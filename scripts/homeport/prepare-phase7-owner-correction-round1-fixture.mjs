@@ -77,7 +77,7 @@ const childEnv = {
   HOMEPORT_SYNTHETIC_EMAIL_ADAPTER: "TASK_OWNED_TEST",
   PROFILE_MEDIA_ROOT: path.join(taskRoot, "media"),
 };
-run("node_modules/prisma/build/index.js", ["migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma"], childEnv);
+const migrationSchema = runJson("scripts/homeport/verify-phase7-sqlite-schema.mjs", childEnv);
 const phase4 = runJson("scripts/homeport/seed-phase4-fixture.mjs", childEnv);
 const phase5 = runJson("scripts/homeport/seed-phase5-fixture.mjs", childEnv);
 const phase7 = runJson("scripts/homeport/seed-phase7-fixture.mjs", childEnv);
@@ -148,6 +148,7 @@ const receipt = {
   fixtureChecksum: correction.fixtureChecksum,
   schemaHash: createHash("sha256").update(schemaBytes).digest("hex"),
   migrationCount: await countMigrationDirectories(path.join(repositoryRoot, "prisma", "migrations")),
+  migrationSchema,
   requestedSource,
   sourceHash,
   sourceCopy,

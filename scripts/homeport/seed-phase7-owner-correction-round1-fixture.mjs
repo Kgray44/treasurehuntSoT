@@ -17,8 +17,12 @@ const databasePath = databaseUrl.startsWith("file:") ? path.resolve(databaseUrl.
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const syntheticPassword = required("HOMEPORT_PHASE7_SYNTHETIC_PASSWORD");
 const createdAt = new Date("2026-08-05T02:00:00.000Z");
+const soundingLineOwned = process.env.HOMEPORT_SOUNDING_LINE_TASK_ROOT === "1";
+const approvedTaskRoot = soundingLineOwned
+  ? path.join(path.resolve(process.cwd()), "artifacts", "sounding-line")
+  : path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport");
 
-if (!taskRoot.startsWith(`${path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport")}${path.sep}`))
+if (!taskRoot.startsWith(`${approvedTaskRoot}${path.sep}`))
   throw new Error(`HOMEPORT_PHASE7_CORRECTION_TASK_ROOT_REFUSED:${taskRoot}`);
 if (!databasePath || !databasePath.startsWith(`${taskRoot}${path.sep}`) || databasePath === canonicalDatabase)
   throw new Error(`HOMEPORT_PHASE7_CORRECTION_FIXTURE_REFUSES_UNOWNED_DATABASE:${databasePath}`);

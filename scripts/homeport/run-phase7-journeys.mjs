@@ -29,11 +29,6 @@ for (const journeyId of requested) {
     DATABASE_URL: `file:${databasePath.replaceAll("\\", "/")}`,
   };
   run(
-    path.join("node_modules", "prisma", "build", "index.js"),
-    ["migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma"],
-    env,
-  );
-  run(
     path.join("node_modules", "tsx", "dist", "cli.mjs"),
     ["scripts/homeport/reconcile-claimed-account-capabilities.ts", "--commit"],
     env,
