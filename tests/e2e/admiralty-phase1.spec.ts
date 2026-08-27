@@ -207,7 +207,9 @@ async function createSupportCase(page: Page, targetAccountId: string, title: str
   await page.getByLabel("Safe case summary visible to the account owner").fill(summary);
   await page.getByRole("button", { name: "Open support case and request consent" }).click();
   await expect(page.getByText(summary, { exact: true })).toBeVisible();
-  await expect(page.getByText("AWAITING_CONSENT", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("article").filter({ hasText: summary }).getByText("AWAITING_CONSENT", { exact: true }),
+  ).toBeVisible();
 }
 
 async function assertNoSeriousAxeViolations(page: Page) {
