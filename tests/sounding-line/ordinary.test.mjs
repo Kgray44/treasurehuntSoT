@@ -824,6 +824,26 @@ test("Homeport fixture preflight provisions only declared journey dependencies",
   ]);
 });
 
+test("Homeport correction commands receive their dedicated task roots", () => {
+  const candidateSha = "f".repeat(40);
+  const plan = { candidateSha, databaseUrl: "file:./.sounding-line-ffffffffffff.sqlite" };
+  for (const [script, lane] of [
+    ["scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs", "phase7-round1"],
+    ["scripts/homeport/run-phase7-owner-correction-round1-journeys.mjs", "phase7-round1"],
+    ["scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs", "phase7-round2"],
+    ["scripts/homeport/run-phase7-owner-correction-round2-journeys.mjs", "phase7-round2"],
+    ["scripts/homeport/prepare-phase7-owner-correction-round3-fixture.mjs", "phase7-round3"],
+    ["scripts/homeport/run-phase7-owner-correction-round3-journeys.mjs", "phase7-round3"],
+    ["scripts/homeport/prepare-phase7-owner-correction-round3-patch-a-fixture.mjs", "phase7-patch-a"],
+    ["scripts/homeport/run-phase7-owner-correction-round3-patch-a-journeys.mjs", "phase7-patch-a"],
+  ]) {
+    assert.equal(
+      verificationEnvironment(plan, process.execPath, [script], {}).HOMEPORT_PHASE7_TASK_ROOT,
+      `artifacts/sounding-line/homeport-${lane}-ffffffffffff`,
+    );
+  }
+});
+
 test("fixture-aware suite dispatch groups established fixture contracts without credential bleed", () => {
   const dispatches = resolveBrowserSuiteDispatches([
     "tests/e2e/admiralty-phase1.spec.ts",
