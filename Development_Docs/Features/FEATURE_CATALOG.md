@@ -1764,8 +1764,8 @@ Captains create, launch, operate, conclude, and safely hand off live Voyages thr
 
 ### Evidence
 
-- branch: `codex/helm-a2-pass-helm-recovery`
-- commit: `f5fd581d50291e46b2f3c2886f9c0e59b826800c`
+- branch: `codex/helm-a2-pass-helm-recovery-r2`
+- commit: `bb305cd6ed8db9d1e626b2bd1d35bbb13e8babe0`
 - commit: `bb5468ce34e77eb58d9af7c57ce2779f6665e3ce`
 - commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
 - path: `src/server/admin-command.ts`
@@ -1774,9 +1774,12 @@ Captains create, launch, operate, conclude, and safely hand off live Voyages thr
 - path: `src/helm/operations.ts`
 - path: `src/helm/lifecycle.ts`
 - path: `src/helm/authority-lifecycle.ts`
+- path: `src/helm/authority-command.client.ts`
 - path: `src/components/platform/PlayerVoyageRoom.tsx`
+- path: `src/components/platform/PlayerLibrary.tsx`
 - path: `src/platform/membership-presence.ts`
 - path: `src/components/captain/CaptainOperationalPanel.tsx`
+- path: `playwright.config.ts`
 - path: `src/components/platform/CaptainLibrary.tsx`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/cancel/route.ts`
