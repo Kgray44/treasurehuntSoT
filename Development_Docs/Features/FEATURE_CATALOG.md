@@ -171,7 +171,7 @@ Players can discover, resume, archive, and reconcile exact-edition Voyage experi
 **Status:** MAINLINE
 **Program or subsystem:** Captain
 
-Captains create, launch, operate, conclude, and safely hand off live Voyages through authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.
+Captains create, ready, launch, operate, conclude, and safely hand off live Voyages through authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.
 
 ### Important subfeatures
 
@@ -191,15 +191,16 @@ Captains create, launch, operate, conclude, and safely hand off live Voyages thr
 - Captain Crew removal, Player voluntary leave, and explicit Voyage cancellation with preserved history
 - Direct joined-Player Captain transfer with durable authority receipts
 - Succession Hold, first-committed Player takeover, and same-edition solo continuation lineage
+- Captain-only and participating-Captain Ready Room with safe Crew state, live reconciliation, and canonical direct launch
 
 ### Primary surfaces
 
-`/captain`, `/captain/library`, `/captain/sessions/[sessionId]`, `/captain/voyages/[playthroughId]/player-preview`, `/player/playthroughs/[playthroughId]`
+`/captain`, `/captain/library`, `/captain/sessions/[sessionId]`, `/captain/voyages/[playthroughId]/muster`, `/captain/voyages/[playthroughId]/player-preview`, `/player/playthroughs/[playthroughId]`
 
 ### Meaningful limitations
 
-- The A2 authority-handoff extension is integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.
-- A3 Ready the Room and original Helm Phase 3 command redesign remain outside this amendment.
+- The A1-A3 extensions are integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.
+- Original Helm Phase 3 command redesign remains outside this amendment.
 
 ### Evidence
 
@@ -212,6 +213,7 @@ Captains create, launch, operate, conclude, and safely hand off live Voyages thr
 - path: `src/helm/authority-lifecycle.ts`
 - path: `src/helm/authority-command.client.ts`
 - path: `src/components/platform/PlayerVoyageRoom.tsx`
+- path: `src/components/captain/CaptainMusterRoom.tsx`
 - path: `src/components/platform/PlayerLibrary.tsx`
 - path: `src/platform/membership-presence.ts`
 - path: `src/components/captain/CaptainOperationalPanel.tsx`
