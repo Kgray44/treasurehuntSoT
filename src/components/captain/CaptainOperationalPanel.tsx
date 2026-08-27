@@ -261,7 +261,7 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
     >
       <header>
         <p className="eyebrow">Operational view</p>
-        <h2>{projection.voyage.voyageName}</h2>
+        <h2 aria-label="Operational voyage summary">{projection.voyage.voyageName}</h2>
         <p>
           {projection.voyage.edition} · {words(projection.voyage.operationalStatus)} · aggregate presence{" "}
           {words(projection.voyage.aggregatePresence)}
@@ -270,7 +270,9 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
       {notice && <StatusBanner tone="success">{notice}</StatusBanner>}
       {error && <StatusBanner tone="danger">{error}</StatusBanner>}
       <section aria-labelledby="needs-attention-heading">
-        <h3 id="needs-attention-heading">Needs Attention</h3>
+        <h3 id="needs-attention-heading" aria-label="Operational attention and safety">
+          Needs Attention
+        </h3>
         {projection.attention.length ? (
           <ul>
             {projection.attention.map((item) => (

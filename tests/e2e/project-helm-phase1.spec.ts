@@ -1181,3 +1181,99 @@ test("Ready the Room keeps the Captain-only, participating-Captain, and ordinary
     await Promise.all(guests.map((guest) => guest.context.close()));
   }
 });
+
+test("Give the Orders keeps live Captain commands contextual, confirmed, idempotent, and private", async ({ page }) => {
+  test.setTimeout(600_000);
+  await signInThroughProduct(page);
+  const voyageName = `Helm commands ${suffix}`;
+  const created = await createVoyage(page, {
+    voyageName,
+    crewName: [],
+    participation: "CAPTAIN_AND_PLAYER",
+  });
+  await beginVoyage(page, voyageName);
+
+  await db.taleSession.update({
+    where: { id: created.playthroughId },
+    data: { variables: JSON.stringify({ helmPhase3CreatorNote: "HELM_PHASE3_PRIVATE_CANARY" }) },
+  });
+  const initial = await browserJson<{
+    csrfToken: string;
+    progress: { currentSequence: number };
+    commandConsole: { commands: Array<{ id: string }> };
+  }>(page, `/api/captain/voyages/${created.playthroughId}`);
+  expect(initial.status).toBe(200);
+  expect(initial.body.commandConsole.commands.map((command) => command.id)).toEqual(
+    expect.arrayContaining(["PAUSE_VOYAGE", "REPLAY_PRESENTATION"]),
+  );
+  expect(forbiddenProjectionKey(initial.body)).toBe(false);
+  expect(JSON.stringify(initial.body)).not.toContain("HELM_PHASE3_PRIVATE_CANARY");
+
+  const replay = {
+    commandId: "REPLAY_PRESENTATION",
+    expectedSequence: initial.body.progress.currentSequence,
+    idempotencyKey: `helm-p3-replay-${suffix}`,
+    confirmed: false,
+  };
+  const firstReplay = await browserJson(page, `/api/captain/voyages/${created.playthroughId}/commands`, {
+    method: "POST",
+    csrf: initial.body.csrfToken,
+    body: replay,
+  });
+  expect(firstReplay.status).toBe(200);
+  const duplicateReplay = await browserJson(page, `/api/captain/voyages/${created.playthroughId}/commands`, {
+    method: "POST",
+    csrf: initial.body.csrfToken,
+    body: replay,
+  });
+  expect(duplicateReplay.status).toBe(200);
+  const staleReplay = await browserJson<{ code?: string }>(
+    page,
+    `/api/captain/voyages/${created.playthroughId}/commands`,
+    {
+      method: "POST",
+      csrf: initial.body.csrfToken,
+      body: { ...replay, idempotencyKey: `helm-p3-stale-${suffix}` },
+    },
+  );
+  expect(staleReplay.status).toBe(409);
+  expect(staleReplay.body).toMatchObject({ code: "STALE_SEQUENCE" });
+
+  await page.goto(`/captain/sessions/${created.playthroughId}`);
+  await expect(page.getByRole("heading", { name: voyageName, exact: true })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole("heading", { name: "Needs attention" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "What you can do now" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Voyage progression" })).toBeVisible();
+  const pause = page.locator(".captain-command-console__command-list").getByRole("button", { name: /Pause Voyage/u });
+  await pause.focus();
+  await expect(pause).toBeFocused();
+  await pause.click();
+  const confirmation = page.getByRole("dialog", { name: /Pause Voyage\?/u });
+  await expect(confirmation).toContainText(/Current state: active/u);
+  const pauseResponse = page.waitForResponse(
+    (response) =>
+      response.url().endsWith(`/api/captain/voyages/${created.playthroughId}/commands`) &&
+      response.request().method() === "POST",
+  );
+  await confirmation.getByRole("button", { name: "Pause Voyage", exact: true }).click();
+  expect((await pauseResponse).status()).toBe(200);
+  await expect(page.getByText(/Pause Voyage was recorded/u)).toBeVisible();
+  await expect(page.getByRole("button", { name: /Resume Voyage/u })).toBeVisible();
+
+  for (const configuration of [
+    { viewport: { width: 1440, height: 1000 }, zoom: 1 },
+    { viewport: { width: 390, height: 844 }, zoom: 1 },
+    { viewport: { width: 1280, height: 900 }, zoom: 2 },
+  ]) {
+    await page.setViewportSize(configuration.viewport);
+    await page
+      .locator("html")
+      .evaluate((node, zoom) => ((node as HTMLElement).style.zoom = String(zoom)), configuration.zoom);
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
+    expect(overflow).toBeLessThanOrEqual(1);
+  }
+  const axe = await new AxeBuilder({ page }).analyze();
+  expect(axe.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);
+});

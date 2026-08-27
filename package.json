@@ -29,6 +29,7 @@
     "tideglass:migrations:sqlite": "node scripts/tideglass/rehearse-phase2-sqlite.mjs",
     "helm:a2:migrations": "node scripts/helm/rehearse-a2-migrations.mjs",
     "helm:a2:journeys": "node scripts/helm/run-a2-journeys.mjs",
+    "helm:phase3:journeys": "node scripts/helm/run-phase3-journeys.mjs",
     "language:validate": "tsx scripts/validate-user-facing-language.ts",
     "test:e2e": "playwright test",
     "test:oauth": "playwright test --config=playwright.oauth.config.ts",

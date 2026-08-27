@@ -22,6 +22,15 @@ last_reviewed: 2026-08-27
   is protected-source behavior with synthetic evidence, not deployment or live
   user-data acceptance.
 
+- Added Project Helm Phase 3, **Give the Orders**: the live Captain console
+  now derives only canonical commands allowed by the fresh Voyage state,
+  previews their target/revision/consequence, confirms meaningful orders, and
+  safely handles stale commands and same-key retries. It reuses the existing
+  One Voyage command/event authority and preserves Captain-only, participating
+  Captain, Player-safe, Creator-private, and Phase 4 recovery/preflight
+  boundaries. This is protected-source behavior with local/synthetic evidence,
+  not deployment, live-Voyage proof, or owner acceptance.
+
 - Added Project Helm Amendment A3, **Ready the Room**: Captain-only and
   Captain + Player Voyages now have clear, responsive pre-launch muster views
   with safe Crew invitation/readiness/presence state, live reconciliation, and

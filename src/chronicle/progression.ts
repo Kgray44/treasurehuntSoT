@@ -100,6 +100,13 @@ export class VerificationRejectedError extends Error {
   }
 }
 
+/** A Captain prepared a command against a Voyage sequence that is no longer current. */
+export class CaptainCommandConflictError extends Error {
+  constructor() {
+    super("Voyage changed while this command was being prepared. Refresh current state before continuing.");
+  }
+}
+
 const identity = (session: { publishedVersionId: string | null; draftRevisionId: string | null }) =>
   session.publishedVersionId ?? `draft:${session.draftRevisionId ?? "unknown"}`;
 const blocksOf = enabledSnapshotBlocks;
@@ -936,7 +943,7 @@ export async function interactWithTaleSession(
 
 export async function submitVerification(
   unchecked: VerificationSubmission,
-  actor: { sourceType: string; sourceId?: string },
+  actor: { sourceType: string; sourceId?: string; expectedSequence?: number },
 ) {
   const submission = verificationSubmissionSchema.parse(unchecked);
   const duplicate = await db.taleVerificationEvent.findUnique({ where: { idempotencyKey: submission.idempotencyKey } });
@@ -1010,6 +1017,8 @@ export async function submitVerification(
       where: { id: request.sessionId },
       include: { version: true },
     });
+    if (actor.expectedSequence !== undefined && current.currentSequence !== actor.expectedSequence)
+      throw new CaptainCommandConflictError();
     if (current.captainAuthorityState === "VACANT") throw new VerificationRejectedError("successionHold");
     if (submission.result !== "match")
       return appendEvent(tx, current, {
@@ -1076,6 +1085,7 @@ export async function captainSessionAction(
     reason?: string;
     targetBlockId?: string;
     idempotencyKey: string;
+    expectedSequence?: number;
   },
 ) {
   const actor = await resolveCaptainActor(actorId);
@@ -1109,11 +1119,19 @@ export async function captainSessionAction(
         confidence: 1,
         evidence: { reason: input.reason ?? "Captain action", override: input.action === "override" },
       },
-      { sourceType: input.action === "override" ? "captainOverride" : "captainManual", sourceId: actorId },
+      {
+        sourceType: input.action === "override" ? "captainOverride" : "captainManual",
+        sourceId: actorId,
+        expectedSequence: input.expectedSequence,
+      },
     );
   }
   const event = await db.$transaction(async (tx) => {
     const current = await tx.taleSession.findUniqueOrThrow({ where: { id: sessionId }, include: { version: true } });
+    const duplicate = await tx.taleSessionEvent.findUnique({ where: { idempotencyKey: input.idempotencyKey } });
+    if (duplicate) return duplicate;
+    if (input.expectedSequence !== undefined && current.currentSequence !== input.expectedSequence)
+      throw new CaptainCommandConflictError();
     if (input.action === "pause" || input.action === "resume") {
       await tx.taleSession.update({
         where: { id: sessionId },
