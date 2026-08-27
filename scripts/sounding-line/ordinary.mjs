@@ -3,7 +3,7 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
-import { mkdir, readdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -27,6 +27,7 @@ const controlPlanePaths = [
   /^AGENTS\.md$/u,
   /^\.agents\/(?:testing-workflow|context-workflow|repository-rules|validation-isolation)\.md$/u,
   /^(?:playwright|vitest)\.config\./u,
+  /^tests\/sounding-line\//u,
   /^testing\/(?!generated\/|contracts\.json$|impact-map\.json$|suites\.json$)/u,
 ];
 const testFile = /(?:\.test|\.spec)\.(?:[cm]?[jt]sx?)$/u;
@@ -87,11 +88,22 @@ const hash = (value) => createHash("sha256").update(JSON.stringify(value)).diges
 export function classifyChanges(paths) {
   const changed = [...new Set(paths.map((file) => file.replaceAll("\\", "/")))].sort();
   const admissionPaths = changed.filter((file) => !ignoredAdmissionPaths.some((pattern) => pattern.test(file)));
+  const productPaths = admissionPaths.filter((file) => productRoots.has(file.split("/")[0]));
+  const authorityPaths = admissionPaths.filter((file) => controlPlanePaths.some((pattern) => pattern.test(file)));
   return {
     changed,
     admissionPaths,
     ignoredPaths: changed.filter((file) => !admissionPaths.includes(file)),
-    controlPlanePaths: admissionPaths.filter((file) => controlPlanePaths.some((pattern) => pattern.test(file))),
+    productPaths,
+    controlPlanePaths: authorityPaths,
+    candidateClassification:
+      productPaths.length && authorityPaths.length
+        ? "PRODUCT_AND_CONTROL_PLANE_MIXED"
+        : authorityPaths.length
+          ? "CONTROL_PLANE"
+          : productPaths.length
+            ? "ORDINARY_PRODUCT"
+            : "ORDINARY_NON_PRODUCT",
   };
 }
 
@@ -283,6 +295,8 @@ export function verificationEnvironment(plan, command, argumentsList, environmen
       (argumentsList.includes("tsx") && argumentsList.includes("prisma/seed.ts")))
   )
     return { DATABASE_URL: environment.DATABASE_URL ?? plan.databaseUrl };
+  if (command === process.execPath && argumentsList[0] === "scripts/sounding-line/browser-authority.mjs")
+    return { DATABASE_URL: environment.DATABASE_URL ?? plan.databaseUrl };
   return {};
 }
 
@@ -313,6 +327,16 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
   const controlPlanePaths = [
     ...new Set([...classification.controlPlanePaths, ...(packageAuthority.length ? ["package.json"] : [])]),
   ].sort();
+  const candidateClassification =
+    classification.productPaths.length && controlPlanePaths.length
+      ? "PRODUCT_AND_CONTROL_PLANE_MIXED"
+      : controlPlanePaths.length
+        ? "CONTROL_PLANE"
+        : classification.candidateClassification;
+  if (mode === "ordinary" && candidateClassification === "PRODUCT_AND_CONTROL_PLANE_MIXED")
+    throw new Error(
+      `SOUNDING_LINE_PRODUCT_AND_CONTROL_PLANE_MIXED:product=${classification.productPaths.join(",")};control-plane=${controlPlanePaths.join(",")}`,
+    );
   if (mode === "ordinary" && controlPlanePaths.length)
     throw new Error(`SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE:${controlPlanePaths.join(",")}`);
   if (!changedPaths.length) throw new Error("SOUNDING_LINE_CANDIDATE_HAS_NO_CHANGED_PATHS");
@@ -343,6 +367,9 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
     candidateTree,
     changedPaths: classification.changed,
     ignoredAdmissionPaths: classification.ignoredPaths,
+    candidateClassification,
+    productPaths: classification.productPaths,
+    controlPlanePaths,
     safetyPaths: classification.admissionPaths.filter(
       (file) => textFile.test(file) && existsSync(path.join(root, file)),
     ),
@@ -412,11 +439,10 @@ export function verificationCommands(plan) {
     if (genericBrowserTests.length) {
       commands.push(["npx", ["--no-install", "tsx", "prisma/seed.ts"]]);
       commands.push([
-        "npx",
+        process.execPath,
         [
-          "--no-install",
-          "playwright",
-          "test",
+          "scripts/sounding-line/browser-authority.mjs",
+          "--",
           ...genericBrowserTests,
           ...(plan.mode === "ordinary" ? ["--project", "chromium"] : []),
         ],
@@ -426,9 +452,56 @@ export function verificationCommands(plan) {
   return commands;
 }
 
+function verificationPhase(command, argumentsList) {
+  if (command === "npm" && argumentsList.join(" ") === "run build") return "build";
+  if (argumentsList[0] === "scripts/sounding-line/browser-authority.mjs") return "browser-authority";
+  if (argumentsList[0] === "scripts/sounding-line/sqlite-bootstrap.mjs" || argumentsList.includes("prisma/seed.ts"))
+    return "browser-server-preparation";
+  return "preflight";
+}
+
 export function runVerificationCommands(root, plan, runCommand = run) {
-  for (const [command, argumentsList] of verificationCommands(plan))
-    runCommand(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
+  const timings = [];
+  for (const [command, argumentsList] of verificationCommands(plan)) {
+    const startedAt = Date.now();
+    const phase = verificationPhase(command, argumentsList);
+    try {
+      runCommand(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
+      timings.push({ phase, durationMs: Date.now() - startedAt, status: "PASS" });
+    } catch (error) {
+      timings.push({ phase, durationMs: Date.now() - startedAt, status: "FAIL" });
+      if (error && typeof error === "object") error.soundingLineTimings = timings;
+      throw error;
+    }
+  }
+  return timings;
+}
+
+export function failureCategoryFor(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  if (message.startsWith("SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:")) return "INVALID_SERVER_TOPOLOGY";
+  if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:")) return "INFRASTRUCTURE_STARTUP_FAILURE";
+  if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:")) return "INFRASTRUCTURE_RUNTIME_FAILURE";
+  if (
+    message.startsWith("SOUNDING_LINE_PRODUCT_AND_CONTROL_PLANE_MIXED:") ||
+    message.startsWith("SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE:")
+  )
+    return "CANDIDATE_CLASSIFICATION_FAILURE";
+  return "PRODUCT_FAILURE";
+}
+
+export function sanitizedFailureCode(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  if (message.startsWith("SOUNDING_LINE_")) return message;
+  return "SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED";
+}
+
+async function readBrowserRuntimeReceipt(root) {
+  try {
+    return JSON.parse(await readFile(path.join(root, "artifacts", "sounding-line", "browser-runtime.json"), "utf8"));
+  } catch {
+    return null;
+  }
 }
 
 async function main() {
@@ -443,13 +516,42 @@ async function main() {
   if (!new Set(["ordinary", "release"]).has(mode)) throw new Error("SOUNDING_LINE_MODE_INVALID");
   const candidateSha = options.candidate ?? git(root, ["rev-parse", "HEAD"]);
   const baseSha = options.base ?? git(root, ["merge-base", candidateSha, "origin/main"]);
-  const plan = await buildPlan({ root, baseSha, candidateSha, mode });
-  const result = { ...plan, planDigest: hash(plan), startedAt: new Date().toISOString(), decision: "FAIL" };
+  const startedAt = new Date().toISOString();
+  const preflightStartedAt = Date.now();
+  let plan;
+  let result;
   try {
-    runVerificationCommands(root, plan);
+    plan = await buildPlan({ root, baseSha, candidateSha, mode });
+    result = {
+      ...plan,
+      planDigest: hash(plan),
+      startedAt,
+      timing: { classificationPreflightMs: Date.now() - preflightStartedAt, commands: [] },
+      failureCategory: null,
+      decision: "FAIL",
+    };
+    result.timing.commands = runVerificationCommands(root, plan);
+    result.browserQualification = await readBrowserRuntimeReceipt(root);
+    if (result.browserQualification?.failureCategory)
+      result.failureCategory = result.browserQualification.failureCategory;
     result.decision = "PASS";
   } catch (error) {
-    result.error = error instanceof Error ? error.message : String(error);
+    result ??= {
+      version: 1,
+      authority: "SOUNDING_LINE",
+      mode,
+      baseSha,
+      candidateSha,
+      startedAt,
+      timing: { classificationPreflightMs: Date.now() - preflightStartedAt, commands: [] },
+      decision: "FAIL",
+    };
+    result.error = sanitizedFailureCode(error);
+    result.failureCategory = failureCategoryFor(error);
+    result.timing.commands = error?.soundingLineTimings ?? result.timing.commands;
+    result.browserQualification = await readBrowserRuntimeReceipt(root);
+    if (result.browserQualification?.failureCategory)
+      result.failureCategory = result.browserQualification.failureCategory;
   }
   result.completedAt = new Date().toISOString();
   await mkdir(path.join(root, "artifacts", "sounding-line"), { recursive: true });

@@ -1,10 +1,16 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { EventEmitter } from "node:events";
 import { mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { splitMigrationStatements } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
+import {
+  assertBrowserAuthorityTopology,
+  browserRuntimeReceipt,
+  runBrowserAuthority,
+} from "../../scripts/sounding-line/browser-authority.mjs";
 import {
   assertBinding,
   browserProvisioningRequired,
@@ -14,6 +20,7 @@ import {
   requiresMigrationValidation,
   requiresBuild,
   runVerificationCommands,
+  sanitizedFailureCode,
   selectAffectedTests,
   soundingLineDatabaseUrl,
   verificationEnvironment,
@@ -81,6 +88,8 @@ test("ordinary classification ignores retired generated state and rejects active
     "testing/generated/active-test-registry.json",
   ]);
   assert.deepEqual(result.controlPlanePaths, ["scripts/sounding-line/ordinary.mjs"]);
+  assert.deepEqual(result.productPaths, ["src/app/community/voyage-logs/[slug]/page.tsx"]);
+  assert.equal(result.candidateClassification, "PRODUCT_AND_CONTROL_PLANE_MIXED");
 });
 
 test("Admiralty-style package scripts remain ordinary-admissible", () => {
@@ -137,6 +146,7 @@ test("global authority paths remain release-only", () => {
     "scripts/sounding-line/ordinary.mjs",
     ".github/workflows/sounding-line-ordinary.yml",
     "playwright.config.ts",
+    "tests/sounding-line/ordinary.test.mjs",
     "AGENTS.md",
     ".agents/testing-workflow.md",
     ".agents/context-workflow.md",
@@ -144,6 +154,7 @@ test("global authority paths remain release-only", () => {
     ".agents/validation-isolation.md",
   ];
   assert.deepEqual(classifyChanges(paths).controlPlanePaths, paths.sort());
+  assert.equal(classifyChanges(paths).candidateClassification, "CONTROL_PLANE");
 });
 
 test("Sounding Line package authority mutations remain release-only", () => {
@@ -254,6 +265,19 @@ test("ordinary admission distinguishes the field candidates from release authori
       /SOUNDING_LINE_INVALID_DECLARATIVE_REGISTRATION:testing\/contracts\.json/u,
     );
   });
+
+  await withCandidate(
+    {
+      "src/product.ts": "export const product = false;\n",
+      "scripts/sounding-line/runtime.mjs": "export const controller = true;\n",
+    },
+    async (fixture) => {
+      await assert.rejects(
+        () => buildPlan({ ...fixture, mode: "ordinary" }),
+        /SOUNDING_LINE_PRODUCT_AND_CONTROL_PLANE_MIXED:product=src\/product\.ts;control-plane=scripts\/sounding-line\/runtime\.mjs/u,
+      );
+    },
+  );
 });
 
 test("ordinary selection finds Harborlight browser proof structurally", () => {
@@ -434,9 +458,24 @@ test("ordinary browser proof uses the installed Chromium project", () => {
   assert.deepEqual(browserCommands.at(-2), ["npx", ["--no-install", "tsx", "prisma/seed.ts"]]);
   const browserCommand = browserCommands.at(-1);
   assert.deepEqual(browserCommand, [
-    "npx",
-    ["--no-install", "playwright", "test", "tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"],
+    process.execPath,
+    [
+      "scripts/sounding-line/browser-authority.mjs",
+      "--",
+      "tests/e2e/harborlight-phase3.spec.ts",
+      "--project",
+      "chromium",
+    ],
   ]);
+  assert.deepEqual(
+    verificationEnvironment(
+      { databaseUrl: "file:./.sounding-line-candidate.sqlite" },
+      process.execPath,
+      ["scripts/sounding-line/browser-authority.mjs", "--", "tests/e2e/harborlight-phase3.spec.ts"],
+      {},
+    ),
+    { DATABASE_URL: "file:./.sounding-line-candidate.sqlite" },
+  );
 });
 
 test("Tideglass browser proof uses its dedicated isolated harness", () => {
@@ -461,7 +500,8 @@ test("Tideglass browser proof uses its dedicated isolated harness", () => {
         ["scripts/tideglass/run-phase3-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
           argumentsList[0],
         )) ||
-      (command === "npx" && (argumentsList.includes("playwright") || argumentsList.includes("prisma/seed.ts"))),
+      (command === process.execPath && argumentsList[0] === "scripts/sounding-line/browser-authority.mjs") ||
+      (command === "npx" && argumentsList.includes("prisma/seed.ts")),
   );
   assert.deepEqual(browserHarnessCommands, [
     [process.execPath, ["scripts/tideglass/run-phase3-journeys.mjs"]],
@@ -470,7 +510,16 @@ test("Tideglass browser proof uses its dedicated isolated harness", () => {
       ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
     ],
     ["npx", ["--no-install", "tsx", "prisma/seed.ts"]],
-    ["npx", ["--no-install", "playwright", "test", "tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"]],
+    [
+      process.execPath,
+      [
+        "scripts/sounding-line/browser-authority.mjs",
+        "--",
+        "tests/e2e/harborlight-phase3.spec.ts",
+        "--project",
+        "chromium",
+      ],
+    ],
   ]);
   assert.deepEqual(
     verificationEnvironment(
@@ -542,7 +591,8 @@ test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once
         ["scripts/admiralty/run-phase2-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
           argumentsList[0],
         )) ||
-      (command === "npx" && (argumentsList.includes("playwright") || argumentsList.includes("prisma/seed.ts"))),
+      (command === process.execPath && argumentsList[0] === "scripts/sounding-line/browser-authority.mjs") ||
+      (command === "npx" && argumentsList.includes("prisma/seed.ts")),
   );
   assert.deepEqual(browserHarnessCommands, [
     [process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]],
@@ -551,7 +601,16 @@ test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once
       ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
     ],
     ["npx", ["--no-install", "tsx", "prisma/seed.ts"]],
-    ["npx", ["--no-install", "playwright", "test", "tests/e2e/admiralty-phase3.spec.ts", "--project", "chromium"]],
+    [
+      process.execPath,
+      [
+        "scripts/sounding-line/browser-authority.mjs",
+        "--",
+        "tests/e2e/admiralty-phase3.spec.ts",
+        "--project",
+        "chromium",
+      ],
+    ],
   ]);
 });
 
@@ -577,9 +636,7 @@ test("Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures
     buildRequired: true,
   });
   assert.deepEqual(
-    browserCommands.filter(
-      ([command, argumentsList]) => command === process.execPath || argumentsList.includes("playwright"),
-    ),
+    browserCommands.filter(([command]) => command === process.execPath),
     [
       [
         process.execPath,
@@ -590,7 +647,16 @@ test("Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures
       [process.execPath, ["scripts/homeport/run-phase7-journeys.mjs"]],
       [process.execPath, ["scripts/homeport/prepare-phase7-owner-correction-round3-fixture.mjs"]],
       [process.execPath, ["scripts/homeport/run-phase7-owner-correction-round3-journeys.mjs"]],
-      ["npx", ["--no-install", "playwright", "test", "tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"]],
+      [
+        process.execPath,
+        [
+          "scripts/sounding-line/browser-authority.mjs",
+          "--",
+          "tests/e2e/harborlight-phase3.spec.ts",
+          "--project",
+          "chromium",
+        ],
+      ],
     ],
   );
   assert.deepEqual(
@@ -735,6 +801,145 @@ test("generic browser configuration starts the built server without webpack dev"
   const configuration = readFileSync("playwright.config.ts", "utf8");
   assert.match(configuration, /next start/u);
   assert.doesNotMatch(configuration, /next dev/u);
+  assert.doesNotThrow(() =>
+    assertBrowserAuthorityTopology({
+      serverMode: "production",
+      productionOutputDirectory: ".next",
+      serverOutputDirectory: ".next",
+    }),
+  );
+  assert.throws(
+    () =>
+      assertBrowserAuthorityTopology({
+        serverMode: "development",
+        productionOutputDirectory: ".next",
+        serverOutputDirectory: ".next",
+        developmentOutputDirectory: ".next",
+      }),
+    /SOUNDING_LINE_INVALID_SERVER_TOPOLOGY/u,
+  );
+});
+
+function fakeChild() {
+  const child = new EventEmitter();
+  child.exitCode = null;
+  child.signalCode = null;
+  child.kill = () => {
+    if (child.exitCode !== null || child.signalCode !== null) return;
+    child.exitCode = 0;
+    queueMicrotask(() => child.emit("exit", 0, null));
+  };
+  return child;
+}
+
+test("dead governed browser server interrupts the browser immediately with infrastructure attribution", async () => {
+  const server = fakeChild();
+  const browser = fakeChild();
+  let launches = 0;
+  const receipt = await runBrowserAuthority({
+    root: process.cwd(),
+    browserArguments: ["tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"],
+    port: 31991,
+    ready: async () => true,
+    sleep: async () => {},
+    launch: () => {
+      launches += 1;
+      if (launches === 1) return server;
+      queueMicrotask(() => {
+        server.exitCode = 1;
+        server.emit("exit", 1, null);
+      });
+      return browser;
+    },
+  });
+  assert.equal(receipt.failureCategory, "INFRASTRUCTURE_RUNTIME_FAILURE");
+  assert.equal(receipt.failureCode, "SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:SERVER_EXITED");
+  assert.equal(browser.exitCode, 0);
+  assert.equal(receipt.topology, "BUILT_SERVER_TASK_OWNED_RUNTIME");
+  assert.ok(receipt.timings.infrastructureFailureWaitMs < 600_000);
+});
+
+test("invalid production and development output topology fails before browser launch", async () => {
+  let launched = false;
+  const receipt = await runBrowserAuthority({
+    root: process.cwd(),
+    browserArguments: ["tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"],
+    port: 31990,
+    serverArguments: ["node_modules/next/dist/bin/next", "dev", "-p", "31990"],
+    launch: () => {
+      launched = true;
+      return fakeChild();
+    },
+  });
+  assert.equal(launched, false);
+  assert.equal(receipt.failureCategory, "INVALID_SERVER_TOPOLOGY");
+  assert.equal(
+    receipt.failureCode,
+    "SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:PRODUCTION_BROWSER_AUTHORITY_REQUIRES_NEXT_START",
+  );
+});
+
+test("slow but live governed browser server retains its readiness budget", async () => {
+  const server = fakeChild();
+  const browser = fakeChild();
+  let launches = 0;
+  let readinessChecks = 0;
+  let clock = 0;
+  const receipt = await runBrowserAuthority({
+    root: process.cwd(),
+    browserArguments: ["tests/e2e/harborlight-phase3.spec.ts", "--project", "chromium"],
+    port: 31992,
+    now: () => (clock += 25),
+    ready: async () => (readinessChecks += 1) === 4,
+    sleep: async () => {},
+    launch: () => {
+      launches += 1;
+      if (launches === 1) return server;
+      queueMicrotask(() => {
+        browser.exitCode = 0;
+        browser.emit("exit", 0, null);
+      });
+      return browser;
+    },
+  });
+  assert.equal(receipt.failureCategory, null);
+  assert.equal(readinessChecks, 4);
+  assert.ok(receipt.timings.serverReadinessMs > 0);
+});
+
+test("browser runtime receipts have a deterministic sanitized shape", () => {
+  assert.equal(
+    sanitizedFailureCode(new Error("database password should not appear in a Sounding Line receipt")),
+    "SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED",
+  );
+  assert.deepEqual(
+    browserRuntimeReceipt({
+      baseURL: "http://127.0.0.1:31993",
+      failureCategory: "INVALID_SERVER_TOPOLOGY",
+      failureCode: "SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:BUILT_OUTPUT_MISMATCH",
+      timings: {
+        serverPreparationMs: 1,
+        serverReadinessMs: 2,
+        browserExecutionMs: 3,
+        infrastructureFailureWaitMs: 4,
+        cleanupMs: 5,
+      },
+    }),
+    {
+      version: 1,
+      topology: "BUILT_SERVER_TASK_OWNED_RUNTIME",
+      baseURL: "http://127.0.0.1:31993",
+      failureCategory: "INVALID_SERVER_TOPOLOGY",
+      failureCode: "SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:BUILT_OUTPUT_MISMATCH",
+      timings: {
+        serverPreparationMs: 1,
+        serverReadinessMs: 2,
+        browserExecutionMs: 3,
+        infrastructureFailureWaitMs: 4,
+        cleanupMs: 5,
+      },
+    },
+  );
 });
 
 test("ordinary admission has no orchestration or generated-state prerequisites", () => {
@@ -780,6 +985,8 @@ test("trusted PR routing produces one strict decision for ordinary and control-p
   assert.match(ordinaryWorkflow, /steps\.route\.outputs\.kind == 'ordinary'/u);
   assert.match(ordinaryWorkflow, /steps\.route\.outputs\.kind == 'control-plane'/u);
   assert.match(ordinaryWorkflow, /SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE/u);
+  assert.match(ordinaryWorkflow, /SOUNDING_LINE_PRODUCT_AND_CONTROL_PLANE_MIXED/u);
+  assert.match(ordinaryWorkflow, /SOUNDING_LINE_CANDIDATE_CLASSIFICATION_FAILURE/u);
   assert.match(ordinaryWorkflow, /git merge-base --is-ancestor/u);
   assert.equal((ordinaryWorkflow.match(/name: Sounding Line \/ Mainline Decision/gu) ?? []).length, 1);
 });

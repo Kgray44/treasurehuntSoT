@@ -91,6 +91,8 @@ jobs:
             appendFileSync(process.env.GITHUB_OUTPUT, `kind=ordinary\nbrowser_required=${plan.browserRequired}\n`);
           } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
+            if (message.startsWith("SOUNDING_LINE_PRODUCT_AND_CONTROL_PLANE_MIXED:"))
+              throw new Error(`SOUNDING_LINE_CANDIDATE_CLASSIFICATION_FAILURE:${message}`);
             if (!message.startsWith("SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE:")) throw error;
             appendFileSync(process.env.GITHUB_OUTPUT, "kind=control-plane\n");
           }
