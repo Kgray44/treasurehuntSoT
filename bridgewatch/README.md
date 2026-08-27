@@ -1,20 +1,21 @@
 ---
-title: Bridgewatch v1.2 Mission Control operator guide
+title: Bridgewatch v2.0 Light Mission Control operator guide
 audience: engineering
 status: current
-canonical_for: bridgewatch-v1.2-operator-guide
+canonical_for: bridgewatch-v2-light-mission-control-operator-guide
 last_reviewed: 2026-08-27
 ---
 
-# Bridgewatch v1.2 — Mission Control and Data Fabric
+# Bridgewatch v2.0 — Light Mission Control and Data Fabric
 
-Bridgewatch v1.2 is a private, read-only internal Mission Control for project,
-version, phase, GitHub, Sounding Line, source-health, and retained-history
-observation. Its Phase 2 data fabric adds bounded source adapters, fact
-provenance, coverage, and durable observation history. It is a post-completion
-product-version amendment: the accepted
-Phase 1–3 program history remains historical evidence and v1.2 does not create
-or imply a Phase 4.
+Bridgewatch v2.0 is a private, read-only internal Mission Control for project,
+version, phase, GitHub, Sounding Line, source-health, runtime, provider, and
+retained-history observation. Its accepted P2 data fabric supplies bounded
+source adapters, fact provenance, coverage, and durable observation history;
+the v2.0 Light Mission Control increment turns those facts into an operator
+experience without creating a new mutation authority. Accepted Phase 1–3
+program history remains historical evidence. v2.0 does not create or imply a
+Bridgewatch Phase 4.
 It is a standalone Fastify service with a local SQLite cache and a static
 dashboard. It does not belong to the public Next.js application.
 
@@ -137,13 +138,18 @@ and defaults to the last 12 hours; `/api/activity` remains worker activity.
 Startup refreshes GitHub and the source-owned Sounding Line projection; a
 source failure retains a cached state and never blanks the board.
 
-v1.2 adds `GET /api/program`, version and phase profiles below
+The inherited v1.2 data model adds `GET /api/program`, version and phase profiles below
 `/api/projects/:id`, retained PR/branch/Sounding Line profiles,
 `GET /api/compare?from=...&to=...`, and `/api/sources/:name`. The hash-routed
-dashboard offers Overview, Program, Projects, Operations, GitHub, Attention,
-History, Sources, and Data & Coverage stations. It is a read-only convenience over the same
-bounded APIs; deep links, browser Back/Forward, and a comparison fidelity label
-do not change source authority.
+dashboard offers Fleet Overview, Active Operations, Mainline, Verification,
+Projects, Repository, Product Intelligence, Voyagewright Runtime, Sources &
+Data Quality, History, and Attention stations. Project profiles group governing
+status, versions, phases, candidate/main relationships, branch/PR observation,
+verification, worker activity, provenance, coverage limits, and history rather
+than presenting one raw directory. Every attention item identifies the source
+that produced it. This remains a read-only convenience over the same bounded
+APIs; deep links, browser Back/Forward, filtering, and comparison fidelity do
+not change source authority.
 
 The browser-local `bridgewatch:last-seen:v1` key affects only the displayed
 history range. Invalid, unavailable, or future local values fall back to the

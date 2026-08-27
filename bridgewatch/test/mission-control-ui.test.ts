@@ -7,19 +7,21 @@ const html = readFileSync(`${root}index.html`, "utf8");
 const app = readFileSync(`${root}app.js`, "utf8");
 const css = readFileSync(`${root}style.css`, "utf8");
 
-describe("v1.2 mission-control navigation", () => {
-  it("uses named stations and hash deep links instead of a single long-form dashboard", () => {
+describe("v2.0 light mission-control navigation", () => {
+  it("uses named mission stations and hash deep links instead of a single long-form dashboard", () => {
     expect(html).toContain('aria-label="Mission control stations"');
     for (const station of [
-      "Overview",
-      "Program",
+      "Fleet Overview",
+      "Active Operations",
+      "Mainline",
+      "Verification",
       "Projects",
-      "Operations",
-      "GitHub",
-      "Attention",
+      "Repository",
+      "Product Intelligence",
+      "Voyagewright Runtime",
+      "Sources &amp; Data Quality",
       "History",
-      "Sources",
-      "Data & Coverage",
+      "Attention",
     ])
       expect(html).toContain(`>${station}<`);
     expect(app).toContain('window.addEventListener("hashchange", renderRoute)');
@@ -27,6 +29,10 @@ describe("v1.2 mission-control navigation", () => {
     expect(app).toContain("function renderComparison");
     expect(app).toContain("function renderPullRequestProfile");
     expect(app).toContain("function renderSourceProfile");
+    expect(app).toContain("function renderMainline");
+    expect(app).toContain("function renderVerification");
+    expect(app).toContain("function renderProductIntelligence");
+    expect(app).toContain("function renderRuntime");
     expect(app).toContain("Sources & Data Quality");
     expect(app).toContain("function renderDataFabric");
     expect(app).toContain("function renderFactProfile");
@@ -44,6 +50,11 @@ describe("v1.2 mission-control navigation", () => {
     expect(app).toContain("Failure classification");
     expect(app).toContain("Serving retained stale data");
     expect(app).toContain("sourceDateText");
+    expect(app).toContain("wrap.tabIndex = 0");
+    expect(app).toContain('Scrollable table: ${headers.join(", ")}');
+    expect(app).toContain("Current-main relationship");
+    expect(app).toContain("Capability realization mapping");
+    expect(app).toContain("Source: ${item.source.id}");
   });
 
   it("offers bounded client-side search or filtering for every requested observation collection", () => {
@@ -54,6 +65,7 @@ describe("v1.2 mission-control navigation", () => {
     expect(app).toContain("Search PRs");
     expect(app).toContain("Search branches");
     expect(app).toContain("Search retained history");
+    expect(app).toContain("new URLSearchParams({ since: initialSince })");
     expect(app).toContain("Search observed facts");
     expect(app).toContain('"Open", "Historical", "All"');
   });

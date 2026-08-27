@@ -19,6 +19,14 @@ handoffs. The owner accepted the qualified Phase 1 walkthrough on 2026-08-12,
 and protected mainline integration completed in PR #41. Deployment remains a
 separate decision.
 
+**In candidate validation, not available on main:** Project Bridgewatch v2.0
+Light Mission Control presents the accepted observer/data-fabric plateau as
+eleven dense, read-only operator stations with source-bound attention and
+project intelligence. Local repository and runtime observations, unavailable
+GitHub, unconfigured provider/telemetry, and unrecorded evidence remain visible
+as distinct states. Protected-main integration, deployment, provider proof, and
+owner acceptance are not claimed.
+
 **Available on main:** Project Homeport Phases 1-7 and Correction Round 3 Patch
 A, Phase 3-4 convergence, Wayfarer Phases 3 and 4,
 Sealed Hold Phases 3 and 4, Harborlight Phase 3, True North, Ledgerlight, the

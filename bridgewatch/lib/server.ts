@@ -14,7 +14,7 @@ import { type BridgewatchEventKind, type BridgewatchProgramSnapshot } from "../s
 import { SoundingLineCollector, testTotals } from "../src/sounding-line.js";
 import { authorizeTelemetry, parseHeartbeat, workerState } from "../src/telemetry.js";
 import { readNightwatchProjection } from "../src/nightwatch-projection.js";
-import { DataFabricCollector, deriveCoverage, type DataFabricSnapshot } from "../src/fabric.js";
+import { DataFabricCollector, deriveCoverage, type DataFabricSnapshot, type ObservationFact } from "../src/fabric.js";
 import { GithubCollector } from "./github.js";
 import { BridgewatchStore, type HistoryQuery } from "./store.js";
 
@@ -67,6 +67,286 @@ type SourceProfile = {
   repairability: "AUTOMATIC_RETRY" | "CONFIGURATION_REQUIRED" | "SOURCE_OWNER_REQUIRED" | "NOT_APPLICABLE";
   servingRetainedStaleData: boolean;
 };
+
+export type OperatorAttention = {
+  level: "NOTICE" | "AMBER" | "BLOCKED";
+  code: string;
+  title: string;
+  message: string;
+  projectId?: string;
+  source: {
+    id: string;
+    reference: string;
+    observedAt: string | null;
+    state: string | null;
+  };
+};
+
+type AttentionPullRequest = {
+  number: number;
+  title: string;
+  state: string;
+  checkState?: string | null;
+  mergeableState?: string | null;
+  updatedAt?: string | null;
+  headRef?: string | null;
+};
+
+type AttentionPlan = {
+  id: string;
+  state: string;
+  createdAt: string | null;
+  sourceSha?: string | null;
+  finalDecision?: string | null;
+  nodes: Array<{ id: string; state: string; rootFailureId?: string | null }>;
+};
+
+const attentionLevelRank: Record<OperatorAttention["level"], number> = {
+  BLOCKED: 3,
+  AMBER: 2,
+  NOTICE: 1,
+};
+
+/**
+ * Turns bounded observations into operator-facing conditions. The function is
+ * deliberately pure: it names the observed source and never prescribes or
+ * performs a repair.
+ */
+export function deriveOperatorAttention(input: {
+  sources: readonly Pick<SourceProfile, "name" | "sourceId" | "state" | "detail" | "lastSuccessAt" | "configured">[];
+  facts: readonly ObservationFact[];
+  branches: readonly {
+    name: string;
+    projectId?: string | null;
+    attention?: boolean;
+    reason?: string | null;
+    message?: string | null;
+    lastActivityAt?: string | null;
+  }[];
+  pullRequests: readonly AttentionPullRequest[];
+  plans: readonly AttentionPlan[];
+  workers: readonly {
+    workerId: string;
+    project: string;
+    effectiveState?: string;
+    state: string;
+    heartbeatAt: string;
+  }[];
+  historyWarning: string | null;
+  candidateStaleAfterMs: number;
+}): OperatorAttention[] {
+  const result: OperatorAttention[] = [];
+  const seen = new Set<string>();
+  const add = (item: OperatorAttention) => {
+    const key = `${item.code}:${item.projectId ?? ""}:${item.source.id}:${item.source.reference}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      result.push(item);
+    }
+  };
+  const sourceFor = (id: string, reference: string, observedAt: string | null, state: string | null) => ({
+    id,
+    reference,
+    observedAt,
+    state,
+  });
+
+  for (const source of input.sources) {
+    if (["DEGRADED", "UNAVAILABLE", "STALE"].includes(source.state)) {
+      add({
+        level: source.state === "UNAVAILABLE" ? "BLOCKED" : "AMBER",
+        code: "SOURCE_HEALTH",
+        title: `${source.name} source ${source.state.toLowerCase()}`,
+        message:
+          source.detail ??
+          "The most recent bounded observation is not healthy; retained data may be stale or incomplete.",
+        source: sourceFor(source.sourceId, `source:${source.name}`, source.lastSuccessAt, source.state),
+      });
+    } else if (source.state === "NOT_CONFIGURED" || !source.configured) {
+      add({
+        level: "NOTICE",
+        code: "SOURCE_NOT_CONFIGURED",
+        title: `${source.name} source is not configured`,
+        message: source.detail ?? "This observation source is optional and has not been configured on this host.",
+        source: sourceFor(source.sourceId, `source:${source.name}`, source.lastSuccessAt, source.state),
+      });
+    }
+  }
+
+  for (const fact of input.facts) {
+    const level = fact.state === "SOURCE_UNAVAILABLE" ? "AMBER" : fact.state === "STALE" ? "AMBER" : "NOTICE";
+    if (!["SOURCE_UNAVAILABLE", "STALE", "UNKNOWN", "NOT_HISTORICALLY_RECORDED"].includes(fact.state)) continue;
+    add({
+      level,
+      code: "EXPECTED_FACT_GAP",
+      title: `${fact.label} is ${fact.state.toLowerCase().replaceAll("_", " ")}`,
+      message:
+        fact.limitation ??
+        "The expected fact class has no current authoritative observation; its absence is retained explicitly rather than inferred.",
+      source: sourceFor(
+        fact.provenance.sourceId,
+        fact.provenance.reference,
+        fact.provenance.sourceObservedAt,
+        fact.state,
+      ),
+    });
+  }
+
+  for (const worker of input.workers) {
+    const state = worker.effectiveState ?? worker.state;
+    if (state !== "BLOCKED" && state !== "STALE") continue;
+    add({
+      level: state === "BLOCKED" ? "BLOCKED" : "NOTICE",
+      code: `WORKER_${state}`,
+      title: `Worker ${worker.workerId} is ${state.toLowerCase()}`,
+      message: `Activity telemetry reports ${state} for this worker. Telemetry remains activity evidence, not lifecycle authority.`,
+      projectId: worker.project,
+      source: sourceFor("bridgewatch-activity-telemetry", `telemetry:${worker.workerId}`, worker.heartbeatAt, state),
+    });
+  }
+
+  for (const branch of input.branches.filter((entry) => entry.attention)) {
+    add({
+      level: "AMBER",
+      code: branch.reason ?? "BRANCH_ATTENTION",
+      title: `Branch ${branch.name} requires review`,
+      message: branch.message ?? "The observed branch has a governed staleness or current-main divergence condition.",
+      projectId: branch.projectId ?? undefined,
+      source: sourceFor(
+        "github-repository-api",
+        `branch:${branch.name}`,
+        branch.lastActivityAt ?? null,
+        branch.reason ?? null,
+      ),
+    });
+  }
+
+  for (const pull of input.pullRequests.filter((entry) => entry.state === "OPEN")) {
+    const checks = (pull.checkState ?? "").toUpperCase();
+    const mergeability = (pull.mergeableState ?? "").toUpperCase();
+    const stale = pull.updatedAt ? Date.now() - Date.parse(pull.updatedAt) > input.candidateStaleAfterMs : false;
+    if (checks.includes("FAIL") || checks.includes("ERROR") || mergeability === "BLOCKED" || mergeability === "DIRTY") {
+      add({
+        level: "BLOCKED",
+        code: "PULL_REQUEST_BLOCKED",
+        title: `Pull request #${pull.number} is blocked`,
+        message: `Observed checks are ${pull.checkState ?? "NOT_RECORDED"}; mergeability is ${pull.mergeableState ?? "NOT_RECORDED"}.`,
+        source: sourceFor(
+          "github-repository-api",
+          `pull-request:${pull.number}`,
+          pull.updatedAt ?? null,
+          pull.checkState ?? null,
+        ),
+      });
+    } else if (stale) {
+      add({
+        level: "AMBER",
+        code: "PULL_REQUEST_STALE",
+        title: `Pull request #${pull.number} is stale`,
+        message: `No observed update is within the configured review freshness window. This does not infer an owner action or lifecycle result.`,
+        source: sourceFor("github-repository-api", `pull-request:${pull.number}`, pull.updatedAt ?? null, "STALE"),
+      });
+    }
+  }
+
+  for (const plan of input.plans) {
+    if (["RELEASE_NO_GO", "EVIDENCE_INVALID"].includes(plan.finalDecision ?? "")) {
+      add({
+        level: "BLOCKED",
+        code: "VERIFICATION_REGRESSION",
+        title: `Sounding Line run ${plan.id} did not clear`,
+        message: `The retained final decision is ${plan.finalDecision}. Sounding Line remains the authority for its meaning and disposition.`,
+        source: sourceFor(
+          "sounding-line-runtime-projection",
+          `run:${plan.id}`,
+          plan.createdAt,
+          plan.finalDecision ?? null,
+        ),
+      });
+    }
+    if (
+      !plan.finalDecision &&
+      !["COMPLETE", "CANCELLED", "SUPERSEDED"].includes(plan.state) &&
+      plan.createdAt &&
+      Number.isFinite(Date.parse(plan.createdAt)) &&
+      Date.now() - Date.parse(plan.createdAt) > input.candidateStaleAfterMs
+    ) {
+      add({
+        level: "AMBER",
+        code: "CANDIDATE_STALLED",
+        title: `Candidate ${plan.id} has no final decision`,
+        message:
+          "The bounded plan remains active beyond the configured review window; Bridgewatch does not retry, cancel, or advance it.",
+        source: sourceFor("sounding-line-runtime-projection", `run:${plan.id}`, plan.createdAt, plan.state),
+      });
+    }
+    const failed = plan.nodes.filter((node) => node.state === "FAILED" || node.state === "BLOCKED");
+    if (failed.length) {
+      add({
+        level: "BLOCKED",
+        code: "VERIFICATION_FAILURE",
+        title: `Sounding Line run ${plan.id} has failed or blocked nodes`,
+        message: `${failed.length} retained node${failed.length === 1 ? " is" : "s are"} failed or blocked. Root-cause detail remains source-owned.`,
+        source: sourceFor("sounding-line-runtime-projection", `run:${plan.id}`, plan.createdAt, "FAILED"),
+      });
+    }
+  }
+
+  const runtime = input.facts.find(
+    (fact) => fact.factClass === "voyagewright.runtime-identity" && typeof fact.value.sourceSha === "string",
+  );
+  const main = input.facts
+    .filter((fact) => fact.factClass === "repository.current-main" && typeof fact.value.headSha === "string")
+    .sort((left, right) => right.provenance.precedence - left.provenance.precedence)[0];
+  if (runtime && main && runtime.value.sourceSha !== main.value.headSha) {
+    add({
+      level: "AMBER",
+      code: "RUNTIME_NOT_CURRENT_MAIN",
+      title: "Voyagewright runtime does not report current main",
+      message:
+        "The observed runtime source SHA differs from the current-main source SHA. Bridgewatch does not infer ancestry, deploy, or restart state.",
+      source: sourceFor(
+        runtime.provenance.sourceId,
+        runtime.provenance.reference,
+        runtime.provenance.sourceObservedAt,
+        runtime.state,
+      ),
+    });
+  }
+
+  const providers = input.facts.find((fact) => fact.factClass === "operations.provider-jobs");
+  if (providers && typeof providers.value.degradedCount === "number" && providers.value.degradedCount > 0) {
+    add({
+      level: "AMBER",
+      code: "PROVIDER_DEGRADED",
+      title: "Provider or job degradation is observed",
+      message: `${providers.value.degradedCount} provider or job status${providers.value.degradedCount === 1 ? " is" : "es are"} reported degraded by the configured projection.`,
+      source: sourceFor(
+        providers.provenance.sourceId,
+        providers.provenance.reference,
+        providers.provenance.sourceObservedAt,
+        providers.state,
+      ),
+    });
+  }
+
+  if (input.historyWarning) {
+    add({
+      level: "NOTICE",
+      code: "HISTORY_UNAVAILABLE",
+      title: "Historical persistence is unavailable",
+      message: input.historyWarning,
+      source: sourceFor("bridgewatch-history", "bridgewatch:history", null, "DEGRADED"),
+    });
+  }
+
+  return result.sort(
+    (left, right) =>
+      attentionLevelRank[right.level] - attentionLevelRank[left.level] ||
+      left.title.localeCompare(right.title) ||
+      left.source.reference.localeCompare(right.source.reference),
+  );
+}
 
 const twelveHours = 12 * 60 * 60 * 1_000;
 const eventKinds = new Set<BridgewatchEventKind>([
@@ -271,6 +551,10 @@ export function buildServer() {
       facts: store.fabricFacts(),
       coverage: deriveCoverage(store.fabricFacts()),
     };
+    const localMain = fabric.facts
+      .filter((fact) => fact.factClass === "repository.current-main" && typeof fact.value.headSha === "string")
+      .sort((left, right) => right.provenance.precedence - left.provenance.precedence)[0]?.value.headSha;
+    const currentMain = snapshot?.headSha ?? (typeof localMain === "string" ? localMain : null);
     const inspectedAt = new Date().toISOString();
     const observedAt = snapshot?.observedAt ?? null;
     const githubHealth = store.sourceObservations().find((source) => source.name === "github") ?? {
@@ -566,67 +850,32 @@ export function buildServer() {
       ),
     ];
     const branches = annotateBranches(snapshot?.branches ?? [], projects, config);
-    const attention = [
-      ...(snapshot
-        ? []
-        : [
-            {
-              level: "ACTION",
-              code: "GITHUB_UNAVAILABLE",
-              message: "No GitHub cache is available yet.",
-            },
-          ]),
-      ...(historyWarning
-        ? [
-            {
-              level: "NOTICE",
-              code: "HISTORY_UNAVAILABLE",
-              message: historyWarning,
-            },
-          ]
-        : []),
-      ...workers
-        .filter((worker) => worker.effectiveState === "BLOCKED")
-        .map((worker) => ({
-          level: "BLOCKED",
-          projectId: worker.project,
-          code: "WORKER_BLOCKED",
-          message: `${worker.workerId} reports BLOCKED activity.`,
+    const attention = deriveOperatorAttention({
+      sources,
+      facts: fabric.facts,
+      branches,
+      pullRequests: snapshot?.pullRequests ?? [],
+      plans: (soundingLineProjection?.plans ?? []).map((plan) => ({
+        id: plan.id,
+        state: plan.state,
+        createdAt: plan.createdAt,
+        sourceSha: plan.sourceSha,
+        finalDecision: plan.finalDecision,
+        nodes: plan.nodes.map((node) => ({
+          id: node.id,
+          state: node.state,
+          rootFailureId: node.rootFailureId,
         })),
-      ...workers
-        .filter((worker) => worker.effectiveState === "STALE")
-        .map((worker) => ({
-          level: "NOTICE",
-          projectId: worker.project,
-          code: "WORKER_STALE",
-          message: `${worker.workerId} has a stale heartbeat.`,
-        })),
-      ...branches
-        .filter((branch) => branch.attention)
-        .map((branch) => ({
-          level: "AMBER",
-          projectId: branch.projectId ?? undefined,
-          code: branch.reason,
-          message: branch.message,
-        })),
-      ...store.rootFailureRecurrences(sinceHours(config.BRIDGEWATCH_EVENT_RETENTION_DAYS * 24)).map((recurrence) => ({
-        level: "AMBER",
-        code: "ROOT_FAILURE_RECURRENCE",
-        message: `${recurrence.rootFailureId} recurred ${recurrence.count} times in retained history; Sounding Line classification remains authoritative.`,
       })),
-      ...rootAttention(soundingLineProjection),
-      ...(soundingLineProjection?.plans
-        .filter((plan) => plan.finalDecision === "RELEASE_NO_GO" || plan.finalDecision === "EVIDENCE_INVALID")
-        .map((plan) => ({
-          level: "BLOCKED",
-          code: "SOUNDING_LINE_DECISION",
-          message: `${plan.id} reports ${plan.finalDecision}.`,
-        })) ?? []),
-    ];
+      workers,
+      historyWarning,
+      candidateStaleAfterMs: config.BRIDGEWATCH_REVIEW_BRANCH_STALE_MS,
+    });
     return {
       generatedAt: new Date().toISOString(),
       mode: "READ_ONLY",
       source: { name: "github", state: githubHealth.state, observedAt },
+      currentMain,
       program: programTotals(projects, snapshot?.openPullRequests.length ?? 0, workers, totals),
       projects: projects.map((project) => ({
         ...project,
@@ -758,7 +1007,7 @@ export function buildServer() {
   app.get("/api/summary", async () => summary());
   app.get("/api/program", async () => ({
     summary: summary().program,
-    currentMain: collector.cached()?.headSha ?? null,
+    currentMain: summary().currentMain,
     discoveredProjects: store.discoveredProjects(),
     acceptedHistory: programTrends(store.projects()).acceptedTimeline,
   }));
@@ -1075,22 +1324,6 @@ function sourceState(observedAt: string | null, staleAfterMs: number) {
 
 function sinceHours(hours: number) {
   return new Date(Date.now() - hours * 3_600_000).toISOString();
-}
-
-function rootAttention(projection: ReturnType<SoundingLineCollector["cached"]>) {
-  if (!projection) return [];
-  const roots = new Map<string, number>();
-  for (const node of projection.plans.flatMap((plan) => plan.nodes)) {
-    if (node.state === "BLOCKED" && node.rootFailureId)
-      roots.set(node.rootFailureId, (roots.get(node.rootFailureId) ?? 0) + 1);
-    if (node.state === "FAILED")
-      roots.set(node.rootFailureId ?? node.id, roots.get(node.rootFailureId ?? node.id) ?? 0);
-  }
-  return [...roots].map(([id, blocked]) => ({
-    level: "BLOCKED",
-    code: "ROOT_FAILURE",
-    message: `${id}: 1 root failure${blocked ? `; ${blocked} blocked dependents` : ""}.`,
-  }));
 }
 
 function versionMatches(value: string, projectId: string, version: string): boolean {
