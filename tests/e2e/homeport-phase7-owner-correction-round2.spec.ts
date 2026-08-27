@@ -600,7 +600,7 @@ test("Journey U: Round 2 full regression", async ({ page }) => {
   await page.goto("/account");
   await expect(page.getByRole("heading", { name: "Overview" })).toBeVisible();
   await page.goto("/passport/history");
-  await expect(page.getByRole("heading", { name: "Your Voyages" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Your Voyages", level: 1 })).toBeVisible();
   const disclosure = await accountMenu(page, account.displayName);
   await disclosure.getByRole("button", { name: "Sign Out" }).click();
   await expect(page.getByRole("button", { name: "Account" })).toBeVisible();
