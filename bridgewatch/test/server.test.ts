@@ -366,7 +366,7 @@ describe("Bridgewatch read-only API", () => {
       expect(response.json().versions).toContainEqual(
         expect.objectContaining({
           identity: "v1.2",
-          lifecycle: "IN_DEVELOPMENT",
+          lifecycle: "PLANNED",
         }),
       );
     } finally {
