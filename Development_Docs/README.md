@@ -68,8 +68,10 @@ A1 **Muster the Crew**, A2 **Pass the Helm**, and A3 **Ready the Room** before
 the unchanged P3 **Give the Orders**, P4 **Weather the Passage**, and P5
 **Clear for Voyage** sequence. A1 and A2 are accepted on main, including the
 scoped authority-handoff and personal-continuation evidence recorded with
-Helm. A3 **Ready the Room** adds the bounded Captain/Player pre-launch muster;
-the original later phases remain separate.
+Helm. A3 **Ready the Room** adds the bounded Captain/Player pre-launch muster.
+P3 **Give the Orders** adds the contextual live Captain command console while
+preserving the canonical progression/authority source and Player-safe
+projection. P4 and P5 remain separate.
 
 ## Project Admiralty
 

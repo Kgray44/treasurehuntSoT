@@ -171,7 +171,7 @@ Players can discover, resume, archive, and reconcile exact-edition Voyage experi
 **Status:** MAINLINE
 **Program or subsystem:** Captain
 
-Captains create, ready, launch, operate, conclude, and safely hand off live Voyages through authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.
+Captains create, ready, launch, operate, conclude, and safely hand off live Voyages through contextual authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.
 
 ### Important subfeatures
 
@@ -192,6 +192,7 @@ Captains create, ready, launch, operate, conclude, and safely hand off live Voya
 - Direct joined-Player Captain transfer with durable authority receipts
 - Succession Hold, first-committed Player takeover, and same-edition solo continuation lineage
 - Captain-only and participating-Captain Ready Room with safe Crew state, live reconciliation, and canonical direct launch
+- Contextual live Captain command console with prepared state, confirmation, stale-sequence protection, and idempotent retry reconciliation
 
 ### Primary surfaces
 
@@ -199,8 +200,8 @@ Captains create, ready, launch, operate, conclude, and safely hand off live Voya
 
 ### Meaningful limitations
 
-- The A1-A3 extensions are integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.
-- Original Helm Phase 3 command redesign remains outside this amendment.
+- The A1-A3 and P3 extensions are integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.
+- Original Helm Phase 4 preflight, provider fallback, and recovery work remains outside the current capability.
 
 ### Evidence
 
@@ -217,6 +218,9 @@ Captains create, ready, launch, operate, conclude, and safely hand off live Voya
 - path: `src/components/platform/PlayerLibrary.tsx`
 - path: `src/platform/membership-presence.ts`
 - path: `src/components/captain/CaptainOperationalPanel.tsx`
+- path: `src/components/captain/CaptainCommandConsole.tsx`
+- path: `src/helm/command-console.ts`
+- path: `src/app/api/captain/voyages/[voyageId]/commands/route.ts`
 - path: `playwright.config.ts`
 - path: `src/components/platform/CaptainLibrary.tsx`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`

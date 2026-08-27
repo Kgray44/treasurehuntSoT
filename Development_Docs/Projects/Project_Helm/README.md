@@ -19,8 +19,8 @@ Phase 2, **Read the Deck**, is accepted on canonical main. It adds read-only
 Captain operational projections, membership-scoped presence and synchronization
 truth, privacy-safe attention/status/event summaries, and a prioritized Voyage
 Library while preserving Phase 1 authority and ordinary Player membership.
-The accepted result stops before the interposed amendments and the original
-Phase 3 command redesign and Phase 4 preflight/recovery work.
+The accepted result stopped before the interposed amendments, the original
+Phase 3 command redesign, and Phase 4 preflight/recovery work.
 
 Governing Amendment v1.1 supplements (and does not replace) the v1.0 governing
 document. It inserts three amendments after accepted Phase 2 and before the
@@ -78,6 +78,17 @@ implementation evidence.
 - [Integration Manifest](Project_Helm_Phase_2_Integration_Manifest.md)
 - [Completion Receipt](Project_Helm_Phase_2_Completion_Receipt.md)
 
+## Phase 3 records
+
+- [Design Record](Project_Helm_Phase_3_Design_Record.md)
+- [Mainline Safety Contract](Project_Helm_Phase_3_Mainline_Safety_Contract.md)
+- [Test Plan](Project_Helm_Phase_3_Test_Plan.md)
+
+Phase 3 **Give the Orders** establishes the contextual live Captain command
+console. Its validation, integration, and completion records carry the exact
+candidate, ordinary Sounding Line Mainline Decision, protected merge, and
+landed-smoke evidence when each is available.
+
 ## Amendment A2 records
 
 - [Design Record](Project_Helm_Amendment_A2_Design_Record.md)
@@ -96,7 +107,7 @@ implementation evidence.
 Amendment A3 is accepted on canonical main through protected pull request 489.
 Its [completion receipt](Project_Helm_Amendment_A3_Completion_Receipt.md)
 records the exact candidate, ordinary Sounding Line decision, merge/tree
-parity, and landed smoke. Original Phase 3 remains unstarted.
+parity, and landed smoke.
 
 Phase 2 was initially integrated through protected pull request 35. Its final
 current-main repair is anchored by protected pull request 53, candidate

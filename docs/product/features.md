@@ -153,10 +153,14 @@ explicit Captain-only or Captain + Player choice, one ordinary same-account
 Player membership where chosen, independent Captain authority, and a
 privacy-safe read-only operations view. Captains can see prioritized Voyage
 status, safe crew presence and synchronization health, current warnings, safe
-event summaries, and read-only progress without gaining Player-private device,
-network, identity, draft, or progression-command data. Participation may end
-without removing Captain authority. Mainline source integration is not
-deployment, live-Voyage proof, or owner acceptance.
+event summaries, and a safe published progress map without gaining
+Player-private device, network, identity, draft, or hidden-story data. Project
+Helm Phase 3 adds the live contextual Captain command console: it previews
+current-state consequences, confirms meaningful orders, uses the canonical
+command path, protects stale commands with the Voyage revision, and reconciles
+same-key retries without a duplicate order. Participation may end without
+removing Captain authority. Mainline source integration is not deployment,
+live-Voyage proof, or owner acceptance.
 [Guide](../user/captain-guide.md).
 
 The branch-complete Amendment A2 candidate adds a separate, scoped Captain handoff lifecycle: an active

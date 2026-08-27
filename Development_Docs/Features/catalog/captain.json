@@ -2,7 +2,7 @@
   {
     "id": "FT-007",
     "title": "Captain Voyage Operations",
-    "summary": "Captains create, ready, launch, operate, conclude, and safely hand off live Voyages through authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.",
+    "summary": "Captains create, ready, launch, operate, conclude, and safely hand off live Voyages through contextual authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.",
     "status": "MAINLINE",
     "program": "Captain",
     "surfaces": [
@@ -30,7 +30,8 @@
       "Captain Crew removal, Player voluntary leave, and explicit Voyage cancellation with preserved history",
       "Direct joined-Player Captain transfer with durable authority receipts",
       "Succession Hold, first-committed Player takeover, and same-edition solo continuation lineage",
-      "Captain-only and participating-Captain Ready Room with safe Crew state, live reconciliation, and canonical direct launch"
+      "Captain-only and participating-Captain Ready Room with safe Crew state, live reconciliation, and canonical direct launch",
+      "Contextual live Captain command console with prepared state, confirmation, stale-sequence protection, and idempotent retry reconciliation"
     ],
     "evidence": [
       { "kind": "commit", "value": "5ee19d77a4f593751cedd123369d1cb9528b7737" },
@@ -46,6 +47,9 @@
       { "kind": "path", "value": "src/components/platform/PlayerLibrary.tsx" },
       { "kind": "path", "value": "src/platform/membership-presence.ts" },
       { "kind": "path", "value": "src/components/captain/CaptainOperationalPanel.tsx" },
+      { "kind": "path", "value": "src/components/captain/CaptainCommandConsole.tsx" },
+      { "kind": "path", "value": "src/helm/command-console.ts" },
+      { "kind": "path", "value": "src/app/api/captain/voyages/[voyageId]/commands/route.ts" },
       { "kind": "path", "value": "playwright.config.ts" },
       { "kind": "path", "value": "src/components/platform/CaptainLibrary.tsx" },
       { "kind": "path", "value": "src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts" },
@@ -53,8 +57,8 @@
       { "kind": "path", "value": "src/app/api/player/playthroughs/[playthroughId]/leave/route.ts" }
     ],
     "limitations": [
-      "The A1-A3 extensions are integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.",
-      "Original Helm Phase 3 command redesign remains outside this amendment."
+      "The A1-A3 and P3 extensions are integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.",
+      "Original Helm Phase 4 preflight, provider fallback, and recovery work remains outside the current capability."
     ],
     "catalogVersion": 1
   }

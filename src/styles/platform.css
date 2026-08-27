@@ -2151,6 +2151,167 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   margin: 0.2rem 0 0;
 }
 
+.captain-command-console {
+  width: min(1440px, calc(100% - 2rem));
+  margin: 1.25rem auto 3rem;
+  color: #f6f0de;
+}
+
+.captain-command-console__header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  border: 1px solid rgba(201, 169, 95, 0.32);
+  border-radius: 18px;
+  padding: clamp(1rem, 2vw, 1.75rem);
+  background: linear-gradient(140deg, rgba(9, 32, 34, 0.98), rgba(22, 55, 56, 0.9));
+}
+
+.captain-command-console__header h1 {
+  margin: 0.1rem 0 0.35rem;
+  font-size: clamp(1.8rem, 3vw, 3.1rem);
+}
+
+.captain-command-console__state {
+  display: grid;
+  justify-items: end;
+  gap: 0.4rem;
+  color: #d2c29b;
+  text-align: right;
+}
+
+.captain-command-console__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
+  gap: 0.85rem;
+  margin-top: 0.85rem;
+}
+
+.captain-command-console__grid > section {
+  min-width: 0;
+  border: 1px solid rgba(201, 169, 95, 0.22);
+  border-radius: 16px;
+  padding: clamp(0.9rem, 1.6vw, 1.3rem);
+  background: rgba(8, 29, 31, 0.9);
+}
+
+.captain-command-console__attention {
+  grid-column: 1 / -1;
+}
+
+.captain-command-console__attention ul,
+.captain-command-console__crew ul,
+.captain-command-console__history ol,
+.captain-command-console__map ol {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.captain-command-console__attention li,
+.captain-command-console__crew li,
+.captain-command-console__history li,
+.captain-command-console__map li {
+  display: grid;
+  gap: 0.2rem;
+  border-left: 3px solid rgba(201, 169, 95, 0.56);
+  padding: 0.55rem 0.7rem;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.captain-command-console__attention li[data-severity="HIGH"],
+.captain-command-console__attention li[data-severity="CRITICAL"] {
+  border-left-color: #d4775d;
+}
+
+.captain-command-console__attention span,
+.captain-command-console__crew span,
+.captain-command-console__history span,
+.captain-command-console__map span {
+  color: #c3d1ca;
+  font-size: 0.86rem;
+}
+
+.captain-command-console__command-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.captain-command-console__command-list button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.25rem 0.8rem;
+  width: 100%;
+  border: 1px solid rgba(201, 169, 95, 0.42);
+  border-radius: 10px;
+  padding: 0.7rem;
+  color: #f6f0de;
+  text-align: left;
+  background: rgba(201, 169, 95, 0.09);
+}
+
+.captain-command-console__command-list button:hover:not(:disabled),
+.captain-command-console__command-list button:focus-visible {
+  border-color: #e2c170;
+  background: rgba(201, 169, 95, 0.2);
+}
+
+.captain-command-console__command-list small {
+  grid-column: 1 / -1;
+  color: #c3d1ca;
+}
+
+.captain-command-console__command-list em {
+  color: #e2c170;
+  font-size: 0.72rem;
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+.captain-command-console__move {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+  border-top: 1px solid rgba(201, 169, 95, 0.18);
+  padding-top: 0.9rem;
+}
+
+.captain-command-console__move select {
+  min-width: 0;
+}
+
+.captain-command-console__preview,
+.captain-command-console__map-summary,
+.captain-command-console__freshness {
+  color: #c3d1ca;
+  font-size: 0.86rem;
+}
+
+.captain-command-console__map li[data-state="CURRENT"] {
+  border-left-color: #8bd1ad;
+  background: rgba(139, 209, 173, 0.13);
+}
+
+.captain-command-console__map li[data-state="COMPLETED"] {
+  border-left-color: #78a9c5;
+}
+
+.captain-command-console__map li[data-state="BLOCKED"] {
+  border-left-color: #d4775d;
+}
+
+.captain-command-console__history ol {
+  max-height: 26rem;
+  overflow: auto;
+}
+
+.captain-command-console__freshness {
+  margin: 0.8rem 0 0;
+}
+
 @media (max-width: 850px) {
   .platform-header {
     align-items: start;
@@ -2173,6 +2334,12 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   }
   .wizard-progress small {
     display: none;
+  }
+  .captain-command-console__grid {
+    grid-template-columns: 1fr;
+  }
+  .captain-command-console__attention {
+    grid-column: auto;
   }
 }
 
@@ -2221,6 +2388,17 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   .captain-operational-panel dl {
     grid-template-columns: 1fr;
   }
+  .captain-command-console {
+    width: min(100% - 1rem, 1440px);
+  }
+  .captain-command-console__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .captain-command-console__state {
+    justify-items: stretch;
+    text-align: left;
+  }
   .archive-timeline time {
     grid-column: 2;
   }
@@ -2255,6 +2433,24 @@ html.helm-document-zoom .voyage-wizard,
 html[style*="zoom: 2"] .voyage-wizard {
   width: calc((100% - 2rem) / 2) !important;
   max-width: calc((100% - 2rem) / 2);
+}
+
+html.helm-document-zoom .captain-command-console,
+html[style*="zoom: 2"] .captain-command-console {
+  width: calc((100% - 2rem) / 2);
+  max-width: calc((100% - 2rem) / 2);
+}
+
+html.helm-document-zoom .captain-command-console__header,
+html[style*="zoom: 2"] .captain-command-console__header {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+html.helm-document-zoom .captain-command-console__state,
+html[style*="zoom: 2"] .captain-command-console__state {
+  justify-items: stretch;
+  text-align: left;
 }
 
 html.helm-document-zoom .platform-header,
@@ -2304,6 +2500,16 @@ html[style*="zoom: 2"] .invitation-secrets article,
 html.helm-document-zoom .player-card-grid.list .player-tale-card,
 html[style*="zoom: 2"] .player-card-grid.list .player-tale-card {
   grid-template-columns: minmax(0, 1fr);
+}
+
+html.helm-document-zoom .captain-command-console__grid,
+html[style*="zoom: 2"] .captain-command-console__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+html.helm-document-zoom .captain-command-console__attention,
+html[style*="zoom: 2"] .captain-command-console__attention {
+  grid-column: auto;
 }
 
 html.helm-document-zoom .captain-card-grid > *,

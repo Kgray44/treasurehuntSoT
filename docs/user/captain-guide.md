@@ -21,12 +21,21 @@ Captain controls. Ending Player participation removes Player access while the
 Captain assignment remains active. Existing and omitted choices remain
 Captain-only.
 
-Captain operations also show a read-only, privacy-safe view of Voyage status,
-current attention, crew readiness, connection/synchronization health, progress,
-and recent safe event summaries. These observations help a Captain decide when
-to use the existing session controls; they do not expose Player-private device,
-network, account, draft, or story data, and they do not create new progression
-controls.
+The live **Captain's Console** turns the same privacy-safe operational view
+into contextual Voyage controls. It shows the current state, Needs Attention,
+safe Crew status, progress map, and recent outcomes, then offers only the
+actions currently allowed for that Voyage. Review the target, current revision,
+consequence, reversibility, and Player-visible effect before confirming a
+meaningful action. If the Voyage changes while you are reviewing it, refresh
+and choose again. If a response is interrupted, retry the same action so the
+existing command receipt can reconcile safely.
+
+The console uses the established Captain actions for verification decisions,
+hints, pause/resume, presentation replay, and published-Passage movement. It
+does not expose Player-private device, network, account, reflection, or story
+data; Creator notes, drafts, hidden answers, and raw verification evidence are
+not part of Captain operations. Provider fallback, preflight, and recovery
+procedures remain separate operational work.
 
 When a Captain + Player Voyage needs a different Captain, use **Transfer
 Captaincy** to select another currently joined Player. The transfer keeps your

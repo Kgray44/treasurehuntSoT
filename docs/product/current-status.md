@@ -28,7 +28,7 @@ libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
 
-**Project Helm Phases 1 and 2 plus Amendments A1-A3 are available on main:** Captain participation is
+**Project Helm Phases 1-3 plus Amendments A1-A3 are available on main:** Captain participation is
 explicit at Voyage creation. Captain-only remains the default; Captain + Player
 attaches exactly one ordinary Player membership to the same canonical account
 while keeping Voyage-scoped Captain authority independent. Captain operations
@@ -44,7 +44,12 @@ durable lineage and private-state exclusion. A3 adds focused Captain and Player
 Waiting Rooms with safe Crew state, direct Captain-only and participating-Captain
 launch affordances, live refresh/reconciliation, responsive accessibility, and
 clear separation between leaving the room, leaving a membership, Captaincy,
-and cancellation.
+and cancellation. Phase 3 adds one live Captain command console that derives
+only contextually permitted canonical orders, shows their target/current
+revision/consequence before confirmation, handles stale state and retries
+safely, and retains the separate Player-safe projection. It adds no recovery,
+provider fallback, preflight, deployment, live-Voyage proof, or owner
+acceptance claim.
 
 **Project Shipwright Phase 2 is available on main:** Creator Studio now turns
 the existing Drydock Story Block contracts into a contract-aware Inspector with
