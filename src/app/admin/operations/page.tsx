@@ -72,7 +72,7 @@ export default async function OperationsPage() {
               items={[
                 { label: "Queue", value: data.community.queueDepth },
                 { label: "Dead letters", value: data.community.deadLetters },
-                { label: "Oldest lease", value: `${data.community.leaseAgeSeconds}s` },
+                { label: "Oldest queued job", value: `${data.community.oldestQueuedJobAgeSeconds}s` },
                 { label: "Stale scans", value: data.community.staleScans },
                 { label: "Moderation cases", value: data.community.caseQueue },
                 { label: "Release identity", value: data.community.releaseIdentity },
