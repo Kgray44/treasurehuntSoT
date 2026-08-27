@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-08-16
+last_reviewed: 2026-08-27
 ---
 
 # Engineering records
@@ -46,6 +46,10 @@ and does not start, rename, or replace a Bridgewatch Phase 4. Its
 tracks the current implementation boundary, and its
 [local validation record](Project_Bridgewatch_v1.2_Validation_Record.md)
 records only task-owned branch evidence pending protected integration.
+The subsequent v1.2 P2 data-fabric branch makes source-by-source fact
+provenance, explicit expected-class coverage, truthful unavailable/historical
+states, bounded Voyagewright runtime identity, and durable observation history
+visible without creating Bridgewatch authority or a Phase 4.
 
 ## Project Deepwater
 
