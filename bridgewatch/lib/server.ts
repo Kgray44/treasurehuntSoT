@@ -584,7 +584,8 @@ export function buildServer() {
           lastAttemptAt: null,
           lastSuccessAt: null,
           nextRetryAt: null,
-          detail: "Set BRIDGEWATCH_TELEMETRY_TOKEN and use npm run report-heartbeat to enable activity reporting.",
+          detail:
+            "Bridgewatch task telemetry is not configured. Configure the private telemetry connection on this host to enable this source.",
           cacheAgeMs: null,
           authenticationState: "NOT_APPLICABLE" as const,
         }
