@@ -2,6 +2,7 @@
 /* Runs generic browser authority against the exact built server and owns its lifecycle. */
 import { spawn } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
+import { createServer as createHttpServer, request as requestHttp } from "node:http";
 import { createServer } from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -28,6 +29,8 @@ export function assertBrowserAuthorityTopology({
 
 export function infrastructureFailureCategory(error) {
   const message = error instanceof Error ? error.message : String(error);
+  if (message.startsWith("SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:"))
+    return "SUITE_FIXTURE_CONTRACT_UNSATISFIED";
   if (message.startsWith("SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:")) return "INVALID_SERVER_TOPOLOGY";
   if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:")) return "INFRASTRUCTURE_STARTUP_FAILURE";
   if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:")) return "INFRASTRUCTURE_RUNTIME_FAILURE";
@@ -61,6 +64,50 @@ async function availablePort() {
       server.close((error) => (error ? reject(error) : resolve(address.port)));
     });
   });
+}
+
+export function taskOwnedCookieAdapterRequired(environment) {
+  return (
+    environment.SOUNDING_LINE_TASK_OWNED_HTTP === "1" &&
+    environment.FOREVER_VALIDATION_ISOLATION === "1" &&
+    environment.FOREVER_VALIDATION_PRODUCTION_IDENTITY === "1" &&
+    /^[a-f0-9]{64}$/u.test(environment.FOREVER_VALIDATION_NONCE_HASH ?? "")
+  );
+}
+
+export function stripTaskOwnedCookieSecurity(value) {
+  return value.replace(/;\s*Secure(?=;|$)/giu, "");
+}
+
+async function startTaskOwnedHttpProxy({ port, backendPort }) {
+  const proxy = createHttpServer((incoming, outgoing) => {
+    const upstream = requestHttp(
+      {
+        hostname: "127.0.0.1",
+        port: backendPort,
+        method: incoming.method,
+        path: incoming.url,
+        headers: { ...incoming.headers, host: `127.0.0.1:${backendPort}` },
+      },
+      (response) => {
+        const headers = { ...response.headers };
+        if (Array.isArray(headers["set-cookie"]))
+          headers["set-cookie"] = headers["set-cookie"].map(stripTaskOwnedCookieSecurity);
+        outgoing.writeHead(response.statusCode ?? 502, headers);
+        response.pipe(outgoing);
+      },
+    );
+    upstream.once("error", () => {
+      if (!outgoing.headersSent) outgoing.writeHead(502);
+      outgoing.end();
+    });
+    incoming.pipe(upstream);
+  });
+  await new Promise((resolve, reject) => {
+    proxy.once("error", reject);
+    proxy.listen(port, "127.0.0.1", resolve);
+  });
+  return proxy;
 }
 
 function spawnProcess(command, argumentsList, { root, env, stdio = "inherit" }) {
@@ -117,6 +164,11 @@ async function stop(child) {
   ]);
 }
 
+async function stopProxy(proxy) {
+  if (!proxy?.listening) return;
+  await new Promise((resolve) => proxy.close(resolve));
+}
+
 function failureCode(error) {
   const message = error instanceof Error ? error.message : String(error);
   return message.split(":", 2).join(":");
@@ -131,6 +183,8 @@ function nextServerMode(argumentsList) {
 export async function runBrowserAuthority({
   root,
   browserArguments,
+  fixtureArguments = [],
+  fixtureProject = "chromium",
   environment = process.env,
   port,
   now = Date.now,
@@ -139,8 +193,11 @@ export async function runBrowserAuthority({
   ready = isReady,
   serverArguments: configuredServerArguments,
 }) {
-  const serverPort = port ?? (await availablePort());
-  const baseURL = `http://127.0.0.1:${serverPort}`;
+  const useTaskOwnedCookieAdapter = taskOwnedCookieAdapterRequired(environment);
+  const browserPort = port ?? (await availablePort());
+  const serverPort = useTaskOwnedCookieAdapter ? await availablePort() : browserPort;
+  const baseURL = `http://127.0.0.1:${browserPort}`;
+  const serverBaseURL = `http://127.0.0.1:${serverPort}`;
   const outputDirectory = environment.NEXT_DIST_DIR ?? ".next";
   const serverArguments = configuredServerArguments ?? [
     "node_modules/next/dist/bin/next",
@@ -159,6 +216,7 @@ export async function runBrowserAuthority({
   };
   const serverStartedAt = now();
   let server;
+  let proxy;
   let browser;
   let failureCategory = null;
   let failureCodeValue = null;
@@ -173,7 +231,36 @@ export async function runBrowserAuthority({
       env: { ...environment, PLAYWRIGHT_BASE_URL: baseURL, NEXT_TELEMETRY_DISABLED: "1" },
     });
     timings.serverPreparationMs = now() - serverStartedAt;
-    timings.serverReadinessMs = await waitForReadiness({ baseURL, server, now, sleep, ready });
+    timings.serverReadinessMs = await waitForReadiness({ baseURL: serverBaseURL, server, now, sleep, ready });
+    if (useTaskOwnedCookieAdapter) {
+      try {
+        proxy = await startTaskOwnedHttpProxy({ port: browserPort, backendPort: serverPort });
+      } catch {
+        throw new Error("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:TASK_OWNED_HTTP_PROXY");
+      }
+      timings.serverReadinessMs += await waitForReadiness({ baseURL, server, now, sleep, ready });
+    }
+    if (fixtureArguments.length) {
+      const fixture = launch(
+        process.execPath,
+        ["node_modules/@playwright/test/cli.js", "test", ...fixtureArguments, "--project", fixtureProject],
+        {
+          root,
+          env: {
+            ...environment,
+            FOREVER_PLAYWRIGHT_EXTERNAL_SERVER: "1",
+            PLAYWRIGHT_BASE_URL: baseURL,
+            SOUNDING_LINE_BROWSER_AUTHORITY: "1",
+            SOUNDING_LINE_BROWSER_FIXTURE_SETUP: "1",
+          },
+        },
+      );
+      const fixtureResult = await exited(fixture);
+      if (fixtureResult.code !== 0)
+        throw new Error(
+          `SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_FIXTURE_EXITED:${fixtureResult.code ?? "UNKNOWN"}`,
+        );
+    }
     const browserStartedAt = now();
     browser = launch(process.execPath, ["node_modules/@playwright/test/cli.js", "test", ...browserArguments], {
       root,
@@ -204,6 +291,7 @@ export async function runBrowserAuthority({
   } finally {
     const cleanupStartedAt = now();
     await stop(browser);
+    await stopProxy(proxy);
     await stop(server);
     timings.cleanupMs = now() - cleanupStartedAt;
   }
@@ -214,7 +302,19 @@ async function main() {
   const separator = process.argv.indexOf("--");
   if (separator === -1) throw new Error("SOUNDING_LINE_BROWSER_ARGUMENTS_REQUIRED");
   const root = process.cwd();
-  const receipt = await runBrowserAuthority({ root, browserArguments: process.argv.slice(separator + 1) });
+  const fixtureArguments = [];
+  let fixtureProject = "chromium";
+  for (let index = 2; index < separator; index += 1) {
+    if (process.argv[index] === "--fixture" && process.argv[index + 1]) fixtureArguments.push(process.argv[index + 1]);
+    if (process.argv[index] === "--fixture-project" && process.argv[index + 1])
+      fixtureProject = process.argv[index + 1];
+  }
+  const receipt = await runBrowserAuthority({
+    root,
+    fixtureArguments,
+    fixtureProject,
+    browserArguments: process.argv.slice(separator + 1),
+  });
   await mkdir(path.join(root, "artifacts", "sounding-line"), { recursive: true });
   await writeFile(
     path.join(root, "artifacts", "sounding-line", "browser-runtime.json"),
