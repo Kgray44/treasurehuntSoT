@@ -1,4 +1,4 @@
-import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { useEffect, useMemo } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AnimationAuthorityContext } from "@/animation/hosts/SceneHostContext";
@@ -381,6 +381,83 @@ describe("PlayerVoyageRoom", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent("revoked");
     expect(screen.getByRole("main")).toHaveAttribute("data-connection-state", "revoked");
     expect(screen.queryByRole("button", { name: "Reconnect and Refresh" })).not.toBeInTheDocument();
+  });
+
+  it("shows Succession Hold, commits only the selected route, and keeps ordinary leave distinct", async () => {
+    const held = {
+      ...voyage,
+      status: "ACTIVE",
+      state: "SUCCESSION_HOLD",
+      canEnter: false,
+      runtimeHref: null,
+      concurrencyVersion: 7,
+      captainAuthorityState: "VACANT",
+      canTakeCaptaincy: true,
+      canContinueSolo: true,
+    };
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, body(held)))
+      .mockResolvedValueOnce(response(200, { voyageId: "solo-voyage-1", voyageName: "Lanternwake — solo" }));
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", fetchMock);
+    renderRoom();
+
+    expect(await screen.findByRole("heading", { name: "This Voyage needs a Captain" })).toBeInTheDocument();
+    expect(screen.getAllByText("Succession Hold").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByRole("button", { name: "Take Captaincy" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Continue Solo" }));
+    fireEvent.click(
+      within(screen.getByRole("dialog", { name: /Continue “Lanternwake” solo/ })).getByRole("button", {
+        name: "Create Solo Voyage",
+      }),
+    );
+
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/player/playthroughs/voyage-1/continue-solo",
+        expect.objectContaining({ method: "POST", body: expect.stringContaining('"expectedVersion":7') }),
+      ),
+    );
+    expect(await screen.findByRole("heading", { name: "Your solo Voyage is ready" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open solo Voyage" })).toHaveAttribute(
+      "href",
+      "/player/playthroughs/solo-voyage-1",
+    );
+    expect(navigation.push).not.toHaveBeenCalled();
+    expect(fetchMock.mock.calls.flat().join(" ")).not.toContain("/leave");
+  });
+
+  it("uses the canonical leave mutation when a Player chooses Leave Voyage during Succession Hold", async () => {
+    const held = {
+      ...voyage,
+      status: "ACTIVE",
+      state: "SUCCESSION_HOLD",
+      concurrencyVersion: 7,
+      captainAuthorityState: "VACANT",
+      canTakeCaptaincy: true,
+      canContinueSolo: true,
+    };
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, body(held)))
+      .mockResolvedValueOnce(response(200, { status: "LEFT" }));
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", fetchMock);
+    renderRoom();
+
+    await screen.findByRole("heading", { name: "This Voyage needs a Captain" });
+    fireEvent.click(screen.getByRole("button", { name: "Leave Voyage" }));
+    fireEvent.click(
+      within(screen.getByRole("dialog", { name: /Leave “Lanternwake”/ })).getByRole("button", { name: "Leave Voyage" }),
+    );
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/player/playthroughs/voyage-1/leave",
+        expect.objectContaining({ method: "POST", body: JSON.stringify({ expectedVersion: 7 }) }),
+      ),
+    );
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/player/library"));
   });
 
   it("keeps revocation terminal when an in-flight load resolves after the access event", async () => {

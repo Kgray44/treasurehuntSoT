@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-27
 ---
 
 # Features and subfeatures
@@ -143,6 +143,15 @@ network, identity, draft, or progression-command data. Participation may end
 without removing Captain authority. Mainline source integration is not
 deployment, live-Voyage proof, or owner acceptance.
 [Guide](../user/captain-guide.md).
+
+The branch-complete Amendment A2 candidate adds a separate, scoped Captain handoff lifecycle: an active
+Captain + Player can transfer authority to another joined Player; relinquishing
+authority puts the shared Voyage into Succession Hold without cancellation; an
+eligible Player can take Captaincy first-committed-wins, leave, or create an
+independent same-edition solo continuation. The continuation keeps durable
+parent/child lineage and excludes all other Player-private state. Its current
+synthetic evidence is not protected-main integration, deployment, live-Voyage
+proof, or owner acceptance.
 
 ## Creator Studio and publishing
 

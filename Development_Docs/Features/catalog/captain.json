@@ -2,8 +2,10 @@
   {
     "id": "FT-007",
     "title": "Captain Voyage Operations",
-    "summary": "Captains create, launch, operate, and conclude live Voyages through authoritative commands, with independent Player participation and a complete ordinary Crew lifecycle.",
-    "status": "MAINLINE",
+    "summary": "Captains create, launch, operate, conclude, and safely hand off live Voyages through authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "branch": "codex/helm-a2-pass-helm-recovery",
+    "commit": "f5fd581d50291e46b2f3c2886f9c0e59b826800c",
     "program": "Captain",
     "surfaces": [
       "/captain",
@@ -26,21 +28,32 @@
       "Membership-scoped crew presence, sync health, warnings, and safe event stream",
       "Zero-invite Captain plus Player Voyage creation",
       "Direct Player invitation acceptance and decline from Chronicle Library",
-      "Captain Crew removal, Player voluntary leave, and explicit Voyage cancellation with preserved history"
+      "Captain Crew removal, Player voluntary leave, and explicit Voyage cancellation with preserved history",
+      "Direct joined-Player Captain transfer with durable authority receipts",
+      "Succession Hold, first-committed Player takeover, and same-edition solo continuation lineage"
     ],
     "evidence": [
+      { "kind": "branch", "value": "codex/helm-a2-pass-helm-recovery" },
+      { "kind": "commit", "value": "f5fd581d50291e46b2f3c2886f9c0e59b826800c" },
+      { "kind": "commit", "value": "bb5468ce34e77eb58d9af7c57ce2779f6665e3ce" },
       { "kind": "commit", "value": "ca40227cbef3575315c089d224a0cd26ec77bc78" },
       { "kind": "path", "value": "src/server/admin-command.ts" },
       { "kind": "path", "value": "src/domain/admin.ts" },
       { "kind": "path", "value": "src/helm/captain-participation.ts" },
       { "kind": "path", "value": "src/helm/operations.ts" },
       { "kind": "path", "value": "src/helm/lifecycle.ts" },
+      { "kind": "path", "value": "src/helm/authority-lifecycle.ts" },
+      { "kind": "path", "value": "src/components/platform/PlayerVoyageRoom.tsx" },
       { "kind": "path", "value": "src/platform/membership-presence.ts" },
       { "kind": "path", "value": "src/components/captain/CaptainOperationalPanel.tsx" },
       { "kind": "path", "value": "src/components/platform/CaptainLibrary.tsx" },
       { "kind": "path", "value": "src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts" },
       { "kind": "path", "value": "src/app/api/captain/playthroughs/[playthroughId]/cancel/route.ts" },
       { "kind": "path", "value": "src/app/api/player/playthroughs/[playthroughId]/leave/route.ts" }
+    ],
+    "limitations": [
+      "The A2 authority-handoff extension is branch-complete and remains pending protected-main integration; deployment, live-Voyage proof, and owner acceptance are separate.",
+      "A3 Ready the Room and original Helm Phase 3 command redesign remain outside this amendment."
     ],
     "catalogVersion": 1
   }

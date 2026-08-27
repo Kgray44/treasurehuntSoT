@@ -2,6 +2,9 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-li
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { PlayerLibrary, type PlayerLibraryCard } from "./PlayerLibrary";
 
+const navigation = vi.hoisted(() => ({ push: vi.fn(), replace: vi.fn() }));
+vi.mock("next/navigation", () => ({ useRouter: () => navigation }));
+
 vi.mock("@/animation/motion/useMotionMode", () => ({
   useMotionMode: () => ({ mode: "reduced", source: "system", userOverride: null, setUserOverride: vi.fn() }),
 }));
@@ -194,5 +197,72 @@ describe("PlayerLibrary motion and authority", () => {
       ),
     );
     expect(await screen.findByRole("heading", { name: "Mustered Voyage" })).toBeInTheDocument();
+  });
+
+  it("presents the distinct Succession Hold choices and routes a committed takeover to Captain work", async () => {
+    const hold = card("voyage-hold", "Held Voyage", "SUCCESSION_HOLD", {
+      status: "ACTIVE",
+      captainName: "Captaincy vacant",
+      concurrencyVersion: 7,
+      captainAuthorityState: "VACANT",
+      canTakeCaptaincy: true,
+      canContinueSolo: true,
+    });
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, library({ inProgress: [hold] })))
+      .mockResolvedValueOnce(response(200, { action: "CAPTAIN_TAKEN" }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<PlayerLibrary />);
+
+    const cardNode = (await screen.findByRole("heading", { name: "Held Voyage" })).closest("article")!;
+    expect(within(cardNode).getByRole("button", { name: "Take Captaincy" })).toBeInTheDocument();
+    expect(within(cardNode).getByRole("button", { name: "Continue Solo" })).toBeInTheDocument();
+    fireEvent.click(within(cardNode).getByRole("button", { name: "Take Captaincy" }));
+    fireEvent.click(
+      within(screen.getByRole("dialog", { name: /Take Captaincy for “Lanternwake”/ })).getByRole("button", {
+        name: "Take Captaincy",
+      }),
+    );
+
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/player/playthroughs/voyage-hold/captain/takeover",
+        expect.objectContaining({ method: "POST", body: expect.stringContaining('"expectedVersion":7') }),
+      ),
+    );
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/captain/library"));
+  });
+
+  it("creates a new solo route without mutating the shared library card", async () => {
+    const held = card("voyage-hold", "Held Voyage", "SUCCESSION_HOLD", {
+      status: "ACTIVE",
+      concurrencyVersion: 7,
+      captainAuthorityState: "VACANT",
+      canContinueSolo: true,
+    });
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, library({ inProgress: [held] })))
+      .mockResolvedValueOnce(response(200, { voyageId: "solo-voyage-1" }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<PlayerLibrary />);
+
+    const cardNode = (await screen.findByRole("heading", { name: "Held Voyage" })).closest("article")!;
+    fireEvent.click(within(cardNode).getByRole("button", { name: "Continue Solo" }));
+    fireEvent.click(
+      within(screen.getByRole("dialog", { name: /Continue “Lanternwake” solo/ })).getByRole("button", {
+        name: "Create Solo Voyage",
+      }),
+    );
+
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/player/playthroughs/voyage-hold/continue-solo",
+        expect.objectContaining({ method: "POST", body: expect.stringContaining('"expectedVersion":7') }),
+      ),
+    );
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/player/playthroughs/solo-voyage-1"));
+    expect(screen.getByRole("heading", { name: "Held Voyage" })).toBeInTheDocument();
   });
 });
