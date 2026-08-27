@@ -94,6 +94,17 @@ The following owner-authored governing documents are current repository authorit
 - [Project Tideglass](Projects/Project%20Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf)
 - [Project Wakebook](Projects/Project%20Wakebook/Project_Wakebook_Governing_Document.pdf)
 
+## Project Shipwright
+
+Project Shipwright's Creator Studio program is governed by its owner-authored
+[governing document](Projects/Project%20Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf).
+The Phase 5, **Launch from the Yard**, implementation and closure records keep
+the staged Creator publishing journey, authority boundaries, synthetic
+walkthrough, and program-completion criteria discoverable without replacing
+the governing document: [design record](Projects/Project%20Shipwright/Project_Shipwright_Phase_5_Design_Record.md),
+[validation record](Projects/Project%20Shipwright/Project_Shipwright_Phase_5_Validation_Record.md),
+and [program closure](Projects/Project%20Shipwright/Project_Shipwright_Program_Closure.md).
+
 ## Project Drydock
 
 [Project Drydock engineering records](Projects/Project%20Drydock/README.md) govern the typed Chronicle authoring-contract, compatibility, validation, and later simulation program. Phase 1 is limited to strict current Passage contracts, variables, expressions, schema evolution, historical fixtures, stable issues, and incremental contract validation; whole-Chronicle analysis and simulation remain later phases.

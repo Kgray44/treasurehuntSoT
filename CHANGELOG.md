@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-24
+last_reviewed: 2026-08-27
 ---
 
 # Changelog
@@ -44,6 +44,16 @@ last_reviewed: 2026-08-24
   source-version provenance; and applies reuse through the ordinary autosave
   and undo/redo path. Protected source material and cross-owner Library access
   remain rejected.
+
+- Prepared the branch-complete Project Shipwright Phase 5, **Launch from the
+  Yard**, candidate. Creator Studio Version history stages saved-draft review, current
+  Drydock readiness, exact release differences, asset/access and compatibility
+  review, Creator release notes, and explicit immutable confirmation before it
+  invokes the existing One Voyage publication authority. Success requires the
+  returned immutable Version receipt; failure preserves the draft for repair.
+  Preview, Voyage, comparison, and eligible Harborlight handoffs remain
+  governed next actions rather than parallel publishing systems. Protected-main
+  acceptance remains the required publication of this candidate.
 
 - Expanded Project Admiralty on its Phase 2 review branch into a read-only
   15-route Chartroom with authorized account-menu entry, role-filtered
