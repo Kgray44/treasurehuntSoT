@@ -213,7 +213,11 @@ export function selectAffectedTests({ changedPaths, unitTests, browserTests, mod
   if (mode === "release")
     return { unitTests: [...unitTests].sort(), browserTests: [...browserTests].sort(), widened: true };
   const direct = new Set(changedPaths.filter((file) => testFile.test(file)));
-  const tokens = tokensFor(changedPaths.filter((file) => !testFile.test(file)));
+  const tokens = tokensFor(
+    changedPaths.filter(
+      (file) => !testFile.test(file) && !file.endsWith(".md") && !file.startsWith("Development_Docs/"),
+    ),
+  );
   const unitTokens = [...tokens].filter((token) => !broadDomainTokens.has(token));
   const matches = (file, selectedTokens) => [...selectedTokens].some((token) => file.toLowerCase().includes(token));
   const selectedUnit = [

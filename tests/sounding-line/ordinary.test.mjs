@@ -362,6 +362,31 @@ test("ordinary selection finds Harborlight browser proof structurally", () => {
   assert.equal(selection.widened, false);
 });
 
+test("ordinary selection ignores documentation vocabulary when scoping product browser proof", () => {
+  const selection = selectAffectedTests({
+    changedPaths: [
+      "src/admiralty/bridgewatch-gateway.ts",
+      "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Test_Plan.md",
+      "Development_Docs/Features/branch-complete/project-bridgewatch-v2-light-mission-control.json",
+    ],
+    unitTests: ["src/admiralty/bridgewatch-gateway.test.ts"],
+    browserTests: [
+      "tests/e2e/admiralty-phase1.spec.ts",
+      "tests/e2e/admiralty-phase2.spec.ts",
+      "tests/e2e/harborlight-phase2.spec.ts",
+      "tests/e2e/phase3-player-event-matrix.spec.ts",
+      "tests/e2e/project-one-voyage-phase2.spec.ts",
+      "tests/e2e/project-true-north.spec.ts",
+    ],
+  });
+  assert.deepEqual(selection.browserTests, [
+    "tests/e2e/admiralty-phase1.spec.ts",
+    "tests/e2e/admiralty-phase2.spec.ts",
+  ]);
+  assert.deepEqual(selection.unitTests, ["src/admiralty/bridgewatch-gateway.test.ts"]);
+  assert.equal(selection.widened, false);
+});
+
 test("trusted browser provisioning follows the unchanged ordinary selection and fails closed", async () => {
   const zeroBrowserSelection = selectAffectedTests({
     changedPaths: ["Development_Docs/Features/guide.md"],
