@@ -4,8 +4,8 @@
     "title": "Captain Voyage Operations",
     "summary": "Captains create, launch, operate, conclude, and safely hand off live Voyages through authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.",
     "status": "BRANCH_COMPLETE_NOT_MERGED",
-    "branch": "codex/helm-a2-pass-helm",
-    "commit": "bb5468ce34e77eb58d9af7c57ce2779f6665e3ce",
+    "branch": "codex/helm-a2-pass-helm-recovery",
+    "commit": "f5fd581d50291e46b2f3c2886f9c0e59b826800c",
     "program": "Captain",
     "surfaces": [
       "/captain",
@@ -33,7 +33,8 @@
       "Succession Hold, first-committed Player takeover, and same-edition solo continuation lineage"
     ],
     "evidence": [
-      { "kind": "branch", "value": "codex/helm-a2-pass-helm" },
+      { "kind": "branch", "value": "codex/helm-a2-pass-helm-recovery" },
+      { "kind": "commit", "value": "f5fd581d50291e46b2f3c2886f9c0e59b826800c" },
       { "kind": "commit", "value": "bb5468ce34e77eb58d9af7c57ce2779f6665e3ce" },
       { "kind": "commit", "value": "ca40227cbef3575315c089d224a0cd26ec77bc78" },
       { "kind": "path", "value": "src/server/admin-command.ts" },

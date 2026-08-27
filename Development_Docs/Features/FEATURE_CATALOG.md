@@ -1764,7 +1764,8 @@ Captains create, launch, operate, conclude, and safely hand off live Voyages thr
 
 ### Evidence
 
-- branch: `codex/helm-a2-pass-helm`
+- branch: `codex/helm-a2-pass-helm-recovery`
+- commit: `f5fd581d50291e46b2f3c2886f9c0e59b826800c`
 - commit: `bb5468ce34e77eb58d9af7c57ce2779f6665e3ce`
 - commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
 - path: `src/server/admin-command.ts`
