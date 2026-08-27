@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fetchDrydockJson } from "@/components/studio/drydock-json-fetch";
 
 type Compatibility = {
   status: string;
@@ -25,15 +26,18 @@ export function DrydockCompatibilityPanel({ taleId, csrfToken }: { taleId: strin
   const [error, setError] = useState("");
   useEffect(() => {
     let active = true;
-    void fetch(`/api/studio/tales/${encodeURIComponent(taleId)}/compatibility`, {
-      cache: "no-store",
-      headers: { "x-csrf-token": csrfToken },
-    })
-      .then(async (response) => {
-        if (!response.ok) throw new Error("Compatibility could not load its current server assessment.");
-        return response.json() as Promise<{ compatibility: Compatibility }>;
+    void fetchDrydockJson<{ compatibility?: Compatibility }>(
+      `/api/studio/tales/${encodeURIComponent(taleId)}/compatibility`,
+      {
+        cache: "no-store",
+        headers: { "x-csrf-token": csrfToken },
+      },
+    )
+      .then((response) => {
+        if (!response.ok || !response.body.compatibility)
+          throw new Error("Compatibility could not load its current server assessment.");
+        if (active) setCompatibility(response.body.compatibility);
       })
-      .then((body) => active && setCompatibility(body.compatibility))
       .catch(
         (cause: unknown) =>
           active && setError(cause instanceof Error ? cause.message : "Compatibility could not load."),
