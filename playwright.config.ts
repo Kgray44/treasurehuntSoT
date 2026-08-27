@@ -18,7 +18,10 @@ export default defineConfig({
     process.env.FOREVER_PLAYWRIGHT_EXTERNAL_SERVER === "1"
       ? undefined
       : {
-          command: `"${process.execPath}" node_modules/next/dist/bin/next dev --webpack -H 127.0.0.1 -p ${port}`,
+          // Browser acceptance must exercise the built application. The dev
+          // compiler can lose a committed mutation response while recompiling
+          // a route, which makes a durable authority command appear to hang.
+          command: `"${process.execPath}" node_modules/next/dist/bin/next start -H 127.0.0.1 -p ${port}`,
           url: baseURL,
           reuseExistingServer: false,
           timeout: 120_000,
