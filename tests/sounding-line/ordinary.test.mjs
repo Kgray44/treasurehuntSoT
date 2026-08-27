@@ -640,6 +640,34 @@ test("Admiralty Phase 2 browser proof uses its dedicated isolated harness", () =
   );
 });
 
+test("Admiralty Phase 1 browser proof uses its dedicated fixture and build harness", () => {
+  const candidateSha = "a".repeat(40);
+  const browserCommands = verificationCommands({
+    mode: "ordinary",
+    candidateSha,
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: ["tests/e2e/admiralty-phase1.spec.ts"] },
+    databaseUrl: "file:./.sounding-line-candidate.sqlite",
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: true,
+  });
+  assert.deepEqual(browserCommands.at(-1), [process.execPath, ["scripts/admiralty/run-phase1-journeys.mjs"]]);
+  assert.deepEqual(
+    verificationEnvironment({ candidateSha }, process.execPath, ["scripts/admiralty/run-phase1-journeys.mjs"], {
+      LOCALAPPDATA: "C:/validation-runtime",
+    }),
+    {
+      LOCALAPPDATA: "artifacts/sounding-line",
+      ADMIRALTY_PHASE1_TASK_ROOT:
+        "artifacts/sounding-line/ProjectAdmiralty/.sounding-line-admiralty-phase1-aaaaaaaaaaaa",
+      NEXT_DIST_DIR: ".next",
+      PLAYWRIGHT_BROWSERS_PATH: path.join("C:/validation-runtime", "ms-playwright"),
+    },
+  );
+});
+
 test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once", () => {
   const browserCommands = verificationCommands({
     mode: "ordinary",
@@ -824,8 +852,8 @@ test("fixture-aware suite dispatch groups established fixture contracts without 
     { runtime: "tsx", script: "scripts/sounding-line/prepare-harborlight-fixture.ts" },
   ]);
   const admiralty = dispatches.find(({ id }) => id === "admiralty-phase1");
-  assert.deepEqual(admiralty.preparers, ["scripts/admiralty/prepare-phase1-fixture.mjs"]);
-  assert.equal(admiralty.environment, undefined);
+  assert.equal(admiralty.dedicatedRunner, "scripts/admiralty/run-phase1-journeys.mjs");
+  assert.equal(admiralty.preparers, undefined);
   assert.equal(new Set(harborlight.preparers.map(({ script }) => script)).size, harborlight.preparers.length);
   assert.equal(dispatches.find(({ id }) => id === "generic").environment, undefined);
 });
