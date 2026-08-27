@@ -16,7 +16,21 @@ import { postIdempotentAuthorityCommand } from "@/helm/authority-command.client"
 import { PlatformRelic } from "./PlatformRelic";
 import { membershipPresenceDeviceId } from "@/platform/presence-client";
 
-type CrewMember = { displayName: string; crewRole: string | null; status: string };
+type CrewMember = {
+  id?: string;
+  displayName: string;
+  crewRole: string | null;
+  status: string;
+  avatar?: null;
+  joinedAt?: string | null;
+  isCaptain?: boolean;
+  isCurrentPlayer?: boolean;
+  canReceiveCaptaincy?: boolean;
+  presence?: { state: string; lastSeenAt: string | null; activeDeviceCount: number; safeActivity: string | null };
+  synchronization?: { state: string; lag: number | null };
+  readiness?: { state: string };
+  invitation?: { id: string; status: string; expiresAt: string; canManage: boolean } | null;
+};
 type Playthrough = {
   id: string;
   title: string;
@@ -37,6 +51,11 @@ type Playthrough = {
   captainAuthorityState?: string;
   canTakeCaptaincy?: boolean;
   canContinueSolo?: boolean;
+  viewer?: {
+    isCaptain: boolean;
+    participationMode: "CAPTAIN_AND_PLAYER" | "PLAYER";
+    canLaunch: boolean;
+  };
 };
 type ConnectionState = "connecting" | "live" | "polling" | "offline" | "reconnecting" | "reconciling" | "revoked";
 type RouteHandoff = (destination: string) => void | Promise<void>;
@@ -86,11 +105,54 @@ function WaitingLaunchBoundary({
 }
 
 function crewIdentity(member: CrewMember) {
-  return `${member.displayName}\u0000${member.crewRole ?? "Player"}`;
+  return member.id ?? `${member.displayName}\u0000${member.crewRole ?? "Player"}`;
 }
 
 function crewVersion(member: CrewMember) {
-  return member.status;
+  return JSON.stringify([
+    member.status,
+    member.isCaptain,
+    member.presence?.state,
+    member.synchronization?.state,
+    member.synchronization?.lag,
+    member.readiness?.state,
+    member.invitation?.status,
+  ]);
+}
+
+function words(value: string | null | undefined) {
+  return (value ?? "UNKNOWN").replaceAll("_", " ").toLocaleLowerCase();
+}
+
+function membershipCopy(status: string) {
+  if (status === "INVITED") return "Invited — not joined";
+  if (status === "ACCEPTED") return "Joined — not ready";
+  if (status === "READY") return "Joined — ready";
+  if (status === "ACTIVE_MEMBER") return "Joined — in Voyage";
+  if (status === "COMPLETED_MEMBER") return "Completed Voyage";
+  if (status === "LEFT") return "Departed Voyage";
+  if (status === "REMOVED") return "Removed from crew";
+  if (status === "CANCELLED") return "Voyage cancelled";
+  return words(status);
+}
+
+function presenceCopy(member: CrewMember) {
+  if (["REMOVED", "LEFT", "CANCELLED"].includes(member.status)) return "No longer connected";
+  if (member.presence?.state === "CONNECTED")
+    return member.synchronization?.state === "CATCHING_UP" ? "Online — catching up" : "Online and in sync";
+  if (member.presence?.state === "RECENTLY_LOST") return "Reconnecting";
+  if (member.presence?.state === "STALE") return "Offline";
+  return "Connection unknown";
+}
+
+function initials(name: string) {
+  return name
+    .split(/\s+/u)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toLocaleUpperCase();
 }
 
 function countdown(plannedStartAt: string, now: number) {
@@ -144,7 +206,9 @@ export function PlayerVoyageRoom({
   const [clock, setClock] = useState<number | null>(null);
   const [launchReady, setLaunchReady] = useState(false);
   const [routeFailed, setRouteFailed] = useState(false);
-  const [authorityAction, setAuthorityAction] = useState<"takeover" | "solo" | "leave" | "">("");
+  const [authorityAction, setAuthorityAction] = useState<
+    "takeover" | "solo" | "leave" | "launch" | "remove" | "transfer" | "relinquish" | "cancel" | "invitation" | ""
+  >("");
   const [soloDestination, setSoloDestination] = useState<{ href: string; voyageName: string } | null>(null);
   const launchCeremonyKey = voyage
     ? platformOneShotKey("waiting-launch", voyage.id, `${voyage.status}:${voyage.lastSynchronizedAt}`)
@@ -192,9 +256,35 @@ export function PlayerVoyageRoom({
           const changes: string[] = [];
           if (previous.status !== nextVoyage.status)
             changes.push(`Voyage status changed to ${nextVoyage.status.replaceAll("_", " ").toLocaleLowerCase()}.`);
-          for (const id of diff.addedIds) changes.push(`${id.split("\u0000")[0]} joined the waiting crew.`);
-          for (const id of diff.changedIds) changes.push(`${id.split("\u0000")[0]}'s readiness changed.`);
-          setReconciliation(changes);
+          const previousCrew = new Map(previous.crew.map((member) => [crewIdentity(member), member]));
+          for (const id of diff.addedIds) {
+            const member = nextVoyage.crew.find((item) => crewIdentity(item) === id);
+            if (member) changes.push(`${member.displayName} joined the waiting crew.`);
+          }
+          for (const id of diff.changedIds) {
+            const before = previousCrew.get(id);
+            const member = nextVoyage.crew.find((item) => crewIdentity(item) === id);
+            if (!before || !member) continue;
+            if (before.isCaptain !== member.isCaptain)
+              changes.push(
+                member.isCaptain
+                  ? `${member.displayName} is now Captain.`
+                  : `${member.displayName} is no longer Captain.`,
+              );
+            else if (before.status !== member.status)
+              changes.push(`${member.displayName}: ${membershipCopy(member.status)}.`);
+            else if (before.presence?.state !== member.presence?.state)
+              changes.push(`${member.displayName} is ${presenceCopy(member).toLocaleLowerCase()}.`);
+            else if (before.synchronization?.state !== member.synchronization?.state)
+              changes.push(`${member.displayName}'s sync state changed to ${words(member.synchronization?.state)}.`);
+            else if (before.readiness?.state !== member.readiness?.state)
+              changes.push(`${member.displayName}'s readiness changed to ${words(member.readiness?.state)}.`);
+          }
+          for (const id of diff.removedIds) {
+            const member = previousCrew.get(id);
+            if (member) changes.push(`${member.displayName} is no longer listed in this room.`);
+          }
+          setReconciliation(changes.slice(0, 3));
         }
         if (diff.addedIds.length) {
           setNewCrew(new Set(diff.addedIds));
@@ -314,6 +404,211 @@ export function PlayerVoyageRoom({
       router.push("/player/library");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "This Voyage could not be left.");
+      await load("reconciling");
+    } finally {
+      setAuthorityAction("");
+    }
+  }
+
+  async function launchVoyage() {
+    if (!voyage?.viewer?.canLaunch || authorityAction) return;
+    if (
+      !(await requestAction({
+        eyebrow: "Captain launch",
+        title: `Begin “${voyage.voyageName}”?`,
+        detail:
+          "Ready Crew will receive access to this Voyage. This changes the shared Voyage state; it does not change anyone's membership or private Player history.",
+        confirmLabel: "Begin Voyage",
+      }))
+    )
+      return;
+    setAuthorityAction("launch");
+    setError("");
+    try {
+      const response = await fetch(`/api/captain/playthroughs/${voyage.id}/launch`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken.current ?? "" },
+        body: JSON.stringify({ expectedVersion: voyage.concurrencyVersion }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "The Voyage could not begin.");
+      await load("reconciling");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The Voyage could not begin.");
+      await load("reconciling");
+    } finally {
+      setAuthorityAction("");
+    }
+  }
+
+  async function removeCrewMember(member: CrewMember) {
+    if (
+      !voyage?.viewer?.isCaptain ||
+      member.isCurrentPlayer ||
+      ["REMOVED", "LEFT", "CANCELLED"].includes(member.status)
+    )
+      return;
+    if (
+      !(await requestAction({
+        eyebrow: "Crew membership",
+        title: `Remove ${member.displayName} from this Voyage?`,
+        detail:
+          "Their current Voyage access ends immediately. Their existing participation history remains preserved, and a new invitation is required to rejoin.",
+        confirmLabel: "Remove from Crew",
+        destructive: true,
+      }))
+    )
+      return;
+    setAuthorityAction("remove");
+    setError("");
+    try {
+      const response = await fetch(`/api/captain/playthroughs/${voyage.id}/crew/${member.id}/remove`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken.current ?? "" },
+        body: JSON.stringify({ expectedVersion: voyage.concurrencyVersion }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Crew access could not be changed.");
+      await load("reconciling");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Crew access could not be changed.");
+      await load("reconciling");
+    } finally {
+      setAuthorityAction("");
+    }
+  }
+
+  async function manageInvitation(member: CrewMember, action: "extend" | "revoke" | "replace") {
+    if (!voyage?.viewer?.isCaptain || !member.invitation?.canManage || authorityAction) return;
+    if (
+      ["revoke", "replace"].includes(action) &&
+      !(await requestAction({
+        eyebrow: "Crew invitation",
+        title:
+          action === "revoke"
+            ? `Revoke ${member.displayName}'s invitation?`
+            : `Replace ${member.displayName}'s invitation?`,
+        detail:
+          action === "revoke"
+            ? "The current invitation link and short code will stop working immediately."
+            : "The current invitation link and short code will stop working immediately, and the Crew member will need the replacement invitation.",
+        confirmLabel: action === "revoke" ? "Revoke Invitation" : "Replace Invitation",
+        destructive: true,
+      }))
+    )
+      return;
+    setAuthorityAction("invitation");
+    setError("");
+    try {
+      const response = await fetch(`/api/captain/invitations/${member.invitation.id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken.current ?? "" },
+        body: JSON.stringify({ action, extendHours: 168 }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "The invitation could not be changed.");
+      await load("reconciling");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The invitation could not be changed.");
+      await load("reconciling");
+    } finally {
+      setAuthorityAction("");
+    }
+  }
+
+  async function transferCaptaincy(member: CrewMember) {
+    if (!voyage?.viewer?.isCaptain || !member.canReceiveCaptaincy || authorityAction) return;
+    if (
+      !(await requestAction({
+        eyebrow: "Captain authority",
+        title: `Transfer Captaincy to ${member.displayName}?`,
+        detail:
+          "Captain authority moves atomically to this current joined Player. Your own Player participation, the edition, progression, artifacts, and private Player state do not change.",
+        confirmLabel: "Transfer Captaincy",
+      }))
+    )
+      return;
+    setAuthorityAction("transfer");
+    setError("");
+    try {
+      const response = await postIdempotentAuthorityCommand({
+        url: `/api/captain/playthroughs/${voyage.id}/captain/transfer`,
+        csrfToken: csrfToken.current ?? "",
+        body: {
+          recipientMembershipId: member.id,
+          expectedVersion: voyage.concurrencyVersion,
+          idempotencyKey: crypto.randomUUID(),
+        },
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Captaincy could not be transferred.");
+      await load("reconciling");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Captaincy could not be transferred.");
+      await load("reconciling");
+    } finally {
+      setAuthorityAction("");
+    }
+  }
+
+  async function relinquishCaptaincy() {
+    if (!voyage?.viewer?.isCaptain || authorityAction || voyage.state === "CANCELLED") return;
+    if (
+      !(await requestAction({
+        eyebrow: "Captain authority",
+        title: `Relinquish Captaincy for “${voyage.voyageName}”?`,
+        detail:
+          "This does not cancel the shared Voyage. It enters Succession Hold until an eligible joined Player takes Captaincy, continues solo, or leaves.",
+        confirmLabel: "Relinquish Captaincy",
+        destructive: true,
+      }))
+    )
+      return;
+    setAuthorityAction("relinquish");
+    setError("");
+    try {
+      const response = await postIdempotentAuthorityCommand({
+        url: `/api/captain/playthroughs/${voyage.id}/captain/relinquish`,
+        csrfToken: csrfToken.current ?? "",
+        body: { expectedVersion: voyage.concurrencyVersion, idempotencyKey: crypto.randomUUID() },
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Captaincy could not be relinquished.");
+      await load("reconciling");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Captaincy could not be relinquished.");
+      await load("reconciling");
+    } finally {
+      setAuthorityAction("");
+    }
+  }
+
+  async function cancelVoyage() {
+    if (!voyage?.viewer?.isCaptain || authorityAction || voyage.state === "CANCELLED") return;
+    if (
+      !(await requestAction({
+        eyebrow: "Terminal Voyage action",
+        title: `Cancel “${voyage.voyageName}” for everyone?`,
+        detail:
+          "This ends shared play and current participant access for every Crew member. It is not Captain relinquishment or an ordinary crew departure.",
+        confirmLabel: "Cancel Voyage for Everyone",
+        destructive: true,
+      }))
+    )
+      return;
+    setAuthorityAction("cancel");
+    setError("");
+    try {
+      const response = await fetch(`/api/captain/playthroughs/${voyage.id}/cancel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken.current ?? "" },
+        body: JSON.stringify({ expectedVersion: voyage.concurrencyVersion }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "The Voyage could not be cancelled.");
+      await load("reconciling");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The Voyage could not be cancelled.");
       await load("reconciling");
     } finally {
       setAuthorityAction("");
@@ -582,7 +877,9 @@ export function PlayerVoyageRoom({
               ? "Captaincy is vacant. This shared Voyage is in Succession Hold until a joined Player takes Captaincy, continues solo, or leaves."
               : launchReady
                 ? "The Captain has launched the voyage. Releasing the journal clasp…"
-                : "Your place is secured. The journal will open only after the Captain launches the voyage."}
+                : voyage.viewer?.isCaptain
+                  ? "You are Captain and an ordinary Player in this Crew. Review the room, then begin the Voyage when it is ready."
+                  : "Your place is secured. The journal will open only after the Captain launches the voyage."}
           </p>
           <dl>
             <div>
@@ -596,9 +893,13 @@ export function PlayerVoyageRoom({
                   ? "Succession Hold"
                   : launchReady
                     ? "Launch confirmed"
-                    : voyage.status === "SCHEDULED"
-                      ? "Scheduled"
-                      : "Awaiting Captain"}
+                    : voyage.viewer?.isCaptain
+                      ? voyage.viewer.canLaunch
+                        ? "Captain launch available"
+                        : "Captain review in progress"
+                      : voyage.status === "SCHEDULED"
+                        ? "Scheduled"
+                        : "Awaiting Captain"}
               </dd>
             </div>
             {voyage.plannedStartAt && (
@@ -623,8 +924,13 @@ export function PlayerVoyageRoom({
             </div>
           </dl>
           {reconciliation.length > 0 && (
-            <section className="reconciliation-summary" aria-labelledby="reconciliation-title">
-              <h3 id="reconciliation-title">Changes received while reconnecting</h3>
+            <section
+              className="reconciliation-summary"
+              aria-live="polite"
+              aria-atomic="true"
+              aria-labelledby="reconciliation-title"
+            >
+              <h3 id="reconciliation-title">Live room update</h3>
               <ol>
                 {reconciliation.map((change, index) => (
                   <li key={`${index}-${change}`}>{change}</li>
@@ -632,30 +938,113 @@ export function PlayerVoyageRoom({
               </ol>
             </section>
           )}
-          <section className="crew-readiness">
-            <h3>Crew readiness</h3>
-            <motion.ul layout>
-              <AnimatePresence initial={false}>
-                {voyage.crew.map((member) => {
-                  const identity = crewIdentity(member);
-                  return (
-                    <motion.li
-                      layout
-                      key={identity}
-                      initial={newCrew.has(identity) ? { opacity: 0, y: layoutToken.distancePx } : false}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: layoutToken.durationSeconds, ease: platformMotionEasing("layout") }}
-                    >
-                      <span>{member.displayName}</span>
-                      <small>
-                        {member.crewRole ?? "Player"} · {member.status.replaceAll("_", " ").toLocaleLowerCase()}
-                      </small>
-                    </motion.li>
-                  );
-                })}
-              </AnimatePresence>
-            </motion.ul>
+          <section className="crew-readiness muster-crew" aria-labelledby="crew-readiness-title">
+            <div className="muster-section-heading">
+              <div>
+                <p className="eyebrow">Crew muster</p>
+                <h3 id="crew-readiness-title">
+                  {voyage.crew.length ? "Everyone in this Voyage" : "No Crew seats yet"}
+                </h3>
+              </div>
+              <span className="muster-count" aria-label={`${voyage.crew.length} crew seats`}>
+                {voyage.crew.length}
+              </span>
+            </div>
+            {voyage.crew.length === 0 ? (
+              <p className="muster-empty">
+                This is a Captain-only Voyage. Invite Players from Captain&apos;s Console when you are ready to assemble
+                a Crew.
+              </p>
+            ) : (
+              <motion.ul layout className="muster-crew-grid">
+                <AnimatePresence initial={false}>
+                  {voyage.crew.map((member) => {
+                    const identity = crewIdentity(member);
+                    return (
+                      <motion.li
+                        layout
+                        key={identity}
+                        data-membership-status={member.status}
+                        data-presence-state={member.presence?.state ?? "UNKNOWN"}
+                        data-captain={member.isCaptain ? "true" : "false"}
+                        initial={newCrew.has(identity) ? { opacity: 0, y: layoutToken.distancePx } : false}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: layoutToken.durationSeconds, ease: platformMotionEasing("layout") }}
+                      >
+                        <span className="muster-avatar" aria-hidden="true">
+                          {initials(member.displayName)}
+                        </span>
+                        <div className="muster-member-copy">
+                          <div className="muster-member-title">
+                            <strong>{member.displayName}</strong>
+                            {member.isCurrentPlayer && <span className="muster-badge">You</span>}
+                            {member.isCaptain && <span className="muster-badge muster-badge-captain">Captain</span>}
+                          </div>
+                          <span>{member.crewRole ?? "Player"}</span>
+                          <div className="muster-statuses">
+                            <span>{membershipCopy(member.status)}</span>
+                            <span>
+                              {member.readiness?.state === "READY"
+                                ? "Ready"
+                                : member.readiness?.state === "NOT_READY"
+                                  ? "Not ready"
+                                  : "Readiness unknown"}
+                            </span>
+                            <span>{presenceCopy(member)}</span>
+                          </div>
+                        </div>
+                        {voyage.viewer?.isCaptain && (
+                          <div className="muster-member-actions">
+                            {member.invitation?.canManage && (
+                              <>
+                                <button
+                                  disabled={Boolean(authorityAction)}
+                                  onClick={() => void manageInvitation(member, "extend")}
+                                >
+                                  Resend invitation
+                                </button>
+                                <button
+                                  disabled={Boolean(authorityAction)}
+                                  onClick={() => void manageInvitation(member, "replace")}
+                                >
+                                  Replace invitation
+                                </button>
+                                <button
+                                  className="button-danger"
+                                  disabled={Boolean(authorityAction)}
+                                  onClick={() => void manageInvitation(member, "revoke")}
+                                >
+                                  Revoke invitation
+                                </button>
+                              </>
+                            )}
+                            {!member.isCurrentPlayer && !["REMOVED", "LEFT", "CANCELLED"].includes(member.status) && (
+                              <button
+                                className="button-danger"
+                                disabled={Boolean(authorityAction)}
+                                onClick={() => void removeCrewMember(member)}
+                              >
+                                {authorityAction === "remove" ? "Removing…" : "Remove from Crew"}
+                              </button>
+                            )}
+                            {member.canReceiveCaptaincy && (
+                              <button
+                                className="button-secondary"
+                                disabled={Boolean(authorityAction)}
+                                onClick={() => void transferCaptaincy(member)}
+                              >
+                                {authorityAction === "transfer" ? "Transferring…" : "Transfer Captaincy"}
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </motion.li>
+                    );
+                  })}
+                </AnimatePresence>
+              </motion.ul>
+            )}
           </section>
           {error && (
             <p className="platform-error" role="alert">
@@ -708,6 +1097,53 @@ export function PlayerVoyageRoom({
               </div>
             </section>
           )}
+          {voyage.viewer?.isCaptain && voyage.captainAuthorityState !== "VACANT" && (
+            <section className="muster-captain-frame" aria-labelledby="captain-room-title">
+              <p className="eyebrow">Captain in the room</p>
+              <h3 id="captain-room-title">Lead this Voyage without leaving your Player perspective</h3>
+              <p>
+                You remain one ordinary Crew member. Launch is available here when the current Voyage state permits it;
+                deeper operations remain in Captain&apos;s Console.
+              </p>
+              <div className="waiting-actions">
+                {voyage.viewer.canLaunch && (
+                  <button
+                    className="brass-button"
+                    disabled={Boolean(authorityAction)}
+                    onClick={() => void launchVoyage()}
+                  >
+                    {authorityAction === "launch" ? "Beginning Voyage…" : "Begin Voyage"}
+                  </button>
+                )}
+                <Link className="button-secondary" href={`/captain/sessions/${voyage.id}`}>
+                  Open Captain&apos;s Console
+                </Link>
+              </div>
+              <details className="muster-management">
+                <summary>Captaincy and Voyage options</summary>
+                <p>
+                  Captain transfer, relinquishment, and cancellation are distinct actions. None of them means “Leave
+                  Waiting Room.”
+                </p>
+                <div className="waiting-actions">
+                  <button
+                    className="button-danger"
+                    disabled={Boolean(authorityAction)}
+                    onClick={() => void relinquishCaptaincy()}
+                  >
+                    {authorityAction === "relinquish" ? "Relinquishing Captaincy…" : "Relinquish Captaincy"}
+                  </button>
+                  <button
+                    className="button-danger"
+                    disabled={Boolean(authorityAction)}
+                    onClick={() => void cancelVoyage()}
+                  >
+                    {authorityAction === "cancel" ? "Cancelling Voyage…" : "Cancel Voyage for Everyone"}
+                  </button>
+                </div>
+              </details>
+            </section>
+          )}
           <div className="waiting-actions">
             {launchReady && routeFailed && (
               <button className="brass-button" onClick={() => setRouteFailed(false)}>
@@ -729,6 +1165,11 @@ export function PlayerVoyageRoom({
             {voyage.captainAuthorityState !== "VACANT" && voyage.canContinueSolo && !soloDestination && (
               <button disabled={Boolean(authorityAction)} onClick={() => void continueSolo()}>
                 {authorityAction === "solo" ? "Synchronizing…" : "Continue Solo"}
+              </button>
+            )}
+            {voyage.captainAuthorityState !== "VACANT" && (
+              <button className="button-danger" disabled={Boolean(authorityAction)} onClick={() => void leaveVoyage()}>
+                {authorityAction === "leave" ? "Leaving Voyage…" : "Leave Voyage"}
               </button>
             )}
             <Link className="button-subtle" href="/player/library">
