@@ -12,14 +12,14 @@ last_reviewed: 2026-08-27
 
 The implementation starts from `445cbb253cd19191c2b02c0951efc7c6be3b1f74`. The following evidence is task-owned and local until a candidate-bound Sounding Line decision and protected merge are recorded separately.
 
-| Evidence | Result | Boundary |
-| --- | --- | --- |
-| TypeScript | passed | `npm run typecheck` with the A2 authority, projection, route, and UI changes. |
-| Authority lifecycle unit suite | passed | Direct transfer, retry authorization, relinquishment, first-committed takeover, one safe fork, concurrent independent forks, and receipt privacy. |
-| Player Library and Waiting Room components | passed | Succession Hold wording and Take Captaincy, Continue Solo, and canonical Leave Voyage mutations. |
-| SQLite migration rehearsal | passed | Fresh and upgrade task-owned databases retain shared state, default existing/fresh authority to `ASSIGNED`, create zero backfill receipts, and pass foreign-key checks. |
-| MySQL migration boundary | schema/DDL validated | Checked-in additive DDL is present and schema-valid; a configured live MySQL execution was not used. |
-| Production-style browser journeys | passed, 6/6 | One isolated Chromium journey on a fresh task-owned SQLite database uses `next build` and `next start`, not dev HMR; it proves transfer, relinquishment, succession refresh and takeover contention, solo continuation, independent forks, and Player projection/privacy boundaries. |
+| Evidence                                   | Result               | Boundary                                                                                                                                                                                                                                                                             |
+| ------------------------------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| TypeScript                                 | passed               | `npm run typecheck` with the A2 authority, projection, route, and UI changes.                                                                                                                                                                                                        |
+| Authority lifecycle unit suite             | passed               | Direct transfer, retry authorization, relinquishment, first-committed takeover, one safe fork, concurrent independent forks, and receipt privacy.                                                                                                                                    |
+| Player Library and Waiting Room components | passed               | Succession Hold wording and Take Captaincy, Continue Solo, and canonical Leave Voyage mutations.                                                                                                                                                                                     |
+| SQLite migration rehearsal                 | passed               | Fresh and upgrade task-owned databases retain shared state, default existing/fresh authority to `ASSIGNED`, create zero backfill receipts, and pass foreign-key checks.                                                                                                              |
+| MySQL migration boundary                   | schema/DDL validated | Checked-in additive DDL is present and schema-valid; a configured live MySQL execution was not used.                                                                                                                                                                                 |
+| Production-style browser journeys          | passed, 6/6          | One isolated Chromium journey on a fresh task-owned SQLite database uses `next build` and `next start`, not dev HMR; it proves transfer, relinquishment, succession refresh and takeover contention, solo continuation, independent forks, and Player projection/privacy boundaries. |
 
 ## Privacy and lineage proof
 
