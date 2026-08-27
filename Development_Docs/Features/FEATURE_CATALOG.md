@@ -1151,8 +1151,11 @@ Bridgewatch v1.2 P2 makes a fixed, read-only set of typed repository, governance
 - Per-fact source identity, authority, maturity, precedence, freshness, explicit limitation, and retained-cache provenance
 - Exact expected fact-class coverage by system with authoritative, provisional, stale, unavailable, unrecorded, and unknown states
 - Truthful historical backfill that preserves NOT_HISTORICALLY_RECORDED instead of inventing absent evidence
+- Cursor-based bounded history pages that retain an explicit time window and filters while preserving the visible free-text filter across Load more
 - Source-specific last-known-good retention and additive SQLite current/history tables
-- Host-owned allowlisted Voyagewright runtime identity and provider/job status observation without database, process, credential, prompt, log, or user-content access
+- Host-owned allowlisted Voyagewright runtime identity and provider/job status observation with source SHA, lifecycle freshness, code/configuration/reachability/live-validation facets, and bounded job counts, without database, process, credential, prompt, log, or user-content access
+- Same-host private gateway coverage for fact, coverage, and safe fact-detail GET/HEAD profiles without adding a mutable upstream path
+- Explicit Codex task activity and completion reporter that sends only branch, source SHA, timestamps, and a bounded task label
 - Responsive, keyboard-visible Data & Coverage and fact-provenance profiles with deep links and bounded fact search
 
 ### Primary surfaces
@@ -1163,15 +1166,18 @@ Bridgewatch v1.2 P2 makes a fixed, read-only set of typed repository, governance
 
 - P2 remains a private GET/HEAD observer: it cannot create, approve, merge, retry, cancel, release, or change project, worker, provider, or Voyagewright state.
 - Runtime and provider facts exist only when an approved host-owned status projection is configured; unavailable and stale states remain visible rather than inferred.
-- Protected-main integration records the bounded P2 capability as available; it does not establish deployment, provider proof, owner acceptance, or Bridgewatch P3.
+- Loopback validation can establish only its configured local adapter facts; any unavailable or external provider, private deployment, and owner acceptance remains explicitly unvalidated.
 
 ### Evidence
 
 - commit: `15b66153c931efbf77b338cb67560a93853dad1e`
 - path: `bridgewatch/src/fabric.ts`
+- path: `scripts/bridgewatch/operational-projection.ts`
 - path: `bridgewatch/lib/store.ts`
 - test: `bridgewatch/test/fabric.test.ts`
 - test: `bridgewatch/test/server.test.ts`
+- test: `src/admiralty/bridgewatch-gateway.test.ts`
+- test: `bridgewatch/test/codex-reporter.test.ts`
 
 ---
 
