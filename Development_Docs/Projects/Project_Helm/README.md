@@ -3,7 +3,7 @@ title: Project Helm Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-helm-repository-index
-last_reviewed: 2026-08-25
+last_reviewed: 2026-08-27
 ---
 
 # Project Helm
@@ -25,8 +25,11 @@ Phase 3 command redesign and Phase 4 preflight/recovery work.
 Governing Amendment v1.1 supplements (and does not replace) the v1.0 governing
 document. It inserts three amendments after accepted Phase 2 and before the
 unchanged original Phase 3: A1 **Muster the Crew**, A2 **Pass the Helm**, and
-A3 **Ready the Room**. This governance-only import implements none of A1, A2,
-or A3.
+A3 **Ready the Room**. A1 is accepted on canonical main and provides ordinary
+invitation, removal, voluntary-leave, and cancellation lifecycle actions. A2
+is branch-complete pending protected integration; it adds scoped Captain
+transfer, Succession Hold, takeover, and ordinary Player solo continuation
+while keeping A3 and original Phase 3 out of scope.
 
 ## Authority
 
@@ -74,6 +77,13 @@ implementation evidence.
 - [Validation Record](Project_Helm_Phase_2_Validation_Record.md)
 - [Integration Manifest](Project_Helm_Phase_2_Integration_Manifest.md)
 - [Completion Receipt](Project_Helm_Phase_2_Completion_Receipt.md)
+
+## Amendment A2 records
+
+- [Design Record](Project_Helm_Amendment_A2_Design_Record.md)
+- [Test Plan](Project_Helm_Amendment_A2_Test_Plan.md)
+- [Validation Record](Project_Helm_Amendment_A2_Validation_Record.md)
+- [Integration Manifest](Project_Helm_Amendment_A2_Integration_Manifest.md)
 
 Phase 2 was initially integrated through protected pull request 35. Its final
 current-main repair is anchored by protected pull request 53, candidate
