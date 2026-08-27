@@ -1,8 +1,12 @@
 import { createHash, randomUUID } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { constants } from "node:fs";
+import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { db } from "@/lib/db";
 import { CommunityError } from "./domain";
+import { DatabaseCommunityRateLimiter } from "./rate-limit";
+import { scanClamAvBytes } from "@/private-content/clamav-transport";
+import { readCommunityWorkerRuntime, workerRuntimeCurrent } from "./worker-runtime";
 
 export type CommunityProviderState =
   | "IMPLEMENTED"
@@ -11,15 +15,20 @@ export type CommunityProviderState =
   | "LIVE_VALIDATED"
   | "BLOCKED_EXTERNAL"
   | "UNAVAILABLE"
-  | "FAILED";
+  | "FAILED"
+  | "STOPPED";
 export type CommunityProviderHealth = {
   kind: string;
   provider: string;
+  codeImplemented: boolean;
   configured: boolean;
+  serviceReachable: boolean | null;
+  liveValidated: boolean;
   healthy: boolean;
   ready: boolean;
   state: CommunityProviderState;
   safeCode: string;
+  observedAt: string;
 };
 
 function bool(value: string | undefined) {
@@ -27,105 +36,216 @@ function bool(value: string | undefined) {
 }
 function providerState(configured: boolean, healthy: boolean, simulated = false): CommunityProviderState {
   if (simulated) return "SIMULATED_LOCAL";
-  if (configured && healthy) return "CONFIGURED";
+  if (configured && healthy) return "LIVE_VALIDATED";
   return configured ? "FAILED" : "UNAVAILABLE";
+}
+
+function configuredAbsolutePath(value: string | undefined) {
+  if (!value || !path.isAbsolute(value)) return null;
+  const root = path.resolve(value);
+  const repository = path.resolve(process.cwd());
+  return root === repository || root.startsWith(`${repository}${path.sep}`) ? null : root;
+}
+
+async function localRootReady(value: string | undefined) {
+  const root = configuredAbsolutePath(value);
+  if (!root) return false;
+  try {
+    await access(root, constants.R_OK | constants.W_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function clamAvProbe(scanner: string) {
+  if (scanner !== "clamav") return { reachable: null, clean: false, code: "SCANNER_NOT_CONFIGURED" };
+  const result = await scanClamAvBytes({
+    bytes: Buffer.from("Forever Treasure local scanner readiness probe", "utf8"),
+    host: process.env.COMMUNITY_CLAMAV_HOST,
+    port: Number(process.env.COMMUNITY_CLAMAV_PORT ?? 3310),
+    timeoutMs: Math.min(15_000, Number(process.env.COMMUNITY_CLAMAV_TIMEOUT_MS ?? 15_000)),
+  });
+  return {
+    reachable: !["PROVIDER_UNAVAILABLE", "TIMEOUT", "SCAN_NOT_CONFIGURED"].includes(result.result),
+    clean: result.result === "CLEAN",
+    code: result.safeCode,
+  };
 }
 
 /** Safe diagnostics: no endpoints, bucket names, account IDs, object keys, or raw errors. */
 export async function collectCommunityProviderHealth(): Promise<CommunityProviderHealth[]> {
+  const observedAt = new Date().toISOString();
   const databaseConfigured = Boolean(process.env.DATABASE_URL);
-  const probe = databaseConfigured ? await db.$queryRaw<Array<{ value: number }>>`SELECT 1 AS value` : [];
+  const probe = databaseConfigured
+    ? await db.$queryRaw<Array<{ value: number }>>`SELECT 1 AS value`.catch(() => [])
+    : [];
   const databaseHealthy = databaseConfigured && probe.length === 1;
-  const scanner = process.env.COMMUNITY_SCANNER_PROVIDER ?? "not-configured";
+  const scanner = process.env.COMMUNITY_BINARY_SCANNER_PROVIDER ?? "not-configured";
   const storage = process.env.COMMUNITY_ASSET_STORAGE_PROVIDER ?? "local";
   const workerEnabled = bool(process.env.COMMUNITY_WORKER_ENABLED);
   const sharedRate = process.env.COMMUNITY_RATE_LIMIT_PROVIDER === "database";
+  const [storageReady, backupReady, restoreReady, scannerProbe, workerRuntime, rateLimiter] = await Promise.all([
+    localRootReady(process.env.COMMUNITY_ASSET_ROOT),
+    localRootReady(process.env.COMMUNITY_BACKUP_ROOT),
+    localRootReady(process.env.COMMUNITY_RESTORE_ROOT),
+    clamAvProbe(scanner),
+    readCommunityWorkerRuntime(),
+    sharedRate ? new DatabaseCommunityRateLimiter().health() : Promise.resolve(null),
+  ]);
+  const workerAlive = workerRuntimeCurrent(workerRuntime);
+  const scannerConfigured = scanner === "clamav";
+  const scannerLive = scannerConfigured && scannerProbe.clean;
   return [
     {
       kind: "DATABASE",
       provider: process.env.DATABASE_URL?.startsWith("mysql:") ? "mysql" : "sqlite",
+      codeImplemented: true,
       configured: databaseConfigured,
+      serviceReachable: databaseConfigured ? databaseHealthy : null,
+      liveValidated: databaseHealthy,
       healthy: databaseHealthy,
       ready: databaseHealthy,
       state: providerState(databaseConfigured, databaseHealthy),
       safeCode: databaseHealthy ? "DATABASE_READY" : "DATABASE_UNAVAILABLE",
+      observedAt,
     },
     {
       kind: "SCANNER",
       provider: scanner === "clamav" ? "clamav-adapter" : scanner,
-      configured: scanner !== "not-configured",
-      healthy: scanner === "clamav" ? bool(process.env.COMMUNITY_SCANNER_HEALTHY) : false,
-      ready: scanner === "clamav" && bool(process.env.COMMUNITY_SCANNER_HEALTHY),
+      codeImplemented: true,
+      configured: scannerConfigured,
+      serviceReachable: scannerConfigured ? scannerProbe.reachable : null,
+      liveValidated: scannerLive,
+      healthy: scannerLive,
+      ready: scannerLive,
       state:
         scanner === "synthetic-test"
           ? "SIMULATED_LOCAL"
           : scanner === "not-configured"
             ? "UNAVAILABLE"
-            : bool(process.env.COMMUNITY_SCANNER_HEALTHY)
-              ? "CONFIGURED"
+            : scannerLive
+              ? "LIVE_VALIDATED"
               : "BLOCKED_EXTERNAL",
-      safeCode: scanner === "not-configured" ? "SCANNER_NOT_CONFIGURED" : "SCANNER_PROBE_REQUIRED",
+      safeCode: scanner === "not-configured" ? "SCANNER_NOT_CONFIGURED" : scannerProbe.code,
+      observedAt,
     },
     {
       kind: "STORAGE",
       provider: storage,
+      codeImplemented: true,
       configured: storage !== "local" || Boolean(process.env.COMMUNITY_ASSET_ROOT),
-      healthy:
-        storage === "local" ? Boolean(process.env.COMMUNITY_ASSET_ROOT) : bool(process.env.COMMUNITY_STORAGE_HEALTHY),
-      ready:
-        storage === "local" ? Boolean(process.env.COMMUNITY_ASSET_ROOT) : bool(process.env.COMMUNITY_STORAGE_HEALTHY),
+      serviceReachable: storage === "local" ? (process.env.COMMUNITY_ASSET_ROOT ? storageReady : null) : null,
+      liveValidated: false,
+      healthy: storage === "local" ? storageReady : false,
+      ready: storage === "local" ? storageReady : false,
       state:
-        storage === "local"
+        storage === "local" && storageReady
           ? "SIMULATED_LOCAL"
-          : bool(process.env.COMMUNITY_STORAGE_HEALTHY)
-            ? "CONFIGURED"
+          : storage === "local"
+            ? "UNAVAILABLE"
             : "BLOCKED_EXTERNAL",
-      safeCode: storage === "local" ? "LOCAL_STORAGE_ONLY" : "STORAGE_PROBE_REQUIRED",
+      safeCode:
+        storage === "local"
+          ? storageReady
+            ? "LOCAL_STORAGE_READY"
+            : "LOCAL_STORAGE_UNAVAILABLE"
+          : "STORAGE_PROBE_REQUIRED",
+      observedAt,
     },
     {
       kind: "WORKER",
       provider: "community-durable-worker",
+      codeImplemented: true,
       configured: workerEnabled,
-      healthy: workerEnabled,
-      ready: workerEnabled,
-      state: workerEnabled ? "IMPLEMENTED" : "UNAVAILABLE",
-      safeCode: workerEnabled ? "WORKER_ENABLED" : "WORKER_DISABLED",
+      serviceReachable: workerEnabled ? workerAlive : null,
+      liveValidated: workerAlive,
+      healthy: workerAlive,
+      ready: workerAlive,
+      state: !workerEnabled
+        ? "UNAVAILABLE"
+        : workerAlive
+          ? "LIVE_VALIDATED"
+          : workerRuntime?.state === "STOPPED"
+            ? "STOPPED"
+            : "FAILED",
+      safeCode: !workerEnabled
+        ? "WORKER_DISABLED"
+        : workerAlive
+          ? "WORKER_READY"
+          : workerRuntime
+            ? "WORKER_STALE_OR_NOT_READY"
+            : "WORKER_STATE_UNAVAILABLE",
+      observedAt,
     },
     {
       kind: "RATE_LIMITER",
       provider: sharedRate ? "database-optimistic" : "process-local",
+      codeImplemented: true,
       configured: sharedRate,
-      healthy: true,
-      ready: sharedRate,
-      state: sharedRate ? "IMPLEMENTED" : "SIMULATED_LOCAL",
-      safeCode: sharedRate ? "DATABASE_RATE_LIMIT_IMPLEMENTED" : "LOCAL_RATE_LIMIT_ONLY",
+      serviceReachable: sharedRate ? rateLimiter?.state === "HEALTHY" : null,
+      liveValidated: sharedRate && rateLimiter?.state === "HEALTHY",
+      healthy: sharedRate ? rateLimiter?.state === "HEALTHY" : true,
+      ready: sharedRate ? rateLimiter?.state === "HEALTHY" : false,
+      state: sharedRate ? (rateLimiter?.state === "HEALTHY" ? "LIVE_VALIDATED" : "FAILED") : "SIMULATED_LOCAL",
+      safeCode: sharedRate
+        ? rateLimiter?.state === "HEALTHY"
+          ? "DATABASE_RATE_LIMIT_READY"
+          : "DATABASE_RATE_LIMIT_UNAVAILABLE"
+        : "LOCAL_RATE_LIMIT_ONLY",
+      observedAt,
     },
     {
       kind: "SEARCH",
       provider: "relational-search",
+      codeImplemented: true,
       configured: true,
+      serviceReachable: true,
+      liveValidated: false,
       healthy: true,
       ready: true,
       state: "IMPLEMENTED",
       safeCode: "RELATIONAL_SEARCH_READY",
+      observedAt,
     },
     {
       kind: "ALERTING",
       provider: "sanitized-structured-log",
+      codeImplemented: true,
       configured: Boolean(process.env.COMMUNITY_ALERT_WEBHOOK_URL),
-      healthy: Boolean(process.env.COMMUNITY_ALERT_WEBHOOK_URL),
+      serviceReachable: null,
+      liveValidated: false,
+      healthy: false,
       ready: false,
-      state: process.env.COMMUNITY_ALERT_WEBHOOK_URL ? "IMPLEMENTED" : "UNAVAILABLE",
-      safeCode: process.env.COMMUNITY_ALERT_WEBHOOK_URL ? "ALERT_DELIVERY_UNVERIFIED" : "ALERTING_NOT_CONFIGURED",
+      state: process.env.COMMUNITY_ALERT_WEBHOOK_URL ? "CONFIGURED" : "IMPLEMENTED",
+      safeCode: process.env.COMMUNITY_ALERT_WEBHOOK_URL ? "ALERT_DELIVERY_UNVERIFIED" : "LOCAL_ALERT_EMITTER_READY",
+      observedAt,
     },
     {
       kind: "BACKUP_TARGET",
       provider: "local-isolated-manifest",
+      codeImplemented: true,
       configured: Boolean(process.env.COMMUNITY_BACKUP_ROOT),
-      healthy: Boolean(process.env.COMMUNITY_BACKUP_ROOT),
-      ready: Boolean(process.env.COMMUNITY_BACKUP_ROOT),
-      state: process.env.COMMUNITY_BACKUP_ROOT ? "SIMULATED_LOCAL" : "UNAVAILABLE",
-      safeCode: process.env.COMMUNITY_BACKUP_ROOT ? "BACKUP_ROOT_CONFIGURED" : "BACKUP_ROOT_NOT_CONFIGURED",
+      serviceReachable: process.env.COMMUNITY_BACKUP_ROOT ? backupReady : null,
+      liveValidated: false,
+      healthy: backupReady,
+      ready: backupReady,
+      state: backupReady ? "SIMULATED_LOCAL" : "UNAVAILABLE",
+      safeCode: backupReady ? "BACKUP_ROOT_READY" : "BACKUP_ROOT_NOT_CONFIGURED",
+      observedAt,
+    },
+    {
+      kind: "RESTORE_DRILL_TARGET",
+      provider: "local-isolated-manifest",
+      codeImplemented: true,
+      configured: Boolean(process.env.COMMUNITY_RESTORE_ROOT),
+      serviceReachable: process.env.COMMUNITY_RESTORE_ROOT ? restoreReady : null,
+      liveValidated: false,
+      healthy: restoreReady,
+      ready: restoreReady,
+      state: restoreReady ? "SIMULATED_LOCAL" : "UNAVAILABLE",
+      safeCode: restoreReady ? "RESTORE_ROOT_READY" : "RESTORE_ROOT_NOT_CONFIGURED",
+      observedAt,
     },
   ];
 }
@@ -274,14 +394,14 @@ export async function reconcileCommunityOperationalState(dryRun = true) {
 /** Bounded operational projection for moderators and alert evaluation. It
  * contains counts/ages only, never event payloads, identities, keys, or URLs. */
 export async function communityOperationalSnapshot(now = new Date()) {
-  const [queueDepth, deadLetters, oldestClaim, staleScans, quarantined, caseQueue, oldestCase, backupSchedules] =
+  const [queueDepth, deadLetters, oldestQueued, staleScans, quarantined, caseQueue, oldestCase, backupSchedules] =
     await Promise.all([
       db.communityOutboxEvent.count({ where: { processedAt: null, terminalFailureAt: null } }),
       db.communityOutboxEvent.count({ where: { terminalFailureAt: { not: null } } }),
       db.communityOutboxEvent.findFirst({
-        where: { processedAt: null, claimExpiresAt: { not: null } },
-        orderBy: { claimedAt: "asc" },
-        select: { claimedAt: true },
+        where: { processedAt: null, terminalFailureAt: null },
+        orderBy: { availableAt: "asc" },
+        select: { availableAt: true },
       }),
       db.communityScanReceipt.count({ where: { expiresAt: { lt: now } } }),
       db.communityRelease.count({ where: { moderationStatus: "QUARANTINED" } }),
@@ -291,14 +411,14 @@ export async function communityOperationalSnapshot(now = new Date()) {
       db.communityModerationCase.findFirst({ orderBy: { openedAt: "asc" }, select: { openedAt: true } }),
       db.communityOperationalSchedule.findMany({
         where: { scheduleType: { in: ["BACKUP", "RESTORE_DRILL_REMINDER"] } },
-        select: { scheduleType: true, lastRunAt: true },
+        select: { scheduleType: true, lastRunAt: true, lastOutcome: true },
       }),
     ]);
   return {
     queueDepth,
     deadLetters,
-    leaseAgeSeconds: oldestClaim?.claimedAt
-      ? Math.max(0, Math.floor((now.getTime() - oldestClaim.claimedAt.getTime()) / 1000))
+    oldestQueuedJobAgeSeconds: oldestQueued?.availableAt
+      ? Math.max(0, Math.floor((now.getTime() - oldestQueued.availableAt.getTime()) / 1000))
       : 0,
     staleScans,
     quarantined,

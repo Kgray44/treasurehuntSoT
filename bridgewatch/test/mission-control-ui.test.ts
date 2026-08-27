@@ -37,6 +37,8 @@ describe("v2.0 light mission-control navigation", () => {
     expect(app).toContain("function renderDataFabric");
     expect(app).toContain("function renderFactProfile");
     expect(app).toContain("Data fabric & observation coverage");
+    expect(app).toContain("function pagedHistory");
+    expect(app).toContain("Load more history");
   });
 
   it("keeps dense technical detail readable, focusable, and phone-safe", () => {
@@ -66,6 +68,7 @@ describe("v2.0 light mission-control navigation", () => {
     expect(app).toContain("Search branches");
     expect(app).toContain("Search retained history");
     expect(app).toContain("new URLSearchParams({ since: initialSince })");
+    expect(app).not.toContain('request("api/history?limit=250")');
     expect(app).toContain("Search observed facts");
     expect(app).toContain('"Open", "Historical", "All"');
   });
