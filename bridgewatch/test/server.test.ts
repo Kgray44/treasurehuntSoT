@@ -272,6 +272,20 @@ describe("Bridgewatch read-only API", () => {
       expect(history.json().events.some((event: { kind: string }) => event.kind === "PROJECT_STATE_CHANGED")).toBe(
         true,
       );
+      const firstPage = await app.inject({
+        method: "GET",
+        url: `/api/history?since=${encodeURIComponent(new Date(Date.now() - 60_000).toISOString())}&limit=1`,
+      });
+      expect(firstPage.statusCode).toBe(200);
+      expect(firstPage.json().events).toHaveLength(1);
+      expect(firstPage.json().nextCursor).toEqual(expect.any(String));
+      const secondPage = await app.inject({
+        method: "GET",
+        url: `/api/history?since=${encodeURIComponent(new Date(Date.now() - 60_000).toISOString())}&limit=1&cursor=${encodeURIComponent(firstPage.json().nextCursor)}`,
+      });
+      expect(secondPage.statusCode).toBe(200);
+      expect(secondPage.json().events[0].id).not.toBe(firstPage.json().events[0].id);
+      expect((await app.inject({ method: "GET", url: "/api/history?limit=250" })).statusCode).toBe(400);
       expect(
         (
           await app.inject({

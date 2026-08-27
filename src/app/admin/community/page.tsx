@@ -59,6 +59,10 @@ export default async function CommunityAdminPage({
               <dd>{data.operations.deadLetters}</dd>
             </div>
             <div>
+              <dt>Oldest queued job</dt>
+              <dd>{data.operations.oldestQueuedJobAgeSeconds}s</dd>
+            </div>
+            <div>
               <dt>Stale scans</dt>
               <dd>{data.operations.staleScans}</dd>
             </div>

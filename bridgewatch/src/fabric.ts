@@ -193,18 +193,27 @@ interface FabricInput {
 }
 
 interface RuntimeIdentity {
+  schemaVersion: number | null;
   sourceSha: string | null;
   port: number | null;
   startedAt: string | null;
   state: string | null;
+  observedAt: string | null;
 }
 
 interface ProviderStatus {
   providerCount: number;
   healthyCount: number;
   degradedCount: number;
+  readyCount: number;
+  queueDepth: number | null;
+  deadLetterCount: number | null;
+  oldestQueuedJobAgeSeconds: number | null;
+  sourceSha: string | null;
   observedAt: string | null;
 }
+
+const operationalProjectionStaleMs = 90_000;
 
 const classFor = (id: string) => {
   const item = expectedFactClasses.find((entry) => entry.id === id);
@@ -333,7 +342,17 @@ function asRuntimeIdentity(value: unknown): RuntimeIdentity {
   const state = [item.state, item.status].find(
     (entry): entry is string => typeof entry === "string" && /^[A-Z0-9_-]{2,64}$/iu.test(entry),
   );
-  return { sourceSha: sourceSha ?? null, port: port ?? null, startedAt: startedAt ?? null, state: state ?? null };
+  const observedAt =
+    typeof item.observedAt === "string" && Number.isFinite(Date.parse(item.observedAt)) ? item.observedAt : null;
+  const schemaVersion = item.schemaVersion === 1 ? 1 : null;
+  return {
+    schemaVersion,
+    sourceSha: sourceSha ?? null,
+    port: port ?? null,
+    startedAt: startedAt ?? null,
+    state: state ?? null,
+    observedAt,
+  };
 }
 
 function asProviderStatus(value: unknown): ProviderStatus {
@@ -346,10 +365,26 @@ function asProviderStatus(value: unknown): ProviderStatus {
   );
   const observedAt =
     typeof item.observedAt === "string" && Number.isFinite(Date.parse(item.observedAt)) ? item.observedAt : null;
+  const jobs = item.jobs && typeof item.jobs === "object" ? (item.jobs as Record<string, unknown>) : {};
+  const count = (candidate: unknown, maximum = 1_000_000) =>
+    typeof candidate === "number" && Number.isInteger(candidate) && candidate >= 0 && candidate <= maximum
+      ? candidate
+      : null;
+  const sourceSha =
+    typeof item.sourceSha === "string" && /^[0-9a-f]{7,64}$/iu.test(item.sourceSha) ? item.sourceSha : null;
   return {
     providerCount: providers.length,
     healthyCount: states.filter((state) => ["HEALTHY", "READY", "OK"].includes(state)).length,
-    degradedCount: states.filter((state) => ["DEGRADED", "FAILED", "UNAVAILABLE", "ERROR"].includes(state)).length,
+    degradedCount: states.filter((state) =>
+      ["DEGRADED", "FAILED", "UNAVAILABLE", "ERROR", "BLOCKED_EXTERNAL", "STOPPED"].includes(state),
+    ).length,
+    readyCount: providers.filter(
+      (entry) => entry && typeof entry === "object" && (entry as Record<string, unknown>).ready === true,
+    ).length,
+    queueDepth: count(jobs.queueDepth),
+    deadLetterCount: count(jobs.deadLetterCount),
+    oldestQueuedJobAgeSeconds: count(jobs.oldestQueuedJobAgeSeconds, 31_536_000),
+    sourceSha,
     observedAt,
   };
 }
@@ -762,25 +797,42 @@ export class DataFabricCollector {
       const identity = asRuntimeIdentity(
         await readBoundedJson(this.config.BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH),
       );
-      const sourceObservedAt = identity.startedAt ?? observedAt;
-      const source = { ...base, lastSuccessAt: sourceObservedAt, cacheAgeMs: cacheAge(sourceObservedAt) };
+      const sourceObservedAt = identity.observedAt;
+      const stale =
+        !sourceObservedAt ||
+        Date.now() - Date.parse(sourceObservedAt) > operationalProjectionStaleMs ||
+        identity.state !== "RUNNING";
+      const source = {
+        ...base,
+        state: stale ? ("DEGRADED" as const) : ("HEALTHY" as const),
+        reachable: identity.state === "RUNNING",
+        lastSuccessAt: sourceObservedAt,
+        cacheAgeMs: cacheAge(sourceObservedAt),
+      };
       return {
         ...source,
         facts: [
           fact(
             source,
             "voyagewright.runtime-identity",
-            identity.sourceSha || identity.port ? "PROVISIONAL" : "NOT_HISTORICALLY_RECORDED",
+            identity.schemaVersion === 1 && (identity.sourceSha || identity.port)
+              ? stale
+                ? "STALE"
+                : "PROVISIONAL"
+              : "NOT_HISTORICALLY_RECORDED",
             {
               sourceSha: identity.sourceSha,
               listenPort: identity.port,
               runtimeState: identity.state,
               startedAt: identity.startedAt,
+              observedAt: identity.observedAt,
             },
             "configured:BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH",
             sourceObservedAt,
             observedAt,
-            "Only an allowlisted runtime identity is observed; cookies, headers, prompts, logs, and process command lines are excluded.",
+            stale
+              ? "The host-owned runtime projection is stopped, malformed, or stale; it cannot establish a current healthy process."
+              : "Only an allowlisted runtime identity is observed; cookies, headers, prompts, logs, and process command lines are excluded.",
           ),
         ],
       };
@@ -847,24 +899,38 @@ export class DataFabricCollector {
         };
       }
       const status = asProviderStatus(await readBoundedJson(this.config.BRIDGEWATCH_PROVIDER_STATUS_PATH));
-      const sourceObservedAt = status.observedAt ?? observedAt;
-      const source = { ...base, lastSuccessAt: sourceObservedAt, cacheAgeMs: cacheAge(sourceObservedAt) };
+      const sourceObservedAt = status.observedAt;
+      const stale = !sourceObservedAt || Date.now() - Date.parse(sourceObservedAt) > operationalProjectionStaleMs;
+      const source = {
+        ...base,
+        state: stale ? ("DEGRADED" as const) : ("HEALTHY" as const),
+        reachable: stale ? false : true,
+        lastSuccessAt: sourceObservedAt,
+        cacheAgeMs: cacheAge(sourceObservedAt),
+      };
       return {
         ...source,
         facts: [
           fact(
             source,
             "operations.provider-jobs",
-            status.providerCount ? "PROVISIONAL" : "NOT_HISTORICALLY_RECORDED",
+            status.providerCount ? (stale ? "STALE" : "PROVISIONAL") : "NOT_HISTORICALLY_RECORDED",
             {
               providerCount: status.providerCount,
               healthyCount: status.healthyCount,
               degradedCount: status.degradedCount,
+              readyCount: status.readyCount,
+              queueDepth: status.queueDepth,
+              deadLetterCount: status.deadLetterCount,
+              oldestQueuedJobAgeSeconds: status.oldestQueuedJobAgeSeconds,
+              sourceSha: status.sourceSha,
             },
             "configured:BRIDGEWATCH_PROVIDER_STATUS_PATH",
             sourceObservedAt,
             observedAt,
-            "Only the bounded status projection is observed; Bridgewatch cannot dispatch, retry, or cancel jobs.",
+            stale
+              ? "The host-owned provider/jobs projection is stale and cannot establish current operational readiness."
+              : "Only the bounded status projection is observed; Bridgewatch cannot dispatch, retry, or cancel jobs.",
           ),
         ],
       };

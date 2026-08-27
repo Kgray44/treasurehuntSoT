@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const dependencies = vi.hoisted(() => ({
   searchHomeportCommunity: vi.fn(),
   requireCanonicalAccountIdentity: vi.fn(),
-  consumeRateLimit: vi.fn(),
+  consumeConfiguredCommunityRateLimit: vi.fn(),
 }));
 
 vi.mock("@/community/homeport", async (importOriginal) => ({
@@ -14,14 +14,16 @@ vi.mock("@/community/homeport", async (importOriginal) => ({
 vi.mock("@/platform/auth", () => ({
   requireCanonicalAccountIdentity: dependencies.requireCanonicalAccountIdentity,
 }));
-vi.mock("@/lib/rate-limit", () => ({ consumeRateLimit: dependencies.consumeRateLimit }));
+vi.mock("@/community/rate-limit", () => ({
+  consumeConfiguredCommunityRateLimit: dependencies.consumeConfiguredCommunityRateLimit,
+}));
 
 import { GET } from "./route";
 
 describe("GET /api/community/discover", () => {
   beforeEach(() => {
     vi.resetAllMocks();
-    dependencies.consumeRateLimit.mockReturnValue({ allowed: true });
+    dependencies.consumeConfiguredCommunityRateLimit.mockResolvedValue({ allowed: true });
     dependencies.requireCanonicalAccountIdentity.mockResolvedValue({ accountId: "viewer-account" });
     dependencies.searchHomeportCommunity.mockResolvedValue({ items: [], facets: {} });
   });

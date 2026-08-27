@@ -9,7 +9,7 @@ import {
   type CommunitySortMode,
 } from "@/community/discovery";
 import { parseHomeportDurationFilter, parseHomeportPlayerFilter, searchHomeportCommunity } from "@/community/homeport";
-import { consumeRateLimit } from "@/lib/rate-limit";
+import { consumeConfiguredCommunityRateLimit } from "@/community/rate-limit";
 import { requireCanonicalAccountIdentity } from "@/platform/auth";
 
 const groupedTypes: Readonly<Record<string, readonly string[]>> = {
@@ -22,7 +22,15 @@ const groupedTypes: Readonly<Record<string, readonly string[]>> = {
 
 export async function GET(request: NextRequest) {
   const address = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "anonymous";
-  if (!consumeRateLimit(`community-discovery:${address}`, { limit: 60, windowMs: 60_000 }).allowed)
+  if (
+    !(
+      await consumeConfiguredCommunityRateLimit(
+        { scope: "community-discovery", network: address, action: "search" },
+        60,
+        60_000,
+      )
+    ).allowed
+  )
     return NextResponse.json(
       { code: "COMMUNITY_RATE_LIMITED", message: "Please wait before searching again." },
       { status: 429 },
