@@ -97,16 +97,9 @@ test("Journey E: Home ambient motion", async ({ page }) => {
   const lantern = page.locator(".hanging-lantern");
   await expect(lantern).toBeVisible();
   await expect(lantern).toHaveCSS("transform-origin", "47px 0px");
-  const samples: number[] = [];
-  for (let index = 0; index < 12; index += 1) {
-    samples.push(await rotation(lantern));
-    await page.waitForTimeout(180);
-  }
-  expect(Math.min(...samples)).toBeLessThan(-0.5);
-  expect(Math.max(...samples)).toBeGreaterThan(0.5);
   await capture(page, "HP-OWCR2-EV-D-LANTERN-NEUTRAL", false);
-  await captureAtRotation(page, lantern, "HP-OWCR2-EV-E-LANTERN-LEFT", (value) => value < -0.5);
-  await captureAtRotation(page, lantern, "HP-OWCR2-EV-F-LANTERN-RIGHT", (value) => value > 0.5);
+  const leftRotation = await captureAtRotation(page, lantern, "HP-OWCR2-EV-E-LANTERN-LEFT", (value) => value < -0.5);
+  const rightRotation = await captureAtRotation(page, lantern, "HP-OWCR2-EV-F-LANTERN-RIGHT", (value) => value > 0.5);
   const star = page.locator(".star-field i").first();
   const fog = page.locator(".distant-clouds");
   const starOpacity: number[] = [];
@@ -121,7 +114,7 @@ test("Journey E: Home ambient motion", async ({ page }) => {
   await capture(page, "HP-OWCR2-EV-H-FOG-DRIFT", false);
   await writeMotionReceipt("HP-OWCR2-EV-D-LANTERN-NEUTRAL", {
     transformOrigin: await lantern.evaluate((node) => getComputedStyle(node).transformOrigin),
-    rotations: samples,
+    rotations: [leftRotation, rightRotation],
     starOpacity,
     fogAnimationName: await fog.evaluate((node) => getComputedStyle(node).animationName),
   });
@@ -265,10 +258,10 @@ test("Journey I: Community district slow success", async ({ page }) => {
   const search = page.getByRole("searchbox", { name: "Search public Community Harbor" });
   await search.fill("coast");
   const navigation = search.press("Enter");
-  await requestIntercepted;
-  await page.waitForTimeout(450);
+  const pendingDelay = page.locator('[data-async-state="pending-delay"]');
+  await expect(pendingDelay).toBeVisible();
   await expect(page.locator(".ui-loading-state")).toHaveCount(0);
-  await page.waitForTimeout(100);
+  await requestIntercepted;
   await expect(page.locator(".ui-loading-state")).toBeVisible();
   await capture(page, "HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING");
   release();
