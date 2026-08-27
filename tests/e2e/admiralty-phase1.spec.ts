@@ -57,118 +57,96 @@ test("Journeys A-G: governed authority, assurance, consent, denial, revocation, 
   await ordinary.context.close();
 
   const admin = await signedInPage(browser, "ADMINISTRATOR", "/admin");
-  await expect(admin.page.getByRole("heading", { name: "Raise the Colors" })).toBeVisible();
-  await expect(admin.page.getByText("92 governed floor entries", { exact: true })).toBeVisible();
-  await expect(admin.page.getByText("Base administrative access", { exact: true })).toBeVisible();
-  await expect(admin.page.getByText(credentials.accounts.ADMINISTRATOR.accountId, { exact: true })).toBeVisible();
+  await expect(admin.page.getByRole("heading", { name: "Platform Overview" })).toBeVisible();
+  await expect(admin.page.getByText("Command center", { exact: true })).toBeVisible();
+  await expect(admin.page.getByRole("heading", { name: "Your watch" })).toBeVisible();
+  await expect(
+    admin.page.locator("main").getByText(credentials.accounts.ADMINISTRATOR.displayName, { exact: true }),
+  ).toBeVisible();
+  await expect(admin.page.getByRole("link", { name: /Bridgewatch Open read-only station/u })).toBeVisible();
   await assertNoSeriousAxeViolations(admin.page);
   await capture(admin.page, "ADM1-EV-B-ADMIN-SHELL");
 
-  let overview = await getOverview(admin.page);
-  const assuranceRequired = await adminPost(admin.page, overview.operator.csrfToken, "/api/admin/support/read", {
-    grantId: "adm1-no-grant",
-    targetAccountId: credentials.accounts.SUPPORT_TARGET.accountId,
-    scope: "ACCOUNT_STATE",
-  });
-  expect(assuranceRequired.status).toBe(403);
-  expect(assuranceRequired.body.code).toBe("ADMIRALTY_ASSURANCE_REQUIRED");
+  await admin.page.getByRole("link", { name: "Support cases", exact: true }).click();
+  await admin.page.waitForURL((url) => url.pathname === "/admin/support/cases");
+  await expect(admin.page.getByRole("heading", { name: "Support cases", exact: true })).toBeVisible();
+  await expect(admin.page.getByText(/registered, bounded repair authority/u)).toBeVisible();
 
-  await admin.page.getByLabel("Confirm current password").fill(credentials.password);
-  await admin.page.getByRole("button", { name: "Verify for privileged work" }).click();
-  await expect(admin.page.getByText("Recently verified", { exact: true })).toBeVisible();
-  await expect(admin.page.getByText("Privileged assurance is active for this session.", { exact: true })).toBeVisible();
-  await capture(admin.page, "ADM1-EV-C-ASSURANCE-ACTIVE");
-  overview = await getOverview(admin.page);
-  await db.privilegedAssurance.updateMany({
-    where: { accountId: credentials.accounts.ADMINISTRATOR.accountId, revokedAt: null },
-    data: { expiresAt: new Date(Date.now() - 1_000) },
-  });
-  const assuranceExpired = await adminPost(admin.page, overview.operator.csrfToken, "/api/admin/support/read", {
-    grantId: "adm1-no-grant",
-    targetAccountId: credentials.accounts.SUPPORT_TARGET.accountId,
-    scope: "ACCOUNT_STATE",
-  });
-  expect(assuranceExpired.status).toBe(403);
-  expect(assuranceExpired.body.code).toBe("ADMIRALTY_ASSURANCE_EXPIRED");
-  await admin.page.reload();
-  await expect(admin.page.getByText("Base administrative access", { exact: true })).toBeVisible();
-  await admin.page.getByLabel("Confirm current password").fill(credentials.password);
-  await admin.page.getByRole("button", { name: "Verify for privileged work" }).click();
-  await expect(admin.page.getByText("Recently verified", { exact: true })).toBeVisible();
-
-  const approvedPurpose = "Review synthetic account and authentication diagnostics for a sign-in report.";
-  await createSupportRequest(admin.page, credentials.accounts.SUPPORT_TARGET.accountId, approvedPurpose);
-  const approvedRequest = await db.supportAccessRequest.findFirstOrThrow({
-    where: { targetAccountId: credentials.accounts.SUPPORT_TARGET.accountId, purpose: approvedPurpose },
-  });
+  const approvedTitle = "Synthetic sign-in diagnosis";
+  const approvedPurpose = "Review synthetic account state and session diagnostics for a sign-in report.";
+  await createSupportCase(admin.page, credentials.accounts.SUPPORT_TARGET.accountId, approvedTitle, approvedPurpose);
   const target = await signedInPage(browser, "SUPPORT_TARGET", "/account/support-access");
   await expect(target.page.getByText(approvedPurpose, { exact: true })).toBeVisible();
   await expect(target.page.getByText("Account state", { exact: true })).toBeVisible();
-  await expect(target.page.getByText("Authentication events", { exact: true })).toBeVisible();
+  await expect(target.page.getByText("Session diagnostics", { exact: true })).toBeVisible();
   await expect(target.page.locator("p").filter({ hasText: "Never included:" })).toContainText("passwords or hashes");
   await assertNoSeriousAxeViolations(target.page);
   await capture(target.page, "ADM1-EV-D-CONSENT-REVIEW");
   await target.page.getByRole("button", { name: "Approve exact categories" }).click();
   await expect(target.page.getByText("Your Support Access decision is in effect.", { exact: true })).toBeVisible();
   await expect(target.page.getByText(/^ACTIVE$/u)).toBeVisible();
-  const grant = await db.supportAccessGrant.findUniqueOrThrow({ where: { requestId: approvedRequest.id } });
+  const approvedCase = await db.supportCase.findFirstOrThrow({
+    where: {
+      targetAccountId: credentials.accounts.SUPPORT_TARGET.accountId,
+      title: approvedTitle,
+      safeSummary: approvedPurpose,
+    },
+  });
 
   await admin.page.reload();
-  const activeRequestCard = admin.page.locator("article").filter({ hasText: approvedPurpose });
-  await expect(activeRequestCard.getByText("ACTIVE", { exact: true })).toBeVisible();
-  await activeRequestCard.getByRole("button", { name: "Account state", exact: true }).click();
-  await expect(admin.page.getByText("Authorized support projection", { exact: true })).toBeVisible();
-  await expect(admin.page.locator("body")).not.toContainText("must-never-appear");
-  await activeRequestCard.getByRole("button", { name: "Authentication events", exact: true }).click();
+  const activeCase = admin.page.getByRole("article").filter({ hasText: approvedPurpose });
+  await expect(activeCase.getByText(approvedTitle, { exact: false })).toBeVisible();
+  await expect(activeCase.getByText("READY_FOR_DIAGNOSIS", { exact: true })).toBeVisible();
+  await expect(activeCase.getByText("ACTIVE", { exact: true })).toBeVisible();
+  const privilegedWork = admin.page.getByRole("region", { name: "Confirm privileged work" }).last();
+  await privilegedWork.getByLabel("Confirm current password").fill(credentials.password);
+  await privilegedWork.getByRole("button", { name: "Verify for governed repair work" }).click();
+  await expect(admin.page.getByText("Recent privileged assurance is active for governed repair work.")).toBeVisible();
+  await capture(admin.page, "ADM1-EV-C-ASSURANCE-ACTIVE");
+  const grantId = await activeCase.getByLabel("Approved grant ID").inputValue();
+  expect(grantId).toMatch(/^[A-Za-z0-9_-]+$/u);
+  await activeCase.getByRole("button", { name: "Run read-only diagnosis" }).click();
+  await expect(admin.page.getByRole("heading", { name: "Latest diagnostic execution · COMPLETE" })).toBeVisible();
+  await expect(admin.page.getByText("INSUFFICIENT_SANITIZED_EVIDENCE", { exact: true })).toBeVisible();
+  await expect(admin.page.getByText(/Proposed next action \(INFORMATION_ONLY\)/u)).toBeVisible();
+  await expect(admin.page.getByText(/Auditable receipt digest:/u)).toBeVisible();
+  await expect(admin.page.getByRole("button", { name: "Execute registered repair" })).toHaveCount(0);
   await expect(admin.page.locator("body")).not.toContainText("must-never-appear");
   await expect
     .poll(() =>
       db.platformAuditEvent.count({
-        where: { action: "ADMIRALTY_SUPPORT_SCOPE_READ", resourceId: credentials.accounts.SUPPORT_TARGET.accountId },
+        where: { action: "ADMIRALTY_SUPPORT_CASE_DIAGNOSED", resourceId: approvedCase.id },
       }),
     )
-    .toBeGreaterThanOrEqual(2);
+    .toBe(1);
   await capture(admin.page, "ADM1-EV-E-AUTHORIZED-PROJECTION");
 
   const deniedPurpose = "Review a synthetic access problem that the account owner may decline.";
-  await createSupportRequest(admin.page, credentials.accounts.DENIAL_TARGET.accountId, deniedPurpose);
-  const deniedRequest = await db.supportAccessRequest.findFirstOrThrow({
-    where: { targetAccountId: credentials.accounts.DENIAL_TARGET.accountId, purpose: deniedPurpose },
-  });
+  await createSupportCase(
+    admin.page,
+    credentials.accounts.DENIAL_TARGET.accountId,
+    "Synthetic declined support diagnosis",
+    deniedPurpose,
+  );
   const denialTarget = await signedInPage(browser, "DENIAL_TARGET", "/account/support-access");
   await expect(denialTarget.page.getByText(deniedPurpose, { exact: true })).toBeVisible();
   await denialTarget.page.getByRole("button", { name: "Deny", exact: true }).click();
   await expect(denialTarget.page.getByText(/^DENIED$/u)).toBeVisible();
-  expect(await db.supportAccessGrant.count({ where: { requestId: deniedRequest.id } })).toBe(0);
-  overview = await getOverview(admin.page);
-  const deniedRead = await adminPost(admin.page, overview.operator.csrfToken, "/api/admin/support/read", {
-    grantId: deniedRequest.id,
-    targetAccountId: credentials.accounts.DENIAL_TARGET.accountId,
-    scope: "ACCOUNT_STATE",
-  });
-  expect(deniedRead.status).toBe(403);
-  expect(deniedRead.body.code).toBe("SUPPORT_GRANT_REQUIRED");
   await admin.page.reload();
-  const deniedCard = admin.page.locator("article").filter({ hasText: deniedPurpose });
-  await expect(deniedCard.getByText("DENIED", { exact: true })).toBeVisible();
-  await expect(deniedCard.getByRole("button", { name: "Account state", exact: true })).toHaveCount(0);
+  const deniedCase = admin.page.getByRole("article").filter({ hasText: deniedPurpose });
+  await expect(deniedCase.getByText("CONSENT_DENIED", { exact: true })).toBeVisible();
+  await expect(deniedCase.getByRole("button", { name: "Run read-only diagnosis" })).toHaveCount(0);
   await capture(admin.page, "ADM1-EV-F-SUPPORT-DENIED");
   await denialTarget.context.close();
 
   await target.page.reload();
   await target.page.getByRole("button", { name: "Revoke now" }).click();
   await expect(target.page.getByText(/^REVOKED$/u)).toBeVisible();
-  overview = await getOverview(admin.page);
-  const revokedRead = await adminPost(admin.page, overview.operator.csrfToken, "/api/admin/support/read", {
-    grantId: grant.id,
-    targetAccountId: credentials.accounts.SUPPORT_TARGET.accountId,
-    scope: "ACCOUNT_STATE",
-  });
-  expect(revokedRead.status).toBe(403);
-  expect(revokedRead.body.code).toBe("SUPPORT_GRANT_REVOKED");
-  expect(
-    await db.platformAuditEvent.count({ where: { action: "ADMIRALTY_SUPPORT_GRANT_REVOKED", resourceId: grant.id } }),
-  ).toBe(1);
+  await admin.page.reload();
+  const revokedCase = admin.page.getByRole("article").filter({ hasText: approvedPurpose });
+  await expect(revokedCase.getByText("CONSENT_REVOKED", { exact: true })).toBeVisible();
+  await expect(revokedCase.getByText("REVOKED", { exact: true })).toBeVisible();
+  await expect(revokedCase.getByRole("button", { name: "Run read-only diagnosis" })).toHaveCount(0);
 
   await target.page.setViewportSize({ width: 390, height: 844 });
   await target.page.emulateMedia({ reducedMotion: "reduce" });
@@ -223,37 +201,13 @@ async function signedInPage(browser: Browser, key: string, returnTo: string) {
   return { context, page } satisfies { context: BrowserContext; page: Page };
 }
 
-async function createSupportRequest(page: Page, targetAccountId: string, purpose: string) {
+async function createSupportCase(page: Page, targetAccountId: string, title: string, summary: string) {
   await page.getByLabel("Target canonical account ID").fill(targetAccountId);
-  await page.getByLabel("Plain-language purpose").fill(purpose);
-  const authEvents = page.getByLabel("Authentication events", { exact: true });
-  if (!(await authEvents.isChecked())) await authEvents.check();
-  await page.getByRole("button", { name: "Create scoped request", exact: true }).click();
-  await expect(
-    page.getByText("The scoped request is ready for the account owner to review.", { exact: true }),
-  ).toBeVisible();
-}
-
-async function getOverview(page: Page) {
-  return page.evaluate(async () => {
-    const response = await fetch("/api/admin/overview", { cache: "no-store" });
-    if (!response.ok) throw new Error(`overview failed: ${response.status}`);
-    return response.json();
-  });
-}
-
-async function adminPost(page: Page, csrfToken: string, url: string, body: Record<string, unknown>) {
-  return page.evaluate(
-    async ({ csrfToken: token, url: target, body: payload }) => {
-      const response = await fetch(target, {
-        method: "POST",
-        headers: { "content-type": "application/json", "x-csrf-token": token },
-        body: JSON.stringify(payload),
-      });
-      return { status: response.status, body: await response.json() };
-    },
-    { csrfToken, url, body },
-  );
+  await page.getByLabel("Case title").fill(title);
+  await page.getByLabel("Safe case summary visible to the account owner").fill(summary);
+  await page.getByRole("button", { name: "Open support case and request consent" }).click();
+  await expect(page.getByText(summary, { exact: true })).toBeVisible();
+  await expect(page.getByText("AWAITING_CONSENT", { exact: true })).toBeVisible();
 }
 
 async function assertNoSeriousAxeViolations(page: Page) {

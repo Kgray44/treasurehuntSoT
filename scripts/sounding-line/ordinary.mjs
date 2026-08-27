@@ -756,6 +756,15 @@ function admiraltyPhase2TaskRoot(candidateSha) {
   return path.posix.join("ProjectAdmiralty", `.sounding-line-admiralty-phase2-${candidateSha.slice(0, 12)}`);
 }
 
+function admiraltyPhase1TaskRoot(candidateSha) {
+  return path.posix.join(
+    "artifacts",
+    "sounding-line",
+    "ProjectAdmiralty",
+    `.sounding-line-admiralty-phase1-${candidateSha.slice(0, 12)}`,
+  );
+}
+
 function homeportTaskRoot(candidateSha, lane) {
   return path.posix.join("artifacts", "sounding-line", `homeport-${lane}-${candidateSha.slice(0, 12)}`);
 }
@@ -781,6 +790,17 @@ function homeportEnvironment(plan) {
 }
 
 export function verificationEnvironment(plan, command, argumentsList, environment = process.env) {
+  if (command === process.execPath && argumentsList[0] === "scripts/admiralty/run-phase1-journeys.mjs") {
+    const playwrightBrowsersPath =
+      environment.PLAYWRIGHT_BROWSERS_PATH ??
+      (environment.LOCALAPPDATA ? path.join(environment.LOCALAPPDATA, "ms-playwright") : undefined);
+    return {
+      LOCALAPPDATA: path.posix.join("artifacts", "sounding-line"),
+      ADMIRALTY_PHASE1_TASK_ROOT: admiraltyPhase1TaskRoot(plan.candidateSha),
+      NEXT_DIST_DIR: ".next",
+      ...(playwrightBrowsersPath ? { PLAYWRIGHT_BROWSERS_PATH: playwrightBrowsersPath } : {}),
+    };
+  }
   if (command === process.execPath && argumentsList[0] === "scripts/admiralty/run-phase2-journeys.mjs") {
     const playwrightBrowsersPath =
       environment.PLAYWRIGHT_BROWSERS_PATH ??
