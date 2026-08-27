@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
@@ -26,6 +27,9 @@ export type PlayerLibraryCard = {
   status: string;
   membershipStatus?: string;
   concurrencyVersion?: number;
+  captainAuthorityState?: string;
+  canTakeCaptaincy?: boolean;
+  canContinueSolo?: boolean;
   pinned: boolean;
   versionLabel: string;
   completionDate: string | null;
@@ -89,10 +93,14 @@ function semanticCardVersion(row: VersionedCard) {
     card.lastSynchronizedAt,
     card.primaryHref,
     card.primaryLabel,
+    card.captainAuthorityState,
+    card.canTakeCaptaincy,
+    card.canContinueSolo,
   ]);
 }
 
 export function PlayerLibrary() {
+  const router = useRouter();
   const { requestAction, dialog } = useActionDialog();
   const { mode } = useMotionMode();
   const token = resolvePlatformMotionToken("layout", mode);
@@ -318,6 +326,77 @@ export function PlayerLibrary() {
       await load();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Your Voyage membership could not be ended.");
+    } finally {
+      setBusyCard("");
+    }
+  }
+
+  async function continueSolo(card: PlayerLibraryCard) {
+    if (!library || !card.canContinueSolo) return;
+    if (
+      !(await requestAction({
+        eyebrow: "Personal continuation",
+        title: `Continue “${card.voyageName}” solo?`,
+        detail:
+          "This creates a new personal Voyage at the latest committed shared state. The shared Voyage, its Crew, and every other Player's private state remain unchanged.",
+        confirmLabel: "Create Solo Voyage",
+      }))
+    )
+      return;
+    setBusyCard(card.id);
+    setError("");
+    setNotice("");
+    try {
+      const response = await fetch(`/api/player/playthroughs/${card.id}/continue-solo`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
+        body: JSON.stringify({
+          expectedVersion: card.concurrencyVersion,
+          idempotencyKey: crypto.randomUUID(),
+        }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string; voyageId?: string };
+      if (!response.ok || !body.voyageId) throw new Error(body.error ?? "A solo continuation could not be created.");
+      setNotice("Your personal Voyage is ready from the committed shared state.");
+      router.push(`/player/playthroughs/${body.voyageId}`);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "A solo continuation could not be created.");
+    } finally {
+      setBusyCard("");
+    }
+  }
+
+  async function takeCaptaincy(card: PlayerLibraryCard) {
+    if (!library || !card.canTakeCaptaincy) return;
+    if (
+      !(await requestAction({
+        eyebrow: "Succession Hold",
+        title: `Take Captaincy for “${card.voyageName}”?`,
+        detail:
+          "You will become this shared Voyage's Captain and remain an ordinary Player. The first committed request wins if another Player chooses Captaincy at the same time.",
+        confirmLabel: "Take Captaincy",
+      }))
+    )
+      return;
+    setBusyCard(card.id);
+    setError("");
+    setNotice("");
+    try {
+      const response = await fetch(`/api/player/playthroughs/${card.id}/captain/takeover`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
+        body: JSON.stringify({
+          expectedVersion: card.concurrencyVersion,
+          idempotencyKey: crypto.randomUUID(),
+        }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Captaincy could not be taken.");
+      setNotice("Captaincy is committed. Opening your Captain controls.");
+      router.push("/captain/library");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Captaincy could not be taken.");
+      await load({ quiet: true });
     } finally {
       setBusyCard("");
     }
@@ -574,6 +653,8 @@ export function PlayerLibrary() {
                               onPreference={setPreference}
                               onLeave={leaveVoyage}
                               onInvitationDecision={decideInvitation}
+                              onContinueSolo={continueSolo}
+                              onTakeCaptaincy={takeCaptaincy}
                             />
                           ))}
                         </AnimatePresence>
@@ -602,6 +683,8 @@ function PlayerTaleCard({
   onPreference,
   onLeave,
   onInvitationDecision,
+  onContinueSolo,
+  onTakeCaptaincy,
 }: {
   card: PlayerLibraryCard;
   busy: boolean;
@@ -613,6 +696,8 @@ function PlayerTaleCard({
   onPreference: (card: PlayerLibraryCard, action: "pin" | "unpin" | "hide") => void;
   onLeave: (card: PlayerLibraryCard) => void;
   onInvitationDecision: (card: PlayerLibraryCard, decision: "accept" | "decline") => void;
+  onContinueSolo: (card: PlayerLibraryCard) => void;
+  onTakeCaptaincy: (card: PlayerLibraryCard) => void;
 }) {
   const token = resolvePlatformMotionToken("layout", mode);
   const stateClass = card.state.toLocaleLowerCase().replaceAll("_", "-");
@@ -706,6 +791,16 @@ function PlayerTaleCard({
                 Decline invitation
               </button>
             </>
+          )}
+          {card.canTakeCaptaincy && (
+            <button className="brass-button" disabled={busy} onClick={() => onTakeCaptaincy(card)}>
+              {busy ? "Confirming…" : "Take Captaincy"}
+            </button>
+          )}
+          {card.canContinueSolo && (
+            <button disabled={busy} onClick={() => onContinueSolo(card)}>
+              {busy ? "Synchronizing…" : "Continue Solo"}
+            </button>
           )}
           <button disabled={busy} aria-busy={busy} onClick={() => onPreference(card, card.pinned ? "unpin" : "pin")}>
             {busy ? "Saving…" : card.pinned ? "Unpin" : "Pin to top"}

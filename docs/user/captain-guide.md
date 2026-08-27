@@ -3,7 +3,7 @@ title: Captain guide
 audience: captain
 status: current
 canonical_for: captain-guide
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-27
 ---
 
 # Captain guide
@@ -27,6 +27,15 @@ and recent safe event summaries. These observations help a Captain decide when
 to use the existing session controls; they do not expose Player-private device,
 network, account, draft, or story data, and they do not create new progression
 controls.
+
+The following Amendment A2 behavior is branch-complete and pending protected
+integration. When a Captain + Player Voyage needs a different Captain, use **Transfer
+Captaincy** to select another currently joined Player. The transfer keeps your
+ordinary Player membership and does not alter the edition, current shared
+progress, or private Player state. If no successor is selected, use
+**Relinquish Captaincy**: it places the shared Voyage in **Succession Hold**;
+it does not cancel it. Cancellation remains the separate **Cancel Voyage for
+Everyone** action.
 
 Creator authoring is separate: see the [Creator guide](creator-guide.md). Operational safety is in [private-content guidance](../administrator/private-content.md).
 
