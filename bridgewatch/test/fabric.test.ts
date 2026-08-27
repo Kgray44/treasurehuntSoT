@@ -57,16 +57,19 @@ describe("Bridgewatch P2 data fabric", () => {
     writeFixture(root);
     const runtimeState = join(root, "runtime-state.json");
     const providerState = join(root, "provider-state.json");
+    const operationalObservedAt = new Date().toISOString();
     writeFileSync(
       runtimeState,
-      `\uFEFF${JSON.stringify({ sourceSha: "2222222222222222222222222222222222222222", port: 4318, state: "READY", cookie: "ultra-secret" })}`,
+      `\uFEFF${JSON.stringify({ schemaVersion: 1, sourceSha: "2222222222222222222222222222222222222222", port: 4318, state: "RUNNING", observedAt: operationalObservedAt, cookie: "ultra-secret" })}`,
     );
     writeFileSync(
       providerState,
       JSON.stringify({
-        observedAt: "2026-08-27T00:00:00.000Z",
+        observedAt: operationalObservedAt,
+        sourceSha: "2222222222222222222222222222222222222222",
         authorization: "ultra-secret",
-        providers: [{ name: "mail", state: "HEALTHY" }],
+        providers: [{ kind: "DATABASE", state: "LIVE_VALIDATED", ready: true, authorization: "server-secret" }],
+        jobs: { queueDepth: 2, deadLetterCount: 1, oldestQueuedJobAgeSeconds: 30, payload: "private" },
       }),
     );
     const config = loadConfig({
@@ -106,6 +109,15 @@ describe("Bridgewatch P2 data fabric", () => {
       expect(main).toMatchObject({ state: "AUTHORITATIVE", sourceId: "git-main" });
       expect(snapshot.coverage.reduce((total, entry) => total + entry.expected, 0)).toBe(expectedFactClasses.length);
       expect(JSON.stringify(snapshot)).not.toContain("ultra-secret");
+      expect(JSON.stringify(snapshot)).not.toContain("server-secret");
+      expect(snapshot.sources.find((source) => source.id === "voyagewright-runtime")?.facts[0]).toMatchObject({
+        state: "PROVISIONAL",
+        value: { runtimeState: "RUNNING" },
+      });
+      expect(snapshot.sources.find((source) => source.id === "provider-jobs")?.facts[0]).toMatchObject({
+        state: "PROVISIONAL",
+        value: { queueDepth: 2, deadLetterCount: 1 },
+      });
 
       unlinkSync(join(root, "prisma", "schema.sqlite.prisma"));
       const stale = await collector.refresh({
@@ -118,6 +130,50 @@ describe("Bridgewatch P2 data fabric", () => {
       expect(schemaSource).toMatchObject({ state: "DEGRADED", servingRetainedStaleData: true });
       expect(schemaSource.facts[0]).toMatchObject({ state: "STALE", provenance: { retainedFromCache: true } });
       expect(store.fabricFactHistory("schema-migrations:voyagewright.schema-migrations")).toHaveLength(2);
+    } finally {
+      store.close();
+      rmSync(root, { force: true, recursive: true });
+    }
+  });
+
+  it("marks stale host-owned runtime and provider projections without retaining malformed or secret fields", async () => {
+    const root = join(tmpdir(), `bridgewatch-fabric-stale-${Date.now()}-${Math.random().toString(16).slice(2)}`);
+    mkdirSync(root, { recursive: true });
+    writeFixture(root);
+    const runtimeState = join(root, "runtime-state.json");
+    const providerState = join(root, "provider-state.json");
+    writeFileSync(
+      runtimeState,
+      JSON.stringify({
+        schemaVersion: 1,
+        sourceSha: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        port: 3000,
+        state: "RUNNING",
+        observedAt: "2000-01-01T00:00:00.000Z",
+        token: "never-retain",
+      }),
+    );
+    writeFileSync(
+      providerState,
+      JSON.stringify({ observedAt: "not-a-date", providers: [{ state: "HEALTHY" }], password: "never-retain" }),
+    );
+    const config = loadConfig({
+      BRIDGEWATCH_REPOSITORY: "owner/repository",
+      BRIDGEWATCH_DB_PATH: join(root, "bridgewatch.sqlite"),
+      BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH: runtimeState,
+      BRIDGEWATCH_PROVIDER_STATUS_PATH: providerState,
+    });
+    const store = new BridgewatchStore(config.dbPath);
+    try {
+      const snapshot = await new DataFabricCollector(config, store, root).refresh({
+        github: githubSnapshot(new Date().toISOString()),
+        soundingLine: null,
+        projects: projectRegistry,
+        workers: [],
+      });
+      expect(snapshot.sources.find((source) => source.id === "voyagewright-runtime")?.facts[0]?.state).toBe("STALE");
+      expect(snapshot.sources.find((source) => source.id === "provider-jobs")?.facts[0]?.state).toBe("STALE");
+      expect(JSON.stringify(snapshot)).not.toContain("never-retain");
     } finally {
       store.close();
       rmSync(root, { force: true, recursive: true });

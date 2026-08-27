@@ -50,13 +50,14 @@ export async function getProviderOverview(operator: AdmiraltyCurrentOperator, fo
       domain: "Harborlight",
       kind: item.kind,
       provider: item.provider,
-      codeSupport: "IMPLEMENTED" as const,
+      codeSupport: item.codeImplemented ? ("IMPLEMENTED" as const) : ("UNKNOWN" as const),
       configured: item.configured,
-      liveValidation: item.state === "LIVE_VALIDATED" ? ("LIVE_VALIDATED" as const) : ("NOT_LIVE_VALIDATED" as const),
+      liveValidation: item.liveValidated ? ("LIVE_VALIDATED" as const) : ("NOT_LIVE_VALIDATED" as const),
       health: item.healthy ? ("HEALTHY" as const) : item.configured ? ("DEGRADED" as const) : ("UNAVAILABLE" as const),
       safeCode: item.safeCode,
-      observedAt: observedAt.toISOString(),
-      capabilities: [] as string[],
+      observedAt: item.observedAt,
+      capabilities:
+        item.serviceReachable === null ? [] : [item.serviceReachable ? "service-reachable" : "service-unreachable"],
     })),
     ...sealed.map((item) => ({
       domain: "Sealed Hold",
@@ -248,9 +249,9 @@ const settings = [
   },
   {
     key: "community.scanner",
-    source: "COMMUNITY_SCANNER_PROVIDER",
+    source: "COMMUNITY_BINARY_SCANNER_PROVIDER",
     class: "SECRET_REFERENCE_ONLY",
-    value: () => process.env.COMMUNITY_SCANNER_PROVIDER ?? "not configured",
+    value: () => process.env.COMMUNITY_BINARY_SCANNER_PROVIDER ?? "not configured",
   },
   {
     key: "community.worker",

@@ -109,3 +109,18 @@ export class LocalCommunityRateLimiter {
     return { allowed: true, remaining: limit - bucket.count, retryAfterSeconds: 0 };
   }
 }
+
+const localCommunityRateLimiter = new LocalCommunityRateLimiter();
+
+/** The configured provider is selected at the request boundary. Database mode
+ * is fail-closed: an unavailable shared store never silently becomes a
+ * process-local bypass. */
+export async function consumeConfiguredCommunityRateLimit(
+  key: CommunityRateLimitKey,
+  limit: number,
+  windowMs: number,
+): Promise<CommunityRateLimitDecision> {
+  if (process.env.COMMUNITY_RATE_LIMIT_PROVIDER === "database")
+    return new DatabaseCommunityRateLimiter().consume(key, limit, windowMs);
+  return localCommunityRateLimiter.consume(key, limit, windowMs);
+}
