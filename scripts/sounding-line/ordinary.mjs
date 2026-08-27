@@ -307,6 +307,10 @@ function browserEvidenceCommand(command, argumentsList) {
   return (
     verificationPhase(command, argumentsList) === "browser-authority" ||
     verificationPhase(command, argumentsList) === "browser-server-preparation" ||
+    (command === "npx" &&
+      argumentsList.includes("prisma") &&
+      argumentsList.includes("generate") &&
+      argumentsList.includes("prisma/schema.sqlite.prisma")) ||
     /^scripts\/(?:admiralty|tideglass|homeport)\/(?:prepare|run)-.*(?:fixture|journeys|e2e)/u.test(script)
   );
 }
