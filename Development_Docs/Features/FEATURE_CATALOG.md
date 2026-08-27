@@ -1730,7 +1730,7 @@ Bridgewatch v1.2 P2 makes a fixed, read-only set of typed repository, governance
 ### Evidence
 
 - branch: `codex/bridgewatch-v2-p2-flood-the-board`
-- commit: `08e2791ff8d44a1452821133534d39e7bf4725d0`
+- commit: `304c4b6354fc8b3026a106550cb0510ed335b312`
 - path: `bridgewatch/src/fabric.ts`
 - path: `bridgewatch/lib/store.ts`
 - test: `bridgewatch/test/fabric.test.ts`

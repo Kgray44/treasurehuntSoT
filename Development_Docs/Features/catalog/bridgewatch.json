@@ -101,14 +101,14 @@
     ],
     "evidence": [
       { "kind": "branch", "value": "codex/bridgewatch-v2-p2-flood-the-board" },
-      { "kind": "commit", "value": "08e2791ff8d44a1452821133534d39e7bf4725d0" },
+      { "kind": "commit", "value": "304c4b6354fc8b3026a106550cb0510ed335b312" },
       { "kind": "path", "value": "bridgewatch/src/fabric.ts" },
       { "kind": "path", "value": "bridgewatch/lib/store.ts" },
       { "kind": "test", "value": "bridgewatch/test/fabric.test.ts" },
       { "kind": "test", "value": "bridgewatch/test/server.test.ts" }
     ],
     "branch": "codex/bridgewatch-v2-p2-flood-the-board",
-    "commit": "08e2791ff8d44a1452821133534d39e7bf4725d0",
+    "commit": "304c4b6354fc8b3026a106550cb0510ed335b312",
     "limitations": [
       "P2 remains a private GET/HEAD observer: it cannot create, approve, merge, retry, cancel, release, or change project, worker, provider, or Voyagewright state.",
       "Runtime and provider facts exist only when an approved host-owned status projection is configured; unavailable and stale states remain visible rather than inferred.",
