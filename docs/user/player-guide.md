@@ -23,7 +23,10 @@ Hold** rather than a cancelled state. A currently joined Player can **Take
 Captaincy**, **Continue Solo**, or **Leave Voyage**. Taking Captaincy retains
 the same shared Voyage. Continuing solo creates a new personal Voyage from the
 last committed shared state and same published edition; it does not change the
-shared Voyage or copy another Player's private state.
+shared Voyage or copy another Player's private state. After that authoritative
+creation commits, the waiting room confirms the new personal Voyage and offers
+an **Open solo Voyage** link, so an interrupted page transition cannot make the
+completed continuation look uncertain.
 
 Related: [getting started](getting-started.md), [Passport](chronicle-passport.md), [accessibility](accessibility.md), and [troubleshooting](troubleshooting.md).
 

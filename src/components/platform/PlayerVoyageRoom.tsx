@@ -144,6 +144,7 @@ export function PlayerVoyageRoom({
   const [launchReady, setLaunchReady] = useState(false);
   const [routeFailed, setRouteFailed] = useState(false);
   const [authorityAction, setAuthorityAction] = useState<"takeover" | "solo" | "leave" | "">("");
+  const [soloDestination, setSoloDestination] = useState<{ href: string; voyageName: string } | null>(null);
   const launchCeremonyKey = voyage
     ? platformOneShotKey("waiting-launch", voyage.id, `${voyage.status}:${voyage.lastSynchronizedAt}`)
     : null;
@@ -265,9 +266,19 @@ export function PlayerVoyageRoom({
         headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken.current ?? "" },
         body: JSON.stringify({ expectedVersion: voyage.concurrencyVersion, idempotencyKey: crypto.randomUUID() }),
       });
-      const body = (await response.json().catch(() => ({}))) as { error?: string; voyageId?: string };
+      const body = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        voyageId?: string;
+        voyageName?: string;
+      };
       if (!response.ok || !body.voyageId) throw new Error(body.error ?? "A solo continuation could not be created.");
-      router.push(`/player/playthroughs/${body.voyageId}`);
+      // The fork is authoritative at this point. Keep the committed result
+      // visible until the Player opens it, so a slow route handoff can never
+      // make this separate authority mutation look indeterminate.
+      setSoloDestination({
+        href: `/player/playthroughs/${body.voyageId}`,
+        voyageName: body.voyageName ?? `${voyage.voyageName} — solo`,
+      });
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "A solo continuation could not be created.");
       await load("reconciling");
@@ -650,6 +661,19 @@ export function PlayerVoyageRoom({
               {error}
             </p>
           )}
+          {soloDestination && (
+            <section className="succession-hold" aria-labelledby="solo-continuation-title" role="status">
+              <p className="eyebrow">Personal continuation ready</p>
+              <h3 id="solo-continuation-title">Your solo Voyage is ready</h3>
+              <p>
+                “{soloDestination.voyageName}” begins from the last committed shared state. The shared Voyage and every
+                other Player&apos;s private state remain unchanged.
+              </p>
+              <Link className="brass-button" href={soloDestination.href}>
+                Open solo Voyage
+              </Link>
+            </section>
+          )}
           {voyage.captainAuthorityState === "VACANT" && (
             <section className="succession-hold" aria-labelledby="succession-hold-title">
               <p className="eyebrow">Succession Hold</p>
@@ -668,7 +692,7 @@ export function PlayerVoyageRoom({
                     {authorityAction === "takeover" ? "Confirming Captaincy…" : "Take Captaincy"}
                   </button>
                 )}
-                {voyage.canContinueSolo && (
+                {voyage.canContinueSolo && !soloDestination && (
                   <button disabled={Boolean(authorityAction)} onClick={() => void continueSolo()}>
                     {authorityAction === "solo" ? "Synchronizing…" : "Continue Solo"}
                   </button>
@@ -701,7 +725,7 @@ export function PlayerVoyageRoom({
                 Reconnect and Refresh
               </button>
             )}
-            {voyage.captainAuthorityState !== "VACANT" && voyage.canContinueSolo && (
+            {voyage.captainAuthorityState !== "VACANT" && voyage.canContinueSolo && !soloDestination && (
               <button disabled={Boolean(authorityAction)} onClick={() => void continueSolo()}>
                 {authorityAction === "solo" ? "Synchronizing…" : "Continue Solo"}
               </button>

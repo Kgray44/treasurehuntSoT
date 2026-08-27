@@ -398,7 +398,7 @@ describe("PlayerVoyageRoom", () => {
     const fetchMock = vi
       .fn()
       .mockResolvedValueOnce(response(200, body(held)))
-      .mockResolvedValueOnce(response(200, { voyageId: "solo-voyage-1" }));
+      .mockResolvedValueOnce(response(200, { voyageId: "solo-voyage-1", voyageName: "Lanternwake — solo" }));
     vi.stubGlobal("EventSource", FakeEventSource);
     vi.stubGlobal("fetch", fetchMock);
     renderRoom();
@@ -419,7 +419,12 @@ describe("PlayerVoyageRoom", () => {
         expect.objectContaining({ method: "POST", body: expect.stringContaining('"expectedVersion":7') }),
       ),
     );
-    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/player/playthroughs/solo-voyage-1"));
+    expect(await screen.findByRole("heading", { name: "Your solo Voyage is ready" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open solo Voyage" })).toHaveAttribute(
+      "href",
+      "/player/playthroughs/solo-voyage-1",
+    );
+    expect(navigation.push).not.toHaveBeenCalled();
     expect(fetchMock.mock.calls.flat().join(" ")).not.toContain("/leave");
   });
 
