@@ -33,6 +33,11 @@ try {
     await mkdir(path.dirname(sqlitePath(environment.DATABASE_URL)), { recursive: true });
     await clearOwnedIsolationDatabase(environment.DATABASE_URL, profile.id);
   }
+  run(
+    process.execPath,
+    ["node_modules/prisma/build/index.js", "generate", "--schema", "prisma/schema.sqlite.prisma"],
+    environment,
+  );
   if (profile.bootstrap)
     run(
       process.execPath,
@@ -76,7 +81,8 @@ function profileEnvironment({ profileId, candidateSha: sha, databaseUrl: request
     const localAppData = path.join(root, "artifacts", "sounding-line");
     const taskRoot = path.join(localAppData, "ProjectAdmiralty", `${profileId}-${sha.slice(0, 12)}`);
     const databasePath = path.join(taskRoot, "database", `admiralty-phase${phase === "3" ? "2" : phase}.db`);
-    const browserPath = process.env.PLAYWRIGHT_BROWSERS_PATH ??
+    const browserPath =
+      process.env.PLAYWRIGHT_BROWSERS_PATH ??
       (process.env.LOCALAPPDATA ? path.join(process.env.LOCALAPPDATA, "ms-playwright") : "");
     return {
       LOCALAPPDATA: localAppData,
