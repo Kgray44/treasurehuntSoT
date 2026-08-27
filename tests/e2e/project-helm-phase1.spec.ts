@@ -245,7 +245,10 @@ async function createVoyage(
   const captainOnly = wizard.getByRole("radio", { name: /Captain only/u });
   const captainPlayer = wizard.getByRole("radio", { name: /Captain \+ Player/u });
   await expect(captainOnly).toBeChecked();
-  if (input.participation === "CAPTAIN_AND_PLAYER") await captainPlayer.check();
+  if (input.participation === "CAPTAIN_AND_PLAYER") {
+    await captainPlayer.check();
+    await expect(captainPlayer).toBeChecked();
+  }
   await wizard.getByLabel("Voyage name").fill(input.voyageName);
   await wizard.getByRole("button", { name: "Continue to Add Crew" }).click();
   const crewNames = Array.isArray(input.crewName) ? input.crewName : [input.crewName];
@@ -257,11 +260,7 @@ async function createVoyage(
   await wizard.getByRole("button", { name: "Continue to Invitation access" }).click();
   await wizard.getByRole("button", { name: "Continue to Delivery" }).click();
   await wizard.getByRole("button", { name: "Continue to Review" }).click();
-  await expect(
-    wizard.getByText(input.participation === "CAPTAIN_AND_PLAYER" ? "Captain + Player" : "Captain only", {
-      exact: true,
-    }),
-  ).toBeVisible();
+  await expect(wizard.getByRole("heading", { name: "Review" })).toBeVisible();
   const responsePromise = page.waitForResponse(
     (response) => response.url().endsWith("/api/captain/playthroughs") && response.request().method() === "POST",
   );
@@ -298,7 +297,10 @@ async function acceptGuestInvitation(browser: Browser, link: string, playthrough
   const response = page.waitForResponse(
     (candidate) => candidate.url().endsWith("/api/invitations/accept") && candidate.request().method() === "POST",
   );
-  await accept.click();
+  // Invitation acceptance owns an animated route handoff after its authoritative
+  // mutation. Waiting for the whole client navigation here can hide a completed
+  // membership transaction behind an optional presentation runtime.
+  await accept.click({ noWaitAfter: true });
   const acceptedResponse = await response;
   expect(acceptedResponse.status(), await acceptedResponse.text()).toBe(200);
   await expect(page).toHaveURL(/\/player\/playthroughs\//u, { timeout: 30_000 });
@@ -595,6 +597,279 @@ test("Captain authority and ordinary Player membership remain independent throug
   expect(audits.some((event) => event.action === "PLAYER_MEMBERSHIP_ADDED")).toBe(true);
   expect(audits.some((event) => event.action === "PLAYER_MEMBERSHIP_REMOVED")).toBe(true);
   expect(audits.some((event) => event.action === "CAPTAIN_AUTHORITY_REVOKED")).toBe(true);
+});
+
+test("Pass the Helm keeps authority, membership, lineage, and Player privacy distinct through the product", async ({
+  browser,
+  page,
+}) => {
+  test.setTimeout(600_000);
+  await signInThroughProduct(page);
+
+  const transferName = `Helm A2 transfer ${suffix}`;
+  const holdName = `Helm A2 succession ${suffix}`;
+  const direct = await createVoyage(page, {
+    voyageName: transferName,
+    crewName: `Helm A2 successor ${suffix}`,
+    participation: "CAPTAIN_AND_PLAYER",
+  });
+  const held = await createVoyage(page, {
+    voyageName: holdName,
+    crewName: [`Helm A2 takeover one ${suffix}`, `Helm A2 takeover two ${suffix}`],
+    participation: "CAPTAIN_AND_PLAYER",
+  });
+  const directCaptainMembership = await currentMembership(direct.playthroughId);
+  const heldCaptainMembership = await currentMembership(held.playthroughId);
+  const [directGuest, heldGuest, heldSecondGuest] = await Promise.all([
+    acceptGuestInvitation(browser, direct.invitations[0]!.link, direct.playthroughId),
+    acceptGuestInvitation(browser, held.invitations[0]!.link, held.playthroughId),
+    acceptGuestInvitation(browser, held.invitations[1]!.link, held.playthroughId),
+  ]);
+
+  try {
+    await test.step("A2-1 direct transfer retains the former Captain as a Player", async () => {
+      await page.goto(`/captain/sessions/${direct.playthroughId}`);
+      await expect(page.getByRole("heading", { name: transferName })).toBeVisible({ timeout: 30_000 });
+      const transferResponse = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/captain/playthroughs/${direct.playthroughId}/captain/transfer`) &&
+          response.request().method() === "POST",
+      );
+      await page.getByRole("button", { name: "Transfer Captaincy" }).click();
+      await page.getByRole("dialog").getByRole("button", { name: "Transfer Captaincy" }).click();
+      expect((await transferResponse).status()).toBe(200);
+      await expect(page).toHaveURL(new RegExp(`/player/playthroughs/${direct.playthroughId}$`, "u"), {
+        timeout: 30_000,
+      });
+
+      const [source, formerCaptain, successor, receipts] = await Promise.all([
+        db.taleSession.findUniqueOrThrow({ where: { id: direct.playthroughId } }),
+        currentMembership(direct.playthroughId),
+        db.playthroughMembership.findFirstOrThrow({
+          where: { playthroughId: direct.playthroughId, id: { not: directCaptainMembership.id } },
+          include: { player: true },
+        }),
+        db.voyageCaptainAuthorityReceipt.findMany({ where: { voyageId: direct.playthroughId } }),
+      ]);
+      expect(source.captainAccountId).toBe(successor.player.accountId);
+      expect(formerCaptain).toMatchObject({ id: directCaptainMembership.id, status: directCaptainMembership.status });
+      expect(receipts).toHaveLength(1);
+      expect(receipts[0]).toMatchObject({ action: "CAPTAIN_TRANSFERRED", authorityState: "ASSIGNED" });
+      expect((await browserJson(page, `/api/captain/sessions/${direct.playthroughId}`)).status).toBe(403);
+    });
+
+    await test.step("A2-2 relinquishment enters Succession Hold instead of cancellation", async () => {
+      await page.goto(`/captain/sessions/${held.playthroughId}`);
+      await expect(page.getByRole("heading", { name: holdName })).toBeVisible({ timeout: 30_000 });
+      const relinquishResponse = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/captain/playthroughs/${held.playthroughId}/captain/relinquish`) &&
+          response.request().method() === "POST",
+      );
+      await page.getByRole("button", { name: "Relinquish Captaincy" }).click();
+      await page.getByRole("dialog").getByRole("button", { name: "Relinquish Captaincy" }).click();
+      expect((await relinquishResponse).status()).toBe(200);
+      await expect(page.getByRole("heading", { name: "This Voyage needs a Captain" })).toBeVisible({ timeout: 30_000 });
+      const source = await db.taleSession.findUniqueOrThrow({ where: { id: held.playthroughId } });
+      expect(source).toMatchObject({ status: "READY", captainAccountId: null, captainAuthorityState: "VACANT" });
+    });
+
+    await test.step("A2-3 refresh restores the vacant candidate and simultaneous takeover has exactly one winner", async () => {
+      const vacancy = await db.taleSession.findUniqueOrThrow({ where: { id: held.playthroughId } });
+      await Promise.all([
+        heldGuest.page.reload({ waitUntil: "domcontentloaded" }),
+        heldSecondGuest.page.reload({ waitUntil: "domcontentloaded" }),
+      ]);
+      await Promise.all(
+        [heldGuest.page, heldSecondGuest.page].map(async (guestPage) => {
+          await expect(guestPage.getByRole("heading", { name: "This Voyage needs a Captain" })).toBeVisible({
+            timeout: 30_000,
+          });
+          await expect(guestPage.getByRole("button", { name: "Take Captaincy" })).toBeVisible();
+          await expect(guestPage.getByRole("button", { name: "Continue Solo" })).toBeVisible();
+          await expect(guestPage.getByRole("button", { name: "Leave Voyage" })).toBeVisible();
+          const projection = await browserJson<{
+            playthrough: { captainAuthorityState: string; concurrencyVersion: number; canTakeCaptaincy: boolean };
+          }>(guestPage, `/api/player/playthroughs/${held.playthroughId}`);
+          expect(projection.status).toBe(200);
+          expect(projection.body.playthrough).toMatchObject({
+            captainAuthorityState: "VACANT",
+            concurrencyVersion: vacancy.concurrencyVersion,
+            canTakeCaptaincy: true,
+          });
+        }),
+      );
+
+      const guestPages = [heldGuest.page, heldSecondGuest.page] as const;
+      const responses = guestPages.map((guestPage) =>
+        guestPage.waitForResponse(
+          (response) =>
+            response.url().endsWith(`/api/player/playthroughs/${held.playthroughId}/captain/takeover`) &&
+            response.request().method() === "POST",
+          { timeout: 30_000 },
+        ),
+      );
+      await Promise.all(
+        guestPages.map((guestPage) =>
+          guestPage.getByRole("button", { name: "Take Captaincy" }).click({ noWaitAfter: true, timeout: 30_000 }),
+        ),
+      );
+      await Promise.all(
+        guestPages.map((guestPage) =>
+          expect(guestPage.getByRole("dialog", { name: /Take Captaincy for/u })).toBeVisible({ timeout: 30_000 }),
+        ),
+      );
+      await Promise.all(
+        guestPages.map((guestPage) =>
+          guestPage
+            .getByRole("dialog", { name: /Take Captaincy for/u })
+            .getByRole("button", { name: "Take Captaincy" })
+            .click({ noWaitAfter: true, timeout: 30_000 }),
+        ),
+      );
+      const outcomes = await Promise.all(responses);
+      expect(outcomes.map((response) => response.status()).sort((left, right) => left - right)).toEqual([200, 409]);
+
+      const source = await db.taleSession.findUniqueOrThrow({ where: { id: held.playthroughId } });
+      const candidates = await db.playthroughMembership.findMany({
+        where: { playthroughId: held.playthroughId, id: { not: heldCaptainMembership.id } },
+        include: { player: true },
+      });
+      const takeoverReceipts = await db.voyageCaptainAuthorityReceipt.findMany({
+        where: { voyageId: held.playthroughId, action: "CAPTAIN_TAKEN" },
+      });
+      expect(source).toMatchObject({ captainAuthorityState: "ASSIGNED" });
+      expect(candidates.map((candidate) => candidate.player.accountId)).toContain(source.captainAccountId);
+      expect(takeoverReceipts).toHaveLength(1);
+      expect(takeoverReceipts[0]).toMatchObject({
+        authorityState: "ASSIGNED",
+        nextCaptainAccountId: source.captainAccountId,
+      });
+
+      const losingPage = outcomes[0]!.status() === 409 ? heldGuest.page : heldSecondGuest.page;
+      await expect
+        .poll(async () => {
+          const refreshed = await browserJson<{
+            playthrough: { captainAuthorityState: string; canTakeCaptaincy: boolean };
+          }>(losingPage, `/api/player/playthroughs/${held.playthroughId}`);
+          return refreshed.body.playthrough;
+        })
+        .toMatchObject({ captainAuthorityState: "ASSIGNED", canTakeCaptaincy: false });
+      expect(await currentMembership(held.playthroughId)).toMatchObject({
+        id: heldCaptainMembership.id,
+        status: heldCaptainMembership.status,
+      });
+    });
+
+    await test.step("A2-4 Continue Solo creates a same-edition child without changing the parent", async () => {
+      await page.goto(`/player/playthroughs/${held.playthroughId}`);
+      await expect(page.getByRole("button", { name: "Continue Solo" })).toBeVisible({ timeout: 30_000 });
+      const before = await db.taleSession.findUniqueOrThrow({ where: { id: held.playthroughId } });
+      const forkResponse = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/player/playthroughs/${held.playthroughId}/continue-solo`) &&
+          response.request().method() === "POST",
+      );
+      await page.getByRole("button", { name: "Continue Solo" }).click();
+      await page.getByRole("dialog").getByRole("button", { name: "Create Solo Voyage" }).click();
+      const response = await forkResponse;
+      expect(response.status()).toBe(200);
+      const result = (await response.json()) as { voyageId: string };
+      const [after, child, lineage] = await Promise.all([
+        db.taleSession.findUniqueOrThrow({ where: { id: held.playthroughId } }),
+        db.taleSession.findUniqueOrThrow({ where: { id: result.voyageId } }),
+        db.voyageForkLineage.findUniqueOrThrow({ where: { childVoyageId: result.voyageId } }),
+      ]);
+      expect(after).toMatchObject({
+        id: before.id,
+        publishedVersionId: before.publishedVersionId,
+        currentSequence: before.currentSequence,
+        concurrencyVersion: before.concurrencyVersion,
+      });
+      expect(child).toMatchObject({
+        publishedVersionId: before.publishedVersionId,
+        currentSequence: before.currentSequence,
+        currentBlockId: before.currentBlockId,
+      });
+      expect(lineage).toMatchObject({ parentVoyageId: held.playthroughId, childVoyageId: result.voyageId });
+    });
+
+    await test.step("A2-5 two joined Players can fork the same committed shared Voyage independently", async () => {
+      await db.taleSessionEvent.create({
+        data: {
+          sessionId: held.playthroughId,
+          publishedVersionId: (await db.taleSession.findUniqueOrThrow({ where: { id: held.playthroughId } }))
+            .publishedVersionId!,
+          blockId: null,
+          eventType: "privateReflection",
+          sourceType: "synthetic-private-fixture",
+          idempotencyKey: `helm-a2-private-${suffix}`,
+          payload: "HELM_A2_PRIVATE_CANARY",
+          sequence: 9_001,
+        },
+      });
+      const [formerDetails, successorDetails] = await Promise.all([
+        browserJson<{ playthrough: { concurrencyVersion: number }; csrfToken: string }>(
+          page,
+          `/api/player/playthroughs/${held.playthroughId}`,
+        ),
+        browserJson<{ playthrough: { concurrencyVersion: number }; csrfToken: string }>(
+          heldGuest.page,
+          `/api/player/playthroughs/${held.playthroughId}`,
+        ),
+      ]);
+      expect(formerDetails.status).toBe(200);
+      expect(successorDetails.status).toBe(200);
+      const [first, second] = await Promise.all([
+        browserJson<{ voyageId: string }>(page, `/api/player/playthroughs/${held.playthroughId}/continue-solo`, {
+          method: "POST",
+          csrf: formerDetails.body.csrfToken,
+          body: {
+            expectedVersion: formerDetails.body.playthrough.concurrencyVersion,
+            idempotencyKey: `helm-a2-fork-a-${suffix}`,
+          },
+        }),
+        browserJson<{ voyageId: string }>(
+          heldGuest.page,
+          `/api/player/playthroughs/${held.playthroughId}/continue-solo`,
+          {
+            method: "POST",
+            csrf: successorDetails.body.csrfToken,
+            body: {
+              expectedVersion: successorDetails.body.playthrough.concurrencyVersion,
+              idempotencyKey: `helm-a2-fork-b-${suffix}`,
+            },
+          },
+        ),
+      ]);
+      expect(first.status).toBe(200);
+      expect(second.status).toBe(200);
+      expect(first.body.voyageId).not.toBe(second.body.voyageId);
+      const children = await db.taleSession.findMany({
+        where: { id: { in: [first.body.voyageId, second.body.voyageId] } },
+      });
+      expect(children).toHaveLength(2);
+      const childEvents = await db.taleSessionEvent.findMany({
+        where: { sessionId: { in: children.map((child) => child.id) } },
+      });
+      expect(JSON.stringify(childEvents)).not.toContain("HELM_A2_PRIVATE_CANARY");
+    });
+
+    await test.step("A2-6 anonymous authority, fork, and receipt access stay denied", async () => {
+      const anonymous = await browser.newContext();
+      try {
+        const result = await anonymous.request.post(`/api/player/playthroughs/${held.playthroughId}/continue-solo`, {
+          data: { expectedVersion: 0, idempotencyKey: `helm-a2-intruder-${suffix}` },
+        });
+        expect(result.status()).toBe(401);
+        expect((await anonymous.request.get(`/api/captain/voyages/${held.playthroughId}`)).status()).toBe(403);
+      } finally {
+        await anonymous.close();
+      }
+    });
+  } finally {
+    await Promise.all([directGuest.context.close(), heldGuest.context.close(), heldSecondGuest.context.close()]);
+  }
 });
 
 test("Captain plus Player can create and begin a zero-invite Voyage without a blank Crew record", async ({ page }) => {
