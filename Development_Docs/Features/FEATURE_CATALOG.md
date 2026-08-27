@@ -910,13 +910,14 @@ Audience-separated current documentation, indexed engineering records, and a fra
 **Status:** MAINLINE
 **Program or subsystem:** Sounding Line
 
-A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. A separate manual mode remains exhaustive for releases and explicit full certification.
+A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. Immutable v1.4 evidence receipts safely preserve or rebind unchanged ordinary obligations while a separate manual mode remains exhaustive for releases and explicit full certification.
 
 ### Important subfeatures
 
 - Exact base, candidate, and tree identity binding
 - Focused filesystem-based test selection
 - Conservative widening when impact is unknown
+- Fail-closed semantic reconciliation of immutable ordinary-evidence receipts
 - Separate exhaustive release certification
 
 ### Primary surfaces
@@ -930,6 +931,7 @@ A focused protected-main check binds the exact pull-request base, candidate, and
 ### Evidence
 
 - path: `scripts/sounding-line/ordinary.mjs`
+- path: `scripts/sounding-line/evidence.mjs`
 - test: `tests/sounding-line/ordinary.test.mjs`
 - path: `.github/workflows/sounding-line-ordinary.yml`
 - completion-record: `Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md`

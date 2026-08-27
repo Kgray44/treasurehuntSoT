@@ -2,7 +2,7 @@
   {
     "id": "FT-033",
     "title": "Sounding Line Direct Candidate Verification",
-    "summary": "A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. A separate manual mode remains exhaustive for releases and explicit full certification.",
+    "summary": "A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. Immutable v1.4 evidence receipts safely preserve or rebind unchanged ordinary obligations while a separate manual mode remains exhaustive for releases and explicit full certification.",
     "status": "MAINLINE",
     "program": "Sounding Line",
     "surfaces": [
@@ -14,6 +14,7 @@
       "Exact base, candidate, and tree identity binding",
       "Focused filesystem-based test selection",
       "Conservative widening when impact is unknown",
+      "Fail-closed semantic reconciliation of immutable ordinary-evidence receipts",
       "Separate exhaustive release certification"
     ],
     "limitations": [
@@ -21,6 +22,7 @@
     ],
     "evidence": [
       { "kind": "path", "value": "scripts/sounding-line/ordinary.mjs" },
+      { "kind": "path", "value": "scripts/sounding-line/evidence.mjs" },
       { "kind": "test", "value": "tests/sounding-line/ordinary.test.mjs" },
       { "kind": "path", "value": ".github/workflows/sounding-line-ordinary.yml" },
       {

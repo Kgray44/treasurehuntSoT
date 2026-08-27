@@ -19,6 +19,7 @@ import {
   packageAuthorityChanges,
   requiresMigrationValidation,
   requiresBuild,
+  runReconciledVerification,
   runVerificationCommands,
   sanitizedFailureCode,
   selectAffectedTests,
@@ -74,6 +75,71 @@ async function withCandidate(changes, assertion) {
   } finally {
     rmSync(fixture.root, { force: true, recursive: true });
   }
+}
+
+function commit(root, message) {
+  git(root, ["add", "."]);
+  git(root, ["commit", "--quiet", "-m", message]);
+  return git(root, ["rev-parse", "HEAD"]);
+}
+
+function evidenceFixture() {
+  const root = mkdtempSync(path.join(tmpdir(), "sounding-line-evidence-"));
+  const files = {
+    "package.json": `${JSON.stringify(basePackage, null, 2)}\n`,
+    "package-lock.json": `${JSON.stringify({ name: "evidence-fixture", lockfileVersion: 3, packages: {} }, null, 2)}\n`,
+    "tsconfig.json": '{"compilerOptions":{"baseUrl":".","paths":{"@/*":["src/*"]}}}\n',
+    "next.config.ts": "export default {};\n",
+    "postcss.config.mjs": "export default {};\n",
+    "playwright.config.ts": "export default {};\n",
+    "vitest.config.ts": "export default {};\n",
+    "eslint.config.mjs": "export default [];\n",
+    ".prettierrc.json": "{}\n",
+    ".prettierignore": "node_modules\n",
+    ".nvmrc": "22\n",
+    "testing/contracts.json": "{}\n",
+    "testing/impact-map.json": "{}\n",
+    "testing/suites.json": "{}\n",
+    "src/product.ts": "export const product = 'base';\n",
+    "src/product.test.ts": "import { product } from './product';\nvoid product;\n",
+    "tests/e2e/product.spec.ts": "export const browserProof = 'base';\n",
+    "Development_Docs/guide.md": "# Guide\n",
+    "scripts/sounding-line/sqlite-bootstrap.mjs": "export {};\n",
+    "scripts/sounding-line/browser-authority.mjs": "export {};\n",
+    "prisma/seed.ts": "export {};\n",
+  };
+  for (const [file, contents] of Object.entries(files)) {
+    mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    writeFileSync(path.join(root, file), contents);
+  }
+  git(root, ["init", "--initial-branch=main", "--quiet"]);
+  git(root, ["config", "core.autocrlf", "false"]);
+  git(root, ["config", "user.email", "evidence@example.invalid"]);
+  git(root, ["config", "user.name", "Evidence Fixture"]);
+  const baseSha = commit(root, "base");
+  return { root, baseSha };
+}
+
+async function withEvidenceFixture(assertion) {
+  const fixture = evidenceFixture();
+  try {
+    await assertion(fixture);
+  } finally {
+    rmSync(fixture.root, { force: true, recursive: true });
+  }
+}
+
+async function runReconciliation(root, plan, commandDelayMs = 0) {
+  const calls = [];
+  const result = await runReconciledVerification(root, plan, (_root, command, argumentsList) => {
+    calls.push([command, argumentsList]);
+    if (commandDelayMs)
+      execFileSync(process.execPath, [
+        "-e",
+        `Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ${commandDelayMs});`,
+      ]);
+  });
+  return { calls, result };
 }
 
 test("ordinary classification ignores retired generated state and rejects active control-plane edits", () => {
@@ -977,6 +1043,11 @@ test("trusted PR routing produces one strict decision for ordinary and control-p
   assert.match(ordinaryWorkflow, /mode: "ordinary"/u);
   assert.match(ordinaryWorkflow, /kind=ordinary/u);
   assert.match(ordinaryWorkflow, /browser_required=\$\{plan\.browserRequired\}/u);
+  assert.match(ordinaryWorkflow, /Restore reusable ordinary evidence/u);
+  assert.match(ordinaryWorkflow, /actions\/cache\/restore@v4/u);
+  assert.match(ordinaryWorkflow, /Persist passing reusable ordinary evidence/u);
+  assert.match(ordinaryWorkflow, /actions\/cache\/save@v4/u);
+  assert.match(ordinaryWorkflow, /scripts\/sounding-line\/evidence\.mjs/u);
   assert.match(ordinaryWorkflow, /kind=control-plane/u);
   assert.match(
     ordinaryWorkflow,
@@ -989,4 +1060,141 @@ test("trusted PR routing produces one strict decision for ordinary and control-p
   assert.match(ordinaryWorkflow, /SOUNDING_LINE_CANDIDATE_CLASSIFICATION_FAILURE/u);
   assert.match(ordinaryWorkflow, /git merge-base --is-ancestor/u);
   assert.equal((ordinaryWorkflow.match(/name: Sounding Line \/ Mainline Decision/gu) ?? []).length, 1);
+});
+
+test("v1.4 evidence reconciliation preserves, invalidates, falls back, and finalizes complete ordinary closure", async () => {
+  await withEvidenceFixture(async ({ root, baseSha }) => {
+    writeFileSync(path.join(root, "Development_Docs/guide.md"), "# Guide\n\nFirst ordinary candidate.\n");
+    let candidateSha = commit(root, "documentation candidate");
+    let plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const first = await runReconciliation(root, plan);
+    assert.ok(first.calls.length > 0);
+    assert.equal(first.result.finalization.decision, "PASS");
+    assert.equal(first.result.freshObligations, first.result.finalization.requiredObligations);
+
+    const preserved = await runReconciliation(root, plan);
+    assert.equal(preserved.calls.length, 0);
+    assert.ok(preserved.result.reconciliation.every((entry) => entry.disposition === "PRESERVED"));
+    assert.equal(preserved.result.finalization.remainder.length, 0);
+
+    writeFileSync(path.join(root, "Development_Docs/second-guide.md"), "# Second guide\n");
+    candidateSha = commit(root, "mixed evidence candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const mixed = await runReconciliation(root, plan);
+    assert.ok(mixed.result.reconciliation.some((entry) => ["PRESERVED", "REBOUND"].includes(entry.disposition)));
+    assert.ok(mixed.result.reconciliation.some((entry) => entry.disposition === "INVALIDATED"));
+    assert.equal(mixed.result.finalization.decision, "PASS");
+
+    writeFileSync(path.join(root, "src/product.ts"), "export const product = 'relevant change';\n");
+    candidateSha = commit(root, "relevant source candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const sourceChanged = await runReconciliation(root, plan);
+    assert.ok(sourceChanged.result.reconciliation.some((entry) => entry.disposition === "INVALIDATED"));
+    assert.ok(sourceChanged.calls.length > 0);
+
+    writeFileSync(
+      path.join(root, "src/product.test.ts"),
+      "import { product } from './product';\nvoid product;\n// definition changed\n",
+    );
+    candidateSha = commit(root, "test definition candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const definitionChanged = await runReconciliation(root, plan);
+    assert.ok(
+      definitionChanged.result.reconciliation.some(
+        (entry) => entry.disposition === "INVALIDATED" && entry.changedFields.includes("testDefinitionDigest"),
+      ),
+    );
+
+    writeFileSync(
+      path.join(root, "package-lock.json"),
+      `${JSON.stringify({ name: "evidence-fixture", lockfileVersion: 3, packages: { "": { version: "2" } } }, null, 2)}\n`,
+    );
+    candidateSha = commit(root, "dependency candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const dependencyChanged = await runReconciliation(root, plan);
+    assert.ok(
+      dependencyChanged.result.reconciliation.some(
+        (entry) => entry.disposition === "INVALIDATED" && entry.changedFields.includes("packageLockDigest"),
+      ),
+    );
+
+    writeFileSync(path.join(root, "prisma/seed.ts"), "export const fixtureVersion = 2;\n");
+    candidateSha = commit(root, "schema fixture candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const schemaChanged = await runReconciliation(root, plan);
+    assert.ok(
+      schemaChanged.result.reconciliation.some(
+        (entry) =>
+          entry.disposition === "INVALIDATED" &&
+          (entry.changedFields.includes("schemaDigest") ||
+            entry.changedFields.includes("fixtureDigest") ||
+            entry.changedFields.includes("semanticClosureDigest")),
+      ),
+      JSON.stringify(schemaChanged.result.reconciliation),
+    );
+
+    writeFileSync(path.join(root, "src/product.test.ts"), "import '/unknown-local-closure';\n");
+    candidateSha = commit(root, "ambiguous closure candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const ambiguous = await runReconciliation(root, plan);
+    assert.ok(
+      ambiguous.result.reconciliation.some(
+        (entry) => entry.disposition === "CONSERVATIVE_FALLBACK" && entry.freshExecuted,
+      ),
+    );
+
+    const storeRoot = path.join(root, "artifacts", "sounding-line", "evidence-store", "receipts");
+    writeFileSync(path.join(storeRoot, "corrupt.json"), "not json\n");
+    const corrupt = await runReconciliation(root, plan);
+    assert.ok(corrupt.result.reconciliation.every((entry) => entry.disposition === "CONSERVATIVE_FALLBACK"));
+    assert.ok(corrupt.calls.length > 0);
+  });
+});
+
+test("v1.4 evidence rebinds a browser obligation across an unrelated base advance and keeps release exhaustive", async () => {
+  await withEvidenceFixture(async ({ root, baseSha }) => {
+    writeFileSync(path.join(root, "src/product.ts"), "export const product = 'candidate browser behavior';\n");
+    const firstCandidate = commit(root, "browser candidate on original base");
+    const firstPlan = await buildPlan({ root, baseSha, candidateSha: firstCandidate, mode: "ordinary" });
+    const first = await runReconciliation(root, firstPlan, 15);
+    assert.ok(
+      first.calls.some(([, argumentsList]) => argumentsList[0] === "scripts/sounding-line/browser-authority.mjs"),
+    );
+    const freshBrowserReceipt = first.result.receipts.find((entry) => entry.obligationId.startsWith("browser."));
+    assert.ok((freshBrowserReceipt?.durationMs ?? 0) >= 50);
+
+    git(root, ["checkout", "--quiet", "-b", "newer-base", baseSha]);
+    writeFileSync(path.join(root, "Development_Docs/guide.md"), "# Guide\n\nUnrelated base advance.\n");
+    const newerBase = commit(root, "unrelated base advance");
+    git(root, ["checkout", "--quiet", "-b", "rebound-candidate"]);
+    writeFileSync(path.join(root, "src/product.ts"), "export const product = 'candidate browser behavior';\n");
+    const reboundCandidate = commit(root, "reapply browser candidate");
+    const reboundPlan = await buildPlan({ root, baseSha: newerBase, candidateSha: reboundCandidate, mode: "ordinary" });
+    const rebound = await runReconciliation(root, reboundPlan);
+    const browser = rebound.result.reconciliation.find((entry) => entry.obligationId.startsWith("browser."));
+    assert.equal(browser?.disposition, "REBOUND");
+    assert.equal(browser?.freshExecuted, false);
+    assert.ok(browser?.commandsAvoided.some((command) => command.includes("browser-authority.mjs")));
+    assert.ok(
+      !rebound.calls.some(([, argumentsList]) => argumentsList[0] === "scripts/sounding-line/browser-authority.mjs"),
+    );
+    assert.equal(rebound.result.finalization.decision, "PASS");
+    assert.equal(rebound.result.finalization.requiredObligations, 6);
+    assert.equal(rebound.result.freshObligations, 1);
+    assert.equal(rebound.result.finalization.counts.REBOUND, 5);
+    assert.equal(rebound.result.finalization.counts.INVALIDATED, 1);
+    assert.equal(rebound.result.commandsAvoided.length, 8);
+    assert.ok(rebound.result.avoidedDurationMs >= (freshBrowserReceipt?.durationMs ?? Infinity));
+
+    const releasePlan = await buildPlan({ root, baseSha: newerBase, candidateSha: reboundCandidate, mode: "release" });
+    const release = await runReconciliation(root, releasePlan);
+    assert.equal(
+      release.result.reconciliation.every((entry) => entry.disposition === "FRESH"),
+      true,
+    );
+    assert.equal(release.result.freshObligations, release.result.finalization.requiredObligations);
+    assert.ok(
+      release.calls.some(([, argumentsList]) => argumentsList[0] === "scripts/sounding-line/browser-authority.mjs"),
+    );
+  });
 });
