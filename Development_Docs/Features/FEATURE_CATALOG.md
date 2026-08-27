@@ -1700,6 +1700,40 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-B014 - Shipwright Creator Publication Review
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Shipwright Phase 5
+
+Creators stage a saved Chronicle source through Drydock readiness, exact readable differences, asset and protected-content evidence, compatibility, release notes, and explicit immutable confirmation before the canonical One Voyage publication authority creates a Version receipt.
+
+### Important subfeatures
+
+- Source-bound Drydock release decision with visible blockers warnings and waivers
+- Creator-readable Chronicle Chapter Passage Asset Location and Artifact differences
+- Safe asset protected-content and provider-compatibility review
+- Explicit immutable publication confirmation with recoverable failure state
+- Authoritative Version receipt before publication success and governed next actions
+- Task-owned Creator browser acceptance including responsive and large-Chronicle proof
+
+### Primary surfaces
+
+`/studio/tales/[taleId]/versions`, `/api/studio/tales/[taleId]/publishing-review`, `src/components/studio/ShipwrightPublishingReview.tsx`
+
+### Meaningful limitations
+
+- Drydock remains the sole authoring-contract validation and simulation authority, and One Voyage remains the sole immutable publication authority.
+- This branch-complete candidate has not received protected-main acceptance, deployment proof, live-provider execution, or owner acceptance.
+
+### Evidence
+
+- path: `src/chronicle/publishing-review.ts`
+- path: `src/components/studio/ShipwrightPublishingReview.tsx`
+- test: `tests/e2e/project-shipwright-phase5.spec.ts`
+- completion-record: `Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_5_Validation_Record.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
