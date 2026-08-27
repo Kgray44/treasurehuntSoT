@@ -205,6 +205,59 @@ function filteredTable({ records, headers, row, matches, placeholder, emptyMessa
   render();
   return host;
 }
+function pagedHistory(initial, emptyMessage) {
+  const host = element("div", "paged-history");
+  const results = element("div", "filter-results");
+  const actions = element("div", "actions");
+  const loadMore = element("button", "", "Load more history");
+  loadMore.type = "button";
+  let events = [...(initial.events ?? [])];
+  let nextCursor = initial.nextCursor ?? null;
+  const range = new URLSearchParams({ since: initial.since, until: initial.until });
+  const render = () => {
+    const priorFilter = results.querySelector('input[type="search"]')?.value ?? "";
+    const listing = filteredTable({
+      records: events,
+      headers: ["When", "Type", "Entity", "Summary"],
+      row: (event) => [
+        dateText(event.occurredAt ?? event.observedAt),
+        event.kind ?? "OBSERVED",
+        `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
+        event.summary ?? "UNMEASURED",
+      ],
+      matches: (event) =>
+        searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
+      placeholder: "Search retained history",
+      emptyMessage,
+    });
+    results.replaceChildren(listing);
+    const input = listing.querySelector('input[type="search"]');
+    if (input && priorFilter) {
+      input.value = priorFilter;
+      input.dispatchEvent(new Event("input"));
+    }
+    loadMore.hidden = !nextCursor;
+  };
+  loadMore.addEventListener("click", async () => {
+    if (!nextCursor) return;
+    loadMore.disabled = true;
+    try {
+      const page = new URLSearchParams(range);
+      page.set("cursor", nextCursor);
+      const response = await request(`api/history?${page}`);
+      const known = new Set(events.map((event) => event.id));
+      events = [...events, ...(response.events ?? []).filter((event) => !known.has(event.id))];
+      nextCursor = response.nextCursor ?? null;
+      render();
+    } finally {
+      loadMore.disabled = false;
+    }
+  });
+  actions.append(loadMore);
+  host.append(results, actions);
+  render();
+  return host;
+}
 function renderOverview() {
   const node = document.createDocumentFragment();
   const summary = snapshot ?? {};
@@ -270,6 +323,83 @@ function renderAttentionList(items) {
     );
   });
   return host;
+}
+async function renderProgram() {
+  const data = await request("api/program");
+  const node = document.createDocumentFragment();
+  const summary = section(
+    "Program intelligence",
+    "Counts and accepted-history trends; no fabricated global completion percentage.",
+  );
+  const metrics = element("div", "grid");
+  Object.entries(data.summary ?? {}).forEach(([scope, values]) =>
+    Object.entries(values ?? {})
+      .filter(([, value]) => typeof value === "number")
+      .forEach(([label, value]) =>
+        metrics.append(renderMetric(`${scope} ${label}`.replaceAll(/([A-Z])/g, " $1"), value)),
+      ),
+  );
+  summary.append(metrics);
+  summary.append(detail([["Current observed main", data.currentMain ?? "NOT_RECORDED"]]));
+  node.append(summary);
+  const discovered = section(
+    "Discovered project truth",
+    "Repository documents, local refs, and GitHub observations are reconciled without rewriting accepted history.",
+  );
+  const rows = (data.discoveredProjects ?? []).map((project) => [
+    linkButton(project.name, `#/projects/${encodeURIComponent(project.id)}`),
+    project.state ?? "OBSERVED",
+    project.confidence,
+    project.phaseCount ?? "UNMEASURED",
+  ]);
+  discovered.append(
+    rows.length
+      ? table(["Project", "State", "Confidence", "Declared phases"], rows)
+      : empty("No durable discovery record is retained yet."),
+  );
+  node.append(discovered);
+  const timeline = section(
+    "Accepted timeline",
+    "Chronological accepted results remain distinct from active discovery.",
+  );
+  timeline.append(eventList(data.acceptedHistory ?? []));
+  node.append(timeline);
+  const historyWindow = section(
+    "Program history window",
+    "Choose a bounded From/To interval to inspect retained program events without changing observation state.",
+  );
+  const controls = element("div", "actions");
+  const from = document.createElement("input");
+  from.type = "datetime-local";
+  from.value = new Date(Date.now() - 86_400_000).toISOString().slice(0, 16);
+  from.setAttribute("aria-label", "Program history from");
+  const to = document.createElement("input");
+  to.type = "datetime-local";
+  to.value = new Date().toISOString().slice(0, 16);
+  to.setAttribute("aria-label", "Program history to");
+  const load = element("button", "", "Load window");
+  const result = element("div", "filter-results");
+  const loadWindow = async () => {
+    if (!from.value || !to.value) {
+      result.replaceChildren(empty("Both From and To are required for a bounded history window."));
+      return;
+    }
+    try {
+      const parameters = new URLSearchParams({
+        since: new Date(from.value).toISOString(),
+        until: new Date(to.value).toISOString(),
+      });
+      const history = await request(`api/history?${parameters}`);
+      result.replaceChildren(pagedHistory(history, "No retained observation matches this program window."));
+    } catch (error) {
+      result.replaceChildren(empty(error instanceof Error ? error.message : "Program history is unavailable."));
+    }
+  };
+  load.addEventListener("click", () => void loadWindow());
+  controls.append(from, to, load);
+  historyWindow.append(controls, result);
+  node.append(historyWindow);
+  return node;
 }
 async function renderProjects() {
   const projects = await request("api/projects");
@@ -1283,23 +1413,7 @@ async function renderHistory() {
     window.location.hash = `#/compare?from=${encodeURIComponent(new Date(from.value).toISOString())}&to=${encodeURIComponent(new Date(to.value).toISOString())}`;
   });
   actions.append(from, to, compare);
-  history.append(
-    actions,
-    filteredTable({
-      records: data.events ?? [],
-      headers: ["When", "Type", "Entity", "Summary"],
-      row: (event) => [
-        dateText(event.occurredAt ?? event.observedAt),
-        event.kind ?? "OBSERVED",
-        `${event.entityType ?? "Observation"}: ${event.entityId ?? "UNMEASURED"}`,
-        event.summary ?? "UNMEASURED",
-      ],
-      matches: (event) =>
-        searchText([event.kind, event.entityType, event.entityId, event.projectId, event.phaseId, event.summary]),
-      placeholder: "Search retained history",
-      emptyMessage: "No retained observations match this scope.",
-    }),
-  );
+  history.append(actions, pagedHistory(data, "No retained observations match this scope."));
   node.append(history);
   return node;
 }
