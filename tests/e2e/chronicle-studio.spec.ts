@@ -475,18 +475,10 @@ test("creator authors a media-rich tale and preserves the Drydock launch gate", 
   await page.getByRole("button", { name: "Close Passage preview" }).click();
 
   await page.getByRole("button", { name: "Publish Chronicle" }).click();
-  const publishDialog = page.getByRole("dialog");
-  await expect(publishDialog.getByText("Publish a new immutable Version?")).toBeVisible();
-  await publishDialog.getByLabel("Release notes").fill("Media-rich Playwright authoring proof");
-  const publishResponse = page.waitForResponse(
-    (response) =>
-      response.request().method() === "POST" && response.url().endsWith(`/api/studio/tales/${taleId}/publish`),
-  );
-  await publishDialog.getByRole("button", { name: "Publish Version" }).click();
-  const response = await publishResponse;
-  expect(response.status()).toBe(422);
-  expect(await response.json()).toMatchObject({
-    code: "DRYDOCK_READINESS_NOT_VERIFIED",
-    readinessStatus: "NEEDS_REPAIR",
-  });
+  await expect(page).toHaveURL(new RegExp(`/studio/tales/${taleId}/versions#publication-review$`));
+  await expect(page.getByRole("heading", { name: "Review and publish" })).toBeVisible();
+  await expect(page.getByText("NEEDS REPAIR")).toBeVisible();
+  await page.getByLabel("Creator release notes").fill("Media-rich Playwright authoring proof");
+  await page.getByRole("checkbox").check();
+  await expect(page.getByRole("button", { name: "Publish immutable Version" })).toBeDisabled();
 });

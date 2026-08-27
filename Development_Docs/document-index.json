@@ -429,6 +429,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/branch-complete/project-shipwright-phase5.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/catalog/admiralty.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -3874,6 +3880,24 @@
     },
     {
       "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_5_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Phase_5_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Program_Closure.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

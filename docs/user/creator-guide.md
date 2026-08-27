@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-08-24
+last_reviewed: 2026-08-26
 ---
 
 # Creator guide
@@ -39,6 +39,23 @@ one normal edit, so Undo removes the full insertion and Redo restores it.
 Reusable content cannot capture Creator-private or protected material. A saved
 insertion keeps source-version provenance even if the Library item is later
 archived.
+
+## Review and publish a Version
+
+Open **Versions**, then choose **Review and publish**. First save the intended
+draft. The staged review shows Drydock's current decision (including blockers,
+warnings, and active waivers), the exact authored changes since the current
+Version, asset readiness, protected-content evidence when recorded, and reader
+compatibility. Use **Open Drydock launch work** to repair a non-verified source;
+do not copy identifiers or assemble a release request manually.
+
+Add Creator release notes and check the immutable-publication confirmation only
+after the review is correct. Studio rechecks the saved source while canonical
+One Voyage publication commits the Version. A success state names the Version
+and checksum and then offers published-edition preview, Voyage creation,
+version comparison, and a governed Community handoff. If publication is
+rejected or interrupted, the draft remains available in Studio for review and
+repair.
 
 Related: [Captain guide](captain-guide.md), [private content](../administrator/private-content.md), and [accessibility](accessibility.md).
 

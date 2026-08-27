@@ -662,86 +662,17 @@ describe("Voyagewright Studio editor motion and authority", () => {
     expect(await screen.findByText("Opening Scene")).toBeInTheDocument();
   });
 
-  it("shows the publish seal only after the immutable version response succeeds", async () => {
-    let resolvePublish!: (value: Response) => void;
-    const publication = new Promise<Response>((resolve) => {
-      resolvePublish = resolve;
-    });
-    vi.stubGlobal(
-      "fetch",
-      vi
-        .fn()
-        .mockResolvedValueOnce(response(200, editorData()))
-        .mockReturnValueOnce(publication)
-        .mockResolvedValueOnce(response(200, editorData())),
-    );
-    render(<TaleEditor taleId="tale-1" authenticated />);
-    await screen.findByRole("heading", { name: "A Test Chronicle" });
-    fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
-    fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Publish Version" }));
-    expect(screen.queryByText(/Version 4 published/)).not.toBeInTheDocument();
-
-    await act(async () => resolvePublish(response(201, { versionLabel: "4" })));
-    expect(await screen.findByText(/Version 4 published/)).toHaveAttribute("data-authority-state", "confirmed");
-  });
-
-  it("keeps a successfully published version confirmed when its presentation director interrupts afterward", async () => {
-    animationDirector.play.mockImplementationOnce(
-      async (_scene: string, options: { operation?: () => Promise<unknown> }) => {
-        await options.operation?.();
-        throw new Error("presentation-interrupted-after-publish");
-      },
-    );
-    vi.stubGlobal(
-      "fetch",
-      vi
-        .fn()
-        .mockResolvedValueOnce(response(200, editorData()))
-        .mockResolvedValueOnce(response(201, { versionLabel: "4" }))
-        .mockResolvedValueOnce(response(200, editorData())),
-    );
-
-    render(<TaleEditor taleId="tale-1" authenticated />);
-    await screen.findByRole("heading", { name: "A Test Chronicle" });
-    fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
-    fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Publish Version" }));
-
-    expect(await screen.findByText(/Version 4 published/)).toHaveAttribute("data-authority-state", "confirmed");
-    expect(screen.queryByText("Publishing failed")).not.toBeInTheDocument();
-  });
-
-  it("waits for an in-flight autosave before publishing the immutable version", async () => {
-    let resolveSave!: (value: Response) => void;
-    const save = new Promise<Response>((resolve) => {
-      resolveSave = resolve;
-    });
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValueOnce(response(200, editorData()))
-      .mockReturnValueOnce(save)
-      .mockResolvedValueOnce(response(201, { versionLabel: "5" }))
-      .mockResolvedValueOnce(response(200, editorData()));
+  it("keeps canonical publication dormant on the canvas before staged review", async () => {
+    const fetchMock = vi.fn().mockResolvedValueOnce(response(200, editorData()));
     vi.stubGlobal("fetch", fetchMock);
-    try {
-      render(<TaleEditor taleId="tale-1" authenticated />);
-      const card = (await screen.findByText("Opening Scene")).closest<HTMLElement>("article")!;
-      fireEvent.click(card);
-      vi.useFakeTimers();
-      fireEvent.change(screen.getByRole("textbox", { name: "Passage title" }), {
-        target: { value: "Updated opening scene" },
-      });
-      act(() => vi.advanceTimersByTime(1100));
-      expect(fetchMock).toHaveBeenCalledTimes(2);
 
-      fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
-      await act(async () => resolveSave(response(200, { autosaveVersion: 4, savedAt: "2026-07-19T12:02:00.000Z" })));
-      vi.useRealTimers();
-      fireEvent.click(within(await screen.findByRole("dialog")).getByRole("button", { name: "Publish Version" }));
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
 
-      expect(await screen.findByText(/Version 5 published/)).toHaveAttribute("data-authority-state", "confirmed");
-    } finally {
-      vi.useRealTimers();
-    }
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(animationDirector.play).not.toHaveBeenCalled();
+    expect(screen.getByRole("button", { name: "Publish Chronicle" })).toHaveAttribute("data-authority-state", "idle");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("tracks each upload independently and preserves successful files when a sibling fails", async () => {

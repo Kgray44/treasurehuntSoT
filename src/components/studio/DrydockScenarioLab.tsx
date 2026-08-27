@@ -88,6 +88,18 @@ type CoverageView = {
   proofStatus: string;
 };
 type Suggestion = { id: string; kind: string; target: string; safeHint: string };
+type RequiredScenarioClass = { id: string; capability: string; reason: string };
+
+const scenarioClassLabels: Record<string, string> = {
+  BASELINE_SUCCESS: "Baseline successful path",
+  REQUIRED_ENDING: "Every required ending",
+  MAJOR_BRANCH: "Major authored alternatives",
+  TIMER_TIMEOUT: "Timer or wait outcome",
+  CAPTAIN_APPROVE_REJECT: "Captain approval outcomes",
+  ANSWER_MATCH_AND_NO_MATCH: "Answer match and no-match outcomes",
+  PROVIDER_OUTCOMES: "Provider outcomes",
+  REDUCED_MOTION_AND_SOUND_BLOCKED: "Reduced-motion and sound-blocked presentation",
+};
 
 const privateRequest = (csrfToken: string, init: RequestInit = {}) => ({
   ...init,
@@ -145,6 +157,7 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
   const [stateDiff, setStateDiff] = useState<StateDiff | null>(null);
   const [coverage, setCoverage] = useState<CoverageView | null>(null);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [requiredScenarioClasses, setRequiredScenarioClasses] = useState<RequiredScenarioClass[]>([]);
   const [filter, setFilter] = useState("");
   const [cancellationRequestedRunId, setCancellationRequestedRunId] = useState("");
   const [choiceTargetBlockId, setChoiceTargetBlockId] = useState("");
@@ -174,12 +187,14 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
         error?: string;
         sourceChecksum?: string;
         scenarios?: ScenarioSummary[];
+        requiredScenarioClasses?: RequiredScenarioClass[];
       };
       const suitesBody = (await suitesResponse.json()) as { suites?: Suite[] };
       if (!response.ok || !body.sourceChecksum)
         throw new Error(body.error ?? "Sea Trial Scenarios could not be loaded.");
       const currentSourceChecksum = body.sourceChecksum;
       setSourceChecksum(currentSourceChecksum);
+      setRequiredScenarioClasses(body.requiredScenarioClasses ?? []);
       setScenarios(body.scenarios ?? []);
       setSuites(suitesResponse.ok ? (suitesBody.suites ?? []) : []);
       if (runsResponse.ok) setRuns(((await runsResponse.json()) as { runs?: RunSummary[] }).runs ?? []);
@@ -217,6 +232,15 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The advanced editor is not a JSON array.");
     }
+  }
+
+  function setRequiredScenarioClass(required: RequiredScenarioClass, selected: boolean) {
+    if (!scenario) return;
+    const tag = `required:${required.id}`;
+    setScenario({
+      ...scenario,
+      tags: selected ? [...new Set([...scenario.tags, tag])] : scenario.tags.filter((candidate) => candidate !== tag),
+    });
   }
 
   function addInventoryArtifact() {
@@ -854,6 +878,27 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
             </label>
           </div>
           <div className="drydock-json-fields">
+            <section aria-label="Required Sea Trial classes">
+              <strong>Required release coverage</strong>
+              <p>
+                Choose the authored outcomes this Scenario covers. Studio keeps the source-bound Drydock tag for you.
+              </p>
+              {requiredScenarioClasses.map((required) => {
+                const tag = `required:${required.id}`;
+                return (
+                  <label className="drydock-toggle" key={required.id}>
+                    <input
+                      type="checkbox"
+                      checked={scenario.tags.includes(tag)}
+                      onChange={(event) => setRequiredScenarioClass(required, event.target.checked)}
+                    />
+                    <span>
+                      {scenarioClassLabels[required.id] ?? required.capability}: {required.reason}
+                    </span>
+                  </label>
+                );
+              })}
+            </section>
             <section aria-label="Scenario initial-state builder">
               <strong>Initial state</strong>
               <p>Set safe starting inventory and variables without exposing a live Voyage.</p>

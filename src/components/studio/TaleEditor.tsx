@@ -43,6 +43,7 @@ import { StudioValidationPanel } from "@/components/studio/StudioValidationPanel
 import { DrydockScenarioLab } from "@/components/studio/DrydockScenarioLab";
 import { DrydockLaunchGate } from "@/components/studio/DrydockLaunchGate";
 import { DrydockCompatibilityPanel } from "@/components/studio/DrydockCompatibilityPanel";
+import { ShipwrightPublishingReview } from "@/components/studio/ShipwrightPublishingReview";
 import {
   TideglassStudioComparison,
   type TideglassStudioComparisonDto,
@@ -138,6 +139,13 @@ type InstalledCommunityReusableItem = {
   compatibility: Record<string, unknown>;
   updateState: "CURRENT" | "LOCAL_MODIFICATION";
   insertionState: "UNAVAILABLE_NO_AUTHORING_ENVELOPE";
+};
+type PublicationReceipt = {
+  id: string;
+  versionLabel: string;
+  checksum: string;
+  evidenceId: string;
+  publishedAt: string;
 };
 
 const clone = <T,>(value: T): T => structuredClone(value);
@@ -255,6 +263,8 @@ export function TaleEditor({
   const [deletedBlock, setDeletedBlock] = useState<DeletedBlock | null>(null);
   const [publishState, setPublishState] = useState<"idle" | "publishing" | "published" | "failed">("idle");
   const [publishedVersion, setPublishedVersion] = useState<string | null>(null);
+  const [publicationReceipt, setPublicationReceipt] = useState<PublicationReceipt | null>(null);
+  const [publicationError, setPublicationError] = useState("");
   const [launchGateStatus, setLaunchGateStatus] = useState<string | null>(null);
   const [uploadEntries, setUploadEntries] = useState<UploadEntry[]>([]);
   const [placedAssetId, setPlacedAssetId] = useState<string | null>(null);
@@ -863,10 +873,10 @@ export function TaleEditor({
       },
       {
         id: "studio.publish",
-        label: "Publish Chronicle",
-        description: "Open the canonical immutable publication flow.",
-        disabled: publishState === "publishing" || (launchGateStatus !== null && launchGateStatus !== "VERIFIED"),
-        run: () => void publish(),
+        label: "Review and publish Chronicle",
+        description: "Open the source-bound release review before creating an immutable Version.",
+        disabled: publishState === "publishing",
+        run: () => openPublishingReview(),
       },
       {
         id: "studio.focus-library",
@@ -892,7 +902,7 @@ export function TaleEditor({
         run: () => addBlock(item.type, 0),
       })) as StudioCommand[]),
     ],
-    [data?.registry, draft?.chapters.length, future.length, launchGateStatus, past.length, publishState, selected],
+    [data?.registry, draft?.chapters.length, future.length, past.length, publishState, selected],
   );
   const saveVisualState =
     saveState.includes("failed") || saveState.includes("Conflict")
@@ -1484,41 +1494,31 @@ export function TaleEditor({
       setError(cause instanceof Error ? cause.message : "A current Drydock migration preview could not be loaded.");
     }
   }
-  async function publish() {
+  function openPublishingReview() {
+    if (typeof window !== "undefined")
+      window.location.assign(`/studio/tales/${encodeURIComponent(taleId)}/versions#publication-review`);
+  }
+  async function publish(releaseNotes: string) {
     if (!draft || !data) return;
     if (launchGateStatus !== null && launchGateStatus !== "VERIFIED") {
-      setError("Drydock has not verified the current Chronicle source for publication.");
+      setPublicationError("Drydock has not verified the current Chronicle source for publication.");
       return;
     }
     if (dirty && !(await save(draft, false))) return;
-    const publication = await requestAction({
-      title: "Publish a new immutable Version?",
-      detail:
-        "New Voyages will use this saved Version. Existing Voyages remain pinned to the Version they already use.",
-      confirmLabel: "Publish Version",
-      fields: [
-        {
-          id: "notes",
-          label: "Release notes",
-          initialValue: "Initial Chronicle release",
-          multiline: true,
-          maxLength: 1000,
-        },
-      ],
-    });
-    if (!publication) return;
-    const notes = publication.notes;
+    const notes = releaseNotes.trim();
     setPublishState("publishing");
     publicationStatusHold.current = false;
     setPublishedVersion(null);
+    setPublicationReceipt(null);
+    setPublicationError("");
     setSaveState("Publishing...");
     if (!root.current || !publishHost.current) {
-      setError("Publishing is not ready. Try again.");
+      setPublicationError("Publishing is not ready. Try again.");
       setSaveState("Publishing failed");
       setPublishState("failed");
       return;
     }
-    type PublishResult = { versionLabel?: string; validation?: typeof validation; error?: string };
+    type PublishResult = Partial<PublicationReceipt> & { validation?: typeof validation; error?: string };
     let operationError = "This Chronicle could not be published.";
     let operationValidation: typeof validation | undefined;
     let operationPromise: Promise<PublishResult> | null = null;
@@ -1527,10 +1527,13 @@ export function TaleEditor({
         const response = await fetch(`/api/studio/tales/${taleId}/publish`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
-          body: JSON.stringify({ releaseNotes: notes }),
+          body: JSON.stringify({
+            releaseNotes: notes,
+            autosaveVersion: autosaveVersionRef.current ?? data.draft.autosaveVersion,
+          }),
         });
         const body = (await response.json()) as PublishResult;
-        if (!response.ok || !body.versionLabel) {
+        if (!response.ok || !body.id || !body.versionLabel || !body.checksum || !body.evidenceId || !body.publishedAt) {
           operationError = body.error ?? operationError;
           operationValidation = body.validation;
           throw new Error("studio-publish-rejected");
@@ -1540,7 +1543,7 @@ export function TaleEditor({
       return operationPromise;
     };
     let fallbackResult: PublishResult | undefined;
-    let publishedLabel = "new";
+    let authoritativeReceipt: PublicationReceipt | null = null;
     try {
       const receipt = await director.play<PublishResult>("studio-publish", {
         root: root.current,
@@ -1563,26 +1566,48 @@ export function TaleEditor({
         },
       });
       const body = receipt.operationResult ?? fallbackResult;
-      if (!body?.versionLabel) throw new Error("studio-publish-not-presented");
-      publishedLabel = body.versionLabel;
-      setPublishedVersion(body.versionLabel);
+      if (!body?.id || !body.versionLabel || !body.checksum || !body.evidenceId || !body.publishedAt)
+        throw new Error("studio-publish-not-presented");
+      authoritativeReceipt = body as PublicationReceipt;
     } catch {
       const completedOperation = await (operationPromise as Promise<PublishResult> | null)?.catch(() => undefined);
-      if (!completedOperation?.versionLabel) {
-        setError(operationError);
+      if (
+        !completedOperation?.id ||
+        !completedOperation.versionLabel ||
+        !completedOperation.checksum ||
+        !completedOperation.evidenceId ||
+        !completedOperation.publishedAt
+      ) {
+        setPublicationError(operationError);
         if (operationValidation) setValidation(operationValidation);
         setSaveState("Publishing failed");
         setPublishState("failed");
         return;
       }
-      publishedLabel = completedOperation.versionLabel;
-      setPublishedVersion(completedOperation.versionLabel);
+      authoritativeReceipt = completedOperation as PublicationReceipt;
     }
+    if (!authoritativeReceipt) return;
+    setPublishedVersion(authoritativeReceipt.versionLabel);
+    setPublicationReceipt(authoritativeReceipt);
     setPublishState("published");
     publicationStatusHold.current = true;
-    setSaveState(`Published as Version ${publishedLabel}`);
+    setSaveState(`Published as Version ${authoritativeReceipt.versionLabel}`);
     await load();
-    setSaveState(`Published as Version ${publishedLabel}`);
+    setSaveState(`Published as Version ${authoritativeReceipt.versionLabel}`);
+  }
+  async function previewPublishedEdition() {
+    if (!data || !publicationReceipt) return;
+    const response = await fetch(`/api/studio/tales/${taleId}/versions/${publicationReceipt.id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+      body: JSON.stringify({ action: "preview" }),
+    });
+    const body = (await response.json()) as { url?: string; error?: string };
+    if (!response.ok || !body.url) {
+      setPublicationError(body.error ?? "The published Edition preview could not be opened.");
+      return;
+    }
+    window.open(body.url, "_blank", "noopener,noreferrer");
   }
   async function preview(blockId?: string) {
     if (!draft || !data) return;
@@ -1985,7 +2010,7 @@ export function TaleEditor({
           validationLabel={validationStatus.label}
           validationDetail={validationStatus.detail}
           publishState={publishState}
-          publishPermitted={launchGateStatus === null || launchGateStatus === "VERIFIED"}
+          publishPermitted={publishState !== "publishing"}
           publishedVersion={publishedVersion}
           moreOpen={moreOpen}
           reducedMotion={mode === "reduced"}
@@ -1997,7 +2022,7 @@ export function TaleEditor({
           onPreview={() => void preview()}
           onValidate={() => void validate()}
           onOpenValidation={() => validation && setValidationPanelOpen(true)}
-          onPublish={() => void publish()}
+          onPublish={openPublishingReview}
           onOpenCommands={openCommandPalette}
           onToggleMore={() => setMoreOpen((open) => !open)}
           onCloseMore={() => setMoreOpen(false)}
@@ -3560,19 +3585,19 @@ export function TaleEditor({
           </LibraryPanel>
         )}
         {initialSection === "versions" && (
-          <LibraryPanel
-            title="Version history"
-            eyebrow="Immutable releases"
-            action={
-              <button
-                onClick={() => void publish()}
-                disabled={launchGateStatus !== null && launchGateStatus !== "VERIFIED"}
-              >
-                Publish current Chronicle draft
-              </button>
-            }
-          >
-            <div className="version-list">
+          <LibraryPanel title="Version history" eyebrow="Immutable releases">
+            <ShipwrightPublishingReview
+              taleId={taleId}
+              csrfToken={data.csrfToken}
+              savedAt={data.draft.savedAt}
+              onSave={() => (draft ? save(draft, false) : Promise.resolve(false))}
+              onPublish={(notes) => publish(notes)}
+              publishState={publishState}
+              publishError={publicationError}
+              receipt={publicationReceipt}
+              onPreviewPublished={previewPublishedEdition}
+            />
+            <div id="published-version-history" className="version-list">
               {!data.versions.length && <p>No published Version exists yet.</p>}
               {data.versions.map((version) => (
                 <motion.article
@@ -4170,7 +4195,7 @@ function LibraryPanel({
 }: {
   title: string;
   eyebrow: string;
-  action: React.ReactNode;
+  action?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (

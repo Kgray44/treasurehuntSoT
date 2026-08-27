@@ -166,6 +166,17 @@ Drydock defaults and local issues, and retain existing autosave, history,
 preview, and publication behavior. Drydock remains the sole contract and
 validation authority; deployment and live-provider execution are separate.
 
+The branch-complete Project Shipwright Phase 5 candidate completes the Creator-side release journey. Version
+history now stages save/freeze, source-bound Drydock readiness, exact
+Creator-readable changes, asset/access and compatibility review, release notes,
+and explicit immutable confirmation. Studio invokes only canonical One Voyage
+publication and withholds success until the immutable Version receipt is
+returned; a rejected request leaves the draft available for repair. Next actions
+include preview, Voyage creation, version comparison, and an eligible governed
+Harborlight handoff. Controls remain responsive, keyboard-operable, and free of
+manual identifiers or raw JSON for normal release work. Local synthetic proof
+does not establish protected-main acceptance, deployment, owner acceptance, or live-provider behavior.
+
 Project Tideglass Phases 1-4 provide exact immutable-edition intelligence with
 stable semantic change codes, explainable compatibility, spoiler-safe
 projections, deterministic summaries, and append-only Creator annotations.

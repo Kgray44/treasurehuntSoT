@@ -10,6 +10,7 @@ import {
 } from "@/drydock/scenario-store";
 import { parseDrydockScenario } from "@/drydock/simulation/schema";
 import { drydockSimulationSourceChecksum } from "@/drydock/simulation/source";
+import { requiredScenarioClasses } from "@/drydock/required-suite-policy";
 
 const privateHeaders = { "Cache-Control": "private, no-store" };
 
@@ -24,9 +25,14 @@ export async function GET(request: Request, context: { params: Promise<{ taleId:
   const { taleId } = await context.params;
   if (!(await requireOwnedStudioTale(taleId, request))) return unavailable();
   try {
-    const sourceChecksum = drydockSimulationSourceChecksum(snapshotFromStudio(await getStudioTale(taleId)));
+    const snapshot = snapshotFromStudio(await getStudioTale(taleId));
+    const sourceChecksum = drydockSimulationSourceChecksum(snapshot);
     return NextResponse.json(
-      { sourceChecksum, scenarios: await listDrydockScenarios(taleId) },
+      {
+        sourceChecksum,
+        requiredScenarioClasses: requiredScenarioClasses(snapshot),
+        scenarios: await listDrydockScenarios(taleId),
+      },
       { headers: privateHeaders },
     );
   } catch (cause) {
