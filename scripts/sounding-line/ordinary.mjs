@@ -786,17 +786,26 @@ function homeportTaskRoot(candidateSha, lane) {
   return path.posix.join("artifacts", "sounding-line", `homeport-${lane}-${candidateSha.slice(0, 12)}`);
 }
 
-function homeportEnvironment(plan) {
+function homeportPhase7Lane(script) {
+  if (script?.includes("phase7-owner-correction-round3-patch-a")) return "phase7-patch-a";
+  if (script?.includes("phase7-owner-correction-round3")) return "phase7-round3";
+  if (script?.includes("phase7-owner-correction-round2")) return "phase7-round2";
+  if (script?.includes("phase7-owner-correction-round1")) return "phase7-round1";
+  return "phase7";
+}
+
+function homeportEnvironment(plan, script) {
   const databaseUrl = plan.databaseUrl?.startsWith("file:") ? plan.databaseUrl.slice("file:".length) : "";
   const sourceDatabase = databaseUrl.startsWith("./") ? path.posix.join("prisma", databaseUrl.slice(2)) : databaseUrl;
   if (!sourceDatabase) throw new Error("SOUNDING_LINE_HOMEPORT_SOURCE_DATABASE_INDETERMINATE");
+  const phase7Lane = homeportPhase7Lane(script);
   return {
     HOMEPORT_SOUNDING_LINE_TASK_ROOT: "1",
     HOMEPORT_PHASE4_TASK_ROOT: homeportTaskRoot(plan.candidateSha, "phase4"),
     HOMEPORT_PHASE4_SOURCE_DATABASE: sourceDatabase,
     HOMEPORT_PHASE4_EVIDENCE_ROOT: path.posix.join(homeportTaskRoot(plan.candidateSha, "phase4"), "evidence"),
     HOMEPORT_PHASE4_REUSE_BUILD: plan.buildRequired ? "1" : "0",
-    HOMEPORT_PHASE7_TASK_ROOT: homeportTaskRoot(plan.candidateSha, "phase7"),
+    HOMEPORT_PHASE7_TASK_ROOT: homeportTaskRoot(plan.candidateSha, phase7Lane),
     HOMEPORT_PHASE7_SOURCE_DATABASE: sourceDatabase,
     HOMEPORT_PHASE7_ORIGINAL_TASK_ROOT: homeportTaskRoot(plan.candidateSha, "phase7"),
     HOMEPORT_PHASE7_ROUND1_TASK_ROOT: homeportTaskRoot(plan.candidateSha, "phase7-round1"),
@@ -850,7 +859,7 @@ export function verificationEnvironment(plan, command, argumentsList, environmen
     };
   }
   if (command === process.execPath && argumentsList[0]?.startsWith("scripts/homeport/"))
-    return homeportEnvironment(plan);
+    return homeportEnvironment(plan, argumentsList[0]);
   if (
     command === "npx" &&
     (argumentsList.includes("prisma") ||
