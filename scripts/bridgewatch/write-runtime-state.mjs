@@ -10,6 +10,10 @@ function option(name) {
   return index >= 0 ? process.argv[index + 1] : undefined;
 }
 
+function hasOption(name) {
+  return process.argv.includes(name);
+}
+
 function runtimeStatePath() {
   const configured = process.env.BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH;
   const fallback = process.env.LOCALAPPDATA
@@ -64,9 +68,26 @@ export async function writeVoyagewrightRuntimeState({ state, port, sourceRoot = 
   return payload;
 }
 
+async function maintainVoyagewrightRuntimeState({ state, port, sourceRoot, intervalMs }) {
+  let stopping = false;
+  const stop = () => {
+    stopping = true;
+  };
+  process.once("SIGINT", stop);
+  process.once("SIGTERM", stop);
+  do {
+    await writeVoyagewrightRuntimeState({ state, port, sourceRoot });
+    if (!stopping) await new Promise((resolve) => setTimeout(resolve, intervalMs));
+  } while (!stopping);
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const state = option("--state");
   const port = Number(option("--port"));
   const sourceRoot = option("--source-root") ?? process.cwd();
-  await writeVoyagewrightRuntimeState({ state, port, sourceRoot });
+  const intervalMs = Number(option("--interval-ms") ?? 30_000);
+  if (!Number.isInteger(intervalMs) || intervalMs < 5_000 || intervalMs > 60_000)
+    throw new Error("BRIDGEWATCH_RUNTIME_REFRESH_INTERVAL_INVALID");
+  if (hasOption("--watch")) await maintainVoyagewrightRuntimeState({ state, port, sourceRoot, intervalMs });
+  else await writeVoyagewrightRuntimeState({ state, port, sourceRoot });
 }
