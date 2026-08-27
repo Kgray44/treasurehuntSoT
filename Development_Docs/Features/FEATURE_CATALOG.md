@@ -1592,7 +1592,7 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 **Status:** MAINLINE
 **Program or subsystem:** Project Admiralty
 
-Accepted Admiralty phases establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, governed owner-domain commands, and a read-only cross-domain Chartroom on main without creating a second source of truth. Support Pilot S1 adds autonomous case-bound diagnosis with no repair authority.
+Accepted Admiralty phases establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, governed owner-domain commands, and a read-only cross-domain Chartroom on main without creating a second source of truth. Support Pilot S2 extends S1 diagnosis with consented, registered, bounded canonical owner repairs and mandatory verification.
 
 ### Important subfeatures
 
@@ -1612,6 +1612,8 @@ Accepted Admiralty phases establish canonical roles, recent privileged assurance
 - Accepted Phase 3 governed owner-domain account, security, Community, job, and configuration commands
 - Support Pilot S1 case-bound, short-lived read-only delegated diagnostic capability
 - Source-bound sanitized findings, deterministic diagnosis receipts, and information-only repair proposals
+- Support Pilot S2 exact repair consent, R0-R4 ceilings, durable command/record/domain budgets, target leases, and idempotent execution receipts
+- Registered R1 profile reconcile, R2 stale-session revoke, and explicitly consented R3 membership reconcile with required postcondition verification
 
 ### Primary surfaces
 
@@ -1625,7 +1627,8 @@ Accepted Admiralty phases establish canonical roles, recent privileged assurance
 - The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; exact-source authority and protected canonical-main integration completed in PR #28
 - Transactional-email delivery health and live verification-provider health are blocked by missing canonical owner contracts
 - Broad administrative mutation remains dormant for later governed phases
-- Support Pilot S1 has no repair executor, user-state correction, session revocation, projection rebuild, job retry, or configuration mutation
+- Support Pilot S2 enables only three registered bounded owner repairs; Harborlight projection rebuild, job actions, configuration mutation, and all other commands remain unavailable until their owners publish safe contracts
+- R4 repairs require explicit per-action human approval and no R4 repair is enabled; RX is never executable
 - Owner acceptance does not imply deployment or acceptance of later Admiralty phases
 
 ### Evidence
@@ -1637,7 +1640,11 @@ Accepted Admiralty phases establish canonical roles, recent privileged assurance
 - test: `tests/e2e/admiralty-phase1.spec.ts`
 - path: `src/admiralty/read-models.ts`
 - path: `src/admiralty/support-pilot.ts`
+- path: `src/admiralty/support-repair-registry.ts`
+- path: `src/admiralty/support-repair-service.ts`
 - test: `src/admiralty/support-pilot.test.ts`
+- test: `src/admiralty/support-repair-policy.test.ts`
+- test: `tests/e2e/admiralty-support-pilot-s2.spec.ts`
 - test: `tests/e2e/admiralty-phase2.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Owner_Decision_Record.md`

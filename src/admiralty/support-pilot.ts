@@ -3,6 +3,7 @@ import type { AdmiraltyDataClass } from "./read-models";
 import type { SupportAccessScope } from "./schemas";
 import { AdmiraltyError } from "./errors";
 import { authorizeSupportGrantRecord } from "./support-access";
+import { getRegisteredSupportRepair, isSupportRiskClass, type SupportRiskClass } from "./support-repair-registry";
 
 export const supportExecutionLifetimeMs = 10 * 60 * 1000;
 export const supportPilotRiskCeiling = "READ_ONLY" as const;
@@ -20,6 +21,8 @@ export type ParentSupportGrant = Readonly<{
   operatorAccountId: string;
   targetAccountId: string;
   grantedScopes: string;
+  grantedRepairIds?: string;
+  maximumRiskClass?: string;
   status: string;
   expiresAt: Date;
   revokedAt: Date | null;
@@ -34,6 +37,11 @@ export type SupportExecutionCapability = Readonly<{
   scopes: readonly SupportAccessScope[];
   dataClasses: readonly AdmiraltyDataClass[];
   riskCeiling: typeof supportPilotRiskCeiling;
+  permittedRepairIds: readonly string[];
+  maximumRiskClass: SupportRiskClass;
+  maximumCommands: number;
+  maximumAffectedRecords: number;
+  maximumDomains: number;
   expiresAt: Date;
 }>;
 
@@ -100,6 +108,23 @@ export function parseSupportScopes(value: string): SupportAccessScope[] {
   }
 }
 
+function parsePermittedRepairIds(value: string | undefined) {
+  try {
+    const parsed = JSON.parse(value ?? "[]") as unknown;
+    return Array.isArray(parsed)
+      ? [
+          ...new Set(
+            parsed.filter(
+              (item): item is string => typeof item === "string" && Boolean(getRegisteredSupportRepair(item)),
+            ),
+          ),
+        ].sort()
+      : [];
+  } catch {
+    return [];
+  }
+}
+
 export function sanitizeSupportNarrative(value: string, maximum = 480) {
   return value.replace(forbiddenNarrative, "[redacted]").replaceAll(/\s+/gu, " ").trim().slice(0, maximum);
 }
@@ -133,6 +158,12 @@ export function createSupportExecutionCapability(
   const scopes = parseSupportScopes(grant.grantedScopes);
   if (!scopes.length)
     throw new AdmiraltyError("SUPPORT_GRANT_SCOPE_DENIED", "The grant does not authorize a diagnostic scope.", 403);
+  const permittedRepairIds = parsePermittedRepairIds(grant.grantedRepairIds);
+  const requestedRiskClass = grant.maximumRiskClass ?? "R0";
+  const maximumRiskClass: SupportRiskClass = isSupportRiskClass(requestedRiskClass) ? requestedRiskClass : "R0";
+  const registeredRepairs = permittedRepairIds
+    .map(getRegisteredSupportRepair)
+    .filter((repair): repair is NonNullable<typeof repair> => Boolean(repair));
   return {
     supportCaseId: supportCase.id,
     parentSupportGrantId: grant.id,
@@ -141,6 +172,14 @@ export function createSupportExecutionCapability(
     scopes,
     dataClasses: [...new Set(scopes.map(supportScopeDataClass))].sort(),
     riskCeiling: supportPilotRiskCeiling,
+    permittedRepairIds,
+    maximumRiskClass,
+    maximumCommands: Math.min(3, registeredRepairs.length),
+    maximumAffectedRecords: Math.min(
+      6,
+      registeredRepairs.reduce((sum, repair) => sum + repair.maximumAffectedRecords, 0),
+    ),
+    maximumDomains: new Set(registeredRepairs.map((repair) => repair.owningSubsystem)).size,
     expiresAt: new Date(Math.min(grant.expiresAt.getTime(), now.getTime() + supportExecutionLifetimeMs)),
   };
 }

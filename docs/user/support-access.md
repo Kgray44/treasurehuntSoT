@@ -42,5 +42,11 @@ Support Pilot S1 lets an authorized operator open a human-readable support
 case from the same consent boundary. A case states its safe purpose and exact
 diagnostic scopes; approving it may enable one short-lived, read-only
 diagnostic session. The session records only sanitized evidence references,
-findings, and an informational next-action proposal. It cannot repair account,
-Voyage, Community, session, job, configuration, or other platform state.
+findings, and an informational next-action proposal.
+
+Support Pilot S2 may also ask you to approve a named registered repair. The
+screen shows each exact command before you decide. Approval does not give
+general Administrator power: a repair still needs fresh assurance, a current
+proposal, a hard risk/budget ceiling, and postcondition verification. You can
+decline named repair authority, approve only diagnosis, or revoke active access
+at any time.

@@ -4233,6 +4233,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S2_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S2_Safety_Boundary.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S2_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Admiralty/README.md",
       "record_type": "program-record",
       "status": "preserved",

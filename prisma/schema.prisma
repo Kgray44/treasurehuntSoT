@@ -287,6 +287,7 @@ model SupportAccessRequest {
   targetAccountId           String
   purpose                   String
   requestedScopes           String
+  requestedRepairIds        String              @default("[]") @db.LongText
   status                    String              @default("REQUESTED")
   requestedAt               DateTime            @default(now())
   expiresAt                 DateTime
@@ -312,6 +313,8 @@ model SupportAccessGrant {
   operatorAccountId  String
   targetAccountId    String
   grantedScopes      String
+  grantedRepairIds   String               @default("[]") @db.LongText
+  maximumRiskClass   String               @default("R0") @db.VarChar(8)
   status             String               @default("ACTIVE")
   issuedAt           DateTime             @default(now())
   expiresAt          DateTime
@@ -339,6 +342,7 @@ model SupportCase {
   title                  String                    @db.VarChar(160)
   safeSummary            String                    @db.VarChar(480)
   status                 String                    @default("AWAITING_CONSENT") @db.VarChar(48)
+  revision               Int                       @default(1)
   correlationId          String                    @unique @db.VarChar(191)
   openedAt               DateTime                  @default(now())
   closedAt               DateTime?
@@ -349,6 +353,8 @@ model SupportCase {
   supportAccessRequest   SupportAccessRequest?     @relation("SupportCaseAccessRequest", fields: [supportAccessRequestId], references: [id], onDelete: SetNull)
   executionGrants        SupportExecutionGrant[]
   executionSessions      SupportExecutionSession[]
+  repairExecutions       SupportRepairExecution[]
+  repairLeases           SupportRepairLease[]
 
   @@index([requestingOperatorId, status, openedAt])
   @@index([targetAccountId, status, openedAt])
@@ -363,6 +369,14 @@ model SupportExecutionGrant {
   grantedScopes         String                    @db.LongText
   dataClasses           String                    @db.LongText
   riskCeiling           String                    @default("READ_ONLY") @db.VarChar(32)
+  permittedRepairIds    String                    @default("[]") @db.LongText
+  maximumRiskClass      String                    @default("R0") @db.VarChar(8)
+  maximumCommands       Int                       @default(0)
+  remainingCommands     Int                       @default(0)
+  maximumAffectedRecords Int                      @default(0)
+  remainingAffectedRecords Int                    @default(0)
+  maximumDomains        Int                       @default(0)
+  usedDomains           String                    @default("[]") @db.LongText
   status                String                    @default("ACTIVE") @db.VarChar(32)
   issuedAt              DateTime                  @default(now())
   expiresAt             DateTime
@@ -374,6 +388,7 @@ model SupportExecutionGrant {
   operator              UserAccount               @relation("SupportExecutionGrantOperator", fields: [operatorAccountId], references: [id], onDelete: Restrict)
   targetAccount         UserAccount               @relation("SupportExecutionGrantTarget", fields: [targetAccountId], references: [id], onDelete: Restrict)
   sessions              SupportExecutionSession[]
+  repairExecutions      SupportRepairExecution[]
 
   @@index([supportCaseId, status, expiresAt])
   @@index([operatorAccountId, targetAccountId, status, expiresAt])
@@ -483,14 +498,72 @@ model SupportRepairProposal {
   id                        String                  @id @default(cuid())
   supportExecutionSessionId String
   proposalType              String                  @db.VarChar(96)
+  repairId                  String?                 @db.VarChar(128)
+  targetType                String?                 @db.VarChar(96)
+  targetId                  String?                 @db.VarChar(191)
+  targetRevision            String?                 @db.VarChar(191)
+  proposalRevision          Int?
+  preview                   String?                 @db.LongText
   summary                   String                  @db.VarChar(480)
   requiredUserConsent       Boolean                 @default(false)
   requiresAdministrator     Boolean                 @default(true)
   state                     String                  @default("INFORMATION_ONLY") @db.VarChar(48)
+  requiresHumanApproval     Boolean                 @default(false)
   createdAt                 DateTime                @default(now())
   executionSession          SupportExecutionSession @relation(fields: [supportExecutionSessionId], references: [id], onDelete: Cascade)
+  repairExecutions          SupportRepairExecution[]
 
   @@index([supportExecutionSessionId, state])
+}
+
+model SupportRepairExecution {
+  id                      String                @id @default(cuid())
+  supportCaseId           String
+  supportExecutionGrantId String
+  supportRepairProposalId String
+  repairId                String                @db.VarChar(128)
+  registrySchemaVersion   String                @db.VarChar(32)
+  targetType              String                @db.VarChar(96)
+  targetId                String                @db.VarChar(191)
+  targetRevision          String                @db.VarChar(191)
+  proposalRevision        Int
+  idempotencyKey          String                @unique @db.VarChar(128)
+  state                   String                @default("PENDING") @db.VarChar(48)
+  verificationState       String                @default("PENDING") @db.VarChar(64)
+  rollbackState           String                @default("NOT_REQUIRED") @db.VarChar(64)
+  affectedRecords         Int
+  ownerReceipt            String?               @db.LongText
+  resultSummary           String                @default("{}") @db.LongText
+  failureCode             String?               @db.VarChar(96)
+  correlationId           String                @unique @db.VarChar(191)
+  startedAt               DateTime              @default(now())
+  committedAt             DateTime?
+  verifiedAt              DateTime?
+  completedAt             DateTime?
+  createdAt               DateTime              @default(now())
+  supportCase             SupportCase           @relation(fields: [supportCaseId], references: [id], onDelete: Restrict)
+  supportExecutionGrant   SupportExecutionGrant @relation(fields: [supportExecutionGrantId], references: [id], onDelete: Restrict)
+  proposal                SupportRepairProposal @relation(fields: [supportRepairProposalId], references: [id], onDelete: Restrict)
+
+  @@index([supportCaseId, state, startedAt])
+  @@index([supportExecutionGrantId, state, startedAt])
+  @@index([targetType, targetId, state])
+}
+
+model SupportRepairLease {
+  id                       String      @id @default(cuid())
+  targetType               String      @db.VarChar(96)
+  targetId                 String      @db.VarChar(191)
+  supportCaseId            String
+  supportRepairExecutionId String?     @unique @db.VarChar(191)
+  leaseToken               String      @unique @db.VarChar(191)
+  acquiredAt               DateTime    @default(now())
+  expiresAt                DateTime
+  releasedAt               DateTime?
+  supportCase              SupportCase @relation(fields: [supportCaseId], references: [id], onDelete: Restrict)
+
+  @@unique([targetType, targetId])
+  @@index([supportCaseId, expiresAt])
 }
 
 model WayfarerMigrationRecord {

@@ -287,6 +287,7 @@ model SupportAccessRequest {
   targetAccountId           String
   purpose                   String
   requestedScopes           String
+  requestedRepairIds        String              @default("[]")
   status                    String              @default("REQUESTED")
   requestedAt               DateTime            @default(now())
   expiresAt                 DateTime
@@ -312,6 +313,8 @@ model SupportAccessGrant {
   operatorAccountId  String
   targetAccountId    String
   grantedScopes      String
+  grantedRepairIds   String               @default("[]")
+  maximumRiskClass   String               @default("R0")
   status             String               @default("ACTIVE")
   issuedAt           DateTime             @default(now())
   expiresAt          DateTime
@@ -341,6 +344,7 @@ model SupportCase {
   title                  String
   safeSummary            String
   status                 String                    @default("AWAITING_CONSENT")
+  revision               Int                       @default(1)
   correlationId          String                    @unique
   openedAt               DateTime                  @default(now())
   closedAt               DateTime?
@@ -351,6 +355,8 @@ model SupportCase {
   supportAccessRequest   SupportAccessRequest?     @relation("SupportCaseAccessRequest", fields: [supportAccessRequestId], references: [id], onDelete: SetNull)
   executionGrants        SupportExecutionGrant[]
   executionSessions      SupportExecutionSession[]
+  repairExecutions       SupportRepairExecution[]
+  repairLeases           SupportRepairLease[]
 
   @@index([requestingOperatorId, status, openedAt])
   @@index([targetAccountId, status, openedAt])
@@ -365,6 +371,14 @@ model SupportExecutionGrant {
   grantedScopes         String
   dataClasses           String
   riskCeiling           String                    @default("READ_ONLY")
+  permittedRepairIds    String                    @default("[]")
+  maximumRiskClass      String                    @default("R0")
+  maximumCommands       Int                       @default(0)
+  remainingCommands     Int                       @default(0)
+  maximumAffectedRecords Int                      @default(0)
+  remainingAffectedRecords Int                    @default(0)
+  maximumDomains        Int                       @default(0)
+  usedDomains           String                    @default("[]")
   status                String                    @default("ACTIVE")
   issuedAt              DateTime                  @default(now())
   expiresAt             DateTime
@@ -376,6 +390,7 @@ model SupportExecutionGrant {
   operator              UserAccount               @relation("SupportExecutionGrantOperator", fields: [operatorAccountId], references: [id], onDelete: Restrict)
   targetAccount         UserAccount               @relation("SupportExecutionGrantTarget", fields: [targetAccountId], references: [id], onDelete: Restrict)
   sessions              SupportExecutionSession[]
+  repairExecutions      SupportRepairExecution[]
 
   @@index([supportCaseId, status, expiresAt])
   @@index([operatorAccountId, targetAccountId, status, expiresAt])
@@ -485,14 +500,72 @@ model SupportRepairProposal {
   id                       String                  @id @default(cuid())
   supportExecutionSessionId String
   proposalType             String
+  repairId                 String?
+  targetType               String?
+  targetId                 String?
+  targetRevision           String?
+  proposalRevision         Int?
+  preview                  String?
   summary                  String
   requiredUserConsent      Boolean                 @default(false)
   requiresAdministrator    Boolean                 @default(true)
   state                    String                  @default("INFORMATION_ONLY")
+  requiresHumanApproval    Boolean                 @default(false)
   createdAt                DateTime                @default(now())
   executionSession         SupportExecutionSession @relation(fields: [supportExecutionSessionId], references: [id], onDelete: Cascade)
+  repairExecutions         SupportRepairExecution[]
 
   @@index([supportExecutionSessionId, state])
+}
+
+model SupportRepairExecution {
+  id                      String                @id @default(cuid())
+  supportCaseId           String
+  supportExecutionGrantId String
+  supportRepairProposalId String
+  repairId                String
+  registrySchemaVersion   String
+  targetType              String
+  targetId                String
+  targetRevision          String
+  proposalRevision        Int
+  idempotencyKey          String                @unique
+  state                   String                @default("PENDING")
+  verificationState       String                @default("PENDING")
+  rollbackState           String                @default("NOT_REQUIRED")
+  affectedRecords         Int
+  ownerReceipt            String?
+  resultSummary           String                @default("{}")
+  failureCode             String?
+  correlationId           String                @unique
+  startedAt               DateTime              @default(now())
+  committedAt             DateTime?
+  verifiedAt              DateTime?
+  completedAt             DateTime?
+  createdAt               DateTime              @default(now())
+  supportCase             SupportCase           @relation(fields: [supportCaseId], references: [id], onDelete: Restrict)
+  supportExecutionGrant   SupportExecutionGrant @relation(fields: [supportExecutionGrantId], references: [id], onDelete: Restrict)
+  proposal                SupportRepairProposal @relation(fields: [supportRepairProposalId], references: [id], onDelete: Restrict)
+
+  @@index([supportCaseId, state, startedAt])
+  @@index([supportExecutionGrantId, state, startedAt])
+  @@index([targetType, targetId, state])
+}
+
+model SupportRepairLease {
+  id                       String      @id @default(cuid())
+  targetType               String
+  targetId                 String
+  supportCaseId            String
+  supportRepairExecutionId String?     @unique
+  leaseToken               String      @unique
+  acquiredAt               DateTime    @default(now())
+  expiresAt                DateTime
+  releasedAt               DateTime?
+  supportCase              SupportCase @relation(fields: [supportCaseId], references: [id], onDelete: Restrict)
+
+  @@unique([targetType, targetId])
+  @@index([supportCaseId, expiresAt])
 }
 
 model WayfarerMigrationRecord {

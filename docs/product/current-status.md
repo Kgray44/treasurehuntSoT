@@ -139,14 +139,16 @@ multi-role synthetic browser evidence passes. The owner accepted the qualified
 walkthrough; exact-source Sounding Line authority and protected mainline
 integration completed in PR #28.
 
-**Support Pilot S1 candidate:** Project Admiralty adds a case-bound,
-owner-consented autonomous diagnostic path at `/admin/support/cases`. A short-
-lived delegated capability reads only the exact approved diagnostic scopes and
-persists sanitized observations, source references, findings, a deterministic
-receipt, and an information-only repair proposal. It has no repair executor or
-user/platform state-mutation path. Candidate integration, ordinary Sounding
-Line authority, and landed smoke remain required before mainline availability
-is claimed.
+**Support Pilot S2 candidate:** Project Admiralty retains S1's case-bound,
+owner-consented diagnostic path at `/admin/support/cases` and adds a narrow,
+registered repair path. A repair can run only after the exact owner grant,
+Administrator capability and fresh assurance, risk ceiling, budget, current
+proposal revision, target preconditions, durable audit start, canonical owner
+command, and postcondition verification all succeed. The initial registry has
+three bounded commands; high-risk, unregistered, job, projection, raw-SQL, and
+private-content actions are not executable. Candidate integration, ordinary
+Sounding Line authority, and landed smoke remain required before mainline
+availability is claimed.
 
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
 

@@ -12,6 +12,16 @@ last_reviewed: 2026-08-27
 
 ### Changed
 
+- Added Project Admiralty Support Pilot S2, **Turn the Wrench**: consented
+  support cases can now propose and execute only three registered, bounded
+  canonical owner repairs. Exact repair consent, fresh assurance, hard R0-R4
+  ceilings, durable command/record/domain budgets, current-state previews,
+  target leases, idempotency, audit-before-mutation, and postcondition
+  verification are enforced. R4, RX, raw SQL, private-content access, jobs,
+  projection rebuilds, and all unregistered mutations remain unavailable. This
+  is protected-source behavior with synthetic evidence, not deployment or live
+  user-data acceptance.
+
 - Added Project Helm Amendment A3, **Ready the Room**: Captain-only and
   Captain + Player Voyages now have clear, responsive pre-launch muster views
   with safe Crew invitation/readiness/presence state, live reconciliation, and
