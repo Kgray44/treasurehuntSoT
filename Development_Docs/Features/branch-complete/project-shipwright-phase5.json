@@ -5,7 +5,7 @@
   "status": "BRANCH_COMPLETE_NOT_MERGED",
   "program": "Project Shipwright Phase 5",
   "branch": "codex/seat1-shipwright-p5-launch-from-yard",
-  "commit": "a9c3d9536ec33ee8e3a2647896d35936f02157b5",
+  "commit": "80cb20cec5ca2bc1cd92b4212d07870dab7ec63f",
   "surfaces": [
     "/studio/tales/[taleId]/versions",
     "/api/studio/tales/[taleId]/publishing-review",
