@@ -264,10 +264,10 @@ test("Journey I: Community district slow success", async ({ page }) => {
   const search = page.getByRole("searchbox", { name: "Search public Community Harbor" });
   await search.fill("coast");
   const navigation = search.press("Enter");
-  await requestIntercepted;
-  await page.waitForTimeout(450);
+  const pendingDelay = page.locator('[data-async-state="pending-delay"]');
+  await expect(pendingDelay).toBeVisible();
   await expect(page.locator(".ui-loading-state")).toHaveCount(0);
-  await page.waitForTimeout(100);
+  await requestIntercepted;
   await expect(page.locator(".ui-loading-state")).toBeVisible();
   await capture(page, "HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING");
   release();
