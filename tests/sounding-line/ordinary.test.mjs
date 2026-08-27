@@ -30,6 +30,7 @@ import {
   soundingLineDatabaseUrl,
   verificationEnvironment,
   verificationCommands,
+  verificationObligationGroups,
 } from "../../scripts/sounding-line/ordinary.mjs";
 import { resolveBrowserSuiteDispatches } from "../../scripts/sounding-line/browser-suite-profiles.mjs";
 
@@ -111,6 +112,7 @@ function evidenceFixture() {
     "Development_Docs/guide.md": "# Guide\n",
     "scripts/sounding-line/sqlite-bootstrap.mjs": "export {};\n",
     "scripts/sounding-line/browser-authority.mjs": "export {};\n",
+    "prisma/schema.sqlite.prisma": 'generator client { provider = "prisma-client-js" }\n',
     "prisma/seed.ts": "export {};\n",
   };
   for (const [file, contents] of Object.entries(files)) {
@@ -575,6 +577,42 @@ test("ordinary browser proof uses the installed Chromium project", () => {
       {},
     ),
     { DATABASE_URL: "file:./.sounding-line-candidate.sqlite" },
+  );
+});
+
+test("browser proof keeps SQLite client generation after the production build", () => {
+  const groups = verificationObligationGroups({
+    mode: "ordinary",
+    candidateSha: "a".repeat(40),
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: ["tests/e2e/project-helm-phase1.spec.ts"] },
+    databaseUrl: "file:./.sounding-line-candidate.sqlite",
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: true,
+  });
+  const browser = groups.find((group) => group.kind === "browser");
+  assert.deepEqual(browser?.commands.slice(0, 3), [
+    ["npm", ["run", "build"]],
+    ["npx", ["--no-install", "prisma", "generate", "--schema", "prisma/schema.sqlite.prisma"]],
+    [
+      process.execPath,
+      ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
+    ],
+  ]);
+  assert.equal(
+    groups.some(
+      (group) =>
+        group.kind === "migration" &&
+        group.commands.some(
+          ([, argumentsList]) =>
+            argumentsList.includes("prisma") &&
+            argumentsList.includes("generate") &&
+            argumentsList.includes("schema.sqlite.prisma"),
+        ),
+    ),
+    false,
   );
 });
 
@@ -1474,9 +1512,9 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
       !rebound.calls.some(([, argumentsList]) => argumentsList[0] === "scripts/sounding-line/browser-authority.mjs"),
     );
     assert.equal(rebound.result.finalization.decision, "PASS");
-    assert.equal(rebound.result.finalization.requiredObligations, 7);
+    assert.equal(rebound.result.finalization.requiredObligations, 6);
     assert.equal(rebound.result.freshObligations, 1);
-    assert.equal(rebound.result.finalization.counts.REBOUND, 6);
+    assert.equal(rebound.result.finalization.counts.REBOUND, 5);
     assert.equal(rebound.result.finalization.counts.INVALIDATED, 1);
     assert.equal(rebound.result.commandsAvoided.length, 9);
     assert.ok(rebound.result.avoidedDurationMs >= (freshBrowserReceipt?.durationMs ?? Infinity));
