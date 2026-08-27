@@ -1805,6 +1805,44 @@ Creators stage a saved Chronicle source through Drydock readiness, exact readabl
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-040 - Bridgewatch v2.0 Light Mission Control
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Bridgewatch v2.0 Phase 3 - Light Mission Control
+
+A private, read-only Bridgewatch Mission Control turns the accepted bounded data fabric into eleven dense, source-bound operator stations with explainable attention, discoverable project intelligence, retained current-main and verification context, and truthful unavailable or unrecorded states without gaining authority over governed work.
+
+### Important subfeatures
+
+- Eleven named Mission Control stations with hash deep links, bounded search, mobile layout, visible focus, and reduced-motion support
+- Dense project profiles grouping identity, versions, phases, governing status, candidate and main relations, branches, pull requests, verification, workers, provenance, and retained history
+- Pure explainable attention derived only from source health, expected coverage, worker, branch, pull-request, verification, runtime, provider, and retained-history evidence
+- Truthful Product Intelligence, Voyagewright Runtime, Sources and Data Quality, History, Mainline, and Verification presentation without fabricated capability realization, schema agreement, deployment ancestry, or historic fact
+- Capability-gated Voyagewright and NGINX allowlists for the existing read-only facts, coverage, Nightwatch, and fact-profile observations
+- Focusable named mobile table regions verified with zero Axe violations on live desktop and mobile task-owned views
+
+### Primary surfaces
+
+`bridgewatch`, `/bridgewatch`, `Fleet Overview through Attention stations`, `GET /api/facts`, `GET /api/coverage`, `GET /api/nightwatch`
+
+### Meaningful limitations
+
+- Bridgewatch remains a private GET/HEAD observer and cannot create, approve, merge, retry, cancel, queue, deploy, release, or mutate project, worker, provider, Voyagewright, or product state.
+- Source, provider, runtime, deployment, capability-realization, schema-agreement, and historical facts remain visibly unavailable, provisional, or unrecorded unless a configured bounded source supplies them.
+- This branch-complete entry is local candidate evidence only; protected-main integration, deployment, provider proof, and owner acceptance are not claimed.
+
+### Evidence
+
+- commit: `f9aa6fb133dae69cb8fdf9de4f33103f65fd5495`
+- path: `bridgewatch/public/app.js`
+- path: `bridgewatch/lib/server.ts`
+- test: `bridgewatch/test/operator-attention.test.ts`
+- test: `bridgewatch/test/mission-control-ui.test.ts`
+- test: `src/admiralty/bridgewatch-gateway.test.ts`
+- completion-record: `Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Validation_Record.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
