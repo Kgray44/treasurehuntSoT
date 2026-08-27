@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { fetchDrydockJson } from "@/components/studio/drydock-json-fetch";
 
 type ScenarioSummary = {
   scenarioId: string;
@@ -179,17 +180,23 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     setError("");
     try {
       const [response, suitesResponse, runsResponse] = await Promise.all([
-        fetch(`/api/studio/tales/${taleId}/scenarios`, privateRequest(csrfToken)),
-        fetch(`/api/studio/tales/${taleId}/scenarios/suites`, privateRequest(csrfToken)),
-        fetch(`/api/studio/tales/${taleId}/simulation-runs`, privateRequest(csrfToken)),
+        fetchDrydockJson<{
+          error?: string;
+          sourceChecksum?: string;
+          scenarios?: ScenarioSummary[];
+          requiredScenarioClasses?: RequiredScenarioClass[];
+        }>(`/api/studio/tales/${taleId}/scenarios`, privateRequest(csrfToken)),
+        fetchDrydockJson<{ suites?: Suite[] }>(
+          `/api/studio/tales/${taleId}/scenarios/suites`,
+          privateRequest(csrfToken),
+        ),
+        fetchDrydockJson<{ runs?: RunSummary[] }>(
+          `/api/studio/tales/${taleId}/simulation-runs`,
+          privateRequest(csrfToken),
+        ),
       ]);
-      const body = (await response.json()) as {
-        error?: string;
-        sourceChecksum?: string;
-        scenarios?: ScenarioSummary[];
-        requiredScenarioClasses?: RequiredScenarioClass[];
-      };
-      const suitesBody = (await suitesResponse.json()) as { suites?: Suite[] };
+      const { body } = response;
+      const suitesBody = suitesResponse.body;
       if (!response.ok || !body.sourceChecksum)
         throw new Error(body.error ?? "Sea Trial Scenarios could not be loaded.");
       const currentSourceChecksum = body.sourceChecksum;
@@ -197,7 +204,7 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
       setRequiredScenarioClasses(body.requiredScenarioClasses ?? []);
       setScenarios(body.scenarios ?? []);
       setSuites(suitesResponse.ok ? (suitesBody.suites ?? []) : []);
-      if (runsResponse.ok) setRuns(((await runsResponse.json()) as { runs?: RunSummary[] }).runs ?? []);
+      if (runsResponse.ok) setRuns(runsResponse.body.runs ?? []);
       setScenario((current) => current ?? freshScenario(currentSourceChecksum));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Sea Trial Scenarios could not be loaded.");
@@ -380,11 +387,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
   async function selectScenario(summary: ScenarioSummary) {
     setError("");
     try {
-      const response = await fetch(
+      const response = await fetchDrydockJson<{ error?: string; scenario?: Scenario }>(
         `/api/studio/tales/${taleId}/scenarios/${encodeURIComponent(summary.scenarioId)}`,
         privateRequest(csrfToken),
       );
-      const body = (await response.json()) as { error?: string; scenario?: Scenario };
+      const { body } = response;
       if (!response.ok || !body.scenario) throw new Error(body.error ?? "Scenario could not be loaded.");
       setScenario(body.scenario);
       setInputsText(formatJson(body.scenario.inputs));
@@ -418,11 +425,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
         assertions,
         tags: scenario.tags.filter(Boolean),
       };
-      const response = await fetch(
+      const response = await fetchDrydockJson<{ error?: string; scenario?: ScenarioSummary }>(
         `/api/studio/tales/${taleId}/scenarios`,
         privateRequest(csrfToken, { method: "POST", body: JSON.stringify(next) }),
       );
-      const body = (await response.json()) as { error?: string; scenario?: ScenarioSummary };
+      const { body } = response;
       if (!response.ok || !body.scenario) throw new Error(body.error ?? "Scenario could not be saved.");
       setScenario(next);
       setScenarios((current) => [
@@ -443,11 +450,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     setBusy("save");
     setError("");
     try {
-      const response = await fetch(
+      const response = await fetchDrydockJson<{ error?: string; scenario?: ScenarioSummary }>(
         `/api/studio/tales/${taleId}/scenarios/${encodeURIComponent(scenario.id)}?revision=${scenario.revision}`,
         privateRequest(csrfToken, { method: "POST" }),
       );
-      const body = (await response.json()) as { error?: string; scenario?: ScenarioSummary };
+      const { body } = response;
       if (!response.ok || !body.scenario) throw new Error(body.error ?? "Scenario could not be duplicated.");
       setScenarios((current) => [body.scenario!, ...current]);
       setScenario({
@@ -468,11 +475,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     setBusy("save");
     setError("");
     try {
-      const response = await fetch(
+      const response = await fetchDrydockJson<{ error?: string; archived?: boolean }>(
         `/api/studio/tales/${taleId}/scenarios/${encodeURIComponent(scenario.id)}`,
         privateRequest(csrfToken, { method: "DELETE" }),
       );
-      const body = (await response.json()) as { error?: string; archived?: boolean };
+      const { body } = response;
       if (!response.ok || !body.archived) throw new Error(body.error ?? "Scenario could not be archived.");
       setScenarios((current) => current.filter((item) => item.scenarioId !== scenario.id));
       setScenario(freshScenario(sourceChecksum));
@@ -490,11 +497,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     setBusy("run");
     setError("");
     try {
-      const response = await fetch(
+      const response = await fetchDrydockJson<{ error?: string; run?: Run }>(
         `/api/studio/tales/${taleId}/scenarios/${encodeURIComponent(saved.scenarioId)}/runs`,
         privateRequest(csrfToken, { method: "POST", body: JSON.stringify({ revision: saved.revision }) }),
       );
-      const body = (await response.json()) as { error?: string; run?: Run };
+      const { body } = response;
       if (!response.ok || !body.run) throw new Error(body.error ?? "Scenario run could not be completed.");
       setRun(body.run);
       setRuns((current) => [body.run!.summary, ...current.filter((item) => item.runId !== body.run!.summary.runId)]);
@@ -516,7 +523,7 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     setBusy("save");
     setError("");
     try {
-      const response = await fetch(
+      const response = await fetchDrydockJson<{ error?: string; suite?: Suite }>(
         `/api/studio/tales/${taleId}/scenarios/suites`,
         privateRequest(csrfToken, {
           method: "POST",
@@ -529,7 +536,7 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
           }),
         }),
       );
-      const body = (await response.json()) as { error?: string; suite?: Suite };
+      const { body } = response;
       if (!response.ok || !body.suite) throw new Error(body.error ?? "Suite could not be saved.");
       setSuites((current) => [body.suite!, ...current.filter((item) => item.suiteId !== body.suite!.suiteId)]);
     } catch (cause) {
@@ -543,14 +550,14 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     setBusy("run");
     setError("");
     try {
-      const response = await fetch(
+      const response = await fetchDrydockJson<{
+        error?: string;
+        result?: { proofStatus: string; runs: Array<{ run: Run }> };
+      }>(
         `/api/studio/tales/${taleId}/scenarios/suites/${encodeURIComponent(suite.suiteId)}/runs`,
         privateRequest(csrfToken, { method: "POST", body: "{}" }),
       );
-      const body = (await response.json()) as {
-        error?: string;
-        result?: { proofStatus: string; runs: Array<{ run: Run }> };
-      };
+      const { body } = response;
       if (!response.ok || !body.result) throw new Error(body.error ?? "Suite could not be run.");
       setRun(body.result.runs.at(-1)?.run ?? null);
       if (body.result.proofStatus !== "COMPLETE")
@@ -565,11 +572,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
   async function selectRun(runId: string) {
     setError("");
     try {
-      const response = await fetch(
+      const response = await fetchDrydockJson<{ error?: string; run?: Run }>(
         `/api/studio/tales/${taleId}/simulation-runs/${encodeURIComponent(runId)}`,
         privateRequest(csrfToken),
       );
-      const body = (await response.json()) as { error?: string; run?: Run };
+      const { body } = response;
       if (!response.ok || !body.run) throw new Error(body.error ?? "Sea Trial receipt could not be loaded.");
       setRun(body.run);
       setStateDiff(null);
@@ -584,11 +591,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     setBusy("run");
     setError("");
     try {
-      const response = await fetch(
+      const response = await fetchDrydockJson<{ error?: string; replay?: { run?: Run } }>(
         `/api/studio/tales/${taleId}/simulation-runs/${encodeURIComponent(run.summary.runId)}/replay`,
         privateRequest(csrfToken, { method: "POST" }),
       );
-      const body = (await response.json()) as { error?: string; replay?: { run?: Run } };
+      const { body } = response;
       if (!response.ok || !body.replay?.run) throw new Error(body.error ?? "Sea Trial replay could not be completed.");
       setRun(body.replay.run);
       setRuns((current) => [
@@ -608,11 +615,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     setBusy("run");
     setError("");
     try {
-      const response = await fetch(
+      const response = await fetchDrydockJson<{ error?: string; cancellationRequested?: boolean }>(
         `/api/studio/tales/${taleId}/simulation-runs/${encodeURIComponent(run.summary.runId)}`,
         privateRequest(csrfToken, { method: "DELETE" }),
       );
-      const body = (await response.json()) as { error?: string; cancellationRequested?: boolean };
+      const { body } = response;
       if (!response.ok || !body.cancellationRequested)
         throw new Error(body.error ?? "Cancellation could not be requested.");
       setCancellationRequestedRunId(run.summary.runId);
@@ -628,11 +635,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     setBusy("run");
     setError("");
     try {
-      const response = await fetch(
+      const response = await fetchDrydockJson<{ error?: string; comparison?: Comparison }>(
         `/api/studio/tales/${taleId}/simulation-runs/${encodeURIComponent(run.summary.runId)}/compare/${encodeURIComponent(compareRunId)}`,
         privateRequest(csrfToken),
       );
-      const body = (await response.json()) as { error?: string; comparison?: Comparison };
+      const { body } = response;
       if (!response.ok || !body.comparison) throw new Error(body.error ?? "Sea Trial receipts could not be compared.");
       setComparison(body.comparison);
     } catch (cause) {
@@ -646,11 +653,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     if (!run) return;
     setError("");
     try {
-      const response = await fetch(
+      const response = await fetchDrydockJson<{ error?: string; diff?: StateDiff }>(
         `/api/studio/tales/${taleId}/simulation-runs/${encodeURIComponent(run.summary.runId)}/state-diff?from=${from}&to=${to}`,
         privateRequest(csrfToken),
       );
-      const body = (await response.json()) as { error?: string; diff?: StateDiff };
+      const { body } = response;
       if (!response.ok || !body.diff) throw new Error(body.error ?? "State Diff could not be loaded.");
       setStateDiff(body.diff);
     } catch (cause) {
@@ -662,8 +669,11 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
     setBusy("run");
     setError("");
     try {
-      const response = await fetch(`/api/studio/tales/${taleId}/scenarios/suggestions`, privateRequest(csrfToken));
-      const body = (await response.json()) as { error?: string; coverage?: CoverageView; suggestions?: Suggestion[] };
+      const response = await fetchDrydockJson<{ error?: string; coverage?: CoverageView; suggestions?: Suggestion[] }>(
+        `/api/studio/tales/${taleId}/scenarios/suggestions`,
+        privateRequest(csrfToken),
+      );
+      const { body } = response;
       if (!response.ok || !body.coverage) throw new Error(body.error ?? "Coverage gaps could not be calculated.");
       setCoverage(body.coverage);
       setSuggestions(body.suggestions ?? []);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fetchDrydockJson } from "@/components/studio/drydock-json-fetch";
 
 type Requirement = { id: string; resolver: string; capability: string };
 type Readiness = {
@@ -45,18 +46,17 @@ export function DrydockLaunchGate({
   const [error, setError] = useState("");
   useEffect(() => {
     let active = true;
-    void fetch(`/api/studio/tales/${encodeURIComponent(taleId)}/readiness`, {
+    void fetchDrydockJson<{ readiness?: Readiness }>(`/api/studio/tales/${encodeURIComponent(taleId)}/readiness`, {
       cache: "no-store",
       headers: { "x-csrf-token": csrfToken },
     })
-      .then(async (response) => {
-        if (!response.ok) throw new Error("The Launch Gate could not load its current server decision.");
-        return response.json() as Promise<{ readiness: Readiness }>;
-      })
-      .then((body) => {
+      .then((response) => {
         if (!active) return;
-        setReadiness(body.readiness);
-        onReadinessChange?.(body.readiness.status);
+        if (!response.ok || !response.body.readiness)
+          throw new Error("The Launch Gate could not load its current server decision.");
+        const { readiness } = response.body;
+        setReadiness(readiness);
+        onReadinessChange?.(readiness.status);
       })
       .catch(
         (cause: unknown) =>
