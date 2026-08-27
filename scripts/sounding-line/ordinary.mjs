@@ -72,6 +72,15 @@ const textFile = /\.(?:[cm]?[jt]sx?|json|ya?ml|md|css)$/u;
 const lintableFile = /\.(?:[cm]?[jt]sx?)$/u;
 const broadDomainTokens = new Set(["community", "exchange", "harborlight"]);
 
+function isGenericBrowserTest(file) {
+  return (
+    file !== admiraltyPhase2BrowserTest &&
+    file !== tideglassPhase3BrowserTest &&
+    file !== homeportPhase4BrowserTest &&
+    !homeportPhase7BrowserTests.has(file)
+  );
+}
+
 const toPosix = (value) => value.split(path.sep).join("/");
 const hash = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 
@@ -346,7 +355,11 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
     migrationScripts,
     sentinels: ["format", "lint", "typecheck", "private-content"],
     migrationRequired: requiresMigrationValidation({ changedPaths, mode }),
-    buildRequired: requiresBuild({ changedPaths, mode }),
+    // Generic browser proof uses the shared Playwright configuration, which
+    // starts the production server. Even a browser-spec-only candidate must
+    // therefore produce the exact .next output before Playwright starts.
+    buildRequired:
+      requiresBuild({ changedPaths, mode }) || selection.browserTests.some((file) => isGenericBrowserTest(file)),
     registrationValidationRequired: changedPaths.some((file) => registrationPaths.has(file)),
   };
 }
@@ -375,13 +388,7 @@ export function verificationCommands(plan) {
   if (plan.buildRequired) commands.push(["npm", ["run", "build"]]);
   if (plan.selected.browserTests.length) {
     const selectedHomeportPhase7 = plan.selected.browserTests.filter((file) => homeportPhase7BrowserTests.has(file));
-    const genericBrowserTests = plan.selected.browserTests.filter(
-      (file) =>
-        file !== admiraltyPhase2BrowserTest &&
-        file !== tideglassPhase3BrowserTest &&
-        file !== homeportPhase4BrowserTest &&
-        !homeportPhase7BrowserTests.has(file),
-    );
+    const genericBrowserTests = plan.selected.browserTests.filter((file) => isGenericBrowserTest(file));
     if (plan.selected.browserTests.includes(admiraltyPhase2BrowserTest))
       commands.push([process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]]);
     if (plan.selected.browserTests.includes(tideglassPhase3BrowserTest))
