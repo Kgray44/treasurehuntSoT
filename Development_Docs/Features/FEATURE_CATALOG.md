@@ -166,51 +166,6 @@ Players can discover, resume, archive, and reconcile exact-edition Voyage experi
 
 ---
 
-## FT-007 - Captain Voyage Operations
-
-**Status:** MAINLINE
-**Program or subsystem:** Captain
-
-Captains create, launch, operate, and conclude live Voyages through authoritative commands, with independent Player participation and a complete ordinary Crew lifecycle.
-
-### Important subfeatures
-
-- Voyage creation wizard
-- Crew readiness
-- Command idempotency
-- Pause and resume
-- Operational audit trail
-- Independent Captain authority and Player membership
-- Captain-only and Captain plus Player participation modes
-- Player-safe perspective switching
-- Membership-bounded personal history and artifact eligibility
-- Captain operational projections and prioritized voyage library
-- Membership-scoped crew presence, sync health, warnings, and safe event stream
-- Zero-invite Captain plus Player Voyage creation
-- Direct Player invitation acceptance and decline from Chronicle Library
-- Captain Crew removal, Player voluntary leave, and explicit Voyage cancellation with preserved history
-
-### Primary surfaces
-
-`/captain`, `/captain/library`, `/captain/sessions/[sessionId]`, `/captain/voyages/[playthroughId]/player-preview`, `/player/playthroughs/[playthroughId]`
-
-### Evidence
-
-- commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
-- path: `src/server/admin-command.ts`
-- path: `src/domain/admin.ts`
-- path: `src/helm/captain-participation.ts`
-- path: `src/helm/operations.ts`
-- path: `src/helm/lifecycle.ts`
-- path: `src/platform/membership-presence.ts`
-- path: `src/components/captain/CaptainOperationalPanel.tsx`
-- path: `src/components/platform/CaptainLibrary.tsx`
-- path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
-- path: `src/app/api/captain/playthroughs/[playthroughId]/cancel/route.ts`
-- path: `src/app/api/player/playthroughs/[playthroughId]/leave/route.ts`
-
----
-
 ## FT-008 - Creator Studio
 
 **Status:** MAINLINE
@@ -1699,6 +1654,62 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 ---
 
 # Completed Branch Features Not Yet Available on Main
+
+## FT-007 - Captain Voyage Operations
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Captain
+
+Captains create, launch, operate, conclude, and safely hand off live Voyages through authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.
+
+### Important subfeatures
+
+- Voyage creation wizard
+- Crew readiness
+- Command idempotency
+- Pause and resume
+- Operational audit trail
+- Independent Captain authority and Player membership
+- Captain-only and Captain plus Player participation modes
+- Player-safe perspective switching
+- Membership-bounded personal history and artifact eligibility
+- Captain operational projections and prioritized voyage library
+- Membership-scoped crew presence, sync health, warnings, and safe event stream
+- Zero-invite Captain plus Player Voyage creation
+- Direct Player invitation acceptance and decline from Chronicle Library
+- Captain Crew removal, Player voluntary leave, and explicit Voyage cancellation with preserved history
+- Direct joined-Player Captain transfer with durable authority receipts
+- Succession Hold, first-committed Player takeover, and same-edition solo continuation lineage
+
+### Primary surfaces
+
+`/captain`, `/captain/library`, `/captain/sessions/[sessionId]`, `/captain/voyages/[playthroughId]/player-preview`, `/player/playthroughs/[playthroughId]`
+
+### Meaningful limitations
+
+- The A2 authority-handoff extension is branch-complete and remains pending protected-main integration; deployment, live-Voyage proof, and owner acceptance are separate.
+- A3 Ready the Room and original Helm Phase 3 command redesign remain outside this amendment.
+
+### Evidence
+
+- branch: `codex/helm-a2-pass-helm`
+- commit: `bb5468ce34e77eb58d9af7c57ce2779f6665e3ce`
+- commit: `ca40227cbef3575315c089d224a0cd26ec77bc78`
+- path: `src/server/admin-command.ts`
+- path: `src/domain/admin.ts`
+- path: `src/helm/captain-participation.ts`
+- path: `src/helm/operations.ts`
+- path: `src/helm/lifecycle.ts`
+- path: `src/helm/authority-lifecycle.ts`
+- path: `src/components/platform/PlayerVoyageRoom.tsx`
+- path: `src/platform/membership-presence.ts`
+- path: `src/components/captain/CaptainOperationalPanel.tsx`
+- path: `src/components/platform/CaptainLibrary.tsx`
+- path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
+- path: `src/app/api/captain/playthroughs/[playthroughId]/cancel/route.ts`
+- path: `src/app/api/player/playthroughs/[playthroughId]/leave/route.ts`
+
+---
 
 # Deliberately Excluded Until Complete
 
