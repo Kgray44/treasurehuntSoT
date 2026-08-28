@@ -91,7 +91,7 @@ test(`Journey D: captain`, async ({ page }) => {
   await enterWorkspaceFromOverview(page, "Captain");
   await expect(page.getByRole("heading", { name: /Captain/u }).first()).toBeVisible();
   await clickFirstRoute(page, "/captain/sessions/");
-  await expect(page.getByRole("heading", { name: "The Lantern Coast", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Operational voyage summary", level: 2 })).toBeVisible();
   await capture(page, "captain-session");
   await accountDestination(page, account, "View My Profile");
 });
@@ -130,7 +130,9 @@ test(`Journey F: community discovery`, async ({ page }) => {
   await capture(page, "community-saved");
   await accountDestination(page, account, "Chronicle Passport");
   await expect(page.getByRole("heading", { name: /Chronicle Passport/u }).first()).toBeVisible();
-  const saved = page.getByRole("navigation", { name: "Personal Harbor sections" }).getByRole("link", { name: "Saved" });
+  const saved = page
+    .getByRole("navigation", { name: "Chronicle Passport sections" })
+    .getByRole("link", { name: "Saved", exact: true });
   await expect(saved).toBeVisible();
   await saved.click();
   await expect(page.getByText("Clockwork Reef Almanac", { exact: true }).first()).toBeVisible();
@@ -166,20 +168,14 @@ test(`Journey H: chronicle passport`, async ({ page }) => {
   const account = await signIn(page, "RETURNING_FULL_CAPABILITY");
   await accountDestination(page, account, "Chronicle Passport");
   await expect(page.getByRole("heading", { name: /Chronicle Passport/u }).first()).toBeVisible();
-  const navigation = page.getByRole("navigation", { name: "Personal Harbor sections" });
+  const navigation = page.getByRole("navigation", { name: "Chronicle Passport sections" });
   await settledDeclaredLinkNavigation(
     page,
-    navigation.getByRole("link", { name: "History", exact: true }),
+    navigation.getByRole("link", { name: "Your Voyages", exact: true }),
     "Chronicle Passport History",
   );
-  await expect(page.getByLabel("Search your history")).toBeVisible();
-  await settledDeclaredLinkNavigation(page, page.getByRole("link", { name: "Open record" }).first(), "History record");
-  await expect(page.getByRole("heading", { name: "Private Keepsake" })).toBeVisible();
-  await settledDeclaredLinkNavigation(
-    page,
-    page.getByRole("link", { name: /Chronicle History/u }).first(),
-    "Chronicle History return",
-  );
+  await expect(page.getByLabel("Search your archive")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Synthetic Route Chronicle", level: 3 })).toBeVisible();
   await settledDeclaredLinkNavigation(
     page,
     navigation.getByRole("link", { name: "Memories", exact: true }),

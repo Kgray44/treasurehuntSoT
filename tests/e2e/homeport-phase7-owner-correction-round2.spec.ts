@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, rmSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
 
@@ -96,16 +97,9 @@ test("Journey E: Home ambient motion", async ({ page }) => {
   const lantern = page.locator(".hanging-lantern");
   await expect(lantern).toBeVisible();
   await expect(lantern).toHaveCSS("transform-origin", "47px 0px");
-  const samples: number[] = [];
-  for (let index = 0; index < 12; index += 1) {
-    samples.push(await rotation(lantern));
-    await page.waitForTimeout(180);
-  }
-  expect(Math.min(...samples)).toBeLessThan(-0.5);
-  expect(Math.max(...samples)).toBeGreaterThan(0.5);
   await capture(page, "HP-OWCR2-EV-D-LANTERN-NEUTRAL", false);
-  await captureAtRotation(page, lantern, "HP-OWCR2-EV-E-LANTERN-LEFT", (value) => value < -0.5);
-  await captureAtRotation(page, lantern, "HP-OWCR2-EV-F-LANTERN-RIGHT", (value) => value > 0.5);
+  const leftRotation = await captureAtRotation(page, lantern, "HP-OWCR2-EV-E-LANTERN-LEFT", (value) => value < -0.5);
+  const rightRotation = await captureAtRotation(page, lantern, "HP-OWCR2-EV-F-LANTERN-RIGHT", (value) => value > 0.5);
   const star = page.locator(".star-field i").first();
   const fog = page.locator(".distant-clouds");
   const starOpacity: number[] = [];
@@ -120,7 +114,7 @@ test("Journey E: Home ambient motion", async ({ page }) => {
   await capture(page, "HP-OWCR2-EV-H-FOG-DRIFT", false);
   await writeMotionReceipt("HP-OWCR2-EV-D-LANTERN-NEUTRAL", {
     transformOrigin: await lantern.evaluate((node) => getComputedStyle(node).transformOrigin),
-    rotations: samples,
+    rotations: [leftRotation, rightRotation],
     starOpacity,
     fogAnimationName: await fog.evaluate((node) => getComputedStyle(node).animationName),
   });
@@ -264,10 +258,10 @@ test("Journey I: Community district slow success", async ({ page }) => {
   const search = page.getByRole("searchbox", { name: "Search public Community Harbor" });
   await search.fill("coast");
   const navigation = search.press("Enter");
-  await requestIntercepted;
-  await page.waitForTimeout(450);
+  const pendingDelay = page.locator('[data-async-state="pending-delay"]');
+  await expect(pendingDelay).toBeVisible();
   await expect(page.locator(".ui-loading-state")).toHaveCount(0);
-  await page.waitForTimeout(100);
+  await requestIntercepted;
   await expect(page.locator(".ui-loading-state")).toBeVisible();
   await capture(page, "HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING");
   release();
@@ -479,6 +473,56 @@ test("Journey S: Text contrast", async ({ page }) => {
   await capture(page, "HP-OWCR2-EV-Y-COMMUNITY-CONTRAST");
 });
 
+test("Journey S: global navigation remains complete at effective 200 percent zoom", async ({ page }) => {
+  const account = await signIn(page, "SERA");
+  await setTheme(page, "LIGHT");
+  await accountDestination(page, account, "Personal Harbor");
+  const globalNavigation = page.getByRole("navigation", { name: "Global navigation" });
+  const globalLabels = ["Home", "Explore Chronicles", "Community Harbor", "Chronicle Passport"];
+  const seriousOrCriticalAxeFindings = async () =>
+    (await new AxeBuilder({ page }).analyze()).violations
+      .filter((item) => ["serious", "critical"].includes(item.impact ?? ""))
+      .map((item) => `${item.id}:${item.impact}`)
+      .sort();
+
+  for (const label of globalLabels)
+    await expect(globalNavigation.getByRole("link", { name: label, exact: true })).toBeVisible();
+  const axeBaseline = await seriousOrCriticalAxeFindings();
+  await page.evaluate(() => (document.body.style.zoom = "2"));
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
+  ).toBeLessThanOrEqual(1);
+
+  const accountButton = page.getByRole("button", { name: account.displayName, exact: true });
+  await globalNavigation.getByRole("link", { name: "Home", exact: true }).focus();
+  await expect(globalNavigation.getByRole("link", { name: "Home", exact: true })).toBeFocused();
+  for (const label of globalLabels.slice(1)) {
+    await page.keyboard.press("Tab");
+    await expect(globalNavigation.getByRole("link", { name: label, exact: true })).toBeFocused();
+  }
+  await expect(accountButton).toBeVisible();
+  await accountButton.click();
+  await expect(accountButton).toHaveAttribute("aria-expanded", "true");
+  await accountButton.click();
+  await expect(accountButton).toHaveAttribute("aria-expanded", "false");
+  expect(await seriousOrCriticalAxeFindings()).toEqual(axeBaseline);
+  expect(
+    (await new AxeBuilder({ page }).include('[aria-label="Global navigation"]').analyze()).violations.filter((item) =>
+      ["serious", "critical"].includes(item.impact ?? ""),
+    ),
+  ).toEqual([]);
+
+  await page.evaluate(() => (document.body.style.zoom = ""));
+  await page.setViewportSize({ width: 390, height: 844 });
+  const navigationButton = page.getByRole("button", { name: "Open navigation", exact: true });
+  await navigationButton.click();
+  for (const label of globalLabels)
+    await expect(globalNavigation.getByRole("link", { name: label, exact: true })).toBeVisible();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
+  ).toBeLessThanOrEqual(1);
+});
+
 test("Journey R: Synthetic email walkthrough", async ({ page }) => {
   await begin(page);
   const menu = await accountMenu(page, "Account");
@@ -556,7 +600,7 @@ test("Journey U: Round 2 full regression", async ({ page }) => {
   await page.goto("/account");
   await expect(page.getByRole("heading", { name: "Overview" })).toBeVisible();
   await page.goto("/passport/history");
-  await expect(page.getByRole("heading", { name: "Chronicle History" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Your Voyages", level: 1 })).toBeVisible();
   const disclosure = await accountMenu(page, account.displayName);
   await disclosure.getByRole("button", { name: "Sign Out" }).click();
   await expect(page.getByRole("button", { name: "Account" })).toBeVisible();
