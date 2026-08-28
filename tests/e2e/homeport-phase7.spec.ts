@@ -168,7 +168,7 @@ test(`Journey H: chronicle passport`, async ({ page }) => {
   const account = await signIn(page, "RETURNING_FULL_CAPABILITY");
   await accountDestination(page, account, "Chronicle Passport");
   await expect(page.getByRole("heading", { name: /Chronicle Passport/u }).first()).toBeVisible();
-  const navigation = page.getByRole("navigation", { name: "Personal Harbor sections" });
+  const navigation = page.getByRole("navigation", { name: "Chronicle Passport sections" });
   await settledDeclaredLinkNavigation(
     page,
     navigation.getByRole("link", { name: "History", exact: true }),
