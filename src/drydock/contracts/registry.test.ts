@@ -63,6 +63,18 @@ describe("Drydock block contract registry", () => {
     expect(parsed.block.configuration.hints).toEqual([]);
   });
 
+  it("migrates a legacy chapter completion into the default continuation behavior", () => {
+    const legacy = structuredClone(frozenBlocks.find((block) => block.blockType === "chapterComplete")!);
+    delete legacy.configuration.nextChapterBehavior;
+    delete legacy.configuration.returnToMap;
+    const parsed = parseDrydockBlock(legacy);
+    expect(parsed.success).toBe(true);
+    if (!parsed.success) return;
+    expect(parsed.migrationsApplied).toEqual(["drydock.chapterComplete.v1-to-v2"]);
+    expect(parsed.block.configuration.nextChapterBehavior).toBe("continue");
+    expect(parsed.block.configuration.returnToMap).toBe(false);
+  });
+
   it("normalizes only the exact known mixed-version Studio compatibility fields", () => {
     const migrated = parseDrydockBlock(frozenBlocks.find((block) => block.blockType === "arrivalCheck")!);
     expect(migrated.success).toBe(true);

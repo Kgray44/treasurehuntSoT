@@ -46,6 +46,10 @@ function migrateLegacyConfiguration(input: DrydockMigrationInput): DrydockMigrat
   }
   if (completion.mode === undefined) completion.mode = completionDefaults[input.blockType] ?? "playerConfirmation";
   if (input.blockType === "riddle" && configuration.hints === undefined) configuration.hints = [];
+  if (input.blockType === "chapterComplete") {
+    if (configuration.nextChapterBehavior === undefined) configuration.nextChapterBehavior = "continue";
+    if (configuration.returnToMap === undefined) configuration.returnToMap = false;
+  }
   for (const field of ["futureVision", "futureProviderOptions"] as const) {
     const value = configuration[field];
     if (value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).length === 0)
