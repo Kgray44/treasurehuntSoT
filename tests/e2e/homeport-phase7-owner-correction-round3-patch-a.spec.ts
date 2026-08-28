@@ -765,7 +765,7 @@ async function beginLoadingObservation(page: Page, startedAt: number) {
       transitions: LoadingTransition[];
       observe: () => void;
     };
-    const windowWithObservation = window as Window & { [key: string]: Observation | undefined };
+    const windowWithObservation = window as unknown as { [key: string]: Observation | undefined };
     const loadingVisible = () =>
       [...document.querySelectorAll<HTMLElement>(".ui-loading-state")].some((loading) => {
         const style = getComputedStyle(loading);
@@ -805,7 +805,7 @@ async function endLoadingObservation(page: Page): Promise<LoadingTransition[]> {
       transitions: LoadingTransition[];
       observe: () => void;
     };
-    const windowWithObservation = window as Window & { [key: string]: Observation | undefined };
+    const windowWithObservation = window as unknown as { [key: string]: Observation | undefined };
     const observation = windowWithObservation[key];
     if (!observation) return [];
     observation.observe();
