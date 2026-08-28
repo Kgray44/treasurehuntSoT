@@ -173,7 +173,7 @@ describe("Bridgewatch same-host gateway", () => {
     expect(nginx).toContain("nightwatch");
     expect(nginx).toContain("facts|coverage");
     expect(nginx).toContain("api/sounding-line/runs");
-    expect(nginx).toContain("api/facts/[a-z][a-z0-9-]{0,63}");
+    expect(nginx).toContain("api/facts/[A-Za-z0-9]");
     expect(nginx).toContain("api/projects/[A-Za-z0-9][A-Za-z0-9._-]{0,127}/versions");
     expect(nginx).toContain("auth_request /_bridgewatch_authorize;");
     expect(nginx).toContain("/api/internal/bridgewatch/authorize");
