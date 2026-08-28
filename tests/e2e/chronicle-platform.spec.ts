@@ -248,7 +248,7 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   await expect(restoredTrialsPage.getByRole("button", { name: "Run Suite" })).toHaveCount(existingSuiteCount + 1, {
     timeout: 15_000,
   });
-  await restoredTrialsPage.getByRole("button", { name: "Run Suite" }).nth(existingSuiteCount).click();
+  await restoredTrialsPage.getByRole("button", { name: "Run Suite" }).first().click();
   await restoredTrialsPage.reload();
   await expect(restoredTrialsPage.getByRole("heading", { name: "Launch Gate" })).toBeVisible({ timeout: 15_000 });
   await expect(restoredTrialsPage.getByText("VERIFIED", { exact: true })).toBeVisible({ timeout: 30_000 });
