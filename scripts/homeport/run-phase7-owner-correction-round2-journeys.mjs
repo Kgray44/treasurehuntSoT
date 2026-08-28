@@ -38,6 +38,14 @@ run("scripts/homeport/phase7-owner-correction-round2-database-clone.mjs", ["jour
 });
 for (const journeyId of requested) {
   if (journeyId === "W") {
+    run("scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs", [], {
+      ...process.env,
+      HOMEPORT_PHASE7_TASK_ROOT: round1TaskRoot,
+    });
+    run("scripts/homeport/prepare-phase7-fixture.mjs", [], {
+      ...process.env,
+      HOMEPORT_PHASE7_TASK_ROOT: originalTaskRoot,
+    });
     run("scripts/homeport/run-phase7-owner-correction-round1-journeys.mjs", [], {
       ...process.env,
       HOMEPORT_PHASE7_TASK_ROOT: round1TaskRoot,
