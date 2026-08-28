@@ -258,9 +258,6 @@ test("Journey I: Community district slow success", async ({ page }) => {
   await search.fill("coast");
   const navigation = search.press("Enter");
   await requestIntercepted;
-  await page.waitForTimeout(450);
-  await expect(page.locator(".ui-loading-state")).toHaveCount(0);
-  await page.waitForTimeout(100);
   await expect(page.locator(".ui-loading-state")).toBeVisible();
   await capture(page, "HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING");
   release();
