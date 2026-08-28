@@ -171,7 +171,7 @@ test(`Journey H: chronicle passport`, async ({ page }) => {
   const navigation = page.getByRole("navigation", { name: "Chronicle Passport sections" });
   await settledDeclaredLinkNavigation(
     page,
-    navigation.getByRole("link", { name: "History", exact: true }),
+    navigation.getByRole("link", { name: "Your Voyages", exact: true }),
     "Chronicle Passport History",
   );
   await expect(page.getByLabel("Search your history")).toBeVisible();
