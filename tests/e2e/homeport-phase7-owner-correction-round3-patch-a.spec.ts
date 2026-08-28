@@ -530,6 +530,7 @@ test("Journey N: Owner blocking regression", async ({ page }) => {
   await wizard.getByRole("button", { name: "Continue to Configure Voyage" }).click();
   await wizard.getByLabel("Voyage name").fill(`Canonical Captain ${journeyId}`);
   await wizard.getByRole("button", { name: "Continue to Add Crew" }).click();
+  await wizard.getByRole("button", { name: "Add another Crew member" }).click();
   await wizard.getByLabel("Crew member name").fill(`Canonical Crew ${journeyId}`);
   await wizard.getByRole("button", { name: "Continue to Invitation access" }).click();
   await wizard.getByRole("button", { name: "Continue to Delivery" }).click();
@@ -588,7 +589,12 @@ test("Journey N: Owner blocking regression", async ({ page }) => {
   menu = await accountMenu(page, account.displayName);
   await menu.getByRole("link", { name: "All Workspaces", exact: true }).click();
   await page.getByRole("link", { name: "Enter Captain" }).click();
-  await expect(page.getByText(`Canonical Captain ${journeyId}`, { exact: true })).toBeVisible();
+  const readyToLaunch = page.locator("section").filter({
+    has: page.getByRole("heading", { name: "Ready to Launch", exact: true }),
+  });
+  await expect(
+    readyToLaunch.getByRole("heading", { name: `Canonical Captain ${journeyId}`, exact: true }),
+  ).toBeVisible();
   const finalContext = await currentUserContext(page);
   expect(finalContext.user.accountId).toBe(accountId);
   expect(finalContext.session.id).toBe(sessionId);
