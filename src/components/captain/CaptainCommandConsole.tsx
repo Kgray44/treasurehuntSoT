@@ -407,11 +407,7 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
                   <strong>{step.label}</strong>
                   <span>{step.detail}</span>
                   {command ? (
-                    <button
-                      className="button-secondary"
-                      disabled={Boolean(busy)}
-                      onClick={() => void prepare(command)}
-                    >
+                    <button className="button-secondary" disabled={Boolean(busy)} onClick={() => void prepare(command)}>
                       Prepare governed action
                     </button>
                   ) : null}
