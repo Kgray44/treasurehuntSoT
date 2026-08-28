@@ -68,7 +68,11 @@ async function classifySession(session: SessionWithAccount): Promise<CurrentUser
     ["ACTIVE", "PENDING_VERIFICATION"].includes(session.account.status) &&
     Boolean(session.account.claimedAt) &&
     Boolean(session.account.ordinaryWorkspaceEntryAt || session.account.status === "PENDING_VERIFICATION");
-  const canUsePlayer = ordinaryEntry && session.account.profile?.status === "ACTIVE";
+  // Invitation acceptance creates an account-rooted, unclaimed guest profile. It
+  // must retain its own Player Library and historical journal, but it does not
+  // gain ordinary Captain or Creator workspace authority until it is claimed.
+  const guestPlayerEntry = session.account.status === "GUEST_UNCLAIMED";
+  const canUsePlayer = (ordinaryEntry || guestPlayerEntry) && session.account.profile?.status === "ACTIVE";
   const [activePlayerWorkspaceLock, captainPlayerWorkspaceLock] = canUsePlayer
     ? await Promise.all([
         hasActivePlayerWorkspaceLock(session.accountId),

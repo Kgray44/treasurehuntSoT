@@ -91,6 +91,58 @@ describe("Drydock Scenario Lab", () => {
     );
   });
 
+  it("builds a Suite from only current-source Scenario revisions", async () => {
+    const checksum = "c".repeat(64);
+    const current = {
+      scenarioId: "scenario-current",
+      revision: 2,
+      sourceChecksum: checksum,
+      title: "Current Sea Trial",
+      purpose: "Current source evidence.",
+      tags: ["creator"],
+      createdAt: "2026-08-12T00:00:00.000Z",
+    };
+    const stale = { ...current, scenarioId: "scenario-stale", revision: 1, sourceChecksum: "d".repeat(64) };
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        response({
+          sourceChecksum: checksum,
+          requiredScenarioClasses: [],
+          scenarios: [current, stale],
+        }),
+      )
+      .mockResolvedValueOnce(response({ suites: [] }))
+      .mockResolvedValueOnce(response({ runs: [] }))
+      .mockResolvedValueOnce(
+        response(
+          {
+            suite: {
+              suiteId: "suite-current",
+              title: "Current Sea Trial suite",
+              sourceChecksum: checksum,
+              updatedAt: "2026-08-12T00:00:00.000Z",
+              members: [{ scenarioId: current.scenarioId, revision: current.revision }],
+            },
+          },
+          201,
+        ),
+      );
+    vi.stubGlobal("fetch", fetchMock);
+    vi.stubGlobal("crypto", { randomUUID: () => "new" });
+
+    render(<DrydockScenarioLab taleId="tale-1" csrfToken="csrf-1" />);
+    await screen.findByRole("heading", { name: "Sea Trials" });
+    fireEvent.click(screen.getByRole("button", { name: "Save current revisions as Suite" }));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
+    const init = fetchMock.mock.calls[3]?.[1] as RequestInit;
+    expect(JSON.parse(String(init.body))).toMatchObject({
+      sourceChecksum: checksum,
+      members: [{ scenarioId: current.scenarioId, revision: current.revision }],
+    });
+  });
+
   it("lets a Creator request cancellation only for an active Sea Trial", async () => {
     const checksum = "b".repeat(64);
     const running = {

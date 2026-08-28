@@ -73,6 +73,35 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   await expectOk(validateFork);
   const firstValidation = (await validateFork.json()) as { valid: boolean; autosaveVersion: number };
   expect(firstValidation.valid).toBe(true);
+
+  const trialsPage = await captainContext.newPage();
+  await trialsPage.goto(`/studio/tales/${fork.id}/trials`);
+  await expect(trialsPage.getByRole("heading", { name: "Sea Trials" })).toBeVisible({ timeout: 30_000 });
+  await trialsPage.getByLabel("Scenario title").fill("Forked Chronicle baseline publication path");
+  await trialsPage.getByRole("checkbox", { name: /Baseline successful path/i }).check();
+  await trialsPage.getByRole("checkbox", { name: /Captain approval outcomes/i }).check();
+  await trialsPage.getByRole("checkbox", { name: /Answer match and no-match outcomes/i }).check();
+  await trialsPage.getByRole("button", { name: "Add Continue" }).click();
+  await trialsPage.getByRole("button", { name: "Answer no match" }).click();
+  await trialsPage.getByRole("button", { name: "Answer match" }).click();
+  await trialsPage.getByRole("button", { name: "Captain reject" }).click();
+  await trialsPage.getByRole("button", { name: "Captain approve" }).click();
+  await trialsPage.getByRole("button", { name: "Add Continue" }).click();
+  await trialsPage.getByRole("button", { name: "Add Continue" }).click();
+  await trialsPage.getByRole("button", { name: "Add Continue" }).click();
+  await trialsPage.getByRole("button", { name: "Add Continue" }).click();
+  await trialsPage.getByRole("button", { name: "Save and run Sea Trial" }).click();
+  await expect(trialsPage.getByRole("region", { name: "Sea Trial receipt" })).toContainText("COMPLETED", {
+    timeout: 30_000,
+  });
+  await trialsPage.getByRole("button", { name: "Save current revisions as Suite" }).click();
+  await expect(trialsPage.getByRole("button", { name: "Run Suite" })).toBeVisible({ timeout: 15_000 });
+  await trialsPage.getByRole("button", { name: "Run Suite" }).click();
+  await trialsPage.reload();
+  await expect(trialsPage.getByRole("heading", { name: "Launch Gate" })).toBeVisible({ timeout: 15_000 });
+  await expect(trialsPage.getByText("VERIFIED", { exact: true })).toBeVisible({ timeout: 30_000 });
+  await trialsPage.close();
+
   const publishFirst = await captain.post(`/api/studio/tales/${fork.id}/publish`, {
     headers: { "x-csrf-token": captainCsrf },
     data: { releaseNotes: "Initial platform acceptance edition", autosaveVersion: firstValidation.autosaveVersion },
@@ -194,6 +223,36 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   await expectOk(validateSecond);
   const secondValidation = (await validateSecond.json()) as { valid: boolean; autosaveVersion: number };
   expect(secondValidation.valid).toBe(true);
+  const restoredTrialsPage = await captainContext.newPage();
+  await restoredTrialsPage.goto(`/studio/tales/${fork.id}/trials`);
+  await expect(restoredTrialsPage.getByRole("heading", { name: "Sea Trials" })).toBeVisible({ timeout: 30_000 });
+  await restoredTrialsPage.getByLabel("Scenario title").fill("Restored Chronicle baseline publication path");
+  await restoredTrialsPage.getByRole("checkbox", { name: /Baseline successful path/i }).check();
+  await restoredTrialsPage.getByRole("checkbox", { name: /Captain approval outcomes/i }).check();
+  await restoredTrialsPage.getByRole("checkbox", { name: /Answer match and no-match outcomes/i }).check();
+  await restoredTrialsPage.getByRole("button", { name: "Add Continue" }).click();
+  await restoredTrialsPage.getByRole("button", { name: "Answer no match" }).click();
+  await restoredTrialsPage.getByRole("button", { name: "Answer match" }).click();
+  await restoredTrialsPage.getByRole("button", { name: "Captain reject" }).click();
+  await restoredTrialsPage.getByRole("button", { name: "Captain approve" }).click();
+  await restoredTrialsPage.getByRole("button", { name: "Add Continue" }).click();
+  await restoredTrialsPage.getByRole("button", { name: "Add Continue" }).click();
+  await restoredTrialsPage.getByRole("button", { name: "Add Continue" }).click();
+  await restoredTrialsPage.getByRole("button", { name: "Add Continue" }).click();
+  await restoredTrialsPage.getByRole("button", { name: "Save and run Sea Trial" }).click();
+  await expect(restoredTrialsPage.getByRole("region", { name: "Sea Trial receipt" })).toContainText("COMPLETED", {
+    timeout: 30_000,
+  });
+  const existingSuiteCount = await restoredTrialsPage.getByRole("button", { name: "Run Suite" }).count();
+  await restoredTrialsPage.getByRole("button", { name: "Save current revisions as Suite" }).click();
+  await expect(restoredTrialsPage.getByRole("button", { name: "Run Suite" })).toHaveCount(existingSuiteCount + 1, {
+    timeout: 15_000,
+  });
+  await restoredTrialsPage.getByRole("button", { name: "Run Suite" }).first().click();
+  await restoredTrialsPage.reload();
+  await expect(restoredTrialsPage.getByRole("heading", { name: "Launch Gate" })).toBeVisible({ timeout: 15_000 });
+  await expect(restoredTrialsPage.getByText("VERIFIED", { exact: true })).toBeVisible({ timeout: 30_000 });
+  await restoredTrialsPage.close();
   const publishSecond = await captain.post(`/api/studio/tales/${fork.id}/publish`, {
     headers: { "x-csrf-token": captainCsrf },
     data: {
@@ -208,7 +267,10 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
     `/api/studio/tales/${fork.id}/versions/compare?left=${versionOne.id}&right=${versionTwo.id}`,
   );
   await expectOk(compare);
-  expect(await compare.json()).toMatchObject({ left: { id: versionOne.id }, right: { id: versionTwo.id } });
+  expect(await compare.json()).toMatchObject({
+    selection: { kind: "PAIR", sourceEditionId: versionOne.id, targetEditionId: versionTwo.id },
+    projection: { audience: "CREATOR_FULL" },
+  });
 
   activeState = (await (
     await expectOk(await playerContext.request.get(playerUrl(`/api/play/sessions/${created.playthroughId}`)))
@@ -299,7 +361,7 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   await completedJournalLink.click();
   await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`));
   await expect(playerPage.locator(".chronicle-journal-shell.mode-historical")).toBeVisible();
-  await expect(playerPage.getByText(/Read-only · edition checksum/)).toBeVisible();
+  await expect(playerPage.getByText("Read-only · version-pinned Voyage record")).toBeVisible();
 
   const pin = await playerContext.request.post(
     playerUrl(`/api/player/playthroughs/${created.playthroughId}/preference`),

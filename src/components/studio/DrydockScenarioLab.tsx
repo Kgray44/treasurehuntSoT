@@ -516,7 +516,8 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
   }
 
   async function saveSuite() {
-    if (!sourceChecksum || !scenarios.length) {
+    const currentScenarios = scenarios.filter((candidate) => candidate.sourceChecksum === sourceChecksum);
+    if (!sourceChecksum || !currentScenarios.length) {
       setError("Save at least one current Scenario revision before creating a Suite.");
       return;
     }
@@ -532,7 +533,7 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
             id: `suite-${crypto.randomUUID()}`,
             title: suiteTitle,
             sourceChecksum,
-            members: scenarios.map(({ scenarioId, revision }) => ({ scenarioId, revision })),
+            members: currentScenarios.map(({ scenarioId, revision }) => ({ scenarioId, revision })),
           }),
         }),
       );

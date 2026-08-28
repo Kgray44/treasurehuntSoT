@@ -1,6 +1,8 @@
 import { performance } from "node:perf_hooks";
 import { randomUUID } from "node:crypto";
 import { db } from "@/lib/db";
+import { publishedSourceChecksum } from "@/chronicle/snapshot";
+import type { PublishedTaleSnapshot } from "@/chronicle/types";
 import { workspaceCapabilityOverview } from "@/homeport/workspace-capabilities";
 import {
   compareRequestSchema,
@@ -61,6 +63,15 @@ function cancelled(signal: AbortSignal | undefined, correlationId: string) {
   return signal?.aborted ? failure("COMPARISON_CANCELLED", correlationId) : null;
 }
 
+function hasMatchingSourceChecksum(edition: TideglassPublishedEdition) {
+  try {
+    if (sha256(edition.contentSnapshot) === edition.checksum) return true;
+    return publishedSourceChecksum(JSON.parse(edition.contentSnapshot) as PublishedTaleSnapshot) === edition.checksum;
+  } catch {
+    return false;
+  }
+}
+
 export async function compareExactEditions(
   repository: TideglassEditionRepository,
   principal: TideglassPrincipal,
@@ -96,7 +107,7 @@ export async function compareExactEditions(
       return failure("CROSS_CHRONICLE_COMPARISON", correlationId);
     if (source.retainedState === "REDACTED" || target.retainedState === "REDACTED")
       return failure("EDITION_NOT_AUTHORIZED", correlationId);
-    if (sha256(source.contentSnapshot) !== source.checksum || sha256(target.contentSnapshot) !== target.checksum)
+    if (!hasMatchingSourceChecksum(source) || !hasMatchingSourceChecksum(target))
       return failure("CHECKSUM_MISMATCH", correlationId);
 
     const pair = { chronicleId: source.chronicleId, source: anchor(source), target: anchor(target) };
