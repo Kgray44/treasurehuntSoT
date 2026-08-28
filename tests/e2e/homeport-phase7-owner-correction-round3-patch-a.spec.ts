@@ -29,6 +29,10 @@ type TemporalFrame = {
   backgroundOnly: boolean;
   layers: TemporalLayer[];
 };
+type LoadingTransition = {
+  tMs: number;
+  visible: boolean;
+};
 type TemporalReceipt = {
   sourcePath: string;
   targetPath: string;
@@ -40,6 +44,7 @@ type TemporalReceipt = {
   lastLoadingMs: number | null;
   loadingAppearances: number;
   loadingDisappearances: number;
+  loadingTransitions: LoadingTransition[];
   transitionDurationMs: number | null;
   observedReadyToSettledMs: number | null;
   oldRouteReturnedAfterSettlement: boolean;
@@ -680,6 +685,7 @@ async function sampleNavigation(
   const startedAt = Date.now();
   const initial = await temporalFrame(page, 0);
   const frames = [initial];
+  await beginLoadingObservation(page, startedAt);
   await action();
   let navigationStartedMs: number | null = null;
   let destinationReadyMs: number | null = null;
@@ -717,14 +723,18 @@ async function sampleNavigation(
   expect(navigationStartedMs, `navigation generation for ${targetPath}`).not.toBeNull();
   expect(destinationReadyMs, `ready destination ${targetPath}`).not.toBeNull();
   expect(destinationSettledMs, `settled destination ${targetPath}`).not.toBeNull();
+  const loadingTransitions = await endLoadingObservation(page);
   const loadingFrames = frames.filter((frame) => frame.loadingVisible);
   const animationDurations = frames.flatMap((frame) => frame.layers.flatMap((layer) => layer.animationDurationsMs));
-  let loadingAppearances = 0;
-  let loadingDisappearances = 0;
+  let sampledLoadingAppearances = 0;
+  let sampledLoadingDisappearances = 0;
   for (let index = 1; index < frames.length; index += 1) {
-    if (!frames[index - 1].loadingVisible && frames[index].loadingVisible) loadingAppearances += 1;
-    if (frames[index - 1].loadingVisible && !frames[index].loadingVisible) loadingDisappearances += 1;
+    if (!frames[index - 1].loadingVisible && frames[index].loadingVisible) sampledLoadingAppearances += 1;
+    if (frames[index - 1].loadingVisible && !frames[index].loadingVisible) sampledLoadingDisappearances += 1;
   }
+  const observedLoadingAppearances = loadingTransitions.filter((transition) => transition.visible).length;
+  const observedLoadingDisappearances = loadingTransitions.filter((transition) => !transition.visible).length;
+  const observedLoadingFrames = loadingTransitions.filter((transition) => transition.visible);
   return {
     sourcePath: initial.urlPath,
     targetPath,
@@ -732,10 +742,11 @@ async function sampleNavigation(
     navigationStartedMs,
     destinationReadyMs,
     destinationSettledMs,
-    firstLoadingMs: loadingFrames[0]?.tMs ?? null,
-    lastLoadingMs: loadingFrames.at(-1)?.tMs ?? null,
-    loadingAppearances,
-    loadingDisappearances,
+    firstLoadingMs: observedLoadingFrames[0]?.tMs ?? loadingFrames[0]?.tMs ?? null,
+    lastLoadingMs: observedLoadingFrames.at(-1)?.tMs ?? loadingFrames.at(-1)?.tMs ?? null,
+    loadingAppearances: observedLoadingAppearances || sampledLoadingAppearances,
+    loadingDisappearances: observedLoadingDisappearances || sampledLoadingDisappearances,
+    loadingTransitions,
     transitionDurationMs: animationDurations.length ? Math.max(...animationDurations) : null,
     observedReadyToSettledMs: destinationSettledMs! - destinationReadyMs!,
     oldRouteReturnedAfterSettlement: frames
@@ -743,6 +754,65 @@ async function sampleNavigation(
       .some((frame) => frame.layers.some((layer) => layer.path !== targetPath && layer.visible)),
     frames,
   };
+}
+
+async function beginLoadingObservation(page: Page, startedAt: number) {
+  await page.evaluate((observationStartedAt) => {
+    const key = "__homeportPhase7PatchALoadingObservation";
+    type Observation = {
+      observer: MutationObserver;
+      visible: boolean;
+      transitions: LoadingTransition[];
+      observe: () => void;
+    };
+    const windowWithObservation = window as Window & { [key: string]: Observation | undefined };
+    const loadingVisible = () =>
+      [...document.querySelectorAll<HTMLElement>(".ui-loading-state")].some((loading) => {
+        const style = getComputedStyle(loading);
+        const box = loading.getBoundingClientRect();
+        return (
+          style.visibility !== "hidden" &&
+          Number.parseFloat(style.opacity || "1") > 0.02 &&
+          box.width > 0 &&
+          box.height > 0
+        );
+      });
+    const observation = {} as Observation;
+    observation.visible = loadingVisible();
+    observation.transitions = [];
+    observation.observe = () => {
+      const visible = loadingVisible();
+      if (visible === observation.visible) return;
+      observation.visible = visible;
+      observation.transitions.push({ tMs: Date.now() - observationStartedAt, visible });
+    };
+    observation.observer = new MutationObserver(observation.observe);
+    observation.observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["aria-hidden", "class", "data-async-state", "style"],
+      childList: true,
+      subtree: true,
+    });
+    windowWithObservation[key] = observation;
+  }, startedAt);
+}
+
+async function endLoadingObservation(page: Page): Promise<LoadingTransition[]> {
+  return page.evaluate(() => {
+    const key = "__homeportPhase7PatchALoadingObservation";
+    type Observation = {
+      observer: MutationObserver;
+      transitions: LoadingTransition[];
+      observe: () => void;
+    };
+    const windowWithObservation = window as Window & { [key: string]: Observation | undefined };
+    const observation = windowWithObservation[key];
+    if (!observation) return [];
+    observation.observe();
+    observation.observer.disconnect();
+    delete windowWithObservation[key];
+    return observation.transitions;
+  });
 }
 
 async function waitForNewGeneration(
