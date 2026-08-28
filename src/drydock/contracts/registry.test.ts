@@ -53,6 +53,16 @@ describe("Drydock block contract registry", () => {
     expect(runtimeCompatibilityProjection(parsed.block).configuration.completionMode).toBe("timer");
   });
 
+  it("migrates a legacy riddle without optional hints into the required empty collection", () => {
+    const legacy = structuredClone(frozenBlocks.find((block) => block.blockType === "riddle")!);
+    delete legacy.configuration.hints;
+    const parsed = parseDrydockBlock(legacy);
+    expect(parsed.success).toBe(true);
+    if (!parsed.success) return;
+    expect(parsed.migrationsApplied).toEqual(["drydock.riddle.v1-to-v2"]);
+    expect(parsed.block.configuration.hints).toEqual([]);
+  });
+
   it("normalizes only the exact known mixed-version Studio compatibility fields", () => {
     const migrated = parseDrydockBlock(frozenBlocks.find((block) => block.blockType === "arrivalCheck")!);
     expect(migrated.success).toBe(true);
