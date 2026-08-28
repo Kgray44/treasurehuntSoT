@@ -2203,7 +2203,9 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
 .captain-command-console__attention ul,
 .captain-command-console__crew ul,
 .captain-command-console__history ol,
-.captain-command-console__map ol {
+.captain-command-console__map ol,
+.captain-command-console__recovery ul,
+.captain-command-console__recovery ol {
   display: grid;
   gap: 0.55rem;
   margin: 0;
@@ -2214,7 +2216,8 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
 .captain-command-console__attention li,
 .captain-command-console__crew li,
 .captain-command-console__history li,
-.captain-command-console__map li {
+.captain-command-console__map li,
+.captain-command-console__recovery li {
   display: grid;
   gap: 0.2rem;
   border-left: 3px solid rgba(201, 169, 95, 0.56);
@@ -2230,7 +2233,8 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
 .captain-command-console__attention span,
 .captain-command-console__crew span,
 .captain-command-console__history span,
-.captain-command-console__map span {
+.captain-command-console__map span,
+.captain-command-console__recovery span {
   color: #c3d1ca;
   font-size: 0.86rem;
 }
@@ -2306,6 +2310,38 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
 .captain-command-console__history ol {
   max-height: 26rem;
   overflow: auto;
+}
+
+.captain-command-console__recovery > p {
+  margin: 0.4rem 0 0.8rem;
+  color: #c3d1ca;
+}
+
+.captain-command-console__recovery li[data-check-state="BLOCKED"] {
+  border-left-color: #d4775d;
+}
+
+.captain-command-console__recovery li[data-check-state="WARNING"] {
+  border-left-color: #e2c170;
+}
+
+.captain-command-console__recovery li[data-check-state="UNKNOWN"] {
+  border-left-color: #78a9c5;
+}
+
+.captain-command-console__recovery ol {
+  margin-top: 0.75rem;
+}
+
+.captain-command-console__recovery button {
+  justify-self: start;
+  margin-top: 0.25rem;
+}
+
+.captain-command-console__recovery small {
+  display: block;
+  margin-top: 0.75rem;
+  color: #c3d1ca;
 }
 
 .captain-command-console__freshness {

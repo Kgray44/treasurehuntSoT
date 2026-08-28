@@ -89,6 +89,16 @@ console. Its validation, integration, and completion records carry the exact
 candidate, ordinary Sounding Line Mainline Decision, protected merge, and
 landed-smoke evidence when each is available.
 
+## Phase 4 records
+
+- [Design Record](Project_Helm_Phase_4_Design_Record.md)
+- [Test Plan](Project_Helm_Phase_4_Test_Plan.md)
+
+Phase 4 **Weather the Passage** adds provider-neutral preflight and governed
+recovery reading after accepted P3. Missing adjacent provider contracts remain
+truthfully unknown; no provider result is fabricated to permit a launch or
+repair.
+
 ## Amendment A2 records
 
 - [Design Record](Project_Helm_Amendment_A2_Design_Record.md)
