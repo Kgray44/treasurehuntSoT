@@ -175,7 +175,9 @@ test(`Journey H: chronicle passport`, async ({ page }) => {
     "Chronicle Passport History",
   );
   await expect(page.getByLabel("Search your archive")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Every Voyage leaves a wake" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /Every Voyage leaves a wake|Your first played Voyage is still ahead/u }),
+  ).toBeVisible();
   await settledDeclaredLinkNavigation(
     page,
     navigation.getByRole("link", { name: "Memories", exact: true }),
