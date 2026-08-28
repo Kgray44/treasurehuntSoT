@@ -85,6 +85,16 @@ describe("Drydock block contract registry", () => {
     expect(parsed.block.configuration.destinationVisibility).toBe("named");
   });
 
+  it("migrates a legacy confirmation into the standard confirmation style", () => {
+    const legacy = structuredClone(frozenBlocks.find((block) => block.blockType === "confirmation")!);
+    delete legacy.configuration.confirmationStyle;
+    const parsed = parseDrydockBlock(legacy);
+    expect(parsed.success).toBe(true);
+    if (!parsed.success) return;
+    expect(parsed.migrationsApplied).toEqual(["drydock.confirmation.v1-to-v2"]);
+    expect(parsed.block.configuration.confirmationStyle).toBe("standard");
+  });
+
   it("normalizes only the exact known mixed-version Studio compatibility fields", () => {
     const migrated = parseDrydockBlock(frozenBlocks.find((block) => block.blockType === "arrivalCheck")!);
     expect(migrated.success).toBe(true);
