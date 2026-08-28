@@ -52,6 +52,8 @@ function migrateLegacyConfiguration(input: DrydockMigrationInput): DrydockMigrat
   }
   if (input.blockType === "travelDirection" && configuration.destinationVisibility === undefined)
     configuration.destinationVisibility = "named";
+  if (input.blockType === "confirmation" && configuration.confirmationStyle === undefined)
+    configuration.confirmationStyle = "standard";
   for (const field of ["futureVision", "futureProviderOptions"] as const) {
     const value = configuration[field];
     if (value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).length === 0)
