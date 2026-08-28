@@ -267,7 +267,10 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
     `/api/studio/tales/${fork.id}/versions/compare?left=${versionOne.id}&right=${versionTwo.id}`,
   );
   await expectOk(compare);
-  expect(await compare.json()).toMatchObject({ left: { id: versionOne.id }, right: { id: versionTwo.id } });
+  expect(await compare.json()).toMatchObject({
+    selection: { kind: "PAIR", sourceEditionId: versionOne.id, targetEditionId: versionTwo.id },
+    projection: { audience: "CREATOR_FULL" },
+  });
 
   activeState = (await (
     await expectOk(await playerContext.request.get(playerUrl(`/api/play/sessions/${created.playthroughId}`)))
