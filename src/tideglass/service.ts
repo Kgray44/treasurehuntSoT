@@ -7,6 +7,7 @@ import { workspaceCapabilityOverview } from "@/homeport/workspace-capabilities";
 import {
   compareRequestSchema,
   failure,
+  sha256,
   type ResolvedEditionAnchor,
   type RetainedEditionState,
   type TideglassCompareRequest,
@@ -64,6 +65,7 @@ function cancelled(signal: AbortSignal | undefined, correlationId: string) {
 
 function hasMatchingSourceChecksum(edition: TideglassPublishedEdition) {
   try {
+    if (sha256(edition.contentSnapshot) === edition.checksum) return true;
     return publishedSourceChecksum(JSON.parse(edition.contentSnapshot) as PublishedTaleSnapshot) === edition.checksum;
   } catch {
     return false;

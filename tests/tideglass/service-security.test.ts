@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { publishedSourceChecksum } from "../../src/chronicle/snapshot";
+import type { PublishedTaleSnapshot } from "../../src/chronicle/types";
 import { canonicalJson, sha256, TIDEGLASS_LIMITS, type TideglassCompareRequest } from "../../src/tideglass/core";
 import { diagnosticProjection, publicSafeFoundationProjection } from "../../src/tideglass/comparison";
 import { compareExactEditions, type TideglassPublishedEdition } from "../../src/tideglass/service";
@@ -65,6 +67,15 @@ describe("Tideglass service authorization, integrity, and projection boundaries"
     const target = { ...edition("edition-b", baseSnapshot()), checksum: "0".repeat(64) };
     const result = await compareExactEditions(new FixtureRepository([source, target]), principal, request());
     expect(result).toMatchObject({ ok: false, code: "CHECKSUM_MISMATCH" });
+  });
+
+  it("accepts the canonical authored checksum for published snapshots with server publication time", async () => {
+    const sourceSnapshot = { ...baseSnapshot(), publishedAt: "2026-08-28T22:00:00.000Z" } as PublishedTaleSnapshot;
+    const targetSnapshot = { ...baseSnapshot(), publishedAt: "2026-08-28T22:01:00.000Z" } as PublishedTaleSnapshot;
+    const source = { ...edition("edition-a", sourceSnapshot), checksum: publishedSourceChecksum(sourceSnapshot) };
+    const target = { ...edition("edition-b", targetSnapshot), checksum: publishedSourceChecksum(targetSnapshot) };
+    const result = await compareExactEditions(new FixtureRepository([source, target]), principal, request());
+    expect(result.ok).toBe(true);
   });
 
   it("returns one generic unavailable error for missing exact IDs without enumeration detail", async () => {
