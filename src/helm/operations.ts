@@ -3,6 +3,7 @@ import { parsePublishedSnapshot } from "@/chronicle/publishing";
 import { captainAuthorityClauses, type CanonicalCaptainActor } from "@/chronicle/captain-authorization";
 import { aggregateMembershipPresence, type MembershipPresenceProjection } from "@/platform/membership-presence";
 import { buildCaptainProgressMap, countCurrentHints, deriveCaptainConsoleCommands } from "@/helm/command-console";
+import { deriveHelmPassageResilience } from "@/helm/passage-resilience";
 
 export const captainOperationalStatuses = [
   "SETUP",
@@ -300,10 +301,12 @@ export function deriveCaptainOperationalStatus(input: {
     return input.sessionStatus as CaptainOperationalStatus;
   if (input.sessionStatus === "PAUSED") return "PAUSED";
   if (["DEGRADED", "RECONCILING"].includes(input.sessionStatus)) return input.sessionStatus as CaptainOperationalStatus;
-  if (input.sessionStatus === "ACTIVE")
-    return input.attention.some((item) => ["HIGH", "CRITICAL"].includes(item.severity))
-      ? "ACTIVE_ATTENTION"
-      : "ACTIVE_HEALTHY";
+  if (input.sessionStatus === "ACTIVE") {
+    if (input.attention.some((item) => ["HIGH", "CRITICAL"].includes(item.severity))) return "ACTIVE_ATTENTION";
+    if (input.attention.some((item) => ["CONNECTION", "SYSTEM"].includes(item.category) && item.severity === "WARNING"))
+      return "DEGRADED";
+    return "ACTIVE_HEALTHY";
+  }
   if (input.sessionStatus === "READY" || input.membershipStates.every((state) => membershipReady.has(state)))
     return "READY";
   if (
@@ -522,6 +525,19 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
   const enteredBlocks = progressEvents.filter((event) => event.eventType === "blockEntered" && event.blockId);
   const priorPassageId = enteredBlocks.length > 1 ? (enteredBlocks.at(-2)?.blockId ?? null) : null;
   const hintCount = snapshot ? countCurrentHints(snapshot, session.currentBlockId) : 0;
+  const resilience = deriveHelmPassageResilience({
+    lifecycle: session.status,
+    hasPublishedEdition: Boolean(session.version),
+    memberCount: session.memberships.filter((membership) => membership.status !== "REMOVED").length,
+    readyMemberCount: session.memberships.filter((membership) => membershipReady.has(membership.status)).length,
+    // Helm has no presentation-provider contract for this Voyage yet. Do not
+    // convert absence of evidence into a healthy provider claim.
+    presentationProvider: "UNKNOWN",
+    attention,
+    hasPriorPassage: Boolean(priorPassageId),
+    currentSequence: session.currentSequence,
+    observedAt: computedAt,
+  });
   const commandConsole: CaptainCommandConsoleProjection = {
     commands: deriveCaptainConsoleCommands({
       lifecycle: session.status,
@@ -580,6 +596,7 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
     // Current membership presence is a bounded, non-persistent operational
     // observation beside canonical history; polling removes/replaces it as it changes.
     events: [...session.events.map(projectCaptainOperationalEvent).reverse(), ...presenceEvents],
+    resilience,
     commandConsole,
   };
 }
