@@ -130,13 +130,9 @@ test(`Journey F: community discovery`, async ({ page }) => {
   await capture(page, "community-saved");
   await accountDestination(page, account, "Chronicle Passport");
   await expect(page.getByRole("heading", { name: /Chronicle Passport/u }).first()).toBeVisible();
-  const rail = page.locator(".personal-harbor__rail");
-  const mobileSections = page.locator(".personal-harbor__mobile-sections");
-  let saved = rail.getByRole("link", { name: "Saved", exact: true });
-  if (!(await rail.isVisible())) {
-    saved = mobileSections.getByRole("link", { name: "Saved", exact: true });
-    if (!(await saved.isVisible())) await mobileSections.getByText("Personal Harbor sections", { exact: true }).click();
-  }
+  const saved = page
+    .getByRole("navigation", { name: "Chronicle Passport sections" })
+    .getByRole("link", { name: "Saved", exact: true });
   await expect(saved).toBeVisible();
   await saved.click();
   await expect(page.getByText("Clockwork Reef Almanac", { exact: true }).first()).toBeVisible();
