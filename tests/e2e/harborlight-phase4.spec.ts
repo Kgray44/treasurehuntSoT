@@ -77,7 +77,10 @@ test.describe.serial("Harborlight Phase 4 moderator browser acceptance", () => {
     // suite tests the moderator page rather than the shell router.
     await moderator.page.goto(`/community/moderation/${caseId}`);
     await expect(moderator.page.getByRole("heading", { name: `Case ${caseKey}` })).toBeVisible();
-    await expect(moderator.page.getByText("Reporter identities are intentionally not shown.")).toBeVisible();
+    const caseDetail = moderator.page.locator("#main-content");
+    const reporterDisclosure = caseDetail.getByText("Reporter identities are intentionally not shown.");
+    await expect(reporterDisclosure).toHaveCount(1);
+    await expect(reporterDisclosure).toBeVisible();
     expect(await moderator.page.content()).not.toContain("private-storage-key");
 
     const axe = await new AxeBuilder({ page: moderator.page }).analyze();
