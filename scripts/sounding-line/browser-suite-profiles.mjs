@@ -1,5 +1,6 @@
 const profileByTest = new Map([
   ["tests/e2e/admiralty-phase1.spec.ts", "admiralty-phase1"],
+  ["tests/e2e/chronicle-platform.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/admiralty-phase2.spec.ts", "admiralty-phase2"],
   ["tests/e2e/admiralty-phase3.spec.ts", "admiralty-phase3"],
   ["tests/e2e/harborlight-phase2.spec.ts", "harborlight-phase2"],
