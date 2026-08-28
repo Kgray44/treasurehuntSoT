@@ -101,7 +101,7 @@
     "catalogVersion": 1
   },
   {
-    "id": "FT-B014",
+    "id": "FT-B015",
     "title": "Private Cross-Voyage Insights",
     "summary": "Project Wakebook Phase 3 adds owner-private, source-bound Timeline, People, and Statistics views that make historical Voyage records easier to understand without inventing social judgment or behavioral analytics.",
     "status": "BRANCH_COMPLETE_NOT_MERGED",

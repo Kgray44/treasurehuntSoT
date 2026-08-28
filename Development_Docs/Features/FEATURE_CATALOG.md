@@ -1843,7 +1843,7 @@ Creators stage a saved Chronicle source through Drydock readiness, exact readabl
 
 # Completed Branch Features Not Yet Available on Main
 
-## FT-B014 - Private Cross-Voyage Insights
+## FT-B015 - Private Cross-Voyage Insights
 
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Wakebook Phase 3 - Read the Wake
