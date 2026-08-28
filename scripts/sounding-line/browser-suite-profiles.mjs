@@ -9,6 +9,7 @@ const profileByTest = new Map([
   ["tests/e2e/phase3-accessibility-viewports.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/phase3-lifecycle-extended.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/phase3-lifecycle.spec.ts", "lanternwake-phase3"],
+  ["tests/e2e/phase3-replay-resilience.spec.ts", "lanternwake-phase3"],
 ]);
 
 export const browserSuiteProfiles = Object.freeze({
