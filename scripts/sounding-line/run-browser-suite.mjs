@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -46,6 +47,7 @@ try {
     );
   if (profile.seed) run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "prisma/seed.ts"], environment);
   for (const preparer of profile.preparers ?? []) run(process.execPath, preparerArguments(preparer), environment);
+  ensureProductionBuild();
   run(
     process.execPath,
     [
@@ -72,6 +74,12 @@ try {
         },
   );
   throw error;
+}
+
+function ensureProductionBuild() {
+  if (!profile.taskOwnedProductionHttp) return;
+  const buildId = path.join(root, environment.NEXT_DIST_DIR ?? ".next", "BUILD_ID");
+  if (!existsSync(buildId)) run(process.execPath, ["node_modules/next/dist/bin/next", "build"], environment);
 }
 
 function profileEnvironment({ profileId, candidateSha: sha, databaseUrl: requestedDatabaseUrl }) {
