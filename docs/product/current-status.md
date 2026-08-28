@@ -28,7 +28,7 @@ libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
 
-**Project Helm Phases 1 and 2 plus Amendment A1 are available on main; Amendment A2 is a branch-complete candidate pending protected integration:** Captain participation is
+**Project Helm Phases 1-3 plus Amendments A1-A3 are available on main:** Captain participation is
 explicit at Voyage creation. Captain-only remains the default; Captain + Player
 attaches exactly one ordinary Player membership to the same canonical account
 while keeping Voyage-scoped Captain authority independent. Captain operations
@@ -37,11 +37,19 @@ presence and synchronization health, current progress, and safe event
 summaries. Player access, history, artifacts, removal, and perspective remain
 membership-bounded and Player-safe. This is protected-mainline source
 integration with local/synthetic automated evidence, not deployment,
-live-Voyage behavior, or owner acceptance. The A2 candidate adds direct Captain
-transfer between joined Players, explicit Succession Hold after relinquishment,
+live-Voyage behavior, or owner acceptance. A2 adds direct Captain transfer
+between joined Players, explicit Succession Hold after relinquishment,
 first-committed Player takeover, and same-edition personal continuations with
-durable lineage and private-state exclusion; its local evidence is not yet
-mainline integration.
+durable lineage and private-state exclusion. A3 adds focused Captain and Player
+Waiting Rooms with safe Crew state, direct Captain-only and participating-Captain
+launch affordances, live refresh/reconciliation, responsive accessibility, and
+clear separation between leaving the room, leaving a membership, Captaincy,
+and cancellation. Phase 3 adds one live Captain command console that derives
+only contextually permitted canonical orders, shows their target/current
+revision/consequence before confirmation, handles stale state and retries
+safely, and retains the separate Player-safe projection. It adds no recovery,
+provider fallback, preflight, deployment, live-Voyage proof, or owner
+acceptance claim.
 
 **Project Shipwright Phase 2 is available on main:** Creator Studio now turns
 the existing Drydock Story Block contracts into a contract-aware Inspector with
@@ -136,6 +144,17 @@ multi-role synthetic browser evidence passes. The owner accepted the qualified
 walkthrough; exact-source Sounding Line authority and protected mainline
 integration completed in PR #28.
 
+**Support Pilot S2 candidate:** Project Admiralty retains S1's case-bound,
+owner-consented diagnostic path at `/admin/support/cases` and adds a narrow,
+registered repair path. A repair can run only after the exact owner grant,
+Administrator capability and fresh assurance, risk ceiling, budget, current
+proposal revision, target preconditions, durable audit start, canonical owner
+command, and postcondition verification all succeed. The initial registry has
+three bounded commands; high-risk, unregistered, job, projection, raw-SQL, and
+private-content actions are not executable. Candidate integration, ordinary
+Sounding Line authority, and landed smoke remain required before mainline
+availability is claimed.
+
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
 
 **Focused and integration validated:** repository evidence covers the merged
@@ -150,7 +169,8 @@ for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
 **Planned or not validated:** Project Homeport owner acceptance, Harborlight
-Phase 4, Project Admiralty Phase 3 and later phases, Project Drydock, Project
+Phase 4, Project Admiralty support repair (S2), systemic support intelligence
+(S3), Project Drydock, Project
 Landfall, and Project Watchglass remain pending. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records

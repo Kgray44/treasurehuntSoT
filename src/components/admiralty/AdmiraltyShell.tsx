@@ -7,6 +7,7 @@ import { AdminNav, type AdminNavItem } from "./AdminNav";
 const navigation: readonly (AdminNavItem & { any: readonly AdmiraltyCapabilityId[] })[] = [
   { href: "/admin", label: "Overview", shortLabel: "Overview", any: ["PLATFORM_OBSERVE"] },
   { href: "/admin/people", label: "People", shortLabel: "People", any: ["ACCOUNT_OBSERVE"] },
+  { href: "/admin/support/cases", label: "Support cases", shortLabel: "Cases", any: ["SUPPORT_REQUEST"] },
   { href: "/admin/chronicles", label: "Chronicles", shortLabel: "Chronicles", any: ["CHRONICLE_OBSERVE"] },
   { href: "/admin/voyages", label: "Voyages", shortLabel: "Voyages", any: ["VOYAGE_OBSERVE"] },
   { href: "/admin/community", label: "Community", shortLabel: "Community", any: ["COMMUNITY_OBSERVE"] },

@@ -57,11 +57,15 @@ describe("Bridgewatch same-host gateway", () => {
       ["style.css", ["style.css"]],
       ["api/summary", ["api", "summary"]],
       ["api/program", ["api", "program"]],
+      ["api/facts", ["api", "facts"]],
+      ["api/coverage", ["api", "coverage"]],
+      ["api/facts/git-main", ["api", "facts", "git-main"]],
       ["api/projects/bridgewatch", ["api", "projects", "bridgewatch"]],
       ["api/projects/bridgewatch/versions", ["api", "projects", "bridgewatch", "versions"]],
       ["api/projects/bridgewatch/versions/v1.2", ["api", "projects", "bridgewatch", "versions", "v1.2"]],
       ["api/projects/bridgewatch/phases/3", ["api", "projects", "bridgewatch", "phases", "3"]],
       ["api/trends", ["api", "trends"]],
+      ["api/nightwatch", ["api", "nightwatch"]],
       ["api/history?since=2026-08-13T12:00:00Z", ["api", "history"]],
       ["api/history?limit=250", ["api", "history"]],
       ["api/compare?from=2026-08-13T12:00:00Z&to=2026-08-14T12:00:00Z", ["api", "compare"]],
@@ -156,7 +160,10 @@ describe("Bridgewatch same-host gateway", () => {
     expect(nginx).toContain("server 127.0.0.1:4318;");
     expect(nginx).toContain("map $request_uri $bridgewatch_browser_route");
     expect(nginx).toContain("summary|program");
+    expect(nginx).toContain("nightwatch");
+    expect(nginx).toContain("facts|coverage");
     expect(nginx).toContain("api/sounding-line/runs");
+    expect(nginx).toContain("api/facts/[a-z][a-z0-9-]{0,63}");
     expect(nginx).toContain("api/projects/[A-Za-z0-9][A-Za-z0-9._-]{0,127}/versions");
     expect(nginx).toContain("auth_request /_bridgewatch_authorize;");
     expect(nginx).toContain("/api/internal/bridgewatch/authorize");

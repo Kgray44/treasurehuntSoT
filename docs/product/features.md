@@ -114,6 +114,21 @@ configuration, release, audit, and correlation-led investigation projections.
 It adds no schema and no broad mutation. Deployment, live-provider validation,
 owner acceptance, canonical-main integration, and later phases remain separate.
 
+Support Pilot S1 adds a case console for a user-approved, short-lived,
+case-bound diagnostic session. It reads only the exact approved scopes, stores
+sanitized source references and deterministic evidence receipts, and presents a
+finding, diagnosis, and information-only proposal. It cannot carry out a repair
+or mutate account, Voyage, Community, session, job, projection, or configuration
+state.
+
+Support Pilot S2 adds a separately consented registered-repair layer. Only a
+current case, current grant, fresh assurance, approved scope, hard risk ceiling,
+budget, current-state preview, and owner command together can permit a repair.
+The initial registry is limited to profile-preference reconciliation, one stale
+session revocation, and one inconsistent removed-membership reconciliation.
+Unregistered commands, raw SQL, private-content access, jobs, projection
+rebuilds, and high-risk actions remain unavailable.
+
 ## Integrated whole-product voyage and owner walkthrough
 
 **Audience:** Product owner, Players, Captains, Creators, and account owners.
@@ -138,10 +153,14 @@ explicit Captain-only or Captain + Player choice, one ordinary same-account
 Player membership where chosen, independent Captain authority, and a
 privacy-safe read-only operations view. Captains can see prioritized Voyage
 status, safe crew presence and synchronization health, current warnings, safe
-event summaries, and read-only progress without gaining Player-private device,
-network, identity, draft, or progression-command data. Participation may end
-without removing Captain authority. Mainline source integration is not
-deployment, live-Voyage proof, or owner acceptance.
+event summaries, and a safe published progress map without gaining
+Player-private device, network, identity, draft, or hidden-story data. Project
+Helm Phase 3 adds the live contextual Captain command console: it previews
+current-state consequences, confirms meaningful orders, uses the canonical
+command path, protects stale commands with the Voyage revision, and reconciles
+same-key retries without a duplicate order. Participation may end without
+removing Captain authority. Mainline source integration is not deployment,
+live-Voyage proof, or owner acceptance.
 [Guide](../user/captain-guide.md).
 
 The branch-complete Amendment A2 candidate adds a separate, scoped Captain handoff lifecycle: an active

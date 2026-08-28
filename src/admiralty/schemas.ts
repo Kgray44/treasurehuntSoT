@@ -10,6 +10,9 @@ export const supportScopeSchema = z.enum([
   "COMMUNITY_ACTIVITY",
   "SESSION_DIAGNOSTICS",
   "PROFILE_DIAGNOSTICS",
+  "VOYAGE_MEMBERSHIP",
+  "RUNTIME_STATUS",
+  "AUDIT_CORRELATION",
 ]);
 
 export const supportRequestSchema = z
@@ -28,6 +31,72 @@ export const supportRequestSchema = z
 export const supportDecisionSchema = z.object({ decision: z.enum(["APPROVE", "DENY"]) }).strict();
 export const supportCancelSchema = z.object({ reason: z.string().trim().min(2).max(160).optional() }).strict();
 export const supportRevokeSchema = z.object({ reason: z.string().trim().min(2).max(160) }).strict();
+export const supportCaseCreateSchema = z
+  .object({
+    targetAccountId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    title: z.string().trim().min(8).max(160),
+    summary: z.string().trim().min(8).max(480),
+    requestedScopes: z.array(supportScopeSchema).min(1).max(8),
+    requestedRepairIds: z.array(z.string().trim().min(3).max(128)).max(6).default([]),
+  })
+  .strict();
+export const supportCaseDiagnosisSchema = z
+  .object({
+    grantId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+  })
+  .strict();
+
+export const supportRepairProposalSchema = z
+  .object({
+    grantId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    repairId: z.string().trim().min(3).max(128),
+    targetId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+  })
+  .strict();
+
+export const supportRepairExecuteSchema = z
+  .object({
+    grantId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    proposalId: z
+      .string()
+      .trim()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    idempotencyKey: z
+      .string()
+      .trim()
+      .min(16)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+    humanApproval: z.boolean().optional(),
+  })
+  .strict();
 export const sessionRevokeSchema = z
   .object({
     targetAccountId: z

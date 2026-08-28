@@ -85,7 +85,7 @@ test("governed account commands require preview, assurance, confirmation, and du
   await search(admin.page, "Consent Harbor");
   await admin.page.getByRole("link", { name: "Consent Harbor", exact: true }).click();
   await expect(admin.page.getByRole("heading", { name: "Consent Harbor", exact: true })).toBeVisible();
-  await expect(admin.page.locator("html")).toHaveAttribute("data-homeport-hydration", "complete");
+  await expect(admin.page.locator("html")).not.toHaveAttribute("data-homeport-hydration");
   await expect(admin.page.locator("body")).not.toContainText("must-never-appear");
 
   const sessionPanel = panel(admin.page, "Session security action");
@@ -172,7 +172,7 @@ test("governed Community moderation requires a case-attached target, independent
   await search(moderator.page, "Chartroom Navigator Kit");
   await moderator.page.getByRole("link", { name: "Chartroom Navigator Kit", exact: true }).click();
   await expect(moderator.page.getByRole("heading", { name: "Chartroom Navigator Kit", exact: true })).toBeVisible();
-  await expect(moderator.page.locator("html")).toHaveAttribute("data-homeport-hydration", "complete");
+  await expect(moderator.page.locator("html")).not.toHaveAttribute("data-homeport-hydration");
   await expect(moderator.page.getByText("adm3-case-listing", { exact: true })).toBeVisible();
   const moderationPanel = moderator.page.getByRole("region", {
     name: "Apply Community moderation action",

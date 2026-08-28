@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { parsePublishedSnapshot } from "@/chronicle/publishing";
 import { captainAuthorityClauses, type CanonicalCaptainActor } from "@/chronicle/captain-authorization";
 import { aggregateMembershipPresence, type MembershipPresenceProjection } from "@/platform/membership-presence";
+import { buildCaptainProgressMap, countCurrentHints, deriveCaptainConsoleCommands } from "@/helm/command-console";
 
 export const captainOperationalStatuses = [
   "SETUP",
@@ -65,6 +66,7 @@ export type CaptainCrewMemberProjection = Readonly<{
     lastAcknowledgedAt: string | null;
   };
   readiness: { state: "READY" | "NOT_READY" | "UNKNOWN"; blockerCategories: string[] };
+  invitation: { id: string; status: string; expiresAt: string; canManage: boolean } | null;
   isCaptainsOwnPlayerMembership: boolean;
   canReceiveCaptaincy: boolean;
 }>;
@@ -91,6 +93,12 @@ export type CaptainProgressProjection = Readonly<{
   blockedRequirementCount: number;
   sourceVersion: string | null;
   updatedAt: string;
+}>;
+
+export type CaptainCommandConsoleProjection = Readonly<{
+  commands: ReturnType<typeof deriveCaptainConsoleCommands>;
+  progressMap: ReturnType<typeof buildCaptainProgressMap>;
+  hintSummary: { available: number; released: number };
 }>;
 
 const severityRank: Record<CaptainAttentionSeverity, number> = {
@@ -404,11 +412,29 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
         },
         orderBy: { createdAt: "asc" },
       },
+      invitations: {
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          intendedPlayerId: true,
+          status: true,
+          expiresAt: true,
+          replacement: { select: { id: true } },
+        },
+      },
       verificationRequests: { where: { status: "PENDING" }, orderBy: { requestedAt: "asc" }, take: 1 },
       events: { orderBy: [{ sequence: "desc" }, { id: "desc" }], take: 25 },
     },
   });
   if (!session) return null;
+  const progressEvents = await db.taleSessionEvent.findMany({
+    where: {
+      sessionId: session.id,
+      eventType: { in: ["blockEntered", "blockCompleted", "hintReleased"] },
+    },
+    orderBy: [{ sequence: "asc" }, { id: "asc" }],
+    select: { blockId: true, eventType: true, sequence: true },
+  });
   const crewPresence = session.memberships.map((membership) => ({
     membershipId: membership.id,
     displayName: membership.participationAlias ?? membership.player.displayName,
@@ -434,6 +460,10 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
   const crew: CaptainCrewMemberProjection[] = session.memberships.map((membership, index) => {
     const presence = crewPresence[index]!.presence;
     const removed = membership.status === "REMOVED";
+    const invitation =
+      session.invitations.find(
+        (candidate) => candidate.intendedPlayerId === membership.player.id && !candidate.replacement,
+      ) ?? null;
     return {
       id: membership.id,
       displayName: membership.participationAlias ?? membership.player.displayName,
@@ -467,6 +497,14 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
             : "UNKNOWN",
         blockerCategories: ["INVITED", "ACCEPTED"].includes(membership.status) ? ["MEMBERSHIP"] : [],
       },
+      invitation: invitation
+        ? {
+            id: invitation.id,
+            status: invitation.status,
+            expiresAt: invitation.expiresAt.toISOString(),
+            canManage: ["CREATED", "SENT", "COPIED", "VIEWED"].includes(invitation.status),
+          }
+        : null,
       isCaptainsOwnPlayerMembership: membership.player.accountId === actor.accountId,
       canReceiveCaptaincy:
         membership.player.accountId !== actor.accountId &&
@@ -478,6 +516,34 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
   const presenceEvents = crewPresence
     .map((member) => projectMembershipPresenceOperationalEvent({ ...member, computedAt }))
     .filter((event): event is CaptainOperationalEventProjection => Boolean(event));
+  const releasedHintCount = progressEvents.filter(
+    (event) => event.eventType === "hintReleased" && event.blockId === session.currentBlockId,
+  ).length;
+  const enteredBlocks = progressEvents.filter((event) => event.eventType === "blockEntered" && event.blockId);
+  const priorPassageId = enteredBlocks.length > 1 ? (enteredBlocks.at(-2)?.blockId ?? null) : null;
+  const hintCount = snapshot ? countCurrentHints(snapshot, session.currentBlockId) : 0;
+  const commandConsole: CaptainCommandConsoleProjection = {
+    commands: deriveCaptainConsoleCommands({
+      lifecycle: session.status,
+      captainAuthorityState: session.captainAuthorityState,
+      currentBlockId: session.currentBlockId,
+      pendingVerification: session.verificationRequests[0]
+        ? { providerType: session.verificationRequests[0].providerType }
+        : null,
+      hintCount,
+      releasedHintCount,
+      priorPassageId,
+    }),
+    progressMap: snapshot
+      ? buildCaptainProgressMap({
+          snapshot,
+          currentBlockId: session.currentBlockId,
+          lifecycle: session.status,
+          events: progressEvents,
+        })
+      : [],
+    hintSummary: { available: hintCount, released: releasedHintCount },
+  };
   return {
     voyage: {
       id: session.id,
@@ -514,6 +580,7 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
     // Current membership presence is a bounded, non-persistent operational
     // observation beside canonical history; polling removes/replaces it as it changes.
     events: [...session.events.map(projectCaptainOperationalEvent).reverse(), ...presenceEvents],
+    commandConsole,
   };
 }
 

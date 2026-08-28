@@ -9,10 +9,19 @@ type SupportRequest = {
   operatorRoles: string[];
   purpose: string;
   requestedScopes: SupportAccessScope[];
+  requestedRepairIds: string[];
   requestedAt: string;
   decisionDeadline: string;
   status: string;
-  grant: null | { id: string; scopes: SupportAccessScope[]; issuedAt: string; expiresAt: string; status: string };
+  grant: null | {
+    id: string;
+    scopes: SupportAccessScope[];
+    repairIds: string[];
+    maximumRiskClass: string;
+    issuedAt: string;
+    expiresAt: string;
+    status: string;
+  };
 };
 const labels: Record<SupportAccessScope, string> = {
   ACCOUNT_STATE: "Account state",
@@ -22,6 +31,9 @@ const labels: Record<SupportAccessScope, string> = {
   COMMUNITY_ACTIVITY: "Community activity",
   SESSION_DIAGNOSTICS: "Session diagnostics",
   PROFILE_DIAGNOSTICS: "Profile diagnostics",
+  VOYAGE_MEMBERSHIP: "Voyage membership",
+  RUNTIME_STATUS: "Safe runtime status",
+  AUDIT_CORRELATION: "Audit correlation history",
 };
 
 export function SupportAccessPanel() {
@@ -96,8 +108,8 @@ export function SupportAccessPanel() {
       <div className="harbor-panel support-access__explanation">
         <h2 id="support-access-heading">You stay in control</h2>
         <p>
-          A request names the person asking, their purpose, and every diagnostic category. Approval lasts no more than
-          30 minutes and applies only to that operator and your account.
+          A request names the person asking, their purpose, every diagnostic category, and any registered repair they
+          may later propose. Approval lasts no more than 30 minutes and applies only to that operator and your account.
         </p>
         <p>
           <strong>Never included:</strong> passwords or hashes, session or OAuth tokens, provider and encryption keys,
@@ -126,6 +138,16 @@ export function SupportAccessPanel() {
                 <li key={scope}>{labels[scope]}</li>
               ))}
             </ul>
+            <h3>Requested repair authority</h3>
+            {request.requestedRepairIds.length ? (
+              <ul>
+                {request.requestedRepairIds.map((repairId) => (
+                  <li key={repairId}>{repairId}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>This is a read-only diagnostic request.</p>
+            )}
             <p>
               <small>
                 Decision available until {new Date(request.decisionDeadline).toLocaleString()}. If approved, access ends
@@ -168,6 +190,9 @@ export function SupportAccessPanel() {
                 <p>
                   Active until {new Date(request.grant.expiresAt).toLocaleString()} for:{" "}
                   {request.grant.scopes.map((scope) => labels[scope]).join(", ")}.
+                  {request.grant.repairIds.length
+                    ? ` Registered repair authority: ${request.grant.repairIds.join(", ")} (maximum risk ${request.grant.maximumRiskClass}).`
+                    : " No repair authority was approved."}
                 </p>
                 <button
                   type="button"

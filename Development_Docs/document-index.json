@@ -3027,6 +3027,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Test_Plan.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Project_Confluence_C2_C7_Design_and_Implementation_Record.md",
       "record_type": "archive-index",
       "status": "preserved",
@@ -4209,6 +4227,48 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S1_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S1_Diagnostic_Scope_Registry.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S1_Safety_Boundary.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S1_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S2_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S2_Safety_Boundary.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S2_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Admiralty/README.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -4246,6 +4306,36 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Amendment_A2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Amendment_A3_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Amendment_A3_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Amendment_A3_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Amendment_A3_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Amendment_A3_Validation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -4312,6 +4402,24 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_3_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_3_Mainline_Safety_Contract.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_3_Test_Plan.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

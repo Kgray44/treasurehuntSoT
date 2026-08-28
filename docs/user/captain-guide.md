@@ -21,21 +21,37 @@ Captain controls. Ending Player participation removes Player access while the
 Captain assignment remains active. Existing and omitted choices remain
 Captain-only.
 
-Captain operations also show a read-only, privacy-safe view of Voyage status,
-current attention, crew readiness, connection/synchronization health, progress,
-and recent safe event summaries. These observations help a Captain decide when
-to use the existing session controls; they do not expose Player-private device,
-network, account, draft, or story data, and they do not create new progression
-controls.
+The live **Captain's Console** turns the same privacy-safe operational view
+into contextual Voyage controls. It shows the current state, Needs Attention,
+safe Crew status, progress map, and recent outcomes, then offers only the
+actions currently allowed for that Voyage. Review the target, current revision,
+consequence, reversibility, and Player-visible effect before confirming a
+meaningful action. If the Voyage changes while you are reviewing it, refresh
+and choose again. If a response is interrupted, retry the same action so the
+existing command receipt can reconcile safely.
 
-The following Amendment A2 behavior is branch-complete and pending protected
-integration. When a Captain + Player Voyage needs a different Captain, use **Transfer
+The console uses the established Captain actions for verification decisions,
+hints, pause/resume, presentation replay, and published-Passage movement. It
+does not expose Player-private device, network, account, reflection, or story
+data; Creator notes, drafts, hidden answers, and raw verification evidence are
+not part of Captain operations. Provider fallback, preflight, and recovery
+procedures remain separate operational work.
+
+When a Captain + Player Voyage needs a different Captain, use **Transfer
 Captaincy** to select another currently joined Player. The transfer keeps your
 ordinary Player membership and does not alter the edition, current shared
 progress, or private Player state. If no successor is selected, use
 **Relinquish Captaincy**: it places the shared Voyage in **Succession Hold**;
 it does not cancel it. Cancellation remains the separate **Cancel Voyage for
 Everyone** action.
+
+Use **Open Muster Room** for a focused pre-launch view. A Captain-only Voyage
+clearly says that no Player membership exists and can begin directly when its
+Voyage state is ready. In a Captain + Player Voyage, your ordinary Player
+Waiting Room marks you as Captain, shows safe Crew invitation/readiness and
+connection state, and offers **Begin Voyage** there once the existing Crew
+readiness rule is met. **Leave Waiting Room** only returns to the Library;
+**Leave Voyage**, Captaincy actions, and cancellation remain distinct.
 
 Creator authoring is separate: see the [Creator guide](creator-guide.md). Operational safety is in [private-content guidance](../administrator/private-content.md).
 

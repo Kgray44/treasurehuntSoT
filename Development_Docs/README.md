@@ -66,10 +66,12 @@ with read-only operational projections and member-scoped presence/synchronizatio
 evidence. Governing Amendment v1.1 supplements the v1.0 authority and inserts
 A1 **Muster the Crew**, A2 **Pass the Helm**, and A3 **Ready the Room** before
 the unchanged P3 **Give the Orders**, P4 **Weather the Passage**, and P5
-**Clear for Voyage** sequence. A1 is accepted on main; A2 is branch-complete
-pending protected integration, with its scoped authority-handoff and
-personal-continuation evidence recorded with Helm. A3 and the original later
-phases remain separate.
+**Clear for Voyage** sequence. A1 and A2 are accepted on main, including the
+scoped authority-handoff and personal-continuation evidence recorded with
+Helm. A3 **Ready the Room** adds the bounded Captain/Player pre-launch muster.
+P3 **Give the Orders** adds the contextual live Captain command console while
+preserving the canonical progression/authority source and Player-safe
+projection. P4 and P5 remain separate.
 
 ## Project Admiralty
 

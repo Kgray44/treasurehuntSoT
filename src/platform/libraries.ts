@@ -57,7 +57,24 @@ async function loadPlayerMemberships(playerId: string) {
           invitations: { orderBy: { createdAt: "desc" }, include: { replacement: { select: { id: true } } } },
           events: { orderBy: { sequence: "asc" } },
           revealStates: { orderBy: { revealedAt: "asc" } },
-          memberships: { include: { player: { select: { id: true, displayName: true } } } },
+          memberships: {
+            orderBy: { createdAt: "asc" },
+            include: {
+              player: { select: { id: true, displayName: true, accountId: true } },
+              // Membership presence is an existing, bounded operational
+              // projection. A3 reads it to describe the room; it never uses
+              // it to derive access, readiness, or progression authority.
+              presenceDevices: {
+                select: {
+                  lastHeartbeatAt: true,
+                  acknowledgedSequence: true,
+                  safeActivity: true,
+                  disconnectedAt: true,
+                  updatedAt: true,
+                },
+              },
+            },
+          },
         },
       },
     },
@@ -250,15 +267,79 @@ export async function getPlayerPlaythrough(playerId: string, playthroughId: stri
     Boolean(membership.player.accountId) &&
     playthrough.captainAccountId === membership.player.accountId &&
     activeCrew.length === 1;
+  const viewerIsCaptain =
+    Boolean(membership.player.accountId) &&
+    (playthrough.captainAccountId === membership.player.accountId ||
+      playthrough.captainId === membership.player.accountId);
+  const activeInvitationFor = (playerProfileId: string) =>
+    playthrough.invitations.find(
+      (invitation) => invitation.intendedPlayerId === playerProfileId && !invitation.replacement,
+    ) ?? null;
   return {
     ...card,
     // This opaque membership identifier is returned only to its authenticated
     // owner. The presence endpoint still binds it to that identity server-side.
     membershipId: membership.id,
-    crew: playthrough.memberships
-      .filter((item) => validMembershipStates.includes(item.status))
-      .map((item) => ({ displayName: item.player.displayName, crewRole: item.crewRole, status: item.status })),
+    // Keep terminal rows visible to other current members. A departure or
+    // removal is a meaningful room change, whereas filtering it away would
+    // make a live update look like an unexplained disappearing person.
+    crew: playthrough.memberships.map((item) => {
+      const presence = aggregateMembershipPresence(item.presenceDevices, playthrough.currentSequence);
+      const invitation = activeInvitationFor(item.playerProfileId);
+      const removed = ["REMOVED", "LEFT", "CANCELLED"].includes(item.status);
+      return {
+        id: item.id,
+        displayName: item.participationAlias ?? item.player.displayName,
+        crewRole: item.crewRole,
+        status: item.status,
+        avatar: null as null,
+        joinedAt: item.joinedAt?.toISOString() ?? null,
+        isCaptain:
+          Boolean(item.player.accountId) &&
+          (playthrough.captainAccountId === item.player.accountId || playthrough.captainId === item.player.accountId),
+        isCurrentPlayer: item.id === membership.id,
+        canReceiveCaptaincy:
+          viewerIsCaptain &&
+          !removed &&
+          item.id !== membership.id &&
+          Boolean(item.player.accountId) &&
+          ["ACCEPTED", "READY", "ACTIVE_MEMBER"].includes(item.status),
+        presence: {
+          state: removed ? "REMOVED" : presence.state,
+          lastSeenAt: removed ? null : presence.lastSeenAt,
+          activeDeviceCount: removed ? 0 : presence.activeDeviceCount,
+          safeActivity: removed ? null : presence.safeActivity,
+        },
+        synchronization: {
+          state: removed ? "UNKNOWN" : presence.synchronizationState,
+          lag: removed ? null : presence.eventLag,
+        },
+        readiness: {
+          state: ["READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"].includes(item.status)
+            ? "READY"
+            : ["INVITED", "ACCEPTED"].includes(item.status)
+              ? "NOT_READY"
+              : "UNKNOWN",
+        },
+        invitation: invitation
+          ? {
+              id: invitation.id,
+              status: invitation.status,
+              expiresAt: invitation.expiresAt.toISOString(),
+              canManage: ["CREATED", "SENT", "COPIED", "VIEWED"].includes(invitation.status),
+            }
+          : null,
+      };
+    }),
     connection: { state: "POLLING", lastServerConfirmation: playthrough.updatedAt.toISOString() },
+    viewer: {
+      isCaptain: viewerIsCaptain,
+      participationMode: viewerIsCaptain ? "CAPTAIN_AND_PLAYER" : "PLAYER",
+      canLaunch:
+        viewerIsCaptain &&
+        playthrough.captainAuthorityState === "ASSIGNED" &&
+        ["READY", "SCHEDULED"].includes(playthrough.status),
+    },
     captainAuthorityState: playthrough.captainAuthorityState,
     canTakeCaptaincy:
       playthrough.captainAuthorityState === "VACANT" && validMembershipStates.includes(membership.status),

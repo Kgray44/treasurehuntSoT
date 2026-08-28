@@ -12,6 +12,53 @@ last_reviewed: 2026-08-27
 
 ### Changed
 
+- Added Project Admiralty Support Pilot S2, **Turn the Wrench**: consented
+  support cases can now propose and execute only three registered, bounded
+  canonical owner repairs. Exact repair consent, fresh assurance, hard R0-R4
+  ceilings, durable command/record/domain budgets, current-state previews,
+  target leases, idempotency, audit-before-mutation, and postcondition
+  verification are enforced. R4, RX, raw SQL, private-content access, jobs,
+  projection rebuilds, and all unregistered mutations remain unavailable. This
+  is protected-source behavior with synthetic evidence, not deployment or live
+  user-data acceptance.
+
+- Added Project Helm Phase 3, **Give the Orders**: the live Captain console
+  now derives only canonical commands allowed by the fresh Voyage state,
+  previews their target/revision/consequence, confirms meaningful orders, and
+  safely handles stale commands and same-key retries. It reuses the existing
+  One Voyage command/event authority and preserves Captain-only, participating
+  Captain, Player-safe, Creator-private, and Phase 4 recovery/preflight
+  boundaries. This is protected-source behavior with local/synthetic evidence,
+  not deployment, live-Voyage proof, or owner acceptance.
+
+- Added Project Helm Amendment A3, **Ready the Room**: Captain-only and
+  Captain + Player Voyages now have clear, responsive pre-launch muster views
+  with safe Crew invitation/readiness/presence state, live reconciliation, and
+  existing lifecycle/authority actions. A Captain-only Voyage can launch
+  directly without inventing a Player seat; a participating Captain can launch
+  from the ordinary Player room once the existing ready-Crew gate permits it.
+  Leaving the room, leaving a Voyage, Captaincy, and cancellation remain
+  separate actions. This is protected-source behavior with local/synthetic
+  evidence, not deployment, live-Voyage proof, or owner acceptance.
+- Expanded Project Bridgewatch on its dedicated v2.0 Light Mission Control
+  candidate with an eleven-station, read-only operator experience: Fleet,
+  Operations, Mainline, Verification, Projects, Repository, Product
+  Intelligence, Runtime, Sources/Data Quality, History, and Attention. Dense
+  project profiles now group retained candidate/main, verification, repository,
+  provenance, and observation-coverage detail; source-bound intelligence keeps
+  degraded, unavailable, provisional, and unrecorded conditions visible. This
+  candidate does not claim protected-main integration, deployment, provider
+  acceptance, or a Bridgewatch Phase 4.
+
+- Added Project Admiralty Support Pilot S1, **Open the Case**, as a bounded
+  autonomous support diagnosis candidate. Authorized operators can open an
+  owner-visible, exact-scope case; fresh-assurance execution derives a
+  short-lived read-only capability, emits sanitized source-bound evidence,
+  deterministic findings and diagnosis, and an information-only repair
+  proposal. It cannot perform repair, user-state correction, session revocation,
+  job retry, projection rebuild, configuration mutation, or systemic analysis.
+  Protected-main authority and landing remain required; this is not deployment.
+
 - Expanded Project Bridgewatch on its dedicated v1.2 P2 implementation branch
   with a bounded typed data fabric: per-source provenance/precedence and
   last-known-good truth, explicit expected fact-class coverage, truthful

@@ -171,7 +171,7 @@ Players can discover, resume, archive, and reconcile exact-edition Voyage experi
 **Status:** MAINLINE
 **Program or subsystem:** Captain
 
-Captains create, launch, operate, conclude, and safely hand off live Voyages through authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.
+Captains create, ready, launch, operate, conclude, and safely hand off live Voyages through contextual authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.
 
 ### Important subfeatures
 
@@ -191,15 +191,17 @@ Captains create, launch, operate, conclude, and safely hand off live Voyages thr
 - Captain Crew removal, Player voluntary leave, and explicit Voyage cancellation with preserved history
 - Direct joined-Player Captain transfer with durable authority receipts
 - Succession Hold, first-committed Player takeover, and same-edition solo continuation lineage
+- Captain-only and participating-Captain Ready Room with safe Crew state, live reconciliation, and canonical direct launch
+- Contextual live Captain command console with prepared state, confirmation, stale-sequence protection, and idempotent retry reconciliation
 
 ### Primary surfaces
 
-`/captain`, `/captain/library`, `/captain/sessions/[sessionId]`, `/captain/voyages/[playthroughId]/player-preview`, `/player/playthroughs/[playthroughId]`
+`/captain`, `/captain/library`, `/captain/sessions/[sessionId]`, `/captain/voyages/[playthroughId]/muster`, `/captain/voyages/[playthroughId]/player-preview`, `/player/playthroughs/[playthroughId]`
 
 ### Meaningful limitations
 
-- The A2 authority-handoff extension is integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.
-- A3 Ready the Room and original Helm Phase 3 command redesign remain outside this amendment.
+- The A1-A3 and P3 extensions are integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.
+- Original Helm Phase 4 preflight, provider fallback, and recovery work remains outside the current capability.
 
 ### Evidence
 
@@ -212,9 +214,13 @@ Captains create, launch, operate, conclude, and safely hand off live Voyages thr
 - path: `src/helm/authority-lifecycle.ts`
 - path: `src/helm/authority-command.client.ts`
 - path: `src/components/platform/PlayerVoyageRoom.tsx`
+- path: `src/components/captain/CaptainMusterRoom.tsx`
 - path: `src/components/platform/PlayerLibrary.tsx`
 - path: `src/platform/membership-presence.ts`
 - path: `src/components/captain/CaptainOperationalPanel.tsx`
+- path: `src/components/captain/CaptainCommandConsole.tsx`
+- path: `src/helm/command-console.ts`
+- path: `src/app/api/captain/voyages/[voyageId]/commands/route.ts`
 - path: `playwright.config.ts`
 - path: `src/components/platform/CaptainLibrary.tsx`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
@@ -908,13 +914,14 @@ Audience-separated current documentation, indexed engineering records, and a fra
 **Status:** MAINLINE
 **Program or subsystem:** Sounding Line
 
-A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. A separate manual mode remains exhaustive for releases and explicit full certification.
+A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. Immutable v1.4 evidence receipts safely preserve or rebind unchanged ordinary obligations while a separate manual mode remains exhaustive for releases and explicit full certification.
 
 ### Important subfeatures
 
 - Exact base, candidate, and tree identity binding
 - Focused filesystem-based test selection
 - Conservative widening when impact is unknown
+- Fail-closed semantic reconciliation of immutable ordinary-evidence receipts
 - Separate exhaustive release certification
 
 ### Primary surfaces
@@ -928,6 +935,7 @@ A focused protected-main check binds the exact pull-request base, candidate, and
 ### Evidence
 
 - path: `scripts/sounding-line/ordinary.mjs`
+- path: `scripts/sounding-line/evidence.mjs`
 - test: `tests/sounding-line/ordinary.test.mjs`
 - path: `.github/workflows/sounding-line-ordinary.yml`
 - completion-record: `Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md`
@@ -1164,6 +1172,44 @@ Bridgewatch v1.2 P2 makes a fixed, read-only set of typed repository, governance
 - path: `bridgewatch/lib/store.ts`
 - test: `bridgewatch/test/fabric.test.ts`
 - test: `bridgewatch/test/server.test.ts`
+
+---
+
+## FT-040 - Bridgewatch v2.0 Light Mission Control
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Bridgewatch v2.0 Phase 3 - Light Mission Control
+
+A private, read-only Bridgewatch Mission Control turns the accepted bounded data fabric into eleven dense, source-bound operator stations with explainable attention, discoverable project intelligence, retained current-main and verification context, and truthful unavailable or unrecorded states without gaining authority over governed work.
+
+### Important subfeatures
+
+- Eleven named Mission Control stations with hash deep links, bounded search, mobile layout, visible focus, and reduced-motion support
+- Dense project profiles grouping identity, versions, phases, governing status, candidate and main relations, branches, pull requests, verification, workers, provenance, and retained history
+- Pure explainable attention derived only from source health, expected coverage, worker, branch, pull-request, verification, runtime, provider, and retained-history evidence
+- Truthful Product Intelligence, Voyagewright Runtime, Sources and Data Quality, History, Mainline, and Verification presentation without fabricated capability realization, schema agreement, deployment ancestry, or historic fact
+- Capability-gated Voyagewright and NGINX allowlists for the existing read-only facts, coverage, Nightwatch, and fact-profile observations
+- Focusable named mobile table regions verified with zero Axe violations on live desktop and mobile task-owned views
+
+### Primary surfaces
+
+`bridgewatch`, `/bridgewatch`, `Fleet Overview through Attention stations`, `GET /api/facts`, `GET /api/coverage`, `GET /api/nightwatch`
+
+### Meaningful limitations
+
+- Bridgewatch remains a private GET/HEAD observer and cannot create, approve, merge, retry, cancel, queue, deploy, release, or mutate project, worker, provider, Voyagewright, or product state.
+- Source, provider, runtime, deployment, capability-realization, schema-agreement, and historical facts remain visibly unavailable, provisional, or unrecorded unless a configured bounded source supplies them.
+- Protected-main integration records the v2.0 Light Mission Control capability as available; it does not establish a private deployment, provider proof, or owner-acceptance record.
+
+### Evidence
+
+- commit: `38108919b7ec910940c6443f79e2d7ef0a0921e8`
+- path: `bridgewatch/public/app.js`
+- path: `bridgewatch/lib/server.ts`
+- test: `bridgewatch/test/operator-attention.test.ts`
+- test: `bridgewatch/test/mission-control-ui.test.ts`
+- test: `src/admiralty/bridgewatch-gateway.test.ts`
+- completion-record: `Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Validation_Record.md`
 
 ---
 
@@ -1588,7 +1634,7 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 **Status:** MAINLINE
 **Program or subsystem:** Project Admiralty
 
-Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a read-only cross-domain Chartroom on main without creating a second source of truth.
+Accepted Admiralty phases establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, governed owner-domain commands, and a read-only cross-domain Chartroom on main without creating a second source of truth. Support Pilot S2 extends S1 diagnosis with consented, registered, bounded canonical owner repairs and mandatory verification.
 
 ### Important subfeatures
 
@@ -1605,10 +1651,15 @@ Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assur
 - Phase 2 bounded People, Chronicle, Voyage, and Community search and detail
 - Phase 2 operations, provider, configuration, release, audit, and correlation-led investigation projections
 - Phase 2 dossier-anchored consented Support Access
+- Accepted Phase 3 governed owner-domain account, security, Community, job, and configuration commands
+- Support Pilot S1 case-bound, short-lived read-only delegated diagnostic capability
+- Source-bound sanitized findings, deterministic diagnosis receipts, and information-only repair proposals
+- Support Pilot S2 exact repair consent, R0-R4 ceilings, durable command/record/domain budgets, target leases, and idempotent execution receipts
+- Registered R1 profile reconcile, R2 stale-session revoke, and explicitly consented R3 membership reconcile with required postcondition verification
 
 ### Primary surfaces
 
-`/admin`, `/admin/people`, `/admin/chronicles`, `/admin/voyages`, `/admin/community`, `/admin/operations`, `/admin/providers`, `/admin/configuration`, `/admin/releases`, `/admin/audit`, `/admin/investigate`, `/account/support-access`
+`/admin`, `/admin/people`, `/admin/chronicles`, `/admin/voyages`, `/admin/community`, `/admin/operations`, `/admin/providers`, `/admin/configuration`, `/admin/releases`, `/admin/audit`, `/admin/investigate`, `/admin/support/cases`, `/account/support-access`
 
 ### Meaningful limitations
 
@@ -1618,6 +1669,8 @@ Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assur
 - The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; exact-source authority and protected canonical-main integration completed in PR #28
 - Transactional-email delivery health and live verification-provider health are blocked by missing canonical owner contracts
 - Broad administrative mutation remains dormant for later governed phases
+- Support Pilot S2 enables only three registered bounded owner repairs; Harborlight projection rebuild, job actions, configuration mutation, and all other commands remain unavailable until their owners publish safe contracts
+- R4 repairs require explicit per-action human approval and no R4 repair is enabled; RX is never executable
 - Owner acceptance does not imply deployment or acceptance of later Admiralty phases
 
 ### Evidence
@@ -1628,6 +1681,12 @@ Owner-accepted Phases 1 and 2 establish canonical roles, recent privileged assur
 - path: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json`
 - test: `tests/e2e/admiralty-phase1.spec.ts`
 - path: `src/admiralty/read-models.ts`
+- path: `src/admiralty/support-pilot.ts`
+- path: `src/admiralty/support-repair-registry.ts`
+- path: `src/admiralty/support-repair-service.ts`
+- test: `src/admiralty/support-pilot.test.ts`
+- test: `src/admiralty/support-repair-policy.test.ts`
+- test: `tests/e2e/admiralty-support-pilot-s2.spec.ts`
 - test: `tests/e2e/admiralty-phase2.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Owner_Decision_Record.md`

@@ -19,11 +19,13 @@
 /.next-admiralty-phase2*/
 /.next-admiralty-phase3*/
 /.next-helm-a2-browser*/
+/.next-helm-phase3-*/
 /.next-shipwright-phase2*/
 /.next-shipwright-phase3*/
 /.admiralty-phase1-build/
 /.sealed-build/
 /out/
+/tmp/
 
 # production
 /build
@@ -100,6 +102,7 @@ __pycache__/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/.next-*/
 /.sealed-build*/
 # Deprecated repository guidance files. Do not reintroduce or track them.
 AGENTS.md

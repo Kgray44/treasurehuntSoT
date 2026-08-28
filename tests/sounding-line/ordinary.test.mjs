@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { EventEmitter } from "node:events";
 import { mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { createServer as createTcpServer } from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -10,6 +11,8 @@ import {
   assertBrowserAuthorityTopology,
   browserRuntimeReceipt,
   runBrowserAuthority,
+  stripTaskOwnedCookieSecurity,
+  taskOwnedCookieAdapterRequired,
 } from "../../scripts/sounding-line/browser-authority.mjs";
 import {
   assertBinding,
@@ -19,13 +22,17 @@ import {
   packageAuthorityChanges,
   requiresMigrationValidation,
   requiresBuild,
+  runReconciledVerification,
+  resolveHomeportFixturePreparers,
   runVerificationCommands,
   sanitizedFailureCode,
   selectAffectedTests,
   soundingLineDatabaseUrl,
   verificationEnvironment,
   verificationCommands,
+  verificationObligationGroups,
 } from "../../scripts/sounding-line/ordinary.mjs";
+import { resolveBrowserSuiteDispatches } from "../../scripts/sounding-line/browser-suite-profiles.mjs";
 
 const basePackage = {
   scripts: {
@@ -74,6 +81,72 @@ async function withCandidate(changes, assertion) {
   } finally {
     rmSync(fixture.root, { force: true, recursive: true });
   }
+}
+
+function commit(root, message) {
+  git(root, ["add", "."]);
+  git(root, ["commit", "--quiet", "-m", message]);
+  return git(root, ["rev-parse", "HEAD"]);
+}
+
+function evidenceFixture() {
+  const root = mkdtempSync(path.join(tmpdir(), "sounding-line-evidence-"));
+  const files = {
+    "package.json": `${JSON.stringify(basePackage, null, 2)}\n`,
+    "package-lock.json": `${JSON.stringify({ name: "evidence-fixture", lockfileVersion: 3, packages: {} }, null, 2)}\n`,
+    "tsconfig.json": '{"compilerOptions":{"baseUrl":".","paths":{"@/*":["src/*"]}}}\n',
+    "next.config.ts": "export default {};\n",
+    "postcss.config.mjs": "export default {};\n",
+    "playwright.config.ts": "export default {};\n",
+    "vitest.config.ts": "export default {};\n",
+    "eslint.config.mjs": "export default [];\n",
+    ".prettierrc.json": "{}\n",
+    ".prettierignore": "node_modules\n",
+    ".nvmrc": "22\n",
+    "testing/contracts.json": "{}\n",
+    "testing/impact-map.json": "{}\n",
+    "testing/suites.json": "{}\n",
+    "src/product.ts": "export const product = 'base';\n",
+    "src/product.test.ts": "import { product } from './product';\nvoid product;\n",
+    "tests/e2e/product.spec.ts": "export const browserProof = 'base';\n",
+    "Development_Docs/guide.md": "# Guide\n",
+    "scripts/sounding-line/sqlite-bootstrap.mjs": "export {};\n",
+    "scripts/sounding-line/browser-authority.mjs": "export {};\n",
+    "prisma/schema.sqlite.prisma": 'generator client { provider = "prisma-client-js" }\n',
+    "prisma/seed.ts": "export {};\n",
+  };
+  for (const [file, contents] of Object.entries(files)) {
+    mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    writeFileSync(path.join(root, file), contents);
+  }
+  git(root, ["init", "--initial-branch=main", "--quiet"]);
+  git(root, ["config", "core.autocrlf", "false"]);
+  git(root, ["config", "user.email", "evidence@example.invalid"]);
+  git(root, ["config", "user.name", "Evidence Fixture"]);
+  const baseSha = commit(root, "base");
+  return { root, baseSha };
+}
+
+async function withEvidenceFixture(assertion) {
+  const fixture = evidenceFixture();
+  try {
+    await assertion(fixture);
+  } finally {
+    rmSync(fixture.root, { force: true, recursive: true });
+  }
+}
+
+async function runReconciliation(root, plan, commandDelayMs = 0) {
+  const calls = [];
+  const result = await runReconciledVerification(root, plan, (_root, command, argumentsList) => {
+    calls.push([command, argumentsList]);
+    if (commandDelayMs)
+      execFileSync(process.execPath, [
+        "-e",
+        `Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ${commandDelayMs});`,
+      ]);
+  });
+  return { calls, result };
 }
 
 test("ordinary classification ignores retired generated state and rejects active control-plane edits", () => {
@@ -291,6 +364,31 @@ test("ordinary selection finds Harborlight browser proof structurally", () => {
   assert.equal(selection.widened, false);
 });
 
+test("ordinary selection ignores documentation vocabulary when scoping product browser proof", () => {
+  const selection = selectAffectedTests({
+    changedPaths: [
+      "src/admiralty/bridgewatch-gateway.ts",
+      "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Test_Plan.md",
+      "Development_Docs/Features/branch-complete/project-bridgewatch-v2-light-mission-control.json",
+    ],
+    unitTests: ["src/admiralty/bridgewatch-gateway.test.ts"],
+    browserTests: [
+      "tests/e2e/admiralty-phase1.spec.ts",
+      "tests/e2e/admiralty-phase2.spec.ts",
+      "tests/e2e/harborlight-phase2.spec.ts",
+      "tests/e2e/phase3-player-event-matrix.spec.ts",
+      "tests/e2e/project-one-voyage-phase2.spec.ts",
+      "tests/e2e/project-true-north.spec.ts",
+    ],
+  });
+  assert.deepEqual(selection.browserTests, [
+    "tests/e2e/admiralty-phase1.spec.ts",
+    "tests/e2e/admiralty-phase2.spec.ts",
+  ]);
+  assert.deepEqual(selection.unitTests, ["src/admiralty/bridgewatch-gateway.test.ts"]);
+  assert.equal(selection.widened, false);
+});
+
 test("trusted browser provisioning follows the unchanged ordinary selection and fails closed", async () => {
   const zeroBrowserSelection = selectAffectedTests({
     changedPaths: ["Development_Docs/Features/guide.md"],
@@ -356,7 +454,7 @@ test("direct browser proof prevents unrelated browser suites from widening the c
     unitTests: [],
     browserTests: [
       "tests/e2e/harborlight-phase2.spec.ts",
-      "tests/e2e/harborlight-phase3.spec.ts",
+      "tests/e2e/project-helm-phase1.spec.ts",
       "tests/e2e/harborlight-phase4.spec.ts",
     ],
   });
@@ -445,12 +543,16 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     mode: "ordinary",
     safetyPaths: [],
     lintPaths: [],
-    selected: { unitTests: [], browserTests: ["tests/e2e/harborlight-phase3.spec.ts"] },
+    selected: { unitTests: [], browserTests: ["tests/e2e/project-helm-phase1.spec.ts"] },
     databaseUrl: "file:./.sounding-line-candidate.sqlite",
     migrationRequired: false,
     migrationScripts: [],
     buildRequired: false,
   });
+  assert.deepEqual(browserCommands.at(-4), [
+    "npx",
+    ["--no-install", "prisma", "generate", "--schema", "prisma/schema.sqlite.prisma"],
+  ]);
   assert.deepEqual(browserCommands.at(-3), [
     process.execPath,
     ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
@@ -462,7 +564,7 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     [
       "scripts/sounding-line/browser-authority.mjs",
       "--",
-      "tests/e2e/harborlight-phase3.spec.ts",
+      "tests/e2e/project-helm-phase1.spec.ts",
       "--project",
       "chromium",
     ],
@@ -471,10 +573,46 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     verificationEnvironment(
       { databaseUrl: "file:./.sounding-line-candidate.sqlite" },
       process.execPath,
-      ["scripts/sounding-line/browser-authority.mjs", "--", "tests/e2e/harborlight-phase3.spec.ts"],
+      ["scripts/sounding-line/browser-authority.mjs", "--", "tests/e2e/project-helm-phase1.spec.ts"],
       {},
     ),
     { DATABASE_URL: "file:./.sounding-line-candidate.sqlite" },
+  );
+});
+
+test("browser proof keeps SQLite client generation after the production build", () => {
+  const groups = verificationObligationGroups({
+    mode: "ordinary",
+    candidateSha: "a".repeat(40),
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: ["tests/e2e/project-helm-phase1.spec.ts"] },
+    databaseUrl: "file:./.sounding-line-candidate.sqlite",
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: true,
+  });
+  const browser = groups.find((group) => group.kind === "browser");
+  assert.deepEqual(browser?.commands.slice(0, 3), [
+    ["npm", ["run", "build"]],
+    ["npx", ["--no-install", "prisma", "generate", "--schema", "prisma/schema.sqlite.prisma"]],
+    [
+      process.execPath,
+      ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
+    ],
+  ]);
+  assert.equal(
+    groups.some(
+      (group) =>
+        group.kind === "migration" &&
+        group.commands.some(
+          ([, argumentsList]) =>
+            argumentsList.includes("prisma") &&
+            argumentsList.includes("generate") &&
+            argumentsList.includes("schema.sqlite.prisma"),
+        ),
+    ),
+    false,
   );
 });
 
@@ -497,27 +635,25 @@ test("Tideglass browser proof uses its dedicated isolated harness", () => {
   const browserHarnessCommands = browserCommands.filter(
     ([command, argumentsList]) =>
       (command === process.execPath &&
-        ["scripts/tideglass/run-phase3-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
+        ["scripts/tideglass/run-phase3-journeys.mjs", "scripts/sounding-line/run-browser-suite.mjs"].includes(
           argumentsList[0],
         )) ||
-      (command === process.execPath && argumentsList[0] === "scripts/sounding-line/browser-authority.mjs") ||
-      (command === "npx" && argumentsList.includes("prisma/seed.ts")),
+      false,
   );
   assert.deepEqual(browserHarnessCommands, [
     [process.execPath, ["scripts/tideglass/run-phase3-journeys.mjs"]],
     [
       process.execPath,
-      ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
-    ],
-    ["npx", ["--no-install", "tsx", "prisma/seed.ts"]],
-    [
-      process.execPath,
       [
-        "scripts/sounding-line/browser-authority.mjs",
+        "scripts/sounding-line/run-browser-suite.mjs",
+        "--profile",
+        "harborlight-phase3",
+        "--candidate",
+        candidateSha,
+        "--database-url",
+        "file:./artifacts/sounding-line/harborlight-phase3-aaaaaaaaaaaa/validation-isolated-19700101-000000000-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.db",
         "--",
         "tests/e2e/harborlight-phase3.spec.ts",
-        "--project",
-        "chromium",
       ],
     ],
   ]);
@@ -559,18 +695,47 @@ test("Admiralty Phase 2 browser proof uses its dedicated isolated harness", () =
       { candidateSha, buildRequired: true },
       process.execPath,
       ["scripts/admiralty/run-phase2-journeys.mjs"],
-      { ADMIRALTY_PHASE2_PRIVATE_CREDENTIALS: "not-used" },
+      { ADMIRALTY_PHASE2_PRIVATE_CREDENTIALS: "not-used", LOCALAPPDATA: "C:/validation-runtime" },
     ),
     {
       LOCALAPPDATA: ".",
       ADMIRALTY_PHASE2_TASK_ROOT: "ProjectAdmiralty/.sounding-line-admiralty-phase2-bbbbbbbbbbbb",
       NEXT_DIST_DIR: ".next",
       ADMIRALTY_PHASE2_REUSE_BUILD: "1",
+      PLAYWRIGHT_BROWSERS_PATH: path.join("C:/validation-runtime", "ms-playwright"),
     },
   );
 });
 
-test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once", () => {
+test("Admiralty Phase 1 browser proof uses its dedicated fixture and build harness", () => {
+  const candidateSha = "a".repeat(40);
+  const browserCommands = verificationCommands({
+    mode: "ordinary",
+    candidateSha,
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: ["tests/e2e/admiralty-phase1.spec.ts"] },
+    databaseUrl: "file:./.sounding-line-candidate.sqlite",
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: true,
+  });
+  assert.deepEqual(browserCommands.at(-1), [process.execPath, ["scripts/admiralty/run-phase1-journeys.mjs"]]);
+  assert.deepEqual(
+    verificationEnvironment({ candidateSha }, process.execPath, ["scripts/admiralty/run-phase1-journeys.mjs"], {
+      LOCALAPPDATA: "C:/validation-runtime",
+    }),
+    {
+      LOCALAPPDATA: "artifacts/sounding-line",
+      ADMIRALTY_PHASE1_TASK_ROOT:
+        "artifacts/sounding-line/ProjectAdmiralty/.sounding-line-admiralty-phase1-aaaaaaaaaaaa",
+      NEXT_DIST_DIR: ".next",
+      PLAYWRIGHT_BROWSERS_PATH: path.join("C:/validation-runtime", "ms-playwright"),
+    },
+  );
+});
+
+test("Admiralty Phase 2 and Phase 3 use their dedicated fixture and build harnesses", () => {
   const browserCommands = verificationCommands({
     mode: "ordinary",
     candidateSha: "c".repeat(40),
@@ -587,31 +752,31 @@ test("Admiralty Phase 2 leaves mixed generic browser proof selected exactly once
   });
   const browserHarnessCommands = browserCommands.filter(
     ([command, argumentsList]) =>
-      (command === process.execPath &&
-        ["scripts/admiralty/run-phase2-journeys.mjs", "scripts/sounding-line/sqlite-bootstrap.mjs"].includes(
-          argumentsList[0],
-        )) ||
-      (command === process.execPath && argumentsList[0] === "scripts/sounding-line/browser-authority.mjs") ||
-      (command === "npx" && argumentsList.includes("prisma/seed.ts")),
+      command === process.execPath &&
+      ["scripts/admiralty/run-phase2-journeys.mjs", "tests/admiralty/phase3/run-journeys.mjs"].includes(
+        argumentsList[0],
+      ),
   );
   assert.deepEqual(browserHarnessCommands, [
     [process.execPath, ["scripts/admiralty/run-phase2-journeys.mjs"]],
-    [
-      process.execPath,
-      ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
-    ],
-    ["npx", ["--no-install", "tsx", "prisma/seed.ts"]],
-    [
-      process.execPath,
-      [
-        "scripts/sounding-line/browser-authority.mjs",
-        "--",
-        "tests/e2e/admiralty-phase3.spec.ts",
-        "--project",
-        "chromium",
-      ],
-    ],
+    [process.execPath, ["tests/admiralty/phase3/run-journeys.mjs"]],
   ]);
+  assert.deepEqual(
+    verificationEnvironment(
+      { candidateSha: "c".repeat(40), buildRequired: true },
+      process.execPath,
+      ["tests/admiralty/phase3/run-journeys.mjs"],
+      { LOCALAPPDATA: "C:/validation-runtime" },
+    ),
+    {
+      LOCALAPPDATA: "artifacts/sounding-line",
+      ADMIRALTY_PHASE3_TASK_ROOT:
+        "artifacts/sounding-line/ProjectAdmiralty/.sounding-line-admiralty-phase3-cccccccccccc",
+      NEXT_DIST_DIR: ".next",
+      ADMIRALTY_PHASE3_REUSE_BUILD: "1",
+      PLAYWRIGHT_BROWSERS_PATH: path.join("C:/validation-runtime", "ms-playwright"),
+    },
+  );
 });
 
 test("Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures", () => {
@@ -644,17 +809,23 @@ test("Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures
       ],
       [process.execPath, ["scripts/homeport/run-phase4-e2e.mjs"]],
       [process.execPath, ["scripts/homeport/prepare-phase7-fixture.mjs"]],
-      [process.execPath, ["scripts/homeport/run-phase7-journeys.mjs"]],
+      [process.execPath, ["scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs"]],
+      [process.execPath, ["scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs"]],
       [process.execPath, ["scripts/homeport/prepare-phase7-owner-correction-round3-fixture.mjs"]],
+      [process.execPath, ["scripts/homeport/run-phase7-journeys.mjs"]],
       [process.execPath, ["scripts/homeport/run-phase7-owner-correction-round3-journeys.mjs"]],
       [
         process.execPath,
         [
-          "scripts/sounding-line/browser-authority.mjs",
+          "scripts/sounding-line/run-browser-suite.mjs",
+          "--profile",
+          "harborlight-phase3",
+          "--candidate",
+          candidateSha,
+          "--database-url",
+          "file:./artifacts/sounding-line/harborlight-phase3-eeeeeeeeeeee/validation-isolated-19700101-000000000-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.db",
           "--",
           "tests/e2e/harborlight-phase3.spec.ts",
-          "--project",
-          "chromium",
         ],
       ],
     ],
@@ -680,6 +851,142 @@ test("Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures
       HOMEPORT_PHASE7_ROUND3_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-round3-eeeeeeeeeeee",
       HOMEPORT_PHASE7_PATCH_A_TASK_ROOT: "artifacts/sounding-line/homeport-phase7-patch-a-eeeeeeeeeeee",
     },
+  );
+});
+
+test("Homeport fixture preflight provisions only declared journey dependencies", () => {
+  const round2 = "tests/e2e/homeport-phase7-owner-correction-round2.spec.ts";
+  assert.deepEqual(resolveHomeportFixturePreparers([round2], { HOMEPORT_PHASE7_CORRECTION_JOURNEYS: "A" }), [
+    "scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs",
+  ]);
+  assert.deepEqual(resolveHomeportFixturePreparers([round2], { HOMEPORT_PHASE7_CORRECTION_JOURNEYS: "W" }), [
+    "scripts/homeport/prepare-phase7-fixture.mjs",
+    "scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs",
+    "scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs",
+  ]);
+});
+
+test("Homeport correction commands receive their dedicated task roots", () => {
+  const candidateSha = "f".repeat(40);
+  const plan = { candidateSha, databaseUrl: "file:./.sounding-line-ffffffffffff.sqlite" };
+  for (const [script, lane] of [
+    ["scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs", "phase7-round1"],
+    ["scripts/homeport/run-phase7-owner-correction-round1-journeys.mjs", "phase7-round1"],
+    ["scripts/homeport/prepare-phase7-owner-correction-round2-fixture.mjs", "phase7-round2"],
+    ["scripts/homeport/run-phase7-owner-correction-round2-journeys.mjs", "phase7-round2"],
+    ["scripts/homeport/prepare-phase7-owner-correction-round3-fixture.mjs", "phase7-round3"],
+    ["scripts/homeport/run-phase7-owner-correction-round3-journeys.mjs", "phase7-round3"],
+    ["scripts/homeport/prepare-phase7-owner-correction-round3-patch-a-fixture.mjs", "phase7-patch-a"],
+    ["scripts/homeport/run-phase7-owner-correction-round3-patch-a-journeys.mjs", "phase7-patch-a"],
+  ]) {
+    assert.equal(
+      verificationEnvironment(plan, process.execPath, [script], {}).HOMEPORT_PHASE7_TASK_ROOT,
+      `artifacts/sounding-line/homeport-${lane}-ffffffffffff`,
+    );
+  }
+});
+
+test("fixture-aware suite dispatch groups established fixture contracts without credential bleed", () => {
+  const dispatches = resolveBrowserSuiteDispatches([
+    "tests/e2e/admiralty-phase1.spec.ts",
+    "tests/e2e/harborlight-phase2.spec.ts",
+    "tests/e2e/harborlight-phase3.spec.ts",
+    "tests/e2e/phase3-accessibility-viewports.spec.ts",
+    "tests/e2e/phase3-lifecycle-extended.spec.ts",
+    "tests/e2e/phase3-lifecycle.spec.ts",
+    "tests/e2e/project-helm-phase1.spec.ts",
+  ]);
+  assert.deepEqual(
+    dispatches.map(({ id, browserTests }) => [id, browserTests]),
+    [
+      ["admiralty-phase1", ["tests/e2e/admiralty-phase1.spec.ts"]],
+      ["harborlight-phase2", ["tests/e2e/harborlight-phase2.spec.ts"]],
+      ["harborlight-phase3", ["tests/e2e/harborlight-phase3.spec.ts"]],
+      [
+        "lanternwake-phase3",
+        [
+          "tests/e2e/phase3-accessibility-viewports.spec.ts",
+          "tests/e2e/phase3-lifecycle-extended.spec.ts",
+          "tests/e2e/phase3-lifecycle.spec.ts",
+        ],
+      ],
+      ["generic", ["tests/e2e/project-helm-phase1.spec.ts"]],
+    ],
+  );
+  assert.deepEqual(dispatches.find(({ id }) => id === "lanternwake-phase3").fixtureArguments, [
+    "tests/e2e/phase3-readonly-setup.setup.ts",
+  ]);
+  assert.equal(dispatches.find(({ id }) => id === "lanternwake-phase3").fixtureProject, "phase3-readonly-setup");
+  assert.equal(dispatches.find(({ id }) => id === "lanternwake-phase3").cookieAdapter, "isolated-loopback");
+  const phase3Preparers = dispatches.find(({ id }) => id === "lanternwake-phase3").preparers;
+  assert.equal(phase3Preparers.filter(({ script }) => script === "scripts/migrate-legacy-companion.ts").length, 2);
+  assert.equal(
+    new Set(phase3Preparers.map((preparer) => JSON.stringify(preparer))).size,
+    phase3Preparers.length,
+    "each declared preparer command executes once per profile dispatch",
+  );
+  assert.deepEqual(phase3Preparers.at(-1), {
+    runtime: "node",
+    script: "scripts/sounding-line/prepare-validation-isolation.mjs",
+  });
+  const harborlight = dispatches.find(({ id }) => id === "harborlight-phase2");
+  assert.equal(harborlight.validationIsolation, true);
+  assert.equal(harborlight.cookieAdapter, "isolated-loopback");
+  assert.deepEqual(harborlight.environment, {
+    COMMUNITY_BINARY_SCANNER_PROVIDER: "synthetic-test",
+    FOREVER_VALIDATION_NODE_ENV: "test",
+  });
+  assert.deepEqual(harborlight.preparers, [
+    { runtime: "node", script: "scripts/sounding-line/prepare-validation-isolation.mjs" },
+    { runtime: "tsx", script: "scripts/sounding-line/prepare-harborlight-fixture.ts" },
+  ]);
+  const admiralty = dispatches.find(({ id }) => id === "admiralty-phase1");
+  assert.equal(admiralty.dedicatedRunner, "scripts/admiralty/run-phase1-journeys.mjs");
+  assert.equal(admiralty.preparers, undefined);
+  assert.equal(new Set(harborlight.preparers.map(({ script }) => script)).size, harborlight.preparers.length);
+  assert.equal(dispatches.find(({ id }) => id === "generic").environment, undefined);
+});
+
+test("task-owned cookie adaptation is nonce-gated to the isolated Phase 3 runtime", () => {
+  const guardedEnvironment = {
+    SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+    FOREVER_VALIDATION_ISOLATION: "1",
+    FOREVER_VALIDATION_PRODUCTION_IDENTITY: "1",
+    FOREVER_VALIDATION_NONCE_HASH: "a".repeat(64),
+  };
+  assert.equal(taskOwnedCookieAdapterRequired({}), false);
+  assert.equal(taskOwnedCookieAdapterRequired({ ...guardedEnvironment, FOREVER_VALIDATION_ISOLATION: "0" }), false);
+  assert.equal(
+    taskOwnedCookieAdapterRequired({ ...guardedEnvironment, FOREVER_VALIDATION_NONCE_HASH: "unsafe" }),
+    false,
+  );
+  assert.equal(taskOwnedCookieAdapterRequired(guardedEnvironment), true);
+  assert.equal(
+    stripTaskOwnedCookieSecurity("session=value; Path=/; Secure; HttpOnly; SameSite=Lax"),
+    "session=value; Path=/; HttpOnly; SameSite=Lax",
+  );
+});
+
+test("an unresolved fixture profile fails closed before browser authority is launched", () => {
+  const result = spawnSync(
+    process.execPath,
+    [
+      "scripts/sounding-line/run-browser-suite.mjs",
+      "--profile",
+      "not-a-governed-profile",
+      "--candidate",
+      "a".repeat(40),
+      "--database-url",
+      "file:./.sounding-line-fixture-contract-negative.sqlite",
+      "--",
+      "tests/e2e/project-helm-phase1.spec.ts",
+    ],
+    { cwd: process.cwd(), encoding: "utf8", windowsHide: true },
+  );
+  assert.notEqual(result.status, 0);
+  assert.match(
+    `${result.stdout}\n${result.stderr}`,
+    /SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:INVALID_PROFILE_INVOCATION/u,
   );
 });
 
@@ -832,6 +1139,27 @@ function fakeChild() {
   return child;
 }
 
+async function unusedPort() {
+  const server = createTcpServer();
+  await new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", resolve);
+  });
+  const address = server.address();
+  assert.ok(address && typeof address !== "string");
+  await new Promise((resolve) => server.close(resolve));
+  return address.port;
+}
+
+async function portCanBeReclaimed(port) {
+  const server = createTcpServer();
+  await new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(port, "127.0.0.1", resolve);
+  });
+  await new Promise((resolve) => server.close(resolve));
+}
+
 test("dead governed browser server interrupts the browser immediately with infrastructure attribution", async () => {
   const server = fakeChild();
   const browser = fakeChild();
@@ -857,6 +1185,77 @@ test("dead governed browser server interrupts the browser immediately with infra
   assert.equal(browser.exitCode, 0);
   assert.equal(receipt.topology, "BUILT_SERVER_TASK_OWNED_RUNTIME");
   assert.ok(receipt.timings.infrastructureFailureWaitMs < 600_000);
+});
+
+test("fixture product failure stops product browser execution with truthful attribution", async () => {
+  const server = fakeChild();
+  const fixture = fakeChild();
+  let launches = 0;
+  let fixtureCommand;
+  const receipt = await runBrowserAuthority({
+    root: process.cwd(),
+    fixtureArguments: ["tests/e2e/phase3-readonly-setup.setup.ts"],
+    fixtureProject: "phase3-readonly-setup",
+    browserArguments: ["tests/e2e/phase3-lifecycle.spec.ts", "--project", "chromium"],
+    port: 31993,
+    ready: async () => true,
+    launch: (_command, argumentsList) => {
+      launches += 1;
+      if (launches === 1) return server;
+      fixtureCommand = argumentsList;
+      queueMicrotask(() => {
+        fixture.exitCode = 1;
+        fixture.emit("exit", 1, null);
+      });
+      return fixture;
+    },
+  });
+  assert.equal(launches, 2);
+  assert.equal(receipt.failureCategory, "PRODUCT_FAILURE");
+  assert.equal(receipt.failureCode, "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_FIXTURE_EXITED");
+  assert.deepEqual(fixtureCommand, [
+    "node_modules/@playwright/test/cli.js",
+    "test",
+    "tests/e2e/phase3-readonly-setup.setup.ts",
+    "--project",
+    "phase3-readonly-setup",
+  ]);
+  assert.equal(server.exitCode, 0);
+});
+
+test("isolated cookie adapter is removed after successful and failed browser execution", async () => {
+  for (const fixtureExitCode of [0, 1]) {
+    const port = await unusedPort();
+    const server = fakeChild();
+    const fixture = fakeChild();
+    let launches = 0;
+    const receipt = await runBrowserAuthority({
+      root: process.cwd(),
+      fixtureArguments: ["tests/e2e/phase3-readonly-setup.setup.ts"],
+      fixtureProject: "phase3-readonly-setup",
+      browserArguments: ["tests/e2e/phase3-lifecycle.spec.ts", "--project", "chromium"],
+      environment: {
+        SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+        FOREVER_VALIDATION_ISOLATION: "1",
+        FOREVER_VALIDATION_PRODUCTION_IDENTITY: "1",
+        FOREVER_VALIDATION_NONCE_HASH: "a".repeat(64),
+      },
+      port,
+      ready: async () => true,
+      launch: () => {
+        launches += 1;
+        if (launches === 1) return server;
+        queueMicrotask(() => {
+          fixture.exitCode = fixtureExitCode;
+          fixture.emit("exit", fixtureExitCode, null);
+        });
+        return fixture;
+      },
+    });
+    assert.equal(receipt.failureCategory, fixtureExitCode ? "PRODUCT_FAILURE" : null);
+    assert.equal(server.exitCode, 0);
+    await portCanBeReclaimed(port);
+  }
 });
 
 test("invalid production and development output topology fails before browser launch", async () => {
@@ -977,6 +1376,11 @@ test("trusted PR routing produces one strict decision for ordinary and control-p
   assert.match(ordinaryWorkflow, /mode: "ordinary"/u);
   assert.match(ordinaryWorkflow, /kind=ordinary/u);
   assert.match(ordinaryWorkflow, /browser_required=\$\{plan\.browserRequired\}/u);
+  assert.match(ordinaryWorkflow, /Restore reusable ordinary evidence/u);
+  assert.match(ordinaryWorkflow, /actions\/cache\/restore@v4/u);
+  assert.match(ordinaryWorkflow, /Persist passing reusable ordinary evidence/u);
+  assert.match(ordinaryWorkflow, /actions\/cache\/save@v4/u);
+  assert.match(ordinaryWorkflow, /scripts\/sounding-line\/evidence\.mjs/u);
   assert.match(ordinaryWorkflow, /kind=control-plane/u);
   assert.match(
     ordinaryWorkflow,
@@ -989,4 +1393,141 @@ test("trusted PR routing produces one strict decision for ordinary and control-p
   assert.match(ordinaryWorkflow, /SOUNDING_LINE_CANDIDATE_CLASSIFICATION_FAILURE/u);
   assert.match(ordinaryWorkflow, /git merge-base --is-ancestor/u);
   assert.equal((ordinaryWorkflow.match(/name: Sounding Line \/ Mainline Decision/gu) ?? []).length, 1);
+});
+
+test("v1.4 evidence reconciliation preserves, invalidates, falls back, and finalizes complete ordinary closure", async () => {
+  await withEvidenceFixture(async ({ root, baseSha }) => {
+    writeFileSync(path.join(root, "Development_Docs/guide.md"), "# Guide\n\nFirst ordinary candidate.\n");
+    let candidateSha = commit(root, "documentation candidate");
+    let plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const first = await runReconciliation(root, plan);
+    assert.ok(first.calls.length > 0);
+    assert.equal(first.result.finalization.decision, "PASS");
+    assert.equal(first.result.freshObligations, first.result.finalization.requiredObligations);
+
+    const preserved = await runReconciliation(root, plan);
+    assert.equal(preserved.calls.length, 0);
+    assert.ok(preserved.result.reconciliation.every((entry) => entry.disposition === "PRESERVED"));
+    assert.equal(preserved.result.finalization.remainder.length, 0);
+
+    writeFileSync(path.join(root, "Development_Docs/second-guide.md"), "# Second guide\n");
+    candidateSha = commit(root, "mixed evidence candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const mixed = await runReconciliation(root, plan);
+    assert.ok(mixed.result.reconciliation.some((entry) => ["PRESERVED", "REBOUND"].includes(entry.disposition)));
+    assert.ok(mixed.result.reconciliation.some((entry) => entry.disposition === "INVALIDATED"));
+    assert.equal(mixed.result.finalization.decision, "PASS");
+
+    writeFileSync(path.join(root, "src/product.ts"), "export const product = 'relevant change';\n");
+    candidateSha = commit(root, "relevant source candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const sourceChanged = await runReconciliation(root, plan);
+    assert.ok(sourceChanged.result.reconciliation.some((entry) => entry.disposition === "INVALIDATED"));
+    assert.ok(sourceChanged.calls.length > 0);
+
+    writeFileSync(
+      path.join(root, "src/product.test.ts"),
+      "import { product } from './product';\nvoid product;\n// definition changed\n",
+    );
+    candidateSha = commit(root, "test definition candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const definitionChanged = await runReconciliation(root, plan);
+    assert.ok(
+      definitionChanged.result.reconciliation.some(
+        (entry) => entry.disposition === "INVALIDATED" && entry.changedFields.includes("testDefinitionDigest"),
+      ),
+    );
+
+    writeFileSync(
+      path.join(root, "package-lock.json"),
+      `${JSON.stringify({ name: "evidence-fixture", lockfileVersion: 3, packages: { "": { version: "2" } } }, null, 2)}\n`,
+    );
+    candidateSha = commit(root, "dependency candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const dependencyChanged = await runReconciliation(root, plan);
+    assert.ok(
+      dependencyChanged.result.reconciliation.some(
+        (entry) => entry.disposition === "INVALIDATED" && entry.changedFields.includes("packageLockDigest"),
+      ),
+    );
+
+    writeFileSync(path.join(root, "prisma/seed.ts"), "export const fixtureVersion = 2;\n");
+    candidateSha = commit(root, "schema fixture candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const schemaChanged = await runReconciliation(root, plan);
+    assert.ok(
+      schemaChanged.result.reconciliation.some(
+        (entry) =>
+          entry.disposition === "INVALIDATED" &&
+          (entry.changedFields.includes("schemaDigest") ||
+            entry.changedFields.includes("fixtureDigest") ||
+            entry.changedFields.includes("semanticClosureDigest")),
+      ),
+      JSON.stringify(schemaChanged.result.reconciliation),
+    );
+
+    writeFileSync(path.join(root, "src/product.test.ts"), "import '/unknown-local-closure';\n");
+    candidateSha = commit(root, "ambiguous closure candidate");
+    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    const ambiguous = await runReconciliation(root, plan);
+    assert.ok(
+      ambiguous.result.reconciliation.some(
+        (entry) => entry.disposition === "CONSERVATIVE_FALLBACK" && entry.freshExecuted,
+      ),
+    );
+
+    const storeRoot = path.join(root, "artifacts", "sounding-line", "evidence-store", "receipts");
+    writeFileSync(path.join(storeRoot, "corrupt.json"), "not json\n");
+    const corrupt = await runReconciliation(root, plan);
+    assert.ok(corrupt.result.reconciliation.every((entry) => entry.disposition === "CONSERVATIVE_FALLBACK"));
+    assert.ok(corrupt.calls.length > 0);
+  });
+});
+
+test("v1.4 evidence rebinds a browser obligation across an unrelated base advance and keeps release exhaustive", async () => {
+  await withEvidenceFixture(async ({ root, baseSha }) => {
+    writeFileSync(path.join(root, "src/product.ts"), "export const product = 'candidate browser behavior';\n");
+    const firstCandidate = commit(root, "browser candidate on original base");
+    const firstPlan = await buildPlan({ root, baseSha, candidateSha: firstCandidate, mode: "ordinary" });
+    const first = await runReconciliation(root, firstPlan, 15);
+    assert.ok(
+      first.calls.some(([, argumentsList]) => argumentsList[0] === "scripts/sounding-line/browser-authority.mjs"),
+    );
+    const freshBrowserReceipt = first.result.receipts.find((entry) => entry.obligationId.startsWith("browser."));
+    assert.ok((freshBrowserReceipt?.durationMs ?? 0) >= 50);
+
+    git(root, ["checkout", "--quiet", "-b", "newer-base", baseSha]);
+    writeFileSync(path.join(root, "Development_Docs/guide.md"), "# Guide\n\nUnrelated base advance.\n");
+    const newerBase = commit(root, "unrelated base advance");
+    git(root, ["checkout", "--quiet", "-b", "rebound-candidate"]);
+    writeFileSync(path.join(root, "src/product.ts"), "export const product = 'candidate browser behavior';\n");
+    const reboundCandidate = commit(root, "reapply browser candidate");
+    const reboundPlan = await buildPlan({ root, baseSha: newerBase, candidateSha: reboundCandidate, mode: "ordinary" });
+    const rebound = await runReconciliation(root, reboundPlan);
+    const browser = rebound.result.reconciliation.find((entry) => entry.obligationId.startsWith("browser."));
+    assert.equal(browser?.disposition, "REBOUND");
+    assert.equal(browser?.freshExecuted, false);
+    assert.ok(browser?.commandsAvoided.some((command) => command.includes("browser-authority.mjs")));
+    assert.ok(
+      !rebound.calls.some(([, argumentsList]) => argumentsList[0] === "scripts/sounding-line/browser-authority.mjs"),
+    );
+    assert.equal(rebound.result.finalization.decision, "PASS");
+    assert.equal(rebound.result.finalization.requiredObligations, 6);
+    assert.equal(rebound.result.freshObligations, 1);
+    assert.equal(rebound.result.finalization.counts.REBOUND, 5);
+    assert.equal(rebound.result.finalization.counts.INVALIDATED, 1);
+    assert.equal(rebound.result.commandsAvoided.length, 9);
+    assert.ok(rebound.result.avoidedDurationMs >= (freshBrowserReceipt?.durationMs ?? Infinity));
+
+    const releasePlan = await buildPlan({ root, baseSha: newerBase, candidateSha: reboundCandidate, mode: "release" });
+    const release = await runReconciliation(root, releasePlan);
+    assert.equal(
+      release.result.reconciliation.every((entry) => entry.disposition === "FRESH"),
+      true,
+    );
+    assert.equal(release.result.freshObligations, release.result.finalization.requiredObligations);
+    assert.ok(
+      release.calls.some(([, argumentsList]) => argumentsList[0] === "scripts/sounding-line/browser-authority.mjs"),
+    );
+  });
 });

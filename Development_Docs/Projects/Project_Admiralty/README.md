@@ -19,12 +19,26 @@ the accepted authority into a read-only command center, cross-domain search,
 provider and configuration visibility, rich account/support inspection, and
 correlation-led investigation. Phase 2 added no broad domain mutation.
 
-Phase 3, **Take the Watch**, is the currently authorized active phase. It adds
-only governed, owner-domain administrative commands for account/support,
-security, Community moderation, jobs, and typed configuration mutations. It
-does not authorize Chronicle, Voyage, private-content, feature-flag,
-maintenance, release, recovery, or break-glass operations; those remain Phase
-4 or separately governed work.
+Phase 3, **Take the Watch**, is accepted on canonical main. It added only
+governed, owner-domain administrative commands for account/support, security,
+Community moderation, jobs, and typed configuration mutations. It did not
+authorize Chronicle, Voyage, private-content, feature-flag, maintenance,
+release, recovery, or break-glass operations; those remain separately governed
+work.
+
+Support Pilot S1, **Open the Case**, is the first supplemental Admiralty
+increment. It adds a case-bound, user-consented, short-lived diagnostic
+capability that can autonomously collect only approved sanitized projections,
+produce source-bound findings and information-only repair proposals, and retain
+human-readable case evidence. It does not mutate user or platform state, and it
+does not begin Support Pilot S2 or S3.
+
+Support Pilot S2, **Turn the Wrench**, builds on that evidence path with only
+three registered, consented owner commands: profile-preference reconciliation,
+stale-session revocation, and reconciliation of an internally inconsistent
+removed Voyage membership. Every proposal is current-state-bound, budgeted,
+previewed, audited before mutation, and postcondition-verified. S2 does not
+begin Support Pilot S3 or Admiralty Phase 4.
 
 The Phase 2 shell is naturally reachable from the account workspace menu only
 for identities holding an active Admiralty role. Ordinary accounts receive no
@@ -67,7 +81,7 @@ on the server.
 - [Mainline acceptance record](Project_Admiralty_Phase_2_Mainline_Acceptance_Record.md)
 - [Owner walkthrough](walkthrough/phase2/README.md)
 
-## Active Phase 3 records
+## Accepted Phase 3 records
 
 - [Active phase registration](Project_Admiralty_Phase_3_Active_Phase_Registration.json)
 - [Design record](Project_Admiralty_Phase_3_Design_Record.md)
@@ -76,6 +90,19 @@ on the server.
 - [Integration manifest](Project_Admiralty_Phase_3_Integration_Manifest.md)
 - [Validation record](Project_Admiralty_Phase_3_Validation_Record.md)
 - [Deepwater disposition register](Project_Admiralty_Phase_3_Deepwater_Disposition_Register.json)
+
+## Support Pilot S1 records
+
+- [Architecture](Project_Admiralty_Support_Pilot_S1_Architecture.md)
+- [Safety boundary](Project_Admiralty_Support_Pilot_S1_Safety_Boundary.md)
+- [Test plan](Project_Admiralty_Support_Pilot_S1_Test_Plan.md)
+- [Diagnostic scope registry](Project_Admiralty_Support_Pilot_S1_Diagnostic_Scope_Registry.json)
+
+## Support Pilot S2 records
+
+- [Architecture](Project_Admiralty_Support_Pilot_S2_Architecture.md)
+- [Safety boundary](Project_Admiralty_Support_Pilot_S2_Safety_Boundary.md)
+- [Test plan](Project_Admiralty_Support_Pilot_S2_Test_Plan.md)
 
 ## Machine-readable controls
 
@@ -96,8 +123,9 @@ on the server.
 - `Project_Admiralty_Phase_3_Command_Catalog.json`
 - `Project_Admiralty_Phase_3_Role_Capability_Registry.json`
 - `Project_Admiralty_Phase_3_Deepwater_Disposition_Register.json`
+- `Project_Admiralty_Support_Pilot_S1_Diagnostic_Scope_Registry.json`
 
-The Phase 1 and Phase 2 owner decisions are `ACCEPTED`; both phases are
-integrated on canonical main. Phase 3 is active under the owner authorization
-recorded in its active-phase registration. Neither prior decision is deployment
-or permission to begin Phase 4.
+The Phase 1, Phase 2, and Phase 3 owner decisions are `ACCEPTED` and integrated
+on canonical main. Support Pilot S1 remains the read-only diagnostic foundation;
+S2 is the bounded registered-repair increment. No prior acceptance is deployment
+authority or permission to begin Support Pilot S3 or Admiralty Phase 4.

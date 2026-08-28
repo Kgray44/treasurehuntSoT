@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Bridgewatch Mission Control</title>
+    <title>Bridgewatch v2.0 Light Mission Control</title>
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <main class="shell">
       <header class="masthead">
-        <p class="eyebrow">PRIVATE / READ ONLY / KEEP THE WATCH</p>
+        <p class="eyebrow">PRIVATE / READ ONLY / SOURCE-BOUND OBSERVATION</p>
         <div class="masthead-row">
           <div>
-            <h1>BRIDGEWATCH</h1>
+            <h1>BRIDGEWATCH <span>v2.0</span></h1>
             <p id="meta" class="meta">Loading governed observation state...</p>
           </div>
           <a class="admin-link" href="/admin">Return to Admiralty</a>
@@ -20,20 +20,23 @@
       </header>
 
       <nav class="station-nav" aria-label="Mission control stations">
-        <a href="#/" data-station="overview">Overview</a>
-        <a href="#/program" data-station="program">Program</a>
+        <a href="#/fleet" data-station="fleet">Fleet Overview</a>
+        <a href="#/operations" data-station="operations">Active Operations</a>
+        <a href="#/mainline" data-station="mainline">Mainline</a>
+        <a href="#/verification" data-station="verification">Verification</a>
         <a href="#/projects" data-station="projects">Projects</a>
-        <a href="#/operations" data-station="operations">Operations</a>
-        <a href="#/github" data-station="github">GitHub</a>
-        <a href="#/attention" data-station="attention">Attention</a>
+        <a href="#/repository" data-station="repository">Repository</a>
+        <a href="#/intelligence" data-station="intelligence">Product Intelligence</a>
+        <a href="#/runtime" data-station="runtime">Voyagewright Runtime</a>
+        <a href="#/sources" data-station="sources">Sources &amp; Data Quality</a>
         <a href="#/history" data-station="history">History</a>
-        <a href="#/sources" data-station="sources">Sources</a>
-        <a href="#/data" data-station="data">Data & Coverage</a>
+        <a href="#/attention" data-station="attention">Attention</a>
       </nav>
 
       <section id="route" class="station" aria-live="polite"></section>
       <footer>
-        Bridgewatch records observed evidence; it does not manage projects, workers, merges, or deployments.
+        Bridgewatch records observed evidence. It does not manage projects, workers, merges, retries, deployments,
+        releases, or product state.
       </footer>
     </main>
     <script src="/app.js" defer></script>
