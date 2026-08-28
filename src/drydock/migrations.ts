@@ -45,6 +45,7 @@ function migrateLegacyConfiguration(input: DrydockMigrationInput): DrydockMigrat
     delete configuration.verificationProvider;
   }
   if (completion.mode === undefined) completion.mode = completionDefaults[input.blockType] ?? "playerConfirmation";
+  if (input.blockType === "riddle" && configuration.hints === undefined) configuration.hints = [];
   for (const field of ["futureVision", "futureProviderOptions"] as const) {
     const value = configuration[field];
     if (value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).length === 0)
