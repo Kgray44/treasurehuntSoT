@@ -38,7 +38,13 @@ three registered, consented owner commands: profile-preference reconciliation,
 stale-session revocation, and reconciliation of an internally inconsistent
 removed Voyage membership. Every proposal is current-state-bound, budgeted,
 previewed, audited before mutation, and postcondition-verified. S2 does not
-begin Support Pilot S3 or Admiralty Phase 4.
+authorize further work by itself; S3 is separately authorized, while Admiralty
+Phase 4 remains outside this increment.
+
+Support Pilot S3, **Close the Case**, lets the opening operator finish a
+quiescent case with a safe reason after recent privileged assurance. It cancels
+unanswered consent or revokes active case-derived grants before recording
+`CLOSED`; it has no user-data or platform-mutation authority.
 
 The Phase 2 shell is naturally reachable from the account workspace menu only
 for identities holding an active Admiralty role. Ordinary accounts receive no
@@ -104,6 +110,11 @@ on the server.
 - [Safety boundary](Project_Admiralty_Support_Pilot_S2_Safety_Boundary.md)
 - [Test plan](Project_Admiralty_Support_Pilot_S2_Test_Plan.md)
 
+## Support Pilot S3 records
+
+- [Architecture](Project_Admiralty_Support_Pilot_S3_Architecture.md)
+- [Test plan](Project_Admiralty_Support_Pilot_S3_Test_Plan.md)
+
 ## Machine-readable controls
 
 - `Project_Admiralty_Phase_1_Active_Phase_Registration.json`
@@ -128,4 +139,5 @@ on the server.
 The Phase 1, Phase 2, and Phase 3 owner decisions are `ACCEPTED` and integrated
 on canonical main. Support Pilot S1 remains the read-only diagnostic foundation;
 S2 is the bounded registered-repair increment. No prior acceptance is deployment
-authority or permission to begin Support Pilot S3 or Admiralty Phase 4.
+authority or permission to begin Admiralty Phase 4. Support Pilot S3 is the
+separately authorized case-finalization increment.

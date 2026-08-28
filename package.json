@@ -57,6 +57,7 @@
     "admiralty:walkthrough:stop": "node scripts/admiralty/phase2-walkthrough-runtime.mjs stop",
     "admiralty:support-pilot-s1:journeys": "node tests/admiralty/support-pilot-s1/run-journeys.mjs",
     "admiralty:support-pilot-s2:journeys": "node scripts/admiralty/run-support-pilot-s2-journeys.mjs",
+    "admiralty:support-pilot-s3:journeys": "node scripts/admiralty/run-support-pilot-s3-journeys.mjs",
     "features:sync": "tsx scripts/features/build-feature-catalog.ts",
     "features:validate": "tsx scripts/features/validate-feature-catalog.ts",
     "features:test": "vitest run scripts/features/feature-catalog.test.ts",

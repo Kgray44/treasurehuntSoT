@@ -19,6 +19,7 @@ describe("SupportCaseConsole", () => {
             safeSummary: "Synthetic account access diagnostics are requested.",
             status: "DIAGNOSED",
             openedAt: "2026-08-27T15:00:00.000Z",
+            closedAt: null,
             correlationId: "correlation-synthetic-a",
             requestedScopes: ["ACCOUNT_STATE", "SESSION_DIAGNOSTICS"],
             requestedRepairIds: [],
@@ -92,5 +93,7 @@ describe("SupportCaseConsole", () => {
     expect(screen.getByRole("button", { name: "Run read-only diagnosis" })).toBeVisible();
     expect(screen.getByText(/Proposed next action \(INFORMATION_ONLY\)/u)).toBeVisible();
     expect(screen.queryByRole("button", { name: "Execute registered repair" })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Close this case" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Close case and revoke remaining access" })).toBeVisible();
   });
 });

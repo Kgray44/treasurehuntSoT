@@ -26,6 +26,14 @@ type CaseInput = Readonly<{
 }>;
 
 const requestLifetimeMs = 24 * 60 * 60 * 1000;
+const terminalCaseStatuses = new Set([
+  "CANCELLED",
+  "CONSENT_DENIED",
+  "CONSENT_REVOKED",
+  "CLOSED",
+  "VERIFIED_RESOLVED",
+  "VERIFICATION_INCONCLUSIVE",
+]);
 
 export async function createSupportCase(operator: AdmiraltyCurrentOperator, input: CaseInput, now = new Date()) {
   if (operator.accountId === input.targetAccountId)
@@ -116,6 +124,7 @@ export async function listSupportCases(operator: AdmiraltyCurrentOperator, now =
       safeSummary: true,
       status: true,
       openedAt: true,
+      closedAt: true,
       correlationId: true,
       supportAccessRequest: {
         select: {
@@ -217,6 +226,110 @@ export async function listSupportCases(operator: AdmiraltyCurrentOperator, now =
       },
       latestExecution: supportCase.executionSessions[0] ?? null,
     };
+  });
+}
+
+/**
+ * Ends an operator-owned case and removes every still-live consent-derived
+ * capability.  It deliberately does not alter user data or attempt a repair.
+ */
+export async function closeSupportCase(
+  operator: AdmiraltyCurrentOperator,
+  input: Readonly<{ caseId: string; reason: string }>,
+  now = new Date(),
+) {
+  const reason = sanitizeSupportNarrative(input.reason, 240);
+  if (!reason) throw new AdmiraltyError("ADMIN_VALIDATION_FAILED", "Provide a safe closure reason.", 400);
+  const correlationId = randomUUID();
+  return db.$transaction(async (tx) => {
+    const supportCase = await tx.supportCase.findFirst({
+      where: { id: input.caseId, requestingOperatorId: operator.accountId },
+      select: {
+        id: true,
+        caseNumber: true,
+        status: true,
+        revision: true,
+        supportAccessRequest: {
+          select: {
+            id: true,
+            status: true,
+            grant: { select: { id: true, status: true, revokedAt: true } },
+          },
+        },
+        executionSessions: {
+          where: { status: "RUNNING" },
+          select: { id: true },
+          take: 1,
+        },
+        repairExecutions: {
+          where: { state: { in: ["PENDING", "COMMITTED"] } },
+          select: { id: true },
+          take: 1,
+        },
+      },
+    });
+    if (!supportCase) throw new AdmiraltyError("ADMIN_TARGET_NOT_FOUND", "The support case was not found.", 404);
+    if (supportCase.status === "CLOSED")
+      return { caseId: supportCase.id, caseNumber: supportCase.caseNumber, status: "CLOSED", idempotent: true };
+    if (terminalCaseStatuses.has(supportCase.status))
+      throw new AdmiraltyError("SUPPORT_CASE_INACTIVE", "This support case is no longer active.", 409);
+    if (supportCase.executionSessions.length || supportCase.repairExecutions.length)
+      throw new AdmiraltyError(
+        "SUPPORT_CASE_ACTIVE_EXECUTION",
+        "Wait for the active support execution to reach a durable outcome before closing this case.",
+        409,
+      );
+
+    const request = supportCase.supportAccessRequest;
+    if (request?.status === "REQUESTED")
+      await tx.supportAccessRequest.update({
+        where: { id: request.id },
+        data: { status: "CANCELLED", cancelledAt: now },
+      });
+    const parentGrant = request?.grant;
+    if (parentGrant?.status === "ACTIVE" && !parentGrant.revokedAt)
+      await tx.supportAccessGrant.update({
+        where: { id: parentGrant.id },
+        data: {
+          status: "REVOKED",
+          revokedAt: now,
+          revokedByAccountId: operator.accountId,
+          revocationReason: "Support case closed by requesting operator.",
+        },
+      });
+    const delegated = await tx.supportExecutionGrant.updateMany({
+      where: { supportCaseId: supportCase.id, status: "ACTIVE", revokedAt: null },
+      data: { status: "REVOKED", revokedAt: now },
+    });
+    const closed = await tx.supportCase.update({
+      where: { id: supportCase.id },
+      data: { status: "CLOSED", closedAt: now, revision: { increment: 1 } },
+    });
+    await writeAdministrativeAudit(
+      {
+        actorAccountId: operator.accountId,
+        actorRole: operator.roles[0] ?? "SUPPORT_OPERATOR",
+        capability: "SUPPORT_USE",
+        action: "ADMIRALTY_SUPPORT_CASE_CLOSED",
+        targetType: "SupportCase",
+        targetId: supportCase.id,
+        reason,
+        authorizationBasis: operator.authorizationBasis,
+        accountSessionId: operator.accountSessionId,
+        supportGrantId: parentGrant?.id,
+        correlationId,
+        beforeSummary: { status: supportCase.status, revision: supportCase.revision },
+        afterSummary: {
+          status: "CLOSED",
+          requestCancelled: request?.status === "REQUESTED",
+          parentGrantRevoked: Boolean(parentGrant?.status === "ACTIVE" && !parentGrant.revokedAt),
+          delegatedGrantRevocations: delegated.count,
+          autonomousMutation: false,
+        },
+      },
+      tx,
+    );
+    return { caseId: closed.id, caseNumber: closed.caseNumber, status: closed.status, idempotent: false };
   });
 }
 
