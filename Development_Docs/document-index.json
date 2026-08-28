@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-27",
+  "generated_at": "2026-08-28",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -4264,6 +4264,18 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S2_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S3_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S3_Test_Plan.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

@@ -11,6 +11,7 @@ type SupportCases = ReadonlyArray<{
   safeSummary: string;
   status: string;
   openedAt: Date | string;
+  closedAt: Date | string | null;
   correlationId: string;
   requestedScopes: SupportAccessScope[];
   requestedRepairIds: string[];
@@ -90,6 +91,14 @@ const repairOptions = [
     scope: "VOYAGE_MEMBERSHIP" as const,
   },
 ];
+const terminalCaseStatuses = new Set([
+  "CANCELLED",
+  "CONSENT_DENIED",
+  "CONSENT_REVOKED",
+  "CLOSED",
+  "VERIFIED_RESOLVED",
+  "VERIFICATION_INCONCLUSIVE",
+]);
 
 function date(value: Date | string | null) {
   return value ? new Date(value).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }) : "Not recorded";
@@ -112,6 +121,7 @@ export function SupportCaseConsole({
   const [grantIds, setGrantIds] = useState<Record<string, string>>({});
   const [repairTargetIds, setRepairTargetIds] = useState<Record<string, string>>({});
   const [repairSelections, setRepairSelections] = useState<Record<string, string>>({});
+  const [closureReasons, setClosureReasons] = useState<Record<string, string>>({});
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState("");
   const [notice, setNotice] = useState("");
@@ -329,6 +339,12 @@ export function SupportCaseConsole({
                       <dt>Opened</dt>
                       <dd>{date(supportCase.openedAt)}</dd>
                     </div>
+                    {supportCase.closedAt ? (
+                      <div>
+                        <dt>Closed</dt>
+                        <dd>{date(supportCase.closedAt)}</dd>
+                      </div>
+                    ) : null}
                   </dl>
                   {canDiagnose && supportCase.consent.grantStatus === "ACTIVE" ? (
                     <form
@@ -510,6 +526,43 @@ export function SupportCaseConsole({
                       </label>
                       <button type="submit" disabled={busy === `propose:${supportCase.id}`}>
                         {busy === `propose:${supportCase.id}` ? "Creating preview…" : "Create mutation preview"}
+                      </button>
+                    </form>
+                  ) : null}
+                  {canDiagnose && !terminalCaseStatuses.has(supportCase.status) ? (
+                    <form
+                      onSubmit={(event) => {
+                        event.preventDefault();
+                        void run(`close:${supportCase.id}`, async () => {
+                          await post(`/api/admin/support/cases/${supportCase.id}/close`, {
+                            reason: closureReasons[supportCase.id] ?? "",
+                          });
+                          setNotice(
+                            `Support case ${supportCase.caseNumber} is closed and its remaining access is revoked.`,
+                          );
+                          window.location.reload();
+                        });
+                      }}
+                    >
+                      <h3>Close this case</h3>
+                      <p>
+                        Closing cancels any pending consent or revokes the remaining case-specific access. It cannot run
+                        while a diagnostic or repair execution is active, and it never changes account data.
+                      </p>
+                      <label>
+                        Safe closure reason visible in the administrative record
+                        <textarea
+                          required
+                          minLength={8}
+                          maxLength={240}
+                          value={closureReasons[supportCase.id] ?? ""}
+                          onChange={(event) =>
+                            setClosureReasons((current) => ({ ...current, [supportCase.id]: event.target.value }))
+                          }
+                        />
+                      </label>
+                      <button type="submit" disabled={busy === `close:${supportCase.id}`}>
+                        {busy === `close:${supportCase.id}` ? "Closing…" : "Close case and revoke remaining access"}
                       </button>
                     </form>
                   ) : null}

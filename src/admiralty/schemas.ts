@@ -55,6 +55,11 @@ export const supportCaseDiagnosisSchema = z
       .regex(/^[A-Za-z0-9_-]+$/u),
   })
   .strict();
+export const supportCaseCloseSchema = z
+  .object({
+    reason: z.string().trim().min(8).max(240),
+  })
+  .strict();
 
 export const supportRepairProposalSchema = z
   .object({
