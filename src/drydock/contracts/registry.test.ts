@@ -75,6 +75,16 @@ describe("Drydock block contract registry", () => {
     expect(parsed.block.configuration.returnToMap).toBe(false);
   });
 
+  it("migrates a legacy travel direction into the named destination visibility default", () => {
+    const legacy = structuredClone(frozenBlocks.find((block) => block.blockType === "travelDirection")!);
+    delete legacy.configuration.destinationVisibility;
+    const parsed = parseDrydockBlock(legacy);
+    expect(parsed.success).toBe(true);
+    if (!parsed.success) return;
+    expect(parsed.migrationsApplied).toEqual(["drydock.travelDirection.v1-to-v2"]);
+    expect(parsed.block.configuration.destinationVisibility).toBe("named");
+  });
+
   it("normalizes only the exact known mixed-version Studio compatibility fields", () => {
     const migrated = parseDrydockBlock(frozenBlocks.find((block) => block.blockType === "arrivalCheck")!);
     expect(migrated.success).toBe(true);
