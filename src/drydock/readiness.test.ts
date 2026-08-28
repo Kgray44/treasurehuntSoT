@@ -83,6 +83,26 @@ describe("Drydock readiness", () => {
     ).toBe("TRIALS_INCOMPLETE");
   });
 
+  it("ignores historical stale Suites once current-source evidence has passed", () => {
+    const decision = evaluateDrydockReadiness(
+      input({
+        requiredSuites: [
+          {
+            suiteId: "historical",
+            revision: 1,
+            sourceChecksum: "b".repeat(64),
+            status: "STALE",
+            reason: "Prior source",
+          },
+          { suiteId: "baseline", revision: 2, sourceChecksum: checksum, status: "PASSED", reason: "Current" },
+        ],
+      }),
+    );
+    expect(decision.status).toBe("VERIFIED");
+    if (decision.status !== "VERIFIED") throw new Error("expected verified decision");
+    expect(decision.evidenceDraft.requiredScenarioSuiteIds).toEqual(["baseline"]);
+  });
+
   it("requires matching provider evidence instead of allowing an unrelated present reference", () => {
     const requirement = {
       id: "landfall",

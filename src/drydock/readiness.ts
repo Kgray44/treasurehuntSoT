@@ -205,8 +205,11 @@ export function evaluateDrydockReadiness(input: EvaluateDrydockReadinessInput): 
   )
     return { status: "NEEDS_REPAIR", sourceChecksum: input.sourceChecksum, blockingIssues, missingEvidence };
 
-  const requiredSuites = stable(input.requiredSuites, (suite) => `${suite.suiteId}:${suite.revision}`);
-  if (requiredSuites.some((suite) => suite.status !== "PASSED" || suite.sourceChecksum !== input.sourceChecksum))
+  const requiredSuites = stable(
+    input.requiredSuites.filter((suite) => suite.sourceChecksum === input.sourceChecksum),
+    (suite) => `${suite.suiteId}:${suite.revision}`,
+  );
+  if (requiredSuites.some((suite) => suite.status !== "PASSED"))
     return { status: "TRIALS_INCOMPLETE", sourceChecksum: input.sourceChecksum, requiredSuites };
 
   const warnings = stable(
