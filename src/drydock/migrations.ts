@@ -50,6 +50,8 @@ function migrateLegacyConfiguration(input: DrydockMigrationInput): DrydockMigrat
     if (configuration.nextChapterBehavior === undefined) configuration.nextChapterBehavior = "continue";
     if (configuration.returnToMap === undefined) configuration.returnToMap = false;
   }
+  if (input.blockType === "travelDirection" && configuration.destinationVisibility === undefined)
+    configuration.destinationVisibility = "named";
   for (const field of ["futureVision", "futureProviderOptions"] as const) {
     const value = configuration[field];
     if (value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).length === 0)
