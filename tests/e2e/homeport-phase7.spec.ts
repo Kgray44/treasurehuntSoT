@@ -91,7 +91,7 @@ test(`Journey D: captain`, async ({ page }) => {
   await enterWorkspaceFromOverview(page, "Captain");
   await expect(page.getByRole("heading", { name: /Captain/u }).first()).toBeVisible();
   await clickFirstRoute(page, "/captain/sessions/");
-  await expect(page.getByRole("heading", { name: "The Lantern Coast", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Operational voyage summary", level: 2 })).toBeVisible();
   await capture(page, "captain-session");
   await accountDestination(page, account, "View My Profile");
 });
