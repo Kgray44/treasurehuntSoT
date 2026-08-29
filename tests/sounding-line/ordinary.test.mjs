@@ -11,6 +11,7 @@ import {
   assertBrowserAuthorityTopology,
   browserRuntimeReceipt,
   runBrowserAuthority,
+  stopProxy,
   stripTaskOwnedCookieSecurity,
   taskOwnedCookieAdapterRequired,
   terminateTaskOwnedProcess,
@@ -1328,6 +1329,19 @@ test("isolated cookie adapter is removed after successful and failed browser exe
     assert.equal(server.exitCode, 0);
     await portCanBeReclaimed(port);
   }
+});
+
+test("task-owned cookie proxy force-closes its own lingering connections before shutdown", async () => {
+  const calls = [];
+  await stopProxy({
+    listening: true,
+    closeAllConnections: () => calls.push("connections"),
+    close: (done) => {
+      calls.push("close");
+      done();
+    },
+  });
+  assert.deepEqual(calls, ["connections", "close"]);
 });
 
 test("invalid production and development output topology fails before browser launch", async () => {
