@@ -2060,6 +2060,77 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
 .wakebook-statistics {
   padding: clamp(1.1rem, 3vw, 1.8rem);
 }
+
+.wakebook-atlas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.42fr);
+  gap: 1rem;
+}
+
+.wakebook-atlas__seasons,
+.wakebook-atlas__boundary,
+.wakebook-atlas__season {
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--harbor-border, #755b3d) 48%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--harbor-panel, #18212b) 90%, #0b1017);
+}
+
+.wakebook-atlas__seasons,
+.wakebook-atlas__boundary {
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.wakebook-atlas__seasons {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.wakebook-atlas__season {
+  padding: 0.8rem;
+}
+
+.wakebook-atlas__season h3,
+.wakebook-atlas__boundary h3 {
+  margin-top: 0;
+}
+
+.wakebook-atlas__season ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wakebook-atlas__season li {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.wakebook-atlas__season a,
+.wakebook-atlas__boundary a {
+  color: var(--harbor-brass);
+  font-weight: 750;
+}
+
+.wakebook-atlas__season span,
+.wakebook-atlas__boundary p {
+  color: var(--text-secondary);
+}
+
+.wakebook-atlas__boundary {
+  align-self: start;
+}
+
+@media (max-width: 52rem) {
+  .wakebook-atlas {
+    grid-template-columns: 1fr;
+  }
+}
 .wakebook-people ul {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
