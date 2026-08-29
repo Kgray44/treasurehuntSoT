@@ -66,10 +66,8 @@
     "id": "FT-041",
     "title": "Helm Passage Resilience",
     "summary": "Project Helm Phase 4 gives Captains a truthful preflight and recovery presentation for healthy, degraded, and provider-unavailable Voyages without creating an alternate command authority or fabricating adjacent-provider results.",
-    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "status": "MAINLINE",
     "program": "Project Helm Phase 4 - Weather the Passage",
-    "branch": "codex/helm-p4-weather-passage-current",
-    "commit": "aec0d94dd5f1ed3b86ce7f3266d235dfa1630b82",
     "surfaces": ["/captain/voyages/[voyageId]", "/captain/sessions/[sessionId]"],
     "subfeatures": [
       "Preflight distinguishes ready, warning, blocked, and unknown-provider conditions using canonical Voyage and Crew evidence",
@@ -78,17 +76,40 @@
       "Captain console labels actionable recovery without duplicating controls or bypassing Captain and Player authority boundaries"
     ],
     "evidence": [
-      { "kind": "branch", "value": "codex/helm-p4-weather-passage-current" },
-      { "kind": "commit", "value": "aec0d94d" },
+      { "kind": "commit", "value": "c6a5ad82c6f77bfb25ffdeab39cbeb0907301c6f" },
       { "kind": "path", "value": "src/helm/passage-resilience.ts" },
       { "kind": "path", "value": "src/components/captain/CaptainCommandConsole.tsx" },
       { "kind": "test", "value": "src/helm/passage-resilience.test.ts" },
       { "kind": "test", "value": "src/helm/operations.test.ts" }
     ],
     "limitations": [
-      "This branch-complete record requires its exact ordinary Sounding Line decision and protected-main merge before promotion",
+      "Protected mainline integration completed in PR #577 as c6a5ad82c6f77bfb25ffdeab39cbeb0907301c6f",
       "Drydock, Landfall, and Watchglass results remain provider-neutral and unavailable until an accepted provider contract exists",
       "No unsupported force repair, speculative persistence, or alternate command authority is introduced"
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-042",
+    "title": "Helm Clear for Voyage Closure",
+    "summary": "Project Helm Phase 5 completes the existing Captain experience with an accessible readiness handoff that preserves canonical commands, ordinary Player membership, recovery truth, and historical boundaries.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Helm Phase 5 - Clear for Voyage",
+    "branch": "codex/helm-p5-clear-for-voyage",
+    "commit": "c6a5ad82c6f77bfb25ffdeab39cbeb0907301c6f",
+    "surfaces": ["/captain/voyages/[voyageId]"],
+    "subfeatures": [
+      "Polite live feedback for command outcomes and recovery reconciliation",
+      "Responsive Captain and Player readiness handoff with degraded and historical truth",
+      "No unproven Captain-surface retirement, authoring control, or invented provider result"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/components/captain/CaptainCommandConsole.tsx" },
+      { "kind": "path", "value": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_5_Design_Record.md" }
+    ],
+    "limitations": [
+      "Owner walkthrough, live-provider proof, deployment, and physical multi-device validation remain external acceptance activities",
+      "Only proven obsolete Captain compatibility surfaces may retire; none are retired by this phase"
     ],
     "catalogVersion": 1
   }

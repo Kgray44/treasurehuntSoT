@@ -1213,6 +1213,40 @@ A private, read-only Bridgewatch Mission Control turns the accepted bounded data
 
 ---
 
+## FT-041 - Helm Passage Resilience
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Helm Phase 4 - Weather the Passage
+
+Project Helm Phase 4 gives Captains a truthful preflight and recovery presentation for healthy, degraded, and provider-unavailable Voyages without creating an alternate command authority or fabricating adjacent-provider results.
+
+### Important subfeatures
+
+- Preflight distinguishes ready, warning, blocked, and unknown-provider conditions using canonical Voyage and Crew evidence
+- Recovery surfaces only existing governed Captain commands, current reconciliation, and evidence-preserving escalation
+- Unavailable presentation providers remain explicitly unavailable rather than being treated as healthy
+- Captain console labels actionable recovery without duplicating controls or bypassing Captain and Player authority boundaries
+
+### Primary surfaces
+
+`/captain/voyages/[voyageId]`, `/captain/sessions/[sessionId]`
+
+### Meaningful limitations
+
+- Protected mainline integration completed in PR #577 as c6a5ad82c6f77bfb25ffdeab39cbeb0907301c6f
+- Drydock, Landfall, and Watchglass results remain provider-neutral and unavailable until an accepted provider contract exists
+- No unsupported force repair, speculative persistence, or alternate command authority is introduced
+
+### Evidence
+
+- commit: `c6a5ad82c6f77bfb25ffdeab39cbeb0907301c6f`
+- path: `src/helm/passage-resilience.ts`
+- path: `src/components/captain/CaptainCommandConsole.tsx`
+- test: `src/helm/passage-resilience.test.ts`
+- test: `src/helm/operations.test.ts`
+
+---
+
 ## FT-B001 - Unified Identity and Session Authority
 
 **Status:** MAINLINE
@@ -1914,38 +1948,32 @@ Project Wakebook Phase 5 adds an owner-private Voyage Atlas that organizes sourc
 
 # Completed Branch Features Not Yet Available on Main
 
-## FT-041 - Helm Passage Resilience
+## FT-042 - Helm Clear for Voyage Closure
 
 **Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Project Helm Phase 4 - Weather the Passage
+**Program or subsystem:** Project Helm Phase 5 - Clear for Voyage
 
-Project Helm Phase 4 gives Captains a truthful preflight and recovery presentation for healthy, degraded, and provider-unavailable Voyages without creating an alternate command authority or fabricating adjacent-provider results.
+Project Helm Phase 5 completes the existing Captain experience with an accessible readiness handoff that preserves canonical commands, ordinary Player membership, recovery truth, and historical boundaries.
 
 ### Important subfeatures
 
-- Preflight distinguishes ready, warning, blocked, and unknown-provider conditions using canonical Voyage and Crew evidence
-- Recovery surfaces only existing governed Captain commands, current reconciliation, and evidence-preserving escalation
-- Unavailable presentation providers remain explicitly unavailable rather than being treated as healthy
-- Captain console labels actionable recovery without duplicating controls or bypassing Captain and Player authority boundaries
+- Polite live feedback for command outcomes and recovery reconciliation
+- Responsive Captain and Player readiness handoff with degraded and historical truth
+- No unproven Captain-surface retirement, authoring control, or invented provider result
 
 ### Primary surfaces
 
-`/captain/voyages/[voyageId]`, `/captain/sessions/[sessionId]`
+`/captain/voyages/[voyageId]`
 
 ### Meaningful limitations
 
-- This branch-complete record requires its exact ordinary Sounding Line decision and protected-main merge before promotion
-- Drydock, Landfall, and Watchglass results remain provider-neutral and unavailable until an accepted provider contract exists
-- No unsupported force repair, speculative persistence, or alternate command authority is introduced
+- Owner walkthrough, live-provider proof, deployment, and physical multi-device validation remain external acceptance activities
+- Only proven obsolete Captain compatibility surfaces may retire; none are retired by this phase
 
 ### Evidence
 
-- branch: `codex/helm-p4-weather-passage-current`
-- commit: `aec0d94d`
-- path: `src/helm/passage-resilience.ts`
 - path: `src/components/captain/CaptainCommandConsole.tsx`
-- test: `src/helm/passage-resilience.test.ts`
-- test: `src/helm/operations.test.ts`
+- path: `Development_Docs/Projects/Project_Helm/Project_Helm_Phase_5_Design_Record.md`
 
 ---
 
