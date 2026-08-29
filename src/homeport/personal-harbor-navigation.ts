@@ -56,6 +56,7 @@ export const personalHarborNavigation = [
       ["passport-timeline", "Timeline", "/passport/timeline"],
       ["passport-people", "People", "/passport/people"],
       ["passport-statistics", "Statistics", "/passport/statistics"],
+      ["passport-atlas", "Voyage Atlas", "/passport/atlas"],
       ["passport-memories", "Memories", "/passport/memories"],
       ["passport-artifacts", "Artifacts", "/passport/artifacts"],
       ["passport-saved", "Saved", "/passport/saved"],
