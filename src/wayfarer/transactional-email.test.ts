@@ -277,13 +277,19 @@ describe("Project Homeport transactional email providers", () => {
     expect(JSON.stringify(mocks.deliveryUpdate.mock.calls)).not.toContain("654321");
   });
 
-  it("uses the candidate-scoped generic outbox when a built server receives only partial task-owned email settings", async () => {
+  it("uses the candidate-scoped generic outbox when only the candidate database reaches a built server", async () => {
     const candidatePrefix = "0123456789ab";
     syntheticRoot = path.resolve(`.sounding-line-${candidatePrefix}.outbox`);
     vi.stubEnv("DATABASE_URL", `file:./.sounding-line-${candidatePrefix}.sqlite`);
-    vi.stubEnv("HOMEPORT_SYNTHETIC_EMAIL_ADAPTER", "TASK_OWNED_TEST");
+    vi.stubEnv("HOMEPORT_SYNTHETIC_EMAIL_ADAPTER", "");
     vi.stubEnv("HOMEPORT_SYNTHETIC_OUTBOX_PATH", path.join(tmpdir(), "unpaired-email-outbox.jsonl"));
     vi.stubEnv("HOMEPORT_PHASE7_TASK_ROOT", "");
+
+    expect(transactionalEmailProviderStatus()).toMatchObject({
+      providerId: "SYNTHETIC_OUTBOX",
+      available: true,
+      classification: "SYNTHETIC_EMAIL_ONLY",
+    });
 
     await expect(
       sendTransactionalEmail({
