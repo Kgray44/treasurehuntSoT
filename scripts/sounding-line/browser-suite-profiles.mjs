@@ -83,6 +83,7 @@ export const browserSuiteProfiles = Object.freeze({
     validationIsolation: true,
     cookieAdapter: "isolated-loopback",
     browserProject: "chromium",
+    browserArguments: Object.freeze(["--grep", "Journey N: history search opens a version-pinned detail and returns"]),
     homeportPhase3Runtime: true,
     preparers: [Object.freeze({ runtime: "node", script: "scripts/sounding-line/prepare-validation-isolation.mjs" })],
     fixtureArguments: [],

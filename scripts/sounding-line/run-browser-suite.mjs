@@ -56,6 +56,7 @@ try {
       ...(profile.fixtureProject ? ["--fixture-project", profile.fixtureProject] : []),
       "--",
       ...browserTests,
+      ...(profile.browserArguments ?? []),
       "--project",
       profile.browserProject ?? "chromium",
     ],

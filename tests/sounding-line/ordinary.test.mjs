@@ -395,6 +395,10 @@ test("Homeport Phase 3 declares the same isolated fixture contract consumed by i
     dispatches.map(({ id, validationIsolation }) => ({ id, validationIsolation })),
     [{ id: "homeport-phase3", validationIsolation: true }],
   );
+  assert.deepEqual(dispatches[0].browserArguments, [
+    "--grep",
+    "Journey N: history search opens a version-pinned detail and returns",
+  ]);
 });
 
 test("ordinary selection ignores documentation vocabulary when scoping product browser proof", () => {
