@@ -18,6 +18,17 @@ function isRuntimePreferences(value: unknown): value is RuntimePreferences {
   return Boolean(experience && typeof experience.textScale === "number" && typeof experience.motion === "string");
 }
 
+function applyAccountRuntimePreferences(preferences: RuntimePreferences) {
+  // A SYSTEM account default delegates motion to the client. Preserve an
+  // explicit local selection (including the isolated Player fixtures) while
+  // retaining every explicit account preference as the authority.
+  if (preferences.experience.motion === "SYSTEM") {
+    applyRuntimePreferences(preferences, { preserveStoredMotion: true });
+    return;
+  }
+  applyRuntimePreferences(preferences);
+}
+
 export function PreferenceRuntimeBridge() {
   const { state } = useCurrentUser();
   const current = useRef<RuntimePreferences>(defaultRuntimePreferences);
@@ -37,7 +48,7 @@ export function PreferenceRuntimeBridge() {
       const cached = JSON.parse(localStorage.getItem(cacheKey) ?? "null") as unknown;
       if (isRuntimePreferences(cached)) {
         current.current = cached;
-        applyRuntimePreferences(cached);
+        applyAccountRuntimePreferences(cached);
       }
     } catch {
       try {
@@ -63,14 +74,14 @@ export function PreferenceRuntimeBridge() {
         } catch {
           // Apply the authoritative response even when the optional cache is unavailable.
         }
-        applyRuntimePreferences(body.preferences);
+        applyAccountRuntimePreferences(body.preferences);
       } catch {
         // The last validated cached preference remains effective during a transient read failure.
       }
     };
     void refresh();
     const onFocus = () => void refresh();
-    const onSystemPreference = () => applyRuntimePreferences(current.current);
+    const onSystemPreference = () => applyAccountRuntimePreferences(current.current);
     const schemes = [
       window.matchMedia("(prefers-color-scheme: dark)"),
       window.matchMedia("(prefers-contrast: more)"),
@@ -84,7 +95,7 @@ export function PreferenceRuntimeBridge() {
         const next = JSON.parse(event.newValue) as unknown;
         if (isRuntimePreferences(next)) {
           current.current = next;
-          applyRuntimePreferences(next);
+          applyAccountRuntimePreferences(next);
         }
       } catch {
         // Ignore another tab's malformed write and retain the last validated value.
@@ -96,7 +107,7 @@ export function PreferenceRuntimeBridge() {
       if (event.data?.type !== "preferences-updated" || event.data?.accountId !== accountId) return;
       if (isRuntimePreferences(event.data.preferences)) {
         current.current = event.data.preferences;
-        applyRuntimePreferences(event.data.preferences);
+        applyAccountRuntimePreferences(event.data.preferences);
       }
     });
     return () => {
