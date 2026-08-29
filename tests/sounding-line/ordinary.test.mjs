@@ -1036,6 +1036,13 @@ test("task-owned browser suites configure a task-owned synthetic email adapter",
   assert.match(source, /HOMEPORT_SYNTHETIC_OUTBOX_PATH:\s*path\.join\(emailTaskRoot, "outbox", "messages\.jsonl"\)/u);
 });
 
+test("only a task-owned Sounding Line build embeds its synthetic email adapter", () => {
+  const source = readFileSync("next.config.ts", "utf8");
+  assert.match(source, /SOUNDING_LINE_TASK_OWNED_HTTP === "1"/u);
+  assert.match(source, /SOUNDING_LINE_SUITE_PROFILE/u);
+  assert.match(source, /HOMEPORT_SYNTHETIC_EMAIL_ADAPTER: "TASK_OWNED_TEST"/u);
+});
+
 test("an unresolved fixture profile fails closed before browser authority is launched", () => {
   const result = spawnSync(
     process.execPath,
