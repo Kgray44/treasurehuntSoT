@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-28",
+  "generated_at": "2026-08-29",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -4432,6 +4432,18 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_3_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_4_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_4_Test_Plan.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

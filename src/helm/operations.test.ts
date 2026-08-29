@@ -78,6 +78,30 @@ describe("Helm Phase 2 operational projections", () => {
     expect(
       deriveCaptainOperationalStatus({ sessionStatus: "PAUSED", membershipStates: ["READY"], attention: [] }),
     ).toBe("PAUSED");
+    expect(
+      deriveCaptainOperationalStatus({
+        sessionStatus: "ACTIVE",
+        membershipStates: ["READY"],
+        attention: [
+          {
+            category: "CONNECTION",
+            severity: "WARNING",
+            key: "connection",
+            voyageId: "voyage-1",
+            title: "Crew connection lost",
+            explanation: "No current connection evidence.",
+            sourceType: "MembershipPresenceDevice",
+            sourceId: "member-1",
+            firstObservedAt: now.toISOString(),
+            latestObservedAt: now.toISOString(),
+            recommendedTarget: "CREW",
+            resolved: false,
+            stale: true,
+            dismissible: false,
+          },
+        ],
+      }),
+    ).toBe("DEGRADED");
   });
 
   it("orders severity before status and uses a stable identifier fallback", () => {

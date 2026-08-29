@@ -1914,6 +1914,41 @@ Project Wakebook Phase 5 adds an owner-private Voyage Atlas that organizes sourc
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-041 - Helm Passage Resilience
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Helm Phase 4 - Weather the Passage
+
+Project Helm Phase 4 gives Captains a truthful preflight and recovery presentation for healthy, degraded, and provider-unavailable Voyages without creating an alternate command authority or fabricating adjacent-provider results.
+
+### Important subfeatures
+
+- Preflight distinguishes ready, warning, blocked, and unknown-provider conditions using canonical Voyage and Crew evidence
+- Recovery surfaces only existing governed Captain commands, current reconciliation, and evidence-preserving escalation
+- Unavailable presentation providers remain explicitly unavailable rather than being treated as healthy
+- Captain console labels actionable recovery without duplicating controls or bypassing Captain and Player authority boundaries
+
+### Primary surfaces
+
+`/captain/voyages/[voyageId]`, `/captain/sessions/[sessionId]`
+
+### Meaningful limitations
+
+- This branch-complete record requires its exact ordinary Sounding Line decision and protected-main merge before promotion
+- Drydock, Landfall, and Watchglass results remain provider-neutral and unavailable until an accepted provider contract exists
+- No unsupported force repair, speculative persistence, or alternate command authority is introduced
+
+### Evidence
+
+- branch: `codex/helm-p4-weather-passage-current`
+- commit: `aec0d94d`
+- path: `src/helm/passage-resilience.ts`
+- path: `src/components/captain/CaptainCommandConsole.tsx`
+- test: `src/helm/passage-resilience.test.ts`
+- test: `src/helm/operations.test.ts`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.

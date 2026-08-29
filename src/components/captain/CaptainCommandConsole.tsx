@@ -62,6 +62,23 @@ type Projection = {
     readiness: { state: string };
     isCaptainsOwnPlayerMembership: boolean;
   }>;
+  resilience: {
+    preflight: {
+      state: "READY" | "READY_WITH_WARNINGS" | "NOT_READY" | "UNKNOWN_DEPENDENCY";
+      checks: Array<{ id: string; state: "PASS" | "WARNING" | "BLOCKED" | "UNKNOWN"; label: string; detail: string }>;
+    };
+    recovery: {
+      state: "HEALTHY" | "ACTIONABLE" | "ESCALATE";
+      diagnosis: string;
+      evidence: { sourceRevision: number; observedAt: string };
+      steps: Array<{
+        id: string;
+        label: string;
+        detail: string;
+        commandId: "PAUSE_VOYAGE" | "RESUME_VOYAGE" | "REPLAY_PRESENTATION" | "RESTORE_PRIOR_PASSAGE" | null;
+      }>;
+    };
+  };
   events: Array<{ id: string; category: string; timestamp: string; sequence: number; summary: string }>;
 };
 
@@ -364,6 +381,44 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
               </li>
             ))}
           </ul>
+        </section>
+        <section className="captain-command-console__recovery" aria-labelledby="captain-recovery-heading">
+          <p className="card-kicker">Weather the Passage</p>
+          <h2 id="captain-recovery-heading">Preflight and recovery</h2>
+          <p data-recovery-state={projection.resilience.recovery.state}>
+            {projection.resilience.preflight.state.replaceAll("_", " ").toLocaleLowerCase()} preflight -{" "}
+            {projection.resilience.recovery.diagnosis}
+          </p>
+          <ul aria-label="Preflight checks">
+            {projection.resilience.preflight.checks.map((check) => (
+              <li key={check.id} data-check-state={check.state}>
+                <strong>{check.label}</strong>
+                <span>{check.detail}</span>
+              </li>
+            ))}
+          </ul>
+          <ol aria-label="Governed recovery steps">
+            {projection.resilience.recovery.steps.map((step) => {
+              const command = step.commandId
+                ? directCommands.find((candidate) => candidate.id === step.commandId)
+                : undefined;
+              return (
+                <li key={step.id}>
+                  <strong>{step.label}</strong>
+                  <span>{step.detail}</span>
+                  {command ? (
+                    <button className="button-secondary" disabled={Boolean(busy)} onClick={() => void prepare(command)}>
+                      Prepare governed action
+                    </button>
+                  ) : null}
+                </li>
+              );
+            })}
+          </ol>
+          <small>
+            Evidence observed at revision {projection.resilience.recovery.evidence.sourceRevision} on{" "}
+            {new Date(projection.resilience.recovery.evidence.observedAt).toLocaleTimeString()}.
+          </small>
         </section>
         <section className="captain-command-console__history" aria-labelledby="captain-history-heading">
           <h2 id="captain-history-heading">Recent Voyage results</h2>
