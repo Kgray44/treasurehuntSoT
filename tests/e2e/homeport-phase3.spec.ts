@@ -602,14 +602,15 @@ test.describe.serial("Project Homeport Phase 3 governed browser journeys A-AE", 
     await signIn(page, full);
     await page.goto("/passport/history");
     await waitForHarbor(page);
-    await page.getByLabel("Search your history").fill("Synthetic Lantern");
-    await page.getByRole("button", { name: "Search" }).click();
-    await expect(page.getByText("The Synthetic Lantern Atlas")).toBeVisible();
-    await page.getByRole("link", { name: "Open record" }).click();
+    await page.getByLabel("Search your archive").fill("Synthetic Lantern");
+    await page.getByRole("button", { name: "Read the wake" }).click();
+    await expect(page.getByRole("heading", { name: "The Synthetic Lantern Atlas", level: 3 })).toBeVisible();
+    await page.getByRole("link", { name: "Open The Synthetic Lantern Atlas Voyage" }).click();
     await expect(page).toHaveURL(new RegExp("/passport/history/" + historyId + "$", "u"));
-    await expect(page.getByRole("heading", { name: "Version-pinned record" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Voyage Detail", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "The Synthetic Lantern Atlas", level: 2 })).toBeVisible();
     await expect(page.getByText("A Chart Without Coordinates")).toBeVisible();
-    await page.getByRole("link", { name: /Chronicle History/u }).click();
+    await page.getByRole("link", { name: "Back to Your Voyages" }).click();
     await expect(page).toHaveURL(/\/passport\/history$/u);
   });
 
