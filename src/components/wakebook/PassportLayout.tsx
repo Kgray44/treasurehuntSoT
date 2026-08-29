@@ -9,6 +9,9 @@ import type { PersonalHarborSectionId } from "@/homeport/personal-harbor-navigat
 const passportSections = [
   ["passport-home", "Passport", "/passport"],
   ["passport-history", "Your Voyages", "/passport/history"],
+  ["passport-timeline", "Timeline", "/passport/timeline"],
+  ["passport-people", "People", "/passport/people"],
+  ["passport-statistics", "Statistics", "/passport/statistics"],
   ["passport-memories", "Memories", "/passport/memories"],
   ["passport-artifacts", "Artifacts", "/passport/artifacts"],
   ["passport-saved", "Saved", "/passport/saved"],

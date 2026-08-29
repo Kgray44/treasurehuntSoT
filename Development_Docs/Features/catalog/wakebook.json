@@ -99,5 +99,36 @@
       "Timeline, People, Statistics, geographic recap, public sharing, competitive metrics, and new Tideglass semantics remain outside Wakebook A1"
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-B015",
+    "title": "Private Cross-Voyage Insights",
+    "summary": "Project Wakebook Phase 3 adds owner-private, source-bound Timeline, People, and Statistics views that make historical Voyage records easier to understand without inventing social judgment or behavioral analytics.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Wakebook Phase 3 - Read the Wake",
+    "surfaces": ["/passport/timeline", "/passport/people", "/passport/statistics", "/api/passport/insights"],
+    "subfeatures": [
+      "Owner-scoped Timeline of canonical historical Voyages with explicit date-quality and lifecycle presentation",
+      "Private People view derived only from retained historical crew snapshots and labeled when historical context is limited",
+      "Versioned personal statistics with source definitions, duration coverage, and explicit quality boundaries",
+      "Chronicle Passport navigation to the three archive views while retaining established Passport and Personal Harbor destinations",
+      "No ranking, streak pressure, public comparison, inferred social judgment, or sensitive behavioral analytics"
+    ],
+    "evidence": [
+      { "kind": "branch", "value": "codex/wakebook-phase3-origin-main" },
+      { "kind": "commit", "value": "17cfbe23b4a1dfd2fe4c87e8dbd68b9523bf8843" },
+      { "kind": "path", "value": "src/wakebook/insights.ts" },
+      { "kind": "path", "value": "src/components/wakebook/WakebookInsights.tsx" },
+      { "kind": "test", "value": "src/components/wakebook/WakebookInsights.test.tsx" },
+      { "kind": "test", "value": "src/components/wakebook/PassportLayout.test.tsx" }
+    ],
+    "branch": "codex/wakebook-phase3-origin-main",
+    "commit": "17cfbe23b4a1dfd2fe4c87e8dbd68b9523bf8843",
+    "limitations": [
+      "Every insight remains owner-private and derived only from canonical records or retained historical snapshots",
+      "Metrics expose source definitions and quality boundaries instead of inferring unavailable duration or historical detail",
+      "Geographic recap, public sharing, competitive metrics, Tideglass semantics, and Phase 4 through Phase 6 behavior remain outside Phase 3"
+    ],
+    "catalogVersion": 1
   }
 ]

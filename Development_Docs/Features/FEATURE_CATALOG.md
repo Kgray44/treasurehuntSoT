@@ -1843,6 +1843,42 @@ Creators stage a saved Chronicle source through Drydock readiness, exact readabl
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-B015 - Private Cross-Voyage Insights
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Wakebook Phase 3 - Read the Wake
+
+Project Wakebook Phase 3 adds owner-private, source-bound Timeline, People, and Statistics views that make historical Voyage records easier to understand without inventing social judgment or behavioral analytics.
+
+### Important subfeatures
+
+- Owner-scoped Timeline of canonical historical Voyages with explicit date-quality and lifecycle presentation
+- Private People view derived only from retained historical crew snapshots and labeled when historical context is limited
+- Versioned personal statistics with source definitions, duration coverage, and explicit quality boundaries
+- Chronicle Passport navigation to the three archive views while retaining established Passport and Personal Harbor destinations
+- No ranking, streak pressure, public comparison, inferred social judgment, or sensitive behavioral analytics
+
+### Primary surfaces
+
+`/passport/timeline`, `/passport/people`, `/passport/statistics`, `/api/passport/insights`
+
+### Meaningful limitations
+
+- Every insight remains owner-private and derived only from canonical records or retained historical snapshots
+- Metrics expose source definitions and quality boundaries instead of inferring unavailable duration or historical detail
+- Geographic recap, public sharing, competitive metrics, Tideglass semantics, and Phase 4 through Phase 6 behavior remain outside Phase 3
+
+### Evidence
+
+- branch: `codex/wakebook-phase3-origin-main`
+- commit: `17cfbe23b4a1dfd2fe4c87e8dbd68b9523bf8843`
+- path: `src/wakebook/insights.ts`
+- path: `src/components/wakebook/WakebookInsights.tsx`
+- test: `src/components/wakebook/WakebookInsights.test.tsx`
+- test: `src/components/wakebook/PassportLayout.test.tsx`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
