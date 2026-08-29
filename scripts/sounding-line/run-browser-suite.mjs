@@ -120,7 +120,22 @@ function profileEnvironment({ profileId, candidateSha: sha, databaseUrl: request
 function taskOwnedProductionHttpEnvironment(profileId, sha) {
   const suiteProfile = browserSuiteProfiles[profileId];
   const environment = { SOUNDING_LINE_SUITE_PROFILE: profileId };
-  if (suiteProfile.taskOwnedProductionHttp) environment.SOUNDING_LINE_TASK_OWNED_HTTP = "1";
+  if (suiteProfile.taskOwnedProductionHttp) {
+    const emailTaskRoot = path.join(
+      root,
+      "artifacts",
+      "sounding-line",
+      "transactional-email",
+      `${profileId}-${sha.slice(0, 12)}`,
+    );
+    Object.assign(environment, {
+      SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+      HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER: "SYNTHETIC_OUTBOX",
+      HOMEPORT_SYNTHETIC_EMAIL_ADAPTER: "TASK_OWNED_TEST",
+      HOMEPORT_PHASE7_TASK_ROOT: emailTaskRoot,
+      HOMEPORT_SYNTHETIC_OUTBOX_PATH: path.join(emailTaskRoot, "outbox", "messages.jsonl"),
+    });
+  }
   if (suiteProfile.validationIsolation) {
     environment.FOREVER_VALIDATION_ISOLATION = "1";
     environment.FOREVER_VALIDATION_NONCE_HASH = createHash("sha256")
