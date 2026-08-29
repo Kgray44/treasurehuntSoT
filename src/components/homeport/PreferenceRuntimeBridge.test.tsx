@@ -38,6 +38,11 @@ describe("Project Homeport preference reconciliation", () => {
 
   beforeEach(() => {
     mocks.apply.mockReset();
+    mocks.currentUser = {
+      status: "authenticated",
+      authenticated: true,
+      user: { accountId: "account-1", displayName: "Synthetic Owner", initials: "SO" },
+    };
     close.mockReset();
     localStorage.clear();
     vi.stubGlobal(
@@ -127,6 +132,24 @@ describe("Project Homeport preference reconciliation", () => {
         experience: { motion: "SYSTEM", textScale: 1, theme: "SYSTEM", contrast: "SYSTEM" },
       },
       { preserveStoredMotion: true },
+    );
+  });
+
+  it("preserves a local motion choice when an authenticated account delegates motion to SYSTEM", async () => {
+    global.fetch = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          preferences: { experience: { motion: "SYSTEM", textScale: 1, theme: "LIGHT", contrast: "STANDARD" } },
+        }),
+        { status: 200 },
+      ),
+    );
+    render(<PreferenceRuntimeBridge />);
+    await waitFor(() =>
+      expect(mocks.apply).toHaveBeenCalledWith(
+        { experience: { motion: "SYSTEM", textScale: 1, theme: "LIGHT", contrast: "STANDARD" } },
+        { preserveStoredMotion: true },
+      ),
     );
   });
 });
