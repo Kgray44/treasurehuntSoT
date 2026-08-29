@@ -626,7 +626,7 @@ test("ordinary generic browser proof uses the task-owned Chromium suite", () => 
       "--candidate",
       "a".repeat(40),
       "--database-url",
-      "file:./.sounding-line-candidate.sqlite",
+      `file:./artifacts/sounding-line/generic-${"a".repeat(12)}/validation-isolated-19700101-000000000-${"a".repeat(32)}.db`,
       "--",
       "tests/e2e/project-helm-phase1.spec.ts",
     ],
