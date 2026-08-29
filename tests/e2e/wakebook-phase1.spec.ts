@@ -549,8 +549,13 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
     await page.setViewportSize(viewport);
     expect(
       await page.evaluate(() => {
-        const root = document.documentElement;
-        return root.scrollWidth <= root.clientWidth;
+        const scrollRoot = document.scrollingElement;
+        if (!scrollRoot) return false;
+        const initialScrollLeft = scrollRoot.scrollLeft;
+        scrollRoot.scrollLeft = scrollRoot.scrollWidth;
+        const horizontallyScrollable = scrollRoot.scrollLeft > initialScrollLeft;
+        scrollRoot.scrollLeft = initialScrollLeft;
+        return !horizontallyScrollable;
       }),
     ).toBeTruthy();
   }
