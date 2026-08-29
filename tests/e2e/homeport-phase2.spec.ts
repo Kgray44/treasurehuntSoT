@@ -8,7 +8,7 @@ import { acceptInvitation, createPlaythroughAndInvitations } from "../../src/pla
 import { registerAccount } from "../../src/wayfarer/accounts";
 import { hash } from "bcryptjs";
 
-const password = "Homeport-validation-passphrase-2026";
+const password = "Signal-quartz-compass-2026";
 const evidenceRoot = path.resolve(
   process.env.HOMEPORT_PHASE2_EVIDENCE_ROOT ??
     (process.env.SOUNDING_LINE_INTERNAL_RUNTIME === "1"
