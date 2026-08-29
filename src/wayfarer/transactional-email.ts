@@ -150,7 +150,9 @@ function taskOwnedOutboxPath() {
       );
     return outboxPath;
   }
-  const genericTaskDatabase = /^file:\.\/\.sounding-line-([a-f0-9]{12,40})\.sqlite$/u.exec(process.env.DATABASE_URL ?? "");
+  const genericTaskDatabase = /^file:\.\/\.sounding-line-([a-f0-9]{12,40})\.sqlite$/u.exec(
+    process.env.DATABASE_URL ?? "",
+  );
   if (!genericTaskDatabase)
     throw new TransactionalEmailError("Synthetic email delivery is not configured safely.", "INVALID_CONFIGURATION");
   return resolve(`.sounding-line-${genericTaskDatabase[1]}.outbox`, "outbox", "messages.jsonl");
