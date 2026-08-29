@@ -1841,11 +1841,9 @@ Creators stage a saved Chronicle source through Drydock readiness, exact readabl
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
-
 ## FT-B015 - Private Cross-Voyage Insights
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Project Wakebook Phase 3 - Read the Wake
 
 Project Wakebook Phase 3 adds owner-private, source-bound Timeline, People, and Statistics views that make historical Voyage records easier to understand without inventing social judgment or behavioral analytics.
@@ -1864,20 +1862,57 @@ Project Wakebook Phase 3 adds owner-private, source-bound Timeline, People, and 
 
 ### Meaningful limitations
 
+- Protected mainline integration completed in PR #463 as 592527d3836f8269c3c1065a068e8210c86c113b
 - Every insight remains owner-private and derived only from canonical records or retained historical snapshots
 - Metrics expose source definitions and quality boundaries instead of inferring unavailable duration or historical detail
 - Geographic recap, public sharing, competitive metrics, Tideglass semantics, and Phase 4 through Phase 6 behavior remain outside Phase 3
 
 ### Evidence
 
-- branch: `codex/wakebook-phase3-origin-main`
-- commit: `17cfbe23b4a1dfd2fe4c87e8dbd68b9523bf8843`
+- commit: `592527d3836f8269c3c1065a068e8210c86c113b`
 - path: `src/wakebook/insights.ts`
 - path: `src/components/wakebook/WakebookInsights.tsx`
 - test: `src/components/wakebook/WakebookInsights.test.tsx`
 - test: `src/components/wakebook/PassportLayout.test.tsx`
 
 ---
+
+## FT-B016 - Private Voyage Atlas
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Wakebook Phase 5 - Chart a Life in Voyages
+
+Project Wakebook Phase 5 adds an owner-private Voyage Atlas that organizes source-bound historical records by season and year while preserving exact record links and truthful geographic unavailability.
+
+### Important subfeatures
+
+- Seasonal and year organization derived only from owner-visible archive dates
+- Links back to the exact historical Voyage record and existing Timeline and People context
+- Canonical Personal Harbor and Chronicle Passport navigation to the Atlas
+- Explicit unavailable Map View when Landfall has not supplied an accepted owner-safe historical geography projection
+- No inferred routes, sensitive locations, social ranking, or public sharing
+
+### Primary surfaces
+
+`/passport/atlas`, `/passport/history/[recordId]`, `/account`
+
+### Meaningful limitations
+
+- Protected mainline integration completed in PR #575 as 805e6fa680987df6c39afcbf55b6cb4fad2b7453
+- Map View remains unavailable until Landfall supplies an accepted owner-safe historical geography projection
+- Collections are not introduced because the governing Phase 5 authority permits, but does not require, custom shelves
+
+### Evidence
+
+- commit: `805e6fa680987df6c39afcbf55b6cb4fad2b7453`
+- path: `src/components/wakebook/WakebookInsights.tsx`
+- path: `src/homeport/personal-harbor-navigation.ts`
+- test: `src/components/wakebook/WakebookInsights.test.tsx`
+- test: `src/homeport/personal-harbor.test.ts`
+
+---
+
+# Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
 

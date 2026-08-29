@@ -3246,6 +3246,78 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   color: var(--text-muted);
 }
 
+.wakebook-voyage-book {
+  display: grid;
+  gap: 1rem;
+  max-width: 68rem;
+  margin-inline: auto;
+}
+
+.wakebook-voyage-book__hero,
+.wakebook-voyage-book__section,
+.wakebook-voyage-book__boundary {
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.9rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: rgb(255 255 255 / 1.5%);
+}
+
+.wakebook-voyage-book__hero {
+  display: grid;
+  grid-template-columns: minmax(12rem, 28%) minmax(0, 1fr);
+  gap: clamp(1rem, 4vw, 2.5rem);
+  align-items: center;
+}
+
+.wakebook-voyage-book__hero h2,
+.wakebook-voyage-book__section h3,
+.wakebook-voyage-book__section h4,
+.wakebook-voyage-book__boundary p {
+  margin-top: 0;
+}
+
+.wakebook-voyage-book__actions {
+  margin-top: 1rem;
+}
+
+.wakebook-voyage-book__reflection {
+  max-width: 68ch;
+  white-space: pre-wrap;
+  line-height: 1.7;
+}
+
+.wakebook-voyage-book__memories,
+.wakebook-voyage-book__crew {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wakebook-voyage-book__memories li,
+.wakebook-voyage-book__crew li {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.8rem;
+}
+
+.wakebook-voyage-book__memories p,
+.wakebook-voyage-book__memories time,
+.wakebook-voyage-book__crew span,
+.wakebook-voyage-book__boundary p {
+  color: var(--text-secondary);
+}
+
+.wakebook-voyage-book__crew li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.8rem;
+}
+
+.wakebook-voyage-book__boundary {
+  border-left: 3px solid var(--harbor-brass);
+}
+
 html[data-voyage-theme="light"]
   :where(
     .wakebook-intro,
@@ -3327,6 +3399,9 @@ html[data-voyage-theme="light"] .wakebook-crew-avatar {
   .wakebook-artifact-boundary {
     grid-template-columns: 1fr;
   }
+  .wakebook-voyage-book__hero {
+    grid-template-columns: 1fr;
+  }
   .wakebook-controls fieldset {
     grid-column: auto;
   }
@@ -3379,6 +3454,9 @@ html[data-voyage-theme="light"] .wakebook-crew-avatar {
   .wakebook-remembrance form .button,
   .wakebook-memory-list .button,
   .wakebook-keepsake .button {
+    width: 100%;
+  }
+  .wakebook-voyage-book__actions .button {
     width: 100%;
   }
   .wakebook-detail-hero__body .personal-harbor__actions {
@@ -3442,5 +3520,30 @@ html[data-voyage-theme="light"] .wakebook-crew-avatar {
     border: 1px solid CanvasText;
     color: CanvasText;
     background: Canvas;
+  }
+}
+
+@media print {
+  .passport-shell__hero,
+  .wakebook-voyage-book__actions,
+  .wakebook-detail__back {
+    display: none !important;
+  }
+  .passport-shell,
+  .passport-shell__content,
+  .wakebook-voyage-book {
+    display: block;
+    max-width: none;
+    color: #000;
+    background: #fff;
+  }
+  .wakebook-voyage-book__hero,
+  .wakebook-voyage-book__section,
+  .wakebook-voyage-book__boundary {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+    border-color: #000;
+    color: #000;
+    background: #fff;
   }
 }
