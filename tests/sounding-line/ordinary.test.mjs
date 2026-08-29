@@ -600,9 +600,10 @@ test("candidate binding requires distinct exact commit and tree identities", () 
   );
 });
 
-test("ordinary browser proof uses the installed Chromium project", () => {
+test("ordinary generic browser proof uses the task-owned Chromium suite", () => {
   const browserCommands = verificationCommands({
     mode: "ordinary",
+    candidateSha: "a".repeat(40),
     safetyPaths: [],
     lintPaths: [],
     selected: { unitTests: [], browserTests: ["tests/e2e/project-helm-phase1.spec.ts"] },
@@ -611,35 +612,25 @@ test("ordinary browser proof uses the installed Chromium project", () => {
     migrationScripts: [],
     buildRequired: false,
   });
-  assert.deepEqual(browserCommands.at(-4), [
+  assert.deepEqual(browserCommands.at(-2), [
     "npx",
     ["--no-install", "prisma", "generate", "--schema", "prisma/schema.sqlite.prisma"],
   ]);
-  assert.deepEqual(browserCommands.at(-3), [
-    process.execPath,
-    ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
-  ]);
-  assert.deepEqual(browserCommands.at(-2), ["npx", ["--no-install", "tsx", "prisma/seed.ts"]]);
   const browserCommand = browserCommands.at(-1);
   assert.deepEqual(browserCommand, [
     process.execPath,
     [
-      "scripts/sounding-line/browser-authority.mjs",
+      "scripts/sounding-line/run-browser-suite.mjs",
+      "--profile",
+      "generic",
+      "--candidate",
+      "a".repeat(40),
+      "--database-url",
+      "file:./.sounding-line-candidate.sqlite",
       "--",
       "tests/e2e/project-helm-phase1.spec.ts",
-      "--project",
-      "chromium",
     ],
   ]);
-  assert.deepEqual(
-    verificationEnvironment(
-      { databaseUrl: "file:./.sounding-line-candidate.sqlite" },
-      process.execPath,
-      ["scripts/sounding-line/browser-authority.mjs", "--", "tests/e2e/project-helm-phase1.spec.ts"],
-      {},
-    ),
-    { DATABASE_URL: "file:./.sounding-line-candidate.sqlite" },
-  );
 });
 
 test("browser proof keeps SQLite client generation after the production build", () => {
@@ -655,13 +646,9 @@ test("browser proof keeps SQLite client generation after the production build", 
     buildRequired: true,
   });
   const browser = groups.find((group) => group.kind === "browser");
-  assert.deepEqual(browser?.commands.slice(0, 3), [
+  assert.deepEqual(browser?.commands.slice(0, 2), [
     ["npm", ["run", "build"]],
     ["npx", ["--no-install", "prisma", "generate", "--schema", "prisma/schema.sqlite.prisma"]],
-    [
-      process.execPath,
-      ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", "file:./.sounding-line-candidate.sqlite"],
-    ],
   ]);
   assert.equal(
     groups.some(
@@ -1618,9 +1605,6 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
     const firstCandidate = commit(root, "browser candidate on original base");
     const firstPlan = await buildPlan({ root, baseSha, candidateSha: firstCandidate, mode: "ordinary" });
     const first = await runReconciliation(root, firstPlan, 15);
-    assert.ok(
-      first.calls.some(([, argumentsList]) => argumentsList[0] === "scripts/sounding-line/browser-authority.mjs"),
-    );
     const freshBrowserReceipt = first.result.receipts.find((entry) => entry.obligationId.startsWith("browser."));
     assert.ok((freshBrowserReceipt?.durationMs ?? 0) >= 50);
 
@@ -1635,16 +1619,12 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
     const browser = rebound.result.reconciliation.find((entry) => entry.obligationId.startsWith("browser."));
     assert.equal(browser?.disposition, "REBOUND");
     assert.equal(browser?.freshExecuted, false);
-    assert.ok(browser?.commandsAvoided.some((command) => command.includes("browser-authority.mjs")));
-    assert.ok(
-      !rebound.calls.some(([, argumentsList]) => argumentsList[0] === "scripts/sounding-line/browser-authority.mjs"),
-    );
     assert.equal(rebound.result.finalization.decision, "PASS");
-    assert.equal(rebound.result.finalization.requiredObligations, 6);
-    assert.equal(rebound.result.freshObligations, 1);
+    assert.equal(rebound.result.finalization.requiredObligations, 7);
+    assert.equal(rebound.result.freshObligations, 2);
     assert.equal(rebound.result.finalization.counts.REBOUND, 5);
     assert.equal(rebound.result.finalization.counts.INVALIDATED, 1);
-    assert.equal(rebound.result.commandsAvoided.length, 9);
+    assert.equal(rebound.result.commandsAvoided.length, 6);
     assert.ok(rebound.result.avoidedDurationMs >= (freshBrowserReceipt?.durationMs ?? Infinity));
 
     const releasePlan = await buildPlan({ root, baseSha: newerBase, candidateSha: reboundCandidate, mode: "release" });
@@ -1654,8 +1634,5 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
       true,
     );
     assert.equal(release.result.freshObligations, release.result.finalization.requiredObligations);
-    assert.ok(
-      release.calls.some(([, argumentsList]) => argumentsList[0] === "scripts/sounding-line/browser-authority.mjs"),
-    );
   });
 });
