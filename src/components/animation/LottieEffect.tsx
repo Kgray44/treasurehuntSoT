@@ -56,8 +56,17 @@ type LottieEffectProps = {
 
 const defaultLoadTimeoutMs = 5_000;
 
+export function canUseLottieDevelopmentFailpoint(
+  environment = {
+    production: process.env.NODE_ENV === "production",
+    animationLabEnabled: process.env.NEXT_PUBLIC_ENABLE_ANIMATION_LAB === "true",
+  },
+) {
+  return !environment.production || environment.animationLabEnabled;
+}
+
 function readDevelopmentFailpoint(ownerWindow: Window, assetKey: string): LottieDevelopmentFailpoint | null {
-  if (process.env.NODE_ENV === "production") return null;
+  if (!canUseLottieDevelopmentFailpoint()) return null;
   const value = ownerWindow[LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL];
   if (!value || value.assetKey !== assetKey) return null;
   if (value.kind === "renderer-error") return { kind: value.kind, assetKey };

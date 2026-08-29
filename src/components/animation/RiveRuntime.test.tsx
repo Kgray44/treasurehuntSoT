@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { riveAssets } from "@/animation/assets/rive-contracts";
 import { resetAnimationMetrics } from "@/animation/core/metrics";
 import { RiveRuntime } from "./RiveRuntime";
-import { RiveStatefulObject } from "./RiveStatefulObject";
+import { canLoadRiveAsset, RiveStatefulObject } from "./RiveStatefulObject";
 
 const runtime = vi.hoisted(() => {
   const trigger = vi.fn();
@@ -324,5 +324,15 @@ describe("Rive runtime", () => {
     expect(status).not.toHaveBeenCalledWith("ready");
     expect(runtime.loadCalls).toBe(before);
     expect(screen.queryByTestId("rive-canvas")).not.toBeInTheDocument();
+  });
+
+  it("allows the development sample only when the authorized animation lab is enabled in a production build", () => {
+    expect(canLoadRiveAsset(riveAssets.developmentRating, { production: true, animationLabEnabled: false })).toBe(
+      false,
+    );
+    expect(canLoadRiveAsset(riveAssets.developmentRating, { production: true, animationLabEnabled: true })).toBe(true);
+    expect(canLoadRiveAsset(riveAssets.developmentRating, { production: false, animationLabEnabled: false })).toBe(
+      true,
+    );
   });
 });

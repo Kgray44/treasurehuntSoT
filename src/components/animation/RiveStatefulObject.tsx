@@ -20,6 +20,20 @@ const RiveRuntime = dynamic(() => import("./RiveRuntime").then((module) => modul
   loading: () => <div className="rive-loading" aria-hidden="true" />,
 });
 
+export function canLoadRiveAsset(
+  asset: RiveAssetContract,
+  environment = {
+    production: process.env.NODE_ENV === "production",
+    animationLabEnabled: process.env.NEXT_PUBLIC_ENABLE_ANIMATION_LAB === "true",
+  },
+) {
+  return (
+    asset.availability === "runtime-ready" &&
+    Boolean(asset.path) &&
+    (!asset.developmentOnly || !environment.production || environment.animationLabEnabled)
+  );
+}
+
 export function RiveStatefulObject({
   asset,
   mode,
@@ -47,10 +61,7 @@ export function RiveStatefulObject({
   onInputs?: (inputs: RiveRuntimeInput[]) => void;
   onStatus?: (status: RiveRuntimeStatus) => void;
 }) {
-  const canLoad =
-    asset.availability === "runtime-ready" &&
-    Boolean(asset.path) &&
-    (!asset.developmentOnly || process.env.NODE_ENV !== "production");
+  const canLoad = canLoadRiveAsset(asset);
   const onInputsRef = useRef(onInputs);
   const onStatusRef = useRef(onStatus);
   useEffect(() => {
