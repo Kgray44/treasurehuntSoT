@@ -189,8 +189,13 @@ async function stop(child) {
   ]);
 }
 
-async function stopProxy(proxy) {
+export async function stopProxy(proxy) {
   if (!proxy?.listening) return;
+  // The proxy sits between Playwright and the task-owned Next process. A
+  // completed browser can leave an upgraded or keep-alive connection behind;
+  // close() then waits forever even though the product receipt is already
+  // complete. These are exclusively task-owned validation connections.
+  proxy.closeAllConnections?.();
   await new Promise((resolve) => proxy.close(resolve));
 }
 
