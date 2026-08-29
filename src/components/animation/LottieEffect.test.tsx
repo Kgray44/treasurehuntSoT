@@ -3,7 +3,12 @@ import { createRef } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
 import { readAnimationMetrics, resetAnimationMetrics } from "@/animation/core/metrics";
-import { LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL, LottieEffect, type LottieEffectHandle } from "./LottieEffect";
+import {
+  canUseLottieDevelopmentFailpoint,
+  LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL,
+  LottieEffect,
+  type LottieEffectHandle,
+} from "./LottieEffect";
 
 const lottie = vi.hoisted(() => {
   const listeners = new Map<string, () => void>();
@@ -277,22 +282,26 @@ describe("LottieEffect", () => {
     expect(lottie.item.destroy).toHaveBeenCalledOnce();
   });
 
-  it.each(["stalled-load", "renderer-error"] as const)(
-    "ignores the development %s failpoint in production",
-    async (kind) => {
-      vi.stubEnv("NODE_ENV", "production");
-      window[LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL] = {
-        kind,
-        assetKey: lottieAssets.moonlitWaves.key,
-        timeoutMs: kind === "stalled-load" ? 1 : undefined,
-      };
-      render(<LottieEffect asset={lottieAssets.moonlitWaves} mode="full" label="Moonlit waves" playback="ambient" />);
+  it("admits the development renderer failpoint only in the explicitly enabled animation lab build", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_ENABLE_ANIMATION_LAB", "true");
+    window[LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL] = {
+      kind: "renderer-error",
+      assetKey: lottieAssets.moonlitWaves.key,
+    };
+    render(<LottieEffect asset={lottieAssets.moonlitWaves} mode="full" label="Moonlit waves" playback="ambient" />);
 
-      await waitFor(() => expect(lottie.loadAnimation).toHaveBeenCalledOnce());
-      act(() => lottie.listeners.get("data_ready")?.());
-      expect(screen.queryByRole("img", { name: "Moonlit waves static fallback" })).not.toBeInTheDocument();
-      expect(document.querySelector("[data-lottie-failure-reason]")).toBeNull();
-      expect(lottie.item.destroy).not.toHaveBeenCalled();
-    },
-  );
+    await waitFor(() => expect(lottie.loadAnimation).toHaveBeenCalledOnce());
+    await waitFor(() => expect(screen.getByRole("img", { name: "Moonlit waves static fallback" })).toBeVisible());
+    expect(
+      screen.getByRole("img", { name: "Moonlit waves static fallback" }).closest(".lottie-effect"),
+    ).toHaveAttribute("data-lottie-failure-reason", "development-renderer-error");
+    expect(lottie.item.destroy).toHaveBeenCalledOnce();
+  });
+
+  it("permits development failpoints only outside production or in the explicitly enabled animation lab", () => {
+    expect(canUseLottieDevelopmentFailpoint({ production: false, animationLabEnabled: false })).toBe(true);
+    expect(canUseLottieDevelopmentFailpoint({ production: true, animationLabEnabled: true })).toBe(true);
+    expect(canUseLottieDevelopmentFailpoint({ production: true, animationLabEnabled: false })).toBe(false);
+  });
 });
