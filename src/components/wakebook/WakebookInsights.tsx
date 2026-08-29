@@ -9,7 +9,7 @@ import {
   WakebookLoading,
 } from "@/components/wakebook/WakebookShared";
 
-type View = "timeline" | "people" | "statistics";
+type View = "timeline" | "people" | "statistics" | "atlas";
 
 const copy: Record<View, { eyebrow: string; heading: string; detail: string }> = {
   timeline: {
@@ -26,6 +26,11 @@ const copy: Record<View, { eyebrow: string; heading: string; detail: string }> =
     eyebrow: "A private reading of the wake",
     heading: "Statistics",
     detail: "Source-bound totals make their quality visible instead of guessing at missing history.",
+  },
+  atlas: {
+    eyebrow: "A life in Voyages",
+    heading: "Voyage Atlas",
+    detail: "Organize the private archive by season and shared historical context without inventing a location trail.",
   },
 };
 
@@ -62,6 +67,9 @@ export function WakebookInsights({ view }: { view: View }) {
           <Link href="/passport/statistics" aria-current={view === "statistics" ? "page" : undefined}>
             Statistics
           </Link>
+          <Link href="/passport/atlas" aria-current={view === "atlas" ? "page" : undefined}>
+            Voyage Atlas
+          </Link>
         </nav>
       </section>
       {insights.notice ? (
@@ -73,6 +81,7 @@ export function WakebookInsights({ view }: { view: View }) {
       {view === "timeline" ? <Timeline insights={insights} /> : null}
       {view === "people" ? <People insights={insights} /> : null}
       {view === "statistics" ? <Statistics insights={insights} /> : null}
+      {view === "atlas" ? <Atlas insights={insights} /> : null}
     </div>
   );
 }
@@ -189,6 +198,61 @@ function Statistics({ insights }: { insights: Insights }) {
         records so later product changes do not rewrite what happened.
       </p>
     </section>
+  );
+}
+
+function Atlas({ insights }: { insights: Insights }) {
+  if (!insights.timeline.length)
+    return (
+      <Empty
+        title="Your Voyage Atlas begins with a first recorded journey"
+        detail="Wakebook will group only owner-visible, source-bound Voyage history. It does not infer places, routes, or social relationships."
+      />
+    );
+  const seasons = new Map<string, typeof insights.timeline>();
+  for (const item of insights.timeline) {
+    const date = item.date ? new Date(item.date) : null;
+    const season =
+      !date || Number.isNaN(date.valueOf())
+        ? "Date unavailable"
+        : `${date.getUTCFullYear()} ${["Winter", "Spring", "Summer", "Autumn"][Math.floor(date.getUTCMonth() / 3)]}`;
+    seasons.set(season, [...(seasons.get(season) ?? []), item]);
+  }
+  return (
+    <div className="wakebook-atlas">
+      <section className="wakebook-atlas__seasons" aria-label="Voyages by season">
+        <p className="wakebook-insights__lead">
+          Seasonal groups retain the historical date quality of each Voyage and link only to your own record.
+        </p>
+        {[...seasons].map(([season, voyages]) => (
+          <section key={season} className="wakebook-atlas__season" aria-label={season}>
+            <h3>{season}</h3>
+            <ul>
+              {voyages.map((voyage) => (
+                <li key={voyage.id}>
+                  <Link href={`/passport/history/${encodeURIComponent(voyage.id)}`}>{voyage.title}</Link>
+                  <span>{voyage.dateQuality === "EXACT" ? formatArchiveDate(voyage.date) : "Date unavailable"}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </section>
+      <aside className="wakebook-atlas__boundary" aria-label="Map availability">
+        <h3>Map view</h3>
+        <p>
+          Landfall has not supplied an accepted owner-safe historical geography projection, so Wakebook does not draw or
+          infer a route.
+        </p>
+        <p>
+          Historical Captain and Player context remains available in People from accepted snapshots, never from current
+          membership.
+        </p>
+        <Link className="button button--quiet" href="/passport/people">
+          Open People
+        </Link>
+      </aside>
+    </div>
   );
 }
 

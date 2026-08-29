@@ -12,6 +12,7 @@ export const personalHarborSectionIds = [
   "passport-timeline",
   "passport-people",
   "passport-statistics",
+  "passport-atlas",
   "passport-memories",
   "passport-artifacts",
   "passport-saved",

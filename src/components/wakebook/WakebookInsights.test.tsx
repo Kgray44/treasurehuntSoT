@@ -58,4 +58,13 @@ describe("WakebookInsights", () => {
     expect(await screen.findByText("Mixed quality")).toBeInTheDocument();
     expect(screen.getByText(/do not rank you/i)).toBeInTheDocument();
   });
+
+  it("organizes Voyage history by season and keeps the absent Landfall map truthful", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(Response.json(response)));
+    render(<WakebookInsights view="atlas" />);
+    expect(await screen.findByRole("heading", { name: "Voyage Atlas" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Voyages by season")).toHaveTextContent("2026 Spring");
+    expect(screen.getByLabelText("Map availability")).toHaveTextContent(/does not draw or infer a route/i);
+    expect(screen.getByRole("link", { name: "Open People" })).toHaveAttribute("href", "/passport/people");
+  });
 });
