@@ -387,6 +387,27 @@ test("ordinary selection routes Passport navigation to its focused Homeport and 
   assert.equal(selection.widened, false);
 });
 
+test("ordinary selection keeps Phase 3 preference-runtime repairs on their exact browser journey", () => {
+  const selection = selectAffectedTests({
+    changedPaths: ["src/homeport/preference-runtime.ts", "src/components/homeport/PreferenceRuntimeBridge.tsx"],
+    unitTests: ["src/components/homeport/PreferenceRuntimeBridge.test.tsx", "src/homeport/preference-runtime.test.ts"],
+    browserTests: [
+      "tests/e2e/homeport-phase1.spec.ts",
+      "tests/e2e/homeport-phase2.spec.ts",
+      "tests/e2e/homeport-phase3.spec.ts",
+      "tests/e2e/homeport-phase5.spec.ts",
+      "tests/e2e/homeport-phase6.spec.ts",
+      "tests/e2e/homeport-phase7.spec.ts",
+    ],
+  });
+  assert.deepEqual(selection.unitTests, [
+    "src/components/homeport/PreferenceRuntimeBridge.test.tsx",
+    "src/homeport/preference-runtime.test.ts",
+  ]);
+  assert.deepEqual(selection.browserTests, ["tests/e2e/homeport-phase3.spec.ts"]);
+  assert.equal(selection.widened, false);
+});
+
 test("Homeport Phase 3 declares the same isolated fixture contract consumed by its preparer", () => {
   const dispatches = resolveBrowserSuiteDispatches(["tests/e2e/homeport-phase3.spec.ts"]);
   assert.deepEqual(
