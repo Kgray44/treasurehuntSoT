@@ -91,7 +91,10 @@ function configuredValue(key: string) {
 }
 
 function taskOwnedSyntheticConfigured() {
-  return process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER === "TASK_OWNED_TEST";
+  return (
+    process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER === "TASK_OWNED_TEST" ||
+    /^file:\.\/\.sounding-line-[a-f0-9]{12,40}\.sqlite$/u.test(process.env.DATABASE_URL ?? "")
+  );
 }
 
 export function transactionalEmailProviderStatus(): ProviderStatus {
@@ -135,16 +138,22 @@ export function assertTransactionalEmailAvailable() {
 function taskOwnedOutboxPath() {
   const requestedPath = process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH;
   const requestedRoot = process.env.HOMEPORT_PHASE7_TASK_ROOT;
-  if (!requestedPath || !requestedRoot)
+  if (requestedPath || requestedRoot) {
+    if (!requestedPath || !requestedRoot)
+      throw new TransactionalEmailError("Synthetic email delivery is not configured safely.", "INVALID_CONFIGURATION");
+    const taskRoot = resolve(requestedRoot);
+    const outboxPath = resolve(requestedPath);
+    if (!outboxPath.startsWith(`${taskRoot}${sep}`))
+      throw new TransactionalEmailError(
+        "Synthetic email delivery must remain inside the task root.",
+        "INVALID_CONFIGURATION",
+      );
+    return outboxPath;
+  }
+  const genericTaskDatabase = /^file:\.\/\.sounding-line-([a-f0-9]{12,40})\.sqlite$/u.exec(process.env.DATABASE_URL ?? "");
+  if (!genericTaskDatabase)
     throw new TransactionalEmailError("Synthetic email delivery is not configured safely.", "INVALID_CONFIGURATION");
-  const taskRoot = resolve(requestedRoot);
-  const outboxPath = resolve(requestedPath);
-  if (!outboxPath.startsWith(`${taskRoot}${sep}`))
-    throw new TransactionalEmailError(
-      "Synthetic email delivery must remain inside the task root.",
-      "INVALID_CONFIGURATION",
-    );
-  return outboxPath;
+  return resolve(`.sounding-line-${genericTaskDatabase[1]}.outbox`, "outbox", "messages.jsonl");
 }
 
 export class SyntheticOutboxTransactionalEmailProvider implements TransactionalEmailProvider {
