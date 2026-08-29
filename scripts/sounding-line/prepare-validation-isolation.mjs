@@ -3,6 +3,7 @@
 import { PrismaClient } from "@prisma/client";
 import path from "node:path";
 import process from "node:process";
+import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
 
 const databaseUrl = process.env.DATABASE_URL ?? "";
 const nonceHash = process.env.FOREVER_VALIDATION_NONCE_HASH ?? "";
@@ -11,7 +12,7 @@ const databasePath = databaseUrl.startsWith("file:") ? databaseUrl.slice("file:"
 
 if (
   process.env.FOREVER_VALIDATION_ISOLATION !== "1" ||
-  !["harborlight-phase2", "harborlight-phase3", "harborlight-phase4", "lanternwake-phase3"].includes(profile) ||
+  !browserSuiteProfiles[profile]?.validationIsolation ||
   !/^[a-f0-9]{64}$/u.test(nonceHash) ||
   !path.isAbsolute(databasePath) ||
   !/^validation-isolated-\d{8}-\d{9}-[a-f0-9]{32}\.db$/u.test(path.basename(databasePath))
