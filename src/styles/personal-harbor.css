@@ -880,6 +880,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 }
 .personal-harbor__actions {
   display: flex;
+  min-width: 0;
   flex-wrap: wrap;
   gap: 0.65rem;
   align-items: center;
@@ -2813,6 +2814,11 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   align-content: center;
   gap: 1rem;
   padding: clamp(1.35rem, 4vw, 3rem);
+}
+
+.wakebook-detail-hero__body .personal-harbor__actions .button {
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .wakebook-detail-hero h2 {
