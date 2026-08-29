@@ -41,14 +41,22 @@ export const phase2Credentials = {
   },
 };
 
+type SoundingLineFixtureEnvironment = {
+  SOUNDING_LINE_SUITE_PROFILE?: string;
+  FOREVER_VALIDATION_ISOLATION?: string;
+  FOREVER_VALIDATION_NONCE_HASH?: string;
+};
+
 export async function ensureSoundingLineFixture() {
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl?.startsWith("file:")) return;
 
   const root = process.cwd();
   const databasePath = path.resolve(root, databaseUrl.slice("file:".length));
-  if (!/^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath))) return;
-  if (!databasePath.startsWith(`${root}${path.sep}`)) throw new Error("ADMIRALTY_SOUNDING_LINE_DATABASE_REFUSED");
+  if (
+    !isSoundingLineFixtureDatabase({ databasePath, root, environment: process.env as SoundingLineFixtureEnvironment })
+  )
+    return;
 
   const db = new PrismaClient();
   const baseFixtureExists = await db.userAccount.findUnique({ where: { id: "adm2-account-administrator" } });
@@ -67,6 +75,34 @@ export async function ensureSoundingLineFixture() {
   };
   if (!baseFixtureExists) run("scripts/admiralty/seed-phase2-fixture.mjs", env);
   run("tests/admiralty/phase3/seed-fixture.mjs", env);
+}
+
+export function isSoundingLineFixtureDatabase({
+  databasePath,
+  root,
+  environment,
+}: {
+  databasePath: string;
+  root: string;
+  environment: SoundingLineFixtureEnvironment;
+}) {
+  const relative = path.relative(root, databasePath);
+  if (relative.startsWith("..") || path.isAbsolute(relative))
+    throw new Error("ADMIRALTY_SOUNDING_LINE_DATABASE_REFUSED");
+  if (/^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath))) return true;
+
+  // The generic ordinary profile uses a candidate-owned validation-isolation
+  // database under artifacts rather than the legacy root SQLite name. Admit
+  // only that exact trusted topology so ordinary Support Pilot specs can seed
+  // their fixture without extending the helper to arbitrary local databases.
+  return (
+    environment.SOUNDING_LINE_SUITE_PROFILE === "generic" &&
+    environment.FOREVER_VALIDATION_ISOLATION === "1" &&
+    /^[a-f0-9]{64}$/u.test(environment.FOREVER_VALIDATION_NONCE_HASH ?? "") &&
+    /^artifacts[\\/]sounding-line[\\/]generic-[a-f0-9]{12}[\\/]validation-isolated-\d{8}-\d{9}-[a-f0-9]{32}\.db$/u.test(
+      relative,
+    )
+  );
 }
 
 function run(script: string, env: NodeJS.ProcessEnv) {
