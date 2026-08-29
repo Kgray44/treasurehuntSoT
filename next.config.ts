@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
   ...(taskOwnedSoundingLineBuild
     ? {
         env: {
+          FOREVER_TASK_OWNED_ANIMATION_FAILPOINTS: "1",
           HOMEPORT_SYNTHETIC_EMAIL_ADAPTER: "TASK_OWNED_TEST",
           HOMEPORT_PHASE7_TASK_ROOT: process.env.HOMEPORT_PHASE7_TASK_ROOT ?? "",
           HOMEPORT_SYNTHETIC_OUTBOX_PATH: process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH ?? "",
