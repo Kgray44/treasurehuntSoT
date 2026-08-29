@@ -118,13 +118,10 @@ function profileEnvironment({ profileId, candidateSha: sha, databaseUrl: request
 function taskOwnedProductionHttpEnvironment(profileId, sha) {
   const suiteProfile = browserSuiteProfiles[profileId];
   const genericTaskRoot = path.join(root, `.sounding-line-${sha.slice(0, 12)}.outbox`);
-  const emailTaskRoot = profileId === "generic" ? genericTaskRoot : path.join(
-    root,
-    "artifacts",
-    "sounding-line",
-    "transactional-email",
-    `${profileId}-${sha.slice(0, 12)}`,
-  );
+  const emailTaskRoot =
+    profileId === "generic"
+      ? genericTaskRoot
+      : path.join(root, "artifacts", "sounding-line", "transactional-email", `${profileId}-${sha.slice(0, 12)}`);
   const environment = { SOUNDING_LINE_SUITE_PROFILE: profileId };
   if (suiteProfile.taskOwnedProductionHttp) {
     Object.assign(environment, {
@@ -141,6 +138,7 @@ function taskOwnedProductionHttpEnvironment(profileId, sha) {
       .update(`sounding-line:${sha}:${profileId}`)
       .digest("hex");
   }
+  if (profileId === "generic") environment.SOUNDING_LINE_INTERNAL_RUNTIME = "1";
   if (suiteProfile.cookieAdapter === "isolated-loopback") {
     environment.SOUNDING_LINE_TASK_OWNED_HTTP = "1";
     environment.FOREVER_VALIDATION_PRODUCTION_IDENTITY = "1";
