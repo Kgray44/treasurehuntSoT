@@ -19,7 +19,8 @@
     "history:inspect": "tsx lib/maintenance.ts inspect",
     "history:prune": "tsx lib/maintenance.ts prune --apply",
     "history:backup": "tsx lib/maintenance.ts backup",
-    "report-heartbeat": "tsx lib/reporter.ts"
+    "report-heartbeat": "tsx lib/reporter.ts",
+    "report-codex-task": "tsx lib/codex-reporter.ts"
   },
   "dependencies": {
     "@fastify/static": "^8.3.0",

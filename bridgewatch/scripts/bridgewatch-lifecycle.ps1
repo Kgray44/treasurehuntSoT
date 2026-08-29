@@ -15,6 +15,33 @@ $serverPath = [System.IO.Path]::GetFullPath((Join-Path $packageRoot "dist\lib\se
 $runtimeDirectory = Join-Path $packageRoot "var"
 $statePath = Join-Path $runtimeDirectory "bridgewatch-runtime.json"
 
+function Import-BridgewatchLocalEnvironment {
+  $environmentPath = Join-Path (Split-Path -Parent $packageRoot) ".env"
+  if (!(Test-Path -LiteralPath $environmentPath)) { return }
+  foreach ($line in Get-Content -LiteralPath $environmentPath) {
+    if ($line -match '^\s*#' -or $line -notmatch '=') { continue }
+    $name, $value = $line -split '=', 2
+    if ($name -notmatch '^(?:BRIDGEWATCH|COMMUNITY)_(?:[A-Z0-9_]+)$|^(?:DATABASE_URL|GIT_COMMIT)$') { continue }
+    [Environment]::SetEnvironmentVariable($name.Trim(), $value.Trim().Trim('"').Trim("'"), "Process")
+  }
+}
+
+Import-BridgewatchLocalEnvironment
+
+function Set-BridgewatchGitHubCredential {
+  if ($env:BRIDGEWATCH_GITHUB_TOKEN) { return }
+  $gh = Get-Command gh -ErrorAction SilentlyContinue
+  if (!$gh) { return }
+  $candidate = & $gh.Source auth token 2>$null
+  if ($LASTEXITCODE -eq 0 -and $candidate -match '^[A-Za-z0-9_-]{20,}$') {
+    # Pass the existing local GitHub CLI credential only to this child process.
+    # It is never written to .env, a state file, or standard output.
+    [Environment]::SetEnvironmentVariable("BRIDGEWATCH_GITHUB_TOKEN", $candidate, "Process")
+  }
+}
+
+Set-BridgewatchGitHubCredential
+
 function Read-BridgewatchState {
   if (!(Test-Path -LiteralPath $statePath)) { return $null }
   try { return Get-Content -LiteralPath $statePath -Raw | ConvertFrom-Json } catch { throw "Bridgewatch runtime state is unreadable: $statePath" }
