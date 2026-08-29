@@ -57,7 +57,7 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
 
     await page.goto(`/community/guides/${fixture.guide.slug}`);
     await expect(page.getByRole("heading", { name: fixture.guide.title })).toBeVisible();
-    const guideBody = await page.locator("article").innerHTML();
+    const guideBody = await page.locator("article.community-guide-detail").innerHTML();
     expect(guideBody).not.toContain("<script>");
     expect(guideBody).not.toContain(fixture.privateCoordinate);
 
