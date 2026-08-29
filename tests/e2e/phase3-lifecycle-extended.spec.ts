@@ -938,6 +938,10 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
           await expectShowcaseFailure();
           await returnToHarbor(page);
           await expectStableHarborFailure();
+          // The development-failpoint route shares the same outgoing visual
+          // layer as the ordinary Lottie fault path. Do not capture that
+          // short-lived route animation as a remount baseline.
+          await expectRouteWaapiQuiescence(page);
         },
         stableLottieRemountSnapshot,
       );
