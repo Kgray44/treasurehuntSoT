@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   accountPreferenceCacheKey,
   applyRuntimePreferences,
+  defaultRuntimePreferences,
   preferenceRuntimeEvent,
   publishRuntimePreferences,
   type RuntimePreferences,
@@ -57,6 +58,19 @@ describe("Project Homeport observable preference effects", () => {
     expect(document.documentElement.style.getPropertyValue("--account-text-scale")).toBe("1.35");
     expect(window.localStorage.getItem("forever-motion")).toBe("reduced");
     expect(observed).toHaveBeenCalledOnce();
+    window.removeEventListener(preferenceRuntimeEvent, observed);
+  });
+
+  it("preserves an explicit local motion choice while resetting unauthenticated account presentation defaults", () => {
+    const observed = vi.fn();
+    localStorage.setItem("forever-motion", "reduced");
+    window.addEventListener(preferenceRuntimeEvent, observed);
+
+    applyRuntimePreferences(defaultRuntimePreferences, { preserveStoredMotion: true });
+
+    expect(document.documentElement.dataset.motionPreference).toBe("reduced");
+    expect(window.localStorage.getItem("forever-motion")).toBe("reduced");
+    expect(observed).toHaveBeenCalledWith(expect.objectContaining({ detail: { productMotion: "reduced" } }));
     window.removeEventListener(preferenceRuntimeEvent, observed);
   });
 
