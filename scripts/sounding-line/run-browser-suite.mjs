@@ -117,15 +117,16 @@ function profileEnvironment({ profileId, candidateSha: sha, databaseUrl: request
 
 function taskOwnedProductionHttpEnvironment(profileId, sha) {
   const suiteProfile = browserSuiteProfiles[profileId];
+  const genericTaskRoot = path.join(root, `.sounding-line-${sha.slice(0, 12)}.outbox`);
+  const emailTaskRoot = profileId === "generic" ? genericTaskRoot : path.join(
+    root,
+    "artifacts",
+    "sounding-line",
+    "transactional-email",
+    `${profileId}-${sha.slice(0, 12)}`,
+  );
   const environment = { SOUNDING_LINE_SUITE_PROFILE: profileId };
   if (suiteProfile.taskOwnedProductionHttp) {
-    const emailTaskRoot = path.join(
-      root,
-      "artifacts",
-      "sounding-line",
-      "transactional-email",
-      `${profileId}-${sha.slice(0, 12)}`,
-    );
     Object.assign(environment, {
       SOUNDING_LINE_TASK_OWNED_HTTP: "1",
       HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER: "SYNTHETIC_OUTBOX",
