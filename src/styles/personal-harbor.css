@@ -3303,11 +3303,15 @@ html[data-voyage-theme="light"] .wakebook-crew-avatar {
     white-space: normal;
   }
   .wakebook-voyage-card__actions .button,
+  .wakebook-detail-hero__body .personal-harbor__actions .button,
   .wakebook-pagination .button,
   .wakebook-remembrance form .button,
   .wakebook-memory-list .button,
   .wakebook-keepsake .button {
     width: 100%;
+  }
+  .wakebook-detail-hero__body .personal-harbor__actions {
+    align-items: stretch;
   }
   .wakebook-invitations li {
     grid-template-columns: auto minmax(0, 1fr);
