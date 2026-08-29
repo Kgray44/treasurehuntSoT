@@ -1060,7 +1060,7 @@ export function verificationCommands(plan) {
           "--candidate",
           plan.candidateSha,
           "--database-url",
-          plan.databaseUrl,
+          suiteDatabaseUrl(plan.candidateSha, "generic"),
           "--",
           ...genericBrowserTests,
         ],
