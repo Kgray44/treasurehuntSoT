@@ -1,6 +1,8 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-import { WakebookTideglassComparisonEntry } from "./WakebookVoyageDetail";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
+import { WakebookLanternwakeReplayEntry, WakebookTideglassComparisonEntry } from "./WakebookVoyageDetail";
+
+afterEach(cleanup);
 
 describe("WakebookTideglassComparisonEntry", () => {
   it("renders the Tideglass-owned exact history handoff only when the server resolved it", () => {
@@ -22,5 +24,16 @@ describe("WakebookTideglassComparisonEntry", () => {
   it("does not render a dead comparison control when no authorized target exists", () => {
     const { container } = render(<WakebookTideglassComparisonEntry />);
     expect(container).toBeEmptyDOMElement();
+  });
+});
+
+describe("WakebookLanternwakeReplayEntry", () => {
+  it("uses the Passport-owned replay handoff rather than exposing a source playthrough identifier", () => {
+    render(<WakebookLanternwakeReplayEntry recordId="record-owned" />);
+
+    expect(screen.getByRole("link", { name: "Replay this Journey" })).toHaveAttribute(
+      "href",
+      "/passport/history/record-owned/replay",
+    );
   });
 });

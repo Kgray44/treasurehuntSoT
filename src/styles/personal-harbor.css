@@ -880,6 +880,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 }
 .personal-harbor__actions {
   display: flex;
+  min-width: 0;
   flex-wrap: wrap;
   gap: 0.65rem;
   align-items: center;
@@ -2815,6 +2816,11 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   padding: clamp(1.35rem, 4vw, 3rem);
 }
 
+.wakebook-detail-hero__body .personal-harbor__actions .button {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 .wakebook-detail-hero h2 {
   max-width: 18ch;
   margin: 0;
@@ -3297,11 +3303,15 @@ html[data-voyage-theme="light"] .wakebook-crew-avatar {
     white-space: normal;
   }
   .wakebook-voyage-card__actions .button,
+  .wakebook-detail-hero__body .personal-harbor__actions .button,
   .wakebook-pagination .button,
   .wakebook-remembrance form .button,
   .wakebook-memory-list .button,
   .wakebook-keepsake .button {
     width: 100%;
+  }
+  .wakebook-detail-hero__body .personal-harbor__actions {
+    align-items: stretch;
   }
   .wakebook-invitations li {
     grid-template-columns: auto minmax(0, 1fr);
