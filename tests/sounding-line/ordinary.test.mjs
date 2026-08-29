@@ -13,6 +13,7 @@ import {
   runBrowserAuthority,
   stripTaskOwnedCookieSecurity,
   taskOwnedCookieAdapterRequired,
+  terminateTaskOwnedProcess,
 } from "../../scripts/sounding-line/browser-authority.mjs";
 import {
   assertBinding,
@@ -382,10 +383,7 @@ test("ordinary selection routes Passport navigation to its focused Homeport and 
       "tests/e2e/wakebook-phase2.spec.ts",
     ],
   });
-  assert.deepEqual(selection.browserTests, [
-    "tests/e2e/homeport-phase3.spec.ts",
-    "tests/e2e/wakebook-phase2.spec.ts",
-  ]);
+  assert.deepEqual(selection.browserTests, ["tests/e2e/homeport-phase3.spec.ts", "tests/e2e/wakebook-phase2.spec.ts"]);
   assert.equal(selection.widened, false);
 });
 
@@ -1175,6 +1173,18 @@ function fakeChild() {
   };
   return child;
 }
+
+test("task-owned Unix cleanup signals the full server process group", () => {
+  const child = fakeChild();
+  child.pid = 4242;
+  const signals = [];
+  terminateTaskOwnedProcess(child, {
+    platform: "linux",
+    kill: (target) => signals.push(target),
+  });
+  assert.deepEqual(signals, [-4242]);
+  assert.equal(child.exitCode, null);
+});
 
 async function unusedPort() {
   const server = createTcpServer();
