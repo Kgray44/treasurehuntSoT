@@ -275,9 +275,24 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
           </button>
         </div>
       </header>
-      {notice ? <StatusBanner tone="success">{notice}</StatusBanner> : null}
-      {error ? <StatusBanner tone="danger">{error}</StatusBanner> : null}
+      <div aria-live="polite" aria-atomic="true">
+        {notice ? <StatusBanner tone="success">{notice}</StatusBanner> : null}
+        {error ? <StatusBanner tone="danger">{error}</StatusBanner> : null}
+      </div>
       <section className="captain-command-console__grid">
+        <section className="captain-command-console__ready" aria-labelledby="captain-ready-heading">
+          <p className="card-kicker">Clear for Voyage</p>
+          <h2 id="captain-ready-heading">A complete Captain and Player handoff</h2>
+          <p>
+            Captain commands remain canonical and Crew membership remains ordinary Player-owned. Before acting, read the
+            current preflight, use governed recovery where it is offered, and refresh if the Voyage changes.
+          </p>
+          <ul>
+            <li>Healthy and degraded Voyages stay legible without inventing unavailable provider results.</li>
+            <li>Command conflicts preserve current state and ask the Captain to refresh before trying again.</li>
+            <li>Completion remains historical context; this console never rewrites the Journey afterward.</li>
+          </ul>
+        </section>
         <section className="captain-command-console__attention" aria-labelledby="captain-attention-heading">
           <h2 id="captain-attention-heading">Needs attention</h2>
           {projection.attention.length ? (

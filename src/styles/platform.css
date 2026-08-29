@@ -2200,6 +2200,23 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   grid-column: 1 / -1;
 }
 
+.captain-command-console__ready {
+  grid-column: 1 / -1;
+  border-left: 3px solid #e2c170;
+}
+
+.captain-command-console__ready p:last-of-type,
+.captain-command-console__ready li {
+  color: #c3d1ca;
+}
+
+.captain-command-console__ready ul {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.8rem 0 0;
+  padding-left: 1.2rem;
+}
+
 .captain-command-console__attention ul,
 .captain-command-console__crew ul,
 .captain-command-console__history ol,

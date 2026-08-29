@@ -99,6 +99,16 @@ recovery reading after accepted P3. Missing adjacent provider contracts remain
 truthfully unknown; no provider result is fabricated to permit a launch or
 repair.
 
+## Phase 5 records
+
+- [Design Record](Project_Helm_Phase_5_Design_Record.md)
+- [Test Plan](Project_Helm_Phase_5_Test_Plan.md)
+
+Phase 5 **Clear for Voyage** completes Helm's existing Captain experience with
+an accessible readiness handoff, responsive polish, and truthful closure
+boundaries. The required physical owner walkthrough remains external to source
+acceptance.
+
 ## Amendment A2 records
 
 - [Design Record](Project_Helm_Amendment_A2_Design_Record.md)
