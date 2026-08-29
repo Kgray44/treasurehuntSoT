@@ -35,7 +35,10 @@ async function account(label: string, handle = false): Promise<AccountFixture> {
     displayName: `Homeport ${label}`,
     deviceLabel: "Homeport Phase 3 synthetic browser",
   });
-  await db.userAccount.update({ where: { id: result.account.id }, data: { status: "ACTIVE" } });
+  await db.userAccount.update({
+    where: { id: result.account.id },
+    data: { status: "ACTIVE", ordinaryWorkspaceEntryAt: new Date() },
+  });
   if (handle)
     await db.playerProfile.update({
       where: { id: result.account.profile.id },
