@@ -19,6 +19,8 @@ export const browserSuiteProfiles = Object.freeze({
     bootstrap: true,
     seed: true,
     taskOwnedProductionHttp: true,
+    validationIsolation: true,
+    cookieAdapter: "isolated-loopback",
     fixtureArguments: [],
   }),
   "harborlight-phase2": Object.freeze({
