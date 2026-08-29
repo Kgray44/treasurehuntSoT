@@ -1031,6 +1031,7 @@ test("task-owned cookie adaptation is nonce-gated to the isolated Phase 3 runtim
 
 test("task-owned browser suites configure a task-owned synthetic email adapter", () => {
   const source = readFileSync("scripts/sounding-line/run-browser-suite.mjs", "utf8");
+  assert.match(source, /genericTaskRoot = path\.join\(root, `\.sounding-line-\$\{sha\.slice\(0, 12\)\}\.outbox`\)/u);
   assert.match(source, /HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER:\s*"SYNTHETIC_OUTBOX"/u);
   assert.match(source, /HOMEPORT_SYNTHETIC_EMAIL_ADAPTER:\s*"TASK_OWNED_TEST"/u);
   assert.match(source, /HOMEPORT_SYNTHETIC_OUTBOX_PATH:\s*path\.join\(emailTaskRoot, "outbox", "messages\.jsonl"\)/u);
