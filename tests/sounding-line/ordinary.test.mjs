@@ -389,6 +389,14 @@ test("ordinary selection routes Passport navigation to its focused Homeport and 
   assert.equal(selection.widened, false);
 });
 
+test("Homeport Phase 3 declares the same isolated fixture contract consumed by its preparer", () => {
+  const dispatches = resolveBrowserSuiteDispatches(["tests/e2e/homeport-phase3.spec.ts"]);
+  assert.deepEqual(
+    dispatches.map(({ id, validationIsolation }) => ({ id, validationIsolation })),
+    [{ id: "homeport-phase3", validationIsolation: true }],
+  );
+});
+
 test("ordinary selection ignores documentation vocabulary when scoping product browser proof", () => {
   const selection = selectAffectedTests({
     changedPaths: [
