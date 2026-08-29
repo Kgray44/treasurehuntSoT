@@ -1,13 +1,17 @@
 import { cleanup, render, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+type MockCurrentUserState =
+  | { status: "authenticated"; authenticated: true; user: { accountId: string; displayName: string; initials: string } }
+  | { status: "anonymous"; authenticated: false };
+
 const mocks = vi.hoisted(() => ({
   apply: vi.fn(),
   currentUser: {
     status: "authenticated",
     authenticated: true,
     user: { accountId: "account-1", displayName: "Synthetic Owner", initials: "SO" },
-  },
+  } as MockCurrentUserState,
 }));
 
 vi.mock("@/components/auth/CurrentUserProvider", () => ({
@@ -111,5 +115,18 @@ describe("Project Homeport preference reconciliation", () => {
 
     view.unmount();
     expect(close).toHaveBeenCalledOnce();
+  });
+
+  it("preserves a Player route's local motion choice when no account preference authority exists", () => {
+    mocks.currentUser = { status: "anonymous", authenticated: false };
+    render(<PreferenceRuntimeBridge />);
+
+    expect(fetch).not.toHaveBeenCalled();
+    expect(mocks.apply).toHaveBeenCalledWith(
+      {
+        experience: { motion: "SYSTEM", textScale: 1, theme: "SYSTEM", contrast: "SYSTEM" },
+      },
+      { preserveStoredMotion: true },
+    );
   });
 });

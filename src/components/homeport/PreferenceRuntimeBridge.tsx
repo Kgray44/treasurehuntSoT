@@ -25,7 +25,10 @@ export function PreferenceRuntimeBridge() {
   useEffect(() => {
     if (state.status !== "authenticated") {
       current.current = defaultRuntimePreferences;
-      applyRuntimePreferences(current.current);
+      // Player-only routes do not have an account preference authority. Reset
+      // account-owned presentation defaults without overwriting an explicit
+      // local motion choice before the Player journal hydrates.
+      applyRuntimePreferences(current.current, { preserveStoredMotion: true });
       return;
     }
     const accountId = state.user.accountId;

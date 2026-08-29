@@ -15,6 +15,8 @@ export const defaultRuntimePreferences: RuntimePreferences = {
   experience: { motion: "SYSTEM", textScale: 1, theme: "DARK", contrast: "SYSTEM" },
 };
 
+type ApplyRuntimePreferenceOptions = Readonly<{ preserveStoredMotion?: boolean }>;
+
 function matches(query: string) {
   return typeof window !== "undefined" && window.matchMedia(query).matches;
 }
@@ -23,7 +25,10 @@ export function accountPreferenceCacheKey(accountId: string) {
   return `voyagewright-preferences:${accountId}`;
 }
 
-export function applyRuntimePreferences(preferences: RuntimePreferences) {
+export function applyRuntimePreferences(
+  preferences: RuntimePreferences,
+  { preserveStoredMotion = false }: ApplyRuntimePreferenceOptions = {},
+) {
   const root = document.documentElement;
   const systemDark = matches("(prefers-color-scheme: dark)");
   const systemHighContrast = matches("(prefers-contrast: more)") || matches("(forced-colors: active)");
@@ -42,16 +47,25 @@ export function applyRuntimePreferences(preferences: RuntimePreferences) {
         : "standard"
       : preferences.experience.contrast.toLowerCase();
   const textScale = Math.min(2, Math.max(0.8, Number(preferences.experience.textScale) || 1));
-  const productMotion =
+  const accountMotion =
     preferences.experience.motion === "REDUCED"
       ? "reduced"
       : preferences.experience.motion === "GENTLE"
         ? "gentle"
         : "full";
+  const storedMotion = (() => {
+    try {
+      const value = localStorage.getItem("forever-motion");
+      return value === "reduced" || value === "gentle" || value === "full" ? value : null;
+    } catch {
+      return null;
+    }
+  })();
+  const productMotion = preserveStoredMotion && storedMotion ? storedMotion : accountMotion;
 
   root.dataset.voyageTheme = theme;
   root.dataset.voyageContrast = contrast;
-  root.dataset.motionPreference = preferences.experience.motion.toLowerCase();
+  root.dataset.motionPreference = preserveStoredMotion ? productMotion : preferences.experience.motion.toLowerCase();
   root.style.setProperty("--account-text-scale", String(textScale));
   try {
     localStorage.setItem(
@@ -63,7 +77,7 @@ export function applyRuntimePreferences(preferences: RuntimePreferences) {
         motion: preferences.experience.motion,
       }),
     );
-    localStorage.setItem("forever-motion", productMotion);
+    if (!preserveStoredMotion) localStorage.setItem("forever-motion", productMotion);
   } catch {
     // Runtime preferences still apply when storage is unavailable or blocked.
   }
