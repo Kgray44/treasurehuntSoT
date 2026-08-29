@@ -128,7 +128,6 @@ function taskOwnedProductionHttpEnvironment(profileId, sha) {
     );
     Object.assign(environment, {
       SOUNDING_LINE_TASK_OWNED_HTTP: "1",
-      NEXT_DIST_DIR: `.next-sounding-line-${profileId}-${sha.slice(0, 12)}`,
       HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER: "SYNTHETIC_OUTBOX",
       HOMEPORT_SYNTHETIC_EMAIL_ADAPTER: "TASK_OWNED_TEST",
       HOMEPORT_PHASE7_TASK_ROOT: emailTaskRoot,
