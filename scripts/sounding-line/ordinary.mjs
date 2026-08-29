@@ -136,7 +136,7 @@ const focusedBrowserCoverage = [
   {
     pattern:
       /^src\/(?:homeport\/(?:personal-harbor-navigation|preference-runtime)\.ts|components\/homeport\/PreferenceRuntimeBridge\.tsx)$/u,
-    browserTests: ["tests/e2e/homeport-phase3.spec.ts"],
+    browserTests: ["tests/e2e/homeport-phase3.spec.ts", "tests/e2e/phase3-replay-resilience.spec.ts"],
   },
   {
     pattern: /^src\/components\/wakebook\/(?:PassportLayout|WakebookInsights)\.tsx$/u,
