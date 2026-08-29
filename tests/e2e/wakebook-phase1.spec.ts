@@ -547,7 +547,12 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
     { width: 390, height: 844 },
   ]) {
     await page.setViewportSize(viewport);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
+    expect(
+      await page.evaluate(() => {
+        const root = document.documentElement;
+        return root.scrollWidth <= root.clientWidth;
+      }),
+    ).toBeTruthy();
   }
   await page.goBack();
   await expect(page).toHaveURL(/\/passport\/history$/u);
