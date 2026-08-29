@@ -150,6 +150,18 @@ describe("Project Homeport transactional email providers", () => {
     expect(status.missing).toContain("POSTMARK_SERVER_TOKEN");
   });
 
+  it("uses the synthetic adapter only for the explicit task-owned Sounding Line browser boundary", () => {
+    vi.stubEnv("HOMEPORT_SYNTHETIC_EMAIL_ADAPTER", "");
+    vi.stubEnv("SOUNDING_LINE_TASK_OWNED_HTTP", "1");
+    vi.stubEnv("SOUNDING_LINE_SUITE_PROFILE", "wakebook-phase1");
+    expect(transactionalEmailProviderStatus()).toMatchObject({
+      providerId: "SYNTHETIC_OUTBOX",
+      available: true,
+      classification: "SYNTHETIC_EMAIL_ONLY",
+      missing: [],
+    });
+  });
+
   it("homeport.owner-correction.round3.resend-adapter and homeport.auth.resend-delivery select Resend without persisting the code", async () => {
     for (const [key, value] of Object.entries(resendConfiguration)) vi.stubEnv(key, value);
     await expect(
