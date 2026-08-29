@@ -132,6 +132,16 @@ const homeportFixtureJourneyContracts = new Map([
 const textFile = /\.(?:[cm]?[jt]sx?|json|ya?ml|md|css)$/u;
 const lintableFile = /\.(?:[cm]?[jt]sx?)$/u;
 const broadDomainTokens = new Set(["community", "exchange", "harborlight"]);
+const focusedBrowserCoverage = [
+  {
+    pattern: /^src\/homeport\/personal-harbor-navigation\.ts$/u,
+    browserTests: ["tests/e2e/homeport-phase3.spec.ts"],
+  },
+  {
+    pattern: /^src\/components\/wakebook\/(?:PassportLayout|WakebookInsights)\.tsx$/u,
+    browserTests: ["tests/e2e/wakebook-phase2.spec.ts"],
+  },
+];
 
 function isGenericBrowserTest(file) {
   return (
@@ -229,9 +239,19 @@ export function selectAffectedTests({ changedPaths, unitTests, browserTests, mod
   ].sort();
   const productChange = changedPaths.some((file) => productRoots.has(file.split("/")[0]));
   const directBrowser = [...direct].filter((file) => e2eFile.test(file));
+  const focusedBrowser = focusedBrowserCoverage
+    .filter(({ pattern }) => changedPaths.some((file) => pattern.test(file)))
+    .flatMap(({ browserTests: coveredTests }) => coveredTests)
+    .filter((file) => browserTests.includes(file));
   const selectedBrowser = [
     ...new Set(
-      directBrowser.length ? directBrowser : productChange ? browserTests.filter((file) => matches(file, tokens)) : [],
+      directBrowser.length
+        ? directBrowser
+        : focusedBrowser.length
+          ? focusedBrowser
+          : productChange
+            ? browserTests.filter((file) => matches(file, tokens))
+            : [],
     ),
   ].sort();
   return {
