@@ -1,6 +1,8 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 import { WakebookLanternwakeReplayEntry, WakebookTideglassComparisonEntry } from "./WakebookVoyageDetail";
+
+afterEach(cleanup);
 
 describe("WakebookTideglassComparisonEntry", () => {
   it("renders the Tideglass-owned exact history handoff only when the server resolved it", () => {
