@@ -607,6 +607,14 @@ async function expectFallback(locator: Locator, label: RegExp) {
   await expect(locator.locator('[data-fallback-active="true"]')).toHaveAttribute("aria-label", label);
 }
 
+async function expectRouteWaapiQuiescence(page: Page) {
+  await expect
+    .poll(async () => (await readSnapshot(page)).activeWaapi, {
+      message: "The route-owned WAAPI transition did not settle before lifecycle comparison.",
+    })
+    .toBe(0);
+}
+
 async function expectDevelopmentLottieFallback(
   locator: Locator,
   reason: "development-stalled-load-timeout" | "development-renderer-error",
@@ -821,6 +829,10 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
             await returnToHarbor(page);
           }
           await expectFallback(page.locator(fault.locator), fault.label);
+          // The fallback is static before a route transition's outgoing WAAPI
+          // layer finishes. Measure the remount only after that unrelated
+          // transition settles, rather than preserving it as a false baseline.
+          await expectRouteWaapiQuiescence(page);
           // Route transition internals may recreate the same asset while
           // serializing its outgoing layer. Require every logical remount to
           // reach the injected fault, while the DOM assertions above retain
