@@ -1785,8 +1785,12 @@ html[data-motion-level="reduced"]
     align-items: flex-start;
     padding: 0.7rem 0.25rem;
   }
+  .chronicle-session-header > * {
+    min-width: 0;
+  }
   .chronicle-session-header h1 {
     font-size: 1.35rem;
+    overflow-wrap: anywhere;
   }
   .journal-session-tools {
     display: grid;
