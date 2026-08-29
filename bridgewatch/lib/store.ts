@@ -1,7 +1,7 @@
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { createHash } from "node:crypto";
-import { backup, DatabaseSync, type StatementSync } from "node:sqlite";
+import { DatabaseSync, type StatementSync } from "node:sqlite";
 import type { MilestoneRecord, PhaseRecord, ProjectRecord } from "../src/domain.js";
 import {
   deriveEvents,
@@ -1145,7 +1145,10 @@ export class BridgewatchStore {
 
   async backupTo(target: string): Promise<void> {
     mkdirSync(dirname(target), { recursive: true });
-    await backup(this.db, target);
+    // `node:sqlite` only exposes its async backup helper in newer Node
+    // releases. VACUUM INTO creates the same SQLite-consistent snapshot while
+    // keeping the declared Node 22 runtime range usable.
+    this.db.exec(`VACUUM INTO '${target.replaceAll("'", "''")}'`);
   }
 
   integrityCheck(): string {
