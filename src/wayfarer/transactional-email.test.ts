@@ -305,6 +305,35 @@ describe("Project Homeport transactional email providers", () => {
     );
   });
 
+  it("persists a task-owned production browser delivery when only its bounded outbox contract reaches the server", async () => {
+    syntheticRoot = mkdtempSync(path.join(tmpdir(), "homeport-browser-email-"));
+    const outboxPath = path.join(syntheticRoot, "outbox", "messages.jsonl");
+    vi.stubEnv("DATABASE_URL", "");
+    vi.stubEnv("HOMEPORT_SYNTHETIC_EMAIL_ADAPTER", "");
+    vi.stubEnv("HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER", "SYNTHETIC_OUTBOX");
+    vi.stubEnv("SOUNDING_LINE_TASK_OWNED_HTTP", "1");
+    vi.stubEnv("SOUNDING_LINE_SUITE_PROFILE", "generic");
+    vi.stubEnv("HOMEPORT_PHASE7_TASK_ROOT", syntheticRoot);
+    vi.stubEnv("HOMEPORT_SYNTHETIC_OUTBOX_PATH", outboxPath);
+
+    expect(transactionalEmailProviderStatus()).toMatchObject({
+      providerId: "SYNTHETIC_OUTBOX",
+      available: true,
+      classification: "SYNTHETIC_EMAIL_ONLY",
+    });
+
+    await expect(
+      sendTransactionalEmail({
+        purpose: "VERIFY_EMAIL",
+        email: "browser-outbox@example.test",
+        accountId: "browser-outbox-account",
+        token: "654321",
+      }),
+    ).resolves.toMatchObject({ status: "SUBMITTED" });
+
+    expect(readFileSync(outboxPath, "utf8")).toContain("browser-outbox@example.test");
+  });
+
   it("keeps the dormant Postmark webhook compatibility boundary idempotent", async () => {
     const input = {
       recordType: "Delivery" as const,
