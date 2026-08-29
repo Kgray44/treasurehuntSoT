@@ -15,6 +15,7 @@ import {
   stripTaskOwnedCookieSecurity,
   taskOwnedCookieAdapterRequired,
   terminateTaskOwnedProcess,
+  writeBrowserReceiptAndExit,
 } from "../../scripts/sounding-line/browser-authority.mjs";
 import {
   assertBinding,
@@ -1425,6 +1426,25 @@ test("browser runtime receipts have a deterministic sanitized shape", () => {
       },
     },
   );
+});
+
+test("browser authority flushes its decision before ending a task-owned process", async () => {
+  let output = "";
+  let exitCode;
+  await writeBrowserReceiptAndExit(
+    { failureCategory: null, failureCode: null },
+    {
+      write: (value, done) => {
+        output = value;
+        done();
+      },
+      exit: (code) => {
+        exitCode = code;
+      },
+    },
+  );
+  assert.match(output, /"failureCategory": null/u);
+  assert.equal(exitCode, 0);
 });
 
 test("ordinary admission has no orchestration or generated-state prerequisites", () => {
