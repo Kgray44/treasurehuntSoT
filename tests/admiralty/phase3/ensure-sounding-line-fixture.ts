@@ -41,13 +41,22 @@ export const phase2Credentials = {
   },
 };
 
+type SoundingLineFixtureEnvironment = {
+  SOUNDING_LINE_SUITE_PROFILE?: string;
+  FOREVER_VALIDATION_ISOLATION?: string;
+  FOREVER_VALIDATION_NONCE_HASH?: string;
+};
+
 export async function ensureSoundingLineFixture() {
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl?.startsWith("file:")) return;
 
   const root = process.cwd();
   const databasePath = path.resolve(root, databaseUrl.slice("file:".length));
-  if (!isSoundingLineFixtureDatabase({ databasePath, root, environment: process.env })) return;
+  if (
+    !isSoundingLineFixtureDatabase({ databasePath, root, environment: process.env as SoundingLineFixtureEnvironment })
+  )
+    return;
 
   const db = new PrismaClient();
   const baseFixtureExists = await db.userAccount.findUnique({ where: { id: "adm2-account-administrator" } });
@@ -75,7 +84,7 @@ export function isSoundingLineFixtureDatabase({
 }: {
   databasePath: string;
   root: string;
-  environment: NodeJS.ProcessEnv;
+  environment: SoundingLineFixtureEnvironment;
 }) {
   const relative = path.relative(root, databasePath);
   if (relative.startsWith("..") || path.isAbsolute(relative))
