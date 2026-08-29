@@ -109,6 +109,9 @@ function profileEnvironment({ profileId, candidateSha: sha, databaseUrl: request
     ...runtimeEnvironment,
     ...(browserSuiteProfiles[profileId].environment ?? {}),
     DATABASE_URL: resolvedDatabaseUrl,
+    ...(browserSuiteProfiles[profileId].homeportPhase3Runtime
+      ? { HOMEPORT_PHASE3_DATABASE_PATH: sqlitePath(resolvedDatabaseUrl) }
+      : {}),
     VALIDATION_ARTIFACTS: path.join(root, "artifacts", "sounding-line", `${profileId}-${sha.slice(0, 12)}`),
   };
 }

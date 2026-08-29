@@ -364,6 +364,31 @@ test("ordinary selection finds Harborlight browser proof structurally", () => {
   assert.equal(selection.widened, false);
 });
 
+test("ordinary selection routes Passport navigation to its focused Homeport and Wakebook browser proof", () => {
+  const selection = selectAffectedTests({
+    changedPaths: [
+      "src/app/passport/timeline/page.tsx",
+      "src/components/wakebook/PassportLayout.tsx",
+      "src/homeport/personal-harbor-navigation.ts",
+      "src/wakebook/insights.ts",
+    ],
+    unitTests: ["src/components/wakebook/WakebookInsights.test.tsx"],
+    browserTests: [
+      "tests/e2e/harborlight-phase4.spec.ts",
+      "tests/e2e/homeport-phase2.spec.ts",
+      "tests/e2e/homeport-phase3.spec.ts",
+      "tests/e2e/homeport-phase7.spec.ts",
+      "tests/e2e/wakebook-phase1.spec.ts",
+      "tests/e2e/wakebook-phase2.spec.ts",
+    ],
+  });
+  assert.deepEqual(selection.browserTests, [
+    "tests/e2e/homeport-phase3.spec.ts",
+    "tests/e2e/wakebook-phase2.spec.ts",
+  ]);
+  assert.equal(selection.widened, false);
+});
+
 test("ordinary selection ignores documentation vocabulary when scoping product browser proof", () => {
   const selection = selectAffectedTests({
     changedPaths: [
