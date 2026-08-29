@@ -8,7 +8,7 @@ import sharp from "sharp";
 import { db } from "../../src/lib/db";
 import { createAccountSession, registerAccount } from "../../src/wayfarer/accounts";
 
-const password = "Homeport-phase3-synthetic-passphrase-2026";
+const password = "Cedar!7Quasar$Lumen42";
 const fixtureVersion = "homeport-phase3-personal-harbor-v1";
 const fixtureChecksum = createHash("sha256")
   .update(`${fixtureVersion}:reserved-synthetic-no-private-content`)
