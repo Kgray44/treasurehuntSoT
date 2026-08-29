@@ -53,6 +53,7 @@ describe("PassportLayout", () => {
   it("wakebook.a1.passport-shell provides a full Passport destination with its own section navigation and Harbor gateway", () => {
     renderLayout();
     expect(screen.getByRole("main")).toHaveAttribute("data-passport-section", "passport-home");
+    expect(screen.getByRole("main")).toHaveClass("passport-shell");
     expect(screen.getByRole("link", { name: /personal harbor/i })).toHaveAttribute("href", "/account");
     expect(screen.getByRole("navigation", { name: "Chronicle Passport sections" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Passport" })).toHaveAttribute("aria-current", "page");

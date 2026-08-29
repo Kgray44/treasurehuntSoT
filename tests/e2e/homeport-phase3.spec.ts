@@ -250,7 +250,9 @@ async function signInFromGateway(page: Page, fixture: AccountFixture) {
 }
 
 async function waitForHarbor(page: Page) {
-  await expect(page.locator(".personal-harbor")).toBeVisible();
+  const authenticatedHomeportRoot = page.locator("main.personal-harbor, main.passport-shell");
+  await expect(authenticatedHomeportRoot).toHaveCount(1);
+  await expect(authenticatedHomeportRoot).toBeVisible();
   await expect.poll(() => page.locator(".harbor-state--loading").count()).toBe(0);
 }
 
