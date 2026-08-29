@@ -395,6 +395,7 @@ test("ordinary selection keeps Phase 3 preference-runtime repairs on their exact
       "tests/e2e/homeport-phase1.spec.ts",
       "tests/e2e/homeport-phase2.spec.ts",
       "tests/e2e/homeport-phase3.spec.ts",
+      "tests/e2e/phase3-replay-resilience.spec.ts",
       "tests/e2e/homeport-phase5.spec.ts",
       "tests/e2e/homeport-phase6.spec.ts",
       "tests/e2e/homeport-phase7.spec.ts",
@@ -404,7 +405,10 @@ test("ordinary selection keeps Phase 3 preference-runtime repairs on their exact
     "src/components/homeport/PreferenceRuntimeBridge.test.tsx",
     "src/homeport/preference-runtime.test.ts",
   ]);
-  assert.deepEqual(selection.browserTests, ["tests/e2e/homeport-phase3.spec.ts"]);
+  assert.deepEqual(selection.browserTests, [
+    "tests/e2e/homeport-phase3.spec.ts",
+    "tests/e2e/phase3-replay-resilience.spec.ts",
+  ]);
   assert.equal(selection.widened, false);
 });
 
