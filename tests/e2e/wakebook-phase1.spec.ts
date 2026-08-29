@@ -91,6 +91,16 @@ async function register(browser: import("@playwright/test").Browser, label: stri
   return { context, profileId: body.player.id };
 }
 
+async function openPassportHistory(page: Page) {
+  const history = page.getByRole("link", { name: "History", exact: true });
+  await expect(history).toHaveAttribute("href", "/passport/history");
+  // The Passport rail is server-rendered before client navigation hydrates.
+  // Assert the real destination after dispatching the link instead of holding
+  // the fixture hostage to Next's opaque click-navigation wait.
+  await history.click({ noWaitAfter: true });
+  await expect(page).toHaveURL(/\/passport\/history$/u, { timeout: 20_000 });
+}
+
 async function seedArchive(ownerId: string, crewId: string, additionalRecords = 1_004) {
   const snapshot = {
     schemaVersion: 1,
@@ -404,7 +414,7 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
   const emptyPage = await firstUse.context.newPage();
   await emptyPage.setViewportSize({ width: 1440, height: 1000 });
   await emptyPage.goto("/passport");
-  await emptyPage.getByRole("link", { name: "History", exact: true }).click();
+  await openPassportHistory(emptyPage);
   await expect(emptyPage.getByRole("heading", { name: "Every Voyage leaves a wake" })).toBeVisible();
   await captureEvidenceState(emptyPage, {
     evidenceId: "WB-P1-EV-001-archive-empty",
@@ -418,7 +428,7 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
   const oneVoyagePage = await oneVoyage.context.newPage();
   await oneVoyagePage.setViewportSize({ width: 1440, height: 1000 });
   await oneVoyagePage.goto("/passport");
-  await oneVoyagePage.getByRole("link", { name: "History", exact: true }).click();
+  await openPassportHistory(oneVoyagePage);
   await expect(oneVoyagePage.getByRole("heading", { name: "The Lantern Below" })).toBeVisible();
   await captureEvidenceState(oneVoyagePage, {
     evidenceId: "WB-P1-EV-002-archive-one-voyage",
@@ -432,7 +442,7 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
   const page = await owner.context.newPage();
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/passport");
-  await page.getByRole("link", { name: "History", exact: true }).click();
+  await openPassportHistory(page);
   await expect(page).toHaveURL(/\/passport\/history$/u);
   await expect(page.getByRole("heading", { name: "Your Voyages", exact: true }).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "The Lantern Below" })).toBeVisible();
