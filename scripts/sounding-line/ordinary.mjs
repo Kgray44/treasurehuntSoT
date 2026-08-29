@@ -1015,11 +1015,7 @@ export function verificationCommands(plan) {
     const profileBrowserTests = plan.selected.browserTests.filter((file) => suiteBrowserProfileId(file) !== "generic");
     if (plan.selected.browserTests.includes(tideglassPhase3BrowserTest))
       commands.push([process.execPath, ["scripts/tideglass/run-phase3-journeys.mjs"]]);
-    if (
-      genericBrowserTests.length ||
-      plan.selected.browserTests.includes(homeportPhase4BrowserTest) ||
-      selectedHomeportPhase7.length
-    ) {
+    if (plan.selected.browserTests.includes(homeportPhase4BrowserTest) || selectedHomeportPhase7.length) {
       commands.push([
         process.execPath,
         ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", plan.databaseUrl],
@@ -1055,14 +1051,18 @@ export function verificationCommands(plan) {
       ]);
     }
     if (genericBrowserTests.length) {
-      commands.push(["npx", ["--no-install", "tsx", "prisma/seed.ts"]]);
       commands.push([
         process.execPath,
         [
-          "scripts/sounding-line/browser-authority.mjs",
+          "scripts/sounding-line/run-browser-suite.mjs",
+          "--profile",
+          "generic",
+          "--candidate",
+          plan.candidateSha,
+          "--database-url",
+          plan.databaseUrl,
           "--",
           ...genericBrowserTests,
-          ...(plan.mode === "ordinary" ? ["--project", "chromium"] : []),
         ],
       ]);
     }
