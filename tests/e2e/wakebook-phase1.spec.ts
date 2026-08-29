@@ -92,7 +92,7 @@ async function register(browser: import("@playwright/test").Browser, label: stri
 }
 
 async function openPassportHistory(page: Page) {
-  const history = page.getByRole("link", { name: "History", exact: true });
+  const history = page.getByRole("link", { name: "Your Voyages", exact: true });
   await expect(history).toHaveAttribute("href", "/passport/history");
   // The Passport rail is server-rendered before client navigation hydrates.
   // Assert the real destination after dispatching the link instead of holding
