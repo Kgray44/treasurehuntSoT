@@ -109,10 +109,7 @@ function taskOwnedSyntheticConfigured() {
   return (
     process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER === "TASK_OWNED_TEST" ||
     /^file:\.\/\.sounding-line-[a-f0-9]{12,40}\.sqlite$/u.test(process.env.DATABASE_URL ?? "") ||
-    (process.env.SOUNDING_LINE_TASK_OWNED_HTTP === "1" &&
-      Boolean(process.env.SOUNDING_LINE_SUITE_PROFILE) &&
-      process.env.HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER?.trim().toUpperCase() === "SYNTHETIC_OUTBOX" &&
-      Boolean(configuredTaskOwnedOutboxPath()))
+    Boolean(configuredTaskOwnedOutboxPath())
   );
 }
 

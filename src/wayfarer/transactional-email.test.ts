@@ -305,14 +305,13 @@ describe("Project Homeport transactional email providers", () => {
     );
   });
 
-  it("persists a task-owned production browser delivery when only its bounded outbox contract reaches the server", async () => {
+  it("persists a task-owned production browser delivery when only its bounded embedded outbox contract reaches the server", async () => {
     syntheticRoot = mkdtempSync(path.join(tmpdir(), "homeport-browser-email-"));
     const outboxPath = path.join(syntheticRoot, "outbox", "messages.jsonl");
     vi.stubEnv("DATABASE_URL", "");
     vi.stubEnv("HOMEPORT_SYNTHETIC_EMAIL_ADAPTER", "");
-    vi.stubEnv("HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER", "SYNTHETIC_OUTBOX");
-    vi.stubEnv("SOUNDING_LINE_TASK_OWNED_HTTP", "1");
-    vi.stubEnv("SOUNDING_LINE_SUITE_PROFILE", "generic");
+    vi.stubEnv("SOUNDING_LINE_TASK_OWNED_HTTP", "");
+    vi.stubEnv("SOUNDING_LINE_SUITE_PROFILE", "");
     vi.stubEnv("HOMEPORT_PHASE7_TASK_ROOT", syntheticRoot);
     vi.stubEnv("HOMEPORT_SYNTHETIC_OUTBOX_PATH", outboxPath);
 
