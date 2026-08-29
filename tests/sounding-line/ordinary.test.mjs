@@ -1034,6 +1034,10 @@ test("task-owned browser suites configure a task-owned synthetic email adapter",
   assert.match(source, /HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER:\s*"SYNTHETIC_OUTBOX"/u);
   assert.match(source, /HOMEPORT_SYNTHETIC_EMAIL_ADAPTER:\s*"TASK_OWNED_TEST"/u);
   assert.match(source, /HOMEPORT_SYNTHETIC_OUTBOX_PATH:\s*path\.join\(emailTaskRoot, "outbox", "messages\.jsonl"\)/u);
+  assert.match(
+    source,
+    /function ensureProductionBuild\(\) \{\s*if \(!profile\.taskOwnedProductionHttp\) return;\s*run\(process\.execPath, \["node_modules\/next\/dist\/bin\/next", "build"\], environment\);\s*\}/u,
+  );
 });
 
 test("only a task-owned Sounding Line build embeds its synthetic email adapter", () => {

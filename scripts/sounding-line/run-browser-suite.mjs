@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { existsSync } from "node:fs";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -79,8 +78,7 @@ try {
 
 function ensureProductionBuild() {
   if (!profile.taskOwnedProductionHttp) return;
-  const buildId = path.join(root, environment.NEXT_DIST_DIR ?? ".next", "BUILD_ID");
-  if (!existsSync(buildId)) run(process.execPath, ["node_modules/next/dist/bin/next", "build"], environment);
+  run(process.execPath, ["node_modules/next/dist/bin/next", "build"], environment);
 }
 
 function profileEnvironment({ profileId, candidateSha: sha, databaseUrl: requestedDatabaseUrl }) {
