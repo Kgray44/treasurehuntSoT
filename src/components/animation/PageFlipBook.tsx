@@ -243,7 +243,7 @@ function sanitizedBrowserReason(reason?: string): PageTurnLifecycleBrowserReason
 }
 
 function readDevelopmentFailpoint(ownerWindow: Window): PageFlipDevelopmentFailpoint | null {
-  if (process.env.NODE_ENV === "production") return null;
+  if (process.env.NODE_ENV === "production" && process.env.FOREVER_TASK_OWNED_ANIMATION_FAILPOINTS !== "1") return null;
   const value = ownerWindow[PAGE_FLIP_DEVELOPMENT_FAILPOINT_GLOBAL];
   return value === "dynamic-import" || value === "runtime-init" || value === "readiness-probe" ? value : null;
 }
