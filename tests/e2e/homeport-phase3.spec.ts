@@ -609,7 +609,7 @@ test.describe.serial("Project Homeport Phase 3 governed browser journeys A-AE", 
     await expect(page).toHaveURL(new RegExp("/passport/history/" + historyId + "$", "u"));
     await expect(page.getByRole("heading", { name: "Voyage Detail", level: 1 })).toBeVisible();
     await expect(page.getByRole("heading", { name: "The Synthetic Lantern Atlas", level: 2 })).toBeVisible();
-    await expect(page.getByText("A Chart Without Coordinates")).toBeVisible();
+    await expect(page.getByLabel("Path Through the Chronicle").getByText("A Chart Without Coordinates")).toBeVisible();
     await page.getByRole("link", { name: "Back to Your Voyages" }).click();
     await expect(page).toHaveURL(/\/passport\/history$/u);
   });
