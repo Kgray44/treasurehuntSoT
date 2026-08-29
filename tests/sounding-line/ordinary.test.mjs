@@ -1033,6 +1033,7 @@ test("task-owned browser suites configure a task-owned synthetic email adapter",
   const source = readFileSync("scripts/sounding-line/run-browser-suite.mjs", "utf8");
   assert.match(source, /HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER:\s*"SYNTHETIC_OUTBOX"/u);
   assert.match(source, /HOMEPORT_SYNTHETIC_EMAIL_ADAPTER:\s*"TASK_OWNED_TEST"/u);
+  assert.match(source, /NEXT_DIST_DIR:\s*`\.next-sounding-line-\$\{profileId\}-\$\{sha\.slice\(0, 12\)\}`/u);
   assert.match(source, /HOMEPORT_SYNTHETIC_OUTBOX_PATH:\s*path\.join\(emailTaskRoot, "outbox", "messages\.jsonl"\)/u);
   assert.match(
     source,
