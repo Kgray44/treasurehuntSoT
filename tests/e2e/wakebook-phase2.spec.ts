@@ -424,6 +424,16 @@ test("Wakebook Phase 2 keeps rich Voyage Detail private, truthful, editable, and
     await page.getByRole("button", { name: "Save Memory" }).click();
     await expect(page.getByText("The revised beacon glow", { exact: true })).toBeVisible();
 
+    await page.getByRole("link", { name: "Open private Voyage Book" }).click();
+    await expect(page.getByRole("heading", { name: "Voyage Book", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "The Remembered Beacon", exact: true })).toBeVisible();
+    await expect(page.getByText("A private reflection from the exact Voyage.")).toBeVisible();
+    await expect(page.getByText("The revised beacon glow", { exact: true })).toBeVisible();
+    await expect(page.getByText(/does not alter the Voyage/i)).toBeVisible();
+    await expect(page.getByRole("button", { name: "Print this private Voyage Book" })).toBeVisible();
+    await page.getByRole("link", { name: "Back to Voyage Detail" }).click();
+    await expect(page.getByRole("heading", { name: "Voyage Detail", exact: true })).toBeVisible();
+
     expect(
       (await new AxeBuilder({ page }).analyze()).violations.filter((violation) =>
         ["serious", "critical"].includes(violation.impact ?? ""),

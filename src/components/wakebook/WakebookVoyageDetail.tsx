@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { usePersonalHarbor } from "@/components/homeport/PersonalHarborLayout";
 import { MutationStatus } from "@/components/ui/AsyncState";
 import { useActionDialog } from "@/components/ui/ActionDialog";
+import { WakebookVoyageBookEntry } from "@/components/wakebook/WakebookVoyageBook";
 import type { VoyageDetail } from "@/wakebook/contracts";
 import {
   crewInitials,
@@ -194,6 +195,7 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
             </Link>
             <WakebookTideglassComparisonEntry comparison={voyage.comparison} />
             <WakebookLanternwakeReplayEntry recordId={voyage.id} />
+            <WakebookVoyageBookEntry recordId={voyage.id} />
             {voyage.review ? (
               <Link className="button button--quiet" href={voyage.review.href}>
                 Review Chronicle

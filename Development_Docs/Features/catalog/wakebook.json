@@ -104,7 +104,7 @@
     "id": "FT-B015",
     "title": "Private Cross-Voyage Insights",
     "summary": "Project Wakebook Phase 3 adds owner-private, source-bound Timeline, People, and Statistics views that make historical Voyage records easier to understand without inventing social judgment or behavioral analytics.",
-    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "status": "MAINLINE",
     "program": "Project Wakebook Phase 3 - Read the Wake",
     "surfaces": ["/passport/timeline", "/passport/people", "/passport/statistics", "/api/passport/insights"],
     "subfeatures": [
@@ -115,19 +115,45 @@
       "No ranking, streak pressure, public comparison, inferred social judgment, or sensitive behavioral analytics"
     ],
     "evidence": [
-      { "kind": "branch", "value": "codex/wakebook-phase3-origin-main" },
-      { "kind": "commit", "value": "17cfbe23b4a1dfd2fe4c87e8dbd68b9523bf8843" },
+      { "kind": "commit", "value": "592527d3836f8269c3c1065a068e8210c86c113b" },
       { "kind": "path", "value": "src/wakebook/insights.ts" },
       { "kind": "path", "value": "src/components/wakebook/WakebookInsights.tsx" },
       { "kind": "test", "value": "src/components/wakebook/WakebookInsights.test.tsx" },
       { "kind": "test", "value": "src/components/wakebook/PassportLayout.test.tsx" }
     ],
-    "branch": "codex/wakebook-phase3-origin-main",
-    "commit": "17cfbe23b4a1dfd2fe4c87e8dbd68b9523bf8843",
     "limitations": [
+      "Protected mainline integration completed in PR #463 as 592527d3836f8269c3c1065a068e8210c86c113b",
       "Every insight remains owner-private and derived only from canonical records or retained historical snapshots",
       "Metrics expose source definitions and quality boundaries instead of inferring unavailable duration or historical detail",
       "Geographic recap, public sharing, competitive metrics, Tideglass semantics, and Phase 4 through Phase 6 behavior remain outside Phase 3"
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-B016",
+    "title": "Private Voyage Atlas",
+    "summary": "Project Wakebook Phase 5 adds an owner-private Voyage Atlas that organizes source-bound historical records by season and year while preserving exact record links and truthful geographic unavailability.",
+    "status": "MAINLINE",
+    "program": "Project Wakebook Phase 5 - Chart a Life in Voyages",
+    "surfaces": ["/passport/atlas", "/passport/history/[recordId]", "/account"],
+    "subfeatures": [
+      "Seasonal and year organization derived only from owner-visible archive dates",
+      "Links back to the exact historical Voyage record and existing Timeline and People context",
+      "Canonical Personal Harbor and Chronicle Passport navigation to the Atlas",
+      "Explicit unavailable Map View when Landfall has not supplied an accepted owner-safe historical geography projection",
+      "No inferred routes, sensitive locations, social ranking, or public sharing"
+    ],
+    "evidence": [
+      { "kind": "commit", "value": "805e6fa680987df6c39afcbf55b6cb4fad2b7453" },
+      { "kind": "path", "value": "src/components/wakebook/WakebookInsights.tsx" },
+      { "kind": "path", "value": "src/homeport/personal-harbor-navigation.ts" },
+      { "kind": "test", "value": "src/components/wakebook/WakebookInsights.test.tsx" },
+      { "kind": "test", "value": "src/homeport/personal-harbor.test.ts" }
+    ],
+    "limitations": [
+      "Protected mainline integration completed in PR #575 as 805e6fa680987df6c39afcbf55b6cb4fad2b7453",
+      "Map View remains unavailable until Landfall supplies an accepted owner-safe historical geography projection",
+      "Collections are not introduced because the governing Phase 5 authority permits, but does not require, custom shelves"
     ],
     "catalogVersion": 1
   }
