@@ -111,7 +111,15 @@ async function startTaskOwnedHttpProxy({ port, backendPort }) {
 }
 
 function spawnProcess(command, argumentsList, { root, env, stdio = "inherit" }) {
-  return spawn(command, argumentsList, { cwd: root, env, stdio, windowsHide: true });
+  // Next can fork its production server.  Give every task-owned launch a
+  // process group on Unix so bounded cleanup also closes descendant stdio.
+  return spawn(command, argumentsList, {
+    cwd: root,
+    detached: process.platform !== "win32",
+    env,
+    stdio,
+    windowsHide: true,
+  });
 }
 
 function exited(child) {
@@ -146,6 +154,19 @@ async function waitForReadiness({ baseURL, server, now, sleep, ready = isReady }
   throw new Error("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:SERVER_NOT_READY");
 }
 
+export function terminateTaskOwnedProcess(child, { platform = process.platform, kill = process.kill } = {}) {
+  if (!child) return;
+  if (platform !== "win32" && Number.isInteger(child.pid) && child.pid > 0) {
+    try {
+      kill(-child.pid);
+      return;
+    } catch {
+      // Fall through to direct-child termination when a process group is unavailable.
+    }
+  }
+  child.kill();
+}
+
 async function stop(child) {
   if (!child || child.exitCode !== null || child.signalCode !== null) return;
   let timeout;
@@ -155,7 +176,11 @@ async function stop(child) {
       resolve({ code, signal });
     });
   });
-  child.kill();
+  // A direct signal leaves Next's forked server alive on hosted Linux runners.
+  // That descendant retains stdout/stderr, causing the synchronous suite
+  // wrapper to wait until the workflow-wide timeout even after Playwright has
+  // reported its result.  Signal the isolated process group when available.
+  terminateTaskOwnedProcess(child);
   await Promise.race([
     childExit,
     new Promise((resolve) => {
