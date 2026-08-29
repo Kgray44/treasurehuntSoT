@@ -54,6 +54,20 @@ export function browserRuntimeReceipt({ timings, failureCategory = null, failure
   };
 }
 
+export async function writeBrowserReceiptAndExit(
+  receipt,
+  { write = process.stdout.write.bind(process.stdout), exit = process.exit.bind(process) } = {},
+) {
+  const output = `${JSON.stringify(receipt, null, 2)}\n`;
+  await new Promise((resolve, reject) => {
+    write(output, (error) => (error ? reject(error) : resolve()));
+  });
+  // A browser suite may leave task-owned child handles after cleanup. The
+  // receipt is the complete bounded decision; flush it before ending the
+  // authority process so its synchronous parent cannot wait indefinitely.
+  exit(receipt.failureCategory ? 1 : 0);
+}
+
 async function availablePort() {
   return await new Promise((resolve, reject) => {
     const server = createServer();
@@ -350,8 +364,7 @@ async function main() {
     path.join(root, "artifacts", "sounding-line", "browser-runtime.json"),
     `${JSON.stringify(receipt, null, 2)}\n`,
   );
-  process.stdout.write(`${JSON.stringify(receipt, null, 2)}\n`);
-  if (receipt.failureCategory) process.exitCode = 1;
+  await writeBrowserReceiptAndExit(receipt);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await main();
