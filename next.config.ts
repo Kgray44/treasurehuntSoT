@@ -13,10 +13,14 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: homeportAllowedDevOrigins(),
   ...(taskOwnedSoundingLineBuild
     ? {
+        // This is compiled into only the task-owned browser build so the
+        // ordinary browser proof can reach its existing local animation lab.
+        // It is never enabled in a normal production build.
         env: {
           HOMEPORT_SYNTHETIC_EMAIL_ADAPTER: "TASK_OWNED_TEST",
           HOMEPORT_PHASE7_TASK_ROOT: process.env.HOMEPORT_PHASE7_TASK_ROOT ?? "",
           HOMEPORT_SYNTHETIC_OUTBOX_PATH: process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH ?? "",
+          NEXT_PUBLIC_ENABLE_ANIMATION_LAB: "true",
         },
       }
     : {}),
