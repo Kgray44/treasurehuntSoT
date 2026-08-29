@@ -395,13 +395,23 @@ async function assertReadableAtTwoHundredPercentZoom(page: Page) {
   }
   await page.evaluate(() => document.documentElement.style.setProperty("zoom", "2"));
   await expect(page.locator(".chronicle-journal-shell").getByRole("heading", { level: 2 })).toBeVisible();
-  const readable = await page.evaluate(() => ({
-    scrollWidth: document.documentElement.scrollWidth,
-    viewportWidth: window.innerWidth,
-    text: document.querySelector(".chronicle-journal-shell")?.textContent?.trim().length ?? 0,
-  }));
+  const readable = await page.evaluate(() => {
+    const scrolling = document.scrollingElement;
+    const originalScrollLeft = scrolling?.scrollLeft ?? 0;
+    if (scrolling) scrolling.scrollLeft = Number.MAX_SAFE_INTEGER;
+    const horizontalReach = scrolling ? scrolling.scrollLeft - originalScrollLeft : 0;
+    if (scrolling) scrolling.scrollLeft = originalScrollLeft;
+    return {
+      horizontalReach,
+      text: document.querySelector(".chronicle-journal-shell")?.textContent?.trim().length ?? 0,
+    };
+  });
   expect(readable.text).toBeGreaterThan(0);
-  expect(readable.scrollWidth).toBeLessThanOrEqual(readable.viewportWidth + 1);
+  // CSS zoom changes root scroll metrics when Chrome allocates the vertical
+  // scrollbar. A real horizontal scroll attempt is the accessibility boundary:
+  // it detects unreachable content without treating that engine geometry as
+  // horizontal overflow.
+  expect(readable.horizontalReach).toBe(0);
   await page.evaluate(() => document.documentElement.style.removeProperty("zoom"));
 }
 
