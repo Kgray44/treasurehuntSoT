@@ -134,7 +134,8 @@ const lintableFile = /\.(?:[cm]?[jt]sx?)$/u;
 const broadDomainTokens = new Set(["community", "exchange", "harborlight"]);
 const focusedBrowserCoverage = [
   {
-    pattern: /^src\/homeport\/personal-harbor-navigation\.ts$/u,
+    pattern:
+      /^src\/(?:homeport\/(?:personal-harbor-navigation|preference-runtime)\.ts|components\/homeport\/PreferenceRuntimeBridge\.tsx)$/u,
     browserTests: ["tests/e2e/homeport-phase3.spec.ts"],
   },
   {
