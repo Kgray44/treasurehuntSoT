@@ -1,6 +1,15 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import type { AnchorHTMLAttributes } from "react";
+import { describe, expect, it, vi } from "vitest";
 import { WakebookLanternwakeReplayEntry, WakebookTideglassComparisonEntry } from "./WakebookVoyageDetail";
+
+vi.mock("next/link", () => ({
+  default: ({ children, href, ...props }: AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
+}));
 
 describe("WakebookTideglassComparisonEntry", () => {
   it("renders the Tideglass-owned exact history handoff only when the server resolved it", () => {
