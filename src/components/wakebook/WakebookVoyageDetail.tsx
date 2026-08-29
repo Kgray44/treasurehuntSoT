@@ -27,6 +27,14 @@ export function WakebookTideglassComparisonEntry({ comparison }: { comparison?: 
   );
 }
 
+export function WakebookLanternwakeReplayEntry({ recordId }: { recordId: string }) {
+  return (
+    <Link className="button button--quiet" href={`/passport/history/${encodeURIComponent(recordId)}/replay`}>
+      Replay this Journey
+    </Link>
+  );
+}
+
 export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
   const resource = useWakebookResource<VoyageDetail>(`/api/passport/voyages/${encodeURIComponent(recordId)}`);
   const { csrfToken, setDirty } = usePersonalHarbor();
@@ -185,6 +193,7 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
               Open Artifact Cabinet
             </Link>
             <WakebookTideglassComparisonEntry comparison={voyage.comparison} />
+            <WakebookLanternwakeReplayEntry recordId={voyage.id} />
             {voyage.review ? (
               <Link className="button button--quiet" href={voyage.review.href}>
                 Review Chronicle
