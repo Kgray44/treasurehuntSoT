@@ -16,10 +16,16 @@ const createdAt = new Date("2026-08-09T14:00:00.000Z");
 const correlationId = "adm2-correlation-northstar";
 
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`)) throw new Error(`ADMIRALTY_TASK_ROOT_REFUSED:${taskRoot}`);
+const genericIsolationPath = path.relative(path.join(root, "artifacts", "sounding-line"), databasePath);
+const isGenericSoundingLineDatabase =
+  process.env.SOUNDING_LINE_SUITE_PROFILE === "generic" &&
+  process.env.FOREVER_VALIDATION_ISOLATION === "1" &&
+  /^generic-[a-f0-9]{12}[\\/]validation-isolated-\d{8}-\d{9}-[a-f0-9]{32}\.db$/u.test(genericIsolationPath);
 const isSoundingLineDatabase =
   process.env.ADMIRALTY_PHASE2_ALLOW_SOUNDING_LINE_DATABASE === "1" &&
-  /^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath)) &&
-  databasePath.startsWith(`${root}${path.sep}`);
+  (isGenericSoundingLineDatabase ||
+    (/^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath)) &&
+      databasePath.startsWith(`${root}${path.sep}`)));
 if (
   (!databasePath.startsWith(`${taskRoot}${path.sep}`) && !isSoundingLineDatabase) ||
   databasePath === canonicalDatabase
