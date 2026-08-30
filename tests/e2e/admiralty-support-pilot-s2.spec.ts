@@ -12,6 +12,7 @@ const accounts = {
   },
   target: { accountId: "adm2-account-ordinary", email: "ordinary@admiralty.example.test" },
 };
+let signInClientOrdinal = 0;
 
 test.beforeAll(async () => {
   await ensureSoundingLineFixture();
@@ -60,6 +61,9 @@ test("a synthetic S2 case executes only a consented registered R1 repair and ver
 async function signedInPage(browser: Browser, account: { email: string; displayName?: string }, returnTo: string) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
+  // Keep each synthetic browser client distinct while preserving the real per-client sign-in guard.
+  signInClientOrdinal += 1;
+  await context.setExtraHTTPHeaders({ "x-forwarded-for": `198.18.12.${signInClientOrdinal}` });
   await page.goto(`/sign-in?returnTo=${encodeURIComponent(returnTo)}`);
   await page.getByLabel("Email or legacy Player name").fill(account.email);
   await page.getByLabel("Password", { exact: true }).fill(password);
