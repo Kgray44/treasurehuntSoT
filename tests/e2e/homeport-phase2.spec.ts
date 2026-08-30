@@ -668,6 +668,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
   });
 
   test("Journey T: reduced motion", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
     await settleGateway(page);
