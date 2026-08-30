@@ -4,7 +4,7 @@ import path from "node:path";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { launchTalePlaythrough } from "../../src/chronicle/progression";
 import { db } from "../../src/lib/db";
-import { acceptInvitation, createPlaythroughAndInvitations } from "../../src/platform/invitations";
+import { createPlaythroughAndInvitations } from "../../src/platform/invitations";
 import { registerAccount } from "../../src/wayfarer/accounts";
 import { hash } from "bcryptjs";
 
@@ -40,7 +40,10 @@ async function fixture(label: string, roles: string[] = [], options: { handle?: 
     displayName,
     deviceLabel: "Homeport Phase 2 browser fixture",
   });
-  await db.userAccount.update({ where: { id: result.account.id }, data: { status: "ACTIVE" } });
+  await db.userAccount.update({
+    where: { id: result.account.id },
+    data: { status: "ACTIVE", ordinaryWorkspaceEntryAt: new Date() },
+  });
   if (options.handle)
     await db.playerProfile.update({
       where: { id: result.account.profile.id },
@@ -90,16 +93,12 @@ async function createImmersiveFixture(account: AccountFixture) {
       expiresInHours: 24,
       accountRequired: true,
       maxRedemptions: 1,
-      players: [{ playerId: account.profileId, displayName: account.displayName, crewRole: "Navigator" }],
+      captainParticipationMode: "CAPTAIN_AND_PLAYER",
+      players: [],
     },
     account.gameMasterId,
     "http://127.0.0.1:3188",
   );
-  const invitation = created.invitations[0];
-  if (!invitation) throw new Error("The immersive fixture did not create an invitation.");
-  const token = new URL(invitation.link).pathname.split("/").filter(Boolean).at(-1);
-  if (!token) throw new Error("The immersive fixture invitation did not expose its bounded token.");
-  await acceptInvitation(token, {}, account.profileId);
   await launchTalePlaythrough(created.playthroughId, account.gameMasterId);
   return created.playthroughId;
 }
