@@ -1,7 +1,7 @@
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { createHash } from "node:crypto";
-import { backup, DatabaseSync, type StatementSync } from "node:sqlite";
+import { DatabaseSync, type StatementSync } from "node:sqlite";
 import type { MilestoneRecord, PhaseRecord, ProjectRecord } from "../src/domain.js";
 import {
   deriveEvents,
@@ -1145,7 +1145,11 @@ export class BridgewatchStore {
 
   async backupTo(target: string): Promise<void> {
     mkdirSync(dirname(target), { recursive: true });
-    await backup(this.db, target);
+    // Node 22 exposes DatabaseSync without the experimental module-level
+    // backup helper. SQLite's native snapshot operation keeps this backup
+    // consistent without relying on an unavailable runtime export.
+    const escapedTarget = target.replaceAll("'", "''");
+    this.db.exec(`VACUUM INTO '${escapedTarget}'`);
   }
 
   integrityCheck(): string {
