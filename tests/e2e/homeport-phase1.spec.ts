@@ -6,7 +6,7 @@ import { hash } from "bcryptjs";
 import { db } from "../../src/lib/db";
 import { registerAccount } from "../../src/wayfarer/accounts";
 
-const password = "Homeport-validation-passphrase-2026";
+const password = "Signal-quartz-compass-2026";
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3100";
 const evidenceRoot = process.env.HOMEPORT_PHASE1_EVIDENCE_ROOT
   ? path.resolve(process.env.HOMEPORT_PHASE1_EVIDENCE_ROOT)
@@ -32,7 +32,10 @@ async function fixture(label: string, roles: string[] = []): Promise<AccountFixt
     displayName,
     deviceLabel: "Homeport Phase 1 browser fixture",
   });
-  await db.userAccount.update({ where: { id: result.account.id }, data: { status: "ACTIVE" } });
+  await db.userAccount.update({
+    where: { id: result.account.id },
+    data: { status: "ACTIVE", ordinaryWorkspaceEntryAt: new Date() },
+  });
   for (const role of roles) await db.accountRoleAssignment.create({ data: { accountId: result.account.id, role } });
   if (label === "Full") {
     const gameMaster = await db.gameMasterUser.create({
