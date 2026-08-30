@@ -439,6 +439,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
   });
 
   test("Journey K: authenticated mobile parity", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
     await signInFromGateway(page, full);
     await navigateAccountLink(page, full, "Player");
     await expect(page).toHaveURL(/\/player\/library$/u);
