@@ -477,9 +477,9 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
       await page.keyboard.press("Tab");
     await expect(account).toBeFocused();
     await page.keyboard.press("Enter");
-    await expect(accountDisclosure(page).getByRole("link", { name: "Create Account" })).toBeFocused();
-    await page.keyboard.press("Tab");
     await expect(accountDisclosure(page).getByRole("link", { name: "Sign In" })).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(accountDisclosure(page).getByRole("link", { name: "Forgot Password" })).toBeFocused();
     await page.keyboard.press("Escape");
     await expect(account).toBeFocused();
     await page.setViewportSize({ width: 390, height: 844 });
