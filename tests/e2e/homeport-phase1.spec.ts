@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
+import { existsSync, readFileSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { expect, test, type Page } from "@playwright/test";
@@ -95,6 +96,28 @@ async function capture(page: Page, evidenceId: string) {
   await page.screenshot({ path: path.join(evidenceRoot, `${evidenceId}.png`), fullPage: true });
 }
 
+async function verificationCodeFor(email: string) {
+  const outboxPath = process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH;
+  let code: string | undefined;
+  await expect
+    .poll(
+      () => {
+        if (!outboxPath || !existsSync(outboxPath)) return null;
+        const delivery = readFileSync(outboxPath, "utf8")
+          .trim()
+          .split("\n")
+          .filter(Boolean)
+          .map((line) => JSON.parse(line) as { purpose?: string; email?: string; token?: string })
+          .find((entry) => entry.purpose === "VERIFY_EMAIL" && entry.email === email.toLocaleLowerCase("en-US"));
+        code = delivery?.token;
+        return code ?? null;
+      },
+      { timeout: 20_000, message: `verification delivery for ${email}` },
+    )
+    .not.toBeNull();
+  return code!;
+}
+
 test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
   test.beforeAll(async () => {
     if (evidenceRoot) await mkdir(evidenceRoot, { recursive: true });
@@ -150,10 +173,14 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     await page.getByRole("link", { name: "Continue to account sign-in" }).click();
     await page.getByRole("link", { name: "Create Account" }).click();
     await page.getByLabel("Display name").fill(`Homeport Registration ${suffix}`);
-    await page.getByLabel("Email").fill(`homeport-registration-${suffix}@example.invalid`);
+    const email = `homeport-registration-${suffix}@example.invalid`;
+    await page.getByLabel("Email").fill(email);
     await page.getByLabel("Password", { exact: true }).fill(password);
     await page.getByLabel("Confirm password").fill(password);
     await page.getByLabel("Confirm password").press("Enter");
+    await expect(page).toHaveURL(/\/verify-email\?.*returnTo=%2Fplayer%2Flibrary/u);
+    await page.getByLabel("Code").fill(await verificationCodeFor(email));
+    await page.getByRole("button", { name: "Continue" }).click();
     await expect(page).toHaveURL(/\/player\/library$/u);
     await expect(page.getByRole("button", { name: `Homeport Registration ${suffix}` })).toBeVisible();
     await expect(page.getByRole("heading", { name: "My Chronicle Library" })).toBeVisible();
