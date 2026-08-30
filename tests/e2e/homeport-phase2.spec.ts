@@ -161,7 +161,7 @@ async function openAccountMenu(page: Page, label: string) {
 
 async function signInFromGateway(page: Page, account: AccountFixture) {
   if (account === full && fullSignInCount === 5) {
-    full = await fixture(`Full rate-safe ${randomUUID().slice(0, 8)}`, ["CAPTAIN", "CREATOR"], {
+    full = await fixture(`Full ${randomUUID().slice(0, 8)}`, ["CAPTAIN", "CREATOR"], {
       handle: true,
       captain: true,
     });
