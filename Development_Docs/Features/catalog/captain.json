@@ -81,7 +81,10 @@
       { "kind": "path", "value": "src/components/captain/CaptainCommandConsole.tsx" },
       { "kind": "test", "value": "src/helm/passage-resilience.test.ts" },
       { "kind": "test", "value": "src/helm/operations.test.ts" },
-      { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_4_Completion_Receipt.md" }
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_4_Completion_Receipt.md"
+      }
     ],
     "limitations": [
       "Protected mainline integration completed in PR #577 as c6a5ad82c6f77bfb25ffdeab39cbeb0907301c6f",
@@ -105,7 +108,10 @@
     "evidence": [
       { "kind": "commit", "value": "fd290e9b34e9bf91a1fe503ac7c3f15dcfee0288" },
       { "kind": "path", "value": "src/components/captain/CaptainCommandConsole.tsx" },
-      { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_5_Completion_Receipt.md" }
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_5_Completion_Receipt.md"
+      }
     ],
     "limitations": [
       "Owner walkthrough, live-provider proof, deployment, and physical multi-device validation remain external acceptance activities",

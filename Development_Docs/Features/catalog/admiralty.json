@@ -59,7 +59,10 @@
       { "kind": "test", "value": "tests/e2e/admiralty-support-pilot-s2.spec.ts" },
       { "kind": "commit", "value": "34c8be0721a72100c740485d54b89e220e0ccf77" },
       { "kind": "test", "value": "tests/e2e/admiralty-support-pilot-s3.spec.ts" },
-      { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S3_Completion_Receipt.md" },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S3_Completion_Receipt.md"
+      },
       { "kind": "test", "value": "tests/e2e/admiralty-phase2.spec.ts" },
       {
         "kind": "completion-record",
