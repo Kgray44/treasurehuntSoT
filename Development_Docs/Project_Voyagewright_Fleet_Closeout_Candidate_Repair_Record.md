@@ -8,17 +8,21 @@ last_reviewed: 2026-08-30
 
 # Voyagewright fleet closeout candidate repair record
 
-The first documentation-closeout candidate is terminal evidence and will not be
-rerun. It used protected base `ae159019eeab36c54a3fb358b73ffef1b4cd420f`,
-candidate `fa0d35fed7020f516d1878ca29a2d7d19a75ea45`, and ordinary Sounding
-Line run `33339783264` on PR #627.
+Both failed documentation-closeout candidates are terminal evidence and will
+not be rerun. They used protected base
+`ae159019eeab36c54a3fb358b73ffef1b4cd420f` on PR #627:
 
-The trusted focused verifier stopped before product checks because Prettier
-reported formatting drift in `admiralty.json`, `captain.json`, and
-`project-drydock-phase4.json`. The disposition was
-`SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED`.
+| Candidate                                  | Ordinary Sounding Line run | Preserved failure                                                                                                                                                       |
+| ------------------------------------------ | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fa0d35fed7020f516d1878ca29a2d7d19a75ea45` | `33339783264`              | Prettier drift in `admiralty.json`, `captain.json`, and `project-drydock-phase4.json`.                                                                                  |
+| `bb5e13e506f7fcc5da3f16074f9c3450c7cff5d2` | `33339880404`              | Prettier drift in `project-shipwright-phase5.json`, this Wakebook closeout record, the Tideglass Phase 4 integration manifest, and the public feature-status reference. |
 
-The superseding candidate changes only the canonical formatting of those three
-machine-readable fragments and this record, then regenerates and revalidates
-the catalog and document index. It changes no product behavior, acceptance
-claim, authority boundary, or failed-candidate history.
+Each trusted focused verifier stopped before product checks with
+`SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED`. The second
+candidate was a limited formatting repair and did not re-run the first
+candidate; its independent failure revealed the remaining changed-path drift.
+
+The next superseding candidate applies canonical Prettier formatting to every
+changed text path, then regenerates and revalidates the catalog and document
+index. It changes no product behavior, acceptance claim, authority boundary,
+or failed-candidate history.
