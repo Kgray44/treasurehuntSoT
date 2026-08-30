@@ -48,7 +48,13 @@ export async function ensureSoundingLineFixture() {
 
   const root = process.cwd();
   const databasePath = path.resolve(root, databaseUrl.slice("file:".length));
-  if (!/^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath))) return;
+  const isLegacySoundingLineDatabase = /^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath));
+  const genericIsolationPath = path.relative(path.join(root, "artifacts", "sounding-line"), databasePath);
+  const isGenericSoundingLineDatabase =
+    process.env.SOUNDING_LINE_SUITE_PROFILE === "generic" &&
+    process.env.FOREVER_VALIDATION_ISOLATION === "1" &&
+    /^generic-[a-f0-9]{12}[\\/]validation-isolated-\d{8}-\d{9}-[a-f0-9]{32}\.db$/u.test(genericIsolationPath);
+  if (!isLegacySoundingLineDatabase && !isGenericSoundingLineDatabase) return;
   if (!databasePath.startsWith(`${root}${path.sep}`)) throw new Error("ADMIRALTY_SOUNDING_LINE_DATABASE_REFUSED");
 
   const db = new PrismaClient();
