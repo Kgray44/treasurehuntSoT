@@ -24,6 +24,8 @@ let removableCaptain: AccountFixture;
 let legacyStaff: AccountFixture;
 let multiTabPlayer: AccountFixture;
 let safeReturnPlayer: AccountFixture;
+let mobilePlayer: AccountFixture;
+let zoomPlayer: AccountFixture;
 
 async function fixture(label: string, roles: string[] = []): Promise<AccountFixture> {
   const suffix = randomUUID().slice(0, 8);
@@ -133,6 +135,8 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     legacyStaff = await fixture("Legacy Staff", ["CAPTAIN"]);
     multiTabPlayer = await fixture("Multi Tab");
     safeReturnPlayer = await fixture("Safe Return");
+    mobilePlayer = await fixture("Mobile");
+    zoomPlayer = await fixture("Zoom");
   });
 
   test("Journey A: anonymous reaches canonical sign-in and arrives without anonymous flash", async ({ page }) => {
@@ -401,11 +405,11 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
 
   test("Journey P: mobile lifecycle reaches context and signs out", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await signInFromGateway(page, player);
-    await expect(page.getByRole("button", { name: player.displayName })).toBeVisible();
+    await signInFromGateway(page, mobilePlayer);
+    await expect(page.getByRole("button", { name: mobilePlayer.displayName })).toBeVisible();
     await expect(page.getByRole("heading", { name: "My Chronicle Library" })).toBeVisible();
     await capture(page, "HP-P1-EV-P-mobile-context");
-    const menu = await openAccountMenu(page, player);
+    const menu = await openAccountMenu(page, mobilePlayer);
     await menu.getByRole("button", { name: "Sign out" }).click();
     await expect(page).toHaveURL(/\/$/u);
   });
@@ -430,7 +434,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1),
     ).toBe(true);
-    await signInFromGateway(page, player);
+    await signInFromGateway(page, zoomPlayer);
     await page.goto("/community/moderation");
     await page.evaluate(() => {
       document.documentElement.style.zoom = "2";

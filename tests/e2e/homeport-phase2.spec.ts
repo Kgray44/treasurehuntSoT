@@ -28,7 +28,9 @@ type AccountFixture = {
 let player: AccountFixture;
 let workspacePlayer: AccountFixture;
 let full: AccountFixture;
+let immersiveCaptain: AccountFixture;
 let immersivePlaythroughId: string;
+let fullSignInCount = 0;
 
 async function fixture(label: string, roles: string[] = [], options: { handle?: boolean; captain?: boolean } = {}) {
   const suffix = randomUUID().slice(0, 8);
@@ -158,6 +160,14 @@ async function openAccountMenu(page: Page, label: string) {
 }
 
 async function signInFromGateway(page: Page, account: AccountFixture) {
+  if (account === full && fullSignInCount === 5) {
+    full = await fixture(`Full rate-safe ${randomUUID().slice(0, 8)}`, ["CAPTAIN", "CREATOR"], {
+      handle: true,
+      captain: true,
+    });
+    account = full;
+    fullSignInCount = 0;
+  }
   await page.goto("/");
   await expectShell(page, "GATEWAY_STANDARD", "public");
   const menu = await openAccountMenu(page, "Account");
@@ -170,6 +180,7 @@ async function signInFromGateway(page: Page, account: AccountFixture) {
   await expect(page.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
   await expectShell(page, "GATEWAY_STANDARD", "public");
   await settleGateway(page);
+  if (account === full) fullSignInCount += 1;
 }
 
 async function capture(page: Page, evidenceId: string) {
@@ -234,7 +245,8 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     player = await fixture("Player", [], { handle: true });
     workspacePlayer = await fixture("Workspace Player", [], { handle: true });
     full = await fixture("Full", ["CAPTAIN", "CREATOR"], { handle: true, captain: true });
-    immersivePlaythroughId = await createImmersiveFixture(full, player);
+    immersiveCaptain = { ...full };
+    immersivePlaythroughId = await createImmersiveFixture(immersiveCaptain, player);
   });
 
   test("Journey A: anonymous gateway account lifecycle", async ({ page }) => {
@@ -311,8 +323,8 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await clickGlobal(page, "Community Harbor");
     await expect(page).toHaveURL(/\/community$/u);
     await navigateAccountLink(page, workspacePlayer, "View My Profile");
-    await expect(page).toHaveURL(/\/account$/u);
-    await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
+    await expect(page).toHaveURL(new RegExp(`/profile/${workspacePlayer.handle}$`, "u"));
+    await expect(page.getByRole("heading", { name: workspacePlayer.displayName, exact: true })).toBeVisible();
     await navigateAccountLink(page, workspacePlayer, "Chronicle Passport");
     await expect(page).toHaveURL(/\/passport(?:#profile)?$/u);
     await navigateAccountLink(page, workspacePlayer, "Security & Sessions");
@@ -392,7 +404,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
       await expect(menu.getByRole("heading", { name: heading, exact: true })).toBeVisible();
     await page.keyboard.press("Escape");
     const destinations = [
-      ["View My Profile", /\/account$/u, "Overview"],
+      ["View My Profile", new RegExp(`/profile/${full.handle}$`, "u"), full.displayName],
       ["Chronicle Passport", /\/passport$/u, "Chronicle Passport"],
       ["Preferences", /\/account\/preferences$/u, "Preferences"],
       ["Privacy & Safety", /\/account\/privacy$/u, "Privacy & Safety"],
@@ -555,14 +567,14 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
   });
 
   test("Journey O: compact surface exit", async ({ page }) => {
-    await signInFromGateway(page, full);
+    await signInFromGateway(page, immersiveCaptain);
     await page.goto(`/captain/sessions/${immersivePlaythroughId}`);
     await expectShell(page, "COMPACT", "captain");
     await expect(page.getByRole("navigation", { name: "Contextual navigation" })).toContainText("Captain's Console");
     await capture(page, "HP-P2-EV-N-compact-exit");
     await page.getByRole("link", { name: "Exit to Captain Voyages" }).click();
     await expect(page).toHaveURL(/\/captain\/library$/u);
-    await expect(page.getByRole("button", { name: full.displayName })).toBeVisible();
+    await expect(page.getByRole("button", { name: immersiveCaptain.displayName })).toBeVisible();
   });
 
   test("Journey P: immersive Player exit", async ({ page }) => {
