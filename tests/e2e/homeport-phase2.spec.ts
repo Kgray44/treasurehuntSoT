@@ -408,7 +408,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
       ["Chronicle Passport", /\/passport$/u, "Chronicle Passport"],
       ["Preferences", /\/account\/preferences$/u, "Preferences"],
       ["Privacy & Safety", /\/account\/privacy$/u, "Privacy & Safety"],
-      ["Chronicle History", /\/passport\/history$/u, "Chronicle History"],
+      ["Chronicle History", /\/passport\/history$/u, "Your Voyages"],
       ["Artifact Cabinet", /\/passport\/artifacts$/u, "Artifact Cabinet"],
       ["Security & Sessions", /\/account\/security$/u, "Security"],
     ] as const;
