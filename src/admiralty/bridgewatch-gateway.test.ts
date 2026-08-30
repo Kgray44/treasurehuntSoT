@@ -74,6 +74,12 @@ describe("Bridgewatch same-host gateway", () => {
       ["api/pull-requests/17", ["api", "pull-requests", "17"]],
       ["api/branches/profile?name=codex%2Fproject-bridgewatch-v1.2", ["api", "branches", "profile"]],
       ["api/sources/github", ["api", "sources", "github"]],
+      ["api/facts", ["api", "facts"]],
+      ["api/coverage", ["api", "coverage"]],
+      [
+        "api/facts/provider-jobs%3Aoperations.provider-jobs",
+        ["api", "facts", "provider-jobs:operations.provider-jobs"],
+      ],
       ["api/sounding-line/runs", ["api", "sounding-line", "runs"]],
       ["api/sounding-line/runs/run-17", ["api", "sounding-line", "runs", "run-17"]],
       ["api/projects/bridgewatch/trends", ["api", "projects", "bridgewatch", "trends"]],
@@ -111,6 +117,10 @@ describe("Bridgewatch same-host gateway", () => {
       ["http://voyagewright.test/bridgewatch/api/compare?from=invalid&to=2026-08-14T12:00:00Z", ["api", "compare"]],
       ["http://voyagewright.test/bridgewatch/api/branches/profile?name=../secret", ["api", "branches", "profile"]],
       ["http://voyagewright.test/bridgewatch/api/archive?order=unknown", ["api", "archive"]],
+      ["http://voyagewright.test/bridgewatch/api/facts?upstream=http://evil.test", ["api", "facts"]],
+      ["http://voyagewright.test/bridgewatch/api/facts/..", ["api", "facts", ".."]],
+      ["http://voyagewright.test/bridgewatch/api/facts/not%2Fsafe", ["api", "facts", "not/safe"]],
+      ["http://voyagewright.test/bridgewatch/api/coverage/extra", ["api", "coverage", "extra"]],
       [
         "http://voyagewright.test/bridgewatch/api/projects/bridgewatch/history?limit=200",
         ["api", "projects", "bridgewatch", "history"],
@@ -163,7 +173,7 @@ describe("Bridgewatch same-host gateway", () => {
     expect(nginx).toContain("nightwatch");
     expect(nginx).toContain("facts|coverage");
     expect(nginx).toContain("api/sounding-line/runs");
-    expect(nginx).toContain("api/facts/[a-z][a-z0-9-]{0,63}");
+    expect(nginx).toContain("api/facts/[A-Za-z0-9]");
     expect(nginx).toContain("api/projects/[A-Za-z0-9][A-Za-z0-9._-]{0,127}/versions");
     expect(nginx).toContain("auth_request /_bridgewatch_authorize;");
     expect(nginx).toContain("/api/internal/bridgewatch/authorize");

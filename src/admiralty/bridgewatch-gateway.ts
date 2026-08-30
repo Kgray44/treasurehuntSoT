@@ -112,7 +112,12 @@ function readOnlyPath(path: readonly string[]) {
     return joined;
   if (path.length === 3 && path[0] === "api" && path[1] === "sources" && /^[a-z][a-z0-9-]{0,63}$/u.test(path[2]!))
     return joined;
-  if (path.length === 3 && path[0] === "api" && path[1] === "facts" && /^[a-z][a-z0-9-]{0,63}$/u.test(path[2]!))
+  if (
+    path.length === 3 &&
+    path[0] === "api" &&
+    path[1] === "facts" &&
+    /^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$/u.test(path[2]!)
+  )
     return joined;
   if (path.length === 3 && path[0] === "api" && path[1] === "branches" && path[2] === "profile") return joined;
   if (path.length === 3 && path[0] === "api" && path[1] === "sounding-line" && path[2] === "runs") return joined;

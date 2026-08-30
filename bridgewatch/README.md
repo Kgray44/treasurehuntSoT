@@ -85,7 +85,11 @@ changed-value history separately from the P1-P3 cache/history tables. Optional
 host-owned status paths are configured only through
 `BRIDGEWATCH_VOYAGEWRIGHT_RUNTIME_STATE_PATH` and
 `BRIDGEWATCH_PROVIDER_STATUS_PATH`; their readers allowlist safe identity and
-count fields before persistence. Those files are observations, not a control
+count fields before persistence. Runtime identity records the serving source
+SHA, loopback port, lifecycle state, and freshness; provider projections report
+code support, configuration, reachability, live-validation, bounded job
+counts, and safe status codes. Stopped, stale, malformed, and missing files
+remain explicit observer states. Those files are observations, not a control
 channel.
 
 ### Windows lifecycle helper
@@ -94,7 +98,9 @@ On Windows, build first and set the normal private Bridgewatch environment
 (especially `BRIDGEWATCH_REPOSITORY`). The lifecycle helper records only the
 PID it starts in the untracked `var/bridgewatch-runtime.json`, verifies its
 loopback health endpoint, and refuses to take over a port or process it does
-not own.
+not own. It imports the allowlisted local `.env` keys and, when no dedicated
+Bridgewatch token is configured, may pass the existing GitHub CLI credential
+to its child process without writing or displaying it.
 
 ```powershell
 cd bridgewatch
@@ -124,6 +130,10 @@ private Bridgewatch listener with their distinct machine bearer token. Keep
 Bridgewatch loopback-only; do not set `BRIDGEWATCH_ALLOW_EXTERNAL` for this
 same-host deployment.
 
+The same allowlist permits `GET/HEAD /api/facts`, `/api/coverage`, and an
+individual safe fact key below `/api/facts/:key`; it does not permit a query
+string, upstream credentials, or any mutable route.
+
 ## Operations
 
 `GET /healthz` reports process health. `GET /readyz` reports whether a usable
@@ -134,7 +144,9 @@ GitHub snapshot is cached. `GET /api/summary`, `/api/projects`,
 `/api/activity?since=...`, `/api/sources`, `/api/facts`, `/api/coverage`, and
 `/api/facts/:key` are human read-only observation
 endpoints. `/api/history` is bounded, filters normalized meaningful events,
-and defaults to the last 12 hours; `/api/activity` remains worker activity.
+defaults to the last 12 hours, caps every response at the configured page
+size, and returns an opaque cursor for a filter- and time-bound next page;
+`/api/activity` remains worker activity.
 Startup refreshes GitHub and the source-owned Sounding Line projection; a
 source failure retains a cached state and never blanks the board.
 
@@ -178,6 +190,12 @@ a strict activity heartbeat to `POST /api/telemetry/heartbeat` or completion to
 `POST /api/telemetry/finish` with `Authorization: Bearer <dedicated token>`.
 Telemetry credentials are rejected in URLs and payloads; there is a 4 KiB body
 limit, a 60/minute client limit, and a default 90-second stale threshold.
+
+For an ordinary local Codex task, use `npm run report-codex-task` when work
+becomes active and `npm run report-codex-task -- --finish` as its final action.
+The helper derives only task identity, branch, source SHA, host label, and
+timestamps; it does not write a credential or task content to a repository
+file.
 
 Bridgewatch invokes the read-only
 `scripts/sounding-line/status-projection.mjs` adapter over Sounding Line runtime

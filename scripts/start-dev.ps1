@@ -28,8 +28,29 @@ $stdout = Join-Path $logDirectory "dev.out.log"
 $stderr = Join-Path $logDirectory "dev.err.log"
 $node = Get-ForeverNode
 $process = Start-Process -FilePath $node -ArgumentList "node_modules/next/dist/bin/next", "dev", "-H", $bindAddress, "-p", "$Port" -WorkingDirectory $runtimeRoot -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru
-@{ pid = $process.Id; port = $Port; runtimeRoot = $runtimeRoot; startedAt = (Get-Date).ToString("o") } | ConvertTo-Json | Set-Content -LiteralPath $statePath -Encoding UTF8
+@{ pid = $process.Id; port = $Port; runtimeRoot = $runtimeRoot; startedAt = (Get-Date).ToString("o"); runtimeStatePid = $null; communityWorkerPid = $null; operationalProjectionPid = $null } | ConvertTo-Json | Set-Content -LiteralPath $statePath -Encoding UTF8
 try { Wait-ForeverHttp -Url "http://127.0.0.1:$Port" -Seconds 60 } catch { if (Test-Path $stderr) { Get-Content $stderr -Tail 30 }; throw }
+$runtimeStateWriter = Join-Path $PSScriptRoot "bridgewatch\write-runtime-state.mjs"
+& $node $runtimeStateWriter --state RUNNING --port "$Port" --source-root $runtimeRoot
+if ($LASTEXITCODE -ne 0) { throw "Unable to write the sanitized Bridgewatch runtime state." }
+$runtimeStateOut = Join-Path $logDirectory "bridgewatch-runtime-state.out.log"
+$runtimeStateErr = Join-Path $logDirectory "bridgewatch-runtime-state.err.log"
+$runtimeState = Start-Process -FilePath $node -ArgumentList $runtimeStateWriter, "--watch", "--interval-ms", "30000", "--state", "RUNNING", "--port", "$Port", "--source-root", $runtimeRoot -WorkingDirectory $runtimeRoot -WindowStyle Hidden -RedirectStandardOutput $runtimeStateOut -RedirectStandardError $runtimeStateErr -PassThru
+$tsx = Join-Path $runtimeRoot "node_modules\tsx\dist\cli.mjs"
+if (!(Test-Path -LiteralPath $tsx)) { throw "The task-owned runtime is missing tsx for Harborlight operational projections." }
+$state = Get-Content -Raw -LiteralPath $statePath | ConvertFrom-Json
+$state.runtimeStatePid = $runtimeState.Id
+if ($env:COMMUNITY_WORKER_ENABLED -eq "true") {
+    $workerOut = Join-Path $logDirectory "community-worker.out.log"
+    $workerErr = Join-Path $logDirectory "community-worker.err.log"
+    $worker = Start-Process -FilePath $node -ArgumentList $tsx, "scripts/community/worker.ts" -WorkingDirectory $runtimeRoot -WindowStyle Hidden -RedirectStandardOutput $workerOut -RedirectStandardError $workerErr -PassThru
+    $state.communityWorkerPid = $worker.Id
+}
+$projectionOut = Join-Path $logDirectory "bridgewatch-projection.out.log"
+$projectionErr = Join-Path $logDirectory "bridgewatch-projection.err.log"
+$projection = Start-Process -FilePath $node -ArgumentList $tsx, "scripts/bridgewatch/operational-projection.ts" -WorkingDirectory $runtimeRoot -WindowStyle Hidden -RedirectStandardOutput $projectionOut -RedirectStandardError $projectionErr -PassThru
+$state.operationalProjectionPid = $projection.Id
+$state | ConvertTo-Json | Set-Content -LiteralPath $statePath -Encoding UTF8
 
 Write-Host "`nForever Treasure Companion is running." -ForegroundColor Green
 Write-Host "`nPlayer Companion:`n$playerUrl"
