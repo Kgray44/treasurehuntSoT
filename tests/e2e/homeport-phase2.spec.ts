@@ -40,7 +40,14 @@ async function fixture(label: string, roles: string[] = [], options: { handle?: 
     displayName,
     deviceLabel: "Homeport Phase 2 browser fixture",
   });
-  await db.userAccount.update({ where: { id: result.account.id }, data: { status: "ACTIVE" } });
+  await db.userAccount.update({
+    where: { id: result.account.id },
+    data: { status: "ACTIVE", ordinaryWorkspaceEntryAt: new Date() },
+  });
+  await db.accountEmail.updateMany({
+    where: { accountId: result.account.id, isPrimary: true },
+    data: { verificationState: "VERIFIED", verifiedAt: new Date() },
+  });
   if (options.handle)
     await db.playerProfile.update({
       where: { id: result.account.profile.id },
