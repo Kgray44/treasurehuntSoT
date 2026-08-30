@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-27
+last_reviewed: 2026-08-30
 ---
 
 # Current status
@@ -19,6 +19,13 @@ handoffs. The owner accepted the qualified Phase 1 walkthrough on 2026-08-12,
 and protected mainline integration completed in PR #41. Deployment remains a
 separate decision.
 
+**Project Wakebook Phases 2-6 are available on main:** private Voyage Detail
+remembrance, Timeline/People/Statistics insights, the read-only replay handoff,
+the season-aware Voyage Atlas, and the printable owner-private Voyage Book are
+integrated through protected PRs #197, #463, #565, #575, and #576. These views
+preserve unavailable-history and ownership truth; they do not add public
+sharing, canonical data export, or Voyage mutation.
+
 **Available on main:** Project Homeport Phases 1-7 and Correction Round 3 Patch
 A, Phase 3-4 convergence, Wayfarer Phases 3 and 4,
 Sealed Hold Phases 3 and 4, Harborlight Phase 3, True North, Ledgerlight, the
@@ -28,7 +35,7 @@ libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
 
-**Project Helm Phases 1-3 plus Amendments A1-A3 are available on main:** Captain participation is
+**Project Helm Phases 1-5 plus Amendments A1-A3 are available on main:** Captain participation is
 explicit at Voyage creation. Captain-only remains the default; Captain + Player
 attaches exactly one ordinary Player membership to the same canonical account
 while keeping Voyage-scoped Captain authority independent. Captain operations
@@ -51,6 +58,11 @@ safely, and retains the separate Player-safe projection. It adds no recovery,
 provider fallback, preflight, deployment, live-Voyage proof, or owner
 acceptance claim.
 
+Phase 4 supplies provider-neutral preflight and governed recovery presentation;
+Phase 5 completes the responsive Captain/Player readiness handoff and polite
+command feedback. Protected PRs #577 and #578 integrated those phases without
+claiming a provider result, deployment, live Voyage proof, or owner acceptance.
+
 **Project Shipwright Phase 2 is available on main:** Creator Studio now turns
 the existing Drydock Story Block contracts into a contract-aware Inspector with
 Guided, Detailed, and Engineering disclosure; readable destinations; typed
@@ -69,8 +81,7 @@ immutable version; Library reads and use remain Creator-owned, and capture
 rejects protected source material. This is protected-main source integration,
 not deployment or live-provider execution.
 
-**Project Shipwright Phase 5 is branch-complete and awaiting protected-main
-acceptance:** Creator Studio now gives
+**Project Shipwright Phases 4-5 are available on main:** Creator Studio now gives
 the Version history a staged **Review and publish** journey. A Creator saves the
 intended draft, sees the source-bound Drydock decision with blockers, warnings,
 and waivers, reviews exact human-readable changes, assets, access evidence, and
@@ -79,16 +90,18 @@ immutable Version. Studio calls only the canonical One Voyage publication
 transaction and reports success only after its Version label and checksum are
 returned. Failed publication preserves the draft for review and repair; the
 next Community action is a governed Harborlight handoff, not a duplicate
-exchange flow. The work adds no schema or competing authority. Task-owned
-synthetic browser evidence covers the Creator path; deployment, live provider,
-and owner acceptance remain separate.
+exchange flow. Phase 4 adds Creator-facing Sea Trial coverage and Passage
+return links. Protected PRs #460 and #479 integrated these phases; deployment,
+live provider, and owner acceptance remain separate.
 
-**Project Drydock Phase 3 accepted mainline:** Creator-only Sea Trials provide
+**Project Drydock Phases 3-4 accepted mainline:** Creator-only Sea Trials provide
 revisioned source-bound deterministic Scenarios, synthetic faults, virtual
 time, Suites, safe trace/coverage receipts, and an adapter-level One Voyage
-transition differential. They cannot change a live Voyage, provider, or
-published Chronicle. Protected PR #52 integrated the accepted implementation;
-deployment and owner acceptance remain separate.
+transition differential. Phase 4 adds source-bound launch readiness,
+compatibility, required Suite and publishing evidence, and SQLite/MySQL
+migration parity. They cannot change a live Voyage, provider, or published
+Chronicle. Protected PRs #52 and #198 integrated these phases; deployment and
+owner acceptance remain separate.
 
 **Project Tideglass Phases 1-4 are available on main:** exact immutable
 edition intelligence now has ordinary Chronicle and Passport **What changed?**
@@ -144,16 +157,23 @@ multi-role synthetic browser evidence passes. The owner accepted the qualified
 walkthrough; exact-source Sounding Line authority and protected mainline
 integration completed in PR #28.
 
-**Support Pilot S2 candidate:** Project Admiralty retains S1's case-bound,
-owner-consented diagnostic path at `/admin/support/cases` and adds a narrow,
+**Support Pilots S1-S3 are available on main:** Project Admiralty retains S1's
+case-bound, owner-consented diagnostic path at `/admin/support/cases` and adds a narrow,
 registered repair path. A repair can run only after the exact owner grant,
 Administrator capability and fresh assurance, risk ceiling, budget, current
 proposal revision, target preconditions, durable audit start, canonical owner
 command, and postcondition verification all succeed. The initial registry has
 three bounded commands; high-risk, unregistered, job, projection, raw-SQL, and
-private-content actions are not executable. Candidate integration, ordinary
-Sounding Line authority, and landed smoke remain required before mainline
-availability is claimed.
+private-content actions are not executable. S3 safely closes only an
+operator-owned quiescent case after revoking pending or active case-derived
+access. Protected PRs #491, #495, and #508 integrated these increments; no
+Admiralty phase is a deployment or production-MySQL claim.
+
+**Project Bridgewatch and Project Deepwater are complete on protected main:**
+Bridgewatch's read-only Mission Control, bounded data fabric, and operational
+integration remain observational; Deepwater Phase 5 closes the governed audit
+and drift-control plane. Neither status claims private deployment, provider
+proof, live runtime, or owner acceptance.
 
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
 
@@ -169,9 +189,7 @@ for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
 **Planned or not validated:** Project Homeport owner acceptance, Harborlight
-Phase 4, Project Admiralty support repair (S2), systemic support intelligence
-(S3), Project Drydock, Project
-Landfall, and Project Watchglass remain pending. Project Sounding
+Phase 4, Project Landfall, and Project Watchglass remain pending. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records
 are evidence, not a release promise.

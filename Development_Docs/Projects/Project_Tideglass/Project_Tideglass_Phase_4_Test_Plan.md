@@ -1,12 +1,16 @@
 ---
 title: Project Tideglass Phase 4 Test Plan
-status: IN_PROGRESS
+status: ACCEPTED_MAINLINE
 project: Project Tideglass
 phase: "Phase 4 - Fix the Bearings"
 canonical_for: project-tideglass-phase-4-test-plan
 ---
 
 # Project Tideglass Phase 4 Test Plan
+
+> Current status: Phase 4 is accepted on protected main through PR #195
+> (`d3787ccc3260611580fa44b83ece844c80563cc2`). The table preserves the
+> pre-acceptance plan; pending cells are historical rather than current gates.
 
 | Area                          | Required focused evidence                                                                                          | Current state                                                                                                          |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |

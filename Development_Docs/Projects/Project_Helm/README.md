@@ -3,7 +3,7 @@ title: Project Helm Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-helm-repository-index
-last_reviewed: 2026-08-27
+last_reviewed: 2026-08-30
 ---
 
 # Project Helm
@@ -93,21 +93,23 @@ landed-smoke evidence when each is available.
 
 - [Design Record](Project_Helm_Phase_4_Design_Record.md)
 - [Test Plan](Project_Helm_Phase_4_Test_Plan.md)
+- [Completion Receipt](Project_Helm_Phase_4_Completion_Receipt.md)
 
 Phase 4 **Weather the Passage** adds provider-neutral preflight and governed
 recovery reading after accepted P3. Missing adjacent provider contracts remain
 truthfully unknown; no provider result is fabricated to permit a launch or
-repair.
+repair. Phase 4 is accepted on protected main through PR #577.
 
 ## Phase 5 records
 
 - [Design Record](Project_Helm_Phase_5_Design_Record.md)
 - [Test Plan](Project_Helm_Phase_5_Test_Plan.md)
+- [Completion Receipt](Project_Helm_Phase_5_Completion_Receipt.md)
 
 Phase 5 **Clear for Voyage** completes Helm's existing Captain experience with
 an accessible readiness handoff, responsive polish, and truthful closure
-boundaries. The required physical owner walkthrough remains external to source
-acceptance.
+boundaries. It is accepted on protected main through PR #578. The required
+physical owner walkthrough remains external to source acceptance.
 
 ## Amendment A2 records
 

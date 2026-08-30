@@ -1,0 +1,34 @@
+{
+  "id": "FT-043",
+  "title": "Drydock Launch Readiness and Publishing Evidence",
+  "summary": "Project Drydock Phase 4 gives Creators source-bound launch readiness, compatibility, required Sea Trial evidence, and immutable-publishing evidence while retaining Drydock as the sole validation and simulation authority and One Voyage as the publication authority.",
+  "status": "MAINLINE",
+  "program": "Project Drydock Phase 4 - Clear for Launch",
+  "surfaces": [
+    "/studio/tales/[taleId]",
+    "/api/studio/tales/[taleId]/readiness",
+    "/api/studio/tales/[taleId]/compatibility",
+    "/api/studio/tales/[taleId]/external-evidence"
+  ],
+  "subfeatures": [
+    "Source-bound launch readiness with blockers, warnings, waivers, and required Suite evidence",
+    "Version-aware compatibility and historical Chronicle handling with explicit unavailable semantics",
+    "Immutable publishing evidence, idempotent evidence storage, and Drydock-gated Community eligibility",
+    "Additive SQLite and MySQL migration parity for readiness and publishing evidence"
+  ],
+  "limitations": [
+    "Drydock does not publish a Chronicle, mutate a live Voyage, or replace One Voyage publication authority.",
+    "Live provider, production MySQL, deployment, and owner acceptance remain separate from protected-main integration."
+  ],
+  "evidence": [
+    { "kind": "commit", "value": "29f3ae60cf13e79f79e6dd793c4cc94aca75b551" },
+    { "kind": "path", "value": "src/drydock/readiness.ts" },
+    { "kind": "path", "value": "src/drydock/compatibility.ts" },
+    { "kind": "test", "value": "tests/e2e/drydock-phase4.spec.ts" },
+    {
+      "kind": "completion-record",
+      "value": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_4_Completion_Receipt.md"
+    }
+  ],
+  "catalogVersion": 1
+}

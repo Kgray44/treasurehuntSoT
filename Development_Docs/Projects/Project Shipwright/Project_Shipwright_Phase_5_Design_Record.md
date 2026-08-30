@@ -3,14 +3,18 @@ title: Project Shipwright Phase 5 design record
 program: Project Shipwright
 phase: 5
 record_type: design
-status: current
+status: accepted-mainline
 authority: Project Shipwright Creator Studio Authoring Experience Governing Document
-date: 2026-08-26
+date: 2026-08-30
 base: 445cbb253cd19191c2b02c0951efc7c6be3b1f74
 scope: Creator staged publication over accepted Drydock and One Voyage authority
 ---
 
 # Project Shipwright Phase 5 — Launch from the Yard
+
+> Current status: Phase 5 is accepted on protected main through PR #479
+> (`ab44c398fb76c367036d720cea619825614233f5`). This record preserves its
+> design baseline and does not claim deployment or owner acceptance.
 
 ## Scope and decisions
 

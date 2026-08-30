@@ -5,21 +5,22 @@
   "phase": 4,
   "phaseName": "Clear for Launch",
   "phaseId": "project-drydock-phase-4-clear-for-launch",
-  "state": "LOCALLY_QUALIFIED_PENDING_SHARED_SOUNDING_LINE_FINALIZATION",
-  "branch": "codex/project-drydock-phase4-clear-for-launch",
+  "state": "ACCEPTED_MAINLINE",
+  "branch": null,
+  "historicalCandidateBranch": "codex/project-drydock-phase4-clear-for-launch",
   "worktree": {
     "ownership": "TASK_OWNED",
     "path": "C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\treasurehuntSoT-drydock-phase4"
   },
-  "baseSha": "60b89841986e66fbc2c0828489d38002a1617506",
-  "currentQualifiedBaseSha": "aaab92a81d52c03af5f2c4d4d2fc915b7b6181b3",
-  "currentCandidateSha": "44934d82e140d2a0ddcb53f90d6ab3beb07ff60d",
+  "baseSha": "03da6a7b507a6a8a73f7b05e1216472714c5f4f8",
+  "currentQualifiedBaseSha": "03da6a7b507a6a8a73f7b05e1216472714c5f4f8",
+  "currentCandidateSha": "9c00ee8e38c1438cbbe8398107209188cf0dba00",
   "acceptanceAdmission": {
-    "state": "PRIMARY_OWNER_RESOLVED_PENDING_CATALOG_LIFECYCLE_AND_BROWSER_FIXTURE_REPAIRS",
+    "state": "ACCEPTED_MAINLINE",
     "localQualification": "COMPLETE",
-    "authoritativeRun": null,
-    "invariant": "ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED:branch-complete catalog-promotion lifecycle",
-    "detail": "At protected main aaab92a81d52c03af5f2c4d4d2fc915b7b6181b3, PR #269's trusted primary/supporting resolver classifies the Phase 4 registration with primary owner drydock and no registration errors. The remaining candidate admission gate is a generic fail-closed lifecycle gap: authoritative changed-path collection uses --no-renames, so a schema-valid same-identity promotion from Features/branch-complete to Features/catalog exposes the removed legacy path and is rejected. PR #270 separately remains in its browser-fixture binding lane with SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE. No RELEASE_GO or Drydock acceptance envelope exists."
+    "authoritativeRun": 32878886481,
+    "invariant": "RELEASE_GO:ordinary-mainline-decision",
+    "detail": "Historical PR #269 and #270 lifecycle and browser-fixture failures are preserved in their original records and were not retried. The final exact candidate used base 03da6a7b507a6a8a73f7b05e1216472714c5f4f8, candidate 9c00ee8e38c1438cbbe8398107209188cf0dba00, ordinary Mainline Decision 32878886481, and protected merge 29f3ae60cf13e79f79e6dd793c4cc94aca75b551 in PR #198."
   },
   "deepwaterCapabilityImpact": {
     "disposition": "EVIDENCE_ONLY",

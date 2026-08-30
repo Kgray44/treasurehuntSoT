@@ -3,7 +3,7 @@ title: Project Admiralty Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-admiralty-repository-index
-last_reviewed: 2026-08-13
+last_reviewed: 2026-08-30
 ---
 
 # Project Admiralty
@@ -38,8 +38,8 @@ three registered, consented owner commands: profile-preference reconciliation,
 stale-session revocation, and reconciliation of an internally inconsistent
 removed Voyage membership. Every proposal is current-state-bound, budgeted,
 previewed, audited before mutation, and postcondition-verified. S2 does not
-authorize further work by itself; S3 is separately authorized, while Admiralty
-Phase 4 remains outside this increment.
+authorize further work by itself. S1 through S3 are accepted on canonical main;
+Admiralty Phase 4 remains outside these increments.
 
 Support Pilot S3, **Close the Case**, lets the opening operator finish a
 quiescent case with a safe reason after recent privileged assurance. It cancels
@@ -114,6 +114,7 @@ on the server.
 
 - [Architecture](Project_Admiralty_Support_Pilot_S3_Architecture.md)
 - [Test plan](Project_Admiralty_Support_Pilot_S3_Test_Plan.md)
+- [Completion receipt](Project_Admiralty_Support_Pilot_S3_Completion_Receipt.md)
 
 ## Machine-readable controls
 
@@ -137,7 +138,8 @@ on the server.
 - `Project_Admiralty_Support_Pilot_S1_Diagnostic_Scope_Registry.json`
 
 The Phase 1, Phase 2, and Phase 3 owner decisions are `ACCEPTED` and integrated
-on canonical main. Support Pilot S1 remains the read-only diagnostic foundation;
-S2 is the bounded registered-repair increment. No prior acceptance is deployment
-authority or permission to begin Admiralty Phase 4. Support Pilot S3 is the
-separately authorized case-finalization increment.
+on canonical main. Support Pilots S1, S2, and S3 are also integrated: S1 is the
+read-only diagnostic foundation, S2 is the bounded registered-repair increment,
+and S3 is the operator-owned case-finalization increment accepted in PR #508.
+No prior acceptance is deployment authority or permission to begin Admiralty
+Phase 4.

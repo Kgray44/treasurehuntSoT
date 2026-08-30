@@ -1,12 +1,19 @@
 ---
 title: Project Tideglass Phase 4 Cross-Project Integration Matrix
-status: IN_PROGRESS
+status: ACCEPTED_MAINLINE
 project: Project Tideglass
 phase: "Phase 4 - Fix the Bearings"
 canonical_for: project-tideglass-phase-4-integration-matrix
 ---
 
 # Project Tideglass Phase 4 Cross-Project Integration Matrix
+
+## Accepted-mainline resolution
+
+This matrix retains its pre-acceptance seam audit. Phase 4 subsequently passed
+the ordinary Mainline Decision in PR #195 and merged as
+`d3787ccc3260611580fa44b83ece844c80563cc2`; any “continuing” or “pending”
+cell below is historical qualification context, not a current integration hold.
 
 | Owner                   | Tideglass may consume                                                          | Tideglass must not own or mutate                                         | Current Phase 4 state                                                                                                 |
 | ----------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |

@@ -495,6 +495,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/catalog/project-drydock-phase4.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/catalog/sealed-hold.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -3027,6 +3033,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Completion_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Design_Record.md",
       "record_type": "archive-index",
       "status": "preserved",
@@ -3333,6 +3345,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Project_Voyagewright_Fleet_Closeout_Candidate_Repair_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Project_Wakebook_Phase_1_Current_History_Audit.md",
       "record_type": "archive-index",
       "status": "preserved",
@@ -3370,6 +3388,12 @@
     },
     {
       "path": "Development_Docs/Project_Wakebook_Phase_1_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wakebook_Program_Closeout_Record.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
@@ -3724,6 +3748,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_4_Compatibility_Ledger.json",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_4_Completion_Receipt.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -4275,6 +4305,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S3_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S3_Test_Plan.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -4437,6 +4473,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_4_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_4_Design_Record.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -4444,6 +4486,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_4_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_5_Completion_Receipt.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

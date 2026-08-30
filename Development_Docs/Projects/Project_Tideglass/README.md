@@ -3,7 +3,7 @@ title: Project Tideglass Engineering Records
 audience: product-engineering
 status: current
 canonical_for: project-tideglass-engineering-records
-last_reviewed: 2026-08-12
+last_reviewed: 2026-08-30
 ---
 
 # Project Tideglass engineering records
@@ -18,6 +18,12 @@ protected binding, tree identity, owner decision, and source-bound product
 evidence are recorded in the Phase 3 packet. Its record-only closeout is
 protected-integrated at `0fb9dfe96e1d414b45edf1841198beeda40e9c27`; it did not
 start Phase 4.
+
+Phase 4, **Fix the Bearings**, is accepted on protected main through PR #195
+at `d3787ccc3260611580fa44b83ece844c80563cc2`. It adds bounded Drydock
+historical reading, Captain-safe preflight, same-Chronicle Harborlight handoff,
+and the retained cross-project compatibility boundaries without changing
+Tideglass's semantic authority.
 
 ## Phase 1 records
 

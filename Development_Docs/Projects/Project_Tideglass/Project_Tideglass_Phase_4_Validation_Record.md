@@ -1,12 +1,20 @@
 ---
 title: Project Tideglass Phase 4 Validation Record
-status: IN_PROGRESS
+status: ACCEPTED_MAINLINE
 project: Project Tideglass
 phase: "Phase 4 - Fix the Bearings"
 canonical_for: project-tideglass-phase-4-validation
 ---
 
 # Project Tideglass Phase 4 Validation Record
+
+## Accepted-mainline resolution
+
+This record preserves candidate and classifier history, including failures that
+were not retried. The final accepted Phase 4 candidate passed the ordinary
+Mainline Decision in PR #195 and merged as
+`d3787ccc3260611580fa44b83ece844c80563cc2`; earlier “next candidate” and
+“remaining” language is historical and does not authorize a rerun.
 
 ## Incremental source checks
 

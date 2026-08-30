@@ -1,12 +1,21 @@
 ---
 title: Project Drydock Phase 4 Reconciliation Record
 audience: engineering
-status: v1.4-mainline-reconciled
+status: accepted-mainline
 canonical_for: project-drydock-phase-4-reconciliation
-last_reviewed: 2026-08-18
+last_reviewed: 2026-08-30
 ---
 
 # Project Drydock Phase 4 reconciliation record
+
+## Current accepted status
+
+The historical reconciliation sequence below is preserved evidence. Its final
+ordinary candidate was accepted in protected PR #198: final candidate
+`9c00ee8e38c1438cbbe8398107209188cf0dba00`, ordinary Sounding Line run
+`32878886481`, and merge `29f3ae60cf13e79f79e6dd793c4cc94aca75b551`. No
+current Phase 4 candidate, branch-only implementation, or finalization gate
+remains.
 
 The implementation began from accepted `origin/main` `60b89841986e66fbc2c0828489d38002a1617506`. Resumption fetched protected `origin/main` `268932d630ee0ea1721d0072da4041f7209b7464` (Sounding Line v1.4 hosted-wave-capacity merge).
 
@@ -50,6 +59,9 @@ Protected main now contains PR #269, `fix(sounding-line): resolve trusted primar
 
 Focused v1.4 tests prove the shared repair: `tests/sounding-line/v14/verification-maintenance.test.mjs`, `tests/sounding-line/v14/maintenance-protected-binding.test.mjs`, `tests/sounding-line/v14/authority-maintenance-adapter-policy.test.mjs`, and `tests/sounding-line/v14/authority-maintenance-document-index-policy.test.mjs` passed 69/69. Exact ordinary classification now resolves the Phase 4 registration as `PRODUCT_WITH_VERIFICATION_REGISTRATION` with `registration.ownerId` `drydock` and no registration ownership errors. The trusted Shipwright Studio descriptor is bounded supporting ownership; no `PRODUCT_VERIFICATION_REGISTRATION_NEW_CONTRACT_OWNER_MISMATCH` or `PRODUCT_VERIFICATION_REGISTRATION_PRODUCT_OWNER_CONFLICT` remains.
 
-The candidate is not yet admissible for a Mainline Decision. The already-accepted Phase 3 feature fragment was correctly promoted to `MAINLINE`, but it is still located at `Development_Docs/Features/branch-complete/project-drydock-phase3.json`. The truthful non-destructive lifecycle move to `Development_Docs/Features/catalog/project-drydock-phase3.json` preserves its exact evidence and makes the generated catalog/index coherent. Current authoritative changed-path collection intentionally uses `--no-renames`, however, so it presents the removed `branch-complete` path to the trusted classifier and rejects it as `ORDINARY_CANDIDATE_UNKNOWN_SCOPE_REJECTED`. The smallest reusable Sounding Line repair is a fail-closed catalog-promotion lifecycle rule: admit only a same-identity, schema-valid fragment move from `Features/branch-complete/` to `Features/catalog/` with its generated catalog/index updates; continue rejecting arbitrary legacy-fragment mutations, non-equivalent moves, and all unrelated unknown paths. This is not a PR #198 exception and has not been added to the Drydock candidate.
+This is a historical reconciliation snapshot, not the current acceptance state. Its then-open catalog-promotion and lifecycle concerns were resolved before the final Phase 4 candidate entered the successful ordinary Mainline Decision recorded in the Phase 4 completion receipt. Preserve the diagnostic history here; do not reinterpret it as a current blocker or reopen the retired candidate path.
 
-PR #270 is also still open in the separate browser-fixture lane. Its current protected-binding run `32196259632`, for base `aaab92a81d52c03af5f2c4d4d2fc915b7b6181b3` and candidate `640bc0299e38f3fa00432238ee3803293a0b40c6`, fails at `SEALED_MAINTENANCE_AUTHORITY_NOT_UNIQUE`; it has no Drydock implementation failure. No Sounding Line Mainline Decision has been dispatched for the reconciled Drydock candidate. Existing Phase 4 focused evidence remains preserved pending these independent shared repairs.
+PR #270 remains preserved historical browser-fixture evidence. It does not
+reopen the accepted Phase 4 product result or authorize a retry of an earlier
+candidate. The final accepted identity is recorded above and in the completion
+receipt.

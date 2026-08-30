@@ -1,12 +1,16 @@
 ---
 title: Project Tideglass Phase 4 Design Record
-status: IN_PROGRESS
+status: ACCEPTED_MAINLINE
 project: Project Tideglass
 phase: "Phase 4 - Fix the Bearings"
 canonical_for: project-tideglass-phase-4-design
 ---
 
 # Project Tideglass Phase 4 Design Record
+
+> Current status: Phase 4 is accepted on protected main through PR #195
+> (`d3787ccc3260611580fa44b83ece844c80563cc2`). This retained design record
+> preserves the pre-acceptance baseline and does not imply a current hold.
 
 ## Baseline
 

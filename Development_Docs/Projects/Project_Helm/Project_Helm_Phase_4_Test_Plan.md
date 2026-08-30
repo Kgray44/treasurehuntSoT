@@ -1,7 +1,7 @@
 ---
 title: Project Helm Phase 4 Test Plan
 audience: product-engineering
-status: current
+status: accepted-mainline
 canonical_for: project-helm-phase-4-test-plan
 last_reviewed: 2026-08-28
 ---

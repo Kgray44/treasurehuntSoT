@@ -3,14 +3,19 @@ title: Project Shipwright Phase 5 validation record
 program: Project Shipwright
 phase: 5
 record_type: validation
-status: current
+status: accepted-mainline
 authority: Project Shipwright Creator Studio Authoring Experience Governing Document
-date: 2026-08-26
+date: 2026-08-30
 base: 445cbb253cd19191c2b02c0951efc7c6be3b1f74
 scope: Task-owned local verification and protected-main acceptance inputs
 ---
 
 # Project Shipwright Phase 5 validation record
+
+> Current status: Phase 5 is accepted on protected main through PR #479
+> (`ab44c398fb76c367036d720cea619825614233f5`) after ordinary Sounding Line
+> run `33048000620`. Statements of future candidate acceptance below are
+> retained local-qualification context, not a current hold.
 
 ## Focused checks
 
