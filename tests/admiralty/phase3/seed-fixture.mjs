@@ -11,10 +11,18 @@ const allowedRoot = path.resolve(required("LOCALAPPDATA"), "ProjectAdmiralty");
 const password = required("ADMIRALTY_PHASE3_SYNTHETIC_PASSWORD");
 const createdAt = new Date("2026-08-13T16:00:00.000Z");
 
+const root = path.resolve(process.cwd());
+const relativeDatabasePath = path.relative(root, databasePath);
 const isSoundingLineDatabase =
   process.env.ADMIRALTY_PHASE3_ALLOW_SOUNDING_LINE_DATABASE === "1" &&
-  /^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath)) &&
-  databasePath.startsWith(`${path.resolve(process.cwd())}${path.sep}`);
+  databasePath.startsWith(`${root}${path.sep}`) &&
+  (/^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath)) ||
+    (process.env.SOUNDING_LINE_SUITE_PROFILE === "generic" &&
+      process.env.FOREVER_VALIDATION_ISOLATION === "1" &&
+      /^[a-f0-9]{64}$/u.test(process.env.FOREVER_VALIDATION_NONCE_HASH ?? "") &&
+      /^artifacts[\\/]sounding-line[\\/]generic-[a-f0-9]{12}[\\/]validation-isolated-\d{8}-\d{9}-[a-f0-9]{32}\.db$/u.test(
+        relativeDatabasePath,
+      )));
 if (
   !taskRoot.startsWith(`${allowedRoot}${path.sep}`) ||
   (!databasePath.startsWith(`${taskRoot}${path.sep}`) && !isSoundingLineDatabase)
