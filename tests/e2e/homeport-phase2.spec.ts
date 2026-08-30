@@ -461,6 +461,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
   });
 
   test("Journey L: keyboard navigation", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/");
     await page.keyboard.press("Tab");
     await expect(page.getByRole("link", { name: "Skip to main content" })).toBeFocused();
