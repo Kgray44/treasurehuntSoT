@@ -4,11 +4,11 @@ import path from "node:path";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { launchTalePlaythrough } from "../../src/chronicle/progression";
 import { db } from "../../src/lib/db";
-import { acceptInvitation, createPlaythroughAndInvitations } from "../../src/platform/invitations";
+import { createPlaythroughAndInvitations } from "../../src/platform/invitations";
 import { registerAccount } from "../../src/wayfarer/accounts";
 import { hash } from "bcryptjs";
 
-const password = "Homeport-validation-passphrase-2026";
+const password = "Signal-quartz-compass-2026";
 const evidenceRoot = path.resolve(
   process.env.HOMEPORT_PHASE2_EVIDENCE_ROOT ??
     (process.env.SOUNDING_LINE_INTERNAL_RUNTIME === "1"
@@ -40,7 +40,10 @@ async function fixture(label: string, roles: string[] = [], options: { handle?: 
     displayName,
     deviceLabel: "Homeport Phase 2 browser fixture",
   });
-  await db.userAccount.update({ where: { id: result.account.id }, data: { status: "ACTIVE" } });
+  await db.userAccount.update({
+    where: { id: result.account.id },
+    data: { status: "ACTIVE", ordinaryWorkspaceEntryAt: new Date() },
+  });
   if (options.handle)
     await db.playerProfile.update({
       where: { id: result.account.profile.id },
@@ -90,16 +93,12 @@ async function createImmersiveFixture(account: AccountFixture) {
       expiresInHours: 24,
       accountRequired: true,
       maxRedemptions: 1,
-      players: [{ playerId: account.profileId, displayName: account.displayName, crewRole: "Navigator" }],
+      captainParticipationMode: "CAPTAIN_AND_PLAYER",
+      players: [],
     },
     account.gameMasterId,
     "http://127.0.0.1:3188",
   );
-  const invitation = created.invitations[0];
-  if (!invitation) throw new Error("The immersive fixture did not create an invitation.");
-  const token = new URL(invitation.link).pathname.split("/").filter(Boolean).at(-1);
-  if (!token) throw new Error("The immersive fixture invitation did not expose its bounded token.");
-  await acceptInvitation(token, {}, account.profileId);
   await launchTalePlaythrough(created.playthroughId, account.gameMasterId);
   return created.playthroughId;
 }
@@ -245,7 +244,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await page.keyboard.press("Enter");
     menu = accountDisclosure(page);
     await expect(menu).toBeVisible();
-    await expect(menu.getByRole("link", { name: "Create Account" })).toBeFocused();
+    await expect(menu.getByRole("link", { name: "Sign In" })).toBeFocused();
     await page.keyboard.press("Escape");
     await expect(account).toBeFocused();
   });
