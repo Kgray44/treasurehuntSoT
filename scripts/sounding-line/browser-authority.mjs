@@ -358,6 +358,7 @@ async function main() {
     fixtureArguments,
     fixtureProject,
     browserArguments: process.argv.slice(separator + 1),
+    port: browserPortFromEnvironment(process.env),
   });
   await mkdir(path.join(root, "artifacts", "sounding-line"), { recursive: true });
   await writeFile(
@@ -365,6 +366,15 @@ async function main() {
     `${JSON.stringify(receipt, null, 2)}\n`,
   );
   await writeBrowserReceiptAndExit(receipt);
+}
+
+function browserPortFromEnvironment(environment) {
+  const configured = environment.SOUNDING_LINE_BROWSER_PORT;
+  if (!configured) return undefined;
+  if (!/^[1-9]\d{0,4}$/u.test(configured)) throw new Error("SOUNDING_LINE_BROWSER_PORT_INVALID");
+  const port = Number(configured);
+  if (port > 65_535) throw new Error("SOUNDING_LINE_BROWSER_PORT_INVALID");
+  return port;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await main();
