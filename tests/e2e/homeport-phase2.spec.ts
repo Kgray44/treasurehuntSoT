@@ -244,7 +244,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await page.keyboard.press("Enter");
     menu = accountDisclosure(page);
     await expect(menu).toBeVisible();
-    await expect(menu.getByRole("link", { name: "Create Account" })).toBeFocused();
+    await expect(menu.getByRole("link", { name: "Sign In" })).toBeFocused();
     await page.keyboard.press("Escape");
     await expect(account).toBeFocused();
   });
