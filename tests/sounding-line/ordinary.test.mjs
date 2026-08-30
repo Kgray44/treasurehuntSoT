@@ -977,6 +977,13 @@ test("fixture-aware suite dispatch groups established fixture contracts without 
   ]);
   assert.equal(dispatches.find(({ id }) => id === "lanternwake-phase3").fixtureProject, "phase3-readonly-setup");
   assert.equal(dispatches.find(({ id }) => id === "lanternwake-phase3").cookieAdapter, "isolated-loopback");
+  assert.deepEqual(dispatches.find(({ id }) => id === "lanternwake-phase3").environment, {
+    GM_USERNAME: "kato",
+    GM_PASSWORD: "development-captain-only",
+    PLAYER_ACCESS_CODE: "development-moonwake",
+    FOREVER_PHASE3_PERFORMANCE_BASE_URL: "http://127.0.0.1:3200",
+    SOUNDING_LINE_BROWSER_PORT: "3200",
+  });
   const phase3Preparers = dispatches.find(({ id }) => id === "lanternwake-phase3").preparers;
   assert.equal(phase3Preparers.filter(({ script }) => script === "scripts/migrate-legacy-companion.ts").length, 2);
   assert.equal(

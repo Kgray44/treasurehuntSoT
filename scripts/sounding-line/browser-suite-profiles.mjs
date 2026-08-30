@@ -105,6 +105,11 @@ export const browserSuiteProfiles = Object.freeze({
     environment: Object.freeze({
       GM_USERNAME: "kato",
       GM_PASSWORD: "development-captain-only",
+      PLAYER_ACCESS_CODE: "development-moonwake",
+      // The Phase 3 performance proof opens a second, mobile Chromium
+      // context against this declared task-owned browser endpoint.
+      FOREVER_PHASE3_PERFORMANCE_BASE_URL: "http://127.0.0.1:3200",
+      SOUNDING_LINE_BROWSER_PORT: "3200",
     }),
     preparers: Object.freeze([
       Object.freeze({ runtime: "tsx", script: "scripts/migrate-legacy-companion.ts" }),
