@@ -243,7 +243,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
       throw new Error("HOMEPORT_PHASE2_REQUIRES_DEDICATED_OR_SOUNDING_LINE_RUNTIME");
     await mkdir(evidenceRoot, { recursive: true });
     player = await fixture("Player", [], { handle: true });
-    workspacePlayer = await fixture("Workspace Player", [], { handle: true });
+    workspacePlayer = await fixture("Workspace", [], { handle: true });
     full = await fixture("Full", ["CAPTAIN", "CREATOR"], { handle: true, captain: true });
     immersiveCaptain = { ...full };
     immersivePlaythroughId = await createImmersiveFixture(immersiveCaptain, player);
