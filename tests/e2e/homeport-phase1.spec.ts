@@ -32,7 +32,14 @@ async function fixture(label: string, roles: string[] = []): Promise<AccountFixt
     displayName,
     deviceLabel: "Homeport Phase 1 browser fixture",
   });
-  await db.userAccount.update({ where: { id: result.account.id }, data: { status: "ACTIVE" } });
+  await db.userAccount.update({
+    where: { id: result.account.id },
+    data: { status: "ACTIVE", ordinaryWorkspaceEntryAt: new Date() },
+  });
+  await db.accountEmail.updateMany({
+    where: { accountId: result.account.id, isPrimary: true },
+    data: { verificationState: "VERIFIED", verifiedAt: new Date() },
+  });
   for (const role of roles) await db.accountRoleAssignment.create({ data: { accountId: result.account.id, role } });
   if (label === "Full") {
     const gameMaster = await db.gameMasterUser.create({
