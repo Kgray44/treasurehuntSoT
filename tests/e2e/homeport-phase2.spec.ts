@@ -285,6 +285,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await clickGlobal(page, "Explore Chronicles");
     await expect(page).toHaveURL(/\/tales$/u);
     await expectShell(page, "PUBLIC_STANDARD", "public");
+    await page.getByRole("button", { name: "Open navigation" }).click();
     await expect(page.getByRole("navigation", { name: "Global navigation" })).toBeVisible();
     await expect(page.locator('[data-navigation-id="global-explore-chronicles"]')).toHaveAttribute(
       "aria-current",

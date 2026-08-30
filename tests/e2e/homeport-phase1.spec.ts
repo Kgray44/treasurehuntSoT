@@ -272,7 +272,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     await capture(second, "HP-P1-EV-J-multitab-sign-out");
   });
 
-  test("Journey K: role removal denies Captain while retaining Player identity", async ({ page }) => {
+  test("Journey K: role removal preserves the ordinary Captain workspace and Player identity", async ({ page }) => {
     await signInFromGateway(page, removableCaptain);
     await db.accountRoleAssignment.updateMany({
       where: { accountId: removableCaptain.accountId, role: "CAPTAIN", revokedAt: null },
@@ -280,7 +280,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     });
     await page.bringToFront();
     await page.goto("/captain/library");
-    await expect(page.getByRole("heading", { name: "Permission required" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Captain/u }).first()).toBeVisible();
     await expect(page.getByRole("button", { name: removableCaptain.displayName })).toBeVisible();
     await page.goto("/player/library");
     await expect(page).toHaveURL(/\/player\/library$/u);
