@@ -57,9 +57,14 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
 
     await page.goto(`/community/guides/${fixture.guide.slug}`);
     await expect(page.getByRole("heading", { name: fixture.guide.title })).toBeVisible();
-    const guideBody = await page.locator("article.community-guide-detail").innerHTML();
-    expect(guideBody).not.toContain("<script>");
-    expect(guideBody).not.toContain(fixture.privateCoordinate);
+    const guideBodies = await page
+      .locator("article.community-guide-detail")
+      .evaluateAll((articles) => articles.map((article) => article.innerHTML));
+    expect(guideBodies).not.toHaveLength(0);
+    for (const guideBody of guideBodies) {
+      expect(guideBody).not.toContain("<script>");
+      expect(guideBody).not.toContain(fixture.privateCoordinate);
+    }
 
     const axe = await new AxeBuilder({ page }).analyze();
     expect(axe.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);
