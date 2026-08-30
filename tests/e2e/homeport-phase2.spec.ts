@@ -44,6 +44,10 @@ async function fixture(label: string, roles: string[] = [], options: { handle?: 
     where: { id: result.account.id },
     data: { status: "ACTIVE", ordinaryWorkspaceEntryAt: new Date() },
   });
+  await db.accountEmail.updateMany({
+    where: { accountId: result.account.id, isPrimary: true },
+    data: { verificationState: "VERIFIED", verifiedAt: new Date() },
+  });
   if (options.handle)
     await db.playerProfile.update({
       where: { id: result.account.profile.id },
