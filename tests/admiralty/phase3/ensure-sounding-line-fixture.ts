@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 export const syntheticPassword = "Adm3-synthetic-fixture-password-20260825!";
 
@@ -47,7 +48,13 @@ export async function ensureSoundingLineFixture() {
 
   const root = process.cwd();
   const databasePath = path.resolve(root, databaseUrl.slice("file:".length));
-  if (!/^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath))) return;
+  const isLegacySoundingLineDatabase = /^\.sounding-line-[a-f0-9]{12}\.sqlite$/u.test(path.basename(databasePath));
+  const genericIsolationPath = path.relative(path.join(root, "artifacts", "sounding-line"), databasePath);
+  const isGenericSoundingLineDatabase =
+    process.env.SOUNDING_LINE_SUITE_PROFILE === "generic" &&
+    process.env.FOREVER_VALIDATION_ISOLATION === "1" &&
+    /^generic-[a-f0-9]{12}[\\/]validation-isolated-\d{8}-\d{9}-[a-f0-9]{32}\.db$/u.test(genericIsolationPath);
+  if (!isLegacySoundingLineDatabase && !isGenericSoundingLineDatabase) return;
   if (!databasePath.startsWith(`${root}${path.sep}`)) throw new Error("ADMIRALTY_SOUNDING_LINE_DATABASE_REFUSED");
 
   const db = new PrismaClient();
@@ -67,6 +74,29 @@ export async function ensureSoundingLineFixture() {
   };
   if (!baseFixtureExists) run("scripts/admiralty/seed-phase2-fixture.mjs", env);
   run("tests/admiralty/phase3/seed-fixture.mjs", env);
+  await reconcilePhase2Credentials();
+}
+
+async function reconcilePhase2Credentials() {
+  const accountIds = Object.values(phase2Credentials.accounts).map(({ accountId }) => accountId);
+  const db = new PrismaClient();
+  try {
+    const accounts = await db.userAccount.findMany({ where: { id: { in: accountIds } }, select: { id: true } });
+    if (accounts.length !== accountIds.length) throw new Error("ADMIRALTY_SOUNDING_LINE_PHASE2_FIXTURE_INCOMPLETE");
+
+    const passwordHash = await bcrypt.hash(syntheticPassword, 10);
+    await db.$transaction(
+      accountIds.map((accountId) =>
+        db.accountCredential.upsert({
+          where: { accountId },
+          update: { passwordHash, changedAt: new Date("2026-08-13T16:00:00.000Z") },
+          create: { accountId, passwordHash, changedAt: new Date("2026-08-13T16:00:00.000Z") },
+        }),
+      ),
+    );
+  } finally {
+    await db.$disconnect();
+  }
 }
 
 function run(script: string, env: NodeJS.ProcessEnv) {
