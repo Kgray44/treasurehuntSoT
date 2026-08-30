@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 export const syntheticPassword = "Adm3-synthetic-fixture-password-20260825!";
 
@@ -67,6 +68,29 @@ export async function ensureSoundingLineFixture() {
   };
   if (!baseFixtureExists) run("scripts/admiralty/seed-phase2-fixture.mjs", env);
   run("tests/admiralty/phase3/seed-fixture.mjs", env);
+  await reconcilePhase2Credentials();
+}
+
+async function reconcilePhase2Credentials() {
+  const accountIds = Object.values(phase2Credentials.accounts).map(({ accountId }) => accountId);
+  const db = new PrismaClient();
+  try {
+    const accounts = await db.userAccount.findMany({ where: { id: { in: accountIds } }, select: { id: true } });
+    if (accounts.length !== accountIds.length) throw new Error("ADMIRALTY_SOUNDING_LINE_PHASE2_FIXTURE_INCOMPLETE");
+
+    const passwordHash = await bcrypt.hash(syntheticPassword, 10);
+    await db.$transaction(
+      accountIds.map((accountId) =>
+        db.accountCredential.upsert({
+          where: { accountId },
+          update: { passwordHash, changedAt: new Date("2026-08-13T16:00:00.000Z") },
+          create: { accountId, passwordHash, changedAt: new Date("2026-08-13T16:00:00.000Z") },
+        }),
+      ),
+    );
+  } finally {
+    await db.$disconnect();
+  }
 }
 
 function run(script: string, env: NodeJS.ProcessEnv) {
