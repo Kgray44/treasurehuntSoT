@@ -770,6 +770,10 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
         await returnToHarbor(page);
         await expect(page.locator(".harbor-waves [data-lottie-status='ready']")).toHaveCount(1, { timeout: 20_000 });
         await expect(page.locator(".harbor-fog [data-lottie-status='ready']")).toHaveCount(1);
+        // Harbor and showcase transitions retain a short-lived outgoing
+        // WAAPI layer. It is not part of the settled Lottie contract, so do
+        // not capture it as the warmed remount baseline.
+        await expectRouteWaapiQuiescence(page);
       },
       stableLottieRemountSnapshot,
     );
