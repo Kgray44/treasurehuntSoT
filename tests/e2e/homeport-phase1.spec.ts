@@ -22,6 +22,7 @@ let player: AccountFixture;
 let full: AccountFixture;
 let removableCaptain: AccountFixture;
 let legacyStaff: AccountFixture;
+let multiTabPlayer: AccountFixture;
 
 async function fixture(label: string, roles: string[] = []): Promise<AccountFixture> {
   const suffix = randomUUID().slice(0, 8);
@@ -125,6 +126,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     full = await fixture("Full", ["CAPTAIN", "CREATOR"]);
     removableCaptain = await fixture("Role Removal", ["CAPTAIN"]);
     legacyStaff = await fixture("Legacy Staff", ["CAPTAIN"]);
+    multiTabPlayer = await fixture("Multi Tab");
   });
 
   test("Journey A: anonymous reaches canonical sign-in and arrives without anonymous flash", async ({ page }) => {
@@ -256,14 +258,14 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
 
   test("Journey J: multi-tab sign-out reconciles the second tab and denies protected work", async ({ context }) => {
     const first = await context.newPage();
-    await signInFromGateway(first, player);
+    await signInFromGateway(first, multiTabPlayer);
     const second = await context.newPage();
     await second.goto("/tales");
-    await expect(second.getByRole("button", { name: player.displayName })).toBeVisible();
-    const menu = await openAccountMenu(first, player);
+    await expect(second.getByRole("button", { name: multiTabPlayer.displayName })).toBeVisible();
+    const menu = await openAccountMenu(first, multiTabPlayer);
     await menu.getByRole("button", { name: "Sign out" }).click();
     await second.bringToFront();
-    await expect(second.getByRole("button", { name: player.displayName })).toHaveCount(0);
+    await expect(second.getByRole("button", { name: multiTabPlayer.displayName })).toHaveCount(0);
     await second.goto("/player/library");
     await expect(second).toHaveURL(/\/sign-in\?/u);
     await expect(second.getByRole("heading", { name: "Sign in" })).toBeVisible();
