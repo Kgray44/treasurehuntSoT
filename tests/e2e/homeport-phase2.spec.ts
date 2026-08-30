@@ -4,7 +4,7 @@ import path from "node:path";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { launchTalePlaythrough } from "../../src/chronicle/progression";
 import { db } from "../../src/lib/db";
-import { createPlaythroughAndInvitations } from "../../src/platform/invitations";
+import { acceptInvitation, createPlaythroughAndInvitations } from "../../src/platform/invitations";
 import { registerAccount } from "../../src/wayfarer/accounts";
 import { hash } from "bcryptjs";
 
@@ -71,8 +71,8 @@ async function fixture(label: string, roles: string[] = [], options: { handle?: 
   } satisfies AccountFixture;
 }
 
-async function createImmersiveFixture(account: AccountFixture) {
-  if (!account.gameMasterId) throw new Error("The immersive fixture requires a linked Captain identity.");
+async function createImmersiveFixture(captain: AccountFixture, invitedPlayer: AccountFixture) {
+  if (!captain.gameMasterId) throw new Error("The immersive fixture requires a linked Captain identity.");
   const chronicle = await db.chronicle.findFirst({
     where: { archivedAt: null, latestPublishedVersionId: { not: null } },
     include: { versions: { where: { isCurrent: true }, orderBy: { versionNumber: "desc" }, take: 1 } },
@@ -93,13 +93,17 @@ async function createImmersiveFixture(account: AccountFixture) {
       expiresInHours: 24,
       accountRequired: true,
       maxRedemptions: 1,
-      captainParticipationMode: "CAPTAIN_AND_PLAYER",
-      players: [],
+      players: [{ playerId: invitedPlayer.profileId, displayName: invitedPlayer.displayName, crewRole: "Navigator" }],
     },
-    account.gameMasterId,
+    captain.gameMasterId,
     "http://127.0.0.1:3188",
   );
-  await launchTalePlaythrough(created.playthroughId, account.gameMasterId);
+  const invitation = created.invitations[0];
+  if (!invitation) throw new Error("The immersive fixture did not create an invitation.");
+  const token = new URL(invitation.link).pathname.split("/").filter(Boolean).at(-1);
+  if (!token) throw new Error("The immersive fixture invitation did not expose its bounded token.");
+  await acceptInvitation(token, {}, invitedPlayer.profileId);
+  await launchTalePlaythrough(created.playthroughId, captain.gameMasterId);
   return created.playthroughId;
 }
 
@@ -224,7 +228,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await mkdir(evidenceRoot, { recursive: true });
     player = await fixture("Player");
     full = await fixture("Full", ["CAPTAIN", "CREATOR"], { handle: true, captain: true });
-    immersivePlaythroughId = await createImmersiveFixture(full);
+    immersivePlaythroughId = await createImmersiveFixture(full, player);
   });
 
   test("Journey A: anonymous gateway account lifecycle", async ({ page }) => {
@@ -556,7 +560,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
 
   test("Journey P: immersive Player exit", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await signInFromGateway(page, full);
+    await signInFromGateway(page, player);
     const before = await db.taleSession.findUniqueOrThrow({
       where: { id: immersivePlaythroughId },
       select: {
@@ -651,7 +655,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await openAccountMenu(page, "Account");
     await page.keyboard.press("Escape");
     await capture(page, "HP-P2-EV-S-reduced-motion");
-    await signInFromGateway(page, full);
+    await signInFromGateway(page, player);
     await page.goto(`/player/playthroughs/${immersivePlaythroughId}/journal`);
     await expect(page.getByRole("link", { name: "Exit to My Voyages" })).toBeVisible();
   });

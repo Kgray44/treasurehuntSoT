@@ -193,7 +193,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     const menu = await openAccountMenu(page, player);
     await expect(menu.getByRole("link", { name: "Chronicle Passport" })).toBeVisible();
     await menu.getByRole("link", { name: "Chronicle Passport" }).click();
-    await expect(page.getByRole("heading", { name: "Chronicle Passport" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Chronicle Passport" }).first()).toBeVisible();
     await page.reload();
     await expect(page.getByRole("button", { name: player.displayName })).toBeVisible();
     await capture(page, "HP-P1-EV-C-passport-continuity");
