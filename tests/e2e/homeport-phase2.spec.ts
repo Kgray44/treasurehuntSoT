@@ -26,6 +26,7 @@ type AccountFixture = {
 };
 
 let player: AccountFixture;
+let workspacePlayer: AccountFixture;
 let full: AccountFixture;
 let immersivePlaythroughId: string;
 
@@ -231,6 +232,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
       throw new Error("HOMEPORT_PHASE2_REQUIRES_DEDICATED_OR_SOUNDING_LINE_RUNTIME");
     await mkdir(evidenceRoot, { recursive: true });
     player = await fixture("Player", [], { handle: true });
+    workspacePlayer = await fixture("Workspace Player", [], { handle: true });
     full = await fixture("Full", ["CAPTAIN", "CREATOR"], { handle: true, captain: true });
     immersivePlaythroughId = await createImmersiveFixture(full, player);
   });
@@ -302,22 +304,22 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
 
   test("Journey E: Player workspace navigation", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await signInFromGateway(page, player);
+    await signInFromGateway(page, workspacePlayer);
     await page.getByRole("link", { name: /Open My Voyages|Enter as Player/u }).click();
     await expect(page).toHaveURL(/\/player\/library$/u);
     await expectShell(page, "WORKSPACE_STANDARD", "player");
     await clickGlobal(page, "Community Harbor");
     await expect(page).toHaveURL(/\/community$/u);
-    await navigateAccountLink(page, player, "View My Profile");
+    await navigateAccountLink(page, workspacePlayer, "View My Profile");
     await expect(page).toHaveURL(/\/account$/u);
     await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
-    await navigateAccountLink(page, player, "Chronicle Passport");
+    await navigateAccountLink(page, workspacePlayer, "Chronicle Passport");
     await expect(page).toHaveURL(/\/passport(?:#profile)?$/u);
-    await navigateAccountLink(page, player, "Security & Sessions");
+    await navigateAccountLink(page, workspacePlayer, "Security & Sessions");
     await expect(page).toHaveURL(/\/account\/security$/u);
-    await navigateAccountLink(page, player, "Player");
+    await navigateAccountLink(page, workspacePlayer, "Player");
     await expect(page).toHaveURL(/\/player\/library$/u);
-    await expect(page.getByRole("button", { name: player.displayName })).toBeVisible();
+    await expect(page.getByRole("button", { name: workspacePlayer.displayName })).toBeVisible();
     await expect(page.getByRole("heading", { name: "My Chronicle Library" })).toBeVisible();
     await capture(page, "HP-P2-EV-H-player-navigation");
   });

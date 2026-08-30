@@ -23,6 +23,7 @@ let full: AccountFixture;
 let removableCaptain: AccountFixture;
 let legacyStaff: AccountFixture;
 let multiTabPlayer: AccountFixture;
+let safeReturnPlayer: AccountFixture;
 
 async function fixture(label: string, roles: string[] = []): Promise<AccountFixture> {
   const suffix = randomUUID().slice(0, 8);
@@ -131,6 +132,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     removableCaptain = await fixture("Role Removal", ["CAPTAIN"]);
     legacyStaff = await fixture("Legacy Staff", ["CAPTAIN"]);
     multiTabPlayer = await fixture("Multi Tab");
+    safeReturnPlayer = await fixture("Safe Return");
   });
 
   test("Journey A: anonymous reaches canonical sign-in and arrives without anonymous flash", async ({ page }) => {
@@ -387,14 +389,13 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
   test("Journey O: malicious return destinations fall back internally", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/sign-in?returnTo=https%3A%2F%2Fattacker.invalid%2Fcollect");
-    await page.getByLabel("Email or legacy Player name").fill(player.email);
+    await page.getByLabel("Email or legacy Player name").fill(safeReturnPlayer.email);
     await page.getByLabel("Password").fill(password);
     await page.getByLabel("Password").press("Enter");
-    await expect(page).toHaveURL(/\/passport$/u);
+    await expect(page).toHaveURL(/\/$/u);
     expect(new URL(page.url()).hostname).toBe("127.0.0.1");
-    await expect(page.getByRole("heading", { name: "Chronicle Passport" })).toBeVisible();
-    await expect(page.getByLabel("Display name")).toBeVisible();
-    await expect(page.locator('[data-route-layer="/passport"]')).toHaveCSS("opacity", "1");
+    await expect(page.getByRole("button", { name: safeReturnPlayer.displayName })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Open My Voyages|Enter as Player/u })).toBeVisible();
     await capture(page, "HP-P1-EV-O-safe-return");
   });
 
