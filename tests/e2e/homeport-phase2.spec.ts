@@ -8,7 +8,7 @@ import { acceptInvitation, createPlaythroughAndInvitations } from "../../src/pla
 import { registerAccount } from "../../src/wayfarer/accounts";
 import { hash } from "bcryptjs";
 
-const password = "Homeport-validation-passphrase-2026";
+const password = "Signal-quartz-compass-2026";
 const evidenceRoot = path.resolve(
   process.env.HOMEPORT_PHASE2_EVIDENCE_ROOT ??
     (process.env.SOUNDING_LINE_INTERNAL_RUNTIME === "1"
@@ -40,7 +40,10 @@ async function fixture(label: string, roles: string[] = [], options: { handle?: 
     displayName,
     deviceLabel: "Homeport Phase 2 browser fixture",
   });
-  await db.userAccount.update({ where: { id: result.account.id }, data: { status: "ACTIVE" } });
+  await db.userAccount.update({
+    where: { id: result.account.id },
+    data: { status: "ACTIVE", ordinaryWorkspaceEntryAt: new Date() },
+  });
   if (options.handle)
     await db.playerProfile.update({
       where: { id: result.account.profile.id },
@@ -68,8 +71,8 @@ async function fixture(label: string, roles: string[] = [], options: { handle?: 
   } satisfies AccountFixture;
 }
 
-async function createImmersiveFixture(account: AccountFixture) {
-  if (!account.gameMasterId) throw new Error("The immersive fixture requires a linked Captain identity.");
+async function createImmersiveFixture(captain: AccountFixture, invitedPlayer: AccountFixture) {
+  if (!captain.gameMasterId) throw new Error("The immersive fixture requires a linked Captain identity.");
   const chronicle = await db.chronicle.findFirst({
     where: { archivedAt: null, latestPublishedVersionId: { not: null } },
     include: { versions: { where: { isCurrent: true }, orderBy: { versionNumber: "desc" }, take: 1 } },
@@ -90,17 +93,17 @@ async function createImmersiveFixture(account: AccountFixture) {
       expiresInHours: 24,
       accountRequired: true,
       maxRedemptions: 1,
-      players: [{ playerId: account.profileId, displayName: account.displayName, crewRole: "Navigator" }],
+      players: [{ playerId: invitedPlayer.profileId, displayName: invitedPlayer.displayName, crewRole: "Navigator" }],
     },
-    account.gameMasterId,
+    captain.gameMasterId,
     "http://127.0.0.1:3188",
   );
   const invitation = created.invitations[0];
   if (!invitation) throw new Error("The immersive fixture did not create an invitation.");
   const token = new URL(invitation.link).pathname.split("/").filter(Boolean).at(-1);
   if (!token) throw new Error("The immersive fixture invitation did not expose its bounded token.");
-  await acceptInvitation(token, {}, account.profileId);
-  await launchTalePlaythrough(created.playthroughId, account.gameMasterId);
+  await acceptInvitation(token, {}, invitedPlayer.profileId);
+  await launchTalePlaythrough(created.playthroughId, captain.gameMasterId);
   return created.playthroughId;
 }
 
@@ -223,9 +226,9 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     if (process.env.SOUNDING_LINE_INTERNAL_RUNTIME !== "1" && !process.env.HOMEPORT_PHASE2_DATABASE_PATH)
       throw new Error("HOMEPORT_PHASE2_REQUIRES_DEDICATED_OR_SOUNDING_LINE_RUNTIME");
     await mkdir(evidenceRoot, { recursive: true });
-    player = await fixture("Player");
+    player = await fixture("Player", [], { handle: true });
     full = await fixture("Full", ["CAPTAIN", "CREATOR"], { handle: true, captain: true });
-    immersivePlaythroughId = await createImmersiveFixture(full);
+    immersivePlaythroughId = await createImmersiveFixture(full, player);
   });
 
   test("Journey A: anonymous gateway account lifecycle", async ({ page }) => {
@@ -245,7 +248,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await page.keyboard.press("Enter");
     menu = accountDisclosure(page);
     await expect(menu).toBeVisible();
-    await expect(menu.getByRole("link", { name: "Create Account" })).toBeFocused();
+    await expect(menu.getByRole("link", { name: "Sign In" })).toBeFocused();
     await page.keyboard.press("Escape");
     await expect(account).toBeFocused();
   });
@@ -282,6 +285,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await clickGlobal(page, "Explore Chronicles");
     await expect(page).toHaveURL(/\/tales$/u);
     await expectShell(page, "PUBLIC_STANDARD", "public");
+    await page.getByRole("button", { name: "Open navigation" }).click();
     await expect(page.getByRole("navigation", { name: "Global navigation" })).toBeVisible();
     await expect(page.locator('[data-navigation-id="global-explore-chronicles"]')).toHaveAttribute(
       "aria-current",
@@ -557,7 +561,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
 
   test("Journey P: immersive Player exit", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await signInFromGateway(page, full);
+    await signInFromGateway(page, player);
     const before = await db.taleSession.findUniqueOrThrow({
       where: { id: immersivePlaythroughId },
       select: {
@@ -652,7 +656,7 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await openAccountMenu(page, "Account");
     await page.keyboard.press("Escape");
     await capture(page, "HP-P2-EV-S-reduced-motion");
-    await signInFromGateway(page, full);
+    await signInFromGateway(page, player);
     await page.goto(`/player/playthroughs/${immersivePlaythroughId}/journal`);
     await expect(page.getByRole("link", { name: "Exit to My Voyages" })).toBeVisible();
   });
