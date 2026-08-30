@@ -1,9 +1,9 @@
 ---
 title: Project Deepwater Phase 5 Validation Record
 audience: product-engineering
-status: implementation-accepted-record-only-closure-ready
+status: accepted-mainline
 canonical_for: project-deepwater-phase-5-validation-record
-last_reviewed: 2026-08-18
+last_reviewed: 2026-08-30
 ---
 
 # Project Deepwater Phase 5 validation record
@@ -31,4 +31,4 @@ The only Phase 5-consumed current-main source addition is `src/app/api/internal/
 
 Sounding Line [Mainline Decision run 32158890855](https://github.com/Kgray44/treasurehuntSoT/actions/runs/32158890855) returned `RELEASE_GO` for candidate `93efa9f4f7d8b4e64ce05ecc89f00e6a73ba02af` over qualified base `a6c1f441d3628bd828bd7a1c3cd77d419a0701c6`, with 13 clean mandatory receipts. Protected binding [run 32161116494](https://github.com/Kgray44/treasurehuntSoT/actions/runs/32161116494) then passed and PR #159 merged as `78610ae4dd63aac9ff45c9c7646c78b38c6ab19a`.
 
-Exact-main proof is satisfied: the protected merge parents are the qualified base and candidate, and its tree `259709872b32d346e888b6b4edc0f37c1c9a1682` equals the candidate tree. The remaining work is the policy-limited source-bound record-only closure; no new Phase 5 implementation, product acceptance, or future phase is implied.
+Exact-main proof is satisfied: the protected merge parents are the qualified base and candidate, and its tree `259709872b32d346e888b6b4edc0f37c1c9a1682` equals the candidate tree. The policy-limited source-bound record-only closure merged in PR #215 as `70afa7ce9f6a2c77394b96020340c069222d60f9`; no new Phase 5 implementation, product acceptance, or future phase is implied.

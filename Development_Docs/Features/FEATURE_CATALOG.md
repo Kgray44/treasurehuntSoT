@@ -200,8 +200,8 @@ Captains create, ready, launch, operate, conclude, and safely hand off live Voya
 
 ### Meaningful limitations
 
-- The A1-A3 and P3 extensions are integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.
-- Original Helm Phase 4 preflight, provider fallback, and recovery work remains outside the current capability.
+- The A1-A3 and P3-P5 extensions are integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.
+- Provider outcomes remain explicitly unavailable unless an accepted provider contract supplies them.
 
 ### Evidence
 
@@ -1048,7 +1048,7 @@ Creators can persist revisioned synthetic Sea Trial scenarios and suites, determ
 - Protected-main integration completed in PR #52 at 191a964488d0df71f8dcb91c5b8372fc73b6b32e; deployment and owner acceptance remain separate from source integration.
 - Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.
 - Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.
-- Immutable publishing evidence and Phase 4 integration remain out of scope.
+- Phase 4 extends separate readiness and publishing-evidence behavior while preserving this Phase 3 simulation authority.
 
 ### Evidence
 
@@ -1250,6 +1250,70 @@ Project Helm Phase 4 gives Captains a truthful preflight and recovery presentati
 - path: `src/components/captain/CaptainCommandConsole.tsx`
 - test: `src/helm/passage-resilience.test.ts`
 - test: `src/helm/operations.test.ts`
+- completion-record: `Development_Docs/Projects/Project_Helm/Project_Helm_Phase_4_Completion_Receipt.md`
+
+---
+
+## FT-042 - Helm Clear for Voyage Closure
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Helm Phase 5 - Clear for Voyage
+
+Project Helm Phase 5 completes the existing Captain experience with an accessible readiness handoff that preserves canonical commands, ordinary Player membership, recovery truth, and historical boundaries.
+
+### Important subfeatures
+
+- Polite live feedback for command outcomes and recovery reconciliation
+- Responsive Captain and Player readiness handoff with degraded and historical truth
+- No unproven Captain-surface retirement, authoring control, or invented provider result
+
+### Primary surfaces
+
+`/captain/voyages/[voyageId]`
+
+### Meaningful limitations
+
+- Owner walkthrough, live-provider proof, deployment, and physical multi-device validation remain external acceptance activities
+- Only proven obsolete Captain compatibility surfaces may retire; none are retired by this phase
+
+### Evidence
+
+- commit: `fd290e9b34e9bf91a1fe503ac7c3f15dcfee0288`
+- path: `src/components/captain/CaptainCommandConsole.tsx`
+- completion-record: `Development_Docs/Projects/Project_Helm/Project_Helm_Phase_5_Completion_Receipt.md`
+
+---
+
+## FT-043 - Drydock Launch Readiness and Publishing Evidence
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Drydock Phase 4 - Clear for Launch
+
+Project Drydock Phase 4 gives Creators source-bound launch readiness, compatibility, required Sea Trial evidence, and immutable-publishing evidence while retaining Drydock as the sole validation and simulation authority and One Voyage as the publication authority.
+
+### Important subfeatures
+
+- Source-bound launch readiness with blockers, warnings, waivers, and required Suite evidence
+- Version-aware compatibility and historical Chronicle handling with explicit unavailable semantics
+- Immutable publishing evidence, idempotent evidence storage, and Drydock-gated Community eligibility
+- Additive SQLite and MySQL migration parity for readiness and publishing evidence
+
+### Primary surfaces
+
+`/studio/tales/[taleId]`, `/api/studio/tales/[taleId]/readiness`, `/api/studio/tales/[taleId]/compatibility`, `/api/studio/tales/[taleId]/external-evidence`
+
+### Meaningful limitations
+
+- Drydock does not publish a Chronicle, mutate a live Voyage, or replace One Voyage publication authority.
+- Live provider, production MySQL, deployment, and owner acceptance remain separate from protected-main integration.
+
+### Evidence
+
+- commit: `29f3ae60cf13e79f79e6dd793c4cc94aca75b551`
+- path: `src/drydock/readiness.ts`
+- path: `src/drydock/compatibility.ts`
+- test: `tests/e2e/drydock-phase4.spec.ts`
+- completion-record: `Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_4_Completion_Receipt.md`
 
 ---
 
@@ -1674,7 +1738,7 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 **Status:** MAINLINE
 **Program or subsystem:** Project Admiralty
 
-Accepted Admiralty phases establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, governed owner-domain commands, and a read-only cross-domain Chartroom on main without creating a second source of truth. Support Pilot S2 extends S1 diagnosis with consented, registered, bounded canonical owner repairs and mandatory verification.
+Accepted Admiralty phases establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, governed owner-domain commands, and a read-only cross-domain Chartroom on main without creating a second source of truth. Support Pilots S1 through S3 provide consented diagnosis, registered bounded canonical owner repairs, and safe operator-owned case closure.
 
 ### Important subfeatures
 
@@ -1696,6 +1760,7 @@ Accepted Admiralty phases establish canonical roles, recent privileged assurance
 - Source-bound sanitized findings, deterministic diagnosis receipts, and information-only repair proposals
 - Support Pilot S2 exact repair consent, R0-R4 ceilings, durable command/record/domain budgets, target leases, and idempotent execution receipts
 - Registered R1 profile reconcile, R2 stale-session revoke, and explicitly consented R3 membership reconcile with required postcondition verification
+- Support Pilot S3 operator-owned case closure with pending-consent cancellation, active-grant revocation, idempotency, and durable audit evidence
 
 ### Primary surfaces
 
@@ -1727,6 +1792,9 @@ Accepted Admiralty phases establish canonical roles, recent privileged assurance
 - test: `src/admiralty/support-pilot.test.ts`
 - test: `src/admiralty/support-repair-policy.test.ts`
 - test: `tests/e2e/admiralty-support-pilot-s2.spec.ts`
+- commit: `34c8be0721a72100c740485d54b89e220e0ccf77`
+- test: `tests/e2e/admiralty-support-pilot-s3.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Support_Pilot_S3_Completion_Receipt.md`
 - test: `tests/e2e/admiralty-phase2.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Owner_Decision_Record.md`
@@ -1811,12 +1879,12 @@ Project Wakebook A1 makes Chronicle Passport a first-class, owner-private Voyage
 
 ---
 
-## FT-B013 - Owner-Safe Historical Voyage Remembrance
+## FT-B013 - Owner-Safe Historical Voyage Detail and Replay
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Wakebook Phase 2
+**Program or subsystem:** Project Wakebook Phases 2 and 4
 
-Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe path and objective context, historical attribution and crew, artifact and achievement chronology, owner-authored remembrance, participant-consented Keepsake degradation, and Sealed Hold-backed private Memory media without rewriting canonical Voyage truth.
+Project Wakebook Phases 2 and 4 enrich one private historical Voyage Detail with safe path and objective context, historical attribution and crew, artifact and achievement chronology, owner-authored remembrance, participant-consented Keepsake degradation, Sealed Hold-backed private Memory media, and an explicit read-only Lanternwake replay handoff without rewriting canonical Voyage truth.
 
 ### Important subfeatures
 
@@ -1825,10 +1893,11 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 - Opaque Sealed Hold Memory-media associations with owner-only protected delivery and truthful unavailable, unscanned, withdrawn, archived, and revoked states
 - Participant-owned consent denial, grant, and revocation for private Keepsake representation without changing the underlying Voyage record
 - Owner-only technical provenance, Tideglass handoff, visible Personal Harbor navigation, responsive layouts, keyboard support, reduced motion, and effective 200 percent zoom evidence
+- Read-only Lanternwake replay handoff that preserves historical source truth and delegates any new runtime state to One Voyage
 
 ### Primary surfaces
 
-`/passport/history/[recordId]`, `/api/passport/voyages/[recordId]`, `/api/passport/voyages/[recordId]/memories/[memoryId]/media/[mediaId]`
+`/passport/history/[recordId]`, `/api/passport/voyages/[recordId]`, `/api/passport/voyages/[recordId]/memories/[memoryId]/media/[mediaId]`, `/passport/history/[recordId]/replay`
 
 ### Meaningful limitations
 
@@ -1843,19 +1912,22 @@ Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe
 - path: `src/wayfarer/chronicle-history.ts`
 - path: `src/components/wakebook/WakebookVoyageDetail.tsx`
 - test: `tests/e2e/wakebook-phase2.spec.ts`
+- commit: `91b4dfa9bc585dd716b3689656b640415e928688`
+- path: `src/app/passport/history/[recordId]/replay/page.tsx`
 
 ---
 
 ## FT-B014 - Shipwright Creator Publication Review
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Shipwright Phase 5
+**Program or subsystem:** Project Shipwright Phases 4 and 5
 
 Creators stage a saved Chronicle source through Drydock readiness, exact readable differences, asset and protected-content evidence, compatibility, release notes, and explicit immutable confirmation before the canonical One Voyage publication authority creates a Version receipt.
 
 ### Important subfeatures
 
 - Source-bound Drydock release decision with visible blockers warnings and waivers
+- Creator-facing Sea Trial coverage map with trace and uncovered-Passage return links
 - Creator-readable Chronicle Chapter Passage Asset Location and Artifact differences
 - Safe asset protected-content and provider-compatibility review
 - Explicit immutable publication confirmation with recoverable failure state
@@ -1874,6 +1946,8 @@ Creators stage a saved Chronicle source through Drydock readiness, exact readabl
 ### Evidence
 
 - commit: `ab44c398fb76c367036d720cea619825614233f5`
+- commit: `05f48fe208749f3fe4de732ff57853af99c79636`
+- path: `src/components/studio/DrydockScenarioLab.tsx`
 - path: `src/chronicle/publishing-review.ts`
 - path: `src/components/studio/ShipwrightPublishingReview.tsx`
 - test: `tests/e2e/project-shipwright-phase5.spec.ts`
@@ -1952,36 +2026,38 @@ Project Wakebook Phase 5 adds an owner-private Voyage Atlas that organizes sourc
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
+## FT-B017 - Private Voyage Book
 
-## FT-042 - Helm Clear for Voyage Closure
+**Status:** MAINLINE
+**Program or subsystem:** Project Wakebook Phase 6 - Preserve the Story
 
-**Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Project Helm Phase 5 - Clear for Voyage
-
-Project Helm Phase 5 completes the existing Captain experience with an accessible readiness handoff that preserves canonical commands, ordinary Player membership, recovery truth, and historical boundaries.
+Project Wakebook Phase 6 gives an owner a printable, private Voyage Book built only from the retained historical Voyage projection and existing private remembrance, without exporting canonical account data or mutating Voyage state.
 
 ### Important subfeatures
 
-- Polite live feedback for command outcomes and recovery reconciliation
-- Responsive Captain and Player readiness handoff with degraded and historical truth
-- No unproven Captain-surface retirement, authoring control, or invented provider result
+- Owner-private print presentation sourced only from existing historical detail and private remembrance
+- Truthful unavailable-history and media states retained in screen and print presentation
+- Responsive and print-specific layout without participant-media export or canonical Voyage mutation
 
 ### Primary surfaces
 
-`/captain/voyages/[voyageId]`
+`/passport/history/[recordId]/book`, `/passport/history/[recordId]`
 
 ### Meaningful limitations
 
-- Owner walkthrough, live-provider proof, deployment, and physical multi-device validation remain external acceptance activities
-- Only proven obsolete Captain compatibility surfaces may retire; none are retired by this phase
+- The Voyage Book is not a Wayfarer account-data export and does not add public sharing.
+- Protected-main integration completed in PR #576 as 78eaa9ce3c27ce5aab10932e838b00c7dca2b307; deployment and owner acceptance remain separate.
 
 ### Evidence
 
-- path: `src/components/captain/CaptainCommandConsole.tsx`
-- path: `Development_Docs/Projects/Project_Helm/Project_Helm_Phase_5_Design_Record.md`
+- commit: `78eaa9ce3c27ce5aab10932e838b00c7dca2b307`
+- path: `src/components/wakebook/WakebookVoyageBook.tsx`
+- test: `src/components/wakebook/WakebookVoyageBook.test.tsx`
+- completion-record: `Development_Docs/Project_Wakebook_Program_Closeout_Record.md`
 
 ---
+
+# Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
 

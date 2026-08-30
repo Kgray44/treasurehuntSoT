@@ -1,21 +1,20 @@
 ---
 title: Project Bridgewatch v2.0 Light Mission Control Local Validation Record
 audience: engineering
-status: active-implementation
+status: accepted-mainline
 canonical_for: project-bridgewatch-v2-light-mission-control-local-validation
-last_reviewed: 2026-08-27
+last_reviewed: 2026-08-30
 ---
 
 # Project Bridgewatch v2.0 — Light Mission Control Local Validation Record
 
 ## Scope and acceptance boundary
 
-This record captures candidate-local implementation evidence for the supplied
-v2.0 Phase 3 Light Mission Control scope. It preserves the accepted
-Bridgewatch P1/P2 plateau and does not reopen the historic Phase 1–3 program,
-create a Bridgewatch Phase 4, or claim protected-main acceptance. Only the
-future exact candidate-bound Sounding Line / Mainline Decision and protected
-binding can establish that status.
+This record captures the local implementation evidence for the accepted v2.0
+Phase 3 Light Mission Control scope. It preserves the accepted Bridgewatch
+P1/P2 plateau and does not reopen the historic Phase 1–3 program or create a
+Bridgewatch Phase 4. The exact protected-main authority is recorded in the
+[completion receipt](Project_Bridgewatch_v2.0_Light_Mission_Control_Completion_Receipt.md).
 
 ## Local implementation evidence
 
@@ -69,6 +68,6 @@ navigation, and the polite route-change region.
 ## Unperformed acceptance
 
 This local record does not assert a shared private deployment, authenticated
-operator session, provider recovery, GitHub availability, physical production
-runtime, or protected-main integration. Those remain deliberately distinct
-from the task-owned current-repository and current-gateway-handler proof above.
+operator session, provider recovery, GitHub availability, or physical
+production runtime. Those remain deliberately distinct from the accepted
+protected-source integration.

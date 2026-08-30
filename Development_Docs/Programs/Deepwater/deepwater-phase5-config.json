@@ -50,10 +50,10 @@
     ]
   },
   "localQualification": {
-    "state": "RECORD_ONLY_CLOSURE_READY",
-    "mainlineState": "PROTECTED_IMPLEMENTATION_ACCEPTED_RECORD_ONLY_CLOSURE_PENDING",
-    "acceptanceLane": "SOUNDING_LINE_V14_CANDIDATE_MAINLINE_DECISION",
-    "holdReason": "PR #159 accepted the exact candidate 93efa9f4f7d8b4e64ce05ecc89f00e6a73ba02af as protected merge 78610ae4dd63aac9ff45c9c7646c78b38c6ab19a after Sounding Line Mainline Decision run 32158890855 returned RELEASE_GO and protected binding run 32161116494 passed. The remaining closure is record-only and must bind this accepted implementation without adding product scope."
+    "state": "ACCEPTED_MAINLINE",
+    "mainlineState": "ACCEPTED_MAINLINE",
+    "acceptanceLane": "PROTECTED_RECORD_ONLY_CLOSURE_ACCEPTED",
+    "holdReason": "None. PR #215 accepted the source-bound record-only closure for the already accepted Phase 5 implementation."
   },
   "phase4Authority": {
     "qualifiedCandidate": "10f505d2188f0c51e356ad935503e5236df62256",

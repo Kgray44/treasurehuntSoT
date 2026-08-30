@@ -34,28 +34,32 @@
   },
   {
     "id": "FT-B013",
-    "title": "Owner-Safe Historical Voyage Remembrance",
-    "summary": "Project Wakebook Phase 2 enriches one private historical Voyage Detail with safe path and objective context, historical attribution and crew, artifact and achievement chronology, owner-authored remembrance, participant-consented Keepsake degradation, and Sealed Hold-backed private Memory media without rewriting canonical Voyage truth.",
+    "title": "Owner-Safe Historical Voyage Detail and Replay",
+    "summary": "Project Wakebook Phases 2 and 4 enrich one private historical Voyage Detail with safe path and objective context, historical attribution and crew, artifact and achievement chronology, owner-authored remembrance, participant-consented Keepsake degradation, Sealed Hold-backed private Memory media, and an explicit read-only Lanternwake replay handoff without rewriting canonical Voyage truth.",
     "status": "MAINLINE",
-    "program": "Project Wakebook Phase 2",
+    "program": "Project Wakebook Phases 2 and 4",
     "surfaces": [
       "/passport/history/[recordId]",
       "/api/passport/voyages/[recordId]",
-      "/api/passport/voyages/[recordId]/memories/[memoryId]/media/[mediaId]"
+      "/api/passport/voyages/[recordId]/memories/[memoryId]/media/[mediaId]",
+      "/passport/history/[recordId]/replay"
     ],
     "subfeatures": [
       "Version-pinned rich Voyage Detail with bounded historical path, objectives, choices, Creator, Captain, crew, artifact, assembly, and achievement context",
       "Owner-only Reflection and Memory curation with owned historical-reference validation and cross-owner rejection",
       "Opaque Sealed Hold Memory-media associations with owner-only protected delivery and truthful unavailable, unscanned, withdrawn, archived, and revoked states",
       "Participant-owned consent denial, grant, and revocation for private Keepsake representation without changing the underlying Voyage record",
-      "Owner-only technical provenance, Tideglass handoff, visible Personal Harbor navigation, responsive layouts, keyboard support, reduced motion, and effective 200 percent zoom evidence"
+      "Owner-only technical provenance, Tideglass handoff, visible Personal Harbor navigation, responsive layouts, keyboard support, reduced motion, and effective 200 percent zoom evidence",
+      "Read-only Lanternwake replay handoff that preserves historical source truth and delegates any new runtime state to One Voyage"
     ],
     "evidence": [
       { "kind": "commit", "value": "31a4b9d7b67ce06d2cec39857d09c21e0188ebd8" },
       { "kind": "path", "value": "src/wakebook/archive-query.ts" },
       { "kind": "path", "value": "src/wayfarer/chronicle-history.ts" },
       { "kind": "path", "value": "src/components/wakebook/WakebookVoyageDetail.tsx" },
-      { "kind": "test", "value": "tests/e2e/wakebook-phase2.spec.ts" }
+      { "kind": "test", "value": "tests/e2e/wakebook-phase2.spec.ts" },
+      { "kind": "commit", "value": "91b4dfa9bc585dd716b3689656b640415e928688" },
+      { "kind": "path", "value": "src/app/passport/history/[recordId]/replay/page.tsx" }
     ],
     "limitations": [
       "Protected mainline integration completed as 31a4b9d7b67ce06d2cec39857d09c21e0188ebd8",
@@ -154,6 +158,30 @@
       "Protected mainline integration completed in PR #575 as 805e6fa680987df6c39afcbf55b6cb4fad2b7453",
       "Map View remains unavailable until Landfall supplies an accepted owner-safe historical geography projection",
       "Collections are not introduced because the governing Phase 5 authority permits, but does not require, custom shelves"
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-B017",
+    "title": "Private Voyage Book",
+    "summary": "Project Wakebook Phase 6 gives an owner a printable, private Voyage Book built only from the retained historical Voyage projection and existing private remembrance, without exporting canonical account data or mutating Voyage state.",
+    "status": "MAINLINE",
+    "program": "Project Wakebook Phase 6 - Preserve the Story",
+    "surfaces": ["/passport/history/[recordId]/book", "/passport/history/[recordId]"],
+    "subfeatures": [
+      "Owner-private print presentation sourced only from existing historical detail and private remembrance",
+      "Truthful unavailable-history and media states retained in screen and print presentation",
+      "Responsive and print-specific layout without participant-media export or canonical Voyage mutation"
+    ],
+    "limitations": [
+      "The Voyage Book is not a Wayfarer account-data export and does not add public sharing.",
+      "Protected-main integration completed in PR #576 as 78eaa9ce3c27ce5aab10932e838b00c7dca2b307; deployment and owner acceptance remain separate."
+    ],
+    "evidence": [
+      { "kind": "commit", "value": "78eaa9ce3c27ce5aab10932e838b00c7dca2b307" },
+      { "kind": "path", "value": "src/components/wakebook/WakebookVoyageBook.tsx" },
+      { "kind": "test", "value": "src/components/wakebook/WakebookVoyageBook.test.tsx" },
+      { "kind": "completion-record", "value": "Development_Docs/Project_Wakebook_Program_Closeout_Record.md" }
     ],
     "catalogVersion": 1
   }

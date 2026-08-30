@@ -31,7 +31,7 @@
     "Protected-main integration completed in PR #52 at 191a964488d0df71f8dcb91c5b8372fc73b6b32e; deployment and owner acceptance remain separate from source integration.",
     "Sea Trials use synthetic bounded inputs and never mutate a live Tale Session, provider, asset, or Player state.",
     "Live provider, production MySQL, physical-device, and external assistive-technology proof remain outside this phase.",
-    "Immutable publishing evidence and Phase 4 integration remain out of scope."
+    "Phase 4 extends separate readiness and publishing-evidence behavior while preserving this Phase 3 simulation authority."
   ],
   "catalogVersion": 1
 }

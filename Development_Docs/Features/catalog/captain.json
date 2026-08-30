@@ -57,8 +57,8 @@
       { "kind": "path", "value": "src/app/api/player/playthroughs/[playthroughId]/leave/route.ts" }
     ],
     "limitations": [
-      "The A1-A3 and P3 extensions are integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.",
-      "Original Helm Phase 4 preflight, provider fallback, and recovery work remains outside the current capability."
+      "The A1-A3 and P3-P5 extensions are integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.",
+      "Provider outcomes remain explicitly unavailable unless an accepted provider contract supplies them."
     ],
     "catalogVersion": 1
   },
@@ -80,7 +80,8 @@
       { "kind": "path", "value": "src/helm/passage-resilience.ts" },
       { "kind": "path", "value": "src/components/captain/CaptainCommandConsole.tsx" },
       { "kind": "test", "value": "src/helm/passage-resilience.test.ts" },
-      { "kind": "test", "value": "src/helm/operations.test.ts" }
+      { "kind": "test", "value": "src/helm/operations.test.ts" },
+      { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_4_Completion_Receipt.md" }
     ],
     "limitations": [
       "Protected mainline integration completed in PR #577 as c6a5ad82c6f77bfb25ffdeab39cbeb0907301c6f",
@@ -93,10 +94,8 @@
     "id": "FT-042",
     "title": "Helm Clear for Voyage Closure",
     "summary": "Project Helm Phase 5 completes the existing Captain experience with an accessible readiness handoff that preserves canonical commands, ordinary Player membership, recovery truth, and historical boundaries.",
-    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "status": "MAINLINE",
     "program": "Project Helm Phase 5 - Clear for Voyage",
-    "branch": "codex/helm-p5-clear-for-voyage",
-    "commit": "c6a5ad82c6f77bfb25ffdeab39cbeb0907301c6f",
     "surfaces": ["/captain/voyages/[voyageId]"],
     "subfeatures": [
       "Polite live feedback for command outcomes and recovery reconciliation",
@@ -104,8 +103,9 @@
       "No unproven Captain-surface retirement, authoring control, or invented provider result"
     ],
     "evidence": [
+      { "kind": "commit", "value": "fd290e9b34e9bf91a1fe503ac7c3f15dcfee0288" },
       { "kind": "path", "value": "src/components/captain/CaptainCommandConsole.tsx" },
-      { "kind": "path", "value": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_5_Design_Record.md" }
+      { "kind": "completion-record", "value": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_5_Completion_Receipt.md" }
     ],
     "limitations": [
       "Owner walkthrough, live-provider proof, deployment, and physical multi-device validation remain external acceptance activities",

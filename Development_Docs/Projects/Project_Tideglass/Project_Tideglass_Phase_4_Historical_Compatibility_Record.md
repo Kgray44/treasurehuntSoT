@@ -1,12 +1,16 @@
 ---
 title: Project Tideglass Phase 4 Historical Compatibility Record
-status: IN_PROGRESS
+status: ACCEPTED_MAINLINE
 project: Project Tideglass
 phase: "Phase 4 - Fix the Bearings"
 canonical_for: project-tideglass-phase-4-historical-compatibility
 ---
 
 # Project Tideglass Phase 4 Historical Compatibility Record
+
+> Current status: Phase 4 is accepted on protected main through PR #195
+> (`d3787ccc3260611580fa44b83ece844c80563cc2`). The compatibility boundaries
+> below remain in force; no pending wording supersedes that acceptance.
 
 ## Contract
 

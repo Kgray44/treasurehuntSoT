@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-27
+last_reviewed: 2026-08-30
 ---
 
 # Features and subfeatures
@@ -54,8 +54,13 @@ existing private Reflection, Memory, Keepsake, consent, and eligible review
 workflows. Invitation-only history is visible but never counted as a played
 Voyage. [Chronicle Passport guide](../user/chronicle-passport.md). The owner
 accepted the qualified Phase 1 walkthrough on 2026-08-12 and protected mainline
-integration completed in PR #41. Deployment, public sharing, Tideglass
-semantics, and later Timeline/People/Statistics views remain separate.
+integration completed in PR #41. Deployment and public sharing remain separate.
+
+Phases 2 through 6 are also available on main: owner-private Voyage Detail
+remembrance, source-bound Timeline/People/Statistics, an explicitly read-only
+replay handoff, a truthful seasonal Voyage Atlas, and a printable Voyage Book.
+They remain private historical presentation, never public sharing, account-data
+export, or Voyage mutation.
 
 ## Global shell and wayfinding
 
@@ -129,6 +134,11 @@ session revocation, and one inconsistent removed-membership reconciliation.
 Unregistered commands, raw SQL, private-content access, jobs, projection
 rebuilds, and high-risk actions remain unavailable.
 
+Support Pilot S3 completes the case lifecycle for the opening assured operator:
+it closes only a quiescent case, revokes pending or active case-derived access,
+and keeps a durable audit receipt. It adds no repair, raw-data, broad-mutation,
+or independent support authority.
+
 ## Integrated whole-product voyage and owner walkthrough
 
 **Audience:** Product owner, Players, Captains, Creators, and account owners.
@@ -163,14 +173,17 @@ removing Captain authority. Mainline source integration is not deployment,
 live-Voyage proof, or owner acceptance.
 [Guide](../user/captain-guide.md).
 
-The branch-complete Amendment A2 candidate adds a separate, scoped Captain handoff lifecycle: an active
+Amendment A2 adds a separate, scoped Captain handoff lifecycle: an active
 Captain + Player can transfer authority to another joined Player; relinquishing
 authority puts the shared Voyage into Succession Hold without cancellation; an
 eligible Player can take Captaincy first-committed-wins, leave, or create an
 independent same-edition solo continuation. The continuation keeps durable
 parent/child lineage and excludes all other Player-private state. Its current
 synthetic evidence is not protected-main integration, deployment, live-Voyage
-proof, or owner acceptance.
+proof, or owner acceptance. Amendments A1-A3 and Helm Phases 4-5 are also
+available on main: crew lifecycle and succession remain authoritative; preflight
+and recovery stay provider-neutral; and the final readiness handoff is
+responsive with polite command feedback.
 
 ## Creator Studio and publishing
 
@@ -185,16 +198,19 @@ Drydock defaults and local issues, and retain existing autosave, history,
 preview, and publication behavior. Drydock remains the sole contract and
 validation authority; deployment and live-provider execution are separate.
 
-The branch-complete Project Shipwright Phase 5 candidate completes the Creator-side release journey. Version
+Project Shipwright Phases 4-5 complete the Creator-side verification and release
+journey. Version
 history now stages save/freeze, source-bound Drydock readiness, exact
 Creator-readable changes, asset/access and compatibility review, release notes,
 and explicit immutable confirmation. Studio invokes only canonical One Voyage
 publication and withholds success until the immutable Version receipt is
 returned; a rejected request leaves the draft available for repair. Next actions
 include preview, Voyage creation, version comparison, and an eligible governed
-Harborlight handoff. Controls remain responsive, keyboard-operable, and free of
-manual identifiers or raw JSON for normal release work. Local synthetic proof
-does not establish protected-main acceptance, deployment, owner acceptance, or live-provider behavior.
+Harborlight handoff. The Creator can also follow Sea Trial coverage and traces
+back to authored Passages. Controls remain responsive, keyboard-operable, and
+free of manual identifiers or raw JSON for normal release work. Protected-main
+integration does not establish deployment, owner acceptance, or live-provider
+behavior.
 
 Project Tideglass Phases 1-4 provide exact immutable-edition intelligence with
 stable semantic change codes, explainable compatibility, spoiler-safe
@@ -207,12 +223,13 @@ historical semantics are named unavailable rather than silently upcast.
 Repository proof is focused and synthetic; deployment and production MySQL
 execution are not claimed.
 
-Project Drydock Phase 3 is active implementation on its dedicated branch. It
+Project Drydock Phases 3-4 are available on main. They
 adds Creator-only, source-bound deterministic Sea Trials with revisioned
 Scenarios, virtual time, registered synthetic faults, Suites, redacted traces,
-coverage ledgers, and a shared One Voyage transition planner. It never mutates
-live Voyages or providers. This branch work is not available on main, deployed,
-or accepted; its candidate qualification remains governed separately.
+coverage ledgers, and a shared One Voyage transition planner. Phase 4 adds
+source-bound launch readiness, compatibility, required Suite evidence, and
+immutable-publishing evidence. Drydock never mutates live Voyages or providers;
+deployment and owner acceptance remain separate.
 
 ## Community and artifacts
 

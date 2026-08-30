@@ -1,9 +1,9 @@
 ---
 title: Project Bridgewatch v2.0 Light Mission Control Design Record
 audience: engineering
-status: active-implementation
+status: accepted-mainline
 canonical_for: project-bridgewatch-v2-light-mission-control
-last_reviewed: 2026-08-27
+last_reviewed: 2026-08-30
 ---
 
 # Project Bridgewatch v2.0 — Light Mission Control
@@ -97,8 +97,7 @@ mobile layouts, keyboard checks, and accessibility scanning. The live stack
 must use actual local repository observations and must report locally available
 degraded/unconfigured sources truthfully.
 
-Only after the current-main reconciliation may this increment have one frozen
-candidate, an ordinary candidate-bound Sounding Line / Mainline Decision,
-protected merge, landed Mission Control smoke, and a v2.0 closure record. This
-record does not itself claim any of those completion gates and does not
-authorize Bridgewatch Phase 4.
+Protected PR #490 completed the frozen-candidate, ordinary Sounding Line,
+protected-merge, and v2.0 closure gates. The exact acceptance identity is in
+the [completion receipt](Project_Bridgewatch_v2.0_Light_Mission_Control_Completion_Receipt.md).
+This record does not authorize Bridgewatch Phase 4.

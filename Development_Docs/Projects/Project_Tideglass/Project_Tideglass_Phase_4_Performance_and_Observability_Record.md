@@ -1,12 +1,16 @@
 ---
 title: Project Tideglass Phase 4 Performance and Observability Record
-status: IN_PROGRESS
+status: ACCEPTED_MAINLINE
 project: Project Tideglass
 phase: "Phase 4 - Fix the Bearings"
 canonical_for: project-tideglass-phase-4-performance-observability
 ---
 
 # Project Tideglass Phase 4 Performance and Observability Record
+
+> Current status: Phase 4 is accepted on protected main through PR #195
+> (`d3787ccc3260611580fa44b83ece844c80563cc2`). Pending live-provider or
+> operational-browser work remains external acceptance rather than a mainline hold.
 
 ## Execution and cache truth
 

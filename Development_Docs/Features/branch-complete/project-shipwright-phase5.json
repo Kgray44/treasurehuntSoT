@@ -3,22 +3,25 @@
   "title": "Shipwright Creator Publication Review",
   "summary": "Creators stage a saved Chronicle source through Drydock readiness, exact readable differences, asset and protected-content evidence, compatibility, release notes, and explicit immutable confirmation before the canonical One Voyage publication authority creates a Version receipt.",
   "status": "MAINLINE",
-  "program": "Project Shipwright Phase 5",
+    "program": "Project Shipwright Phases 4 and 5",
   "surfaces": [
     "/studio/tales/[taleId]/versions",
     "/api/studio/tales/[taleId]/publishing-review",
     "src/components/studio/ShipwrightPublishingReview.tsx"
   ],
   "subfeatures": [
-    "Source-bound Drydock release decision with visible blockers warnings and waivers",
+      "Source-bound Drydock release decision with visible blockers warnings and waivers",
+      "Creator-facing Sea Trial coverage map with trace and uncovered-Passage return links",
     "Creator-readable Chronicle Chapter Passage Asset Location and Artifact differences",
     "Safe asset protected-content and provider-compatibility review",
     "Explicit immutable publication confirmation with recoverable failure state",
     "Authoritative Version receipt before publication success and governed next actions",
     "Task-owned Creator browser acceptance including responsive and large-Chronicle proof"
   ],
-  "evidence": [
-    { "kind": "commit", "value": "ab44c398fb76c367036d720cea619825614233f5" },
+    "evidence": [
+      { "kind": "commit", "value": "ab44c398fb76c367036d720cea619825614233f5" },
+      { "kind": "commit", "value": "05f48fe208749f3fe4de732ff57853af99c79636" },
+      { "kind": "path", "value": "src/components/studio/DrydockScenarioLab.tsx" },
     { "kind": "path", "value": "src/chronicle/publishing-review.ts" },
     { "kind": "path", "value": "src/components/studio/ShipwrightPublishingReview.tsx" },
     { "kind": "test", "value": "tests/e2e/project-shipwright-phase5.spec.ts" },

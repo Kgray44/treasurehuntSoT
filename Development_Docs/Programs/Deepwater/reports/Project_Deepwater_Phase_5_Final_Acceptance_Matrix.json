@@ -3,7 +3,7 @@
   "project": "Project Deepwater",
   "phase": "Phase 5 - Keep the Soundings",
   "sourceSha": "78610ae4dd63aac9ff45c9c7646c78b38c6ab19a",
-  "state": "RECORD_ONLY_CLOSURE_READY",
+  "state": "ACCEPTED_MAINLINE",
   "checks": [
     { "id": "P5-AUTHORIZATION", "state": "PASSED", "evidence": "Explicit owner prompt, 2026-08-13" },
     {
@@ -68,8 +68,8 @@
     },
     {
       "id": "P5-RECORD-ONLY-CLOSURE",
-      "state": "READY_FOR_PROTECTED_RECORD_ONLY_BINDING",
-      "evidence": "This documentation-only candidate is limited to source-bound closure records and generated indexes. It references the one accepted implementation authority, run 32158890855, and requires the current protected record-only binding before program completion is reported."
+      "state": "PASSED_PROTECTED_RECORD_ONLY_CLOSURE",
+      "evidence": "PR #215 protected-merged the source-bound record-only closure as 70afa7ce9f6a2c77394b96020340c069222d60f9 after required protected binding."
     }
   ]
 }

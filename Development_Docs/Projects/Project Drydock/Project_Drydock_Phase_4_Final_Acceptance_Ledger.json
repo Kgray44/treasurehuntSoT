@@ -2,9 +2,16 @@
   "schemaVersion": 1,
   "project": "Project Drydock",
   "phase": 4,
-  "status": "READY_FOR_V14_MAINLINE_ACCEPTANCE",
+  "status": "ACCEPTED_MAINLINE",
   "governingSource": "Project Drydock Phase 4: Clear for Launch",
-  "acceptedCommit": null,
+  "acceptedCommit": "29f3ae60cf13e79f79e6dd793c4cc94aca75b551",
+  "mainlineAuthority": {
+    "pullRequest": 198,
+    "baseSha": "03da6a7b507a6a8a73f7b05e1216472714c5f4f8",
+    "candidateSha": "9c00ee8e38c1438cbbe8398107209188cf0dba00",
+    "ordinaryDecisionRun": 32878886481,
+    "decision": "RELEASE_GO"
+  },
   "mandatoryFamilies": [
     {
       "id": "DD-F-READINESS",

@@ -1,14 +1,19 @@
 ---
 title: Project Drydock Phase 4 Validation Record
 audience: engineering
-status: v1.4-reconciled-qualification
+status: accepted-mainline
 canonical_for: project-drydock-phase-4-validation
-last_reviewed: 2026-08-18
+last_reviewed: 2026-08-30
 ---
 
 # Project Drydock Phase 4 validation record
 
 This record is development and local-qualification evidence only. It is not a Sounding Line release decision or protected-main acceptance receipt.
+
+The final protected acceptance is now recorded separately: PR #198, ordinary
+Sounding Line run `32878886481`, and merge
+`29f3ae60cf13e79f79e6dd793c4cc94aca75b551`. The table remains the preserved
+focused qualification evidence for that accepted result.
 
 | Evidence                                                | Result                                     | Boundary                                                                                                                                                                       |
 | ------------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -28,4 +33,5 @@ This record is development and local-qualification evidence only. It is not a So
 
 The frozen source checkpoint `896817e315e5e4300569e996281da2f3601bd3d8` remains preserved historic evidence. After reconciliation to protected main `8c7c3589955f94fcc8a400a81e4f61565d0d4521`, the current branch reran the focused Drydock, publishing, historical, Sea Trials, Harborlight, Studio, migration, policy, and authenticated browser families. The browser journey additionally proves an emulated reduced-motion preference alongside the existing 390 px, keyboard, and Axe checks.
 
-The local phase is `READY_FOR_V14_MAINLINE_ACCEPTANCE`: its exact frozen candidate still requires a current Sounding Line Mainline Decision with a valid `RELEASE_GO` and protected integration before it can be called accepted. Live MySQL and connected external/provider proof remain distinct external evidence and are not represented as passed.
+The phase is `ACCEPTED_MAINLINE`. Live MySQL and connected external/provider
+proof remain distinct external evidence and are not represented as passed.

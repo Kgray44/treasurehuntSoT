@@ -3,18 +3,17 @@ title: Project Shipwright program closure
 program: Project Shipwright
 phase: closure
 record_type: closure
-status: current
+status: accepted-mainline
 authority: Project Shipwright Creator Studio Authoring Experience Governing Document
-date: 2026-08-26
-base: 445cbb253cd19191c2b02c0951efc7c6be3b1f74
+date: 2026-08-30
+base: ab44c398fb76c367036d720cea619825614233f5
 scope: Completion criteria for Shipwright Phases 1 through 5
 ---
 
 # Project Shipwright program closure
 
 Project Shipwright is complete when its five governed phase outcomes are
-present together and the Phase 5 candidate has passed ordinary protected-main
-acceptance:
+present together on protected main:
 
 1. Phase 1 established Creator Studio's owned shell, Chronicle source, and
    safe authoring boundaries.
@@ -37,9 +36,11 @@ validation and simulation; One Voyage owns publication; Harborlight owns
 Community release; Tideglass owns edition intelligence.
 
 This closure neither creates a Phase 6 nor claims deployment, live providers,
-production databases, or owner acceptance. The candidate's recorded
-qualification, protected merge, and landed-tree smoke are the final integration
-evidence.
+production databases, or owner acceptance. Phase 4 merged in PR #460 as
+`05f48fe208749f3fe4de732ff57853af99c79636` and Phase 5 merged in PR #479 as
+`ab44c398fb76c367036d720cea619825614233f5` after ordinary Sounding Line run
+`33048000620` passed. Their recorded qualification, protected merge, and
+landed-tree evidence are the final source-integration evidence.
 
 ## Related records
 
