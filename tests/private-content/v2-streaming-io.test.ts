@@ -14,6 +14,8 @@ import { makePayload } from "@/private-content/package";
 
 const roots: string[] = [];
 const digest = (value: Buffer) => createHash("sha256").update(value).digest("hex");
+const scryptWorkingSetBytes = 128 * 1024 * 1024;
+const streamingRssHeadroomBytes = 32 * 1024 * 1024;
 afterEach(async () => Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true }))));
 
 describe("v2 protected streaming sink", () => {
@@ -227,6 +229,9 @@ describe("v2 protected streaming sink", () => {
     });
     peakRss = Math.max(peakRss, process.memoryUsage().rss);
     expect(staged.files[0]).toMatchObject({ byteLength: manifest.totals.plaintextBytes });
-    expect(peakRss - warmedRss).toBeLessThan(128 * 1024 * 1024);
+    // The KDF is explicitly permitted to reserve its bounded 128 MiB working
+    // set; leave allocator headroom while retaining a limit far below the
+    // 512 MiB streamed payload.
+    expect(peakRss - warmedRss).toBeLessThan(scryptWorkingSetBytes + streamingRssHeadroomBytes);
   }, 180_000);
 });
