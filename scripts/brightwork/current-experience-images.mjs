@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 import { PrismaClient } from "@prisma/client";
@@ -30,6 +30,7 @@ const command = process.argv[2] ?? "plan";
 
 if (command === "plan") await plan();
 else if (command === "capture") await capture();
+else if (command === "capture-supplemental") await capture(true);
 else if (command === "render") await render();
 else if (command === "reconcile") await reconcile();
 else if (command === "validate") await validate();
@@ -84,13 +85,25 @@ async function plan() {
   );
 }
 
-async function capture() {
+async function capture(supplemental = false) {
   const [contract, census] = await Promise.all([json(contractPath), json(censusPath)]);
   const sourceSha = auditedSourceSha();
   if (contract.sourceSha !== sourceSha) throw new Error("BRIGHTWORK_CAPTURE_PLAN_STALE_REPLAN_REQUIRED");
   const contractValidation = captureContractValidation({ contract, census });
   if (!contractValidation.valid)
     throw new Error(`BRIGHTWORK_CAPTURE_CONTRACT_INVALID:${contractValidation.failureCodes.join(",")}`);
+  const existingManifest = supplemental ? await json(path.join(imageRoot, "manifest.json")) : null;
+  const existingByIdentity = new Map((existingManifest?.records ?? []).map((record) => [record.identity, record]));
+  const requirementsToCapture = supplemental
+    ? contract.requirements.filter((requirement) => {
+        const existing = existingByIdentity.get(requirement.identity);
+        return (
+          !existing ||
+          existing.captureStatus === "BLOCKED_BY_PRODUCT" ||
+          existing.requirementDigest !== requirement.requirementDigest
+        );
+      })
+    : contract.requirements;
   const baseUrl = required("BRIGHTWORK_BASE_URL").replace(/\/$/u, "");
   const fixtureRoot = path.resolve(required("BRIGHTWORK_FIXTURE_ROOT"));
   const fixtureReceipt = await json(path.join(fixtureRoot, "reports", "fixture-receipt.json"));
@@ -108,7 +121,7 @@ async function capture() {
   const authentications = new Map();
   try {
     const byContext = new Map();
-    for (const requirement of contract.requirements) {
+    for (const requirement of requirementsToCapture) {
       const key = `${requirement.persona}|${requirement.theme}|${requirement.viewport}`;
       const group = byContext.get(key) ?? [];
       group.push(requirement);
@@ -158,7 +171,7 @@ async function capture() {
               fixtureReceipt,
               browserVersion,
               representatives,
-              ordinal: records.length + 1,
+              ordinal: nextImageOrdinal(existingManifest?.records ?? [], records.length),
               baseUrl,
             }),
           );
@@ -171,10 +184,14 @@ async function capture() {
     await Promise.all([...authentications.values()].map((authentication) => authentication.dispose()));
     await browser.close();
   }
+  const retainedRecords = (existingManifest?.records ?? []).filter(
+    (record) => !records.some((replacement) => replacement.identity === record.identity),
+  );
+  const allRecords = [...retainedRecords, ...records];
   const manifest = {
-    schemaVersion: "2.0.0",
+    schemaVersion: "2.1.0",
     project: "Voyagewright",
-    artifact: "Brightwork Stage 1 current visual evidence corpus",
+    artifact: "Brightwork current visual evidence corpus",
     fixture: fixtureReceipt.fixtureVersion,
     fixturePrivacyBasis: fixtureReceipt.privacyBasis,
     sourceSha,
@@ -182,31 +199,59 @@ async function capture() {
     generatedAt: new Date().toISOString(),
     browser: `Chromium ${browserVersion}`,
     visualReviewStatus: CURRENT_CAPTURE_STATUS,
-    records,
+    records: allRecords,
+    ...(supplemental && existingManifest?.stage4b
+      ? {
+          stage4b: {
+            ...existingManifest.stage4b,
+            supplementalCaptureCount:
+              Number(existingManifest.stage4b.supplementalCaptureCount ?? 0) +
+              records.filter((record) => !existingByIdentity.has(record.identity)).length,
+          },
+        }
+      : {}),
   };
-  await writeJson(path.join(temporaryImages, "manifest.json"), manifest);
-  await createIndex(temporaryImages, manifest);
-  await createContactSheets(temporaryImages, manifest);
-  await writeFile(path.join(temporaryImages, "README.md"), buildReadme(manifest), "utf8");
-  await verifyManifestFiles(temporaryImages, manifest);
-  await rm(imageRoot, { recursive: true, force: true });
-  await mkdir(path.dirname(imageRoot), { recursive: true });
-  await copyDirectory(temporaryImages, imageRoot);
+  if (supplemental) {
+    for (const record of records) {
+      const source = path.join(temporaryImages, ...record.screenshotPath.split("/"));
+      const destination = path.join(imageRoot, ...record.screenshotPath.split("/"));
+      await mkdir(path.dirname(destination), { recursive: true });
+      await copyFile(source, destination);
+    }
+    await writeJson(path.join(imageRoot, "manifest.json"), manifest);
+    await createIndex(imageRoot, manifest);
+    await createContactSheets(imageRoot, manifest);
+    await writeFile(path.join(imageRoot, "README.md"), buildReadme(manifest), "utf8");
+    await verifyManifestFiles(imageRoot, manifest);
+    await rm(temporaryRoot, { recursive: true, force: true });
+  } else {
+    await writeJson(path.join(temporaryImages, "manifest.json"), manifest);
+    await createIndex(temporaryImages, manifest);
+    await createContactSheets(temporaryImages, manifest);
+    await writeFile(path.join(temporaryImages, "README.md"), buildReadme(manifest), "utf8");
+    await verifyManifestFiles(temporaryImages, manifest);
+    await rm(imageRoot, { recursive: true, force: true });
+    await mkdir(path.dirname(imageRoot), { recursive: true });
+    await copyDirectory(temporaryImages, imageRoot);
+  }
   await reconcile();
   process.stdout.write(
-    `${JSON.stringify({ status: "BRIGHTWORK_CURRENT_EXPERIENCE_IMAGES_CAPTURED", sourceSha, captures: records.length, blocked: records.filter((record) => record.captureStatus === "BLOCKED_BY_PRODUCT").length })}\n`,
+    `${JSON.stringify({ status: supplemental ? "BRIGHTWORK_SUPPLEMENTAL_EXPERIENCE_IMAGES_CAPTURED" : "BRIGHTWORK_CURRENT_EXPERIENCE_IMAGES_CAPTURED", sourceSha, captures: records.length, totalCaptures: allRecords.length, blocked: records.filter((record) => record.captureStatus === "BLOCKED_BY_PRODUCT").length })}\n`,
   );
 }
 
 async function render() {
   const manifest = await json(path.join(imageRoot, "manifest.json"));
+  const prunedCanonicalFiles = await removeUnreferencedCanonicalFiles(imageRoot, manifest);
   await rm(path.join(imageRoot, "Contact_Sheets"), { recursive: true, force: true });
   await createIndex(imageRoot, manifest);
   await createContactSheets(imageRoot, manifest);
   await writeFile(path.join(imageRoot, "README.md"), buildReadme(manifest), "utf8");
   await verifyManifestFiles(imageRoot, manifest);
   const report = await reconcile();
-  process.stdout.write(`${JSON.stringify({ status: "BRIGHTWORK_CONTACT_SHEETS_RENDERED", ...summary(report) })}\n`);
+  process.stdout.write(
+    `${JSON.stringify({ status: "BRIGHTWORK_CONTACT_SHEETS_RENDERED", prunedCanonicalFiles, ...summary(report) })}\n`,
+  );
 }
 
 async function captureRequirement(options) {
@@ -280,6 +325,7 @@ async function captureRequirement(options) {
     browserVersion: `Chromium ${browserVersion}`,
     sourceSha,
     contractDigest: contract.contractDigest,
+    requirementDigest: requirement.requirementDigest,
     capturedAt: new Date().toISOString(),
     screenshotPath: relativePath,
     sha256: fileChecksum(absolutePath),
@@ -310,17 +356,56 @@ async function observePage(page, response, requirement, concreteRoute) {
       .getByLabel("Email or legacy Player name")
       .count()
       .catch(() => 0)) > 0;
+  const semanticText = `${pageTitle}\n${body}`;
+  const readyMarkers = [];
+  if (
+    (await page
+      .locator("[data-operational-status]")
+      .count()
+      .catch(() => 0)) > 0
+  )
+    readyMarkers.push("CAPTAIN_OPERATIONAL_PROJECTION");
+  if (
+    (await page
+      .locator("[data-captain-authority]")
+      .count()
+      .catch(() => 0)) > 0
+  )
+    readyMarkers.push("CAPTAIN_MUSTER_PROJECTION");
+  if (
+    (await page
+      .locator(".player-safe-preview:not(.platform-loading) h1")
+      .count()
+      .catch(() => 0)) > 0
+  )
+    readyMarkers.push("PLAYER_SAFE_PREVIEW");
+  if (
+    (await page
+      .locator("#private-operations-title")
+      .count()
+      .catch(() => 0)) > 0
+  )
+    readyMarkers.push("PRIVATE_OPERATIONS_CONSOLE");
   return {
     httpStatus: response?.status() ?? null,
     finalPath: final.pathname,
     pageTitle,
-    notFound:
-      response?.status() === 404 || /(?:\b404\b|page could not be found|not found)/iu.test(`${pageTitle}\n${body}`),
+    notFound: response?.status() === 404 || /(?:\b404\b|page could not be found|not found)/iu.test(semanticText),
     unauthorizedSurface:
       response?.status() === 401 ||
       response?.status() === 403 ||
-      /(?:unauthorized|not authorized|permission denied)/iu.test(`${pageTitle}\n${body}`),
+      /(?:unauthorized|not authorized|permission denied|access is required|authorization is required)/iu.test(
+        semanticText,
+      ),
+    unavailableSurface:
+      /(?:\b(?:access|chronicle|console|muster room|operational view|page|preview|resource|route|voyage)\b[^.\n]{0,64}\bunavailable\b|\bcannot be (?:opened|accessed)\b|\bnot (?:currently )?available\b)/iu.test(
+        semanticText,
+      ),
+    deadEndSurface:
+      /\breturn to (?:chronicle|studio|captain|library)\b/iu.test(semanticText) &&
+      /\b(?:access|route|page|chronicle)\b[^.\n]{0,64}\bunavailable\b/iu.test(semanticText),
     signInSurface,
+    readyMarkers,
     syntheticRecordProven:
       requirement.classification !== "CONTEXTUAL_DYNAMIC_DESTINATION" || !/\[[^\]]+\]/u.test(concreteRoute),
   };
@@ -332,9 +417,9 @@ async function navigateForRequirement(page, url, requirement) {
     const gate = new Promise((resolve) => {
       release = resolve;
     });
-    await page.route("**/api/community/discover?**", async (request) => {
+    await page.route("**/api/community/discover?**", async (route) => {
       await gate;
-      await request.continue();
+      await route.continue().catch(() => undefined);
     });
     const response = await settledGoto(page, url);
     const search = page.getByRole("searchbox", { name: "Search public Community Harbor" });
@@ -364,6 +449,77 @@ async function navigateForRequirement(page, url, requirement) {
     await search.press("Enter");
     await page.locator(".community-state--error").waitFor({ timeout: 5_000 });
     return { response, cleanup: () => page.unroute("**/api/community/discover?**") };
+  }
+  if (requirement.captureAction === "CAPTAIN_LOADING") {
+    let release;
+    const gate = new Promise((resolve) => {
+      release = resolve;
+    });
+    await page.route("**/api/captain/voyages/**", async (route) => {
+      await gate;
+      await route.continue().catch(() => undefined);
+    });
+    const response = await settledGoto(page, url);
+    await page.getByText("Reading operational state").waitFor({ timeout: 5_000 });
+    return {
+      response,
+      cleanup: async () => {
+        release();
+        await page.unroute("**/api/captain/voyages/**");
+      },
+    };
+  }
+  if (requirement.captureAction === "CAPTAIN_ERROR") {
+    await page.route("**/api/captain/voyages/**", async (request) =>
+      request.fulfill({
+        status: 503,
+        contentType: "application/json",
+        body: JSON.stringify({ error: "Task-owned Brightwork synthetic outage." }),
+      }),
+    );
+    const response = await settledGoto(page, url);
+    await page.getByText("Operational view unavailable").waitFor({ timeout: 5_000 });
+    return { response, cleanup: () => page.unroute("**/api/captain/voyages/**") };
+  }
+  if (requirement.captureAction === "CAPTAIN_DESTRUCTIVE_CONFIRMATION") {
+    const response = await settledGoto(page, url);
+    await page.locator("[data-operational-status]").first().waitFor({ timeout: 5_000 });
+    await page.getByRole("button", { name: "Cancel Voyage for Everyone" }).click();
+    await page.getByText("Cancel Voyage for Everyone", { exact: true }).last().waitFor({ timeout: 5_000 });
+    return { response, cleanup: async () => undefined };
+  }
+  if (requirement.captureAction === "PRIVATE_OPERATIONS_LOADING") {
+    let release;
+    const gate = new Promise((resolve) => {
+      release = resolve;
+    });
+    await page.route("**/api/studio/private-content/operations", async (route) => {
+      await gate;
+      await route.continue().catch(() => undefined);
+    });
+    const response = await settledGoto(page, url);
+    await page.getByText("Loading operational status.").waitFor({ timeout: 5_000 });
+    return {
+      response,
+      cleanup: async () => {
+        release();
+        await page.unroute("**/api/studio/private-content/operations");
+      },
+    };
+  }
+  if (requirement.captureAction === "PRIVATE_OPERATIONS_DEPENDENCY_UNAVAILABLE") {
+    await page.route("**/api/studio/private-content/operations", async (request) =>
+      request.fulfill({
+        status: 503,
+        contentType: "application/json",
+        body: JSON.stringify({ error: "Task-owned Brightwork synthetic dependency outage." }),
+      }),
+    );
+    const response = await settledGoto(page, url);
+    await page
+      .getByText("Operational status is unavailable or requires Administrator access.")
+      .waitFor({ timeout: 5_000 });
+    return { response, cleanup: () => page.unroute("**/api/studio/private-content/operations") };
   }
   const response = await settledGoto(page, url);
   if (requirement.captureAction === "KEYBOARD_FOCUS") await page.keyboard.press("Tab");
@@ -477,29 +633,48 @@ async function representativeValues(databasePath, credentials) {
       where: { accountId: credentials.ORDINARY_PLAYER?.accountId, status: "ACTIVE", handle: { not: null } },
       orderBy: { id: "asc" },
     });
-    const [chronicle, listing, collection, guide, voyageLog, moderation, artifact, history, session] =
-      await Promise.all([
-        db.chronicle.findFirst({ where: { status: "PUBLISHED" }, orderBy: { id: "asc" } }),
-        db.communityListing.findFirst({
-          where: { publicationStatus: "PUBLISHED", visibility: { in: ["COMMUNITY", "FEATURED"] }, archivedAt: null },
-          orderBy: { id: "asc" },
-        }),
-        db.communityCollection.findFirst({ orderBy: { id: "asc" } }),
-        db.communityGuideContent.findFirst({ orderBy: { id: "asc" } }),
-        db.communityVoyageLog.findFirst({ orderBy: { id: "asc" } }),
-        db.communityModerationCase.findFirst({ orderBy: { id: "asc" } }),
-        db.playerArtifactRecord.findFirst({ where: { playerProfileId: ordinary?.id }, orderBy: { id: "asc" } }),
-        db.playerChronicleRecord.findFirst({ where: { playerProfileId: ordinary?.id }, orderBy: { id: "asc" } }),
-        db.taleSession.findFirst({
-          where: { memberships: { some: { playerProfileId: ordinary?.id } } },
-          orderBy: { id: "asc" },
-          include: { tale: true },
-        }),
-      ]);
+    const [
+      chronicle,
+      listing,
+      collection,
+      guide,
+      voyageLog,
+      moderation,
+      artifact,
+      history,
+      session,
+      captainSession,
+      studioTale,
+    ] = await Promise.all([
+      db.chronicle.findFirst({ where: { status: "PUBLISHED" }, orderBy: { id: "asc" } }),
+      db.communityListing.findFirst({
+        where: { publicationStatus: "PUBLISHED", visibility: { in: ["COMMUNITY", "FEATURED"] }, archivedAt: null },
+        orderBy: { id: "asc" },
+      }),
+      db.communityCollection.findFirst({ orderBy: { id: "asc" } }),
+      db.communityGuideContent.findFirst({ orderBy: { id: "asc" } }),
+      db.communityVoyageLog.findFirst({ orderBy: { id: "asc" } }),
+      db.communityModerationCase.findFirst({ orderBy: { id: "asc" } }),
+      db.playerArtifactRecord.findFirst({ where: { playerProfileId: ordinary?.id }, orderBy: { id: "asc" } }),
+      db.playerChronicleRecord.findFirst({ where: { playerProfileId: ordinary?.id }, orderBy: { id: "asc" } }),
+      db.taleSession.findFirst({
+        where: { memberships: { some: { playerProfileId: ordinary?.id } } },
+        orderBy: { id: "asc" },
+        include: { tale: true },
+      }),
+      db.taleSession.findFirst({
+        where: { captainAccountId: credentials.CAPTAIN_PLAYER?.accountId, status: "ACTIVE" },
+        orderBy: { id: "asc" },
+      }),
+      db.chronicle.findFirst({
+        where: { creatorAccountId: credentials.CREATOR?.accountId, status: "DRAFT" },
+        orderBy: { id: "asc" },
+      }),
+    ]);
     const adminTarget = credentials.admiraltyAccounts?.SUPPORT_TARGET ?? credentials.ADMIRALTY_OPERATOR;
     const values = {
       chronicleId: chronicle?.id,
-      taleId: chronicle?.id,
+      taleId: studioTale?.id,
       taleSlug: chronicle?.slug,
       campaignSlug: chronicle?.slug,
       listingSlug: listing?.slug,
@@ -512,9 +687,9 @@ async function representativeValues(databasePath, credentials) {
       moderationId: moderation?.id,
       artifactId: artifact?.id,
       recordId: history?.id,
-      sessionId: session?.id,
-      playthroughId: session?.id,
-      voyageId: session?.id,
+      sessionId: captainSession?.id,
+      playthroughId: captainSession?.id,
+      voyageId: captainSession?.id,
       accountId: adminTarget?.accountId,
       workspace: "chapters",
     };
@@ -693,6 +868,35 @@ async function verifyManifestFiles(output, manifest) {
   }
 }
 
+async function removeUnreferencedCanonicalFiles(output, manifest) {
+  const canonicalRoot = path.resolve(output, "Canonical");
+  const expected = new Set(
+    manifest.records.map((record) => {
+      if (!record.screenshotPath.startsWith("Canonical/"))
+        throw new Error(`BRIGHTWORK_NONCANONICAL_MANIFEST_PATH:${record.imageId}`);
+      const file = path.resolve(output, ...record.screenshotPath.split("/"));
+      if (!file.startsWith(`${canonicalRoot}${path.sep}`))
+        throw new Error(`BRIGHTWORK_CANONICAL_PATH_ESCAPE:${record.imageId}`);
+      return file;
+    }),
+  );
+  const actual = await canonicalPngFiles(canonicalRoot);
+  const stale = actual.filter((file) => !expected.has(file));
+  await Promise.all(stale.map((file) => rm(file, { force: false })));
+  return stale.map((file) => path.relative(output, file).replaceAll("\\", "/"));
+}
+
+async function canonicalPngFiles(directory) {
+  const { readdir } = await import("node:fs/promises");
+  const files = [];
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const candidate = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...(await canonicalPngFiles(candidate)));
+    else if (entry.isFile() && entry.name.endsWith(".png")) files.push(candidate);
+  }
+  return files;
+}
+
 async function copyDirectory(from, to) {
   await mkdir(to, { recursive: true });
   const { readdir } = await import("node:fs/promises");
@@ -727,6 +931,14 @@ function summary(report) {
   };
 }
 
+function nextImageOrdinal(existingRecords, supplementalCount) {
+  const highest = existingRecords.reduce((current, record) => {
+    const parsed = Number.parseInt(String(record.imageId ?? "").replace(/^BW-XI-/u, ""), 10);
+    return Number.isFinite(parsed) ? Math.max(current, parsed) : current;
+  }, 0);
+  return highest + supplementalCount + 1;
+}
+
 function json(file) {
   return readFile(file, "utf8").then(JSON.parse);
 }
@@ -741,7 +953,19 @@ function git(...args) {
 }
 
 function auditedSourceSha() {
-  return git("merge-base", "origin/main", "HEAD");
+  // Evidence commits may be merged after the product source they describe.
+  // Stage 1 is the recorded source authority; fail closed if its product tree
+  // no longer matches the protected tree instead of silently moving baseline.
+  const stageOne = JSON.parse(
+    git("show", "HEAD:Development_Docs/Projects/Voyagewright_Brightwork/Current_Route_Census.json"),
+  );
+  const sourceSha = stageOne.sourceSha;
+  try {
+    execFileSync("git", ["diff", "--quiet", sourceSha, "HEAD", "--", "src"], { cwd: root, stdio: "ignore" });
+  } catch {
+    throw new Error(`BRIGHTWORK_PRODUCT_SOURCE_BASELINE_MOVED:${sourceSha}`);
+  }
+  return sourceSha;
 }
 
 function sqliteUrl(file) {

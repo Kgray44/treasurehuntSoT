@@ -7107,7 +7107,31 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Brightwork_Current_Navigation_Reachability_Report.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Brightwork_Evidence_State_Exceptions.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Brightwork_Meaningful_State_Coverage_Matrix.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Voyagewright_Brightwork/Brightwork_Stage_1_Completion_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Brightwork_Stage_4B_Evidence_Addendum.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

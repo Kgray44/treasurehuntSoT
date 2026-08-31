@@ -17,7 +17,15 @@ const homeportDatabase = path.join(
   "owner-rereview-database",
   "homeport-phase7-owner-correction-round3-rereview.db",
 );
-const sourceSha = git(["merge-base", "origin/main", "HEAD"]);
+const stageOneCensus = JSON.parse(
+  git(["show", "HEAD:Development_Docs/Projects/Voyagewright_Brightwork/Current_Route_Census.json"]),
+);
+const sourceSha = stageOneCensus.sourceSha;
+try {
+  git(["diff", "--quiet", sourceSha, "HEAD", "--", "src"]);
+} catch {
+  throw new Error(`BRIGHTWORK_PRODUCT_SOURCE_BASELINE_MOVED:${sourceSha}`);
+}
 const currentMainBootstrapDatabase = path.join(homeportRoot, "bootstrap", `current-main-${sourceSha.slice(0, 12)}.db`);
 
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`)) throw new Error("BRIGHTWORK_TASK_ROOT_REFUSED");
@@ -72,7 +80,7 @@ const receipt = {
   schemaVersion: "1.0.0",
   status: "BRIGHTWORK_COMBINED_SYNTHETIC_FIXTURE_READY",
   sourceSha,
-  fixtureVersion: "brightwork-combined-homeport-round3-admiralty-phase2-v2",
+  fixtureVersion: "brightwork-combined-homeport-round3-admiralty-phase2-v3",
   databasePath: combinedDatabase,
   databaseHash,
   credentials: {
@@ -220,6 +228,79 @@ async function ensureBrightworkRouteRepresentatives(databasePath, credentialsPat
         sourceFingerprint: "brightwork-stage1-artifact-v1",
         createdAt: completedAt,
         lastDerivedAt: completedAt,
+      },
+    });
+
+    // These records are task-owned route representatives. Stage 1 selected a
+    // generic completed session and a published Chronicle, neither of which
+    // was owned by the authenticated Captain/Creator capture persona.
+    await db.taleSession.upsert({
+      where: { id: "brightwork-stage4b-captain-voyage" },
+      update: {
+        captainId: player.id,
+        captainAccountId: fullCapability.accountId,
+        status: "ACTIVE",
+        publishedVersionId: session.publishedVersionId,
+      },
+      create: {
+        id: "brightwork-stage4b-captain-voyage",
+        taleId: session.taleId,
+        publishedVersionId: session.publishedVersionId,
+        ownerLabel: "Brightwork synthetic Captain",
+        voyageName: "Brightwork Captain Passage",
+        captainId: player.id,
+        captainAccountId: fullCapability.accountId,
+        accessTokenHash: "brightwork-stage4b-captain-token-never-rendered",
+        status: "ACTIVE",
+        captainMode: "CAPTAIN_CONTROLLED",
+        configuration: "{}",
+        launchedAt: completedAt,
+        lastHeartbeatAt: completedAt,
+        currentSequence: 1,
+        startedAt: completedAt,
+      },
+    });
+    await db.playthroughMembership.upsert({
+      where: {
+        playthroughId_playerProfileId: {
+          playthroughId: "brightwork-stage4b-captain-voyage",
+          playerProfileId: player.id,
+        },
+      },
+      update: { status: "ACTIVE_MEMBER", role: "CAPTAIN", joinedAt: completedAt, completedAt: null, removedAt: null },
+      create: {
+        id: "brightwork-stage4b-captain-membership",
+        playthroughId: "brightwork-stage4b-captain-voyage",
+        playerProfileId: player.id,
+        role: "CAPTAIN",
+        status: "ACTIVE_MEMBER",
+        participationAlias: "Brightwork Captain",
+        joinedAt: completedAt,
+        createdAt: completedAt,
+      },
+    });
+    await db.chronicle.upsert({
+      where: { id: "brightwork-stage4b-creator-chronicle" },
+      update: {
+        creatorId: player.id,
+        creatorAccountId: fullCapability.accountId,
+        status: "DRAFT",
+        visibility: "PRIVATE",
+      },
+      create: {
+        id: "brightwork-stage4b-creator-chronicle",
+        slug: "brightwork-stage4b-creator-chronicle",
+        title: "Brightwork Creator Chronicle",
+        subtitle: "Synthetic creator-owned evidence record",
+        shortDescription: "Task-owned Chronicle used only for Brightwork route evidence.",
+        status: "DRAFT",
+        visibility: "PRIVATE",
+        creatorId: player.id,
+        creatorAccountId: fullCapability.accountId,
+        playerCountMin: 1,
+        playerCountMax: 4,
+        estimatedDuration: 60,
+        createdAt: completedAt,
       },
     });
   } finally {

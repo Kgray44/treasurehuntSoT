@@ -212,6 +212,7 @@
     "homeport:phase4:e2e": "node scripts/homeport/run-phase4-e2e.mjs",
     "docs:index": "node scripts/generate-document-index.mjs",
     "docs:validate": "node scripts/validate-documentation.mjs",
+    "brightwork:validate": "node scripts/brightwork/current-experience-images.mjs validate && node scripts/brightwork/stage4b-evidence.mjs validate",
     "test:docs": "node --test tests/validate-documentation.test.mjs",
     "private-content:scan": "tsx scripts/private-content/scan.ts",
     "private-content:build-scan": "tsx scripts/private-content/build-scan.ts",

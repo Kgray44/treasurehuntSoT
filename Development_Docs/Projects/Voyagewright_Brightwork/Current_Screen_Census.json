@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "artifact": "Voyagewright Brightwork current-main screen census",
   "sourceSha": "a82473c40114280694fd292f1103ae914dcc7c6c",
-  "generatedAt": "2026-08-31T00:50:54.925Z",
+  "generatedAt": "2026-08-31T04:48:18.558Z",
   "totalScreens": 117,
   "screens": [
     {
@@ -1343,14 +1343,8 @@
       "routeIds": ["route-page-studio-private-content-operations"],
       "routePatterns": ["/studio/private-content/operations"],
       "productArea": "Creator_Studio_Shipwright",
-      "applicableStates": [
-        "EMPTY_WHERE_IMPLEMENTED",
-        "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
-        "LOADING_WHERE_IMPLEMENTED",
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
-      "captureStatus": "EXCLUDED_BY_CLASSIFICATION"
+      "applicableStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "UNAUTHORIZED"],
+      "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-studio-sign-in",
