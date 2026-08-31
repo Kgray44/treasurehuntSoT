@@ -77,6 +77,28 @@ const ADMIN_PATHS = new Set([
   "/admin/voyages",
 ]);
 
+// The page-level gate is the evidence authority for Admiralty stations.  The
+// shared layout requires PLATFORM_OBSERVE too, but it is not a substitute for
+// the station-specific gate below.
+const ADMIN_PAGE_CAPABILITIES = Object.freeze({
+  "/admin": "PLATFORM_OBSERVE",
+  "/admin/audit": "AUDIT_OBSERVE",
+  "/admin/chronicles": "CHRONICLE_OBSERVE",
+  "/admin/chronicles/[chronicleId]": "CHRONICLE_OBSERVE",
+  "/admin/community": "COMMUNITY_OBSERVE",
+  "/admin/community/[listingId]": "COMMUNITY_OBSERVE",
+  "/admin/configuration": "CONFIG_OBSERVE",
+  "/admin/investigate": "PLATFORM_OBSERVE",
+  "/admin/operations": "JOBS_OBSERVE",
+  "/admin/people": "ACCOUNT_OBSERVE",
+  "/admin/people/[accountId]": "ACCOUNT_OBSERVE",
+  "/admin/providers": "CONTENT_OBSERVE",
+  "/admin/releases": "RELEASE_OBSERVE",
+  "/admin/support/cases": "SUPPORT_REQUEST",
+  "/admin/voyages": "VOYAGE_OBSERVE",
+  "/admin/voyages/[voyageId]": "VOYAGE_OBSERVE",
+});
+
 export function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
@@ -142,7 +164,9 @@ export function productAreaFor(routePattern) {
 
 export function fallbackClassification(routePattern) {
   if (routePattern.startsWith("/dev/")) return "DEVELOPMENT_OR_DIAGNOSTIC";
-  if (routePattern === "/studio/private-content/operations") return "INTERNAL_NON_PAGE";
+  // This is a protected browser UI with an interactive refresh control.  It
+  // is intentionally protected, not an internal service endpoint.
+  if (routePattern === "/studio/private-content/operations") return "CONTEXTUAL_DYNAMIC_DESTINATION";
   if (TOKENIZED_ROUTES.has(routePattern)) return "TOKENIZED_OR_INVITATION_DEEP_LINK";
   if (COMPATIBILITY_ROUTES.has(routePattern)) return "COMPATIBILITY_OR_REDIRECT";
   if (routePattern.includes("[")) return "CONTEXTUAL_DYNAMIC_DESTINATION";
@@ -162,7 +186,8 @@ export function fallbackAuthentication(routePattern) {
 }
 
 export function fallbackCapabilities(routePattern) {
-  if (routePattern.startsWith("/admin")) return ["admiralty"];
+  if (ADMIN_PAGE_CAPABILITIES[routePattern]) return [ADMIN_PAGE_CAPABILITIES[routePattern]];
+  if (routePattern === "/studio/private-content/operations") return ["ADMIN"];
   if (routePattern.startsWith("/captain") || routePattern.startsWith("/quartermaster")) return ["captain"];
   if (routePattern.startsWith("/studio")) return ["creator"];
   if (routePattern.startsWith("/community/moderation")) return ["moderator"];
@@ -184,10 +209,21 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
     const prior = priorRoutes.get(routePattern);
     const routeId = prior?.routeId ?? routeIdFor(routePattern);
     const priorScreen = priorScreens.get(routeId);
-    const classification = LEGACY_CLASSIFICATIONS[prior?.classification] ?? fallbackClassification(routePattern);
-    const capabilityRequirements = prior?.capabilityRequirements?.length
-      ? prior.capabilityRequirements
-      : fallbackCapabilities(routePattern);
+    // A prior Homeport internal-service label must not hide a current browser
+    // page that has a protected, interactive human console.
+    const classification =
+      routePattern === "/studio/private-content/operations"
+        ? "CONTEXTUAL_DYNAMIC_DESTINATION"
+        : (LEGACY_CLASSIFICATIONS[prior?.classification] ?? fallbackClassification(routePattern));
+    // Stage 1 legacy metadata used a generic Admiralty label.  Prefer the
+    // actual page gate whenever the current source defines one.
+    const inferredCapabilities = fallbackCapabilities(routePattern);
+    const capabilityRequirements =
+      ADMIN_PAGE_CAPABILITIES[routePattern] || routePattern === "/studio/private-content/operations"
+        ? inferredCapabilities
+        : prior?.capabilityRequirements?.length
+          ? prior.capabilityRequirements
+          : inferredCapabilities;
     const authenticationRequirement = prior?.authenticationRequirement ?? fallbackAuthentication(routePattern);
     const route = {
       routeId,
@@ -200,7 +236,10 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
       authenticationRequirement,
       capabilityRequirements,
       applicablePersonas: personasFor({ routePattern, authenticationRequirement, capabilityRequirements }),
-      meaningfulVisualStates: meaningfulStates(priorScreen?.applicableStates ?? [], routePattern),
+      meaningfulVisualStates:
+        routePattern === "/studio/private-content/operations"
+          ? ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "UNAUTHORIZED"]
+          : meaningfulStates(priorScreen?.applicableStates ?? [], routePattern),
       desktopMobileApplicability: ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification)
         ? "EXCLUDED"
         : "DESKTOP_AND_MOBILE",
@@ -239,7 +278,8 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
 
 export function personasFor({ routePattern, authenticationRequirement, capabilityRequirements }) {
   if (authenticationRequirement === "ANONYMOUS_ALLOWED" && !capabilityRequirements.length) return ["ANONYMOUS"];
-  if (routePattern.startsWith("/admin")) return ["ADMIRALTY_OPERATOR", "ANONYMOUS"];
+  if (routePattern.startsWith("/admin") || hasCapability(capabilityRequirements, "admin"))
+    return ["ADMIRALTY_OPERATOR", "ANONYMOUS"];
   if (hasCapability(capabilityRequirements, "moderator")) return ["MODERATOR", "ORDINARY_PLAYER"];
   if (hasCapability(capabilityRequirements, "captain")) return ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"];
   if (hasCapability(capabilityRequirements, "creator")) return ["CREATOR", "ORDINARY_PLAYER"];
@@ -292,6 +332,11 @@ export function buildCaptureContract(census, generatedAt) {
       screenId: route.screenId,
       productArea: route.productArea,
       classification: route.classification,
+      authenticationRequirement: route.authenticationRequirement,
+      capabilityRequirements: route.capabilityRequirements,
+      ...(semanticReadyMarkerFor(route.routePattern)
+        ? { semanticReadyMarker: semanticReadyMarkerFor(route.routePattern) }
+        : {}),
       ...requirement,
     })),
   );
@@ -313,6 +358,42 @@ export function buildCaptureContract(census, generatedAt) {
       action: "COMMUNITY_LOADING",
     },
     { routePattern: "/community/chronicles", state: "ERROR", persona: "ANONYMOUS", action: "COMMUNITY_ERROR" },
+    {
+      routePattern: "/captain/sessions/[sessionId]",
+      state: "INITIAL_LOADING",
+      persona: "CAPTAIN_PLAYER",
+      action: "CAPTAIN_LOADING",
+    },
+    {
+      routePattern: "/captain/sessions/[sessionId]",
+      state: "RECOVERABLE_ERROR",
+      persona: "CAPTAIN_PLAYER",
+      action: "CAPTAIN_ERROR",
+    },
+    {
+      routePattern: "/captain/sessions/[sessionId]",
+      state: "DESTRUCTIVE_CONFIRMATION",
+      persona: "CAPTAIN_PLAYER",
+      action: "CAPTAIN_DESTRUCTIVE_CONFIRMATION",
+    },
+    {
+      routePattern: "/studio/private-content/operations",
+      state: "INITIAL_LOADING",
+      persona: "ADMIRALTY_OPERATOR",
+      action: "PRIVATE_OPERATIONS_LOADING",
+    },
+    {
+      routePattern: "/studio/private-content/operations",
+      state: "DEPENDENCY_UNAVAILABLE",
+      persona: "ADMIRALTY_OPERATOR",
+      action: "PRIVATE_OPERATIONS_DEPENDENCY_UNAVAILABLE",
+    },
+    {
+      routePattern: "/studio/private-content/operations",
+      state: "UNAUTHORIZED",
+      persona: "ANONYMOUS",
+      action: "NONE",
+    },
     { routePattern: "/", state: "KEYBOARD_FOCUS", persona: "ANONYMOUS", action: "KEYBOARD_FOCUS" },
     { routePattern: "/account", state: "200_PERCENT_EFFECTIVE_ZOOM", persona: "ORDINARY_PLAYER", action: "ZOOM_200" },
     { routePattern: "/", state: "REDUCED_MOTION", persona: "ANONYMOUS", action: "NONE" },
@@ -325,6 +406,11 @@ export function buildCaptureContract(census, generatedAt) {
       screenId: route.screenId,
       productArea: route.productArea,
       classification: route.classification,
+      authenticationRequirement: route.authenticationRequirement,
+      capabilityRequirements: route.capabilityRequirements,
+      ...(semanticReadyMarkerFor(route.routePattern)
+        ? { semanticReadyMarker: semanticReadyMarkerFor(route.routePattern) }
+        : {}),
       state: state.state,
       persona: state.persona,
       theme: "DARK",
@@ -336,12 +422,12 @@ export function buildCaptureContract(census, generatedAt) {
       ...(state.concreteRoute ? { concreteRoute: state.concreteRoute } : {}),
     });
   }
-  const normalizedRequirements = requirements.map((requirement) => ({
-    ...requirement,
-    identity: canonicalCaptureIdentity(requirement),
-  }));
+  const normalizedRequirements = requirements.map((requirement) => {
+    const normalized = { ...requirement, identity: canonicalCaptureIdentity(requirement) };
+    return { ...normalized, requirementDigest: captureRequirementDigest(normalized) };
+  });
   const contract = {
-    schemaVersion: "1.0.0",
+    schemaVersion: "2.0.0",
     artifact: "Voyagewright Brightwork visual capture contract",
     sourceSha: census.sourceSha,
     censusDigest: sha256(stableJson(census.routes)),
@@ -386,11 +472,41 @@ export function canonicalCaptureIdentity(requirement) {
   return components.map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join("&");
 }
 
+// A global contract digest is useful provenance, but it must not force a
+// ceremonial recapture of every unchanged image when Stage 4B adds one state.
+// This binding contains every route-specific fact that makes an image valid.
+export function captureRequirementDigest(requirement) {
+  return sha256(
+    stableJson({
+      routeId: requirement.routeId,
+      routePattern: requirement.routePattern,
+      screenId: requirement.screenId,
+      productArea: requirement.productArea,
+      classification: requirement.classification,
+      authenticationRequirement: requirement.authenticationRequirement ?? null,
+      capabilityRequirements: [...(requirement.capabilityRequirements ?? [])].sort(),
+      state: requirement.state,
+      persona: requirement.persona,
+      theme: requirement.theme,
+      viewport: requirement.viewport,
+      motionMode: requirement.motionMode,
+      coverageKind: requirement.coverageKind,
+      criticality: requirement.criticality,
+      captureAction: requirement.captureAction ?? null,
+      concreteRoute: requirement.concreteRoute ?? null,
+      expectedDestination: requirement.expectedDestination ?? null,
+      expectedCompatibilityState: requirement.expectedCompatibilityState ?? null,
+      semanticReadyMarker: requirement.semanticReadyMarker ?? null,
+    }),
+  );
+}
+
 export function captureContractValidation({ contract, census }) {
   const routes = new Map((census?.routes ?? []).map((route) => [route.routeId, route]));
   const malformedIdentities = [];
   const duplicateIdentities = [];
   const personaMismatches = [];
+  const malformedRequirementDigests = [];
   const seen = new Map();
   for (const requirement of contract.requirements ?? []) {
     let canonical;
@@ -402,6 +518,8 @@ export function captureContractValidation({ contract, census }) {
     }
     if (requirement.identity !== canonical)
       malformedIdentities.push({ requirement, reason: "IDENTITY_DOES_NOT_MATCH_CANONICAL_COMPONENTS" });
+    if (requirement.requirementDigest && requirement.requirementDigest !== captureRequirementDigest(requirement))
+      malformedRequirementDigests.push({ requirement, reason: "REQUIREMENT_DIGEST_DOES_NOT_MATCH_BINDING" });
     if (seen.has(requirement.identity))
       duplicateIdentities.push({ requirement, duplicateOf: seen.get(requirement.identity) });
     else seen.set(requirement.identity, requirement);
@@ -417,6 +535,7 @@ export function captureContractValidation({ contract, census }) {
     ...(malformedIdentities.length ? ["MALFORMED_IDENTITIES"] : []),
     ...(duplicateIdentities.length ? ["DUPLICATE_IDENTITIES"] : []),
     ...(personaMismatches.length ? ["PERSONA_MISMATCHES"] : []),
+    ...(malformedRequirementDigests.length ? ["MALFORMED_REQUIREMENT_DIGESTS"] : []),
   ];
   return {
     valid: failureCodes.length === 0,
@@ -424,6 +543,7 @@ export function captureContractValidation({ contract, census }) {
     malformedIdentities,
     duplicateIdentities,
     personaMismatches,
+    malformedRequirementDigests,
   };
 }
 
@@ -433,6 +553,10 @@ export function semanticCaptureIssue(requirement, observation) {
     return "DYNAMIC_SYNTHETIC_RECORD_UNPROVEN";
   if (requirement.state === "READY") {
     if (observation.notFound) return "READY_NOT_FOUND";
+    if (observation.unauthorizedSurface) return "READY_UNAUTHORIZED_SURFACE";
+    if (observation.unavailableSurface || observation.deadEndSurface) return "READY_UNAVAILABLE_SURFACE";
+    if (requirement.semanticReadyMarker && !observation.readyMarkers?.includes(requirement.semanticReadyMarker))
+      return "READY_MARKER_MISSING";
   }
   if (requirement.state === "UNAUTHORIZED" && !observation.notFound && !observation.unauthorizedSurface)
     return "UNAUTHORIZED_EXPECTATION_UNMET";
@@ -486,7 +610,11 @@ export function reconciliationReport({ contract, manifest, sourceSha, imageRoot,
       blocked.push(record);
       continue;
     }
-    if (record.sourceSha !== sourceSha || record.contractDigest !== contract.contractDigest) {
+    const requirement = requirements.get(identity);
+    const requirementCurrent = record.requirementDigest
+      ? record.requirementDigest === requirement.requirementDigest
+      : record.contractDigest === contract.contractDigest;
+    if (record.sourceSha !== sourceSha || !requirementCurrent) {
       stale.push(record);
       continue;
     }
@@ -495,7 +623,7 @@ export function reconciliationReport({ contract, manifest, sourceSha, imageRoot,
       missing.push({ ...record, reconciliationReason: existsSync(file) ? "CHECKSUM_MISMATCH" : "IMAGE_MISSING" });
       continue;
     }
-    const semanticIssue = semanticCaptureIssue(requirements.get(identity), record.semanticObservation);
+    const semanticIssue = semanticCaptureIssue(requirement, record.semanticObservation);
     if (semanticIssue) {
       semanticFailures.push({ ...record, reconciliationReason: semanticIssue });
       continue;
@@ -569,6 +697,7 @@ function hasCapability(capabilities, expected) {
 
 function capturePersonaFor(route) {
   if (route.routePattern.startsWith("/admin")) return "ADMIRALTY_OPERATOR";
+  if (hasCapability(route.capabilityRequirements, "admin")) return "ADMIRALTY_OPERATOR";
   if (hasCapability(route.capabilityRequirements, "moderator")) return "MODERATOR";
   if (hasCapability(route.capabilityRequirements, "captain")) return "CAPTAIN_PLAYER";
   if (hasCapability(route.capabilityRequirements, "creator")) return "CREATOR";
@@ -594,6 +723,14 @@ function compatibilityExpectation(routePattern) {
   if (expectedDestination) return { expectedDestination };
   if (routePattern === "/player/sign-in") return { expectedCompatibilityState: "SIGN_IN_SURFACE" };
   return { expectedCompatibilityState: "DECLARED_COMPATIBILITY_SURFACE" };
+}
+
+function semanticReadyMarkerFor(routePattern) {
+  if (routePattern === "/captain/sessions/[sessionId]") return "CAPTAIN_OPERATIONAL_PROJECTION";
+  if (routePattern === "/captain/voyages/[playthroughId]/muster") return "CAPTAIN_MUSTER_PROJECTION";
+  if (routePattern === "/captain/voyages/[playthroughId]/player-preview") return "PLAYER_SAFE_PREVIEW";
+  if (routePattern === "/studio/private-content/operations") return "PRIVATE_OPERATIONS_CONSOLE";
+  return null;
 }
 
 function canonicalFiles(imageRoot, directory = path.join(imageRoot, "Canonical")) {

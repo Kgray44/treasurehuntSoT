@@ -6,6 +6,7 @@ import test from "node:test";
 import {
   canonicalCaptureIdentity,
   captureContractValidation,
+  captureRequirementDigest,
   fileChecksum,
   reconciliationReport,
   semanticCaptureIssue,
@@ -32,7 +33,8 @@ function requirement(overrides = {}) {
     criticality: "STANDARD",
     ...fields,
   };
-  return { ...value, identity: identity ?? canonicalCaptureIdentity(value) };
+  const canonical = { ...value, identity: identity ?? canonicalCaptureIdentity(value) };
+  return { ...canonical, requirementDigest: fields.requirementDigest ?? captureRequirementDigest(canonical) };
 }
 
 async function fixture(t, overrides = {}) {
@@ -48,6 +50,7 @@ async function fixture(t, overrides = {}) {
     imageId: "BW-XI-0001",
     sourceSha,
     contractDigest,
+    requirementDigest: required.requirementDigest,
     screenshotPath: relative,
     sha256: fileChecksum(image),
     captureStatus: "CAPTURED_PENDING_BRIGHTWORK_REVIEW",
@@ -92,6 +95,18 @@ test("old-source evidence is STALE", async (t) => {
     imageRoot: value.root,
   });
   assert.equal(report.staleCaptures, 1);
+});
+
+test("an unchanged per-requirement binding stays current across a global contract revision", async (t) => {
+  const value = await fixture(t);
+  const report = reconciliationReport({
+    contract: { contractDigest: "expanded-contract-digest", requirements: [value.required] },
+    manifest: { records: [value.record] },
+    sourceSha,
+    imageRoot: value.root,
+  });
+  assert.equal(report.currentCaptures, 1);
+  assert.equal(report.staleCaptures, 0);
 });
 
 test("a newly required human route remains MISSING until captured", async (t) => {
@@ -226,6 +241,17 @@ test("semantic validation refuses a ready capture that is a not-found surface", 
       syntheticRecordProven: true,
     }),
     "READY_NOT_FOUND",
+  );
+  assert.equal(
+    semanticCaptureIssue(requirement(), {
+      notFound: false,
+      unauthorizedSurface: false,
+      unavailableSurface: true,
+      deadEndSurface: false,
+      signInSurface: false,
+      syntheticRecordProven: true,
+    }),
+    "READY_UNAVAILABLE_SURFACE",
   );
   assert.equal(
     semanticCaptureIssue(requirement(), {
