@@ -18,6 +18,17 @@ export const REQUIRED_VIEWPORTS = Object.freeze([
 ]);
 export const REQUIRED_THEMES = Object.freeze(["DARK", "LIGHT"]);
 
+const IDENTITY_COMPONENTS = Object.freeze([
+  "routeId",
+  "screenId",
+  "state",
+  "persona",
+  "theme",
+  "viewport",
+  "motionMode",
+  "coverageKind",
+]);
+
 const LEGACY_CLASSIFICATIONS = Object.freeze({
   USER_NAVIGABLE: "USER_FACING_NAVIGABLE",
   CONTEXTUAL_DYNAMIC: "CONTEXTUAL_DYNAMIC_DESTINATION",
@@ -51,7 +62,20 @@ const COMPATIBILITY_ROUTES = new Set([
   "/tale/[campaignSlug]",
 ]);
 
-const ADMIN_PATHS = new Set(["/admin", "/admin/audit", "/admin/chronicles", "/admin/community", "/admin/configuration", "/admin/investigate", "/admin/operations", "/admin/people", "/admin/providers", "/admin/releases", "/admin/support/cases", "/admin/voyages"]);
+const ADMIN_PATHS = new Set([
+  "/admin",
+  "/admin/audit",
+  "/admin/chronicles",
+  "/admin/community",
+  "/admin/configuration",
+  "/admin/investigate",
+  "/admin/operations",
+  "/admin/people",
+  "/admin/providers",
+  "/admin/releases",
+  "/admin/support/cases",
+  "/admin/voyages",
+]);
 
 export function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -69,7 +93,10 @@ export function stableJson(value) {
 
 export function routeIdFor(routePattern) {
   const value = routePattern === "/" ? "root" : routePattern.slice(1);
-  return `route-page-${value.replaceAll(/[^a-zA-Z0-9]+/gu, "-").replaceAll(/^-|-$/gu, "").toLowerCase()}`;
+  return `route-page-${value
+    .replaceAll(/[^a-zA-Z0-9]+/gu, "-")
+    .replaceAll(/^-|-$/gu, "")
+    .toLowerCase()}`;
 }
 
 export function screenIdFor(routePattern, priorScreenId) {
@@ -123,11 +150,14 @@ export function fallbackClassification(routePattern) {
 }
 
 export function fallbackAuthentication(routePattern) {
-  if (/^\/(sign-in|register|forgot-password|reset-password|verify-email)/u.test(routePattern)) return "ANONYMOUS_ALLOWED";
+  if (/^\/(sign-in|register|forgot-password|reset-password|verify-email)/u.test(routePattern))
+    return "ANONYMOUS_ALLOWED";
   if (TOKENIZED_ROUTES.has(routePattern)) return "BOUNDED_TOKEN_OR_CODE";
   if (routePattern.startsWith("/admin")) return "AUTHENTICATED_CAPABILITY_REQUIRED";
-  if (routePattern.startsWith("/captain") || routePattern.startsWith("/studio")) return "AUTHENTICATED_CAPABILITY_REQUIRED";
-  if (routePattern.startsWith("/player") || routePattern.startsWith("/passport")) return "AUTHENTICATED_PLAYER_REQUIRED";
+  if (routePattern.startsWith("/captain") || routePattern.startsWith("/studio"))
+    return "AUTHENTICATED_CAPABILITY_REQUIRED";
+  if (routePattern.startsWith("/player") || routePattern.startsWith("/passport"))
+    return "AUTHENTICATED_PLAYER_REQUIRED";
   return "ANONYMOUS_ALLOWED";
 }
 
@@ -159,7 +189,7 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
       ? prior.capabilityRequirements
       : fallbackCapabilities(routePattern);
     const authenticationRequirement = prior?.authenticationRequirement ?? fallbackAuthentication(routePattern);
-    return {
+    const route = {
       routeId,
       routePattern,
       implementationSource,
@@ -174,18 +204,22 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
       desktopMobileApplicability: ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification)
         ? "EXCLUDED"
         : "DESKTOP_AND_MOBILE",
-      themesApplicable: ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification) ? [] : [...REQUIRED_THEMES],
+      themesApplicable: ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification)
+        ? []
+        : [...REQUIRED_THEMES],
       motionApplicability: ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification)
         ? "NOT_APPLICABLE"
         : "REDUCED_MOTION_REQUIRED",
-      screenshotRequirements: ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification)
-        ? []
-        : captureRequirementsFor({ routePattern, classification, authenticationRequirement, capabilityRequirements }),
+      screenshotRequirements: [],
       captureStatus: ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification)
         ? "EXCLUDED_BY_CLASSIFICATION"
         : "PLANNED",
       provenance: prior ? "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG" : "CURRENT_SOURCE_DISCOVERED",
     };
+    route.screenshotRequirements = ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification)
+      ? []
+      : captureRequirementsFor(route);
+    return route;
   });
   const totals = countClassifications(routes);
   return {
@@ -206,10 +240,10 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
 export function personasFor({ routePattern, authenticationRequirement, capabilityRequirements }) {
   if (authenticationRequirement === "ANONYMOUS_ALLOWED" && !capabilityRequirements.length) return ["ANONYMOUS"];
   if (routePattern.startsWith("/admin")) return ["ADMIRALTY_OPERATOR", "ANONYMOUS"];
-  if (capabilityRequirements.includes("moderator")) return ["MODERATOR", "ORDINARY_PLAYER"];
-  if (capabilityRequirements.includes("captain")) return ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"];
-  if (capabilityRequirements.includes("creator")) return ["CREATOR", "ORDINARY_PLAYER"];
-  if (capabilityRequirements.includes("player") || authenticationRequirement !== "ANONYMOUS_ALLOWED")
+  if (hasCapability(capabilityRequirements, "moderator")) return ["MODERATOR", "ORDINARY_PLAYER"];
+  if (hasCapability(capabilityRequirements, "captain")) return ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"];
+  if (hasCapability(capabilityRequirements, "creator")) return ["CREATOR", "ORDINARY_PLAYER"];
+  if (hasCapability(capabilityRequirements, "player") || authenticationRequirement !== "ANONYMOUS_ALLOWED")
     return ["ORDINARY_PLAYER", "ANONYMOUS"];
   return ["ANONYMOUS"];
 }
@@ -217,8 +251,14 @@ export function personasFor({ routePattern, authenticationRequirement, capabilit
 export function meaningfulStates(screenStates, routePattern) {
   const states = new Set(["READY"]);
   for (const state of screenStates) {
-    const normalized = String(state).toUpperCase().replaceAll(/[^A-Z0-9]+/gu, "_");
-    if (/EMPTY|LOADING|ERROR|UNAVAILABLE|DENIED|DISABLED|VALIDATION|SUCCESS|DESTRUCTIVE|MODAL|DRAWER|FOCUS|MOTION/u.test(normalized))
+    const normalized = String(state)
+      .toUpperCase()
+      .replaceAll(/[^A-Z0-9]+/gu, "_");
+    if (
+      /EMPTY|LOADING|ERROR|UNAVAILABLE|DENIED|DISABLED|VALIDATION|SUCCESS|DESTRUCTIVE|MODAL|DRAWER|FOCUS|MOTION/u.test(
+        normalized,
+      )
+    )
       states.add(normalized);
   }
   if (routePattern.startsWith("/admin")) states.add("UNAUTHORIZED");
@@ -227,27 +267,19 @@ export function meaningfulStates(screenStates, routePattern) {
 }
 
 export function captureRequirementsFor(route) {
-  const persona = route.capabilityRequirements.includes("admiralty")
-    ? "ADMIRALTY_OPERATOR"
-    : route.capabilityRequirements.includes("moderator")
-      ? "MODERATOR"
-      : route.capabilityRequirements.includes("captain")
-        ? "CAPTAIN_PLAYER"
-        : route.capabilityRequirements.includes("creator")
-          ? "CREATOR"
-          : route.authenticationRequirement === "ANONYMOUS_ALLOWED" || route.classification === "TOKENIZED_OR_INVITATION_DEEP_LINK"
-            ? "ANONYMOUS"
-            : "ORDINARY_PLAYER";
+  const persona = capturePersonaFor(route);
+  const compatibility = compatibilityExpectation(route.routePattern);
+  const state = route.classification === "COMPATIBILITY_OR_REDIRECT" ? "COMPATIBILITY_OR_REDIRECT" : "READY";
   return REQUIRED_THEMES.flatMap((theme) =>
     REQUIRED_VIEWPORTS.map((viewport) => ({
-      identity: `${route.routeId}|READY|${persona}|${theme}|${viewport.id}|REDUCED`,
-      state: "READY",
+      state,
       persona,
       theme,
       viewport: viewport.id,
       motionMode: "REDUCED",
       coverageKind: "ROUTE",
       criticality: route.classification === "CONTEXTUAL_DYNAMIC_DESTINATION" ? "HIGH" : "STANDARD",
+      ...(compatibility ?? {}),
     })),
   );
 }
@@ -274,7 +306,12 @@ export function buildCaptureContract(census, generatedAt) {
       action: "NONE",
       concreteRoute: "/community/collections/empty-chart-case",
     },
-    { routePattern: "/community/chronicles", state: "DELAYED_LOADING", persona: "ANONYMOUS", action: "COMMUNITY_LOADING" },
+    {
+      routePattern: "/community/chronicles",
+      state: "DELAYED_LOADING",
+      persona: "ANONYMOUS",
+      action: "COMMUNITY_LOADING",
+    },
     { routePattern: "/community/chronicles", state: "ERROR", persona: "ANONYMOUS", action: "COMMUNITY_ERROR" },
     { routePattern: "/", state: "KEYBOARD_FOCUS", persona: "ANONYMOUS", action: "KEYBOARD_FOCUS" },
     { routePattern: "/account", state: "200_PERCENT_EFFECTIVE_ZOOM", persona: "ORDINARY_PLAYER", action: "ZOOM_200" },
@@ -299,15 +336,22 @@ export function buildCaptureContract(census, generatedAt) {
       ...(state.concreteRoute ? { concreteRoute: state.concreteRoute } : {}),
     });
   }
+  const normalizedRequirements = requirements.map((requirement) => ({
+    ...requirement,
+    identity: canonicalCaptureIdentity(requirement),
+  }));
   const contract = {
     schemaVersion: "1.0.0",
     artifact: "Voyagewright Brightwork visual capture contract",
     sourceSha: census.sourceSha,
     censusDigest: sha256(stableJson(census.routes)),
     generatedAt,
-    requirements,
+    requirements: normalizedRequirements,
   };
-  return { ...contract, contractDigest: sha256(stableJson(contract)) };
+  const finalized = { ...contract, contractDigest: sha256(stableJson(contract)) };
+  const validation = captureContractValidation({ contract: finalized, census });
+  if (!validation.valid) throw new Error(`BRIGHTWORK_CAPTURE_CONTRACT_INVALID:${validation.failureCodes.join(",")}`);
+  return finalized;
 }
 
 export function countClassifications(routes) {
@@ -331,11 +375,81 @@ export function countClassifications(routes) {
 }
 
 export function requirementIdentity(requirement) {
-  return `${requirement.routeId}|${requirement.state}|${requirement.persona}|${requirement.theme}|${requirement.viewport}|${requirement.motionMode}`;
+  return canonicalCaptureIdentity(requirement);
 }
 
-export function reconciliationReport({ contract, manifest, sourceSha, imageRoot, checksum = fileChecksum }) {
-  const requirements = new Map(contract.requirements.map((requirement) => [requirementIdentity(requirement), requirement]));
+export function canonicalCaptureIdentity(requirement) {
+  const components = identityComponents(requirement);
+  const invalid = components.filter(([, value]) => !value);
+  if (invalid.length)
+    throw new Error(`BRIGHTWORK_CANONICAL_IDENTITY_COMPONENT_INVALID:${invalid.map(([key]) => key).join(",")}`);
+  return components.map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join("&");
+}
+
+export function captureContractValidation({ contract, census }) {
+  const routes = new Map((census?.routes ?? []).map((route) => [route.routeId, route]));
+  const malformedIdentities = [];
+  const duplicateIdentities = [];
+  const personaMismatches = [];
+  const seen = new Map();
+  for (const requirement of contract.requirements ?? []) {
+    let canonical;
+    try {
+      canonical = canonicalCaptureIdentity(requirement);
+    } catch (error) {
+      malformedIdentities.push({ requirement, reason: String(error.message ?? error) });
+      continue;
+    }
+    if (requirement.identity !== canonical)
+      malformedIdentities.push({ requirement, reason: "IDENTITY_DOES_NOT_MATCH_CANONICAL_COMPONENTS" });
+    if (seen.has(requirement.identity))
+      duplicateIdentities.push({ requirement, duplicateOf: seen.get(requirement.identity) });
+    else seen.set(requirement.identity, requirement);
+    const route = routes.get(requirement.routeId);
+    if (
+      route &&
+      !route.applicablePersonas.includes(requirement.persona) &&
+      !requirement.personaException?.allowOutsideApplicablePersonas
+    )
+      personaMismatches.push({ requirement, route });
+  }
+  const failureCodes = [
+    ...(malformedIdentities.length ? ["MALFORMED_IDENTITIES"] : []),
+    ...(duplicateIdentities.length ? ["DUPLICATE_IDENTITIES"] : []),
+    ...(personaMismatches.length ? ["PERSONA_MISMATCHES"] : []),
+  ];
+  return {
+    valid: failureCodes.length === 0,
+    failureCodes,
+    malformedIdentities,
+    duplicateIdentities,
+    personaMismatches,
+  };
+}
+
+export function semanticCaptureIssue(requirement, observation) {
+  if (!observation) return "SEMANTIC_OBSERVATION_MISSING";
+  if (requirement.classification === "CONTEXTUAL_DYNAMIC_DESTINATION" && !observation.syntheticRecordProven)
+    return "DYNAMIC_SYNTHETIC_RECORD_UNPROVEN";
+  if (requirement.state === "READY") {
+    if (observation.notFound) return "READY_NOT_FOUND";
+  }
+  if (requirement.state === "UNAUTHORIZED" && !observation.notFound && !observation.unauthorizedSurface)
+    return "UNAUTHORIZED_EXPECTATION_UNMET";
+  if (requirement.state === "SIGN_IN_REQUIRED" && !observation.signInSurface) return "SIGN_IN_EXPECTATION_UNMET";
+  if (requirement.state === "COMPATIBILITY_OR_REDIRECT") {
+    if (observation.notFound) return "COMPATIBILITY_NOT_FOUND";
+    if (requirement.expectedDestination && observation.finalPath !== requirement.expectedDestination)
+      return "COMPATIBILITY_DESTINATION_MISMATCH";
+    if (requirement.expectedCompatibilityState === "SIGN_IN_SURFACE" && !observation.signInSurface)
+      return "COMPATIBILITY_SIGN_IN_EXPECTATION_UNMET";
+  }
+  return null;
+}
+
+export function reconciliationReport({ contract, manifest, sourceSha, imageRoot, census, checksum = fileChecksum }) {
+  const contractValidation = captureContractValidation({ contract, census });
+  const requirements = new Map(contract.requirements.map((requirement) => [requirement.identity, requirement]));
   const captures = manifest?.records ?? [];
   const seen = new Map();
   const current = [];
@@ -345,11 +459,23 @@ export function reconciliationReport({ contract, manifest, sourceSha, imageRoot,
   const orphaned = [];
   const duplicates = [];
   const duplicateImageIds = [];
+  const malformedRecordIdentities = [];
+  const semanticFailures = [];
   const imageIds = new Set();
   for (const record of captures) {
     if (imageIds.has(record.imageId)) duplicateImageIds.push(record);
     imageIds.add(record.imageId);
-    const identity = requirementIdentity(record);
+    let identity;
+    try {
+      identity = canonicalCaptureIdentity(record);
+    } catch (error) {
+      malformedRecordIdentities.push({ record, reason: String(error.message ?? error) });
+      continue;
+    }
+    if (record.identity !== identity) {
+      malformedRecordIdentities.push({ record, reason: "RECORD_IDENTITY_DOES_NOT_MATCH_CANONICAL_COMPONENTS" });
+      continue;
+    }
     if (seen.has(identity)) duplicates.push(record);
     seen.set(identity, record);
     if (!requirements.has(identity)) {
@@ -369,15 +495,22 @@ export function reconciliationReport({ contract, manifest, sourceSha, imageRoot,
       missing.push({ ...record, reconciliationReason: existsSync(file) ? "CHECKSUM_MISMATCH" : "IMAGE_MISSING" });
       continue;
     }
+    const semanticIssue = semanticCaptureIssue(requirements.get(identity), record.semanticObservation);
+    if (semanticIssue) {
+      semanticFailures.push({ ...record, reconciliationReason: semanticIssue });
+      continue;
+    }
     current.push(record);
   }
   for (const [identity, requirement] of requirements)
     if (!seen.has(identity)) missing.push({ ...requirement, reconciliationReason: "REQUIRED_CAPTURE_MISSING" });
   const manifestPaths = new Set(captures.map((record) => String(record.screenshotPath).replaceAll("\\", "/")));
-  const orphanedFiles = canonicalFiles(imageRoot).filter((screenshotPath) => !manifestPaths.has(screenshotPath)).map((screenshotPath) => ({
-    screenshotPath,
-    reconciliationReason: "CANONICAL_FILE_NOT_IN_MANIFEST",
-  }));
+  const orphanedFiles = canonicalFiles(imageRoot)
+    .filter((screenshotPath) => !manifestPaths.has(screenshotPath))
+    .map((screenshotPath) => ({
+      screenshotPath,
+      reconciliationReason: "CANONICAL_FILE_NOT_IN_MANIFEST",
+    }));
   const allOrphaned = [...orphaned, ...orphanedFiles];
   const excluded = contract.requirements.filter((requirement) => requirement.classification === "INTERNAL_NON_PAGE");
   return {
@@ -391,11 +524,23 @@ export function reconciliationReport({ contract, manifest, sourceSha, imageRoot,
     missingCaptures: missing.length,
     blockedByProduct: blocked.length,
     unexpectedOrphanedCaptures: allOrphaned.length,
-    duplicateCanonicalIdentities: duplicates.length,
+    duplicateCanonicalIdentities: duplicates.length + contractValidation.duplicateIdentities.length,
     duplicateCanonicalImageIds: duplicateImageIds.length,
+    malformedCanonicalIdentities: malformedRecordIdentities.length + contractValidation.malformedIdentities.length,
+    personaContractMismatches: contractValidation.personaMismatches.length,
+    semanticInvalidCaptures: semanticFailures.length,
     excludedByClassification: excluded.length,
     overallCompleteness:
-      stale.length === 0 && missing.length === 0 && allOrphaned.length === 0 && duplicates.length === 0 && duplicateImageIds.length === 0
+      stale.length === 0 &&
+      missing.length === 0 &&
+      allOrphaned.length === 0 &&
+      duplicates.length === 0 &&
+      duplicateImageIds.length === 0 &&
+      malformedRecordIdentities.length === 0 &&
+      contractValidation.malformedIdentities.length === 0 &&
+      contractValidation.duplicateIdentities.length === 0 &&
+      contractValidation.personaMismatches.length === 0 &&
+      semanticFailures.length === 0
         ? blocked.length === 0
           ? "COMPLETE"
           : "COMPLETE_WITH_PRODUCT_BLOCKERS"
@@ -407,8 +552,48 @@ export function reconciliationReport({ contract, manifest, sourceSha, imageRoot,
     orphaned: allOrphaned,
     duplicates,
     duplicateImageIds,
+    malformedRecordIdentities,
+    contractValidation,
+    semanticFailures,
     excluded,
   };
+}
+
+function identityComponents(requirement) {
+  return IDENTITY_COMPONENTS.map((key) => [key, String(requirement?.[key] ?? "").trim()]);
+}
+
+function hasCapability(capabilities, expected) {
+  return capabilities.some((capability) => String(capability).toLocaleLowerCase() === expected);
+}
+
+function capturePersonaFor(route) {
+  if (route.routePattern.startsWith("/admin")) return "ADMIRALTY_OPERATOR";
+  if (hasCapability(route.capabilityRequirements, "moderator")) return "MODERATOR";
+  if (hasCapability(route.capabilityRequirements, "captain")) return "CAPTAIN_PLAYER";
+  if (hasCapability(route.capabilityRequirements, "creator")) return "CREATOR";
+  if (
+    route.authenticationRequirement === "ANONYMOUS_ALLOWED" ||
+    route.classification === "TOKENIZED_OR_INVITATION_DEEP_LINK"
+  )
+    return "ANONYMOUS";
+  return "ORDINARY_PLAYER";
+}
+
+function compatibilityExpectation(routePattern) {
+  const expectedDestination = {
+    "/captain": "/captain/library",
+    "/captain/invitations": "/captain/library",
+    "/captain/sign-in": "/captain/library",
+    "/player": "/player/library",
+    "/quartermaster": "/captain/library",
+    "/quartermaster/[workspace]": "/captain/library",
+    "/studio": "/studio/library",
+    "/studio/sign-in": "/studio/library",
+  }[routePattern];
+  if (expectedDestination) return { expectedDestination };
+  if (routePattern === "/player/sign-in") return { expectedCompatibilityState: "SIGN_IN_SURFACE" };
+  return { expectedCompatibilityState: "DECLARED_COMPATIBILITY_SURFACE" };
 }
 
 function canonicalFiles(imageRoot, directory = path.join(imageRoot, "Canonical")) {

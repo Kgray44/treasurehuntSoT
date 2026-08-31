@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import { createHash, randomBytes } from "node:crypto";
 import { copyFile, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { PrismaClient } from "@prisma/client";
 
 const repositoryRoot = path.resolve(process.cwd());
 const localAppData = required("LOCALAPPDATA");
@@ -16,7 +17,7 @@ const homeportDatabase = path.join(
   "owner-rereview-database",
   "homeport-phase7-owner-correction-round3-rereview.db",
 );
-const sourceSha = git(["rev-parse", "HEAD"]);
+const sourceSha = git(["merge-base", "origin/main", "HEAD"]);
 const currentMainBootstrapDatabase = path.join(homeportRoot, "bootstrap", `current-main-${sourceSha.slice(0, 12)}.db`);
 
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`)) throw new Error("BRIGHTWORK_TASK_ROOT_REFUSED");
@@ -32,10 +33,14 @@ run("scripts/homeport/prepare-phase7-owner-correction-round3-fixture.mjs", {
   HOMEPORT_PHASE7_CORRECTION_WALKTHROUGH_PORT: "3868",
   HOMEPORT_PHASE7_OWNER_ALIAS: "FULL_CAPABILITY",
 });
-run("scripts/homeport/phase7-owner-correction-round3-database-clone.mjs", {
-  HOMEPORT_PHASE7_TASK_ROOT: homeportRoot,
-  HOMEPORT_PHASE7_CORRECTION_WALKTHROUGH_PORT: "3868",
-}, ["walkthrough"]);
+run(
+  "scripts/homeport/phase7-owner-correction-round3-database-clone.mjs",
+  {
+    HOMEPORT_PHASE7_TASK_ROOT: homeportRoot,
+    HOMEPORT_PHASE7_CORRECTION_WALKTHROUGH_PORT: "3868",
+  },
+  ["walkthrough"],
+);
 
 if (!(await stat(homeportDatabase)).size) throw new Error("BRIGHTWORK_HOMEPORT_CLONE_EMPTY");
 await mkdir(path.dirname(combinedDatabase), { recursive: true });
@@ -51,8 +56,13 @@ run("scripts/admiralty/seed-phase2-fixture.mjs", {
 });
 await copyFile(admiraltyDatabase, combinedDatabase);
 
-const homeportCredentials = path.join(homeportRoot, "credentials", "owner-correction-round3-walkthrough-credentials.private.json");
+const homeportCredentials = path.join(
+  homeportRoot,
+  "credentials",
+  "owner-correction-round3-walkthrough-credentials.private.json",
+);
 const admiraltyCredentials = path.join(admiraltyRoot, "credentials", "admiralty-phase2-walkthrough.private.json");
+await ensureBrightworkRouteRepresentatives(combinedDatabase, homeportCredentials);
 const [databaseHash, homeportAliasCount, admiraltyAliasCount] = await Promise.all([
   sha256(combinedDatabase),
   aliasCount(homeportCredentials),
@@ -62,7 +72,7 @@ const receipt = {
   schemaVersion: "1.0.0",
   status: "BRIGHTWORK_COMBINED_SYNTHETIC_FIXTURE_READY",
   sourceSha,
-  fixtureVersion: "brightwork-combined-homeport-round3-admiralty-phase2-v1",
+  fixtureVersion: "brightwork-combined-homeport-round3-admiralty-phase2-v2",
   databasePath: combinedDatabase,
   databaseHash,
   credentials: {
@@ -71,11 +81,16 @@ const receipt = {
     homeportAliasCount,
     admiraltyAliasCount,
   },
-  privacyBasis: "Task-owned database assembled only from governed synthetic Homeport and Admiralty fixture seeds; private credentials remain outside the repository.",
+  privacyBasis:
+    "Task-owned database assembled only from governed synthetic Homeport and Admiralty fixture seeds; private credentials remain outside the repository.",
   generatedAt: new Date().toISOString(),
 };
 await mkdir(path.join(taskRoot, "reports"), { recursive: true });
-await writeFile(path.join(taskRoot, "reports", "fixture-receipt.json"), `${JSON.stringify(receipt, null, 2)}\n`, "utf8");
+await writeFile(
+  path.join(taskRoot, "reports", "fixture-receipt.json"),
+  `${JSON.stringify(receipt, null, 2)}\n`,
+  "utf8",
+);
 process.stdout.write(`${JSON.stringify({ ...receipt, credentials: "EXTERNAL_PRIVATE_HANDOFFS_CREATED" })}\n`);
 
 function run(script, variables, args = []) {
@@ -99,8 +114,123 @@ async function aliasCount(file) {
   return Object.keys(parsed.accounts ?? parsed.aliases ?? {}).length;
 }
 
+async function ensureBrightworkRouteRepresentatives(databasePath, credentialsPath) {
+  const credentialHandoff = JSON.parse(await readFile(credentialsPath, "utf8"));
+  const aliases = credentialHandoff.accounts ?? credentialHandoff.aliases ?? {};
+  const fullCapability = aliases.FULL_CAPABILITY ?? aliases.VERIFIED_FULL_CAPABILITY;
+  if (!fullCapability?.accountId) throw new Error("BRIGHTWORK_FULL_CAPABILITY_ALIAS_REQUIRED");
+  const db = new PrismaClient({ datasources: { db: { url: sqliteUrl(databasePath) } } });
+  try {
+    const player = await db.playerProfile.findFirst({
+      where: { accountId: fullCapability.accountId, status: "ACTIVE" },
+      select: { id: true, displayName: true },
+    });
+    const session = await db.taleSession.findFirst({
+      where: { status: "COMPLETED", publishedVersionId: { not: null } },
+      orderBy: { id: "asc" },
+      include: { version: { select: { id: true, checksum: true } } },
+    });
+    if (!player || !session?.publishedVersionId || !session.version?.checksum)
+      throw new Error("BRIGHTWORK_COMPLETED_SYNTHETIC_ROUTE_SESSION_REQUIRED");
+    const completedAt = session.completedAt ?? new Date("2026-01-01T00:00:00.000Z");
+    await db.userAccount.update({
+      where: { id: fullCapability.accountId },
+      data: { ordinaryWorkspaceEntryAt: completedAt },
+    });
+    const membership = await db.playthroughMembership.upsert({
+      where: {
+        playthroughId_playerProfileId: { playthroughId: session.id, playerProfileId: player.id },
+      },
+      update: { status: "COMPLETED_MEMBER", joinedAt: completedAt, completedAt, removedAt: null },
+      create: {
+        id: "brightwork-stage1-membership-full-capability",
+        playthroughId: session.id,
+        playerProfileId: player.id,
+        role: "PLAYER",
+        status: "COMPLETED_MEMBER",
+        participationAlias: "Brightwork Observer",
+        joinedAt: completedAt,
+        completedAt,
+        createdAt: completedAt,
+      },
+    });
+    await db.playerChronicleRecord.upsert({
+      where: {
+        playerProfileId_sourcePlaythroughId: { playerProfileId: player.id, sourcePlaythroughId: session.id },
+      },
+      update: {
+        sourceMembershipId: membership.id,
+        publishedVersionId: session.publishedVersionId,
+        publishedVersionChecksum: session.version.checksum,
+        lifecycleStatus: "COMPLETED",
+        outcome: "COMPLETED:brightwork-synthetic",
+        completedAt,
+        sourceFingerprint: "brightwork-stage1-completed-history-v1",
+      },
+      create: {
+        id: "brightwork-stage1-history-full-capability",
+        playerProfileId: player.id,
+        sourcePlaythroughId: session.id,
+        sourceMembershipId: membership.id,
+        publishedVersionId: session.publishedVersionId,
+        publishedVersionChecksum: session.version.checksum,
+        chronicleTitleSnapshot: "Synthetic completed Brightwork voyage",
+        playerNameSnapshot: player.displayName,
+        lifecycleStatus: "COMPLETED",
+        outcome: "COMPLETED:brightwork-synthetic",
+        startedAt: session.startedAt,
+        joinedAt: completedAt,
+        completedAt,
+        sourceFingerprint: "brightwork-stage1-completed-history-v1",
+        createdAt: completedAt,
+        lastDerivedAt: completedAt,
+      },
+    });
+    await db.playerArtifactRecord.upsert({
+      where: {
+        playerProfileId_sourceGrantEventId: {
+          playerProfileId: player.id,
+          sourceGrantEventId: "brightwork-stage1-artifact-grant",
+        },
+      },
+      update: {
+        publishedVersionId: session.publishedVersionId,
+        publishedVersionChecksum: session.version.checksum,
+        ownershipState: "OWNED",
+        recordStatus: "ACTIVE",
+      },
+      create: {
+        id: "brightwork-stage1-artifact-full-capability",
+        playerProfileId: player.id,
+        sourcePlaythroughId: session.id,
+        sourceGrantEventId: "brightwork-stage1-artifact-grant",
+        sourceGrantSequence: 1,
+        publishedVersionId: session.publishedVersionId,
+        publishedVersionChecksum: session.version.checksum,
+        chronicleTitleSnapshot: "Synthetic completed Brightwork voyage",
+        artifactDefinitionId: "brightwork-stage1-synthetic-compass",
+        artifactNameSnapshot: "Synthetic Brightwork Compass",
+        artifactTypeSnapshot: "RELIC",
+        recipientPolicy: "SELECTED_PLAYER",
+        recipientEvidence: '{"synthetic":true}',
+        ownershipState: "OWNED",
+        custody: "PERSONAL",
+        recordStatus: "ACTIVE",
+        grantedAt: completedAt,
+        sourceFingerprint: "brightwork-stage1-artifact-v1",
+        createdAt: completedAt,
+        lastDerivedAt: completedAt,
+      },
+    });
+  } finally {
+    await db.$disconnect();
+  }
+}
+
 async function sha256(file) {
-  return createHash("sha256").update(await readFile(file)).digest("hex");
+  return createHash("sha256")
+    .update(await readFile(file))
+    .digest("hex");
 }
 
 function sqliteUrl(file) {
