@@ -1,5 +1,5 @@
-# Project Homeport Experience Images
+# Voyagewright Brightwork Experience Images
 
-This owner-review library is source-bound to `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f` and fixture `homeport-phase7-owner-correction-round3-v1`. It contains 256 synthetic captures covering 88 current human-facing route patterns plus representative loading, empty, error, permission, restricted, archived, token, and destructive-warning states.
+This canonical evidence corpus is source-bound to `a82473c40114280694fd292f1103ae914dcc7c6c`, capture-contract digest `26369fa3ac3bb93df496e4c77088a22e0166e244e486df81c718fc627c6de70d`, and the `brightwork-combined-homeport-round3-admiralty-phase2-v2` task-owned synthetic fixture. It contains 468 captures, all marked `CAPTURED_PENDING_BRIGHTWORK_REVIEW`.
 
-Open [index.html](index.html) directly in a browser. Contact sheets are under [Contact_Sheets](Contact_Sheets). Codex visual review is not owner acceptance. Live email delivery, live external providers, deployment, merge, and production data are not represented.
+Open [index.html](index.html) for the auditor index. Contact sheets are under [Contact_Sheets](Contact_Sheets). Captures are evidence awaiting later Brightwork review, not visual acceptance, owner acceptance, live-provider, deployment, or production-data proof.
