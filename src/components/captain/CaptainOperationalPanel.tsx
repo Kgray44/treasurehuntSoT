@@ -305,7 +305,7 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
                 {words(member.presence.state)} · sync {words(member.synchronization.state)} · readiness{" "}
                 {words(member.readiness.state)}
                 {member.presence.lastSeenAt
-                  ? ` Â· last seen ${new Date(member.presence.lastSeenAt).toLocaleTimeString()}`
+                  ? ` · last seen ${new Date(member.presence.lastSeenAt).toLocaleTimeString()}`
                   : ""}
               </span>
               {!member.isCaptainsOwnPlayerMembership &&

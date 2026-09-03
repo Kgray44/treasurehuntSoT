@@ -85,4 +85,12 @@ describe("TaleCatalog", () => {
     await waitFor(() => expect(screen.getByRole("heading", { name: "The Lantern Test" })).toBeInTheDocument());
     expect(fetch).toHaveBeenCalledTimes(2);
   });
+
+  it("omits an optional subtitle heading when the source has no subtitle", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse({ tales: [{ ...tales[0], subtitle: "   " }] })));
+    const { container } = render(<TaleCatalog />);
+
+    await screen.findByRole("heading", { name: "The Lantern Test" });
+    expect(container.querySelectorAll(".catalog-grid h3")).toHaveLength(0);
+  });
 });

@@ -128,13 +128,7 @@ export function createJournalTeardownRegistry(): JournalTeardownRegistry {
 }
 
 export type JournalOpeningConsumerStatus =
-  | "idle"
-  | "running"
-  | "completed"
-  | "completed-fallback"
-  | "aborted"
-  | "failure"
-  | "skipped";
+  "idle" | "running" | "completed" | "completed-fallback" | "aborted" | "failure" | "skipped";
 
 type JournalPhaseFailureOutcome = Exclude<
   JournalPhaseOutcome,
@@ -1128,7 +1122,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
             Open the voyage journal
           </h2>
           <button className="wax-open" onClick={(event) => void openJournal(event.currentTarget)}>
-            <span>âœ¦</span>
+            <span>✦</span>
             <strong>Open the journal</strong>
             <small>{reading.hasOpened ? "Return to your place" : platformCopy.beginVoyage.value}</small>
           </button>
@@ -1168,7 +1162,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
           onClick={() => saveReading({ openDrawer: null })}
           aria-label="Close chapter drawer"
         >
-          Ã—
+          ×
         </button>
         <h2>Released chapters</h2>
         {state.journal.chapters.map((chapter) => (
@@ -1189,7 +1183,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
           onClick={() => saveReading({ openDrawer: null })}
           aria-label="Close journal tool drawer"
         >
-          Ã—
+          ×
         </button>
         <h2>{drawerTitle(reading.openDrawer)}</h2>
         {contextBlocks
@@ -1328,7 +1322,7 @@ function JournalActions({
           <input value={answer} onChange={(event) => setAnswer(event.target.value)} autoComplete="off" required />
         </label>
         <button className="brass-button" disabled={busy}>
-          {busy ? "Testing the answerâ€¦" : "Write answer"}
+          {busy ? "Testing the answer…" : "Write answer"}
         </button>
       </form>
     );
@@ -1356,7 +1350,7 @@ function JournalActions({
   return (
     <button className="brass-button" disabled={busy || !currentBlock} onClick={() => void act("continue")}>
       {busy
-        ? "Writing progressâ€¦"
+        ? "Writing progress…"
         : String(
             currentBlock?.configuration.buttonLabel ??
               currentBlock?.configuration.primaryLabel ??

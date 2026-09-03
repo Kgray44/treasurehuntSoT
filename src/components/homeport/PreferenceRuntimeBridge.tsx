@@ -7,6 +7,7 @@ import {
   applyRuntimePreferences,
   defaultRuntimePreferences,
   preferenceRuntimeChannel,
+  preferenceRuntimeUpdatedEvent,
   type RuntimePreferences,
 } from "@/homeport/preference-runtime";
 
@@ -82,12 +83,18 @@ export function PreferenceRuntimeBridge() {
     void refresh();
     const onFocus = () => void refresh();
     const onSystemPreference = () => applyAccountRuntimePreferences(current.current);
+    const onLocalPreferenceUpdate = (event: Event) => {
+      const detail = (event as CustomEvent<{ accountId?: string; preferences?: unknown }>).detail;
+      if (detail?.accountId !== accountId || !isRuntimePreferences(detail.preferences)) return;
+      current.current = detail.preferences;
+    };
     const schemes = [
       window.matchMedia("(prefers-color-scheme: dark)"),
       window.matchMedia("(prefers-contrast: more)"),
       window.matchMedia("(forced-colors: active)"),
     ];
     window.addEventListener("focus", onFocus);
+    window.addEventListener(preferenceRuntimeUpdatedEvent, onLocalPreferenceUpdate);
     schemes.forEach((query) => query.addEventListener("change", onSystemPreference));
     const onStorage = (event: StorageEvent) => {
       if (event.key !== cacheKey || !event.newValue) return;
@@ -113,6 +120,7 @@ export function PreferenceRuntimeBridge() {
     return () => {
       controller.abort();
       window.removeEventListener("focus", onFocus);
+      window.removeEventListener(preferenceRuntimeUpdatedEvent, onLocalPreferenceUpdate);
       window.removeEventListener("storage", onStorage);
       schemes.forEach((query) => query.removeEventListener("change", onSystemPreference));
       channel?.close();

@@ -1,5 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useEffect, useState, type ReactNode } from "react";
+
 type State = {
   providers?: Array<{ kind: string; provider: string; configurationState: string; safeCode: string }>;
   backupRuns?: Array<{ backupId: string; state: string; verifiedAt?: string }>;
@@ -13,29 +15,98 @@ type State = {
     staleGrants: number;
   };
 };
+
+type OperationStatus = "loading" | "ready" | "error" | "unavailable" | "unauthorized";
+
+const statusMessage: Record<OperationStatus, string> = {
+  loading: "Loading operational status.",
+  ready: "Operational status is current.",
+  error: "Operational status could not be refreshed. Try again.",
+  unavailable: "Operational status is temporarily unavailable.",
+  unauthorized: "Operational status is unavailable or requires Administrator access.",
+};
+
+function OperationalSection({
+  title,
+  detail,
+  status,
+  emptyMessage,
+  children,
+}: {
+  title: string;
+  detail?: string;
+  status: OperationStatus;
+  emptyMessage?: string;
+  children?: ReactNode;
+}) {
+  const state = status === "ready" && emptyMessage ? "empty" : status;
+  const fallback =
+    status === "loading"
+      ? `Loading ${title.toLocaleLowerCase()}.`
+      : status === "unauthorized"
+        ? "Administrator access is required to view this operational section."
+        : status === "unavailable"
+          ? "This operational section is temporarily unavailable."
+          : "This operational section could not be loaded. Refresh to try again.";
+  return (
+    <section className="studio-editor-section" data-async-state={`private-operations-${state}`}>
+      <h2>{title}</h2>
+      {detail ? <p>{detail}</p> : null}
+      {status === "ready" ? (
+        emptyMessage ? (
+          <p>{emptyMessage}</p>
+        ) : (
+          children
+        )
+      ) : (
+        <p aria-busy={status === "loading" || undefined}>{fallback}</p>
+      )}
+    </section>
+  );
+}
+
 export function PrivateOperationsConsole() {
-  const [state, setState] = useState<State>({});
-  const [message, setMessage] = useState("Loading operational status.");
-  const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState<OperationStatus>("loading");
+  const [state, setState] = useState<State | null>(null);
   const refresh = async () => {
+    setStatus("loading");
+    setState(null);
     try {
       const response = await fetch("/api/studio/private-content/operations", { cache: "no-store" });
       if (!response.ok) {
-        setMessage("Operational status is unavailable or requires Administrator access.");
+        setStatus(
+          response.status === 401 || response.status === 403
+            ? "unauthorized"
+            : response.status === 503
+              ? "unavailable"
+              : "error",
+        );
         return;
       }
-      setState((await response.json()) as State);
-      setMessage("Operational status is current.");
+      const nextState = (await response.json()) as unknown;
+      if (!nextState || typeof nextState !== "object") {
+        setStatus("error");
+        return;
+      }
+      setState(nextState as State);
+      setStatus("ready");
     } catch {
-      setMessage("Operational status is temporarily unavailable.");
-    } finally {
-      setLoading(false);
+      setStatus("unavailable");
     }
   };
   useEffect(() => {
     const initialFetch = setTimeout(() => void refresh(), 0);
     return () => clearTimeout(initialFetch);
   }, []);
+
+  const protectedMedia = status === "ready" ? state?.protectedMedia : undefined;
+  const providers = status === "ready" && Array.isArray(state?.providers) ? state.providers : undefined;
+  const backupRuns = status === "ready" && Array.isArray(state?.backupRuns) ? state.backupRuns : undefined;
+  const drills = status === "ready" && Array.isArray(state?.drills) ? state.drills : undefined;
+  const repairs = status === "ready" && Array.isArray(state?.repairs) ? state.repairs : undefined;
+  const sectionStatus = (available: boolean): OperationStatus =>
+    status === "ready" && !available ? "unavailable" : status;
+
   return (
     <main className="studio-home" aria-labelledby="private-operations-title">
       <header className="studio-home-header">
@@ -45,67 +116,83 @@ export function PrivateOperationsConsole() {
           <p>Provider state, backups, restore drills, and repair plans use sanitized identifiers only.</p>
         </div>
       </header>
-      <p role="status" aria-live="polite" aria-atomic="true">
-        {message}
+      <p
+        role={status === "error" || status === "unavailable" || status === "unauthorized" ? "alert" : "status"}
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {statusMessage[status]}
       </p>
       <button
         type="button"
-        onClick={() => {
-          setLoading(true);
-          void refresh();
-        }}
-        aria-busy={loading}
-        disabled={loading}
+        onClick={() => void refresh()}
+        aria-busy={status === "loading"}
+        disabled={status === "loading"}
       >
-        {loading ? "Refreshing provider readiness" : "Refresh provider readiness"}
+        {status === "loading" ? "Refreshing provider readiness" : "Refresh provider readiness"}
       </button>
-      <section className="studio-editor-section">
-        <h2>Protected media</h2>
-        <p>Metadata only; protected originals and derivatives are never previewed here.</p>
+      <OperationalSection
+        title="Protected media"
+        detail="Metadata only; protected originals and derivatives are never previewed here."
+        status={sectionStatus(Boolean(protectedMedia))}
+      >
         <ul>
-          <li>Registered media: {state.protectedMedia?.total ?? 0}</li>
-          <li>Ready derivatives: {state.protectedMedia?.readyDerivatives ?? 0}</li>
-          <li>Blocked by consent: {state.protectedMedia?.blockedConsent ?? 0}</li>
-          <li>Withdrawn derivatives: {state.protectedMedia?.withdrawnDerivatives ?? 0}</li>
-          <li>Stale or expired grants: {state.protectedMedia?.staleGrants ?? 0}</li>
+          <li>Registered media: {protectedMedia?.total}</li>
+          <li>Ready derivatives: {protectedMedia?.readyDerivatives}</li>
+          <li>Blocked by consent: {protectedMedia?.blockedConsent}</li>
+          <li>Withdrawn derivatives: {protectedMedia?.withdrawnDerivatives}</li>
+          <li>Stale or expired grants: {protectedMedia?.staleGrants}</li>
         </ul>
-      </section>
-      <section className="studio-editor-section">
-        <h2>Provider readiness</h2>
+      </OperationalSection>
+      <OperationalSection
+        title="Provider readiness"
+        status={sectionStatus(Boolean(providers))}
+        emptyMessage={providers?.length === 0 ? "No provider status records were returned." : undefined}
+      >
         <ul>
-          {state.providers?.map((provider) => (
+          {providers?.map((provider) => (
             <li key={provider.kind}>
               <strong>{provider.kind}</strong>: {provider.configurationState} ({provider.safeCode})
             </li>
-          )) ?? <li>No provider status is available.</li>}
+          ))}
         </ul>
-      </section>
-      <section className="studio-editor-section">
-        <h2>Backups and restore drills</h2>
+      </OperationalSection>
+      <OperationalSection
+        title="Backups and restore drills"
+        status={sectionStatus(Boolean(backupRuns) && Boolean(drills))}
+        emptyMessage={
+          backupRuns?.length === 0 && drills?.length === 0
+            ? "No backup runs or restore drills have been recorded."
+            : undefined
+        }
+      >
         <ul>
-          {state.backupRuns?.map((backup) => (
+          {backupRuns?.map((backup) => (
             <li key={backup.backupId}>
               Backup {backup.backupId}: {backup.state}
             </li>
-          )) ?? <li>No backup runs have been recorded.</li>}
-          {state.drills?.map((drill) => (
+          ))}
+          {drills?.map((drill) => (
             <li key={`${drill.targetIdentity}:${drill.state}`}>
               Restore drill {drill.targetIdentity}: {drill.state}
             </li>
           ))}
         </ul>
-      </section>
-      <section className="studio-editor-section">
-        <h2>Repair plans</h2>
+      </OperationalSection>
+      <OperationalSection
+        title="Repair plans"
+        status={sectionStatus(Boolean(repairs))}
+        emptyMessage={repairs?.length === 0 ? "No repair plans have been recorded." : undefined}
+      >
         <ul>
-          {state.repairs?.map((repair) => (
+          {repairs?.map((repair) => (
             <li key={repair.digest}>
               Plan {repair.digest.slice(0, 12)}: {repair.state}; {repair._count.actions} actions;{" "}
               {repair.dryRun ? "dry run" : "approved execution"}
             </li>
-          )) ?? <li>No repair plans have been recorded.</li>}
+          ))}
         </ul>
-      </section>
+      </OperationalSection>
     </main>
   );
 }

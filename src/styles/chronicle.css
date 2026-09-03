@@ -316,6 +316,15 @@ html[data-voyage-theme="light"]
   box-shadow: var(--shadow-deep);
   backdrop-filter: blur(12px);
 }
+.tale-start-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1rem;
+  margin-bottom: 1.25rem;
+}
+.tale-start-navigation a {
+  overflow-wrap: anywhere;
+}
 .tale-start h1 {
   margin: 0.3rem 0;
   font-size: clamp(3rem, 7vw, 6rem);

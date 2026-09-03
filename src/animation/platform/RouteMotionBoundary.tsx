@@ -126,6 +126,8 @@ function RouteLayer({
       data-route-crossfade="direct"
       data-route-role={outgoing ? "outgoing" : "incoming"}
       data-route-interactive={!outgoing && !hideContent ? "true" : "false"}
+      aria-hidden={inactive ? "true" : undefined}
+      inert={inactive ? true : undefined}
       initial={outgoing ? { opacity: 1 } : generation === 0 ? false : { opacity: 0, y: distance }}
       animate={
         outgoing

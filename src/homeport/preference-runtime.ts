@@ -8,6 +8,7 @@ export type RuntimePreferences = {
 };
 
 export const preferenceRuntimeEvent = "voyagewright-preferences-changed";
+export const preferenceRuntimeUpdatedEvent = "voyagewright-preferences-updated";
 export const preferenceRuntimeChannel = "voyagewright-preferences";
 export const preferenceThemeBootstrapKey = "voyagewright-theme-bootstrap-v1";
 
@@ -92,6 +93,10 @@ export function publishRuntimePreferences(accountId: string, preferences: Runtim
     // The server remains authoritative; this cache only improves reload timing.
   }
   applyRuntimePreferences(preferences);
+  // BroadcastChannel does not deliver an update back to its sender. A local
+  // event keeps this tab's server-reconciliation cache aligned before a
+  // system preference change or focus refresh can reapply stale values.
+  window.dispatchEvent(new CustomEvent(preferenceRuntimeUpdatedEvent, { detail: { accountId, preferences } }));
   if (typeof BroadcastChannel !== "undefined") {
     const channel = new BroadcastChannel(preferenceRuntimeChannel);
     channel.postMessage({ type: "preferences-updated", accountId, preferences });

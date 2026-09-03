@@ -179,7 +179,7 @@ export function TaleCatalog() {
                     : "New voyage"}
               </p>
               <h2>{tale.title}</h2>
-              <h3>{tale.subtitle}</h3>
+              {tale.subtitle?.trim() ? <h3>{tale.subtitle.trim()}</h3> : null}
               <p>{tale.shortDescription ?? "A new voyage awaits beyond the harbor lights."}</p>
               <dl>
                 <div>

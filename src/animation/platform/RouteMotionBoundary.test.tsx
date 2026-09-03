@@ -86,6 +86,23 @@ describe("RouteMotionBoundary", () => {
     expect(view.container.querySelector('[data-route-role="outgoing"] label')).toBeNull();
   });
 
+  it("exposes only the incoming main landmark and page heading while the visual snapshot exits", () => {
+    vi.useFakeTimers();
+    const view = render(
+      <RouteMotionBoundary pathname="/community/lantern">{ready("Lantern Chronicle")}</RouteMotionBoundary>,
+    );
+    view.rerender(
+      <RouteMotionBoundary pathname="/play/lantern">{ready("Begin Lantern Chronicle")}</RouteMotionBoundary>,
+    );
+
+    const outgoing = view.container.querySelector('[data-route-role="outgoing"]');
+    expect(outgoing).toHaveAttribute("aria-hidden", "true");
+    expect(outgoing).toHaveAttribute("inert");
+    expect(view.getAllByRole("main")).toHaveLength(1);
+    expect(view.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    expect(view.getByRole("heading", { level: 1 })).toHaveTextContent("Begin Lantern Chronicle");
+  });
+
   it("ready at 200 ms permanently suppresses loading through 800 ms", () => {
     vi.useFakeTimers();
     const view = render(<RouteMotionBoundary pathname="/sign-in">{ready("Sign in")}</RouteMotionBoundary>);
