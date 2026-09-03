@@ -133,6 +133,10 @@ async function capture(supplemental = false) {
   const browser = await chromium.launch({ headless: true });
   const browserVersion = browser.version();
   const records = [];
+  // Keep one source-faithful signed-in session per declared persona. Creating
+  // one session per screenshot would exceed the product's real sign-in guard
+  // and turn the audit itself into a false authorization failure.
+  const authentications = new Map();
   try {
     const byContext = new Map();
     for (const requirement of requirementsToCapture) {
@@ -145,34 +149,35 @@ async function capture(supplemental = false) {
       const [persona, theme, viewportName] = key.split("|");
       const viewport = REQUIRED_VIEWPORTS.find((candidate) => candidate.id === viewportName);
       if (!viewport) throw new Error(`BRIGHTWORK_VIEWPORT_UNKNOWN:${viewportName}`);
-      for (const requirement of requirements) {
-        // Server-side session revocation is not isolated by cloned browser
-        // storage. Establish a fresh task-owned synthetic session for each
-        // authenticated requirement so no capture can contaminate another.
-        const authentication = await storageState(browser, credentials, persona);
-        const context =
-          authentication?.context ??
-          (await browser.newContext({
-            viewport: { width: viewport.width, height: viewport.height },
-            colorScheme: theme === "LIGHT" ? "light" : "dark",
-            reducedMotion: "reduce",
-            locale: "en-US",
-          }));
-        const page = await context.newPage();
-        await page.setViewportSize({ width: viewport.width, height: viewport.height });
-        await page.emulateMedia({ colorScheme: theme === "LIGHT" ? "light" : "dark", reducedMotion: "reduce" });
-        await page.addInitScript(
-          ({ value }) => {
-            sessionStorage.setItem("chronicle-role-gateway", "seen");
-            localStorage.setItem(
-              "voyagewright-theme-bootstrap-v1",
-              JSON.stringify({ theme: value, contrast: "STANDARD", textScale: 1, motion: "REDUCED" }),
-            );
-          },
-          { value: theme },
-        );
-        page.setDefaultTimeout(15_000);
-        try {
+      let authentication = authentications.get(persona);
+      if (!authentication) {
+        authentication = await storageState(browser, credentials, persona);
+        if (authentication) authentications.set(persona, authentication);
+      }
+      const context =
+        authentication?.context ??
+        (await browser.newContext({
+          viewport: { width: viewport.width, height: viewport.height },
+          colorScheme: theme === "LIGHT" ? "light" : "dark",
+          reducedMotion: "reduce",
+          locale: "en-US",
+        }));
+      const page = await context.newPage();
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.emulateMedia({ colorScheme: theme === "LIGHT" ? "light" : "dark", reducedMotion: "reduce" });
+      await page.addInitScript(
+        ({ value }) => {
+          sessionStorage.setItem("chronicle-role-gateway", "seen");
+          localStorage.setItem(
+            "voyagewright-theme-bootstrap-v1",
+            JSON.stringify({ theme: value, contrast: "STANDARD", textScale: 1, motion: "REDUCED" }),
+          );
+        },
+        { value: theme },
+      );
+      page.setDefaultTimeout(15_000);
+      try {
+        for (const requirement of requirements)
           records.push(
             await captureRequirement({
               page,
@@ -190,13 +195,13 @@ async function capture(supplemental = false) {
               baseUrl,
             }),
           );
-        } finally {
-          await page.close();
-          await context.close();
-        }
+      } finally {
+        await page.close();
+        if (!authentication) await context.close();
       }
     }
   } finally {
+    await Promise.all([...authentications.values()].map((authentication) => authentication.dispose()));
     await browser.close();
   }
   const retainedRecords = (existingManifest?.records ?? []).filter(
