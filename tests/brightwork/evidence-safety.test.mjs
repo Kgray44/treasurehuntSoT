@@ -25,6 +25,7 @@ test("every READY requirement has an explicit landmark and missing landmarks fai
   const contract = buildCaptureContract(await census(), "2026-09-03T00:00:00.000Z");
   const ready = contract.requirements.filter((requirement) => requirement.state === "READY");
   assert.ok(ready.length > 0);
+  assert.equal(contract.auditRuntimeSourceSha, "test-audit-runtime-source");
   assert.ok(ready.every((requirement) => requirement.expectedReadyLandmarks?.every((landmark) => landmark.id && landmark.selector)));
   const sample = ready[0];
   assert.equal(

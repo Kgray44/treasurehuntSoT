@@ -552,6 +552,7 @@ export function buildCaptureContract(census, generatedAt) {
     schemaVersion: "2.0.0",
     artifact: "Voyagewright Brightwork visual capture contract",
     sourceSha: census.sourceSha,
+    auditRuntimeSourceSha: census.auditRuntimeSourceSha,
     censusDigest: sha256(stableJson(census.routes)),
     generatedAt,
     requirements: normalizedRequirements,
