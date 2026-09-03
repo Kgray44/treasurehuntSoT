@@ -52,6 +52,12 @@ const TOKENIZED_ROUTES = new Set([
   "/verify-email",
 ]);
 
+const SOURCE_REDIRECT_ROUTES = new Set([
+  "/account/profile/view",
+  "/passport/history/[recordId]/compare",
+  "/passport/history/[recordId]/replay",
+]);
+
 const COMPATIBILITY_ROUTES = new Set([
   "/captain",
   "/captain/sign-in",
@@ -215,7 +221,9 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
     const classification =
       routePattern === "/studio/private-content/operations"
         ? "CONTEXTUAL_DYNAMIC_DESTINATION"
-        : (LEGACY_CLASSIFICATIONS[prior?.classification] ?? fallbackClassification(routePattern));
+        : SOURCE_REDIRECT_ROUTES.has(routePattern)
+          ? "COMPATIBILITY_OR_REDIRECT"
+          : (LEGACY_CLASSIFICATIONS[prior?.classification] ?? fallbackClassification(routePattern));
     // Stage 1 legacy metadata used a generic Admiralty label.  Prefer the
     // actual page gate whenever the current source defines one.
     const capabilityMetadata = sourceCapabilityMetadata({ routePattern, implementationSource });
@@ -244,7 +252,7 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
       meaningfulVisualStates:
         routePattern === "/studio/private-content/operations"
           ? ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "UNAUTHORIZED"]
-          : meaningfulStates(priorScreen?.applicableStates ?? [], routePattern),
+          : meaningfulStates(priorScreen?.applicableStates ?? [], routePattern, classification),
       desktopMobileApplicability: ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification)
         ? "EXCLUDED"
         : "DESKTOP_AND_MOBILE",
@@ -414,8 +422,18 @@ export function personasFor({ routePattern, authenticationRequirement, capabilit
   return ["ANONYMOUS"];
 }
 
-export function meaningfulStates(screenStates, routePattern) {
-  const states = new Set(["READY"]);
+export function meaningfulStates(screenStates, routePattern, classification) {
+  // A captured invalid invitation is a deliberately bounded-token outcome,
+  // not a false claim that the route's unprovided valid-token READY state was
+  // observed. Source redirect entries likewise have a compatibility contract,
+  // not an independent READY surface at their legacy pathname.
+  const states = new Set(
+    routePattern === "/player/invitation"
+      ? ["UNAVAILABLE"]
+      : classification === "COMPATIBILITY_OR_REDIRECT"
+        ? ["COMPATIBILITY_OR_REDIRECT"]
+        : ["READY"],
+  );
   for (const state of screenStates) {
     const normalized = String(state)
       .toUpperCase()
@@ -434,8 +452,13 @@ export function meaningfulStates(screenStates, routePattern) {
 
 export function captureRequirementsFor(route) {
   const persona = capturePersonaFor(route);
-  const compatibility = compatibilityExpectation(route.routePattern);
-  const state = route.classification === "COMPATIBILITY_OR_REDIRECT" ? "COMPATIBILITY_OR_REDIRECT" : "READY";
+  const compatibility = { ...compatibilityExpectation(route.routePattern), ...sourceRedirectExpectation(route.routePattern) };
+  const state =
+    route.routePattern === "/player/invitation"
+      ? "UNAVAILABLE"
+      : route.classification === "COMPATIBILITY_OR_REDIRECT"
+        ? "COMPATIBILITY_OR_REDIRECT"
+        : "READY";
   return REQUIRED_THEMES.flatMap((theme) =>
     REQUIRED_VIEWPORTS.map((viewport) => ({
       state,
@@ -696,6 +719,10 @@ export function semanticCaptureIssue(requirement, observation) {
   }
   if (requirement.state === "UNAUTHORIZED" && !observation.notFound && !observation.unauthorizedSurface)
     return "UNAUTHORIZED_EXPECTATION_UNMET";
+  if (requirement.state === "UNAVAILABLE") {
+    if (!observation.visibleMain) return "UNAVAILABLE_MAIN_NOT_VISIBLE";
+    if (!observation.unavailableSurface && !observation.deadEndSurface) return "UNAVAILABLE_EXPECTATION_UNMET";
+  }
   if (requirement.state === "SIGN_IN_REQUIRED" && !observation.signInSurface) return "SIGN_IN_EXPECTATION_UNMET";
   if (requirement.state === "COMPATIBILITY_OR_REDIRECT") {
     if (observation.notFound) return "COMPATIBILITY_NOT_FOUND";
@@ -859,6 +886,15 @@ function compatibilityExpectation(routePattern) {
   if (expectedDestination) return { expectedDestination };
   if (routePattern === "/player/sign-in") return { expectedCompatibilityState: "SIGN_IN_SURFACE" };
   return { expectedCompatibilityState: "DECLARED_COMPATIBILITY_SURFACE" };
+}
+
+function sourceRedirectExpectation(routePattern) {
+  const expectedDestination = {
+    "/account/profile/view": "/profile/[handle]",
+    "/passport/history/[recordId]/compare": "/chronicles/[historyTaleSlug]/compare",
+    "/passport/history/[recordId]/replay": "/player/playthroughs/[historyPlaythroughId]/journal",
+  }[routePattern];
+  return expectedDestination ? { expectedDestination } : {};
 }
 
 function semanticReadyMarkerFor(routePattern) {

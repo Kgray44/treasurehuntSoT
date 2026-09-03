@@ -152,30 +152,33 @@ async function capture(supplemental = false) {
         authentication = await storageState(browser, credentials, persona);
         if (authentication) authentications.set(authenticationKey, authentication);
       }
-      const context =
-        authentication?.context ??
-        (await browser.newContext({
+      // A capture can traverse an intentional sign-out, role gateway, or other
+      // session-mutating route. Every requirement begins from the same
+      // authenticated snapshot, never from the preceding capture's state.
+      const storageState = authentication ? await authentication.context.storageState() : undefined;
+      for (const requirement of requirements) {
+        const context = await browser.newContext({
+          ...(storageState ? { storageState } : {}),
           viewport: { width: viewport.width, height: viewport.height },
           colorScheme: theme === "LIGHT" ? "light" : "dark",
           reducedMotion: "reduce",
           locale: "en-US",
-        }));
-      const page = await context.newPage();
-      await page.setViewportSize({ width: viewport.width, height: viewport.height });
-      await page.emulateMedia({ colorScheme: theme === "LIGHT" ? "light" : "dark", reducedMotion: "reduce" });
-      await page.addInitScript(
-        ({ value }) => {
-          sessionStorage.setItem("chronicle-role-gateway", "seen");
-          localStorage.setItem(
-            "voyagewright-theme-bootstrap-v1",
-            JSON.stringify({ theme: value, contrast: "STANDARD", textScale: 1, motion: "REDUCED" }),
-          );
-        },
-        { value: theme },
-      );
-      page.setDefaultTimeout(15_000);
-      try {
-        for (const requirement of requirements)
+        });
+        const page = await context.newPage();
+        await page.setViewportSize({ width: viewport.width, height: viewport.height });
+        await page.emulateMedia({ colorScheme: theme === "LIGHT" ? "light" : "dark", reducedMotion: "reduce" });
+        await page.addInitScript(
+          ({ value }) => {
+            sessionStorage.setItem("chronicle-role-gateway", "seen");
+            localStorage.setItem(
+              "voyagewright-theme-bootstrap-v1",
+              JSON.stringify({ theme: value, contrast: "STANDARD", textScale: 1, motion: "REDUCED" }),
+            );
+          },
+          { value: theme },
+        );
+        page.setDefaultTimeout(15_000);
+        try {
           records.push(
             await captureRequirement({
               page,
@@ -193,9 +196,10 @@ async function capture(supplemental = false) {
               baseUrl,
             }),
           );
-      } finally {
-        await page.close();
-        if (!authentication) await context.close();
+        } finally {
+          await page.close();
+          await context.close();
+        }
       }
     }
   } finally {
@@ -302,6 +306,9 @@ async function captureRequirement(options) {
   const absolutePath = path.join(temporaryImages, ...relativePath.split("/"));
   await mkdir(path.dirname(absolutePath), { recursive: true });
   const concreteRoute = requirement.concreteRoute ?? resolveRoute(requirement.routePattern, representatives);
+  const effectiveRequirement = requirement.expectedDestination
+    ? { ...requirement, expectedDestination: resolveRoute(requirement.expectedDestination, representatives) }
+    : requirement;
   let pageTitle = "Voyagewright";
   let captureStatus = CURRENT_CAPTURE_STATUS;
   let limitation =
@@ -313,9 +320,9 @@ async function captureRequirement(options) {
     cleanup = prepared.cleanup;
     const { response } = prepared;
     if (response && response.status() >= 500) throw new Error(`HTTP_${response.status()}`);
-    const transitionSettled = await waitForStableReadyState(page, requirement);
-    semanticObservation = await observePage(page, response, requirement, concreteRoute, transitionSettled);
-    const semanticIssue = semanticCaptureIssue(requirement, semanticObservation);
+    const transitionSettled = await waitForStableReadyState(page, effectiveRequirement);
+    semanticObservation = await observePage(page, response, effectiveRequirement, concreteRoute, transitionSettled);
+    const semanticIssue = semanticCaptureIssue(effectiveRequirement, semanticObservation);
     if (semanticIssue) throw new Error(`BRIGHTWORK_SEMANTIC_CAPTURE_INVALID:${semanticIssue}`);
     pageTitle = semanticObservation.pageTitle;
     await page.screenshot({ path: absolutePath, fullPage: true, animations: "disabled" });
@@ -461,6 +468,11 @@ async function waitForStableReadyState(page, requirement) {
         requestAnimationFrame(() => requestAnimationFrame(resolve));
       }),
   );
+  const specificLandmarks = landmarks.filter((landmark) => !landmark.id.endsWith(":MAIN_CONTENT"));
+  if (!specificLandmarks.length)
+    return page.evaluate(
+      () => document.readyState === "complete" && !document.querySelector('main[aria-busy="true"], [data-transitioning="true"]'),
+    );
   const snapshot = await page.evaluate((selectors) => {
     return selectors.map((selector) => {
       const element = document.querySelector(selector);
@@ -469,7 +481,7 @@ async function waitForStableReadyState(page, requirement) {
       const style = getComputedStyle(element);
       return { width: rect.width, height: rect.height, opacity: style.opacity, visibility: style.visibility };
     });
-  }, landmarks.map((landmark) => landmark.selector));
+  }, specificLandmarks.map((landmark) => landmark.selector));
   await page.waitForTimeout(120);
   const repeated = await page.evaluate((selectors) => {
     return selectors.map((selector) => {
@@ -479,7 +491,7 @@ async function waitForStableReadyState(page, requirement) {
       const style = getComputedStyle(element);
       return { width: rect.width, height: rect.height, opacity: style.opacity, visibility: style.visibility };
     });
-  }, landmarks.map((landmark) => landmark.selector));
+  }, specificLandmarks.map((landmark) => landmark.selector));
   return stableJson(snapshot) === stableJson(repeated);
 }
 
@@ -730,10 +742,21 @@ async function representativeValues(databasePath, credentials) {
       }),
       db.communityCollection.findFirst({ orderBy: { id: "asc" } }),
       db.communityGuideContent.findFirst({ orderBy: { id: "asc" } }),
-      db.communityVoyageLog.findFirst({ orderBy: { id: "asc" } }),
+      db.communityVoyageLog.findFirst({
+        where: { ownerAccountId: credentials.ORDINARY_PLAYER?.accountId },
+        orderBy: { id: "asc" },
+      }),
       db.communityModerationCase.findFirst({ orderBy: { id: "asc" } }),
       db.playerArtifactRecord.findFirst({ where: { playerProfileId: ordinary?.id }, orderBy: { id: "asc" } }),
-      db.playerChronicleRecord.findFirst({ where: { playerProfileId: ordinary?.id }, orderBy: { id: "asc" } }),
+      db.playerChronicleRecord.findFirst({
+        where: { playerProfileId: ordinary?.id },
+        orderBy: { id: "asc" },
+        select: {
+          id: true,
+          sourcePlaythroughId: true,
+          publishedVersion: { select: { tale: { select: { slug: true } } } },
+        },
+      }),
       db.taleSession.findFirst({
         where: { memberships: { some: { playerProfileId: ordinary?.id } } },
         orderBy: { id: "asc" },
@@ -764,6 +787,8 @@ async function representativeValues(databasePath, credentials) {
       moderationId: moderation?.id,
       artifactId: artifact?.id,
       recordId: history?.id,
+      historyPlaythroughId: history?.sourcePlaythroughId,
+      historyTaleSlug: history?.publishedVersion?.tale?.slug,
       sessionId: captainSession?.id,
       playthroughId: captainSession?.id,
       voyageId: captainSession?.id,
@@ -792,6 +817,8 @@ function resolveRoute(pattern, values) {
     "[campaignSlug]": values.campaignSlug,
     "[artifactId]": values.artifactId,
     "[recordId]": values.recordId,
+    "[historyPlaythroughId]": values.historyPlaythroughId,
+    "[historyTaleSlug]": values.historyTaleSlug,
     "[handle]": values.handle,
     "[workspace]": values.workspace,
   };

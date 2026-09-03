@@ -260,6 +260,18 @@ async function ensureBrightworkRouteRepresentatives(databasePath, credentialsPat
       where: { id: fullCapability.accountId },
       data: { ordinaryWorkspaceEntryAt: completedAt },
     });
+    // The owner editor is a contextual screen: select a disposable log for
+    // the authenticated ordinary fixture owner rather than treating another
+    // synthetic account's private record as a product-ready destination.
+    const voyageLog = await db.communityVoyageLog.findFirst({
+      orderBy: { id: "asc" },
+      select: { id: true },
+    });
+    if (!voyageLog) throw new Error("BRIGHTWORK_OWNER_VOYAGE_LOG_REPRESENTATIVE_REQUIRED");
+    await db.communityVoyageLog.update({
+      where: { id: voyageLog.id },
+      data: { ownerAccountId: fullCapability.accountId },
+    });
     const membership = await db.playthroughMembership.upsert({
       where: {
         playthroughId_playerProfileId: { playthroughId: session.id, playerProfileId: player.id },
