@@ -7137,6 +7137,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Brightwork_Stage_8_Wave_0_Evidence_Record.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Voyagewright_Brightwork/Capture_Limitations_and_Blockers.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -7186,6 +7192,12 @@
     },
     {
       "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Stage_7_Master_Audit_Reconciliation.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Stage_8_Wave_0_Completion_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

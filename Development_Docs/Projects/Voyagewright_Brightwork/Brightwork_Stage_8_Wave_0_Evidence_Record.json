@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifact": "Voyagewright Brightwork Stage 8 Wave 0 evidence reconciliation",
+  "sourceSha": "a82473c40114280694fd292f1103ae914dcc7c6c",
+  "auditRuntimeSourceSha": "6a7b0c9edec14dcb985156ac446467775c287fc3",
+  "generatedAt": "2026-09-03T19:48:52.473Z",
+  "summary": {
+    "completionStatus": "BRIGHTWORK STAGE 8 WAVE 0 — EVIDENCE SAFETY RECONCILED",
+    "originalStage1CaptureCount": 468,
+    "supplementalCaptureCount": 10,
+    "replacementCaptureCount": 0,
+    "netNewCaptureCount": 10,
+    "newTotalCaptureCount": 478,
+    "oldPageRouteCount": 117,
+    "newPageRouteCount": 117,
+    "oldHumanFacingRouteCount": 115,
+    "newHumanFacingRouteCount": 116,
+    "declaredStateCount": 568,
+    "materiallyDistinctStateCount": 568,
+    "directlyCapturedStateCount": 130,
+    "exemptionCount": 438,
+    "blockedStateCount": 0,
+    "readyUnavailableMismatchesBefore": 40,
+    "readyUnavailableMismatchesAfter": 0,
+    "capabilityMetadataMismatchesBefore": 15,
+    "capabilityMetadataMismatchesAfter": 0,
+    "staleHomeportProofBefore": true,
+    "staleHomeportProofAfter": false,
+    "currentOrphanRouteCount": 0,
+    "unresolvedEvidenceGaps": 0
+  }
+}
