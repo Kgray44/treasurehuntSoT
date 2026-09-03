@@ -343,6 +343,7 @@ async function captureRequirement(options) {
     productArea: requirement.productArea,
     classification: requirement.classification,
     state: requirement.state,
+    expectedDestination: effectiveRequirement.expectedDestination ?? null,
     persona: requirement.persona,
     accountAlias: requirement.persona,
     fixture: fixtureReceipt.fixtureVersion,

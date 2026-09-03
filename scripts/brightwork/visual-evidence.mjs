@@ -489,6 +489,12 @@ export function captureRequirementsFor(route) {
       motionMode: "REDUCED",
       coverageKind: "ROUTE",
       criticality: route.classification === "CONTEXTUAL_DYNAMIC_DESTINATION" ? "HIGH" : "STANDARD",
+      ...(route.routePattern === "/player/invitation"
+        ? {
+            concreteRoute: "/player/invitation?state=invalid",
+            captureAction: "SOURCE_DECLARED_INVALID_INVITATION_STATE",
+          }
+        : {}),
       ...(compatibility ?? {}),
     })),
   );
@@ -807,7 +813,14 @@ export function reconciliationReport({ contract, manifest, sourceSha, imageRoot,
       missing.push({ ...record, reconciliationReason: existsSync(file) ? "CHECKSUM_MISMATCH" : "IMAGE_MISSING" });
       continue;
     }
-    const semanticIssue = semanticCaptureIssue(requirement, record.semanticObservation);
+    // A redirect destination is resolved against the source-bound synthetic
+    // representative before capture. Reuse that resolved destination here so
+    // the later reconciliation does not compare a concrete browser path with
+    // an unresolved contract placeholder.
+    const semanticIssue = semanticCaptureIssue(
+      record.expectedDestination ? { ...requirement, expectedDestination: record.expectedDestination } : requirement,
+      record.semanticObservation,
+    );
     if (semanticIssue) {
       semanticFailures.push({ ...record, reconciliationReason: semanticIssue });
       continue;

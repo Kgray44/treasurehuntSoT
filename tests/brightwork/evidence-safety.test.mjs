@@ -64,4 +64,9 @@ test("Community, privileged stations, and redirect routes retain source-specific
   );
   assert.equal(legacyPlaythrough?.state, "COMPATIBILITY_OR_REDIRECT");
   assert.equal(legacyPlaythrough?.expectedDestination, "/player/playthroughs/[playthroughId]/journal");
+  const invalidInvitation = contract.requirements.find(
+    (requirement) => requirement.routePattern === "/player/invitation" && requirement.state === "UNAVAILABLE",
+  );
+  assert.equal(invalidInvitation?.concreteRoute, "/player/invitation?state=invalid");
+  assert.equal(invalidInvitation?.captureAction, "SOURCE_DECLARED_INVALID_INVITATION_STATE");
 });
