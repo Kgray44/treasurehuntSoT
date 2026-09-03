@@ -56,6 +56,7 @@ const SOURCE_REDIRECT_ROUTES = new Set([
   "/account/profile/view",
   "/passport/history/[recordId]/compare",
   "/passport/history/[recordId]/replay",
+  "/player/playthroughs/[playthroughId]",
 ]);
 
 const COMPATIBILITY_ROUTES = new Set([
@@ -404,6 +405,26 @@ function readyLandmarksFor({ routeId, routePattern, implementationSource }) {
         description: "Private operations console heading is visible.",
         sourceFile: "src/components/studio/PrivateOperationsConsole.tsx",
         sourceBasis: "PRIVATE_OPERATIONS_CONSOLE",
+      },
+    ],
+    "/admin/configuration": [
+      {
+        id: "ADMIRALTY_CONFIGURATION_HEADING",
+        selector: ".chartroom-page h1",
+        text: "Configuration",
+        description: "The read-only Admiralty Configuration station heading is visible.",
+        sourceFile: "src/app/admin/configuration/page.tsx",
+        sourceBasis: "CONFIGURATION_PAGE_HEADING",
+      },
+    ],
+    "/studio/exchange": [
+      {
+        id: "STUDIO_EXCHANGE_HEADING",
+        selector: '[data-testid="studio-community-exchange"] h1',
+        text: "Open the Exchange",
+        description: "The authenticated Community Exchange console heading is visible.",
+        sourceFile: "src/components/community/StudioExchangeConsole.tsx",
+        sourceBasis: "STUDIO_EXCHANGE_AUTHENTICATED_CONSOLE",
       },
     ],
   }[routePattern];
@@ -893,6 +914,7 @@ function sourceRedirectExpectation(routePattern) {
     "/account/profile/view": "/profile/[handle]",
     "/passport/history/[recordId]/compare": "/chronicles/[historyTaleSlug]/compare",
     "/passport/history/[recordId]/replay": "/player/playthroughs/[historyPlaythroughId]/journal",
+    "/player/playthroughs/[playthroughId]": "/player/playthroughs/[playthroughId]/journal",
   }[routePattern];
   return expectedDestination ? { expectedDestination } : {};
 }

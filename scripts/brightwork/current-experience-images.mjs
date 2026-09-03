@@ -387,6 +387,21 @@ async function observePage(page, response, requirement, concreteRoute, transitio
       .count()
       .catch(() => 0)) > 0;
   const semanticText = `${pageTitle}\n${body}`;
+  const unavailableSurface = await page
+    .locator("main")
+    .first()
+    .evaluate((main) => {
+      const text = (element) => element.textContent?.replaceAll(/\s+/gu, " ").trim() ?? "";
+      const routeStateNodes = [
+        ...main.querySelectorAll('[role="alert"], [aria-live], h1, h2, [data-state="unavailable"]'),
+      ];
+      return routeStateNodes.some((element) =>
+        /(?:\b(?:access|chronicle|console|muster room|operational view|page|preview|resource|route|voyage)\b[^.\n]{0,64}\bunavailable\b|\bcannot be (?:opened|accessed)\b|\bnot (?:currently )?available\b)/iu.test(
+          text(element),
+        ),
+      );
+    })
+    .catch(() => false);
   const readyLandmarks = [];
   if (
     (await page
@@ -433,10 +448,11 @@ async function observePage(page, response, requirement, concreteRoute, transitio
       /(?:unauthorized|not authorized|permission denied|access is required|authorization is required)/iu.test(
         semanticText,
       ),
-    unavailableSurface:
-      /(?:\b(?:access|chronicle|console|muster room|operational view|page|preview|resource|route|voyage)\b[^.\n]{0,64}\bunavailable\b|\bcannot be (?:opened|accessed)\b|\bnot (?:currently )?available\b)/iu.test(
-        semanticText,
-      ),
+    // A bare "not available" in secondary status copy (for example a
+    // configuration rotation timestamp) is not a route-level unavailable
+    // surface. Restrict that verdict to a primary/announced state node so a
+    // READY capture cannot be rejected by unrelated supporting copy.
+    unavailableSurface,
     deadEndSurface:
       /\breturn to (?:chronicle|studio|captain|library)\b/iu.test(semanticText) &&
       /\b(?:access|route|page|chronicle)\b[^.\n]{0,64}\bunavailable\b/iu.test(semanticText),

@@ -44,14 +44,24 @@ test("every READY requirement has an explicit landmark and missing landmarks fai
   );
 });
 
-test("Community recertification and Private Operations retain source-specific evidence metadata", async () => {
+test("Community, privileged stations, and redirect routes retain source-specific evidence metadata", async () => {
   const routes = (await census()).routes;
   const community = routes.find((route) => route.routePattern === "/community");
   const featured = routes.find((route) => route.routePattern === "/community/featured");
   const privateOperations = routes.find((route) => route.routePattern === "/studio/private-content/operations");
+  const configuration = routes.find((route) => route.routePattern === "/admin/configuration");
+  const exchange = routes.find((route) => route.routePattern === "/studio/exchange");
   assert.ok(community?.readyLandmarks.some((landmark) => landmark.id === "COMMUNITY_HARBOR_DIRECTORY"));
   assert.ok(featured?.readyLandmarks.some((landmark) => landmark.id === "COMMUNITY_FEATURED_HEADING"));
   assert.equal(privateOperations?.classification, "CONTEXTUAL_DYNAMIC_DESTINATION");
   assert.equal(privateOperations?.capabilityMetadata?.requiredCapability, "ADMIN");
   assert.deepEqual(privateOperations?.meaningfulVisualStates, ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "UNAUTHORIZED"]);
+  assert.ok(configuration?.readyLandmarks.some((landmark) => landmark.id === "ADMIRALTY_CONFIGURATION_HEADING"));
+  assert.ok(exchange?.readyLandmarks.some((landmark) => landmark.id === "STUDIO_EXCHANGE_HEADING"));
+  const contract = buildCaptureContract({ routes }, "2026-09-03T00:00:00.000Z");
+  const legacyPlaythrough = contract.requirements.find(
+    (requirement) => requirement.routePattern === "/player/playthroughs/[playthroughId]",
+  );
+  assert.equal(legacyPlaythrough?.state, "COMPATIBILITY_OR_REDIRECT");
+  assert.equal(legacyPlaythrough?.expectedDestination, "/player/playthroughs/[playthroughId]/journal");
 });
