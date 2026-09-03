@@ -465,10 +465,16 @@ async function waitForStableReadyState(page, requirement) {
       }),
   );
   const specificLandmarks = landmarks.filter((landmark) => !landmark.id.endsWith(":MAIN_CONTENT"));
-  if (!specificLandmarks.length)
+  if (!specificLandmarks.length) {
+    // Generic route entries can hydrate a client-side redirect or an initial
+    // read model after DOM content is ready. Observe only after that transition
+    // has had a bounded chance to settle; do not mistake its initial copy for
+    // the route's READY state.
+    await page.waitForTimeout(300);
     return page.evaluate(
       () => document.readyState === "complete" && !document.querySelector('main[aria-busy="true"], [data-transitioning="true"]'),
     );
+  }
   const snapshot = await page.evaluate((selectors) => {
     return selectors.map((selector) => {
       const element = document.querySelector(selector);
