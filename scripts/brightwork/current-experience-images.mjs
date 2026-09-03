@@ -697,11 +697,7 @@ async function storageState(browser, credentials, persona) {
     });
     await page.getByLabel("Email or legacy Player name").fill(account.email);
     await page.getByLabel("Password").fill(password);
-    await Promise.all([
-      page.waitForURL((url) => url.pathname !== "/sign-in", { timeout: 15_000 }),
-      page.getByRole("button", { name: "Continue" }).click(),
-    ]);
-    await page.waitForLoadState("domcontentloaded");
+    await page.getByRole("button", { name: "Continue" }).click();
     await page.waitForFunction(
       () =>
         fetch("/api/auth/context", { cache: "no-store" })
@@ -710,6 +706,10 @@ async function storageState(browser, credentials, persona) {
       undefined,
       { timeout: 15_000 },
     );
+    // Some role-entry paths retain the sign-in location after the cookie has
+    // been established. Give the form's own navigation a chance to settle,
+    // but make the authenticated context (not a URL transition) decisive.
+    await page.waitForTimeout(300);
     return { context, dispose: () => context.close() };
   } catch (error) {
     await context.close();
