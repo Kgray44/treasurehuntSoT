@@ -129,6 +129,7 @@ async function capture(supplemental = false) {
   const temporaryImages = path.join(temporaryRoot, "Experience_Images");
   await rm(temporaryRoot, { recursive: true, force: true });
   await mkdir(temporaryImages, { recursive: true });
+  await preserveStage4BExceptionFrames(temporaryImages);
 
   const browser = await chromium.launch({ headless: true });
   const browserVersion = browser.version();
@@ -272,6 +273,21 @@ async function render() {
   process.stdout.write(
     `${JSON.stringify({ status: "BRIGHTWORK_CONTACT_SHEETS_RENDERED", prunedCanonicalFiles, ...summary(report) })}\n`,
   );
+}
+
+async function preserveStage4BExceptionFrames(temporaryImages) {
+  const exceptions = await json(path.join(brightworkRoot, "Brightwork_Evidence_State_Exceptions.json"));
+  if (!(exceptions.exceptions?.length ?? 0)) return;
+  const source = path.join(imageRoot, "Stage4B_Fixture_Exceptions");
+  const target = path.join(temporaryImages, "Stage4B_Fixture_Exceptions");
+  const sourceStats = await stat(source).catch(() => null);
+  if (!sourceStats?.isDirectory()) throw new Error("BRIGHTWORK_STAGE4B_EXCEPTION_FRAMES_MISSING_BEFORE_CAPTURE");
+  await copyDirectory(source, target);
+  for (const exception of exceptions.exceptions) {
+    const preserved = path.join(temporaryImages, ...exception.preservedPath.split("/"));
+    if (!(await isNonEmpty(preserved)))
+      throw new Error(`BRIGHTWORK_STAGE4B_EXCEPTION_FRAME_PRESERVATION_FAILED:${exception.exceptionId}`);
+  }
 }
 
 async function captureRequirement(options) {
