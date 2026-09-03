@@ -155,10 +155,10 @@ async function capture(supplemental = false) {
       // A capture can traverse an intentional sign-out, role gateway, or other
       // session-mutating route. Every requirement begins from the same
       // authenticated snapshot, never from the preceding capture's state.
-      const storageState = authentication ? await authentication.context.storageState() : undefined;
+      const authenticationStorageState = authentication ? await authentication.context.storageState() : undefined;
       for (const requirement of requirements) {
         const context = await browser.newContext({
-          ...(storageState ? { storageState } : {}),
+          ...(authenticationStorageState ? { storageState: authenticationStorageState } : {}),
           viewport: { width: viewport.width, height: viewport.height },
           colorScheme: theme === "LIGHT" ? "light" : "dark",
           reducedMotion: "reduce",
