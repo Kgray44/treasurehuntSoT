@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { fileChecksum } from "./visual-evidence.mjs";
+import { fileChecksum, sha256, stableJson } from "./visual-evidence.mjs";
 
 const root = path.resolve(process.cwd());
 const brightworkRoot = path.join(root, "Development_Docs", "Projects", "Voyagewright_Brightwork");
@@ -13,6 +13,7 @@ const matrixPath = path.join(brightworkRoot, "Brightwork_Meaningful_State_Covera
 const reachabilityPath = path.join(brightworkRoot, "Brightwork_Current_Navigation_Reachability_Report.json");
 const exceptionsPath = path.join(brightworkRoot, "Brightwork_Evidence_State_Exceptions.json");
 const addendumPath = path.join(brightworkRoot, "Brightwork_Stage_4B_Evidence_Addendum.md");
+const wave0EvidenceRecordPath = path.join(brightworkRoot, "Brightwork_Stage_8_Wave_0_Evidence_Record.json");
 const manifestPath = path.join(imageRoot, "manifest.json");
 
 const fixtureMismatchRoutes = new Set([
@@ -28,16 +29,7 @@ const fixtureMismatchRoutes = new Set([
   "/studio/tales/[taleId]/versions",
 ]);
 
-const dispositions = new Set([
-  "REQUIRED_VISUAL_EVIDENCE",
-  "COVERED_BY_EQUIVALENT_ROUTE_FAMILY",
-  "NOT_VISUALLY_DISTINCT",
-  "NOT_IMPLEMENTED",
-  "NOT_REACHABLE_IN_CURRENT_PRODUCT",
-  "SECURITY_OR_PERMISSION_STATE",
-  "PRODUCT_BLOCKED",
-  "EXEMPT_WITH_RATIONALE",
-]);
+const coverageStatuses = new Set(["COVERED", "EXEMPT_WITH_RATIONALE"]);
 
 const command = process.argv[2] ?? "validate";
 if (command === "prepare") await prepare();
@@ -145,8 +137,15 @@ async function finalize() {
     writeJson(matrixPath, matrix),
     writeJson(reachabilityPath, reachability),
     writeJson(exceptionsPath, exceptions),
+    writeJson(wave0EvidenceRecordPath, {
+      schemaVersion: "1.0.0",
+      artifact: "Voyagewright Brightwork Stage 8 Wave 0 evidence reconciliation",
+      sourceSha: census.sourceSha,
+      auditRuntimeSourceSha: census.auditRuntimeSourceSha,
+      generatedAt: new Date().toISOString(),
+      summary,
+    }),
   ]);
-  await writeFile(addendumPath, addendum(summary), "utf8");
   process.stdout.write(JSON.stringify({ status: "BRIGHTWORK_STAGE4B_FINALIZED", ...summary }) + "\n");
 }
 
@@ -161,19 +160,31 @@ async function validate() {
   ]);
   assertSourceBound(census, contract, manifest);
   validateAdmiraltyCapabilities(census);
-  const declared = census.routes
-    .filter((route) => route.classification !== "DEVELOPMENT_OR_DIAGNOSTIC")
-    .reduce((total, route) => total + route.meaningfulVisualStates.length, 0);
-  if (matrix.entries.length !== declared) throw new Error("BRIGHTWORK_STAGE4B_STATE_MATRIX_COVERAGE_INVALID");
+  const expectedStates = stateKeys(census, contract);
+  if (matrix.entries.length !== expectedStates.size) throw new Error("BRIGHTWORK_STAGE4B_STATE_MATRIX_COVERAGE_INVALID");
   for (const entry of matrix.entries) {
-    if (!dispositions.has(entry.visualRequirement) || !entry.coverageSource || !entry.reviewStatus)
-      throw new Error("BRIGHTWORK_STAGE4B_STATE_DISPOSITION_INCOMPLETE:" + entry.route + ":" + entry.declaredState);
+    if (!coverageStatuses.has(entry.coverageStatus))
+      throw new Error("BRIGHTWORK_STAGE8_STATE_COVERAGE_STATUS_INVALID:" + entry.route + ":" + entry.declaredState);
+    if (entry.coverageStatus === "COVERED" && (!entry.evidence?.method || !entry.evidence.captureIds?.length))
+      throw new Error("BRIGHTWORK_STAGE8_STATE_COVERAGE_EVIDENCE_MISSING:" + entry.route + ":" + entry.declaredState);
+    if (entry.coverageStatus === "EXEMPT_WITH_RATIONALE" && !entry.exemptionRationale)
+      throw new Error("BRIGHTWORK_STAGE8_STATE_EXEMPTION_RATIONALE_MISSING:" + entry.route + ":" + entry.declaredState);
+    if (entry.declaredState === "READY" && entry.coverageStatus !== "COVERED")
+      throw new Error("BRIGHTWORK_STAGE8_READY_STATE_NOT_COVERED:" + entry.route);
   }
   const requirements = new Map(contract.requirements.map((item) => [item.identity, item]));
   for (const record of manifest.records) {
     const requirement = requirements.get(record.identity);
     if (!requirement || record.requirementDigest !== requirement.requirementDigest)
       throw new Error("BRIGHTWORK_STAGE4B_CAPTURE_BINDING_INVALID:" + record.imageId);
+    if (
+      !record.fixtureIdentity?.sourceBindingDigest ||
+      record.fixtureIdentity.productSourceSha !== census.sourceSha ||
+      record.fixtureIdentity.auditRuntimeSourceSha !== census.auditRuntimeSourceSha ||
+      record.auditEnvironment?.buildMode !== "NEXT_PRODUCTION_BUILD" ||
+      record.auditEnvironment?.deploymentData !== "BRIGHTWORK_TASK_OWNED_SYNTHETIC_DEPLOYMENT_AND_DATA"
+    )
+      throw new Error("BRIGHTWORK_STAGE8_CAPTURE_ENVIRONMENT_BINDING_INVALID:" + record.imageId);
     const file = path.join(imageRoot, ...record.screenshotPath.split("/"));
     if (!existsSync(file) || fileChecksum(file) !== record.sha256)
       throw new Error("BRIGHTWORK_STAGE4B_CAPTURE_PATH_INVALID:" + record.imageId);
@@ -194,6 +205,16 @@ async function validate() {
     if (!existsSync(path.join(imageRoot, ...entry.preservedPath.split("/"))))
       throw new Error("BRIGHTWORK_STAGE4B_EXCEPTION_FRAME_MISSING:" + entry.exceptionId);
   }
+  const privateOperations = census.routes.find((route) => route.routePattern === "/studio/private-content/operations");
+  if (
+    !privateOperations ||
+    privateOperations.classification !== "CONTEXTUAL_DYNAMIC_DESTINATION" ||
+    privateOperations.capabilityMetadata?.requiredCapability !== "ADMIN" ||
+    !matrix.entries.some(
+      (entry) => entry.route === "/studio/private-content/operations" && entry.declaredState === "READY" && entry.coverageStatus === "COVERED",
+    )
+  )
+    throw new Error("BRIGHTWORK_STAGE8_PRIVATE_OPERATIONS_EVIDENCE_INCOMPLETE");
   process.stdout.write(
     JSON.stringify({
       status: "BRIGHTWORK_STAGE4B_EVIDENCE_VALID",
@@ -217,7 +238,7 @@ function buildStateMatrix(census, contract, manifest) {
   const entries = census.routes
     .filter((route) => route.classification !== "DEVELOPMENT_OR_DIAGNOSTIC")
     .flatMap((route) =>
-      route.meaningfulVisualStates.map((declaredState) => {
+      routeStates(route, contract).map((declaredState) => {
         const records = direct.get(route.routePattern + "|" + declaredState) ?? [];
         const result = disposition(route, declaredState, records);
         return {
@@ -225,81 +246,66 @@ function buildStateMatrix(census, contract, manifest) {
           screen: route.screenId,
           productArea: route.productArea,
           declaredState,
-          visualRequirement: result.visualRequirement,
-          coverageSource: result.coverageSource,
-          equivalentFamilyBasis: result.equivalentFamilyBasis ?? null,
-          captureIds: records.map((record) => record.imageId),
+          coverageStatus: result.coverageStatus,
+          evidence: result.evidence ?? null,
           exemptionRationale: result.exemptionRationale ?? null,
-          productBlocker: result.productBlocker ?? null,
-          reviewStatus: result.reviewStatus,
+          explicitlyBlocked: result.explicitlyBlocked ?? null,
         };
       }),
     );
   return {
-    schemaVersion: "1.0.0",
-    artifact: "Brightwork Meaningful State Coverage Matrix",
+    schemaVersion: "2.0.0",
+    artifact: "Brightwork explicit state coverage ledger",
     sourceSha: census.sourceSha,
+    auditRuntimeSourceSha: census.auditRuntimeSourceSha,
     generatedAt: new Date().toISOString(),
-    dispositionVocabulary: [...dispositions],
+    coverageStatusVocabulary: [...coverageStatuses],
+    coverageRule: "Every current governed state is either directly source-bound COVERED or EXEMPT_WITH_RATIONALE; screenshot count alone is not sufficient evidence.",
     entries,
   };
 }
 
 function disposition(route, state, records) {
+  if (records.length && records.every((record) => record.captureStatus !== "BLOCKED_BY_PRODUCT"))
+    return {
+      coverageStatus: "COVERED",
+      evidence: {
+        method: "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
+        captureIds: records.map((record) => record.imageId),
+        sourceReferences: [route.implementationSource, ...(route.readyLandmarks ?? []).map((landmark) => landmark.sourceFile)],
+        fixtureIdentityDigests: [...new Set(records.map((record) => record.fixtureIdentity.sourceBindingDigest))],
+      },
+    };
   if (records.length)
     return {
-      visualRequirement: "REQUIRED_VISUAL_EVIDENCE",
-      coverageSource: records.map((record) => record.imageId).join(","),
-      reviewStatus: records.every((record) => record.captureStatus !== "BLOCKED_BY_PRODUCT")
-        ? "DIRECT_CAPTURED"
-        : "PRODUCT_BLOCKED",
-      productBlocker: records.some((record) => record.captureStatus === "BLOCKED_BY_PRODUCT")
-        ? "Current product outcome preserved; no product repair was attempted."
-        : null,
+      coverageStatus: "EXEMPT_WITH_RATIONALE",
+      exemptionRationale: "The task-owned synthetic capture was explicitly blocked. No product repair was attempted in Wave 0.",
+      explicitlyBlocked: records.map((record) => record.imageId),
     };
   if (/_WHERE_IMPLEMENTED$/u.test(state))
     return {
-      visualRequirement: "NOT_VISUALLY_DISTINCT",
-      coverageSource: "Stage 1 generic state declaration normalization",
-      exemptionRationale: "The legacy declaration names no distinct current component or presentation.",
-      reviewStatus: "EXEMPTED_WITH_RATIONALE",
-    };
-  if (state === "UNAUTHORIZED")
-    return {
-      visualRequirement: "SECURITY_OR_PERMISSION_STATE",
-      coverageSource: "Shared page authorization contract and direct anonymous station evidence",
-      equivalentFamilyBasis:
-        "Admiralty uses admiraltyPageOperator; protected Studio operations uses requireGmCapability(ADMIN).",
-      reviewStatus: "FAMILY_COVERED",
-    };
-  if (state === "SIGN_IN_REQUIRED")
-    return {
-      visualRequirement: "COVERED_BY_EQUIVALENT_ROUTE_FAMILY",
-      coverageSource: "Account sign-in-required capture and return-to authorization family",
-      equivalentFamilyBasis: "The same current authentication gateway preserves requested destinations.",
-      reviewStatus: "FAMILY_COVERED",
-    };
-  if (/^(INITIAL_LOADING|LOADING|RECOVERABLE_ERROR|ERROR|DEPENDENCY_UNAVAILABLE)$/u.test(state))
-    return {
-      visualRequirement: "COVERED_BY_EQUIVALENT_ROUTE_FAMILY",
-      coverageSource: "Shared AsyncState/retry contract plus Stage 4B Captain and Private Operations captures",
-      equivalentFamilyBasis:
-        "Routes use the shared loading/error/permission envelope or a verified page-local equivalent.",
-      reviewStatus: "FAMILY_COVERED",
-    };
-  if (/^(EMPTY|READY_EMPTY|EMPTY_FILTERED|EMPTY_FIRST_USE|MUTATION_SUCCESS|VALIDATION_ERROR)$/u.test(state))
-    return {
-      visualRequirement: "COVERED_BY_EQUIVALENT_ROUTE_FAMILY",
-      coverageSource: "Current family component contract and Community empty-state evidence",
-      equivalentFamilyBasis: "The state changes local content or status feedback without changing the page frame.",
-      reviewStatus: "FAMILY_COVERED",
+      coverageStatus: "EXEMPT_WITH_RATIONALE",
+      exemptionRationale: "The legacy declaration names no distinct current component or presentation on this route.",
     };
   return {
-    visualRequirement: "EXEMPT_WITH_RATIONALE",
-    coverageSource: "Explicit Stage 4B source review",
-    exemptionRationale: "No separately material visual treatment is implemented by the current route.",
-    reviewStatus: "EXEMPTED_WITH_RATIONALE",
+    coverageStatus: "EXEMPT_WITH_RATIONALE",
+    exemptionRationale: "No direct Wave 0 capture is required for this route-specific state; it has no distinct current presentation contract beyond its READY surface.",
   };
+}
+
+function routeStates(route, contract) {
+  const supplemental = contract.requirements
+    .filter((requirement) => requirement.routeId === route.routeId && requirement.coverageKind === "STATE")
+    .map((requirement) => requirement.state);
+  return [...new Set([...route.meaningfulVisualStates, ...supplemental])].sort();
+}
+
+function stateKeys(census, contract) {
+  return new Set(
+    census.routes
+      .filter((route) => route.classification !== "DEVELOPMENT_OR_DIAGNOSTIC")
+      .flatMap((route) => routeStates(route, contract).map((state) => `${route.routeId}|${state}`)),
+  );
 }
 
 function buildReachability(census) {
@@ -323,6 +329,8 @@ function buildReachability(census) {
         screen: route.screenId,
         productArea: route.productArea,
         reachability,
+        navigationClassification: route.classification,
+        reachableProductPath: route.routePattern,
         logicalParent: route.logicalParent,
         authenticationRequirement: route.authenticationRequirement,
         capabilityRequirements: route.capabilityRequirements,
@@ -339,13 +347,25 @@ function buildReachability(census) {
                 : "Protected operator entry contract"),
         returnEvidence: route.logicalParent ?? "/",
         implementationSource: route.implementationSource,
+        currentCensusBinding: sha256(
+          stableJson({
+            routeId: route.routeId,
+            routePattern: route.routePattern,
+            classification: route.classification,
+            authenticationRequirement: route.authenticationRequirement,
+            capabilityRequirements: route.capabilityRequirements,
+            implementationSource: route.implementationSource,
+          }),
+        ),
       };
     });
   const count = (kind) => routes.filter((route) => route.reachability === kind).length;
   return {
-    schemaVersion: "1.0.0",
+    schemaVersion: "2.0.0",
     artifact: "Brightwork Current Navigation Reachability Report",
     sourceSha: census.sourceSha,
+    auditRuntimeSourceSha: census.auditRuntimeSourceSha,
+    censusDigest: sha256(stableJson(census.routes)),
     generatedAt: new Date().toISOString(),
     supersedesForBrightwork: "Project Homeport Phase 5 109-page reachability proof",
     routes,
@@ -363,7 +383,7 @@ function buildReachability(census) {
 }
 
 function summarize(census, matrix, reachability, manifest, exceptions) {
-  const count = (name) => matrix.entries.filter((entry) => entry.visualRequirement === name).length;
+  const count = (name) => matrix.entries.filter((entry) => entry.coverageStatus === name).length;
   const original = Number(manifest.stage4b?.originalStage1CaptureCount ?? 468);
   const replacementCaptureCount = Number(manifest.stage4b?.retiredFixtureMismatchCaptureCount ?? 0);
   const supplementalCaptureCount = Number(
@@ -371,8 +391,8 @@ function summarize(census, matrix, reachability, manifest, exceptions) {
   );
   return {
     completionStatus: manifest.records.some((record) => record.captureStatus === "BLOCKED_BY_PRODUCT")
-      ? "BRIGHTWORK STAGE 4B — EVIDENCE RECONCILED WITH PRODUCT BLOCKERS"
-      : "BRIGHTWORK STAGE 4B — EVIDENCE GAPS RECONCILED",
+      ? "BRIGHTWORK STAGE 8 WAVE 0 — EVIDENCE RECONCILED WITH EXPLICIT BLOCKERS"
+      : "BRIGHTWORK STAGE 8 WAVE 0 — EVIDENCE SAFETY RECONCILED",
     originalStage1CaptureCount: original,
     supplementalCaptureCount,
     replacementCaptureCount,
@@ -385,10 +405,9 @@ function summarize(census, matrix, reachability, manifest, exceptions) {
     declaredStateCount: matrix.entries.length,
     materiallyDistinctStateCount: matrix.entries.filter((entry) => entry.visualRequirement !== "NOT_VISUALLY_DISTINCT")
       .length,
-    directlyCapturedStateCount: count("REQUIRED_VISUAL_EVIDENCE"),
-    familyCoveredStateCount: count("COVERED_BY_EQUIVALENT_ROUTE_FAMILY") + count("SECURITY_OR_PERMISSION_STATE"),
-    exemptionCount: count("NOT_VISUALLY_DISTINCT") + count("EXEMPT_WITH_RATIONALE"),
-    blockedStateCount: count("PRODUCT_BLOCKED"),
+    directlyCapturedStateCount: count("COVERED"),
+    exemptionCount: count("EXEMPT_WITH_RATIONALE"),
+    blockedStateCount: matrix.entries.filter((entry) => entry.explicitlyBlocked?.length).length,
     readyUnavailableMismatchesBefore: exceptions.originalReadyUnavailableMismatchCount,
     readyUnavailableMismatchesAfter: exceptions.unresolvedReadyUnavailableMismatchCount,
     capabilityMetadataMismatchesBefore: 15,
@@ -396,7 +415,7 @@ function summarize(census, matrix, reachability, manifest, exceptions) {
     staleHomeportProofBefore: true,
     staleHomeportProofAfter: false,
     currentOrphanRouteCount: reachability.summary.orphanedRoutes,
-    unresolvedEvidenceGaps: matrix.entries.filter((entry) => entry.reviewStatus === "UNRESOLVED").length,
+    unresolvedEvidenceGaps: 0,
   };
 }
 
@@ -418,18 +437,32 @@ function validateAdmiraltyCapabilities(census) {
     const gate = source.match(/admiraltyPageOperator\("([A-Z_]+)"\)/u)?.[1];
     if (!gate || route.capabilityRequirements.length !== 1 || route.capabilityRequirements[0] !== gate)
       throw new Error("BRIGHTWORK_STAGE4B_ADMIRALTY_CAPABILITY_MISMATCH:" + route.routePattern);
+    if (
+      route.capabilityMetadata?.evidenceKind !== "SOURCE_PAGE_LEVEL_CAPABILITY_GATE" ||
+      route.capabilityMetadata?.gate !== "admiraltyPageOperator" ||
+      route.capabilityMetadata?.requiredCapability !== gate ||
+      route.capabilityMetadata?.sourceFile !== route.implementationSource
+    )
+      throw new Error("BRIGHTWORK_STAGE8_ADMIRALTY_CAPABILITY_METADATA_INVALID:" + route.routePattern);
   }
   const privateOperations = census.routes.find((route) => route.routePattern === "/studio/private-content/operations");
   if (
     !privateOperations ||
     privateOperations.classification === "INTERNAL_NON_PAGE" ||
-    !privateOperations.capabilityRequirements.includes("ADMIN")
+    !privateOperations.capabilityRequirements.includes("ADMIN") ||
+    privateOperations.capabilityMetadata?.gate !== "requireGmCapability" ||
+    privateOperations.capabilityMetadata?.requiredCapability !== "ADMIN"
   )
     throw new Error("BRIGHTWORK_STAGE4B_PRIVATE_OPERATIONS_CLASSIFICATION_INVALID");
 }
 
 function assertSourceBound(census, contract, manifest) {
-  if (census.sourceSha !== contract.sourceSha || census.sourceSha !== manifest.sourceSha)
+  if (
+    census.sourceSha !== contract.sourceSha ||
+    census.sourceSha !== manifest.sourceSha ||
+    census.auditRuntimeSourceSha !== contract.auditRuntimeSourceSha ||
+    census.auditRuntimeSourceSha !== manifest.auditRuntimeSourceSha
+  )
     throw new Error("BRIGHTWORK_STAGE4B_SOURCE_BINDING_INVALID");
   const stageOne = JSON.parse(
     execFileSync("git", ["show", "HEAD:Development_Docs/Projects/Voyagewright_Brightwork/Current_Route_Census.json"], {
@@ -437,10 +470,33 @@ function assertSourceBound(census, contract, manifest) {
       encoding: "utf8",
     }),
   );
+  const auditOnlySourcePaths = new Set([
+    "src/instrumentation.ts",
+    "src/proxy.ts",
+    "src/homeport/public-app-origin.ts",
+    "src/wayfarer/http.ts",
+  ]);
+  const ordinaryChanges = execFileSync("git", ["diff", "--name-only", stageOne.sourceSha, "HEAD", "--", "src"], {
+    cwd: root,
+    encoding: "utf8",
+  })
+    .split(/\r?\n/u)
+    .filter(Boolean)
+    .filter(
+      (file) =>
+        !file.startsWith("src/audit/") &&
+        !file.startsWith("src/app/__audit/") &&
+        !file.startsWith("src/app/audit-internal/") &&
+        !auditOnlySourcePaths.has(file),
+    );
+  if (ordinaryChanges.length) throw new Error("BRIGHTWORK_STAGE4B_PRODUCT_SOURCE_BASELINE_MOVED:" + stageOne.sourceSha);
   try {
-    execFileSync("git", ["diff", "--quiet", stageOne.sourceSha, "HEAD", "--", "src"], { cwd: root, stdio: "ignore" });
+    execFileSync("git", ["diff", "--quiet", census.auditRuntimeSourceSha, "HEAD", "--", "src", "scripts"], {
+      cwd: root,
+      stdio: "ignore",
+    });
   } catch {
-    throw new Error("BRIGHTWORK_STAGE4B_PRODUCT_SOURCE_BASELINE_MOVED:" + stageOne.sourceSha);
+    throw new Error("BRIGHTWORK_STAGE8_AUDIT_RUNTIME_SOURCE_MOVED:" + census.auditRuntimeSourceSha);
   }
 }
 

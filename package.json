@@ -216,6 +216,7 @@
     "brightwork:audit:start": "node scripts/brightwork/audit-runtime.mjs start",
     "brightwork:audit:status": "node scripts/brightwork/audit-runtime.mjs status",
     "brightwork:audit:reset": "node scripts/brightwork/audit-runtime.mjs reset",
+    "brightwork:audit:recertify": "node scripts/brightwork/audit-runtime.mjs recertify",
     "brightwork:audit:stop": "node scripts/brightwork/audit-runtime.mjs stop",
     "brightwork:validate": "node scripts/brightwork/current-experience-images.mjs validate && node scripts/brightwork/stage4b-evidence.mjs validate",
     "test:docs": "node --test tests/validate-documentation.test.mjs",

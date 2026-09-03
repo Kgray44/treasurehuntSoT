@@ -13,6 +13,7 @@ import {
   fileChecksum,
   reconciliationReport,
   sha256,
+  stableJson,
   semanticCaptureIssue,
 } from "./visual-evidence.mjs";
 
@@ -38,7 +39,8 @@ else if (command === "complete") await complete();
 else throw new Error(`BRIGHTWORK_COMMAND_UNKNOWN:${command}`);
 
 async function plan() {
-  const sourceSha = auditedSourceSha();
+  const source = auditedSources();
+  const sourceSha = source.productSourceSha;
   const generatedAt = new Date().toISOString();
   const [legacyInventory, screenCatalog] = await Promise.all([
     json(path.join(root, "Development_Docs", "Projects", "Project_Homeport", "Homeport_Route_Inventory.json")),
@@ -49,6 +51,7 @@ async function plan() {
     legacyInventory,
     screenCatalog,
     sourceSha,
+    auditRuntimeSourceSha: source.auditRuntimeSourceSha,
     generatedAt,
   });
   const contract = buildCaptureContract(census, generatedAt);
@@ -81,14 +84,16 @@ async function plan() {
     writeJson(contractPath, contract),
   ]);
   process.stdout.write(
-    `${JSON.stringify({ status: "BRIGHTWORK_CAPTURE_PLAN_READY", sourceSha, routes: census.totals, requiredCaptures: contract.requirements.length })}\n`,
+    `${JSON.stringify({ status: "BRIGHTWORK_CAPTURE_PLAN_READY", sourceSha, auditRuntimeSourceSha: source.auditRuntimeSourceSha, routes: census.totals, requiredCaptures: contract.requirements.length })}\n`,
   );
 }
 
 async function capture(supplemental = false) {
   const [contract, census] = await Promise.all([json(contractPath), json(censusPath)]);
-  const sourceSha = auditedSourceSha();
-  if (contract.sourceSha !== sourceSha) throw new Error("BRIGHTWORK_CAPTURE_PLAN_STALE_REPLAN_REQUIRED");
+  const source = auditedSources();
+  const sourceSha = source.productSourceSha;
+  if (contract.sourceSha !== sourceSha || contract.auditRuntimeSourceSha !== source.auditRuntimeSourceSha)
+    throw new Error("BRIGHTWORK_CAPTURE_PLAN_STALE_REPLAN_REQUIRED");
   const contractValidation = captureContractValidation({ contract, census });
   if (!contractValidation.valid)
     throw new Error(`BRIGHTWORK_CAPTURE_CONTRACT_INVALID:${contractValidation.failureCodes.join(",")}`);
@@ -108,6 +113,16 @@ async function capture(supplemental = false) {
   const fixtureRoot = path.resolve(required("BRIGHTWORK_FIXTURE_ROOT"));
   const fixtureReceipt = await json(path.join(fixtureRoot, "reports", "fixture-receipt.json"));
   if (fixtureReceipt.sourceSha !== sourceSha) throw new Error("BRIGHTWORK_FIXTURE_SOURCE_MISMATCH");
+  const auditReceipt = await json(required("BRIGHTWORK_AUDIT_METADATA_PATH"));
+  if (
+    auditReceipt.sourceSha !== source.auditRuntimeSourceSha ||
+    auditReceipt.productBaselineSha !== sourceSha ||
+    auditReceipt.classification !== "SYNTHETIC_DISPOSABLE_AUDIT_DATA" ||
+    auditReceipt.environment?.buildMode !== "NEXT_PRODUCTION_BUILD" ||
+    auditReceipt.environment?.deploymentData !== "BRIGHTWORK_TASK_OWNED_SYNTHETIC_DEPLOYMENT_AND_DATA"
+  )
+    throw new Error("BRIGHTWORK_AUDIT_ENVIRONMENT_METADATA_INVALID");
+  const fixtureIdentity = sourceBoundFixtureIdentity({ fixtureReceipt, auditReceipt, source });
   const credentials = await loadCredentials(fixtureReceipt.credentials);
   const representatives = await representativeValues(fixtureReceipt.databasePath, credentials);
   const temporaryRoot = path.join(fixtureRoot, "capture-output");
@@ -167,8 +182,11 @@ async function capture(supplemental = false) {
               requirement,
               temporaryImages,
               sourceSha,
+              auditRuntimeSourceSha: source.auditRuntimeSourceSha,
               contract,
               fixtureReceipt,
+              fixtureIdentity,
+              auditEnvironment: auditReceipt.environment,
               browserVersion,
               representatives,
               ordinal: nextImageOrdinal(existingManifest?.records ?? [], records.length),
@@ -195,6 +213,8 @@ async function capture(supplemental = false) {
     fixture: fixtureReceipt.fixtureVersion,
     fixturePrivacyBasis: fixtureReceipt.privacyBasis,
     sourceSha,
+    auditRuntimeSourceSha: source.auditRuntimeSourceSha,
+    auditEnvironment: auditReceipt.environment,
     contractDigest: contract.contractDigest,
     generatedAt: new Date().toISOString(),
     browser: `Chromium ${browserVersion}`,
@@ -262,6 +282,9 @@ async function captureRequirement(options) {
     sourceSha,
     contract,
     fixtureReceipt,
+    fixtureIdentity,
+    auditEnvironment,
+    auditRuntimeSourceSha,
     browserVersion,
     representatives,
     ordinal,
@@ -290,7 +313,8 @@ async function captureRequirement(options) {
     cleanup = prepared.cleanup;
     const { response } = prepared;
     if (response && response.status() >= 500) throw new Error(`HTTP_${response.status()}`);
-    semanticObservation = await observePage(page, response, requirement, concreteRoute);
+    const transitionSettled = await waitForStableReadyState(page, requirement);
+    semanticObservation = await observePage(page, response, requirement, concreteRoute, transitionSettled);
     const semanticIssue = semanticCaptureIssue(requirement, semanticObservation);
     if (semanticIssue) throw new Error(`BRIGHTWORK_SEMANTIC_CAPTURE_INVALID:${semanticIssue}`);
     pageTitle = semanticObservation.pageTitle;
@@ -324,6 +348,7 @@ async function captureRequirement(options) {
     motionMode: requirement.motionMode,
     browserVersion: `Chromium ${browserVersion}`,
     sourceSha,
+    auditRuntimeSourceSha,
     contractDigest: contract.contractDigest,
     requirementDigest: requirement.requirementDigest,
     capturedAt: new Date().toISOString(),
@@ -337,11 +362,13 @@ async function captureRequirement(options) {
       "Synthetic fixture aliases only; credentials, tokens, private prose, media objects, and raw identifiers are excluded from the corpus.",
     visualReviewStatus: CURRENT_CAPTURE_STATUS,
     pageTitle,
+    fixtureIdentity,
+    auditEnvironment,
     semanticObservation,
   };
 }
 
-async function observePage(page, response, requirement, concreteRoute) {
+async function observePage(page, response, requirement, concreteRoute, transitionSettled) {
   const pageTitle = (await page.title()).replaceAll(/\s+/gu, " ").trim() || "Voyagewright";
   const body = (
     (await page
@@ -357,35 +384,41 @@ async function observePage(page, response, requirement, concreteRoute) {
       .count()
       .catch(() => 0)) > 0;
   const semanticText = `${pageTitle}\n${body}`;
-  const readyMarkers = [];
+  const readyLandmarks = [];
   if (
     (await page
       .locator("[data-operational-status]")
       .count()
       .catch(() => 0)) > 0
   )
-    readyMarkers.push("CAPTAIN_OPERATIONAL_PROJECTION");
+    readyLandmarks.push("CAPTAIN_OPERATIONAL_PROJECTION");
   if (
     (await page
       .locator("[data-captain-authority]")
       .count()
       .catch(() => 0)) > 0
   )
-    readyMarkers.push("CAPTAIN_MUSTER_PROJECTION");
+    readyLandmarks.push("CAPTAIN_MUSTER_PROJECTION");
   if (
     (await page
       .locator(".player-safe-preview:not(.platform-loading) h1")
       .count()
       .catch(() => 0)) > 0
   )
-    readyMarkers.push("PLAYER_SAFE_PREVIEW");
+    readyLandmarks.push("PLAYER_SAFE_PREVIEW");
   if (
     (await page
       .locator("#private-operations-title")
       .count()
       .catch(() => 0)) > 0
   )
-    readyMarkers.push("PRIVATE_OPERATIONS_CONSOLE");
+    readyLandmarks.push("PRIVATE_OPERATIONS_CONSOLE");
+  for (const landmark of requirement.expectedReadyLandmarks ?? []) {
+    let locator = page.locator(landmark.selector).first();
+    if (landmark.text) locator = locator.filter({ hasText: landmark.text });
+    if (await locator.isVisible().catch(() => false)) readyLandmarks.push(landmark.id);
+  }
+  const expectedPath = new URL(concreteRoute, "https://brightwork.invalid").pathname;
   return {
     httpStatus: response?.status() ?? null,
     finalPath: final.pathname,
@@ -405,10 +438,49 @@ async function observePage(page, response, requirement, concreteRoute) {
       /\breturn to (?:chronicle|studio|captain|library)\b/iu.test(semanticText) &&
       /\b(?:access|route|page|chronicle)\b[^.\n]{0,64}\bunavailable\b/iu.test(semanticText),
     signInSurface,
-    readyMarkers,
+    readyLandmarks: [...new Set(readyLandmarks)],
+    visibleMain: await page.locator("main").first().isVisible().catch(() => false),
+    expectedPathMatched: final.pathname === expectedPath,
+    transitionSettled,
     syntheticRecordProven:
       requirement.classification !== "CONTEXTUAL_DYNAMIC_DESTINATION" || !/\[[^\]]+\]/u.test(concreteRoute),
   };
+}
+
+async function waitForStableReadyState(page, requirement) {
+  if (requirement.state !== "READY") return true;
+  const landmarks = requirement.expectedReadyLandmarks ?? [];
+  for (const landmark of landmarks) {
+    let locator = page.locator(landmark.selector).first();
+    if (landmark.text) locator = locator.filter({ hasText: landmark.text });
+    await locator.waitFor({ state: "visible", timeout: 10_000 });
+  }
+  await page.evaluate(
+    () =>
+      new Promise((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(resolve));
+      }),
+  );
+  const snapshot = await page.evaluate((selectors) => {
+    return selectors.map((selector) => {
+      const element = document.querySelector(selector);
+      if (!element) return null;
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return { width: rect.width, height: rect.height, opacity: style.opacity, visibility: style.visibility };
+    });
+  }, landmarks.map((landmark) => landmark.selector));
+  await page.waitForTimeout(120);
+  const repeated = await page.evaluate((selectors) => {
+    return selectors.map((selector) => {
+      const element = document.querySelector(selector);
+      if (!element) return null;
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return { width: rect.width, height: rect.height, opacity: style.opacity, visibility: style.visibility };
+    });
+  }, landmarks.map((landmark) => landmark.selector));
+  return stableJson(snapshot) === stableJson(repeated);
 }
 
 async function navigateForRequirement(page, url, requirement) {
@@ -953,19 +1025,62 @@ function git(...args) {
 }
 
 function auditedSourceSha() {
+  return auditedSources().productSourceSha;
+}
+
+function auditedSources() {
   // Evidence commits may be merged after the product source they describe.
-  // Stage 1 is the recorded source authority; fail closed if its product tree
-  // no longer matches the protected tree instead of silently moving baseline.
+  // Keep ordinary product source and the production-build audit runtime distinct.
   const stageOne = JSON.parse(
     git("show", "HEAD:Development_Docs/Projects/Voyagewright_Brightwork/Current_Route_Census.json"),
   );
-  const sourceSha = stageOne.sourceSha;
+  const productSourceSha = stageOne.sourceSha;
+  const auditRuntimeSourceSha = git("rev-parse", "HEAD");
+  const auditOnlySourcePaths = new Set([
+    "src/instrumentation.ts",
+    "src/proxy.ts",
+    "src/homeport/public-app-origin.ts",
+    "src/wayfarer/http.ts",
+  ]);
   try {
-    execFileSync("git", ["diff", "--quiet", sourceSha, "HEAD", "--", "src"], { cwd: root, stdio: "ignore" });
-  } catch {
-    throw new Error(`BRIGHTWORK_PRODUCT_SOURCE_BASELINE_MOVED:${sourceSha}`);
+    const changed = git("diff", "--name-only", productSourceSha, "HEAD", "--", "src")
+      .split(/\r?\n/u)
+      .filter(Boolean)
+      .filter(
+        (file) =>
+          !file.startsWith("src/audit/") &&
+          !file.startsWith("src/app/__audit/") &&
+          !file.startsWith("src/app/audit-internal/") &&
+          !auditOnlySourcePaths.has(file),
+      );
+    if (changed.length) throw new Error(`BRIGHTWORK_PRODUCT_SOURCE_BASELINE_MOVED:${productSourceSha}`);
+  } catch (error) {
+    if (String(error.message ?? error).startsWith("BRIGHTWORK_PRODUCT_SOURCE_BASELINE_MOVED")) throw error;
+    throw new Error(`BRIGHTWORK_PRODUCT_SOURCE_BASELINE_CHECK_FAILED:${productSourceSha}`);
   }
-  return sourceSha;
+  return { productSourceSha, auditRuntimeSourceSha };
+}
+
+function sourceBoundFixtureIdentity({ fixtureReceipt, auditReceipt, source }) {
+  const fixture = {
+    fixtureVersion: fixtureReceipt.fixtureVersion,
+    fixtureSourceSha: fixtureReceipt.sourceSha,
+    fixtureDatabaseHash: fixtureReceipt.databaseHash,
+  };
+  const environment = {
+    classification: auditReceipt.classification,
+    auditRuntimeSourceSha: auditReceipt.sourceSha,
+    productSourceSha: auditReceipt.productBaselineSha,
+    buildMode: auditReceipt.environment.buildMode,
+    deploymentData: auditReceipt.environment.deploymentData,
+  };
+  return {
+    ...fixture,
+    ...environment,
+    fixtureReceiptDigest: sha256(stableJson(fixture)),
+    auditEnvironmentDigest: sha256(stableJson(environment)),
+    sourceBindingDigest: sha256(stableJson({ ...source, fixture, environment })),
+  };
 }
 
 function sqliteUrl(file) {
