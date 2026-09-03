@@ -133,7 +133,6 @@ async function capture(supplemental = false) {
   const browser = await chromium.launch({ headless: true });
   const browserVersion = browser.version();
   const records = [];
-  const authentications = new Map();
   try {
     const byContext = new Map();
     for (const requirement of requirementsToCapture) {
@@ -146,24 +145,19 @@ async function capture(supplemental = false) {
       const [persona, theme, viewportName] = key.split("|");
       const viewport = REQUIRED_VIEWPORTS.find((candidate) => candidate.id === viewportName);
       if (!viewport) throw new Error(`BRIGHTWORK_VIEWPORT_UNKNOWN:${viewportName}`);
-      const authenticationKey = credentials[persona]?.accountId ?? persona;
-      let authentication = authentications.get(authenticationKey);
-      if (!authentication) {
-        authentication = await storageState(browser, credentials, persona);
-        if (authentication) authentications.set(authenticationKey, authentication);
-      }
-      // A capture can traverse an intentional sign-out, role gateway, or other
-      // session-mutating route. Every requirement begins from the same
-      // authenticated snapshot, never from the preceding capture's state.
-      const authenticationStorageState = authentication ? await authentication.context.storageState() : undefined;
       for (const requirement of requirements) {
-        const context = await browser.newContext({
-          ...(authenticationStorageState ? { storageState: authenticationStorageState } : {}),
-          viewport: { width: viewport.width, height: viewport.height },
-          colorScheme: theme === "LIGHT" ? "light" : "dark",
-          reducedMotion: "reduce",
-          locale: "en-US",
-        });
+        // Server-side session revocation is not isolated by cloned browser
+        // storage. Establish a fresh task-owned synthetic session for each
+        // authenticated requirement so no capture can contaminate another.
+        const authentication = await storageState(browser, credentials, persona);
+        const context =
+          authentication?.context ??
+          (await browser.newContext({
+            viewport: { width: viewport.width, height: viewport.height },
+            colorScheme: theme === "LIGHT" ? "light" : "dark",
+            reducedMotion: "reduce",
+            locale: "en-US",
+          }));
         const page = await context.newPage();
         await page.setViewportSize({ width: viewport.width, height: viewport.height });
         await page.emulateMedia({ colorScheme: theme === "LIGHT" ? "light" : "dark", reducedMotion: "reduce" });
@@ -203,7 +197,6 @@ async function capture(supplemental = false) {
       }
     }
   } finally {
-    await Promise.all([...authentications.values()].map((authentication) => authentication.dispose()));
     await browser.close();
   }
   const retainedRecords = (existingManifest?.records ?? []).filter(
