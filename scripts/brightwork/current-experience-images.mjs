@@ -154,14 +154,13 @@ async function capture(supplemental = false) {
         authentication = await storageState(browser, credentials, persona);
         if (authentication) authentications.set(persona, authentication);
       }
-      const context =
-        authentication?.context ??
-        (await browser.newContext({
-          viewport: { width: viewport.width, height: viewport.height },
-          colorScheme: theme === "LIGHT" ? "light" : "dark",
-          reducedMotion: "reduce",
-          locale: "en-US",
-        }));
+      const context = await browser.newContext({
+        ...(authentication ? { storageState: authentication.storageState } : {}),
+        viewport: { width: viewport.width, height: viewport.height },
+        colorScheme: theme === "LIGHT" ? "light" : "dark",
+        reducedMotion: "reduce",
+        locale: "en-US",
+      });
       const page = await context.newPage();
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await page.emulateMedia({ colorScheme: theme === "LIGHT" ? "light" : "dark", reducedMotion: "reduce" });
@@ -197,11 +196,10 @@ async function capture(supplemental = false) {
           );
       } finally {
         await page.close();
-        if (!authentication) await context.close();
+        await context.close();
       }
     }
   } finally {
-    await Promise.all([...authentications.values()].map((authentication) => authentication.dispose()));
     await browser.close();
   }
   const retainedRecords = (existingManifest?.records ?? []).filter(
@@ -710,7 +708,9 @@ async function storageState(browser, credentials, persona) {
     // been established. Give the form's own navigation a chance to settle,
     // but make the authenticated context (not a URL transition) decisive.
     await page.waitForTimeout(300);
-    return { context, dispose: () => context.close() };
+    const snapshot = await context.storageState();
+    await context.close();
+    return { storageState: snapshot };
   } catch (error) {
     await context.close();
     throw error;
