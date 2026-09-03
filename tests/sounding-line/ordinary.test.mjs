@@ -1050,6 +1050,7 @@ test("only a task-owned Sounding Line build embeds its synthetic email adapter",
   assert.match(source, /SOUNDING_LINE_TASK_OWNED_HTTP === "1"/u);
   assert.match(source, /SOUNDING_LINE_SUITE_PROFILE/u);
   assert.match(source, /process\.env\.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER = "TASK_OWNED_TEST"/u);
+  assert.match(source, /FOREVER_TASK_OWNED_ANIMATION_FAILPOINTS: "1"/u);
   assert.match(source, /HOMEPORT_SYNTHETIC_EMAIL_ADAPTER: "TASK_OWNED_TEST"/u);
   assert.match(source, /HOMEPORT_PHASE7_TASK_ROOT: process\.env\.HOMEPORT_PHASE7_TASK_ROOT \?\? ""/u);
   assert.match(source, /HOMEPORT_SYNTHETIC_OUTBOX_PATH: process\.env\.HOMEPORT_SYNTHETIC_OUTBOX_PATH \?\? ""/u);
