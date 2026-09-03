@@ -653,7 +653,7 @@ async function complete() {
 }
 
 async function loadCredentials(paths) {
-  const [homeport, admiralty] = await Promise.all([json(paths.homeport), json(paths.admiralty)]);
+  const [homeport, admiralty, creator] = await Promise.all([json(paths.homeport), json(paths.admiralty), json(paths.creator)]);
   const homeportAccounts = homeport.accounts ?? homeport.aliases;
   const admiraltyAccounts = admiralty.accounts ?? admiralty.aliases;
   const choose = (source, preferred) => preferred.map((key) => source[key]).find(Boolean);
@@ -661,10 +661,10 @@ async function loadCredentials(paths) {
     ANONYMOUS: null,
     ORDINARY_PLAYER: choose(homeportAccounts, ["FULL_CAPABILITY", "VERIFIED_FULL_CAPABILITY", "SERA_OWNER"]),
     CAPTAIN_PLAYER: choose(homeportAccounts, ["FULL_CAPABILITY", "RETURNING_FULL_CAPABILITY"]),
-    CREATOR: choose(homeportAccounts, ["FULL_CAPABILITY", "RETURNING_FULL_CAPABILITY"]),
+    CREATOR: creator.account,
     MODERATOR: choose(homeportAccounts, ["MODERATOR", "FULL_CAPABILITY"]),
     ADMIRALTY_OPERATOR: choose(admiraltyAccounts, ["ADMINISTRATOR"]),
-    passwords: { homeport: homeport.password, admiralty: admiralty.password },
+    passwords: { homeport: homeport.password, admiralty: admiralty.password, creator: creator.password },
     admiraltyAccounts,
   };
 }
@@ -673,7 +673,12 @@ async function storageState(browser, credentials, persona) {
   if (persona === "ANONYMOUS") return undefined;
   const account = credentials[persona];
   if (!account?.email) throw new Error(`BRIGHTWORK_PERSONA_CREDENTIAL_MISSING:${persona}`);
-  const password = persona === "ADMIRALTY_OPERATOR" ? credentials.passwords.admiralty : credentials.passwords.homeport;
+  const password =
+    persona === "ADMIRALTY_OPERATOR"
+      ? credentials.passwords.admiralty
+      : persona === "CREATOR"
+        ? credentials.passwords.creator
+        : credentials.passwords.homeport;
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   try {

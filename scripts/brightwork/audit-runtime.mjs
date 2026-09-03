@@ -63,6 +63,7 @@ async function prepare() {
     BRIGHTWORK_HOMEPORT_ROOT: homeportRoot,
     BRIGHTWORK_ADMIRALTY_ROOT: admiraltyRoot,
     BRIGHTWORK_ADMIRALTY_SYNTHETIC_PASSWORD: auditFixturePassword(sourceSha),
+    BRIGHTWORK_CREATOR_SYNTHETIC_PASSWORD: auditFixturePassword(`${sourceSha}:creator`),
   });
   const combinedDatabase = path.join(fixtureBuildRoot, "database", "brightwork-combined-synthetic.db");
   if (!(await stat(combinedDatabase)).size) throw new Error("BRIGHTWORK_AUDIT_COMBINED_FIXTURE_EMPTY");
