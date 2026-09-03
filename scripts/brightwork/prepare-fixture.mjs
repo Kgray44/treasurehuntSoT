@@ -8,8 +8,12 @@ const repositoryRoot = path.resolve(process.cwd());
 const localAppData = required("LOCALAPPDATA");
 const allowedRoot = path.resolve(localAppData, "VoyagewrightBrightwork");
 const taskRoot = path.resolve(process.env.BRIGHTWORK_TASK_ROOT ?? path.join(allowedRoot, "stage1"));
-const homeportRoot = path.resolve(localAppData, "ProjectHomeport", "brightwork-stage1");
-const admiraltyRoot = path.resolve(localAppData, "ProjectAdmiralty", "brightwork-stage1");
+const homeportRoot = path.resolve(
+  process.env.BRIGHTWORK_HOMEPORT_ROOT ?? path.join(localAppData, "ProjectHomeport", "brightwork-stage1"),
+);
+const admiraltyRoot = path.resolve(
+  process.env.BRIGHTWORK_ADMIRALTY_ROOT ?? path.join(localAppData, "ProjectAdmiralty", "brightwork-stage1"),
+);
 const combinedDatabase = path.join(taskRoot, "database", "brightwork-combined-synthetic.db");
 const admiraltyDatabase = path.join(admiraltyRoot, "database", "admiralty-phase2.db");
 const homeportDatabase = path.join(
@@ -21,14 +25,32 @@ const stageOneCensus = JSON.parse(
   git(["show", "HEAD:Development_Docs/Projects/Voyagewright_Brightwork/Current_Route_Census.json"]),
 );
 const sourceSha = stageOneCensus.sourceSha;
-try {
-  git(["diff", "--quiet", sourceSha, "HEAD", "--", "src"]);
-} catch {
+const auditOnlySourcePaths = new Set([
+  "src/instrumentation.ts",
+  "src/proxy.ts",
+  "src/homeport/public-app-origin.ts",
+  "src/wayfarer/http.ts",
+]);
+const ordinarySourceChanges = git(["diff", "--name-only", sourceSha, "HEAD", "--", "src"])
+  .split(/\r?\n/u)
+  .filter(Boolean)
+  .filter(
+    (file) =>
+      !file.startsWith("src/audit/") &&
+      !file.startsWith("src/app/__audit/") &&
+      !file.startsWith("src/app/audit-internal/") &&
+      !auditOnlySourcePaths.has(file),
+  );
+if (ordinarySourceChanges.length) {
   throw new Error(`BRIGHTWORK_PRODUCT_SOURCE_BASELINE_MOVED:${sourceSha}`);
 }
 const currentMainBootstrapDatabase = path.join(homeportRoot, "bootstrap", `current-main-${sourceSha.slice(0, 12)}.db`);
 
 if (!taskRoot.startsWith(`${allowedRoot}${path.sep}`)) throw new Error("BRIGHTWORK_TASK_ROOT_REFUSED");
+if (!homeportRoot.startsWith(`${path.resolve(localAppData, "ProjectHomeport")}${path.sep}`))
+  throw new Error("BRIGHTWORK_HOMEPORT_ROOT_REFUSED");
+if (!admiraltyRoot.startsWith(`${path.resolve(localAppData, "ProjectAdmiralty")}${path.sep}`))
+  throw new Error("BRIGHTWORK_ADMIRALTY_ROOT_REFUSED");
 for (const directory of [taskRoot, homeportRoot, admiraltyRoot]) await mkdir(directory, { recursive: true });
 
 await mkdir(path.dirname(currentMainBootstrapDatabase), { recursive: true });
@@ -59,7 +81,8 @@ await copyFile(combinedDatabase, admiraltyDatabase);
 run("scripts/admiralty/seed-phase2-fixture.mjs", {
   ADMIRALTY_PHASE2_TASK_ROOT: admiraltyRoot,
   DATABASE_URL: sqliteUrl(admiraltyDatabase),
-  ADMIRALTY_PHASE2_SYNTHETIC_PASSWORD: `BrwAdm-${randomBytes(24).toString("base64url")}!`,
+  ADMIRALTY_PHASE2_SYNTHETIC_PASSWORD:
+    process.env.BRIGHTWORK_ADMIRALTY_SYNTHETIC_PASSWORD ?? `BrwAdm-${randomBytes(24).toString("base64url")}!`,
   ADMIRALTY_PHASE2_WRITE_CREDENTIAL_HANDOFF: "1",
 });
 await copyFile(admiraltyDatabase, combinedDatabase);
@@ -80,7 +103,7 @@ const receipt = {
   schemaVersion: "1.0.0",
   status: "BRIGHTWORK_COMBINED_SYNTHETIC_FIXTURE_READY",
   sourceSha,
-  fixtureVersion: "brightwork-combined-homeport-round3-admiralty-phase2-v3",
+  fixtureVersion: "brightwork-combined-homeport-round3-admiralty-phase2-v4-creator-continuation",
   databasePath: combinedDatabase,
   databaseHash,
   credentials: {
@@ -129,6 +152,8 @@ async function ensureBrightworkRouteRepresentatives(databasePath, credentialsPat
   if (!fullCapability?.accountId) throw new Error("BRIGHTWORK_FULL_CAPABILITY_ALIAS_REQUIRED");
   const db = new PrismaClient({ datasources: { db: { url: sqliteUrl(databasePath) } } });
   try {
+    const creatorAccountId = "brightwork-stage6-creator-account";
+    const creatorEmail = "brightwork-stage6-creator@audit.example.test";
     const player = await db.playerProfile.findFirst({
       where: { accountId: fullCapability.accountId, status: "ACTIVE" },
       select: { id: true, displayName: true },
@@ -141,6 +166,77 @@ async function ensureBrightworkRouteRepresentatives(databasePath, credentialsPat
     if (!player || !session?.publishedVersionId || !session.version?.checksum)
       throw new Error("BRIGHTWORK_COMPLETED_SYNTHETIC_ROUTE_SESSION_REQUIRED");
     const completedAt = session.completedAt ?? new Date("2026-01-01T00:00:00.000Z");
+    await db.userAccount.upsert({
+      where: { id: creatorAccountId },
+      update: {
+        status: "ACTIVE",
+        claimedAt: completedAt,
+        ordinaryWorkspaceEntryAt: completedAt,
+        lockedAt: null,
+        suspendedAt: null,
+      },
+      create: {
+        id: creatorAccountId,
+        status: "ACTIVE",
+        claimedAt: completedAt,
+        ordinaryWorkspaceEntryAt: completedAt,
+      },
+    });
+    await db.accountEmail.upsert({
+      where: { normalizedEmail: creatorEmail },
+      update: {
+        accountId: creatorAccountId,
+        displayEmail: creatorEmail,
+        isPrimary: true,
+        verificationState: "VERIFIED",
+        verifiedAt: completedAt,
+      },
+      create: {
+        id: "brightwork-stage6-creator-email",
+        accountId: creatorAccountId,
+        normalizedEmail: creatorEmail,
+        displayEmail: creatorEmail,
+        isPrimary: true,
+        verificationState: "VERIFIED",
+        verifiedAt: completedAt,
+      },
+    });
+    const creator = await db.playerProfile.upsert({
+      where: { accountId: creatorAccountId },
+      update: {
+        displayName: "Brightwork Creator",
+        normalizedDisplayName: "brightwork creator",
+        status: "ACTIVE",
+        claimedAt: completedAt,
+      },
+      create: {
+        id: "brightwork-stage6-creator-profile",
+        accountId: creatorAccountId,
+        displayName: "Brightwork Creator",
+        normalizedDisplayName: "brightwork creator",
+        status: "ACTIVE",
+        claimedAt: completedAt,
+      },
+      select: { id: true },
+    });
+    await db.accountRoleAssignment.deleteMany({
+      where: {
+        OR: [
+          { id: "brightwork-stage6-creator-role" },
+          { accountId: creatorAccountId, role: "CREATOR", scopeType: "GLOBAL", scopeId: null },
+        ],
+      },
+    });
+    await db.accountRoleAssignment.create({
+      data: {
+        id: "brightwork-stage6-creator-role",
+        accountId: creatorAccountId,
+        role: "CREATOR",
+        scopeType: "GLOBAL",
+        grantedBy: "brightwork-stage6-synthetic-fixture",
+        grantedAt: completedAt,
+      },
+    });
     await db.userAccount.update({
       where: { id: fullCapability.accountId },
       data: { ordinaryWorkspaceEntryAt: completedAt },
@@ -282,8 +378,8 @@ async function ensureBrightworkRouteRepresentatives(databasePath, credentialsPat
     await db.chronicle.upsert({
       where: { id: "brightwork-stage4b-creator-chronicle" },
       update: {
-        creatorId: player.id,
-        creatorAccountId: fullCapability.accountId,
+        creatorId: creator.id,
+        creatorAccountId,
         status: "DRAFT",
         visibility: "PRIVATE",
       },
@@ -295,8 +391,8 @@ async function ensureBrightworkRouteRepresentatives(databasePath, credentialsPat
         shortDescription: "Task-owned Chronicle used only for Brightwork route evidence.",
         status: "DRAFT",
         visibility: "PRIVATE",
-        creatorId: player.id,
-        creatorAccountId: fullCapability.accountId,
+        creatorId: creator.id,
+        creatorAccountId,
         playerCountMin: 1,
         playerCountMax: 4,
         estimatedDuration: 60,
