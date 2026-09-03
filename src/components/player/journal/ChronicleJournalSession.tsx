@@ -128,7 +128,13 @@ export function createJournalTeardownRegistry(): JournalTeardownRegistry {
 }
 
 export type JournalOpeningConsumerStatus =
-  "idle" | "running" | "completed" | "completed-fallback" | "aborted" | "failure" | "skipped";
+  | "idle"
+  | "running"
+  | "completed"
+  | "completed-fallback"
+  | "aborted"
+  | "failure"
+  | "skipped";
 
 type JournalPhaseFailureOutcome = Exclude<
   JournalPhaseOutcome,
