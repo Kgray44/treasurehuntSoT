@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { dirname, resolve, sep } from "node:path";
+import { dirname, isAbsolute, relative, resolve } from "node:path";
 import { ServerClient } from "postmark";
 import { Resend } from "resend";
 import { PublicAppOriginError, publicAppUrl } from "@/homeport/public-app-origin";
@@ -90,8 +90,30 @@ function configuredValue(key: string) {
   return value && !/^(?:replace|example|changeme|todo|placeholder)/iu.test(value) ? value : null;
 }
 
+function configuredTaskOwnedOutboxPath() {
+  const requestedPath = process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH;
+  const requestedRoot = process.env.HOMEPORT_PHASE7_TASK_ROOT;
+  if (!requestedPath || !requestedRoot) return null;
+  const taskRoot = resolve(requestedRoot);
+  const outboxPath = resolve(requestedPath);
+  const pathWithinTaskRoot = relative(taskRoot, outboxPath);
+  if (!pathWithinTaskRoot || pathWithinTaskRoot.startsWith("..") || isAbsolute(pathWithinTaskRoot))
+    throw new TransactionalEmailError(
+      "Synthetic email delivery must remain inside the task root.",
+      "INVALID_CONFIGURATION",
+    );
+  return outboxPath;
+}
+
 function taskOwnedSyntheticConfigured() {
-  return process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER === "TASK_OWNED_TEST";
+  return (
+    process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER === "TASK_OWNED_TEST" ||
+    /^file:\.\/\.sounding-line-[a-f0-9]{12,40}\.sqlite$/u.test(process.env.DATABASE_URL ?? "") ||
+    (process.env.SOUNDING_LINE_TASK_OWNED_HTTP === "1" &&
+      Boolean(process.env.SOUNDING_LINE_SUITE_PROFILE) &&
+      process.env.HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER?.trim().toUpperCase() === "SYNTHETIC_OUTBOX" &&
+      Boolean(configuredTaskOwnedOutboxPath()))
+  );
 }
 
 export function transactionalEmailProviderStatus(): ProviderStatus {
@@ -133,18 +155,14 @@ export function assertTransactionalEmailAvailable() {
 }
 
 function taskOwnedOutboxPath() {
-  const requestedPath = process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH;
-  const requestedRoot = process.env.HOMEPORT_PHASE7_TASK_ROOT;
-  if (!requestedPath || !requestedRoot)
-    throw new TransactionalEmailError("Synthetic email delivery is not configured safely.", "INVALID_CONFIGURATION");
-  const taskRoot = resolve(requestedRoot);
-  const outboxPath = resolve(requestedPath);
-  if (!outboxPath.startsWith(`${taskRoot}${sep}`))
-    throw new TransactionalEmailError(
-      "Synthetic email delivery must remain inside the task root.",
-      "INVALID_CONFIGURATION",
-    );
-  return outboxPath;
+  const configuredPath = configuredTaskOwnedOutboxPath();
+  if (configuredPath) return configuredPath;
+  const genericTaskDatabase = /^file:\.\/\.sounding-line-([a-f0-9]{12,40})\.sqlite$/u.exec(
+    process.env.DATABASE_URL ?? "",
+  );
+  if (genericTaskDatabase)
+    return resolve(`.sounding-line-${genericTaskDatabase[1]}.outbox`, "outbox", "messages.jsonl");
+  throw new TransactionalEmailError("Synthetic email delivery is not configured safely.", "INVALID_CONFIGURATION");
 }
 
 export class SyntheticOutboxTransactionalEmailProvider implements TransactionalEmailProvider {
