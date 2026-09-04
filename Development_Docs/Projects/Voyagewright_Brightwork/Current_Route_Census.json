@@ -51,9 +51,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -61,10 +59,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -131,21 +126,10 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "DEPENDENCY_UNAVAILABLE",
-        "INITIAL_LOADING",
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
+      "meaningfulVisualStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -212,10 +196,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -225,10 +206,7 @@
         "VALIDATION_ERROR"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -295,10 +273,7 @@
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -307,10 +282,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -377,10 +349,7 @@
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -389,10 +358,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -459,21 +425,10 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "DEPENDENCY_UNAVAILABLE",
-        "INITIAL_LOADING",
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
+      "meaningfulVisualStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -540,10 +495,7 @@
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -552,10 +504,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -622,10 +571,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -634,10 +580,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -704,10 +647,7 @@
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -716,10 +656,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -786,10 +723,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -798,10 +732,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -868,10 +799,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -880,10 +808,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -950,10 +875,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -963,10 +885,7 @@
         "VALIDATION_ERROR"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1033,10 +952,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -1046,10 +962,7 @@
         "VALIDATION_ERROR"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1116,10 +1029,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -1129,10 +1039,7 @@
         "VALIDATION_ERROR"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1199,10 +1106,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1211,10 +1115,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1285,10 +1186,7 @@
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -1297,10 +1195,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1367,10 +1262,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -1379,10 +1271,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1449,10 +1338,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -1461,10 +1347,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1531,10 +1414,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -1543,10 +1423,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1613,10 +1490,7 @@
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -1626,10 +1500,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1694,30 +1565,17 @@
       "logicalParent": "/",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "PLATFORM_OBSERVE"
-      ],
+      "capabilityRequirements": ["PLATFORM_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "PLATFORM_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1782,30 +1640,17 @@
       "logicalParent": "/admin",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "AUDIT_OBSERVE"
-      ],
+      "capabilityRequirements": ["AUDIT_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/audit/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "AUDIT_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1870,30 +1715,17 @@
       "logicalParent": "/admin",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CHRONICLE_OBSERVE"
-      ],
+      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/chronicles/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "CHRONICLE_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -1958,30 +1790,17 @@
       "logicalParent": "/admin/chronicles",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CHRONICLE_OBSERVE"
-      ],
+      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/chronicles/[chronicleId]/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "CHRONICLE_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -2046,19 +1865,14 @@
       "logicalParent": "/admin",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "COMMUNITY_OBSERVE"
-      ],
+      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/community/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "COMMUNITY_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -2069,10 +1883,7 @@
         "UNAUTHORIZED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -2137,19 +1948,14 @@
       "logicalParent": "/admin/community",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "COMMUNITY_OBSERVE"
-      ],
+      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/community/[listingId]/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "COMMUNITY_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -2160,10 +1966,7 @@
         "UNAUTHORIZED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -2228,30 +2031,17 @@
       "logicalParent": "/admin",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CONFIG_OBSERVE"
-      ],
+      "capabilityRequirements": ["CONFIG_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/configuration/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "CONFIG_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -2324,30 +2114,17 @@
       "logicalParent": "/admin",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "PLATFORM_OBSERVE"
-      ],
+      "capabilityRequirements": ["PLATFORM_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/investigate/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "PLATFORM_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -2412,30 +2189,17 @@
       "logicalParent": "/admin",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "JOBS_OBSERVE"
-      ],
+      "capabilityRequirements": ["JOBS_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/operations/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "JOBS_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -2500,30 +2264,17 @@
       "logicalParent": "/admin",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ACCOUNT_OBSERVE"
-      ],
+      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/people/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "ACCOUNT_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -2588,19 +2339,14 @@
       "logicalParent": "/admin/people",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ACCOUNT_OBSERVE"
-      ],
+      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/people/[accountId]/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "ACCOUNT_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -2610,10 +2356,7 @@
         "UNAUTHORIZED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -2678,30 +2421,17 @@
       "logicalParent": "/admin",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CONTENT_OBSERVE"
-      ],
+      "capabilityRequirements": ["CONTENT_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/providers/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "CONTENT_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -2766,30 +2496,17 @@
       "logicalParent": "/admin",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "RELEASE_OBSERVE"
-      ],
+      "capabilityRequirements": ["RELEASE_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/releases/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "RELEASE_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -2854,28 +2571,17 @@
       "logicalParent": null,
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "SUPPORT_REQUEST"
-      ],
+      "capabilityRequirements": ["SUPPORT_REQUEST"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/support/cases/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "SUPPORT_REQUEST"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "READY",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["READY", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -2940,30 +2646,17 @@
       "logicalParent": "/admin",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "VOYAGE_OBSERVE"
-      ],
+      "capabilityRequirements": ["VOYAGE_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/voyages/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "VOYAGE_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3028,30 +2721,17 @@
       "logicalParent": "/admin/voyages",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "VOYAGE_OBSERVE"
-      ],
+      "capabilityRequirements": ["VOYAGE_OBSERVE"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/admin/voyages/[voyageId]/page.tsx",
         "gate": "admiraltyPageOperator",
         "requiredCapability": "VOYAGE_OBSERVE"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3116,14 +2796,9 @@
       "logicalParent": "/",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CAPTAIN_PLAYER",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -3132,10 +2807,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3200,14 +2872,9 @@
       "logicalParent": "/captain/library",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CAPTAIN_PLAYER",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -3216,10 +2883,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3284,14 +2948,9 @@
       "logicalParent": "/",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CAPTAIN_PLAYER",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -3300,10 +2959,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3368,14 +3024,9 @@
       "logicalParent": "/captain/library",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CAPTAIN_PLAYER",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -3384,10 +3035,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3459,14 +3107,9 @@
       "logicalParent": "/",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "captain"
-      ],
+      "capabilityRequirements": ["captain"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CAPTAIN_PLAYER",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -3475,10 +3118,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3543,14 +3183,9 @@
       "logicalParent": "/captain/library",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CAPTAIN_PLAYER",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -3559,10 +3194,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3627,23 +3259,12 @@
       "logicalParent": null,
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "captain"
-      ],
+      "capabilityRequirements": ["captain"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CAPTAIN_PLAYER",
-        "ORDINARY_PLAYER"
-      ],
-      "meaningfulVisualStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
+      "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3715,14 +3336,9 @@
       "logicalParent": "/captain/library",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CAPTAIN_PLAYER",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -3731,10 +3347,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3808,9 +3421,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -3818,10 +3429,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3888,19 +3496,10 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
+      "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -3967,9 +3566,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -3980,10 +3577,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4065,9 +3659,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -4078,10 +3670,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4148,9 +3737,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -4161,10 +3748,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4231,9 +3815,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -4244,10 +3826,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4314,9 +3893,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -4327,10 +3904,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4397,9 +3971,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -4410,10 +3982,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4480,9 +4049,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -4493,10 +4060,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4563,9 +4127,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -4576,10 +4138,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4646,9 +4205,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -4659,10 +4216,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4729,9 +4283,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -4742,10 +4294,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4827,9 +4376,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -4840,10 +4387,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4910,9 +4454,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -4923,10 +4465,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -4993,9 +4532,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -5006,10 +4543,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -5074,14 +4608,9 @@
       "logicalParent": "/community",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "MODERATOR"
-      ],
+      "capabilityRequirements": ["MODERATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "MODERATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["MODERATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -5089,10 +4618,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -5157,14 +4683,9 @@
       "logicalParent": "/community/moderation",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "MODERATOR"
-      ],
+      "capabilityRequirements": ["MODERATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "MODERATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["MODERATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -5172,10 +4693,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -5242,9 +4760,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -5255,10 +4771,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -5325,9 +4838,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -5338,10 +4849,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -5408,9 +4916,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY",
@@ -5421,10 +4927,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -5489,14 +4992,9 @@
       "logicalParent": "/community/voyage-logs",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -5504,10 +5002,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -5574,9 +5069,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -5584,10 +5077,7 @@
         "LOADING_WHERE_IMPLEMENTED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -5652,14 +5142,9 @@
       "logicalParent": "/community/voyage-logs",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -5667,10 +5152,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -5735,14 +5217,9 @@
       "logicalParent": "/community/voyage-logs/owner",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -5750,10 +5227,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -5820,9 +5294,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -5856,9 +5328,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -5866,10 +5336,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -5934,25 +5401,12 @@
       "logicalParent": "/account",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "DEPENDENCY_UNAVAILABLE",
-        "INITIAL_LOADING",
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
+      "meaningfulVisualStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6017,14 +5471,9 @@
       "logicalParent": "/passport",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -6033,10 +5482,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6101,14 +5547,9 @@
       "logicalParent": "/passport/artifacts",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -6117,10 +5558,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6185,23 +5623,12 @@
       "logicalParent": null,
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
+      "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6266,14 +5693,9 @@
       "logicalParent": "/passport",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "EMPTY_FILTERED",
@@ -6283,10 +5705,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6351,14 +5770,9 @@
       "logicalParent": "/passport/history",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -6367,10 +5781,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6435,23 +5846,12 @@
       "logicalParent": null,
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
+      "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6516,14 +5916,9 @@
       "logicalParent": "/passport/history/[recordId]",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "DEPENDENCY_UNAVAILABLE",
@@ -6534,10 +5929,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6606,23 +5998,12 @@
       "logicalParent": null,
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "COMPATIBILITY_OR_REDIRECT",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
+      "meaningfulVisualStates": ["COMPATIBILITY_OR_REDIRECT", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6691,14 +6072,9 @@
       "logicalParent": "/passport",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -6707,10 +6083,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6775,23 +6148,12 @@
       "logicalParent": null,
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
+      "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6856,14 +6218,9 @@
       "logicalParent": "/passport",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -6872,10 +6229,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -6940,23 +6294,12 @@
       "logicalParent": null,
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
+      "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7021,23 +6364,12 @@
       "logicalParent": null,
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
+      "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7104,9 +6436,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -7114,10 +6444,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7184,9 +6511,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -7194,10 +6519,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7264,9 +6586,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -7274,10 +6594,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7342,14 +6659,9 @@
       "logicalParent": "/",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -7358,10 +6670,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7426,14 +6735,9 @@
       "logicalParent": "/player/sign-in",
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -7442,10 +6746,7 @@
         "UNAVAILABLE"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7518,14 +6819,9 @@
       "logicalParent": "/",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -7534,10 +6830,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7602,14 +6895,9 @@
       "logicalParent": "/player/library",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -7618,10 +6906,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7690,14 +6975,9 @@
       "logicalParent": "/player/playthroughs/[playthroughId]",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -7706,10 +6986,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7774,14 +7051,9 @@
       "logicalParent": "/player/library",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -7790,10 +7062,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7858,14 +7127,9 @@
       "logicalParent": "/",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -7874,10 +7138,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -7944,17 +7205,10 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "READY"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
+      "meaningfulVisualStates": ["READY"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8019,14 +7273,9 @@
       "logicalParent": "/captain/library",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CAPTAIN_PLAYER",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -8034,10 +7283,7 @@
         "LOADING_WHERE_IMPLEMENTED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8102,14 +7348,9 @@
       "logicalParent": "/captain/library",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CAPTAIN_PLAYER",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -8117,10 +7358,7 @@
         "LOADING_WHERE_IMPLEMENTED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8187,9 +7425,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -8197,10 +7433,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8267,10 +7500,7 @@
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -8278,10 +7508,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8348,9 +7575,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -8358,10 +7583,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8426,14 +7648,9 @@
       "logicalParent": "/",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -8442,10 +7659,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8510,14 +7724,9 @@
       "logicalParent": "/studio/library",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -8526,10 +7735,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8602,14 +7808,9 @@
       "logicalParent": "/",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -8618,10 +7819,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8686,14 +7884,9 @@
       "logicalParent": "/studio/library",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -8702,10 +7895,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8770,30 +7960,17 @@
       "logicalParent": "/studio/private-content",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ADMIN"
-      ],
+      "capabilityRequirements": ["ADMIN"],
       "capabilityMetadata": {
         "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
         "sourceFile": "src/app/studio/private-content/operations/page.tsx",
         "gate": "requireGmCapability",
         "requiredCapability": "ADMIN"
       },
-      "applicablePersonas": [
-        "ADMIRALTY_OPERATOR",
-        "ANONYMOUS"
-      ],
-      "meaningfulVisualStates": [
-        "DEPENDENCY_UNAVAILABLE",
-        "INITIAL_LOADING",
-        "READY",
-        "UNAUTHORIZED"
-      ],
+      "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
+      "meaningfulVisualStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8866,14 +8043,9 @@
       "logicalParent": "/",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "creator"
-      ],
+      "capabilityRequirements": ["creator"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -8882,10 +8054,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -8950,14 +8119,9 @@
       "logicalParent": "/studio/library",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -8966,10 +8130,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -9034,14 +8195,9 @@
       "logicalParent": "/studio/library",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -9050,10 +8206,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -9118,14 +8271,9 @@
       "logicalParent": "/studio/library",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -9134,10 +8282,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -9202,14 +8347,9 @@
       "logicalParent": "/studio/library",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -9218,10 +8358,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -9286,14 +8423,9 @@
       "logicalParent": "/studio/library",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -9302,10 +8434,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -9370,14 +8499,9 @@
       "logicalParent": "/studio/tales/[taleId]",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
@@ -9387,10 +8511,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -9455,14 +8576,9 @@
       "logicalParent": "/studio/library",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -9471,10 +8587,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -9539,14 +8652,9 @@
       "logicalParent": "/studio/library",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "CREATOR",
-        "ORDINARY_PLAYER"
-      ],
+      "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -9555,10 +8663,7 @@
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -9625,9 +8730,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
@@ -9635,10 +8738,7 @@
         "LOADING_WHERE_IMPLEMENTED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -9705,9 +8805,7 @@
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -9715,10 +8813,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
@@ -9785,10 +8880,7 @@
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
       "capabilityMetadata": null,
-      "applicablePersonas": [
-        "ORDINARY_PLAYER",
-        "ANONYMOUS"
-      ],
+      "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
@@ -9796,10 +8888,7 @@
         "READY"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
-      "themesApplicable": [
-        "DARK",
-        "LIGHT"
-      ],
+      "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {

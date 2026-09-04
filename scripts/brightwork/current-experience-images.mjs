@@ -475,7 +475,11 @@ async function observePage(page, response, requirement, concreteRoute, transitio
       /\b(?:access|route|page|chronicle)\b[^.\n]{0,64}\bunavailable\b/iu.test(semanticText),
     signInSurface,
     readyLandmarks: [...new Set(readyLandmarks)],
-    visibleMain: await page.locator("main").first().isVisible().catch(() => false),
+    visibleMain: await page
+      .locator("main")
+      .first()
+      .isVisible()
+      .catch(() => false),
     expectedPathMatched: final.pathname === expectedPath,
     transitionSettled,
     syntheticRecordProven:
@@ -505,28 +509,36 @@ async function waitForStableReadyState(page, requirement) {
     // the route's READY state.
     await page.waitForTimeout(300);
     return page.evaluate(
-      () => document.readyState === "complete" && !document.querySelector('main[aria-busy="true"], [data-transitioning="true"]'),
+      () =>
+        document.readyState === "complete" &&
+        !document.querySelector('main[aria-busy="true"], [data-transitioning="true"]'),
     );
   }
-  const snapshot = await page.evaluate((selectors) => {
-    return selectors.map((selector) => {
-      const element = document.querySelector(selector);
-      if (!element) return null;
-      const rect = element.getBoundingClientRect();
-      const style = getComputedStyle(element);
-      return { width: rect.width, height: rect.height, opacity: style.opacity, visibility: style.visibility };
-    });
-  }, specificLandmarks.map((landmark) => landmark.selector));
+  const snapshot = await page.evaluate(
+    (selectors) => {
+      return selectors.map((selector) => {
+        const element = document.querySelector(selector);
+        if (!element) return null;
+        const rect = element.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        return { width: rect.width, height: rect.height, opacity: style.opacity, visibility: style.visibility };
+      });
+    },
+    specificLandmarks.map((landmark) => landmark.selector),
+  );
   await page.waitForTimeout(120);
-  const repeated = await page.evaluate((selectors) => {
-    return selectors.map((selector) => {
-      const element = document.querySelector(selector);
-      if (!element) return null;
-      const rect = element.getBoundingClientRect();
-      const style = getComputedStyle(element);
-      return { width: rect.width, height: rect.height, opacity: style.opacity, visibility: style.visibility };
-    });
-  }, specificLandmarks.map((landmark) => landmark.selector));
+  const repeated = await page.evaluate(
+    (selectors) => {
+      return selectors.map((selector) => {
+        const element = document.querySelector(selector);
+        if (!element) return null;
+        const rect = element.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        return { width: rect.width, height: rect.height, opacity: style.opacity, visibility: style.visibility };
+      });
+    },
+    specificLandmarks.map((landmark) => landmark.selector),
+  );
   return stableJson(snapshot) === stableJson(repeated);
 }
 
@@ -700,7 +712,11 @@ async function complete() {
 }
 
 async function loadCredentials(paths) {
-  const [homeport, admiralty, creator] = await Promise.all([json(paths.homeport), json(paths.admiralty), json(paths.creator)]);
+  const [homeport, admiralty, creator] = await Promise.all([
+    json(paths.homeport),
+    json(paths.admiralty),
+    json(paths.creator),
+  ]);
   const homeportAccounts = homeport.accounts ?? homeport.aliases;
   const admiraltyAccounts = admiralty.accounts ?? admiralty.aliases;
   const choose = (source, preferred) => preferred.map((key) => source[key]).find(Boolean);

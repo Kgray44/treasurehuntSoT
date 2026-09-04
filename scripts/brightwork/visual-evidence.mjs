@@ -210,7 +210,14 @@ function legacyScreenByRoute(screenCatalog) {
   return result;
 }
 
-export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sourceSha, auditRuntimeSourceSha, generatedAt }) {
+export function buildRouteCensus({
+  appRoot,
+  legacyInventory,
+  screenCatalog,
+  sourceSha,
+  auditRuntimeSourceSha,
+  generatedAt,
+}) {
   const priorRoutes = new Map((legacyInventory.routes ?? []).map((route) => [route.routePattern, route]));
   const priorScreens = legacyScreenByRoute(screenCatalog);
   const routes = sourcePageRoutes(appRoot).map(({ implementationSource, routePattern }) => {
@@ -284,7 +291,8 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
     sourceProvenance: {
       ordinaryProductSourceSha: sourceSha,
       auditRuntimeSourceSha,
-      sourceOfTruth: "Current source route files, with audit-only runtime changes recorded separately from ordinary product source.",
+      sourceOfTruth:
+        "Current source route files, with audit-only runtime changes recorded separately from ordinary product source.",
     },
     generatedAt,
     discovery: {
@@ -302,8 +310,7 @@ function sourceCapabilityMetadata({ routePattern, implementationSource }) {
   const source = readFileSync(sourceFile, "utf8");
   if (routePattern.startsWith("/admin")) {
     const requiredCapability = source.match(/admiraltyPageOperator\("([A-Z_]+)"\)/u)?.[1];
-    if (!requiredCapability)
-      throw new Error(`BRIGHTWORK_ADMIRALTY_PAGE_GATE_NOT_FOUND:${routePattern}`);
+    if (!requiredCapability) throw new Error(`BRIGHTWORK_ADMIRALTY_PAGE_GATE_NOT_FOUND:${routePattern}`);
     return {
       evidenceKind: "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
       sourceFile: implementationSource,
@@ -313,8 +320,7 @@ function sourceCapabilityMetadata({ routePattern, implementationSource }) {
   }
   if (routePattern === "/studio/private-content/operations") {
     const requiredCapability = source.match(/requireGmCapability\("([A-Z_]+)"\)/u)?.[1];
-    if (!requiredCapability)
-      throw new Error("BRIGHTWORK_PRIVATE_OPERATIONS_PAGE_GATE_NOT_FOUND");
+    if (!requiredCapability) throw new Error("BRIGHTWORK_PRIVATE_OPERATIONS_PAGE_GATE_NOT_FOUND");
     return {
       evidenceKind: "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
       sourceFile: implementationSource,
@@ -473,7 +479,10 @@ export function meaningfulStates(screenStates, routePattern, classification) {
 
 export function captureRequirementsFor(route) {
   const persona = capturePersonaFor(route);
-  const compatibility = { ...compatibilityExpectation(route.routePattern), ...sourceRedirectExpectation(route.routePattern) };
+  const compatibility = {
+    ...compatibilityExpectation(route.routePattern),
+    ...sourceRedirectExpectation(route.routePattern),
+  };
   const state =
     route.routePattern === "/player/invitation"
       ? "UNAVAILABLE"
@@ -696,7 +705,7 @@ export function captureContractValidation({ contract, census }) {
       malformedRequirementDigests.push({ requirement, reason: "REQUIREMENT_DIGEST_DOES_NOT_MATCH_BINDING" });
     if (
       requirement.state === "READY" &&
-      (!(requirement.expectedReadyLandmarks?.length) ||
+      (!requirement.expectedReadyLandmarks?.length ||
         requirement.expectedReadyLandmarks.some((landmark) => !landmark?.id || !landmark?.selector))
     )
       missingReadyLandmarkExpectations.push({ requirement, reason: "READY_LANDMARK_EXPECTATION_MISSING_OR_MALFORMED" });

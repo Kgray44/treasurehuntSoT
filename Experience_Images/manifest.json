@@ -77,9 +77,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-root:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-root:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -146,9 +144,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-cancel-deletion:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-cancel-deletion:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -215,9 +211,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-claim:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-claim:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -284,9 +278,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-email-change:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-email-change:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -353,9 +345,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": true,
-        "readyLandmarks": [
-          "route-page-account-merge:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-merge:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -422,9 +412,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-reactivate:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-reactivate:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -491,9 +479,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-chronicles-taleslug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-chronicles-taleslug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -560,9 +546,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-chronicles-taleslug-compare:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-chronicles-taleslug-compare:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -700,9 +684,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -769,9 +751,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -838,9 +818,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-audio:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-audio:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -907,9 +885,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-chronicles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-chronicles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -976,9 +952,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-collections:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-collections:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1045,9 +1019,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-collections-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-collections-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1114,9 +1086,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-creators:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-creators:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1183,9 +1153,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-creators-handle:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-creators-handle:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1323,9 +1291,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-guides:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-guides:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1392,9 +1358,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-guides-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-guides-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1461,9 +1425,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-maps:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-maps:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1530,9 +1492,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-templates:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-templates:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1599,9 +1559,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1668,9 +1626,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1804,9 +1760,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-forgot-password:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-forgot-password:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1873,9 +1827,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -1942,9 +1894,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug-history:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug-history:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -2011,9 +1961,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug-session-sessionid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug-session-sessionid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -2214,9 +2162,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-profile-handle:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-profile-handle:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -2283,9 +2229,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-register:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-register:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -2352,9 +2296,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-reset-password:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-reset-password:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -2421,9 +2363,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": true,
-        "readyLandmarks": [
-          "route-page-sign-in:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-sign-in:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -2557,9 +2497,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-tales:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-tales:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -2626,9 +2564,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-verify-email:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-verify-email:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -3231,9 +3167,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-root:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-root:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -3300,9 +3234,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-cancel-deletion:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-cancel-deletion:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -3369,9 +3301,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-claim:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-claim:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -3438,9 +3368,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-email-change:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-email-change:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -3507,9 +3435,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": true,
-        "readyLandmarks": [
-          "route-page-account-merge:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-merge:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -3576,9 +3502,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-reactivate:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-reactivate:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -3645,9 +3569,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-chronicles-taleslug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-chronicles-taleslug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -3714,9 +3636,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-chronicles-taleslug-compare:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-chronicles-taleslug-compare:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -3854,9 +3774,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -3923,9 +3841,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -3992,9 +3908,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-audio:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-audio:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4061,9 +3975,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-chronicles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-chronicles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4130,9 +4042,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-collections:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-collections:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4199,9 +4109,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-collections-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-collections-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4268,9 +4176,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-creators:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-creators:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4337,9 +4243,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-creators-handle:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-creators-handle:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4477,9 +4381,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-guides:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-guides:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4546,9 +4448,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-guides-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-guides-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4615,9 +4515,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-maps:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-maps:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4684,9 +4582,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-templates:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-templates:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4753,9 +4649,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4822,9 +4716,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -4958,9 +4850,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-forgot-password:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-forgot-password:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5027,9 +4917,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5096,9 +4984,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug-history:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug-history:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5165,9 +5051,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug-session-sessionid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug-session-sessionid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5368,9 +5252,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-profile-handle:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-profile-handle:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5437,9 +5319,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-register:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-register:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5506,9 +5386,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-reset-password:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-reset-password:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5575,9 +5453,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": true,
-        "readyLandmarks": [
-          "route-page-sign-in:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-sign-in:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5711,9 +5587,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-tales:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-tales:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5780,9 +5654,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-verify-email:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-verify-email:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5849,9 +5721,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-root:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-root:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5918,9 +5788,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-cancel-deletion:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-cancel-deletion:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -5987,9 +5855,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-claim:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-claim:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6056,9 +5922,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-email-change:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-email-change:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6125,9 +5989,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": true,
-        "readyLandmarks": [
-          "route-page-account-merge:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-merge:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6194,9 +6056,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-reactivate:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-reactivate:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6263,9 +6123,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-chronicles-taleslug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-chronicles-taleslug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6332,9 +6190,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-chronicles-taleslug-compare:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-chronicles-taleslug-compare:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6472,9 +6328,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6541,9 +6395,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6610,9 +6462,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-audio:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-audio:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6679,9 +6529,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-chronicles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-chronicles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6748,9 +6596,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-collections:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-collections:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6817,9 +6663,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-collections-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-collections-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6886,9 +6730,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-creators:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-creators:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -6955,9 +6797,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-creators-handle:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-creators-handle:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -7095,9 +6935,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-guides:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-guides:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -7164,9 +7002,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-guides-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-guides-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -7233,9 +7069,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-maps:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-maps:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -7302,9 +7136,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-templates:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-templates:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -7371,9 +7203,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -7440,9 +7270,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -7576,9 +7404,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-forgot-password:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-forgot-password:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -7645,9 +7471,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -7714,9 +7538,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug-history:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug-history:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -7783,9 +7605,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug-session-sessionid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug-session-sessionid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -7986,9 +7806,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-profile-handle:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-profile-handle:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8055,9 +7873,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-register:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-register:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8124,9 +7940,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-reset-password:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-reset-password:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8193,9 +8007,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": true,
-        "readyLandmarks": [
-          "route-page-sign-in:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-sign-in:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8329,9 +8141,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-tales:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-tales:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8398,9 +8208,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-verify-email:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-verify-email:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8467,9 +8275,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-root:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-root:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8536,9 +8342,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-cancel-deletion:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-cancel-deletion:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8605,9 +8409,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-claim:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-claim:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8674,9 +8476,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-email-change:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-email-change:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8743,9 +8543,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": true,
-        "readyLandmarks": [
-          "route-page-account-merge:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-merge:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8812,9 +8610,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-reactivate:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-reactivate:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8881,9 +8677,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-chronicles-taleslug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-chronicles-taleslug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -8950,9 +8744,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-chronicles-taleslug-compare:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-chronicles-taleslug-compare:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9090,9 +8882,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9159,9 +8949,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9228,9 +9016,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-audio:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-audio:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9297,9 +9083,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-chronicles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-chronicles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9366,9 +9150,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-collections:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-collections:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9435,9 +9217,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-collections-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-collections-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9504,9 +9284,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-creators:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-creators:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9573,9 +9351,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-creators-handle:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-creators-handle:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9713,9 +9489,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-guides:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-guides:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9782,9 +9556,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-guides-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-guides-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9851,9 +9623,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-maps:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-maps:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9920,9 +9690,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-templates:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-templates:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -9989,9 +9757,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -10058,9 +9824,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-slug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-slug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -10194,9 +9958,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-forgot-password:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-forgot-password:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -10263,9 +10025,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -10332,9 +10092,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug-history:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug-history:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -10401,9 +10159,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-play-taleslug-session-sessionid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-play-taleslug-session-sessionid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -10604,9 +10360,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-profile-handle:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-profile-handle:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -10673,9 +10427,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-register:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-register:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -10742,9 +10494,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-reset-password:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-reset-password:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -10811,9 +10561,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": true,
-        "readyLandmarks": [
-          "route-page-sign-in:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-sign-in:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -10947,9 +10695,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-tales:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-tales:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11016,9 +10762,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-verify-email:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-verify-email:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11085,9 +10829,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11154,9 +10896,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-accessibility:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-accessibility:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11223,9 +10963,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-data:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-data:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11292,9 +11030,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-linked-identities:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-linked-identities:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11361,9 +11097,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-notifications:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-notifications:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11430,9 +11164,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-personal-information:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-personal-information:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11499,9 +11231,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-preferences:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-preferences:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11568,9 +11298,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-privacy:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-privacy:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11637,9 +11365,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-profile:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-profile:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11773,9 +11499,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-roles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-roles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11842,9 +11566,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-security:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-security:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11911,9 +11633,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-sessions:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-sessions:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -11980,9 +11700,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-support-access:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-support-access:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12049,9 +11767,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-consent:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-consent:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12118,9 +11834,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-owner:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-owner:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12187,9 +11901,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-owner-id:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-owner-id:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12256,9 +11968,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12325,9 +12035,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12394,9 +12102,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-artifacts-artifactId:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-artifacts-artifactId:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12463,9 +12169,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-atlas:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-atlas:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12532,9 +12236,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12601,9 +12303,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history-recordId:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history-recordId:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12670,9 +12370,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history-recordid-book:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history-recordid-book:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12873,9 +12571,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-memories:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-memories:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -12942,9 +12638,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-people:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-people:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -13011,9 +12705,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-saved:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-saved:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -13080,9 +12772,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-statistics:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-statistics:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -13149,9 +12839,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-timeline:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-timeline:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -13285,9 +12973,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-player-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-player-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -13488,9 +13174,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -13624,9 +13308,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -13693,9 +13375,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-accessibility:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-accessibility:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -13762,9 +13442,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-data:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-data:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -13831,9 +13509,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-linked-identities:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-linked-identities:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -13900,9 +13576,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-notifications:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-notifications:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -13969,9 +13643,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-personal-information:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-personal-information:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14038,9 +13710,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-preferences:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-preferences:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14107,9 +13777,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-privacy:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-privacy:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14176,9 +13844,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-profile:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-profile:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14312,9 +13978,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-roles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-roles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14381,9 +14045,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-security:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-security:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14450,9 +14112,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-sessions:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-sessions:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14519,9 +14179,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-support-access:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-support-access:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14588,9 +14246,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-consent:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-consent:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14657,9 +14313,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-owner:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-owner:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14726,9 +14380,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-owner-id:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-owner-id:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14795,9 +14447,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14864,9 +14514,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -14933,9 +14581,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-artifacts-artifactId:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-artifacts-artifactId:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -15002,9 +14648,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-atlas:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-atlas:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -15071,9 +14715,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -15140,9 +14782,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history-recordId:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history-recordId:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -15209,9 +14849,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history-recordid-book:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history-recordid-book:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -15412,9 +15050,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-memories:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-memories:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -15481,9 +15117,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-people:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-people:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -15550,9 +15184,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-saved:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-saved:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -15619,9 +15251,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-statistics:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-statistics:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -15688,9 +15318,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-timeline:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-timeline:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -15824,9 +15452,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-player-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-player-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16027,9 +15653,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16096,9 +15720,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16165,9 +15787,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-accessibility:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-accessibility:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16234,9 +15854,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-data:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-data:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16303,9 +15921,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-linked-identities:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-linked-identities:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16372,9 +15988,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-notifications:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-notifications:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16441,9 +16055,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-personal-information:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-personal-information:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16510,9 +16122,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-preferences:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-preferences:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16579,9 +16189,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-privacy:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-privacy:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16648,9 +16256,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-profile:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-profile:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16784,9 +16390,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-roles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-roles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16853,9 +16457,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-security:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-security:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16922,9 +16524,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-sessions:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-sessions:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -16991,9 +16591,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-support-access:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-support-access:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17060,9 +16658,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-consent:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-consent:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17129,9 +16725,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-owner:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-owner:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17198,9 +16792,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-owner-id:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-owner-id:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17267,9 +16859,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17336,9 +16926,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17405,9 +16993,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-artifacts-artifactId:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-artifacts-artifactId:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17474,9 +17060,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-atlas:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-atlas:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17543,9 +17127,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17612,9 +17194,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history-recordId:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history-recordId:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17681,9 +17261,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history-recordid-book:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history-recordid-book:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17884,9 +17462,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-memories:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-memories:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -17953,9 +17529,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-people:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-people:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18022,9 +17596,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-saved:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-saved:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18091,9 +17663,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-statistics:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-statistics:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18160,9 +17730,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-timeline:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-timeline:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18296,9 +17864,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-player-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-player-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18499,9 +18065,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18568,9 +18132,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18637,9 +18199,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-accessibility:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-accessibility:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18706,9 +18266,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-data:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-data:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18775,9 +18333,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-linked-identities:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-linked-identities:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18844,9 +18400,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-notifications:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-notifications:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18913,9 +18467,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-personal-information:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-personal-information:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -18982,9 +18534,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-preferences:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-preferences:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19051,9 +18601,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-privacy:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-privacy:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19120,9 +18668,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-profile:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-profile:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19256,9 +18802,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-roles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-roles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19325,9 +18869,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-security:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-security:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19394,9 +18936,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-sessions:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-sessions:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19463,9 +19003,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-account-support-access:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-account-support-access:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19532,9 +19070,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-consent:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-consent:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19601,9 +19137,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-owner:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-owner:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19670,9 +19204,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-voyage-logs-owner-id:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-voyage-logs-owner-id:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19739,9 +19271,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19808,9 +19338,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19877,9 +19405,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-artifacts-artifactId:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-artifacts-artifactId:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -19946,9 +19472,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-atlas:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-atlas:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -20015,9 +19539,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -20084,9 +19606,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history-recordId:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history-recordId:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -20153,9 +19673,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-history-recordid-book:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-history-recordid-book:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -20356,9 +19874,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-memories:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-memories:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -20425,9 +19941,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-people:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-people:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -20494,9 +20008,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-saved:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-saved:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -20563,9 +20075,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-statistics:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-statistics:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -20632,9 +20142,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-passport-timeline:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-passport-timeline:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -20768,9 +20276,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-player-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-player-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -20971,9 +20477,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21040,9 +20544,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21109,9 +20611,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-audit:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-audit:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21178,9 +20678,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-chronicles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-chronicles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21247,9 +20745,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-chronicles-chronicleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-chronicles-chronicleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21316,9 +20812,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-community:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-community:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21385,9 +20879,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-community-listingid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-community-listingid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21454,10 +20946,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-configuration:MAIN_CONTENT",
-          "ADMIRALTY_CONFIGURATION_HEADING"
-        ],
+        "readyLandmarks": ["route-page-admin-configuration:MAIN_CONTENT", "ADMIRALTY_CONFIGURATION_HEADING"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21524,9 +21013,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-investigate:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-investigate:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21593,9 +21080,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-operations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-operations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21662,9 +21147,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-people:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-people:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21731,9 +21214,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-people-accountid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-people-accountid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21800,9 +21281,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-providers:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-providers:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21869,9 +21348,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-releases:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-releases:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -21938,9 +21415,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-support-cases:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-support-cases:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22007,9 +21482,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-voyages:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-voyages:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22076,9 +21549,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-voyages-voyageid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-voyages-voyageid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22145,10 +21616,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "PRIVATE_OPERATIONS_CONSOLE",
-          "route-page-studio-private-content-operations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["PRIVATE_OPERATIONS_CONSOLE", "route-page-studio-private-content-operations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22215,9 +21683,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "PRIVATE_OPERATIONS_CONSOLE"
-        ],
+        "readyLandmarks": ["PRIVATE_OPERATIONS_CONSOLE"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22284,9 +21750,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "PRIVATE_OPERATIONS_CONSOLE"
-        ],
+        "readyLandmarks": ["PRIVATE_OPERATIONS_CONSOLE"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22353,9 +21817,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22422,9 +21884,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-audit:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-audit:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22491,9 +21951,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-chronicles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-chronicles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22560,9 +22018,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-chronicles-chronicleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-chronicles-chronicleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22629,9 +22085,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-community:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-community:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22698,9 +22152,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-community-listingid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-community-listingid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22767,10 +22219,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-configuration:MAIN_CONTENT",
-          "ADMIRALTY_CONFIGURATION_HEADING"
-        ],
+        "readyLandmarks": ["route-page-admin-configuration:MAIN_CONTENT", "ADMIRALTY_CONFIGURATION_HEADING"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22837,9 +22286,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-investigate:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-investigate:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22906,9 +22353,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-operations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-operations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -22975,9 +22420,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-people:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-people:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23044,9 +22487,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-people-accountid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-people-accountid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23113,9 +22554,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-providers:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-providers:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23182,9 +22621,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-releases:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-releases:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23251,9 +22688,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-support-cases:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-support-cases:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23320,9 +22755,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-voyages:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-voyages:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23389,9 +22822,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-voyages-voyageid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-voyages-voyageid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23458,10 +22889,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "PRIVATE_OPERATIONS_CONSOLE",
-          "route-page-studio-private-content-operations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["PRIVATE_OPERATIONS_CONSOLE", "route-page-studio-private-content-operations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23528,9 +22956,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23597,9 +23023,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-audit:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-audit:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23666,9 +23090,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-chronicles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-chronicles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23735,9 +23157,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-chronicles-chronicleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-chronicles-chronicleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23804,9 +23224,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-community:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-community:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23873,9 +23291,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-community-listingid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-community-listingid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -23942,10 +23358,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-configuration:MAIN_CONTENT",
-          "ADMIRALTY_CONFIGURATION_HEADING"
-        ],
+        "readyLandmarks": ["route-page-admin-configuration:MAIN_CONTENT", "ADMIRALTY_CONFIGURATION_HEADING"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24012,9 +23425,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-investigate:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-investigate:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24081,9 +23492,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-operations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-operations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24150,9 +23559,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-people:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-people:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24219,9 +23626,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-people-accountid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-people-accountid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24288,9 +23693,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-providers:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-providers:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24357,9 +23760,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-releases:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-releases:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24426,9 +23827,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-support-cases:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-support-cases:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24495,9 +23894,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-voyages:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-voyages:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24564,9 +23961,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-voyages-voyageid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-voyages-voyageid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24633,10 +24028,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "PRIVATE_OPERATIONS_CONSOLE",
-          "route-page-studio-private-content-operations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["PRIVATE_OPERATIONS_CONSOLE", "route-page-studio-private-content-operations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24703,9 +24095,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24772,9 +24162,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-audit:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-audit:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24841,9 +24229,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-chronicles:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-chronicles:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24910,9 +24296,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-chronicles-chronicleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-chronicles-chronicleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -24979,9 +24363,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-community:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-community:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25048,9 +24430,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-community-listingid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-community-listingid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25117,10 +24497,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-configuration:MAIN_CONTENT",
-          "ADMIRALTY_CONFIGURATION_HEADING"
-        ],
+        "readyLandmarks": ["route-page-admin-configuration:MAIN_CONTENT", "ADMIRALTY_CONFIGURATION_HEADING"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25187,9 +24564,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-investigate:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-investigate:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25256,9 +24631,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-operations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-operations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25325,9 +24698,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-people:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-people:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25394,9 +24765,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-people-accountid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-people-accountid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25463,9 +24832,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-providers:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-providers:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25532,9 +24899,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-releases:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-releases:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25601,9 +24966,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-support-cases:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-support-cases:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25670,9 +25033,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-voyages:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-voyages:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25739,9 +25100,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-admin-voyages-voyageid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-admin-voyages-voyageid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -25808,10 +25167,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "PRIVATE_OPERATIONS_CONSOLE",
-          "route-page-studio-private-content-operations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["PRIVATE_OPERATIONS_CONSOLE", "route-page-studio-private-content-operations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -26012,9 +25368,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-captain-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-captain-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -26081,10 +25435,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "CAPTAIN_OPERATIONAL_PROJECTION",
-          "route-page-captain-sessions-sessionid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["CAPTAIN_OPERATIONAL_PROJECTION", "route-page-captain-sessions-sessionid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -26218,9 +25569,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-captain-tales-taleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-captain-tales-taleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -26287,10 +25636,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "CAPTAIN_MUSTER_PROJECTION",
-          "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["CAPTAIN_MUSTER_PROJECTION", "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -26695,9 +26041,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "CAPTAIN_OPERATIONAL_PROJECTION"
-        ],
+        "readyLandmarks": ["CAPTAIN_OPERATIONAL_PROJECTION"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -26898,9 +26242,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-captain-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-captain-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -26967,10 +26309,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "CAPTAIN_OPERATIONAL_PROJECTION",
-          "route-page-captain-sessions-sessionid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["CAPTAIN_OPERATIONAL_PROJECTION", "route-page-captain-sessions-sessionid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -27104,9 +26443,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-captain-tales-taleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-captain-tales-taleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -27173,10 +26510,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "CAPTAIN_MUSTER_PROJECTION",
-          "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["CAPTAIN_MUSTER_PROJECTION", "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -27581,9 +26915,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-captain-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-captain-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -27650,10 +26982,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "CAPTAIN_OPERATIONAL_PROJECTION",
-          "route-page-captain-sessions-sessionid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["CAPTAIN_OPERATIONAL_PROJECTION", "route-page-captain-sessions-sessionid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -27787,9 +27116,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-captain-tales-taleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-captain-tales-taleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -27856,10 +27183,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "CAPTAIN_MUSTER_PROJECTION",
-          "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["CAPTAIN_MUSTER_PROJECTION", "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -28264,9 +27588,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-captain-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-captain-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -28333,10 +27655,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "CAPTAIN_OPERATIONAL_PROJECTION",
-          "route-page-captain-sessions-sessionid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["CAPTAIN_OPERATIONAL_PROJECTION", "route-page-captain-sessions-sessionid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -28470,9 +27789,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-captain-tales-taleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-captain-tales-taleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -28539,10 +27856,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "CAPTAIN_MUSTER_PROJECTION",
-          "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["CAPTAIN_MUSTER_PROJECTION", "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -28813,9 +28127,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-moderation:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-moderation:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -28882,9 +28194,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-moderation-id:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-moderation-id:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -28951,9 +28261,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-moderation:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-moderation:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29020,9 +28328,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-moderation-id:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-moderation-id:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29089,9 +28395,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-moderation:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-moderation:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29158,9 +28462,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-moderation-id:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-moderation-id:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29227,9 +28529,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-moderation:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-moderation:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29296,9 +28596,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-community-moderation-id:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-community-moderation-id:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29432,10 +28730,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-exchange:MAIN_CONTENT",
-          "STUDIO_EXCHANGE_HEADING"
-        ],
+        "readyLandmarks": ["route-page-studio-exchange:MAIN_CONTENT", "STUDIO_EXCHANGE_HEADING"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29502,9 +28797,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29571,9 +28864,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-private-content:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-private-content:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29707,9 +28998,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29776,9 +29065,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29845,9 +29132,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-assets:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-assets:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29914,9 +29199,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-locations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-locations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -29983,9 +29266,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-settings:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-settings:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30052,9 +29333,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-trials:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-trials:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30121,9 +29400,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-versions:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-versions:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30190,9 +29467,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-new:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-new:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30326,10 +29601,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-exchange:MAIN_CONTENT",
-          "STUDIO_EXCHANGE_HEADING"
-        ],
+        "readyLandmarks": ["route-page-studio-exchange:MAIN_CONTENT", "STUDIO_EXCHANGE_HEADING"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30396,9 +29668,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30465,9 +29735,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-private-content:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-private-content:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30601,9 +29869,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30670,9 +29936,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30739,9 +30003,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-assets:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-assets:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30808,9 +30070,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-locations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-locations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30877,9 +30137,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-settings:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-settings:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -30946,9 +30204,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-trials:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-trials:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31015,9 +30271,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-versions:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-versions:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31084,9 +30338,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-new:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-new:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31220,10 +30472,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-exchange:MAIN_CONTENT",
-          "STUDIO_EXCHANGE_HEADING"
-        ],
+        "readyLandmarks": ["route-page-studio-exchange:MAIN_CONTENT", "STUDIO_EXCHANGE_HEADING"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31290,9 +30539,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31359,9 +30606,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-private-content:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-private-content:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31495,9 +30740,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31564,9 +30807,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31633,9 +30874,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-assets:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-assets:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31702,9 +30941,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-locations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-locations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31771,9 +31008,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-settings:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-settings:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31840,9 +31075,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-trials:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-trials:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31909,9 +31142,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-versions:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-versions:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -31978,9 +31209,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-new:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-new:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -32114,10 +31343,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-exchange:MAIN_CONTENT",
-          "STUDIO_EXCHANGE_HEADING"
-        ],
+        "readyLandmarks": ["route-page-studio-exchange:MAIN_CONTENT", "STUDIO_EXCHANGE_HEADING"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -32184,9 +31410,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-library:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-library:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -32253,9 +31477,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-private-content:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-private-content:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -32389,9 +31611,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -32458,9 +31678,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-artifacts:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-artifacts:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -32527,9 +31745,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-assets:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-assets:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -32596,9 +31812,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-locations:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-locations:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -32665,9 +31879,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-settings:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-settings:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -32734,9 +31946,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-trials:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-trials:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -32803,9 +32013,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-taleid-versions:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-taleid-versions:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,
@@ -32872,9 +32080,7 @@
         "unavailableSurface": false,
         "deadEndSurface": false,
         "signInSurface": false,
-        "readyLandmarks": [
-          "route-page-studio-tales-new:MAIN_CONTENT"
-        ],
+        "readyLandmarks": ["route-page-studio-tales-new:MAIN_CONTENT"],
         "visibleMain": true,
         "expectedPathMatched": true,
         "transitionSettled": true,

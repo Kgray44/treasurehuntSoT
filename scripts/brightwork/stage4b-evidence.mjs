@@ -161,7 +161,8 @@ async function validate() {
   assertSourceBound(census, contract, manifest);
   validateAdmiraltyCapabilities(census);
   const expectedStates = stateKeys(census, contract);
-  if (matrix.entries.length !== expectedStates.size) throw new Error("BRIGHTWORK_STAGE4B_STATE_MATRIX_COVERAGE_INVALID");
+  if (matrix.entries.length !== expectedStates.size)
+    throw new Error("BRIGHTWORK_STAGE4B_STATE_MATRIX_COVERAGE_INVALID");
   for (const entry of matrix.entries) {
     if (!coverageStatuses.has(entry.coverageStatus))
       throw new Error("BRIGHTWORK_STAGE8_STATE_COVERAGE_STATUS_INVALID:" + entry.route + ":" + entry.declaredState);
@@ -211,7 +212,10 @@ async function validate() {
     privateOperations.classification !== "CONTEXTUAL_DYNAMIC_DESTINATION" ||
     privateOperations.capabilityMetadata?.requiredCapability !== "ADMIN" ||
     !matrix.entries.some(
-      (entry) => entry.route === "/studio/private-content/operations" && entry.declaredState === "READY" && entry.coverageStatus === "COVERED",
+      (entry) =>
+        entry.route === "/studio/private-content/operations" &&
+        entry.declaredState === "READY" &&
+        entry.coverageStatus === "COVERED",
     )
   )
     throw new Error("BRIGHTWORK_STAGE8_PRIVATE_OPERATIONS_EVIDENCE_INCOMPLETE");
@@ -260,7 +264,8 @@ function buildStateMatrix(census, contract, manifest) {
     auditRuntimeSourceSha: census.auditRuntimeSourceSha,
     generatedAt: new Date().toISOString(),
     coverageStatusVocabulary: [...coverageStatuses],
-    coverageRule: "Every current governed state is either directly source-bound COVERED or EXEMPT_WITH_RATIONALE; screenshot count alone is not sufficient evidence.",
+    coverageRule:
+      "Every current governed state is either directly source-bound COVERED or EXEMPT_WITH_RATIONALE; screenshot count alone is not sufficient evidence.",
     entries,
   };
 }
@@ -272,14 +277,18 @@ function disposition(route, state, records) {
       evidence: {
         method: "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         captureIds: records.map((record) => record.imageId),
-        sourceReferences: [route.implementationSource, ...(route.readyLandmarks ?? []).map((landmark) => landmark.sourceFile)],
+        sourceReferences: [
+          route.implementationSource,
+          ...(route.readyLandmarks ?? []).map((landmark) => landmark.sourceFile),
+        ],
         fixtureIdentityDigests: [...new Set(records.map((record) => record.fixtureIdentity.sourceBindingDigest))],
       },
     };
   if (records.length)
     return {
       coverageStatus: "EXEMPT_WITH_RATIONALE",
-      exemptionRationale: "The task-owned synthetic capture was explicitly blocked. No product repair was attempted in Wave 0.",
+      exemptionRationale:
+        "The task-owned synthetic capture was explicitly blocked. No product repair was attempted in Wave 0.",
       explicitlyBlocked: records.map((record) => record.imageId),
     };
   if (/_WHERE_IMPLEMENTED$/u.test(state))
@@ -289,7 +298,8 @@ function disposition(route, state, records) {
     };
   return {
     coverageStatus: "EXEMPT_WITH_RATIONALE",
-    exemptionRationale: "No direct Wave 0 capture is required for this route-specific state; it has no distinct current presentation contract beyond its READY surface.",
+    exemptionRationale:
+      "No direct Wave 0 capture is required for this route-specific state; it has no distinct current presentation contract beyond its READY surface.",
   };
 }
 

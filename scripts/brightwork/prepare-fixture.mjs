@@ -153,7 +153,12 @@ async function aliasCount(file) {
   return Object.keys(parsed.accounts ?? parsed.aliases ?? {}).length;
 }
 
-async function ensureBrightworkRouteRepresentatives(databasePath, credentialsPath, creatorCredentialsPath, creatorPassword) {
+async function ensureBrightworkRouteRepresentatives(
+  databasePath,
+  credentialsPath,
+  creatorCredentialsPath,
+  creatorPassword,
+) {
   const credentialHandoff = JSON.parse(await readFile(credentialsPath, "utf8"));
   const aliases = credentialHandoff.accounts ?? credentialHandoff.aliases ?? {};
   const fullCapability = aliases.FULL_CAPABILITY ?? aliases.VERIFIED_FULL_CAPABILITY;

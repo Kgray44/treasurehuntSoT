@@ -2,14 +2,22 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
-import { buildCaptureContract, buildRouteCensus, semanticCaptureIssue } from "../../scripts/brightwork/visual-evidence.mjs";
+import {
+  buildCaptureContract,
+  buildRouteCensus,
+  semanticCaptureIssue,
+} from "../../scripts/brightwork/visual-evidence.mjs";
 
 const root = path.resolve(process.cwd());
 
 async function census() {
   const [legacyInventory, screenCatalog] = await Promise.all([
-    readFile(path.join(root, "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"), "utf8").then(JSON.parse),
-    readFile(path.join(root, "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json"), "utf8").then(JSON.parse),
+    readFile(path.join(root, "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"), "utf8").then(
+      JSON.parse,
+    ),
+    readFile(path.join(root, "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json"), "utf8").then(
+      JSON.parse,
+    ),
   ]);
   return buildRouteCensus({
     appRoot: path.join(root, "src/app"),
@@ -26,7 +34,11 @@ test("every READY requirement has an explicit landmark and missing landmarks fai
   const ready = contract.requirements.filter((requirement) => requirement.state === "READY");
   assert.ok(ready.length > 0);
   assert.equal(contract.auditRuntimeSourceSha, "test-audit-runtime-source");
-  assert.ok(ready.every((requirement) => requirement.expectedReadyLandmarks?.every((landmark) => landmark.id && landmark.selector)));
+  assert.ok(
+    ready.every((requirement) =>
+      requirement.expectedReadyLandmarks?.every((landmark) => landmark.id && landmark.selector),
+    ),
+  );
   const sample = ready[0];
   assert.equal(
     semanticCaptureIssue(sample, {
@@ -55,7 +67,12 @@ test("Community, privileged stations, and redirect routes retain source-specific
   assert.ok(featured?.readyLandmarks.some((landmark) => landmark.id === "COMMUNITY_FEATURED_HEADING"));
   assert.equal(privateOperations?.classification, "CONTEXTUAL_DYNAMIC_DESTINATION");
   assert.equal(privateOperations?.capabilityMetadata?.requiredCapability, "ADMIN");
-  assert.deepEqual(privateOperations?.meaningfulVisualStates, ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "UNAUTHORIZED"]);
+  assert.deepEqual(privateOperations?.meaningfulVisualStates, [
+    "DEPENDENCY_UNAVAILABLE",
+    "INITIAL_LOADING",
+    "READY",
+    "UNAUTHORIZED",
+  ]);
   assert.ok(configuration?.readyLandmarks.some((landmark) => landmark.id === "ADMIRALTY_CONFIGURATION_HEADING"));
   assert.ok(exchange?.readyLandmarks.some((landmark) => landmark.id === "STUDIO_EXCHANGE_HEADING"));
   const contract = buildCaptureContract({ routes }, "2026-09-03T00:00:00.000Z");
