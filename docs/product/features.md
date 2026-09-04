@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-30
+last_reviewed: 2026-09-04
 ---
 
 # Features and subfeatures
@@ -28,6 +28,11 @@ security/session management. [Profile guide](../user/profile.md), [Passport
 guide](../user/chronicle-passport.md), and [account security
 guide](../user/account-security.md). Mainline availability is not deployment or
 owner acceptance.
+
+Brightwork Stage 8 Wave 3 reinforces that distinction without adding a new
+identity or workspace: Personal Harbor is the account control center and
+Chronicle Passport is the first-class private history destination with one
+product-level navigation authority.
 
 Google and GitHub sign-up, sign-in, and explicit account linking are complete
 on main and accepted through protected staging. Both providers use the canonical
@@ -61,6 +66,12 @@ remembrance, source-bound Timeline/People/Statistics, an explicitly read-only
 replay handoff, a truthful seasonal Voyage Atlas, and a printable Voyage Book.
 They remain private historical presentation, never public sharing, account-data
 export, or Voyage mutation.
+
+Brightwork Stage 8 Wave 3 aligns those retained Passport surfaces with the
+archival teal, brass, and parchment family; gives Timeline, People, Statistics,
+and Atlas clearer human-facing composition; and retains provenance behind
+technical disclosure. It does not add public sharing, social ranking, inferred
+geography, new history ownership, or a new archive data source.
 
 ## Global shell and wayfinding
 

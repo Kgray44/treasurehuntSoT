@@ -74,7 +74,7 @@ describe("WakebookArchive", () => {
 
     render(<WakebookArchive />);
 
-    expect(await screen.findByRole("heading", { name: "Your Voyages" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Your private shelf" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "The Lantern Below" })).toBeInTheDocument();
     expect(screen.getByText("Completed · 1 hr 2 min")).toBeInTheDocument();
     expect(screen.getByLabelText("Historical crew: Synthetic Crew")).toBeInTheDocument();

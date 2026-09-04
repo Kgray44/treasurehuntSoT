@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-27
+last_reviewed: 2026-09-04
 ---
 
 # Changelog
@@ -11,6 +11,13 @@ last_reviewed: 2026-08-27
 ## Unreleased
 
 ### Changed
+
+- Polished Personal Harbor and Chronicle Passport in Brightwork Stage 8 Wave 3:
+  account management now has one concise Passport gateway, while Passport owns
+  direct product navigation and a coherent private archive experience. Timeline,
+  People, Statistics, Atlas, and Voyage Detail now favor retained human history
+  over implementation detail, without adding a public social graph, inferred
+  geography, a new historical source of truth, or an account-data export.
 
 - Added Project Admiralty Support Pilot S2, **Turn the Wrench**: consented
   support cases can now propose and execute only three registered, bounded
