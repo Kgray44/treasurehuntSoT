@@ -1,10 +1,10 @@
 {
   "schemaVersion": "2.0.0",
   "artifact": "Voyagewright Brightwork current-main route and screen census",
-  "sourceSha": "a82473c40114280694fd292f1103ae914dcc7c6c",
+  "sourceSha": "2ae4333f09c76c11a51e8b7015cad9e02523a65d",
   "auditRuntimeSourceSha": "6a7b0c9edec14dcb985156ac446467775c287fc3",
   "sourceProvenance": {
-    "ordinaryProductSourceSha": "a82473c40114280694fd292f1103ae914dcc7c6c",
+    "ordinaryProductSourceSha": "2ae4333f09c76c11a51e8b7015cad9e02523a65d",
     "auditRuntimeSourceSha": "6a7b0c9edec14dcb985156ac446467775c287fc3",
     "sourceOfTruth": "Current source route files, with audit-only runtime changes recorded separately from ordinary product source."
   },
