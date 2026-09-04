@@ -26,6 +26,8 @@ export type WakebookInsights = {
     role: string;
     voyageCount: number;
     availability: "HISTORICAL" | "LIMITED";
+    firstSharedVoyage: { id: string; title: string; date: string | null } | null;
+    latestSharedVoyage: { id: string; title: string; date: string | null } | null;
   }>;
 };
 
@@ -78,12 +80,26 @@ export async function queryWakebookInsights(playerProfileId: string): Promise<Wa
           wallClockAccuracy: true,
         },
       }),
-      db.playerChronicleParticipantSnapshot.groupBy({
-        by: ["displayNameSnapshot", "tombstoneState", "participationRole", "crewRoleSnapshot"],
+      db.playerChronicleParticipantSnapshot.findMany({
         where: { record: { playerProfileId }, projectionEligibility: "ONLY_ME" },
-        _count: { historyRecordId: true },
-        orderBy: { _count: { historyRecordId: "desc" } },
-        take: 40,
+        select: {
+          participantProfileId: true,
+          sourceMembershipId: true,
+          displayNameSnapshot: true,
+          tombstoneState: true,
+          participationRole: true,
+          crewRoleSnapshot: true,
+          record: {
+            select: {
+              id: true,
+              sourceMembershipId: true,
+              chronicleTitleSnapshot: true,
+              completedAt: true,
+              startedAt: true,
+              joinedAt: true,
+            },
+          },
+        },
       }),
     ]);
 
@@ -124,11 +140,71 @@ export async function queryWakebookInsights(playerProfileId: string): Promise<Wa
         duration: presentTiming(row.wallClockSeconds, row.wallClockAccuracy).humanLabel,
       };
     }),
-    people: peopleRows.map((person) => ({
-      label: person.tombstoneState === "ACTIVE" ? person.displayNameSnapshot : "Former crew member",
-      role: person.crewRoleSnapshot || presentRole(person.participationRole),
-      voyageCount: person._count.historyRecordId,
-      availability: person.tombstoneState === "ACTIVE" ? "HISTORICAL" : "LIMITED",
-    })),
+    people: projectSharedHistory(peopleRows),
   };
+}
+
+export function projectSharedHistory(
+  rows: Array<{
+    participantProfileId: string | null;
+    sourceMembershipId: string;
+    displayNameSnapshot: string;
+    tombstoneState: string;
+    participationRole: string;
+    crewRoleSnapshot: string | null;
+    record: {
+      id: string;
+      sourceMembershipId: string | null;
+      chronicleTitleSnapshot: string;
+      completedAt: Date | null;
+      startedAt: Date | null;
+      joinedAt: Date | null;
+    };
+  }>,
+) {
+  const people = new Map<
+    string,
+    {
+      label: string;
+      role: string;
+      availability: "HISTORICAL" | "LIMITED";
+      voyages: Array<{ id: string; title: string; date: string | null }>;
+    }
+  >();
+  for (const row of rows) {
+    // The owner snapshot belongs to the same source membership as the record;
+    // People tells the shared-history story, never the owner back to themself.
+    if (row.sourceMembershipId === row.record.sourceMembershipId) continue;
+    const key = row.participantProfileId ?? `${row.tombstoneState}:${row.displayNameSnapshot}`;
+    const chronology = archiveChronology(row.record.completedAt, row.record.startedAt, row.record.joinedAt);
+    const person = people.get(key) ?? {
+      label: row.tombstoneState === "ACTIVE" ? row.displayNameSnapshot : "Former crew member",
+      role: row.crewRoleSnapshot || presentRole(row.participationRole),
+      availability: row.tombstoneState === "ACTIVE" ? "HISTORICAL" : "LIMITED",
+      voyages: [],
+    };
+    if (!person.voyages.some((voyage) => voyage.id === row.record.id)) {
+      person.voyages.push({
+        id: row.record.id,
+        title: row.record.chronicleTitleSnapshot,
+        date: chronology.dateQuality === "EXACT" ? chronology.archiveDate : null,
+      });
+    }
+    people.set(key, person);
+  }
+  return [...people.values()]
+    .map((person) => {
+      const datedVoyages = person.voyages
+        .filter((voyage): voyage is typeof voyage & { date: string } => Boolean(voyage.date))
+        .sort((left, right) => left.date.localeCompare(right.date) || left.id.localeCompare(right.id));
+      return {
+        label: person.label,
+        role: person.role,
+        voyageCount: person.voyages.length,
+        availability: person.availability,
+        firstSharedVoyage: datedVoyages.at(0) ?? null,
+        latestSharedVoyage: datedVoyages.at(-1) ?? null,
+      };
+    })
+    .sort((left, right) => right.voyageCount - left.voyageCount || left.label.localeCompare(right.label));
 }

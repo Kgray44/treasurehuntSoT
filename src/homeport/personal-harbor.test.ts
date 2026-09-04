@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { personalHarborNavigation, personalHarborSectionIds } from "@/homeport/personal-harbor-navigation";
+import {
+  personalHarborNavigation,
+  personalHarborSectionIds,
+  passportSectionIds,
+} from "@/homeport/personal-harbor-navigation";
 import { accountDataAvailability } from "@/homeport/personal-harbor";
 import { preferenceV1Schema, defaultPreferences } from "@/wayfarer/profile";
 
@@ -10,6 +14,7 @@ describe("Homeport Phase 3 Personal Harbor contracts", () => {
     expect(new Set(items.map(([id]) => id)).size).toBe(items.length);
     expect(new Set(items.map(([, , href]) => href)).size).toBe(items.length);
     expect(items.map(([id]) => id)).toEqual(personalHarborSectionIds);
+    expect(items.map(([id]) => id)).not.toEqual(expect.arrayContaining(Array.from(passportSectionIds)));
     expect(items.every(([, , href]) => href.startsWith("/") && !href.includes("#"))).toBe(true);
   });
 
