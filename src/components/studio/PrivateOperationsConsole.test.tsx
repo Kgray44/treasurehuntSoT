@@ -2,7 +2,8 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { PrivateOperationsConsole } from "./PrivateOperationsConsole";
 
-const response = (body: unknown, ok = true) => ({ ok, json: async () => body }) as Response;
+const response = (body: unknown, ok = true, status = ok ? 200 : 500) =>
+  ({ ok, status, json: async () => body }) as Response;
 
 describe("PrivateOperationsConsole", () => {
   afterEach(() => {
@@ -27,9 +28,24 @@ describe("PrivateOperationsConsole", () => {
               _count: { actions: 2 },
             },
           ],
+          protectedMedia: {
+            total: 2,
+            readyDerivatives: 1,
+            blockedConsent: 1,
+            withdrawnDerivatives: 0,
+            staleGrants: 0,
+          },
         }),
       )
-      .mockResolvedValueOnce(response({ providers: [] }));
+      .mockResolvedValueOnce(
+        response({
+          providers: [],
+          backupRuns: [],
+          drills: [],
+          repairs: [],
+          protectedMedia: { total: 0, readyDerivatives: 0, blockedConsent: 0, withdrawnDerivatives: 0, staleGrants: 0 },
+        }),
+      );
     vi.stubGlobal("fetch", fetch);
     render(<PrivateOperationsConsole />);
 
@@ -45,12 +61,24 @@ describe("PrivateOperationsConsole", () => {
     fireEvent.click(refresh);
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
     expect(fetch).toHaveBeenLastCalledWith("/api/studio/private-content/operations", { cache: "no-store" });
+    expect(screen.getByText("No provider status records were returned.")).toBeVisible();
+    expect(screen.getByText("No backup runs or restore drills have been recorded.")).toBeVisible();
+    expect(screen.getByText("No repair plans have been recorded.")).toBeVisible();
   });
 
   it("announces a generic failure without rendering provider details", async () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("C:/private/root")));
     render(<PrivateOperationsConsole />);
-    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("temporarily unavailable"));
+    await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("temporarily unavailable"));
     expect(screen.queryByText("C:/private/root")).not.toBeInTheDocument();
+  });
+
+  it("distinguishes authorization from a successful zero-record response", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response({ error: "not authorized" }, false, 403)));
+    render(<PrivateOperationsConsole />);
+
+    await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("requires Administrator access"));
+    expect(screen.getAllByText("Administrator access is required to view this operational section.")).toHaveLength(4);
+    expect(screen.queryByText("No provider status records were returned.")).not.toBeInTheDocument();
   });
 });

@@ -105,7 +105,7 @@ export function DrydockLaunchGate({
               <ul>
                 {readiness.requiredSuites.map((suite) => (
                   <li key={suite.suiteId}>
-                    {suite.suiteId}: {suite.status} â€” {suite.reason}
+                    {suite.suiteId}: {suite.status} — {suite.reason}
                   </li>
                 ))}
               </ul>

@@ -4,6 +4,7 @@ import {
   applyRuntimePreferences,
   defaultRuntimePreferences,
   preferenceRuntimeEvent,
+  preferenceRuntimeUpdatedEvent,
   publishRuntimePreferences,
   type RuntimePreferences,
 } from "./preference-runtime";
@@ -82,10 +83,16 @@ describe("Project Homeport observable preference effects", () => {
 
   it("homeport.owner-correction.round1.preference-persistence stores only the account-scoped validated payload", () => {
     const value = preferences({ theme: "DARK", motion: "GENTLE" });
+    const updated = vi.fn();
+    window.addEventListener(preferenceRuntimeUpdatedEvent, updated);
     publishRuntimePreferences("account-1", value);
     expect(JSON.parse(window.localStorage.getItem(accountPreferenceCacheKey("account-1")) ?? "null")).toEqual(value);
     expect(document.documentElement.dataset.voyageTheme).toBe("dark");
     expect(window.localStorage.getItem("forever-motion")).toBe("gentle");
+    expect(updated).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { accountId: "account-1", preferences: value } }),
+    );
+    window.removeEventListener(preferenceRuntimeUpdatedEvent, updated);
   });
 
   it("homeport.owner-correction.round1.preference-failure still applies preferences when browser storage is blocked", () => {

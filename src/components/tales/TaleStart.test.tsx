@@ -16,7 +16,21 @@ vi.mock("@/components/auth/CurrentUserProvider", () => ({
 
 import { TaleStart } from "./TaleStart";
 
-const tale = {
+type TaleResponse = {
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  shortDescription: string | null;
+  longDescription: string | null;
+  coverUrl: string | null;
+  estimatedDuration: number | null;
+  playerCountMin: number;
+  playerCountMax: number;
+  contentWarnings: string | null;
+  version: string;
+};
+
+const tale: TaleResponse = {
   slug: "moonlit-map",
   title: "The Moonlit Map",
   subtitle: "A synthetic subtitle",
@@ -30,10 +44,10 @@ const tale = {
   version: "1.0",
 };
 
-function installFetch() {
+function installFetch(taleResponse: TaleResponse = tale) {
   const fetch = vi.fn(async (input: RequestInfo | URL, options?: RequestInit) => {
     const url = String(input);
-    if (url === "/api/tales/moonlit-map") return new Response(JSON.stringify({ tale }), { status: 200 });
+    if (url === "/api/tales/moonlit-map") return new Response(JSON.stringify({ tale: taleResponse }), { status: 200 });
     if (url === "/api/tales/moonlit-map/start" && options?.method === "POST")
       return new Response(JSON.stringify({ url: "/play/moonlit-map/session/session-1" }), { status: 201 });
     throw new Error(`Unexpected request ${url}`);
@@ -112,5 +126,16 @@ describe("Project Homeport Chronicle start identity", () => {
     const startCall = fetch.mock.calls.find(([url]) => String(url).endsWith("/start"));
     expect(startCall?.[1]?.headers).toEqual({ "Content-Type": "application/json" });
     expect(startCall?.[1]?.body).toBe(JSON.stringify({ ownerLabel: "Guest Mariner", aliasEdited: false }));
+  });
+
+  it("keeps return links distinct and omits an absent preview subtitle heading", async () => {
+    installFetch({ ...tale, subtitle: null });
+    render(<TaleStart taleSlug="moonlit-map" />);
+
+    const navigation = await screen.findByRole("navigation", { name: "Chronicle preview navigation" });
+    expect(navigation).toHaveClass("tale-start-navigation");
+    expect(screen.getByRole("link", { name: "← Published Chronicles" })).toBeVisible();
+    expect(screen.getByRole("link", { name: "View this browser's Voyage History" })).toBeVisible();
+    expect(document.querySelectorAll(".tale-start h2")).toHaveLength(0);
   });
 });

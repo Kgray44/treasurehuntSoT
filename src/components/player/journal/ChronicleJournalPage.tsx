@@ -17,14 +17,14 @@ export function ChronicleJournalPageContent({ page, assets }: { page: ChronicleJ
   return (
     <div className={`journal-leaf chronicle-leaf page-kind-${page.kind}`}>
       <div className="paper-fibers" aria-hidden="true" />
-      <span className="folio">â€” {page.folio} â€”</span>
+      <span className="folio">— {page.folio} —</span>
       {page.kind === "title" && (
         <>
           <p className="eyebrow">Chronicle Journal</p>
           <h3>{page.title}</h3>
           <p className="journal-prose">{page.body}</p>
           <div className="journal-compass-mark" aria-hidden="true">
-            âœ¦
+            ✦
           </div>
         </>
       )}
@@ -43,7 +43,7 @@ export function ChronicleJournalPageContent({ page, assets }: { page: ChronicleJ
           <p className="journal-prose">{page.body}</p>
           <div className="chapter-divider-rule" aria-hidden="true">
             <i />
-            <span>âœ¦</span>
+            <span>✦</span>
             <i />
           </div>
         </>
@@ -185,7 +185,7 @@ function JournalBlock({
             />
           ) : (
             <div className="journal-illustration-fallback" aria-label="No illustration was published for this page">
-              âœ¦
+              ✦
             </div>
           )}
         </div>
@@ -276,7 +276,7 @@ function JournalBlock({
       )}
       {block.journalKind === "locationVerification" && block.progress === "active" && (
         <div className="verification-seal">
-          <span aria-hidden="true">â—‡</span>
+          <span aria-hidden="true">◇</span>
           <strong>Awaiting verification</strong>
         </div>
       )}

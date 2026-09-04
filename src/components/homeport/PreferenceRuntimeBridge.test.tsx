@@ -24,6 +24,7 @@ vi.mock("@/homeport/preference-runtime", () => ({
     experience: { motion: "SYSTEM", textScale: 1, theme: "SYSTEM", contrast: "SYSTEM" },
   },
   preferenceRuntimeChannel: "voyagewright-preferences",
+  preferenceRuntimeUpdatedEvent: "voyagewright-preferences-updated",
 }));
 
 import { PreferenceRuntimeBridge } from "./PreferenceRuntimeBridge";
@@ -34,6 +35,7 @@ const nextPreferences = {
 
 describe("Project Homeport preference reconciliation", () => {
   let messageListener: ((event: MessageEvent) => void) | undefined;
+  let systemPreferenceListener: ((event: Event) => void) | undefined;
   const close = vi.fn();
 
   beforeEach(() => {
@@ -44,6 +46,7 @@ describe("Project Homeport preference reconciliation", () => {
       user: { accountId: "account-1", displayName: "Synthetic Owner", initials: "SO" },
     };
     close.mockReset();
+    systemPreferenceListener = undefined;
     localStorage.clear();
     vi.stubGlobal(
       "matchMedia",
@@ -52,7 +55,9 @@ describe("Project Homeport preference reconciliation", () => {
           ({
             matches: false,
             media: query,
-            addEventListener: vi.fn(),
+            addEventListener: vi.fn((event: string, listener: (event: Event) => void) => {
+              if (event === "change") systemPreferenceListener = listener;
+            }),
             removeEventListener: vi.fn(),
           }) as unknown as MediaQueryList,
       ),
@@ -151,5 +156,20 @@ describe("Project Homeport preference reconciliation", () => {
         { preserveStoredMotion: true },
       ),
     );
+  });
+
+  it("keeps a same-tab saved motion choice through later system-preference revalidation", async () => {
+    render(<PreferenceRuntimeBridge />);
+    await waitFor(() => expect(mocks.apply).toHaveBeenCalled());
+    mocks.apply.mockClear();
+
+    window.dispatchEvent(
+      new CustomEvent("voyagewright-preferences-updated", {
+        detail: { accountId: "account-1", preferences: nextPreferences },
+      }),
+    );
+    systemPreferenceListener?.(new Event("change"));
+
+    expect(mocks.apply).toHaveBeenCalledWith(nextPreferences);
   });
 });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { ArtifactPreview } from "./ArtifactPreview";
 import { InstallationReview } from "./InstallationReview";
 import { PublicationWizard, type PublicationWizardValues } from "./PublicationWizard";
@@ -12,6 +13,7 @@ import { PublicationWizard, type PublicationWizardValues } from "./PublicationWi
  */
 export function StudioExchangeConsole({ authenticated }: { authenticated: boolean }) {
   const [notice, setNotice] = useState("");
+  const { mode } = useMotionMode();
   if (!authenticated)
     return (
       <main className="studio-auth-gate">
@@ -53,7 +55,7 @@ export function StudioExchangeConsole({ authenticated }: { authenticated: boolea
         description="A static poster fallback is always available for 3D Exchange artifacts."
         posterUrl="/images/placeholder.svg"
         kind="3D"
-        reducedMotion
+        reducedMotion={mode === "reduced"}
       />
     </main>
   );

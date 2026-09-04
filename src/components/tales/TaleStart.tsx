@@ -68,6 +68,7 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
         />
       </main>
     );
+  const subtitle = tale.subtitle?.trim();
   return (
     <main className="tale-start">
       <ResilientImage
@@ -79,14 +80,16 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
       />
       <div className="tale-start-shade" />
       <section>
-        <Link href="/tales">← Published Chronicles</Link>
-        <Link href={`/play/${encodeURIComponent(taleSlug)}/history`}>{"View this browser's Voyage History"}</Link>
+        <nav className="tale-start-navigation" aria-label="Chronicle preview navigation">
+          <Link href="/tales">← Published Chronicles</Link>
+          <Link href={`/play/${encodeURIComponent(taleSlug)}/history`}>{"View this browser's Voyage History"}</Link>
+        </nav>
         <p className="eyebrow tale-preview-label">Preview this Chronicle</p>
         <p className="tale-edition-line">
           Version {tale.version} · {tale.estimatedDuration ? `${tale.estimatedDuration} minutes` : "duration uncharted"}
         </p>
         <h1>{tale.title}</h1>
-        <h2>{tale.subtitle}</h2>
+        {subtitle ? <h2>{subtitle}</h2> : null}
         <p>{tale.longDescription ?? tale.shortDescription}</p>
         <dl>
           <div>
