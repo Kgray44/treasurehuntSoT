@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { personalHarborNavigation, personalHarborSectionIds, passportSectionIds } from "@/homeport/personal-harbor-navigation";
+import {
+  personalHarborNavigation,
+  personalHarborSectionIds,
+  passportSectionIds,
+} from "@/homeport/personal-harbor-navigation";
 import { accountDataAvailability } from "@/homeport/personal-harbor";
 import { preferenceV1Schema, defaultPreferences } from "@/wayfarer/profile";
 
