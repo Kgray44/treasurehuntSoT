@@ -72,6 +72,7 @@ describe("WakebookInsights", () => {
     rerender(<WakebookInsights view="statistics" />);
     expect(await screen.findByText("Mixed quality")).toBeInTheDocument();
     expect(screen.getByText(/do not rank you/i)).toBeInTheDocument();
+    expect(screen.getByLabelText("Private journey statistics").querySelectorAll("dl p")).toHaveLength(0);
   });
 
   it("organizes Voyage history by season and keeps the absent Landfall map truthful", async () => {
