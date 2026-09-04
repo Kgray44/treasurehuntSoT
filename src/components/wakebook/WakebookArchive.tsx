@@ -106,7 +106,7 @@ export function WakebookArchive() {
       <section className="wakebook-intro" aria-labelledby="wakebook-archive-title">
         <div>
           <p className="personal-harbor__eyebrow">The Living Journey Archive</p>
-          <h2 id="wakebook-archive-title">Your Voyages</h2>
+          <h2 id="wakebook-archive-title">Your private shelf</h2>
           <p>
             A private shelf of the exact Chronicle editions you traveled, the people beside you, and the moments that
             remain.

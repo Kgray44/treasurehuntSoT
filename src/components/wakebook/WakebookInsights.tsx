@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 import type { WakebookInsights as Insights } from "@/wakebook/insights";
 import {
   formatArchiveDate,
@@ -14,22 +15,22 @@ type View = "timeline" | "people" | "statistics" | "atlas";
 const copy: Record<View, { eyebrow: string; heading: string; detail: string }> = {
   timeline: {
     eyebrow: "The shape of your journey",
-    heading: "Timeline",
+    heading: "Your archive in time",
     detail: "Read the private sequence of your recorded Voyages without turning history into a score.",
   },
   people: {
     eyebrow: "Those who traveled beside you",
-    heading: "People",
+    heading: "Shared history",
     detail: "Historical crew context stays private and remains distinct from current profiles.",
   },
   statistics: {
     eyebrow: "A private reading of the wake",
-    heading: "Statistics",
+    heading: "The record at a glance",
     detail: "Source-bound totals make their quality visible instead of guessing at missing history.",
   },
   atlas: {
     eyebrow: "A life in Voyages",
-    heading: "Voyage Atlas",
+    heading: "Seasons in your archive",
     detail: "Organize the private archive by season and shared historical context without inventing a location trail.",
   },
 };
@@ -51,26 +52,12 @@ export function WakebookInsights({ view }: { view: View }) {
   const text = copy[view];
   return (
     <div className="wakebook-insights">
-      <section className="wakebook-insights__intro" aria-labelledby="wakebook-insights-title">
+      <section className="wakebook-insights__intro" aria-labelledby="wakebook-insights-context">
         <div>
           <p className="personal-harbor__eyebrow">{text.eyebrow}</p>
-          <h2 id="wakebook-insights-title">{text.heading}</h2>
+          <h2 id="wakebook-insights-context">{text.heading}</h2>
           <p>{text.detail}</p>
         </div>
-        <nav aria-label="Archive views" className="wakebook-insights__tabs">
-          <Link href="/passport/timeline" aria-current={view === "timeline" ? "page" : undefined}>
-            Timeline
-          </Link>
-          <Link href="/passport/people" aria-current={view === "people" ? "page" : undefined}>
-            People
-          </Link>
-          <Link href="/passport/statistics" aria-current={view === "statistics" ? "page" : undefined}>
-            Statistics
-          </Link>
-          <Link href="/passport/atlas" aria-current={view === "atlas" ? "page" : undefined}>
-            Voyage Atlas
-          </Link>
-        </nav>
       </section>
       {insights.notice ? (
         <aside className="wakebook-notice" role="status">
@@ -94,24 +81,46 @@ function Timeline({ insights }: { insights: Insights }) {
         detail="Completed or in-progress Voyages will appear here once their private historical record is available."
       />
     );
+  const years = new Map<string, typeof insights.timeline>();
+  for (const item of insights.timeline) {
+    const date = item.dateQuality === "EXACT" && item.date ? new Date(item.date) : null;
+    const year = date && !Number.isNaN(date.valueOf()) ? String(date.getUTCFullYear()) : "Date not retained";
+    years.set(year, [...(years.get(year) ?? []), item]);
+  }
   return (
-    <ol className="wakebook-timeline" aria-label="Private Voyage timeline">
-      {insights.timeline.map((item) => (
-        <li key={item.id}>
-          <div className="wakebook-timeline__marker" aria-hidden="true" />
-          <article>
-            <p>{item.dateQuality === "EXACT" ? formatArchiveDate(item.date) : "Date unavailable"}</p>
-            <h3>{item.title}</h3>
-            <span>
-              {item.lifecycle} · {item.duration}
-            </span>
-            <Link className="button button--quiet" href={`/passport/history/${encodeURIComponent(item.id)}`}>
-              Open Voyage
-            </Link>
-          </article>
-        </li>
+    <div className="wakebook-timeline-groups" aria-label="Private Voyage timeline">
+      {[...years].map(([year, journeys]) => (
+        <section
+          className="wakebook-timeline-group"
+          key={year}
+          aria-labelledby={`wakebook-timeline-${year.replaceAll(" ", "-")}`}
+        >
+          <header>
+            <p className="personal-harbor__eyebrow">Archive year</p>
+            <h2 id={`wakebook-timeline-${year.replaceAll(" ", "-")}`}>{year}</h2>
+          </header>
+          <ol className="wakebook-timeline">
+            {journeys.map((item) => (
+              <li key={item.id}>
+                <div className="wakebook-timeline__marker" aria-hidden="true" />
+                <article>
+                  <time dateTime={item.date ?? undefined}>
+                    {item.dateQuality === "EXACT" ? formatArchiveDate(item.date) : "Historical date unavailable"}
+                  </time>
+                  <h3>{item.title}</h3>
+                  <span>
+                    {item.lifecycle} · {item.duration}
+                  </span>
+                  <Link className="button button--quiet" href={`/passport/history/${encodeURIComponent(item.id)}`}>
+                    Open Voyage
+                  </Link>
+                </article>
+              </li>
+            ))}
+          </ol>
+        </section>
       ))}
-    </ol>
+    </div>
   );
 }
 
@@ -137,8 +146,12 @@ function People({ insights }: { insights: Insights }) {
             <div>
               <h3>{person.label}</h3>
               <p>
-                {person.role} · {person.voyageCount} {person.voyageCount === 1 ? "Voyage" : "Voyages"}
+                Remembered as {person.role} · {person.voyageCount} {person.voyageCount === 1 ? "Voyage" : "Voyages"}
               </p>
+              <dl className="wakebook-people__journeys">
+                <SharedVoyage label="First shared Voyage" voyage={person.firstSharedVoyage} />
+                <SharedVoyage label="Most recent shared Voyage" voyage={person.latestSharedVoyage} />
+              </dl>
             </div>
             <span className="wakebook-people__quality">
               {person.availability === "HISTORICAL" ? "Historical snapshot" : "Limited historical record"}
@@ -147,6 +160,30 @@ function People({ insights }: { insights: Insights }) {
         ))}
       </ul>
     </section>
+  );
+}
+
+function SharedVoyage({
+  label,
+  voyage,
+}: {
+  label: string;
+  voyage: { id: string; title: string; date: string | null } | null;
+}) {
+  return (
+    <div>
+      <dt>{label}</dt>
+      <dd>
+        {voyage ? (
+          <>
+            <Link href={`/passport/history/${encodeURIComponent(voyage.id)}`}>{voyage.title}</Link>
+            <span>{formatArchiveDate(voyage.date)}</span>
+          </>
+        ) : (
+          "Date was not retained"
+        )}
+      </dd>
+    </div>
   );
 }
 
@@ -169,28 +206,28 @@ function Statistics({ insights }: { insights: Insights }) {
         <div>
           <dt>Recorded Voyages</dt>
           <dd>{metrics.voyageCount}</dd>
-          <p>Private historical records</p>
+          <dd className="wakebook-statistics__note">Private historical records</dd>
         </div>
         <div>
           <dt>Completed</dt>
           <dd>{metrics.completedCount}</dd>
-          <p>Accepted completion records</p>
+          <dd className="wakebook-statistics__note">Accepted completion records</dd>
         </div>
         <div>
           <dt>Recorded time</dt>
           <dd>{metrics.exactDurationSeconds === null ? "Mixed quality" : duration(metrics.exactDurationSeconds)}</dd>
-          <p>
+          <dd className="wakebook-statistics__note">
             {metrics.durationCoverage === "EXACT"
               ? "Every record has exact timing"
               : "Unavailable or estimated timing is not added"}
-          </p>
+          </dd>
         </div>
         <div>
           <dt>Archive span</dt>
           <dd>
             {formatArchiveDate(metrics.firstJourneyAt)} - {formatArchiveDate(metrics.latestJourneyAt)}
           </dd>
-          <p>From available historical dates</p>
+          <dd className="wakebook-statistics__note">From available historical dates</dd>
         </div>
       </dl>
       <p className="wakebook-statistics__method">
@@ -202,13 +239,7 @@ function Statistics({ insights }: { insights: Insights }) {
 }
 
 function Atlas({ insights }: { insights: Insights }) {
-  if (!insights.timeline.length)
-    return (
-      <Empty
-        title="Your Voyage Atlas begins with a first recorded journey"
-        detail="Wakebook will group only owner-visible, source-bound Voyage history. It does not infer places, routes, or social relationships."
-      />
-    );
+  if (!insights.timeline.length) return <AtlasUnavailable hasVoyages={false} />;
   const seasons = new Map<string, typeof insights.timeline>();
   for (const item of insights.timeline) {
     const date = item.date ? new Date(item.date) : null;
@@ -238,21 +269,31 @@ function Atlas({ insights }: { insights: Insights }) {
           </section>
         ))}
       </section>
-      <aside className="wakebook-atlas__boundary" aria-label="Map availability">
-        <h3>Map view</h3>
-        <p>
-          Landfall has not supplied an accepted owner-safe historical geography projection, so Wakebook does not draw or
-          infer a route.
-        </p>
-        <p>
-          Historical Captain and Player context remains available in People from accepted snapshots, never from current
-          membership.
-        </p>
-        <Link className="button button--quiet" href="/passport/people">
-          Open People
-        </Link>
-      </aside>
+      <AtlasUnavailable hasVoyages />
     </div>
+  );
+}
+
+function AtlasUnavailable({ hasVoyages }: { hasVoyages: boolean }) {
+  return (
+    <aside className="wakebook-atlas__boundary" aria-label="Journey geography availability">
+      <p className="personal-harbor__eyebrow">Private geography</p>
+      <h3>{hasVoyages ? "Journey geography is not available yet" : "Your Atlas is ready when history arrives"}</h3>
+      <p>
+        {hasVoyages
+          ? "Journey geography appears only when a Voyage retained safe place information for your private history. None is available for this archive yet."
+          : "When a future Voyage retains safe journey geography, it can appear here alongside your own historical record."}
+      </p>
+      <Link className="button button--quiet" href={hasVoyages ? "/passport/people" : "/passport/history"}>
+        {hasVoyages ? "Open People" : "Open your Voyage archive"}
+      </Link>
+      <TechnicalDetails
+        summary="About geography availability"
+        description="No route or location is inferred when the accepted historical geography projection is unavailable."
+      >
+        <p>Landfall is the governed source for any future owner-safe geography projection.</p>
+      </TechnicalDetails>
+    </aside>
   );
 }
 

@@ -280,6 +280,47 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 .passport-intro > :last-child {
   margin-bottom: 0;
 }
+
+.harbor-passport-gateway {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid color-mix(in srgb, var(--harbor-brass) 72%, var(--semantic-border));
+  border-radius: 1rem;
+  color: var(--semantic-foreground-primary);
+  background:
+    radial-gradient(circle at 94% 12%, rgb(209 175 105 / 18%), transparent 14rem),
+    linear-gradient(
+      125deg,
+      color-mix(in srgb, var(--harbor-teal) 88%, var(--semantic-surface)),
+      var(--semantic-surface-elevated)
+    );
+  box-shadow: var(--semantic-shadow);
+}
+
+.harbor-passport-gateway h2 {
+  margin: 0;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: clamp(1.5rem, 3vw, 2.35rem);
+}
+
+.harbor-passport-gateway p:not(.personal-harbor__eyebrow) {
+  max-width: 64ch;
+  margin: 0.55rem 0 0;
+  color: var(--semantic-foreground-muted);
+  line-height: 1.6;
+}
+
+.harbor-passport-gateway__summary {
+  color: var(--harbor-brass) !important;
+  font-weight: 750;
+}
+
+.harbor-passport-gateway .button {
+  flex: none;
+}
 .harbor-panel h2,
 .passport-record-hero h2,
 .artifact-detail-hero h2,
@@ -1391,11 +1432,16 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 }
 
 .passport-intro {
-  background: linear-gradient(120deg, #f1e4c4, #c9b27d);
-  color: var(--harbor-ink);
+  border-color: #8b6b35;
+  background: linear-gradient(120deg, #f8edcf, #d7bd79);
+  color: #1e2925;
 }
 .passport-intro p {
-  color: #514b3a;
+  color: #29332d;
+}
+
+.passport-intro .personal-harbor__eyebrow {
+  color: #5f4214;
 }
 .passport-card-grid {
   display: grid;
@@ -1573,6 +1619,15 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 }
 
 @media (max-width: 42rem) {
+  .harbor-passport-gateway {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .harbor-passport-gateway .button {
+    width: 100%;
+  }
+
   .personal-harbor {
     padding: 0.75rem;
   }
@@ -1679,6 +1734,13 @@ html[data-motion-preference="reduced"] .personal-harbor *::after {
 /* Project Wakebook A1: Passport is a first-class destination. It shares the
  * Personal Harbor language, but intentionally has no account-settings rail. */
 .passport-shell {
+  --passport-surface: var(--semantic-surface);
+  --passport-elevated-surface: var(--semantic-surface-elevated);
+  --passport-border: var(--semantic-border);
+  --passport-shadow: var(--semantic-shadow);
+  --passport-foreground: var(--semantic-foreground-primary);
+  --passport-muted: var(--semantic-foreground-muted);
+  --passport-accent: var(--semantic-accent);
   --harbor-paper: #f3e6c7;
   --harbor-paper-soft: #decda5;
   --harbor-ink: #28271f;
@@ -1689,7 +1751,7 @@ html[data-motion-preference="reduced"] .personal-harbor *::after {
   min-width: 0;
   max-width: 100%;
   min-height: min(78rem, 100vh);
-  color: var(--harbor-ink);
+  color: var(--passport-foreground);
   font-size: calc(1rem * var(--personal-text-scale, 1));
 }
 
@@ -1946,10 +2008,12 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
 .wakebook-insights__intro,
 .wakebook-statistics,
 .wakebook-people {
-  border: 1px solid color-mix(in srgb, var(--harbor-border, #755b3d) 56%, transparent);
+  border: 1px solid color-mix(in srgb, var(--passport-border) 65%, var(--harbor-brass));
   border-radius: 1.15rem;
-  background: color-mix(in srgb, var(--harbor-panel, #18212b) 92%, #0b1017);
-  box-shadow: 0 1.1rem 2.5rem rgb(0 0 0 / 14%);
+  background:
+    radial-gradient(circle at 94% 4%, rgb(209 175 105 / 9%), transparent 22rem),
+    color-mix(in srgb, var(--passport-elevated-surface) 91%, #082729);
+  box-shadow: var(--passport-shadow);
 }
 .wakebook-insights__intro {
   display: flex;
@@ -1968,27 +2032,8 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   margin: 0;
   line-height: 1.55;
 }
-.wakebook-insights__tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-}
-.wakebook-insights__tabs a {
-  padding: 0.55rem 0.8rem;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  color: inherit;
-  font-weight: 700;
-  text-decoration: none;
-}
-.wakebook-insights__tabs a[aria-current="page"] {
-  color: #17202a;
-  background: #e6bd72;
-  border-color: #e6bd72;
-}
-.wakebook-insights__tabs a:focus-visible,
 .wakebook-timeline a:focus-visible {
-  outline: 3px solid #e6bd72;
+  outline: 3px solid var(--semantic-focus);
   outline-offset: 3px;
 }
 .wakebook-insights__lead {
@@ -2002,6 +2047,29 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.wakebook-timeline-groups {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.wakebook-timeline-group > header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin: 0 0 0.7rem 2.8rem;
+}
+
+.wakebook-timeline-group > header .personal-harbor__eyebrow,
+.wakebook-timeline-group > header h2 {
+  margin: 0;
+}
+
+.wakebook-timeline-group > header h2 {
+  color: var(--passport-foreground);
+  font-family: var(--font-display, Georgia, serif);
+  font-size: clamp(1.7rem, 4vw, 2.7rem);
 }
 .wakebook-timeline > li {
   display: grid;
@@ -2036,13 +2104,14 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   border-radius: 0.85rem;
   background: color-mix(in srgb, var(--harbor-panel, #18212b) 86%, transparent);
 }
-.wakebook-timeline p,
+.wakebook-timeline time,
 .wakebook-timeline h3,
 .wakebook-timeline span {
   margin: 0;
 }
-.wakebook-timeline p {
-  color: #e6bd72;
+.wakebook-timeline time {
+  display: block;
+  color: var(--harbor-brass);
   font-size: 0.86rem;
   font-weight: 700;
 }
@@ -2071,9 +2140,9 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
 .wakebook-atlas__boundary,
 .wakebook-atlas__season {
   min-width: 0;
-  border: 1px solid color-mix(in srgb, var(--harbor-border, #755b3d) 48%, transparent);
+  border: 1px solid color-mix(in srgb, var(--passport-border) 65%, var(--harbor-brass));
   border-radius: 1rem;
-  background: color-mix(in srgb, var(--harbor-panel, #18212b) 90%, #0b1017);
+  background: color-mix(in srgb, var(--passport-elevated-surface) 92%, #082729);
 }
 
 .wakebook-atlas__seasons,
@@ -2145,7 +2214,7 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   gap: 0.75rem;
   align-items: center;
   padding: 0.85rem;
-  border: 1px solid color-mix(in srgb, var(--harbor-border, #755b3d) 42%, transparent);
+  border: 1px solid color-mix(in srgb, var(--passport-border) 62%, var(--harbor-brass));
   border-radius: 0.8rem;
 }
 .wakebook-people h3,
@@ -2171,6 +2240,37 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   font-size: 0.78rem;
   opacity: 0.72;
 }
+
+.wakebook-people__journeys {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.8rem 0 0;
+}
+
+.wakebook-people__journeys dt {
+  color: var(--passport-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.wakebook-people__journeys dd {
+  display: grid;
+  gap: 0.12rem;
+  margin: 0.12rem 0 0;
+  color: var(--passport-muted);
+  font-size: 0.86rem;
+}
+
+.wakebook-people__journeys a {
+  color: var(--harbor-brass);
+  font-weight: 750;
+}
+
+.wakebook-people__journeys span {
+  color: var(--passport-muted);
+}
 .wakebook-statistics dl {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
@@ -2187,12 +2287,12 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   font-weight: 700;
   opacity: 0.8;
 }
-.wakebook-statistics dd {
+.wakebook-statistics dd:not(.wakebook-statistics__note) {
   margin: 0.35rem 0;
   font-family: var(--font-display, Georgia, serif);
   font-size: 1.45rem;
 }
-.wakebook-statistics dl p,
+.wakebook-statistics__note,
 .wakebook-statistics__method {
   margin: 0;
   font-size: 0.86rem;
@@ -2207,15 +2307,11 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
     align-items: stretch;
     flex-direction: column;
   }
-  .wakebook-insights__tabs {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .wakebook-insights__tabs a {
-    text-align: center;
-  }
   .wakebook-timeline > li {
     grid-template-columns: 1.4rem minmax(0, 1fr);
+  }
+  .wakebook-timeline-group > header {
+    margin-left: 2rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2892,6 +2988,22 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
   overflow-wrap: anywhere;
 }
 
+.wakebook-detail-actions {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.wakebook-detail-actions__primary,
+.wakebook-detail-actions__secondary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.wakebook-detail-actions__secondary .button {
+  border-color: color-mix(in srgb, var(--harbor-brass) 42%, var(--border-default));
+}
+
 .wakebook-detail-hero h2 {
   max-width: 18ch;
   margin: 0;
@@ -2974,6 +3086,14 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
 .wakebook-detail-nav a:focus-visible {
   color: var(--text-heading);
   background: rgb(209 175 105 / 10%);
+}
+
+.wakebook-detail-nav__mobile-select {
+  display: none;
+}
+
+.wakebook-detail-section--technical {
+  background: color-mix(in srgb, var(--passport-elevated-surface) 82%, var(--semantic-surface-inset));
 }
 
 .wakebook-detail-grid {
@@ -3450,6 +3570,7 @@ html[data-voyage-theme="light"] .wakebook-crew-avatar {
   }
   .wakebook-voyage-card__actions .button,
   .wakebook-detail-hero__body .personal-harbor__actions .button,
+  .wakebook-detail-actions .button,
   .wakebook-pagination .button,
   .wakebook-remembrance form .button,
   .wakebook-memory-list .button,
@@ -3459,8 +3580,40 @@ html[data-voyage-theme="light"] .wakebook-crew-avatar {
   .wakebook-voyage-book__actions .button {
     width: 100%;
   }
-  .wakebook-detail-hero__body .personal-harbor__actions {
+  .wakebook-detail-hero__body .personal-harbor__actions,
+  .wakebook-detail-actions__primary,
+  .wakebook-detail-actions__secondary {
     align-items: stretch;
+  }
+
+  .wakebook-detail-nav {
+    display: none;
+  }
+
+  .wakebook-detail-nav__mobile-select {
+    position: sticky;
+    z-index: 2;
+    top: calc(var(--shell-header-height, 4.75rem) + 0.5rem);
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.75rem;
+    border: 1px solid var(--passport-border);
+    border-radius: 0.8rem;
+    color: var(--passport-foreground);
+    background: color-mix(in srgb, var(--passport-elevated-surface) 96%, #082729);
+    box-shadow: var(--passport-shadow);
+    font-weight: 750;
+  }
+
+  .wakebook-detail-nav__mobile-select select {
+    width: 100%;
+    min-height: 2.75rem;
+    border: 1px solid var(--harbor-brass);
+    border-radius: 0.5rem;
+    padding: 0.45rem 0.6rem;
+    color: var(--passport-foreground);
+    background: var(--passport-surface);
+    font: inherit;
   }
   .wakebook-invitations li {
     grid-template-columns: auto minmax(0, 1fr);
