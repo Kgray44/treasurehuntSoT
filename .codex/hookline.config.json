@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "defaultMode": "GUARD",
+  "maxAutomaticContinuations": 1,
+  "permissionAutoApproveEnabled": false,
+  "futurePermissionAllowlist": []
+}

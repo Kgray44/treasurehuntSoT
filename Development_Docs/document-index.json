@@ -7359,6 +7359,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Voyagewright_Hookline_Codex_Lifecycle_Integration.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Validation/Isolated_Validation_Baselines.md",
       "record_type": "validation-evidence",
       "status": "preserved",
