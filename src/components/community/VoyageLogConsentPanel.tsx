@@ -75,11 +75,14 @@ export function VoyageLogConsentPanel({ voyageLogId }: { voyageLogId?: string })
     if (response.ok) await refresh();
   }
   return (
-    <section aria-labelledby="voyage-log-consent-title">
+    <section
+      className="community-workflow__panel community-workflow__consent"
+      aria-labelledby="voyage-log-consent-title"
+    >
       <h2 id="voyage-log-consent-title">Publication consent</h2>
       <p aria-live="polite">{message}</p>
       {owner ? (
-        <section aria-label="Owner consent dashboard">
+        <section className="community-workflow__consent-dashboard" aria-label="Owner consent dashboard">
           <p>Lifecycle: {owner.lifecycleState}</p>
           {owner.participants.map((participant) => (
             <article key={participant.id}>
@@ -108,7 +111,7 @@ export function VoyageLogConsentPanel({ voyageLogId }: { voyageLogId?: string })
           ))}
         </section>
       ) : null}
-      <section aria-label="Your publication consent requests">
+      <section className="community-workflow__consent-inbox" aria-label="Your publication consent requests">
         <h3>Your requests</h3>
         {inbox.length ? (
           <ul>

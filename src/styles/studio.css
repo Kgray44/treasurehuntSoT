@@ -2584,3 +2584,249 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
     animation: none;
   }
 }
+
+/* Brightwork Wave 4: staged Studio workflow composition. */
+.studio-exchange-steps,
+.studio-exchange-layout,
+.studio-private-content__layout {
+  max-width: 1500px;
+  margin-inline: auto;
+}
+.studio-exchange-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding: 0;
+  list-style: none;
+}
+.studio-exchange-steps li {
+  border: 1px solid rgb(201 169 95 / 24%);
+  border-radius: 0.85rem;
+  padding: 0.75rem;
+  color: #8ea6a0;
+}
+.studio-exchange-steps li[data-current="true"] {
+  border-color: rgb(201 169 95 / 62%);
+  color: var(--brass-100);
+  background: rgb(201 169 95 / 10%);
+}
+.studio-exchange-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(16rem, 0.65fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.studio-exchange-workflow,
+.studio-exchange-guidance,
+.studio-private-content .studio-editor-section {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid rgb(201 169 95 / 25%);
+  border-radius: 1rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  background: rgb(5 19 22 / 84%);
+  box-shadow: 0 1.25rem 2.5rem rgb(0 0 0 / 16%);
+}
+.studio-exchange-workflow header h2,
+.studio-exchange-guidance h2,
+.studio-private-content h2 {
+  margin: 0.15rem 0 0.45rem;
+}
+.studio-exchange-workflow header p:last-child,
+.studio-exchange-guidance li,
+.studio-private-content .studio-editor-section > p:not(.eyebrow) {
+  color: #b6c8c3;
+}
+.studio-exchange-workflow__state,
+.studio-exchange-receipt {
+  margin: 0;
+  border-left: 3px solid var(--brass-100);
+  padding-left: 0.75rem;
+  color: #d7e5d7;
+}
+.studio-exchange-receipt {
+  max-width: 1500px;
+  margin: 1rem auto;
+  border: 1px solid rgb(112 187 146 / 44%);
+  border-left: 3px solid #70bb92;
+  border-radius: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: rgb(33 104 75 / 18%);
+}
+.studio-exchange-workflow__group {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 0;
+  margin: 0;
+  border: 1px solid rgb(201 169 95 / 18%);
+  border-radius: 0.8rem;
+  padding: 0.85rem;
+}
+.studio-exchange-workflow__group legend {
+  padding-inline: 0.35rem;
+  color: var(--brass-100);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.studio-exchange-workflow label,
+.studio-private-content label {
+  display: grid;
+  gap: 0.4rem;
+  color: #d9e4de;
+  font-weight: 700;
+}
+.studio-exchange-workflow input,
+.studio-exchange-workflow select,
+.studio-exchange-workflow textarea,
+.studio-private-content input,
+.studio-private-content select {
+  width: 100%;
+  border: 1px solid rgb(201 169 95 / 28%);
+  border-radius: 0.6rem;
+  padding: 0.7rem;
+  color: #f5ead0;
+  background: rgb(2 12 14 / 85%);
+}
+.studio-exchange-workflow textarea {
+  min-height: 5.5rem;
+  resize: vertical;
+}
+.studio-exchange-workflow__group small {
+  color: #a9bbb6;
+}
+.studio-exchange-workflow__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.studio-exchange-guidance {
+  align-content: start;
+}
+.studio-exchange-guidance ul {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding-left: 1.15rem;
+}
+.studio-exchange-workflow__notice {
+  border-left: 3px solid #70bb92;
+  padding-left: 0.75rem;
+}
+.studio-exchange-workflow__notice--warning {
+  border-left-color: var(--brass-100);
+}
+.studio-exchange-installation fieldset label {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 500;
+}
+.studio-exchange-installation fieldset input {
+  width: auto;
+}
+.studio-private-content__layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.studio-private-content__import {
+  grid-row: span 2;
+}
+.studio-private-content__history {
+  grid-column: 2;
+}
+.studio-private-content__file-select {
+  display: grid;
+  gap: 0.5rem;
+  border: 1px dashed rgb(201 169 95 / 48%);
+  border-radius: 0.85rem;
+  padding: 1rem;
+  background: rgb(201 169 95 / 6%);
+}
+.studio-private-content__file-select small {
+  color: #a9bbb6;
+}
+.studio-private-content__file-select input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.studio-private-content__file-select button {
+  justify-self: start;
+}
+.studio-private-content__history ul {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.studio-private-content__history li {
+  border-left: 2px solid rgb(201 169 95 / 60%);
+  padding-left: 0.7rem;
+  color: #d9e4de;
+}
+.new-tale-sheet {
+  width: min(1240px, 100%);
+}
+.new-tale-sheet .form-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+html[data-voyage-theme="light"]
+  :where(.studio-exchange-workflow, .studio-exchange-guidance, .studio-private-content .studio-editor-section) {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--surface-default) 96%, transparent);
+  box-shadow: var(--shadow-card);
+}
+html[data-voyage-theme="light"]
+  :where(
+    .studio-exchange-workflow header p:last-child,
+    .studio-exchange-guidance li,
+    .studio-private-content .studio-editor-section > p:not(.eyebrow),
+    .studio-exchange-workflow__group small
+  ) {
+  color: var(--text-secondary);
+}
+html[data-voyage-theme="light"]
+  :where(
+    .studio-exchange-workflow input,
+    .studio-exchange-workflow select,
+    .studio-exchange-workflow textarea,
+    .studio-private-content input,
+    .studio-private-content select
+  ) {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+}
+@media (max-width: 54rem) {
+  .studio-exchange-layout,
+  .studio-private-content__layout {
+    grid-template-columns: 1fr;
+  }
+  .studio-private-content__import,
+  .studio-private-content__history {
+    grid-row: auto;
+    grid-column: auto;
+  }
+}
+@media (max-width: 40rem) {
+  .studio-exchange-steps {
+    grid-template-columns: 1fr;
+  }
+  .new-tale-page {
+    padding: 0.75rem;
+  }
+  .new-tale-sheet {
+    padding: 1.1rem;
+  }
+  .new-tale-sheet .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

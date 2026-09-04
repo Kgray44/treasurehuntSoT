@@ -200,6 +200,13 @@ responsive with polite command feedback.
 
 **Audience:** Creators. **Availability:** available on main. Studio supports Chronicle settings, story blocks, locations, assets, artifact authoring, version views, and immutable publishing. [Guide](../user/creator-guide.md).
 
+Brightwork Stage 8 Wave 4 clarifies the existing Creator workflow without
+adding a release or package authority: Exchange presents immutable release,
+obligation, scanner, safe preview, and receipt states together; Private Content
+separates selected-package import, verified export, and private history; and
+new Chronicle creation uses the full desktop canvas while retaining its simple
+responsive form.
+
 Project Shipwright Phase 2 makes current Story Block authoring contract-aware:
 the Inspector groups content, behavior, completion, presentation,
 accessibility, and advanced diagnostics; it offers Guided, Detailed, and
@@ -256,6 +263,12 @@ collections, Guides, Voyage Logs, details, and save/follow state with complete
 default, empty, no-result, unavailable, quarantine, removed, desktop, and
 mobile contracts. It is not deployed or owner accepted. External providers
 remain truthfully unavailable where unsupported.
+
+Brightwork Stage 8 Wave 4 makes active discovery results primary, gives
+private Voyage Log work a deliberate Harbor frame, keeps comments and Creator
+response spoilers behind explicit reveals, and promotes moderator case work
+above operational detail. It does not add a public private-draft projection,
+change comments/reports/moderation authority, or claim provider behavior.
 
 ## Private content, animation, and resilience
 

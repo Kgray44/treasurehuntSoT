@@ -3,7 +3,7 @@ title: Community Harbor
 audience: creator
 status: current
 canonical_for: community-harbor-guide
-last_reviewed: 2026-08-05
+last_reviewed: 2026-09-04
 ---
 
 # Community Harbor
@@ -20,6 +20,12 @@ Chronicles, Artifacts, Templates, Maps, Audio and reveals, Creators,
 Collections, Guides, and Voyage Logs. Search, sort, compact filters, advanced
 filters, Back/Forward restoration, deliberate no-results, and safe detail
 returns are supported.
+
+When you search, the results and their filters become the Harbor's active
+workspace; clear the search to return to the Home shelves. Public listing
+conversations show only preview-safe text until a person deliberately reveals
+spoiler detail. Voyage Log owner and consent routes are private workflow
+surfaces, not public Harbor districts.
 
 Signed-in accounts can save eligible public content and follow eligible
 Creators; anonymous controls return through the canonical sign-in. Missing

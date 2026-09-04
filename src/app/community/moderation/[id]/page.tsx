@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { AccessDecisionState } from "@/components/auth/AccessDecisionState";
+import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 import { resolveCapability } from "@/homeport/current-user.server";
 import { signInHref } from "@/homeport/return-to";
 import { db } from "@/lib/db";
@@ -55,89 +56,89 @@ export default async function CommunityModerationCasePage({ params }: { params: 
         <p className="community-eyebrow">Private moderator workspace</p>
         <h1 id="case-heading">Case {record.caseKey}</h1>
         <p>
-          {humanize(record.status)} · {humanize(record.priority)} priority
+          {humanize(record.status)} · {humanize(record.priority)} priority · {humanize(record.primaryReasonCode)}
         </p>
       </header>
       <section className="community-moderation__summary" aria-label="Case status">
-        <article className="rounded border border-slate-300 bg-white p-4">
-          <h2 className="font-semibold">Assignment</h2>
-          <p className="mt-2">{record.assignments[0]?.moderatorAccountId ? "Assigned" : "Unassigned"}</p>
-          <p className="text-sm text-slate-700">Use the CSRF-bound assignment API with the current revision.</p>
+        <article>
+          <h2>Assignment</h2>
+          <p>{record.assignments[0]?.moderatorAccountId ? "Assigned" : "Unassigned"}</p>
+          <span>Ownership is kept private and conflict checks remain enforced.</span>
         </article>
-        <article className="rounded border border-slate-300 bg-white p-4">
-          <h2 className="font-semibold">Linked reports</h2>
-          <p className="mt-2 text-2xl">{record.reportLinks.length}</p>
-          <p className="text-sm text-slate-700">Reporter identities are intentionally not shown.</p>
+        <article>
+          <h2>Linked reports</h2>
+          <p>{record.reportLinks.length}</p>
+          <span>Reporter identities are intentionally not shown.</span>
         </article>
-        <article className="rounded border border-slate-300 bg-white p-4">
-          <h2 className="font-semibold">Appeals</h2>
-          <p className="mt-2 text-2xl">{record.appeals.length}</p>
-          <p className="text-sm text-slate-700">Appeal ownership and reviewer conflicts are enforced server-side.</p>
+        <article>
+          <h2>Appeals</h2>
+          <p>{record.appeals.length}</p>
+          <span>Appeal ownership and reviewer conflicts remain protected.</span>
         </article>
       </section>
       <section className="community-moderation__panel" aria-labelledby="subjects-heading">
-        <h2 id="subjects-heading" className="text-xl font-semibold">
-          Safe subject preview
-        </h2>
-        <ul className="mt-3 space-y-2">
+        <p className="community-eyebrow">What was reported</p>
+        <h2 id="subjects-heading">Safe subject preview</h2>
+        <ul>
           {record.subjects.map((subject) => (
-            <li key={`${subject.subjectType}-${subject.subjectId}`} className="rounded bg-slate-50 p-3">
+            <li key={`${subject.subjectType}-${subject.subjectId}`}>
               <strong>{subject.subjectType.replaceAll("_", " ").toLocaleLowerCase()}</strong>
-              <span className="ml-2 text-sm text-slate-700">Reported Community item</span>
-              {subject.subjectChecksum && <span className="ml-2 text-sm text-slate-700">checksum verified</span>}
+              <span>Reported Community item</span>
+              {subject.tombstone ? <span>Unavailable record</span> : null}
             </li>
           ))}
         </ul>
+        <TechnicalDetails summary="Evidence integrity details">
+          <p>
+            {record.subjects.filter((subject) => subject.subjectChecksum).length} linked subjects retain a checksum
+            reference.
+          </p>
+        </TechnicalDetails>
       </section>
       <section className="community-moderation__split">
-        <article className="rounded border border-slate-300 bg-white p-4" aria-labelledby="evidence-heading">
-          <h2 id="evidence-heading" className="text-xl font-semibold">
-            Evidence timeline
-          </h2>
-          <ul className="mt-3 space-y-2">
+        <article aria-labelledby="evidence-heading">
+          <p className="community-eyebrow">Evidence</p>
+          <h2 id="evidence-heading">Evidence timeline</h2>
+          <ul>
             {record.evidence.map((item) => (
-              <li key={item.id} className="border-l-2 border-sky-600 pl-3">
+              <li key={item.id}>
                 <strong>{item.kind.replaceAll("_", " ").toLocaleLowerCase()}</strong>
-                <span className="ml-2 text-sm text-slate-700">Evidence integrity verified</span>
-                <time className="ml-2 text-sm text-slate-700">{item.createdAt.toLocaleString("en-US")}</time>
+                <span>Integrity recorded</span>
+                <time>{item.createdAt.toLocaleString("en-US")}</time>
               </li>
             ))}
-            {!record.evidence.length && <li className="text-slate-700">No evidence has been attached.</li>}
+            {!record.evidence.length && <li>No evidence has been attached.</li>}
           </ul>
         </article>
-        <article className="rounded border border-slate-300 bg-white p-4" aria-labelledby="actions-heading">
-          <h2 id="actions-heading" className="text-xl font-semibold">
-            Actions and restoration
-          </h2>
-          <ul className="mt-3 space-y-2">
+        <article aria-labelledby="actions-heading">
+          <p className="community-eyebrow">Governed actions</p>
+          <h2 id="actions-heading">Actions and restoration</h2>
+          <ul>
             {record.actions.map((action) => (
-              <li key={action.id} className="rounded bg-slate-50 p-3">
+              <li key={action.id}>
                 <strong>{humanize(action.actionType)}</strong> · {humanize(action.state)}
-                {action.restorationEligible && <span className="ml-2 text-sm">restoration checklist required</span>}
+                {action.restorationEligible && <span>Restoration checklist required</span>}
               </li>
             ))}
             {!record.actions.length && (
-              <li className="text-slate-700">
-                No action has been committed. Use a dry-run preview before any high-impact action.
-              </li>
+              <li>No action has been committed. A governed preview is required before any high-impact action.</li>
             )}
           </ul>
         </article>
       </section>
       <section className="community-moderation__panel" aria-labelledby="timeline-heading">
-        <h2 id="timeline-heading" className="text-xl font-semibold">
-          Case timeline
-        </h2>
-        <ol className="mt-3 space-y-2">
+        <p className="community-eyebrow">Case history</p>
+        <h2 id="timeline-heading">Case timeline</h2>
+        <ol>
           {record.events.map((event) => (
-            <li key={event.id} className="border-l-2 border-slate-300 pl-3">
+            <li key={event.id}>
               <strong>{humanize(event.eventType)}</strong>
               {event.fromStatus || event.toStatus ? (
                 <span className="ml-2">
                   {humanize(event.fromStatus ?? "")} → {humanize(event.toStatus ?? "")}
                 </span>
               ) : null}
-              <span className="ml-2 text-sm text-slate-700">
+              <span>
                 {humanize(event.reasonCode)} · {event.createdAt.toLocaleString("en-US")}
               </span>
             </li>
@@ -145,8 +146,7 @@ export default async function CommunityModerationCasePage({ params }: { params: 
         </ol>
       </section>
       <p className="sr-only" aria-live="polite">
-        Case detail loaded. Use the protected moderation API for mutations; server-side conflict checks preserve the
-        current revision.
+        Case detail loaded. Protected moderation rules apply to every change.
       </p>
     </main>
   );

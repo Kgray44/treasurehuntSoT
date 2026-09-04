@@ -29,14 +29,21 @@ export function InstallationReview({
   const [complete, setComplete] = useState(false);
   const canInstall = Boolean(mode) && !(localEditProtected && mode === "LIBRARY_REFERENCE");
   return (
-    <section aria-labelledby="community-install-heading">
-      <h2 id="community-install-heading">Review installation</h2>
-      <p aria-live="polite">
-        {localEditProtected
-          ? "Local changes are protected; choose an editable copy or fork."
-          : "Choose how this package should be installed."}
-      </p>
-      <fieldset>
+    <section
+      className="studio-exchange-workflow studio-exchange-installation"
+      data-installation-state={complete ? "success" : canInstall ? "ready" : "blocked"}
+      aria-labelledby="community-install-heading"
+    >
+      <header>
+        <p className="eyebrow">Safe reuse</p>
+        <h2 id="community-install-heading">Review installation intent</h2>
+        <p aria-live="polite">
+          {localEditProtected
+            ? "Local changes are protected; choose an editable copy or fork."
+            : "Choose how the approved package should be used. Installation remains governed by a server receipt."}
+        </p>
+      </header>
+      <fieldset className="studio-exchange-workflow__group">
         <legend id={groupId}>Installation mode</legend>
         {allowedModes.map((option) => (
           <label key={option}>
@@ -52,7 +59,7 @@ export function InstallationReview({
         ))}
       </fieldset>
       {obligations.length > 0 ? (
-        <section aria-labelledby="community-install-obligations">
+        <section className="studio-exchange-workflow__notice" aria-labelledby="community-install-obligations">
           <h3 id="community-install-obligations">Attribution and licence obligations</h3>
           <ul>
             {obligations.map((item) => (
@@ -62,7 +69,11 @@ export function InstallationReview({
         </section>
       ) : null}
       {warnings.length > 0 ? (
-        <section aria-labelledby="community-install-warnings" role="status">
+        <section
+          className="studio-exchange-workflow__notice studio-exchange-workflow__notice--warning"
+          aria-labelledby="community-install-warnings"
+          role="status"
+        >
           <h3 id="community-install-warnings">Review before continuing</h3>
           <ul>
             {warnings.map((item) => (
@@ -72,6 +83,7 @@ export function InstallationReview({
         </section>
       ) : null}
       <button
+        className="primary"
         type="button"
         disabled={!canInstall}
         onClick={async () => {

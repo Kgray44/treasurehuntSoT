@@ -14,7 +14,12 @@ type Review = {
   createdAt: string;
   author: { displayName: string; handle?: string } | null;
   helpfulCount: number;
-  creatorResponse: { body: string | null; hasSpoiler: boolean; creator: { displayName: string } | null } | null;
+  creatorResponse: {
+    id: string;
+    body: string | null;
+    hasSpoiler: boolean;
+    creator: { displayName: string } | null;
+  } | null;
   canEdit: boolean;
 };
 type ReviewAccess = {
@@ -28,6 +33,7 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
   const [reviews, setReviews] = useState<Review[]>([]);
   const [revealed, setRevealed] = useState<Record<string, string>>({});
+  const [creatorRevealed, setCreatorRevealed] = useState<Record<string, string>>({});
   const [csrf, setCsrf] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
@@ -217,6 +223,22 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
     } catch {
       // The button remains available for a later explicit retry without
       // exposing server implementation details.
+    }
+  }
+
+  async function revealCreatorSpoiler(reviewId: string) {
+    try {
+      const response = await fetch(`/api/community/reviews/${encodeURIComponent(reviewId)}/creator-response/spoiler`, {
+        cache: "no-store",
+      });
+      if (!response.ok) {
+        setMessage("That Creator spoiler detail is no longer available.");
+        return;
+      }
+      const value = (await response.json()) as { spoilerBody?: string };
+      if (value.spoilerBody) setCreatorRevealed((current) => ({ ...current, [reviewId]: value.spoilerBody! }));
+    } catch {
+      setMessage("That Creator spoiler detail could not be opened. Try again.");
     }
   }
 
@@ -555,12 +577,24 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
                   </form>
                 ) : null}
                 {review.creatorResponse?.body ? (
-                  <section aria-label="Official Creator response">
+                  <section className="community-review-creator-response" aria-label="Official Creator response">
                     <h4>Creator response</h4>
                     <p>{review.creatorResponse.creator?.displayName ?? "Creator"}</p>
                     <p>{review.creatorResponse.body}</p>
                     {review.creatorResponse.hasSpoiler ? (
-                      <p>Creator response contains separately available spoiler details.</p>
+                      creatorRevealed[review.id] ? (
+                        <p className="community-review-creator-response__spoiler" aria-live="polite">
+                          {creatorRevealed[review.id]}
+                        </p>
+                      ) : (
+                        <button
+                          type="button"
+                          className="community-button community-button--quiet"
+                          onClick={() => void revealCreatorSpoiler(review.id)}
+                        >
+                          Reveal Creator spoiler details
+                        </button>
+                      )
                     ) : null}
                   </section>
                 ) : null}

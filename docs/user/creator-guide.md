@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-08-26
+last_reviewed: 2026-09-04
 ---
 
 # Creator guide
@@ -56,6 +56,18 @@ and checksum and then offers published-edition preview, Voyage creation,
 version comparison, and a governed Community handoff. If publication is
 rejected or interrupted, the draft remains available in Studio for review and
 repair.
+
+## Community Exchange and protected packages
+
+Exchange keeps an immutable release, access and license obligations,
+accessibility notes, validation requirements, and package receipt in one
+staged review. The preview is a safe inspection step: it does not install the
+package or change your Chronicle.
+
+Private Content separates package selection and import from verified export
+and private import history. Use it only for material you are authorized to
+handle. Import is not publication; protected content stays subject to its
+existing authentication, validation, and disclosure controls.
 
 Related: [Captain guide](captain-guide.md), [private content](../administrator/private-content.md), and [accessibility](accessibility.md).
 

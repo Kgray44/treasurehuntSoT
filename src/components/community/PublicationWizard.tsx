@@ -51,14 +51,25 @@ export function PublicationWizard({
   };
 
   return (
-    <form aria-labelledby="community-publication-heading" noValidate onSubmit={submit}>
-      <h2 id="community-publication-heading">Publish to Community Harbor</h2>
+    <form
+      className="studio-exchange-workflow studio-exchange-publication"
+      data-publication-state={errors.length === 0 ? "ready" : submitted ? "blocked" : "incomplete"}
+      aria-labelledby="community-publication-heading"
+      noValidate
+      onSubmit={submit}
+    >
+      <header>
+        <p className="eyebrow">Release handoff</p>
+        <h2 id="community-publication-heading">Prepare a Community release</h2>
+        <p>
+          Begin with an immutable published Version. A package can move forward only after its scanner and listing
+          checks pass.
+        </p>
+      </header>
       <p id="community-publication-progress" aria-live="polite">
-        Publication review:{" "}
         {errors.length === 0
-          ? "ready to publish"
-          : `${errors.length} requirement${errors.length === 1 ? "" : "s"} remaining`}
-        .
+          ? "Ready for package creation."
+          : `Publication review: ${errors.length} requirement${errors.length === 1 ? "" : "s"} remaining.`}
       </p>
       {submitted && errors.length > 0 ? (
         <section aria-labelledby="community-publication-errors" role="alert" tabIndex={-1}>
@@ -70,7 +81,8 @@ export function PublicationWizard({
           </ul>
         </section>
       ) : null}
-      <p>
+      <fieldset className="studio-exchange-workflow__group">
+        <legend>1. Select the immutable release</legend>
         <label htmlFor={titleId}>Listing title</label>
         <input
           id={titleId}
@@ -78,8 +90,6 @@ export function PublicationWizard({
           onChange={(event) => update("title", event.target.value)}
           aria-invalid={submitted && !values.title.trim()}
         />
-      </p>
-      <p>
         <label htmlFor={sourceId}>Immutable published Chronicle version</label>
         <input
           id={sourceId}
@@ -87,8 +97,9 @@ export function PublicationWizard({
           onChange={(event) => update("sourcePublishedVersionId", event.target.value)}
           aria-invalid={submitted && !values.sourcePublishedVersionId.trim()}
         />
-      </p>
-      <p>
+      </fieldset>
+      <fieldset className="studio-exchange-workflow__group">
+        <legend>2. Confirm publication obligations</legend>
         <label htmlFor={licenseId}>Licence</label>
         <input
           id={licenseId}
@@ -96,8 +107,6 @@ export function PublicationWizard({
           onChange={(event) => update("license", event.target.value)}
           aria-invalid={submitted && !values.license.trim()}
         />
-      </p>
-      <p>
         <label htmlFor={descriptionId}>Accessibility description</label>
         <textarea
           id={descriptionId}
@@ -105,8 +114,9 @@ export function PublicationWizard({
           onChange={(event) => update("accessibilityDescription", event.target.value)}
           aria-invalid={submitted && requiresAccessibilityDescription && !values.accessibilityDescription.trim()}
         />
-      </p>
-      <p>
+      </fieldset>
+      <fieldset className="studio-exchange-workflow__group">
+        <legend>3. Verify the package gate</legend>
         <label htmlFor={scannerId}>Scanner status</label>
         <select
           id={scannerId}
@@ -118,8 +128,13 @@ export function PublicationWizard({
           <option value="QUARANTINED">Quarantined</option>
           <option value="CLEAN">Clean</option>
         </select>
-      </p>
-      <button type="submit">Publish release</button>
+        <small>Only a clean scanner result can move this release to package creation.</small>
+      </fieldset>
+      <div className="studio-exchange-workflow__actions">
+        <button type="submit" className="primary">
+          Publish release
+        </button>
+      </div>
     </form>
   );
 }

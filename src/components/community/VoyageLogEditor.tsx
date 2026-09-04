@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { VoyageLogConsentPanel } from "./VoyageLogConsentPanel";
 import { VoyageLogMediaPanel } from "./VoyageLogMediaPanel";
@@ -150,7 +149,7 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
 
   if (!log)
     return (
-      <section role="status">
+      <section className="community-workflow__state community-workflow__state--error" role="status">
         <p>{message}</p>
         <button type="button" onClick={() => void refresh()}>
           Try again
@@ -158,50 +157,53 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
       </section>
     );
   return (
-    <section aria-labelledby="voyage-log-editor-title">
-      <p>
-        <Link href="/community/voyage-logs/owner">Back to your drafts</Link>
-      </p>
-      <h1 id="voyage-log-editor-title">Edit Voyage Log</h1>
-      <p aria-live="polite">{message}</p>
-      <p>
-        Lifecycle: {log.lifecycleState.replaceAll("_", " ")}. Consent revision: {log.consentRevision}.
-      </p>
-      <form onSubmit={(event) => void save(event)}>
-        <label>
-          Title <input name="title" required maxLength={140} defaultValue={log.title} />
-        </label>
-        <label>
-          Safe summary <textarea name="safeSummary" maxLength={280} defaultValue={log.safeSummary ?? ""} />
-        </label>
-        <label>
-          Visibility{" "}
-          <select name="visibility" defaultValue={log.visibility}>
-            <option value="PRIVATE">Private</option>
-            <option value="CREW_ONLY">Crew only</option>
-            <option value="UNLISTED">Unlisted exact link</option>
-            <option value="COMMUNITY">Community</option>
-          </select>
-        </label>
-        <label>
-          Spoiler classification{" "}
-          <select name="spoilerLevel" defaultValue={log.spoilerLevel}>
-            <option value="NONE">None</option>
-            <option value="PREVIEW_SAFE">Preview safe</option>
-            <option value="MINOR">Minor</option>
-            <option value="CHAPTER">Chapter</option>
-            <option value="FINALE">Finale</option>
-          </select>
-        </label>
-        <label>
-          Approximate location{" "}
-          <input name="approximateLocation" maxLength={140} defaultValue={log.approximateLocation ?? ""} />
-        </label>
-        <button type="submit" disabled={!csrf}>
-          Save revision
-        </button>
-      </form>
-      <section aria-labelledby="voyage-log-participants-title">
+    <section className="community-workflow__editor" aria-labelledby="voyage-log-editor-title">
+      <div className="community-workflow__status" aria-live="polite">
+        <strong>{log.lifecycleState.replaceAll("_", " ").toLocaleLowerCase()}</strong>
+        <span>Consent revision {log.consentRevision}</span>
+        {message ? <p>{message}</p> : null}
+      </div>
+      <section className="community-workflow__panel">
+        <h2 id="voyage-log-editor-title">Draft details</h2>
+        <p>
+          Choose what can be shared without revealing participant identity, private locations, or unconsented media.
+        </p>
+        <form className="community-workflow__form" onSubmit={(event) => void save(event)}>
+          <label>
+            Title <input name="title" required maxLength={140} defaultValue={log.title} />
+          </label>
+          <label>
+            Safe summary <textarea name="safeSummary" maxLength={280} defaultValue={log.safeSummary ?? ""} />
+          </label>
+          <label>
+            Visibility{" "}
+            <select name="visibility" defaultValue={log.visibility}>
+              <option value="PRIVATE">Private</option>
+              <option value="CREW_ONLY">Crew only</option>
+              <option value="UNLISTED">Unlisted exact link</option>
+              <option value="COMMUNITY">Community</option>
+            </select>
+          </label>
+          <label>
+            Spoiler classification{" "}
+            <select name="spoilerLevel" defaultValue={log.spoilerLevel}>
+              <option value="NONE">None</option>
+              <option value="PREVIEW_SAFE">Preview safe</option>
+              <option value="MINOR">Minor</option>
+              <option value="CHAPTER">Chapter</option>
+              <option value="FINALE">Finale</option>
+            </select>
+          </label>
+          <label>
+            Approximate location{" "}
+            <input name="approximateLocation" maxLength={140} defaultValue={log.approximateLocation ?? ""} />
+          </label>
+          <button type="submit" disabled={!csrf}>
+            Save revision
+          </button>
+        </form>
+      </section>
+      <section className="community-workflow__panel" aria-labelledby="voyage-log-participants-title">
         <h2 id="voyage-log-participants-title">Participants</h2>
         <p>
           Only add a participant you are authorized to invite. Consent is requested separately and is required before
@@ -236,7 +238,7 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
           <p>No additional participants are selected.</p>
         )}
       </section>
-      <section aria-labelledby="voyage-log-restrictions-title">
+      <section className="community-workflow__panel" aria-labelledby="voyage-log-restrictions-title">
         <h2 id="voyage-log-restrictions-title">Creator sharing restrictions</h2>
         {log.restrictions.length ? (
           <ul>
@@ -250,7 +252,10 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
       </section>
       <VoyageLogConsentPanel voyageLogId={log.id} />
       <VoyageLogMediaPanel voyageLogId={log.id} />
-      <section aria-labelledby="voyage-log-publication-title">
+      <section
+        className="community-workflow__panel community-workflow__panel--publication"
+        aria-labelledby="voyage-log-publication-title"
+      >
         <h2 id="voyage-log-publication-title">Publication and lifecycle</h2>
         <p>
           Publishing rechecks provenance, consent, media safety, restrictions, location safety, and visibility in one

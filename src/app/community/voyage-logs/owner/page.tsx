@@ -1,15 +1,15 @@
-import Link from "next/link";
+import { CommunityWorkflowFrame } from "@/components/community/CommunityWorkflowFrame";
 import { VoyageLogOwnerList } from "@/components/community/VoyageLogOwnerList";
 export const dynamic = "force-dynamic";
 export default function Page() {
   return (
-    <main className="page-shell" aria-labelledby="voyage-log-owner-title">
-      <p>
-        <Link href="/community/voyage-logs">Back to Voyage Logs</Link>
-      </p>
-      <h1 id="voyage-log-owner-title">Your Voyage Log drafts</h1>
-      <p>Drafts remain private until every consent, media, provenance, spoiler, and sharing-policy check is ready.</p>
+    <CommunityWorkflowFrame
+      title="Your Voyage Log drafts"
+      description="Drafts stay private until consent, media, provenance, spoiler, and sharing-policy checks are all ready."
+      backHref="/community/voyage-logs"
+      backLabel="Public Voyage Logs"
+    >
       <VoyageLogOwnerList />
-    </main>
+    </CommunityWorkflowFrame>
   );
 }

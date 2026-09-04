@@ -24,24 +24,30 @@ export function VoyageLogOwnerList() {
   }, []);
   if (error)
     return (
-      <section role="status">
+      <section className="community-workflow__state community-workflow__state--error" role="status">
         <p>{error}</p>
         <button onClick={() => void load()}>Try again</button>
       </section>
     );
-  if (!rows) return <p role="status">Loading Voyage Logs…</p>;
+  if (!rows)
+    return (
+      <p className="community-workflow__loading" role="status">
+        Loading your private Voyage Logs…
+      </p>
+    );
   if (!rows.length)
     return (
-      <section>
+      <section className="community-workflow__state">
         <h2>No Voyage Log drafts yet</h2>
         <p>Prepare an eligible Keepsake before creating a private sharing draft.</p>
       </section>
     );
   return (
-    <ul aria-label="Your Voyage Logs">
+    <ul className="community-workflow__draft-list" aria-label="Your Voyage Logs">
       {rows.map((row) => (
         <li key={row.id}>
           <article>
+            <p className="community-eyebrow">Private sharing draft</p>
             <h2>{row.title}</h2>
             <p>
               {row.visibility.replaceAll("_", " ")} · {row.lifecycleState.replaceAll("_", " ")}

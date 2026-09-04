@@ -11,6 +11,7 @@ export function PrivateContentConsole({ authenticated }: { authenticated: boolea
     Array<{ id: string; packageId: string; packageRevision: number; status: string }>
   >([]);
   const [exportId, setExportId] = useState("");
+  const [operation, setOperation] = useState<"idle" | "inspecting" | "importing" | "exporting">("idle");
   const inputRef = useRef<HTMLInputElement>(null);
   async function refreshImports() {
     const response = await fetch("/api/studio/private-content/imports", { cache: "no-store" });
@@ -42,6 +43,7 @@ export function PrivateContentConsole({ authenticated }: { authenticated: boolea
   }
   async function inspect() {
     try {
+      setOperation("inspecting");
       setMessage("");
       const response = await fetch("/api/studio/private-content/inspect", {
         method: "POST",
@@ -59,10 +61,13 @@ export function PrivateContentConsole({ authenticated }: { authenticated: boolea
       setMessage("Inspection succeeded. Import remains private and is not yet committed.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The private package could not be authenticated or opened.");
+    } finally {
+      setOperation("idle");
     }
   }
   async function commit() {
     try {
+      setOperation("importing");
       const response = await fetch("/api/studio/private-content/import", {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
@@ -78,10 +83,13 @@ export function PrivateContentConsole({ authenticated }: { authenticated: boolea
       await refreshImports();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The private package could not be imported.");
+    } finally {
+      setOperation("idle");
     }
   }
   async function exportPackage() {
     try {
+      setOperation("exporting");
       if (!exportId || !passphrase) throw new Error("Select an import and enter an export passphrase.");
       const response = await fetch("/api/studio/private-content/export", {
         method: "POST",
@@ -101,6 +109,8 @@ export function PrivateContentConsole({ authenticated }: { authenticated: boolea
       setMessage("Encrypted export was verified before download.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The private export could not be created.");
+    } finally {
+      setOperation("idle");
     }
   }
   if (!authenticated)
@@ -110,80 +120,117 @@ export function PrivateContentConsole({ authenticated }: { authenticated: boolea
       </main>
     );
   return (
-    <main className="studio-home">
+    <main className="studio-home studio-private-content" data-private-operation={operation}>
       <header className="studio-home-header">
         <div>
           <p className="eyebrow">Private Chronicle</p>
-          <h1>Private content administration</h1>
-          <p>Import does not publish a Chronicle, create a Voyage, or invite Players.</p>
+          <h1>Private content</h1>
+          <p>
+            Move protected Chronicle packages through deliberate import, verified export, and private history review.
+          </p>
         </div>
       </header>
-      <section className="studio-editor-section">
-        <h2>Import encrypted package</h2>
-        <p id="private-content-help">
-          Choose a .ftprivate package and enter its passphrase. The passphrase is held only in this form while the
-          request runs.
-        </p>
-        <label>
-          <span>Encrypted package</span>
-          <input
-            ref={inputRef}
-            type="file"
-            accept=".ftprivate,application/json"
-            onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-          />
-        </label>
-        <label>
-          <span>Passphrase</span>
-          <input
-            type="password"
-            autoComplete="off"
-            value={passphrase}
-            onChange={(event) => setPassphrase(event.target.value)}
-            aria-describedby="private-content-help"
-          />
-        </label>
-        <div className="tale-card-actions">
-          <button onClick={() => void inspect()} disabled={!file || !passphrase || !csrf}>
-            Inspect package
+      <div className="studio-private-content__layout">
+        <section className="studio-editor-section studio-private-content__import">
+          <p className="eyebrow">1. Import</p>
+          <h2>Inspect an encrypted package</h2>
+          <p id="private-content-help">
+            Choose a .ftprivate package and enter its passphrase. The passphrase is held only in this form while the
+            request runs.
+          </p>
+          <div className="studio-private-content__file-select">
+            <span>Encrypted package</span>
+            <strong>{file ? file.name : "Choose a .ftprivate package"}</strong>
+            <small>
+              {file
+                ? `${Math.ceil(file.size / 1024)} KB selected; nothing has been imported.`
+                : "The selected package stays private while it is inspected."}
+            </small>
+            <button type="button" onClick={() => inputRef.current?.click()}>
+              Select protected package
+            </button>
+            <input
+              ref={inputRef}
+              type="file"
+              accept=".ftprivate,application/json"
+              aria-label="Select an encrypted private-content package"
+              onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+            />
+          </div>
+          <label>
+            <span>Passphrase</span>
+            <input
+              type="password"
+              autoComplete="off"
+              value={passphrase}
+              onChange={(event) => setPassphrase(event.target.value)}
+              aria-describedby="private-content-help"
+            />
+          </label>
+          <div className="tale-card-actions">
+            <button onClick={() => void inspect()} disabled={operation !== "idle" || !file || !passphrase || !csrf}>
+              {operation === "inspecting" ? "Inspecting package…" : "Inspect package"}
+            </button>
+            <button
+              className="primary"
+              onClick={() => void commit()}
+              disabled={operation !== "idle" || !plan || !file || !passphrase || !csrf}
+            >
+              {operation === "importing" ? "Importing privately…" : "Confirm private import"}
+            </button>
+          </div>
+          {plan && <p role="status">Plan: {plan}</p>}
+          <p role="status" aria-live="polite">
+            {message}
+          </p>
+        </section>
+        <section
+          className="studio-editor-section studio-private-content__export"
+          aria-labelledby="private-export-heading"
+        >
+          <p className="eyebrow">2. Verified export</p>
+          <h2 id="private-export-heading">Verified private export</h2>
+          <p>Exports are encrypted and round-trip verified before download.</p>
+          <label>
+            <span>Imported package</span>
+            <select value={exportId} onChange={(event) => setExportId(event.target.value)}>
+              <option value="">Select a completed import</option>
+              {imports
+                .filter((item) => item.status === "COMPLETED")
+                .map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.packageId} revision {item.packageRevision}
+                  </option>
+                ))}
+            </select>
+          </label>
+          <button
+            className="primary"
+            onClick={() => void exportPackage()}
+            disabled={operation !== "idle" || !exportId || !passphrase || !csrf}
+          >
+            {operation === "exporting" ? "Verifying export…" : "Export verified package"}
           </button>
-          <button className="primary" onClick={() => void commit()} disabled={!plan || !file || !passphrase || !csrf}>
-            Confirm private import
-          </button>
-        </div>
-        {plan && <p role="status">Plan: {plan}</p>}
-        <p role="status" aria-live="polite">
-          {message}
-        </p>
-      </section>
-      <section className="studio-editor-section" aria-labelledby="private-export-heading">
-        <h2 id="private-export-heading">Verified private export</h2>
-        <p>Exports are encrypted and round-trip verified before download.</p>
-        <label>
-          <span>Imported package</span>
-          <select value={exportId} onChange={(event) => setExportId(event.target.value)}>
-            <option value="">Select a completed import</option>
-            {imports
-              .filter((item) => item.status === "COMPLETED")
-              .map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.packageId} revision {item.packageRevision}
-                </option>
+        </section>
+        <section
+          className="studio-editor-section studio-private-content__history"
+          aria-labelledby="private-history-heading"
+        >
+          <p className="eyebrow">3. History</p>
+          <h2 id="private-history-heading">Private import history</h2>
+          {imports.length ? (
+            <ul>
+              {imports.map((item) => (
+                <li key={item.id}>
+                  {item.packageId} revision {item.packageRevision}: {item.status}
+                </li>
               ))}
-          </select>
-        </label>
-        <button className="primary" onClick={() => void exportPackage()} disabled={!exportId || !passphrase || !csrf}>
-          Export verified package
-        </button>
-        <h3>Import history</h3>
-        <ul>
-          {imports.map((item) => (
-            <li key={item.id}>
-              {item.packageId} revision {item.packageRevision}: {item.status}
-            </li>
-          ))}
-        </ul>
-      </section>
+            </ul>
+          ) : (
+            <p>No private import has completed in this workspace yet.</p>
+          )}
+        </section>
+      </div>
     </main>
   );
 }
