@@ -26,7 +26,7 @@ test("Wayfarer Passport directs account changes to the current Personal Harbor s
   await expect(page).toHaveURL(/\/passport/u);
 
   await page.goto("/passport");
-  await expect(page.getByRole("heading", { name: "Chronicle Passport" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Chronicle Passport", exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: "Edit public Profile" })).toHaveAttribute("href", "/account/profile");
 
   await page.goto("/account/personal-information");
