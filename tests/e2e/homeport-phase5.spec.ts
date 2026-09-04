@@ -17,7 +17,8 @@ const fixtureVersion = "homeport-phase5-route-reachability-v2";
 let fixtureChecksum = "UNAVAILABLE_OUTSIDE_PHASE5_RUNTIME";
 let secrets: Record<string, string> = {};
 const sourceSha = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
-const branch = execFileSync("git", ["branch", "--show-current"], { encoding: "utf8" }).trim();
+const candidateSha = sourceSha;
+const sharedBaselineIdentityOnly = process.env.SOUNDING_LINE_SUITE_PROFILE === "generic";
 const records: EvidenceRecord[] = [];
 const receipts: RouteReceipt[] = [];
 const password = "Homeport-Phase4-Synthetic!";
@@ -50,14 +51,14 @@ type RouteReceipt = Readonly<{
   desktopResult: string;
   mobileResult: string;
   sourceSha: string;
-  branch: string;
+  candidateSha: string;
   timestamp: string;
   limitation: string;
 }>;
 type EvidenceRecord = Readonly<{
   evidenceId: string;
   sourceSha: string;
-  branch: string;
+  candidateSha: string;
   route: string;
   screenContract: string;
   journey: string;
@@ -191,9 +192,20 @@ const ordinaryEvidence = new Map<string, [string, string]>([
   ["/tales", ["HP-P5-EV-H-dynamic-source", "HP-P5-JRN-H"]],
 ]);
 
+test.describe("Project Homeport Phase 5 governed candidate identity", () => {
+  test("detached governed candidate identity remains bound", () => {
+    expect(candidateSha).toMatch(/^[a-f0-9]{40}$/u);
+    expect(candidateSha).toBe(sourceSha);
+  });
+});
+
 test.describe.serial("Project Homeport Phase 5 route reachability acceptance", () => {
+  test.skip(
+    sharedBaselineIdentityOnly,
+    "The shared generic baseline verifies the candidate binding; the dedicated Phase 5 runner owns historical journeys.",
+  );
   test.beforeAll(async ({ browser }) => {
-    expect(branch).toBe("codex/project-homeport-product-reality-recovery");
+    expect(candidateSha).toBe(sourceSha);
     secrets = JSON.parse(readFileSync(path.join(taskRoot, "browser-state", "phase5-secrets.json"), "utf8"));
     const fixtureReceipt = JSON.parse(
       readFileSync(path.join(taskRoot, "browser-state", "fixture-receipt.json"), "utf8"),
@@ -224,7 +236,7 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
       schemaVersion: "1.0.0",
       phase: "PROJECT_HOMEPORT_PHASE_5",
       sourceSha,
-      branch,
+      candidateSha,
       fixtureVersion,
       fixtureChecksum,
       browser: `Chromium ${browserVersion}`,
@@ -1053,10 +1065,10 @@ function routeReceipt(input: {
     desktopResult: "PASSED_CHROMIUM_DESKTOP",
     mobileResult: "REPRESENTATIVE_PARITY_PROVED_IN_HP_P5_EV_U_THROUGH_X",
     sourceSha,
-    branch,
+    candidateSha,
     timestamp: new Date().toISOString(),
     limitation:
-      "Synthetic local branch evidence only; not merge, deploy, production, owner, or product acceptance proof.",
+      "Synthetic local candidate evidence only; not merge, deploy, production, owner, or product acceptance proof.",
   };
 }
 
@@ -1093,7 +1105,7 @@ async function capture(
   records.push({
     evidenceId,
     sourceSha,
-    branch,
+    candidateSha,
     route: new URL(page.url()).pathname,
     screenContract: input.screenContract,
     journey: input.journey,

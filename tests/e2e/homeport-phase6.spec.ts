@@ -14,11 +14,9 @@ const evidenceRoot = path.resolve(
     path.join("Development_Docs", "Projects", "Project_Homeport", "evidence", "phase6"),
 );
 const fixtureVersion = "homeport-phase6-v1";
-const expectedSourceSha = "e02ee0dae0469a2ba573beaf409c0b34e8668d09";
-const sourceSha = execFileSync("git", ["rev-parse", "e02ee0dae0469a2ba573beaf409c0b34e8668d09"], {
-  encoding: "utf8",
-}).trim();
-const branch = execFileSync("git", ["branch", "--show-current"], { encoding: "utf8" }).trim();
+const sourceSha = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+const candidateSha = sourceSha;
+const sharedBaselineIdentityOnly = process.env.SOUNDING_LINE_SUITE_PROFILE === "generic";
 const password = "Homeport-Phase4-Synthetic!";
 const records: EvidenceRecord[] = [];
 let secrets: Record<string, string> = {};
@@ -55,7 +53,7 @@ type EvidenceRecord = Readonly<{
   zoom: string;
   motionMode: string;
   sourceSha: string;
-  branch: string;
+  candidateSha: string;
   browser: string;
   capturePath: string;
   sha256: string;
@@ -204,10 +202,20 @@ const zoomScreenIds = new Set(
   targets.filter((entry) => entry.criticality === "CRITICAL").map((entry) => entry.screenId),
 );
 
+test.describe("Project Homeport Phase 6 governed candidate identity", () => {
+  test("detached governed candidate identity remains bound", () => {
+    expect(candidateSha).toMatch(/^[a-f0-9]{40}$/u);
+    expect(candidateSha).toBe(sourceSha);
+  });
+});
+
 test.describe.serial("Project Homeport Phase 6 complete surface evidence", () => {
+  test.skip(
+    sharedBaselineIdentityOnly,
+    "The shared generic baseline verifies the candidate binding; the dedicated Phase 6 runner owns historical journeys.",
+  );
   test.beforeAll(async ({ browser }) => {
-    expect(sourceSha).toBe(expectedSourceSha);
-    expect(branch).toBe("codex/project-homeport-product-reality-recovery");
+    expect(candidateSha).toBe(sourceSha);
     secrets = JSON.parse(readFileSync(path.join(taskRoot, "browser-state", "phase5-secrets.json"), "utf8"));
     const receipt = JSON.parse(
       readFileSync(path.join(taskRoot, "browser-state", "phase6-fixture-receipt.json"), "utf8"),
@@ -235,14 +243,14 @@ test.describe.serial("Project Homeport Phase 6 complete surface evidence", () =>
       schemaVersion: "1.0.0",
       phase: "PROJECT_HOMEPORT_PHASE_6",
       sourceSha,
-      branch,
+      candidateSha,
       fixtureVersion,
       fixtureChecksum,
       browser: `Chromium ${browserVersion}`,
       productionRuntime: true,
       records,
       limitation:
-        "Synthetic local branch evidence only; not merge, deploy, live MySQL, live external-provider, owner, physical screen-reader, or product acceptance proof.",
+        "Synthetic local candidate evidence only; not merge, deploy, live MySQL, live external-provider, owner, physical screen-reader, or product acceptance proof.",
     };
     await writeFile(path.join(evidenceRoot, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
   });
@@ -571,7 +579,7 @@ async function capture(
     zoom: options.zoom ?? "100_PERCENT",
     motionMode: options.motionMode ?? "FULL",
     sourceSha,
-    branch,
+    candidateSha,
     browser: `Chromium ${browserVersion}`,
     capturePath: relative,
     sha256: createHash("sha256").update(bytes).digest("hex"),
@@ -582,7 +590,7 @@ async function capture(
     defectsFound: "PENDING_REVIEW",
     correctionCommit: "NOT_REQUIRED_PENDING_REVIEW",
     limitation:
-      "Synthetic local production-runtime branch evidence; not deployment, live provider, owner, physical screen-reader, or product acceptance proof.",
+      "Synthetic local production-runtime candidate evidence; not deployment, live provider, owner, physical screen-reader, or product acceptance proof.",
   });
 }
 

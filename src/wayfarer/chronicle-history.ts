@@ -239,11 +239,21 @@ export function summarizeHistoricalEvents(
     choiceSummary: [
       {
         schemaVersion: 1 as const,
+        state: "UNAVAILABLE" as const,
         reason: "UNAVAILABLE: canonical completion events do not retain selected choice identity.",
       },
     ],
     artifactSummary: artifacts,
   };
+}
+
+function storedChoiceHistory(value: string) {
+  try {
+    const parsed = safeChoiceHistorySchema.safeParse(JSON.parse(value));
+    return parsed.success ? parsed.data : null;
+  } catch {
+    return null;
+  }
 }
 
 export async function materializeChronicleHistory(playerProfileId: string) {
@@ -325,9 +335,10 @@ export async function materializeChronicleHistory(playerProfileId: string) {
       where: {
         playerProfileId_sourcePlaythroughId: { playerProfileId, sourcePlaythroughId: membership.playthroughId },
       },
-      select: { id: true, sourceFingerprint: true },
+      select: { id: true, sourceFingerprint: true, choiceSummary: true },
     });
-    if (existing?.sourceFingerprint === sourceFingerprint) continue;
+    const existingChoiceSummary = existing ? storedChoiceHistory(existing.choiceSummary) : null;
+    if (existing?.sourceFingerprint === sourceFingerprint && existingChoiceSummary) continue;
     const data = {
       sourceMembershipId: membership.id,
       publishedVersionId: version.id,
@@ -345,7 +356,10 @@ export async function materializeChronicleHistory(playerProfileId: string) {
       ...nextTiming,
       completedChapters: JSON.stringify(chapterSummarySchema.parse(summary.completedChapters)),
       optionalObjectives: JSON.stringify(unavailableSummarySchema.parse(summary.optionalObjectives)),
-      choiceSummary: JSON.stringify(unavailableSummarySchema.parse(summary.choiceSummary)),
+      // Current events do not preserve selected-choice identity. Preserve a
+      // previously validated richer record, otherwise state that limitation
+      // explicitly instead of fabricating an available choice.
+      choiceSummary: JSON.stringify(existingChoiceSummary ?? safeChoiceHistorySchema.parse(summary.choiceSummary)),
       artifactSummary: JSON.stringify(artifactSummarySchema.parse(summary.artifactSummary)),
       sourceFingerprint,
       projectionStatus: "CURRENT",
