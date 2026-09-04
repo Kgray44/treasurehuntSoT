@@ -1,8 +1,20 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const { db } = vi.hoisted(() => ({
+  db: {
+    playthroughMembership: { findMany: vi.fn() },
+    playerChronicleRecord: { findUnique: vi.fn(), upsert: vi.fn() },
+    playerChronicleParticipantSnapshot: { upsert: vi.fn() },
+  },
+}));
+
+vi.mock("@/lib/db", () => ({ db }));
+
 import type { PublishedTaleSnapshot } from "@/chronicle/types";
 import {
   derivePersonalTiming,
   filterKeepsakeCrew,
+  materializeChronicleHistory,
   summarizeHistoricalEvents,
   isTerminalHistoryStatus,
 } from "./chronicle-history";
@@ -59,6 +71,10 @@ const snapshot = {
 } as unknown as PublishedTaleSnapshot;
 
 describe("Project Wayfarer Phase 3 chronicle derivation", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
   it("starts personal timing at the later of session start and membership join", () => {
     const timing = derivePersonalTiming(
       new Date("2026-07-25T10:00:00.000Z"),
@@ -112,7 +128,80 @@ describe("Project Wayfarer Phase 3 chronicle derivation", () => {
     expect(summary.artifactSummary).toEqual([
       expect.objectContaining({ artifactId: "artifact-1", name: "Harbor Lantern", sourceSequence: 3 }),
     ]);
-    expect(summary.choiceSummary[0]?.reason).toMatch(/^UNAVAILABLE:/);
+    expect(summary.choiceSummary).toEqual([
+      {
+        schemaVersion: 1,
+        state: "UNAVAILABLE",
+        reason: "UNAVAILABLE: canonical completion events do not retain selected choice identity.",
+      },
+    ]);
+  });
+
+  it("reconciles malformed choice history without fabricating a selected choice and is idempotent", async () => {
+    let stored = {
+      sourceFingerprint: "legacy-fingerprint",
+      choiceSummary: JSON.stringify([
+        {
+          schemaVersion: 1,
+          reason: "UNAVAILABLE: canonical completion events do not retain selected choice identity.",
+        },
+      ]),
+    };
+    db.playthroughMembership.findMany.mockResolvedValue([materializationMembership()]);
+    db.playerChronicleRecord.findUnique.mockImplementation(async () => ({ id: "record-1", ...stored }));
+    db.playerChronicleRecord.upsert.mockImplementation(async ({ update }) => {
+      stored = { sourceFingerprint: update.sourceFingerprint, choiceSummary: update.choiceSummary };
+      return { id: "record-1" };
+    });
+    db.playerChronicleParticipantSnapshot.upsert.mockResolvedValue({});
+
+    await expect(materializeChronicleHistory("profile-owner")).resolves.toEqual({
+      membershipsExamined: 1,
+      recordsCreated: 0,
+      recordsUpdated: 1,
+      projectionFailures: 0,
+    });
+    expect(JSON.parse(stored.choiceSummary)).toEqual([
+      {
+        schemaVersion: 1,
+        state: "UNAVAILABLE",
+        reason: "UNAVAILABLE: canonical completion events do not retain selected choice identity.",
+      },
+    ]);
+
+    await expect(materializeChronicleHistory("profile-owner")).resolves.toEqual({
+      membershipsExamined: 1,
+      recordsCreated: 0,
+      recordsUpdated: 0,
+      projectionFailures: 0,
+    });
+    expect(db.playerChronicleRecord.upsert).toHaveBeenCalledTimes(1);
+  });
+
+  it("preserves a previously validated available choice when materializing other history changes", async () => {
+    const availableChoice = [
+      {
+        schemaVersion: 1,
+        state: "AVAILABLE",
+        label: "Take the lighthouse path",
+        chapterTitle: "The First Tide",
+        kind: "CHOICE",
+      },
+    ];
+    db.playthroughMembership.findMany.mockResolvedValue([materializationMembership()]);
+    db.playerChronicleRecord.findUnique.mockResolvedValue({
+      id: "record-1",
+      sourceFingerprint: "outdated-fingerprint",
+      choiceSummary: JSON.stringify(availableChoice),
+    });
+    db.playerChronicleRecord.upsert.mockResolvedValue({ id: "record-1" });
+    db.playerChronicleParticipantSnapshot.upsert.mockResolvedValue({});
+
+    await materializeChronicleHistory("profile-owner");
+
+    expect(JSON.parse(db.playerChronicleRecord.upsert.mock.calls[0]?.[0].update.choiceSummary)).toEqual(
+      availableChoice,
+    );
   });
 
   it("omits all crew data for a one-person Keepsake", () => {
@@ -142,3 +231,48 @@ describe("Project Wayfarer Phase 3 chronicle derivation", () => {
     expect(isTerminalHistoryStatus("ACTIVE")).toBe(false);
   });
 });
+
+function materializationMembership() {
+  const createdAt = new Date("2026-07-25T10:00:00.000Z");
+  return {
+    id: "membership-owner",
+    playthroughId: "playthrough-owner",
+    status: "COMPLETED",
+    joinedAt: createdAt,
+    completedAt: createdAt,
+    removedAt: null,
+    role: "PLAYER",
+    crewRole: null,
+    player: { displayName: "Owner", avatarMedia: null },
+    playthrough: {
+      id: "playthrough-owner",
+      status: "COMPLETED",
+      startedAt: createdAt,
+      completedAt: createdAt,
+      tale: { coverAssetId: null, creatorId: "creator-owner" },
+      version: { id: "version-owner", checksum: "checksum-owner", contentSnapshot: JSON.stringify(snapshot) },
+      events: [
+        {
+          id: "completed-event",
+          eventType: "chapterCompleted",
+          blockId: "block-1",
+          sequence: 1,
+          createdAt,
+        },
+      ],
+      memberships: [
+        {
+          id: "membership-owner",
+          playerProfileId: "profile-owner",
+          status: "COMPLETED",
+          role: "PLAYER",
+          crewRole: null,
+          joinedAt: createdAt,
+          completedAt: createdAt,
+          removedAt: null,
+          player: { displayName: "Owner", avatarMedia: null },
+        },
+      ],
+    },
+  };
+}

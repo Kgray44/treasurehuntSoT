@@ -291,6 +291,7 @@ test("Wayfarer Phase 3 authenticated Passport history is private, pinned, consen
   const detailText = await detail.text();
   expect(detailText).toContain("First Safe Chapter");
   expect(detailText).toContain("Synthetic Harbor Lantern");
+  expect(detailText).toContain('"state":"UNAVAILABLE"');
   expect(detailText).toContain("UNAVAILABLE: canonical completion events do not retain selected choice identity.");
   expect(detailText).not.toContain("storageKey");
   expect(detailText).not.toContain("payload");
