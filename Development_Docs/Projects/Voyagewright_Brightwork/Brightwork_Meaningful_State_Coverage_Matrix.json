@@ -1,9 +1,9 @@
 {
   "schemaVersion": "2.0.0",
   "artifact": "Brightwork explicit state coverage ledger",
-  "sourceSha": "a82473c40114280694fd292f1103ae914dcc7c6c",
-  "auditRuntimeSourceSha": "6a7b0c9edec14dcb985156ac446467775c287fc3",
-  "generatedAt": "2026-09-03T19:48:52.466Z",
+  "sourceSha": "2ae4333f09c76c11a51e8b7015cad9e02523a65d",
+  "auditRuntimeSourceSha": "4ce9b890c4b863e72d20d7e9523191bf234f0d4b",
+  "generatedAt": "2026-09-04T16:49:25.453Z",
   "coverageStatusVocabulary": [
     "COVERED",
     "EXEMPT_WITH_RATIONALE"
@@ -46,7 +46,7 @@
           "src/app/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -81,7 +81,7 @@
           "src/app/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -103,7 +103,7 @@
           "src/app/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -125,7 +125,7 @@
           "src/app/account/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -170,7 +170,7 @@
           "src/app/account/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -192,7 +192,7 @@
           "src/app/account/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -247,7 +247,7 @@
           "src/app/account/accessibility/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -322,7 +322,7 @@
           "src/app/account/cancel-deletion/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -387,7 +387,7 @@
           "src/app/account/claim/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -442,7 +442,7 @@
           "src/app/account/data/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -507,7 +507,7 @@
           "src/app/account/email-change/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -572,7 +572,7 @@
           "src/app/account/linked-identities/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -637,7 +637,7 @@
           "src/app/account/merge/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -702,7 +702,7 @@
           "src/app/account/notifications/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -767,7 +767,7 @@
           "src/app/account/personal-information/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -832,7 +832,7 @@
           "src/app/account/preferences/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -907,7 +907,7 @@
           "src/app/account/privacy/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -982,7 +982,7 @@
           "src/app/account/profile/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1027,7 +1027,7 @@
           "src/app/account/profile/view/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1122,7 +1122,7 @@
           "src/app/account/reactivate/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1187,7 +1187,7 @@
           "src/app/account/roles/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1252,7 +1252,7 @@
           "src/app/account/security/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1317,7 +1317,7 @@
           "src/app/account/sessions/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1382,7 +1382,7 @@
           "src/app/account/support-access/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1437,7 +1437,7 @@
           "src/app/admin/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1469,7 +1469,7 @@
           "src/app/admin/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1504,7 +1504,7 @@
           "src/app/admin/audit/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1559,7 +1559,7 @@
           "src/app/admin/chronicles/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1614,7 +1614,7 @@
           "src/app/admin/chronicles/[chronicleId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1689,7 +1689,7 @@
           "src/app/admin/community/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1774,7 +1774,7 @@
           "src/app/admin/community/[listingId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1840,7 +1840,7 @@
           "src/app/admin/configuration/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1895,7 +1895,7 @@
           "src/app/admin/investigate/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -1950,7 +1950,7 @@
           "src/app/admin/operations/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2005,7 +2005,7 @@
           "src/app/admin/people/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2080,7 +2080,7 @@
           "src/app/admin/people/[accountId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2135,7 +2135,7 @@
           "src/app/admin/providers/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2190,7 +2190,7 @@
           "src/app/admin/releases/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2235,7 +2235,7 @@
           "src/app/admin/support/cases/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2280,7 +2280,7 @@
           "src/app/admin/voyages/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2335,7 +2335,7 @@
           "src/app/admin/voyages/[voyageId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2380,7 +2380,7 @@
           "src/app/captain/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2445,7 +2445,7 @@
           "src/app/captain/invitations/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2540,7 +2540,7 @@
           "src/app/captain/library/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2573,7 +2573,7 @@
           "src/app/captain/sessions/[sessionId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2616,7 +2616,7 @@
           "src/app/captain/sessions/[sessionId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2652,7 +2652,7 @@
           "src/app/captain/sessions/[sessionId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2675,7 +2675,7 @@
           "src/app/captain/sessions/[sessionId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2710,7 +2710,7 @@
           "src/app/captain/sign-in/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2805,7 +2805,7 @@
           "src/app/captain/tales/[taleId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2841,7 +2841,7 @@
           "src/app/captain/voyages/[playthroughId]/muster/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2907,7 +2907,7 @@
           "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -2972,7 +2972,7 @@
           "src/app/chronicles/[taleSlug]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3007,7 +3007,7 @@
           "src/app/chronicles/[taleSlug]/compare/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3104,7 +3104,7 @@
           "src/app/community/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3189,7 +3189,7 @@
           "src/app/community/[slug]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3274,7 +3274,7 @@
           "src/app/community/artifacts/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3359,7 +3359,7 @@
           "src/app/community/audio/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3381,7 +3381,7 @@
           "src/app/community/chronicles/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3433,7 +3433,7 @@
           "src/app/community/chronicles/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3488,7 +3488,7 @@
           "src/app/community/chronicles/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3573,7 +3573,7 @@
           "src/app/community/collections/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3605,7 +3605,7 @@
           "src/app/community/collections/[slug]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3670,7 +3670,7 @@
           "src/app/community/collections/[slug]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3755,7 +3755,7 @@
           "src/app/community/creators/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3840,7 +3840,7 @@
           "src/app/community/creators/[handle]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -3927,7 +3927,7 @@
           "src/components/community/PublicCommunitySection.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4012,7 +4012,7 @@
           "src/app/community/guides/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4097,7 +4097,7 @@
           "src/app/community/guides/[slug]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4182,7 +4182,7 @@
           "src/app/community/maps/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4237,7 +4237,7 @@
           "src/app/community/moderation/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4292,7 +4292,7 @@
           "src/app/community/moderation/[id]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4377,7 +4377,7 @@
           "src/app/community/templates/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4462,7 +4462,7 @@
           "src/app/community/voyage-logs/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4547,7 +4547,7 @@
           "src/app/community/voyage-logs/[slug]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4602,7 +4602,7 @@
           "src/app/community/voyage-logs/consent/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4627,7 +4627,7 @@
           "src/app/community/voyage-logs/media/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4712,7 +4712,7 @@
           "src/app/community/voyage-logs/owner/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4767,7 +4767,7 @@
           "src/app/community/voyage-logs/owner/[id]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4822,7 +4822,7 @@
           "src/app/forgot-password/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4867,7 +4867,7 @@
           "src/app/passport/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4932,7 +4932,7 @@
           "src/app/passport/artifacts/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -4997,7 +4997,7 @@
           "src/app/passport/artifacts/[artifactId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5032,7 +5032,7 @@
           "src/app/passport/atlas/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5107,7 +5107,7 @@
           "src/app/passport/history/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5172,7 +5172,7 @@
           "src/app/passport/history/[recordId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5207,7 +5207,7 @@
           "src/app/passport/history/[recordId]/book/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5242,7 +5242,7 @@
           "src/app/passport/history/[recordId]/compare/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5327,7 +5327,7 @@
           "src/app/passport/history/[recordId]/replay/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5392,7 +5392,7 @@
           "src/app/passport/memories/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5427,7 +5427,7 @@
           "src/app/passport/people/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5492,7 +5492,7 @@
           "src/app/passport/saved/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5527,7 +5527,7 @@
           "src/app/passport/statistics/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5562,7 +5562,7 @@
           "src/app/passport/timeline/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5627,7 +5627,7 @@
           "src/app/play/[taleSlug]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5682,7 +5682,7 @@
           "src/app/play/[taleSlug]/history/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5737,7 +5737,7 @@
           "src/app/play/[taleSlug]/session/[sessionId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5762,7 +5762,7 @@
           "src/app/player/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5867,7 +5867,7 @@
           "src/app/player/invitation/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5922,7 +5922,7 @@
           "src/app/player/library/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -5957,7 +5957,7 @@
           "src/app/player/playthroughs/[playthroughId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6022,7 +6022,7 @@
           "src/app/player/playthroughs/[playthroughId]/archive/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6117,7 +6117,7 @@
           "src/app/player/playthroughs/[playthroughId]/journal/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6152,7 +6152,7 @@
           "src/app/player/sign-in/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6217,7 +6217,7 @@
           "src/app/profile/[handle]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6242,7 +6242,7 @@
           "src/app/quartermaster/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6297,7 +6297,7 @@
           "src/app/quartermaster/[workspace]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6382,7 +6382,7 @@
           "src/app/register/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6437,7 +6437,7 @@
           "src/app/reset-password/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6492,7 +6492,7 @@
           "src/app/sign-in/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6517,7 +6517,7 @@
           "src/app/studio/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6613,7 +6613,7 @@
           "src/components/community/StudioExchangeConsole.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6678,7 +6678,7 @@
           "src/app/studio/library/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6743,7 +6743,7 @@
           "src/app/studio/private-content/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6776,7 +6776,7 @@
           "src/components/studio/PrivateOperationsConsole.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6799,7 +6799,7 @@
           "src/components/studio/PrivateOperationsConsole.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6825,7 +6825,7 @@
           "src/components/studio/PrivateOperationsConsole.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6848,7 +6848,7 @@
           "src/components/studio/PrivateOperationsConsole.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6873,7 +6873,7 @@
           "src/app/studio/sign-in/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -6968,7 +6968,7 @@
           "src/app/studio/tales/[taleId]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -7033,7 +7033,7 @@
           "src/app/studio/tales/[taleId]/artifacts/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -7098,7 +7098,7 @@
           "src/app/studio/tales/[taleId]/assets/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -7163,7 +7163,7 @@
           "src/app/studio/tales/[taleId]/locations/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -7228,7 +7228,7 @@
           "src/app/studio/tales/[taleId]/settings/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -7293,7 +7293,7 @@
           "src/app/studio/tales/[taleId]/trials/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -7368,7 +7368,7 @@
           "src/app/studio/tales/[taleId]/versions/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -7433,7 +7433,7 @@
           "src/app/studio/tales/new/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -7468,7 +7468,7 @@
           "src/app/tale/[campaignSlug]/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -7553,7 +7553,7 @@
           "src/app/tales/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,
@@ -7608,7 +7608,7 @@
           "src/app/verify-email/page.tsx"
         ],
         "fixtureIdentityDigests": [
-          "c0c9321f1e6f91940414bfb6a37a99275c13879c873a7e4435abdcb69eb9617e"
+          "4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"
         ]
       },
       "exemptionRationale": null,

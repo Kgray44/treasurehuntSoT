@@ -1,10 +1,10 @@
 {
   "schemaVersion": "2.0.0",
   "artifact": "Brightwork Current Navigation Reachability Report",
-  "sourceSha": "a82473c40114280694fd292f1103ae914dcc7c6c",
-  "auditRuntimeSourceSha": "6a7b0c9edec14dcb985156ac446467775c287fc3",
+  "sourceSha": "2ae4333f09c76c11a51e8b7015cad9e02523a65d",
+  "auditRuntimeSourceSha": "4ce9b890c4b863e72d20d7e9523191bf234f0d4b",
   "censusDigest": "80c08d26b2c2753d8f9eb281c8ba7780630f69f6040187afe08facb4c0f22fec",
-  "generatedAt": "2026-09-03T19:48:52.471Z",
+  "generatedAt": "2026-09-04T16:49:25.458Z",
   "supersedesForBrightwork": "Project Homeport Phase 5 109-page reachability proof",
   "routes": [
     {

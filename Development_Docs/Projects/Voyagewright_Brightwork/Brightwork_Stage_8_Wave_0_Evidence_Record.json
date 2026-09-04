@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.0.0",
   "artifact": "Voyagewright Brightwork Stage 8 Wave 0 evidence reconciliation",
-  "sourceSha": "a82473c40114280694fd292f1103ae914dcc7c6c",
-  "auditRuntimeSourceSha": "6a7b0c9edec14dcb985156ac446467775c287fc3",
-  "generatedAt": "2026-09-03T19:48:52.473Z",
+  "sourceSha": "2ae4333f09c76c11a51e8b7015cad9e02523a65d",
+  "auditRuntimeSourceSha": "4ce9b890c4b863e72d20d7e9523191bf234f0d4b",
+  "generatedAt": "2026-09-04T16:49:25.458Z",
   "summary": {
     "completionStatus": "BRIGHTWORK STAGE 8 WAVE 0 — EVIDENCE SAFETY RECONCILED",
     "originalStage1CaptureCount": 468,

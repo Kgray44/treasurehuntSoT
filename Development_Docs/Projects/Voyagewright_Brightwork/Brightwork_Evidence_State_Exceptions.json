@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "artifact": "Voyagewright Brightwork Stage 4B evidence state exceptions",
   "sourceSha": "a82473c40114280694fd292f1103ae914dcc7c6c",
-  "generatedAt": "2026-09-03T19:48:52.472Z",
+  "generatedAt": "2026-09-04T16:49:25.458Z",
   "originalReadyUnavailableMismatchCount": 40,
   "unresolvedReadyUnavailableMismatchCount": 0,
   "exceptions": [
