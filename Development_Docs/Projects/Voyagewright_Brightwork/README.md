@@ -17,6 +17,8 @@ This directory holds the current-main Brightwork capture inventory and evidence 
 - `Capture_Limitations_and_Blockers.md` records only capture limitations and product blockers.
 - `Brightwork_Stage_1_Completion_Record.md` is written after final validation.
 - `Brightwork_Stage_4B_Evidence_Addendum.md` records the evidence-only Stage 4B reconciliation, without creating the master findings ledger.
+- `Voyagewright_Brightwork_Stage_6_Creator_Live_Continuation_Findings.md` records the diagnosis-only Creator, Studio, and Drydock live-audit continuation and its final Stage 7 source disposition; it does not independently authorize a repair.
+- `Voyagewright_Brightwork_Stage_7_Master_Audit_Reconciliation.md` is the canonical, frozen Stage 7 reconciliation and repair-authority ledger. It adjudicates every Creator continuation observation and preserves the reference-quality contracts.
 - `Brightwork_Meaningful_State_Coverage_Matrix.json` accounts for every declared human-facing state and its visual-evidence disposition.
 - `Brightwork_Current_Navigation_Reachability_Report.json` supersedes the stale 109-page Homeport proof for Brightwork and records the current 116 human-facing routes.
 - `Brightwork_Evidence_State_Exceptions.json` preserves the replaced unavailable READY frames, their observed copy, and their evidence-only classification.

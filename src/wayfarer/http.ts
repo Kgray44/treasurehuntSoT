@@ -1,13 +1,25 @@
 import { cookies } from "next/headers";
+import { auditAllowsLocalPublicOrigin } from "@/audit/host";
 import { safeEqual } from "@/lib/security";
 import { currentAccount } from "@/wayfarer/accounts";
 
 export const WAYFARER_COOKIE = "wayfarer_account";
 
+function secureCookieRequired() {
+  if (process.env.NODE_ENV !== "production") return false;
+  const configured = process.env.HOMEPORT_PUBLIC_APP_ORIGIN?.trim() || process.env.NEXT_PUBLIC_APP_URL?.trim();
+  if (!configured) return true;
+  try {
+    return !auditAllowsLocalPublicOrigin(new URL(configured));
+  } catch {
+    return true;
+  }
+}
+
 export const wayfarerCookieOptions = {
   httpOnly: true,
   sameSite: "lax" as const,
-  secure: process.env.NODE_ENV === "production",
+  secure: secureCookieRequired(),
   path: "/",
   maxAge: 60 * 60 * 24 * 30,
 };

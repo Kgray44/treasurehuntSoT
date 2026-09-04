@@ -1,4 +1,5 @@
 import { safeReturnTo } from "./return-to";
+import { auditAllowsLocalPublicOrigin } from "@/audit/host";
 
 const bindOnlyHostnames = new Set(["0.0.0.0", "::", "[::]"]);
 const internalHostnameSuffixes = [".internal", ".local", ".localdomain"];
@@ -65,7 +66,11 @@ export function canonicalPublicAppOrigin() {
 
   if (bindOnlyHostnames.has(origin.hostname.toLowerCase()))
     throw new PublicAppOriginError("A server bind address cannot be used as the public application origin.");
-  if (process.env.NODE_ENV === "production" && isInternalProductionHostname(origin.hostname))
+  if (
+    process.env.NODE_ENV === "production" &&
+    isInternalProductionHostname(origin.hostname) &&
+    !auditAllowsLocalPublicOrigin(origin)
+  )
     throw new PublicAppOriginError(
       "A loopback, private, or internal host cannot be used as the production public origin.",
     );

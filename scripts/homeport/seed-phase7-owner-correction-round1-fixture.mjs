@@ -17,6 +17,7 @@ const databasePath = databaseUrl.startsWith("file:") ? path.resolve(databaseUrl.
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const syntheticPassword = required("HOMEPORT_PHASE7_SYNTHETIC_PASSWORD");
 const createdAt = new Date("2026-08-05T02:00:00.000Z");
+const activeGuestSessionExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 const soundingLineOwned = process.env.HOMEPORT_SOUNDING_LINE_TASK_ROOT === "1";
 const approvedTaskRoot = soundingLineOwned
   ? path.join(path.resolve(process.cwd()), "artifacts", "sounding-line")
@@ -279,7 +280,7 @@ async function seed() {
       accountId: aliases.UNCLAIMED_GUEST.accountId,
       tokenHash: sha256Text(tokenMaterial.guestSession),
       csrfToken: randomBytes(24).toString("base64url"),
-      expiresAt: new Date(createdAt.getTime() + 30 * 24 * 60 * 60 * 1000),
+      expiresAt: activeGuestSessionExpiresAt,
       deviceLabel: "Owner correction synthetic guest",
       createdAt,
     },
