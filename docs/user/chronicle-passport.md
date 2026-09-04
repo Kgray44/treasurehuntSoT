@@ -3,7 +3,7 @@ title: Chronicle Passport
 audience: user
 status: current
 canonical_for: chronicle-passport-guide
-last_reviewed: 2026-08-12
+last_reviewed: 2026-09-04
 ---
 
 # Chronicle Passport
@@ -29,13 +29,21 @@ matching year, not just the cards already loaded. Invitations appear in their
 own section and do not increase the played-Voyage total.
 
 Choose **Open Voyage** for Journey Summary, Path, Crew, Artifacts, Exact
-Edition, and Remembrance. `Duration unavailable` means trustworthy timing was
-not preserved; it never means zero. Shared Voyage artifact moments describe
-what the crew witnessed, while **Your Artifact Cabinet records** are the only
-items presented as personally held. Reflection, Memories, and Keepsakes remain
-private. The exact version identifier and checksum are available under
-**Edition provenance** for advanced verification without dominating the normal
-experience.
+Edition, and Remembrance. **Add Memory** is the immediate archive action;
+Artifact Cabinet, comparison, replay, Voyage Book, and review remain available
+as related actions. `Duration unavailable` means trustworthy timing was not
+preserved; it never means zero. Shared Voyage artifact moments describe what the
+crew witnessed, while **Your Artifact Cabinet records** are the only items
+presented as personally held. Reflection, Memories, and Keepsakes remain
+private. Source and quality references remain available under **Technical
+details** without dominating the normal experience. On a narrow screen, the
+Voyage-detail section selector keeps every long-page section reachable.
+
+Timeline groups private history by retained archive year. People tells the
+shared-history story from private historical snapshots: remembered role, shared
+Voyage count, and first/most-recent retained Voyage links. Statistics stays
+private and noncompetitive. Atlas explains plainly when safe journey geography
+was not retained; it never invents a route or location.
 
 If the archive is empty, use its visible Chronicle discovery or invitation
 actions. If filters return no matches, clear them in one action; the underlying
@@ -54,9 +62,11 @@ to a visible tab all trigger a fresh authoritative check. Browser storage and
 route names are never treated as authorization. This behavior is on main.
 
 In Project Homeport Phase 3, `/passport` and its History, Memories,
-Artifacts, and Saved sections are complete product routes. Desktop and mobile
-show the same Personal Harbor destinations. The behavior is on main; its
-retained evidence is synthetic and does not establish deployment or owner acceptance.
+Artifacts, and Saved sections are complete product routes. Chronicle Passport
+now has its own desktop and mobile product navigation, while Personal Harbor
+keeps one clear return/gateway rather than reproducing Passport's destination
+tree. The behavior is on main; its retained evidence is synthetic and does not
+establish deployment or owner acceptance.
 
 In Phase 4, saving or unsaving eligible Community content preserves
 the Harborlight authoritative state and reconciles after refresh with Saved
