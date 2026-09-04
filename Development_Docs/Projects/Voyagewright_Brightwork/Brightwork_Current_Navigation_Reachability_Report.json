@@ -1,8 +1,10 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "artifact": "Brightwork Current Navigation Reachability Report",
-  "sourceSha": "a82473c40114280694fd292f1103ae914dcc7c6c",
-  "generatedAt": "2026-08-31T05:03:00.220Z",
+  "sourceSha": "2ae4333f09c76c11a51e8b7015cad9e02523a65d",
+  "auditRuntimeSourceSha": "4ce9b890c4b863e72d20d7e9523191bf234f0d4b",
+  "censusDigest": "80c08d26b2c2753d8f9eb281c8ba7780630f69f6040187afe08facb4c0f22fec",
+  "generatedAt": "2026-09-04T16:49:25.458Z",
   "supersedesForBrightwork": "Project Homeport Phase 5 109-page reachability proof",
   "routes": [
     {
@@ -10,6 +12,8 @@
       "screen": "screen-page-root",
       "productArea": "Gateway_Public_Shell",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/",
       "logicalParent": null,
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -17,13 +21,16 @@
       "mobile": true,
       "entryEvidence": "Current global/workspace navigation classification",
       "returnEvidence": "/",
-      "implementationSource": "src/app/page.tsx"
+      "implementationSource": "src/app/page.tsx",
+      "currentCensusBinding": "e7a24555e134ede40be49a9edd35075f07a493630d7fad9a75bbeccb66ee75e2"
     },
     {
       "route": "/account",
       "screen": "screen-page-account",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -31,13 +38,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/account/page.tsx"
+      "implementationSource": "src/app/account/page.tsx",
+      "currentCensusBinding": "0cc49e06168caabe356df1e1824c98dfcd8b78be9d6ad7da7b80475376a773e1"
     },
     {
       "route": "/account/accessibility",
       "screen": "screen-page-account-accessibility",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/accessibility",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -45,13 +55,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/accessibility/page.tsx"
+      "implementationSource": "src/app/account/accessibility/page.tsx",
+      "currentCensusBinding": "8535e368306a23c8f9560c600f8fc5d3393b49a0b8353fdeb8a9d21235771af4"
     },
     {
       "route": "/account/cancel-deletion",
       "screen": "screen-page-account-cancel-deletion",
       "productArea": "Personal_Harbor",
       "reachability": "TOKEN_OR_INVITATION_ONLY",
+      "navigationClassification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
+      "reachableProductPath": "/account/cancel-deletion",
       "logicalParent": "/sign-in",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
@@ -59,13 +72,16 @@
       "mobile": true,
       "entryEvidence": "/sign-in",
       "returnEvidence": "/sign-in",
-      "implementationSource": "src/app/account/cancel-deletion/page.tsx"
+      "implementationSource": "src/app/account/cancel-deletion/page.tsx",
+      "currentCensusBinding": "4de2a1c22a8bd6d3109df3bba0a67408b0078b2d0ad63575e67e82ca8e00eac2"
     },
     {
       "route": "/account/claim",
       "screen": "screen-page-account-claim",
       "productArea": "Personal_Harbor",
       "reachability": "TOKEN_OR_INVITATION_ONLY",
+      "navigationClassification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
+      "reachableProductPath": "/account/claim",
       "logicalParent": "/sign-in",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
@@ -73,13 +89,16 @@
       "mobile": true,
       "entryEvidence": "/sign-in",
       "returnEvidence": "/sign-in",
-      "implementationSource": "src/app/account/claim/page.tsx"
+      "implementationSource": "src/app/account/claim/page.tsx",
+      "currentCensusBinding": "df3696ec8fe559fd403cae146da6fa8077f4031a78d1124babeae0e59a1817b8"
     },
     {
       "route": "/account/data",
       "screen": "screen-page-account-data",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/data",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -87,13 +106,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/data/page.tsx"
+      "implementationSource": "src/app/account/data/page.tsx",
+      "currentCensusBinding": "376972a6b9c180696f0b2a83bf82a1f757ccdf8218c73e155fa28313a94eef6f"
     },
     {
       "route": "/account/email-change",
       "screen": "screen-page-account-email-change",
       "productArea": "Personal_Harbor",
       "reachability": "TOKEN_OR_INVITATION_ONLY",
+      "navigationClassification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
+      "reachableProductPath": "/account/email-change",
       "logicalParent": "/account/personal-information",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
@@ -101,13 +123,16 @@
       "mobile": true,
       "entryEvidence": "/account/personal-information",
       "returnEvidence": "/account/personal-information",
-      "implementationSource": "src/app/account/email-change/page.tsx"
+      "implementationSource": "src/app/account/email-change/page.tsx",
+      "currentCensusBinding": "2db47f244dfc43cfb1127219bc09180bc9cca8fe897a41b9b7e99a758fea55e9"
     },
     {
       "route": "/account/linked-identities",
       "screen": "screen-page-account-linked-identities",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/linked-identities",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -115,13 +140,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/linked-identities/page.tsx"
+      "implementationSource": "src/app/account/linked-identities/page.tsx",
+      "currentCensusBinding": "15bf8ee2a189beac7f13c1d4a24427b1fe8e85b02bcc9194125dfd92f127febb"
     },
     {
       "route": "/account/merge",
       "screen": "screen-page-account-merge",
       "productArea": "Personal_Harbor",
       "reachability": "TOKEN_OR_INVITATION_ONLY",
+      "navigationClassification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
+      "reachableProductPath": "/account/merge",
       "logicalParent": "/sign-in",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
@@ -129,13 +157,16 @@
       "mobile": true,
       "entryEvidence": "/sign-in",
       "returnEvidence": "/sign-in",
-      "implementationSource": "src/app/account/merge/page.tsx"
+      "implementationSource": "src/app/account/merge/page.tsx",
+      "currentCensusBinding": "aa38c77b46596fb76c5f48dad8a2b932bb17c151c25813e32d49394f1e8a22a2"
     },
     {
       "route": "/account/notifications",
       "screen": "screen-page-account-notifications",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/notifications",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -143,13 +174,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/notifications/page.tsx"
+      "implementationSource": "src/app/account/notifications/page.tsx",
+      "currentCensusBinding": "511e75a1cf2d0473ae18449598d0b29d0627d07b1ceb0e06df5d24828c16966f"
     },
     {
       "route": "/account/personal-information",
       "screen": "screen-page-account-personal-information",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/personal-information",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -157,13 +191,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/personal-information/page.tsx"
+      "implementationSource": "src/app/account/personal-information/page.tsx",
+      "currentCensusBinding": "8afca916b68a94f1da839f82155e84b080a7c6f13f0692b6b5e4e95af7d191cf"
     },
     {
       "route": "/account/preferences",
       "screen": "screen-page-account-preferences",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/preferences",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -171,13 +208,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/preferences/page.tsx"
+      "implementationSource": "src/app/account/preferences/page.tsx",
+      "currentCensusBinding": "e2f1c227c0f4779f3e4f2362647b201210491972debfee5cca5cf28b34a5ba25"
     },
     {
       "route": "/account/privacy",
       "screen": "screen-page-account-privacy",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/privacy",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -185,13 +225,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/privacy/page.tsx"
+      "implementationSource": "src/app/account/privacy/page.tsx",
+      "currentCensusBinding": "242516a4f92d3f17cb31811f962418a88f974d7bc0026d6b9bc72c6bd8b05508"
     },
     {
       "route": "/account/profile",
       "screen": "screen-page-account-profile",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/profile",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -199,13 +242,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/profile/page.tsx"
+      "implementationSource": "src/app/account/profile/page.tsx",
+      "currentCensusBinding": "75cd0f39e60f83463a2cc859843eac898c15e491c204c8944a2cfac4cf9ce692"
     },
     {
       "route": "/account/profile/view",
       "screen": "screen-page-account-profile-view",
       "productArea": "Personal_Harbor",
-      "reachability": "DIRECT_NAVIGABLE",
+      "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/account/profile/view",
       "logicalParent": "/account/profile",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -213,13 +259,16 @@
       "mobile": true,
       "entryEvidence": "/account/profile",
       "returnEvidence": "/account/profile",
-      "implementationSource": "src/app/account/profile/view/page.tsx"
+      "implementationSource": "src/app/account/profile/view/page.tsx",
+      "currentCensusBinding": "51dca732b08cca9bce5bc65d3de89386ca2244b1c65ab4bb04d3c2596e8d8152"
     },
     {
       "route": "/account/reactivate",
       "screen": "screen-page-account-reactivate",
       "productArea": "Personal_Harbor",
       "reachability": "TOKEN_OR_INVITATION_ONLY",
+      "navigationClassification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
+      "reachableProductPath": "/account/reactivate",
       "logicalParent": "/sign-in",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
@@ -227,13 +276,16 @@
       "mobile": true,
       "entryEvidence": "/sign-in",
       "returnEvidence": "/sign-in",
-      "implementationSource": "src/app/account/reactivate/page.tsx"
+      "implementationSource": "src/app/account/reactivate/page.tsx",
+      "currentCensusBinding": "1b07ca2451c2d0b7e3d825bf4788d0d3a2823225990b1712d21c78f8ba71d916"
     },
     {
       "route": "/account/roles",
       "screen": "screen-page-account-roles",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/roles",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -241,13 +293,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/roles/page.tsx"
+      "implementationSource": "src/app/account/roles/page.tsx",
+      "currentCensusBinding": "f70a283273aeb0434ec3562c13d10750a7fcc50df452914b51dc6e2b658cca3e"
     },
     {
       "route": "/account/security",
       "screen": "screen-page-account-security",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/security",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -255,13 +310,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/security/page.tsx"
+      "implementationSource": "src/app/account/security/page.tsx",
+      "currentCensusBinding": "b9261d1be9d471b8cef0b54ee843aa4d0f0a2831e608615621a53e884dbca988"
     },
     {
       "route": "/account/sessions",
       "screen": "screen-page-account-sessions",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/sessions",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -269,13 +327,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/sessions/page.tsx"
+      "implementationSource": "src/app/account/sessions/page.tsx",
+      "currentCensusBinding": "21df397914d52ffab925fffa5e079839d7dd0201eade47a6cc89d4fd09f6dede"
     },
     {
       "route": "/account/support-access",
       "screen": "screen-page-account-support-access",
       "productArea": "Personal_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/account/support-access",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
@@ -283,13 +344,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/account/support-access/page.tsx"
+      "implementationSource": "src/app/account/support-access/page.tsx",
+      "currentCensusBinding": "07fbbdbcf97c988e14aa2227532ec5eb508c9fa3749336d816a7c03406a7c38b"
     },
     {
       "route": "/admin",
       "screen": "screen-page-admin",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["PLATFORM_OBSERVE"],
@@ -297,13 +361,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/admin/page.tsx"
+      "implementationSource": "src/app/admin/page.tsx",
+      "currentCensusBinding": "84ad4e39d0b31043a39cc5257e7cf56569604d7e77619e39db95028c6c9b2109"
     },
     {
       "route": "/admin/audit",
       "screen": "screen-page-admin-audit",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/audit",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["AUDIT_OBSERVE"],
@@ -311,13 +378,16 @@
       "mobile": true,
       "entryEvidence": "/admin",
       "returnEvidence": "/admin",
-      "implementationSource": "src/app/admin/audit/page.tsx"
+      "implementationSource": "src/app/admin/audit/page.tsx",
+      "currentCensusBinding": "fab4c2f85a0962fc0a528a687465e3d17cd957233e9f15556901c920013c5df1"
     },
     {
       "route": "/admin/chronicles",
       "screen": "screen-page-admin-chronicles",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/chronicles",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CHRONICLE_OBSERVE"],
@@ -325,13 +395,16 @@
       "mobile": true,
       "entryEvidence": "/admin",
       "returnEvidence": "/admin",
-      "implementationSource": "src/app/admin/chronicles/page.tsx"
+      "implementationSource": "src/app/admin/chronicles/page.tsx",
+      "currentCensusBinding": "8647382b979ca189c740ba176c29b07832c5e81a8a56e5afc6af42cd19de912f"
     },
     {
       "route": "/admin/chronicles/[chronicleId]",
       "screen": "screen-page-admin-chronicles-chronicleid",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/chronicles/[chronicleId]",
       "logicalParent": "/admin/chronicles",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CHRONICLE_OBSERVE"],
@@ -339,13 +412,16 @@
       "mobile": true,
       "entryEvidence": "/admin/chronicles",
       "returnEvidence": "/admin/chronicles",
-      "implementationSource": "src/app/admin/chronicles/[chronicleId]/page.tsx"
+      "implementationSource": "src/app/admin/chronicles/[chronicleId]/page.tsx",
+      "currentCensusBinding": "8eb7dd14aa31d0e9f98ac5c8280bbca562a470fbecd73958d5ec3e29f93c0980"
     },
     {
       "route": "/admin/community",
       "screen": "screen-page-admin-community",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/community",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["COMMUNITY_OBSERVE"],
@@ -353,13 +429,16 @@
       "mobile": true,
       "entryEvidence": "/admin",
       "returnEvidence": "/admin",
-      "implementationSource": "src/app/admin/community/page.tsx"
+      "implementationSource": "src/app/admin/community/page.tsx",
+      "currentCensusBinding": "eccad9f93fbae03df683e8183237b2295bc1cecac1180c05ece179f80a0af2ce"
     },
     {
       "route": "/admin/community/[listingId]",
       "screen": "screen-page-admin-community-listingid",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/community/[listingId]",
       "logicalParent": "/admin/community",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["COMMUNITY_OBSERVE"],
@@ -367,13 +446,16 @@
       "mobile": true,
       "entryEvidence": "/admin/community",
       "returnEvidence": "/admin/community",
-      "implementationSource": "src/app/admin/community/[listingId]/page.tsx"
+      "implementationSource": "src/app/admin/community/[listingId]/page.tsx",
+      "currentCensusBinding": "6a31a775af89452395edaac8fe906bc7afdc9681425e839917747d23e86f23c9"
     },
     {
       "route": "/admin/configuration",
       "screen": "screen-page-admin-configuration",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/configuration",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CONFIG_OBSERVE"],
@@ -381,13 +463,16 @@
       "mobile": true,
       "entryEvidence": "/admin",
       "returnEvidence": "/admin",
-      "implementationSource": "src/app/admin/configuration/page.tsx"
+      "implementationSource": "src/app/admin/configuration/page.tsx",
+      "currentCensusBinding": "00315efb617ff4769e2fd4357671c54fc622cfa73402eaf621cb96bd32e57c58"
     },
     {
       "route": "/admin/investigate",
       "screen": "screen-page-admin-investigate",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/investigate",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["PLATFORM_OBSERVE"],
@@ -395,13 +480,16 @@
       "mobile": true,
       "entryEvidence": "/admin",
       "returnEvidence": "/admin",
-      "implementationSource": "src/app/admin/investigate/page.tsx"
+      "implementationSource": "src/app/admin/investigate/page.tsx",
+      "currentCensusBinding": "0cc0d133566b72f2bbcf08f44e24a69e5cd4d68125619bee96b80c8e84454607"
     },
     {
       "route": "/admin/operations",
       "screen": "screen-page-admin-operations",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/operations",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["JOBS_OBSERVE"],
@@ -409,13 +497,16 @@
       "mobile": true,
       "entryEvidence": "/admin",
       "returnEvidence": "/admin",
-      "implementationSource": "src/app/admin/operations/page.tsx"
+      "implementationSource": "src/app/admin/operations/page.tsx",
+      "currentCensusBinding": "dfd429efebfbb4ce9e77f39c35bb1de6dda508184e3f708c6bc520930376885a"
     },
     {
       "route": "/admin/people",
       "screen": "screen-page-admin-people",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/people",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["ACCOUNT_OBSERVE"],
@@ -423,13 +514,16 @@
       "mobile": true,
       "entryEvidence": "/admin",
       "returnEvidence": "/admin",
-      "implementationSource": "src/app/admin/people/page.tsx"
+      "implementationSource": "src/app/admin/people/page.tsx",
+      "currentCensusBinding": "ad93b3f23dfa53bb4da689512b5087da0dd3fc1583fa11a1a1dc020af8f5bdae"
     },
     {
       "route": "/admin/people/[accountId]",
       "screen": "screen-page-admin-people-accountid",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/people/[accountId]",
       "logicalParent": "/admin/people",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["ACCOUNT_OBSERVE"],
@@ -437,13 +531,16 @@
       "mobile": true,
       "entryEvidence": "/admin/people",
       "returnEvidence": "/admin/people",
-      "implementationSource": "src/app/admin/people/[accountId]/page.tsx"
+      "implementationSource": "src/app/admin/people/[accountId]/page.tsx",
+      "currentCensusBinding": "204a11ff5d5c6c32c9c2f81d0db0091e5f5f91449830fd9c4c92f3f34ad6748e"
     },
     {
       "route": "/admin/providers",
       "screen": "screen-page-admin-providers",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/providers",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CONTENT_OBSERVE"],
@@ -451,13 +548,16 @@
       "mobile": true,
       "entryEvidence": "/admin",
       "returnEvidence": "/admin",
-      "implementationSource": "src/app/admin/providers/page.tsx"
+      "implementationSource": "src/app/admin/providers/page.tsx",
+      "currentCensusBinding": "686037cee37e38064e2bcd8cb0e4e2bc780483fd12489f10fce5aaa01ef202a5"
     },
     {
       "route": "/admin/releases",
       "screen": "screen-page-admin-releases",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/releases",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["RELEASE_OBSERVE"],
@@ -465,13 +565,16 @@
       "mobile": true,
       "entryEvidence": "/admin",
       "returnEvidence": "/admin",
-      "implementationSource": "src/app/admin/releases/page.tsx"
+      "implementationSource": "src/app/admin/releases/page.tsx",
+      "currentCensusBinding": "d477911f8ac995ca47e4192b9f8fea702a198c5ded34a79835eb678274fef09d"
     },
     {
       "route": "/admin/support/cases",
       "screen": "screen-page-admin-support-cases",
       "productArea": "Admiralty",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/admin/support/cases",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["SUPPORT_REQUEST"],
@@ -479,13 +582,16 @@
       "mobile": true,
       "entryEvidence": "Current global/workspace navigation classification",
       "returnEvidence": "/",
-      "implementationSource": "src/app/admin/support/cases/page.tsx"
+      "implementationSource": "src/app/admin/support/cases/page.tsx",
+      "currentCensusBinding": "740a49e65f4025c4832b91fa8ae791e572760685eacde4b777b46587bfc9c6e7"
     },
     {
       "route": "/admin/voyages",
       "screen": "screen-page-admin-voyages",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/voyages",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["VOYAGE_OBSERVE"],
@@ -493,13 +599,16 @@
       "mobile": true,
       "entryEvidence": "/admin",
       "returnEvidence": "/admin",
-      "implementationSource": "src/app/admin/voyages/page.tsx"
+      "implementationSource": "src/app/admin/voyages/page.tsx",
+      "currentCensusBinding": "a55970edef7ca433e5c0d937279836b3d142ae4dc82e0e82f044e6c013206cff"
     },
     {
       "route": "/admin/voyages/[voyageId]",
       "screen": "screen-page-admin-voyages-voyageid",
       "productArea": "Admiralty",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/admin/voyages/[voyageId]",
       "logicalParent": "/admin/voyages",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["VOYAGE_OBSERVE"],
@@ -507,13 +616,16 @@
       "mobile": true,
       "entryEvidence": "/admin/voyages",
       "returnEvidence": "/admin/voyages",
-      "implementationSource": "src/app/admin/voyages/[voyageId]/page.tsx"
+      "implementationSource": "src/app/admin/voyages/[voyageId]/page.tsx",
+      "currentCensusBinding": "84ddfe01cfaf375fcca5b56fd58217fe3a0992d3a49b8b91f74221ad50a4ae26"
     },
     {
       "route": "/captain",
       "screen": "screen-page-captain",
       "productArea": "Captain_Helm",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/captain",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
@@ -521,13 +633,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/captain/page.tsx"
+      "implementationSource": "src/app/captain/page.tsx",
+      "currentCensusBinding": "4961451e2ee52dec0606792ddf33d750c23372fc9e6dfd6732d390e6b87b8767"
     },
     {
       "route": "/captain/invitations",
       "screen": "screen-page-captain-invitations",
       "productArea": "Captain_Helm",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/captain/invitations",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
@@ -535,13 +650,16 @@
       "mobile": true,
       "entryEvidence": "/captain/library",
       "returnEvidence": "/captain/library",
-      "implementationSource": "src/app/captain/invitations/page.tsx"
+      "implementationSource": "src/app/captain/invitations/page.tsx",
+      "currentCensusBinding": "48c2b1fef40aac44f0a5d7500804cc79f22d1a66339359aafdf5647fcb84ffce"
     },
     {
       "route": "/captain/library",
       "screen": "screen-page-captain-library",
       "productArea": "Captain_Helm",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/captain/library",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
@@ -549,13 +667,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/captain/library/page.tsx"
+      "implementationSource": "src/app/captain/library/page.tsx",
+      "currentCensusBinding": "3d425c5ff6a1f35080704d577e8a6798f91bf59a48b65bc61206e51b25ab8dce"
     },
     {
       "route": "/captain/sessions/[sessionId]",
       "screen": "screen-page-captain-sessions-sessionid",
       "productArea": "Captain_Helm",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/captain/sessions/[sessionId]",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
@@ -563,13 +684,16 @@
       "mobile": true,
       "entryEvidence": "/captain/library",
       "returnEvidence": "/captain/library",
-      "implementationSource": "src/app/captain/sessions/[sessionId]/page.tsx"
+      "implementationSource": "src/app/captain/sessions/[sessionId]/page.tsx",
+      "currentCensusBinding": "22dab220db48fed0f305c2b2c6654fa6fea71f94f638c08614a09dbaae04d1d3"
     },
     {
       "route": "/captain/sign-in",
       "screen": "screen-page-captain-sign-in",
       "productArea": "Captain_Helm",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/captain/sign-in",
       "logicalParent": "/",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": ["captain"],
@@ -577,13 +701,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/captain/sign-in/page.tsx"
+      "implementationSource": "src/app/captain/sign-in/page.tsx",
+      "currentCensusBinding": "3ef88ebca1b91b2d3ebd589fca8c022ee1cfa1da27aa6dd512a8eb5ccf413359"
     },
     {
       "route": "/captain/tales/[taleId]",
       "screen": "screen-page-captain-tales-taleid",
       "productArea": "Captain_Helm",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/captain/tales/[taleId]",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
@@ -591,13 +718,16 @@
       "mobile": true,
       "entryEvidence": "/captain/library",
       "returnEvidence": "/captain/library",
-      "implementationSource": "src/app/captain/tales/[taleId]/page.tsx"
+      "implementationSource": "src/app/captain/tales/[taleId]/page.tsx",
+      "currentCensusBinding": "0f5de4f579560696560c00bd8ef15fb4f5c4b5e50ff6566ea817ab3423603ec9"
     },
     {
       "route": "/captain/voyages/[playthroughId]/muster",
       "screen": "screen-page-captain-voyages-playthroughid-muster",
       "productArea": "Captain_Helm",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/captain/voyages/[playthroughId]/muster",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["captain"],
@@ -605,13 +735,16 @@
       "mobile": true,
       "entryEvidence": "Protected operator entry contract",
       "returnEvidence": "/",
-      "implementationSource": "src/app/captain/voyages/[playthroughId]/muster/page.tsx"
+      "implementationSource": "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
+      "currentCensusBinding": "33b555022597a23151335d234dcc685b8d744971bd69c575177fc4195863a5a5"
     },
     {
       "route": "/captain/voyages/[playthroughId]/player-preview",
       "screen": "screen-page-captain-voyages-playthroughid-player-preview",
       "productArea": "Captain_Helm",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/captain/voyages/[playthroughId]/player-preview",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
@@ -619,13 +752,16 @@
       "mobile": true,
       "entryEvidence": "/captain/library",
       "returnEvidence": "/captain/library",
-      "implementationSource": "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx"
+      "implementationSource": "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
+      "currentCensusBinding": "d255867a95a7f2dde88dd149c4b6a38c7f5b30ff4c92b655fba6222c8b6d2895"
     },
     {
       "route": "/chronicles/[taleSlug]",
       "screen": "screen-page-chronicles-taleslug",
       "productArea": "Public_Chronicle_and_Detail",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/chronicles/[taleSlug]",
       "logicalParent": "/tales",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -633,13 +769,16 @@
       "mobile": true,
       "entryEvidence": "/tales",
       "returnEvidence": "/tales",
-      "implementationSource": "src/app/chronicles/[taleSlug]/page.tsx"
+      "implementationSource": "src/app/chronicles/[taleSlug]/page.tsx",
+      "currentCensusBinding": "fceeaea9513d7491f750b79a834edda7d7c058c93e65cffc0a8546c0ef467cbb"
     },
     {
       "route": "/chronicles/[taleSlug]/compare",
       "screen": "screen-page-chronicles-taleslug-compare",
       "productArea": "Public_Chronicle_and_Detail",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/chronicles/[taleSlug]/compare",
       "logicalParent": "/chronicles/[taleSlug]",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -647,13 +786,16 @@
       "mobile": true,
       "entryEvidence": "/chronicles/[taleSlug]",
       "returnEvidence": "/chronicles/[taleSlug]",
-      "implementationSource": "src/app/chronicles/[taleSlug]/compare/page.tsx"
+      "implementationSource": "src/app/chronicles/[taleSlug]/compare/page.tsx",
+      "currentCensusBinding": "9ae13c1dbefd476483b7eb480f4b85c2f01e159133f802063766d23f7e22f3d3"
     },
     {
       "route": "/community",
       "screen": "screen-page-community",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community",
       "logicalParent": "/",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -661,13 +803,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/community/page.tsx"
+      "implementationSource": "src/app/community/page.tsx",
+      "currentCensusBinding": "4c3e2257660b24ddb7fcf6041dccc071d5eea8c2d9ec36755bf832aa2f3e0982"
     },
     {
       "route": "/community/[slug]",
       "screen": "screen-page-community-slug",
       "productArea": "Community_Harbor",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/community/[slug]",
       "logicalParent": "/community/chronicles",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -675,13 +820,16 @@
       "mobile": true,
       "entryEvidence": "/community/chronicles",
       "returnEvidence": "/community/chronicles",
-      "implementationSource": "src/app/community/[slug]/page.tsx"
+      "implementationSource": "src/app/community/[slug]/page.tsx",
+      "currentCensusBinding": "2b6a40565a2cc63e4a689f849de03a6839edcbdb0eed766a80df3a58a392a0ca"
     },
     {
       "route": "/community/artifacts",
       "screen": "screen-page-community-artifacts",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/artifacts",
       "logicalParent": "/community",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -689,13 +837,16 @@
       "mobile": true,
       "entryEvidence": "/community",
       "returnEvidence": "/community",
-      "implementationSource": "src/app/community/artifacts/page.tsx"
+      "implementationSource": "src/app/community/artifacts/page.tsx",
+      "currentCensusBinding": "307fec06deb7fdd83fb4c0d8231f220e11009cdeca98b2110c7cc78c9e7b0197"
     },
     {
       "route": "/community/audio",
       "screen": "screen-page-community-audio",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/audio",
       "logicalParent": "/community",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -703,13 +854,16 @@
       "mobile": true,
       "entryEvidence": "/community",
       "returnEvidence": "/community",
-      "implementationSource": "src/app/community/audio/page.tsx"
+      "implementationSource": "src/app/community/audio/page.tsx",
+      "currentCensusBinding": "97d96130cde4249f0a88845dcfe24d3afd691214dcecb75c660418d0daad0a92"
     },
     {
       "route": "/community/chronicles",
       "screen": "screen-page-community-chronicles",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/chronicles",
       "logicalParent": "/community",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -717,13 +871,16 @@
       "mobile": true,
       "entryEvidence": "/community",
       "returnEvidence": "/community",
-      "implementationSource": "src/app/community/chronicles/page.tsx"
+      "implementationSource": "src/app/community/chronicles/page.tsx",
+      "currentCensusBinding": "234d1f88712ce5e4a035e93ff01bd2102413141e0718044addf72041014d8b70"
     },
     {
       "route": "/community/collections",
       "screen": "screen-page-community-collections",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/collections",
       "logicalParent": "/community",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -731,13 +888,16 @@
       "mobile": true,
       "entryEvidence": "/community",
       "returnEvidence": "/community",
-      "implementationSource": "src/app/community/collections/page.tsx"
+      "implementationSource": "src/app/community/collections/page.tsx",
+      "currentCensusBinding": "90251d108346b080ff65e4e9c38b15a2a0aa661758c0820a7f91ff9e64b5f9f8"
     },
     {
       "route": "/community/collections/[slug]",
       "screen": "screen-page-community-collections-slug",
       "productArea": "Community_Harbor",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/community/collections/[slug]",
       "logicalParent": "/community/collections",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -745,13 +905,16 @@
       "mobile": true,
       "entryEvidence": "/community/collections",
       "returnEvidence": "/community/collections",
-      "implementationSource": "src/app/community/collections/[slug]/page.tsx"
+      "implementationSource": "src/app/community/collections/[slug]/page.tsx",
+      "currentCensusBinding": "82889180a415930a5b27b74ef00495d2d592f635c5b6fcfda31e642fdba97b97"
     },
     {
       "route": "/community/creators",
       "screen": "screen-page-community-creators",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/creators",
       "logicalParent": "/community",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -759,13 +922,16 @@
       "mobile": true,
       "entryEvidence": "/community",
       "returnEvidence": "/community",
-      "implementationSource": "src/app/community/creators/page.tsx"
+      "implementationSource": "src/app/community/creators/page.tsx",
+      "currentCensusBinding": "6ce8fe5e5b4f70b833cff4e220089d99d01ace712c45bb6526460f215cf5200a"
     },
     {
       "route": "/community/creators/[handle]",
       "screen": "screen-page-community-creators-handle",
       "productArea": "Community_Harbor",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/community/creators/[handle]",
       "logicalParent": "/community/creators",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -773,13 +939,16 @@
       "mobile": true,
       "entryEvidence": "/community/creators",
       "returnEvidence": "/community/creators",
-      "implementationSource": "src/app/community/creators/[handle]/page.tsx"
+      "implementationSource": "src/app/community/creators/[handle]/page.tsx",
+      "currentCensusBinding": "f9d134fb3a92bfdc6bd46de64d412993c702e088d5dc1cf3c9bf9d1b36bbe06f"
     },
     {
       "route": "/community/featured",
       "screen": "screen-page-community-featured",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/featured",
       "logicalParent": "/community",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -787,13 +956,16 @@
       "mobile": true,
       "entryEvidence": "/community",
       "returnEvidence": "/community",
-      "implementationSource": "src/app/community/featured/page.tsx"
+      "implementationSource": "src/app/community/featured/page.tsx",
+      "currentCensusBinding": "bea294b0118bcd0aea1c818b7be6385b3c89d25769a3c9c05e5d04ac0760dd8c"
     },
     {
       "route": "/community/guides",
       "screen": "screen-page-community-guides",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/guides",
       "logicalParent": "/community",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -801,13 +973,16 @@
       "mobile": true,
       "entryEvidence": "/community",
       "returnEvidence": "/community",
-      "implementationSource": "src/app/community/guides/page.tsx"
+      "implementationSource": "src/app/community/guides/page.tsx",
+      "currentCensusBinding": "8ad354d339d31b487d69c72b00ef5c18681a1b1c6e9081c4dd16269155cf28c9"
     },
     {
       "route": "/community/guides/[slug]",
       "screen": "screen-page-community-guides-slug",
       "productArea": "Community_Harbor",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/community/guides/[slug]",
       "logicalParent": "/community/guides",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -815,13 +990,16 @@
       "mobile": true,
       "entryEvidence": "/community/guides",
       "returnEvidence": "/community/guides",
-      "implementationSource": "src/app/community/guides/[slug]/page.tsx"
+      "implementationSource": "src/app/community/guides/[slug]/page.tsx",
+      "currentCensusBinding": "a93cd045e8bf981b812efac27b7f4144f3c8fb310b82ecf377ef7ac558c724d7"
     },
     {
       "route": "/community/maps",
       "screen": "screen-page-community-maps",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/maps",
       "logicalParent": "/community",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -829,13 +1007,16 @@
       "mobile": true,
       "entryEvidence": "/community",
       "returnEvidence": "/community",
-      "implementationSource": "src/app/community/maps/page.tsx"
+      "implementationSource": "src/app/community/maps/page.tsx",
+      "currentCensusBinding": "90c7d8cc83d559b41ac513c3482d818f0a856c5fdc833f8788d7db6c5ea6c358"
     },
     {
       "route": "/community/moderation",
       "screen": "screen-page-community-moderation",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/moderation",
       "logicalParent": "/community",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["MODERATOR"],
@@ -843,13 +1024,16 @@
       "mobile": true,
       "entryEvidence": "/community",
       "returnEvidence": "/community",
-      "implementationSource": "src/app/community/moderation/page.tsx"
+      "implementationSource": "src/app/community/moderation/page.tsx",
+      "currentCensusBinding": "b0f87286e7a8478aa69e59e4c440c5eb7f73e91a3ca945e20a7897d67dc40f73"
     },
     {
       "route": "/community/moderation/[id]",
       "screen": "screen-page-community-moderation-id",
       "productArea": "Community_Harbor",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/community/moderation/[id]",
       "logicalParent": "/community/moderation",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["MODERATOR"],
@@ -857,13 +1041,16 @@
       "mobile": true,
       "entryEvidence": "/community/moderation",
       "returnEvidence": "/community/moderation",
-      "implementationSource": "src/app/community/moderation/[id]/page.tsx"
+      "implementationSource": "src/app/community/moderation/[id]/page.tsx",
+      "currentCensusBinding": "79451c5c7e25bfba28962516c98eee0056e81b9822bec7f2799156d527e955cf"
     },
     {
       "route": "/community/templates",
       "screen": "screen-page-community-templates",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/templates",
       "logicalParent": "/community",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -871,13 +1058,16 @@
       "mobile": true,
       "entryEvidence": "/community",
       "returnEvidence": "/community",
-      "implementationSource": "src/app/community/templates/page.tsx"
+      "implementationSource": "src/app/community/templates/page.tsx",
+      "currentCensusBinding": "dc15a969c4b28c74cf939356e6f45097c1f99c44072f543085f50e986b8e0a53"
     },
     {
       "route": "/community/voyage-logs",
       "screen": "screen-page-community-voyage-logs",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/voyage-logs",
       "logicalParent": "/community",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -885,13 +1075,16 @@
       "mobile": true,
       "entryEvidence": "/community",
       "returnEvidence": "/community",
-      "implementationSource": "src/app/community/voyage-logs/page.tsx"
+      "implementationSource": "src/app/community/voyage-logs/page.tsx",
+      "currentCensusBinding": "32ae95a8b732a97151b68ec04dd69366f76a1d749dd41c27f57db823b4e2a8e5"
     },
     {
       "route": "/community/voyage-logs/[slug]",
       "screen": "screen-page-community-voyage-logs-slug",
       "productArea": "Community_Harbor",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/community/voyage-logs/[slug]",
       "logicalParent": "/community/voyage-logs",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -899,13 +1092,16 @@
       "mobile": true,
       "entryEvidence": "/community/voyage-logs",
       "returnEvidence": "/community/voyage-logs",
-      "implementationSource": "src/app/community/voyage-logs/[slug]/page.tsx"
+      "implementationSource": "src/app/community/voyage-logs/[slug]/page.tsx",
+      "currentCensusBinding": "dc3a5aeb404470a7b76d7aaf28762cefe10588a72b6ccd409909cc167a2aef73"
     },
     {
       "route": "/community/voyage-logs/consent",
       "screen": "screen-page-community-voyage-logs-consent",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/voyage-logs/consent",
       "logicalParent": "/community/voyage-logs",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
@@ -913,13 +1109,16 @@
       "mobile": true,
       "entryEvidence": "/community/voyage-logs",
       "returnEvidence": "/community/voyage-logs",
-      "implementationSource": "src/app/community/voyage-logs/consent/page.tsx"
+      "implementationSource": "src/app/community/voyage-logs/consent/page.tsx",
+      "currentCensusBinding": "004b2803874cc8f164f7fe04bc08a43f743f5f7f49d6213cf1d01d7cc03135e2"
     },
     {
       "route": "/community/voyage-logs/media",
       "screen": "screen-page-community-voyage-logs-media",
       "productArea": "Community_Harbor",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/community/voyage-logs/media",
       "logicalParent": "/community/voyage-logs/owner",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -927,13 +1126,16 @@
       "mobile": true,
       "entryEvidence": "/community/voyage-logs/owner",
       "returnEvidence": "/community/voyage-logs/owner",
-      "implementationSource": "src/app/community/voyage-logs/media/page.tsx"
+      "implementationSource": "src/app/community/voyage-logs/media/page.tsx",
+      "currentCensusBinding": "f73a76a98e16c30aa487d90bfa7762b6b59b6c3d413444ff3c13240c5ebcb078"
     },
     {
       "route": "/community/voyage-logs/owner",
       "screen": "screen-page-community-voyage-logs-owner",
       "productArea": "Community_Harbor",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/community/voyage-logs/owner",
       "logicalParent": "/community/voyage-logs",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
@@ -941,13 +1143,16 @@
       "mobile": true,
       "entryEvidence": "/community/voyage-logs",
       "returnEvidence": "/community/voyage-logs",
-      "implementationSource": "src/app/community/voyage-logs/owner/page.tsx"
+      "implementationSource": "src/app/community/voyage-logs/owner/page.tsx",
+      "currentCensusBinding": "526bd7216a1fd86eacbcdb6b21658128ddc17a311ecb7d0080ed5bb5df01cda3"
     },
     {
       "route": "/community/voyage-logs/owner/[id]",
       "screen": "screen-page-community-voyage-logs-owner-id",
       "productArea": "Community_Harbor",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/community/voyage-logs/owner/[id]",
       "logicalParent": "/community/voyage-logs/owner",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
@@ -955,13 +1160,16 @@
       "mobile": true,
       "entryEvidence": "/community/voyage-logs/owner",
       "returnEvidence": "/community/voyage-logs/owner",
-      "implementationSource": "src/app/community/voyage-logs/owner/[id]/page.tsx"
+      "implementationSource": "src/app/community/voyage-logs/owner/[id]/page.tsx",
+      "currentCensusBinding": "9b44773ef6b806f1b05c1ee157cc9e3bf13381a3635d619ac28858a9cbca4a64"
     },
     {
       "route": "/forgot-password",
       "screen": "screen-page-forgot-password",
       "productArea": "Authentication_and_Recovery",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/forgot-password",
       "logicalParent": "/sign-in",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -969,13 +1177,16 @@
       "mobile": true,
       "entryEvidence": "/sign-in",
       "returnEvidence": "/sign-in",
-      "implementationSource": "src/app/forgot-password/page.tsx"
+      "implementationSource": "src/app/forgot-password/page.tsx",
+      "currentCensusBinding": "e66e17c9753846b602398e9af78218bbc7c1f94f9613c17d4d6e459a0ace4307"
     },
     {
       "route": "/passport",
       "screen": "screen-page-passport",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/passport",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -983,13 +1194,16 @@
       "mobile": true,
       "entryEvidence": "/account",
       "returnEvidence": "/account",
-      "implementationSource": "src/app/passport/page.tsx"
+      "implementationSource": "src/app/passport/page.tsx",
+      "currentCensusBinding": "5907f70f283116e5599d17ad71fdbefed492444583a2ebe32fb35a82393e07fe"
     },
     {
       "route": "/passport/artifacts",
       "screen": "screen-page-passport-artifacts",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/passport/artifacts",
       "logicalParent": "/passport",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -997,13 +1211,16 @@
       "mobile": true,
       "entryEvidence": "/passport",
       "returnEvidence": "/passport",
-      "implementationSource": "src/app/passport/artifacts/page.tsx"
+      "implementationSource": "src/app/passport/artifacts/page.tsx",
+      "currentCensusBinding": "903f59f801b62615d2b3cbf3869ea825788bb9e87eed92eaf28eb70de48a900f"
     },
     {
       "route": "/passport/artifacts/[artifactId]",
       "screen": "screen-page-passport-artifacts-artifactId",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/passport/artifacts/[artifactId]",
       "logicalParent": "/passport/artifacts",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -1011,13 +1228,16 @@
       "mobile": true,
       "entryEvidence": "/passport/artifacts",
       "returnEvidence": "/passport/artifacts",
-      "implementationSource": "src/app/passport/artifacts/[artifactId]/page.tsx"
+      "implementationSource": "src/app/passport/artifacts/[artifactId]/page.tsx",
+      "currentCensusBinding": "4b25fab911466d39ae1d5ac8b06e43927199d93069f922ba80825d50ff612b9d"
     },
     {
       "route": "/passport/atlas",
       "screen": "screen-page-passport-atlas",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/passport/atlas",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -1025,13 +1245,16 @@
       "mobile": true,
       "entryEvidence": "Current global/workspace navigation classification",
       "returnEvidence": "/",
-      "implementationSource": "src/app/passport/atlas/page.tsx"
+      "implementationSource": "src/app/passport/atlas/page.tsx",
+      "currentCensusBinding": "f75a604a60b5ec010dcf5a3a7b8ba7301ef5f02a5a133f6590da04e147731d86"
     },
     {
       "route": "/passport/history",
       "screen": "screen-page-passport-history",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/passport/history",
       "logicalParent": "/passport",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -1039,13 +1262,16 @@
       "mobile": true,
       "entryEvidence": "/passport",
       "returnEvidence": "/passport",
-      "implementationSource": "src/app/passport/history/page.tsx"
+      "implementationSource": "src/app/passport/history/page.tsx",
+      "currentCensusBinding": "0f2c53d869ce47fd00ddaaf7007a4e27493c78cdf226ade46f6fa16ad328f6b7"
     },
     {
       "route": "/passport/history/[recordId]",
       "screen": "screen-page-passport-history-recordId",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/passport/history/[recordId]",
       "logicalParent": "/passport/history",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -1053,13 +1279,16 @@
       "mobile": true,
       "entryEvidence": "/passport/history",
       "returnEvidence": "/passport/history",
-      "implementationSource": "src/app/passport/history/[recordId]/page.tsx"
+      "implementationSource": "src/app/passport/history/[recordId]/page.tsx",
+      "currentCensusBinding": "5099861dbe278816f2c7ecf0d7e11365158a55fe48dccb77b7576f3e8568602e"
     },
     {
       "route": "/passport/history/[recordId]/book",
       "screen": "screen-page-passport-history-recordid-book",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/passport/history/[recordId]/book",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -1067,13 +1296,16 @@
       "mobile": true,
       "entryEvidence": "Protected operator entry contract",
       "returnEvidence": "/",
-      "implementationSource": "src/app/passport/history/[recordId]/book/page.tsx"
+      "implementationSource": "src/app/passport/history/[recordId]/book/page.tsx",
+      "currentCensusBinding": "4dc0cf8a74a46694bef39aa9147fa1ad4b05235e74f6b3467ad7aeb2e3a4ebb4"
     },
     {
       "route": "/passport/history/[recordId]/compare",
       "screen": "screen-page-passport-history-recordid-compare",
       "productArea": "Chronicle_Passport_Wakebook",
-      "reachability": "CONTEXTUALLY_REACHABLE",
+      "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/passport/history/[recordId]/compare",
       "logicalParent": "/passport/history/[recordId]",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -1081,27 +1313,33 @@
       "mobile": true,
       "entryEvidence": "/passport/history/[recordId]",
       "returnEvidence": "/passport/history/[recordId]",
-      "implementationSource": "src/app/passport/history/[recordId]/compare/page.tsx"
+      "implementationSource": "src/app/passport/history/[recordId]/compare/page.tsx",
+      "currentCensusBinding": "306055dde6fa047628fff5ec2cd3ef85510fe52b27a83770e0f28c6d38ee65bd"
     },
     {
       "route": "/passport/history/[recordId]/replay",
       "screen": "screen-page-passport-history-recordid-replay",
       "productArea": "Chronicle_Passport_Wakebook",
-      "reachability": "CONTEXTUALLY_REACHABLE",
+      "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/passport/history/[recordId]/replay",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
       "desktop": true,
       "mobile": true,
-      "entryEvidence": "Protected operator entry contract",
+      "entryEvidence": "Compatibility destination contract",
       "returnEvidence": "/",
-      "implementationSource": "src/app/passport/history/[recordId]/replay/page.tsx"
+      "implementationSource": "src/app/passport/history/[recordId]/replay/page.tsx",
+      "currentCensusBinding": "9b14b6e603e4010dc5032619d2d89852b77e0e8160b8b2c6b085acb043328e38"
     },
     {
       "route": "/passport/memories",
       "screen": "screen-page-passport-memories",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/passport/memories",
       "logicalParent": "/passport",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -1109,13 +1347,16 @@
       "mobile": true,
       "entryEvidence": "/passport",
       "returnEvidence": "/passport",
-      "implementationSource": "src/app/passport/memories/page.tsx"
+      "implementationSource": "src/app/passport/memories/page.tsx",
+      "currentCensusBinding": "d200b09c2dbea1710ab055b624bdc18037f807e3e852ce42cdfbd3c46531b388"
     },
     {
       "route": "/passport/people",
       "screen": "screen-page-passport-people",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/passport/people",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -1123,13 +1364,16 @@
       "mobile": true,
       "entryEvidence": "Current global/workspace navigation classification",
       "returnEvidence": "/",
-      "implementationSource": "src/app/passport/people/page.tsx"
+      "implementationSource": "src/app/passport/people/page.tsx",
+      "currentCensusBinding": "c1597ee91b1f4b148665c76cf0fb535c52d13e8e551eb9d935f8610b6ea8cc43"
     },
     {
       "route": "/passport/saved",
       "screen": "screen-page-passport-saved",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/passport/saved",
       "logicalParent": "/passport",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -1137,13 +1381,16 @@
       "mobile": true,
       "entryEvidence": "/passport",
       "returnEvidence": "/passport",
-      "implementationSource": "src/app/passport/saved/page.tsx"
+      "implementationSource": "src/app/passport/saved/page.tsx",
+      "currentCensusBinding": "d6796e41d7f5ab694fcb37de5ba90eb8374a3a5d2a1ca472deacfb866adf4dc8"
     },
     {
       "route": "/passport/statistics",
       "screen": "screen-page-passport-statistics",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/passport/statistics",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -1151,13 +1398,16 @@
       "mobile": true,
       "entryEvidence": "Current global/workspace navigation classification",
       "returnEvidence": "/",
-      "implementationSource": "src/app/passport/statistics/page.tsx"
+      "implementationSource": "src/app/passport/statistics/page.tsx",
+      "currentCensusBinding": "dabe8b2f09306a259ca29631ba06e64592d18c9e3407c4553b5ff2f2c2327ecb"
     },
     {
       "route": "/passport/timeline",
       "screen": "screen-page-passport-timeline",
       "productArea": "Chronicle_Passport_Wakebook",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/passport/timeline",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
@@ -1165,13 +1415,16 @@
       "mobile": true,
       "entryEvidence": "Current global/workspace navigation classification",
       "returnEvidence": "/",
-      "implementationSource": "src/app/passport/timeline/page.tsx"
+      "implementationSource": "src/app/passport/timeline/page.tsx",
+      "currentCensusBinding": "fae012e28d047f91019c9e1036f8d45a83c1e0e810a8e417dfb88106fe322d01"
     },
     {
       "route": "/play/[taleSlug]",
       "screen": "screen-page-play-taleslug",
       "productArea": "Player",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/play/[taleSlug]",
       "logicalParent": "/tales",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -1179,13 +1432,16 @@
       "mobile": true,
       "entryEvidence": "/tales",
       "returnEvidence": "/tales",
-      "implementationSource": "src/app/play/[taleSlug]/page.tsx"
+      "implementationSource": "src/app/play/[taleSlug]/page.tsx",
+      "currentCensusBinding": "48e0583a9b384d0584484c61f5ecff7791569b4fe2bc6b6e65447dcb346a45f0"
     },
     {
       "route": "/play/[taleSlug]/history",
       "screen": "screen-page-play-taleslug-history",
       "productArea": "Player",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/play/[taleSlug]/history",
       "logicalParent": "/play/[taleSlug]",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -1193,13 +1449,16 @@
       "mobile": true,
       "entryEvidence": "/play/[taleSlug]",
       "returnEvidence": "/play/[taleSlug]",
-      "implementationSource": "src/app/play/[taleSlug]/history/page.tsx"
+      "implementationSource": "src/app/play/[taleSlug]/history/page.tsx",
+      "currentCensusBinding": "d0d46f2a91dafd1efa0f76c90d55b06f191e8d7f359088b167399575f47e284f"
     },
     {
       "route": "/play/[taleSlug]/session/[sessionId]",
       "screen": "screen-page-play-taleslug-session-sessionid",
       "productArea": "Player",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/play/[taleSlug]/session/[sessionId]",
       "logicalParent": "/play/[taleSlug]",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -1207,13 +1466,16 @@
       "mobile": true,
       "entryEvidence": "/play/[taleSlug]",
       "returnEvidence": "/play/[taleSlug]",
-      "implementationSource": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx"
+      "implementationSource": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+      "currentCensusBinding": "f0559e5b68de4a4b6dbaf34581e1ef2bd5b075ed0a1cbc193b2d3a523f3d3179"
     },
     {
       "route": "/player",
       "screen": "screen-page-player",
       "productArea": "Player",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/player",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
@@ -1221,13 +1483,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/player/page.tsx"
+      "implementationSource": "src/app/player/page.tsx",
+      "currentCensusBinding": "e6ffd5fb7d93e7a6be7aa31cf39523306e62683cc60a54670102cb1446a34cc1"
     },
     {
       "route": "/player/invitation",
       "screen": "screen-page-player-invitation",
       "productArea": "Authentication_and_Recovery",
       "reachability": "TOKEN_OR_INVITATION_ONLY",
+      "navigationClassification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
+      "reachableProductPath": "/player/invitation",
       "logicalParent": "/player/sign-in",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": ["PLAYER"],
@@ -1235,13 +1500,16 @@
       "mobile": true,
       "entryEvidence": "/player/sign-in",
       "returnEvidence": "/player/sign-in",
-      "implementationSource": "src/app/player/invitation/page.tsx"
+      "implementationSource": "src/app/player/invitation/page.tsx",
+      "currentCensusBinding": "42911a59b630f2db059e4b8187cff5ba18d9ba402c593f5805c2e8010b38aaf9"
     },
     {
       "route": "/player/library",
       "screen": "screen-page-player-library",
       "productArea": "Player",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/player/library",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
@@ -1249,13 +1517,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/player/library/page.tsx"
+      "implementationSource": "src/app/player/library/page.tsx",
+      "currentCensusBinding": "9ecef9300e9dcf6c1d1debb5cae5a7cd8c45c6974162e76fefc5419cac836ac9"
     },
     {
       "route": "/player/playthroughs/[playthroughId]",
       "screen": "screen-page-player-playthroughs-playthroughid",
       "productArea": "Player",
-      "reachability": "CONTEXTUALLY_REACHABLE",
+      "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/player/playthroughs/[playthroughId]",
       "logicalParent": "/player/library",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
@@ -1263,13 +1534,16 @@
       "mobile": true,
       "entryEvidence": "/player/library",
       "returnEvidence": "/player/library",
-      "implementationSource": "src/app/player/playthroughs/[playthroughId]/page.tsx"
+      "implementationSource": "src/app/player/playthroughs/[playthroughId]/page.tsx",
+      "currentCensusBinding": "d09fe06841e12895c6474e1614ef8261dc4d7017b14a3c9dfdd3af0a7c70abfa"
     },
     {
       "route": "/player/playthroughs/[playthroughId]/archive",
       "screen": "screen-page-player-playthroughs-playthroughid-archive",
       "productArea": "Player",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/player/playthroughs/[playthroughId]/archive",
       "logicalParent": "/player/playthroughs/[playthroughId]",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
@@ -1277,13 +1551,16 @@
       "mobile": true,
       "entryEvidence": "/player/playthroughs/[playthroughId]",
       "returnEvidence": "/player/playthroughs/[playthroughId]",
-      "implementationSource": "src/app/player/playthroughs/[playthroughId]/archive/page.tsx"
+      "implementationSource": "src/app/player/playthroughs/[playthroughId]/archive/page.tsx",
+      "currentCensusBinding": "2cfa15832c8ba8c1e7d1c51e39efdd498f4a28711c3869372eacaf2b64a456f2"
     },
     {
       "route": "/player/playthroughs/[playthroughId]/journal",
       "screen": "screen-page-player-playthroughs-playthroughid-journal",
       "productArea": "Player",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/player/playthroughs/[playthroughId]/journal",
       "logicalParent": "/player/library",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
@@ -1291,13 +1568,16 @@
       "mobile": true,
       "entryEvidence": "/player/library",
       "returnEvidence": "/player/library",
-      "implementationSource": "src/app/player/playthroughs/[playthroughId]/journal/page.tsx"
+      "implementationSource": "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
+      "currentCensusBinding": "62c3cb30f5141cde518d3c575857d18338e0b707877ab5a5799292618b6300d8"
     },
     {
       "route": "/player/sign-in",
       "screen": "screen-page-player-sign-in",
       "productArea": "Player",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/player/sign-in",
       "logicalParent": "/",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": ["player"],
@@ -1305,13 +1585,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/player/sign-in/page.tsx"
+      "implementationSource": "src/app/player/sign-in/page.tsx",
+      "currentCensusBinding": "ddbb7f47f5833fe1b3ce7e4859241f26b4a14131efbc1680b8d914bee70e5420"
     },
     {
       "route": "/profile/[handle]",
       "screen": "screen-page-profile-handle",
       "productArea": "Personal_Harbor",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/profile/[handle]",
       "logicalParent": "/tales",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -1319,13 +1602,16 @@
       "mobile": true,
       "entryEvidence": "/tales",
       "returnEvidence": "/tales",
-      "implementationSource": "src/app/profile/[handle]/page.tsx"
+      "implementationSource": "src/app/profile/[handle]/page.tsx",
+      "currentCensusBinding": "9710865aaee524c96217002331d35c11fb0bb353a4d65bf6c8cbbcff1dec7f0b"
     },
     {
       "route": "/quartermaster",
       "screen": "screen-page-quartermaster",
       "productArea": "Captain_Helm",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/quartermaster",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
@@ -1333,13 +1619,16 @@
       "mobile": true,
       "entryEvidence": "/captain/library",
       "returnEvidence": "/captain/library",
-      "implementationSource": "src/app/quartermaster/page.tsx"
+      "implementationSource": "src/app/quartermaster/page.tsx",
+      "currentCensusBinding": "d4ef7aaa6435c40fc0f9d7df8f4d44c0c1b4a32f41ff940298f855a2746543de"
     },
     {
       "route": "/quartermaster/[workspace]",
       "screen": "screen-page-quartermaster-workspace",
       "productArea": "Captain_Helm",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/quartermaster/[workspace]",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
@@ -1347,13 +1636,16 @@
       "mobile": true,
       "entryEvidence": "/captain/library",
       "returnEvidence": "/captain/library",
-      "implementationSource": "src/app/quartermaster/[workspace]/page.tsx"
+      "implementationSource": "src/app/quartermaster/[workspace]/page.tsx",
+      "currentCensusBinding": "65dce92d8a770620f4332ea695b14fb6a2ad6f96f75ede4053ec1ce9e7d83446"
     },
     {
       "route": "/register",
       "screen": "screen-page-register",
       "productArea": "Authentication_and_Recovery",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/register",
       "logicalParent": "/sign-in",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -1361,13 +1653,16 @@
       "mobile": true,
       "entryEvidence": "/sign-in",
       "returnEvidence": "/sign-in",
-      "implementationSource": "src/app/register/page.tsx"
+      "implementationSource": "src/app/register/page.tsx",
+      "currentCensusBinding": "9ccb0a3f5ded2ef8b653e9745e0b47a11d121c32306421e8753063a6003fcb49"
     },
     {
       "route": "/reset-password",
       "screen": "screen-page-reset-password",
       "productArea": "Authentication_and_Recovery",
       "reachability": "TOKEN_OR_INVITATION_ONLY",
+      "navigationClassification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
+      "reachableProductPath": "/reset-password",
       "logicalParent": "/sign-in",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
@@ -1375,13 +1670,16 @@
       "mobile": true,
       "entryEvidence": "/sign-in",
       "returnEvidence": "/sign-in",
-      "implementationSource": "src/app/reset-password/page.tsx"
+      "implementationSource": "src/app/reset-password/page.tsx",
+      "currentCensusBinding": "cc4a9ed9a4326c384238ef10899ccff6cf12258d36b0620c75caa040609c1d10"
     },
     {
       "route": "/sign-in",
       "screen": "screen-page-sign-in",
       "productArea": "Authentication_and_Recovery",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/sign-in",
       "logicalParent": "/",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -1389,13 +1687,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/sign-in/page.tsx"
+      "implementationSource": "src/app/sign-in/page.tsx",
+      "currentCensusBinding": "72f0e39145bde199882a3d08c4f75cb0b2b4ef3352013840a833b0b25e07c299"
     },
     {
       "route": "/studio",
       "screen": "screen-page-studio",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/studio",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1403,13 +1704,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/studio/page.tsx"
+      "implementationSource": "src/app/studio/page.tsx",
+      "currentCensusBinding": "a5ba3c096f566f6b34ffec9c103165e85b339c7c87efc714048e5cc2b28c5e65"
     },
     {
       "route": "/studio/exchange",
       "screen": "screen-page-studio-exchange",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/studio/exchange",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1417,13 +1721,16 @@
       "mobile": true,
       "entryEvidence": "/studio/library",
       "returnEvidence": "/studio/library",
-      "implementationSource": "src/app/studio/exchange/page.tsx"
+      "implementationSource": "src/app/studio/exchange/page.tsx",
+      "currentCensusBinding": "de3fcf8a0fb798c6db040f251254da3136d351513e5d02ab7e4b004b32cc8954"
     },
     {
       "route": "/studio/library",
       "screen": "screen-page-studio-library",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/studio/library",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1431,13 +1738,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/studio/library/page.tsx"
+      "implementationSource": "src/app/studio/library/page.tsx",
+      "currentCensusBinding": "552c872c4fa608c99d22c52d03be9b1e1e92eff2f29c67353881cbe35acdf5cb"
     },
     {
       "route": "/studio/private-content",
       "screen": "screen-page-studio-private-content",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/studio/private-content",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1445,13 +1755,16 @@
       "mobile": true,
       "entryEvidence": "/studio/library",
       "returnEvidence": "/studio/library",
-      "implementationSource": "src/app/studio/private-content/page.tsx"
+      "implementationSource": "src/app/studio/private-content/page.tsx",
+      "currentCensusBinding": "52df795a6f12f9ecbd279e35ea0e9d65658695fd70ff29c6d3cafa29f32865cb"
     },
     {
       "route": "/studio/private-content/operations",
       "screen": "screen-page-studio-private-content-operations",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "INTENTIONALLY_PROTECTED",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/studio/private-content/operations",
       "logicalParent": "/studio/private-content",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["ADMIN"],
@@ -1459,13 +1772,16 @@
       "mobile": true,
       "entryEvidence": "/studio/private-content",
       "returnEvidence": "/studio/private-content",
-      "implementationSource": "src/app/studio/private-content/operations/page.tsx"
+      "implementationSource": "src/app/studio/private-content/operations/page.tsx",
+      "currentCensusBinding": "d0efadeb11288812a95ea8f051594ecafcb125912b1e821cfc494cb13f2ff74e"
     },
     {
       "route": "/studio/sign-in",
       "screen": "screen-page-studio-sign-in",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/studio/sign-in",
       "logicalParent": "/",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": ["creator"],
@@ -1473,13 +1789,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/studio/sign-in/page.tsx"
+      "implementationSource": "src/app/studio/sign-in/page.tsx",
+      "currentCensusBinding": "e79458f961dbbf1210004f8627735e1bd2be1ef3b356b1526d828966d9621a0e"
     },
     {
       "route": "/studio/tales/[taleId]",
       "screen": "screen-page-studio-tales-taleid",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/studio/tales/[taleId]",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1487,13 +1806,16 @@
       "mobile": true,
       "entryEvidence": "/studio/library",
       "returnEvidence": "/studio/library",
-      "implementationSource": "src/app/studio/tales/[taleId]/page.tsx"
+      "implementationSource": "src/app/studio/tales/[taleId]/page.tsx",
+      "currentCensusBinding": "37a7c17a7b80948261c029d938292aedf35ecadbce6af91697e4573f0baef86f"
     },
     {
       "route": "/studio/tales/[taleId]/artifacts",
       "screen": "screen-page-studio-tales-taleid-artifacts",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/studio/tales/[taleId]/artifacts",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1501,13 +1823,16 @@
       "mobile": true,
       "entryEvidence": "/studio/library",
       "returnEvidence": "/studio/library",
-      "implementationSource": "src/app/studio/tales/[taleId]/artifacts/page.tsx"
+      "implementationSource": "src/app/studio/tales/[taleId]/artifacts/page.tsx",
+      "currentCensusBinding": "8ffe24c0dff471a69fc392b757419872c3efe263f2de8b07d8c1b60cd1e1dabb"
     },
     {
       "route": "/studio/tales/[taleId]/assets",
       "screen": "screen-page-studio-tales-taleid-assets",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/studio/tales/[taleId]/assets",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1515,13 +1840,16 @@
       "mobile": true,
       "entryEvidence": "/studio/library",
       "returnEvidence": "/studio/library",
-      "implementationSource": "src/app/studio/tales/[taleId]/assets/page.tsx"
+      "implementationSource": "src/app/studio/tales/[taleId]/assets/page.tsx",
+      "currentCensusBinding": "c12bef2f74c1b3e6f63dfd096f61f798e32850dc68563bc75049465616daa41e"
     },
     {
       "route": "/studio/tales/[taleId]/locations",
       "screen": "screen-page-studio-tales-taleid-locations",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/studio/tales/[taleId]/locations",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1529,13 +1857,16 @@
       "mobile": true,
       "entryEvidence": "/studio/library",
       "returnEvidence": "/studio/library",
-      "implementationSource": "src/app/studio/tales/[taleId]/locations/page.tsx"
+      "implementationSource": "src/app/studio/tales/[taleId]/locations/page.tsx",
+      "currentCensusBinding": "a45947ca1cbe1ddb58471c1324adef1fc6224fb8ab131998edd1b2d766487c6f"
     },
     {
       "route": "/studio/tales/[taleId]/settings",
       "screen": "screen-page-studio-tales-taleid-settings",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/studio/tales/[taleId]/settings",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1543,13 +1874,16 @@
       "mobile": true,
       "entryEvidence": "/studio/library",
       "returnEvidence": "/studio/library",
-      "implementationSource": "src/app/studio/tales/[taleId]/settings/page.tsx"
+      "implementationSource": "src/app/studio/tales/[taleId]/settings/page.tsx",
+      "currentCensusBinding": "b3ec4da011d5eda8180da10c8627bc093f3778fa392d8fdda4a7ad99db05d058"
     },
     {
       "route": "/studio/tales/[taleId]/trials",
       "screen": "screen-page-studio-tales-taleid-trials",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/studio/tales/[taleId]/trials",
       "logicalParent": "/studio/tales/[taleId]",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1557,13 +1891,16 @@
       "mobile": true,
       "entryEvidence": "/studio/tales/[taleId]",
       "returnEvidence": "/studio/tales/[taleId]",
-      "implementationSource": "src/app/studio/tales/[taleId]/trials/page.tsx"
+      "implementationSource": "src/app/studio/tales/[taleId]/trials/page.tsx",
+      "currentCensusBinding": "ec2bf4bfff430cf48e378072eed4b746ecca68e4a9cdf769cd5e463618f0233c"
     },
     {
       "route": "/studio/tales/[taleId]/versions",
       "screen": "screen-page-studio-tales-taleid-versions",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "CONTEXTUALLY_REACHABLE",
+      "navigationClassification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "reachableProductPath": "/studio/tales/[taleId]/versions",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1571,13 +1908,16 @@
       "mobile": true,
       "entryEvidence": "/studio/library",
       "returnEvidence": "/studio/library",
-      "implementationSource": "src/app/studio/tales/[taleId]/versions/page.tsx"
+      "implementationSource": "src/app/studio/tales/[taleId]/versions/page.tsx",
+      "currentCensusBinding": "392c93c78f1aa1f09c7cbcb789e6bc7c793d0617974549515c1ad634e857ebe5"
     },
     {
       "route": "/studio/tales/new",
       "screen": "screen-page-studio-tales-new",
       "productArea": "Creator_Studio_Shipwright",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/studio/tales/new",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
@@ -1585,13 +1925,16 @@
       "mobile": true,
       "entryEvidence": "/studio/library",
       "returnEvidence": "/studio/library",
-      "implementationSource": "src/app/studio/tales/new/page.tsx"
+      "implementationSource": "src/app/studio/tales/new/page.tsx",
+      "currentCensusBinding": "2e3d28be8e46f4e17a081e652a368122b3a8ed7491787f29cba2249db037f3cd"
     },
     {
       "route": "/tale/[campaignSlug]",
       "screen": "screen-page-tale-campaignslug",
       "productArea": "Public_Chronicle_and_Detail",
       "reachability": "COMPATIBILITY_REDIRECT",
+      "navigationClassification": "COMPATIBILITY_OR_REDIRECT",
+      "reachableProductPath": "/tale/[campaignSlug]",
       "logicalParent": "/tales",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -1599,13 +1942,16 @@
       "mobile": true,
       "entryEvidence": "/tales",
       "returnEvidence": "/tales",
-      "implementationSource": "src/app/tale/[campaignSlug]/page.tsx"
+      "implementationSource": "src/app/tale/[campaignSlug]/page.tsx",
+      "currentCensusBinding": "72837d4c52e5448557e7615c196d9f7caa9228d94e997f036eaeb999e0ea15e0"
     },
     {
       "route": "/tales",
       "screen": "screen-page-tales",
       "productArea": "Public_Chronicle_and_Detail",
       "reachability": "DIRECT_NAVIGABLE",
+      "navigationClassification": "USER_FACING_NAVIGABLE",
+      "reachableProductPath": "/tales",
       "logicalParent": "/",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -1613,13 +1959,16 @@
       "mobile": true,
       "entryEvidence": "/",
       "returnEvidence": "/",
-      "implementationSource": "src/app/tales/page.tsx"
+      "implementationSource": "src/app/tales/page.tsx",
+      "currentCensusBinding": "7f192538c06961ef799da949650a40390ee9c3af1a0173b206a50ecbc11a565f"
     },
     {
       "route": "/verify-email",
       "screen": "screen-page-verify-email",
       "productArea": "Authentication_and_Recovery",
       "reachability": "TOKEN_OR_INVITATION_ONLY",
+      "navigationClassification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
+      "reachableProductPath": "/verify-email",
       "logicalParent": "/sign-in",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
@@ -1627,15 +1976,16 @@
       "mobile": true,
       "entryEvidence": "/sign-in",
       "returnEvidence": "/sign-in",
-      "implementationSource": "src/app/verify-email/page.tsx"
+      "implementationSource": "src/app/verify-email/page.tsx",
+      "currentCensusBinding": "e23e0e1879c3feeff742a29c8ea3df6f01a2fe0a61d8b20d6c158ba348127adf"
     }
   ],
   "summary": {
     "currentHumanFacingRoutes": 116,
-    "directNavigableRoutes": 49,
-    "contextualRoutes": 46,
+    "directNavigableRoutes": 48,
+    "contextualRoutes": 43,
     "tokenOrInvitationRoutes": 8,
-    "compatibilityRedirects": 12,
+    "compatibilityRedirects": 16,
     "intentionallyProtectedRoutes": 1,
     "orphanedRoutes": 0,
     "unresolvedRoutes": 0

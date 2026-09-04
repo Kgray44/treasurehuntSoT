@@ -1,8 +1,14 @@
 {
   "schemaVersion": "2.0.0",
   "artifact": "Voyagewright Brightwork current-main route and screen census",
-  "sourceSha": "a82473c40114280694fd292f1103ae914dcc7c6c",
-  "generatedAt": "2026-08-31T04:48:18.558Z",
+  "sourceSha": "2ae4333f09c76c11a51e8b7015cad9e02523a65d",
+  "auditRuntimeSourceSha": "4ce9b890c4b863e72d20d7e9523191bf234f0d4b",
+  "sourceProvenance": {
+    "ordinaryProductSourceSha": "2ae4333f09c76c11a51e8b7015cad9e02523a65d",
+    "auditRuntimeSourceSha": "4ce9b890c4b863e72d20d7e9523191bf234f0d4b",
+    "sourceOfTruth": "Current source route files, with audit-only runtime changes recorded separately from ordinary product source."
+  },
+  "generatedAt": "2026-09-04T16:42:34.385Z",
   "discovery": {
     "appRoot": "src/app",
     "sourceOfTruth": "Current src/app page files reconciled with current navigation and catalog metadata."
@@ -18,17 +24,17 @@
   "totals": {
     "allPageRoutes": 117,
     "humanFacingRoutes": 116,
-    "navigableRoutes": 49,
-    "contextualDynamicRoutes": 47,
+    "navigableRoutes": 48,
+    "contextualDynamicRoutes": 44,
     "tokenizedOrDeepLinkRoutes": 8,
-    "compatibilityRoutes": 12,
+    "compatibilityRoutes": 16,
     "developmentOnlyRoutes": 1,
     "excludedInternalNonPageRoutes": 0,
     "byClassification": {
-      "USER_FACING_NAVIGABLE": 49,
-      "CONTEXTUAL_DYNAMIC_DESTINATION": 47,
+      "USER_FACING_NAVIGABLE": 48,
+      "CONTEXTUAL_DYNAMIC_DESTINATION": 44,
       "TOKENIZED_OR_INVITATION_DEEP_LINK": 8,
-      "COMPATIBILITY_OR_REDIRECT": 12,
+      "COMPATIBILITY_OR_REDIRECT": 16,
       "DEVELOPMENT_OR_DIAGNOSTIC": 1,
       "INTERNAL_NON_PAGE": 0
     }
@@ -44,6 +50,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -97,6 +104,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-root:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /.",
+          "sourceFile": "src/app/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -109,6 +125,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -157,6 +174,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account.",
+          "sourceFile": "src/app/account/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -169,6 +195,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -224,6 +251,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-accessibility:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/accessibility.",
+          "sourceFile": "src/app/account/accessibility/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -236,6 +272,7 @@
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -290,6 +327,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-cancel-deletion:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/cancel-deletion.",
+          "sourceFile": "src/app/account/cancel-deletion/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -302,6 +348,7 @@
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -356,6 +403,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-claim:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/claim.",
+          "sourceFile": "src/app/account/claim/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -368,6 +424,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -416,6 +473,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-data:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/data.",
+          "sourceFile": "src/app/account/data/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -428,6 +494,7 @@
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -482,6 +549,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-email-change:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/email-change.",
+          "sourceFile": "src/app/account/email-change/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -494,6 +570,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -548,6 +625,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-linked-identities:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/linked-identities.",
+          "sourceFile": "src/app/account/linked-identities/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -560,6 +646,7 @@
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -614,6 +701,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-merge:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/merge.",
+          "sourceFile": "src/app/account/merge/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -626,6 +722,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -680,6 +777,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-notifications:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/notifications.",
+          "sourceFile": "src/app/account/notifications/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -692,6 +798,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -746,6 +853,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-personal-information:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/personal-information.",
+          "sourceFile": "src/app/account/personal-information/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -758,6 +874,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -813,6 +930,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-preferences:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/preferences.",
+          "sourceFile": "src/app/account/preferences/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -825,6 +951,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -880,6 +1007,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-privacy:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/privacy.",
+          "sourceFile": "src/app/account/privacy/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -892,6 +1028,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -947,6 +1084,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-profile:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/profile.",
+          "sourceFile": "src/app/account/profile/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -956,15 +1102,16 @@
       "screenId": "screen-page-account-profile-view",
       "productArea": "Personal_Harbor",
       "logicalParent": "/account/profile",
-      "classification": "USER_FACING_NAVIGABLE",
+      "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -972,47 +1119,60 @@
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "DARK",
           "viewport": "desktop-1440x900",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
           "criticality": "STANDARD",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/profile/[handle]"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "DARK",
           "viewport": "mobile-390x844",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
           "criticality": "STANDARD",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/profile/[handle]"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "LIGHT",
           "viewport": "desktop-1440x900",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
           "criticality": "STANDARD",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/profile/[handle]"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "LIGHT",
           "viewport": "mobile-390x844",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
           "criticality": "STANDARD",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/profile/[handle]"
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-profile-view:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/profile/view.",
+          "sourceFile": "src/app/account/profile/view/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1025,6 +1185,7 @@
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1079,6 +1240,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-reactivate:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/reactivate.",
+          "sourceFile": "src/app/account/reactivate/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1091,6 +1261,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1145,6 +1316,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-roles:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/roles.",
+          "sourceFile": "src/app/account/roles/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1157,6 +1337,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1211,6 +1392,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-security:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/security.",
+          "sourceFile": "src/app/account/security/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1223,6 +1413,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1277,6 +1468,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-sessions:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/sessions.",
+          "sourceFile": "src/app/account/sessions/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1289,6 +1489,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1344,6 +1545,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-account-support-access:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /account/support-access.",
+          "sourceFile": "src/app/account/support-access/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1356,6 +1566,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["PLATFORM_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "PLATFORM_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -1404,6 +1620,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin.",
+          "sourceFile": "src/app/admin/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1416,6 +1641,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["AUDIT_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/audit/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "AUDIT_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -1464,6 +1695,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-audit:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/audit.",
+          "sourceFile": "src/app/admin/audit/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1476,6 +1716,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CHRONICLE_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/chronicles/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "CHRONICLE_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -1524,6 +1770,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-chronicles:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/chronicles.",
+          "sourceFile": "src/app/admin/chronicles/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1536,6 +1791,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CHRONICLE_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/chronicles/[chronicleId]/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "CHRONICLE_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -1584,6 +1845,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-chronicles-chronicleid:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/chronicles/[chronicleId].",
+          "sourceFile": "src/app/admin/chronicles/[chronicleId]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1596,6 +1866,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["COMMUNITY_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/community/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "COMMUNITY_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1652,6 +1928,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-community:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/community.",
+          "sourceFile": "src/app/admin/community/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1664,6 +1949,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["COMMUNITY_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/community/[listingId]/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "COMMUNITY_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1720,6 +2011,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-community-listingid:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/community/[listingId].",
+          "sourceFile": "src/app/admin/community/[listingId]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1732,6 +2032,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CONFIG_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/configuration/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "CONFIG_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -1780,6 +2086,23 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-configuration:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/configuration.",
+          "sourceFile": "src/app/admin/configuration/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        },
+        {
+          "id": "ADMIRALTY_CONFIGURATION_HEADING",
+          "selector": ".chartroom-page h1",
+          "text": "Configuration",
+          "description": "The read-only Admiralty Configuration station heading is visible.",
+          "sourceFile": "src/app/admin/configuration/page.tsx",
+          "sourceBasis": "CONFIGURATION_PAGE_HEADING"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1792,6 +2115,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["PLATFORM_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/investigate/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "PLATFORM_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -1840,6 +2169,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-investigate:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/investigate.",
+          "sourceFile": "src/app/admin/investigate/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1852,6 +2190,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["JOBS_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/operations/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "JOBS_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -1900,6 +2244,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-operations:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/operations.",
+          "sourceFile": "src/app/admin/operations/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1912,6 +2265,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["ACCOUNT_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/people/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "ACCOUNT_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -1960,6 +2319,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-people:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/people.",
+          "sourceFile": "src/app/admin/people/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -1972,6 +2340,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["ACCOUNT_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/people/[accountId]/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "ACCOUNT_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -2027,6 +2401,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-people-accountid:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/people/[accountId].",
+          "sourceFile": "src/app/admin/people/[accountId]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2039,6 +2422,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CONTENT_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/providers/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "CONTENT_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -2087,6 +2476,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-providers:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/providers.",
+          "sourceFile": "src/app/admin/providers/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2099,6 +2497,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["RELEASE_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/releases/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "RELEASE_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -2147,6 +2551,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-releases:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/releases.",
+          "sourceFile": "src/app/admin/releases/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2159,6 +2572,12 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["SUPPORT_REQUEST"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/support/cases/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "SUPPORT_REQUEST"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["READY", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -2207,6 +2626,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-support-cases:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/support/cases.",
+          "sourceFile": "src/app/admin/support/cases/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_DISCOVERED"
     },
     {
@@ -2219,6 +2647,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["VOYAGE_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/voyages/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "VOYAGE_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -2267,6 +2701,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-voyages:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/voyages.",
+          "sourceFile": "src/app/admin/voyages/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2279,6 +2722,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["VOYAGE_OBSERVE"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/admin/voyages/[voyageId]/page.tsx",
+        "gate": "admiraltyPageOperator",
+        "requiredCapability": "VOYAGE_OBSERVE"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -2327,6 +2776,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-admin-voyages-voyageid:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /admin/voyages/[voyageId].",
+          "sourceFile": "src/app/admin/voyages/[voyageId]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2339,12 +2797,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -2393,6 +2852,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-captain:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /captain.",
+          "sourceFile": "src/app/captain/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2405,12 +2873,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -2459,6 +2928,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-captain-invitations:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /captain/invitations.",
+          "sourceFile": "src/app/captain/invitations/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2471,6 +2949,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -2525,6 +3004,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-captain-library:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /captain/library.",
+          "sourceFile": "src/app/captain/library/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2537,6 +3025,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -2591,6 +3080,22 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-captain-sessions-sessionid:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /captain/sessions/[sessionId].",
+          "sourceFile": "src/app/captain/sessions/[sessionId]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        },
+        {
+          "id": "CAPTAIN_OPERATIONAL_PROJECTION",
+          "selector": "[data-operational-status]",
+          "description": "Captain operational projection is visible.",
+          "sourceFile": "src/app/captain/sessions/[sessionId]/page.tsx",
+          "sourceBasis": "CAPTAIN_OPERATIONAL_PROJECTION"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2603,12 +3108,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": ["captain"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -2657,6 +3163,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-captain-sign-in:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /captain/sign-in.",
+          "sourceFile": "src/app/captain/sign-in/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2669,6 +3184,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -2723,6 +3239,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-captain-tales-taleid:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /captain/tales/[taleId].",
+          "sourceFile": "src/app/captain/tales/[taleId]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2735,6 +3260,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["captain"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -2783,6 +3309,22 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /captain/voyages/[playthroughId]/muster.",
+          "sourceFile": "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        },
+        {
+          "id": "CAPTAIN_MUSTER_PROJECTION",
+          "selector": "[data-captain-authority]",
+          "description": "Captain muster projection is visible.",
+          "sourceFile": "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
+          "sourceBasis": "CAPTAIN_MUSTER_PROJECTION"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_DISCOVERED"
     },
     {
@@ -2795,6 +3337,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -2849,6 +3392,22 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-captain-voyages-playthroughid-player-preview:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /captain/voyages/[playthroughId]/player-preview.",
+          "sourceFile": "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        },
+        {
+          "id": "PLAYER_SAFE_PREVIEW",
+          "selector": ".player-safe-preview:not(.platform-loading) h1",
+          "description": "Player-safe preview heading is visible.",
+          "sourceFile": "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
+          "sourceBasis": "PLAYER_SAFE_PREVIEW"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2861,6 +3420,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -2914,6 +3474,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-chronicles-taleslug:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /chronicles/[taleSlug].",
+          "sourceFile": "src/app/chronicles/[taleSlug]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2926,6 +3495,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -2974,6 +3544,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-chronicles-taleslug-compare:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /chronicles/[taleSlug]/compare.",
+          "sourceFile": "src/app/chronicles/[taleSlug]/compare/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -2986,6 +3565,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3042,6 +3622,30 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community.",
+          "sourceFile": "src/app/community/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        },
+        {
+          "id": "COMMUNITY_HARBOR_HOME_FRAME",
+          "selector": "[data-community-district=\"HARBOR_HOME\"]",
+          "description": "Community Harbor Home frame is visible.",
+          "sourceFile": "src/components/community/CommunityPageFrame.tsx",
+          "sourceBasis": "COMMUNITY_PAGE_FRAME_DISTRICT"
+        },
+        {
+          "id": "COMMUNITY_HARBOR_DIRECTORY",
+          "selector": "#community-district-directory-title",
+          "text": "The whole Harbor, one chart",
+          "description": "Community Harbor district directory is visible.",
+          "sourceFile": "src/app/community/page.tsx",
+          "sourceBasis": "COMMUNITY_HOME_DIRECTORY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3054,6 +3658,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3110,6 +3715,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-slug:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/[slug].",
+          "sourceFile": "src/app/community/[slug]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3122,6 +3736,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3178,6 +3793,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-artifacts:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/artifacts.",
+          "sourceFile": "src/app/community/artifacts/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3190,6 +3814,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3246,6 +3871,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-audio:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/audio.",
+          "sourceFile": "src/app/community/audio/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3258,6 +3892,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3314,6 +3949,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-chronicles:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/chronicles.",
+          "sourceFile": "src/app/community/chronicles/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3326,6 +3970,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3382,6 +4027,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-collections:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/collections.",
+          "sourceFile": "src/app/community/collections/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3394,6 +4048,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3450,6 +4105,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-collections-slug:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/collections/[slug].",
+          "sourceFile": "src/app/community/collections/[slug]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3462,6 +4126,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3518,6 +4183,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-creators:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/creators.",
+          "sourceFile": "src/app/community/creators/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3530,6 +4204,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3586,6 +4261,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-creators-handle:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/creators/[handle].",
+          "sourceFile": "src/app/community/creators/[handle]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3598,6 +4282,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3654,6 +4339,30 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-featured:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/featured.",
+          "sourceFile": "src/app/community/featured/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        },
+        {
+          "id": "COMMUNITY_FEATURED_FRAME",
+          "selector": "[data-community-district=\"FEATURED\"]",
+          "description": "Featured Community district frame is visible.",
+          "sourceFile": "src/components/community/CommunityPageFrame.tsx",
+          "sourceBasis": "COMMUNITY_PAGE_FRAME_DISTRICT"
+        },
+        {
+          "id": "COMMUNITY_FEATURED_HEADING",
+          "selector": "main.community-harbor h1",
+          "text": "Featured at the Harbor",
+          "description": "Featured Community heading is visible after its presentation transition settles.",
+          "sourceFile": "src/components/community/PublicCommunitySection.tsx",
+          "sourceBasis": "FEATURED_SECTION_TITLE"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3666,6 +4375,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3722,6 +4432,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-guides:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/guides.",
+          "sourceFile": "src/app/community/guides/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3734,6 +4453,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3790,6 +4510,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-guides-slug:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/guides/[slug].",
+          "sourceFile": "src/app/community/guides/[slug]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3802,6 +4531,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -3858,6 +4588,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-maps:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/maps.",
+          "sourceFile": "src/app/community/maps/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3870,6 +4609,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["MODERATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["MODERATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -3923,6 +4663,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-moderation:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/moderation.",
+          "sourceFile": "src/app/community/moderation/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -3935,6 +4684,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["MODERATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["MODERATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -3988,6 +4738,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-moderation-id:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/moderation/[id].",
+          "sourceFile": "src/app/community/moderation/[id]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4000,6 +4759,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -4056,6 +4816,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-templates:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/templates.",
+          "sourceFile": "src/app/community/templates/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4068,6 +4837,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -4124,6 +4894,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-voyage-logs:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/voyage-logs.",
+          "sourceFile": "src/app/community/voyage-logs/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4136,6 +4915,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -4192,6 +4972,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-voyage-logs-slug:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/voyage-logs/[slug].",
+          "sourceFile": "src/app/community/voyage-logs/[slug]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4204,6 +4993,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -4257,6 +5047,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-voyage-logs-consent:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/voyage-logs/consent.",
+          "sourceFile": "src/app/community/voyage-logs/consent/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4269,12 +5068,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
-        "LOADING_WHERE_IMPLEMENTED",
-        "READY"
+        "LOADING_WHERE_IMPLEMENTED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
       "themesApplicable": ["DARK", "LIGHT"],
@@ -4322,6 +5122,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-voyage-logs-media:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/voyage-logs/media.",
+          "sourceFile": "src/app/community/voyage-logs/media/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4334,6 +5143,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -4387,6 +5197,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-voyage-logs-owner:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/voyage-logs/owner.",
+          "sourceFile": "src/app/community/voyage-logs/owner/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4399,6 +5218,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -4452,6 +5272,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-community-voyage-logs-owner-id:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /community/voyage-logs/owner/[id].",
+          "sourceFile": "src/app/community/voyage-logs/owner/[id]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4464,6 +5293,7 @@
       "classification": "DEVELOPMENT_OR_DIAGNOSTIC",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -4476,6 +5306,15 @@
       "motionApplicability": "NOT_APPLICABLE",
       "screenshotRequirements": [],
       "captureStatus": "EXCLUDED_BY_CLASSIFICATION",
+      "readyLandmarks": [
+        {
+          "id": "route-page-dev-animations:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /dev/animations.",
+          "sourceFile": "src/app/dev/animations/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4488,6 +5327,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -4541,6 +5381,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-forgot-password:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /forgot-password.",
+          "sourceFile": "src/app/forgot-password/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4553,6 +5402,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -4601,6 +5451,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport.",
+          "sourceFile": "src/app/passport/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4613,6 +5472,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -4667,6 +5527,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-artifacts:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/artifacts.",
+          "sourceFile": "src/app/passport/artifacts/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4679,6 +5548,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -4733,6 +5603,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-artifacts-artifactId:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/artifacts/[artifactId].",
+          "sourceFile": "src/app/passport/artifacts/[artifactId]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4745,6 +5624,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -4793,6 +5673,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-atlas:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/atlas.",
+          "sourceFile": "src/app/passport/atlas/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_DISCOVERED"
     },
     {
@@ -4805,6 +5694,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -4860,6 +5750,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-history:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/history.",
+          "sourceFile": "src/app/passport/history/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4872,6 +5771,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -4926,6 +5826,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-history-recordId:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/history/[recordId].",
+          "sourceFile": "src/app/passport/history/[recordId]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -4938,6 +5847,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -4986,6 +5896,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-history-recordid-book:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/history/[recordId]/book.",
+          "sourceFile": "src/app/passport/history/[recordId]/book/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_DISCOVERED"
     },
     {
@@ -4995,15 +5914,16 @@
       "screenId": "screen-page-passport-history-recordid-compare",
       "productArea": "Chronicle_Passport_Wakebook",
       "logicalParent": "/passport/history/[recordId]",
-      "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
         "MUTATION_SUCCESS",
-        "READY",
         "READY_EMPTY",
         "RECOVERABLE_ERROR",
         "SIGN_IN_REQUIRED"
@@ -5013,47 +5933,60 @@
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "DARK",
           "viewport": "desktop-1440x900",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/chronicles/[historyTaleSlug]/compare"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "DARK",
           "viewport": "mobile-390x844",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/chronicles/[historyTaleSlug]/compare"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "LIGHT",
           "viewport": "desktop-1440x900",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/chronicles/[historyTaleSlug]/compare"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "LIGHT",
           "viewport": "mobile-390x844",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/chronicles/[historyTaleSlug]/compare"
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-history-recordid-compare:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/history/[recordId]/compare.",
+          "sourceFile": "src/app/passport/history/[recordId]/compare/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -5063,57 +5996,71 @@
       "screenId": "screen-page-passport-history-recordid-replay",
       "productArea": "Chronicle_Passport_Wakebook",
       "logicalParent": null,
-      "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
-      "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
+      "meaningfulVisualStates": ["COMPATIBILITY_OR_REDIRECT", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
       "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "DARK",
           "viewport": "desktop-1440x900",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/player/playthroughs/[historyPlaythroughId]/journal"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "DARK",
           "viewport": "mobile-390x844",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/player/playthroughs/[historyPlaythroughId]/journal"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "LIGHT",
           "viewport": "desktop-1440x900",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/player/playthroughs/[historyPlaythroughId]/journal"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "LIGHT",
           "viewport": "mobile-390x844",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/player/playthroughs/[historyPlaythroughId]/journal"
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-history-recordid-replay:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/history/[recordId]/replay.",
+          "sourceFile": "src/app/passport/history/[recordId]/replay/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_DISCOVERED"
     },
     {
@@ -5126,6 +6073,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -5180,6 +6128,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-memories:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/memories.",
+          "sourceFile": "src/app/passport/memories/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -5192,6 +6149,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -5240,6 +6198,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-people:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/people.",
+          "sourceFile": "src/app/passport/people/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_DISCOVERED"
     },
     {
@@ -5252,6 +6219,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -5306,6 +6274,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-saved:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/saved.",
+          "sourceFile": "src/app/passport/saved/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -5318,6 +6295,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -5366,6 +6344,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-statistics:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/statistics.",
+          "sourceFile": "src/app/passport/statistics/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_DISCOVERED"
     },
     {
@@ -5378,6 +6365,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": ["READY", "SIGN_IN_REQUIRED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -5426,6 +6414,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-passport-timeline:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /passport/timeline.",
+          "sourceFile": "src/app/passport/timeline/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_DISCOVERED"
     },
     {
@@ -5438,6 +6435,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -5491,6 +6489,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-play-taleslug:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /play/[taleSlug].",
+          "sourceFile": "src/app/play/[taleSlug]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -5503,6 +6510,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -5556,6 +6564,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-play-taleslug-history:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /play/[taleSlug]/history.",
+          "sourceFile": "src/app/play/[taleSlug]/history/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -5568,6 +6585,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -5621,6 +6639,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-play-taleslug-session-sessionid:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /play/[taleSlug]/session/[sessionId].",
+          "sourceFile": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -5633,12 +6660,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -5687,6 +6715,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-player:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /player.",
+          "sourceFile": "src/app/player/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -5699,60 +6736,78 @@
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": ["PLAYER"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
-        "SIGN_IN_REQUIRED"
+        "SIGN_IN_REQUIRED",
+        "UNAVAILABLE"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
       "themesApplicable": ["DARK", "LIGHT"],
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
-          "state": "READY",
+          "state": "UNAVAILABLE",
           "persona": "ANONYMOUS",
           "theme": "DARK",
           "viewport": "desktop-1440x900",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
           "criticality": "STANDARD",
+          "concreteRoute": "/player/invitation?state=invalid",
+          "captureAction": "SOURCE_DECLARED_INVALID_INVITATION_STATE",
           "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
         },
         {
-          "state": "READY",
+          "state": "UNAVAILABLE",
           "persona": "ANONYMOUS",
           "theme": "DARK",
           "viewport": "mobile-390x844",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
           "criticality": "STANDARD",
+          "concreteRoute": "/player/invitation?state=invalid",
+          "captureAction": "SOURCE_DECLARED_INVALID_INVITATION_STATE",
           "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
         },
         {
-          "state": "READY",
+          "state": "UNAVAILABLE",
           "persona": "ANONYMOUS",
           "theme": "LIGHT",
           "viewport": "desktop-1440x900",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
           "criticality": "STANDARD",
+          "concreteRoute": "/player/invitation?state=invalid",
+          "captureAction": "SOURCE_DECLARED_INVALID_INVITATION_STATE",
           "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
         },
         {
-          "state": "READY",
+          "state": "UNAVAILABLE",
           "persona": "ANONYMOUS",
           "theme": "LIGHT",
           "viewport": "mobile-390x844",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
           "criticality": "STANDARD",
+          "concreteRoute": "/player/invitation?state=invalid",
+          "captureAction": "SOURCE_DECLARED_INVALID_INVITATION_STATE",
           "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-player-invitation:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /player/invitation.",
+          "sourceFile": "src/app/player/invitation/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -5765,6 +6820,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -5819,6 +6875,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-player-library:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /player/library.",
+          "sourceFile": "src/app/player/library/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -5828,15 +6893,16 @@
       "screenId": "screen-page-player-playthroughs-playthroughid",
       "productArea": "Player",
       "logicalParent": "/player/library",
-      "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
+      "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -5844,47 +6910,60 @@
       "motionApplicability": "REDUCED_MOTION_REQUIRED",
       "screenshotRequirements": [
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "DARK",
           "viewport": "desktop-1440x900",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/player/playthroughs/[playthroughId]/journal"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "DARK",
           "viewport": "mobile-390x844",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/player/playthroughs/[playthroughId]/journal"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "LIGHT",
           "viewport": "desktop-1440x900",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/player/playthroughs/[playthroughId]/journal"
         },
         {
-          "state": "READY",
+          "state": "COMPATIBILITY_OR_REDIRECT",
           "persona": "ORDINARY_PLAYER",
           "theme": "LIGHT",
           "viewport": "mobile-390x844",
           "motionMode": "REDUCED",
           "coverageKind": "ROUTE",
-          "criticality": "HIGH",
-          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE"
+          "criticality": "STANDARD",
+          "expectedCompatibilityState": "DECLARED_COMPATIBILITY_SURFACE",
+          "expectedDestination": "/player/playthroughs/[playthroughId]/journal"
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-player-playthroughs-playthroughid:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /player/playthroughs/[playthroughId].",
+          "sourceFile": "src/app/player/playthroughs/[playthroughId]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -5897,12 +6976,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -5951,6 +7031,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-player-playthroughs-playthroughid-archive:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /player/playthroughs/[playthroughId]/archive.",
+          "sourceFile": "src/app/player/playthroughs/[playthroughId]/archive/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -5963,6 +7052,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilityRequirements": ["PLAYER"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -6017,6 +7107,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /player/playthroughs/[playthroughId]/journal.",
+          "sourceFile": "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6029,12 +7128,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": ["player"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -6083,6 +7183,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-player-sign-in:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /player/sign-in.",
+          "sourceFile": "src/app/player/sign-in/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6095,6 +7204,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": ["READY"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -6143,6 +7253,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-profile-handle:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /profile/[handle].",
+          "sourceFile": "src/app/profile/[handle]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6155,12 +7274,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
-        "LOADING_WHERE_IMPLEMENTED",
-        "READY"
+        "LOADING_WHERE_IMPLEMENTED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
       "themesApplicable": ["DARK", "LIGHT"],
@@ -6208,6 +7328,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-quartermaster:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /quartermaster.",
+          "sourceFile": "src/app/quartermaster/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6220,12 +7349,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CAPTAIN"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CAPTAIN_PLAYER", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
-        "LOADING_WHERE_IMPLEMENTED",
-        "READY"
+        "LOADING_WHERE_IMPLEMENTED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
       "themesApplicable": ["DARK", "LIGHT"],
@@ -6273,6 +7403,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-quartermaster-workspace:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /quartermaster/[workspace].",
+          "sourceFile": "src/app/quartermaster/[workspace]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6285,6 +7424,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -6338,6 +7478,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-register:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /register.",
+          "sourceFile": "src/app/register/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6350,6 +7499,7 @@
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -6403,6 +7553,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-reset-password:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /reset-password.",
+          "sourceFile": "src/app/reset-password/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6415,6 +7574,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -6468,6 +7628,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-sign-in:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /sign-in.",
+          "sourceFile": "src/app/sign-in/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6480,12 +7649,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -6534,6 +7704,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio.",
+          "sourceFile": "src/app/studio/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6546,6 +7725,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -6600,6 +7780,23 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-exchange:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/exchange.",
+          "sourceFile": "src/app/studio/exchange/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        },
+        {
+          "id": "STUDIO_EXCHANGE_HEADING",
+          "selector": "[data-testid=\"studio-community-exchange\"] h1",
+          "text": "Open the Exchange",
+          "description": "The authenticated Community Exchange console heading is visible.",
+          "sourceFile": "src/components/community/StudioExchangeConsole.tsx",
+          "sourceBasis": "STUDIO_EXCHANGE_AUTHENTICATED_CONSOLE"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6612,6 +7809,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -6666,6 +7864,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-library:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/library.",
+          "sourceFile": "src/app/studio/library/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6678,6 +7885,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -6732,6 +7940,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-private-content:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/private-content.",
+          "sourceFile": "src/app/studio/private-content/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6744,6 +7961,12 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["ADMIN"],
+      "capabilityMetadata": {
+        "evidenceKind": "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+        "sourceFile": "src/app/studio/private-content/operations/page.tsx",
+        "gate": "requireGmCapability",
+        "requiredCapability": "ADMIN"
+      },
       "applicablePersonas": ["ADMIRALTY_OPERATOR", "ANONYMOUS"],
       "meaningfulVisualStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "UNAUTHORIZED"],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -6792,6 +8015,23 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-private-content-operations:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/private-content/operations.",
+          "sourceFile": "src/app/studio/private-content/operations/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        },
+        {
+          "id": "PRIVATE_OPERATIONS_CONSOLE",
+          "selector": "#private-operations-title",
+          "text": "Operational readiness",
+          "description": "Private operations console heading is visible.",
+          "sourceFile": "src/components/studio/PrivateOperationsConsole.tsx",
+          "sourceBasis": "PRIVATE_OPERATIONS_CONSOLE"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6804,12 +8044,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": ["creator"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
@@ -6858,6 +8099,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-sign-in:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/sign-in.",
+          "sourceFile": "src/app/studio/sign-in/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6870,6 +8120,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -6924,6 +8175,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-tales-taleid:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/tales/[taleId].",
+          "sourceFile": "src/app/studio/tales/[taleId]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -6936,6 +8196,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -6990,6 +8251,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-tales-taleid-artifacts:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/tales/[taleId]/artifacts.",
+          "sourceFile": "src/app/studio/tales/[taleId]/artifacts/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -7002,6 +8272,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -7056,6 +8327,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-tales-taleid-assets:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/tales/[taleId]/assets.",
+          "sourceFile": "src/app/studio/tales/[taleId]/assets/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -7068,6 +8348,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -7122,6 +8403,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-tales-taleid-locations:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/tales/[taleId]/locations.",
+          "sourceFile": "src/app/studio/tales/[taleId]/locations/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -7134,6 +8424,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -7188,6 +8479,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-tales-taleid-settings:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/tales/[taleId]/settings.",
+          "sourceFile": "src/app/studio/tales/[taleId]/settings/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -7200,6 +8500,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -7255,6 +8556,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-tales-taleid-trials:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/tales/[taleId]/trials.",
+          "sourceFile": "src/app/studio/tales/[taleId]/trials/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -7267,6 +8577,7 @@
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -7321,6 +8632,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-tales-taleid-versions:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/tales/[taleId]/versions.",
+          "sourceFile": "src/app/studio/tales/[taleId]/versions/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -7333,6 +8653,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilityRequirements": ["CREATOR"],
+      "capabilityMetadata": null,
       "applicablePersonas": ["CREATOR", "ORDINARY_PLAYER"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -7387,6 +8708,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-studio-tales-new:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /studio/tales/new.",
+          "sourceFile": "src/app/studio/tales/new/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -7399,12 +8729,13 @@
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
-        "LOADING_WHERE_IMPLEMENTED",
-        "READY"
+        "LOADING_WHERE_IMPLEMENTED"
       ],
       "desktopMobileApplicability": "DESKTOP_AND_MOBILE",
       "themesApplicable": ["DARK", "LIGHT"],
@@ -7452,6 +8783,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-tale-campaignslug:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /tale/[campaignSlug].",
+          "sourceFile": "src/app/tale/[campaignSlug]/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -7464,6 +8804,7 @@
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -7517,6 +8858,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-tales:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /tales.",
+          "sourceFile": "src/app/tales/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     },
     {
@@ -7529,6 +8879,7 @@
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
       "capabilityRequirements": [],
+      "capabilityMetadata": null,
       "applicablePersonas": ["ORDINARY_PLAYER", "ANONYMOUS"],
       "meaningfulVisualStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -7582,6 +8933,15 @@
         }
       ],
       "captureStatus": "PLANNED",
+      "readyLandmarks": [
+        {
+          "id": "route-page-verify-email:MAIN_CONTENT",
+          "selector": "main",
+          "description": "Visible main product surface for /verify-email.",
+          "sourceFile": "src/app/verify-email/page.tsx",
+          "sourceBasis": "CURRENT_ROUTE_ENTRY"
+        }
+      ],
       "provenance": "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG"
     }
   ]

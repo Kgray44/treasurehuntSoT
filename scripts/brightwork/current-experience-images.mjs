@@ -13,6 +13,7 @@ import {
   fileChecksum,
   reconciliationReport,
   sha256,
+  stableJson,
   semanticCaptureIssue,
 } from "./visual-evidence.mjs";
 
@@ -38,7 +39,8 @@ else if (command === "complete") await complete();
 else throw new Error(`BRIGHTWORK_COMMAND_UNKNOWN:${command}`);
 
 async function plan() {
-  const sourceSha = auditedSourceSha();
+  const source = auditedSources();
+  const sourceSha = source.productSourceSha;
   const generatedAt = new Date().toISOString();
   const [legacyInventory, screenCatalog] = await Promise.all([
     json(path.join(root, "Development_Docs", "Projects", "Project_Homeport", "Homeport_Route_Inventory.json")),
@@ -49,6 +51,7 @@ async function plan() {
     legacyInventory,
     screenCatalog,
     sourceSha,
+    auditRuntimeSourceSha: source.auditRuntimeSourceSha,
     generatedAt,
   });
   const contract = buildCaptureContract(census, generatedAt);
@@ -81,14 +84,16 @@ async function plan() {
     writeJson(contractPath, contract),
   ]);
   process.stdout.write(
-    `${JSON.stringify({ status: "BRIGHTWORK_CAPTURE_PLAN_READY", sourceSha, routes: census.totals, requiredCaptures: contract.requirements.length })}\n`,
+    `${JSON.stringify({ status: "BRIGHTWORK_CAPTURE_PLAN_READY", sourceSha, auditRuntimeSourceSha: source.auditRuntimeSourceSha, routes: census.totals, requiredCaptures: contract.requirements.length })}\n`,
   );
 }
 
 async function capture(supplemental = false) {
   const [contract, census] = await Promise.all([json(contractPath), json(censusPath)]);
-  const sourceSha = auditedSourceSha();
-  if (contract.sourceSha !== sourceSha) throw new Error("BRIGHTWORK_CAPTURE_PLAN_STALE_REPLAN_REQUIRED");
+  const source = auditedSources();
+  const sourceSha = source.productSourceSha;
+  if (contract.sourceSha !== sourceSha || contract.auditRuntimeSourceSha !== source.auditRuntimeSourceSha)
+    throw new Error("BRIGHTWORK_CAPTURE_PLAN_STALE_REPLAN_REQUIRED");
   const contractValidation = captureContractValidation({ contract, census });
   if (!contractValidation.valid)
     throw new Error(`BRIGHTWORK_CAPTURE_CONTRACT_INVALID:${contractValidation.failureCodes.join(",")}`);
@@ -108,16 +113,30 @@ async function capture(supplemental = false) {
   const fixtureRoot = path.resolve(required("BRIGHTWORK_FIXTURE_ROOT"));
   const fixtureReceipt = await json(path.join(fixtureRoot, "reports", "fixture-receipt.json"));
   if (fixtureReceipt.sourceSha !== sourceSha) throw new Error("BRIGHTWORK_FIXTURE_SOURCE_MISMATCH");
+  const auditReceipt = await json(required("BRIGHTWORK_AUDIT_METADATA_PATH"));
+  if (
+    auditReceipt.sourceSha !== source.auditRuntimeSourceSha ||
+    auditReceipt.productBaselineSha !== sourceSha ||
+    auditReceipt.classification !== "SYNTHETIC_DISPOSABLE_AUDIT_DATA" ||
+    auditReceipt.environment?.buildMode !== "NEXT_PRODUCTION_BUILD" ||
+    auditReceipt.environment?.deploymentData !== "BRIGHTWORK_TASK_OWNED_SYNTHETIC_DEPLOYMENT_AND_DATA"
+  )
+    throw new Error("BRIGHTWORK_AUDIT_ENVIRONMENT_METADATA_INVALID");
+  const fixtureIdentity = sourceBoundFixtureIdentity({ fixtureReceipt, auditReceipt, source });
   const credentials = await loadCredentials(fixtureReceipt.credentials);
   const representatives = await representativeValues(fixtureReceipt.databasePath, credentials);
   const temporaryRoot = path.join(fixtureRoot, "capture-output");
   const temporaryImages = path.join(temporaryRoot, "Experience_Images");
   await rm(temporaryRoot, { recursive: true, force: true });
   await mkdir(temporaryImages, { recursive: true });
+  await preserveStage4BExceptionFrames(temporaryImages);
 
   const browser = await chromium.launch({ headless: true });
   const browserVersion = browser.version();
   const records = [];
+  // Keep one source-faithful signed-in session per declared persona. Creating
+  // one session per screenshot would exceed the product's real sign-in guard
+  // and turn the audit itself into a false authorization failure.
   const authentications = new Map();
   try {
     const byContext = new Map();
@@ -131,20 +150,18 @@ async function capture(supplemental = false) {
       const [persona, theme, viewportName] = key.split("|");
       const viewport = REQUIRED_VIEWPORTS.find((candidate) => candidate.id === viewportName);
       if (!viewport) throw new Error(`BRIGHTWORK_VIEWPORT_UNKNOWN:${viewportName}`);
-      const authenticationKey = credentials[persona]?.accountId ?? persona;
-      let authentication = authentications.get(authenticationKey);
+      let authentication = authentications.get(persona);
       if (!authentication) {
         authentication = await storageState(browser, credentials, persona);
-        if (authentication) authentications.set(authenticationKey, authentication);
+        if (authentication) authentications.set(persona, authentication);
       }
-      const context =
-        authentication?.context ??
-        (await browser.newContext({
-          viewport: { width: viewport.width, height: viewport.height },
-          colorScheme: theme === "LIGHT" ? "light" : "dark",
-          reducedMotion: "reduce",
-          locale: "en-US",
-        }));
+      const context = await browser.newContext({
+        ...(authentication ? { storageState: authentication.storageState } : {}),
+        viewport: { width: viewport.width, height: viewport.height },
+        colorScheme: theme === "LIGHT" ? "light" : "dark",
+        reducedMotion: "reduce",
+        locale: "en-US",
+      });
       const page = await context.newPage();
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await page.emulateMedia({ colorScheme: theme === "LIGHT" ? "light" : "dark", reducedMotion: "reduce" });
@@ -167,8 +184,11 @@ async function capture(supplemental = false) {
               requirement,
               temporaryImages,
               sourceSha,
+              auditRuntimeSourceSha: source.auditRuntimeSourceSha,
               contract,
               fixtureReceipt,
+              fixtureIdentity,
+              auditEnvironment: auditReceipt.environment,
               browserVersion,
               representatives,
               ordinal: nextImageOrdinal(existingManifest?.records ?? [], records.length),
@@ -177,11 +197,10 @@ async function capture(supplemental = false) {
           );
       } finally {
         await page.close();
-        if (!authentication) await context.close();
+        await context.close();
       }
     }
   } finally {
-    await Promise.all([...authentications.values()].map((authentication) => authentication.dispose()));
     await browser.close();
   }
   const retainedRecords = (existingManifest?.records ?? []).filter(
@@ -195,6 +214,8 @@ async function capture(supplemental = false) {
     fixture: fixtureReceipt.fixtureVersion,
     fixturePrivacyBasis: fixtureReceipt.privacyBasis,
     sourceSha,
+    auditRuntimeSourceSha: source.auditRuntimeSourceSha,
+    auditEnvironment: auditReceipt.environment,
     contractDigest: contract.contractDigest,
     generatedAt: new Date().toISOString(),
     browser: `Chromium ${browserVersion}`,
@@ -254,6 +275,21 @@ async function render() {
   );
 }
 
+async function preserveStage4BExceptionFrames(temporaryImages) {
+  const exceptions = await json(path.join(brightworkRoot, "Brightwork_Evidence_State_Exceptions.json"));
+  if (!(exceptions.exceptions?.length ?? 0)) return;
+  const source = path.join(imageRoot, "Stage4B_Fixture_Exceptions");
+  const target = path.join(temporaryImages, "Stage4B_Fixture_Exceptions");
+  const sourceStats = await stat(source).catch(() => null);
+  if (!sourceStats?.isDirectory()) throw new Error("BRIGHTWORK_STAGE4B_EXCEPTION_FRAMES_MISSING_BEFORE_CAPTURE");
+  await copyDirectory(source, target);
+  for (const exception of exceptions.exceptions) {
+    const preserved = path.join(temporaryImages, ...exception.preservedPath.split("/"));
+    if (!(await isNonEmpty(preserved)))
+      throw new Error(`BRIGHTWORK_STAGE4B_EXCEPTION_FRAME_PRESERVATION_FAILED:${exception.exceptionId}`);
+  }
+}
+
 async function captureRequirement(options) {
   const {
     page,
@@ -262,6 +298,9 @@ async function captureRequirement(options) {
     sourceSha,
     contract,
     fixtureReceipt,
+    fixtureIdentity,
+    auditEnvironment,
+    auditRuntimeSourceSha,
     browserVersion,
     representatives,
     ordinal,
@@ -279,6 +318,9 @@ async function captureRequirement(options) {
   const absolutePath = path.join(temporaryImages, ...relativePath.split("/"));
   await mkdir(path.dirname(absolutePath), { recursive: true });
   const concreteRoute = requirement.concreteRoute ?? resolveRoute(requirement.routePattern, representatives);
+  const effectiveRequirement = requirement.expectedDestination
+    ? { ...requirement, expectedDestination: resolveRoute(requirement.expectedDestination, representatives) }
+    : requirement;
   let pageTitle = "Voyagewright";
   let captureStatus = CURRENT_CAPTURE_STATUS;
   let limitation =
@@ -290,8 +332,9 @@ async function captureRequirement(options) {
     cleanup = prepared.cleanup;
     const { response } = prepared;
     if (response && response.status() >= 500) throw new Error(`HTTP_${response.status()}`);
-    semanticObservation = await observePage(page, response, requirement, concreteRoute);
-    const semanticIssue = semanticCaptureIssue(requirement, semanticObservation);
+    const transitionSettled = await waitForStableReadyState(page, effectiveRequirement);
+    semanticObservation = await observePage(page, response, effectiveRequirement, concreteRoute, transitionSettled);
+    const semanticIssue = semanticCaptureIssue(effectiveRequirement, semanticObservation);
     if (semanticIssue) throw new Error(`BRIGHTWORK_SEMANTIC_CAPTURE_INVALID:${semanticIssue}`);
     pageTitle = semanticObservation.pageTitle;
     await page.screenshot({ path: absolutePath, fullPage: true, animations: "disabled" });
@@ -316,6 +359,7 @@ async function captureRequirement(options) {
     productArea: requirement.productArea,
     classification: requirement.classification,
     state: requirement.state,
+    expectedDestination: effectiveRequirement.expectedDestination ?? null,
     persona: requirement.persona,
     accountAlias: requirement.persona,
     fixture: fixtureReceipt.fixtureVersion,
@@ -324,6 +368,7 @@ async function captureRequirement(options) {
     motionMode: requirement.motionMode,
     browserVersion: `Chromium ${browserVersion}`,
     sourceSha,
+    auditRuntimeSourceSha,
     contractDigest: contract.contractDigest,
     requirementDigest: requirement.requirementDigest,
     capturedAt: new Date().toISOString(),
@@ -337,11 +382,13 @@ async function captureRequirement(options) {
       "Synthetic fixture aliases only; credentials, tokens, private prose, media objects, and raw identifiers are excluded from the corpus.",
     visualReviewStatus: CURRENT_CAPTURE_STATUS,
     pageTitle,
+    fixtureIdentity,
+    auditEnvironment,
     semanticObservation,
   };
 }
 
-async function observePage(page, response, requirement, concreteRoute) {
+async function observePage(page, response, requirement, concreteRoute, transitionSettled) {
   const pageTitle = (await page.title()).replaceAll(/\s+/gu, " ").trim() || "Voyagewright";
   const body = (
     (await page
@@ -357,35 +404,56 @@ async function observePage(page, response, requirement, concreteRoute) {
       .count()
       .catch(() => 0)) > 0;
   const semanticText = `${pageTitle}\n${body}`;
-  const readyMarkers = [];
+  const unavailableSurface = await page
+    .locator("main")
+    .first()
+    .evaluate((main) => {
+      const text = (element) => element.textContent?.replaceAll(/\s+/gu, " ").trim() ?? "";
+      const routeStateNodes = [
+        ...main.querySelectorAll('[role="alert"], [aria-live], h1, h2, [data-state="unavailable"]'),
+      ];
+      return routeStateNodes.some((element) =>
+        /(?:\b(?:access|chronicle|console|muster room|operational view|page|preview|resource|route|voyage)\b[^.\n]{0,64}\bunavailable\b|\bcannot be (?:opened|accessed)\b|\bnot (?:currently )?available\b)/iu.test(
+          text(element),
+        ),
+      );
+    })
+    .catch(() => false);
+  const readyLandmarks = [];
   if (
     (await page
       .locator("[data-operational-status]")
       .count()
       .catch(() => 0)) > 0
   )
-    readyMarkers.push("CAPTAIN_OPERATIONAL_PROJECTION");
+    readyLandmarks.push("CAPTAIN_OPERATIONAL_PROJECTION");
   if (
     (await page
       .locator("[data-captain-authority]")
       .count()
       .catch(() => 0)) > 0
   )
-    readyMarkers.push("CAPTAIN_MUSTER_PROJECTION");
+    readyLandmarks.push("CAPTAIN_MUSTER_PROJECTION");
   if (
     (await page
       .locator(".player-safe-preview:not(.platform-loading) h1")
       .count()
       .catch(() => 0)) > 0
   )
-    readyMarkers.push("PLAYER_SAFE_PREVIEW");
+    readyLandmarks.push("PLAYER_SAFE_PREVIEW");
   if (
     (await page
       .locator("#private-operations-title")
       .count()
       .catch(() => 0)) > 0
   )
-    readyMarkers.push("PRIVATE_OPERATIONS_CONSOLE");
+    readyLandmarks.push("PRIVATE_OPERATIONS_CONSOLE");
+  for (const landmark of requirement.expectedReadyLandmarks ?? []) {
+    let locator = page.locator(landmark.selector).first();
+    if (landmark.text) locator = locator.filter({ hasText: landmark.text });
+    if (await locator.isVisible().catch(() => false)) readyLandmarks.push(landmark.id);
+  }
+  const expectedPath = new URL(concreteRoute, "https://brightwork.invalid").pathname;
   return {
     httpStatus: response?.status() ?? null,
     finalPath: final.pathname,
@@ -397,18 +465,81 @@ async function observePage(page, response, requirement, concreteRoute) {
       /(?:unauthorized|not authorized|permission denied|access is required|authorization is required)/iu.test(
         semanticText,
       ),
-    unavailableSurface:
-      /(?:\b(?:access|chronicle|console|muster room|operational view|page|preview|resource|route|voyage)\b[^.\n]{0,64}\bunavailable\b|\bcannot be (?:opened|accessed)\b|\bnot (?:currently )?available\b)/iu.test(
-        semanticText,
-      ),
+    // A bare "not available" in secondary status copy (for example a
+    // configuration rotation timestamp) is not a route-level unavailable
+    // surface. Restrict that verdict to a primary/announced state node so a
+    // READY capture cannot be rejected by unrelated supporting copy.
+    unavailableSurface,
     deadEndSurface:
       /\breturn to (?:chronicle|studio|captain|library)\b/iu.test(semanticText) &&
       /\b(?:access|route|page|chronicle)\b[^.\n]{0,64}\bunavailable\b/iu.test(semanticText),
     signInSurface,
-    readyMarkers,
+    readyLandmarks: [...new Set(readyLandmarks)],
+    visibleMain: await page
+      .locator("main")
+      .first()
+      .isVisible()
+      .catch(() => false),
+    expectedPathMatched: final.pathname === expectedPath,
+    transitionSettled,
     syntheticRecordProven:
       requirement.classification !== "CONTEXTUAL_DYNAMIC_DESTINATION" || !/\[[^\]]+\]/u.test(concreteRoute),
   };
+}
+
+async function waitForStableReadyState(page, requirement) {
+  if (requirement.state !== "READY") return true;
+  const landmarks = requirement.expectedReadyLandmarks ?? [];
+  for (const landmark of landmarks) {
+    let locator = page.locator(landmark.selector).first();
+    if (landmark.text) locator = locator.filter({ hasText: landmark.text });
+    await locator.waitFor({ state: "visible", timeout: 10_000 });
+  }
+  await page.evaluate(
+    () =>
+      new Promise((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(resolve));
+      }),
+  );
+  const specificLandmarks = landmarks.filter((landmark) => !landmark.id.endsWith(":MAIN_CONTENT"));
+  if (!specificLandmarks.length) {
+    // Generic route entries can hydrate a client-side redirect or an initial
+    // read model after DOM content is ready. Observe only after that transition
+    // has had a bounded chance to settle; do not mistake its initial copy for
+    // the route's READY state.
+    await page.waitForTimeout(300);
+    return page.evaluate(
+      () =>
+        document.readyState === "complete" &&
+        !document.querySelector('main[aria-busy="true"], [data-transitioning="true"]'),
+    );
+  }
+  const snapshot = await page.evaluate(
+    (selectors) => {
+      return selectors.map((selector) => {
+        const element = document.querySelector(selector);
+        if (!element) return null;
+        const rect = element.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        return { width: rect.width, height: rect.height, opacity: style.opacity, visibility: style.visibility };
+      });
+    },
+    specificLandmarks.map((landmark) => landmark.selector),
+  );
+  await page.waitForTimeout(120);
+  const repeated = await page.evaluate(
+    (selectors) => {
+      return selectors.map((selector) => {
+        const element = document.querySelector(selector);
+        if (!element) return null;
+        const rect = element.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        return { width: rect.width, height: rect.height, opacity: style.opacity, visibility: style.visibility };
+      });
+    },
+    specificLandmarks.map((landmark) => landmark.selector),
+  );
+  return stableJson(snapshot) === stableJson(repeated);
 }
 
 async function navigateForRequirement(page, url, requirement) {
@@ -581,7 +712,11 @@ async function complete() {
 }
 
 async function loadCredentials(paths) {
-  const [homeport, admiralty] = await Promise.all([json(paths.homeport), json(paths.admiralty)]);
+  const [homeport, admiralty, creator] = await Promise.all([
+    json(paths.homeport),
+    json(paths.admiralty),
+    json(paths.creator),
+  ]);
   const homeportAccounts = homeport.accounts ?? homeport.aliases;
   const admiraltyAccounts = admiralty.accounts ?? admiralty.aliases;
   const choose = (source, preferred) => preferred.map((key) => source[key]).find(Boolean);
@@ -589,10 +724,10 @@ async function loadCredentials(paths) {
     ANONYMOUS: null,
     ORDINARY_PLAYER: choose(homeportAccounts, ["FULL_CAPABILITY", "VERIFIED_FULL_CAPABILITY", "SERA_OWNER"]),
     CAPTAIN_PLAYER: choose(homeportAccounts, ["FULL_CAPABILITY", "RETURNING_FULL_CAPABILITY"]),
-    CREATOR: choose(homeportAccounts, ["FULL_CAPABILITY", "RETURNING_FULL_CAPABILITY"]),
+    CREATOR: creator.account,
     MODERATOR: choose(homeportAccounts, ["MODERATOR", "FULL_CAPABILITY"]),
     ADMIRALTY_OPERATOR: choose(admiraltyAccounts, ["ADMINISTRATOR"]),
-    passwords: { homeport: homeport.password, admiralty: admiralty.password },
+    passwords: { homeport: homeport.password, admiralty: admiralty.password, creator: creator.password },
     admiraltyAccounts,
   };
 }
@@ -601,7 +736,12 @@ async function storageState(browser, credentials, persona) {
   if (persona === "ANONYMOUS") return undefined;
   const account = credentials[persona];
   if (!account?.email) throw new Error(`BRIGHTWORK_PERSONA_CREDENTIAL_MISSING:${persona}`);
-  const password = persona === "ADMIRALTY_OPERATOR" ? credentials.passwords.admiralty : credentials.passwords.homeport;
+  const password =
+    persona === "ADMIRALTY_OPERATOR"
+      ? credentials.passwords.admiralty
+      : persona === "CREATOR"
+        ? credentials.passwords.creator
+        : credentials.passwords.homeport;
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   try {
@@ -619,7 +759,13 @@ async function storageState(browser, credentials, persona) {
       undefined,
       { timeout: 15_000 },
     );
-    return { context, dispose: () => context.close() };
+    // Some role-entry paths retain the sign-in location after the cookie has
+    // been established. Give the form's own navigation a chance to settle,
+    // but make the authenticated context (not a URL transition) decisive.
+    await page.waitForTimeout(300);
+    const snapshot = await context.storageState();
+    await context.close();
+    return { storageState: snapshot };
   } catch (error) {
     await context.close();
     throw error;
@@ -653,10 +799,21 @@ async function representativeValues(databasePath, credentials) {
       }),
       db.communityCollection.findFirst({ orderBy: { id: "asc" } }),
       db.communityGuideContent.findFirst({ orderBy: { id: "asc" } }),
-      db.communityVoyageLog.findFirst({ orderBy: { id: "asc" } }),
+      db.communityVoyageLog.findFirst({
+        where: { ownerAccountId: credentials.ORDINARY_PLAYER?.accountId },
+        orderBy: { id: "asc" },
+      }),
       db.communityModerationCase.findFirst({ orderBy: { id: "asc" } }),
       db.playerArtifactRecord.findFirst({ where: { playerProfileId: ordinary?.id }, orderBy: { id: "asc" } }),
-      db.playerChronicleRecord.findFirst({ where: { playerProfileId: ordinary?.id }, orderBy: { id: "asc" } }),
+      db.playerChronicleRecord.findFirst({
+        where: { playerProfileId: ordinary?.id },
+        orderBy: { id: "asc" },
+        select: {
+          id: true,
+          sourcePlaythroughId: true,
+          publishedVersion: { select: { tale: { select: { slug: true } } } },
+        },
+      }),
       db.taleSession.findFirst({
         where: { memberships: { some: { playerProfileId: ordinary?.id } } },
         orderBy: { id: "asc" },
@@ -687,6 +844,8 @@ async function representativeValues(databasePath, credentials) {
       moderationId: moderation?.id,
       artifactId: artifact?.id,
       recordId: history?.id,
+      historyPlaythroughId: history?.sourcePlaythroughId,
+      historyTaleSlug: history?.publishedVersion?.tale?.slug,
       sessionId: captainSession?.id,
       playthroughId: captainSession?.id,
       voyageId: captainSession?.id,
@@ -715,6 +874,8 @@ function resolveRoute(pattern, values) {
     "[campaignSlug]": values.campaignSlug,
     "[artifactId]": values.artifactId,
     "[recordId]": values.recordId,
+    "[historyPlaythroughId]": values.historyPlaythroughId,
+    "[historyTaleSlug]": values.historyTaleSlug,
     "[handle]": values.handle,
     "[workspace]": values.workspace,
   };
@@ -953,19 +1114,62 @@ function git(...args) {
 }
 
 function auditedSourceSha() {
+  return auditedSources().productSourceSha;
+}
+
+function auditedSources() {
   // Evidence commits may be merged after the product source they describe.
-  // Stage 1 is the recorded source authority; fail closed if its product tree
-  // no longer matches the protected tree instead of silently moving baseline.
+  // Keep ordinary product source and the production-build audit runtime distinct.
   const stageOne = JSON.parse(
     git("show", "HEAD:Development_Docs/Projects/Voyagewright_Brightwork/Current_Route_Census.json"),
   );
-  const sourceSha = stageOne.sourceSha;
+  const productSourceSha = stageOne.sourceSha;
+  const auditRuntimeSourceSha = git("rev-parse", "HEAD");
+  const auditOnlySourcePaths = new Set([
+    "src/instrumentation.ts",
+    "src/proxy.ts",
+    "src/homeport/public-app-origin.ts",
+    "src/wayfarer/http.ts",
+  ]);
   try {
-    execFileSync("git", ["diff", "--quiet", sourceSha, "HEAD", "--", "src"], { cwd: root, stdio: "ignore" });
-  } catch {
-    throw new Error(`BRIGHTWORK_PRODUCT_SOURCE_BASELINE_MOVED:${sourceSha}`);
+    const changed = git("diff", "--name-only", productSourceSha, "HEAD", "--", "src")
+      .split(/\r?\n/u)
+      .filter(Boolean)
+      .filter(
+        (file) =>
+          !file.startsWith("src/audit/") &&
+          !file.startsWith("src/app/__audit/") &&
+          !file.startsWith("src/app/audit-internal/") &&
+          !auditOnlySourcePaths.has(file),
+      );
+    if (changed.length) throw new Error(`BRIGHTWORK_PRODUCT_SOURCE_BASELINE_MOVED:${productSourceSha}`);
+  } catch (error) {
+    if (String(error.message ?? error).startsWith("BRIGHTWORK_PRODUCT_SOURCE_BASELINE_MOVED")) throw error;
+    throw new Error(`BRIGHTWORK_PRODUCT_SOURCE_BASELINE_CHECK_FAILED:${productSourceSha}`);
   }
-  return sourceSha;
+  return { productSourceSha, auditRuntimeSourceSha };
+}
+
+function sourceBoundFixtureIdentity({ fixtureReceipt, auditReceipt, source }) {
+  const fixture = {
+    fixtureVersion: fixtureReceipt.fixtureVersion,
+    fixtureSourceSha: fixtureReceipt.sourceSha,
+    fixtureDatabaseHash: fixtureReceipt.databaseHash,
+  };
+  const environment = {
+    classification: auditReceipt.classification,
+    auditRuntimeSourceSha: auditReceipt.sourceSha,
+    productSourceSha: auditReceipt.productBaselineSha,
+    buildMode: auditReceipt.environment.buildMode,
+    deploymentData: auditReceipt.environment.deploymentData,
+  };
+  return {
+    ...fixture,
+    ...environment,
+    fixtureReceiptDigest: sha256(stableJson(fixture)),
+    auditEnvironmentDigest: sha256(stableJson(environment)),
+    sourceBindingDigest: sha256(stableJson({ ...source, fixture, environment })),
+  };
 }
 
 function sqliteUrl(file) {

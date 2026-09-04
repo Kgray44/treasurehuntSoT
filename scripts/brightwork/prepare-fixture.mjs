@@ -3,6 +3,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { copyFile, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const repositoryRoot = path.resolve(process.cwd());
 const localAppData = required("LOCALAPPDATA");
@@ -93,7 +94,13 @@ const homeportCredentials = path.join(
   "owner-correction-round3-walkthrough-credentials.private.json",
 );
 const admiraltyCredentials = path.join(admiraltyRoot, "credentials", "admiralty-phase2-walkthrough.private.json");
-await ensureBrightworkRouteRepresentatives(combinedDatabase, homeportCredentials);
+const creatorCredentials = path.join(taskRoot, "credentials", "brightwork-creator.private.json");
+await ensureBrightworkRouteRepresentatives(
+  combinedDatabase,
+  homeportCredentials,
+  creatorCredentials,
+  required("BRIGHTWORK_CREATOR_SYNTHETIC_PASSWORD"),
+);
 const [databaseHash, homeportAliasCount, admiraltyAliasCount] = await Promise.all([
   sha256(combinedDatabase),
   aliasCount(homeportCredentials),
@@ -109,6 +116,7 @@ const receipt = {
   credentials: {
     homeport: homeportCredentials,
     admiralty: admiraltyCredentials,
+    creator: creatorCredentials,
     homeportAliasCount,
     admiraltyAliasCount,
   },
@@ -145,7 +153,12 @@ async function aliasCount(file) {
   return Object.keys(parsed.accounts ?? parsed.aliases ?? {}).length;
 }
 
-async function ensureBrightworkRouteRepresentatives(databasePath, credentialsPath) {
+async function ensureBrightworkRouteRepresentatives(
+  databasePath,
+  credentialsPath,
+  creatorCredentialsPath,
+  creatorPassword,
+) {
   const credentialHandoff = JSON.parse(await readFile(credentialsPath, "utf8"));
   const aliases = credentialHandoff.accounts ?? credentialHandoff.aliases ?? {};
   const fullCapability = aliases.FULL_CAPABILITY ?? aliases.VERIFIED_FULL_CAPABILITY;
@@ -237,9 +250,32 @@ async function ensureBrightworkRouteRepresentatives(databasePath, credentialsPat
         grantedAt: completedAt,
       },
     });
+    await db.accountCredential.upsert({
+      where: { accountId: creatorAccountId },
+      update: { passwordHash: await bcrypt.hash(creatorPassword, 10), changedAt: completedAt },
+      create: {
+        id: "brightwork-stage6-creator-credential",
+        accountId: creatorAccountId,
+        passwordHash: await bcrypt.hash(creatorPassword, 10),
+        changedAt: completedAt,
+        createdAt: completedAt,
+      },
+    });
     await db.userAccount.update({
       where: { id: fullCapability.accountId },
       data: { ordinaryWorkspaceEntryAt: completedAt },
+    });
+    // The owner editor is a contextual screen: select a disposable log for
+    // the authenticated ordinary fixture owner rather than treating another
+    // synthetic account's private record as a product-ready destination.
+    const voyageLog = await db.communityVoyageLog.findFirst({
+      orderBy: { id: "asc" },
+      select: { id: true },
+    });
+    if (!voyageLog) throw new Error("BRIGHTWORK_OWNER_VOYAGE_LOG_REPRESENTATIVE_REQUIRED");
+    await db.communityVoyageLog.update({
+      where: { id: voyageLog.id },
+      data: { ownerAccountId: fullCapability.accountId },
     });
     const membership = await db.playthroughMembership.upsert({
       where: {
@@ -399,6 +435,21 @@ async function ensureBrightworkRouteRepresentatives(databasePath, credentialsPat
         createdAt: completedAt,
       },
     });
+    await mkdir(path.dirname(creatorCredentialsPath), { recursive: true });
+    await writeFile(
+      creatorCredentialsPath,
+      `${JSON.stringify(
+        {
+          classification: "LOCAL_SYNTHETIC_CREDENTIAL_HANDOFF",
+          fixtureVersion: "brightwork-creator-continuation-v1",
+          password: creatorPassword,
+          account: { accountId: creatorAccountId, email: creatorEmail, displayName: "Brightwork Creator" },
+        },
+        null,
+        2,
+      )}\n`,
+      { encoding: "utf8", mode: 0o600 },
+    );
   } finally {
     await db.$disconnect();
   }

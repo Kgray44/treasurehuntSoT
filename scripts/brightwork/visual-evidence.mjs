@@ -12,6 +12,7 @@ export const CAPTURE_CLASSIFICATIONS = Object.freeze([
 ]);
 
 export const CURRENT_CAPTURE_STATUS = "CAPTURED_PENDING_BRIGHTWORK_REVIEW";
+export const READY_LANDMARK_SCHEMA_VERSION = "1.0.0";
 export const REQUIRED_VIEWPORTS = Object.freeze([
   { id: "desktop-1440x900", width: 1440, height: 900 },
   { id: "mobile-390x844", width: 390, height: 844 },
@@ -49,6 +50,13 @@ const TOKENIZED_ROUTES = new Set([
   "/player/invitation",
   "/reset-password",
   "/verify-email",
+]);
+
+const SOURCE_REDIRECT_ROUTES = new Set([
+  "/account/profile/view",
+  "/passport/history/[recordId]/compare",
+  "/passport/history/[recordId]/replay",
+  "/player/playthroughs/[playthroughId]",
 ]);
 
 const COMPATIBILITY_ROUTES = new Set([
@@ -202,7 +210,14 @@ function legacyScreenByRoute(screenCatalog) {
   return result;
 }
 
-export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sourceSha, generatedAt }) {
+export function buildRouteCensus({
+  appRoot,
+  legacyInventory,
+  screenCatalog,
+  sourceSha,
+  auditRuntimeSourceSha,
+  generatedAt,
+}) {
   const priorRoutes = new Map((legacyInventory.routes ?? []).map((route) => [route.routePattern, route]));
   const priorScreens = legacyScreenByRoute(screenCatalog);
   const routes = sourcePageRoutes(appRoot).map(({ implementationSource, routePattern }) => {
@@ -214,10 +229,15 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
     const classification =
       routePattern === "/studio/private-content/operations"
         ? "CONTEXTUAL_DYNAMIC_DESTINATION"
-        : (LEGACY_CLASSIFICATIONS[prior?.classification] ?? fallbackClassification(routePattern));
+        : SOURCE_REDIRECT_ROUTES.has(routePattern)
+          ? "COMPATIBILITY_OR_REDIRECT"
+          : (LEGACY_CLASSIFICATIONS[prior?.classification] ?? fallbackClassification(routePattern));
     // Stage 1 legacy metadata used a generic Admiralty label.  Prefer the
     // actual page gate whenever the current source defines one.
-    const inferredCapabilities = fallbackCapabilities(routePattern);
+    const capabilityMetadata = sourceCapabilityMetadata({ routePattern, implementationSource });
+    const inferredCapabilities = capabilityMetadata?.requiredCapability
+      ? [capabilityMetadata.requiredCapability]
+      : fallbackCapabilities(routePattern);
     const capabilityRequirements =
       ADMIN_PAGE_CAPABILITIES[routePattern] || routePattern === "/studio/private-content/operations"
         ? inferredCapabilities
@@ -235,11 +255,12 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
       classification,
       authenticationRequirement,
       capabilityRequirements,
+      capabilityMetadata,
       applicablePersonas: personasFor({ routePattern, authenticationRequirement, capabilityRequirements }),
       meaningfulVisualStates:
         routePattern === "/studio/private-content/operations"
           ? ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "UNAUTHORIZED"]
-          : meaningfulStates(priorScreen?.applicableStates ?? [], routePattern),
+          : meaningfulStates(priorScreen?.applicableStates ?? [], routePattern, classification),
       desktopMobileApplicability: ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification)
         ? "EXCLUDED"
         : "DESKTOP_AND_MOBILE",
@@ -253,6 +274,7 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
       captureStatus: ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification)
         ? "EXCLUDED_BY_CLASSIFICATION"
         : "PLANNED",
+      readyLandmarks: readyLandmarksFor({ routeId, routePattern, implementationSource }),
       provenance: prior ? "CURRENT_SOURCE_RECONCILED_WITH_LEGACY_CATALOG" : "CURRENT_SOURCE_DISCOVERED",
     };
     route.screenshotRequirements = ["INTERNAL_NON_PAGE", "DEVELOPMENT_OR_DIAGNOSTIC"].includes(classification)
@@ -265,6 +287,13 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
     schemaVersion: "2.0.0",
     artifact: "Voyagewright Brightwork current-main route and screen census",
     sourceSha,
+    auditRuntimeSourceSha,
+    sourceProvenance: {
+      ordinaryProductSourceSha: sourceSha,
+      auditRuntimeSourceSha,
+      sourceOfTruth:
+        "Current source route files, with audit-only runtime changes recorded separately from ordinary product source.",
+    },
     generatedAt,
     discovery: {
       appRoot: path.relative(process.cwd(), appRoot).split(path.sep).join("/"),
@@ -274,6 +303,138 @@ export function buildRouteCensus({ appRoot, legacyInventory, screenCatalog, sour
     totals,
     routes,
   };
+}
+
+function sourceCapabilityMetadata({ routePattern, implementationSource }) {
+  const sourceFile = path.join(process.cwd(), implementationSource);
+  const source = readFileSync(sourceFile, "utf8");
+  if (routePattern.startsWith("/admin")) {
+    const requiredCapability = source.match(/admiraltyPageOperator\("([A-Z_]+)"\)/u)?.[1];
+    if (!requiredCapability) throw new Error(`BRIGHTWORK_ADMIRALTY_PAGE_GATE_NOT_FOUND:${routePattern}`);
+    return {
+      evidenceKind: "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+      sourceFile: implementationSource,
+      gate: "admiraltyPageOperator",
+      requiredCapability,
+    };
+  }
+  if (routePattern === "/studio/private-content/operations") {
+    const requiredCapability = source.match(/requireGmCapability\("([A-Z_]+)"\)/u)?.[1];
+    if (!requiredCapability) throw new Error("BRIGHTWORK_PRIVATE_OPERATIONS_PAGE_GATE_NOT_FOUND");
+    return {
+      evidenceKind: "SOURCE_PAGE_LEVEL_CAPABILITY_GATE",
+      sourceFile: implementationSource,
+      gate: "requireGmCapability",
+      requiredCapability,
+    };
+  }
+  return null;
+}
+
+function readyLandmarksFor({ routeId, routePattern, implementationSource }) {
+  const base = [
+    {
+      id: `${routeId}:MAIN_CONTENT`,
+      selector: "main",
+      description: `Visible main product surface for ${routePattern}.`,
+      sourceFile: implementationSource,
+      sourceBasis: "CURRENT_ROUTE_ENTRY",
+    },
+  ];
+  const additions = {
+    "/community": [
+      {
+        id: "COMMUNITY_HARBOR_HOME_FRAME",
+        selector: '[data-community-district="HARBOR_HOME"]',
+        description: "Community Harbor Home frame is visible.",
+        sourceFile: "src/components/community/CommunityPageFrame.tsx",
+        sourceBasis: "COMMUNITY_PAGE_FRAME_DISTRICT",
+      },
+      {
+        id: "COMMUNITY_HARBOR_DIRECTORY",
+        selector: "#community-district-directory-title",
+        text: "The whole Harbor, one chart",
+        description: "Community Harbor district directory is visible.",
+        sourceFile: "src/app/community/page.tsx",
+        sourceBasis: "COMMUNITY_HOME_DIRECTORY",
+      },
+    ],
+    "/community/featured": [
+      {
+        id: "COMMUNITY_FEATURED_FRAME",
+        selector: '[data-community-district="FEATURED"]',
+        description: "Featured Community district frame is visible.",
+        sourceFile: "src/components/community/CommunityPageFrame.tsx",
+        sourceBasis: "COMMUNITY_PAGE_FRAME_DISTRICT",
+      },
+      {
+        id: "COMMUNITY_FEATURED_HEADING",
+        selector: "main.community-harbor h1",
+        text: "Featured at the Harbor",
+        description: "Featured Community heading is visible after its presentation transition settles.",
+        sourceFile: "src/components/community/PublicCommunitySection.tsx",
+        sourceBasis: "FEATURED_SECTION_TITLE",
+      },
+    ],
+    "/captain/sessions/[sessionId]": [
+      {
+        id: "CAPTAIN_OPERATIONAL_PROJECTION",
+        selector: "[data-operational-status]",
+        description: "Captain operational projection is visible.",
+        sourceFile: "src/app/captain/sessions/[sessionId]/page.tsx",
+        sourceBasis: "CAPTAIN_OPERATIONAL_PROJECTION",
+      },
+    ],
+    "/captain/voyages/[playthroughId]/muster": [
+      {
+        id: "CAPTAIN_MUSTER_PROJECTION",
+        selector: "[data-captain-authority]",
+        description: "Captain muster projection is visible.",
+        sourceFile: "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
+        sourceBasis: "CAPTAIN_MUSTER_PROJECTION",
+      },
+    ],
+    "/captain/voyages/[playthroughId]/player-preview": [
+      {
+        id: "PLAYER_SAFE_PREVIEW",
+        selector: ".player-safe-preview:not(.platform-loading) h1",
+        description: "Player-safe preview heading is visible.",
+        sourceFile: "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
+        sourceBasis: "PLAYER_SAFE_PREVIEW",
+      },
+    ],
+    "/studio/private-content/operations": [
+      {
+        id: "PRIVATE_OPERATIONS_CONSOLE",
+        selector: "#private-operations-title",
+        text: "Operational readiness",
+        description: "Private operations console heading is visible.",
+        sourceFile: "src/components/studio/PrivateOperationsConsole.tsx",
+        sourceBasis: "PRIVATE_OPERATIONS_CONSOLE",
+      },
+    ],
+    "/admin/configuration": [
+      {
+        id: "ADMIRALTY_CONFIGURATION_HEADING",
+        selector: ".chartroom-page h1",
+        text: "Configuration",
+        description: "The read-only Admiralty Configuration station heading is visible.",
+        sourceFile: "src/app/admin/configuration/page.tsx",
+        sourceBasis: "CONFIGURATION_PAGE_HEADING",
+      },
+    ],
+    "/studio/exchange": [
+      {
+        id: "STUDIO_EXCHANGE_HEADING",
+        selector: '[data-testid="studio-community-exchange"] h1',
+        text: "Open the Exchange",
+        description: "The authenticated Community Exchange console heading is visible.",
+        sourceFile: "src/components/community/StudioExchangeConsole.tsx",
+        sourceBasis: "STUDIO_EXCHANGE_AUTHENTICATED_CONSOLE",
+      },
+    ],
+  }[routePattern];
+  return [...base, ...(additions ?? [])];
 }
 
 export function personasFor({ routePattern, authenticationRequirement, capabilityRequirements }) {
@@ -288,8 +449,18 @@ export function personasFor({ routePattern, authenticationRequirement, capabilit
   return ["ANONYMOUS"];
 }
 
-export function meaningfulStates(screenStates, routePattern) {
-  const states = new Set(["READY"]);
+export function meaningfulStates(screenStates, routePattern, classification) {
+  // A captured invalid invitation is a deliberately bounded-token outcome,
+  // not a false claim that the route's unprovided valid-token READY state was
+  // observed. Source redirect entries likewise have a compatibility contract,
+  // not an independent READY surface at their legacy pathname.
+  const states = new Set(
+    routePattern === "/player/invitation"
+      ? ["UNAVAILABLE"]
+      : classification === "COMPATIBILITY_OR_REDIRECT"
+        ? ["COMPATIBILITY_OR_REDIRECT"]
+        : ["READY"],
+  );
   for (const state of screenStates) {
     const normalized = String(state)
       .toUpperCase()
@@ -308,8 +479,16 @@ export function meaningfulStates(screenStates, routePattern) {
 
 export function captureRequirementsFor(route) {
   const persona = capturePersonaFor(route);
-  const compatibility = compatibilityExpectation(route.routePattern);
-  const state = route.classification === "COMPATIBILITY_OR_REDIRECT" ? "COMPATIBILITY_OR_REDIRECT" : "READY";
+  const compatibility = {
+    ...compatibilityExpectation(route.routePattern),
+    ...sourceRedirectExpectation(route.routePattern),
+  };
+  const state =
+    route.routePattern === "/player/invitation"
+      ? "UNAVAILABLE"
+      : route.classification === "COMPATIBILITY_OR_REDIRECT"
+        ? "COMPATIBILITY_OR_REDIRECT"
+        : "READY";
   return REQUIRED_THEMES.flatMap((theme) =>
     REQUIRED_VIEWPORTS.map((viewport) => ({
       state,
@@ -319,6 +498,12 @@ export function captureRequirementsFor(route) {
       motionMode: "REDUCED",
       coverageKind: "ROUTE",
       criticality: route.classification === "CONTEXTUAL_DYNAMIC_DESTINATION" ? "HIGH" : "STANDARD",
+      ...(route.routePattern === "/player/invitation"
+        ? {
+            concreteRoute: "/player/invitation?state=invalid",
+            captureAction: "SOURCE_DECLARED_INVALID_INVITATION_STATE",
+          }
+        : {}),
       ...(compatibility ?? {}),
     })),
   );
@@ -334,9 +519,7 @@ export function buildCaptureContract(census, generatedAt) {
       classification: route.classification,
       authenticationRequirement: route.authenticationRequirement,
       capabilityRequirements: route.capabilityRequirements,
-      ...(semanticReadyMarkerFor(route.routePattern)
-        ? { semanticReadyMarker: semanticReadyMarkerFor(route.routePattern) }
-        : {}),
+      ...(requirement.state === "READY" ? { expectedReadyLandmarks: route.readyLandmarks } : {}),
       ...requirement,
     })),
   );
@@ -408,9 +591,7 @@ export function buildCaptureContract(census, generatedAt) {
       classification: route.classification,
       authenticationRequirement: route.authenticationRequirement,
       capabilityRequirements: route.capabilityRequirements,
-      ...(semanticReadyMarkerFor(route.routePattern)
-        ? { semanticReadyMarker: semanticReadyMarkerFor(route.routePattern) }
-        : {}),
+      ...(state.state === "READY" ? { expectedReadyLandmarks: route.readyLandmarks } : {}),
       state: state.state,
       persona: state.persona,
       theme: "DARK",
@@ -430,6 +611,7 @@ export function buildCaptureContract(census, generatedAt) {
     schemaVersion: "2.0.0",
     artifact: "Voyagewright Brightwork visual capture contract",
     sourceSha: census.sourceSha,
+    auditRuntimeSourceSha: census.auditRuntimeSourceSha,
     censusDigest: sha256(stableJson(census.routes)),
     generatedAt,
     requirements: normalizedRequirements,
@@ -496,7 +678,7 @@ export function captureRequirementDigest(requirement) {
       concreteRoute: requirement.concreteRoute ?? null,
       expectedDestination: requirement.expectedDestination ?? null,
       expectedCompatibilityState: requirement.expectedCompatibilityState ?? null,
-      semanticReadyMarker: requirement.semanticReadyMarker ?? null,
+      expectedReadyLandmarks: requirement.expectedReadyLandmarks ?? [],
     }),
   );
 }
@@ -507,6 +689,7 @@ export function captureContractValidation({ contract, census }) {
   const duplicateIdentities = [];
   const personaMismatches = [];
   const malformedRequirementDigests = [];
+  const missingReadyLandmarkExpectations = [];
   const seen = new Map();
   for (const requirement of contract.requirements ?? []) {
     let canonical;
@@ -520,6 +703,12 @@ export function captureContractValidation({ contract, census }) {
       malformedIdentities.push({ requirement, reason: "IDENTITY_DOES_NOT_MATCH_CANONICAL_COMPONENTS" });
     if (requirement.requirementDigest && requirement.requirementDigest !== captureRequirementDigest(requirement))
       malformedRequirementDigests.push({ requirement, reason: "REQUIREMENT_DIGEST_DOES_NOT_MATCH_BINDING" });
+    if (
+      requirement.state === "READY" &&
+      (!requirement.expectedReadyLandmarks?.length ||
+        requirement.expectedReadyLandmarks.some((landmark) => !landmark?.id || !landmark?.selector))
+    )
+      missingReadyLandmarkExpectations.push({ requirement, reason: "READY_LANDMARK_EXPECTATION_MISSING_OR_MALFORMED" });
     if (seen.has(requirement.identity))
       duplicateIdentities.push({ requirement, duplicateOf: seen.get(requirement.identity) });
     else seen.set(requirement.identity, requirement);
@@ -536,6 +725,7 @@ export function captureContractValidation({ contract, census }) {
     ...(duplicateIdentities.length ? ["DUPLICATE_IDENTITIES"] : []),
     ...(personaMismatches.length ? ["PERSONA_MISMATCHES"] : []),
     ...(malformedRequirementDigests.length ? ["MALFORMED_REQUIREMENT_DIGESTS"] : []),
+    ...(missingReadyLandmarkExpectations.length ? ["READY_LANDMARK_EXPECTATIONS_MISSING"] : []),
   ];
   return {
     valid: failureCodes.length === 0,
@@ -544,6 +734,7 @@ export function captureContractValidation({ contract, census }) {
     duplicateIdentities,
     personaMismatches,
     malformedRequirementDigests,
+    missingReadyLandmarkExpectations,
   };
 }
 
@@ -552,14 +743,22 @@ export function semanticCaptureIssue(requirement, observation) {
   if (requirement.classification === "CONTEXTUAL_DYNAMIC_DESTINATION" && !observation.syntheticRecordProven)
     return "DYNAMIC_SYNTHETIC_RECORD_UNPROVEN";
   if (requirement.state === "READY") {
+    if (!observation.visibleMain) return "READY_MAIN_NOT_VISIBLE";
+    if (!observation.expectedPathMatched) return "READY_DESTINATION_MISMATCH";
     if (observation.notFound) return "READY_NOT_FOUND";
     if (observation.unauthorizedSurface) return "READY_UNAUTHORIZED_SURFACE";
     if (observation.unavailableSurface || observation.deadEndSurface) return "READY_UNAVAILABLE_SURFACE";
-    if (requirement.semanticReadyMarker && !observation.readyMarkers?.includes(requirement.semanticReadyMarker))
-      return "READY_MARKER_MISSING";
+    const requiredLandmarkIds = requirement.expectedReadyLandmarks?.map((landmark) => landmark.id) ?? [];
+    if (!requiredLandmarkIds.length) return "READY_LANDMARK_EXPECTATION_MISSING";
+    if (!requiredLandmarkIds.every((id) => observation.readyLandmarks?.includes(id))) return "READY_LANDMARK_MISSING";
+    if (!observation.transitionSettled) return "READY_TRANSITION_UNSETTLED";
   }
   if (requirement.state === "UNAUTHORIZED" && !observation.notFound && !observation.unauthorizedSurface)
     return "UNAUTHORIZED_EXPECTATION_UNMET";
+  if (requirement.state === "UNAVAILABLE") {
+    if (!observation.visibleMain) return "UNAVAILABLE_MAIN_NOT_VISIBLE";
+    if (!observation.unavailableSurface && !observation.deadEndSurface) return "UNAVAILABLE_EXPECTATION_UNMET";
+  }
   if (requirement.state === "SIGN_IN_REQUIRED" && !observation.signInSurface) return "SIGN_IN_EXPECTATION_UNMET";
   if (requirement.state === "COMPATIBILITY_OR_REDIRECT") {
     if (observation.notFound) return "COMPATIBILITY_NOT_FOUND";
@@ -623,7 +822,14 @@ export function reconciliationReport({ contract, manifest, sourceSha, imageRoot,
       missing.push({ ...record, reconciliationReason: existsSync(file) ? "CHECKSUM_MISMATCH" : "IMAGE_MISSING" });
       continue;
     }
-    const semanticIssue = semanticCaptureIssue(requirement, record.semanticObservation);
+    // A redirect destination is resolved against the source-bound synthetic
+    // representative before capture. Reuse that resolved destination here so
+    // the later reconciliation does not compare a concrete browser path with
+    // an unresolved contract placeholder.
+    const semanticIssue = semanticCaptureIssue(
+      record.expectedDestination ? { ...requirement, expectedDestination: record.expectedDestination } : requirement,
+      record.semanticObservation,
+    );
     if (semanticIssue) {
       semanticFailures.push({ ...record, reconciliationReason: semanticIssue });
       continue;
@@ -723,6 +929,16 @@ function compatibilityExpectation(routePattern) {
   if (expectedDestination) return { expectedDestination };
   if (routePattern === "/player/sign-in") return { expectedCompatibilityState: "SIGN_IN_SURFACE" };
   return { expectedCompatibilityState: "DECLARED_COMPATIBILITY_SURFACE" };
+}
+
+function sourceRedirectExpectation(routePattern) {
+  const expectedDestination = {
+    "/account/profile/view": "/profile/[handle]",
+    "/passport/history/[recordId]/compare": "/chronicles/[historyTaleSlug]/compare",
+    "/passport/history/[recordId]/replay": "/player/playthroughs/[historyPlaythroughId]/journal",
+    "/player/playthroughs/[playthroughId]": "/player/playthroughs/[playthroughId]/journal",
+  }[routePattern];
+  return expectedDestination ? { expectedDestination } : {};
 }
 
 function semanticReadyMarkerFor(routePattern) {

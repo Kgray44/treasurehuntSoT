@@ -31,6 +31,7 @@ function requirement(overrides = {}) {
     motionMode: "REDUCED",
     coverageKind: "ROUTE",
     criticality: "STANDARD",
+    expectedReadyLandmarks: [{ id: "EXAMPLE_MAIN", selector: "main" }],
     ...fields,
   };
   const canonical = { ...value, identity: identity ?? canonicalCaptureIdentity(value) };
@@ -58,9 +59,13 @@ async function fixture(t, overrides = {}) {
       httpStatus: 200,
       finalPath: "/example",
       pageTitle: "Example",
+      visibleMain: true,
+      expectedPathMatched: true,
+      transitionSettled: true,
       notFound: false,
       unauthorizedSurface: false,
       signInSurface: false,
+      readyLandmarks: ["EXAMPLE_MAIN"],
       syntheticRecordProven: true,
     },
     ...overrides.record,
@@ -235,6 +240,8 @@ test("contract validation rejects a persona outside the route census", () => {
 test("semantic validation refuses a ready capture that is a not-found surface", () => {
   assert.equal(
     semanticCaptureIssue(requirement(), {
+      visibleMain: true,
+      expectedPathMatched: true,
       notFound: true,
       unauthorizedSurface: false,
       signInSurface: false,
@@ -244,6 +251,8 @@ test("semantic validation refuses a ready capture that is a not-found surface", 
   );
   assert.equal(
     semanticCaptureIssue(requirement(), {
+      visibleMain: true,
+      expectedPathMatched: true,
       notFound: false,
       unauthorizedSurface: false,
       unavailableSurface: true,
@@ -255,9 +264,13 @@ test("semantic validation refuses a ready capture that is a not-found surface", 
   );
   assert.equal(
     semanticCaptureIssue(requirement(), {
+      visibleMain: true,
+      expectedPathMatched: true,
+      transitionSettled: true,
       notFound: false,
       unauthorizedSurface: false,
       signInSurface: true,
+      readyLandmarks: ["EXAMPLE_MAIN"],
       syntheticRecordProven: true,
     }),
     null,

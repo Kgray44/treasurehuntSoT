@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.0.0",
   "artifact": "Voyagewright Brightwork current-main screen census",
-  "sourceSha": "a82473c40114280694fd292f1103ae914dcc7c6c",
-  "generatedAt": "2026-08-31T04:48:18.558Z",
+  "sourceSha": "2ae4333f09c76c11a51e8b7015cad9e02523a65d",
+  "generatedAt": "2026-09-04T16:42:34.385Z",
   "totalScreens": 117,
   "screens": [
     {
@@ -198,10 +198,10 @@
       "routePatterns": ["/account/profile/view"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "captureStatus": "PLANNED"
@@ -434,10 +434,10 @@
       "routePatterns": ["/captain"],
       "productArea": "Captain_Helm",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "captureStatus": "PLANNED"
@@ -448,10 +448,10 @@
       "routePatterns": ["/captain/invitations"],
       "productArea": "Captain_Helm",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "captureStatus": "PLANNED"
@@ -490,10 +490,10 @@
       "routePatterns": ["/captain/sign-in"],
       "productArea": "Captain_Helm",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "captureStatus": "PLANNED"
@@ -856,10 +856,10 @@
       "routePatterns": ["/community/voyage-logs/media"],
       "productArea": "Community_Harbor",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
-        "LOADING_WHERE_IMPLEMENTED",
-        "READY"
+        "LOADING_WHERE_IMPLEMENTED"
       ],
       "captureStatus": "PLANNED"
     },
@@ -1002,10 +1002,10 @@
       "routePatterns": ["/passport/history/[recordId]/compare"],
       "productArea": "Chronicle_Passport_Wakebook",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "DEPENDENCY_UNAVAILABLE",
         "INITIAL_LOADING",
         "MUTATION_SUCCESS",
-        "READY",
         "READY_EMPTY",
         "RECOVERABLE_ERROR",
         "SIGN_IN_REQUIRED"
@@ -1017,7 +1017,7 @@
       "routeIds": ["route-page-passport-history-recordid-replay"],
       "routePatterns": ["/passport/history/[recordId]/replay"],
       "productArea": "Chronicle_Passport_Wakebook",
-      "applicableStates": ["READY", "SIGN_IN_REQUIRED"],
+      "applicableStates": ["COMPATIBILITY_OR_REDIRECT", "SIGN_IN_REQUIRED"],
       "captureStatus": "PLANNED"
     },
     {
@@ -1117,10 +1117,10 @@
       "routePatterns": ["/player"],
       "productArea": "Player",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "captureStatus": "PLANNED"
@@ -1134,8 +1134,8 @@
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
-        "SIGN_IN_REQUIRED"
+        "SIGN_IN_REQUIRED",
+        "UNAVAILABLE"
       ],
       "captureStatus": "PLANNED"
     },
@@ -1159,10 +1159,10 @@
       "routePatterns": ["/player/playthroughs/[playthroughId]"],
       "productArea": "Player",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "captureStatus": "PLANNED"
@@ -1173,10 +1173,10 @@
       "routePatterns": ["/player/playthroughs/[playthroughId]/archive"],
       "productArea": "Player",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "captureStatus": "PLANNED"
@@ -1201,10 +1201,10 @@
       "routePatterns": ["/player/sign-in"],
       "productArea": "Player",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "captureStatus": "PLANNED"
@@ -1223,10 +1223,10 @@
       "routePatterns": ["/quartermaster"],
       "productArea": "Captain_Helm",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
-        "LOADING_WHERE_IMPLEMENTED",
-        "READY"
+        "LOADING_WHERE_IMPLEMENTED"
       ],
       "captureStatus": "PLANNED"
     },
@@ -1236,10 +1236,10 @@
       "routePatterns": ["/quartermaster/[workspace]"],
       "productArea": "Captain_Helm",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
-        "LOADING_WHERE_IMPLEMENTED",
-        "READY"
+        "LOADING_WHERE_IMPLEMENTED"
       ],
       "captureStatus": "PLANNED"
     },
@@ -1288,10 +1288,10 @@
       "routePatterns": ["/studio"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "captureStatus": "PLANNED"
@@ -1352,10 +1352,10 @@
       "routePatterns": ["/studio/sign-in"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
         "LOADING_WHERE_IMPLEMENTED",
-        "READY",
         "SIGN_IN_REQUIRED"
       ],
       "captureStatus": "PLANNED"
@@ -1479,10 +1479,10 @@
       "routePatterns": ["/tale/[campaignSlug]"],
       "productArea": "Public_Chronicle_and_Detail",
       "applicableStates": [
+        "COMPATIBILITY_OR_REDIRECT",
         "EMPTY_WHERE_IMPLEMENTED",
         "ERROR_OR_PERMISSION_WHERE_IMPLEMENTED",
-        "LOADING_WHERE_IMPLEMENTED",
-        "READY"
+        "LOADING_WHERE_IMPLEMENTED"
       ],
       "captureStatus": "PLANNED"
     },

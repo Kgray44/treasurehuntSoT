@@ -43,6 +43,8 @@ else if (command === "reset") {
   await resetFixtureState();
   await prepare();
   await start();
+} else if (command === "recertify") {
+  await recertify();
 } else if (command === "stop") await stop(true);
 else throw new Error(`BRIGHTWORK_AUDIT_COMMAND_UNKNOWN:${command}`);
 
@@ -61,6 +63,7 @@ async function prepare() {
     BRIGHTWORK_HOMEPORT_ROOT: homeportRoot,
     BRIGHTWORK_ADMIRALTY_ROOT: admiraltyRoot,
     BRIGHTWORK_ADMIRALTY_SYNTHETIC_PASSWORD: auditFixturePassword(sourceSha),
+    BRIGHTWORK_CREATOR_SYNTHETIC_PASSWORD: auditFixturePassword(`${sourceSha}:creator`),
   });
   const combinedDatabase = path.join(fixtureBuildRoot, "database", "brightwork-combined-synthetic.db");
   if (!(await stat(combinedDatabase)).size) throw new Error("BRIGHTWORK_AUDIT_COMBINED_FIXTURE_EMPTY");
@@ -80,6 +83,7 @@ async function prepare() {
     privateContentRoot,
     profileMediaRoot,
     providerIsolation: "NO_EXTERNAL_PROVIDER_CREDENTIALS; SYNTHETIC_OUTBOX_ONLY",
+    environment: auditEnvironmentMetadata(),
     generatedAt: new Date().toISOString(),
   };
   await writeJson(fixtureReceiptPath, receipt);
@@ -110,10 +114,38 @@ async function prepare() {
     outboxPath,
     dataIsolation: "TASK_OWNED_SYNTHETIC_SQLITE_AND_STORAGE_ONLY",
     providerIsolation: "EXTERNAL_DISABLED; SYNTHETIC_EMAIL_OUTBOX_ONLY",
+    environment: auditEnvironmentMetadata(),
     preparedAt: new Date().toISOString(),
   };
   await writeJson(preparationPath, preparation);
   process.stdout.write(`${JSON.stringify(preparation, null, 2)}\n`);
+}
+
+async function recertify() {
+  const preparation = await readJson(preparationPath);
+  const currentSourceSha = git(["rev-parse", "HEAD"]);
+  if (!preparation || preparation.sourceSha !== currentSourceSha)
+    throw new Error("BRIGHTWORK_AUDIT_SOURCE_CHANGED_REPREPARE_REQUIRED");
+  const current = await status();
+  if (current.status !== "BRIGHTWORK_STAGE6_AUDIT_HEALTHY")
+    throw new Error("BRIGHTWORK_AUDIT_RECERTIFICATION_RUNTIME_NOT_HEALTHY");
+  const environment = {
+    ...runtimeEnvironment(currentSourceSha),
+    BRIGHTWORK_BASE_URL: localOrigin.origin,
+    BRIGHTWORK_FIXTURE_ROOT: fixtureBuildRoot,
+    BRIGHTWORK_AUDIT_METADATA_PATH: fixtureReceiptPath,
+  };
+  run("scripts/brightwork/current-experience-images.mjs", ["plan"], environment);
+  run("scripts/brightwork/current-experience-images.mjs", ["capture"], environment);
+  run("scripts/brightwork/stage4b-evidence.mjs", ["finalize"], environment);
+  process.stdout.write(
+    `${JSON.stringify({
+      status: "BRIGHTWORK_STAGE8_WAVE0_RECERTIFIED",
+      sourceSha: preparation.productBaselineSha,
+      auditRuntimeSourceSha: currentSourceSha,
+      environment: auditEnvironmentMetadata(),
+    })}\n`,
+  );
 }
 
 async function start() {
@@ -161,6 +193,7 @@ async function start() {
     databasePath,
     initialDatabaseHash: preparation.databaseHash,
     fixtureVersion: preparation.fixtureVersion,
+    environment: preparation.environment,
     logPath,
     errorLogPath,
     startedAt: new Date().toISOString(),
@@ -337,6 +370,15 @@ function runtimeEnvironment(sourceSha) {
     PRIVATE_CONTENT_SCANNER_PROVIDER: "disabled",
     PRIVATE_CONTENT_KEY_PROVIDER: "local",
     PRIVATE_CONTENT_WORKER_ENABLED: "false",
+  };
+}
+
+function auditEnvironmentMetadata() {
+  return {
+    buildMode: "NEXT_PRODUCTION_BUILD",
+    deploymentData: "BRIGHTWORK_TASK_OWNED_SYNTHETIC_DEPLOYMENT_AND_DATA",
+    providerIsolation: "EXTERNAL_DISABLED_SYNTHETIC_OUTBOX_ONLY",
+    authorityBoundary: "AUDIT_EVIDENCE_ONLY_NOT_PRODUCTION_DEPLOYMENT",
   };
 }
 
