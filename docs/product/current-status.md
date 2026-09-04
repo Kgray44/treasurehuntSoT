@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-30
+last_reviewed: 2026-09-04
 ---
 
 # Current status
@@ -25,6 +25,16 @@ the season-aware Voyage Atlas, and the printable owner-private Voyage Book are
 integrated through protected PRs #197, #463, #565, #575, and #576. These views
 preserve unavailable-history and ownership truth; they do not add public
 sharing, canonical data export, or Voyage mutation.
+
+**Brightwork Stage 8 Wave 3:** Personal Harbor is the account control center;
+Chronicle Passport is the direct private destination for retained personal
+history. Its archive-facing surfaces share a human-first archival visual family,
+Timeline has retained-date groups, People has private shared-history context,
+Atlas describes unavailable geography plainly, and Voyage Detail retains its
+long-page navigation with a narrow-screen selector. This source work has
+task-owned synthetic browser evidence; deployment, live-provider behavior,
+physical assistive-technology testing, and owner visual acceptance are not
+claimed.
 
 **Available on main:** Project Homeport Phases 1-7 and Correction Round 3 Patch
 A, Phase 3-4 convergence, Wayfarer Phases 3 and 4,
