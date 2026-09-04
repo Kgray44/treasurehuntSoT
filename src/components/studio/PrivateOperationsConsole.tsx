@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
+import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 
 type State = {
   providers?: Array<{ kind: string; provider: string; configurationState: string; safeCode: string }>;
@@ -25,6 +26,13 @@ const statusMessage: Record<OperationStatus, string> = {
   unavailable: "Operational status is temporarily unavailable.",
   unauthorized: "Operational status is unavailable or requires Administrator access.",
 };
+
+function humanize(value: string) {
+  return value
+    .toLocaleLowerCase()
+    .replaceAll("_", " ")
+    .replace(/\b\p{L}/gu, (letter) => letter.toLocaleUpperCase());
+}
 
 function OperationalSection({
   title,
@@ -152,7 +160,10 @@ export function PrivateOperationsConsole() {
         <ul>
           {providers?.map((provider) => (
             <li key={provider.kind}>
-              <strong>{provider.kind}</strong>: {provider.configurationState} ({provider.safeCode})
+              <strong>{humanize(provider.kind)}</strong>: {humanize(provider.configurationState)}
+              <TechnicalDetails summary="Show provider reference">
+                <code>{provider.safeCode}</code>
+              </TechnicalDetails>
             </li>
           ))}
         </ul>
@@ -169,12 +180,18 @@ export function PrivateOperationsConsole() {
         <ul>
           {backupRuns?.map((backup) => (
             <li key={backup.backupId}>
-              Backup {backup.backupId}: {backup.state}
+              Backup: {humanize(backup.state)}
+              <TechnicalDetails summary="Show backup reference">
+                <code>{backup.backupId}</code>
+              </TechnicalDetails>
             </li>
           ))}
           {drills?.map((drill) => (
             <li key={`${drill.targetIdentity}:${drill.state}`}>
-              Restore drill {drill.targetIdentity}: {drill.state}
+              Restore drill: {humanize(drill.state)}
+              <TechnicalDetails summary="Show restore-drill reference">
+                <code>{drill.targetIdentity}</code>
+              </TechnicalDetails>
             </li>
           ))}
         </ul>
@@ -187,8 +204,11 @@ export function PrivateOperationsConsole() {
         <ul>
           {repairs?.map((repair) => (
             <li key={repair.digest}>
-              Plan {repair.digest.slice(0, 12)}: {repair.state}; {repair._count.actions} actions;{" "}
+              Repair plan: {humanize(repair.state)}; {repair._count.actions} actions;{" "}
               {repair.dryRun ? "dry run" : "approved execution"}
+              <TechnicalDetails summary="Show repair-plan reference">
+                <code>{repair.digest}</code>
+              </TechnicalDetails>
             </li>
           ))}
         </ul>

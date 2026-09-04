@@ -54,8 +54,10 @@ describe("ProductShell", () => {
     );
 
     expect(document.querySelector(".product-shell")).toHaveAttribute("data-shell-mode", "GATEWAY_STANDARD");
+    expect(document.querySelector(".product-shell")).toHaveAttribute("data-theme-applicability", "LIGHT_AND_DARK");
     expect(screen.getByRole("link", { name: "Skip to main content" })).toHaveAttribute("href", "#main-content");
     const global = screen.getByRole("navigation", { name: "Global navigation" });
+    expect(global).toHaveAttribute("data-navigation-level", "GLOBAL");
     expect(within(global).getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
     expect(within(global).getByRole("link", { name: "Explore Chronicles" })).toBeInTheDocument();
     expect(within(global).getByRole("link", { name: "Community Harbor" })).toBeInTheDocument();
@@ -184,6 +186,10 @@ describe("ProductShell", () => {
     expect(within(disclosure).getByRole("link", { name: "Moderation" })).toBeInTheDocument();
     expect(within(disclosure).getByRole("button", { name: "Sign out" })).toBeInTheDocument();
     expect(disclosure.textContent).not.toMatch(/@.*\.com|email/i);
+    expect(screen.getByRole("navigation", { name: "Voyagewright Player navigation" })).toHaveAttribute(
+      "data-navigation-level",
+      "PRODUCT",
+    );
   });
 
   it("homeport.shell.account-menu remains viewport-bounded under effective 200 percent zoom", async () => {
@@ -296,6 +302,11 @@ describe("ProductShell", () => {
     expect(screen.getByRole("link", { name: "Exit to My Voyages" })).toHaveAttribute("href", "/player/library");
     expect(screen.getByText("Immersive journal")).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: /Captain|Studio/u })).not.toBeInTheDocument();
+    expect(document.querySelector(".product-shell")).toHaveAttribute(
+      "data-theme-applicability",
+      "THEME_LOCKED_IMMERSIVE",
+    );
+    expect(screen.getByText(/uses its authored appearance/i)).toHaveClass("sr-only");
   });
 
   it("homeport.shell.route-close closes overlays, restores scroll, and hands focus to the destination heading", async () => {

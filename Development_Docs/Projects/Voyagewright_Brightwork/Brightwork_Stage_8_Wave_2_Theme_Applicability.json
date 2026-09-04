@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifact": "Voyagewright Brightwork Stage 8 Wave 2 theme applicability contract",
+  "protectedBaseSha": "969a9bfe222ecf65df132e7ee8af7d2cbb7ecf76",
+  "states": {
+    "LIGHT_AND_DARK": "The shared preference is intentionally rendered through semantic tokens.",
+    "THEME_LOCKED_IMMERSIVE": "An authored experience retains its deliberate visual mode; the shell announces that the ordinary preference resumes on standard surfaces."
+  },
+  "families": [
+    {
+      "family": "Gateway / public entry",
+      "applicability": "LIGHT_AND_DARK",
+      "source": "src/app/page.tsx",
+      "rationale": "The public shell uses the shared semantic token lineage."
+    },
+    {
+      "family": "Authentication",
+      "applicability": "LIGHT_AND_DARK",
+      "source": "src/components/homeport/AccountSurfaces.tsx",
+      "rationale": "Account tasks must remain intentionally readable in either promised preference."
+    },
+    {
+      "family": "Player",
+      "applicability": "LIGHT_AND_DARK",
+      "source": "src/components/platform/PlayerLibrary.tsx",
+      "rationale": "The standard Player workspace participates in shared appearance preferences."
+    },
+    {
+      "family": "Journal",
+      "applicability": "THEME_LOCKED_IMMERSIVE",
+      "source": "src/components/player/journal/ChronicleJournalPage.tsx",
+      "rationale": "The authored reading surface is immersive; it must not claim a fabricated Light treatment."
+    },
+    {
+      "family": "Chronicle Passport",
+      "applicability": "LIGHT_AND_DARK",
+      "source": "src/components/wayfarer/ChroniclePassport.tsx",
+      "rationale": "The archive family is a standard account-adjacent surface."
+    },
+    {
+      "family": "Personal Harbor",
+      "applicability": "LIGHT_AND_DARK",
+      "source": "src/components/homeport/PersonalHarborLayout.tsx",
+      "rationale": "Account settings and personal work remain preference-applicable."
+    },
+    {
+      "family": "Captain",
+      "applicability": "LIGHT_AND_DARK",
+      "source": "src/components/platform/CaptainLibrary.tsx",
+      "rationale": "Operational material preserves its teal/brass hierarchy through semantic tokens."
+    },
+    {
+      "family": "Creator Studio",
+      "applicability": "LIGHT_AND_DARK",
+      "source": "src/components/studio/TaleEditor.tsx",
+      "rationale": "Creator workflows are standard product surfaces, not authored immersion."
+    },
+    {
+      "family": "Community Harbor",
+      "applicability": "LIGHT_AND_DARK",
+      "source": "src/components/community/CommunityPageFrame.tsx",
+      "rationale": "Public discovery must honor the shared preference."
+    },
+    {
+      "family": "Admiralty",
+      "applicability": "LIGHT_AND_DARK",
+      "source": "src/components/admiralty/AdmiraltyConsole.tsx",
+      "rationale": "Command-center material remains a standard governed surface."
+    },
+    {
+      "family": "Invitation / ceremony",
+      "applicability": "THEME_LOCKED_IMMERSIVE",
+      "source": "src/components/platform/InvitationCeremony.tsx",
+      "rationale": "The parchment and ribbon ceremony is deliberately authored rather than a generic Light variant."
+    },
+    {
+      "family": "Public Chronicle",
+      "applicability": "LIGHT_AND_DARK",
+      "source": "src/components/tales/TaleCatalog.tsx",
+      "rationale": "Browse and preview tasks use the shared public surface treatment."
+    }
+  ]
+}

@@ -61,6 +61,19 @@
   --control-height-large: 48px;
   --content-wide: 1500px;
   --content-default: 1180px;
+  /* Brightwork semantic lineage: family CSS can inherit these without erasing its authored material. */
+  --semantic-surface: var(--surface-default);
+  --semantic-surface-elevated: var(--surface-raised);
+  --semantic-surface-inset: var(--surface-overlay);
+  --semantic-border: var(--border-default);
+  --semantic-shadow: var(--shadow-card);
+  --semantic-foreground-primary: var(--text-primary);
+  --semantic-foreground-muted: var(--text-muted);
+  --semantic-accent: var(--accent-primary);
+  --semantic-accent-strong: var(--accent-hover);
+  --semantic-control-surface: var(--surface-raised);
+  --semantic-focus: var(--focus-color);
+  --semantic-content-width: var(--content-default);
   --font-display: Georgia, "Times New Roman", serif;
   --font-interface: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --shell-header-height: 68px;
@@ -519,11 +532,12 @@ svg {
   place-content: center;
   justify-items: center;
   gap: 0.35rem;
-  border: 1px dashed var(--border-default);
+  border: 1px dashed var(--semantic-border);
   border-radius: inherit;
   padding: 1rem;
-  color: var(--text-secondary);
-  background: radial-gradient(circle at 50% 18%, rgba(157, 216, 208, 0.12), transparent 38%), var(--surface-default);
+  color: var(--semantic-foreground-muted);
+  background:
+    radial-gradient(circle at 50% 18%, rgba(157, 216, 208, 0.12), transparent 38%), var(--semantic-surface-inset);
   text-align: center;
 }
 
@@ -537,6 +551,54 @@ svg {
   max-width: 24rem;
   color: var(--text-muted);
   line-height: 1.45;
+}
+
+.ui-media-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2rem;
+  margin-top: 0.45rem;
+  color: var(--semantic-foreground-muted);
+  font-size: 0.8rem;
+}
+
+.ui-media-loading::before {
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 2px solid var(--border-subtle);
+  border-top-color: var(--semantic-accent-strong);
+  border-radius: 50%;
+  animation: ui-spin 800ms linear infinite;
+  content: "";
+}
+
+.ui-technical-details {
+  margin-top: 0.8rem;
+  border-top: 1px solid var(--semantic-border);
+  padding-top: 0.65rem;
+  color: var(--semantic-foreground-primary);
+}
+
+.ui-technical-details summary {
+  width: fit-content;
+  cursor: pointer;
+  color: var(--semantic-foreground-primary);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.ui-technical-details__description,
+.ui-technical-details__content {
+  max-width: 72ch;
+  margin: 0.65rem 0 0;
+  color: var(--semantic-foreground-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.ui-technical-details__content code {
+  overflow-wrap: anywhere;
 }
 
 [data-resilient-image="fallback"] {
