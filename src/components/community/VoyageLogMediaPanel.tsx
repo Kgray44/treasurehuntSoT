@@ -75,11 +75,11 @@ export function VoyageLogMediaPanel({ voyageLogId }: { voyageLogId?: string }) {
     if (response.ok) await refresh();
   }
   return (
-    <section aria-labelledby="voyage-log-media-title">
+    <section className="community-workflow__panel community-workflow__media" aria-labelledby="voyage-log-media-title">
       <h2 id="voyage-log-media-title">Publication-safe media</h2>
       <p>Media is read only through Sealed Hold. Original files and storage references are never shown here.</p>
       <p aria-live="polite">{message}</p>
-      <section aria-label="Selected Voyage Log media">
+      <section className="community-workflow__media-selected" aria-label="Selected Voyage Log media">
         <h3>Selected media</h3>
         {selected.length ? (
           <ul>
@@ -96,7 +96,7 @@ export function VoyageLogMediaPanel({ voyageLogId }: { voyageLogId?: string }) {
           <p>No media is selected.</p>
         )}
       </section>
-      <ul aria-label="Eligible protected-media candidates">
+      <ul className="community-workflow__media-candidates" aria-label="Eligible protected-media candidates">
         {candidates.map((candidate) => (
           <li key={candidate.sourceOpaqueId}>
             <span>

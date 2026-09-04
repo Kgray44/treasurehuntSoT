@@ -249,12 +249,13 @@ export function CommunityDiscoveryBrowser({
     <section
       className={`community-discovery ${compactLanding ? "community-discovery--landing" : ""}`}
       aria-labelledby="community-discovery-title"
+      data-search-active={active ? "true" : "false"}
     >
       <div className="community-section-heading">
         <div>
           <p className="community-eyebrow">Discovery chart</p>
           <h2 id="community-discovery-title">{heading}</h2>
-          <p>Search public titles and summaries, then narrow only by metadata Creators have supplied.</p>
+          <p>Find public Community work by title, theme, or Creator. Use filters only when they help.</p>
         </div>
       </div>
       <form className="community-discovery__form" onSubmit={submitSearch} role="search">

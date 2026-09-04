@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CommunityPageFrame } from "@/components/community/CommunityPageFrame";
+import { CommunityCommentThread } from "@/components/community/CommunityCommentThread";
 import { CommunityReviewList } from "@/components/community/CommunityReviewList";
 import { CommunitySocialControls } from "@/components/community/CommunitySocialControls";
 import type { CommunityDistrictId } from "@/community/districts";
@@ -122,6 +123,7 @@ export default async function CommunityListingPage({ params }: Props) {
         <h2 id="community-reviews-title">Community reviews</h2>
         <CommunityReviewList listingId={detail.card.id} />
       </section>
+      <CommunityCommentThread subjectType="LISTING" subjectId={detail.card.id} returnTo={detail.card.destination} />
       <p className="community-detail-return">
         <Link href={districtRoute}>Return to {districtLabel(detail.card.variant)}</Link>
       </p>

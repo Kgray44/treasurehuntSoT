@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AccessDecisionState } from "@/components/auth/AccessDecisionState";
+import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 import { collectCommunityProviderHealth } from "@/community/operations";
 import { resolveCapability } from "@/homeport/current-user.server";
 import { signInHref } from "@/homeport/return-to";
@@ -43,49 +44,33 @@ export default async function CommunityModerationPage() {
   return (
     <main className="community-harbor community-moderation" aria-labelledby="moderation-heading">
       <header className="community-moderation__header">
-        <p className="community-eyebrow">Community Harbor operations</p>
+        <p className="community-eyebrow">Private Community workspace</p>
         <h1 id="moderation-heading">Moderation queue</h1>
         <p>
-          Case data is private operational information. Actions require a protected, CSRF-bound API request and an
-          expected revision; this queue never exposes reporter identity or private evidence.
+          Start with what was reported, its current risk, and the governed next step. Reporter identity and private
+          evidence stay protected throughout case work.
         </p>
       </header>
-      <section aria-label="Operational summary" className="community-moderation__summary">
+      <section aria-label="Case work summary" className="community-moderation__summary">
         <article>
           <h2>Actionable cases</h2>
           <p aria-label={`${queueDepth} actionable cases`}>{queueDepth}</p>
+          <span>Cases needing a moderator decision</span>
         </article>
         <article>
-          <h2>Dead-letter events</h2>
-          <p aria-label={`${deadLetters} terminal worker failures`}>{deadLetters}</p>
+          <h2>Open in priority order</h2>
+          <p>{cases.length}</p>
+          <span>Private cases available to this moderator</span>
         </article>
-        <article>
-          <h2>Providers requiring attention</h2>
-          <p aria-label={`${providerHealth.filter((item) => !item.ready).length} providers requiring attention`}>
-            {providerHealth.filter((item) => !item.ready).length}
-          </p>
-        </article>
-        <article>
-          <h2>Alert delivery</h2>
-          <p>{humanize(providerHealth.find((item) => item.kind === "ALERTING")?.safeCode ?? "NOT_CONFIGURED")}</p>
-        </article>
-      </section>
-      <section className="community-moderation__panel" aria-labelledby="provider-heading">
-        <h2 id="provider-heading">Provider health</h2>
-        <ul className="community-moderation__provider-grid">
-          {providerHealth.map((item) => (
-            <li key={item.kind}>
-              <strong>{humanize(item.kind)}</strong>
-              <p>
-                {humanize(item.state)} · {humanize(item.safeCode)}
-              </p>
-            </li>
-          ))}
-          {!providerHealth.length && <li>Provider health is unavailable; no provider details are disclosed.</li>}
-        </ul>
       </section>
       <section aria-labelledby="case-table-heading" className="community-moderation__table-frame">
-        <h2 id="case-table-heading">Cases</h2>
+        <div className="community-section-heading">
+          <div>
+            <p className="community-eyebrow">Case work</p>
+            <h2 id="case-table-heading">Choose the next case</h2>
+            <p>Each case opens a private, governed review. The queue is ordered to make attention clear.</p>
+          </div>
+        </div>
         <table className="community-moderation__table">
           <thead>
             <tr>
@@ -128,6 +113,25 @@ export default async function CommunityModerationPage() {
           </tbody>
         </table>
       </section>
+      <TechnicalDetails
+        summary="Operational delivery details"
+        description="These signals support escalation and do not change the authority or evidence available in a case."
+      >
+        <p>
+          {deadLetters} terminal worker {deadLetters === 1 ? "failure" : "failures"} are awaiting operations review.
+        </p>
+        <ul className="community-moderation__provider-grid">
+          {providerHealth.map((item) => (
+            <li key={item.kind}>
+              <strong>{humanize(item.kind)}</strong>
+              <p>
+                {humanize(item.state)} · {humanize(item.safeCode)}
+              </p>
+            </li>
+          ))}
+          {!providerHealth.length && <li>Provider health is unavailable; no provider detail is disclosed.</li>}
+        </ul>
+      </TechnicalDetails>
     </main>
   );
 }

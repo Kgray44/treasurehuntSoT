@@ -1,17 +1,17 @@
-import Link from "next/link";
+import { CommunityWorkflowFrame } from "@/components/community/CommunityWorkflowFrame";
 import { VoyageLogConsentPanel } from "@/components/community/VoyageLogConsentPanel";
 
 export const dynamic = "force-dynamic";
 export default async function Page({ searchParams }: { searchParams: Promise<{ voyageLogId?: string }> }) {
   const { voyageLogId } = await searchParams;
   return (
-    <main className="page-shell" aria-labelledby="consent-page-title">
-      <p>
-        <Link href="/community/voyage-logs">Back to Voyage Logs</Link>
-      </p>
-      <h1 id="consent-page-title">Voyage Log publication consent</h1>
-      <p>Publication consent is specific to this Voyage Log and can be revoked at any time.</p>
+    <CommunityWorkflowFrame
+      title="Voyage Log publication consent"
+      description="Consent is specific to this Voyage Log, can be revoked at any time, and never makes a private draft public by itself."
+      backHref="/community/voyage-logs"
+      backLabel="Public Voyage Logs"
+    >
       <VoyageLogConsentPanel voyageLogId={voyageLogId} />
-    </main>
+    </CommunityWorkflowFrame>
   );
 }

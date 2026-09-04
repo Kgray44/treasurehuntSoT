@@ -175,8 +175,9 @@ export function CommunityCardGrid({
                     <Link
                       className="community-button community-button--quiet"
                       href={`/sign-in?returnTo=${encodeURIComponent(card.destination)}`}
+                      aria-label={`Sign in to ${creatorAction ? "follow" : "save"}`}
                     >
-                      Sign in to {creatorAction ? "follow" : "save"}
+                      {creatorAction ? "Follow" : "Save"}
                     </Link>
                   )
                 ) : null}
