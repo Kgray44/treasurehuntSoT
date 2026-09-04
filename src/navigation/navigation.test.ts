@@ -240,8 +240,6 @@ describe("Homeport Phase 2 navigation authority", () => {
       ["account-passport", "/passport"],
       ["account-preferences", "/account/preferences"],
       ["account-privacy", "/account/privacy"],
-      ["account-history", "/passport/history"],
-      ["account-artifacts", "/passport/artifacts"],
       ["account-security-sessions", "/account/security"],
       ["account-sessions", "/account/sessions"],
       ["account-support-access", "/account/support-access"],

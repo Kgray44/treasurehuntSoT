@@ -148,9 +148,6 @@ export function AccountOverview() {
             <Link className="button" href="/account/personal-information">
               Personal Information
             </Link>
-            <Link className="button" href="/passport">
-              Chronicle Passport
-            </Link>
           </nav>
         </div>
       </section>
@@ -165,6 +162,23 @@ export function AccountOverview() {
           </Link>
         </aside>
       ) : null}
+      <section className="harbor-passport-gateway" aria-labelledby="harbor-passport-gateway-title">
+        <div>
+          <p className="personal-harbor__eyebrow">Chronicle Passport</p>
+          <h2 id="harbor-passport-gateway-title">Return to what you experienced</h2>
+          <p>
+            Your private Voyage archive, shared-history context, Memories, artifacts, and saved keepsakes live in
+            Chronicle Passport—not in account settings.
+          </p>
+          <p className="harbor-passport-gateway__summary">
+            {counts.history} {counts.history === 1 ? "recorded Voyage" : "recorded Voyages"} · {counts.memories}{" "}
+            {counts.memories === 1 ? "Memory" : "Memories"}
+          </p>
+        </div>
+        <Link className="button button--primary" href="/passport">
+          Open Chronicle Passport
+        </Link>
+      </section>
       <section aria-labelledby="harbor-at-a-glance">
         <h2 id="harbor-at-a-glance">At a glance</h2>
         <div className="harbor-stat-grid">

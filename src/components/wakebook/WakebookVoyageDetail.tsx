@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { usePersonalHarbor } from "@/components/homeport/PersonalHarborLayout";
 import { MutationStatus } from "@/components/ui/AsyncState";
 import { useActionDialog } from "@/components/ui/ActionDialog";
+import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 import { WakebookVoyageBookEntry } from "@/components/wakebook/WakebookVoyageBook";
 import type { VoyageDetail } from "@/wakebook/contracts";
 import {
@@ -18,6 +19,18 @@ import {
 } from "@/components/wakebook/WakebookShared";
 
 type MemoryMediaOption = { id: string; kind: string; description: string | null };
+
+const detailSections = [
+  ["wakebook-summary", "Journey Summary"],
+  ["wakebook-path", "Path"],
+  ["wakebook-crew", "Crew"],
+  ["wakebook-artifacts", "Artifacts"],
+  ["wakebook-achievements", "Achievements"],
+  ["wakebook-edition", "Edition"],
+  ["wakebook-remembrance", "Remembrance"],
+  ["wakebook-keepsake", "Keepsake"],
+  ["wakebook-provenance", "Technical details"],
+] as const;
 
 export function WakebookTideglassComparisonEntry({ comparison }: { comparison?: VoyageDetail["comparison"] }) {
   if (!comparison) return null;
@@ -54,6 +67,18 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
   const [selectedMediaId, setSelectedMediaId] = useState("");
   const [message, setMessage] = useState("");
   const [mutationState, setMutationState] = useState<"pending" | "success" | "failure" | null>(null);
+  const [selectedSection, setSelectedSection] = useState<(typeof detailSections)[number][0]>("wakebook-summary");
+
+  useEffect(() => {
+    const syncSelectedSection = () => {
+      const section = window.location.hash.slice(1);
+      if (detailSections.some(([id]) => id === section))
+        setSelectedSection(section as (typeof detailSections)[number][0]);
+    };
+    syncSelectedSection();
+    window.addEventListener("hashchange", syncSelectedSection);
+    return () => window.removeEventListener("hashchange", syncSelectedSection);
+  }, []);
 
   useEffect(() => {
     if (resource.state.status !== "ready") return;
@@ -186,36 +211,53 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
               <dd>{voyage.memories.length}</dd>
             </div>
           </dl>
-          <div className="personal-harbor__actions">
-            <a className="button button--primary" href="#wakebook-remembrance">
-              Add a Memory
-            </a>
-            <Link className="button" href="/passport/artifacts">
-              Open Artifact Cabinet
-            </Link>
-            <WakebookTideglassComparisonEntry comparison={voyage.comparison} />
-            <WakebookLanternwakeReplayEntry recordId={voyage.id} />
-            <WakebookVoyageBookEntry recordId={voyage.id} />
-            {voyage.review ? (
-              <Link className="button button--quiet" href={voyage.review.href}>
-                Review Chronicle
+          <div className="wakebook-detail-actions" aria-label="Voyage archive actions">
+            <div className="wakebook-detail-actions__primary">
+              <a className="button button--primary" href="#wakebook-remembrance">
+                Add a Memory
+              </a>
+            </div>
+            <div className="wakebook-detail-actions__secondary">
+              <Link className="button button--quiet" href="/passport/artifacts">
+                Artifact Cabinet
               </Link>
-            ) : null}
+              <WakebookTideglassComparisonEntry comparison={voyage.comparison} />
+              <WakebookLanternwakeReplayEntry recordId={voyage.id} />
+              <WakebookVoyageBookEntry recordId={voyage.id} />
+              {voyage.review ? (
+                <Link className="button button--quiet" href={voyage.review.href}>
+                  Review Chronicle
+                </Link>
+              ) : null}
+            </div>
           </div>
         </div>
       </header>
 
-      <nav className="wakebook-detail-nav" aria-label="Voyage Detail sections">
-        <a href="#wakebook-summary">Journey Summary</a>
-        <a href="#wakebook-path">Path</a>
-        <a href="#wakebook-crew">Crew</a>
-        <a href="#wakebook-artifacts">Artifacts</a>
-        <a href="#wakebook-achievements">Achievements</a>
-        <a href="#wakebook-edition">Edition</a>
-        <a href="#wakebook-remembrance">Remembrance</a>
-        <a href="#wakebook-keepsake">Keepsake</a>
-        <a href="#wakebook-provenance">Provenance</a>
+      <nav className="wakebook-detail-nav" aria-label="Voyage Detail sections" data-navigation-level="LONG_PAGE">
+        {detailSections.map(([id, label]) => (
+          <a href={`#${id}`} key={id}>
+            {label}
+          </a>
+        ))}
       </nav>
+      <label className="wakebook-detail-nav__mobile-select">
+        <span>Jump to a Voyage section</span>
+        <select
+          value={selectedSection}
+          onChange={(event) => {
+            const section = event.target.value as (typeof detailSections)[number][0];
+            setSelectedSection(section);
+            window.location.hash = section;
+          }}
+        >
+          {detailSections.map(([id, label]) => (
+            <option key={id} value={id}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </label>
 
       <div className="wakebook-detail-grid">
         <section className="wakebook-detail-section" id="wakebook-summary" aria-labelledby="wakebook-summary-title">
@@ -812,17 +854,19 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
         </section>
 
         <section
-          className="wakebook-detail-section"
+          className="wakebook-detail-section wakebook-detail-section--technical"
           id="wakebook-provenance"
           aria-labelledby="wakebook-provenance-title"
         >
           <SectionHeading
-            eyebrow="Owner-only, advanced details"
-            title="Technical Provenance"
+            eyebrow="Available when you need to check the record"
+            title="Technical details"
             id="wakebook-provenance-title"
           />
-          <details className="wakebook-edition-panel">
-            <summary>Show historical source and quality details</summary>
+          <TechnicalDetails
+            summary="Show historical source and quality details"
+            description="These references explain how the private record was retained; they do not change what happened."
+          >
             <dl>
               <Definition term="History record" value={voyage.provenance.historyRecordId} code />
               <Definition term="Source Voyage" value={voyage.provenance.sourcePlaythroughId} code />
@@ -836,7 +880,7 @@ export function WakebookVoyageDetail({ recordId }: { recordId: string }) {
                 />
               ))}
             </dl>
-          </details>
+          </TechnicalDetails>
         </section>
       </div>
 

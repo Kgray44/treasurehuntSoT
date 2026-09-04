@@ -168,14 +168,8 @@ describe("ProductShell", () => {
       "href",
       "/account/privacy",
     );
-    expect(within(disclosure).getByRole("link", { name: "Chronicle History" })).toHaveAttribute(
-      "href",
-      "/passport/history",
-    );
-    expect(within(disclosure).getByRole("link", { name: "Artifact Cabinet" })).toHaveAttribute(
-      "href",
-      "/passport/artifacts",
-    );
+    expect(within(disclosure).queryByRole("link", { name: "Chronicle History" })).not.toBeInTheDocument();
+    expect(within(disclosure).queryByRole("link", { name: "Artifact Cabinet" })).not.toBeInTheDocument();
     expect(within(disclosure).getByRole("link", { name: "Security & Sessions" })).toHaveAttribute(
       "href",
       "/account/security",

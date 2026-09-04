@@ -7,6 +7,13 @@ export const personalHarborSectionIds = [
   "notifications",
   "privacy-safety",
   "linked-identities",
+  "security",
+  "sessions-devices",
+  "support-access",
+  "data-account",
+] as const;
+
+export const passportSectionIds = [
   "passport-home",
   "passport-history",
   "passport-timeline",
@@ -16,13 +23,9 @@ export const personalHarborSectionIds = [
   "passport-memories",
   "passport-artifacts",
   "passport-saved",
-  "security",
-  "sessions-devices",
-  "support-access",
-  "data-account",
 ] as const;
 
-export type PersonalHarborSectionId = (typeof personalHarborSectionIds)[number];
+export type PersonalHarborSectionId = (typeof personalHarborSectionIds)[number] | (typeof passportSectionIds)[number];
 
 export const personalHarborNavigation = [
   {
@@ -46,20 +49,6 @@ export const personalHarborNavigation = [
     items: [
       ["privacy-safety", "Privacy & Safety", "/account/privacy"],
       ["linked-identities", "Linked Identities", "/account/linked-identities"],
-    ],
-  },
-  {
-    label: "Chronicle Passport",
-    items: [
-      ["passport-home", "Passport Home", "/passport"],
-      ["passport-history", "History", "/passport/history"],
-      ["passport-timeline", "Timeline", "/passport/timeline"],
-      ["passport-people", "People", "/passport/people"],
-      ["passport-statistics", "Statistics", "/passport/statistics"],
-      ["passport-atlas", "Voyage Atlas", "/passport/atlas"],
-      ["passport-memories", "Memories", "/passport/memories"],
-      ["passport-artifacts", "Artifacts", "/passport/artifacts"],
-      ["passport-saved", "Saved", "/passport/saved"],
     ],
   },
   {
