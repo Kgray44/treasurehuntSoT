@@ -7,6 +7,7 @@ last_reviewed: 2026-09-03
 ---
 
 # Voyagewright Brightwork — Stage 7
+
 ## Master Audit Reconciliation and Repair-Authority Ledger
 
 **Audit date:** 2026-08-31
@@ -32,7 +33,7 @@ The old Captain and Studio “READY unavailable” findings were evidence-fixtur
 
 Stage 7 also overturns the Stage 5 claim that the Community Harbor home is simply “unimplemented.” Current source contains the full Community Harbor experience and Stage 6 interacted with the real shelves/search. The blank READY capture is an evidence/capture/presentation anomaly and must be recaptured, not “fixed” by building a second Community home. The Featured route likewise already has a complete populated/empty-state implementation.
 
-Conversely, several findings become *stronger* after reconciliation. Journal/Captain mojibake is source-corroborated. Passport count disagreement is now source-explained as inconsistent lazy history materialization rather than ambiguous wording. Admiralty Configuration is indisputably read-only. Passport material drift is traceable to token lineage. Studio Exchange/Private Content rawness is structural in their components. These survive into the repair-authority ledger.
+Conversely, several findings become _stronger_ after reconciliation. Journal/Captain mojibake is source-corroborated. Passport count disagreement is now source-explained as inconsistent lazy history materialization rather than ambiguous wording. Admiralty Configuration is indisputably read-only. Passport material drift is traceable to token lineage. Studio Exchange/Private Content rawness is structural in their components. These survive into the repair-authority ledger.
 
 The Creator continuation completed the former live-coverage gate with a dedicated, task-owned Creator account. Its sole ordinary-product observation does not create a new route-specific ticket: the Studio Exchange motion status hard-codes reduced motion and is additional live/source evidence for the existing cross-surface effective-motion defect in BW-M-020. The remaining Creator observations either close an audit-fixture gap, remain an evidence limitation, or strengthen reference-quality contracts.
 
@@ -66,15 +67,15 @@ Stage 7 performed targeted current-source review for the ambiguous findings most
 
 ### 3.1 Creator continuation adjudication
 
-| Creator source ID | Stage 7 disposition | Precedence and deduplication decision |
-| --- | --- | --- |
-| BW-LIVE-CREATOR-001 | `BW-AUD-006` closed as `AUDIT_ENVIRONMENT_GAP_RESOLVED` | Newer corrected fixture evidence proves the former Creator denial was an intentional Player-workspace conflict in the synthetic account, not a product authorization failure. |
-| BW-LIVE-CREATOR-002 | Fixture-only; retained in source reconciliation with no master item | The legacy evidence Chronicle lacked an editable draft, and the product made no contrary promise. No ordinary behavior or data is authorized to change. |
-| BW-LIVE-CREATOR-003 | Merged into existing `BW-M-020`; no new master finding | Independent live observation plus current source explains a second manifestation of the same effective-motion-state defect. |
-| BW-LIVE-CREATOR-004 | Evidence limitation; no product finding or repair authority | The audit browser did not expose the child window opened by Preview Voyage. The initiating surface reported no error, so downstream presentation remains unobserved. |
-| BW-LIVE-CREATOR-005 | `BW-REF-013` | Positive live evidence protects source-bound Drydock validation, exact-source publication gating, and receipt traceability. |
-| BW-LIVE-CREATOR-006 | `BW-REF-014` | Positive live evidence protects labelled overlays, Escape/focus restoration, semantic regions, and narrow-viewport Studio navigation. |
-| BW-LIVE-CREATOR-007 | `BW-REF-015` | Positive live evidence protects Exchange requirement validation and the explicit no-install Preview sandbox contract. |
+| Creator source ID   | Stage 7 disposition                                                 | Precedence and deduplication decision                                                                                                                                         |
+| ------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BW-LIVE-CREATOR-001 | `BW-AUD-006` closed as `AUDIT_ENVIRONMENT_GAP_RESOLVED`             | Newer corrected fixture evidence proves the former Creator denial was an intentional Player-workspace conflict in the synthetic account, not a product authorization failure. |
+| BW-LIVE-CREATOR-002 | Fixture-only; retained in source reconciliation with no master item | The legacy evidence Chronicle lacked an editable draft, and the product made no contrary promise. No ordinary behavior or data is authorized to change.                       |
+| BW-LIVE-CREATOR-003 | Merged into existing `BW-M-020`; no new master finding              | Independent live observation plus current source explains a second manifestation of the same effective-motion-state defect.                                                   |
+| BW-LIVE-CREATOR-004 | Evidence limitation; no product finding or repair authority         | The audit browser did not expose the child window opened by Preview Voyage. The initiating surface reported no error, so downstream presentation remains unobserved.          |
+| BW-LIVE-CREATOR-005 | `BW-REF-013`                                                        | Positive live evidence protects source-bound Drydock validation, exact-source publication gating, and receipt traceability.                                                   |
+| BW-LIVE-CREATOR-006 | `BW-REF-014`                                                        | Positive live evidence protects labelled overlays, Escape/focus restoration, semantic regions, and narrow-viewport Studio navigation.                                         |
+| BW-LIVE-CREATOR-007 | `BW-REF-015`                                                        | Positive live evidence protects Exchange requirement validation and the explicit no-install Preview sandbox contract.                                                         |
 
 ## 4. Master product repair ledger
 
