@@ -46,8 +46,9 @@ describe("PersonalHarborLayout", () => {
   it("homeport.personal-harbor.mobile-parity projects the same section links in desktop and mobile navigation", () => {
     renderLayout();
     expect(screen.getAllByRole("link", { name: "Preferences" })).toHaveLength(2);
-    expect(screen.getAllByRole("link", { name: "Saved" })).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: "Sessions & Devices" })).toHaveLength(2);
+    expect(screen.queryByRole("link", { name: "Passport Home" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Saved" })).not.toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: "Sign out" })).toHaveLength(2);
   });
 

@@ -71,7 +71,7 @@ export function PassportHome() {
     <div className="harbor-stack">
       <section className="passport-intro">
         <p className="personal-harbor__eyebrow">Your record, in one place</p>
-        <h2>The Chronicle Passport</h2>
+        <h2>A record you can return to</h2>
         <p>
           Return to the Voyages you joined, the private Memories you kept, artifacts authoritatively granted to you, and
           eligible Community items you saved. No engineering simulators or test controls live here.
