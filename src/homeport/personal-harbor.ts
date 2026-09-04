@@ -3,9 +3,20 @@ import { publicListingProjection, publicReleaseProjection } from "@/community/se
 import { personalHarborNavigation } from "@/homeport/personal-harbor-navigation";
 import { workspaceCapabilityOverview } from "@/homeport/workspace-capabilities";
 import { humanAccountState } from "@/wayfarer/account-lifecycle";
+import { materializeChronicleHistory } from "@/wayfarer/chronicle-history";
 
 export { personalHarborNavigation, personalHarborSectionIds } from "@/homeport/personal-harbor-navigation";
 export type { PersonalHarborSectionId } from "@/homeport/personal-harbor-navigation";
+
+/**
+ * The Personal Harbor, Passport overview, archive, and insight routes share
+ * this one refresh boundary. It intentionally derives records before any
+ * private summary is counted, so opening an archive cannot change a nearby
+ * summary merely by doing the materialization later.
+ */
+export async function refreshChroniclePassportHistory(profileId: string) {
+  return materializeChronicleHistory(profileId);
+}
 
 export async function personalInformation(accountId: string) {
   const account = await db.userAccount.findUnique({
@@ -45,6 +56,7 @@ export async function personalInformation(accountId: string) {
 }
 
 export async function personalHarborOverview(accountId: string, profileId: string) {
+  await refreshChroniclePassportHistory(profileId);
   const [profile, identities, sessions, history, memories, artifacts, saves, capabilities] = await Promise.all([
     db.playerProfile.findUnique({
       where: { id: profileId },
@@ -107,6 +119,7 @@ export async function personalHarborOverview(accountId: string, profileId: strin
 }
 
 export async function passportOverview(accountId: string, profileId: string) {
+  await refreshChroniclePassportHistory(profileId);
   const [history, memories, artifacts, saved] = await Promise.all([
     db.playerChronicleRecord.count({ where: { playerProfileId: profileId } }),
     db.chronicleMemory.count({ where: { playerProfileId: profileId, deletedAt: null } }),
