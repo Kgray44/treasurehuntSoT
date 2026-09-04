@@ -36,6 +36,16 @@ task-owned synthetic browser evidence; deployment, live-provider behavior,
 physical assistive-technology testing, and owner visual acceptance are not
 claimed.
 
+**Brightwork Stage 8 Wave 4:** Community Harbor search now makes active
+results primary while preserving Home shelves for the cleared state. Private
+Voyage Log, owner, and consent work retains a bounded Community workflow
+without becoming public discovery. Comments and Creator responses preserve
+explicit spoiler reveal and governed report paths; moderation leads with case
+work. Creator Studio presents the existing Exchange, Private Content, and
+new-Chronicle contracts in clearer staged workflows. This is task-owned
+synthetic source evidence, not deployment, live provider/scanner behavior,
+physical assistive-technology testing, or owner visual acceptance.
+
 **Available on main:** Project Homeport Phases 1-7 and Correction Round 3 Patch
 A, Phase 3-4 convergence, Wayfarer Phases 3 and 4,
 Sealed Hold Phases 3 and 4, Harborlight Phase 3, True North, Ledgerlight, the

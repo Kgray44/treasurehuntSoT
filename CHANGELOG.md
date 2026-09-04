@@ -12,6 +12,15 @@ last_reviewed: 2026-09-04
 
 ### Changed
 
+- Polished Community Harbor and Creator Studio in Brightwork Stage 8 Wave 4:
+  active discovery makes search results primary; private Voyage Log work keeps
+  its Harbor lineage without public projection; Community comments and Creator
+  responses keep spoiler details behind an explicit reveal; and moderation
+  leads with case work. Exchange, Private Content, and new Chronicle creation
+  now present existing governed actions as clearer Studio workflows without
+  changing release, package, private-content, authorization, or audit
+  authority.
+
 - Polished Personal Harbor and Chronicle Passport in Brightwork Stage 8 Wave 3:
   account management now has one concise Passport gateway, while Passport owns
   direct product navigation and a coherent private archive experience. Timeline,
