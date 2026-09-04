@@ -21,6 +21,9 @@ This directory holds the current-main Brightwork capture inventory and evidence 
 - `Voyagewright_Brightwork_Stage_7_Master_Audit_Reconciliation.md` is the canonical, frozen Stage 7 reconciliation and repair-authority ledger. It adjudicates every Creator continuation observation and preserves the reference-quality contracts.
 - `Voyagewright_Brightwork_Stage_8_Wave_0_Completion_Record.md` records the completed evidence-safety wave. It does not authorize or begin Wave 1 product repair.
 - `Voyagewright_Brightwork_Stage_8_Wave_1_Completion_Record.md` records the bounded repair and verification of the Stage 7-authorized Wave 1 findings. It does not authorize a wider redesign, pending decision, or later Wave.
+- `Brightwork_Stage_8_Wave_2_Visual_Family_Registry.json` binds every governed visual family to its strongest current reference source and its semantic design lineage.
+- `Brightwork_Stage_8_Wave_2_Theme_Applicability.json` declares where Light and Dark are truly applicable and where authored immersion is intentionally theme-locked.
+- `Voyagewright_Brightwork_Stage_8_Wave_2_Completion_Record.md` records the systemic visual-governance foundation, targeted proof, and later-wave deferrals. It does not authorize Wave 3.
 - `Brightwork_Meaningful_State_Coverage_Matrix.json` accounts for every declared human-facing state and its visual-evidence disposition.
 - `Brightwork_Current_Navigation_Reachability_Report.json` supersedes the stale 109-page Homeport proof for Brightwork and records the current 116 human-facing routes.
 - `Brightwork_Evidence_State_Exceptions.json` preserves the replaced unavailable READY frames, their observed copy, and their evidence-only classification.

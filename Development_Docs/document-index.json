@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-03",
+  "generated_at": "2026-09-04",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -7143,6 +7143,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Brightwork_Stage_8_Wave_2_Theme_Applicability.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Brightwork_Stage_8_Wave_2_Visual_Family_Registry.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Voyagewright_Brightwork/Capture_Limitations_and_Blockers.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -7204,6 +7216,12 @@
     },
     {
       "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Stage_8_Wave_1_Completion_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Stage_8_Wave_2_Completion_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

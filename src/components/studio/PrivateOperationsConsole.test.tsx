@@ -55,8 +55,10 @@ describe("PrivateOperationsConsole", () => {
     expect(screen.getByRole("heading", { name: "Operational readiness" })).toBeVisible();
     const refresh = screen.getByRole("button", { name: "Refresh provider readiness" });
     expect(refresh).toHaveAttribute("aria-busy", "false");
-    expect(screen.getByText(/Backup backup-0123456789abcdef/)).toBeVisible();
-    expect(screen.getByText(/Restore drill restore-fedcba9876543210/)).toBeVisible();
+    expect(screen.getByText("Backup: Verified")).toBeVisible();
+    expect(screen.getByText("Restore drill: Verified")).toBeVisible();
+    expect(screen.getAllByText(/Show .* reference/)).toHaveLength(4);
+    expect(screen.getByText("backup-0123456789abcdef").closest("details")).not.toHaveAttribute("open");
 
     fireEvent.click(refresh);
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));

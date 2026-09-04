@@ -10,7 +10,9 @@ import { RouteMotionBoundary } from "@/animation/platform/RouteMotionBoundary";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { ResilientImage } from "@/components/ui/ResilientImage";
+import { themeApplicabilityForShell, themeApplicabilityNotice } from "@/brightwork/theme-applicability";
 import { canonicalTerms } from "@/language/canonical-terms";
+import { navigationSemanticLevels } from "@/navigation/semantic-levels";
 import {
   classifyRoute,
   projectNavigation,
@@ -111,6 +113,8 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const accountHeadingPrefix = useId();
   const compact = route.shellMode === "COMPACT" || route.shellMode === "IMMERSIVE";
+  const applicableTheme = themeApplicabilityForShell(route.shellMode);
+  const applicableThemeNotice = themeApplicabilityNotice(applicableTheme);
   const ordinaryNavigation = ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD"].includes(route.shellMode);
   const accountControl = ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"].includes(
     route.shellMode,
@@ -282,6 +286,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
       className={`product-shell workspace-${route.workspace} shell-mode-${route.shellMode}`}
       data-shell-mode={route.shellMode}
       data-workspace={route.workspace}
+      data-theme-applicability={applicableTheme}
       data-functional-destination-count={mobileProjection.functionalDestinationIds.length}
     >
       <a className="skip-link" href="#main-content">
@@ -318,7 +323,11 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
             aria-modal={navigationOpen || undefined}
             aria-label={navigationOpen ? "Product navigation" : undefined}
           >
-            <nav className="product-navigation global-navigation" aria-label="Global navigation">
+            <nav
+              className="product-navigation global-navigation"
+              aria-label="Global navigation"
+              data-navigation-level={navigationSemanticLevels.global}
+            >
               <NavigationLinks
                 items={projection.globalItems}
                 activeId={projection.activeGlobalItem?.id}
@@ -327,7 +336,11 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
               />
             </nav>
             {projection.workspaceItems.length ? (
-              <nav className="product-navigation workspace-navigation" aria-label={`${workspace.label} navigation`}>
+              <nav
+                className="product-navigation workspace-navigation"
+                aria-label={`${workspace.label} navigation`}
+                data-navigation-level={navigationSemanticLevels.product}
+              >
                 <span className="navigation-label">{workspace.label}</span>
                 <NavigationLinks
                   items={projection.workspaceItems}
@@ -525,11 +538,17 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
       </header>
 
       {projection.contextualItems.length ? (
-        <nav className="shell-contextual-navigation" aria-label="Contextual navigation">
+        <nav
+          className="shell-contextual-navigation"
+          aria-label="Contextual navigation"
+          data-navigation-level={navigationSemanticLevels.contextual}
+        >
           <span>{compact ? workspace.label : "Current area"}</span>
           <NavigationLinks items={projection.contextualItems} motionKey="contextual" onNavigate={closeAll} />
         </nav>
       ) : null}
+
+      {applicableThemeNotice ? <p className="sr-only">{applicableThemeNotice}</p> : null}
 
       {currentUser.status === "authenticated" && currentUser.emailVerification.status === "unverified" ? (
         <aside className="shell-verification-notice" aria-label="Email verification">
