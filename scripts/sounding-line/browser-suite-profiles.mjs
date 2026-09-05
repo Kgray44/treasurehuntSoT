@@ -30,6 +30,7 @@ export const browserSuiteProfiles = Object.freeze({
       GM_USERNAME: "kato",
       GM_PASSWORD: "development-captain-only",
     }),
+    preparers: Object.freeze([Object.freeze({ runtime: "tsx", script: "scripts/migrate-legacy-companion.ts" })]),
     fixtureArguments: [],
   }),
   "harborlight-phase2": Object.freeze({

@@ -1049,6 +1049,9 @@ test("fixture-aware suite dispatch groups established fixture contracts without 
     GM_USERNAME: "kato",
     GM_PASSWORD: "development-captain-only",
   });
+  assert.deepEqual(dispatches.find(({ id }) => id === "generic").preparers, [
+    { runtime: "tsx", script: "scripts/migrate-legacy-companion.ts" },
+  ]);
 });
 
 test("task-owned cookie adaptation is nonce-gated to the isolated Phase 3 runtime", () => {
