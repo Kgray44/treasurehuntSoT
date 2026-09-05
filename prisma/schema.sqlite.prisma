@@ -3240,6 +3240,58 @@ model CommunityOutboxEvent {
   @@index([aggregateType, aggregateId, createdAt])
 }
 
+// Harborlight owns this narrowly-scoped runtime policy.  It is deliberately
+// not a generic configuration table: only the outbox worker's bounded,
+// operationally safe controls are persisted here.
+model CommunityOperationalPolicy {
+  id              String   @id @default(cuid())
+  key             String   @unique
+  dispatchEnabled Boolean  @default(true)
+  batchSize       Int      @default(25)
+  pollIntervalMs  Int      @default(1000)
+  revision        Int      @default(1)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// This is the Harborlight owner receipt for a governed operational-policy
+// change.  The unique idempotency and correlation identities make retries
+// explainable without exposing worker payloads or lease-owner data.
+model CommunityOperationalPolicyChange {
+  id                String   @id @default(cuid())
+  policyKey         String
+  actorAccountId    String
+  idempotencyKey    String   @unique
+  requestFingerprint String
+  correlationId     String   @unique
+  expectedRevision  Int
+  resultingRevision Int
+  beforeState       String
+  afterState        String
+  createdAt         DateTime @default(now())
+
+  @@index([policyKey, createdAt])
+  @@index([actorAccountId, createdAt])
+}
+
+// Owner receipts for bounded Community operational commands.  These are
+// separate from policy changes so a no-op recovery command remains durable
+// and idempotent without masquerading as a configuration mutation.
+model CommunityOperationalCommandReceipt {
+  id             String   @id @default(cuid())
+  commandType    String
+  actorAccountId String
+  targetType     String
+  targetId       String
+  idempotencyKey String   @unique
+  correlationId  String   @unique
+  result         String
+  createdAt      DateTime @default(now())
+
+  @@index([commandType, actorAccountId, createdAt])
+  @@index([targetType, targetId, createdAt])
+}
+
 model CommunityLicensePolicy {
   id                   String   @id @default(cuid())
   key                  String   @unique

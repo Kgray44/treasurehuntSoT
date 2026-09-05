@@ -7,6 +7,7 @@ import {
   type OutboxHandler,
 } from "./outbox";
 import { CommunityError } from "./domain";
+import { readCommunityOutboxRuntimePolicy } from "./operational-policy";
 import { createCommunityBackupManifest, reconcileCommunityOperationalState } from "./operations";
 
 export const communityWorkerEventTypes = [
@@ -30,7 +31,13 @@ export const communityWorkerEventTypes = [
   "BACKUP_SCHEDULING",
 ] as const;
 export type CommunityWorkerEventType = (typeof communityWorkerEventTypes)[number];
-export type CommunityWorkerRun = { workerId: string; claimed: number; processed: number; releasedClaims: number };
+export type CommunityWorkerRun = {
+  workerId: string;
+  claimed: number;
+  processed: number;
+  releasedClaims: number;
+  dispatchPaused?: boolean;
+};
 export type CommunityWorkerOptions = {
   workerId?: string;
   concurrency?: number;
@@ -80,6 +87,11 @@ export async function runCommunityWorkerOnce(
   signal?: AbortSignal,
 ): Promise<CommunityWorkerRun> {
   const released = await releaseExpiredClaims();
+  const policy = await readCommunityOutboxRuntimePolicy();
+  // Recovery remains available while dispatch is paused: expired worker leases
+  // are safely released, but no new Community work is claimed.
+  if (!policy.dispatchEnabled)
+    return { workerId, claimed: 0, processed: 0, releasedClaims: released.count, dispatchPaused: true };
   const result = await dispatchOutboxBatch(
     workerId,
     async (event) => {
@@ -90,7 +102,7 @@ export async function runCommunityWorkerOnce(
         throw new CommunityError("COMMUNITY_OUTBOX_HANDLER_UNAVAILABLE", "No enabled handler for outbox event.");
       await runHandlerWithHeartbeat(workerId, event, handler);
     },
-    25,
+    policy.batchSize,
     signal,
   );
   return { workerId, claimed: result.claimed, processed: result.processed, releasedClaims: released.count };
@@ -101,7 +113,6 @@ export async function runCommunityWorkerOnce(
 export async function runCommunityWorker(options: CommunityWorkerOptions = {}) {
   const workerId = options.workerId ?? `community-worker-${randomUUID()}`;
   const concurrency = Math.max(1, Math.min(16, options.concurrency ?? 1));
-  const pollMs = Math.max(50, Math.min(60_000, options.pollMs ?? 1_000));
   let totals = { workerId, claimed: 0, processed: 0, releasedClaims: 0 };
   try {
     while (!options.signal?.aborted) {
@@ -116,7 +127,11 @@ export async function runCommunityWorker(options: CommunityWorkerOptions = {}) {
           releasedClaims: totals.releasedClaims + run.releasedClaims,
         };
       }
-      if (runs.every((run) => run.claimed === 0)) await new Promise<void>((resolve) => setTimeout(resolve, pollMs));
+      if (runs.every((run) => run.claimed === 0)) {
+        const policy = await readCommunityOutboxRuntimePolicy();
+        const pollMs = Math.max(50, Math.min(60_000, options.pollMs ?? policy.pollIntervalMs));
+        await new Promise<void>((resolve) => setTimeout(resolve, pollMs));
+      }
     }
   } finally {
     await releaseWorkerClaims(workerId);

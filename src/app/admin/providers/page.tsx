@@ -16,42 +16,61 @@ export default async function ProvidersPage() {
     <ChartroomPage
       eyebrow="Provider-neutral projections"
       title="Providers"
-      description="Code support, configuration, live-validation boundary, current safe health, source, and freshness are separate facts."
+      description="Readiness, configuration, health, freshness, and safe owner action are separate facts. Credentials are never rendered."
     >
       {result.data?.length ? (
         <div className="chartroom-cards chartroom-cards--providers">
           {result.data.map((provider) => (
-            <Panel key={`${provider.domain}-${provider.kind}`} title={humanize(provider.kind)} kicker={provider.domain}>
+            <Panel
+              key={`${provider.domain}-${provider.kind}`}
+              title={provider.provider}
+              kicker={`${provider.domain} · ${humanize(provider.kind)}`}
+            >
               <div className="chartroom-provider-state">
                 <StatusBadge state={provider.health} />
-                <span>{provider.provider}</span>
+                <span>{provider.configured ? "Configured" : "Not configured"}</span>
               </div>
               <dl className="chartroom-details">
                 <div>
-                  <dt>Code support</dt>
-                  <dd>{humanize(provider.codeSupport)}</dd>
+                  <dt>Readiness</dt>
+                  <dd>
+                    {provider.health === "HEALTHY"
+                      ? "Ready"
+                      : provider.health === "UNAVAILABLE"
+                        ? "Unavailable"
+                        : "Needs attention"}
+                  </dd>
                 </div>
                 <div>
-                  <dt>Configured</dt>
-                  <dd>{provider.configured ? "Yes" : "No"}</dd>
-                </div>
-                <div>
-                  <dt>Live validation</dt>
-                  <dd>{humanize(provider.liveValidation)}</dd>
-                </div>
-                <div>
-                  <dt>Safe status</dt>
-                  <dd>{provider.safeCode}</dd>
-                </div>
-                <div>
-                  <dt>Observed</dt>
+                  <dt>Last safe check</dt>
                   <dd>{new Date(provider.observedAt).toLocaleString()}</dd>
                 </div>
                 <div>
-                  <dt>Capabilities</dt>
-                  <dd>{provider.capabilities.join(", ") || "Not reported"}</dd>
+                  <dt>Validation boundary</dt>
+                  <dd>{humanize(provider.liveValidation)}</dd>
+                </div>
+                <div>
+                  <dt>Safe action</dt>
+                  <dd>Refresh this projection to run the owner’s bounded health check.</dd>
                 </div>
               </dl>
+              <details>
+                <summary>Technical details</summary>
+                <dl className="chartroom-details">
+                  <div>
+                    <dt>Code support</dt>
+                    <dd>{humanize(provider.codeSupport)}</dd>
+                  </div>
+                  <div>
+                    <dt>Safe status code</dt>
+                    <dd>{provider.safeCode}</dd>
+                  </div>
+                  <div>
+                    <dt>Capabilities</dt>
+                    <dd>{provider.capabilities.map(humanize).join(", ") || "Not reported"}</dd>
+                  </div>
+                </dl>
+              </details>
             </Panel>
           ))}
         </div>

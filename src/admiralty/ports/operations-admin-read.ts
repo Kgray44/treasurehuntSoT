@@ -1,10 +1,12 @@
 import packageManifest from "../../../package.json";
 import { communityOperationalSnapshot, collectCommunityProviderHealth } from "@/community/operations";
+import { readCommunityOutboxRuntimePolicy } from "@/community/operational-policy";
 import { db } from "@/lib/db";
 import { parsePrivateContentConfiguration } from "@/private-content/config";
 import { collectPrivateProviderHealth, createPrivateProviderRuntime } from "@/private-content/providers";
 import type { AdmiraltyCurrentOperator } from "../authorization";
 import { writeAdministrativeAudit } from "../audit";
+import { admiraltyConfigurationRegistry } from "../configuration-registry";
 import { environmentLabel, projection, unavailableProjection, type AdmiraltyProjection } from "../read-models";
 
 type ProviderCard = {
@@ -119,6 +121,7 @@ export async function getOperationsOverview(operator: AdmiraltyCurrentOperator) 
     latestRestore,
     schedules,
     community,
+    expiredCommunityClaims,
   ] = await Promise.all([
     db.$queryRaw<Array<{ value: number }>>`SELECT 1 AS value`.then((rows) => rows.length === 1).catch(() => false),
     db.userAccount.count({ where: { lastSeenAt: { gte: dayAgo } } }),
@@ -160,6 +163,9 @@ export async function getOperationsOverview(operator: AdmiraltyCurrentOperator) 
       take: 30,
     }),
     communityOperationalSnapshot(now).catch(() => null),
+    db.communityOutboxEvent.count({
+      where: { processedAt: null, terminalFailureAt: null, claimExpiresAt: { lt: now } },
+    }),
   ]);
   const providers = await getProviderOverview(operator);
   await auditOperationsRead(operator, "ADMIRALTY_OPERATIONS_OVERVIEW_READ", "OperationsOverview", "current", {
@@ -189,101 +195,49 @@ export async function getOperationsOverview(operator: AdmiraltyCurrentOperator) 
           : 0,
       },
       privateOperations: { latestHealth, latestBackup, latestRestore, schedules },
-      community,
+      community: community ? { ...community, expiredClaims: expiredCommunityClaims } : null,
       providers,
     },
     { observedAt: now, state: databaseProbe ? (community ? "HEALTHY" : "DEGRADED") : "DEGRADED" },
   );
 }
 
-const settings = [
-  { key: "environment", source: "NODE_ENV", class: "PUBLIC_SAFE", value: () => environmentLabel() },
-  {
-    key: "database.provider",
-    source: "DATABASE_URL",
-    class: "SECRET_REFERENCE_ONLY",
-    value: () =>
-      process.env.DATABASE_URL?.startsWith("mysql:") ? "mysql" : process.env.DATABASE_URL ? "sqlite" : "not configured",
-  },
-  {
-    key: "oauth.google",
-    source: "GOOGLE_CLIENT_ID",
-    class: "SECRET_REFERENCE_ONLY",
-    value: () => (process.env.GOOGLE_CLIENT_ID ? "configured" : "not configured"),
-  },
-  {
-    key: "oauth.github",
-    source: "GITHUB_CLIENT_ID",
-    class: "SECRET_REFERENCE_ONLY",
-    value: () => (process.env.GITHUB_CLIENT_ID ? "configured" : "not configured"),
-  },
-  {
-    key: "transactional-email",
-    source: "EMAIL_PROVIDER",
-    class: "SECRET_REFERENCE_ONLY",
-    value: () => (process.env.EMAIL_PROVIDER ? "configured; health contract pending" : "not configured"),
-  },
-  {
-    key: "private.storage",
-    source: "PRIVATE_CONTENT_STORAGE_PROVIDER",
-    class: "SECRET_REFERENCE_ONLY",
-    value: () => process.env.PRIVATE_CONTENT_STORAGE_PROVIDER ?? "not configured",
-  },
-  {
-    key: "private.scanner",
-    source: "PRIVATE_CONTENT_SCANNER_PROVIDER",
-    class: "SECRET_REFERENCE_ONLY",
-    value: () => process.env.PRIVATE_CONTENT_SCANNER_PROVIDER ?? "not configured",
-  },
-  {
-    key: "private.worker",
-    source: "PRIVATE_CONTENT_WORKER_ENABLED",
-    class: "RUNTIME_SETTING",
-    value: () => (process.env.PRIVATE_CONTENT_WORKER_ENABLED === "true" ? "enabled" : "disabled"),
-  },
-  {
-    key: "community.storage",
-    source: "COMMUNITY_ASSET_STORAGE_PROVIDER",
-    class: "SECRET_REFERENCE_ONLY",
-    value: () => process.env.COMMUNITY_ASSET_STORAGE_PROVIDER ?? "local",
-  },
-  {
-    key: "community.scanner",
-    source: "COMMUNITY_BINARY_SCANNER_PROVIDER",
-    class: "SECRET_REFERENCE_ONLY",
-    value: () => process.env.COMMUNITY_BINARY_SCANNER_PROVIDER ?? "not configured",
-  },
-  {
-    key: "community.worker",
-    source: "COMMUNITY_WORKER_ENABLED",
-    class: "RUNTIME_SETTING",
-    value: () => (process.env.COMMUNITY_WORKER_ENABLED === "true" ? "enabled" : "disabled"),
-  },
-  {
-    key: "community.rate-limit",
-    source: "COMMUNITY_RATE_LIMIT_PROVIDER",
-    class: "RUNTIME_SETTING",
-    value: () => process.env.COMMUNITY_RATE_LIMIT_PROVIDER ?? "process-local",
-  },
-] as const;
-
 export async function getConfigurationProjection(operator: AdmiraltyCurrentOperator) {
-  const data = settings.map((setting) => ({
-    key: setting.key,
-    classification: setting.class,
-    value: setting.value(),
-    reference: setting.source,
-    configured: Boolean(process.env[setting.source]),
-    lastValidated: null,
-    lastRotated: null,
-    expires: null,
-    mutableHere: false,
+  const policy = await readCommunityOutboxRuntimePolicy();
+  const values: Record<string, string> = {
+    "platform.environment": environmentLabel(),
+    "platform.database-provider": process.env.DATABASE_URL?.startsWith("mysql:")
+      ? "MySQL configured"
+      : process.env.DATABASE_URL
+        ? "SQLite configured"
+        : "Not configured",
+    "wayfarer.oauth.google": process.env.GOOGLE_CLIENT_ID ? "Configured" : "Not configured",
+    "wayfarer.oauth.github": process.env.GITHUB_CLIENT_ID ? "Configured" : "Not configured",
+    "wayfarer.transactional-email": process.env.EMAIL_PROVIDER
+      ? "Configured; owner health contract pending"
+      : "Not configured",
+    "sealed-hold.storage": process.env.PRIVATE_CONTENT_STORAGE_PROVIDER ? "Configured" : "Not configured",
+    "sealed-hold.scanner": process.env.PRIVATE_CONTENT_SCANNER_PROVIDER ? "Configured" : "Not configured",
+    "sealed-hold.worker-enabled": process.env.PRIVATE_CONTENT_WORKER_ENABLED === "true" ? "Enabled" : "Disabled",
+    "harborlight.storage": process.env.COMMUNITY_ASSET_STORAGE_PROVIDER ? "Configured" : "Not configured",
+    "harborlight.scanner": process.env.COMMUNITY_BINARY_SCANNER_PROVIDER ? "Configured" : "Not configured",
+    "harborlight.worker-deployment": process.env.COMMUNITY_WORKER_ENABLED === "true" ? "Enabled" : "Disabled",
+    "harborlight.rate-limit-provider": process.env.COMMUNITY_RATE_LIMIT_PROVIDER ?? "Process-local development default",
+    "harborlight.outbox.dispatch-enabled": policy.dispatchEnabled ? "Accepting new work" : "Paused",
+    "harborlight.outbox.batch-size": `${policy.batchSize} jobs per batch`,
+    "harborlight.outbox.poll-interval": `${Math.round(policy.pollIntervalMs / 1_000)} seconds`,
+  };
+  const settings = admiraltyConfigurationRegistry.map((definition) => ({
+    ...definition,
+    effectiveValue: values[definition.key] ?? "Not available",
+    configured: definition.managementClass === "POLICY_EDITABLE" || Boolean(process.env[definition.sourceReference]),
+    mutableHere: definition.managementClass === "POLICY_EDITABLE",
   }));
   await auditOperationsRead(operator, "ADMIRALTY_CONFIGURATION_READ", "ConfigurationProjection", "current", {
-    settingCount: data.length,
-    mutationAvailable: false,
+    settingCount: settings.length,
+    editableSettingCount: settings.filter((setting) => setting.mutableHere).length,
   });
-  return projection("Platform configuration allowlist", data);
+  return projection("Source-bound configuration registry", { settings, communityOutboxRuntimePolicy: policy });
 }
 
 export async function getReleaseProjection(operator: AdmiraltyCurrentOperator) {

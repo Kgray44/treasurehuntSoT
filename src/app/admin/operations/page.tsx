@@ -1,5 +1,6 @@
 import { admiraltyPageOperator } from "@/admiralty/page-authorization";
 import { getOperationsOverview } from "@/admiralty/ports/operations-admin-read";
+import { CommunityOutboxLeaseRecoveryPanel } from "@/components/admiralty/CommunityOutboxLeaseRecoveryPanel";
 import {
   ChartroomPage,
   DetailList,
@@ -10,6 +11,7 @@ import {
   Panel,
   StatusBadge,
   dateTime,
+  duration,
   humanize,
 } from "@/components/admiralty/AdminPrimitives";
 
@@ -19,9 +21,9 @@ export default async function OperationsPage() {
   const data = result.data!;
   return (
     <ChartroomPage
-      eyebrow="Operational read ports"
+      eyebrow="Owner-scoped operations"
       title="Operations"
-      description="Workers, queues, schedulers, database, backup, and restore evidence. No retry, cancel, repair, or other Phase 3 command is available."
+      description="Workers, queues, schedulers, database, backup, and restore evidence. Only a current owner-backed recovery command is exposed."
     >
       <div className="chartroom-metrics">
         <Metric
@@ -33,7 +35,7 @@ export default async function OperationsPage() {
         <Metric
           label="Queued jobs"
           value={data.jobs.queued}
-          detail={`Oldest ${data.jobs.oldestPendingAgeSeconds}s`}
+          detail={`Oldest ${duration(data.jobs.oldestPendingAgeSeconds)}`}
           state={data.jobs.queued ? "DEGRADED" : "HEALTHY"}
         />
         <Metric label="Failed jobs" value={data.jobs.failed} state={data.jobs.failed ? "DEGRADED" : "HEALTHY"} />
@@ -72,10 +74,14 @@ export default async function OperationsPage() {
               items={[
                 { label: "Queue", value: data.community.queueDepth },
                 { label: "Dead letters", value: data.community.deadLetters },
-                { label: "Oldest queued job", value: `${data.community.oldestQueuedJobAgeSeconds}s` },
+                { label: "Oldest queued job", value: duration(data.community.oldestQueuedJobAgeSeconds) },
                 { label: "Stale scans", value: data.community.staleScans },
                 { label: "Moderation cases", value: data.community.caseQueue },
-                { label: "Release identity", value: data.community.releaseIdentity },
+                { label: "Expired leases", value: data.community.expiredClaims },
+                {
+                  label: "Release identity",
+                  value: <Identifier value={data.community.releaseIdentity} label="release identity" />,
+                },
               ]}
             />
           ) : (
@@ -83,6 +89,20 @@ export default async function OperationsPage() {
           )}
         </Panel>
       </div>
+      <Panel title="Community lease recovery" kicker="Harborlight owner command">
+        {data.community ? (
+          <CommunityOutboxLeaseRecoveryPanel
+            csrfToken={operator.csrfToken}
+            expiredClaims={data.community.expiredClaims}
+            enabled={operator.capabilities.includes("JOBS_OPERATE")}
+          />
+        ) : (
+          <EmptyState
+            title="Community owner unavailable"
+            detail="The recovery command is intentionally unavailable while its owner projection is unavailable."
+          />
+        )}
+      </Panel>
       <Panel title="Private operation schedules">
         {data.privateOperations.schedules.length ? (
           <div className="chartroom-table-wrap" tabIndex={0}>
