@@ -34,23 +34,23 @@ editable, provider-safe editable, immutable security, external owner, or
 observe-only; those classes remain reserved for a future owner contract rather
 than simulated by an Admiralty control.
 
-| Stable ID | Setting | Class | Owner | Chartroom disposition |
-| --- | --- | --- | --- | --- |
-| ADM-CFG-001 | Runtime environment | DEPLOYMENT_MANAGED | Platform delivery | Safe label only; deployment rollback |
-| ADM-CFG-002 | Database provider | SECRET_REFERENCE_ONLY | Platform delivery | Provider identity only; no connection material |
-| ADM-CFG-003 | Google sign-in reference | SECRET_REFERENCE_ONLY | Wayfarer | Presence only; owner deployment action |
-| ADM-CFG-004 | GitHub sign-in reference | SECRET_REFERENCE_ONLY | Wayfarer | Presence only; owner deployment action |
-| ADM-CFG-005 | Transactional email reference | SECRET_REFERENCE_ONLY | Wayfarer | Presence only; health contract remains pending |
-| ADM-CFG-006 | Private storage reference | SECRET_REFERENCE_ONLY | Sealed Hold | Reference only; no credentials or object paths |
-| ADM-CFG-007 | Private scanner reference | SECRET_REFERENCE_ONLY | Sealed Hold | Reference only; no scanner credentials |
-| ADM-CFG-008 | Private worker deployment state | DEPLOYMENT_MANAGED | Sealed Hold | Non-editable deployment state |
-| ADM-CFG-009 | Community storage reference | SECRET_REFERENCE_ONLY | Harborlight | Reference only; no storage credentials |
-| ADM-CFG-010 | Community scanner reference | SECRET_REFERENCE_ONLY | Harborlight | Reference only; no scanner credentials |
-| ADM-CFG-011 | Community worker deployment state | DEPLOYMENT_MANAGED | Harborlight | Non-editable process enablement |
-| ADM-CFG-012 | Community rate-limit provider | DEPLOYMENT_MANAGED | Harborlight | Non-editable fail-closed provider selection |
-| ADM-CFG-013 | Accept new Community outbox work | POLICY_EDITABLE | Harborlight | Part of the governed policy command |
-| ADM-CFG-014 | Community jobs per batch | POLICY_EDITABLE | Harborlight | Bounded 1–25; part of the governed policy command |
-| ADM-CFG-015 | Idle Community worker poll interval | POLICY_EDITABLE | Harborlight | Bounded 1–60 seconds; part of the governed policy command |
+| Stable ID   | Setting                             | Class                 | Owner             | Chartroom disposition                                     |
+| ----------- | ----------------------------------- | --------------------- | ----------------- | --------------------------------------------------------- |
+| ADM-CFG-001 | Runtime environment                 | DEPLOYMENT_MANAGED    | Platform delivery | Safe label only; deployment rollback                      |
+| ADM-CFG-002 | Database provider                   | SECRET_REFERENCE_ONLY | Platform delivery | Provider identity only; no connection material            |
+| ADM-CFG-003 | Google sign-in reference            | SECRET_REFERENCE_ONLY | Wayfarer          | Presence only; owner deployment action                    |
+| ADM-CFG-004 | GitHub sign-in reference            | SECRET_REFERENCE_ONLY | Wayfarer          | Presence only; owner deployment action                    |
+| ADM-CFG-005 | Transactional email reference       | SECRET_REFERENCE_ONLY | Wayfarer          | Presence only; health contract remains pending            |
+| ADM-CFG-006 | Private storage reference           | SECRET_REFERENCE_ONLY | Sealed Hold       | Reference only; no credentials or object paths            |
+| ADM-CFG-007 | Private scanner reference           | SECRET_REFERENCE_ONLY | Sealed Hold       | Reference only; no scanner credentials                    |
+| ADM-CFG-008 | Private worker deployment state     | DEPLOYMENT_MANAGED    | Sealed Hold       | Non-editable deployment state                             |
+| ADM-CFG-009 | Community storage reference         | SECRET_REFERENCE_ONLY | Harborlight       | Reference only; no storage credentials                    |
+| ADM-CFG-010 | Community scanner reference         | SECRET_REFERENCE_ONLY | Harborlight       | Reference only; no scanner credentials                    |
+| ADM-CFG-011 | Community worker deployment state   | DEPLOYMENT_MANAGED    | Harborlight       | Non-editable process enablement                           |
+| ADM-CFG-012 | Community rate-limit provider       | DEPLOYMENT_MANAGED    | Harborlight       | Non-editable fail-closed provider selection               |
+| ADM-CFG-013 | Accept new Community outbox work    | POLICY_EDITABLE       | Harborlight       | Part of the governed policy command                       |
+| ADM-CFG-014 | Community jobs per batch            | POLICY_EDITABLE       | Harborlight       | Bounded 1–25; part of the governed policy command         |
+| ADM-CFG-015 | Idle Community worker poll interval | POLICY_EDITABLE       | Harborlight       | Bounded 1–60 seconds; part of the governed policy command |
 
 ## Governed policy operation
 
