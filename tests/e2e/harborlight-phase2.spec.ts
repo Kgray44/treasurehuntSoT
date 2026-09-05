@@ -68,7 +68,7 @@ test("Harborlight Studio access and Exchange package installation are isolated a
   await page.goto("/studio/exchange");
   await expect(page.getByRole("heading", { name: "Open the Exchange" })).toBeVisible();
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(page.getByText("A static poster fallback is always available for 3D Exchange artifacts.")).toBeVisible();
+  await expect(page.getByRole("status")).toHaveText("Reduced motion is on. A static poster is shown.");
 
   const profile = await creator.request.post("/api/community/profile", {
     headers,
@@ -371,7 +371,7 @@ test("H2: hash-attested synthetic 2D artifact publication persists its immutable
   ).resolves.toEqual({ scanStatus: "CLEAN", releaseId: release.id });
   await page.goto("/studio/exchange");
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(page.getByText("A static poster fallback is always available for 3D Exchange artifacts.")).toBeVisible();
+  await expect(page.getByRole("status")).toHaveText("Reduced motion is on. A static poster is shown.");
   await page.reload();
   expect(await db.communityPackageItem.count({ where: { packageId: result.packageId, itemType: "ARTIFACT_2D" } })).toBe(
     1,
