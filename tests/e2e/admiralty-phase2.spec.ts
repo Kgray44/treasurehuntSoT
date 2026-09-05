@@ -147,10 +147,8 @@ test("administrator reaches the Chartroom naturally and inspects every Phase 2 r
     await expect(admin.page.getByRole("button", { name: mutation, exact: true })).toHaveCount(0);
 
   await goToStation(admin.page, "/admin/releases");
-  await expect(admin.page.getByText("Deployment controls", { exact: true })).toBeVisible();
-  await expect(
-    admin.page.getByText(/No deploy, promote, rollback, restart, or repair action is exposed/u),
-  ).toBeVisible();
+  await expect(admin.page.getByRole("heading", { name: "Deployment authority" })).toBeVisible();
+  await expect(admin.page.getByText(/owned by the deployment platform/u)).toBeVisible();
 
   await goToStation(admin.page, "/admin/audit");
   await admin.page.locator('input[name="correlationId"]').fill("adm2-correlation-northstar");
