@@ -97,6 +97,10 @@ on the server.
 - [Validation record](Project_Admiralty_Phase_3_Validation_Record.md)
 - [Deepwater disposition register](Project_Admiralty_Phase_3_Deepwater_Disposition_Register.json)
 
+## Brightwork Wave 5 current owner contract
+
+- [Harborlight configuration and operations owner contract](Project_Admiralty_Brightwork_Wave_5_Owner_Contract.md)
+
 ## Support Pilot S1 records
 
 - [Architecture](Project_Admiralty_Support_Pilot_S1_Architecture.md)

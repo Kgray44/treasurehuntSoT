@@ -20,9 +20,17 @@ export default async function InvestigatePage({ searchParams }: { searchParams: 
     <ChartroomPage
       eyebrow="Federated owner read ports"
       title="Investigate"
-      description="Follow a person, Chronicle, Voyage, listing, audit event, or correlation ID across only the domains your role can observe."
+      description="Start with a person, Chronicle, Voyage, case, release, or time-linked activity. Exact IDs remain an advanced option."
     >
-      <SearchForm value={query} placeholder="Account, Chronicle, Voyage, listing, audit, or correlation ID" />
+      <SearchForm
+        value={query}
+        label="What are you investigating?"
+        placeholder="Account, Chronicle, Voyage, Community case, release, or known identifier"
+      />
+      <aside className="chartroom-callout">
+        <strong>Use exact IDs only when they are your starting clue.</strong>
+        <p>Admiralty sends the bounded query only to owner projections available to your current role.</p>
+      </aside>
       {!query ? (
         <EmptyState
           title="Start with one clue"

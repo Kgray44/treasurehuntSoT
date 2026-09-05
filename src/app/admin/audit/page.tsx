@@ -60,37 +60,25 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
     <ChartroomPage
       eyebrow="Canonical audit store"
       title="Audit Explorer"
-      description="Filter sanitized evidence by actor, action, target, outcome, time, or correlation. Raw secret/private metadata is never returned."
+      description="Start with an account, activity, status, or time range. Exact identifiers and source fields remain available as advanced precision."
     >
       <form className="chartroom-filter" method="get">
         <label>
-          Free text
-          <input name="q" defaultValue={first(params.q)} placeholder="Action, target ID, audit ID, correlation ID" />
+          Account
+          <input name="actor" defaultValue={input.actor} placeholder="Person or account ID" />
         </label>
         <label>
-          Actor
-          <input name="actor" defaultValue={input.actor} placeholder="Actor or account ID" />
+          Activity
+          <input name="action" defaultValue={input.action} placeholder="For example, configuration change" />
         </label>
         <label>
-          Action
-          <input name="action" defaultValue={input.action} placeholder="ADMIRALTY_…" />
-        </label>
-        <label>
-          Target type
-          <input name="targetType" defaultValue={input.targetType} />
-        </label>
-        <label>
-          Outcome
+          Status
           <select name="outcome" defaultValue={input.outcome ?? ""}>
-            <option value="">Any outcome</option>
-            <option>SUCCEEDED</option>
-            <option>DENIED</option>
-            <option>FAILED</option>
+            <option value="">Any status</option>
+            <option value="SUCCEEDED">Completed</option>
+            <option value="DENIED">Denied</option>
+            <option value="FAILED">Failed</option>
           </select>
-        </label>
-        <label>
-          Correlation ID
-          <input name="correlationId" defaultValue={input.correlationId} />
         </label>
         <label>
           From
@@ -101,6 +89,25 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
           <input type="datetime-local" name="to" defaultValue={first(params.to)} />
         </label>
         <button type="submit">Search audit</button>
+        <details className="chartroom-filter__advanced">
+          <summary>Advanced precision</summary>
+          <label>
+            Free text or exact audit ID
+            <input
+              name="q"
+              defaultValue={first(params.q)}
+              placeholder="Exact action, target, audit, or correlation ID"
+            />
+          </label>
+          <label>
+            Source target type
+            <input name="targetType" defaultValue={input.targetType} placeholder="Only when known" />
+          </label>
+          <label>
+            Exact correlation ID
+            <input name="correlationId" defaultValue={input.correlationId} placeholder="Only when known" />
+          </label>
+        </details>
       </form>
       {!active ? (
         <EmptyState

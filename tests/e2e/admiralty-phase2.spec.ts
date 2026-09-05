@@ -51,7 +51,8 @@ test("administrator reaches the Chartroom naturally and inspects every Phase 2 r
   await admin.page.getByRole("link", { name: /Admiralty/u }).click();
   await admin.page.waitForURL((url) => url.pathname === "/admin");
   await expect(admin.page.getByRole("heading", { name: "Platform Overview" })).toBeVisible();
-  await expect(admin.page.getByText("62 / 92", { exact: true })).toBeVisible();
+  await expect(admin.page.getByText("Community queue", { exact: true })).toBeVisible();
+  await expect(admin.page.getByText("Audit activity", { exact: true })).toBeVisible();
   await assertNoSeriousAxeViolations(admin.page);
   await capture(admin.page, "ADM2-EV-A-PLATFORM-OVERVIEW");
 
@@ -129,21 +130,30 @@ test("administrator reaches the Chartroom naturally and inspects every Phase 2 r
 
   await goToStation(admin.page, "/admin/providers");
   await expect(admin.page.getByRole("heading", { name: "Providers" })).toBeVisible();
-  await expect(admin.page.getByText("BLOCKED_BY_MISSING_OWNER_CONTRACT", { exact: true })).toBeVisible();
+  const blockedProviderDetails = admin.page
+    .locator("details")
+    .filter({ has: admin.page.getByText("BLOCKED_BY_MISSING_OWNER_CONTRACT", { exact: true }) })
+    .first();
+  await blockedProviderDetails.locator("summary").click();
+  await expect(blockedProviderDetails.getByText("BLOCKED_BY_MISSING_OWNER_CONTRACT", { exact: true })).toBeVisible();
 
   await goToStation(admin.page, "/admin/configuration");
-  await expect(admin.page.getByText(/Values cannot be changed here\./u)).toBeVisible();
+  await expect(admin.page.getByRole("heading", { name: "Editable current policy" })).toBeVisible();
+  const runtimePolicy = admin.page.getByRole("region", { name: "Community outbox runtime" });
+  await expect(runtimePolicy.getByRole("checkbox", { name: "Accept new Community outbox work" })).toBeChecked();
+  await expect(runtimePolicy.getByRole("button", { name: "Preview policy change" })).toBeDisabled();
+  await expect(admin.page.getByRole("heading", { name: "Classified non-editable settings" })).toBeVisible();
   for (const mutation of ["Edit", "Save", "Apply", "Toggle"])
     await expect(admin.page.getByRole("button", { name: mutation, exact: true })).toHaveCount(0);
 
   await goToStation(admin.page, "/admin/releases");
-  await expect(admin.page.getByText("Deployment controls", { exact: true })).toBeVisible();
-  await expect(
-    admin.page.getByText(/No deploy, promote, rollback, restart, or repair action is exposed/u),
-  ).toBeVisible();
+  await expect(admin.page.getByRole("heading", { name: "Deployment authority" })).toBeVisible();
+  await expect(admin.page.getByText(/owned by the deployment platform/u)).toBeVisible();
 
   await goToStation(admin.page, "/admin/audit");
-  await admin.page.locator('input[name="correlationId"]').fill("adm2-correlation-northstar");
+  const advancedAuditPrecision = admin.page.locator("details.chartroom-filter__advanced");
+  await advancedAuditPrecision.locator("summary").click();
+  await advancedAuditPrecision.locator('input[name="correlationId"]').fill("adm2-correlation-northstar");
   await admin.page.getByRole("button", { name: "Search audit" }).click();
   await expect(
     admin.page

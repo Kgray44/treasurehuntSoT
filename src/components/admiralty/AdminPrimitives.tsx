@@ -192,6 +192,13 @@ export function dateTime(value: Date | string | null | undefined) {
     : "No data recorded";
 }
 
+export function duration(value: number | null | undefined) {
+  if (!Number.isFinite(value) || value === null || value === undefined) return "No data recorded";
+  if (value < 60) return `${Math.round(value)} seconds`;
+  if (value < 3_600) return `${Math.floor(value / 60)} minutes`;
+  return `${Math.floor(value / 3_600)} hours`;
+}
+
 export function humanize(value: string) {
   return value
     .replaceAll("_", " ")

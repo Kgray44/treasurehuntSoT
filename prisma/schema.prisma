@@ -3235,6 +3235,58 @@ model CommunityOutboxEvent {
   @@index([aggregateType, aggregateId, createdAt])
 }
 
+// Harborlight owns this narrowly-scoped runtime policy. It is deliberately
+// not a generic configuration table: only the outbox worker's bounded,
+// operationally safe controls are persisted here.
+model CommunityOperationalPolicy {
+  id              String   @id @default(cuid()) @db.VarChar(191)
+  key             String   @unique @db.VarChar(191)
+  dispatchEnabled Boolean  @default(true)
+  batchSize       Int      @default(25)
+  pollIntervalMs  Int      @default(1000)
+  revision        Int      @default(1)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// This is the Harborlight owner receipt for a governed operational-policy
+// change. The unique idempotency and correlation identities make retries
+// explainable without exposing worker payloads or lease-owner data.
+model CommunityOperationalPolicyChange {
+  id                 String   @id @default(cuid()) @db.VarChar(191)
+  policyKey          String   @db.VarChar(191)
+  actorAccountId     String   @db.VarChar(191)
+  idempotencyKey     String   @unique @db.VarChar(191)
+  requestFingerprint String   @db.VarChar(128)
+  correlationId      String   @unique @db.VarChar(191)
+  expectedRevision   Int
+  resultingRevision  Int
+  beforeState        String   @db.Text
+  afterState         String   @db.Text
+  createdAt          DateTime @default(now())
+
+  @@index([policyKey, createdAt])
+  @@index([actorAccountId, createdAt])
+}
+
+// Owner receipts for bounded Community operational commands. These are
+// separate from policy changes so a no-op recovery command remains durable
+// and idempotent without masquerading as a configuration mutation.
+model CommunityOperationalCommandReceipt {
+  id             String   @id @default(cuid()) @db.VarChar(191)
+  commandType    String   @db.VarChar(96)
+  actorAccountId String   @db.VarChar(191)
+  targetType     String   @db.VarChar(96)
+  targetId       String   @db.VarChar(191)
+  idempotencyKey String   @unique @db.VarChar(191)
+  correlationId  String   @unique @db.VarChar(191)
+  result         String   @db.Text
+  createdAt      DateTime @default(now())
+
+  @@index([commandType, actorAccountId, createdAt])
+  @@index([targetType, targetId, createdAt])
+}
+
 model CommunityLicensePolicy {
   id                   String   @id @default(cuid())
   key                  String   @unique

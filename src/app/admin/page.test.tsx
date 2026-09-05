@@ -41,6 +41,12 @@ describe("secure Admiralty page", () => {
       support: { activeGrantCount: 0, pendingRequestCount: 0 },
       registry: { total: 92, implemented: 16 },
       environment: { application: "Voyagewright", version: "0.2.0", environment: "test", buildIdentity: null },
+      attention: {
+        pendingSupportCases: 0,
+        communityQueuedJobs: null,
+        communityDeadLetters: null,
+        communityModerationCases: null,
+      },
       audit: { recentCount24Hours: 0, recent: [] },
     });
     await expect(AdmiraltyPage()).resolves.toBeTruthy();

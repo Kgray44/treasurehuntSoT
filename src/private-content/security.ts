@@ -105,8 +105,10 @@ async function walk(
   ignoredGenerated: string[] = [],
 ): Promise<{ files: string[]; ignoredGenerated: string[] }> {
   for (const entry of await readdir(root, { withFileTypes: true })) {
-    if ([".git", "node_modules", ".next"].includes(entry.name) || entry.name.startsWith(".sealed-build")) {
-      if (entry.name === ".next" || entry.name.startsWith(".sealed-build")) ignoredGenerated.push(entry.name);
+    const generatedOutput =
+      entry.name === ".next" || entry.name.startsWith(".next-") || entry.name.startsWith(".sealed-build");
+    if ([".git", "node_modules"].includes(entry.name) || generatedOutput) {
+      if (generatedOutput) ignoredGenerated.push(entry.name);
       continue;
     }
     const candidate = path.join(root, entry.name);

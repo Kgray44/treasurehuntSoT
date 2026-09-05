@@ -45,6 +45,7 @@
     "admiralty:phase1:journeys": "node scripts/admiralty/run-phase1-journeys.mjs",
     "admiralty:fixture": "node scripts/admiralty/prepare-phase2-fixture.mjs",
     "admiralty:journeys": "node scripts/admiralty/run-phase2-journeys.mjs",
+    "admiralty:brightwork-wave5:journeys": "node scripts/admiralty/run-brightwork-wave5-journeys.mjs",
     "admiralty:phase1:walkthrough:prepare": "node scripts/admiralty/phase1-walkthrough-runtime.mjs prepare",
     "admiralty:phase1:walkthrough:start": "node scripts/admiralty/phase1-walkthrough-runtime.mjs start",
     "admiralty:phase1:walkthrough:status": "node scripts/admiralty/phase1-walkthrough-runtime.mjs status",

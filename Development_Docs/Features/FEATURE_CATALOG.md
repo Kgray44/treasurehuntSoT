@@ -1738,7 +1738,7 @@ Tideglass compares exact immutable Chronicle editions, explains semantic change 
 **Status:** MAINLINE
 **Program or subsystem:** Project Admiralty
 
-Accepted Admiralty phases establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, governed owner-domain commands, and a read-only cross-domain Chartroom on main without creating a second source of truth. Support Pilots S1 through S3 provide consented diagnosis, registered bounded canonical owner repairs, and safe operator-owned case closure.
+Accepted Admiralty phases establish canonical roles, recent privileged assurance, scoped user consent, sanitized audit evidence, governed owner-domain commands, and a read-only cross-domain Chartroom on main without creating a second source of truth. Support Pilots S1 through S3 provide consented diagnosis, registered bounded canonical owner repairs, and safe operator-owned case closure. Wave 5 adds a Harborlight-owned Community outbox runtime policy and safe expired-lease recovery without broadening the administrative control plane.
 
 ### Important subfeatures
 
@@ -1761,6 +1761,8 @@ Accepted Admiralty phases establish canonical roles, recent privileged assurance
 - Support Pilot S2 exact repair consent, R0-R4 ceilings, durable command/record/domain budgets, target leases, and idempotent execution receipts
 - Registered R1 profile reconcile, R2 stale-session revoke, and explicitly consented R3 membership reconcile with required postcondition verification
 - Support Pilot S3 operator-owned case closure with pending-consent cancellation, active-grant revocation, idempotency, and durable audit evidence
+- Wave 5 Harborlight-owned revisioned Community outbox policy with reauthentication, preview, audit, worker enforcement, and governed revert
+- Wave 5 safe expired-claim lease release without retry, requeue, cancellation, payload access, or deployment control
 
 ### Primary surfaces
 
@@ -1774,7 +1776,7 @@ Accepted Admiralty phases establish canonical roles, recent privileged assurance
 - The owner accepted the qualified Phase 2 walkthrough on 2026-08-12; exact-source authority and protected canonical-main integration completed in PR #28
 - Transactional-email delivery health and live verification-provider health are blocked by missing canonical owner contracts
 - Broad administrative mutation remains dormant for later governed phases
-- Support Pilot S2 enables only three registered bounded owner repairs; Harborlight projection rebuild, job actions, configuration mutation, and all other commands remain unavailable until their owners publish safe contracts
+- Harborlight exposes only its Community outbox runtime policy and expired-claim release; projection rebuild, retry, requeue, cancel, provider mutation, feature flags, deployment, and all other commands remain unavailable until an owner publishes a safe contract
 - R4 repairs require explicit per-action human approval and no R4 repair is enabled; RX is never executable
 - Owner acceptance does not imply deployment or acceptance of later Admiralty phases
 
@@ -1801,6 +1803,9 @@ Accepted Admiralty phases establish canonical roles, recent privileged assurance
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Mainline_Acceptance_Record.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md`
+- path: `src/community/operational-policy.ts`
+- test: `tests/admiralty/brightwork-wave5/browser.spec.ts`
+- completion-record: `Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Stage_8_Wave_5_Completion_Record.md`
 
 ---
 

@@ -1,4 +1,5 @@
 import packageManifest from "../../package.json";
+import { communityOperationalSnapshot } from "@/community/operations";
 import { db } from "@/lib/db";
 import { privilegedAssuranceState } from "./assurance";
 import type { AdmiraltyCurrentOperator } from "./authorization";
@@ -12,7 +13,7 @@ function safeBuildIdentity() {
 }
 
 export async function admiraltyOverview(operator: AdmiraltyCurrentOperator) {
-  const [assurance, support, recentAudits, recentAuditCount] = await Promise.all([
+  const [assurance, support, recentAudits, recentAuditCount, community] = await Promise.all([
     privilegedAssuranceState(operator),
     operatorSupportSummary(operator.accountId),
     db.platformAuditEvent.findMany({
@@ -31,6 +32,7 @@ export async function admiraltyOverview(operator: AdmiraltyCurrentOperator) {
     db.platformAuditEvent.count({
       where: { action: { startsWith: "ADMIRALTY_" }, createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } },
     }),
+    communityOperationalSnapshot().catch(() => null),
   ]);
   return {
     operator: {
@@ -53,5 +55,12 @@ export async function admiraltyOverview(operator: AdmiraltyCurrentOperator) {
       buildIdentity: safeBuildIdentity(),
     },
     audit: { recentCount24Hours: recentAuditCount, recent: recentAudits },
+    attention: {
+      pendingSupportCases: support.pendingRequestCount,
+      activeSupportGrants: support.activeGrantCount,
+      communityQueuedJobs: community?.queueDepth ?? null,
+      communityDeadLetters: community?.deadLetters ?? null,
+      communityModerationCases: community?.caseQueue ?? null,
+    },
   };
 }

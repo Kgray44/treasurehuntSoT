@@ -177,6 +177,34 @@ export const accountSuspendSchema = z
       .regex(/^[A-Za-z0-9_-]+$/u),
   })
   .strict();
+
+export const communityOutboxRuntimePolicySchema = z
+  .object({
+    expectedRevision: z.number().int().min(0),
+    dispatchEnabled: z.boolean(),
+    batchSize: z.number().int().min(1).max(25),
+    pollIntervalMs: z.number().int().min(1_000).max(60_000),
+    reason: z.string().trim().min(8).max(240),
+    idempotencyKey: z
+      .string()
+      .trim()
+      .min(16)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+  })
+  .strict();
+
+export const communityOutboxReleaseExpiredSchema = z
+  .object({
+    reason: z.string().trim().min(8).max(240),
+    idempotencyKey: z
+      .string()
+      .trim()
+      .min(16)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/u),
+  })
+  .strict();
 export const supportReadSchema = z
   .object({
     grantId: z

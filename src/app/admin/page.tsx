@@ -16,24 +16,11 @@ export const dynamic = "force-dynamic";
 export default async function AdmiraltyPage() {
   const operator = await admiraltyPageOperator("PLATFORM_OBSERVE");
   const overview = await admiraltyOverview(operator);
-  const available = [
-    ["PLATFORM_OBSERVE", "Bridgewatch", "/bridgewatch"],
-    ["SUPPORT_REQUEST", "Support cases", "/admin/support/cases"],
-    ["ACCOUNT_OBSERVE", "People", "/admin/people"],
-    ["CHRONICLE_OBSERVE", "Chronicles", "/admin/chronicles"],
-    ["VOYAGE_OBSERVE", "Voyages", "/admin/voyages"],
-    ["COMMUNITY_OBSERVE", "Community", "/admin/community"],
-    ["JOBS_OBSERVE", "Operations", "/admin/operations"],
-    ["CONTENT_OBSERVE", "Providers", "/admin/providers"],
-    ["CONFIG_OBSERVE", "Configuration", "/admin/configuration"],
-    ["RELEASE_OBSERVE", "Releases", "/admin/releases"],
-    ["AUDIT_OBSERVE", "Audit", "/admin/audit"],
-  ].filter(([capability]) => operator.capabilities.includes(capability as never));
   return (
     <ChartroomPage
       eyebrow="Command center"
       title="Platform Overview"
-      description="A source-labeled view of the platform evidence this operator is allowed to inspect."
+      description="What needs attention, what recently changed, and which owner surface can act."
     >
       <div className="chartroom-metrics">
         <Metric
@@ -49,10 +36,14 @@ export default async function AdmiraltyPage() {
           state={overview.environment.buildIdentity ? "CONFIGURED" : "NOT_CONFIGURED"}
         />
         <Metric
-          label="Registry"
-          value={`${overview.registry.implemented} / ${overview.registry.total}`}
-          detail={`${overview.registry.phase1Implemented} inherited · ${overview.registry.phase2Implemented} activated in Phase 2 · ${overview.registry.dormant} dormant`}
-          state="IMPLEMENTED"
+          label="Community queue"
+          value={overview.attention.communityQueuedJobs ?? "Unavailable"}
+          detail={
+            overview.attention.communityDeadLetters === null
+              ? "Harborlight owner projection unavailable"
+              : `${overview.attention.communityDeadLetters} dead letters`
+          }
+          state={overview.attention.communityDeadLetters ? "DEGRADED" : "HEALTHY"}
         />
         <Metric
           label="Audit activity"
@@ -62,7 +53,7 @@ export default async function AdmiraltyPage() {
         />
       </div>
       <div className="chartroom-grid chartroom-grid--wide">
-        <Panel title="Your watch" kicker="Authorization">
+        <Panel title="Your watch" kicker="Authority">
           <DetailList
             items={[
               { label: "Operator", value: operator.displayName },
@@ -79,14 +70,43 @@ export default async function AdmiraltyPage() {
             ]}
           />
         </Panel>
-        <Panel title="Available stations" kicker="Least privilege">
-          <div className="chartroom-stations">
-            {available.map(([, label, href]) => (
-              <Link key={href} href={href}>
-                <strong>{label}</strong>
-                <span>Open read-only station →</span>
-              </Link>
-            ))}
+        <Panel title="Attention and owner handoffs" kicker="Current safe data">
+          <div className="chartroom-timeline">
+            {overview.attention.pendingSupportCases ? (
+              <article>
+                <span aria-hidden="true" />
+                <div>
+                  <strong>{overview.attention.pendingSupportCases} support request(s) need a response</strong>
+                  <p>Support Access remains consent-scoped and temporary.</p>
+                  <Link href="/admin/support/cases">Open support cases →</Link>
+                </div>
+              </article>
+            ) : null}
+            {overview.attention.communityDeadLetters ? (
+              <article>
+                <span aria-hidden="true" />
+                <div>
+                  <strong>{overview.attention.communityDeadLetters} Community dead letter(s) need owner review</strong>
+                  <p>Harborlight owns recovery and moderation business logic.</p>
+                  <Link href="/admin/operations">Open Community operations →</Link>
+                </div>
+              </article>
+            ) : null}
+            {overview.attention.communityModerationCases ? (
+              <article>
+                <span aria-hidden="true" />
+                <div>
+                  <strong>{overview.attention.communityModerationCases} Community case(s) are pending</strong>
+                  <p>Only case-attached owner commands are available.</p>
+                  <Link href="/admin/community">Open Community cases →</Link>
+                </div>
+              </article>
+            ) : null}
+            {!overview.attention.pendingSupportCases &&
+            !overview.attention.communityDeadLetters &&
+            !overview.attention.communityModerationCases ? (
+              <p>No safe attention signal is currently reported by the owner projections.</p>
+            ) : null}
           </div>
         </Panel>
       </div>

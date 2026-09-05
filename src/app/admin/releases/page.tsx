@@ -17,7 +17,7 @@ export default async function ReleasesPage() {
     <ChartroomPage
       eyebrow="Release evidence"
       title="Releases"
-      description="Current build and source identity where configured. Deploy, promote, rollback, and restart remain outside Phase 2."
+      description="Current runtime identity plus explicit deployment ownership. Admiralty does not become the deployment engine."
     >
       <div className="chartroom-grid">
         <Panel title={`${release.application} ${release.version}`} kicker="Current runtime">
@@ -38,13 +38,21 @@ export default async function ReleasesPage() {
             ]}
           />
         </Panel>
-        <Panel title="Deployment controls" kicker="Intentionally absent">
+        <Panel title="Deployment authority" kicker="External handoff">
           <p>
             <StatusBadge state="NOT_CONFIGURED" />
           </p>
           <p>
-            No deploy, promote, rollback, restart, or repair action is exposed. This is a read-only release projection.
+            Promotion, deployment, rollback, restart, retry, and cancellation are owned by the deployment platform. This
+            runtime has no source-bound owner command or safe handoff URL to expose.
           </p>
+          <DetailList
+            items={[
+              { label: "Classification", value: "External handoff" },
+              { label: "Required operator action", value: "Use the deployment owner’s governed release surface." },
+              { label: "Admiralty role", value: "Observe current build evidence and retain the audit trail." },
+            ]}
+          />
         </Panel>
       </div>
       <EvidenceStrip evidence={result.evidence} />
