@@ -312,10 +312,25 @@ async function openReadableJournal(page: Page, slug: string, returning: boolean,
   await expect(open).toBeVisible();
   await open.click();
   const skip = page.getByRole("button", { name: "Skip ceremony" });
-  // The control remains intentionally animated while the ceremony is active;
-  // force is appropriate once its visibility has established user reachability.
-  if (await skip.isVisible().catch(() => false)) await skip.click({ force: true });
-  await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+  // The control enters after the opening click. Await either its reachable
+  // state or the already-completed readable result; a same-tick visibility
+  // probe can otherwise leave a full-motion ceremony running past the
+  // readiness assertion on a cold large viewport.
+  await expect
+    .poll(
+      async () => {
+        if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return "ready";
+        return (await skip.isVisible().catch(() => false)) ? "skip" : "pending";
+      },
+      { timeout: 20_000 },
+    )
+    .not.toBe("pending");
+  if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") {
+    // The control remains intentionally animated while the ceremony is active;
+    // force is appropriate once its visibility has established user reachability.
+    await skip.click({ force: true });
+  }
+  await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY", { timeout: 20_000 });
   // The canonical Journal renders the authorized event as its readable current
   // Passage. The retired compatibility overlay is not part of this surface;
   // keep the event-specific assertion on the Player-visible projection.
