@@ -314,6 +314,33 @@ function commandLabel(command, argumentsList) {
   return `${command} ${argumentsList.join(" ")}`;
 }
 
+// `npx` resolves through cmd.exe on Windows. Keep each command well below its
+// 8,191-character command-line ceiling while retaining deterministic Vitest
+// selection order. A complete set of chunks remains one unit obligation below.
+export const WINDOWS_SAFE_VITEST_COMMAND_LENGTH = 6_000;
+
+export function boundedVitestCommands(unitTests) {
+  const prefix = ["--no-install", "vitest", "run"];
+  const commands = [];
+  let argumentsList = [...prefix];
+  for (const testPath of unitTests) {
+    const candidate = [...argumentsList, testPath];
+    if (
+      argumentsList.length > prefix.length &&
+      commandLabel("npx", candidate).length > WINDOWS_SAFE_VITEST_COMMAND_LENGTH
+    ) {
+      commands.push(["npx", argumentsList]);
+      argumentsList = [...prefix, testPath];
+    } else {
+      argumentsList = candidate;
+    }
+    if (commandLabel("npx", argumentsList).length > WINDOWS_SAFE_VITEST_COMMAND_LENGTH)
+      throw new Error(`SOUNDING_LINE_UNIT_TEST_PATH_EXCEEDS_WINDOWS_COMMAND_LIMIT:${testPath}`);
+  }
+  if (argumentsList.length > prefix.length) commands.push(["npx", argumentsList]);
+  return commands;
+}
+
 function normalizedCommand(plan, command, argumentsList) {
   const candidateToken = plan.candidateSha.slice(0, 12);
   const normalize = (value) =>
@@ -342,9 +369,14 @@ export function verificationObligationGroups(plan) {
   const browserRequired = browserCommands.length > 0;
   const groups = [];
   let browserGroup = [];
+  let unitGroup = [];
   for (const [command, argumentsList] of commands) {
     const build = command === "npm" && argumentsList.join(" ") === "run build";
     if (browserEvidenceCommand(command, argumentsList) || (browserRequired && build)) {
+      if (unitGroup.length) {
+        groups.push({ kind: "unit", commands: unitGroup });
+        unitGroup = [];
+      }
       browserGroup.push([command, argumentsList]);
       continue;
     }
@@ -357,8 +389,17 @@ export function verificationObligationGroups(plan) {
           : build
             ? "build"
             : "preflight";
+    if (kind === "unit") {
+      unitGroup.push([command, argumentsList]);
+      continue;
+    }
+    if (unitGroup.length) {
+      groups.push({ kind: "unit", commands: unitGroup });
+      unitGroup = [];
+    }
     groups.push({ kind, commands: [[command, argumentsList]] });
   }
+  if (unitGroup.length) groups.push({ kind: "unit", commands: unitGroup });
   if (browserGroup.length) groups.push({ kind: "browser", commands: browserGroup });
   return groups.map((group) => {
     const identityCommands = group.commands.map(([command, argumentsList]) =>
@@ -999,8 +1040,7 @@ export function verificationCommands(plan) {
   const lintPaths = plan.mode === "release" ? ["."] : plan.lintPaths;
   if (formatPaths.length) commands.unshift(["npx", ["--no-install", "prettier", "--check", ...formatPaths]]);
   if (lintPaths.length) commands.splice(1, 0, ["npx", ["--no-install", "eslint", ...lintPaths]]);
-  if (plan.selected.unitTests.length)
-    commands.push(["npx", ["--no-install", "vitest", "run", ...plan.selected.unitTests]]);
+  if (plan.selected.unitTests.length) commands.push(...boundedVitestCommands(plan.selected.unitTests));
   if (plan.mode === "ordinary" && plan.registrationValidationRequired)
     commands.push([process.execPath, ["--test", "tests/sounding-line/ordinary.test.mjs"]]);
   if (plan.mode === "release") commands.push([process.execPath, ["--test", "tests/sounding-line/ordinary.test.mjs"]]);
