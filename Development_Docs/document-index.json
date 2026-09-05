@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-04",
+  "generated_at": "2026-09-05",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -3963,6 +3963,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Brightwork_Wave_5_Owner_Contract.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Active_Phase_Registration.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -7234,6 +7240,12 @@
     },
     {
       "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Stage_8_Wave_4_Completion_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Stage_8_Wave_5_Completion_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
