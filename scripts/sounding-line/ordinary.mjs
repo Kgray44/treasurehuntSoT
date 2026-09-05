@@ -1033,6 +1033,7 @@ export function requiresMigrationValidation({ changedPaths, mode = "ordinary" })
 
 export function verificationCommands(plan) {
   const commands = [
+    ["npm", ["run", "db:generate"]],
     ["npx", ["--no-install", "tsc", "--noEmit"]],
     ["npx", ["--no-install", "tsx", "scripts/private-content/scan.ts"]],
   ];

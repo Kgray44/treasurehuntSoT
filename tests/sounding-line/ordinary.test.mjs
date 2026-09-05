@@ -668,6 +668,24 @@ test("ordinary generic browser proof uses the task-owned Chromium suite", () => 
   ]);
 });
 
+test("typecheck generates the SQLite client before checking source", () => {
+  const commands = verificationCommands({
+    mode: "ordinary",
+    candidateSha: "a".repeat(40),
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: [] },
+    databaseUrl: "file:./.sounding-line-candidate.sqlite",
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: false,
+  });
+  assert.deepEqual(commands.slice(0, 2), [
+    ["npm", ["run", "db:generate"]],
+    ["npx", ["--no-install", "tsc", "--noEmit"]],
+  ]);
+});
+
 test("browser proof keeps SQLite client generation after the production build", () => {
   const groups = verificationObligationGroups({
     mode: "ordinary",
@@ -1678,11 +1696,11 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
     assert.equal(browser?.disposition, "REBOUND");
     assert.equal(browser?.freshExecuted, false);
     assert.equal(rebound.result.finalization.decision, "PASS");
-    assert.equal(rebound.result.finalization.requiredObligations, 7);
+    assert.equal(rebound.result.finalization.requiredObligations, 8);
     assert.equal(rebound.result.freshObligations, 2);
-    assert.equal(rebound.result.finalization.counts.REBOUND, 5);
+    assert.equal(rebound.result.finalization.counts.REBOUND, 6);
     assert.equal(rebound.result.finalization.counts.INVALIDATED, 1);
-    assert.equal(rebound.result.commandsAvoided.length, 6);
+    assert.equal(rebound.result.commandsAvoided.length, 7);
     assert.ok(rebound.result.avoidedDurationMs >= (freshBrowserReceipt?.durationMs ?? Infinity));
 
     const releasePlan = await buildPlan({ root, baseSha: newerBase, candidateSha: reboundCandidate, mode: "release" });
