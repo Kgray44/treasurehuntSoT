@@ -9,8 +9,8 @@ last_reviewed: 2026-09-05
 # Voyagewright Brightwork — Stage 8 Wave 5 Completion Record
 
 **Status:** `CANDIDATE COMPLETE — PROTECTED-MAIN VERIFICATION PENDING`
-**Protected base:** `b739602a034bf7ba004fedcbde0ee286863065d4`
-**Product source tip:** `9b79c8cbdb790728769ba6fdc993c819ba29752a`
+**Protected base:** `279af418bbec145e96b7202f514b61c467ce3b1a`
+**Product source tip:** `49f78683252ba258ebcaac8be842dedb6670da44`
 **Scope:** Stage 8 Wave 5 only. Wave 6 Captain, authentication, public, and Journal work remains out of scope.
 
 ## Finding disposition
@@ -30,7 +30,7 @@ last_reviewed: 2026-09-05
 - Both SQLite and MySQL Prisma schemas validated, including additive migration parity.
 - A task-owned SQLite production build and browser journey passed: 3 journeys / 3 passed, with five desktop/mobile evidence captures. The journey performed a real policy preview, reauthenticated execution, stale-revision failure without partial change, governed revert, worker pause enforcement, and expired-lease release. It also checked grouped mobile navigation, no horizontal overflow, focused Axe findings, and non-revealing authorization boundaries.
 - The production build retained five existing audit/workspace Edge-runtime trace warnings and one existing output-tracing warning. This record does not attribute those existing warnings to Wave 5.
-- `git diff --check`, documentation validation, Feature Catalog synchronization/validation, and the final normal Sounding Line/Mainline Decision run only after this corrected record is frozen.
+- `git diff --check`, documentation validation, Feature Catalog synchronization/validation, and one fresh normal Sounding Line/Mainline Decision run only after this fresh-base provenance correction is frozen.
 
 ## Evidence boundary and deferrals
 
