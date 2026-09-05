@@ -51,7 +51,8 @@ test("administrator reaches the Chartroom naturally and inspects every Phase 2 r
   await admin.page.getByRole("link", { name: /Admiralty/u }).click();
   await admin.page.waitForURL((url) => url.pathname === "/admin");
   await expect(admin.page.getByRole("heading", { name: "Platform Overview" })).toBeVisible();
-  await expect(admin.page.getByText("62 / 92", { exact: true })).toBeVisible();
+  await expect(admin.page.getByText("Community queue", { exact: true })).toBeVisible();
+  await expect(admin.page.getByText("Audit activity", { exact: true })).toBeVisible();
   await assertNoSeriousAxeViolations(admin.page);
   await capture(admin.page, "ADM2-EV-A-PLATFORM-OVERVIEW");
 
