@@ -26,6 +26,10 @@ export const browserSuiteProfiles = Object.freeze({
     taskOwnedProductionHttp: true,
     validationIsolation: true,
     cookieAdapter: "isolated-loopback",
+    environment: Object.freeze({
+      GM_USERNAME: "kato",
+      GM_PASSWORD: "development-captain-only",
+    }),
     fixtureArguments: [],
   }),
   "harborlight-phase2": Object.freeze({

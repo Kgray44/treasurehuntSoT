@@ -1045,7 +1045,10 @@ test("fixture-aware suite dispatch groups established fixture contracts without 
   assert.equal(admiralty.dedicatedRunner, "scripts/admiralty/run-phase1-journeys.mjs");
   assert.equal(admiralty.preparers, undefined);
   assert.equal(new Set(harborlight.preparers.map(({ script }) => script)).size, harborlight.preparers.length);
-  assert.equal(dispatches.find(({ id }) => id === "generic").environment, undefined);
+  assert.deepEqual(dispatches.find(({ id }) => id === "generic").environment, {
+    GM_USERNAME: "kato",
+    GM_PASSWORD: "development-captain-only",
+  });
 });
 
 test("task-owned cookie adaptation is nonce-gated to the isolated Phase 3 runtime", () => {
