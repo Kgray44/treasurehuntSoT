@@ -21,6 +21,7 @@ import {
   assertBinding,
   browserProvisioningRequired,
   buildPlan,
+  boundedVitestCommands,
   classifyChanges,
   packageAuthorityChanges,
   requiresMigrationValidation,
@@ -34,6 +35,7 @@ import {
   verificationEnvironment,
   verificationCommands,
   verificationObligationGroups,
+  WINDOWS_SAFE_VITEST_COMMAND_LENGTH,
 } from "../../scripts/sounding-line/ordinary.mjs";
 import { resolveBrowserSuiteDispatches } from "../../scripts/sounding-line/browser-suite-profiles.mjs";
 
@@ -541,6 +543,39 @@ test("docs and catalog candidates keep directly changed static tests without sel
   assert.deepEqual(selection.unitTests, ["scripts/features/feature-catalog.test.ts"]);
   assert.deepEqual(selection.browserTests, []);
   assert.equal(selection.widened, false);
+});
+
+test("Windows-safe Vitest chunks preserve the complete ordered unit selection as one obligation", () => {
+  const unitTests = Array.from(
+    { length: 300 },
+    (_, index) => `src/over-limit/${String(index).padStart(3, "0")}-${"x".repeat(32)}.test.ts`,
+  );
+  const commands = boundedVitestCommands(unitTests);
+  assert.ok(commands.length > 1);
+  assert.ok(
+    commands.every(
+      ([command, argumentsList]) =>
+        command === "npx" &&
+        argumentsList.slice(0, 3).join(" ") === "--no-install vitest run" &&
+        `${command} ${argumentsList.join(" ")}`.length <= WINDOWS_SAFE_VITEST_COMMAND_LENGTH,
+    ),
+  );
+  assert.deepEqual(
+    commands.flatMap(([, argumentsList]) => argumentsList.slice(3)),
+    unitTests,
+  );
+  const groups = verificationObligationGroups({
+    mode: "ordinary",
+    candidateSha: "a".repeat(40),
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests, browserTests: [] },
+    migrationRequired: false,
+    migrationScripts: [],
+    buildRequired: false,
+  });
+  const unitGroup = groups.find((group) => group.kind === "unit");
+  assert.deepEqual(unitGroup?.commands, commands);
 });
 
 test("directly changed browser specs run even without a product path change", () => {
