@@ -95,6 +95,21 @@ describe("private-content security boundary", () => {
     await expect(scanPrivateContent(workspace)).resolves.toContainEqual({ path: "key.md", rule: "sensitive-content" });
   });
 
+  it("ignores task-owned Next build output roots while retaining generated-output evidence", async () => {
+    workspace = await mkdtemp(path.join(tmpdir(), "sealed-next-output-scan-"));
+    const generatedOutput = path.join(workspace, ".next-brightwork-wave5", "server", "private-content");
+    await mkdir(generatedOutput, { recursive: true });
+    await writeFile(path.join(generatedOutput, "fixture.js"), PRIVATE_SENTINEL);
+
+    const report = await scanPrivateContentReport(workspace);
+
+    expect(report.violations).toEqual([]);
+    expect(report.classifications).toContainEqual({
+      path: ".next-brightwork-wave5",
+      classification: "ignored-generated-output",
+    });
+  });
+
   it("classifies only exact unchanged governed chat archives while retaining strict scans elsewhere", async () => {
     workspace = await mkdtemp(path.join(tmpdir(), "sealed-archive-scan-"));
     const archiveRelative = "Codex_Chats/chats/019f854e-6112-7c33-ac11-a976c0c71e0c--fixture.md";
