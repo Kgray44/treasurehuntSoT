@@ -130,7 +130,12 @@ test("administrator reaches the Chartroom naturally and inspects every Phase 2 r
 
   await goToStation(admin.page, "/admin/providers");
   await expect(admin.page.getByRole("heading", { name: "Providers" })).toBeVisible();
-  await expect(admin.page.getByText("BLOCKED_BY_MISSING_OWNER_CONTRACT", { exact: true })).toBeVisible();
+  const blockedProviderDetails = admin.page
+    .locator("details")
+    .filter({ has: admin.page.getByText("BLOCKED_BY_MISSING_OWNER_CONTRACT", { exact: true }) })
+    .first();
+  await blockedProviderDetails.locator("summary").click();
+  await expect(blockedProviderDetails.getByText("BLOCKED_BY_MISSING_OWNER_CONTRACT", { exact: true })).toBeVisible();
 
   await goToStation(admin.page, "/admin/configuration");
   await expect(admin.page.getByText(/Values cannot be changed here\./u)).toBeVisible();
