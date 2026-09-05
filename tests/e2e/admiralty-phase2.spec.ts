@@ -151,7 +151,9 @@ test("administrator reaches the Chartroom naturally and inspects every Phase 2 r
   await expect(admin.page.getByText(/owned by the deployment platform/u)).toBeVisible();
 
   await goToStation(admin.page, "/admin/audit");
-  await admin.page.locator('input[name="correlationId"]').fill("adm2-correlation-northstar");
+  const advancedAuditPrecision = admin.page.locator("details.chartroom-filter__advanced");
+  await advancedAuditPrecision.locator("summary").click();
+  await advancedAuditPrecision.locator('input[name="correlationId"]').fill("adm2-correlation-northstar");
   await admin.page.getByRole("button", { name: "Search audit" }).click();
   await expect(
     admin.page
