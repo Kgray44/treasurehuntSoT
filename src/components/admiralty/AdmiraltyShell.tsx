@@ -61,7 +61,7 @@ const navigation: readonly (AdminNavItem & { any: readonly AdmiraltyCapabilityId
   },
   {
     href: "/bridgewatch",
-    label: "Bridgewatch",
+    label: "Bridgewatch Open read-only station",
     shortLabel: "Bridgewatch",
     group: "Investigation",
     any: ["PLATFORM_OBSERVE"],
