@@ -95,7 +95,7 @@ test.describe.serial("Harborlight Phase 3 persisted browser acceptance", () => {
     expect(await foreignResponse.text()).not.toContain(voyageLogs.ownerId);
 
     await owner.page.goto(`/community/voyage-logs/owner/${voyageLogs.ownerId}`);
-    await expect(owner.page.getByRole("heading", { name: "Edit Voyage Log" })).toBeVisible();
+    await expect(owner.page.getByRole("heading", { level: 1, name: "Prepare a Voyage Log" })).toBeVisible();
     await owner.page.getByLabel("Approximate location").fill("Harbor district");
     await owner.page.getByRole("button", { name: "Save revision" }).click();
     await expect(
