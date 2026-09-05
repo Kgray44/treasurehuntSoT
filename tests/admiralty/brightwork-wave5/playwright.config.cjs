@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports -- Playwright loads this isolated config as CommonJS.
 const path = require("node:path");
+// eslint-disable-next-line @typescript-eslint/no-require-imports -- Playwright loads this isolated config as CommonJS.
 const { defineConfig, devices } = require("@playwright/test");
 
 const repositoryRoot = path.resolve(__dirname, "../../..");
