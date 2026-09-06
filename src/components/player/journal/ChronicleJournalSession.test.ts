@@ -732,6 +732,8 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("JOURNAL_READY");
     expect(view.container.querySelector("main")?.dataset.journalReadyReason).toBe("completed-fallback");
     expect(screen.getByText("Completed archive")).toBeTruthy();
+    expect(screen.getByLabelText("Historical volume information")).toHaveTextContent("Preserved Voyage record");
+    expect(view.container.querySelector(".chronicle-objective-tray")).toBeNull();
     expect(ControlledEventSource.activeStreams).toBe(0);
     expect(setIntervalSpy.mock.calls.some((call) => Number(call[1]) === 5000)).toBe(false);
   });

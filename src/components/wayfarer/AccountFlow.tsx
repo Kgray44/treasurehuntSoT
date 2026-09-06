@@ -35,6 +35,19 @@ const endpoints: Record<Exclude<Mode, "security">, string> = {
   merge: "/api/auth/guest/merge",
 };
 
+function primaryActionLabel(mode: Exclude<Mode, "security">) {
+  return {
+    register: "Create account",
+    "sign-in": "Sign in",
+    forgot: "Send reset instructions",
+    reset: "Reset password",
+    verify: "Verify email",
+    "email-change": "Confirm email change",
+    claim: "Claim voyage",
+    merge: "Use this account",
+  }[mode];
+}
+
 export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Props) {
   const router = useRouter();
   const { state: currentUser, invalidate } = useCurrentUser();
@@ -417,7 +430,7 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
                   {field === "displayName"
                     ? "Display name"
                     : field === "login"
-                      ? "Email or legacy Player name"
+                      ? "Email or Player name"
                       : field === "confirmPassword"
                         ? "Confirm password"
                         : field[0].toUpperCase() + field.slice(1)}
@@ -502,7 +515,7 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
           {(mode === "reset" || mode === "email-change") && <input name="token" type="hidden" value={queryToken} />}
           {mode === "merge" && <p>Confirming preserves your guest voyage history in this account.</p>}
           <button className="brass-button" disabled={busy}>
-            {busy ? "Working…" : "Continue"}
+            {busy ? "Working…" : primaryActionLabel(mode)}
           </button>
         </form>
         {mode === "sign-in" || mode === "register" ? (
@@ -531,9 +544,20 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
                     {mode === "register" ? `Create account with ${provider.name}` : `Continue with ${provider.name}`}
                   </a>
                 ) : (
-                  <button className="account-oauth__button" disabled key={provider.provider} type="button">
-                    {provider.status === "CHECKING" ? `Checking ${provider.name}…` : `${provider.name} unavailable`}
-                  </button>
+                  <article
+                    className="account-oauth__unavailable"
+                    key={provider.provider}
+                    data-provider={provider.provider}
+                  >
+                    <strong>
+                      {provider.status === "CHECKING" ? `Checking ${provider.name}` : `${provider.name} unavailable`}
+                    </strong>
+                    <span>
+                      {provider.status === "CHECKING"
+                        ? "This sign-in option is being checked."
+                        : "This sign-in option is not configured here. Use email and password, or return later."}
+                    </span>
+                  </article>
                 );
               })}
             </div>
@@ -545,6 +569,11 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
             <Link href={`/forgot-password${returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ""}`}>
               Forgot Password
             </Link>
+            {returnTo ? (
+              <Link href={returnTo}>Return to previous page</Link>
+            ) : (
+              <Link href="/">Return to Voyagewright</Link>
+            )}
           </nav>
         ) : null}
         {mode === "register" ? (

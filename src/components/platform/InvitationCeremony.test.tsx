@@ -145,6 +145,9 @@ describe("InvitationCeremony", () => {
     const heading = await screen.findByRole("heading", { name: "This invitation was locked by its Captain" });
     await waitFor(() => expect(heading).toHaveFocus());
     expect(screen.getByRole("main")).toHaveAttribute("data-invitation-state", "revoked");
+    expect(screen.getByText("What happened")).toBeInTheDocument();
+    expect(screen.getByText("What you can do next")).toBeInTheDocument();
+    expect(screen.getByText(/no longer grants access/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Return to Player Entry" })).toBeInTheDocument();
   });
 

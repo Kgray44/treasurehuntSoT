@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useActionDialog } from "@/components/ui/ActionDialog";
 import { ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
+import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 
 type Command = {
   id: string;
@@ -96,6 +98,10 @@ type Preview = {
 
 function words(value: string) {
   return value.replaceAll("_", " ").toLocaleLowerCase();
+}
+
+function commandTier(command: Command) {
+  return command.risk === "HIGH" ? "authority" : "ordinary";
 }
 
 export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: string; authenticated: boolean }) {
@@ -264,12 +270,17 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
           <p className="eyebrow">Live Voyage operations</p>
           <h1>{projection.voyage.voyageName}</h1>
           <p>
-            {projection.voyage.chronicle} - {projection.voyage.edition} - {words(projection.voyage.operationalStatus)}
+            {projection.voyage.chronicle} · {projection.voyage.edition} · {words(projection.voyage.operationalStatus)}
           </p>
+          <nav className="captain-command-console__context-nav" aria-label="Captain destinations">
+            <Link href="/captain/library">Captain library</Link>
+            <Link href={`/captain/voyages/${voyageId}/muster`}>Crew muster</Link>
+            <Link href="/player/library">Player library</Link>
+          </nav>
         </div>
         <div className="captain-command-console__state">
-          <strong>Revision {projection.progress.currentSequence}</strong>
-          <span>{projection.progress.currentChapter ?? "Current chapter awaiting confirmation"}</span>
+          <strong>{projection.progress.currentChapter ?? "Voyage position awaiting confirmation"}</strong>
+          <span>Review the operational scan before a consequential command.</span>
           <button className="button-secondary" disabled={Boolean(busy)} onClick={() => void load()}>
             Refresh current state
           </button>
@@ -312,15 +323,31 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
           )}
         </section>
         <section className="captain-command-console__commands" aria-labelledby="captain-commands-heading">
-          <p className="card-kicker">Contextual commands</p>
+          <p className="card-kicker">Governed Voyage actions</p>
           <h2 id="captain-commands-heading">What you can do now</h2>
+          <p className="captain-command-console__action-intro">
+            Ordinary actions support the current Voyage. Authority actions change shared state and show their
+            consequence before confirmation.
+          </p>
           {directCommands.length ? (
             <div className="captain-command-console__command-list">
               {directCommands.map((command) => (
-                <button key={command.id} disabled={Boolean(busy)} onClick={() => void prepare(command)}>
-                  <span>{command.label}</span>
-                  <small>{command.description}</small>
-                  <em>{command.risk.toLocaleLowerCase()} impact</em>
+                <button
+                  key={command.id}
+                  data-action-tier={commandTier(command)}
+                  disabled={Boolean(busy)}
+                  onClick={() => void prepare(command)}
+                >
+                  <span>
+                    <strong>{command.label}</strong>
+                    <small>{command.description}</small>
+                  </span>
+                  <em>{commandTier(command) === "authority" ? "Authority action" : "Voyage action"}</em>
+                  <i>
+                    {command.requiresConfirmation
+                      ? "Review consequence before confirming"
+                      : "Applies to the current Voyage"}
+                  </i>
                 </button>
               ))}
             </div>
@@ -328,8 +355,13 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
             <p>No Captain command is currently safe or relevant for this Voyage state.</p>
           )}
           {moveCommand ? (
-            <div className="captain-command-console__move">
+            <div className="captain-command-console__move" data-action-tier={commandTier(moveCommand)}>
               <label htmlFor="captain-passage-target">Move Crew to a published Passage</label>
+              <p>
+                {commandTier(moveCommand) === "authority"
+                  ? "Authority action: review the new Passage and consequence before confirming."
+                  : "Voyage action: choose the released Passage the Crew should see next."}
+              </p>
               <select
                 id="captain-passage-target"
                 value={moveTarget}
@@ -343,7 +375,7 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
                 ))}
               </select>
               <button
-                className="button-danger"
+                className={commandTier(moveCommand) === "authority" ? "button-secondary" : "brass-button"}
                 disabled={Boolean(busy) || !moveTarget}
                 onClick={() => void prepare(moveCommand, moveTarget)}
               >
@@ -365,17 +397,25 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
               <li key={node.id} data-state={node.state}>
                 <strong>{node.title}</strong>
                 <span>
-                  {node.chapterTitle} - {words(node.state)} - {node.outgoingCount} onward path
-                  {node.outgoingCount === 1 ? "" : "s"}
+                  {node.chapterTitle} · {words(node.state)}
                 </span>
               </li>
             ))}
           </ol>
-          <p className="captain-command-console__map-summary">
-            Hints released: {projection.commandConsole.hintSummary.released} of{" "}
-            {projection.commandConsole.hintSummary.available}. This operational map is Captain-only; Player view remains
-            separately projected.
-          </p>
+          <TechnicalDetails summary="Show progression map details">
+            <p>
+              Hints released: {projection.commandConsole.hintSummary.released} of{" "}
+              {projection.commandConsole.hintSummary.available}. This Captain-only map remains separately projected from
+              the Player view.
+            </p>
+            <ul>
+              {projection.commandConsole.progressMap.map((node) => (
+                <li key={node.id}>
+                  {node.title}: {node.outgoingCount} onward path{node.outgoingCount === 1 ? "" : "s"}.
+                </li>
+              ))}
+            </ul>
+          </TechnicalDetails>
         </section>
         <section className="captain-command-console__crew" aria-labelledby="captain-crew-heading">
           <h2 id="captain-crew-heading">Crew status</h2>
@@ -430,10 +470,12 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
               );
             })}
           </ol>
-          <small>
-            Evidence observed at revision {projection.resilience.recovery.evidence.sourceRevision} on{" "}
-            {new Date(projection.resilience.recovery.evidence.observedAt).toLocaleTimeString()}.
-          </small>
+          <TechnicalDetails summary="Show recovery evidence details">
+            <p>
+              Evidence observed at revision {projection.resilience.recovery.evidence.sourceRevision} on{" "}
+              {new Date(projection.resilience.recovery.evidence.observedAt).toLocaleTimeString()}.
+            </p>
+          </TechnicalDetails>
         </section>
         <section className="captain-command-console__history" aria-labelledby="captain-history-heading">
           <h2 id="captain-history-heading">Recent Voyage results</h2>
@@ -441,17 +483,23 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
             {projection.events.map((event) => (
               <li key={event.id}>
                 <strong>{event.summary}</strong>
-                <span>
-                  {words(event.category)} - revision {event.sequence} - {new Date(event.timestamp).toLocaleTimeString()}
-                </span>
+                <span>{new Date(event.timestamp).toLocaleTimeString()}</span>
               </li>
             ))}
           </ol>
+          <TechnicalDetails summary="Show event references">
+            <ul>
+              {projection.events.map((event) => (
+                <li key={event.id}>
+                  {words(event.category)} · revision {event.sequence} · {new Date(event.timestamp).toLocaleTimeString()}
+                </li>
+              ))}
+            </ul>
+          </TechnicalDetails>
         </section>
       </section>
       <p className="captain-command-console__freshness">
-        Authoritative projection refreshed {new Date(projection.voyage.computedAt).toLocaleTimeString()}. If it changes
-        while a command is prepared, refresh before continuing.
+        If the Voyage changes while a command is prepared, refresh before continuing.
       </p>
       {dialog}
     </main>

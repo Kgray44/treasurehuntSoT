@@ -30,9 +30,30 @@ describe("Homeport account lifecycle", () => {
   it("keeps anonymous sign-in controls interactive while account context is still loading", () => {
     currentUser.state = { status: "loading", authenticated: false };
     render(<AccountFlow mode="sign-in" />);
-    expect(screen.getByLabelText("Email or legacy Player name")).toBeEnabled();
+    expect(screen.getByLabelText("Email or Player name")).toBeEnabled();
     expect(screen.getByLabelText("Password")).toBeEnabled();
-    expect(screen.getByRole("button", { name: "Continue" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Sign in" })).toBeEnabled();
+  });
+
+  it("explains an unavailable provider without presenting it as a disabled primary action", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          providers: [
+            { provider: "GOOGLE", name: "Google", available: false, status: "UNAVAILABLE" },
+            { provider: "GITHUB", name: "GitHub", available: true, status: "AVAILABLE" },
+          ],
+        }),
+      }),
+    );
+    render(<AccountFlow mode="sign-in" />);
+
+    expect(await screen.findByText("Google unavailable")).toBeVisible();
+    expect(screen.getByText(/not configured here/i)).toBeVisible();
+    expect(screen.queryByRole("button", { name: /Google unavailable/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Continue with GitHub" })).toBeVisible();
   });
 
   it("homeport.registration.reachable keeps canonical sign-in adjacent to registration", () => {
@@ -76,7 +97,7 @@ describe("Homeport account lifecycle", () => {
     fireEvent.change(screen.getByLabelText("Email"), { target: { value: "new@example.test" } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "harbor-quiet-42-wind" } });
     fireEvent.change(screen.getByLabelText("Confirm password"), { target: { value: "harbor-quiet-42-wind" } });
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create account" }));
     await waitFor(() => expect(screen.getByLabelText("Display name")).toHaveFocus());
     expect(screen.getByText("That display name is already in use.")).toBeVisible();
     expect(screen.getByLabelText("Email")).toHaveValue("new@example.test");
@@ -101,7 +122,7 @@ describe("Homeport account lifecycle", () => {
     fireEvent.change(screen.getByLabelText("Email"), { target: { value: "returning@example.test" } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "harbor-quiet-42-wind" } });
     fireEvent.change(screen.getByLabelText("Confirm password"), { target: { value: "harbor-quiet-42-wind" } });
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create account" }));
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith(
         "/sign-in?email=returning%40example.test&reason=account-exists&returnTo=%2Fplayer%2Flibrary",
@@ -111,7 +132,7 @@ describe("Homeport account lifecycle", () => {
 
   it("homeport.owner-correction.round3.patch-a.sign-in-prefill keeps recovery adjacent", () => {
     render(<AccountFlow mode="sign-in" query={{ email: "returning@example.test", reason: "account-exists" }} />);
-    expect(screen.getByLabelText("Email or legacy Player name")).toHaveValue("returning@example.test");
+    expect(screen.getByLabelText("Email or Player name")).toHaveValue("returning@example.test");
     expect(screen.getByText("An account already uses this email address. Sign in instead.")).toBeVisible();
     expect(screen.getByRole("link", { name: "Forgot Password" })).toBeVisible();
   });
@@ -142,7 +163,7 @@ describe("Homeport account lifecycle", () => {
     fireEvent.change(screen.getByLabelText("Email"), { target: { value: "mara@example.invalid" } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "safe-development-password" } });
     fireEvent.change(screen.getByLabelText("Confirm password"), { target: { value: "safe-development-password" } });
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create account" }));
     await waitFor(() => expect(navigation.replace).toHaveBeenCalledWith("/verify-email?returnTo=%2Fplayer%2Flibrary"));
     expect(currentUser.invalidate).not.toHaveBeenCalled();
     expect(sessionStorage.getItem("wayfarer-csrf")).toBe("verification-csrf");

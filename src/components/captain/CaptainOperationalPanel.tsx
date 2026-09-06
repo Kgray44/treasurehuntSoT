@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
 import { useActionDialog } from "@/components/ui/ActionDialog";
+import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 import { postIdempotentAuthorityCommand } from "@/helm/authority-command.client";
 
 type Projection = {
@@ -63,6 +64,37 @@ type Projection = {
 function words(value: string) {
   if (value === "REMOVED") return "removed / no longer participating";
   return value.replaceAll("_", " ").toLocaleLowerCase();
+}
+
+function freshness(sourceUpdatedAt: string, computedAt: string) {
+  const sourceTime = Date.parse(sourceUpdatedAt);
+  const computedTime = Date.parse(computedAt);
+  if (!Number.isFinite(sourceTime) || !Number.isFinite(computedTime))
+    return {
+      label: "Freshness unknown",
+      detail: "Check the operational details before acting on this view.",
+      state: "unknown",
+    };
+  const age = Math.max(0, computedTime - sourceTime);
+  if (age > 120_000)
+    return {
+      label: "May be stale",
+      detail: "Review the attention items and refresh before making a consequential change.",
+      state: "stale",
+    };
+  return {
+    label: "Current when checked",
+    detail: "This view is based on the latest available operational projection.",
+    state: "current",
+  };
+}
+
+function readinessSummary(crew: Projection["crew"]) {
+  const participatingCrew = crew.filter(
+    (member) => !["REMOVED", "LEFT", "CANCELLED"].includes(member.membership.status),
+  );
+  const ready = participatingCrew.filter((member) => member.readiness.state === "READY").length;
+  return { ready, total: participatingCrew.length };
 }
 
 export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId: string; authenticated: boolean }) {
@@ -253,6 +285,9 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
         )}
       </section>
     );
+  const crewReadiness = readinessSummary(projection.crew);
+  const viewFreshness = freshness(projection.voyage.sourceUpdatedAt, projection.voyage.computedAt);
+  const needsAttention = projection.attention.length > 0;
   return (
     <section
       className="captain-operational-panel"
@@ -262,13 +297,49 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
       <header>
         <p className="eyebrow">Operational view</p>
         <h2 aria-label="Operational voyage summary">{projection.voyage.voyageName}</h2>
-        <p>
-          {projection.voyage.edition} · {words(projection.voyage.operationalStatus)} · aggregate presence{" "}
-          {words(projection.voyage.aggregatePresence)}
-        </p>
+        <p>{projection.voyage.edition} · a clear view of Crew, Voyage, and attention state.</p>
       </header>
       {notice && <StatusBanner tone="success">{notice}</StatusBanner>}
       {error && <StatusBanner tone="danger">{error}</StatusBanner>}
+      <section className="captain-operational-panel__snapshot" aria-labelledby="captain-scan-heading">
+        <div className="captain-operational-panel__section-heading">
+          <div>
+            <p className="card-kicker">Operational scan</p>
+            <h3 id="captain-scan-heading">What needs your attention</h3>
+          </div>
+          <span data-state={needsAttention ? "attention" : "clear"}>
+            {needsAttention
+              ? `${projection.attention.length} item${projection.attention.length === 1 ? "" : "s"} to review`
+              : "No active attention"}
+          </span>
+        </div>
+        <dl className="captain-status-cells">
+          <div data-state={crewReadiness.ready === crewReadiness.total ? "ready" : "attention"}>
+            <dt>Who is ready</dt>
+            <dd>{crewReadiness.ready} ready</dd>
+            <dd className="captain-status-cells__detail">of {crewReadiness.total} participating Crew</dd>
+          </div>
+          <div data-state={projection.voyage.crewPresenceSummary.connected > 0 ? "current" : "attention"}>
+            <dt>Who is present</dt>
+            <dd>{projection.voyage.crewPresenceSummary.connected} present</dd>
+            <dd className="captain-status-cells__detail">
+              {projection.voyage.crewPresenceSummary.recentlyLost} recently disconnected
+            </dd>
+          </div>
+          <div data-state={projection.voyage.crewPresenceSummary.catchingUp > 0 ? "attention" : "ready"}>
+            <dt>Synchronization</dt>
+            <dd>{projection.voyage.crewPresenceSummary.synchronized} in sync</dd>
+            <dd className="captain-status-cells__detail">
+              {projection.voyage.crewPresenceSummary.catchingUp} catching up
+            </dd>
+          </div>
+          <div data-state={viewFreshness.state}>
+            <dt>Is this view current?</dt>
+            <dd>{viewFreshness.label}</dd>
+            <dd className="captain-status-cells__detail">{viewFreshness.detail}</dd>
+          </div>
+        </dl>
+      </section>
       <section aria-labelledby="needs-attention-heading">
         <h3 id="needs-attention-heading" aria-label="Operational attention and safety">
           Needs Attention
@@ -277,9 +348,7 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
           <ul>
             {projection.attention.map((item) => (
               <li key={item.key} data-severity={item.severity}>
-                <strong>
-                  {item.severity}: {item.title}
-                </strong>
+                <strong>{item.title}</strong>
                 <span>
                   {item.explanation}
                   {item.stale ? " Information may be stale." : ""}
@@ -292,60 +361,99 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
         )}
       </section>
       <section aria-labelledby="crew-operational-heading">
-        <h3 id="crew-operational-heading">Crew</h3>
-        <ul>
+        <div className="captain-operational-panel__section-heading">
+          <div>
+            <p className="card-kicker">Crew status</p>
+            <h3 id="crew-operational-heading">Who is present and ready</h3>
+          </div>
+          <span>
+            {projection.crew.length} Crew record{projection.crew.length === 1 ? "" : "s"}
+          </span>
+        </div>
+        <ul className="captain-crew-list">
           {projection.crew.map((member) => (
-            <li key={member.id}>
-              <strong>
-                {member.displayName}
-                {member.isCaptainsOwnPlayerMembership ? " (your Player membership)" : ""}
-              </strong>
-              <span>
-                {member.crewRole ?? "Crew"} · membership {words(member.membership.status)} · presence{" "}
-                {words(member.presence.state)} · sync {words(member.synchronization.state)} · readiness{" "}
-                {words(member.readiness.state)}
-                {member.presence.lastSeenAt
-                  ? ` · last seen ${new Date(member.presence.lastSeenAt).toLocaleTimeString()}`
-                  : ""}
-              </span>
-              {!member.isCaptainsOwnPlayerMembership &&
-                !["REMOVED", "LEFT", "CANCELLED"].includes(member.membership.status) && (
-                  <button
-                    className="button-danger"
-                    disabled={Boolean(busyMemberId) || cancelling || Boolean(authorityAction)}
-                    aria-busy={busyMemberId === member.id}
-                    onClick={() => void removeMember(member)}
-                  >
-                    {busyMemberId === member.id ? "Removing…" : "Remove from Crew"}
-                  </button>
-                )}
-              {member.canReceiveCaptaincy && (
-                <button
-                  className="button-secondary"
-                  disabled={Boolean(busyMemberId) || cancelling || Boolean(authorityAction)}
-                  onClick={() => void transferCaptaincy(member)}
-                >
-                  {authorityAction === "transfer" ? "Transferring Captaincy…" : "Transfer Captaincy"}
-                </button>
-              )}
+            <li key={member.id} data-presence={member.presence.state}>
+              <div className="captain-crew-list__identity">
+                <strong>
+                  {member.displayName}
+                  {member.isCaptainsOwnPlayerMembership ? " (your Player membership)" : ""}
+                </strong>
+                <span>{member.crewRole ?? "Crew"}</span>
+              </div>
+              <dl>
+                <div>
+                  <dt>Membership</dt>
+                  <dd>{words(member.membership.status)}</dd>
+                </div>
+                <div>
+                  <dt>Presence</dt>
+                  <dd>{words(member.presence.state)}</dd>
+                </div>
+                <div>
+                  <dt>Sync</dt>
+                  <dd>{words(member.synchronization.state)}</dd>
+                </div>
+                <div>
+                  <dt>Ready</dt>
+                  <dd>{words(member.readiness.state)}</dd>
+                </div>
+              </dl>
+              {member.presence.lastSeenAt ? (
+                <small>Last seen {new Date(member.presence.lastSeenAt).toLocaleTimeString()}</small>
+              ) : null}
+              {(!member.isCaptainsOwnPlayerMembership &&
+                !["REMOVED", "LEFT", "CANCELLED"].includes(member.membership.status)) ||
+              member.canReceiveCaptaincy ? (
+                <div className="captain-crew-list__actions">
+                  {!member.isCaptainsOwnPlayerMembership &&
+                    !["REMOVED", "LEFT", "CANCELLED"].includes(member.membership.status) && (
+                      <div className="captain-action-affordance captain-action-affordance--destructive">
+                        <span>Ends active Crew access</span>
+                        <button
+                          className="button-danger"
+                          disabled={Boolean(busyMemberId) || cancelling || Boolean(authorityAction)}
+                          aria-busy={busyMemberId === member.id}
+                          onClick={() => void removeMember(member)}
+                        >
+                          {busyMemberId === member.id ? "Removing…" : "Remove from Crew"}
+                        </button>
+                      </div>
+                    )}
+                  {member.canReceiveCaptaincy && (
+                    <div className="captain-action-affordance captain-action-affordance--authority">
+                      <span>Transfers Captain authority and preserves this Voyage</span>
+                      <button
+                        className="button-secondary"
+                        disabled={Boolean(busyMemberId) || cancelling || Boolean(authorityAction)}
+                        onClick={() => void transferCaptaincy(member)}
+                      >
+                        {authorityAction === "transfer" ? "Transferring Captaincy…" : "Transfer Captaincy"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : null}
             </li>
           ))}
         </ul>
-        <p>
-          Presence is derived from authenticated membership heartbeats. It is operational evidence only and never
-          changes Voyage progression.
-        </p>
       </section>
       {!["CANCELLED", "COMPLETED", "ABANDONED"].includes(projection.voyage.lifecycle) &&
         projection.voyage.captainAuthorityState === "ASSIGNED" && (
-          <section aria-labelledby="relinquish-captaincy-heading">
+          <section
+            className="captain-action-zone captain-action-zone--authority"
+            aria-labelledby="relinquish-captaincy-heading"
+          >
+            <p className="card-kicker">Authority action</p>
             <h3 id="relinquish-captaincy-heading">Relinquish Captaincy</h3>
             <p>
               Relinquishing is not cancellation. The shared Voyage enters Succession Hold until a joined Player takes
               Captaincy, continues solo, or leaves. Transfer Captaincy directly when a successor is available.
             </p>
+            <p className="captain-action-zone__consequence">
+              Consequential: this immediately changes who can guide the shared Voyage.
+            </p>
             <button
-              className="button-danger"
+              className="button-secondary"
               disabled={Boolean(busyMemberId) || cancelling || Boolean(authorityAction)}
               onClick={() => void relinquishCaptaincy()}
             >
@@ -354,10 +462,17 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
           </section>
         )}
       {!["CANCELLED", "COMPLETED", "ABANDONED"].includes(projection.voyage.lifecycle) && (
-        <section aria-labelledby="cancel-voyage-heading">
+        <section
+          className="captain-action-zone captain-action-zone--destructive"
+          aria-labelledby="cancel-voyage-heading"
+        >
+          <p className="card-kicker">Irreversible action</p>
           <h3 id="cancel-voyage-heading">End shared Voyage</h3>
           <p>
             Cancellation ends this shared Voyage for everyone. It is distinct from the later Captain succession flow.
+          </p>
+          <p className="captain-action-zone__consequence">
+            Cancellation is deliberate and requires confirmation; it cannot resume this same shared Voyage.
           </p>
           <button
             className="button-danger"
@@ -369,7 +484,8 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
         </section>
       )}
       <section aria-labelledby="progress-operational-heading">
-        <h3 id="progress-operational-heading">Progress</h3>
+        <p className="card-kicker">Voyage status</p>
+        <h3 id="progress-operational-heading">Where the Voyage is waiting</h3>
         <dl>
           <div>
             <dt>Current section</dt>
@@ -378,10 +494,6 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
           <div>
             <dt>Current checkpoint</dt>
             <dd>{projection.progress.currentCheckpoint ?? "Not yet established"}</dd>
-          </div>
-          <div>
-            <dt>Canonical sequence</dt>
-            <dd>{projection.progress.currentSequence}</dd>
           </div>
           <div>
             <dt>Waiting</dt>
@@ -398,24 +510,50 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
         </dl>
       </section>
       <section aria-labelledby="operational-events-heading">
-        <h3 id="operational-events-heading">Recent operational events</h3>
+        <p className="card-kicker">Recent changes</p>
+        <h3 id="operational-events-heading">What changed recently</h3>
         <ol>
           {projection.events.map((event) => (
             <li key={event.id}>
               <strong>{event.summary}</strong>
-              <span>
-                {event.category.toLocaleLowerCase()} · sequence {event.sequence} ·{" "}
-                {new Date(event.timestamp).toLocaleTimeString()}
-              </span>
+              <span>{new Date(event.timestamp).toLocaleTimeString()}</span>
             </li>
           ))}
         </ol>
       </section>
-      <p>
-        Projection computed {new Date(projection.voyage.computedAt).toLocaleTimeString()} from source updated{" "}
-        {new Date(projection.voyage.sourceUpdatedAt).toLocaleTimeString()}. Polling is the active reconciliation
-        fallback.
-      </p>
+      <section className="captain-operational-panel__technical" aria-label="Operational source details">
+        <TechnicalDetails
+          summary="Show operational source details"
+          description="These exact mechanics support Captain diagnosis; they do not change the Crew or Voyage state shown above."
+        >
+          <dl>
+            <div>
+              <dt>Voyage state</dt>
+              <dd>{words(projection.voyage.operationalStatus)}</dd>
+            </div>
+            <div>
+              <dt>Aggregate presence</dt>
+              <dd>{words(projection.voyage.aggregatePresence)}</dd>
+            </div>
+            <div>
+              <dt>Current sequence</dt>
+              <dd>{projection.progress.currentSequence}</dd>
+            </div>
+            <div>
+              <dt>Projection source</dt>
+              <dd>{new Date(projection.voyage.sourceUpdatedAt).toLocaleTimeString()}</dd>
+            </div>
+            <div>
+              <dt>Projection computed</dt>
+              <dd>{new Date(projection.voyage.computedAt).toLocaleTimeString()}</dd>
+            </div>
+          </dl>
+          <p>
+            Presence is derived from authenticated membership heartbeats. It is operational evidence only and never
+            changes Voyage progression. Polling remains the active reconciliation fallback.
+          </p>
+        </TechnicalDetails>
+      </section>
       {dialog}
     </section>
   );
