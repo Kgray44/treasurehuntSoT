@@ -1300,6 +1300,85 @@ html[data-voyage-theme="light"]
 .chronicle-journal-workspace .open-page-stage {
   z-index: 7;
 }
+
+.journal-historical-volume {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.2rem 0.75rem;
+  width: min(760px, calc(100% - 2rem));
+  margin: 1rem auto 0;
+  border: 1px solid rgba(202, 169, 97, 0.52);
+  border-left: 4px solid #b58a49;
+  border-radius: 10px 4px 10px 4px;
+  padding: 0.7rem 0.9rem;
+  color: #f2e6ce;
+  background: linear-gradient(100deg, rgba(84, 56, 35, 0.96), rgba(35, 49, 47, 0.96));
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
+}
+
+.journal-historical-volume > span {
+  grid-row: 1 / span 2;
+  border: 1px solid rgba(202, 169, 97, 0.62);
+  border-radius: 999px;
+  padding: 0.28rem 0.5rem;
+  color: #f1d492;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.journal-historical-volume > strong {
+  color: #fff4da;
+}
+
+.journal-historical-volume > p {
+  grid-column: 2;
+  margin: 0;
+  color: #d9d4c3;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.journal-technical-details {
+  width: min(760px, calc(100% - 2rem));
+  margin: 0.9rem auto 0;
+  color: #d9e0da;
+}
+
+.journal-technical-details .ui-technical-details {
+  border-top-color: rgba(202, 169, 97, 0.35);
+}
+
+.journal-technical-details .ui-technical-details__description,
+.journal-technical-details .ui-technical-details__content {
+  color: #c4d0c9;
+}
+
+.journal-technical-details dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.journal-technical-details dl > div {
+  border-left: 2px solid rgba(202, 169, 97, 0.5);
+  padding-left: 0.55rem;
+}
+
+.journal-technical-details dt {
+  color: #f0d291;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.journal-technical-details dd {
+  margin: 0.2rem 0 0;
+  overflow-wrap: anywhere;
+  font-size: 0.82rem;
+}
 .chronicle-leaf {
   overflow: hidden;
 }
@@ -1684,6 +1763,17 @@ html[data-motion-level="reduced"]
 .journal-opening-status:not([role="dialog"]) {
   pointer-events: none;
 }
+
+.journal-degradation-note {
+  position: relative;
+  top: auto;
+  left: auto;
+  width: min(760px, calc(100% - 2rem));
+  margin: 0.9rem auto 0;
+  border-radius: 10px;
+  transform: none;
+  pointer-events: auto !important;
+}
 .journal-connection-note {
   top: 7rem;
   right: 1rem;
@@ -1776,6 +1866,23 @@ html[data-motion-level="reduced"]
   }
   .chronicle-objective-tray {
     grid-template-columns: 1fr auto;
+  }
+  .journal-historical-volume,
+  .journal-technical-details {
+    width: calc(100% - 1.1rem);
+  }
+  .journal-historical-volume {
+    grid-template-columns: 1fr;
+  }
+  .journal-historical-volume > span {
+    grid-row: auto;
+    width: fit-content;
+  }
+  .journal-historical-volume > p {
+    grid-column: auto;
+  }
+  .journal-technical-details dl {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -26,6 +26,7 @@ import type {
 import { resolveStoryMotion } from "@/animation/presentation/story-motion";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
 import { ChronicleJournalPageContent, type JournalAsset } from "@/components/player/journal/ChronicleJournalPage";
+import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 import {
   emptyJournalReadingState,
   type PlayerJournalBlock,
@@ -260,6 +261,9 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
   const [openingOutcome, setOpeningOutcome] = useState<JournalOpeningConsumerStatus>("idle");
   const [openingNotice, setOpeningNotice] = useState("");
   const [readyReceipt, setReadyReceipt] = useState<JournalReadyReceipt | null>(null);
+  const [pagePresentation, setPagePresentation] = useState<PageFlipReadinessSnapshot["status"] | "awaiting report">(
+    "awaiting report",
+  );
   const [replayControlsMounted, setReplayControlsMounted] = useState(false);
   const { mode, policy: motionPolicy, cycle: cycleMotion, ready: motionPolicyReady = true } = useMotionMode();
   const openingMode = useRef(mode);
@@ -283,6 +287,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
 
   const recordPageFlipReadiness = useCallback((snapshot: PageFlipReadinessSnapshot) => {
     if (root.current) root.current.dataset.pageFlipReadiness = snapshot.status;
+    setPagePresentation(snapshot.status);
   }, []);
 
   const forcePageFlipReadableFallback = useCallback((reason: string) => {
@@ -1115,6 +1120,14 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
         />
       </section>
 
+      {historical ? (
+        <aside className="journal-historical-volume" aria-label="Historical volume information">
+          <span>Historical volume</span>
+          <strong>Preserved Voyage record</strong>
+          <p>This completed Voyage is read-only and remains bound to the exact edition this Crew experienced.</p>
+        </aside>
+      ) : null}
+
       {(openingPhase === "ENTRY_IDLE" || openingPhase === "ENTRY_ACTIVATED") && (
         <div
           ref={openingStatus}
@@ -1152,10 +1165,37 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
         </div>
       )}
       {openingNotice && (journalReady || openingOutcome === "aborted") && (
-        <p className="journal-opening-status" role={openingOutcome === "failure" ? "alert" : "status"}>
+        <p
+          className="journal-opening-status journal-degradation-note"
+          role={openingOutcome === "failure" ? "alert" : "status"}
+        >
           {openingNotice}
         </p>
       )}
+
+      {readyReceipt && readyReceipt.reason !== "completed" ? (
+        <aside className="journal-technical-details" aria-label="Journal presentation details">
+          <TechnicalDetails
+            summary="Show journal presentation details"
+            description="The readable Journal remains available. These details explain the presentation state for support or diagnosis."
+          >
+            <dl>
+              <div>
+                <dt>Opening result</dt>
+                <dd>{openingOutcome.replaceAll("-", " ")}</dd>
+              </div>
+              <div>
+                <dt>Readable presentation</dt>
+                <dd>{readyReceipt.reason.replaceAll("-", " ")}</dd>
+              </div>
+              <div>
+                <dt>Page presentation</dt>
+                <dd>{pagePresentation}</dd>
+              </div>
+            </dl>
+          </TechnicalDetails>
+        </aside>
+      ) : null}
 
       <aside
         ref={chapterDrawer}
@@ -1222,25 +1262,23 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
         ))}
       </nav>
 
-      <aside
-        className="chronicle-objective-tray persistent-objective"
-        data-opening-actor="objective"
-        aria-hidden={openingActive}
-        inert={openingActive ? true : undefined}
-      >
-        <div>
-          <p>{historical ? "Historical volume" : "Current objective"}</p>
-          <strong>{historical ? "Browse every released page from this completed voyage." : currentObjective}</strong>
-          <span>
-            {state.session.status.replaceAll("_", " ").toLocaleLowerCase()} · update {state.session.currentSequence}
-          </span>
-        </div>
-        {newContent && (
-          <button className="return-current" onClick={returnToCurrent}>
-            Return to Current Objective
-          </button>
-        )}
-        {!historical && (
+      {!historical ? (
+        <aside
+          className="chronicle-objective-tray persistent-objective"
+          data-opening-actor="objective"
+          aria-hidden={openingActive}
+          inert={openingActive ? true : undefined}
+        >
+          <div>
+            <p>Current objective</p>
+            <strong>{currentObjective}</strong>
+            <span>{state.session.status.replaceAll("_", " ").toLocaleLowerCase()}</span>
+          </div>
+          {newContent && (
+            <button className="return-current" onClick={returnToCurrent}>
+              Return to Current Objective
+            </button>
+          )}
           <JournalActions
             state={state}
             currentBlock={currentBlock}
@@ -1251,14 +1289,14 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
             busy={busy}
             act={act}
           />
-        )}
-        {historical && <span className="historical-lock">Read-only · version-pinned Voyage record</span>}
-        {error && (
-          <p className="runtime-error" role="alert">
-            {error}
-          </p>
-        )}
-      </aside>
+        </aside>
+      ) : null}
+
+      {error && (
+        <p className="journal-degradation-note" role="alert">
+          {error}
+        </p>
+      )}
 
       {connection === "revoked" && journalReady && (
         <div className="journal-connection-note" role="alert">

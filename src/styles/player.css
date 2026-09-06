@@ -1190,18 +1190,18 @@ html[data-voyage-theme="light"] .ocean-depth {
   height: 100%;
   flex-direction: column;
   padding: clamp(2rem, 5vw, 4rem);
-  color: var(--parchment-ink);
+  color: #251d15;
   background:
     radial-gradient(circle at 18% 18%, rgba(119, 78, 43, 0.13), transparent 14%),
-    linear-gradient(100deg, rgba(89, 59, 34, 0.12), transparent 8% 92%, rgba(87, 55, 31, 0.13)), #ebddb9;
-  box-shadow: inset 0 0 45px rgba(87, 54, 28, 0.14);
+    linear-gradient(100deg, rgba(89, 59, 34, 0.09), transparent 8% 92%, rgba(87, 55, 31, 0.1)), #f0e3c4;
+  box-shadow: inset 0 0 45px rgba(87, 54, 28, 0.1);
   font-family: Georgia, serif;
 }
 .page-side-left .journal-leaf {
   padding-right: clamp(2.4rem, 5.5vw, 4.6rem);
   background:
     radial-gradient(circle at 16% 19%, rgba(119, 78, 43, 0.14), transparent 14%),
-    linear-gradient(270deg, rgba(59, 39, 24, 0.31), transparent 10% 91%, rgba(105, 66, 33, 0.16)), #eadbb5;
+    linear-gradient(270deg, rgba(59, 39, 24, 0.25), transparent 10% 91%, rgba(105, 66, 33, 0.12)), #efe0bd;
   box-shadow:
     inset -25px 0 31px rgba(63, 40, 22, 0.22),
     inset 8px 0 18px rgba(111, 75, 37, 0.1),
@@ -1211,7 +1211,7 @@ html[data-voyage-theme="light"] .ocean-depth {
   padding-left: clamp(2.4rem, 5.5vw, 4.6rem);
   background:
     radial-gradient(circle at 84% 16%, rgba(126, 83, 43, 0.13), transparent 15%),
-    linear-gradient(90deg, rgba(59, 39, 24, 0.31), transparent 10% 91%, rgba(105, 66, 33, 0.17)), #ecdeb9;
+    linear-gradient(90deg, rgba(59, 39, 24, 0.25), transparent 10% 91%, rgba(105, 66, 33, 0.13)), #f1e3c0;
   box-shadow:
     inset 25px 0 31px rgba(63, 40, 22, 0.22),
     inset -8px 0 18px rgba(111, 75, 37, 0.1),
@@ -1221,13 +1221,13 @@ html[data-voyage-theme="light"] .ocean-depth {
 .paper-fibers {
   position: absolute;
   inset: 0;
-  opacity: calc(0.18 * var(--texture-opacity));
+  opacity: calc(0.1 * var(--texture-opacity));
   background: repeating-linear-gradient(4deg, transparent 0 7px, rgba(74, 51, 29, 0.12) 8px, transparent 9px);
   pointer-events: none;
 }
 .journal-leaf .folio {
   margin-bottom: 1rem;
-  color: #785c39;
+  color: #5c4329;
   font-size: 0.72rem;
 }
 .page-side-left .journal-leaf .folio {
@@ -1238,7 +1238,7 @@ html[data-voyage-theme="light"] .ocean-depth {
 }
 .journal-leaf h3 {
   margin: 0 0 1.2rem;
-  color: #2f2a21;
+  color: #251d15;
   font-size: clamp(2rem, 3.4vw, 3.8rem);
   line-height: 1;
 }
@@ -1247,6 +1247,7 @@ html[data-voyage-theme="light"] .ocean-depth {
   max-width: 44ch;
   font-size: 1.08em;
   line-height: 1.8;
+  color: #251d15;
 }
 .page-objective {
   margin: 1rem 0;

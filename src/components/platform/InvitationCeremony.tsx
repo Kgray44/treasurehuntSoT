@@ -210,6 +210,7 @@ function TerminalInvitationState({
   detail: string;
   retry: () => void;
 }) {
+  const { mode } = useMotionMode();
   const title = {
     resolving: "Opening your invitation",
     "account-required": "Sign in to accept this invitation",
@@ -221,6 +222,28 @@ function TerminalInvitationState({
     replaced: "This invitation has been replaced",
     failed: "The invitation could not be reached",
   }[stage];
+  const nextStep = {
+    resolving: "The invitation is being checked. No Voyage details are available until that check completes.",
+    "account-required": "Sign in, then return to this invitation to continue with the same safe invitation check.",
+    invalid: "Ask the Captain for a new invitation if you expected to join a Voyage.",
+    expired: "Ask the Captain for a new invitation if this Voyage is still available to you.",
+    revoked: "This invitation no longer grants access. Contact the Captain only if you believe this is unexpected.",
+    declined: "Return to Player Entry when you are ready to use a different invitation or account.",
+    replacing: "The replacement invitation is being checked; no private Voyage details are shown during that check.",
+    replaced: "Check for the replacement invitation, or ask the Captain to send a new one.",
+    failed: "Try again when your connection is available. Your account and Voyage progress have not changed.",
+  }[stage];
+  const relicState = {
+    resolving: "resolving",
+    "account-required": "locked",
+    invalid: "invalid",
+    expired: "expired",
+    revoked: "revoked",
+    declined: "declined",
+    replacing: "resolving",
+    replaced: "locked",
+    failed: "failure",
+  }[stage] as Parameters<typeof PlatformRelic>[0]["state"];
   return (
     <motion.section
       key={stage}
@@ -230,10 +253,23 @@ function TerminalInvitationState({
       exit={{ opacity: 0 }}
       aria-busy={stage === "resolving" || stage === "replacing"}
     >
+      <div className="invitation-state__seal" aria-hidden="true">
+        <PlatformRelic kind="invitation-seal" state={relicState} mode={mode} />
+      </div>
+      <p className="eyebrow">Invitation status</p>
       <h1 id="invitation-state-title" tabIndex={-1}>
         {title}
       </h1>
-      <p>{detail}</p>
+      <dl className="invitation-state__summary">
+        <div>
+          <dt>What happened</dt>
+          <dd>{detail}</dd>
+        </div>
+        <div>
+          <dt>What you can do next</dt>
+          <dd>{nextStep}</dd>
+        </div>
+      </dl>
       <p className="platform-status" role="status" aria-live="polite">
         {title}
       </p>
