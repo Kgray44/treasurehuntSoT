@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-09-04
+last_reviewed: 2026-09-06
 ---
 
 # Changelog
@@ -11,6 +11,16 @@ last_reviewed: 2026-09-04
 ## Unreleased
 
 ### Changed
+
+- Polished Captain operations, account entry, invitation terminal states, and
+  the Voyage Journal in Brightwork Stage 8 Wave 6. Captain now leads with a
+  readable operational scan and distinct consequence hierarchy; account entry
+  explains unavailable providers and gives each primary action a clear purpose;
+  invitation terminal states provide a bounded outcome and next step while
+  retaining the valid invitation ceremony; and the Journal keeps its authored
+  reading shell while historical context and presentation diagnostics remain
+  secondary. Existing authority, authentication, invitation, Journal, PageFlip,
+  and opening-lifecycle behavior is unchanged.
 
 - Polished Community Harbor and Creator Studio in Brightwork Stage 8 Wave 4:
   active discovery makes search results primary; private Voyage Log work keeps

@@ -3,7 +3,7 @@ title: Voyagewright Brightwork Evidence
 audience: engineering-evidence
 status: current
 canonical_for: voyagewright-brightwork-stage-1-evidence
-last_reviewed: 2026-09-03
+last_reviewed: 2026-09-06
 ---
 
 # Voyagewright Brightwork Evidence
@@ -27,6 +27,7 @@ This directory holds the current-main Brightwork capture inventory and evidence 
 - `Voyagewright_Brightwork_Stage_8_Wave_3_Completion_Record.md` records the completed Personal Harbor and Chronicle Passport information-architecture, visual, freshness, and focused rendered-browser work. It does not authorize Wave 4.
 - `Voyagewright_Brightwork_Stage_8_Wave_4_Completion_Record.md` records the completed bounded Community and Creator Studio workflow repair, including the governed comments/Creator-response product decision. It does not authorize Wave 5.
 - `Voyagewright_Brightwork_Stage_8_Wave_5_Completion_Record.md` records the completed least-privilege Admiralty manageability repair. It does not authorize Wave 6.
+- `Voyagewright_Brightwork_Stage_8_Wave_6_Completion_Record.md` records the completed Captain, authentication, public-entry, and Journal polish, including the protected-main verification. It does not authorize Wave 7.
 - `Brightwork_Meaningful_State_Coverage_Matrix.json` accounts for every declared human-facing state and its visual-evidence disposition.
 - `Brightwork_Current_Navigation_Reachability_Report.json` supersedes the stale 109-page Homeport proof for Brightwork and records the current 116 human-facing routes.
 - `Brightwork_Evidence_State_Exceptions.json` preserves the replaced unavailable READY frames, their observed copy, and their evidence-only classification.
