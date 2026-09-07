@@ -16,12 +16,12 @@ The focused runner used audit source `2599d694f132e87eab23ee580fb45fddeb9e6f13`,
 
 ## Invocation history
 
-| Attempt | Outcome | Classification |
-| --- | --- | --- |
-| Direct audit-server Playwright invocation | Rejected at `/api/dev/validation/database-identity`: the audit hostname guard returned `421` for the default loopback Host, and the production audit build did not expose the test-only validation endpoint (`404`) when sent the audit Host. No Journal product assertion ran. | `ENVIRONMENT_LIMITED`, not product evidence. |
-| First dedicated profile invocation | The runner's filename preflight rejected a six-digit time segment. No fixture, build, server, or browser test ran. | `SUITE_FIXTURE_CONTRACT_UNSATISFIED`, not product evidence. |
-| Second dedicated profile invocation | Prisma regeneration could not rename the query engine while the completed-corpus audit server held it open. The owned corpus server (PID 16192, port 3112) was verified healthy, then stopped through `brightwork:audit:stop`; no shared process was touched. No Journal browser test ran. | `ENVIRONMENT_LIMITED`, not product evidence. |
-| Authoritative dedicated profile invocation | Fixture setup passed, production build passed, readonly setup passed, and the Journal suite completed. | Evidence below. |
+| Attempt                                    | Outcome                                                                                                                                                                                                                                                                                    | Classification                                              |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
+| Direct audit-server Playwright invocation  | Rejected at `/api/dev/validation/database-identity`: the audit hostname guard returned `421` for the default loopback Host, and the production audit build did not expose the test-only validation endpoint (`404`) when sent the audit Host. No Journal product assertion ran.            | `ENVIRONMENT_LIMITED`, not product evidence.                |
+| First dedicated profile invocation         | The runner's filename preflight rejected a six-digit time segment. No fixture, build, server, or browser test ran.                                                                                                                                                                         | `SUITE_FIXTURE_CONTRACT_UNSATISFIED`, not product evidence. |
+| Second dedicated profile invocation        | Prisma regeneration could not rename the query engine while the completed-corpus audit server held it open. The owned corpus server (PID 16192, port 3112) was verified healthy, then stopped through `brightwork:audit:stop`; no shared process was touched. No Journal browser test ran. | `ENVIRONMENT_LIMITED`, not product evidence.                |
+| Authoritative dedicated profile invocation | Fixture setup passed, production build passed, readonly setup passed, and the Journal suite completed.                                                                                                                                                                                     | Evidence below.                                             |
 
 ## Authoritative browser result
 
@@ -40,10 +40,10 @@ The browser test's `.historical-lock` expectation predates that product change a
 
 ## Pending-finding disposition
 
-| Pending ID | Evidence result | Updated status |
-| --- | --- | --- |
+| Pending ID  | Evidence result                                                                                                                                                                 | Updated status                          |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
 | BW-PEND-001 | The normal/fallback lifecycle cases—including the missing actor and infinite CSS timing case—settled into readable final poses without reproducing the Stage 6 opening failure. | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` |
-| BW-PEND-002 | The PageFlip control/keyboard, interruption, and failure-fallback cases passed without reproducing a stuck page 3-to-4 Next transition. | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` |
+| BW-PEND-002 | The PageFlip control/keyboard, interruption, and failure-fallback cases passed without reproducing a stuck page 3-to-4 Next transition.                                         | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` |
 
 The suite explicitly skips non-Chromium because its unique mutable voyage fixture is Chromium-only. This record does not claim WebKit, public deployment, real player, or owner acceptance coverage. It also does not authorize any Journal repair.
 

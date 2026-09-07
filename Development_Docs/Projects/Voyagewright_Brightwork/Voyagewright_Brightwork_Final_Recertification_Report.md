@@ -14,14 +14,14 @@ last_reviewed: 2026-09-07
 
 The current protected main baseline `87ce8a959ceca056c3e91304b0aa7dcf64fde649` was recertified with audit runtime `2599d694f132e87eab23ee580fb45fddeb9e6f13`. The authoritative synthetic production-build corpus is complete and current:
 
-| Measure | Result |
-| --- | --- |
-| All page routes / human-facing routes | 117 / 116 |
-| Direct navigable / contextual / token-or-invitation / compatibility / development | 48 / 44 / 8 / 16 / 1 |
-| Required / current visual records | 478 / 478 |
-| Stale / missing / blocked / orphaned / semantic-invalid | 0 / 0 / 0 / 0 / 0 |
-| Meaningful-state entries | 568 (130 `COVERED`, 438 `EXEMPT_WITH_RATIONALE`) |
-| Navigation reachability | 48 direct, 43 contextual, 8 token/invitation, 16 compatibility, 1 intentionally protected; zero unresolved/orphaned |
+| Measure                                                                           | Result                                                                                                              |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| All page routes / human-facing routes                                             | 117 / 116                                                                                                           |
+| Direct navigable / contextual / token-or-invitation / compatibility / development | 48 / 44 / 8 / 16 / 1                                                                                                |
+| Required / current visual records                                                 | 478 / 478                                                                                                           |
+| Stale / missing / blocked / orphaned / semantic-invalid                           | 0 / 0 / 0 / 0 / 0                                                                                                   |
+| Meaningful-state entries                                                          | 568 (130 `COVERED`, 438 `EXEMPT_WITH_RATIONALE`)                                                                    |
+| Navigation reachability                                                           | 48 direct, 43 contextual, 8 token/invitation, 16 compatibility, 1 intentionally protected; zero unresolved/orphaned |
 
 This report supersedes no product behavior and does not release, deploy, or accept it. It records a task-owned audit result only.
 

@@ -647,9 +647,7 @@ async function navigateForRequirement(page, url, requirement) {
       }),
     );
     const response = await settledGoto(page, url);
-    await page
-      .getByText("Operational status is temporarily unavailable.")
-      .waitFor({ timeout: 5_000 });
+    await page.getByText("Operational status is temporarily unavailable.").waitFor({ timeout: 5_000 });
     return { response, cleanup: () => page.unroute("**/api/studio/private-content/operations") };
   }
   const response = await settledGoto(page, url);

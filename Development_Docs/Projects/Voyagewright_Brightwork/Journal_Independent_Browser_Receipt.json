@@ -4,9 +4,7 @@
   "ordinaryProductSourceSha": "87ce8a959ceca056c3e91304b0aa7dcf64fde649",
   "auditRuntimeSourceSha": "2599d694f132e87eab23ee580fb45fddeb9e6f13",
   "profile": "lanternwake-phase3",
-  "browserTests": [
-    "tests/e2e/lanternwake-journal.spec.ts"
-  ],
+  "browserTests": ["tests/e2e/lanternwake-journal.spec.ts"],
   "browserSuiteReceipt": {
     "status": "FAIL",
     "failureCategory": "PRODUCT_FAILURE",

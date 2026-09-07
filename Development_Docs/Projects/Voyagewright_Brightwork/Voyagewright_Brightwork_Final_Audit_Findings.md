@@ -24,8 +24,8 @@ This is the final current-protected-main evidence recertification and independen
 
 No new serious or critical product finding was demonstrated by the current corpus, current-source reconciliation, or the independent Journal browser lane.
 
-| ID | Classification | Severity | Evidence | Disposition |
-| --- | --- | --- | --- | --- |
+| ID           | Classification                                               | Severity                        | Evidence                                                                                                                                                                                                                                                                                                                                                                                                                  | Disposition                                                                                                                                                                                                                                                     |
+| ------------ | ------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | BW-FINAL-001 | `TEST_EVIDENCE_DRIFT`, not a demonstrated product regression | P3 engineering-evidence quality | The dedicated Journal browser run reported one failure after 11 passes because `tests/e2e/lanternwake-journal.spec.ts` still requires `.historical-lock`. Wave 6 commit `e5bcfb81f5118c823914588140416d5d504619db` intentionally replaced that old objective-tray node with the rendered `.journal-historical-volume` aside. The captured completed archive visibly and semantically states that the voyage is read-only. | Preserve the test runner receipt and screenshot; do not classify it as a user-facing read-only failure or alter product code in this audit. A future test-maintenance change should target the labeled Historical volume surface rather than the removed class. |
 
 The selector discrepancy is preserved in `Experience_Images/Final_Attention/Journal_Historical_Read_Only_Selector_Discrepancy.png` and in the Journal reproduction record. The screenshot shows the completed archive, replay controls, a readable journal, and the current historical-volume treatment; it does not show the removed selector.
@@ -34,14 +34,14 @@ The selector discrepancy is preserved in `Experience_Images/Final_Attention/Jour
 
 Every Stage 7 master item was rechecked against the current protected source, the source-bound 478-capture corpus, its semantic/reachability/state ledgers, and the owning Stage 8 completion evidence. `REPAIR_VERIFIED_CURRENT` means that the current recertification found no regression of the completed repair in its applicable rendered/current evidence. It does not claim that each historical acceptance procedure was rerun manually or that a public deployment was accepted.
 
-| Master items | Current recheck outcome | Current evidence |
-| --- | --- | --- |
-| BW-M-001 to BW-M-007 | `REPAIR_VERIFIED_CURRENT` | Systemic visual-governance records, dark/light and desktop/mobile contact sheets, full current corpus. |
-| BW-M-008, BW-M-020, BW-M-023 to BW-M-025, BW-M-038 | `REPAIR_VERIFIED_CURRENT` | Wave 1 evidence, current state matrix, semantic capture validation, text-integrity evidence. |
-| BW-M-009 to BW-M-019 | `REPAIR_VERIFIED_CURRENT` | Wave 3 record and current Passport/Harbor corpus and reachability evidence. |
-| BW-M-026 to BW-M-029, BW-M-035 to BW-M-037 | `REPAIR_VERIFIED_CURRENT` | Wave 4 record and current Community/Studio corpus. |
-| BW-M-030 to BW-M-034 | `REPAIR_VERIFIED_CURRENT` | Wave 5 record and current Admiralty corpus. |
-| BW-M-021, BW-M-022, BW-M-039 to BW-M-041 | `REPAIR_VERIFIED_CURRENT` | Wave 6 and Wave 7 records, current Journal/Captain/auth/public-entry corpus, and the independent Journal lifecycle lane. |
+| Master items                                       | Current recheck outcome   | Current evidence                                                                                                         |
+| -------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| BW-M-001 to BW-M-007                               | `REPAIR_VERIFIED_CURRENT` | Systemic visual-governance records, dark/light and desktop/mobile contact sheets, full current corpus.                   |
+| BW-M-008, BW-M-020, BW-M-023 to BW-M-025, BW-M-038 | `REPAIR_VERIFIED_CURRENT` | Wave 1 evidence, current state matrix, semantic capture validation, text-integrity evidence.                             |
+| BW-M-009 to BW-M-019                               | `REPAIR_VERIFIED_CURRENT` | Wave 3 record and current Passport/Harbor corpus and reachability evidence.                                              |
+| BW-M-026 to BW-M-029, BW-M-035 to BW-M-037         | `REPAIR_VERIFIED_CURRENT` | Wave 4 record and current Community/Studio corpus.                                                                       |
+| BW-M-030 to BW-M-034                               | `REPAIR_VERIFIED_CURRENT` | Wave 5 record and current Admiralty corpus.                                                                              |
+| BW-M-021, BW-M-022, BW-M-039 to BW-M-041           | `REPAIR_VERIFIED_CURRENT` | Wave 6 and Wave 7 records, current Journal/Captain/auth/public-entry corpus, and the independent Journal lifecycle lane. |
 
 The machine-readable record enumerates all 41 individual outcomes in `Voyagewright_Brightwork_Final_Audit_Findings.json`.
 
@@ -53,10 +53,10 @@ The product-wide sheets, `Critical_States_01.png`, and the area sheets in `Exper
 
 ## Pending Journal findings
 
-| Pending ID | Current status | Evidence and boundary |
-| --- | --- | --- |
+| Pending ID  | Current status                          | Evidence and boundary                                                                                                                                                                                                                                                                                                                                     |
+| ----------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | BW-PEND-001 | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` | The dedicated production-browser lifecycle check passed the missing-opening-actor/infinite-CSS fallback case and the other opening/fallback checks. The old Stage 6 live observation is not recreated in this coherent synthetic voyage. WebKit remains explicitly skipped by the test fixture, so this is not multi-browser or live-environment closure. |
-| BW-PEND-002 | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` | The same lane passed PageFlip control/keyboard authority, readiness interruption, and all dynamic-import/runtime-init/readiness-probe fallback cases. The original page-3-to-4 post-fallback symptom did not recur. This does not authorize page-turn changes or claim broader browser certification. |
+| BW-PEND-002 | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` | The same lane passed PageFlip control/keyboard authority, readiness interruption, and all dynamic-import/runtime-init/readiness-probe fallback cases. The original page-3-to-4 post-fallback symptom did not recur. This does not authorize page-turn changes or claim broader browser certification.                                                     |
 
 The exact invocation history, environment-only failures, runner receipt, source/test divergence, and preserved screenshot are in `Voyagewright_Brightwork_Journal_Pending_Reproduction_Record.md`.
 
