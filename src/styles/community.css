@@ -106,6 +106,12 @@ html[data-voyage-theme="light"]
   background: var(--surface-overlay);
 }
 
+html[data-voyage-theme="light"] .community-discovery :is(input[type="search"], input[type="text"], select) {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+}
+
 html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filter-chip, .community-card__badges li) {
   color: var(--text-primary);
   background: var(--surface-raised);

@@ -12,6 +12,12 @@ last_reviewed: 2026-09-06
 
 ### Changed
 
+- Polished cross-family Brightwork continuity in Stage 8 Wave 7. Personal
+  Harbor's dark identity action, the persistent dark footer, and Community
+  Harbor discovery fields now retain deliberate foreground/surface pairing in
+  Light mode; no account, Community, navigation, or authority behavior
+  changed.
+
 - Polished Captain operations, account entry, invitation terminal states, and
   the Voyage Journal in Brightwork Stage 8 Wave 6. Captain now leads with a
   readable operational scan and distinct consequence hierarchy; account entry
