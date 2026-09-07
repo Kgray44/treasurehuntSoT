@@ -400,7 +400,7 @@ async function observePage(page, response, requirement, concreteRoute, transitio
   const signInSurface =
     /(?:^|\/)sign-in$/u.test(final.pathname) ||
     (await page
-      .getByLabel("Email or legacy Player name")
+      .getByLabel("Email or Player name")
       .count()
       .catch(() => 0)) > 0;
   const semanticText = `${pageTitle}\n${body}`;
@@ -647,9 +647,7 @@ async function navigateForRequirement(page, url, requirement) {
       }),
     );
     const response = await settledGoto(page, url);
-    await page
-      .getByText("Operational status is unavailable or requires Administrator access.")
-      .waitFor({ timeout: 5_000 });
+    await page.getByText("Operational status is temporarily unavailable.").waitFor({ timeout: 5_000 });
     return { response, cleanup: () => page.unroute("**/api/studio/private-content/operations") };
   }
   const response = await settledGoto(page, url);
@@ -748,9 +746,9 @@ async function storageState(browser, credentials, persona) {
     await page.goto(`${required("BRIGHTWORK_BASE_URL").replace(/\/$/u, "")}/sign-in`, {
       waitUntil: "domcontentloaded",
     });
-    await page.getByLabel("Email or legacy Player name").fill(account.email);
+    await page.getByLabel("Email or Player name").fill(account.email);
     await page.getByLabel("Password").fill(password);
-    await page.getByRole("button", { name: "Continue" }).click();
+    await page.getByRole("button", { name: "Sign in", exact: true }).click();
     await page.waitForFunction(
       () =>
         fetch("/api/auth/context", { cache: "no-store" })

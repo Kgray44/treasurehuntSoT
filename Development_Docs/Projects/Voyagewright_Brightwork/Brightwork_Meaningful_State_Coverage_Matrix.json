@@ -1,9 +1,9 @@
 {
   "schemaVersion": "2.0.0",
   "artifact": "Brightwork explicit state coverage ledger",
-  "sourceSha": "2ae4333f09c76c11a51e8b7015cad9e02523a65d",
-  "auditRuntimeSourceSha": "4ce9b890c4b863e72d20d7e9523191bf234f0d4b",
-  "generatedAt": "2026-09-04T16:49:25.453Z",
+  "sourceSha": "87ce8a959ceca056c3e91304b0aa7dcf64fde649",
+  "auditRuntimeSourceSha": "2599d694f132e87eab23ee580fb45fddeb9e6f13",
+  "generatedAt": "2026-09-07T02:53:09.952Z",
   "coverageStatusVocabulary": ["COVERED", "EXEMPT_WITH_RATIONALE"],
   "coverageRule": "Every current governed state is either directly source-bound COVERED or EXEMPT_WITH_RATIONALE; screenshot count alone is not sufficient evidence.",
   "entries": [
@@ -37,7 +37,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0045"],
         "sourceReferences": ["src/app/page.tsx", "src/app/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -62,7 +62,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0001", "BW-XI-0047", "BW-XI-0085", "BW-XI-0123"],
         "sourceReferences": ["src/app/page.tsx", "src/app/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -77,7 +77,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0046"],
         "sourceReferences": ["src/app/page.tsx", "src/app/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -92,7 +92,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0197"],
         "sourceReferences": ["src/app/account/page.tsx", "src/app/account/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -127,7 +127,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0161", "BW-XI-0198", "BW-XI-0234", "BW-XI-0270"],
         "sourceReferences": ["src/app/account/page.tsx", "src/app/account/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -142,7 +142,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0039"],
         "sourceReferences": ["src/app/account/page.tsx", "src/app/account/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -187,7 +187,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0162", "BW-XI-0199", "BW-XI-0235", "BW-XI-0271"],
         "sourceReferences": ["src/app/account/accessibility/page.tsx", "src/app/account/accessibility/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -252,7 +252,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0002", "BW-XI-0048", "BW-XI-0086", "BW-XI-0124"],
         "sourceReferences": ["src/app/account/cancel-deletion/page.tsx", "src/app/account/cancel-deletion/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -307,7 +307,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0003", "BW-XI-0049", "BW-XI-0087", "BW-XI-0125"],
         "sourceReferences": ["src/app/account/claim/page.tsx", "src/app/account/claim/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -352,7 +352,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0163", "BW-XI-0200", "BW-XI-0236", "BW-XI-0272"],
         "sourceReferences": ["src/app/account/data/page.tsx", "src/app/account/data/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -407,7 +407,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0004", "BW-XI-0050", "BW-XI-0088", "BW-XI-0126"],
         "sourceReferences": ["src/app/account/email-change/page.tsx", "src/app/account/email-change/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -465,7 +465,7 @@
           "src/app/account/linked-identities/page.tsx",
           "src/app/account/linked-identities/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -520,7 +520,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0005", "BW-XI-0051", "BW-XI-0089", "BW-XI-0127"],
         "sourceReferences": ["src/app/account/merge/page.tsx", "src/app/account/merge/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -575,7 +575,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0165", "BW-XI-0202", "BW-XI-0238", "BW-XI-0274"],
         "sourceReferences": ["src/app/account/notifications/page.tsx", "src/app/account/notifications/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -633,7 +633,7 @@
           "src/app/account/personal-information/page.tsx",
           "src/app/account/personal-information/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -688,7 +688,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0167", "BW-XI-0204", "BW-XI-0240", "BW-XI-0276"],
         "sourceReferences": ["src/app/account/preferences/page.tsx", "src/app/account/preferences/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -753,7 +753,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0168", "BW-XI-0205", "BW-XI-0241", "BW-XI-0277"],
         "sourceReferences": ["src/app/account/privacy/page.tsx", "src/app/account/privacy/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -818,7 +818,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0169", "BW-XI-0206", "BW-XI-0242", "BW-XI-0278"],
         "sourceReferences": ["src/app/account/profile/page.tsx", "src/app/account/profile/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -853,7 +853,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0170", "BW-XI-0207", "BW-XI-0243", "BW-XI-0279"],
         "sourceReferences": ["src/app/account/profile/view/page.tsx", "src/app/account/profile/view/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -938,7 +938,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0006", "BW-XI-0052", "BW-XI-0090", "BW-XI-0128"],
         "sourceReferences": ["src/app/account/reactivate/page.tsx", "src/app/account/reactivate/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -993,7 +993,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0171", "BW-XI-0208", "BW-XI-0244", "BW-XI-0280"],
         "sourceReferences": ["src/app/account/roles/page.tsx", "src/app/account/roles/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1048,7 +1048,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0172", "BW-XI-0209", "BW-XI-0245", "BW-XI-0281"],
         "sourceReferences": ["src/app/account/security/page.tsx", "src/app/account/security/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1103,7 +1103,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0173", "BW-XI-0210", "BW-XI-0246", "BW-XI-0282"],
         "sourceReferences": ["src/app/account/sessions/page.tsx", "src/app/account/sessions/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1158,7 +1158,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0174", "BW-XI-0211", "BW-XI-0247", "BW-XI-0283"],
         "sourceReferences": ["src/app/account/support-access/page.tsx", "src/app/account/support-access/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1203,7 +1203,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0306", "BW-XI-0325", "BW-XI-0342", "BW-XI-0359"],
         "sourceReferences": ["src/app/admin/page.tsx", "src/app/admin/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1228,7 +1228,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0040"],
         "sourceReferences": ["src/app/admin/page.tsx", "src/app/admin/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1253,7 +1253,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0307", "BW-XI-0326", "BW-XI-0343", "BW-XI-0360"],
         "sourceReferences": ["src/app/admin/audit/page.tsx", "src/app/admin/audit/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1298,7 +1298,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0308", "BW-XI-0327", "BW-XI-0344", "BW-XI-0361"],
         "sourceReferences": ["src/app/admin/chronicles/page.tsx", "src/app/admin/chronicles/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1346,7 +1346,7 @@
           "src/app/admin/chronicles/[chronicleId]/page.tsx",
           "src/app/admin/chronicles/[chronicleId]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1411,7 +1411,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0310", "BW-XI-0329", "BW-XI-0346", "BW-XI-0363"],
         "sourceReferences": ["src/app/admin/community/page.tsx", "src/app/admin/community/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1489,7 +1489,7 @@
           "src/app/admin/community/[listingId]/page.tsx",
           "src/app/admin/community/[listingId]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1548,7 +1548,7 @@
           "src/app/admin/configuration/page.tsx",
           "src/app/admin/configuration/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1593,7 +1593,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0313", "BW-XI-0332", "BW-XI-0349", "BW-XI-0366"],
         "sourceReferences": ["src/app/admin/investigate/page.tsx", "src/app/admin/investigate/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1638,7 +1638,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0314", "BW-XI-0333", "BW-XI-0350", "BW-XI-0367"],
         "sourceReferences": ["src/app/admin/operations/page.tsx", "src/app/admin/operations/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1683,7 +1683,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0315", "BW-XI-0334", "BW-XI-0351", "BW-XI-0368"],
         "sourceReferences": ["src/app/admin/people/page.tsx", "src/app/admin/people/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1748,7 +1748,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0316", "BW-XI-0335", "BW-XI-0352", "BW-XI-0369"],
         "sourceReferences": ["src/app/admin/people/[accountId]/page.tsx", "src/app/admin/people/[accountId]/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1793,7 +1793,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0317", "BW-XI-0336", "BW-XI-0353", "BW-XI-0370"],
         "sourceReferences": ["src/app/admin/providers/page.tsx", "src/app/admin/providers/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1838,7 +1838,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0318", "BW-XI-0337", "BW-XI-0354", "BW-XI-0371"],
         "sourceReferences": ["src/app/admin/releases/page.tsx", "src/app/admin/releases/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1873,7 +1873,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0319", "BW-XI-0338", "BW-XI-0355", "BW-XI-0372"],
         "sourceReferences": ["src/app/admin/support/cases/page.tsx", "src/app/admin/support/cases/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1908,7 +1908,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0320", "BW-XI-0339", "BW-XI-0356", "BW-XI-0373"],
         "sourceReferences": ["src/app/admin/voyages/page.tsx", "src/app/admin/voyages/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1953,7 +1953,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0321", "BW-XI-0340", "BW-XI-0357", "BW-XI-0374"],
         "sourceReferences": ["src/app/admin/voyages/[voyageId]/page.tsx", "src/app/admin/voyages/[voyageId]/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -1988,7 +1988,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0376", "BW-XI-0389", "BW-XI-0399", "BW-XI-0409"],
         "sourceReferences": ["src/app/captain/page.tsx", "src/app/captain/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2043,7 +2043,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0377", "BW-XI-0390", "BW-XI-0400", "BW-XI-0410"],
         "sourceReferences": ["src/app/captain/invitations/page.tsx", "src/app/captain/invitations/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2128,7 +2128,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0378", "BW-XI-0391", "BW-XI-0401", "BW-XI-0411"],
         "sourceReferences": ["src/app/captain/library/page.tsx", "src/app/captain/library/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2157,7 +2157,7 @@
           "src/app/captain/sessions/[sessionId]/page.tsx",
           "src/app/captain/sessions/[sessionId]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2196,7 +2196,7 @@
           "src/app/captain/sessions/[sessionId]/page.tsx",
           "src/app/captain/sessions/[sessionId]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2225,7 +2225,7 @@
           "src/app/captain/sessions/[sessionId]/page.tsx",
           "src/app/captain/sessions/[sessionId]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2244,7 +2244,7 @@
           "src/app/captain/sessions/[sessionId]/page.tsx",
           "src/app/captain/sessions/[sessionId]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2269,7 +2269,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0380", "BW-XI-0393", "BW-XI-0403", "BW-XI-0413"],
         "sourceReferences": ["src/app/captain/sign-in/page.tsx", "src/app/captain/sign-in/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2354,7 +2354,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0381", "BW-XI-0394", "BW-XI-0404", "BW-XI-0414"],
         "sourceReferences": ["src/app/captain/tales/[taleId]/page.tsx", "src/app/captain/tales/[taleId]/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2383,7 +2383,7 @@
           "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
           "src/app/captain/voyages/[playthroughId]/muster/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2442,7 +2442,7 @@
           "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
           "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2497,7 +2497,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0007", "BW-XI-0053", "BW-XI-0091", "BW-XI-0129"],
         "sourceReferences": ["src/app/chronicles/[taleSlug]/page.tsx", "src/app/chronicles/[taleSlug]/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2525,7 +2525,7 @@
           "src/app/chronicles/[taleSlug]/compare/page.tsx",
           "src/app/chronicles/[taleSlug]/compare/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2615,7 +2615,7 @@
           "src/components/community/CommunityPageFrame.tsx",
           "src/app/community/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2690,7 +2690,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0010", "BW-XI-0056", "BW-XI-0094", "BW-XI-0132"],
         "sourceReferences": ["src/app/community/[slug]/page.tsx", "src/app/community/[slug]/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2765,7 +2765,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0011", "BW-XI-0057", "BW-XI-0095", "BW-XI-0133"],
         "sourceReferences": ["src/app/community/artifacts/page.tsx", "src/app/community/artifacts/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2840,7 +2840,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0012", "BW-XI-0058", "BW-XI-0096", "BW-XI-0134"],
         "sourceReferences": ["src/app/community/audio/page.tsx", "src/app/community/audio/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2855,7 +2855,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0042"],
         "sourceReferences": ["src/app/community/chronicles/page.tsx", "src/app/community/chronicles/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2900,7 +2900,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0043"],
         "sourceReferences": ["src/app/community/chronicles/page.tsx", "src/app/community/chronicles/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -2945,7 +2945,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0013", "BW-XI-0059", "BW-XI-0097", "BW-XI-0135"],
         "sourceReferences": ["src/app/community/chronicles/page.tsx", "src/app/community/chronicles/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3020,7 +3020,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0014", "BW-XI-0060", "BW-XI-0098", "BW-XI-0136"],
         "sourceReferences": ["src/app/community/collections/page.tsx", "src/app/community/collections/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3048,7 +3048,7 @@
           "src/app/community/collections/[slug]/page.tsx",
           "src/app/community/collections/[slug]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3106,7 +3106,7 @@
           "src/app/community/collections/[slug]/page.tsx",
           "src/app/community/collections/[slug]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3181,7 +3181,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0016", "BW-XI-0062", "BW-XI-0100", "BW-XI-0138"],
         "sourceReferences": ["src/app/community/creators/page.tsx", "src/app/community/creators/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3259,7 +3259,7 @@
           "src/app/community/creators/[handle]/page.tsx",
           "src/app/community/creators/[handle]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3339,7 +3339,7 @@
           "src/components/community/CommunityPageFrame.tsx",
           "src/components/community/PublicCommunitySection.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3414,7 +3414,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0019", "BW-XI-0065", "BW-XI-0103", "BW-XI-0141"],
         "sourceReferences": ["src/app/community/guides/page.tsx", "src/app/community/guides/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3489,7 +3489,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0020", "BW-XI-0066", "BW-XI-0104", "BW-XI-0142"],
         "sourceReferences": ["src/app/community/guides/[slug]/page.tsx", "src/app/community/guides/[slug]/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3564,7 +3564,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0021", "BW-XI-0067", "BW-XI-0105", "BW-XI-0143"],
         "sourceReferences": ["src/app/community/maps/page.tsx", "src/app/community/maps/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3609,7 +3609,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0419", "BW-XI-0421", "BW-XI-0423", "BW-XI-0425"],
         "sourceReferences": ["src/app/community/moderation/page.tsx", "src/app/community/moderation/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3657,7 +3657,7 @@
           "src/app/community/moderation/[id]/page.tsx",
           "src/app/community/moderation/[id]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3732,7 +3732,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0022", "BW-XI-0068", "BW-XI-0106", "BW-XI-0144"],
         "sourceReferences": ["src/app/community/templates/page.tsx", "src/app/community/templates/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3807,7 +3807,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0023", "BW-XI-0069", "BW-XI-0107", "BW-XI-0145"],
         "sourceReferences": ["src/app/community/voyage-logs/page.tsx", "src/app/community/voyage-logs/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3885,7 +3885,7 @@
           "src/app/community/voyage-logs/[slug]/page.tsx",
           "src/app/community/voyage-logs/[slug]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3933,7 +3933,7 @@
           "src/app/community/voyage-logs/consent/page.tsx",
           "src/app/community/voyage-logs/consent/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -3951,7 +3951,7 @@
           "src/app/community/voyage-logs/media/page.tsx",
           "src/app/community/voyage-logs/media/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4029,7 +4029,7 @@
           "src/app/community/voyage-logs/owner/page.tsx",
           "src/app/community/voyage-logs/owner/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4077,7 +4077,7 @@
           "src/app/community/voyage-logs/owner/[id]/page.tsx",
           "src/app/community/voyage-logs/owner/[id]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4122,7 +4122,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0026", "BW-XI-0072", "BW-XI-0110", "BW-XI-0148"],
         "sourceReferences": ["src/app/forgot-password/page.tsx", "src/app/forgot-password/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4157,7 +4157,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0178", "BW-XI-0215", "BW-XI-0251", "BW-XI-0287"],
         "sourceReferences": ["src/app/passport/page.tsx", "src/app/passport/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4212,7 +4212,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0179", "BW-XI-0216", "BW-XI-0252", "BW-XI-0288"],
         "sourceReferences": ["src/app/passport/artifacts/page.tsx", "src/app/passport/artifacts/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4270,7 +4270,7 @@
           "src/app/passport/artifacts/[artifactId]/page.tsx",
           "src/app/passport/artifacts/[artifactId]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4295,7 +4295,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0181", "BW-XI-0218", "BW-XI-0254", "BW-XI-0290"],
         "sourceReferences": ["src/app/passport/atlas/page.tsx", "src/app/passport/atlas/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4360,7 +4360,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0182", "BW-XI-0219", "BW-XI-0255", "BW-XI-0291"],
         "sourceReferences": ["src/app/passport/history/page.tsx", "src/app/passport/history/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4418,7 +4418,7 @@
           "src/app/passport/history/[recordId]/page.tsx",
           "src/app/passport/history/[recordId]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4446,7 +4446,7 @@
           "src/app/passport/history/[recordId]/book/page.tsx",
           "src/app/passport/history/[recordId]/book/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4474,7 +4474,7 @@
           "src/app/passport/history/[recordId]/compare/page.tsx",
           "src/app/passport/history/[recordId]/compare/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4552,7 +4552,7 @@
           "src/app/passport/history/[recordId]/replay/page.tsx",
           "src/app/passport/history/[recordId]/replay/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4607,7 +4607,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0187", "BW-XI-0224", "BW-XI-0260", "BW-XI-0296"],
         "sourceReferences": ["src/app/passport/memories/page.tsx", "src/app/passport/memories/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4632,7 +4632,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0188", "BW-XI-0225", "BW-XI-0261", "BW-XI-0297"],
         "sourceReferences": ["src/app/passport/people/page.tsx", "src/app/passport/people/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4687,7 +4687,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0189", "BW-XI-0226", "BW-XI-0262", "BW-XI-0298"],
         "sourceReferences": ["src/app/passport/saved/page.tsx", "src/app/passport/saved/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4712,7 +4712,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0190", "BW-XI-0227", "BW-XI-0263", "BW-XI-0299"],
         "sourceReferences": ["src/app/passport/statistics/page.tsx", "src/app/passport/statistics/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4737,7 +4737,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0191", "BW-XI-0228", "BW-XI-0264", "BW-XI-0300"],
         "sourceReferences": ["src/app/passport/timeline/page.tsx", "src/app/passport/timeline/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4792,7 +4792,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0027", "BW-XI-0073", "BW-XI-0111", "BW-XI-0149"],
         "sourceReferences": ["src/app/play/[taleSlug]/page.tsx", "src/app/play/[taleSlug]/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4837,7 +4837,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0028", "BW-XI-0074", "BW-XI-0112", "BW-XI-0150"],
         "sourceReferences": ["src/app/play/[taleSlug]/history/page.tsx", "src/app/play/[taleSlug]/history/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4885,7 +4885,7 @@
           "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
           "src/app/play/[taleSlug]/session/[sessionId]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4900,7 +4900,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0192", "BW-XI-0229", "BW-XI-0265", "BW-XI-0301"],
         "sourceReferences": ["src/app/player/page.tsx", "src/app/player/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -4995,7 +4995,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0030", "BW-XI-0076", "BW-XI-0114", "BW-XI-0152"],
         "sourceReferences": ["src/app/player/invitation/page.tsx", "src/app/player/invitation/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5040,7 +5040,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0193", "BW-XI-0230", "BW-XI-0266", "BW-XI-0302"],
         "sourceReferences": ["src/app/player/library/page.tsx", "src/app/player/library/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5068,7 +5068,7 @@
           "src/app/player/playthroughs/[playthroughId]/page.tsx",
           "src/app/player/playthroughs/[playthroughId]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5126,7 +5126,7 @@
           "src/app/player/playthroughs/[playthroughId]/archive/page.tsx",
           "src/app/player/playthroughs/[playthroughId]/archive/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5214,7 +5214,7 @@
           "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
           "src/app/player/playthroughs/[playthroughId]/journal/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5239,7 +5239,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0031", "BW-XI-0077", "BW-XI-0115", "BW-XI-0153"],
         "sourceReferences": ["src/app/player/sign-in/page.tsx", "src/app/player/sign-in/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5294,7 +5294,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0032", "BW-XI-0078", "BW-XI-0116", "BW-XI-0154"],
         "sourceReferences": ["src/app/profile/[handle]/page.tsx", "src/app/profile/[handle]/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5309,7 +5309,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0384", "BW-XI-0397", "BW-XI-0407", "BW-XI-0417"],
         "sourceReferences": ["src/app/quartermaster/page.tsx", "src/app/quartermaster/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5357,7 +5357,7 @@
           "src/app/quartermaster/[workspace]/page.tsx",
           "src/app/quartermaster/[workspace]/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5432,7 +5432,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0033", "BW-XI-0079", "BW-XI-0117", "BW-XI-0155"],
         "sourceReferences": ["src/app/register/page.tsx", "src/app/register/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5477,7 +5477,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0034", "BW-XI-0080", "BW-XI-0118", "BW-XI-0156"],
         "sourceReferences": ["src/app/reset-password/page.tsx", "src/app/reset-password/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5522,7 +5522,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0035", "BW-XI-0081", "BW-XI-0119", "BW-XI-0157"],
         "sourceReferences": ["src/app/sign-in/page.tsx", "src/app/sign-in/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5537,7 +5537,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0427", "BW-XI-0440", "BW-XI-0453", "BW-XI-0466"],
         "sourceReferences": ["src/app/studio/page.tsx", "src/app/studio/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5626,7 +5626,7 @@
           "src/app/studio/exchange/page.tsx",
           "src/components/community/StudioExchangeConsole.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5681,7 +5681,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0429", "BW-XI-0442", "BW-XI-0455", "BW-XI-0468"],
         "sourceReferences": ["src/app/studio/library/page.tsx", "src/app/studio/library/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5736,7 +5736,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0430", "BW-XI-0443", "BW-XI-0456", "BW-XI-0469"],
         "sourceReferences": ["src/app/studio/private-content/page.tsx", "src/app/studio/private-content/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5765,7 +5765,7 @@
           "src/app/studio/private-content/operations/page.tsx",
           "src/components/studio/PrivateOperationsConsole.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5784,7 +5784,7 @@
           "src/app/studio/private-content/operations/page.tsx",
           "src/components/studio/PrivateOperationsConsole.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5803,7 +5803,7 @@
           "src/app/studio/private-content/operations/page.tsx",
           "src/components/studio/PrivateOperationsConsole.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5822,7 +5822,7 @@
           "src/app/studio/private-content/operations/page.tsx",
           "src/components/studio/PrivateOperationsConsole.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5837,7 +5837,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0431", "BW-XI-0444", "BW-XI-0457", "BW-XI-0470"],
         "sourceReferences": ["src/app/studio/sign-in/page.tsx", "src/app/studio/sign-in/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5922,7 +5922,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0432", "BW-XI-0445", "BW-XI-0458", "BW-XI-0471"],
         "sourceReferences": ["src/app/studio/tales/[taleId]/page.tsx", "src/app/studio/tales/[taleId]/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -5980,7 +5980,7 @@
           "src/app/studio/tales/[taleId]/artifacts/page.tsx",
           "src/app/studio/tales/[taleId]/artifacts/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -6038,7 +6038,7 @@
           "src/app/studio/tales/[taleId]/assets/page.tsx",
           "src/app/studio/tales/[taleId]/assets/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -6096,7 +6096,7 @@
           "src/app/studio/tales/[taleId]/locations/page.tsx",
           "src/app/studio/tales/[taleId]/locations/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -6154,7 +6154,7 @@
           "src/app/studio/tales/[taleId]/settings/page.tsx",
           "src/app/studio/tales/[taleId]/settings/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -6212,7 +6212,7 @@
           "src/app/studio/tales/[taleId]/trials/page.tsx",
           "src/app/studio/tales/[taleId]/trials/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -6280,7 +6280,7 @@
           "src/app/studio/tales/[taleId]/versions/page.tsx",
           "src/app/studio/tales/[taleId]/versions/page.tsx"
         ],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -6335,7 +6335,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0439", "BW-XI-0452", "BW-XI-0465", "BW-XI-0478"],
         "sourceReferences": ["src/app/studio/tales/new/page.tsx", "src/app/studio/tales/new/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -6360,7 +6360,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0036", "BW-XI-0082", "BW-XI-0120", "BW-XI-0158"],
         "sourceReferences": ["src/app/tale/[campaignSlug]/page.tsx", "src/app/tale/[campaignSlug]/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -6435,7 +6435,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0037", "BW-XI-0083", "BW-XI-0121", "BW-XI-0159"],
         "sourceReferences": ["src/app/tales/page.tsx", "src/app/tales/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null
@@ -6480,7 +6480,7 @@
         "method": "DIRECT_SOURCE_BOUND_SYNTHETIC_CAPTURE_WITH_SEMANTIC_VALIDATION",
         "captureIds": ["BW-XI-0038", "BW-XI-0084", "BW-XI-0122", "BW-XI-0160"],
         "sourceReferences": ["src/app/verify-email/page.tsx", "src/app/verify-email/page.tsx"],
-        "fixtureIdentityDigests": ["4fd4a026833202b7e0de777233bfc27fe03182921f7e764e0017bc0c7d0d0a00"]
+        "fixtureIdentityDigests": ["e1a948493c1cffd85740f1d6e13f6d0a85d9a24503b80ee18b288dc757527c4a"]
       },
       "exemptionRationale": null,
       "explicitlyBlocked": null

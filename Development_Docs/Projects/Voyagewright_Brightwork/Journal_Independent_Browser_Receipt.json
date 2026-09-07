@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifact": "Brightwork independent Journal browser-lane receipt",
+  "ordinaryProductSourceSha": "87ce8a959ceca056c3e91304b0aa7dcf64fde649",
+  "auditRuntimeSourceSha": "2599d694f132e87eab23ee580fb45fddeb9e6f13",
+  "profile": "lanternwake-phase3",
+  "browserTests": ["tests/e2e/lanternwake-journal.spec.ts"],
+  "browserSuiteReceipt": {
+    "status": "FAIL",
+    "failureCategory": "PRODUCT_FAILURE",
+    "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+  },
+  "browserRuntimeReceipt": {
+    "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+    "baseURL": "http://127.0.0.1:3200",
+    "failureCategory": "PRODUCT_FAILURE",
+    "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+    "timings": {
+      "serverPreparationMs": 25,
+      "serverReadinessMs": 2114,
+      "browserExecutionMs": 79858,
+      "infrastructureFailureWaitMs": 0,
+      "cleanupMs": 27
+    }
+  },
+  "testCounts": {
+    "passed": 11,
+    "failed": 1,
+    "skipped": 0
+  },
+  "auditAssessment": {
+    "classification": "TEST_EVIDENCE_DRIFT",
+    "productFinding": false,
+    "reason": "The only failing assertion targets the removed .historical-lock class. Current rendered source exposes the labeled journal-historical-volume read-only surface introduced by Wave 6.",
+    "preservedScreenshot": "Experience_Images/Final_Attention/Journal_Historical_Read_Only_Selector_Discrepancy.png"
+  }
+}
