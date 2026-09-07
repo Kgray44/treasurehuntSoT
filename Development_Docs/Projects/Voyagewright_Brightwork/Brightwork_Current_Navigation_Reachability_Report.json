@@ -1,10 +1,10 @@
 {
   "schemaVersion": "2.0.0",
   "artifact": "Brightwork Current Navigation Reachability Report",
-  "sourceSha": "2ae4333f09c76c11a51e8b7015cad9e02523a65d",
-  "auditRuntimeSourceSha": "4ce9b890c4b863e72d20d7e9523191bf234f0d4b",
+  "sourceSha": "87ce8a959ceca056c3e91304b0aa7dcf64fde649",
+  "auditRuntimeSourceSha": "2599d694f132e87eab23ee580fb45fddeb9e6f13",
   "censusDigest": "80c08d26b2c2753d8f9eb281c8ba7780630f69f6040187afe08facb4c0f22fec",
-  "generatedAt": "2026-09-04T16:49:25.458Z",
+  "generatedAt": "2026-09-07T02:53:10.031Z",
   "supersedesForBrightwork": "Project Homeport Phase 5 109-page reachability proof",
   "routes": [
     {
@@ -356,7 +356,9 @@
       "reachableProductPath": "/admin",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["PLATFORM_OBSERVE"],
+      "capabilityRequirements": [
+        "PLATFORM_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/",
@@ -373,7 +375,9 @@
       "reachableProductPath": "/admin/audit",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["AUDIT_OBSERVE"],
+      "capabilityRequirements": [
+        "AUDIT_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin",
@@ -390,7 +394,9 @@
       "reachableProductPath": "/admin/chronicles",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
+      "capabilityRequirements": [
+        "CHRONICLE_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin",
@@ -407,7 +413,9 @@
       "reachableProductPath": "/admin/chronicles/[chronicleId]",
       "logicalParent": "/admin/chronicles",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
+      "capabilityRequirements": [
+        "CHRONICLE_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin/chronicles",
@@ -424,7 +432,9 @@
       "reachableProductPath": "/admin/community",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
+      "capabilityRequirements": [
+        "COMMUNITY_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin",
@@ -441,7 +451,9 @@
       "reachableProductPath": "/admin/community/[listingId]",
       "logicalParent": "/admin/community",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
+      "capabilityRequirements": [
+        "COMMUNITY_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin/community",
@@ -458,7 +470,9 @@
       "reachableProductPath": "/admin/configuration",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CONFIG_OBSERVE"],
+      "capabilityRequirements": [
+        "CONFIG_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin",
@@ -475,7 +489,9 @@
       "reachableProductPath": "/admin/investigate",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["PLATFORM_OBSERVE"],
+      "capabilityRequirements": [
+        "PLATFORM_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin",
@@ -492,7 +508,9 @@
       "reachableProductPath": "/admin/operations",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["JOBS_OBSERVE"],
+      "capabilityRequirements": [
+        "JOBS_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin",
@@ -509,7 +527,9 @@
       "reachableProductPath": "/admin/people",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
+      "capabilityRequirements": [
+        "ACCOUNT_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin",
@@ -526,7 +546,9 @@
       "reachableProductPath": "/admin/people/[accountId]",
       "logicalParent": "/admin/people",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
+      "capabilityRequirements": [
+        "ACCOUNT_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin/people",
@@ -543,7 +565,9 @@
       "reachableProductPath": "/admin/providers",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CONTENT_OBSERVE"],
+      "capabilityRequirements": [
+        "CONTENT_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin",
@@ -560,7 +584,9 @@
       "reachableProductPath": "/admin/releases",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["RELEASE_OBSERVE"],
+      "capabilityRequirements": [
+        "RELEASE_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin",
@@ -577,7 +603,9 @@
       "reachableProductPath": "/admin/support/cases",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["SUPPORT_REQUEST"],
+      "capabilityRequirements": [
+        "SUPPORT_REQUEST"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "Current global/workspace navigation classification",
@@ -594,7 +622,9 @@
       "reachableProductPath": "/admin/voyages",
       "logicalParent": "/admin",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["VOYAGE_OBSERVE"],
+      "capabilityRequirements": [
+        "VOYAGE_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin",
@@ -611,7 +641,9 @@
       "reachableProductPath": "/admin/voyages/[voyageId]",
       "logicalParent": "/admin/voyages",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["VOYAGE_OBSERVE"],
+      "capabilityRequirements": [
+        "VOYAGE_OBSERVE"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/admin/voyages",
@@ -628,7 +660,9 @@
       "reachableProductPath": "/captain",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CAPTAIN"],
+      "capabilityRequirements": [
+        "CAPTAIN"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/",
@@ -645,7 +679,9 @@
       "reachableProductPath": "/captain/invitations",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CAPTAIN"],
+      "capabilityRequirements": [
+        "CAPTAIN"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/captain/library",
@@ -662,7 +698,9 @@
       "reachableProductPath": "/captain/library",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CAPTAIN"],
+      "capabilityRequirements": [
+        "CAPTAIN"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/",
@@ -679,7 +717,9 @@
       "reachableProductPath": "/captain/sessions/[sessionId]",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CAPTAIN"],
+      "capabilityRequirements": [
+        "CAPTAIN"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/captain/library",
@@ -696,7 +736,9 @@
       "reachableProductPath": "/captain/sign-in",
       "logicalParent": "/",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": ["captain"],
+      "capabilityRequirements": [
+        "captain"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/",
@@ -713,7 +755,9 @@
       "reachableProductPath": "/captain/tales/[taleId]",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CAPTAIN"],
+      "capabilityRequirements": [
+        "CAPTAIN"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/captain/library",
@@ -730,7 +774,9 @@
       "reachableProductPath": "/captain/voyages/[playthroughId]/muster",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["captain"],
+      "capabilityRequirements": [
+        "captain"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "Protected operator entry contract",
@@ -747,7 +793,9 @@
       "reachableProductPath": "/captain/voyages/[playthroughId]/player-preview",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CAPTAIN"],
+      "capabilityRequirements": [
+        "CAPTAIN"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/captain/library",
@@ -1019,7 +1067,9 @@
       "reachableProductPath": "/community/moderation",
       "logicalParent": "/community",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["MODERATOR"],
+      "capabilityRequirements": [
+        "MODERATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/community",
@@ -1036,7 +1086,9 @@
       "reachableProductPath": "/community/moderation/[id]",
       "logicalParent": "/community/moderation",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["MODERATOR"],
+      "capabilityRequirements": [
+        "MODERATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/community/moderation",
@@ -1104,7 +1156,9 @@
       "reachableProductPath": "/community/voyage-logs/consent",
       "logicalParent": "/community/voyage-logs",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": ["PLAYER"],
+      "capabilityRequirements": [
+        "PLAYER"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/community/voyage-logs",
@@ -1138,7 +1192,9 @@
       "reachableProductPath": "/community/voyage-logs/owner",
       "logicalParent": "/community/voyage-logs",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": ["PLAYER"],
+      "capabilityRequirements": [
+        "PLAYER"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/community/voyage-logs",
@@ -1155,7 +1211,9 @@
       "reachableProductPath": "/community/voyage-logs/owner/[id]",
       "logicalParent": "/community/voyage-logs/owner",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": ["PLAYER"],
+      "capabilityRequirements": [
+        "PLAYER"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/community/voyage-logs/owner",
@@ -1189,7 +1247,9 @@
       "reachableProductPath": "/passport",
       "logicalParent": "/account",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/account",
@@ -1206,7 +1266,9 @@
       "reachableProductPath": "/passport/artifacts",
       "logicalParent": "/passport",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/passport",
@@ -1223,7 +1285,9 @@
       "reachableProductPath": "/passport/artifacts/[artifactId]",
       "logicalParent": "/passport/artifacts",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/passport/artifacts",
@@ -1240,7 +1304,9 @@
       "reachableProductPath": "/passport/atlas",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "Current global/workspace navigation classification",
@@ -1257,7 +1323,9 @@
       "reachableProductPath": "/passport/history",
       "logicalParent": "/passport",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/passport",
@@ -1274,7 +1342,9 @@
       "reachableProductPath": "/passport/history/[recordId]",
       "logicalParent": "/passport/history",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/passport/history",
@@ -1291,7 +1361,9 @@
       "reachableProductPath": "/passport/history/[recordId]/book",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "Protected operator entry contract",
@@ -1308,7 +1380,9 @@
       "reachableProductPath": "/passport/history/[recordId]/compare",
       "logicalParent": "/passport/history/[recordId]",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/passport/history/[recordId]",
@@ -1325,7 +1399,9 @@
       "reachableProductPath": "/passport/history/[recordId]/replay",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "Compatibility destination contract",
@@ -1342,7 +1418,9 @@
       "reachableProductPath": "/passport/memories",
       "logicalParent": "/passport",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/passport",
@@ -1359,7 +1437,9 @@
       "reachableProductPath": "/passport/people",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "Current global/workspace navigation classification",
@@ -1376,7 +1456,9 @@
       "reachableProductPath": "/passport/saved",
       "logicalParent": "/passport",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/passport",
@@ -1393,7 +1475,9 @@
       "reachableProductPath": "/passport/statistics",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "Current global/workspace navigation classification",
@@ -1410,7 +1494,9 @@
       "reachableProductPath": "/passport/timeline",
       "logicalParent": null,
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "Current global/workspace navigation classification",
@@ -1478,7 +1564,9 @@
       "reachableProductPath": "/player",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": ["PLAYER"],
+      "capabilityRequirements": [
+        "PLAYER"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/",
@@ -1495,7 +1583,9 @@
       "reachableProductPath": "/player/invitation",
       "logicalParent": "/player/sign-in",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
-      "capabilityRequirements": ["PLAYER"],
+      "capabilityRequirements": [
+        "PLAYER"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/player/sign-in",
@@ -1512,7 +1602,9 @@
       "reachableProductPath": "/player/library",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": ["PLAYER"],
+      "capabilityRequirements": [
+        "PLAYER"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/",
@@ -1529,7 +1621,9 @@
       "reachableProductPath": "/player/playthroughs/[playthroughId]",
       "logicalParent": "/player/library",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": ["PLAYER"],
+      "capabilityRequirements": [
+        "PLAYER"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/player/library",
@@ -1546,7 +1640,9 @@
       "reachableProductPath": "/player/playthroughs/[playthroughId]/archive",
       "logicalParent": "/player/playthroughs/[playthroughId]",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": ["PLAYER"],
+      "capabilityRequirements": [
+        "PLAYER"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/player/playthroughs/[playthroughId]",
@@ -1563,7 +1659,9 @@
       "reachableProductPath": "/player/playthroughs/[playthroughId]/journal",
       "logicalParent": "/player/library",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": ["PLAYER"],
+      "capabilityRequirements": [
+        "PLAYER"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/player/library",
@@ -1580,7 +1678,9 @@
       "reachableProductPath": "/player/sign-in",
       "logicalParent": "/",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": ["player"],
+      "capabilityRequirements": [
+        "player"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/",
@@ -1614,7 +1714,9 @@
       "reachableProductPath": "/quartermaster",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CAPTAIN"],
+      "capabilityRequirements": [
+        "CAPTAIN"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/captain/library",
@@ -1631,7 +1733,9 @@
       "reachableProductPath": "/quartermaster/[workspace]",
       "logicalParent": "/captain/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CAPTAIN"],
+      "capabilityRequirements": [
+        "CAPTAIN"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/captain/library",
@@ -1699,7 +1803,9 @@
       "reachableProductPath": "/studio",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/",
@@ -1716,7 +1822,9 @@
       "reachableProductPath": "/studio/exchange",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/studio/library",
@@ -1733,7 +1841,9 @@
       "reachableProductPath": "/studio/library",
       "logicalParent": "/",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/",
@@ -1750,7 +1860,9 @@
       "reachableProductPath": "/studio/private-content",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/studio/library",
@@ -1767,7 +1879,9 @@
       "reachableProductPath": "/studio/private-content/operations",
       "logicalParent": "/studio/private-content",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["ADMIN"],
+      "capabilityRequirements": [
+        "ADMIN"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/studio/private-content",
@@ -1784,7 +1898,9 @@
       "reachableProductPath": "/studio/sign-in",
       "logicalParent": "/",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": ["creator"],
+      "capabilityRequirements": [
+        "creator"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/",
@@ -1801,7 +1917,9 @@
       "reachableProductPath": "/studio/tales/[taleId]",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/studio/library",
@@ -1818,7 +1936,9 @@
       "reachableProductPath": "/studio/tales/[taleId]/artifacts",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/studio/library",
@@ -1835,7 +1955,9 @@
       "reachableProductPath": "/studio/tales/[taleId]/assets",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/studio/library",
@@ -1852,7 +1974,9 @@
       "reachableProductPath": "/studio/tales/[taleId]/locations",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/studio/library",
@@ -1869,7 +1993,9 @@
       "reachableProductPath": "/studio/tales/[taleId]/settings",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/studio/library",
@@ -1886,7 +2012,9 @@
       "reachableProductPath": "/studio/tales/[taleId]/trials",
       "logicalParent": "/studio/tales/[taleId]",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/studio/tales/[taleId]",
@@ -1903,7 +2031,9 @@
       "reachableProductPath": "/studio/tales/[taleId]/versions",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/studio/library",
@@ -1920,7 +2050,9 @@
       "reachableProductPath": "/studio/tales/new",
       "logicalParent": "/studio/library",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": ["CREATOR"],
+      "capabilityRequirements": [
+        "CREATOR"
+      ],
       "desktop": true,
       "mobile": true,
       "entryEvidence": "/studio/library",

@@ -33,6 +33,10 @@ This directory holds the current-main Brightwork capture inventory and evidence 
 - `Brightwork_Current_Navigation_Reachability_Report.json` supersedes the stale 109-page Homeport proof for Brightwork and records the current 116 human-facing routes.
 - `Brightwork_Evidence_State_Exceptions.json` preserves the replaced unavailable READY frames, their observed copy, and their evidence-only classification.
 - `Brightwork_Stage_8_Wave_0_Evidence_Record.json` is the machine-readable final reconciliation for the Wave 0 source binding, state coverage, capture set, and reachability proof.
+- `Voyagewright_Brightwork_Final_Audit_Findings.md` and `.json` are the final current-protected-main findings ledger, including every Stage 7 master and reference-contract recheck.
+- `Voyagewright_Brightwork_Final_Recertification_Report.md` is the final evidence handoff for human review; it is not a release or owner-acceptance record.
+- `Voyagewright_Brightwork_Journal_Pending_Reproduction_Record.md` preserves the bounded independent Journal reproduction, its environment limitations, and its test-selector evidence discrepancy.
+- `Journal_Independent_Browser_Receipt.json` preserves the focused browser runner's unmodified classification alongside the audit's narrower source/render assessment.
 
 Run `npm run brightwork:validate` to fail closed on capture binding, preserved-image integrity, declared-state coverage, current navigation reachability, and unresolved READY/unavailable evidence.
 

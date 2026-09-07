@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifact": "Voyagewright Brightwork final current-protected-main audit findings",
+  "status": "READY_FOR_FINAL_HUMAN_REVIEW",
+  "ordinaryProductSourceSha": "87ce8a959ceca056c3e91304b0aa7dcf64fde649",
+  "auditRuntimeSourceSha": "2599d694f132e87eab23ee580fb45fddeb9e6f13",
+  "authorityBoundary": "AUDIT_EVIDENCE_ONLY_NOT_PRODUCT_REPAIR_OR_RELEASE_ACCEPTANCE",
+  "corpus": {
+    "requiredCaptures": 478,
+    "currentCaptures": 478,
+    "staleCaptures": 0,
+    "missingCaptures": 0,
+    "blockedByProduct": 0,
+    "unexpectedOrphanedCaptures": 0,
+    "semanticInvalidCaptures": 0,
+    "overallCompleteness": "COMPLETE"
+  },
+  "findings": [
+    {
+      "id": "BW-FINAL-001",
+      "classification": "TEST_EVIDENCE_DRIFT",
+      "severity": "P3_ENGINEERING_EVIDENCE_QUALITY",
+      "productFinding": false,
+      "runnerReceipt": "Journal_Independent_Browser_Receipt.json",
+      "evidence": {
+        "staleSelector": ".historical-lock",
+        "currentRenderedSurface": ".journal-historical-volume",
+        "productChangeCommit": "e5bcfb81f5118c823914588140416d5d504619db",
+        "preservedScreenshot": "Experience_Images/Final_Attention/Journal_Historical_Read_Only_Selector_Discrepancy.png"
+      },
+      "disposition": "NO_PRODUCT_REPAIR_AUTHORIZED; FUTURE_TEST_MAINTENANCE_ONLY_IF_SEPARATELY_AUTHORIZED"
+    }
+  ],
+  "masterFindingRecheck": [
+    { "id": "BW-M-001", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-002", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-003", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-004", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-005", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-006", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-007", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-008", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-009", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-010", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-011", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-012", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-013", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-014", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-015", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-016", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-017", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-018", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-019", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-020", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-021", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-022", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-023", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-024", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-025", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-026", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-027", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-028", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-029", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-030", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-031", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-032", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-033", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-034", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-035", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-036", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-037", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-038", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-039", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-040", "outcome": "REPAIR_VERIFIED_CURRENT" },
+    { "id": "BW-M-041", "outcome": "REPAIR_VERIFIED_CURRENT" }
+  ],
+  "referenceContractRecheck": [
+    { "id": "BW-REF-001", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-002", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-003", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-004", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-005", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-006", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-007", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-008", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-009", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-010", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-011", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-012", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-013", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-014", "outcome": "PROTECTED_CURRENT" },
+    { "id": "BW-REF-015", "outcome": "PROTECTED_CURRENT" }
+  ],
+  "pendingFindingRecheck": [
+    {
+      "id": "BW-PEND-001",
+      "outcome": "NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM",
+      "crossBrowserStatus": "WEBKIT_EXPLICITLY_SKIPPED_BY_FIXTURE"
+    },
+    {
+      "id": "BW-PEND-002",
+      "outcome": "NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM",
+      "crossBrowserStatus": "WEBKIT_EXPLICITLY_SKIPPED_BY_FIXTURE"
+    }
+  ],
+  "limitations": [
+    "No public deployment or live-provider proof.",
+    "No production-user data, owner acceptance, or assistive-technology certification.",
+    "The focused Journal suite is Chromium-only because its unique mutable fixture explicitly skips non-Chromium browsers.",
+    "The failed historical-lock selector is preserved as evidence drift and is not counted as a demonstrated product regression."
+  ]
+}

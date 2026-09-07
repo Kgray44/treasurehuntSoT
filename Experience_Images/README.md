@@ -1,5 +1,5 @@
 # Voyagewright Brightwork Experience Images
 
-This canonical evidence corpus is source-bound to `2ae4333f09c76c11a51e8b7015cad9e02523a65d`, capture-contract digest `05065bbcdbf0ab3a68331cf4c59aff76f6e0285e32db891188aa697d4a07d370`, and the `brightwork-combined-homeport-round3-admiralty-phase2-v4-creator-continuation` task-owned synthetic fixture. It contains 478 captures, all marked `CAPTURED_PENDING_BRIGHTWORK_REVIEW`.
+This canonical evidence corpus is source-bound to `87ce8a959ceca056c3e91304b0aa7dcf64fde649`, capture-contract digest `9492731f3bdadc5cebb67a025ccf54239d6160cc79303da88c3f4d50fb688de3`, and the `brightwork-combined-homeport-round3-admiralty-phase2-v4-creator-continuation` task-owned synthetic fixture. It contains 478 captures, all marked `CAPTURED_PENDING_BRIGHTWORK_REVIEW`.
 
 Open [index.html](index.html) for the auditor index. Contact sheets are under [Contact_Sheets](Contact_Sheets). Captures are evidence awaiting later Brightwork review, not visual acceptance, owner acceptance, live-provider, deployment, or production-data proof.

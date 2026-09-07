@@ -7179,6 +7179,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Experience_Images/Final_Attention/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Journal_Independent_Browser_Receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Voyagewright_Brightwork/README.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -7198,6 +7210,30 @@
     },
     {
       "path": "Development_Docs/Projects/Voyagewright_Brightwork/Visual_Evidence_Freshness_Report.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Final_Audit_Findings.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Final_Audit_Findings.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Final_Recertification_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Journal_Pending_Reproduction_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
