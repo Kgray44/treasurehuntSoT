@@ -919,6 +919,14 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
   color: #ffd9d4;
   background: rgb(86 28 26 / 50%);
 }
+
+html[data-voyage-theme="light"] .button:not(.button--primary):not(.button--quiet):not(.button--danger) {
+  color: #f4eddc;
+}
+
+html[data-voyage-theme="light"] .button--quiet {
+  color: var(--text-primary);
+}
 .personal-harbor__actions {
   display: flex;
   min-width: 0;

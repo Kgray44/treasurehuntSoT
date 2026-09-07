@@ -587,6 +587,8 @@
 }
 
 .product-footer {
+  --shell-footer-ink: #fff6e5;
+  --shell-footer-muted: #d1ddd7;
   display: flex;
   min-height: var(--shell-footer-height);
   align-items: center;
@@ -594,16 +596,17 @@
   gap: 1rem;
   padding: 1rem clamp(1rem, 4vw, 3rem);
   border-top: 1px solid var(--shell-border);
-  color: var(--shell-muted);
+  color: var(--shell-footer-muted);
   background: #071015;
 }
 
 .product-footer p {
   margin: 0;
+  color: var(--shell-footer-muted);
 }
 
 .product-footer b {
-  color: var(--shell-ink);
+  color: var(--shell-footer-ink);
 }
 
 .product-footer a {
