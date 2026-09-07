@@ -750,7 +750,7 @@ async function storageState(browser, credentials, persona) {
     });
     await page.getByLabel("Email or Player name").fill(account.email);
     await page.getByLabel("Password").fill(password);
-    await page.getByRole("button", { name: "Continue" }).click();
+    await page.getByRole("button", { name: "Sign in", exact: true }).click();
     await page.waitForFunction(
       () =>
         fetch("/api/auth/context", { cache: "no-store" })
