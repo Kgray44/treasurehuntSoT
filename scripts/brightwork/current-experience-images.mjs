@@ -648,7 +648,7 @@ async function navigateForRequirement(page, url, requirement) {
     );
     const response = await settledGoto(page, url);
     await page
-      .getByText("Operational status is unavailable or requires Administrator access.")
+      .getByText("Operational status is temporarily unavailable.")
       .waitFor({ timeout: 5_000 });
     return { response, cleanup: () => page.unroute("**/api/studio/private-content/operations") };
   }
