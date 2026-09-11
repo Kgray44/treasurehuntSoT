@@ -7,12 +7,8 @@
   "screens": [
     {
       "screenId": "screen-page-root",
-      "routeIds": [
-        "route-page-root"
-      ],
-      "routePatterns": [
-        "/"
-      ],
+      "routeIds": ["route-page-root"],
+      "routePatterns": ["/"],
       "productArea": "Gateway_Public_Shell",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -24,29 +20,16 @@
     },
     {
       "screenId": "screen-page-account",
-      "routeIds": [
-        "route-page-account"
-      ],
-      "routePatterns": [
-        "/account"
-      ],
+      "routeIds": ["route-page-account"],
+      "routePatterns": ["/account"],
       "productArea": "Personal_Harbor",
-      "applicableStates": [
-        "DEPENDENCY_UNAVAILABLE",
-        "INITIAL_LOADING",
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicableStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "SIGN_IN_REQUIRED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-account-accessibility",
-      "routeIds": [
-        "route-page-account-accessibility"
-      ],
-      "routePatterns": [
-        "/account/accessibility"
-      ],
+      "routeIds": ["route-page-account-accessibility"],
+      "routePatterns": ["/account/accessibility"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -60,12 +43,8 @@
     },
     {
       "screenId": "screen-page-account-cancel-deletion",
-      "routeIds": [
-        "route-page-account-cancel-deletion"
-      ],
-      "routePatterns": [
-        "/account/cancel-deletion"
-      ],
+      "routeIds": ["route-page-account-cancel-deletion"],
+      "routePatterns": ["/account/cancel-deletion"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -78,12 +57,8 @@
     },
     {
       "screenId": "screen-page-account-claim",
-      "routeIds": [
-        "route-page-account-claim"
-      ],
-      "routePatterns": [
-        "/account/claim"
-      ],
+      "routeIds": ["route-page-account-claim"],
+      "routePatterns": ["/account/claim"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -96,29 +71,16 @@
     },
     {
       "screenId": "screen-page-account-data",
-      "routeIds": [
-        "route-page-account-data"
-      ],
-      "routePatterns": [
-        "/account/data"
-      ],
+      "routeIds": ["route-page-account-data"],
+      "routePatterns": ["/account/data"],
       "productArea": "Personal_Harbor",
-      "applicableStates": [
-        "DEPENDENCY_UNAVAILABLE",
-        "INITIAL_LOADING",
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicableStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "SIGN_IN_REQUIRED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-account-email-change",
-      "routeIds": [
-        "route-page-account-email-change"
-      ],
-      "routePatterns": [
-        "/account/email-change"
-      ],
+      "routeIds": ["route-page-account-email-change"],
+      "routePatterns": ["/account/email-change"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -131,12 +93,8 @@
     },
     {
       "screenId": "screen-page-account-linked-identities",
-      "routeIds": [
-        "route-page-account-linked-identities"
-      ],
-      "routePatterns": [
-        "/account/linked-identities"
-      ],
+      "routeIds": ["route-page-account-linked-identities"],
+      "routePatterns": ["/account/linked-identities"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -149,12 +107,8 @@
     },
     {
       "screenId": "screen-page-account-merge",
-      "routeIds": [
-        "route-page-account-merge"
-      ],
-      "routePatterns": [
-        "/account/merge"
-      ],
+      "routeIds": ["route-page-account-merge"],
+      "routePatterns": ["/account/merge"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -167,12 +121,8 @@
     },
     {
       "screenId": "screen-page-account-notifications",
-      "routeIds": [
-        "route-page-account-notifications"
-      ],
-      "routePatterns": [
-        "/account/notifications"
-      ],
+      "routeIds": ["route-page-account-notifications"],
+      "routePatterns": ["/account/notifications"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -185,12 +135,8 @@
     },
     {
       "screenId": "screen-page-account-personal-information",
-      "routeIds": [
-        "route-page-account-personal-information"
-      ],
-      "routePatterns": [
-        "/account/personal-information"
-      ],
+      "routeIds": ["route-page-account-personal-information"],
+      "routePatterns": ["/account/personal-information"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -203,12 +149,8 @@
     },
     {
       "screenId": "screen-page-account-preferences",
-      "routeIds": [
-        "route-page-account-preferences"
-      ],
-      "routePatterns": [
-        "/account/preferences"
-      ],
+      "routeIds": ["route-page-account-preferences"],
+      "routePatterns": ["/account/preferences"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -222,12 +164,8 @@
     },
     {
       "screenId": "screen-page-account-privacy",
-      "routeIds": [
-        "route-page-account-privacy"
-      ],
-      "routePatterns": [
-        "/account/privacy"
-      ],
+      "routeIds": ["route-page-account-privacy"],
+      "routePatterns": ["/account/privacy"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -241,12 +179,8 @@
     },
     {
       "screenId": "screen-page-account-profile",
-      "routeIds": [
-        "route-page-account-profile"
-      ],
-      "routePatterns": [
-        "/account/profile"
-      ],
+      "routeIds": ["route-page-account-profile"],
+      "routePatterns": ["/account/profile"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -260,12 +194,8 @@
     },
     {
       "screenId": "screen-page-account-profile-view",
-      "routeIds": [
-        "route-page-account-profile-view"
-      ],
-      "routePatterns": [
-        "/account/profile/view"
-      ],
+      "routeIds": ["route-page-account-profile-view"],
+      "routePatterns": ["/account/profile/view"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -278,12 +208,8 @@
     },
     {
       "screenId": "screen-page-account-reactivate",
-      "routeIds": [
-        "route-page-account-reactivate"
-      ],
-      "routePatterns": [
-        "/account/reactivate"
-      ],
+      "routeIds": ["route-page-account-reactivate"],
+      "routePatterns": ["/account/reactivate"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -296,12 +222,8 @@
     },
     {
       "screenId": "screen-page-account-roles",
-      "routeIds": [
-        "route-page-account-roles"
-      ],
-      "routePatterns": [
-        "/account/roles"
-      ],
+      "routeIds": ["route-page-account-roles"],
+      "routePatterns": ["/account/roles"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -314,12 +236,8 @@
     },
     {
       "screenId": "screen-page-account-security",
-      "routeIds": [
-        "route-page-account-security"
-      ],
-      "routePatterns": [
-        "/account/security"
-      ],
+      "routeIds": ["route-page-account-security"],
+      "routePatterns": ["/account/security"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -332,12 +250,8 @@
     },
     {
       "screenId": "screen-page-account-sessions",
-      "routeIds": [
-        "route-page-account-sessions"
-      ],
-      "routePatterns": [
-        "/account/sessions"
-      ],
+      "routeIds": ["route-page-account-sessions"],
+      "routePatterns": ["/account/sessions"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -350,12 +264,8 @@
     },
     {
       "screenId": "screen-page-account-support-access",
-      "routeIds": [
-        "route-page-account-support-access"
-      ],
-      "routePatterns": [
-        "/account/support-access"
-      ],
+      "routeIds": ["route-page-account-support-access"],
+      "routePatterns": ["/account/support-access"],
       "productArea": "Personal_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -369,80 +279,40 @@
     },
     {
       "screenId": "screen-page-admin",
-      "routeIds": [
-        "route-page-admin"
-      ],
-      "routePatterns": [
-        "/admin"
-      ],
+      "routeIds": ["route-page-admin"],
+      "routePatterns": ["/admin"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-audit",
-      "routeIds": [
-        "route-page-admin-audit"
-      ],
-      "routePatterns": [
-        "/admin/audit"
-      ],
+      "routeIds": ["route-page-admin-audit"],
+      "routePatterns": ["/admin/audit"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-chronicles",
-      "routeIds": [
-        "route-page-admin-chronicles"
-      ],
-      "routePatterns": [
-        "/admin/chronicles"
-      ],
+      "routeIds": ["route-page-admin-chronicles"],
+      "routePatterns": ["/admin/chronicles"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-chronicles-chronicleid",
-      "routeIds": [
-        "route-page-admin-chronicles-chronicleid"
-      ],
-      "routePatterns": [
-        "/admin/chronicles/[chronicleId]"
-      ],
+      "routeIds": ["route-page-admin-chronicles-chronicleid"],
+      "routePatterns": ["/admin/chronicles/[chronicleId]"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-community",
-      "routeIds": [
-        "route-page-admin-community"
-      ],
-      "routePatterns": [
-        "/admin/community"
-      ],
+      "routeIds": ["route-page-admin-community"],
+      "routePatterns": ["/admin/community"],
       "productArea": "Admiralty",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -457,12 +327,8 @@
     },
     {
       "screenId": "screen-page-admin-community-listingid",
-      "routeIds": [
-        "route-page-admin-community-listingid"
-      ],
-      "routePatterns": [
-        "/admin/community/[listingId]"
-      ],
+      "routeIds": ["route-page-admin-community-listingid"],
+      "routePatterns": ["/admin/community/[listingId]"],
       "productArea": "Admiralty",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -477,80 +343,40 @@
     },
     {
       "screenId": "screen-page-admin-configuration",
-      "routeIds": [
-        "route-page-admin-configuration"
-      ],
-      "routePatterns": [
-        "/admin/configuration"
-      ],
+      "routeIds": ["route-page-admin-configuration"],
+      "routePatterns": ["/admin/configuration"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-investigate",
-      "routeIds": [
-        "route-page-admin-investigate"
-      ],
-      "routePatterns": [
-        "/admin/investigate"
-      ],
+      "routeIds": ["route-page-admin-investigate"],
+      "routePatterns": ["/admin/investigate"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-operations",
-      "routeIds": [
-        "route-page-admin-operations"
-      ],
-      "routePatterns": [
-        "/admin/operations"
-      ],
+      "routeIds": ["route-page-admin-operations"],
+      "routePatterns": ["/admin/operations"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-people",
-      "routeIds": [
-        "route-page-admin-people"
-      ],
-      "routePatterns": [
-        "/admin/people"
-      ],
+      "routeIds": ["route-page-admin-people"],
+      "routePatterns": ["/admin/people"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-people-accountid",
-      "routeIds": [
-        "route-page-admin-people-accountid"
-      ],
-      "routePatterns": [
-        "/admin/people/[accountId]"
-      ],
+      "routeIds": ["route-page-admin-people-accountid"],
+      "routePatterns": ["/admin/people/[accountId]"],
       "productArea": "Admiralty",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -564,95 +390,48 @@
     },
     {
       "screenId": "screen-page-admin-providers",
-      "routeIds": [
-        "route-page-admin-providers"
-      ],
-      "routePatterns": [
-        "/admin/providers"
-      ],
+      "routeIds": ["route-page-admin-providers"],
+      "routePatterns": ["/admin/providers"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-releases",
-      "routeIds": [
-        "route-page-admin-releases"
-      ],
-      "routePatterns": [
-        "/admin/releases"
-      ],
+      "routeIds": ["route-page-admin-releases"],
+      "routePatterns": ["/admin/releases"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-support-cases",
-      "routeIds": [
-        "route-page-admin-support-cases"
-      ],
-      "routePatterns": [
-        "/admin/support/cases"
-      ],
+      "routeIds": ["route-page-admin-support-cases"],
+      "routePatterns": ["/admin/support/cases"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "READY",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["READY", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-voyages",
-      "routeIds": [
-        "route-page-admin-voyages"
-      ],
-      "routePatterns": [
-        "/admin/voyages"
-      ],
+      "routeIds": ["route-page-admin-voyages"],
+      "routePatterns": ["/admin/voyages"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-admin-voyages-voyageid",
-      "routeIds": [
-        "route-page-admin-voyages-voyageid"
-      ],
-      "routePatterns": [
-        "/admin/voyages/[voyageId]"
-      ],
+      "routeIds": ["route-page-admin-voyages-voyageid"],
+      "routePatterns": ["/admin/voyages/[voyageId]"],
       "productArea": "Admiralty",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-captain",
-      "routeIds": [
-        "route-page-captain"
-      ],
-      "routePatterns": [
-        "/captain"
-      ],
+      "routeIds": ["route-page-captain"],
+      "routePatterns": ["/captain"],
       "productArea": "Captain_Helm",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -665,12 +444,8 @@
     },
     {
       "screenId": "screen-page-captain-invitations",
-      "routeIds": [
-        "route-page-captain-invitations"
-      ],
-      "routePatterns": [
-        "/captain/invitations"
-      ],
+      "routeIds": ["route-page-captain-invitations"],
+      "routePatterns": ["/captain/invitations"],
       "productArea": "Captain_Helm",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -683,12 +458,8 @@
     },
     {
       "screenId": "screen-page-captain-library",
-      "routeIds": [
-        "route-page-captain-library"
-      ],
-      "routePatterns": [
-        "/captain/library"
-      ],
+      "routeIds": ["route-page-captain-library"],
+      "routePatterns": ["/captain/library"],
       "productArea": "Captain_Helm",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -701,12 +472,8 @@
     },
     {
       "screenId": "screen-page-captain-sessions-sessionid",
-      "routeIds": [
-        "route-page-captain-sessions-sessionid"
-      ],
-      "routePatterns": [
-        "/captain/sessions/[sessionId]"
-      ],
+      "routeIds": ["route-page-captain-sessions-sessionid"],
+      "routePatterns": ["/captain/sessions/[sessionId]"],
       "productArea": "Captain_Helm",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -719,12 +486,8 @@
     },
     {
       "screenId": "screen-page-captain-sign-in",
-      "routeIds": [
-        "route-page-captain-sign-in"
-      ],
-      "routePatterns": [
-        "/captain/sign-in"
-      ],
+      "routeIds": ["route-page-captain-sign-in"],
+      "routePatterns": ["/captain/sign-in"],
       "productArea": "Captain_Helm",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -737,12 +500,8 @@
     },
     {
       "screenId": "screen-page-captain-tales-taleid",
-      "routeIds": [
-        "route-page-captain-tales-taleid"
-      ],
-      "routePatterns": [
-        "/captain/tales/[taleId]"
-      ],
+      "routeIds": ["route-page-captain-tales-taleid"],
+      "routePatterns": ["/captain/tales/[taleId]"],
       "productArea": "Captain_Helm",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -755,27 +514,16 @@
     },
     {
       "screenId": "screen-page-captain-voyages-playthroughid-muster",
-      "routeIds": [
-        "route-page-captain-voyages-playthroughid-muster"
-      ],
-      "routePatterns": [
-        "/captain/voyages/[playthroughId]/muster"
-      ],
+      "routeIds": ["route-page-captain-voyages-playthroughid-muster"],
+      "routePatterns": ["/captain/voyages/[playthroughId]/muster"],
       "productArea": "Captain_Helm",
-      "applicableStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicableStates": ["READY", "SIGN_IN_REQUIRED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-captain-voyages-playthroughid-player-preview",
-      "routeIds": [
-        "route-page-captain-voyages-playthroughid-player-preview"
-      ],
-      "routePatterns": [
-        "/captain/voyages/[playthroughId]/player-preview"
-      ],
+      "routeIds": ["route-page-captain-voyages-playthroughid-player-preview"],
+      "routePatterns": ["/captain/voyages/[playthroughId]/player-preview"],
       "productArea": "Captain_Helm",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -788,12 +536,8 @@
     },
     {
       "screenId": "screen-page-chronicles-taleslug",
-      "routeIds": [
-        "route-page-chronicles-taleslug"
-      ],
-      "routePatterns": [
-        "/chronicles/[taleSlug]"
-      ],
+      "routeIds": ["route-page-chronicles-taleslug"],
+      "routePatterns": ["/chronicles/[taleSlug]"],
       "productArea": "Public_Chronicle_and_Detail",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -805,28 +549,16 @@
     },
     {
       "screenId": "screen-page-chronicles-taleslug-compare",
-      "routeIds": [
-        "route-page-chronicles-taleslug-compare"
-      ],
-      "routePatterns": [
-        "/chronicles/[taleSlug]/compare"
-      ],
+      "routeIds": ["route-page-chronicles-taleslug-compare"],
+      "routePatterns": ["/chronicles/[taleSlug]/compare"],
       "productArea": "Public_Chronicle_and_Detail",
-      "applicableStates": [
-        "INITIAL_LOADING",
-        "READY",
-        "RECOVERABLE_ERROR"
-      ],
+      "applicableStates": ["INITIAL_LOADING", "READY", "RECOVERABLE_ERROR"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-community",
-      "routeIds": [
-        "route-page-community"
-      ],
-      "routePatterns": [
-        "/community"
-      ],
+      "routeIds": ["route-page-community"],
+      "routePatterns": ["/community"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -841,12 +573,8 @@
     },
     {
       "screenId": "screen-page-community-slug",
-      "routeIds": [
-        "route-page-community-slug"
-      ],
-      "routePatterns": [
-        "/community/[slug]"
-      ],
+      "routeIds": ["route-page-community-slug"],
+      "routePatterns": ["/community/[slug]"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -861,12 +589,8 @@
     },
     {
       "screenId": "screen-page-community-artifacts",
-      "routeIds": [
-        "route-page-community-artifacts"
-      ],
-      "routePatterns": [
-        "/community/artifacts"
-      ],
+      "routeIds": ["route-page-community-artifacts"],
+      "routePatterns": ["/community/artifacts"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -881,12 +605,8 @@
     },
     {
       "screenId": "screen-page-community-audio",
-      "routeIds": [
-        "route-page-community-audio"
-      ],
-      "routePatterns": [
-        "/community/audio"
-      ],
+      "routeIds": ["route-page-community-audio"],
+      "routePatterns": ["/community/audio"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -901,12 +621,8 @@
     },
     {
       "screenId": "screen-page-community-chronicles",
-      "routeIds": [
-        "route-page-community-chronicles"
-      ],
-      "routePatterns": [
-        "/community/chronicles"
-      ],
+      "routeIds": ["route-page-community-chronicles"],
+      "routePatterns": ["/community/chronicles"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -921,12 +637,8 @@
     },
     {
       "screenId": "screen-page-community-collections",
-      "routeIds": [
-        "route-page-community-collections"
-      ],
-      "routePatterns": [
-        "/community/collections"
-      ],
+      "routeIds": ["route-page-community-collections"],
+      "routePatterns": ["/community/collections"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -941,12 +653,8 @@
     },
     {
       "screenId": "screen-page-community-collections-slug",
-      "routeIds": [
-        "route-page-community-collections-slug"
-      ],
-      "routePatterns": [
-        "/community/collections/[slug]"
-      ],
+      "routeIds": ["route-page-community-collections-slug"],
+      "routePatterns": ["/community/collections/[slug]"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -961,12 +669,8 @@
     },
     {
       "screenId": "screen-page-community-creators",
-      "routeIds": [
-        "route-page-community-creators"
-      ],
-      "routePatterns": [
-        "/community/creators"
-      ],
+      "routeIds": ["route-page-community-creators"],
+      "routePatterns": ["/community/creators"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -981,12 +685,8 @@
     },
     {
       "screenId": "screen-page-community-creators-handle",
-      "routeIds": [
-        "route-page-community-creators-handle"
-      ],
-      "routePatterns": [
-        "/community/creators/[handle]"
-      ],
+      "routeIds": ["route-page-community-creators-handle"],
+      "routePatterns": ["/community/creators/[handle]"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1001,12 +701,8 @@
     },
     {
       "screenId": "screen-page-community-featured",
-      "routeIds": [
-        "route-page-community-featured"
-      ],
-      "routePatterns": [
-        "/community/featured"
-      ],
+      "routeIds": ["route-page-community-featured"],
+      "routePatterns": ["/community/featured"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1021,12 +717,8 @@
     },
     {
       "screenId": "screen-page-community-guides",
-      "routeIds": [
-        "route-page-community-guides"
-      ],
-      "routePatterns": [
-        "/community/guides"
-      ],
+      "routeIds": ["route-page-community-guides"],
+      "routePatterns": ["/community/guides"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1041,12 +733,8 @@
     },
     {
       "screenId": "screen-page-community-guides-slug",
-      "routeIds": [
-        "route-page-community-guides-slug"
-      ],
-      "routePatterns": [
-        "/community/guides/[slug]"
-      ],
+      "routeIds": ["route-page-community-guides-slug"],
+      "routePatterns": ["/community/guides/[slug]"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1061,12 +749,8 @@
     },
     {
       "screenId": "screen-page-community-maps",
-      "routeIds": [
-        "route-page-community-maps"
-      ],
-      "routePatterns": [
-        "/community/maps"
-      ],
+      "routeIds": ["route-page-community-maps"],
+      "routePatterns": ["/community/maps"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1081,12 +765,8 @@
     },
     {
       "screenId": "screen-page-community-moderation",
-      "routeIds": [
-        "route-page-community-moderation"
-      ],
-      "routePatterns": [
-        "/community/moderation"
-      ],
+      "routeIds": ["route-page-community-moderation"],
+      "routePatterns": ["/community/moderation"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1098,12 +778,8 @@
     },
     {
       "screenId": "screen-page-community-moderation-id",
-      "routeIds": [
-        "route-page-community-moderation-id"
-      ],
-      "routePatterns": [
-        "/community/moderation/[id]"
-      ],
+      "routeIds": ["route-page-community-moderation-id"],
+      "routePatterns": ["/community/moderation/[id]"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1115,12 +791,8 @@
     },
     {
       "screenId": "screen-page-community-templates",
-      "routeIds": [
-        "route-page-community-templates"
-      ],
-      "routePatterns": [
-        "/community/templates"
-      ],
+      "routeIds": ["route-page-community-templates"],
+      "routePatterns": ["/community/templates"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1135,12 +807,8 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs",
-      "routeIds": [
-        "route-page-community-voyage-logs"
-      ],
-      "routePatterns": [
-        "/community/voyage-logs"
-      ],
+      "routeIds": ["route-page-community-voyage-logs"],
+      "routePatterns": ["/community/voyage-logs"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1155,12 +823,8 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs-slug",
-      "routeIds": [
-        "route-page-community-voyage-logs-slug"
-      ],
-      "routePatterns": [
-        "/community/voyage-logs/[slug]"
-      ],
+      "routeIds": ["route-page-community-voyage-logs-slug"],
+      "routePatterns": ["/community/voyage-logs/[slug]"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1175,12 +839,8 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs-consent",
-      "routeIds": [
-        "route-page-community-voyage-logs-consent"
-      ],
-      "routePatterns": [
-        "/community/voyage-logs/consent"
-      ],
+      "routeIds": ["route-page-community-voyage-logs-consent"],
+      "routePatterns": ["/community/voyage-logs/consent"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1192,12 +852,8 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs-media",
-      "routeIds": [
-        "route-page-community-voyage-logs-media"
-      ],
-      "routePatterns": [
-        "/community/voyage-logs/media"
-      ],
+      "routeIds": ["route-page-community-voyage-logs-media"],
+      "routePatterns": ["/community/voyage-logs/media"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -1209,12 +865,8 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs-owner",
-      "routeIds": [
-        "route-page-community-voyage-logs-owner"
-      ],
-      "routePatterns": [
-        "/community/voyage-logs/owner"
-      ],
+      "routeIds": ["route-page-community-voyage-logs-owner"],
+      "routePatterns": ["/community/voyage-logs/owner"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1226,12 +878,8 @@
     },
     {
       "screenId": "screen-page-community-voyage-logs-owner-id",
-      "routeIds": [
-        "route-page-community-voyage-logs-owner-id"
-      ],
-      "routePatterns": [
-        "/community/voyage-logs/owner/[id]"
-      ],
+      "routeIds": ["route-page-community-voyage-logs-owner-id"],
+      "routePatterns": ["/community/voyage-logs/owner/[id]"],
       "productArea": "Community_Harbor",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1243,12 +891,8 @@
     },
     {
       "screenId": "screen-page-dev-animations",
-      "routeIds": [
-        "route-page-dev-animations"
-      ],
-      "routePatterns": [
-        "/dev/animations"
-      ],
+      "routeIds": ["route-page-dev-animations"],
+      "routePatterns": ["/dev/animations"],
       "productArea": "Development",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1260,12 +904,8 @@
     },
     {
       "screenId": "screen-page-forgot-password",
-      "routeIds": [
-        "route-page-forgot-password"
-      ],
-      "routePatterns": [
-        "/forgot-password"
-      ],
+      "routeIds": ["route-page-forgot-password"],
+      "routePatterns": ["/forgot-password"],
       "productArea": "Authentication_and_Recovery",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1277,29 +917,16 @@
     },
     {
       "screenId": "screen-page-passport",
-      "routeIds": [
-        "route-page-passport"
-      ],
-      "routePatterns": [
-        "/passport"
-      ],
+      "routeIds": ["route-page-passport"],
+      "routePatterns": ["/passport"],
       "productArea": "Chronicle_Passport_Wakebook",
-      "applicableStates": [
-        "DEPENDENCY_UNAVAILABLE",
-        "INITIAL_LOADING",
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicableStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "SIGN_IN_REQUIRED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-passport-artifacts",
-      "routeIds": [
-        "route-page-passport-artifacts"
-      ],
-      "routePatterns": [
-        "/passport/artifacts"
-      ],
+      "routeIds": ["route-page-passport-artifacts"],
+      "routePatterns": ["/passport/artifacts"],
       "productArea": "Chronicle_Passport_Wakebook",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1312,12 +939,8 @@
     },
     {
       "screenId": "screen-page-passport-artifacts-artifactId",
-      "routeIds": [
-        "route-page-passport-artifacts-artifactId"
-      ],
-      "routePatterns": [
-        "/passport/artifacts/[artifactId]"
-      ],
+      "routeIds": ["route-page-passport-artifacts-artifactId"],
+      "routePatterns": ["/passport/artifacts/[artifactId]"],
       "productArea": "Chronicle_Passport_Wakebook",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1330,27 +953,16 @@
     },
     {
       "screenId": "screen-page-passport-atlas",
-      "routeIds": [
-        "route-page-passport-atlas"
-      ],
-      "routePatterns": [
-        "/passport/atlas"
-      ],
+      "routeIds": ["route-page-passport-atlas"],
+      "routePatterns": ["/passport/atlas"],
       "productArea": "Chronicle_Passport_Wakebook",
-      "applicableStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicableStates": ["READY", "SIGN_IN_REQUIRED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-passport-history",
-      "routeIds": [
-        "route-page-passport-history"
-      ],
-      "routePatterns": [
-        "/passport/history"
-      ],
+      "routeIds": ["route-page-passport-history"],
+      "routePatterns": ["/passport/history"],
       "productArea": "Chronicle_Passport_Wakebook",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1364,12 +976,8 @@
     },
     {
       "screenId": "screen-page-passport-history-recordId",
-      "routeIds": [
-        "route-page-passport-history-recordId"
-      ],
-      "routePatterns": [
-        "/passport/history/[recordId]"
-      ],
+      "routeIds": ["route-page-passport-history-recordId"],
+      "routePatterns": ["/passport/history/[recordId]"],
       "productArea": "Chronicle_Passport_Wakebook",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1382,27 +990,16 @@
     },
     {
       "screenId": "screen-page-passport-history-recordid-book",
-      "routeIds": [
-        "route-page-passport-history-recordid-book"
-      ],
-      "routePatterns": [
-        "/passport/history/[recordId]/book"
-      ],
+      "routeIds": ["route-page-passport-history-recordid-book"],
+      "routePatterns": ["/passport/history/[recordId]/book"],
       "productArea": "Chronicle_Passport_Wakebook",
-      "applicableStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicableStates": ["READY", "SIGN_IN_REQUIRED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-passport-history-recordid-compare",
-      "routeIds": [
-        "route-page-passport-history-recordid-compare"
-      ],
-      "routePatterns": [
-        "/passport/history/[recordId]/compare"
-      ],
+      "routeIds": ["route-page-passport-history-recordid-compare"],
+      "routePatterns": ["/passport/history/[recordId]/compare"],
       "productArea": "Chronicle_Passport_Wakebook",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -1417,27 +1014,16 @@
     },
     {
       "screenId": "screen-page-passport-history-recordid-replay",
-      "routeIds": [
-        "route-page-passport-history-recordid-replay"
-      ],
-      "routePatterns": [
-        "/passport/history/[recordId]/replay"
-      ],
+      "routeIds": ["route-page-passport-history-recordid-replay"],
+      "routePatterns": ["/passport/history/[recordId]/replay"],
       "productArea": "Chronicle_Passport_Wakebook",
-      "applicableStates": [
-        "COMPATIBILITY_OR_REDIRECT",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicableStates": ["COMPATIBILITY_OR_REDIRECT", "SIGN_IN_REQUIRED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-passport-memories",
-      "routeIds": [
-        "route-page-passport-memories"
-      ],
-      "routePatterns": [
-        "/passport/memories"
-      ],
+      "routeIds": ["route-page-passport-memories"],
+      "routePatterns": ["/passport/memories"],
       "productArea": "Chronicle_Passport_Wakebook",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1450,27 +1036,16 @@
     },
     {
       "screenId": "screen-page-passport-people",
-      "routeIds": [
-        "route-page-passport-people"
-      ],
-      "routePatterns": [
-        "/passport/people"
-      ],
+      "routeIds": ["route-page-passport-people"],
+      "routePatterns": ["/passport/people"],
       "productArea": "Chronicle_Passport_Wakebook",
-      "applicableStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicableStates": ["READY", "SIGN_IN_REQUIRED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-passport-saved",
-      "routeIds": [
-        "route-page-passport-saved"
-      ],
-      "routePatterns": [
-        "/passport/saved"
-      ],
+      "routeIds": ["route-page-passport-saved"],
+      "routePatterns": ["/passport/saved"],
       "productArea": "Chronicle_Passport_Wakebook",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -1483,42 +1058,24 @@
     },
     {
       "screenId": "screen-page-passport-statistics",
-      "routeIds": [
-        "route-page-passport-statistics"
-      ],
-      "routePatterns": [
-        "/passport/statistics"
-      ],
+      "routeIds": ["route-page-passport-statistics"],
+      "routePatterns": ["/passport/statistics"],
       "productArea": "Chronicle_Passport_Wakebook",
-      "applicableStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicableStates": ["READY", "SIGN_IN_REQUIRED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-passport-timeline",
-      "routeIds": [
-        "route-page-passport-timeline"
-      ],
-      "routePatterns": [
-        "/passport/timeline"
-      ],
+      "routeIds": ["route-page-passport-timeline"],
+      "routePatterns": ["/passport/timeline"],
       "productArea": "Chronicle_Passport_Wakebook",
-      "applicableStates": [
-        "READY",
-        "SIGN_IN_REQUIRED"
-      ],
+      "applicableStates": ["READY", "SIGN_IN_REQUIRED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-play-taleslug",
-      "routeIds": [
-        "route-page-play-taleslug"
-      ],
-      "routePatterns": [
-        "/play/[taleSlug]"
-      ],
+      "routeIds": ["route-page-play-taleslug"],
+      "routePatterns": ["/play/[taleSlug]"],
       "productArea": "Player",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1530,12 +1087,8 @@
     },
     {
       "screenId": "screen-page-play-taleslug-history",
-      "routeIds": [
-        "route-page-play-taleslug-history"
-      ],
-      "routePatterns": [
-        "/play/[taleSlug]/history"
-      ],
+      "routeIds": ["route-page-play-taleslug-history"],
+      "routePatterns": ["/play/[taleSlug]/history"],
       "productArea": "Player",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1547,12 +1100,8 @@
     },
     {
       "screenId": "screen-page-play-taleslug-session-sessionid",
-      "routeIds": [
-        "route-page-play-taleslug-session-sessionid"
-      ],
-      "routePatterns": [
-        "/play/[taleSlug]/session/[sessionId]"
-      ],
+      "routeIds": ["route-page-play-taleslug-session-sessionid"],
+      "routePatterns": ["/play/[taleSlug]/session/[sessionId]"],
       "productArea": "Player",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1564,12 +1113,8 @@
     },
     {
       "screenId": "screen-page-player",
-      "routeIds": [
-        "route-page-player"
-      ],
-      "routePatterns": [
-        "/player"
-      ],
+      "routeIds": ["route-page-player"],
+      "routePatterns": ["/player"],
       "productArea": "Player",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -1582,12 +1127,8 @@
     },
     {
       "screenId": "screen-page-player-invitation",
-      "routeIds": [
-        "route-page-player-invitation"
-      ],
-      "routePatterns": [
-        "/player/invitation"
-      ],
+      "routeIds": ["route-page-player-invitation"],
+      "routePatterns": ["/player/invitation"],
       "productArea": "Authentication_and_Recovery",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1600,12 +1141,8 @@
     },
     {
       "screenId": "screen-page-player-library",
-      "routeIds": [
-        "route-page-player-library"
-      ],
-      "routePatterns": [
-        "/player/library"
-      ],
+      "routeIds": ["route-page-player-library"],
+      "routePatterns": ["/player/library"],
       "productArea": "Player",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1618,12 +1155,8 @@
     },
     {
       "screenId": "screen-page-player-playthroughs-playthroughid",
-      "routeIds": [
-        "route-page-player-playthroughs-playthroughid"
-      ],
-      "routePatterns": [
-        "/player/playthroughs/[playthroughId]"
-      ],
+      "routeIds": ["route-page-player-playthroughs-playthroughid"],
+      "routePatterns": ["/player/playthroughs/[playthroughId]"],
       "productArea": "Player",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -1636,12 +1169,8 @@
     },
     {
       "screenId": "screen-page-player-playthroughs-playthroughid-archive",
-      "routeIds": [
-        "route-page-player-playthroughs-playthroughid-archive"
-      ],
-      "routePatterns": [
-        "/player/playthroughs/[playthroughId]/archive"
-      ],
+      "routeIds": ["route-page-player-playthroughs-playthroughid-archive"],
+      "routePatterns": ["/player/playthroughs/[playthroughId]/archive"],
       "productArea": "Player",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -1654,12 +1183,8 @@
     },
     {
       "screenId": "screen-page-player-playthroughs-playthroughid-journal",
-      "routeIds": [
-        "route-page-player-playthroughs-playthroughid-journal"
-      ],
-      "routePatterns": [
-        "/player/playthroughs/[playthroughId]/journal"
-      ],
+      "routeIds": ["route-page-player-playthroughs-playthroughid-journal"],
+      "routePatterns": ["/player/playthroughs/[playthroughId]/journal"],
       "productArea": "Player",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1672,12 +1197,8 @@
     },
     {
       "screenId": "screen-page-player-sign-in",
-      "routeIds": [
-        "route-page-player-sign-in"
-      ],
-      "routePatterns": [
-        "/player/sign-in"
-      ],
+      "routeIds": ["route-page-player-sign-in"],
+      "routePatterns": ["/player/sign-in"],
       "productArea": "Player",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -1690,26 +1211,16 @@
     },
     {
       "screenId": "screen-page-profile-handle",
-      "routeIds": [
-        "route-page-profile-handle"
-      ],
-      "routePatterns": [
-        "/profile/[handle]"
-      ],
+      "routeIds": ["route-page-profile-handle"],
+      "routePatterns": ["/profile/[handle]"],
       "productArea": "Personal_Harbor",
-      "applicableStates": [
-        "READY"
-      ],
+      "applicableStates": ["READY"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-quartermaster",
-      "routeIds": [
-        "route-page-quartermaster"
-      ],
-      "routePatterns": [
-        "/quartermaster"
-      ],
+      "routeIds": ["route-page-quartermaster"],
+      "routePatterns": ["/quartermaster"],
       "productArea": "Captain_Helm",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -1721,12 +1232,8 @@
     },
     {
       "screenId": "screen-page-quartermaster-workspace",
-      "routeIds": [
-        "route-page-quartermaster-workspace"
-      ],
-      "routePatterns": [
-        "/quartermaster/[workspace]"
-      ],
+      "routeIds": ["route-page-quartermaster-workspace"],
+      "routePatterns": ["/quartermaster/[workspace]"],
       "productArea": "Captain_Helm",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -1738,12 +1245,8 @@
     },
     {
       "screenId": "screen-page-register",
-      "routeIds": [
-        "route-page-register"
-      ],
-      "routePatterns": [
-        "/register"
-      ],
+      "routeIds": ["route-page-register"],
+      "routePatterns": ["/register"],
       "productArea": "Authentication_and_Recovery",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1755,12 +1258,8 @@
     },
     {
       "screenId": "screen-page-reset-password",
-      "routeIds": [
-        "route-page-reset-password"
-      ],
-      "routePatterns": [
-        "/reset-password"
-      ],
+      "routeIds": ["route-page-reset-password"],
+      "routePatterns": ["/reset-password"],
       "productArea": "Authentication_and_Recovery",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1772,12 +1271,8 @@
     },
     {
       "screenId": "screen-page-sign-in",
-      "routeIds": [
-        "route-page-sign-in"
-      ],
-      "routePatterns": [
-        "/sign-in"
-      ],
+      "routeIds": ["route-page-sign-in"],
+      "routePatterns": ["/sign-in"],
       "productArea": "Authentication_and_Recovery",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1789,12 +1284,8 @@
     },
     {
       "screenId": "screen-page-studio",
-      "routeIds": [
-        "route-page-studio"
-      ],
-      "routePatterns": [
-        "/studio"
-      ],
+      "routeIds": ["route-page-studio"],
+      "routePatterns": ["/studio"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -1807,12 +1298,8 @@
     },
     {
       "screenId": "screen-page-studio-exchange",
-      "routeIds": [
-        "route-page-studio-exchange"
-      ],
-      "routePatterns": [
-        "/studio/exchange"
-      ],
+      "routeIds": ["route-page-studio-exchange"],
+      "routePatterns": ["/studio/exchange"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1825,12 +1312,8 @@
     },
     {
       "screenId": "screen-page-studio-library",
-      "routeIds": [
-        "route-page-studio-library"
-      ],
-      "routePatterns": [
-        "/studio/library"
-      ],
+      "routeIds": ["route-page-studio-library"],
+      "routePatterns": ["/studio/library"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1843,12 +1326,8 @@
     },
     {
       "screenId": "screen-page-studio-private-content",
-      "routeIds": [
-        "route-page-studio-private-content"
-      ],
-      "routePatterns": [
-        "/studio/private-content"
-      ],
+      "routeIds": ["route-page-studio-private-content"],
+      "routePatterns": ["/studio/private-content"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1861,29 +1340,16 @@
     },
     {
       "screenId": "screen-page-studio-private-content-operations",
-      "routeIds": [
-        "route-page-studio-private-content-operations"
-      ],
-      "routePatterns": [
-        "/studio/private-content/operations"
-      ],
+      "routeIds": ["route-page-studio-private-content-operations"],
+      "routePatterns": ["/studio/private-content/operations"],
       "productArea": "Creator_Studio_Shipwright",
-      "applicableStates": [
-        "DEPENDENCY_UNAVAILABLE",
-        "INITIAL_LOADING",
-        "READY",
-        "UNAUTHORIZED"
-      ],
+      "applicableStates": ["DEPENDENCY_UNAVAILABLE", "INITIAL_LOADING", "READY", "UNAUTHORIZED"],
       "captureStatus": "PLANNED"
     },
     {
       "screenId": "screen-page-studio-sign-in",
-      "routeIds": [
-        "route-page-studio-sign-in"
-      ],
-      "routePatterns": [
-        "/studio/sign-in"
-      ],
+      "routeIds": ["route-page-studio-sign-in"],
+      "routePatterns": ["/studio/sign-in"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -1896,12 +1362,8 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid",
-      "routeIds": [
-        "route-page-studio-tales-taleid"
-      ],
-      "routePatterns": [
-        "/studio/tales/[taleId]"
-      ],
+      "routeIds": ["route-page-studio-tales-taleid"],
+      "routePatterns": ["/studio/tales/[taleId]"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1914,12 +1376,8 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid-artifacts",
-      "routeIds": [
-        "route-page-studio-tales-taleid-artifacts"
-      ],
-      "routePatterns": [
-        "/studio/tales/[taleId]/artifacts"
-      ],
+      "routeIds": ["route-page-studio-tales-taleid-artifacts"],
+      "routePatterns": ["/studio/tales/[taleId]/artifacts"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1932,12 +1390,8 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid-assets",
-      "routeIds": [
-        "route-page-studio-tales-taleid-assets"
-      ],
-      "routePatterns": [
-        "/studio/tales/[taleId]/assets"
-      ],
+      "routeIds": ["route-page-studio-tales-taleid-assets"],
+      "routePatterns": ["/studio/tales/[taleId]/assets"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1950,12 +1404,8 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid-locations",
-      "routeIds": [
-        "route-page-studio-tales-taleid-locations"
-      ],
-      "routePatterns": [
-        "/studio/tales/[taleId]/locations"
-      ],
+      "routeIds": ["route-page-studio-tales-taleid-locations"],
+      "routePatterns": ["/studio/tales/[taleId]/locations"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1968,12 +1418,8 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid-settings",
-      "routeIds": [
-        "route-page-studio-tales-taleid-settings"
-      ],
-      "routePatterns": [
-        "/studio/tales/[taleId]/settings"
-      ],
+      "routeIds": ["route-page-studio-tales-taleid-settings"],
+      "routePatterns": ["/studio/tales/[taleId]/settings"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -1986,12 +1432,8 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid-trials",
-      "routeIds": [
-        "route-page-studio-tales-taleid-trials"
-      ],
-      "routePatterns": [
-        "/studio/tales/[taleId]/trials"
-      ],
+      "routeIds": ["route-page-studio-tales-taleid-trials"],
+      "routePatterns": ["/studio/tales/[taleId]/trials"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "DEPENDENCY_UNAVAILABLE",
@@ -2005,12 +1447,8 @@
     },
     {
       "screenId": "screen-page-studio-tales-taleid-versions",
-      "routeIds": [
-        "route-page-studio-tales-taleid-versions"
-      ],
-      "routePatterns": [
-        "/studio/tales/[taleId]/versions"
-      ],
+      "routeIds": ["route-page-studio-tales-taleid-versions"],
+      "routePatterns": ["/studio/tales/[taleId]/versions"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -2023,12 +1461,8 @@
     },
     {
       "screenId": "screen-page-studio-tales-new",
-      "routeIds": [
-        "route-page-studio-tales-new"
-      ],
-      "routePatterns": [
-        "/studio/tales/new"
-      ],
+      "routeIds": ["route-page-studio-tales-new"],
+      "routePatterns": ["/studio/tales/new"],
       "productArea": "Creator_Studio_Shipwright",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -2041,12 +1475,8 @@
     },
     {
       "screenId": "screen-page-tale-campaignslug",
-      "routeIds": [
-        "route-page-tale-campaignslug"
-      ],
-      "routePatterns": [
-        "/tale/[campaignSlug]"
-      ],
+      "routeIds": ["route-page-tale-campaignslug"],
+      "routePatterns": ["/tale/[campaignSlug]"],
       "productArea": "Public_Chronicle_and_Detail",
       "applicableStates": [
         "COMPATIBILITY_OR_REDIRECT",
@@ -2058,12 +1488,8 @@
     },
     {
       "screenId": "screen-page-tales",
-      "routeIds": [
-        "route-page-tales"
-      ],
-      "routePatterns": [
-        "/tales"
-      ],
+      "routeIds": ["route-page-tales"],
+      "routePatterns": ["/tales"],
       "productArea": "Public_Chronicle_and_Detail",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",
@@ -2075,12 +1501,8 @@
     },
     {
       "screenId": "screen-page-verify-email",
-      "routeIds": [
-        "route-page-verify-email"
-      ],
-      "routePatterns": [
-        "/verify-email"
-      ],
+      "routeIds": ["route-page-verify-email"],
+      "routePatterns": ["/verify-email"],
       "productArea": "Authentication_and_Recovery",
       "applicableStates": [
         "EMPTY_WHERE_IMPLEMENTED",

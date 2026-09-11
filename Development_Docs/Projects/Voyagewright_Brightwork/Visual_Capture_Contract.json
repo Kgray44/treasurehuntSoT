@@ -2221,9 +2221,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "PLATFORM_OBSERVE"
-      ],
+      "capabilityRequirements": ["PLATFORM_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin:MAIN_CONTENT",
@@ -2251,9 +2249,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "PLATFORM_OBSERVE"
-      ],
+      "capabilityRequirements": ["PLATFORM_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin:MAIN_CONTENT",
@@ -2281,9 +2277,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "PLATFORM_OBSERVE"
-      ],
+      "capabilityRequirements": ["PLATFORM_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin:MAIN_CONTENT",
@@ -2311,9 +2305,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "PLATFORM_OBSERVE"
-      ],
+      "capabilityRequirements": ["PLATFORM_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin:MAIN_CONTENT",
@@ -2341,9 +2333,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "AUDIT_OBSERVE"
-      ],
+      "capabilityRequirements": ["AUDIT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-audit:MAIN_CONTENT",
@@ -2371,9 +2361,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "AUDIT_OBSERVE"
-      ],
+      "capabilityRequirements": ["AUDIT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-audit:MAIN_CONTENT",
@@ -2401,9 +2389,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "AUDIT_OBSERVE"
-      ],
+      "capabilityRequirements": ["AUDIT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-audit:MAIN_CONTENT",
@@ -2431,9 +2417,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "AUDIT_OBSERVE"
-      ],
+      "capabilityRequirements": ["AUDIT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-audit:MAIN_CONTENT",
@@ -2461,9 +2445,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CHRONICLE_OBSERVE"
-      ],
+      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-chronicles:MAIN_CONTENT",
@@ -2491,9 +2473,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CHRONICLE_OBSERVE"
-      ],
+      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-chronicles:MAIN_CONTENT",
@@ -2521,9 +2501,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CHRONICLE_OBSERVE"
-      ],
+      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-chronicles:MAIN_CONTENT",
@@ -2551,9 +2529,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CHRONICLE_OBSERVE"
-      ],
+      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-chronicles:MAIN_CONTENT",
@@ -2581,9 +2557,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CHRONICLE_OBSERVE"
-      ],
+      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-chronicles-chronicleid:MAIN_CONTENT",
@@ -2611,9 +2585,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CHRONICLE_OBSERVE"
-      ],
+      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-chronicles-chronicleid:MAIN_CONTENT",
@@ -2641,9 +2613,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CHRONICLE_OBSERVE"
-      ],
+      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-chronicles-chronicleid:MAIN_CONTENT",
@@ -2671,9 +2641,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CHRONICLE_OBSERVE"
-      ],
+      "capabilityRequirements": ["CHRONICLE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-chronicles-chronicleid:MAIN_CONTENT",
@@ -2701,9 +2669,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "COMMUNITY_OBSERVE"
-      ],
+      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-community:MAIN_CONTENT",
@@ -2731,9 +2697,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "COMMUNITY_OBSERVE"
-      ],
+      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-community:MAIN_CONTENT",
@@ -2761,9 +2725,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "COMMUNITY_OBSERVE"
-      ],
+      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-community:MAIN_CONTENT",
@@ -2791,9 +2753,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "COMMUNITY_OBSERVE"
-      ],
+      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-community:MAIN_CONTENT",
@@ -2821,9 +2781,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "COMMUNITY_OBSERVE"
-      ],
+      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-community-listingid:MAIN_CONTENT",
@@ -2851,9 +2809,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "COMMUNITY_OBSERVE"
-      ],
+      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-community-listingid:MAIN_CONTENT",
@@ -2881,9 +2837,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "COMMUNITY_OBSERVE"
-      ],
+      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-community-listingid:MAIN_CONTENT",
@@ -2911,9 +2865,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "COMMUNITY_OBSERVE"
-      ],
+      "capabilityRequirements": ["COMMUNITY_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-community-listingid:MAIN_CONTENT",
@@ -2941,9 +2893,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CONFIG_OBSERVE"
-      ],
+      "capabilityRequirements": ["CONFIG_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-configuration:MAIN_CONTENT",
@@ -2979,9 +2929,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CONFIG_OBSERVE"
-      ],
+      "capabilityRequirements": ["CONFIG_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-configuration:MAIN_CONTENT",
@@ -3017,9 +2965,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CONFIG_OBSERVE"
-      ],
+      "capabilityRequirements": ["CONFIG_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-configuration:MAIN_CONTENT",
@@ -3055,9 +3001,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CONFIG_OBSERVE"
-      ],
+      "capabilityRequirements": ["CONFIG_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-configuration:MAIN_CONTENT",
@@ -3093,9 +3037,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "PLATFORM_OBSERVE"
-      ],
+      "capabilityRequirements": ["PLATFORM_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-investigate:MAIN_CONTENT",
@@ -3123,9 +3065,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "PLATFORM_OBSERVE"
-      ],
+      "capabilityRequirements": ["PLATFORM_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-investigate:MAIN_CONTENT",
@@ -3153,9 +3093,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "PLATFORM_OBSERVE"
-      ],
+      "capabilityRequirements": ["PLATFORM_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-investigate:MAIN_CONTENT",
@@ -3183,9 +3121,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "PLATFORM_OBSERVE"
-      ],
+      "capabilityRequirements": ["PLATFORM_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-investigate:MAIN_CONTENT",
@@ -3213,9 +3149,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "JOBS_OBSERVE"
-      ],
+      "capabilityRequirements": ["JOBS_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-operations:MAIN_CONTENT",
@@ -3243,9 +3177,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "JOBS_OBSERVE"
-      ],
+      "capabilityRequirements": ["JOBS_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-operations:MAIN_CONTENT",
@@ -3273,9 +3205,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "JOBS_OBSERVE"
-      ],
+      "capabilityRequirements": ["JOBS_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-operations:MAIN_CONTENT",
@@ -3303,9 +3233,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "JOBS_OBSERVE"
-      ],
+      "capabilityRequirements": ["JOBS_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-operations:MAIN_CONTENT",
@@ -3333,9 +3261,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ACCOUNT_OBSERVE"
-      ],
+      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-people:MAIN_CONTENT",
@@ -3363,9 +3289,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ACCOUNT_OBSERVE"
-      ],
+      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-people:MAIN_CONTENT",
@@ -3393,9 +3317,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ACCOUNT_OBSERVE"
-      ],
+      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-people:MAIN_CONTENT",
@@ -3423,9 +3345,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ACCOUNT_OBSERVE"
-      ],
+      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-people:MAIN_CONTENT",
@@ -3453,9 +3373,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ACCOUNT_OBSERVE"
-      ],
+      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-people-accountid:MAIN_CONTENT",
@@ -3483,9 +3401,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ACCOUNT_OBSERVE"
-      ],
+      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-people-accountid:MAIN_CONTENT",
@@ -3513,9 +3429,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ACCOUNT_OBSERVE"
-      ],
+      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-people-accountid:MAIN_CONTENT",
@@ -3543,9 +3457,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ACCOUNT_OBSERVE"
-      ],
+      "capabilityRequirements": ["ACCOUNT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-people-accountid:MAIN_CONTENT",
@@ -3573,9 +3485,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CONTENT_OBSERVE"
-      ],
+      "capabilityRequirements": ["CONTENT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-providers:MAIN_CONTENT",
@@ -3603,9 +3513,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CONTENT_OBSERVE"
-      ],
+      "capabilityRequirements": ["CONTENT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-providers:MAIN_CONTENT",
@@ -3633,9 +3541,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CONTENT_OBSERVE"
-      ],
+      "capabilityRequirements": ["CONTENT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-providers:MAIN_CONTENT",
@@ -3663,9 +3569,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CONTENT_OBSERVE"
-      ],
+      "capabilityRequirements": ["CONTENT_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-providers:MAIN_CONTENT",
@@ -3693,9 +3597,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "RELEASE_OBSERVE"
-      ],
+      "capabilityRequirements": ["RELEASE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-releases:MAIN_CONTENT",
@@ -3723,9 +3625,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "RELEASE_OBSERVE"
-      ],
+      "capabilityRequirements": ["RELEASE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-releases:MAIN_CONTENT",
@@ -3753,9 +3653,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "RELEASE_OBSERVE"
-      ],
+      "capabilityRequirements": ["RELEASE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-releases:MAIN_CONTENT",
@@ -3783,9 +3681,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "RELEASE_OBSERVE"
-      ],
+      "capabilityRequirements": ["RELEASE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-releases:MAIN_CONTENT",
@@ -3813,9 +3709,7 @@
       "productArea": "Admiralty",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "SUPPORT_REQUEST"
-      ],
+      "capabilityRequirements": ["SUPPORT_REQUEST"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-support-cases:MAIN_CONTENT",
@@ -3843,9 +3737,7 @@
       "productArea": "Admiralty",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "SUPPORT_REQUEST"
-      ],
+      "capabilityRequirements": ["SUPPORT_REQUEST"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-support-cases:MAIN_CONTENT",
@@ -3873,9 +3765,7 @@
       "productArea": "Admiralty",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "SUPPORT_REQUEST"
-      ],
+      "capabilityRequirements": ["SUPPORT_REQUEST"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-support-cases:MAIN_CONTENT",
@@ -3903,9 +3793,7 @@
       "productArea": "Admiralty",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "SUPPORT_REQUEST"
-      ],
+      "capabilityRequirements": ["SUPPORT_REQUEST"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-support-cases:MAIN_CONTENT",
@@ -3933,9 +3821,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "VOYAGE_OBSERVE"
-      ],
+      "capabilityRequirements": ["VOYAGE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-voyages:MAIN_CONTENT",
@@ -3963,9 +3849,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "VOYAGE_OBSERVE"
-      ],
+      "capabilityRequirements": ["VOYAGE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-voyages:MAIN_CONTENT",
@@ -3993,9 +3877,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "VOYAGE_OBSERVE"
-      ],
+      "capabilityRequirements": ["VOYAGE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-voyages:MAIN_CONTENT",
@@ -4023,9 +3905,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "VOYAGE_OBSERVE"
-      ],
+      "capabilityRequirements": ["VOYAGE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-voyages:MAIN_CONTENT",
@@ -4053,9 +3933,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "VOYAGE_OBSERVE"
-      ],
+      "capabilityRequirements": ["VOYAGE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-voyages-voyageid:MAIN_CONTENT",
@@ -4083,9 +3961,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "VOYAGE_OBSERVE"
-      ],
+      "capabilityRequirements": ["VOYAGE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-voyages-voyageid:MAIN_CONTENT",
@@ -4113,9 +3989,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "VOYAGE_OBSERVE"
-      ],
+      "capabilityRequirements": ["VOYAGE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-voyages-voyageid:MAIN_CONTENT",
@@ -4143,9 +4017,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "VOYAGE_OBSERVE"
-      ],
+      "capabilityRequirements": ["VOYAGE_OBSERVE"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-admin-voyages-voyageid:MAIN_CONTENT",
@@ -4173,9 +4045,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -4194,9 +4064,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -4215,9 +4083,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "LIGHT",
@@ -4236,9 +4102,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "LIGHT",
@@ -4257,9 +4121,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -4278,9 +4140,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -4299,9 +4159,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "LIGHT",
@@ -4320,9 +4178,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "LIGHT",
@@ -4341,9 +4197,7 @@
       "productArea": "Captain_Helm",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-library:MAIN_CONTENT",
@@ -4371,9 +4225,7 @@
       "productArea": "Captain_Helm",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-library:MAIN_CONTENT",
@@ -4401,9 +4253,7 @@
       "productArea": "Captain_Helm",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-library:MAIN_CONTENT",
@@ -4431,9 +4281,7 @@
       "productArea": "Captain_Helm",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-library:MAIN_CONTENT",
@@ -4461,9 +4309,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-sessions-sessionid:MAIN_CONTENT",
@@ -4498,9 +4344,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-sessions-sessionid:MAIN_CONTENT",
@@ -4535,9 +4379,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-sessions-sessionid:MAIN_CONTENT",
@@ -4572,9 +4414,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-sessions-sessionid:MAIN_CONTENT",
@@ -4609,9 +4449,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "captain"
-      ],
+      "capabilityRequirements": ["captain"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -4630,9 +4468,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "captain"
-      ],
+      "capabilityRequirements": ["captain"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -4651,9 +4487,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "captain"
-      ],
+      "capabilityRequirements": ["captain"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "LIGHT",
@@ -4672,9 +4506,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "captain"
-      ],
+      "capabilityRequirements": ["captain"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "LIGHT",
@@ -4693,9 +4525,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-tales-taleid:MAIN_CONTENT",
@@ -4723,9 +4553,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-tales-taleid:MAIN_CONTENT",
@@ -4753,9 +4581,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-tales-taleid:MAIN_CONTENT",
@@ -4783,9 +4609,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-tales-taleid:MAIN_CONTENT",
@@ -4813,9 +4637,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "captain"
-      ],
+      "capabilityRequirements": ["captain"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT",
@@ -4850,9 +4672,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "captain"
-      ],
+      "capabilityRequirements": ["captain"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT",
@@ -4887,9 +4707,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "captain"
-      ],
+      "capabilityRequirements": ["captain"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT",
@@ -4924,9 +4742,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "captain"
-      ],
+      "capabilityRequirements": ["captain"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-voyages-playthroughid-muster:MAIN_CONTENT",
@@ -4961,9 +4777,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-voyages-playthroughid-player-preview:MAIN_CONTENT",
@@ -4998,9 +4812,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-voyages-playthroughid-player-preview:MAIN_CONTENT",
@@ -5035,9 +4847,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-voyages-playthroughid-player-preview:MAIN_CONTENT",
@@ -5072,9 +4882,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-captain-voyages-playthroughid-player-preview:MAIN_CONTENT",
@@ -6909,9 +6717,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "MODERATOR"
-      ],
+      "capabilityRequirements": ["MODERATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-moderation:MAIN_CONTENT",
@@ -6939,9 +6745,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "MODERATOR"
-      ],
+      "capabilityRequirements": ["MODERATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-moderation:MAIN_CONTENT",
@@ -6969,9 +6773,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "MODERATOR"
-      ],
+      "capabilityRequirements": ["MODERATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-moderation:MAIN_CONTENT",
@@ -6999,9 +6801,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "MODERATOR"
-      ],
+      "capabilityRequirements": ["MODERATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-moderation:MAIN_CONTENT",
@@ -7029,9 +6829,7 @@
       "productArea": "Community_Harbor",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "MODERATOR"
-      ],
+      "capabilityRequirements": ["MODERATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-moderation-id:MAIN_CONTENT",
@@ -7059,9 +6857,7 @@
       "productArea": "Community_Harbor",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "MODERATOR"
-      ],
+      "capabilityRequirements": ["MODERATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-moderation-id:MAIN_CONTENT",
@@ -7089,9 +6885,7 @@
       "productArea": "Community_Harbor",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "MODERATOR"
-      ],
+      "capabilityRequirements": ["MODERATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-moderation-id:MAIN_CONTENT",
@@ -7119,9 +6913,7 @@
       "productArea": "Community_Harbor",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "MODERATOR"
-      ],
+      "capabilityRequirements": ["MODERATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-moderation-id:MAIN_CONTENT",
@@ -7485,9 +7277,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-consent:MAIN_CONTENT",
@@ -7515,9 +7305,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-consent:MAIN_CONTENT",
@@ -7545,9 +7333,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-consent:MAIN_CONTENT",
@@ -7575,9 +7361,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-consent:MAIN_CONTENT",
@@ -7681,9 +7465,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-owner:MAIN_CONTENT",
@@ -7711,9 +7493,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-owner:MAIN_CONTENT",
@@ -7741,9 +7521,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-owner:MAIN_CONTENT",
@@ -7771,9 +7549,7 @@
       "productArea": "Community_Harbor",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-owner:MAIN_CONTENT",
@@ -7801,9 +7577,7 @@
       "productArea": "Community_Harbor",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-owner-id:MAIN_CONTENT",
@@ -7831,9 +7605,7 @@
       "productArea": "Community_Harbor",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-owner-id:MAIN_CONTENT",
@@ -7861,9 +7633,7 @@
       "productArea": "Community_Harbor",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-owner-id:MAIN_CONTENT",
@@ -7891,9 +7661,7 @@
       "productArea": "Community_Harbor",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-community-voyage-logs-owner-id:MAIN_CONTENT",
@@ -8033,9 +7801,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport:MAIN_CONTENT",
@@ -8063,9 +7829,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport:MAIN_CONTENT",
@@ -8093,9 +7857,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport:MAIN_CONTENT",
@@ -8123,9 +7885,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport:MAIN_CONTENT",
@@ -8153,9 +7913,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-artifacts:MAIN_CONTENT",
@@ -8183,9 +7941,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-artifacts:MAIN_CONTENT",
@@ -8213,9 +7969,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-artifacts:MAIN_CONTENT",
@@ -8243,9 +7997,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-artifacts:MAIN_CONTENT",
@@ -8273,9 +8025,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-artifacts-artifactId:MAIN_CONTENT",
@@ -8303,9 +8053,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-artifacts-artifactId:MAIN_CONTENT",
@@ -8333,9 +8081,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-artifacts-artifactId:MAIN_CONTENT",
@@ -8363,9 +8109,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-artifacts-artifactId:MAIN_CONTENT",
@@ -8393,9 +8137,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-atlas:MAIN_CONTENT",
@@ -8423,9 +8165,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-atlas:MAIN_CONTENT",
@@ -8453,9 +8193,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-atlas:MAIN_CONTENT",
@@ -8483,9 +8221,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-atlas:MAIN_CONTENT",
@@ -8513,9 +8249,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history:MAIN_CONTENT",
@@ -8543,9 +8277,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history:MAIN_CONTENT",
@@ -8573,9 +8305,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history:MAIN_CONTENT",
@@ -8603,9 +8333,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history:MAIN_CONTENT",
@@ -8633,9 +8361,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history-recordId:MAIN_CONTENT",
@@ -8663,9 +8389,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history-recordId:MAIN_CONTENT",
@@ -8693,9 +8417,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history-recordId:MAIN_CONTENT",
@@ -8723,9 +8445,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history-recordId:MAIN_CONTENT",
@@ -8753,9 +8473,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history-recordid-book:MAIN_CONTENT",
@@ -8783,9 +8501,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history-recordid-book:MAIN_CONTENT",
@@ -8813,9 +8529,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history-recordid-book:MAIN_CONTENT",
@@ -8843,9 +8557,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-history-recordid-book:MAIN_CONTENT",
@@ -8873,9 +8585,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "DARK",
@@ -8895,9 +8605,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "DARK",
@@ -8917,9 +8625,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "LIGHT",
@@ -8939,9 +8645,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "LIGHT",
@@ -8961,9 +8665,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "DARK",
@@ -8983,9 +8685,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "DARK",
@@ -9005,9 +8705,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "LIGHT",
@@ -9027,9 +8725,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "LIGHT",
@@ -9049,9 +8745,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-memories:MAIN_CONTENT",
@@ -9079,9 +8773,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-memories:MAIN_CONTENT",
@@ -9109,9 +8801,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-memories:MAIN_CONTENT",
@@ -9139,9 +8829,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-memories:MAIN_CONTENT",
@@ -9169,9 +8857,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-people:MAIN_CONTENT",
@@ -9199,9 +8885,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-people:MAIN_CONTENT",
@@ -9229,9 +8913,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-people:MAIN_CONTENT",
@@ -9259,9 +8941,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-people:MAIN_CONTENT",
@@ -9289,9 +8969,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-saved:MAIN_CONTENT",
@@ -9319,9 +8997,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-saved:MAIN_CONTENT",
@@ -9349,9 +9025,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-saved:MAIN_CONTENT",
@@ -9379,9 +9053,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_ACCOUNT_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-saved:MAIN_CONTENT",
@@ -9409,9 +9081,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-statistics:MAIN_CONTENT",
@@ -9439,9 +9109,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-statistics:MAIN_CONTENT",
@@ -9469,9 +9137,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-statistics:MAIN_CONTENT",
@@ -9499,9 +9165,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-statistics:MAIN_CONTENT",
@@ -9529,9 +9193,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-timeline:MAIN_CONTENT",
@@ -9559,9 +9221,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-timeline:MAIN_CONTENT",
@@ -9589,9 +9249,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-timeline:MAIN_CONTENT",
@@ -9619,9 +9277,7 @@
       "productArea": "Chronicle_Passport_Wakebook",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-passport-timeline:MAIN_CONTENT",
@@ -9985,9 +9641,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "DARK",
@@ -10006,9 +9660,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "DARK",
@@ -10027,9 +9679,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "LIGHT",
@@ -10048,9 +9698,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "LIGHT",
@@ -10069,9 +9717,7 @@
       "productArea": "Authentication_and_Recovery",
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "UNAVAILABLE",
       "persona": "ANONYMOUS",
       "theme": "DARK",
@@ -10092,9 +9738,7 @@
       "productArea": "Authentication_and_Recovery",
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "UNAVAILABLE",
       "persona": "ANONYMOUS",
       "theme": "DARK",
@@ -10115,9 +9759,7 @@
       "productArea": "Authentication_and_Recovery",
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "UNAVAILABLE",
       "persona": "ANONYMOUS",
       "theme": "LIGHT",
@@ -10138,9 +9780,7 @@
       "productArea": "Authentication_and_Recovery",
       "classification": "TOKENIZED_OR_INVITATION_DEEP_LINK",
       "authenticationRequirement": "BOUNDED_TOKEN_OR_CODE",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "UNAVAILABLE",
       "persona": "ANONYMOUS",
       "theme": "LIGHT",
@@ -10161,9 +9801,7 @@
       "productArea": "Player",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-player-library:MAIN_CONTENT",
@@ -10191,9 +9829,7 @@
       "productArea": "Player",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-player-library:MAIN_CONTENT",
@@ -10221,9 +9857,7 @@
       "productArea": "Player",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-player-library:MAIN_CONTENT",
@@ -10251,9 +9885,7 @@
       "productArea": "Player",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-player-library:MAIN_CONTENT",
@@ -10281,9 +9913,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "DARK",
@@ -10303,9 +9933,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "DARK",
@@ -10325,9 +9953,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "LIGHT",
@@ -10347,9 +9973,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "LIGHT",
@@ -10369,9 +9993,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "DARK",
@@ -10390,9 +10012,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "DARK",
@@ -10411,9 +10031,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "LIGHT",
@@ -10432,9 +10050,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ORDINARY_PLAYER",
       "theme": "LIGHT",
@@ -10453,9 +10069,7 @@
       "productArea": "Player",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT",
@@ -10483,9 +10097,7 @@
       "productArea": "Player",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT",
@@ -10513,9 +10125,7 @@
       "productArea": "Player",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT",
@@ -10543,9 +10153,7 @@
       "productArea": "Player",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
-      "capabilityRequirements": [
-        "PLAYER"
-      ],
+      "capabilityRequirements": ["PLAYER"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-player-playthroughs-playthroughid-journal:MAIN_CONTENT",
@@ -10573,9 +10181,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ANONYMOUS",
       "theme": "DARK",
@@ -10594,9 +10200,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ANONYMOUS",
       "theme": "DARK",
@@ -10615,9 +10219,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ANONYMOUS",
       "theme": "LIGHT",
@@ -10636,9 +10238,7 @@
       "productArea": "Player",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "player"
-      ],
+      "capabilityRequirements": ["player"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "ANONYMOUS",
       "theme": "LIGHT",
@@ -10769,9 +10369,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -10790,9 +10388,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -10811,9 +10407,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "LIGHT",
@@ -10832,9 +10426,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "LIGHT",
@@ -10853,9 +10445,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -10874,9 +10464,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -10895,9 +10483,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "LIGHT",
@@ -10916,9 +10502,7 @@
       "productArea": "Captain_Helm",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CAPTAIN_PLAYER",
       "theme": "LIGHT",
@@ -11273,9 +10857,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CREATOR",
       "theme": "DARK",
@@ -11294,9 +10876,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CREATOR",
       "theme": "DARK",
@@ -11315,9 +10895,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CREATOR",
       "theme": "LIGHT",
@@ -11336,9 +10914,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CREATOR",
       "theme": "LIGHT",
@@ -11357,9 +10933,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-exchange:MAIN_CONTENT",
@@ -11395,9 +10969,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-exchange:MAIN_CONTENT",
@@ -11433,9 +11005,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-exchange:MAIN_CONTENT",
@@ -11471,9 +11041,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-exchange:MAIN_CONTENT",
@@ -11509,9 +11077,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-library:MAIN_CONTENT",
@@ -11539,9 +11105,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-library:MAIN_CONTENT",
@@ -11569,9 +11133,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-library:MAIN_CONTENT",
@@ -11599,9 +11161,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-library:MAIN_CONTENT",
@@ -11629,9 +11189,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-private-content:MAIN_CONTENT",
@@ -11659,9 +11217,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-private-content:MAIN_CONTENT",
@@ -11689,9 +11245,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-private-content:MAIN_CONTENT",
@@ -11719,9 +11273,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-private-content:MAIN_CONTENT",
@@ -11749,9 +11301,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ADMIN"
-      ],
+      "capabilityRequirements": ["ADMIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-private-content-operations:MAIN_CONTENT",
@@ -11787,9 +11337,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ADMIN"
-      ],
+      "capabilityRequirements": ["ADMIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-private-content-operations:MAIN_CONTENT",
@@ -11825,9 +11373,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ADMIN"
-      ],
+      "capabilityRequirements": ["ADMIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-private-content-operations:MAIN_CONTENT",
@@ -11863,9 +11409,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ADMIN"
-      ],
+      "capabilityRequirements": ["ADMIN"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-private-content-operations:MAIN_CONTENT",
@@ -11901,9 +11445,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "creator"
-      ],
+      "capabilityRequirements": ["creator"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CREATOR",
       "theme": "DARK",
@@ -11922,9 +11464,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "creator"
-      ],
+      "capabilityRequirements": ["creator"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CREATOR",
       "theme": "DARK",
@@ -11943,9 +11483,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "creator"
-      ],
+      "capabilityRequirements": ["creator"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CREATOR",
       "theme": "LIGHT",
@@ -11964,9 +11502,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "COMPATIBILITY_OR_REDIRECT",
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
-      "capabilityRequirements": [
-        "creator"
-      ],
+      "capabilityRequirements": ["creator"],
       "state": "COMPATIBILITY_OR_REDIRECT",
       "persona": "CREATOR",
       "theme": "LIGHT",
@@ -11985,9 +11521,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid:MAIN_CONTENT",
@@ -12015,9 +11549,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid:MAIN_CONTENT",
@@ -12045,9 +11577,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid:MAIN_CONTENT",
@@ -12075,9 +11605,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid:MAIN_CONTENT",
@@ -12105,9 +11633,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-artifacts:MAIN_CONTENT",
@@ -12135,9 +11661,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-artifacts:MAIN_CONTENT",
@@ -12165,9 +11689,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-artifacts:MAIN_CONTENT",
@@ -12195,9 +11717,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-artifacts:MAIN_CONTENT",
@@ -12225,9 +11745,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-assets:MAIN_CONTENT",
@@ -12255,9 +11773,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-assets:MAIN_CONTENT",
@@ -12285,9 +11801,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-assets:MAIN_CONTENT",
@@ -12315,9 +11829,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-assets:MAIN_CONTENT",
@@ -12345,9 +11857,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-locations:MAIN_CONTENT",
@@ -12375,9 +11885,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-locations:MAIN_CONTENT",
@@ -12405,9 +11913,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-locations:MAIN_CONTENT",
@@ -12435,9 +11941,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-locations:MAIN_CONTENT",
@@ -12465,9 +11969,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-settings:MAIN_CONTENT",
@@ -12495,9 +11997,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-settings:MAIN_CONTENT",
@@ -12525,9 +12025,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-settings:MAIN_CONTENT",
@@ -12555,9 +12053,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-settings:MAIN_CONTENT",
@@ -12585,9 +12081,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-trials:MAIN_CONTENT",
@@ -12615,9 +12109,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-trials:MAIN_CONTENT",
@@ -12645,9 +12137,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-trials:MAIN_CONTENT",
@@ -12675,9 +12165,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-trials:MAIN_CONTENT",
@@ -12705,9 +12193,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-versions:MAIN_CONTENT",
@@ -12735,9 +12221,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-versions:MAIN_CONTENT",
@@ -12765,9 +12249,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-versions:MAIN_CONTENT",
@@ -12795,9 +12277,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-taleid-versions:MAIN_CONTENT",
@@ -12825,9 +12305,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-new:MAIN_CONTENT",
@@ -12855,9 +12333,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-new:MAIN_CONTENT",
@@ -12885,9 +12361,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-new:MAIN_CONTENT",
@@ -12915,9 +12389,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "USER_FACING_NAVIGABLE",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CREATOR"
-      ],
+      "capabilityRequirements": ["CREATOR"],
       "expectedReadyLandmarks": [
         {
           "id": "route-page-studio-tales-new:MAIN_CONTENT",
@@ -13264,9 +12736,7 @@
       "productArea": "Admiralty",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "PLATFORM_OBSERVE"
-      ],
+      "capabilityRequirements": ["PLATFORM_OBSERVE"],
       "state": "UNAUTHORIZED",
       "persona": "ANONYMOUS",
       "theme": "DARK",
@@ -13343,9 +12813,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "INITIAL_LOADING",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -13364,9 +12832,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "RECOVERABLE_ERROR",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -13385,9 +12851,7 @@
       "productArea": "Captain_Helm",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "CAPTAIN"
-      ],
+      "capabilityRequirements": ["CAPTAIN"],
       "state": "DESTRUCTIVE_CONFIRMATION",
       "persona": "CAPTAIN_PLAYER",
       "theme": "DARK",
@@ -13406,9 +12870,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ADMIN"
-      ],
+      "capabilityRequirements": ["ADMIN"],
       "state": "INITIAL_LOADING",
       "persona": "ADMIRALTY_OPERATOR",
       "theme": "DARK",
@@ -13427,9 +12889,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ADMIN"
-      ],
+      "capabilityRequirements": ["ADMIN"],
       "state": "DEPENDENCY_UNAVAILABLE",
       "persona": "ADMIRALTY_OPERATOR",
       "theme": "DARK",
@@ -13448,9 +12908,7 @@
       "productArea": "Creator_Studio_Shipwright",
       "classification": "CONTEXTUAL_DYNAMIC_DESTINATION",
       "authenticationRequirement": "AUTHENTICATED_CAPABILITY_REQUIRED",
-      "capabilityRequirements": [
-        "ADMIN"
-      ],
+      "capabilityRequirements": ["ADMIN"],
       "state": "UNAUTHORIZED",
       "persona": "ANONYMOUS",
       "theme": "DARK",

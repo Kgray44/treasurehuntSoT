@@ -14,16 +14,16 @@ last_reviewed: 2026-09-11
 
 After the final bounded product corrections protected-merged at `d2fe25355ed2e5eac47aefb9cc0152413b8b607f`, the full Brightwork corpus was regenerated rather than rebadging older images. The generator fail-closed on ordinary-product source movement; the census was narrowly re-bound in commit `5f5ad949ff92427dfc4fbef1acf915f91a65a205`, then the task-owned production-build runtime captured the current product.
 
-| Measure | Current result |
-| --- | --- |
-| Protected product baseline | `d2fe25355ed2e5eac47aefb9cc0152413b8b607f` |
-| Audit-runtime binding | `5f5ad949ff92427dfc4fbef1acf915f91a65a205` |
-| All page routes / human-facing routes | 117 / 116 |
-| Direct navigable / contextual / token-or-invitation / compatibility / development | 48 / 44 / 8 / 16 / 1 |
-| Required / current visual records | 478 / 478 |
-| Stale / missing / blocked / orphaned / semantic-invalid | 0 / 0 / 0 / 0 / 0 |
-| Meaningful-state entries | 568 (130 `COVERED`, 438 `EXEMPT_WITH_RATIONALE`) |
-| Navigation reachability | 48 direct, 43 contextual, 8 token/invitation, 16 compatibility, 1 intentionally protected; zero unresolved or orphaned |
+| Measure                                                                           | Current result                                                                                                         |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Protected product baseline                                                        | `d2fe25355ed2e5eac47aefb9cc0152413b8b607f`                                                                             |
+| Audit-runtime binding                                                             | `5f5ad949ff92427dfc4fbef1acf915f91a65a205`                                                                             |
+| All page routes / human-facing routes                                             | 117 / 116                                                                                                              |
+| Direct navigable / contextual / token-or-invitation / compatibility / development | 48 / 44 / 8 / 16 / 1                                                                                                   |
+| Required / current visual records                                                 | 478 / 478                                                                                                              |
+| Stale / missing / blocked / orphaned / semantic-invalid                           | 0 / 0 / 0 / 0 / 0                                                                                                      |
+| Meaningful-state entries                                                          | 568 (130 `COVERED`, 438 `EXEMPT_WITH_RATIONALE`)                                                                       |
+| Navigation reachability                                                           | 48 direct, 43 contextual, 8 token/invitation, 16 compatibility, 1 intentionally protected; zero unresolved or orphaned |
 
 The capture manifest is bound to contract digest `f12139ba2e8699755ecc63b5ea665932329a0c89ea92c6d1759398993540c138`. It is machine evidence from a disposable synthetic fixture, not a public deployment, production-data, live-provider, accessibility certification, or owner-acceptance result.
 

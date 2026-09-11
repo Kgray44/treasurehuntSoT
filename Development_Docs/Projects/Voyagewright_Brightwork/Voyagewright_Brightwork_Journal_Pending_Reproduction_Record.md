@@ -24,23 +24,23 @@ The preserved screenshot under `Experience_Images/Final_Attention/` is historica
 
 The bounded final correction changed only the stale browser assertion to the current semantic contract: historical mode, a visible labeled Historical Volume, explicit completed-voyage read-only communication, available replay controls, and a readable Journal.
 
-| Field | Result |
-| --- | --- |
-| Candidate | `43b7d4b78109cdad2ffaae136b63cda6e1288870` |
-| Protected product merge | `d2fe25355ed2e5eac47aefb9cc0152413b8b607f` (#654) |
-| Profile | `lanternwake-phase3` |
-| Browser scope | Task-owned Chromium production-browser lane |
-| Result | 12 passed / 0 failed |
-| CI confirmation | Sounding Line / Mainline Decision run `34637475779` — PASS |
-| Disposition | `TEST_EVIDENCE_REPAIRED_AND_VERIFIED` |
+| Field                   | Result                                                     |
+| ----------------------- | ---------------------------------------------------------- |
+| Candidate               | `43b7d4b78109cdad2ffaae136b63cda6e1288870`                 |
+| Protected product merge | `d2fe25355ed2e5eac47aefb9cc0152413b8b607f` (#654)          |
+| Profile                 | `lanternwake-phase3`                                       |
+| Browser scope           | Task-owned Chromium production-browser lane                |
+| Result                  | 12 passed / 0 failed                                       |
+| CI confirmation         | Sounding Line / Mainline Decision run `34637475779` — PASS |
+| Disposition             | `TEST_EVIDENCE_REPAIRED_AND_VERIFIED`                      |
 
 The final test repair did not alter PageFlip, opening ceremony, replay, readiness, fallback, reduced-motion handling, or historical-mode behavior.
 
 ## Pending-finding disposition
 
-| Pending ID | Current outcome | Boundary |
-| --- | --- | --- |
-| `BW-PEND-001` | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` | The final lane includes normal/fallback lifecycle coverage but is not WebKit, live-environment, or owner proof. |
+| Pending ID    | Current outcome                         | Boundary                                                                                                         |
+| ------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `BW-PEND-001` | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` | The final lane includes normal/fallback lifecycle coverage but is not WebKit, live-environment, or owner proof.  |
 | `BW-PEND-002` | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` | Page-turn, interruption, and failure-fallback coverage passed; this is not authority for Journal product repair. |
 
 The unique mutable voyage fixture explicitly skips non-Chromium browsers. No public deployment, real-player, production-data, or owner acceptance claim follows from this record.

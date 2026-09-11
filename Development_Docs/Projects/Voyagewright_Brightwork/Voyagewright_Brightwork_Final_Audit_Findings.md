@@ -18,11 +18,11 @@ This final source-bound evidence pass evaluates protected product `d2fe25355ed2e
 - The 568-entry state ledger and all 116 current human-facing routes reconcile without an unresolved or orphaned route.
 - No new serious or critical product defect was demonstrated by the current corpus, its fail-closed source binding, or the final focused Journal lane.
 
-| ID | Current classification | Severity | Disposition |
-| --- | --- | --- | --- |
-| `BW-HUMAN-FINAL-001` | Creator Studio no-editable-draft composition | final bounded product correction | `REPAIRED_AND_VERIFIED` |
-| `BW-HUMAN-FINAL-002` | Captain initial-loading composition | final bounded product correction | `REPAIRED_AND_VERIFIED` |
-| `BW-FINAL-001` | Journal historical selector evidence drift | P3 engineering-evidence quality | `TEST_EVIDENCE_REPAIRED_AND_VERIFIED` |
+| ID                   | Current classification                       | Severity                         | Disposition                           |
+| -------------------- | -------------------------------------------- | -------------------------------- | ------------------------------------- |
+| `BW-HUMAN-FINAL-001` | Creator Studio no-editable-draft composition | final bounded product correction | `REPAIRED_AND_VERIFIED`               |
+| `BW-HUMAN-FINAL-002` | Captain initial-loading composition          | final bounded product correction | `REPAIRED_AND_VERIFIED`               |
+| `BW-FINAL-001`       | Journal historical selector evidence drift   | P3 engineering-evidence quality  | `TEST_EVIDENCE_REPAIRED_AND_VERIFIED` |
 
 `BW-FINAL-001` is not a current product finding. The final test uses the visible, labeled Historical Volume/read-only semantic contract and passed all 12 lifecycle cases. The retained old 11-pass/1-failure receipt is historical evidence of the prior selector drift, not a rewritten result.
 
@@ -34,9 +34,9 @@ The especially relevant final-correction lenses remain protected: Studio publish
 
 ## Pending Journal observations
 
-| Pending ID | Current outcome | Boundary |
-| --- | --- | --- |
-| `BW-PEND-001` | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` | The final focused lane still does not establish WebKit, public deployment, or live-environment coverage. |
+| Pending ID    | Current outcome                         | Boundary                                                                                                       |
+| ------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `BW-PEND-001` | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` | The final focused lane still does not establish WebKit, public deployment, or live-environment coverage.       |
 | `BW-PEND-002` | `NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM` | The final focused lane still does not authorize any PageFlip, readiness, fallback, or Journal behavior change. |
 
 ## Historical record and boundary
