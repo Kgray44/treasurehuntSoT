@@ -3,7 +3,7 @@ title: Voyagewright Brightwork Evidence
 audience: engineering-evidence
 status: current
 canonical_for: voyagewright-brightwork-stage-1-evidence
-last_reviewed: 2026-09-06
+last_reviewed: 2026-09-11
 ---
 
 # Voyagewright Brightwork Evidence
@@ -33,11 +33,13 @@ This directory holds the current-main Brightwork capture inventory and evidence 
 - `Brightwork_Current_Navigation_Reachability_Report.json` supersedes the stale 109-page Homeport proof for Brightwork and records the current 116 human-facing routes.
 - `Brightwork_Evidence_State_Exceptions.json` preserves the replaced unavailable READY frames, their observed copy, and their evidence-only classification.
 - `Brightwork_Stage_8_Wave_0_Evidence_Record.json` is the machine-readable final reconciliation for the Wave 0 source binding, state coverage, capture set, and reachability proof.
+- `Voyagewright_Brightwork_Final_Corrections_Record.md` records the three final authorized corrections and their protected-main/product-test evidence.
 - `Voyagewright_Brightwork_Final_Audit_Findings.md` and `.json` are the final current-protected-main findings ledger, including every Stage 7 master and reference-contract recheck.
-- `Voyagewright_Brightwork_Final_Recertification_Report.md` is the final evidence handoff for human review; it is not a release or owner-acceptance record.
-- `Voyagewright_Brightwork_Journal_Pending_Reproduction_Record.md` preserves the bounded independent Journal reproduction, its environment limitations, and its test-selector evidence discrepancy.
-- `Journal_Independent_Browser_Receipt.json` preserves the focused browser runner's unmodified classification alongside the audit's narrower source/render assessment.
+- `Voyagewright_Brightwork_Final_Recertification_Report.md` is the final source-bound evidence handoff; it is not a release, public-deployment, or owner-acceptance record.
+- `Voyagewright_Brightwork_Journal_Pending_Reproduction_Record.md` preserves both the historical stale-selector receipt and the final all-pass Journal lane.
+- `Journal_Independent_Browser_Receipt.json` preserves the old receipt alongside the final current semantic-contract result.
+- `Voyagewright_Brightwork_Final_Owner_Acceptance_Checklist.md` is the concise manual owner walkthrough; it is the only remaining acceptance gate.
 
 Run `npm run brightwork:validate` to fail closed on capture binding, preserved-image integrity, declared-state coverage, current navigation reachability, and unresolved READY/unavailable evidence.
 
-The canonical images, auditor index, and contact sheets are in `Experience_Images/`. Their review status is `CAPTURED_PENDING_BRIGHTWORK_REVIEW`; they are not an audit verdict or product-quality acceptance.
+The canonical images, auditor index, and contact sheets are in `Experience_Images/`. Their review status is `CAPTURED_PENDING_BRIGHTWORK_REVIEW`; they are source-bound machine evidence, not an audit verdict or owner acceptance.

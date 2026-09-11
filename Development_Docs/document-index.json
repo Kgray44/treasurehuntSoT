@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-07",
+  "generated_at": "2026-09-11",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -7222,6 +7222,18 @@
     },
     {
       "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Final_Audit_Findings.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Final_Corrections_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Final_Owner_Acceptance_Checklist.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
