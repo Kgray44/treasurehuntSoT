@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { apiError } from "@/chronicle/api";
 import { requireOwnedStudioTale } from "@/chronicle/studio-authorization";
-import { archiveStudioTale, duplicateStudioTale, getStudioTale } from "@/chronicle/studio-service";
+import {
+  archiveStudioTale,
+  duplicateStudioTale,
+  getStudioTale,
+  StudioNoEditableDraftError,
+} from "@/chronicle/studio-service";
 
 export async function GET(_: Request, context: { params: Promise<{ taleId: string }> }) {
   const { taleId } = await context.params;
@@ -11,6 +16,15 @@ export async function GET(_: Request, context: { params: Promise<{ taleId: strin
   try {
     return NextResponse.json({ csrfToken: authorization.session.csrfToken, ...(await getStudioTale(taleId)) });
   } catch (cause) {
+    if (cause instanceof StudioNoEditableDraftError)
+      return NextResponse.json(
+        {
+          error: cause.message,
+          code: "NO_EDITABLE_DRAFT",
+          tale: cause.tale,
+        },
+        { status: 409 },
+      );
     return apiError(cause);
   }
 }

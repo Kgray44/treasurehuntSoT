@@ -2,7 +2,8 @@
 .tale-editor,
 .new-tale-page,
 .studio-auth-gate,
-.studio-loading {
+.studio-loading,
+.studio-no-editable-draft {
   min-height: 100vh;
   background:
     linear-gradient(rgba(202, 174, 106, 0.035) 1px, transparent 1px),
@@ -15,7 +16,8 @@
     auto;
 }
 
-html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-page, .studio-auth-gate, .studio-loading) {
+html[data-voyage-theme="light"]
+  :where(.studio-home, .tale-editor, .new-tale-page, .studio-auth-gate, .studio-loading, .studio-no-editable-draft) {
   color: var(--text-primary);
   background:
     linear-gradient(rgb(98 80 41 / 5%) 1px, transparent 1px),
@@ -239,6 +241,130 @@ html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-pag
   padding: 2.5rem;
   background: rgba(8, 28, 31, 0.92);
   box-shadow: var(--shadow-deep);
+}
+.studio-no-editable-draft {
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 3vw, 3rem);
+  color: #f5ead0;
+}
+.studio-no-editable-draft__frame {
+  display: grid;
+  width: min(100%, 1060px);
+  gap: 0.85rem;
+}
+.studio-no-editable-draft__header,
+.studio-no-editable-draft__notice,
+.studio-no-editable-draft__details {
+  border: 1px solid rgba(201, 169, 95, 0.3);
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(18, 48, 49, 0.94), rgba(6, 20, 23, 0.96));
+  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.22);
+}
+.studio-no-editable-draft__header {
+  padding: clamp(1.15rem, 3vw, 2rem);
+}
+.studio-no-editable-draft__header h1 {
+  margin: 0.2rem 0 0.45rem;
+  font-size: clamp(2rem, 4vw, 3.6rem);
+}
+.studio-no-editable-draft__header > p:last-child,
+.studio-no-editable-draft__notice > div:last-child > p,
+.studio-no-editable-draft__next > p:not(.card-kicker) {
+  max-width: 62ch;
+  margin-bottom: 0;
+  color: #b9c7c2;
+  line-height: 1.6;
+}
+.studio-no-editable-draft__notice {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  border-left: 4px solid var(--brass-100);
+  padding: clamp(1.15rem, 3vw, 1.8rem);
+}
+.studio-no-editable-draft__notice h2,
+.studio-no-editable-draft__next h2 {
+  margin: 0.18rem 0 0.5rem;
+}
+.studio-no-editable-draft__seal {
+  display: grid;
+  width: 2.8rem;
+  height: 2.8rem;
+  place-items: center;
+  border: 1px solid rgba(201, 169, 95, 0.55);
+  border-radius: 50%;
+  color: var(--brass-100);
+  background: rgba(201, 169, 95, 0.1);
+  font-size: 1.3rem;
+}
+.studio-no-editable-draft__details {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: clamp(1.15rem, 3vw, 1.8rem);
+}
+.studio-no-editable-draft__details dl {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0.65rem 0 0;
+}
+.studio-no-editable-draft__details dl div {
+  border-left: 2px solid rgba(201, 169, 95, 0.42);
+  padding-left: 0.75rem;
+}
+.studio-no-editable-draft__details dt {
+  color: #a9bbb6;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.studio-no-editable-draft__details dd {
+  margin: 0.18rem 0 0;
+}
+.studio-no-editable-draft__next {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 0.25rem;
+  border-left: 1px solid rgba(201, 169, 95, 0.22);
+  padding-left: 1rem;
+}
+.studio-no-editable-draft__next .brass-button {
+  margin-top: 0.75rem;
+}
+html[data-voyage-theme="light"] .studio-no-editable-draft {
+  color: var(--text-primary);
+}
+html[data-voyage-theme="light"] .studio-no-editable-draft__header,
+html[data-voyage-theme="light"] .studio-no-editable-draft__notice,
+html[data-voyage-theme="light"] .studio-no-editable-draft__details {
+  background: linear-gradient(145deg, rgb(255 251 237 / 96%), rgb(235 227 205 / 96%));
+  box-shadow: 0 16px 36px rgb(63 46 20 / 12%);
+}
+html[data-voyage-theme="light"] .studio-no-editable-draft__header > p:last-child,
+html[data-voyage-theme="light"] .studio-no-editable-draft__notice > div:last-child > p,
+html[data-voyage-theme="light"] .studio-no-editable-draft__next > p:not(.card-kicker),
+html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
+  color: var(--text-secondary);
+}
+@media (max-width: 700px) {
+  .studio-no-editable-draft__details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .studio-no-editable-draft__next {
+    border-top: 1px solid rgba(201, 169, 95, 0.22);
+    border-left: 0;
+    padding-top: 1rem;
+    padding-left: 0;
+  }
+}
+@media (max-width: 460px) {
+  .studio-no-editable-draft__notice {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .studio-error,
 .editor-error {

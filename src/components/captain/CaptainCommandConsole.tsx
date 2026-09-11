@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useActionDialog } from "@/components/ui/ActionDialog";
-import { ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
+import { ErrorState, StatusBanner } from "@/components/ui/AsyncState";
 import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 
 type Command = {
@@ -102,6 +102,61 @@ function words(value: string) {
 
 function commandTier(command: Command) {
   return command.risk === "HIGH" ? "authority" : "ordinary";
+}
+
+function CaptainLoadingComposition() {
+  return (
+    <>
+      <header className="captain-command-console__header captain-command-console__header--loading">
+        <div>
+          <p className="eyebrow">Live Voyage operations</p>
+          <h1>Preparing Captain console</h1>
+          <p>Reading the authoritative Voyage projection before commands are available.</p>
+        </div>
+        <div className="captain-command-console__state">
+          <strong>Live scan in progress</strong>
+          <span>Captain orientation will remain available while the current state resolves.</span>
+        </div>
+      </header>
+      <section
+        className="captain-command-console__grid captain-command-console__grid--loading"
+        aria-label="Captain console loading"
+        aria-busy="true"
+      >
+        <section className="captain-command-console__loading-overview">
+          <p className="card-kicker">Voyage position</p>
+          <h2>Confirming current operational state</h2>
+          <p>
+            Loading only the live Captain projection. No commands or Voyage data are shown until it is authoritative.
+          </p>
+          <div className="captain-command-console__loading-lines" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </div>
+        </section>
+        <section className="captain-command-console__loading-card">
+          <p className="card-kicker">Command review</p>
+          <h2>Preparing command console</h2>
+          <div className="captain-command-console__loading-lines" aria-hidden="true">
+            <i />
+            <i />
+          </div>
+        </section>
+        <section className="captain-command-console__loading-card">
+          <p className="card-kicker">Crew and safeguards</p>
+          <h2>Checking shared Voyage context</h2>
+          <div className="captain-command-console__loading-lines" aria-hidden="true">
+            <i />
+            <i />
+          </div>
+        </section>
+      </section>
+      <p className="captain-command-console__loading-status" role="status" aria-live="polite">
+        Reading live Voyage state.
+      </p>
+    </>
+  );
 }
 
 export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: string; authenticated: boolean }) {
@@ -248,10 +303,7 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
             action={{ label: "Try again", onClick: () => void load() }}
           />
         ) : (
-          <LoadingState
-            title="Reading live Voyage state"
-            detail="Loading the authoritative Captain operation projection."
-          />
+          <CaptainLoadingComposition />
         )}
       </main>
     );

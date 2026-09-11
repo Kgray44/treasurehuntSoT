@@ -92,6 +92,19 @@ describe("CaptainCommandConsole", () => {
     vi.unstubAllGlobals();
   });
 
+  it("preserves Captain orientation while the authoritative projection is loading", () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => new Promise<Response>(() => undefined)),
+    );
+    render(<CaptainCommandConsole voyageId="voyage-1" authenticated />);
+
+    expect(screen.getByRole("heading", { name: "Preparing Captain console" })).toBeVisible();
+    expect(screen.getByRole("region", { name: "Captain console loading" })).toHaveAttribute("aria-busy", "true");
+    expect(screen.getByRole("status")).toHaveTextContent("Reading live Voyage state.");
+    expect(screen.queryByRole("button", { name: /Pause Voyage/ })).not.toBeInTheDocument();
+  });
+
   it("keeps navigation separate from ordinary and authority actions", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(projection)));
     render(<CaptainCommandConsole voyageId="voyage-1" authenticated />);

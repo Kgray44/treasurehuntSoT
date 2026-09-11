@@ -190,6 +190,36 @@ describe("Voyagewright Studio editor motion and authority", () => {
     vi.clearAllMocks();
   });
 
+  it("presents one composed Studio state when an authorized Chronicle has no editable draft", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        response(409, {
+          code: "NO_EDITABLE_DRAFT",
+          error: "This Chronicle has no editable draft.",
+          tale: {
+            id: "published-tale",
+            slug: "moonlit-key",
+            title: "The Moonlit Key",
+            subtitle: "A preserved edition",
+          },
+        }),
+      ),
+    );
+
+    render(<TaleEditor taleId="published-tale" initialSection="assets" authenticated />);
+
+    expect(await screen.findByRole("heading", { name: "The Moonlit Key" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "No editable draft is available" })).toBeVisible();
+    expect(screen.getByText("Creator Studio · Assets")).toBeVisible();
+    expect(screen.getByText("Unavailable without an editable draft")).toBeVisible();
+    expect(screen.getByRole("link", { name: "Return to Chronicle Library" })).toHaveAttribute(
+      "href",
+      "/studio/library",
+    );
+    expect(document.querySelector("[data-studio-state='no-editable-draft']")).toBeInTheDocument();
+  });
+
   it("exposes the More actions through an explicit keyboard-operable disclosure", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
     render(<TaleEditor taleId="tale-1" authenticated />);

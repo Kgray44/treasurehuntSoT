@@ -40,6 +40,7 @@ import { StudioCanvasViewControls } from "@/components/studio/StudioCanvasViewCo
 import { StudioSelectionToolbar } from "@/components/studio/StudioSelectionToolbar";
 import { StudioStatusHeader } from "@/components/studio/StudioStatusHeader";
 import { StudioValidationPanel } from "@/components/studio/StudioValidationPanel";
+import { StudioNoEditableDraftState } from "@/components/studio/StudioNoEditableDraftState";
 import { DrydockScenarioLab } from "@/components/studio/DrydockScenarioLab";
 import { DrydockLaunchGate } from "@/components/studio/DrydockLaunchGate";
 import { DrydockCompatibilityPanel } from "@/components/studio/DrydockCompatibilityPanel";
@@ -209,6 +210,10 @@ export function TaleEditor({
   const [dirty, setDirty] = useState(false);
   const [saveState, setSaveState] = useState("Loading Chronicle...");
   const [error, setError] = useState("");
+  const [unavailableTale, setUnavailableTale] = useState<Pick<
+    EditorData["tale"],
+    "id" | "slug" | "title" | "subtitle"
+  > | null>(null);
   const [validation, setValidation] = useState<DraftValidationResult | null>(null);
   const [validationPanelOpen, setValidationPanelOpen] = useState(false);
   const [validationFocusField, setValidationFocusField] = useState<string | null>(null);
@@ -326,8 +331,13 @@ export function TaleEditor({
 
   const load = useCallback(async () => {
     const response = await fetch(`/api/studio/tales/${taleId}`, { cache: "no-store" });
-    const body = (await response.json()) as EditorData & { error?: string };
+    const body = (await response.json()) as EditorData & {
+      error?: string;
+      code?: string;
+      tale?: Pick<EditorData["tale"], "id" | "slug" | "title" | "subtitle">;
+    };
     if (!response.ok) {
+      setUnavailableTale(body.code === "NO_EDITABLE_DRAFT" && body.tale ? body.tale : null);
       setError(body.error ?? "This Chronicle could not be opened. Reload the page and try again.");
       return;
     }
@@ -336,6 +346,8 @@ export function TaleEditor({
     autosaveVersionRef.current = body.draft.autosaveVersion;
     setData(body);
     setDraft(nextDraft);
+    setUnavailableTale(null);
+    setError("");
     setSaveState(`Saved at ${new Date(body.draft.savedAt).toLocaleTimeString()}`);
   }, [taleId]);
   useEffect(() => {
@@ -1976,7 +1988,14 @@ export function TaleEditor({
         </section>
       </main>
     );
-  if (!data || !draft) return <main className="studio-loading">{error || "Opening your Chronicle..."}</main>;
+  if (!data || !draft) {
+    if (unavailableTale) return <StudioNoEditableDraftState tale={unavailableTale} section={initialSection} />;
+    return (
+      <main className="studio-loading" aria-live="polite">
+        {error || "Opening your Chronicle..."}
+      </main>
+    );
+  }
 
   const nav = ["story", "trials", "settings", "assets", "locations", "artifacts", "versions"] as const;
   const navLabels = {
