@@ -7,6 +7,7 @@ const profileByTest = new Map([
   ["tests/e2e/harborlight-phase3.spec.ts", "harborlight-phase3"],
   ["tests/e2e/harborlight-phase4.spec.ts", "harborlight-phase4"],
   ["tests/e2e/homeport-phase3.spec.ts", "homeport-phase3"],
+  ["tests/e2e/lanternwake-journal.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/lanternwake-phase2.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/phase3-accessibility-viewports.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/phase3-lifecycle-extended.spec.ts", "lanternwake-phase3"],
