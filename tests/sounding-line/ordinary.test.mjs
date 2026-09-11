@@ -999,6 +999,7 @@ test("fixture-aware suite dispatch groups established fixture contracts without 
     "tests/e2e/phase3-player-event-matrix.spec.ts",
     "tests/e2e/phase3-player-motion.spec.ts",
     "tests/e2e/phase3-visual-checkpoints.spec.ts",
+    "tests/e2e/lanternwake-journal.spec.ts",
     "tests/e2e/lanternwake-phase2.spec.ts",
     "tests/e2e/phase3-performance.spec.ts",
     "tests/e2e/project-helm-phase1.spec.ts",
@@ -1012,6 +1013,7 @@ test("fixture-aware suite dispatch groups established fixture contracts without 
       [
         "lanternwake-phase3",
         [
+          "tests/e2e/lanternwake-journal.spec.ts",
           "tests/e2e/lanternwake-phase2.spec.ts",
           "tests/e2e/phase3-accessibility-viewports.spec.ts",
           "tests/e2e/phase3-lifecycle-extended.spec.ts",
