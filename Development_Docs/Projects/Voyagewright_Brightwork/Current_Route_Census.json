@@ -1,14 +1,14 @@
 {
   "schemaVersion": "2.0.0",
   "artifact": "Voyagewright Brightwork current-main route and screen census",
-  "sourceSha": "87ce8a959ceca056c3e91304b0aa7dcf64fde649",
-  "auditRuntimeSourceSha": "2599d694f132e87eab23ee580fb45fddeb9e6f13",
+  "sourceSha": "d2fe25355ed2e5eac47aefb9cc0152413b8b607f",
+  "auditRuntimeSourceSha": "5f5ad949ff92427dfc4fbef1acf915f91a65a205",
   "sourceProvenance": {
-    "ordinaryProductSourceSha": "87ce8a959ceca056c3e91304b0aa7dcf64fde649",
-    "auditRuntimeSourceSha": "2599d694f132e87eab23ee580fb45fddeb9e6f13",
+    "ordinaryProductSourceSha": "d2fe25355ed2e5eac47aefb9cc0152413b8b607f",
+    "auditRuntimeSourceSha": "5f5ad949ff92427dfc4fbef1acf915f91a65a205",
     "sourceOfTruth": "Current source route files, with audit-only runtime changes recorded separately from ordinary product source."
   },
-  "generatedAt": "2026-09-07T02:40:47.453Z",
+  "generatedAt": "2026-09-11T19:26:33.418Z",
   "discovery": {
     "appRoot": "src/app",
     "sourceOfTruth": "Current src/app page files reconciled with current navigation and catalog metadata."

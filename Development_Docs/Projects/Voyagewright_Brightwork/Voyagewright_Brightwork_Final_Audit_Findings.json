@@ -1,9 +1,9 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "1.1.0",
   "artifact": "Voyagewright Brightwork final current-protected-main audit findings",
-  "status": "READY_FOR_FINAL_HUMAN_REVIEW",
-  "ordinaryProductSourceSha": "87ce8a959ceca056c3e91304b0aa7dcf64fde649",
-  "auditRuntimeSourceSha": "2599d694f132e87eab23ee580fb45fddeb9e6f13",
+  "status": "READY_FOR_PROTECTED_EVIDENCE_MERGE",
+  "ordinaryProductSourceSha": "d2fe25355ed2e5eac47aefb9cc0152413b8b607f",
+  "auditRuntimeSourceSha": "5f5ad949ff92427dfc4fbef1acf915f91a65a205",
   "authorityBoundary": "AUDIT_EVIDENCE_ONLY_NOT_PRODUCT_REPAIR_OR_RELEASE_ACCEPTANCE",
   "corpus": {
     "requiredCaptures": 478,
@@ -18,19 +18,43 @@
   "findings": [
     {
       "id": "BW-FINAL-001",
-      "classification": "TEST_EVIDENCE_DRIFT",
+      "classification": "TEST_EVIDENCE_REPAIRED_AND_VERIFIED",
       "severity": "P3_ENGINEERING_EVIDENCE_QUALITY",
       "productFinding": false,
       "runnerReceipt": "Journal_Independent_Browser_Receipt.json",
       "evidence": {
-        "staleSelector": ".historical-lock",
-        "currentRenderedSurface": ".journal-historical-volume",
-        "productChangeCommit": "e5bcfb81f5118c823914588140416d5d504619db",
-        "preservedScreenshot": "Experience_Images/Final_Attention/Journal_Historical_Read_Only_Selector_Discrepancy.png"
+        "finalCandidateSha": "43b7d4b78109cdad2ffaae136b63cda6e1288870",
+        "finalProtectedProductSha": "d2fe25355ed2e5eac47aefb9cc0152413b8b607f",
+        "profile": "lanternwake-phase3",
+        "testCounts": { "passed": 12, "failed": 0, "skipped": 0 },
+        "currentSemanticContract": "Visible labeled Historical Volume with completed-voyage read-only communication, replay control, and readable Journal."
       },
-      "disposition": "NO_PRODUCT_REPAIR_AUTHORIZED; FUTURE_TEST_MAINTENANCE_ONLY_IF_SEPARATELY_AUTHORIZED"
+      "disposition": "TEST_EVIDENCE_REPAIRED_AND_VERIFIED; NO_JOURNAL_PRODUCT_REPAIR"
     }
   ],
+  "finalHumanCorrectionDispositions": [
+    {
+      "id": "BW-HUMAN-FINAL-001",
+      "classification": "CREATOR_STUDIO_NO_EDITABLE_DRAFT_COMPOSITION",
+      "disposition": "REPAIRED_AND_VERIFIED"
+    },
+    {
+      "id": "BW-HUMAN-FINAL-002",
+      "classification": "CAPTAIN_INITIAL_LOADING_COMPOSITION",
+      "disposition": "REPAIRED_AND_VERIFIED"
+    },
+    {
+      "id": "BW-FINAL-001",
+      "classification": "JOURNAL_HISTORICAL_SELECTOR_EVIDENCE_DRIFT",
+      "disposition": "TEST_EVIDENCE_REPAIRED_AND_VERIFIED"
+    }
+  ],
+  "historicalPreCorrectionRecertification": {
+    "ordinaryProductSourceSha": "87ce8a959ceca056c3e91304b0aa7dcf64fde649",
+    "auditRuntimeSourceSha": "2599d694f132e87eab23ee580fb45fddeb9e6f13",
+    "journalReceipt": { "passed": 11, "failed": 1, "classification": "TEST_EVIDENCE_DRIFT" },
+    "preservedScreenshot": "Development_Docs/Projects/Voyagewright_Brightwork/Experience_Images/Final_Attention/Journal_Historical_Read_Only_Selector_Discrepancy.png"
+  },
   "masterFindingRecheck": [
     { "id": "BW-M-001", "outcome": "REPAIR_VERIFIED_CURRENT" },
     { "id": "BW-M-002", "outcome": "REPAIR_VERIFIED_CURRENT" },
@@ -107,6 +131,6 @@
     "No public deployment or live-provider proof.",
     "No production-user data, owner acceptance, or assistive-technology certification.",
     "The focused Journal suite is Chromium-only because its unique mutable fixture explicitly skips non-Chromium browsers.",
-    "The failed historical-lock selector is preserved as evidence drift and is not counted as a demonstrated product regression."
+    "The historical failed .historical-lock selector receipt is preserved as pre-correction evidence; the final semantic assertion passed all 12 Chromium lifecycle cases."
   ]
 }

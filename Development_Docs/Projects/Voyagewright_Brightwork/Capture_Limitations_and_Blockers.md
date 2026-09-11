@@ -3,7 +3,7 @@ title: Brightwork Capture Limitations and Blockers
 audience: engineering-evidence
 status: current
 canonical_for: brightwork-capture-limitations
-last_reviewed: 2026-09-07
+last_reviewed: 2026-09-11
 ---
 
 # Brightwork Capture Limitations and Blockers

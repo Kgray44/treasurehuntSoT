@@ -1,37 +1,51 @@
 {
-  "schemaVersion": "1.0.0",
-  "artifact": "Brightwork independent Journal browser-lane receipt",
-  "ordinaryProductSourceSha": "87ce8a959ceca056c3e91304b0aa7dcf64fde649",
-  "auditRuntimeSourceSha": "2599d694f132e87eab23ee580fb45fddeb9e6f13",
+  "schemaVersion": "1.1.0",
+  "artifact": "Brightwork independent Journal browser-lane receipts",
+  "status": "TEST_EVIDENCE_REPAIRED_AND_VERIFIED",
+  "finalCandidateSourceSha": "43b7d4b78109cdad2ffaae136b63cda6e1288870",
+  "finalProtectedProductSourceSha": "d2fe25355ed2e5eac47aefb9cc0152413b8b607f",
   "profile": "lanternwake-phase3",
   "browserTests": ["tests/e2e/lanternwake-journal.spec.ts"],
-  "browserSuiteReceipt": {
-    "status": "FAIL",
-    "failureCategory": "PRODUCT_FAILURE",
-    "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
-  },
-  "browserRuntimeReceipt": {
+  "finalBrowserLane": {
     "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
-    "baseURL": "http://127.0.0.1:3200",
-    "failureCategory": "PRODUCT_FAILURE",
-    "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
-    "timings": {
-      "serverPreparationMs": 25,
-      "serverReadinessMs": 2114,
-      "browserExecutionMs": 79858,
-      "infrastructureFailureWaitMs": 0,
-      "cleanupMs": 27
+    "browser": "CHROMIUM",
+    "testCounts": { "passed": 12, "failed": 0, "skipped": 0 },
+    "verifiedSemanticContract": [
+      "completed archive entered historical mode",
+      "labeled Historical Volume information is visible",
+      "completed Voyage is communicated as read-only",
+      "replay controls remain available",
+      "Journal remains readable"
+    ],
+    "ciConfirmation": {
+      "workflow": "Sounding Line / Mainline Decision",
+      "runId": "34637475779",
+      "status": "PASS"
     }
   },
-  "testCounts": {
-    "passed": 11,
-    "failed": 1,
-    "skipped": 0
+  "historicalPreCorrectionReceipt": {
+    "ordinaryProductSourceSha": "87ce8a959ceca056c3e91304b0aa7dcf64fde649",
+    "auditRuntimeSourceSha": "2599d694f132e87eab23ee580fb45fddeb9e6f13",
+    "browserSuiteReceipt": {
+      "status": "FAIL",
+      "failureCategory": "PRODUCT_FAILURE",
+      "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+    },
+    "testCounts": { "passed": 11, "failed": 1, "skipped": 0 },
+    "auditAssessment": {
+      "classification": "TEST_EVIDENCE_DRIFT",
+      "productFinding": false,
+      "reason": "The only failing assertion targeted removed .historical-lock markup while the rendered product exposed the labeled journal-historical-volume read-only surface.",
+      "preservedScreenshot": "Experience_Images/Final_Attention/Journal_Historical_Read_Only_Selector_Discrepancy.png"
+    }
   },
-  "auditAssessment": {
-    "classification": "TEST_EVIDENCE_DRIFT",
-    "productFinding": false,
-    "reason": "The only failing assertion targets the removed .historical-lock class. Current rendered source exposes the labeled journal-historical-volume read-only surface introduced by Wave 6.",
-    "preservedScreenshot": "Experience_Images/Final_Attention/Journal_Historical_Read_Only_Selector_Discrepancy.png"
-  }
+  "pendingFindingRecheck": [
+    { "id": "BW-PEND-001", "outcome": "NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM" },
+    { "id": "BW-PEND-002", "outcome": "NOT_REPRODUCED_IN_TASK_OWNED_CHROMIUM" }
+  ],
+  "limitations": [
+    "The final browser lane is task-owned Chromium evidence only.",
+    "The unique mutable voyage fixture explicitly skips non-Chromium browsers.",
+    "No public deployment, live-provider, production-data, real-player, or owner acceptance claim follows from this receipt."
+  ]
 }
