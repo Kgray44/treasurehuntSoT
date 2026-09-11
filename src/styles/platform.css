@@ -2452,6 +2452,18 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   text-align: right;
 }
 
+.captain-command-console__header--loading {
+  align-items: center;
+}
+
+.captain-command-console__header--loading > div > p:last-child,
+.captain-command-console__loading-overview > p:not(.card-kicker) {
+  max-width: 60ch;
+  margin-bottom: 0;
+  color: #c3d1ca;
+  line-height: 1.5;
+}
+
 .captain-command-console__grid {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
@@ -2465,6 +2477,52 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   border-radius: 16px;
   padding: clamp(0.9rem, 1.6vw, 1.3rem);
   background: rgba(8, 29, 31, 0.9);
+}
+
+.captain-command-console__grid--loading {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.captain-command-console__loading-overview {
+  grid-column: 1 / -1;
+  border-left: 3px solid #e2c170;
+}
+
+.captain-command-console__loading-card {
+  min-height: 11rem;
+}
+
+.captain-command-console__loading-card h2,
+.captain-command-console__loading-overview h2 {
+  margin: 0.2rem 0 0.55rem;
+}
+
+.captain-command-console__loading-lines {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.captain-command-console__loading-lines i {
+  display: block;
+  height: 0.7rem;
+  border: 1px solid rgba(201, 169, 95, 0.18);
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(201, 169, 95, 0.16), rgba(120, 169, 197, 0.08));
+}
+
+.captain-command-console__loading-lines i:nth-child(2) {
+  width: 82%;
+}
+
+.captain-command-console__loading-lines i:nth-child(3) {
+  width: 58%;
+}
+
+.captain-command-console__loading-status {
+  margin: 0.85rem 0 0;
+  color: #d2c29b;
+  font-size: 0.86rem;
 }
 
 .captain-command-console__attention {
@@ -2695,6 +2753,9 @@ html[data-motion-level="reduced"] .needs-attention-mark span,
   }
   .captain-command-console__grid {
     grid-template-columns: 1fr;
+  }
+  .captain-command-console__loading-overview {
+    grid-column: auto;
   }
   .captain-command-console__attention {
     grid-column: auto;

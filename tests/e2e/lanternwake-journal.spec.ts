@@ -478,8 +478,14 @@ async function openJournalIfRequired(page: Page) {
     })
     .not.toBe("pending");
   if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return;
-  await expect(opener).toBeVisible();
-  await opener.click();
+  if (await opener.isVisible().catch(() => false)) {
+    await opener.click();
+    return;
+  }
+  // A persisted reading can complete the opening handoff after the poll saw
+  // the entry control but before this next tick. That path must settle at the
+  // same interactive state, not force a stale opener assertion.
+  await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
 }
 
 async function skipCeremonyWhenAvailable(page: Page) {
@@ -961,7 +967,10 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     await expect(page.getByRole("button", { name: "Open the journal" })).toHaveCount(0);
     await expectReadyFinalPose(page);
     await expect.poll(async () => (await readProbe(page)).activeEventSources).toBe(0);
-    await expect(page.locator(".historical-lock")).toContainText("Read-only");
+    const historicalVolume = page.getByRole("complementary", { name: "Historical volume information" });
+    await expect(historicalVolume).toBeVisible();
+    await expect(historicalVolume).toContainText("Historical volume");
+    await expect(historicalVolume).toContainText("This completed Voyage is read-only");
 
     const replay = page.getByRole("button", { name: "Replay short opening" });
     await replay.focus();

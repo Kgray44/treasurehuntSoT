@@ -187,6 +187,13 @@ export async function createStudioTale(input: {
   });
 }
 
+export class StudioNoEditableDraftError extends Error {
+  constructor(public readonly tale: { id: string; slug: string; title: string; subtitle: string | null }) {
+    super("This Chronicle has no editable draft.");
+    this.name = "StudioNoEditableDraftError";
+  }
+}
+
 export async function getStudioTale(taleId: string) {
   const tale = await db.chronicle.findUniqueOrThrow({
     where: { id: taleId },
@@ -220,7 +227,13 @@ export async function getStudioTale(taleId: string) {
     },
   });
   const draft = tale.drafts[0];
-  if (!draft) throw new Error("This Chronicle has no editable draft.");
+  if (!draft)
+    throw new StudioNoEditableDraftError({
+      id: tale.id,
+      slug: tale.slug,
+      title: tale.title,
+      subtitle: tale.subtitle,
+    });
   return {
     tale: {
       id: tale.id,
