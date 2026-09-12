@@ -22,7 +22,7 @@ The current protected baseline and its source-bound Brightwork evidence are inpu
 
 ## Canonical records
 
-- [Muster design packet](muster/design-packet.md) — MAJOR_STRATEGY_RETHINK, FINAL_VALIDATION; [explicit owner acceptance](muster/owner-acceptance.md), [accepted visual reference](muster/accepted-reference/manifest.json), [retained fixture matrix](muster/accepted-reference/fixture-matrix.json), and [final validation/integration](muster/final-validation.md). Earlier [source mapping](muster/iteration-2-delta.md) and [positioning delta](muster/iteration-3-delta.md) remain historical implementation evidence.
+- [Muster design packet](muster/design-packet.md) — MAJOR_STRATEGY_RETHINK, MERGED on protected main; Refit V1 remains open; [explicit owner acceptance](muster/owner-acceptance.md), [accepted visual reference](muster/accepted-reference/manifest.json), [retained fixture matrix](muster/accepted-reference/fixture-matrix.json), and [final validation/integration](muster/final-validation.md). Earlier [source mapping](muster/iteration-2-delta.md) and [positioning delta](muster/iteration-3-delta.md) remain historical implementation evidence.
 
 - [Refit registry](refit-registry.json) — machine-readable area inventory, treatment, lifecycle, branch, and protection state.
 - [Preview runbook](preview-runbook.md) — the fast, isolated local iteration loop.

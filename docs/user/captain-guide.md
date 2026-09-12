@@ -8,7 +8,7 @@ last_reviewed: 2026-09-12
 
 # Captain guide
 
-In the owner-accepted Muster experience, **CAPTAIN MUSTER** follows your current authority on either entry route. Player readiness counts actual participating Players; a Captain-only card adds no ready Player. **Begin the Voyage** uses the existing launch rule, which can allow ready Players to begin while others prepare. **Captain & Voyage options** contains the existing relinquishment and cancellation actions. Crew Chat is shared only with this Voyage’s authorized participants; Captain-only accounts may chat. Protected integration is in progress.
+In the owner-accepted Muster experience, **CAPTAIN MUSTER** follows your current authority on either entry route. Player readiness counts actual participating Players; a Captain-only card adds no ready Player. **Begin the Voyage** uses the existing launch rule, which can allow ready Players to begin while others prepare. **Captain & Voyage options** contains the existing relinquishment and cancellation actions. Crew Chat is shared only with this Voyage’s authorized participants; Captain-only accounts may chat. This is the canonical mainline Muster experience.
 
 The **Invite Crew** action card opens the Captain Library when your current authority permits invitations. Actual invited people keep their own crew cards. Chronicle details on the parchment follow the published edition used by the Voyage. If its cover cannot load, **Retry cover** retries the selected artwork; the island fallback is reserved for a Chronicle with no cover.
 

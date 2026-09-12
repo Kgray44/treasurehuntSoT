@@ -1,6 +1,6 @@
-# Muster Refit continuation
+# Muster Refit preservation
 
-Use the existing `refit-v1/muster` branch in `D:/CodexWorktrees/treasurehunt-refit-v1-muster`. Owner feedback applies to this same candidate. Preserve other worktrees and the port-3000 walkthrough.
+The retained `refit-v1/muster` branch in `D:/CodexWorktrees/treasurehunt-refit-v1-muster` owns the accepted review preview and fixture matrix. Protected main contains the integrated implementation. Preserve the review worktree, other worktrees, and the port-3000 walkthrough.
 
 Latest owner direction: [iteration delta 3](../Development_Docs/Projects/Voyagewright_Refit_V1/muster/iteration-3-delta.md); canonical source mapping remains in [iteration delta 2](../Development_Docs/Projects/Voyagewright_Refit_V1/muster/iteration-2-delta.md). Preserve every current owner-review Voyage, membership, invitation and chat. The existing fixture manifest remains authoritative; never replace it during a visual delta.
 
@@ -15,3 +15,5 @@ Focused development proof: the two Muster wrapper tests, `src/components/muster/
 For delta 2, `prepare-muster-delta2.ts` adds the isolated observatory/invited-member fixture while verifying all existing review state is preserved. `node scripts/refit/prove-muster-delta2.mjs` covers disclosure frames, anchored artwork, responsive/keyboard/reduced motion and published-source comparisons without executing lifecycle mutations. Prefer this bounded proof for these refinements; retain its `.runtime/muster/delta2` evidence.
 
 Final acceptance: `capture-muster-acceptance.mjs` has already captured the immutable accepted reference and consistent fixture backups; do not rerun or overwrite them. `prove-muster-final.mjs` requires the separate `.runtime/muster-final/validation.sqlite` and production server on loopback port 3130. The owner preview remains on 3128. `rehearse-muster-chat.mjs <exact-pre-Muster-main-SHA>` applies only the new migration to an isolated current-main schema with copied synthetic rows. `verify-muster-fixture-retention.mjs` verifies original review data against its accepted backup. These helpers never reset the owner preview. Use ordinary trusted Sounding Line only once the candidate is ready; preserve its exact SHA decision before protected merge and verify the landed tree afterward.
+
+Integration is complete: product PR #658, qualified implementation debc23a83ea8028d863a0376bd79214f51f1b748, landed main 0164bc0739956909d2640294516221e81becd952. Muster is MERGED; Refit V1 stays open. The immutable accepted reference, final validation record, retained fixture matrix and landed smoke are the continuation authority. Do not restart iteration or another area without new owner direction. Preserve the existing preview and review data.

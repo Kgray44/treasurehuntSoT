@@ -171,7 +171,7 @@ Players can discover, resume, archive, and reconcile exact-edition Voyage experi
 **Status:** MAINLINE
 **Program or subsystem:** Captain
 
-Captains create, ready, launch, operate, conclude, and safely hand off live Voyages through contextual authoritative commands, with independent Player participation, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.
+Captains create, ready, launch, operate, conclude, and safely hand off live Voyages through contextual authoritative commands, with independent Player participation, a shared role-aware Muster gathering room, persistent Voyage Crew Chat, a complete ordinary Crew lifecycle, and private-state-safe personal continuation.
 
 ### Important subfeatures
 
@@ -191,8 +191,10 @@ Captains create, ready, launch, operate, conclude, and safely hand off live Voya
 - Captain Crew removal, Player voluntary leave, and explicit Voyage cancellation with preserved history
 - Direct joined-Player Captain transfer with durable authority receipts
 - Succession Hold, first-committed Player takeover, and same-edition solo continuation lineage
-- Captain-only and participating-Captain Ready Room with safe Crew state, live reconciliation, and canonical direct launch
+- Owner-accepted shared Captain-only, Captain plus Player, and Player Muster with canonical Crew, invitation, readiness and launch projections
 - Contextual live Captain command console with prepared state, confirmation, stale-sequence protection, and idempotent retry reconciliation
+- Persistent Voyage-scoped Crew Chat with current-membership authorization, live arrival and reconciliation, unread history, plain-text rendering, length and rate protections
+- Exact published-edition Chronicle parchment and cover selection, truthful missing-cover fallback and retry, with preserved illustrated responsive composition and accessible reduced-motion interactions
 
 ### Primary surfaces
 
@@ -202,6 +204,7 @@ Captains create, ready, launch, operate, conclude, and safely hand off live Voya
 
 - The A1-A3 and P3-P5 extensions are integrated on protected main; deployment, live-Voyage proof, and owner acceptance are separate.
 - Provider outcomes remain explicitly unavailable unless an accepted provider contract supplies them.
+- Muster is owner accepted and integrated on protected main; production deployment and physical multi-device proof are separate.
 
 ### Evidence
 
@@ -226,6 +229,12 @@ Captains create, ready, launch, operate, conclude, and safely hand off live Voya
 - path: `src/app/api/captain/playthroughs/[playthroughId]/participation/route.ts`
 - path: `src/app/api/captain/playthroughs/[playthroughId]/cancel/route.ts`
 - path: `src/app/api/player/playthroughs/[playthroughId]/leave/route.ts`
+- commit: `0164bc0739956909d2640294516221e81becd952`
+- path: `src/components/muster/MusterRoom.tsx`
+- path: `src/components/muster/CrewChat.tsx`
+- path: `src/muster/service.ts`
+- path: `src/muster/chat.ts`
+- completion-record: `Development_Docs/Projects/Voyagewright_Refit_V1/muster/final-validation.md`
 
 ---
 
