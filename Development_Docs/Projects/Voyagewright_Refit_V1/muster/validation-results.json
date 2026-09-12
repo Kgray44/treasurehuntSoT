@@ -293,5 +293,138 @@
     "productionBuild": "PASS",
     "fontChecks": ["default", "Arial", "Verdana"],
     "viewportJourneys": 6
+  },
+  "sourcePrivacy": {
+    "implementationCommit": "debc23a83ea8028d863a0376bd79214f51f1b748",
+    "scope": "exact tracked source archive",
+    "result": "PASS",
+    "violations": 0,
+    "classifications": 6
+  },
+  "integration": {
+    "acceptedCommit": "11509df7c686806d58989223804f13aa0c3aa0b1",
+    "implementationCommit": "debc23a83ea8028d863a0376bd79214f51f1b748",
+    "productPr": "https://github.com/Kgray44/treasurehuntSoT/pull/658",
+    "mainCommit": "0164bc0739956909d2640294516221e81becd952",
+    "soundingLine": {
+      "name": "Sounding Line / Mainline Decision",
+      "result": "PASS",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/34715009483"
+    },
+    "landedSmoke": {
+      "date": "2026-09-12T19:56:17.558Z",
+      "mainSha": "0164bc0739956909d2640294516221e81becd952",
+      "implementation": "debc23a83ea8028d863a0376bd79214f51f1b748",
+      "sourceIdentity": "EXACT_PRODUCT_MATCH",
+      "origin": "http://127.0.0.1:3131",
+      "checks": [
+        {
+          "role": "captain",
+          "route": "/captain/voyages/muster-all-ready/muster",
+          "chatMessages": 5,
+          "images": [
+            {
+              "src": "/api/profile-media/muster-northwind-avatar",
+              "loaded": true
+            },
+            {
+              "src": "/api/voyages/muster-all-ready/muster/cover",
+              "loaded": true
+            },
+            {
+              "src": "/api/profile-media/muster-northwind-avatar",
+              "loaded": true
+            }
+          ],
+          "geometry": {
+            ".muster-environment": {
+              "x": 0,
+              "y": 76,
+              "width": 1536,
+              "height": 948
+            },
+            ".muster-gathering": {
+              "x": 304.25,
+              "y": 76,
+              "width": 719.75,
+              "height": 521.625
+            },
+            ".muster-parchment": {
+              "x": 1090.546875,
+              "y": 95,
+              "width": 437.4375,
+              "height": 856.34375
+            },
+            ".muster-chat": {
+              "x": 24.5625,
+              "y": 684.34375,
+              "width": 350,
+              "height": 303
+            },
+            ".muster-quote": {
+              "x": 445.4375,
+              "y": 903.34375,
+              "width": 645.109375,
+              "height": 99
+            }
+          },
+          "result": "PASS"
+        },
+        {
+          "role": "player",
+          "route": "/player/playthroughs/muster-all-ready",
+          "chatMessages": 5,
+          "images": [
+            {
+              "src": "/api/profile-media/muster-northwind-avatar",
+              "loaded": true
+            },
+            {
+              "src": "/api/voyages/muster-all-ready/muster/cover",
+              "loaded": true
+            },
+            {
+              "src": "/api/profile-media/muster-northwind-avatar",
+              "loaded": true
+            }
+          ],
+          "geometry": {
+            ".muster-environment": {
+              "x": 0,
+              "y": 76,
+              "width": 1536,
+              "height": 948
+            },
+            ".muster-gathering": {
+              "x": 304.25,
+              "y": 130.578125,
+              "width": 719.75,
+              "height": 521.625
+            },
+            ".muster-parchment": {
+              "x": 1090.546875,
+              "y": 149.578125,
+              "width": 437.4375,
+              "height": 856.34375
+            },
+            ".muster-chat": {
+              "x": 24.5625,
+              "y": 738.921875,
+              "width": 350,
+              "height": 303
+            },
+            ".muster-quote": {
+              "x": 445.4375,
+              "y": 957.921875,
+              "width": 645.109375,
+              "height": 99
+            }
+          },
+          "result": "PASS"
+        }
+      ],
+      "runtimeErrors": [],
+      "result": "PASS"
+    }
   }
 }

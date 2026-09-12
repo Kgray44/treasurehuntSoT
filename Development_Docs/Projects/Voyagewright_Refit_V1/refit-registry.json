@@ -88,12 +88,18 @@
       "productArea": "Captain_Helm",
       "routePatterns": ["/captain/voyages/[playthroughId]/muster", "/player/playthroughs/[playthroughId]"],
       "treatment": "MAJOR_STRATEGY_RETHINK",
-      "status": "FINAL_VALIDATION",
+      "status": "MERGED",
       "branch": "refit-v1/muster",
       "designPacket": "muster/design-packet.md",
       "ownerAccepted": true,
       "preserveReferences": ["muster/owner-acceptance.md", "muster/accepted-reference/manifest.json", "image-3.png"],
-      "notes": "Explicitly OWNER_ACCEPTED 2026-09-12 at 11509df7c686806d58989223804f13aa0c3aa0b1. Entered FINAL_VALIDATION; protected integration is authorized. Preserve the exact accepted composition and all owner-review fixtures."
+      "notes": "OWNER_ACCEPTED 2026-09-12 at 11509df7c686806d58989223804f13aa0c3aa0b1. Protected PR #658 integrated final implementation debc23a83ea8028d863a0376bd79214f51f1b748 as 0164bc0739956909d2640294516221e81becd952 after Sounding Line PASS. Exact landed-tree Captain/Player, chat, parchment, asset, runtime and accepted-composition smoke passed. All ten owner-review Voyages are retained. Only Muster is closed; Refit V1 remains open.",
+      "ownerAcceptedAt": "2026-09-12",
+      "acceptedImplementationCommit": "11509df7c686806d58989223804f13aa0c3aa0b1",
+      "implementationCommit": "debc23a83ea8028d863a0376bd79214f51f1b748",
+      "protectedMergePr": "https://github.com/Kgray44/treasurehuntSoT/pull/658",
+      "mainCommit": "0164bc0739956909d2640294516221e81becd952",
+      "validationRecord": "muster/final-validation.md"
     }
   ]
 }

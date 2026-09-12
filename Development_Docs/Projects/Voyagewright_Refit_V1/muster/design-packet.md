@@ -12,17 +12,19 @@ last_reviewed: 2026-09-12
 
 - Area: Muster / waiting room; registry ID: muster.
 - Treatment: MAJOR_STRATEGY_RETHINK.
-- Lifecycle: FINAL_VALIDATION.
+- Lifecycle: MERGED.
 - Branch: refit-v1/muster.
 - Worktree: D:/CodexWorktrees/treasurehunt-refit-v1-muster.
 - Protected-main baseline: a8b72f37 (Refit setup integrated).
+- Final implementation: debc23a83ea8028d863a0376bd79214f51f1b748; [protected PR #658](https://github.com/Kgray44/treasurehuntSoT/pull/658); landed main: 0164bc0739956909d2640294516221e81becd952.
+- Sounding Line and exact landed-tree smoke: PASS; [integration evidence](final-validation.md).
 - Routes: /captain/voyages/[playthroughId]/muster and /player/playthroughs/[playthroughId].
 - Owner direction and concept approval: attached goal-objective.md and image-3.png, 2026-09-12.
 - Owner acceptance: explicitly granted 2026-09-12 for `11509df7c686806d58989223804f13aa0c3aa0b1`; [acceptance record and preserved reference](owner-acceptance.md). Final validation, ordinary Sounding Line, protected integration and landed smoke are now authorized.
 
 ## Current experience and preservation
 
-The existing rooms provide Captain and Player projections, canonical invitation acceptance/readiness, lifecycle commands, Player presence, and live reconciliation. Their separate list/card layouts do not provide the approved illustrated composition or Crew Chat.
+The canonical shared room now provides the owner-accepted illustrated composition, current Captain and Player projections, invitation/readiness cards, published-edition parchment, persistent Crew Chat, lifecycle commands, presence and live reconciliation. The prior separate list/card rooms have been replaced.
 
 Preserve the real global header, One Voyage membership and launch contract, Helm authority commands, destructive confirmations, Player privacy, role and participation separation, effective motion preferences, and automatic Player handoff after launch. Preserve unrelated pages and the shared port-3000 runtime.
 
@@ -50,7 +52,7 @@ Desktop most closely follows the mockup. Tablet rebalances crew and parchment. M
 
 Persistent preview origin: http://127.0.0.1:3128. Database, assets, build output and browser sessions are task-owned. Focused proof covers Captain-only, Captain+Player, Player-only, readiness states, chat send/receive/persistence/authorization, specific/fallback covers, desktop/mobile/overflow, reduced motion and runtime errors.
 
-The owner-accepted implementation is frozen as the do-not-regress reference. Complete [final validation and protected integration](final-validation.md); correct only evidenced defects. Keep existing owner-review fixtures and the preview.
+The owner-accepted implementation is frozen as the do-not-regress reference. [Final validation and protected integration](final-validation.md) passed; this area is closed as MERGED. Keep existing owner-review fixtures and the preview.
 
 ## Iteration history
 
