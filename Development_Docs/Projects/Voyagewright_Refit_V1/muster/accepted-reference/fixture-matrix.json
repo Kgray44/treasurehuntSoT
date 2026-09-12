@@ -1,0 +1,259 @@
+{
+  "scope": "Synthetic owner-review fixtures only; no credentials or message text exported",
+  "acceptedImplementation": "11509df7c686806d58989223804f13aa0c3aa0b1",
+  "verifiedAt": "2026-09-12T18:49:35.726Z",
+  "allRetained": true,
+  "voyages": [
+    {
+      "id": "muster-all-ready",
+      "taleId": "muster-forever-treasure",
+      "publishedVersionId": "muster-forever-treasure-edition",
+      "captainAccountId": "muster-account-captain",
+      "captainAuthorityState": "ASSIGNED",
+      "status": "READY",
+      "concurrencyVersion": 1,
+      "memberships": [
+        {
+          "playerProfileId": "muster-profile-captain",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-sera",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-northwind",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-tidewalker",
+          "status": "REMOVED"
+        }
+      ],
+      "invitationCount": 0,
+      "messageCount": 5,
+      "retainedDataSha256": "acdeadf2c94c6666e1742e114c665f041ab9b5ac29deb4a8e50b93451886a8d9"
+    },
+    {
+      "id": "muster-captain-empty",
+      "taleId": "muster-forever-treasure",
+      "publishedVersionId": "muster-forever-treasure-edition",
+      "captainAccountId": "muster-account-captain",
+      "captainAuthorityState": "ASSIGNED",
+      "status": "READY",
+      "concurrencyVersion": 0,
+      "memberships": [],
+      "invitationCount": 0,
+      "messageCount": 0,
+      "retainedDataSha256": "493bd1818dc357e1d5eef683bcf8962fc2fc691625346e436d706d2c5f1f1f4b"
+    },
+    {
+      "id": "muster-captain-only",
+      "taleId": "muster-forever-treasure",
+      "publishedVersionId": "muster-forever-treasure-edition",
+      "captainAccountId": "muster-account-captain",
+      "captainAuthorityState": "ASSIGNED",
+      "status": "READY",
+      "concurrencyVersion": 0,
+      "memberships": [
+        {
+          "playerProfileId": "muster-profile-sera",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-northwind",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-tidewalker",
+          "status": "READY"
+        }
+      ],
+      "invitationCount": 0,
+      "messageCount": 2,
+      "retainedDataSha256": "588bc64743cabbd75a7fae81c735dc2c3746887ab4c2ca5fff2502bcc992af70"
+    },
+    {
+      "id": "muster-fallback",
+      "taleId": "muster-fallback-chronicle",
+      "publishedVersionId": "muster-fallback-chronicle-edition",
+      "captainAccountId": "muster-account-captain",
+      "captainAuthorityState": "ASSIGNED",
+      "status": "READY",
+      "concurrencyVersion": 0,
+      "memberships": [
+        {
+          "playerProfileId": "muster-profile-captain",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-sera",
+          "status": "READY"
+        }
+      ],
+      "invitationCount": 0,
+      "messageCount": 0,
+      "retainedDataSha256": "4e0f9e5a45ddd8a3f145aa9b4b6420ac805a38d91b9a509dd35f3fa9832223ce"
+    },
+    {
+      "id": "muster-preparing",
+      "taleId": "muster-forever-treasure",
+      "publishedVersionId": "muster-forever-treasure-edition",
+      "captainAccountId": "muster-account-sera",
+      "captainAuthorityState": "ASSIGNED",
+      "status": "READY",
+      "concurrencyVersion": 1,
+      "memberships": [
+        {
+          "playerProfileId": "muster-profile-captain",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-sera",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-northwind",
+          "status": "ACCEPTED"
+        },
+        {
+          "playerProfileId": "muster-profile-tidewalker",
+          "status": "ACCEPTED"
+        }
+      ],
+      "invitationCount": 0,
+      "messageCount": 0,
+      "retainedDataSha256": "c49ea4dca49399622fe496244bcb885029447b586bf60488d9ebf1c932df201c"
+    },
+    {
+      "id": "muster-proof-chat-63701c59",
+      "taleId": "muster-forever-treasure",
+      "publishedVersionId": "muster-forever-treasure-edition",
+      "captainAccountId": "muster-account-captain",
+      "captainAuthorityState": "ASSIGNED",
+      "status": "READY",
+      "concurrencyVersion": 0,
+      "memberships": [
+        {
+          "playerProfileId": "muster-profile-captain",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-sera",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-northwind",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-tidewalker",
+          "status": "LEFT"
+        }
+      ],
+      "invitationCount": 0,
+      "messageCount": 31,
+      "retainedDataSha256": "5aadf41c73472ccbcebe24e9a9c0f079594981d004e66eb95264754c65946b32"
+    },
+    {
+      "id": "muster-proof-chat-d6b5818a",
+      "taleId": "muster-forever-treasure",
+      "publishedVersionId": "muster-forever-treasure-edition",
+      "captainAccountId": "muster-account-captain",
+      "captainAuthorityState": "ASSIGNED",
+      "status": "READY",
+      "concurrencyVersion": 0,
+      "memberships": [
+        {
+          "playerProfileId": "muster-profile-captain",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-sera",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-northwind",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-tidewalker",
+          "status": "READY"
+        }
+      ],
+      "invitationCount": 0,
+      "messageCount": 21,
+      "retainedDataSha256": "027775edac5e0028f682757d3cbff6d98c18f4773c997a01d816e8dd49e0bc0d"
+    },
+    {
+      "id": "muster-proof-launch-0239777b",
+      "taleId": "muster-forever-treasure",
+      "publishedVersionId": "muster-forever-treasure-edition",
+      "captainAccountId": "muster-account-captain",
+      "captainAuthorityState": "ASSIGNED",
+      "status": "CANCELLED",
+      "concurrencyVersion": 1,
+      "memberships": [
+        {
+          "playerProfileId": "muster-profile-captain",
+          "status": "ACTIVE_MEMBER"
+        },
+        {
+          "playerProfileId": "muster-profile-sera",
+          "status": "ACTIVE_MEMBER"
+        }
+      ],
+      "invitationCount": 0,
+      "messageCount": 0,
+      "retainedDataSha256": "c8ae52c8ca076dfbc6b23e5a5371aaecddfc7efbaed4e7564018eeed17dc2952"
+    },
+    {
+      "id": "muster-proof-relinquish-ca75fa87",
+      "taleId": "muster-forever-treasure",
+      "publishedVersionId": "muster-forever-treasure-edition",
+      "captainAccountId": null,
+      "captainAuthorityState": "VACANT",
+      "status": "CANCELLED",
+      "concurrencyVersion": 1,
+      "memberships": [
+        {
+          "playerProfileId": "muster-profile-captain",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-sera",
+          "status": "READY"
+        }
+      ],
+      "invitationCount": 0,
+      "messageCount": 0,
+      "retainedDataSha256": "0a61ab5e634c7a07a3b1369ce2389de0b5a7ecf1696afecc6c7869d1950c840b"
+    },
+    {
+      "id": "muster-tidal-observatory",
+      "taleId": "muster-delta2-observatory",
+      "publishedVersionId": "muster-delta2-observatory-edition",
+      "captainAccountId": "muster-account-captain",
+      "captainAuthorityState": "ASSIGNED",
+      "status": "SCHEDULED",
+      "concurrencyVersion": 0,
+      "memberships": [
+        {
+          "playerProfileId": "muster-profile-captain",
+          "status": "READY"
+        },
+        {
+          "playerProfileId": "muster-profile-sera",
+          "status": "INVITED"
+        },
+        {
+          "playerProfileId": "muster-profile-northwind",
+          "status": "ACCEPTED"
+        }
+      ],
+      "invitationCount": 1,
+      "messageCount": 0,
+      "retainedDataSha256": "525b223cea93f2e9e741db3cc9eca5117c9f1bf47e150f40c71c47b8c2f2135c"
+    }
+  ]
+}

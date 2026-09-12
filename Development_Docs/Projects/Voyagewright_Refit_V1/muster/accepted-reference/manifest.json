@@ -1,0 +1,206 @@
+{
+  "acceptedAt": "2026-09-12",
+  "capturedAt": "2026-09-12T18:33:13.436Z",
+  "commit": "11509df7c686806d58989223804f13aa0c3aa0b1",
+  "branch": "refit-v1/muster",
+  "files": [
+    {
+      "path": "prisma/migrations/202609120001_muster_crew_chat/migration.sql",
+      "sha256": "12637a6ec2d40c38b8672d5ca7f12d9208e02e30cc1f4fbf4e8fc5e35a1cffad"
+    },
+    {
+      "path": "prisma/muster-cover.ts",
+      "sha256": "476af6069b753efb93250a895501d4d361e07849534aaad092b983f8c8c3d9b4"
+    },
+    {
+      "path": "prisma/mysql-migrations/0066_muster_crew_chat/migration.sql",
+      "sha256": "d8ab7ee10c38790b7c13b60ec0870b1503a88783f3297305fff4577eb9b7a4dd"
+    },
+    {
+      "path": "prisma/schema.prisma",
+      "sha256": "47168fc10b36034fc94751ecccba4b325bd74c76375540000f1ca0f77c905479"
+    },
+    {
+      "path": "prisma/schema.sqlite.prisma",
+      "sha256": "9e6e60df9c5d41accb91ff67a9336037d5e28fca1a1da7ab8901efd8f2cf00f3"
+    },
+    {
+      "path": "prisma/seed.ts",
+      "sha256": "e3ce7d95688e17685b59408ccc629a3615f74a2bcf934680ce39dd104733ee0f"
+    },
+    {
+      "path": "public/images/muster/lantern-room.png",
+      "sha256": "b7ff4a97b4476084fb09bcf47f110f4a725b9ba7e2d7eb905f64898c62f5b9e7"
+    },
+    {
+      "path": "public/images/muster/moonlit-island.png",
+      "sha256": "a73900b4a86a908e2bdee0215bd4455c372e8a81d650e52c8fa822c19c63f596"
+    },
+    {
+      "path": "public/images/muster/parchment.png",
+      "sha256": "340f76f2f6be92bc124b970af37335f04137ec91cc469a6a364ac58170aa7d07"
+    },
+    {
+      "path": "src/app/api/voyages/[voyageId]/muster/chat/route.ts",
+      "sha256": "6078e4663c49a65bab37e8ae83bc1b2fde304d037b5fb24179ff65da6ea72df7"
+    },
+    {
+      "path": "src/app/api/voyages/[voyageId]/muster/cover/route.ts",
+      "sha256": "6bfaa446d3e74daf0a8fa25e9426d5fcf9c1036063ba29a822d484a4adf15f03"
+    },
+    {
+      "path": "src/app/api/voyages/[voyageId]/muster/events/route.ts",
+      "sha256": "d20d0a6835c1f7595786d89e350767c10fc9f650a6f82699601d76669441b96d"
+    },
+    {
+      "path": "src/app/api/voyages/[voyageId]/muster/route.ts",
+      "sha256": "b42c0f9f539db5f32eeb17c535831b6beaffa63647b847995966f5416d047421"
+    },
+    {
+      "path": "src/components/captain/CaptainMusterRoom.test.tsx",
+      "sha256": "1cd863c03988ea792b5692d5863326a4bdeed2dff450efa118c5bc67587db270"
+    },
+    {
+      "path": "src/components/captain/CaptainMusterRoom.tsx",
+      "sha256": "f59e965b2f908c471797f6376e34cd8ced1b856f9f94b6a111e76577655a7040"
+    },
+    {
+      "path": "src/components/muster/CrewChat.test.tsx",
+      "sha256": "7b2ac5f1bf6577340ade192db7983842569c333e00369ef633120a0d663db731"
+    },
+    {
+      "path": "src/components/muster/CrewChat.tsx",
+      "sha256": "68531987c47cb042e2993843c88d4e929e38a7b397b01ebb58bc487308074505"
+    },
+    {
+      "path": "src/components/muster/MusterAvatar.tsx",
+      "sha256": "38b6fec8735c0ceea314688328ca7917bcc6774d910b8986398b9cb8d27c10a8"
+    },
+    {
+      "path": "src/components/muster/MusterOptions.tsx",
+      "sha256": "83e0259a1e9ddf4615498a5c183cd41700dd5e990755dc4d1bec0ec47cf19f9a"
+    },
+    {
+      "path": "src/components/muster/MusterRoom.tsx",
+      "sha256": "768b312051c31cd7d968b2606817a5c7cd5af2799966f38427d2c97e44d4044e"
+    },
+    {
+      "path": "src/components/muster/icons.tsx",
+      "sha256": "98e538ade243136148f3b89550875a7a705b71403d0de01397fab893bae6d7fd"
+    },
+    {
+      "path": "src/components/muster/muster.css",
+      "sha256": "cbfb2f84b94a07e5add7c424ccd9745a743ab381a04e02bf51ee07eb18a80254"
+    },
+    {
+      "path": "src/components/muster/test-support.ts",
+      "sha256": "c9590fd7e0856ba94ef0522700b0838d1359e652059f586aa3d75383a028d480"
+    },
+    {
+      "path": "src/components/muster/useMusterStage.ts",
+      "sha256": "ce316f9e2368be1348e0889a9a989ab0b33b4aaa9f7d71b5688a178031e3f232"
+    },
+    {
+      "path": "src/components/platform/PlayerVoyageRoom.test.tsx",
+      "sha256": "3fc32c80e0d796af4e94b29aedcaf5f8b721267853f99785ec1b00fc554ff2cd"
+    },
+    {
+      "path": "src/components/platform/PlayerVoyageRoom.tsx",
+      "sha256": "0d721d6628204a4f6663a7e7d862c0dfaf60a01fcf09c37d86a7e65375ab3859"
+    },
+    {
+      "path": "src/muster/chat.ts",
+      "sha256": "6f976c5047fb55562cbba7d4ad72b75f80345c99f7ff7359113a994217f8c869"
+    },
+    {
+      "path": "src/muster/chronicle.test.ts",
+      "sha256": "dd852e29b514be1bde4ad9afa9eac15bd90c7dfe8c131a376a920ed8507d4023"
+    },
+    {
+      "path": "src/muster/chronicle.ts",
+      "sha256": "48b3fdd0e4948a8e5da683af8c71561642eb01ca6e50a13ebabdbb570d355cd3"
+    },
+    {
+      "path": "src/muster/contracts.ts",
+      "sha256": "16c2338c9bdeb6abcc352aa3245616b96583c7c3ee5e3558c2a32fef8e5707fc"
+    },
+    {
+      "path": "src/muster/http.ts",
+      "sha256": "73794be757de5acaa432d7d3542bac530c9700e805f089f5787723e1193fe21b"
+    },
+    {
+      "path": "src/muster/service.ts",
+      "sha256": "527d12d789b889ea0837248569bb0831e3ce5127b1af623c36b8c3c4247e220e"
+    }
+  ],
+  "assets": [
+    {
+      "path": "public/images/muster/lantern-room.png",
+      "sha256": "b7ff4a97b4476084fb09bcf47f110f4a725b9ba7e2d7eb905f64898c62f5b9e7"
+    },
+    {
+      "path": "public/images/muster/moonlit-island.png",
+      "sha256": "a73900b4a86a908e2bdee0215bd4455c372e8a81d650e52c8fa822c19c63f596"
+    },
+    {
+      "path": "public/images/muster/parchment.png",
+      "sha256": "340f76f2f6be92bc124b970af37335f04137ec91cc469a6a364ac58170aa7d07"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "captain-desktop.png",
+      "route": "/captain/voyages/muster-all-ready/muster",
+      "viewport": {
+        "width": 1536,
+        "height": 1024
+      },
+      "sha256": "c0fe0189a606c5b1825d54da3590e117e66697ba0817a5822da9887507ee47f3"
+    },
+    {
+      "path": "player-desktop.png",
+      "route": "/player/playthroughs/muster-all-ready",
+      "viewport": {
+        "width": 1536,
+        "height": 1024
+      },
+      "sha256": "f2b3697a360f07857d0a28240a76c808580433163be405a9490ea42dbc6642d0"
+    },
+    {
+      "path": "captain-tablet.png",
+      "route": "/captain/voyages/muster-all-ready/muster",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "sha256": "a6c2c04e6d3292cef4d7876a2af7471d17bdf0f1337db69c3b9a720a255d1517"
+    },
+    {
+      "path": "captain-tablet-chat.png",
+      "route": "/captain/voyages/muster-all-ready/muster",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "sha256": "870330b78761bbf2f76c8f6e209840a3b1da916199129893bc16aa6aede4c84d"
+    },
+    {
+      "path": "captain-mobile.png",
+      "route": "/captain/voyages/muster-all-ready/muster",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "ee8aef1b33aaba3ccb6e8c437efc6119829f2b43a430ba2fc2cce95f80f03512"
+    },
+    {
+      "path": "captain-mobile-chat.png",
+      "route": "/captain/voyages/muster-all-ready/muster",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "18b10ee6dbdf4063ebc0fff51927718184ae7a5827f3fe1c67e752786d318a85"
+    }
+  ]
+}

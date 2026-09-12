@@ -8,7 +8,7 @@ last_reviewed: 2026-09-12
 
 # Player guide
 
-In the development Muster preview, **CHRONICLE MUSTER** is the Player-only view. Crew Chat keeps recent messages for this Voyage: Enter sends, Shift+Enter adds a line, and the new-message button returns you to the latest messages while you read older ones. Messages are plain text, limited to 1,000 characters and 12 per minute per sender in a Voyage. Current Crew and the Captain can use chat; departed or removed members cannot. A participating Captain receives the same room with their real Captain controls. This preview awaits owner acceptance.
+In the owner-accepted Muster experience, **CHRONICLE MUSTER** is the Player-only view. Crew Chat keeps recent messages for this Voyage: Enter sends, Shift+Enter adds a line, and the new-message button returns you to the latest messages while you read older ones. Messages are plain text, limited to 1,000 characters and 12 per minute per sender in a Voyage. Current Crew and the Captain can use chat; departed or removed members cannot. A participating Captain receives the same room with their real Captain controls. Protected integration is in progress.
 
 After accepting an invitation, use the Player Library to find available Voyages. A Voyage may show a waiting state until your Captain opens it. During play, use the story view and Chronicle Journal to follow events, review prior pages, and return to the archive or history where available.
 

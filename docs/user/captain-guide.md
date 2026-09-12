@@ -8,9 +8,9 @@ last_reviewed: 2026-09-12
 
 # Captain guide
 
-In the development Muster preview, **CAPTAIN MUSTER** follows your current authority on either entry route. Player readiness counts actual participating Players; a Captain-only card adds no ready Player. **Begin the Voyage** uses the existing launch rule, which can allow ready Players to begin while others prepare. **Captain & Voyage options** contains the existing relinquishment and cancellation actions. Crew Chat is shared only with this Voyage’s authorized participants; Captain-only accounts may chat. This preview awaits owner acceptance.
+In the owner-accepted Muster experience, **CAPTAIN MUSTER** follows your current authority on either entry route. Player readiness counts actual participating Players; a Captain-only card adds no ready Player. **Begin the Voyage** uses the existing launch rule, which can allow ready Players to begin while others prepare. **Captain & Voyage options** contains the existing relinquishment and cancellation actions. Crew Chat is shared only with this Voyage’s authorized participants; Captain-only accounts may chat. Protected integration is in progress.
 
-The preview's **Invite Crew** action card opens the Captain Library when your current authority permits invitations. Actual invited people keep their own crew cards. Chronicle details on the parchment follow the published edition used by the Voyage.
+The **Invite Crew** action card opens the Captain Library when your current authority permits invitations. Actual invited people keep their own crew cards. Chronicle details on the parchment follow the published edition used by the Voyage. If its cover cannot load, **Retry cover** retries the selected artwork; the island fallback is reserved for a Chronicle with no cover.
 
 Use the Captain Library to select a Chronicle, prepare a Voyage, and manage its invitations. The Captain session views support monitoring and player preview where enabled. Start only when participants are expected to have access, and use the session controls rather than sharing a private route directly.
 

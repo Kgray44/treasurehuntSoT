@@ -8,7 +8,7 @@ last_reviewed: 2026-09-12
 
 # Features and subfeatures
 
-**Development preview:** the Muster Refit combines Captain and Player waiting rooms into an illustrated gathering space with real crew cards, Chronicle details, and persistent Voyage-scoped Crew Chat. This candidate awaits owner review and is not available on main.
+**Owner-accepted integration candidate:** Muster combines Captain and Player waiting rooms into the canonical illustrated gathering space with current crew/invitation/readiness cards, published-edition Chronicle details, and persistent Voyage-scoped Crew Chat. Final local validation passed; protected-main qualification is in progress.
 
 ## Identity and Chronicle Passport
 

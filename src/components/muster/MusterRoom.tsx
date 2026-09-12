@@ -7,12 +7,7 @@ import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { useActionDialog } from "@/components/ui/ActionDialog";
 import { postIdempotentAuthorityCommand } from "@/helm/authority-command.client";
 import { membershipPresenceDeviceId } from "@/platform/presence-client";
-import {
-  MUSTER_COVER_FALLBACK,
-  type MusterProjection,
-  type MusterMessage,
-  type MusterMember,
-} from "@/muster/contracts";
+import { type MusterProjection, type MusterMessage, type MusterMember } from "@/muster/contracts";
 import { CrewChat } from "./CrewChat";
 import { MusterAvatar } from "./MusterAvatar";
 import { MusterOptions } from "./MusterOptions";
@@ -307,7 +302,6 @@ export function MusterRoom({
   const departed = room.crew.filter(
     (m) => !m.isCaptain && ["LEFT", "REMOVED", "CANCELLED", "COMPLETED_MEMBER"].includes(m.status),
   );
-  const cover = coverFailed === voyage.coverUrl ? MUSTER_COVER_FALLBACK : voyage.coverUrl;
   const gathering = ["READY", "INVITING", "SCHEDULED"].includes(voyage.status);
   return (
     <>
@@ -444,12 +438,19 @@ export function MusterRoom({
           <div className="muster-paper" aria-hidden="true" />
           <div className="muster-paper-content">
             <div className="muster-cover">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={cover}
-                alt={`${voyage.title} Chronicle cover`}
-                onError={() => setCoverFailed(voyage.coverUrl)}
-              />
+              {coverFailed === voyage.coverUrl ? (
+                <div className="muster-cover-error" role="status">
+                  <p>Chronicle cover temporarily unavailable.</p>
+                  <button onClick={() => setCoverFailed("")}>Retry cover</button>
+                </div>
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={voyage.coverUrl}
+                  alt={`${voyage.title} Chronicle cover`}
+                  onError={() => setCoverFailed(voyage.coverUrl)}
+                />
+              )}
               <span>
                 <span aria-hidden="true">✦</span>{" "}
                 {gathering ? "Awaiting departure" : stateName(voyage.status, voyage.authorityState)}
@@ -460,31 +461,39 @@ export function MusterRoom({
             {voyage.description && <p className="muster-description">{voyage.description}</p>}
             <dl className="muster-details">
               <div>
-                <i>
-                  <BookOpen />
-                </i>
+                <dt className="muster-detail-icon" aria-hidden="true">
+                  <i>
+                    <BookOpen />
+                  </i>
+                </dt>
                 <dt>Edition</dt>
                 <dd>{voyage.edition}</dd>
               </div>
               <div>
-                <i>
-                  <Compass />
-                </i>
+                <dt className="muster-detail-icon" aria-hidden="true">
+                  <i>
+                    <Compass />
+                  </i>
+                </dt>
                 <dt>Voyage State</dt>
                 <dd>{stateName(voyage.status, voyage.authorityState)}</dd>
               </div>
               <div>
-                <i>
-                  <UserRound />
-                </i>
+                <dt className="muster-detail-icon" aria-hidden="true">
+                  <i>
+                    <UserRound />
+                  </i>
+                </dt>
                 <dt>Captain</dt>
                 <dd>{voyage.captainName}</dd>
               </div>
               {voyage.duration !== null && (
                 <div>
-                  <i>
-                    <Timer />
-                  </i>
+                  <dt className="muster-detail-icon" aria-hidden="true">
+                    <i>
+                      <Timer />
+                    </i>
+                  </dt>
                   <dt>Estimated Duration</dt>
                   <dd>
                     {voyage.duration >= 60

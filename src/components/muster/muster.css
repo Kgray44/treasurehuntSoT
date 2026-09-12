@@ -381,6 +381,25 @@
   display: block;
   object-fit: cover;
 }
+.muster-cover-error {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px 12px 12px;
+  color: var(--muster-paper-ink);
+  text-align: center;
+  font-size: 12px;
+}
+.muster-cover-error button {
+  color: inherit;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  padding: 5px 9px;
+}
 .muster-cover > span {
   position: absolute;
   left: 15px;
@@ -433,8 +452,10 @@
   column-gap: 10px;
   align-items: center;
 }
-.muster-details i {
+.muster-details .muster-detail-icon {
   grid-row: span 2;
+}
+.muster-details i {
   width: 43px;
   height: 46px;
   border: 1px solid #78684830;
@@ -1258,4 +1279,48 @@
 .muster-chat h2,
 .muster-readiness h3 {
   font-weight: 500;
+}
+
+/* This illustrated room retains its accepted dark materials inside a Light shell. */
+html[data-voyage-theme="light"] .muster-scene {
+  --text-body: #e4e9e2;
+}
+html[data-voyage-theme="light"] .muster-scene .muster-launch,
+html[data-voyage-theme="light"] .muster-scene .muster-launch:hover:not(:disabled) {
+  color: #f1dbac;
+  background: linear-gradient(#214a45, #13342f);
+  border-color: #9b7c36;
+}
+html[data-voyage-theme="light"] .muster-scene .muster-launch:disabled {
+  color: #f0e6c4;
+  background: #74796be6;
+  border-color: #858779;
+}
+html[data-voyage-theme="light"] .muster-scene .muster-manage-member,
+html[data-voyage-theme="light"] .muster-scene .muster-manage-member:hover {
+  color: #cbd4c6;
+  background: transparent;
+}
+html[data-voyage-theme="light"] .muster-scene .muster-chat-compose button,
+html[data-voyage-theme="light"] .muster-scene .muster-chat-compose button:hover {
+  color: #c3ddd3;
+  background: transparent;
+  border-color: #75909540;
+}
+html[data-voyage-theme="light"] .muster-scene .muster-chat-unread,
+html[data-voyage-theme="light"] .muster-scene .muster-chat-unread:hover {
+  color: #f0e2b2;
+  background: #234846;
+  border-color: #a9945c;
+}
+html[data-voyage-theme="light"] .muster-scene .muster-options-trigger,
+html[data-voyage-theme="light"] .muster-scene .muster-options-trigger:hover {
+  color: #51533f;
+  background: transparent;
+}
+html[data-voyage-theme="light"] .muster-scene .muster-option-buttons button,
+html[data-voyage-theme="light"] .muster-scene .muster-option-buttons button:hover {
+  color: #273d34;
+  background: #f0deaf4d;
+  border-color: #6e745665;
 }

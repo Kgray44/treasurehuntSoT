@@ -7311,7 +7311,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/muster/accepted-reference/fixture-matrix.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/muster/accepted-reference/manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Voyagewright_Refit_V1/muster/design-packet.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/muster/final-validation.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -7330,6 +7348,18 @@
     },
     {
       "path": "Development_Docs/Projects/Voyagewright_Refit_V1/muster/iteration-3-delta.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/muster/owner-acceptance.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/muster/validation-results.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

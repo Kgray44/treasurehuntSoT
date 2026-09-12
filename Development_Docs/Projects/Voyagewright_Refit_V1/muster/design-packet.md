@@ -12,13 +12,13 @@ last_reviewed: 2026-09-12
 
 - Area: Muster / waiting room; registry ID: muster.
 - Treatment: MAJOR_STRATEGY_RETHINK.
-- Lifecycle: IMPLEMENTATION_ITERATING.
+- Lifecycle: FINAL_VALIDATION.
 - Branch: refit-v1/muster.
 - Worktree: D:/CodexWorktrees/treasurehunt-refit-v1-muster.
 - Protected-main baseline: a8b72f37 (Refit setup integrated).
 - Routes: /captain/voyages/[playthroughId]/muster and /player/playthroughs/[playthroughId].
 - Owner direction and concept approval: attached goal-objective.md and image-3.png, 2026-09-12.
-- Owner acceptance: absent. No merge or final Sounding Line validation authorized.
+- Owner acceptance: explicitly granted 2026-09-12 for `11509df7c686806d58989223804f13aa0c3aa0b1`; [acceptance record and preserved reference](owner-acceptance.md). Final validation, ordinary Sounding Line, protected integration and landed smoke are now authorized.
 
 ## Current experience and preservation
 
@@ -50,7 +50,7 @@ Desktop most closely follows the mockup. Tablet rebalances crew and parchment. M
 
 Persistent preview origin: http://127.0.0.1:3128. Database, assets, build output and browser sessions are task-owned. Focused proof covers Captain-only, Captain+Player, Player-only, readiness states, chat send/receive/persistence/authorization, specific/fallback covers, desktop/mobile/overflow, reduced motion and runtime errors.
 
-Final broad validation and owner acceptance are deferred. Continue only the owner's named Muster deltas and leave the preview running.
+The owner-accepted implementation is frozen as the do-not-regress reference. Complete [final validation and protected integration](final-validation.md); correct only evidenced defects. Keep existing owner-review fixtures and the preview.
 
 ## Iteration history
 
