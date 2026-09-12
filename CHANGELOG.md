@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-09-06
+last_reviewed: 2026-09-12
 ---
 
 # Changelog
@@ -11,6 +11,8 @@ last_reviewed: 2026-09-06
 ## Unreleased
 
 ### Changed
+
+- Added the first development preview of the owner-directed Muster Refit: one role-aware illustrated waiting room, real crew cards, supplied room/cover/parchment artwork, and persistent authorized Voyage Crew Chat. Canonical Captain authority, Player participation, launch and lifecycle rules are retained. Owner acceptance and integration are pending.
 
 - Polished cross-family Brightwork continuity in Stage 8 Wave 7. Personal
   Harbor's dark identity action, the persistent dark footer, and Community

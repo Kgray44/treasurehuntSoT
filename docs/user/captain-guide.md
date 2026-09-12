@@ -3,10 +3,12 @@ title: Captain guide
 audience: captain
 status: current
 canonical_for: captain-guide
-last_reviewed: 2026-08-27
+last_reviewed: 2026-09-12
 ---
 
 # Captain guide
+
+In the development Muster preview, **CAPTAIN MUSTER** follows your current authority on either entry route. Player readiness counts actual participating Players; a Captain-only card adds no ready Player. **Begin the Voyage** uses the existing launch rule, which can allow ready Players to begin while others prepare. **Captain & Voyage options** contains the existing relinquishment and cancellation actions. Crew Chat is shared only with this Voyage’s authorized participants; Captain-only accounts may chat. This preview awaits owner acceptance.
 
 Use the Captain Library to select a Chronicle, prepare a Voyage, and manage its invitations. The Captain session views support monitoring and player preview where enabled. Start only when participants are expected to have access, and use the session controls rather than sharing a private route directly.
 

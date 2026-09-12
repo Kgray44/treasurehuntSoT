@@ -3,10 +3,12 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-09-04
+last_reviewed: 2026-09-12
 ---
 
 # Feature status
+
+The shared Muster and Voyage Crew Chat are **development-only**, with focused synthetic proof. This first iteration is awaiting owner review; final validation and integration are pending.
 
 | Feature                                               | Status                 | Validation state      | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ----------------------------------------------------- | ---------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

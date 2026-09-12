@@ -3,10 +3,12 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-09-04
+last_reviewed: 2026-09-12
 ---
 
 # Current status
+
+**Muster Refit:** first implementation is in development preview. Captain-only, Captain + Player, and Player views share one experience; Crew Chat is operational with synthetic development evidence. Owner acceptance, final validation, and mainline integration remain pending.
 
 **Available on main and owner accepted:** Project Wakebook Phase 1,
 Open the Wake, replaces the skeletal Passport history presentation with a

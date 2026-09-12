@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
+import { ensureDevelopmentMusterCover } from "./muster-cover";
 
 const db = new PrismaClient();
 const hash = (value: string) => createHash("sha256").update(value).digest("hex");
@@ -189,6 +190,7 @@ async function main() {
 
   const prior = await db.campaign.findUnique({ where: { slug: "development-forever-treasure" } });
   if (prior && preserveExisting) {
+    await ensureDevelopmentMusterCover(db);
     await db.campaign.update({
       where: { id: prior.id },
       data: { accessCodeHash: await bcrypt.hash(accessCode, 12) },
@@ -781,6 +783,7 @@ async function main() {
     });
   }
   const publishedAt = new Date();
+  const musterCover = await ensureDevelopmentMusterCover(db);
   const contentSnapshot = JSON.stringify({
     schemaVersion: 1,
     tale: {
@@ -790,7 +793,7 @@ async function main() {
       subtitle: studioTale.subtitle,
       shortDescription: studioTale.shortDescription,
       longDescription: studioTale.longDescription,
-      coverAssetId: null,
+      coverAssetId: musterCover?.id ?? null,
       theme: studioTale.theme,
       visibility: studioTale.visibility,
       playerCountMin: studioTale.playerCountMin,
@@ -982,7 +985,26 @@ async function main() {
         ],
       },
     ],
-    assets: [],
+    assets: musterCover
+      ? [
+          {
+            id: musterCover.id,
+            mediaType: "IMAGE",
+            displayName: musterCover.displayName,
+            description: null,
+            mimeType: musterCover.mimeType,
+            width: musterCover.width,
+            height: musterCover.height,
+            roles: ["COVER"],
+            variants: musterCover.variants.map((variant) => ({
+              id: variant.id,
+              role: variant.role,
+              mimeType: variant.mimeType,
+              processingState: variant.processingState,
+            })),
+          },
+        ]
+      : [],
     locations: [],
     artifacts: [],
     publishedAt: publishedAt.toISOString(),

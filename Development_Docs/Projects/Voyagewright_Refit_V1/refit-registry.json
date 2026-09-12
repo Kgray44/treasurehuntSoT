@@ -81,6 +81,19 @@
       "ownerAccepted": false,
       "preserveReferences": [],
       "notes": "Seed placeholder from the current route census. No owner design direction or treatment decision is recorded."
+    },
+    {
+      "id": "muster",
+      "name": "Muster experience",
+      "productArea": "Captain_Helm",
+      "routePatterns": ["/captain/voyages/[playthroughId]/muster", "/player/playthroughs/[playthroughId]"],
+      "treatment": "MAJOR_STRATEGY_RETHINK",
+      "status": "IMPLEMENTATION_ITERATING",
+      "branch": "refit-v1/muster",
+      "designPacket": "muster/design-packet.md",
+      "ownerAccepted": false,
+      "preserveReferences": ["image-3.png"],
+      "notes": "Owner-approved full mockup. First implementation; owner acceptance and final validation pending."
     }
   ]
 }

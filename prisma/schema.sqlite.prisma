@@ -84,6 +84,7 @@ model GameMasterUser {
 }
 
 model UserAccount {
+  musterMessages VoyageCrewMessage[]
   id                       String                       @id @default(cuid())
   status                   String                       @default("PENDING_VERIFICATION")
   legacyGameMasterId       String?                      @unique
@@ -1622,6 +1623,7 @@ model TaleSideQuestObjective {
 }
 
 model TaleSession {
+  musterMessages VoyageCrewMessage[]
   id                     String                     @id @default(cuid())
   taleId                 String
   publishedVersionId     String?
@@ -1674,9 +1676,22 @@ model TaleSession {
   @@index([captainAuthorityState, status])
 }
 
-// Helm A2 keeps authority changes and personal continuations as durable,
-// source-bound lifecycle receipts. These are deliberately separate from
-// canonical progression events: they never become a second progression log.
+// Voyage-scoped Crew Chat is separate from canonical progression events.
+model VoyageCrewMessage {
+  id Int @id @default(autoincrement())
+  voyageId String
+  senderAccountId String
+  senderName String
+  body String
+  clientMessageId String
+  createdAt DateTime @default(now())
+  voyage TaleSession @relation(fields: [voyageId], references: [id], onDelete: Cascade)
+  sender UserAccount @relation(fields: [senderAccountId], references: [id], onDelete: Cascade)
+  @@unique([voyageId, senderAccountId, clientMessageId])
+  @@index([voyageId, id])
+  @@index([voyageId, senderAccountId, createdAt])
+}
+
 model VoyageCaptainAuthorityReceipt {
   id                       String   @id @default(cuid())
   voyageId                 String

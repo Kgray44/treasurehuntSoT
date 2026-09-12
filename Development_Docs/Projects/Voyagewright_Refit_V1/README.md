@@ -3,7 +3,7 @@ title: Voyagewright Refit V1
 audience: product-engineering
 status: current
 canonical_for: voyagewright-refit-v1-control-area
-last_reviewed: 2026-09-11
+last_reviewed: 2026-09-12
 ---
 
 # Voyagewright Refit V1
@@ -21,6 +21,8 @@ Brightwork remains complete. Refit V1 begins from the accepted post-Brightwork p
 The current protected baseline and its source-bound Brightwork evidence are inputs to a future packet. They are not a standing instruction to alter a page.
 
 ## Canonical records
+
+- [Muster design packet](muster/design-packet.md) — first implementation, MAJOR_STRATEGY_RETHINK, IMPLEMENTATION_ITERATING; [focused development proof](muster/iteration-1-proof.md). Owner acceptance remains pending.
 
 - [Refit registry](refit-registry.json) — machine-readable area inventory, treatment, lifecycle, branch, and protection state.
 - [Preview runbook](preview-runbook.md) — the fast, isolated local iteration loop.

@@ -3,10 +3,12 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-09-04
+last_reviewed: 2026-09-12
 ---
 
 # Features and subfeatures
+
+**Development preview:** the Muster Refit combines Captain and Player waiting rooms into an illustrated gathering space with real crew cards, Chronicle details, and persistent Voyage-scoped Crew Chat. This first iteration awaits owner review and is not available on main.
 
 ## Identity and Chronicle Passport
 
