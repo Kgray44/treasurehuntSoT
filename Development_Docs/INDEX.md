@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-08-21
+last_reviewed: 2026-09-11
 ---
 
 # Engineering-record index
@@ -35,6 +35,10 @@ last_reviewed: 2026-08-21
 - `Archive/`: superseded, prompt, and legacy material.
 
 Use [document-index.json](document-index.json) for complete path-level classification.
+
+## Voyagewright Refit V1
+
+- [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md) is the current owner-directed experience-redesign control area. Its registry, packet templates, acceptance records, and preview runbook enable one coherent redesign area at a time; they do not authorize page changes or reopen Brightwork.
 
 ## Historical Project Trim
 

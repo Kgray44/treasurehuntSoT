@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Voyagewright Refit V1",
+  "subtitle": "Owner-Directed Experience Redesign",
+  "purpose": "Selective redesign of existing product areas under direct owner guidance.",
+  "registryRules": {
+    "ownerAcceptanceTransition": {
+      "from": "IMPLEMENTATION_ITERATING",
+      "to": "OWNER_ACCEPTED",
+      "authority": "explicit owner feedback recorded in the area owner-acceptance record"
+    },
+    "referenceQuality": "REFERENCE_QUALITY is a terminal protection classification. It must be reviewed before a shared-component change affecting that surface is merged."
+  },
+  "supportedTreatmentValues": [
+    "REFERENCE_QUALITY",
+    "LOCAL_POLISH",
+    "MODERATE_REDESIGN",
+    "MAJOR_STRATEGY_RETHINK",
+    "UNASSESSED"
+  ],
+  "supportedLifecycleStates": [
+    "PLANNED",
+    "OWNER_DIRECTION",
+    "CONCEPT_ITERATING",
+    "CONCEPT_APPROVED",
+    "IMPLEMENTATION_ITERATING",
+    "OWNER_ACCEPTED",
+    "FINAL_VALIDATION",
+    "MERGED",
+    "PAUSED"
+  ],
+  "areas": [
+    {
+      "id": "chronicle-passport",
+      "name": "Chronicle Passport",
+      "productArea": "Chronicle_Passport_Wakebook",
+      "routePatterns": ["/passport", "/passport/**"],
+      "treatment": "UNASSESSED",
+      "status": "PLANNED",
+      "branch": null,
+      "designPacket": null,
+      "ownerAccepted": false,
+      "preserveReferences": [],
+      "notes": "Seed placeholder from the current route census. No owner design direction or treatment decision is recorded."
+    },
+    {
+      "id": "personal-harbor",
+      "name": "Personal Harbor",
+      "productArea": "Personal_Harbor",
+      "routePatterns": ["/account", "/account/**"],
+      "treatment": "UNASSESSED",
+      "status": "PLANNED",
+      "branch": null,
+      "designPacket": null,
+      "ownerAccepted": false,
+      "preserveReferences": [],
+      "notes": "Seed placeholder from the current route census. No owner design direction or treatment decision is recorded."
+    },
+    {
+      "id": "community-harbor",
+      "name": "Community Harbor",
+      "productArea": "Community_Harbor",
+      "routePatterns": ["/community", "/community/**"],
+      "treatment": "UNASSESSED",
+      "status": "PLANNED",
+      "branch": null,
+      "designPacket": null,
+      "ownerAccepted": false,
+      "preserveReferences": [],
+      "notes": "Seed placeholder from the current route census. No owner design direction or treatment decision is recorded."
+    },
+    {
+      "id": "captain-experience",
+      "name": "Captain experience",
+      "productArea": "Captain_Helm",
+      "routePatterns": ["/captain", "/captain/**"],
+      "treatment": "UNASSESSED",
+      "status": "PLANNED",
+      "branch": null,
+      "designPacket": null,
+      "ownerAccepted": false,
+      "preserveReferences": [],
+      "notes": "Seed placeholder from the current route census. No owner design direction or treatment decision is recorded."
+    }
+  ]
+}

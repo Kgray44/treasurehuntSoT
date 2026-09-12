@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-11",
+  "generated_at": "2026-09-12",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -7306,6 +7306,42 @@
     },
     {
       "path": "Development_Docs/Projects/Voyagewright_Brightwork/Voyagewright_Brightwork_Stage_8_Wave_7_Completion_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/preview-runbook.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/refit-registry.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/templates/design-packet.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/templates/iteration-delta.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/templates/owner-acceptance.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

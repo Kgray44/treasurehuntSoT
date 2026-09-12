@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-08-27
+last_reviewed: 2026-09-11
 ---
 
 # Engineering records
@@ -24,6 +24,10 @@ protected PR #12. The owner accepted successful real Google and GitHub sign-in
 and sign-up through the protected staging experience with no internal-origin
 redirect. Automated protocol, security, lifecycle, and redirect-boundary proof
 also passed. See the [OAuth validation and completion record](Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md).
+
+## Voyagewright Refit V1
+
+[Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md) is the owner-directed redesign control area for selected existing experiences. It records design packets, narrow iteration deltas, local preview practice, acceptance, and post-acceptance validation without authorizing a redesign by itself. It begins from the accepted post-Brightwork baseline and does not reopen Brightwork absent an independently proven regression.
 
 ## Project Tideglass
 
