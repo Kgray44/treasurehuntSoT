@@ -55,7 +55,7 @@ describe("CaptainMusterRoom shared projection", () => {
     const base = room();
     mockNetwork(() =>
       room({
-        viewer: { ...base.viewer, isCaptain: true, canLaunch: true },
+        viewer: { ...base.viewer, isCaptain: true, canLaunch: true, canInvite: true },
         crew: [
           member({ isCaptain: true, displayName: "Kato" }),
           member({
@@ -73,6 +73,9 @@ describe("CaptainMusterRoom shared projection", () => {
     );
     render(<CaptainMusterRoom voyageId="voyage-1" />);
     await screen.findByRole("heading", { level: 1, name: "The Moonlit Key" });
+    expect(screen.getByRole("link", { name: "Invite Crew" })).toHaveAttribute("href", "/captain/library");
+    expect(screen.queryByText(/Waiting for more crew/)).not.toBeInTheDocument();
+    expect(screen.getByText("Invited", { exact: true })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Manage Mira" }));
     expect(screen.getByRole("button", { name: "Resend invitation" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Transfer Captaincy" })).not.toBeInTheDocument();
@@ -90,5 +93,12 @@ describe("CaptainMusterRoom shared projection", () => {
     expect(fetchMock.mock.calls.some(([url]) => url.endsWith("/cancel"))).toBe(false);
     fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Cancel" }));
     expect(fetchMock.mock.calls.some(([url]) => url.endsWith("/cancel"))).toBe(false);
+  });
+  it("does not show an Invite Crew action without current invitation permission", async () => {
+    const base = room();
+    mockNetwork(() => room({ viewer: { ...base.viewer, isCaptain: true, canInvite: false } }));
+    render(<CaptainMusterRoom voyageId="voyage-1" />);
+    await screen.findByRole("heading", { level: 1, name: "The Moonlit Key" });
+    expect(screen.queryByRole("link", { name: "Invite Crew" })).not.toBeInTheDocument();
   });
 });

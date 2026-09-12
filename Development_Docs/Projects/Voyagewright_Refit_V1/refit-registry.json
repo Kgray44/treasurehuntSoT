@@ -93,7 +93,7 @@
       "designPacket": "muster/design-packet.md",
       "ownerAccepted": false,
       "preserveReferences": ["image-3.png"],
-      "notes": "Owner-approved full mockup. First implementation; owner acceptance and final validation pending."
+      "notes": "Owner-approved composition preserved through iteration delta 3: smooth options, fixed environment, invitation action card, published-source audit, lower chat/quote anchors and clean message composer. Owner acceptance and final validation pending."
     }
   ]
 }

@@ -22,6 +22,8 @@ describe("PlayerVoyageRoom shared Muster", () => {
     expect(screen.queryByRole("button", { name: "Relinquish Captaincy" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Cancel Voyage for Everyone" })).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Crew Chat" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Invite Crew" })).not.toBeInTheDocument();
+    expect(document.querySelector(".muster-open-card")).toBeNull();
   });
   it("keeps offline and reconnect states separate from the last confirmed crew", async () => {
     mockNetwork(() => room());

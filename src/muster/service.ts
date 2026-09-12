@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { hasCaptainAuthority, type CanonicalCaptainActor } from "@/chronicle/captain-authorization";
 import { workspaceCapabilityOverview } from "@/homeport/workspace-capabilities";
 import { aggregateMembershipPresence } from "@/platform/membership-presence";
-import { parsePublishedSnapshot } from "@/chronicle/publishing";
+import { musterChronicleIdentity } from "./chronicle";
 import { MUSTER_COVER_FALLBACK, type MusterProjection } from "./contracts";
 
 export const joinedMembershipStates = ["ACCEPTED", "READY", "ACTIVE_MEMBER"];
@@ -63,7 +63,7 @@ export async function getMusterProjection(
     (await workspaceCapabilityOverview(actor.accountId)).workspaces.some(
       (w) => w.id === "CAPTAIN" && w.state === "ACTIVE",
     );
-  const snapshot = voyage.version ? parsePublishedSnapshot(voyage.version.contentSnapshot) : null;
+  const chronicle = musterChronicleIdentity(voyage);
   const participants = voyage.memberships.filter((m) => ["INVITED", ...joinedMembershipStates].includes(m.status));
   const ready = participants.filter((m) => ["READY", "ACTIVE_MEMBER"].includes(m.status)).length;
   const captainMember = voyage.memberships.find(
@@ -123,19 +123,16 @@ export async function getMusterProjection(
   return {
     voyage: {
       id: voyage.id,
-      title: snapshot?.tale.title ?? voyage.tale.title,
-      subtitle: snapshot?.tale.subtitle ?? voyage.tale.subtitle,
-      description: snapshot?.tale.shortDescription ?? voyage.tale.shortDescription,
+      title: chronicle.title,
+      subtitle: chronicle.subtitle,
+      description: chronicle.shortDescription,
       voyageName: voyage.voyageName ?? voyage.ownerLabel ?? "Voyage",
       edition: voyage.version?.versionLabel ?? "Unpublished",
       status: voyage.status,
       authorityState: voyage.captainAuthorityState,
       captainName,
-      duration: snapshot?.tale.estimatedDuration ?? voyage.tale.estimatedDuration,
-      coverUrl:
-        voyage.tale.coverAssetId || snapshot?.tale.coverAssetId
-          ? `/api/voyages/${voyage.id}/muster/cover`
-          : MUSTER_COVER_FALLBACK,
+      duration: chronicle.estimatedDuration,
+      coverUrl: chronicle.coverAssetId ? `/api/voyages/${voyage.id}/muster/cover` : MUSTER_COVER_FALLBACK,
       concurrencyVersion: voyage.concurrencyVersion,
       currentSequence: voyage.currentSequence,
       plannedStartAt: voyage.plannedStartAt?.toISOString() ?? null,
@@ -153,6 +150,7 @@ export async function getMusterProjection(
           (voyage.memberships.length === 0 || voyage.memberships.some((m) => m.status === "READY")),
       ),
       canRelinquish: Boolean(captainWorkspace && active),
+      canInvite: Boolean(captainWorkspace && active && voyage.version),
       canLeave: Boolean(
         participating &&
           active &&

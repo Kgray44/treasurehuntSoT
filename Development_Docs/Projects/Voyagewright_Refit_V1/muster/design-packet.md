@@ -6,7 +6,7 @@ canonical_for: voyagewright-refit-v1-muster
 last_reviewed: 2026-09-12
 ---
 
-# Muster experience — iteration 1
+# Muster experience
 
 ## Identity and authority
 
@@ -50,10 +50,12 @@ Desktop most closely follows the mockup. Tablet rebalances crew and parchment. M
 
 Persistent preview origin: http://127.0.0.1:3128. Database, assets, build output and browser sessions are task-owned. Focused proof covers Captain-only, Captain+Player, Player-only, readiness states, chat send/receive/persistence/authorization, specific/fallback covers, desktop/mobile/overflow, reduced motion and runtime errors.
 
-Final broad validation and owner acceptance are deferred. Stop after first faithful implementation and leave the preview running.
+Final broad validation and owner acceptance are deferred. Continue only the owner's named Muster deltas and leave the preview running.
 
 ## Iteration history
 
-| Iteration | Date       | Request                                   | Result                                               | Owner response     |
-| --------- | ---------- | ----------------------------------------- | ---------------------------------------------------- | ------------------ |
-| 1         | 2026-09-12 | Owner-approved full Muster implementation | Preview ready; [focused proof](iteration-1-proof.md) | Pending inspection |
+| Iteration | Date       | Request                                                                            | Result                                               | Owner response     |
+| --------- | ---------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------- | ------------------ |
+| 1         | 2026-09-12 | Owner-approved full Muster implementation                                          | Preview ready; [focused proof](iteration-1-proof.md) | Pending inspection |
+| 2         | 2026-09-12 | Smooth options, fixed room artwork, invitation action card, published-source audit | [Delta and source mapping](iteration-2-delta.md)     | Pending inspection |
+| 3         | 2026-09-12 | Lower chat and quote; remove composer scrollbar and resize grip                    | [Positioning proof](iteration-3-delta.md)            | Pending inspection |

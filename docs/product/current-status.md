@@ -8,7 +8,7 @@ last_reviewed: 2026-09-12
 
 # Current status
 
-**Muster Refit:** first implementation is in development preview. Captain-only, Captain + Player, and Player views share one experience; Crew Chat is operational with synthetic development evidence. Owner acceptance, final validation, and mainline integration remain pending.
+**Muster Refit:** iteration 3 is in development preview. Captain-only, Captain + Player, and Player views share one experience; Crew Chat is operational with synthetic development evidence. The options disclosure is smooth, room artwork stays anchored, invitation actions follow authority, and Chronicle identity follows the selected published edition. Chat and quote now sit lower within the stable desktop stage; the message field hides native scrollbar and resize controls. Owner acceptance, final validation, and mainline integration remain pending.
 
 **Available on main and owner accepted:** Project Wakebook Phase 1,
 Open the Wake, replaces the skeletal Passport history presentation with a

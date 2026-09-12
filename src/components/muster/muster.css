@@ -11,10 +11,22 @@
   padding: 0;
   overflow: clip;
   color: var(--muster-cream);
+  background: #101b21;
+  font-family: var(--font-sans, "Segoe UI", sans-serif);
+}
+/* The physical room has a viewport-sized coordinate system, independent of UI flow.
+   100vw also keeps its crop stable when a dialog changes the document scrollbar. */
+.muster-environment {
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  top: var(--shell-header-height, 68px);
+  left: 0;
+  width: 100vw;
+  height: max(900px, calc(100svh - var(--shell-header-height, 68px)));
   background:
     linear-gradient(0deg, #05090955 0%, transparent 38%),
     url("/images/muster/lantern-room.png") center center / cover no-repeat #101b21;
-  font-family: var(--font-sans, "Segoe UI", sans-serif);
 }
 .muster-scene *,
 .muster-scene *::before,
@@ -46,7 +58,6 @@
   pointer-events: none;
   position: absolute;
   inset: 0;
-  z-index: -1;
   background:
     radial-gradient(ellipse at 23% 9%, #ffa52d26, transparent 14%),
     radial-gradient(ellipse at 65% 70%, #fa9b2917, transparent 16%);
@@ -235,7 +246,17 @@
   justify-content: center;
   color: #b8c4c1;
 }
-.muster-open-card > span {
+.muster-open-card > a {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  color: #dfcc99;
+  text-decoration: none;
+}
+.muster-open-card > a > span {
   display: grid;
   place-items: center;
   width: 50px;
@@ -244,15 +265,20 @@
   border-radius: 50%;
   margin: 5px 0 9px;
 }
-.muster-open-card p {
+.muster-open-card small {
   font-size: 13px;
   line-height: 1.5;
 }
-.muster-open-card a {
-  font-size: 11px;
-  color: #dfcc99;
-  margin-top: 8px;
-  text-underline-offset: 3px;
+.muster-open-card strong {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 0 6px;
+}
+.muster-open-card small {
+  color: #b8c4c1;
+}
+.muster-open-card:has(a:hover) {
+  border-color: #dfcc99;
 }
 .muster-manage-member {
   position: absolute;
@@ -538,9 +564,27 @@
   text-align: center;
   color: #51533f;
 }
-.muster-voyage-options summary {
+.muster-voyage-options .muster-options-trigger,
+.muster-voyage-options .muster-options-trigger[aria-expanded="true"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   cursor: pointer;
   padding: 6px;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  box-shadow: none;
+  min-height: 0;
+}
+.muster-options-panel {
+  overflow: hidden;
+}
+.muster-options-content {
+  display: flow-root;
+  padding: 0 5px 5px;
 }
 .muster-option-buttons {
   display: grid;
@@ -703,7 +747,9 @@
   width: 100%;
   flex: 1;
   min-width: 0;
-  resize: vertical;
+  resize: none;
+  overflow: auto;
+  scrollbar-width: none;
   max-height: 110px;
   min-height: 43px;
   padding: 12px 14px;
@@ -717,6 +763,9 @@
 .muster-chat textarea::placeholder {
   color: #c1c9c0;
   opacity: 1;
+}
+.muster-chat textarea::-webkit-scrollbar {
+  display: none;
 }
 .muster-chat-compose button {
   width: 41px;
@@ -864,10 +913,24 @@
 }
 @media (min-width: 1101px) {
   .muster-scene {
+    --muster-stage-min-row: 830px;
+    --muster-lower-shift: 20px;
+    --muster-chat-bottom: 34px;
     display: grid;
     grid-template-columns: 71% 29%;
-    grid-template-rows: minmax(830px, auto);
+    grid-template-rows: minmax(var(--muster-stage-min-row), auto);
     padding-bottom: 50px;
+  }
+  .muster-chat,
+  .muster-quote {
+    bottom: auto;
+    transform: translateY(-100%);
+  }
+  .muster-chat {
+    top: calc(var(--muster-stage-height, 100%) - var(--muster-chat-bottom) + var(--muster-lower-shift));
+  }
+  .muster-quote {
+    top: calc(var(--muster-stage-height, 100%) - 19px + var(--muster-lower-shift));
   }
   .muster-gathering {
     grid-column: 1;
@@ -887,8 +950,12 @@
   }
 }
 @media (min-width: 1800px) {
+  .muster-environment {
+    height: max(970px, calc(100svh - var(--shell-header-height, 68px)));
+  }
   .muster-scene {
-    grid-template-rows: minmax(920px, auto);
+    --muster-stage-min-row: 920px;
+    --muster-chat-bottom: 40px;
   }
   .muster-gathering {
     padding-top: 150px;
@@ -905,7 +972,6 @@
   }
   .muster-chat {
     width: 390px;
-    bottom: 40px;
   }
   .muster-chat-history {
     height: 230px;
@@ -958,8 +1024,10 @@
     grid-template-columns: minmax(0, 1fr) minmax(330px, 0.86fr);
     gap: 28px;
     padding: 45px 24px 25px;
-    background-position: 46% center;
     min-height: calc(100svh - 68px);
+  }
+  .muster-environment {
+    background-position: 46% center;
   }
   .muster-gathering {
     grid-column: 1;
@@ -1015,11 +1083,13 @@
     flex-direction: column;
     gap: 24px;
     padding: 34px 17px 25px;
+    overflow: hidden;
+  }
+  .muster-environment {
+    height: max(1050px, calc(100svh - var(--shell-header-height, 68px)));
     background-size: auto 1050px;
     background-position: 43% top;
-    background-repeat: no-repeat;
     background-color: #101918;
-    overflow: hidden;
   }
   .muster-gathering {
     padding: 15px 2px 0;

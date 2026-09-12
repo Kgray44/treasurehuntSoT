@@ -12,6 +12,10 @@ last_reviewed: 2026-09-12
 
 ### Changed
 
+- Lowered the development Muster preview's chat and quote by 20 px within a stable desktop stage, preserving document height and horizontal composition. Removed the chat composer scrollbar and resize grip while retaining multiline editing.
+
+- Refined the development Muster preview with a measured disclosure transition, fixed room artwork, an authorized Invite Crew action card, and Chronicle details/cover variants bound to the Voyage's published edition. Existing owner-review fixtures and chat are preserved; owner acceptance and integration remain pending.
+
 - Added the first development preview of the owner-directed Muster Refit: one role-aware illustrated waiting room, real crew cards, supplied room/cover/parchment artwork, and persistent authorized Voyage Crew Chat. Canonical Captain authority, Player participation, launch and lifecycle rules are retained. Owner acceptance and integration are pending.
 
 - Polished cross-family Brightwork continuity in Stage 8 Wave 7. Personal

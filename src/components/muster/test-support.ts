@@ -58,6 +58,7 @@ export function room(overrides: Partial<MusterProjection> = {}): MusterProjectio
       ready: true,
       canLaunch: false,
       canRelinquish: false,
+      canInvite: false,
       canLeave: true,
       canTakeCaptaincy: false,
       canContinueSolo: true,

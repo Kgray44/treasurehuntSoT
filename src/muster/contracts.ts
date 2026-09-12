@@ -47,6 +47,7 @@ export type MusterProjection = {
     ready: boolean;
     canLaunch: boolean;
     canRelinquish: boolean;
+    canInvite: boolean;
     canLeave: boolean;
     canTakeCaptaincy: boolean;
     canContinueSolo: boolean;

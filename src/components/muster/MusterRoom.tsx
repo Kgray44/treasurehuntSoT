@@ -15,6 +15,8 @@ import {
 } from "@/muster/contracts";
 import { CrewChat } from "./CrewChat";
 import { MusterAvatar } from "./MusterAvatar";
+import { MusterOptions } from "./MusterOptions";
+import { useMusterStage } from "./useMusterStage";
 import "./muster.css";
 
 function words(value: string) {
@@ -26,6 +28,7 @@ function stateName(status: string, authority: string) {
   return status.charAt(0) + words(status).slice(1);
 }
 export function readinessCopy(room: MusterProjection) {
+  if (["CANCELLED", "COMPLETED", "ABANDONED"].includes(room.voyage.status)) return "This Voyage has ended.";
   if (room.voyage.authorityState === "VACANT") return "A joined Player can take the helm.";
   if (["ACTIVE", "PAUSED"].includes(room.voyage.status)) return "The Voyage has begun. Your story awaits.";
   if (!room.readiness.total)
@@ -49,6 +52,7 @@ export function MusterRoom({
   const { mode } = useMotionMode();
   const { requestAction, dialog } = useActionDialog();
   const [room, setRoom] = useState<MusterProjection | null>(null);
+  const stage = useMusterStage(voyageId, Boolean(room));
   const [messages, setMessages] = useState<MusterMessage[]>([]);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -284,6 +288,7 @@ export function MusterRoom({
   if (!room)
     return (
       <main className="muster-scene muster-loading" data-motion={mode}>
+        <div className="muster-environment" aria-hidden="true" />
         <section>
           <Compass size={34} />
           <h1>
@@ -307,12 +312,15 @@ export function MusterRoom({
   return (
     <>
       <main
+        ref={stage}
         className="muster-scene"
         data-motion={mode}
         data-viewer-role={viewer.isCaptain ? (viewer.participates ? "captain-player" : "captain-only") : "player"}
         aria-labelledby="muster-title"
       >
-        <div className="muster-lantern-glow" aria-hidden="true" />
+        <div className="muster-environment" aria-hidden="true">
+          <div className="muster-lantern-glow" />
+        </div>
         <section className="muster-gathering">
           <header className="muster-title-group">
             <p className="muster-eyebrow">{viewer.isCaptain ? "Captain Muster" : "Chronicle Muster"}</p>
@@ -405,17 +413,21 @@ export function MusterRoom({
                 )}
               </li>
             ))}
-            <li className="muster-open-card">
-              <span>
-                <Plus size={30} />
-              </span>
-              <p>
-                Waiting for
-                <br />
-                more crew…
-              </p>
-              {viewer.isCaptain && <Link href="/captain/library">Invite Crew</Link>}
-            </li>
+            {viewer.canInvite && (
+              <li className="muster-open-card">
+                <Link href="/captain/library" aria-label="Invite Crew">
+                  <span>
+                    <Plus size={30} aria-hidden="true" />
+                  </span>
+                  <strong>Invite Crew</strong>
+                  <small>
+                    Send another
+                    <br />
+                    invitation
+                  </small>
+                </Link>
+              </li>
+            )}
           </ul>
           {departed.length > 0 && (
             <details className="muster-departed">
@@ -538,7 +550,11 @@ export function MusterRoom({
               ) : (
                 <button className="muster-launch" disabled>
                   <Anchor />
-                  {voyage.authorityState === "VACANT" ? "Awaiting a Captain" : "Waiting for the Captain"}
+                  {["CANCELLED", "COMPLETED", "ABANDONED"].includes(voyage.status)
+                    ? "Voyage ended"
+                    : voyage.authorityState === "VACANT"
+                      ? "Awaiting a Captain"
+                      : "Waiting for the Captain"}
                 </button>
               )}
               <p>
@@ -548,13 +564,14 @@ export function MusterRoom({
                     : !readiness.allReady && viewer.canLaunch
                       ? "Ready Players can begin; preparing crew can join later."
                       : "Good company. A new horizon."
-                  : viewer.ready
-                    ? "You're ready. The Captain will begin the Voyage."
-                    : "Your readiness follows your current participation."}
+                  : !gathering
+                    ? "Your access follows the current Voyage state."
+                    : viewer.ready
+                      ? "You're ready. The Captain will begin the Voyage."
+                      : "Your readiness follows your current participation."}
               </p>
             </div>
-            <details className="muster-voyage-options">
-              <summary>{viewer.isCaptain ? "Captain & Voyage options" : "Your Voyage options"}</summary>
+            <MusterOptions label={viewer.isCaptain ? "Captain & Voyage options" : "Your Voyage options"}>
               <div className="muster-option-buttons">
                 {viewer.isCaptain && (
                   <>
@@ -646,7 +663,7 @@ export function MusterRoom({
                 <Link href={viewer.isCaptain ? "/captain/library" : "/player/library"}>Leave Waiting Room</Link>
                 <button onClick={() => void load()}>Refresh room</button>
               </div>
-            </details>
+            </MusterOptions>
           </div>
         </aside>
         <CrewChat
