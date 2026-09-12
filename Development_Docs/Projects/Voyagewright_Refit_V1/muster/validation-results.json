@@ -283,6 +283,15 @@
     "originallyFailedJourneys": 3,
     "studioSemantics": "PASS - full-page axe plus keyboard inspector focus restoration",
     "uniqueJourneys": 16,
-    "productScope": "Accepted Muster unchanged; two Studio accessibility attributes corrected"
+    "productScope": "Accepted Muster unchanged; Studio accessibility semantics and development Showcase mobile control sizing corrected"
+  },
+  "showcaseViewportRegression": {
+    "evidence": ".runtime/muster-landed/showcase-recheck.json",
+    "typecheck": "PASS",
+    "failedProtectedRun": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/34714346585",
+    "result": "PASS",
+    "productionBuild": "PASS",
+    "fontChecks": ["default", "Arial", "Verdana"],
+    "viewportJourneys": 6
   }
 }

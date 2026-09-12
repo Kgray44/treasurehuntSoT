@@ -42,7 +42,7 @@ Evidence remains in `.runtime/muster-final/proof`, `.runtime/muster-final/migrat
 
 ## Protected-check browser regression reconciliation
 
-The first [ordinary Sounding Line run](https://github.com/Kgray44/treasurehuntSoT/actions/runs/34712573494) passed source sentinels, the selected unit tests, schema validation and production build. Its browser stage found stale expectations in the existing historical Journal and Voyage-wizard journeys, plus an immediate narrow-Showcase layout measurement. These surfaces' product sources match protected main; no Muster redesign or unrelated product correction was made.
+The first [ordinary Sounding Line run](https://github.com/Kgray44/treasurehuntSoT/actions/runs/34712573494) passed source sentinels, the selected unit tests, schema validation and production build. Its browser stage found stale expectations in the existing historical Journal and Voyage-wizard journeys, plus an immediate narrow-Showcase layout measurement. Those first corrections reconciled test expectations with protected main without changing the Muster design.
 
 The historical assertion now checks the existing labeled preserved-volume region and its explicit read-only, exact-edition wording. The wizard explicitly adds its Crew row and checks the current Captain-only success state before proving focus returns to the exact trigger. The Showcase retains its one-pixel overflow limit with Playwright's normal retrying assertion while the layout settles. All three failed journeys passed against the isolated production runtime after those test corrections.
 
@@ -53,3 +53,9 @@ The generic profile did not establish the nonce marker required by the two Lante
 The final selected Studio browser journey proved a pre-existing serious accessibility violation: sortable Passage articles were exposed as buttons containing other buttons. The two-attribute correction exposes each article as a named sortable group while retaining all existing listeners, focus, controls and visual layout. The 19 focused editor tests pass; the browser journey retains its complete axe check and additionally verifies Enter-to-inspector and focus restoration. This is a bounded prerequisite correction for protected qualification, not a Studio Refit or a change to the accepted Muster composition.
 
 All 16 affected protected-browser journeys passed locally across the focused reruns (the original three plus the remaining thirteen), including the unfiltered serious/critical accessibility gate. The final production rebuild and typecheck passed. Exact candidate qualification remains with the ordinary protected Sounding Line check.
+
+## Narrow Showcase regression
+
+The second [protected run](https://github.com/Kgray44/treasurehuntSoT/actions/runs/34714346585) passed 18 of the 19 browser journeys in its first profile, but the 390-pixel development Showcase retained 31 pixels of horizontal overflow throughout the retry window. Local font-variation inspection reproduced overflow with Arial and Verdana and isolated the cause to the playback controls' four intrinsic grid columns. The development-only Showcase now uses two playback-control columns below its existing mobile breakpoint. Default and wider-font layouts have no document overflow; the browser regression also checks that every playback button remains inside the viewport. The accepted Muster styles and geometry are unchanged.
+
+The isolated production rebuild and all six required viewport journeys passed after this correction, including the 390-pixel Arial/Verdana button-boundary assertions.

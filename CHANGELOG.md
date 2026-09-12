@@ -14,7 +14,7 @@ last_reviewed: 2026-09-12
 
 - Accepted the shared Captain/Player Muster gathering room for protected integration, including real Voyage Crew Chat, canonical Crew/invitation/readiness, published-edition parchment, fixed artwork and smooth options. Final validation corrected cover-error truth, parchment semantics, large-Crew overlap and Light-theme readability while preserving the approved reference and all ten review Voyages.
 
-- Corrected Studio sortable Passage semantics so nested selection and movement controls remain accessible without changing their appearance, keyboard selection or drag behavior. Reconciled the protected browser journeys with current account-entry labels and task-owned fixture setup.
+- Corrected Studio sortable Passage semantics so nested selection and movement controls remain accessible without changing their appearance, keyboard selection or drag behavior. Reconciled the protected browser journeys with current account-entry labels and task-owned fixture setup. The development animation Showcase playback controls now fit narrow viewports across system fonts.
 
 - Lowered the development Muster preview's chat and quote by 20 px within a stable desktop stage, preserving document height and horizontal composition. Removed the chat composer scrollbar and resize grip while retaining multiline editing.
 
