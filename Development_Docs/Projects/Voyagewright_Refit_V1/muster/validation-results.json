@@ -1,0 +1,297 @@
+{
+  "browser": {
+    "date": "2026-09-12T18:46:45.272Z",
+    "checks": [
+      {
+        "name": "Canonical role/readiness and visible crew matrix",
+        "details": [
+          {
+            "id": "muster-all-ready",
+            "role": "captain-player",
+            "readiness": {
+              "ready": 3,
+              "total": 3,
+              "allReady": true
+            },
+            "canLaunch": true
+          },
+          {
+            "id": "muster-captain-only",
+            "role": "captain-only",
+            "readiness": {
+              "ready": 3,
+              "total": 3,
+              "allReady": true
+            },
+            "canLaunch": true
+          },
+          {
+            "id": "muster-captain-empty",
+            "role": "captain-only",
+            "readiness": {
+              "ready": 0,
+              "total": 0,
+              "allReady": true
+            },
+            "canLaunch": true
+          },
+          {
+            "id": "muster-preparing",
+            "role": "player",
+            "readiness": {
+              "ready": 2,
+              "total": 4,
+              "allReady": false
+            },
+            "canLaunch": false
+          },
+          {
+            "id": "muster-tidal-observatory",
+            "role": "captain-player",
+            "readiness": {
+              "ready": 1,
+              "total": 3,
+              "allReady": false
+            },
+            "canLaunch": true
+          },
+          {
+            "id": "muster-proof-launch-0239777b",
+            "role": "captain-player",
+            "readiness": {
+              "ready": 2,
+              "total": 2,
+              "allReady": true
+            },
+            "canLaunch": false
+          }
+        ]
+      },
+      {
+        "name": "Exact published cover bytes and absent-cover fallback"
+      },
+      {
+        "name": "Failed selected cover does not masquerade as absent cover"
+      },
+      {
+        "name": "Disclosure frames, indicator, independent anchors and dialog",
+        "details": {
+          "cycles": 2,
+          "frameCounts": [13, 13, 14, 13]
+        }
+      },
+      {
+        "name": "Invite Crew reaches canonical invitation management"
+      },
+      {
+        "name": "Live chat, persistence, history, safe text, reconnect and protections",
+        "details": {
+          "voyage": "muster-final-chat-d052d239",
+          "historyCount": 133
+        }
+      },
+      {
+        "name": "Canonical launch, relinquish, cancellation and Player leave"
+      },
+      {
+        "name": "Responsive, themes, effective zoom, keyboard and accessibility",
+        "details": [
+          {
+            "label": "desktop-dark",
+            "violations": []
+          },
+          {
+            "label": "desktop-light",
+            "violations": []
+          },
+          {
+            "label": "desktop-high-contrast",
+            "violations": []
+          },
+          {
+            "label": "tablet",
+            "violations": []
+          },
+          {
+            "label": "mobile",
+            "violations": []
+          },
+          {
+            "label": "zoom-200",
+            "violations": []
+          }
+        ]
+      },
+      {
+        "name": "Long Chronicle, maximum 20 invited crew and one-person layout",
+        "details": {
+          "voyage": "muster-final-long-649f4756",
+          "invited": 20
+        }
+      },
+      {
+        "name": "Loading, request error and denied access"
+      },
+      {
+        "name": "No unexpected browser runtime errors"
+      }
+    ],
+    "failures": [],
+    "pageErrors": []
+  },
+  "themeRecheck": {
+    "date": "2026-09-12T18:49:28.125Z",
+    "checks": [
+      {
+        "name": "Responsive, themes, effective zoom, keyboard and accessibility",
+        "details": [
+          {
+            "label": "desktop-dark",
+            "violations": [],
+            "materials": {
+              ".muster-voyage-name": {
+                "color": "rgb(228, 233, 226)",
+                "background": "none"
+              },
+              ".muster-crew-card > strong": {
+                "color": "rgb(228, 233, 226)",
+                "background": "none"
+              },
+              ".muster-launch": {
+                "color": "rgb(241, 219, 172)",
+                "background": "linear-gradient(rgb(33, 74, 69), rgb(19, 52, 47))"
+              }
+            }
+          },
+          {
+            "label": "desktop-light",
+            "violations": [],
+            "materials": {
+              ".muster-voyage-name": {
+                "color": "rgb(228, 233, 226)",
+                "background": "none"
+              },
+              ".muster-crew-card > strong": {
+                "color": "rgb(228, 233, 226)",
+                "background": "none"
+              },
+              ".muster-launch": {
+                "color": "rgb(241, 219, 172)",
+                "background": "linear-gradient(rgb(33, 74, 69), rgb(19, 52, 47))"
+              }
+            }
+          },
+          {
+            "label": "desktop-high-contrast",
+            "violations": [],
+            "materials": {
+              ".muster-voyage-name": {
+                "color": "rgb(255, 255, 255)",
+                "background": "none"
+              },
+              ".muster-crew-card > strong": {
+                "color": "rgb(255, 255, 255)",
+                "background": "none"
+              },
+              ".muster-launch": {
+                "color": "rgb(241, 219, 172)",
+                "background": "linear-gradient(rgb(33, 74, 69), rgb(19, 52, 47))"
+              }
+            }
+          },
+          {
+            "label": "tablet",
+            "violations": [],
+            "materials": {
+              ".muster-voyage-name": {
+                "color": "rgb(228, 233, 226)",
+                "background": "none"
+              },
+              ".muster-crew-card > strong": {
+                "color": "rgb(228, 233, 226)",
+                "background": "none"
+              },
+              ".muster-launch": {
+                "color": "rgb(241, 219, 172)",
+                "background": "linear-gradient(rgb(33, 74, 69), rgb(19, 52, 47))"
+              }
+            }
+          },
+          {
+            "label": "mobile",
+            "violations": [],
+            "materials": {
+              ".muster-voyage-name": {
+                "color": "rgb(228, 233, 226)",
+                "background": "none"
+              },
+              ".muster-crew-card > strong": {
+                "color": "rgb(228, 233, 226)",
+                "background": "none"
+              },
+              ".muster-launch": {
+                "color": "rgb(241, 219, 172)",
+                "background": "linear-gradient(rgb(33, 74, 69), rgb(19, 52, 47))"
+              }
+            }
+          },
+          {
+            "label": "zoom-200",
+            "violations": [],
+            "materials": {
+              ".muster-voyage-name": {
+                "color": "rgb(228, 233, 226)",
+                "background": "none"
+              },
+              ".muster-crew-card > strong": {
+                "color": "rgb(228, 233, 226)",
+                "background": "none"
+              },
+              ".muster-launch": {
+                "color": "rgb(241, 219, 172)",
+                "background": "linear-gradient(rgb(33, 74, 69), rgb(19, 52, 47))"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "failures": [],
+    "pageErrors": []
+  },
+  "migration": {
+    "base": "a8b72f375efbd27e4c0dc73c91907bb03ccbf3ee",
+    "retainedTables": 214,
+    "retainedRows": 131,
+    "foreignKeys": "PASS",
+    "retryUniqueness": "PASS"
+  },
+  "regression": {
+    "files": 16,
+    "uniqueTests": 90,
+    "result": "PASS"
+  },
+  "productionBuild": "PASS",
+  "typecheck": "PASS",
+  "protectedBrowserRegression": {
+    "fixtureGuard": "Existing nonce marker preparer and unchanged HTTP identity assertions",
+    "isolationRejectionChecks": 3,
+    "result": "PASS",
+    "remainingSelectedJourneys": 13,
+    "isolatedWorktree": "D:/CodexWorktrees/treasurehunt-muster-landed-b36cf268",
+    "originalFailedRun": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/34712573494",
+    "originallyFailedJourneys": 3,
+    "studioSemantics": "PASS - full-page axe plus keyboard inspector focus restoration",
+    "uniqueJourneys": 16,
+    "productScope": "Accepted Muster unchanged; Studio accessibility semantics and development Showcase mobile control sizing corrected"
+  },
+  "showcaseViewportRegression": {
+    "evidence": ".runtime/muster-landed/showcase-recheck.json",
+    "typecheck": "PASS",
+    "failedProtectedRun": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/34714346585",
+    "result": "PASS",
+    "productionBuild": "PASS",
+    "fontChecks": ["default", "Arial", "Verdana"],
+    "viewportJourneys": 6
+  }
+}

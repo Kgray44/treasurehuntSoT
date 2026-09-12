@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-09-06
+last_reviewed: 2026-09-12
 ---
 
 # Changelog
@@ -11,6 +11,16 @@ last_reviewed: 2026-09-06
 ## Unreleased
 
 ### Changed
+
+- Accepted the shared Captain/Player Muster gathering room for protected integration, including real Voyage Crew Chat, canonical Crew/invitation/readiness, published-edition parchment, fixed artwork and smooth options. Final validation corrected cover-error truth, parchment semantics, large-Crew overlap and Light-theme readability while preserving the approved reference and all ten review Voyages.
+
+- Corrected Studio sortable Passage semantics so nested selection and movement controls remain accessible without changing their appearance, keyboard selection or drag behavior. Reconciled the protected browser journeys with current account-entry labels and task-owned fixture setup. The development animation Showcase playback controls now fit narrow viewports across system fonts.
+
+- Lowered the development Muster preview's chat and quote by 20 px within a stable desktop stage, preserving document height and horizontal composition. Removed the chat composer scrollbar and resize grip while retaining multiline editing.
+
+- Refined the development Muster preview with a measured disclosure transition, fixed room artwork, an authorized Invite Crew action card, and Chronicle details/cover variants bound to the Voyage's published edition. Existing owner-review fixtures and chat are preserved; owner acceptance and integration remain pending.
+
+- Added the first development preview of the owner-directed Muster Refit: one role-aware illustrated waiting room, real crew cards, supplied room/cover/parchment artwork, and persistent authorized Voyage Crew Chat. Canonical Captain authority, Player participation, launch and lifecycle rules are retained. Owner acceptance and integration are pending.
 
 - Polished cross-family Brightwork continuity in Stage 8 Wave 7. Personal
   Harbor's dark identity action, the persistent dark footer, and Community

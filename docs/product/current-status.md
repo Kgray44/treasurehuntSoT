@@ -3,10 +3,12 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-09-04
+last_reviewed: 2026-09-12
 ---
 
 # Current status
+
+**Muster Refit:** the owner accepted the current design on 2026-09-12. Captain-only, Captain + Player, and Player views share one experience with persistent authorized Crew Chat, published-edition parchment, fixed room artwork and smooth options. Final local role, interaction, responsive/accessibility, production-build and migration checks passed. Protected-main qualification and landed verification are in progress.
 
 **Available on main and owner accepted:** Project Wakebook Phase 1,
 Open the Wake, replaces the skeletal Passport history presentation with a

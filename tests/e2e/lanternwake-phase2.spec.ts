@@ -726,13 +726,14 @@ test.describe("Project Lanternwake Phase 2 Captain's Console boundaries", () => 
     await dialog.getByRole("button", { name: "Continue to Configure Voyage" }).click();
     await dialog.getByLabel("Voyage name").fill(`Focused Voyage ${crypto.randomUUID().slice(0, 8)}`);
     await dialog.getByRole("button", { name: "Continue to Add Crew" }).click();
+    await dialog.getByRole("button", { name: "Add another Crew member" }).click();
     await dialog.getByLabel("Crew member name").fill(`Focused Crew ${crypto.randomUUID().slice(0, 8)}`);
     await dialog.getByRole("button", { name: "Continue to Invitation access" }).click();
     await dialog.getByRole("button", { name: "Continue to Delivery" }).click();
     await dialog.getByRole("button", { name: "Continue to Review" }).click();
     await dialog.getByRole("button", { name: "Create Voyage and invitations" }).click();
     await expect(dialog.getByRole("button", { name: "Done" })).toBeVisible({ timeout: 20_000 });
-    await expect(page.getByRole("status")).toContainText("created together");
+    await expect(page.getByRole("status")).toHaveText("The Captain-only Voyage was created.");
     await dialog.getByRole("button", { name: "Done" }).click();
     await expect(dialog).toHaveCount(0, { timeout: 20_000 });
     await expect(trigger).toBeFocused();
@@ -801,7 +802,21 @@ test.describe("Project Lanternwake Phase 2 required viewports", () => {
       await expect(page.getByLabel("Scene")).toBeVisible();
       await expect(page.getByRole("button", { name: "Play selected scene" })).toBeVisible();
       await expect(page.getByRole("button", { name: "Next journal page" })).toBeVisible();
-      expect(await horizontalOverflow(page), `${viewport.label} showcase overflow`).toBeLessThanOrEqual(1);
+      await expect.poll(() => horizontalOverflow(page), `${viewport.label} showcase overflow`).toBeLessThanOrEqual(1);
+      if (viewport.width === 390) {
+        for (const font of ["Arial", "Verdana"]) {
+          await page.evaluate((font) => document.documentElement.style.setProperty("--font-interface", font), font);
+          await expect.poll(() => horizontalOverflow(page), `${font} showcase overflow`).toBeLessThanOrEqual(1);
+          const controlsFit = await page.locator(".transport-controls button").evaluateAll((buttons) =>
+            buttons.every((button) => {
+              const bounds = button.getBoundingClientRect();
+              return bounds.left >= 0 && bounds.right <= innerWidth;
+            }),
+          );
+          expect(controlsFit, `${font} playback controls remain within the viewport`).toBe(true);
+        }
+        await page.evaluate(() => document.documentElement.style.removeProperty("--font-interface"));
+      }
       await page.getByLabel("Scene").focus();
       await page.keyboard.press("Tab");
       await expect(page.getByRole("button", { name: "Play selected scene" })).toBeFocused();

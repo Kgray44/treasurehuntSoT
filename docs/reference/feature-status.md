@@ -3,10 +3,12 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-09-04
+last_reviewed: 2026-09-12
 ---
 
 # Feature status
+
+The shared Muster and Voyage Crew Chat are **OWNER_ACCEPTED**, with final synthetic production-browser, role, interaction and responsive/accessibility proof. The accepted composition is preserved; four evidenced final-validation defects were corrected. Protected qualification and mainline integration are in progress.
 
 | Feature                                               | Status                 | Validation state      | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ----------------------------------------------------- | ---------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

@@ -675,6 +675,9 @@ html[data-voyage-theme="light"] .animation-showcase {
     max-height: none;
     margin-bottom: 0.7rem;
   }
+  .showcase-catalog .transport-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .showcase-stage {
     padding: 0.5rem;
   }

@@ -361,7 +361,11 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   await completedJournalLink.click();
   await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`));
   await expect(playerPage.locator(".chronicle-journal-shell.mode-historical")).toBeVisible();
-  await expect(playerPage.getByText("Read-only · version-pinned Voyage record")).toBeVisible();
+  const historicalVolume = playerPage.getByRole("complementary", { name: "Historical volume information" });
+  await expect(historicalVolume.getByText("Preserved Voyage record", { exact: true })).toBeVisible();
+  await expect(historicalVolume).toContainText(
+    "This completed Voyage is read-only and remains bound to the exact edition this Crew experienced.",
+  );
 
   const pin = await playerContext.request.post(
     playerUrl(`/api/player/playthroughs/${created.playthroughId}/preference`),

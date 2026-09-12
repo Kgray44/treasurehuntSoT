@@ -3,10 +3,12 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-09-04
+last_reviewed: 2026-09-12
 ---
 
 # Features and subfeatures
+
+**Owner-accepted integration candidate:** Muster combines Captain and Player waiting rooms into the canonical illustrated gathering space with current crew/invitation/readiness cards, published-edition Chronicle details, and persistent Voyage-scoped Crew Chat. Final local validation passed; protected-main qualification is in progress.
 
 ## Identity and Chronicle Passport
 

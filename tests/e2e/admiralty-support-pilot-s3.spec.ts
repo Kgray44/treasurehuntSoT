@@ -60,12 +60,12 @@ async function signedInPage(browser: Browser, account: { email: string; displayN
   signInClientOrdinal += 1;
   await context.setExtraHTTPHeaders({ "x-forwarded-for": `198.18.13.${signInClientOrdinal}` });
   await page.goto(`/sign-in?returnTo=${encodeURIComponent(returnTo)}`);
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password", { exact: true }).fill(password);
   const signInResponse = page.waitForResponse(
     (response) => response.url().endsWith("/api/auth/sign-in") && response.request().method() === "POST",
   );
-  await page.getByRole("button", { name: "Continue", exact: true }).click({ noWaitAfter: true });
+  await page.getByRole("button", { name: "Sign in", exact: true }).click({ noWaitAfter: true });
   expect((await signInResponse).status()).toBe(200);
   await expect(page).toHaveURL((url) => url.pathname === returnTo, { timeout: 30_000 });
   return { context, page } satisfies { context: BrowserContext; page: Page };
