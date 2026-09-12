@@ -267,10 +267,22 @@
     "retryUniqueness": "PASS"
   },
   "regression": {
-    "files": 15,
-    "uniqueTests": 71,
+    "files": 16,
+    "uniqueTests": 90,
     "result": "PASS"
   },
   "productionBuild": "PASS",
-  "typecheck": "PASS"
+  "typecheck": "PASS",
+  "protectedBrowserRegression": {
+    "fixtureGuard": "Existing nonce marker preparer and unchanged HTTP identity assertions",
+    "isolationRejectionChecks": 3,
+    "result": "PASS",
+    "remainingSelectedJourneys": 13,
+    "isolatedWorktree": "D:/CodexWorktrees/treasurehunt-muster-landed-b36cf268",
+    "originalFailedRun": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/34712573494",
+    "originallyFailedJourneys": 3,
+    "studioSemantics": "PASS - full-page axe plus keyboard inspector focus restoration",
+    "uniqueJourneys": 16,
+    "productScope": "Accepted Muster unchanged; two Studio accessibility attributes corrected"
+  }
 }

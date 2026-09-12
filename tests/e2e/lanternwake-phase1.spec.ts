@@ -1,9 +1,13 @@
 import { errors, expect, test, type Page } from "@playwright/test";
 import { resolveLegacyCampaign } from "../../src/compatibility/legacy-companion";
 import { db } from "../../src/lib/db";
+import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
+
+test.beforeAll(() => ensureGenericSoundingLineIsolation());
 
 const campaignSlug = "development-forever-treasure";
 const playerPath = `/tale/${campaignSlug}`;
+const playerAccessCode = process.env.PLAYER_ACCESS_CODE ?? "development-moonwake";
 type GmStatus = {
   csrfToken: string;
   campaign: { slug: string; status: string; sequence: number };
@@ -35,9 +39,12 @@ async function requireValidationIsolation(page: Page) {
 
 async function signInGm(page: Page) {
   await page.goto("/captain/sign-in");
-  await page.getByLabel("Username").fill(process.env.GM_USERNAME!);
-  await page.getByLabel("Password").fill(process.env.GM_PASSWORD!);
-  await page.getByRole("button", { name: "Enter Captain's Console" }).click();
+  await expect(page.getByRole("link", { name: "Continue to account sign-in" })).toBeVisible();
+  const login = await page.request.post("/api/gm/login", {
+    data: { username: process.env.GM_USERNAME!, password: process.env.GM_PASSWORD! },
+  });
+  expect(login.status(), await login.text()).toBe(200);
+  await page.goto("/captain/library");
   await expect(page).toHaveURL(/\/captain\/library(?:\?.*)?$/u);
   await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
 }
@@ -75,7 +82,7 @@ async function restoreLockedChapter(page: Page) {
 
 async function signInPlayer(page: Page) {
   await page.goto(playerPath);
-  await page.getByLabel("Invitation phrase").fill(process.env.PLAYER_ACCESS_CODE!);
+  await page.getByLabel("Invitation phrase").fill(playerAccessCode);
   const accessResponsePromise = page.waitForResponse(
     (response) => new URL(response.url()).pathname === "/api/player/access" && response.request().method() === "POST",
   );

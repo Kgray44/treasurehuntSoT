@@ -19,17 +19,27 @@ test("Phase 4 gateway and authentication remain readable, responsive, and truthf
   await expectNoSeriousAccessibilityViolations(page);
 
   await page.goto("/player/sign-in");
-  const signInWarmup = await page.request.post("/api/player/sign-in", {
+  const refusedCredentials = await page.request.post("/api/player/sign-in", {
     data: { playerName: "not-a-player", password: "not-a-password" },
     maxRetries: 2,
   });
-  expect([400, 401]).toContain(signInWarmup.status());
-  await page.getByLabel("Player name", { exact: true }).fill("not-a-player");
-  await page.getByLabel("Password", { exact: true }).fill("not-a-password");
-  await page.getByRole("button", { name: "Open my library" }).click();
-  await expect(page.getByText("Those Player credentials were not accepted.")).toHaveAttribute("role", "alert");
+  expect([400, 401]).toContain(refusedCredentials.status());
+  await expect(page.getByRole("link", { name: "Continue to account sign-in" })).toHaveAttribute(
+    "href",
+    /\/sign-in\?returnTo=%2Fplayer%2Flibrary/,
+  );
+  await expect(page.getByLabel("Player name", { exact: true })).toHaveCount(0);
+  await expect(page.getByLabel("Password", { exact: true })).toHaveCount(0);
   await page.getByRole("tab", { name: "Invitation code" }).click();
-  await expect(page.getByText("Those Player credentials were not accepted.")).toHaveCount(0);
+  await expect(page.getByLabel("Short code")).toBeFocused();
+  await page.getByLabel("Short code").fill("NOPE-NOPE");
+  await page.getByRole("button", { name: "Find my invitation" }).click();
+  await expect(page.getByText("This invitation is not available.")).toHaveAttribute("role", "alert");
+  await page.getByRole("tab", { name: "Player account" }).click();
+  await expect(page.getByRole("heading", { name: "Player account", exact: true })).toBeVisible();
+  await expect(page.getByText("This invitation is not available.")).toHaveCount(0);
+  await expect(page.locator("main")).toHaveAttribute("data-async-state", "idle");
+  await page.getByRole("tab", { name: "Invitation code" }).click();
   await expect(page.locator("main")).toHaveAttribute("data-async-state", "idle");
   await expect(page.getByLabel("Short code")).toBeFocused();
   await expectNoSeriousAccessibilityViolations(page);
@@ -63,4 +73,12 @@ test("Phase 4 Studio More actions are keyboard-operated and stay inside the mobi
   await expect(more).toHaveAttribute("aria-expanded", "false");
   await expect(more).toBeFocused();
   await expectNoSeriousAccessibilityViolations(page);
+  const passage = page.locator(".timeline-block").first();
+  await expect(passage).toHaveAttribute("role", "group");
+  await expect(passage).toHaveAttribute("aria-roledescription", "sortable");
+  await passage.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("textbox", { name: "Passage title", exact: true })).toBeFocused();
+  await page.getByRole("button", { name: "Close Passage inspector" }).click();
+  await expect(passage).toBeFocused();
 });

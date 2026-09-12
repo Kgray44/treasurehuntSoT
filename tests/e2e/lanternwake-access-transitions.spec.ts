@@ -1,4 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
+import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
+
+test.beforeAll(() => ensureGenericSoundingLineIsolation());
 
 const campaignSlug = "development-forever-treasure";
 
@@ -159,17 +162,14 @@ test.describe("Lanternwake Phase 1 access transition final-state holds", () => {
   }) => {
     await proveIsolatedValidationDatabase(page);
     await useFullMotion(page);
-    expect(
-      process.env.PLAYER_ACCESS_CODE,
-      "PLAYER_ACCESS_CODE is required for the isolated validation fixture.",
-    ).toBeTruthy();
+    const playerAccessCode = process.env.PLAYER_ACCESS_CODE ?? "development-moonwake";
 
     await page.goto(`/tale/${campaignSlug}`);
     await expect(page.getByRole("heading", { name: "Confirm your invitation" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Confirm invitation" })).toBeVisible();
     await installTransitionProbe(page, "player-access");
 
-    await page.getByLabel("Invitation phrase").fill(process.env.PLAYER_ACCESS_CODE!);
+    await page.getByLabel("Invitation phrase").fill(playerAccessCode);
     const accessResponsePromise = page.waitForResponse(
       (response) => new URL(response.url()).pathname === "/api/player/access" && response.request().method() === "POST",
     );

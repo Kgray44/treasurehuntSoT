@@ -2768,6 +2768,8 @@ export function TaleEditor({
                                   <article
                                     {...attributes}
                                     {...listeners}
+                                    role="group"
+                                    aria-label={`Passage: ${block.title}`}
                                     className={`timeline-block ${selectedIds.includes(block.id) ? "selected" : ""}`}
                                     id={`block-${block.id}`}
                                     data-block-id={block.id}

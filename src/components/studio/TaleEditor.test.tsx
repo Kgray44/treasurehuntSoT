@@ -263,7 +263,9 @@ describe("Voyagewright Studio editor motion and authority", () => {
 
     const first = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
     const second = screen.getByText("Second Scene").closest<HTMLElement>("article")!;
-    expect(first).toHaveAttribute("role", "button");
+    expect(screen.getByRole("group", { name: "Passage: Opening Scene" })).toBe(first);
+    expect(within(first).getByRole("button", { name: "Select Opening Scene" })).toBeVisible();
+    expect(within(first).getByRole("button", { name: "Move Passage down" })).toBeVisible();
     expect(first).toHaveAttribute("aria-roledescription", "sortable");
     fireEvent.click(first);
     fireEvent.click(second, { ctrlKey: true });
