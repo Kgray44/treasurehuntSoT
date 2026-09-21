@@ -1,657 +1,224 @@
+---
+title: Voyagewright
+audience: public
+status: current
+canonical_for: repository-landing-page
+last_reviewed: 2026-09-21
+---
+
 # Voyagewright
 
-> **Create, run, and remember story-driven adventures.**
+Voyagewright is a proprietary platform for creating and experiencing immersive Chronicles and shared adventures.
 
-Voyagewright is a platform for building and experiencing **Chronicles**: authored adventures that can combine story, choices, puzzles, crew coordination, artifacts, media, cinematic presentation, and real-world or digital moments into one connected experience.
+A **Chronicle** is an authored body of story material. A **Voyage** is a prepared experience of a particular published Chronicle edition. Together, they let Creators shape a story, Captains gather people around it, and Players experience it without losing the history that makes it personal.
 
-A Chronicle is more than a sequence of pages. It can be prepared as a specific published edition, launched as a live **Voyage**, shared with a crew, guided by a Captain, experienced through a Player-facing Journal, and remembered afterward through each participant's private **Chronicle Passport**.
-
-Voyagewright is designed around one simple idea:
-
-> **The platform should handle the machinery so people can focus on the adventure.**
-
----
-
-## What Voyagewright is
-
-Voyagewright brings several related experiences together as one product:
-
-| Area                   | What it is for                                                                                             |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Explore Chronicles** | Discover Chronicles that are available to preview or experience                                            |
-| **Player**             | Join invitations, manage your Voyages, gather with the crew, and experience a Chronicle                    |
-| **Captain**            | Prepare and operate a Voyage, invite the crew, manage readiness, and guide live progression                |
-| **Creator Studio**     | Author Chronicles, test them, manage assets and Story Blocks, and publish immutable Versions               |
-| **Community Harbor**   | Discover public Chronicles, Creators, artifacts, collections, guides, templates, and other shared material |
-| **Chronicle Passport** | Your private archive of Voyages, Memories, artifacts, Keepsakes, statistics, and personal history          |
-| **Personal Harbor**    | Your account, identity, preferences, privacy, security, linked identities, sessions, and support controls  |
-| **Profile**            | The deliberately shareable identity other people may see                                                   |
-
-These are not separate accounts or unrelated applications. A single Voyagewright account can have the capabilities needed to be a Player, Captain, Creator, or more than one at the same time.
-
----
-
-# The core concepts
-
-Voyagewright uses a few terms consistently throughout the product.
-
-### Chronicle
-
-A **Chronicle** is the authored adventure itself.
-
-It contains the story structure and may include Chapters, Passages, Story Blocks, locations, artifacts, assets, conditions, variables, media, choices, completion rules, and other authored material.
-
-A Chronicle can continue to evolve over time.
-
-### Version
-
-A **Version** is an immutable published edition of a Chronicle.
-
-Once a Version is published, the material used by an existing Voyage does not silently change underneath the Players. A later edit becomes a new Version rather than rewriting the one a crew already experienced.
-
-This means a person can return months or years later and know which exact edition they played.
-
-### Voyage
-
-A **Voyage** is a prepared playthrough of one exact Chronicle Version.
-
-A Voyage has its own crew, Captain authority, invitations, live state, progression, and history.
-
-Two crews can therefore play the same Chronicle Version as separate Voyages without sharing each other's state.
+## Explore the experience
 
 ### Player
 
-A **Player** participates in the Voyage.
-
-Players receive or accept invitations, join the crew, enter the Muster room, experience the Chronicle through Player-safe surfaces, and retain their own authorized personal history afterward.
+Players accept invitations, find available Voyages in their library, follow the story, and return to their personal history afterward. A Player sees the material and choices intended for their place in the Voyage.
 
 ### Captain
 
-A **Captain** operates a Voyage.
+Captains prepare Voyages, invite a crew, use Muster to gather before launch, and guide the shared experience. Captain controls stay distinct from the private information held by individual Players.
 
-Captain authority is separate from Player participation. A Captain may run the Voyage without joining as a Player, or may explicitly participate as **Captain + Player** using the same account.
+### Creator Studio
 
-### Creator
+Creators use Creator Studio to build Chronicles from story material, locations, media, artifacts, and editions. Published editions are immutable, so a Voyage can continue with the version it began with.
 
-A **Creator** authors Chronicles in Creator Studio.
+### Community Harbor
 
-Creator capability controls authoring access. It does not automatically grant Captain authority over every Voyage or access to another person's private Player records.
+Community Harbor is Voyagewright's controlled discovery space for material that Creators choose to share. It supports safe browsing, collections, saves, and reviews where available.
 
----
+### Chronicle Passport
 
-# How a Voyage works
+Chronicle Passport is a private personal archive for Voyages, Timeline, People, memories, keepsakes, artifacts, saved material, and the editions that shaped your history. It is not an account-settings page and it is not a public Profile.
 
-A typical Voyage moves through several stages.
+### Personal Harbor
 
-## 1. Discover or receive a Chronicle
+Personal Harbor is the account control center. It brings together personal information, preferences, accessibility, privacy, security, connected sign-in methods, Support Access, and account-data choices.
 
-A person may begin from public Chronicle discovery, Community Harbor, or an invitation supplied by a Captain.
+## A shared Voyage, in brief
 
-Public preview information is intentionally limited to material that is safe to reveal before the Voyage begins.
+1. A Creator prepares a Chronicle and publishes the edition a Voyage will use.
+2. A Captain creates a Voyage, chooses whether to join the crew, and invites the people who should experience it.
+3. Players accept an invitation and find the Voyage in their library.
+4. The crew gathers in Muster, where the Captain can see the available readiness information before launch.
+5. Players experience the Chronicle while the Captain guides the shared Voyage.
+6. Each person can later revisit the parts of that experience that belong in their private Chronicle Passport.
 
-## 2. Use one Voyagewright identity
+The details of a Voyage depend on its Chronicle. It can use story passages, choices, media, artifacts, clues, Captain decisions, and other authored elements. Voyagewright keeps those elements connected without making a private story public by accident.
 
-Voyagewright uses one canonical account and session across its normal workspaces.
+## Built for distinct perspectives
 
-A person's account may have Player, Captain, Creator, or administrative capabilities, but those are permissions and relationships of the same identity rather than separate logins.
+### A Player's perspective
 
-Some invitation flows can also support an invited guest before that identity is fully claimed.
+The Player Library answers practical questions: which invitation is waiting, which Voyage is active, and where can I return after an immersive story view? It shows the experience intended for that Player, not Captain notes, hidden answers, or another person's private history.
 
-## 3. Join a Voyage
+### A Captain's perspective
 
-An invitation can bring a Player into a specific Voyage.
+The Captain's Console presents the current Voyage and the actions that make sense at that moment. Transfer Captaincy, stepping down, and cancelling a Voyage are deliberately different choices with different consequences.
 
-Accepted Voyages appear in the Player experience rather than requiring the person to remember a hidden route or manually reconstruct how they arrived there.
+### A Creator's perspective
 
-Invitation state and Voyage membership remain separate concepts: an invitation can be pending, declined, revoked, accepted, or replaced without pretending those states are all the same thing.
+Creator Studio supports guided authoring for a first draft and more detailed controls when they are needed. Reusable material, drafts, review, and publication remain connected to the Chronicle that a Creator is shaping.
 
-## 4. Gather in Muster
+## What stays personal
 
-Before launch, the crew can gather in the shared **Muster** experience.
+Voyagewright distinguishes between:
 
-Muster can show:
+- what happened in a shared Voyage;
+- an artifact the whole crew encountered;
+- an item personally associated with one Player;
+- a memory or keepsake a person chose to preserve;
+- information a person chose to make public through their Profile.
 
-- the Chronicle and published edition being prepared;
-- the Captain;
-- invited and joined crew;
-- readiness;
-- connection state;
-- Player and Captain roles;
-- Voyage-scoped Crew Chat;
-- Captain launch and Voyage controls when authorized.
+That distinction lets Chronicle Passport preserve personal history without turning it into a public activity feed or an account-settings page.
 
-Crew Chat belongs to that Voyage and is available only to the people who currently have the required membership or Captain authority.
+## Core principles
 
-Leaving the Muster screen is not the same as leaving the Voyage.
+- **One account:** One Voyagewright identity can enter the workspaces you have permission to use.
+- **Stable editions:** A published Chronicle edition does not silently change underneath an active Voyage.
+- **Privacy and consent:** Shared, private, and personal-history material have deliberate boundaries.
+- **Player and Captain separation:** A Captain can participate as a Player without turning the two views into one unrestricted role.
+- **Truthful availability:** A screen makes unavailable choices clear instead of pretending every service is ready everywhere.
 
-## 5. Launch the Voyage
+## Find your way
 
-The Captain launches using the Voyage's real readiness and authorization rules.
+The full product manual is the [Voyagewright user guide](docs/README.md).
 
-A participating Captain still receives ordinary Player membership rather than a magical hybrid identity with access to both public and secret information at once.
+| If you want to…                 | Start here                                                                                        |
+| ------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Join a Chronicle or Voyage      | [Getting started](docs/user/getting-started.md) and the [Player guide](docs/user/player-guide.md) |
+| Prepare a shared experience     | [Captain guide](docs/user/captain-guide.md)                                                       |
+| Build a Chronicle               | [Creator guide](docs/user/creator-guide.md)                                                       |
+| Revisit your personal history   | [Chronicle Passport](docs/user/chronicle-passport.md)                                             |
+| Manage your account and Profile | [Personal Harbor](docs/user/personal-harbor.md) and [Profile](docs/user/profile.md)               |
+| Discover shareable material     | [Community Harbor](docs/user/community-harbor.md)                                                 |
 
-Voyagewright keeps Captain-only state and Player-safe state separated deliberately.
+For a concise description of the product, see [Overview](docs/product/overview.md), [Features](docs/product/features.md), and [Terminology](docs/product/terminology.md).
 
-## 6. Experience the Chronicle
+## Privacy and care
 
-During a Voyage, Players use the Chronicle's authored presentation, including surfaces such as the Journal and other story views.
+Chronicles can contain stories, memories, surprises, and material meant for a particular crew. Voyagewright keeps public identity, private account choices, private Chronicle history, and Creator material distinct. Share only what you have permission to share.
 
-Depending on the Chronicle, the experience may involve:
+Read [Privacy and private material](docs/user/privacy.md), [Accessibility](docs/user/accessibility.md), and [Support Access](docs/user/support-access.md) for help using the product safely.
 
-- narrative passages;
-- choices;
-- clues and answers;
-- Captain decisions;
-- artifacts;
-- media;
-- optional objectives;
-- waits or timers;
-- verification providers;
-- cinematic scenes;
-- location-aware experiences when supported by an implemented provider.
+## Designed for thoughtful access
 
-The platform's progression state remains authoritative. Visual presentation is not allowed to silently advance the story merely because an animation finished.
+Voyagewright supports the ways people actually move through a shared story:
 
-## 7. Handle crew changes safely
+- an invitation can be pending, accepted, replaced, or no longer available;
+- a Captain can guide a Voyage without becoming a second account;
+- a person can leave a waiting room without leaving the Voyage itself;
+- a shared Voyage can enter Succession Hold while a new Captain is chosen;
+- a private record can say when a detail was not retained instead of filling the gap with a guess.
 
-Voyages are designed to preserve history even when the crew changes.
+The product also supports browser zoom, keyboard navigation, reduced motion, and clear recovery guidance. These are part of making a story experience usable, not optional decoration.
 
-Players can leave a Voyage without deleting the fact that they once participated.
+## Before a Voyage
 
-Captains can transfer authority to an eligible joined Player. Relinquishing Captaincy can place a shared Voyage into **Succession Hold** rather than silently cancelling it.
+Every Voyage begins with an invitation, a Chronicle edition, and a group of people who should be there. The invitation is the practical starting point for a Player. It can lead to a library, a waiting space, or a shared Muster room depending on the experience that the Captain prepared.
 
-When supported by the current Voyage state, a Player may be offered choices such as:
+Captains can see the information needed to gather a crew without asking Players to expose their private account details. A Captain who also joins the crew keeps a normal Player perspective alongside their separate Captain controls.
 
-- **Take Captaincy** of the shared Voyage;
-- **Continue Solo** from the last safe committed state;
-- **Leave Voyage**.
+Creators prepare the Chronicle before people arrive. They can organize Chapters, Passages, Story Blocks, locations, media, artifacts, and reusable material into a published edition that stays stable for the Voyage.
 
-A solo continuation is its own Voyage. It does not steal another Player's private state or rewrite the original shared Voyage.
+## During a Voyage
 
-## 8. Keep the history afterward
+Voyagewright is built to make the shared story legible for everyone involved.
 
-After and during participation, a person's authorized history belongs in **Chronicle Passport**.
+- Players can follow the current story, choices, and material made available to them.
+- Captains can guide the group with the controls appropriate to the moment.
+- Creators' private draft material and hidden answers remain separate from the Player experience.
+- Crew changes are handled deliberately rather than being treated as a broken navigation event.
+- A Captain can transfer responsibility, step away into Succession Hold, or cancel for everyone through distinct choices.
 
-Voyagewright keeps the difference between:
+The shared experience can include quiet reading, guided decisions, media, artifacts, or more active group moments. The Chronicle determines the tone; Voyagewright supplies the boundaries that help people experience it together.
 
-- what happened in the shared Voyage;
-- what was personally granted to one Player;
-- what the person privately wrote or preserved;
-- what may be publicly shared.
+## After a Voyage
 
-That distinction is central to the platform.
+Chronicle Passport keeps the personal side of a Voyage available after the moment has passed. Depending on what the experience retained, a person can revisit:
 
----
+- a Journey Summary and the edition they experienced;
+- Timeline and People views for their own history;
+- memories and keepsakes they chose to preserve;
+- artifacts associated with them;
+- saved Community material and available reflections.
 
-# Player experience
+Passport does not turn private history into a public scorecard. When a detail was not retained, Voyagewright says so rather than guessing.
 
-The Player workspace is the ordinary home for participating in Voyages.
+## A platform with boundaries
 
-## Player Library
+Voyagewright does not collapse every kind of information into one profile or one feed. It keeps three different ideas clear:
 
-The Player Library is where a signed-in Player can find the Voyages and invitation-driven experiences available to them.
+- **Personal Harbor** is where you manage your account and preferences.
+- **Profile** is what you choose to share publicly.
+- **Chronicle Passport** is where your private Voyage history belongs.
 
-It is intended to answer practical questions such as:
+The same clarity applies to a Chronicle: an edition can be published for a Voyage without making its drafts, private media, or Creator-only material generally visible.
 
-- What have I been invited to?
-- Which Voyages can I enter?
-- Which one is waiting for launch?
-- Which one is active?
-- Where do I return after leaving an immersive Chronicle view?
+## For every kind of participant
 
-Player-facing screens should expose only information that Player is authorized to know.
+Whether you are joining one invitation, running an ongoing group, building a long-form Chronicle, or returning to a meaningful shared story, Voyagewright starts with the same promise: the story should remain understandable, the people involved should retain control of their private material, and the experience should not become harder to use as it grows.
 
-Captain notes, Creator-private material, hidden answers, other Players' private state, and administrative details do not become visible merely because the same human also has another role elsewhere in Voyagewright.
+## A few useful ideas
 
-## Muster and Crew Chat
+### Chronicle editions
 
-The Player Muster experience shows the crew gathering around one Voyage.
+A Chronicle can have more than one published edition. When a Captain prepares a Voyage, that Voyage uses the edition chosen for it. Later work on a Chronicle can continue without changing what a crew already started together.
 
-Recent Crew Chat is retained for that Voyage, and current participants can communicate without turning chat into a separate social network.
+### Invitations and membership
 
-The interface distinguishes ordinary navigation from actual membership changes:
+An invitation and membership are related but different. An invitation helps a person enter a Voyage. Membership is the ongoing relationship that lets that person participate. This makes it possible to handle an expired invitation, a crew change, or a return visit without pretending every state is the same.
 
-- **Leave Waiting Room** returns to the Player area.
-- **Leave Voyage** ends the person's current membership after confirmation.
+### Personal records
 
-## Chronicle Journal and story surfaces
+Chronicle Passport is deliberately personal. A shared Voyage can leave a meaningful record for each participant while still respecting that one person's memory, artifact, or reflection is not automatically everyone else's.
 
-The Journal and related story views present the Chronicle in the form intended by its Creator.
+### Public discovery
 
-They may show story pages, choices, progress, revealed material, artifacts, and other Player-safe state.
+Community Harbor only shows material that has been prepared for sharing. Private drafts, private Chronicle material, and personal history do not become public simply because related material exists somewhere else in Voyagewright.
 
-Immersive routes provide a deliberate way back to the Player experience rather than requiring browser-history archaeology.
+## Use the guide that fits the moment
 
----
+The [Voyagewright user guide](docs/README.md) is organized around the experience you are having now:
 
-# Captain experience
+- Start with [Getting started](docs/user/getting-started.md) when you have an invitation or are new to Voyagewright.
+- Use the [Player guide](docs/user/player-guide.md) while participating in a shared Voyage.
+- Use the [Captain guide](docs/user/captain-guide.md) while preparing or leading one.
+- Use the [Creator guide](docs/user/creator-guide.md) while building a Chronicle.
+- Use [Chronicle Passport](docs/user/chronicle-passport.md) when you want to revisit what you experienced.
+- Use [Personal Harbor](docs/user/personal-harbor.md) when you need to manage account choices.
 
-Captains prepare and operate Voyages without becoming a separate kind of account.
+The guide is written for people using Voyagewright. Engineering details, historical records, and validation evidence are kept separately so they remain available without getting in the way of an ordinary product journey.
 
-## Creating a Voyage
+## Small things that matter
 
-A Captain prepares a Voyage from a published Chronicle Version.
+Voyagewright treats a few everyday moments as first-class parts of a story experience:
 
-The Version is pinned so the crew has a stable source throughout that playthrough.
+- A person can use browser zoom, a keyboard, or reduced motion without losing the thread of the Voyage.
+- A Captain can see what needs attention without seeing information meant only for a Player.
+- A Creator can return to a draft, reuse their own material, and publish with a clear sense of what will become stable.
+- A Player can come back later and find a private history that does not confuse a memory with a public post.
+- A person can change a password, review devices, or manage a connected sign-in method without leaving their account choices scattered around the product.
 
-A Captain can choose whether they are:
+## Availability with honesty
 
-- **Captain only**, operating the Voyage without a Player record; or
-- **Captain + Player**, joining the crew as one ordinary Player while retaining separate Captain authority.
+Voyagewright can show an experience only when the relevant invitation, account access, and service choices are available. If something is unavailable, the product should explain that plainly and offer the next useful step instead of presenting a misleading success state.
 
-## Inviting the crew
+That same principle applies to personal history: an unavailable detail is shown as unavailable, not reconstructed from a guess. It is one of the ways Voyagewright keeps a private Chronicle experience trustworthy over time.
 
-Voyagewright supports governed invitation lifecycle and crew preparation.
+## Development record
 
-Depending on the available surface, invitations can be represented through individually controlled links, codes, QR handoffs, or other supported invitation mechanisms.
+This repository intentionally preserves Voyagewright's engineering history, including governing records, validation evidence, visual evidence, and selected development transcripts. These materials are part of the project's long-term development record and are intentionally retained.
 
-The Captain can distinguish pending invitations from joined crew rather than treating everybody as though they already entered the Voyage.
+The [engineering-record archive](Development_Docs/README.md) organizes those materials separately from the user guide.
 
-## Captain Muster
+## Proprietary software
 
-**Captain Muster** shows the same shared gathering room with the controls appropriate to current Captain authority.
+Voyagewright is proprietary software. Copyright © 2026 Kato Gray. All rights reserved.
 
-It can include:
+This repository is source-visible but is not open-source software. No general permission is granted to use, copy, modify, redistribute, self-host, commercialize, sublicense, or create derivative works from Voyagewright except where required by GitHub's applicable platform terms or expressly authorized in writing by the copyright holder.
 
-- Crew and invitation state;
-- readiness;
-- connection state;
-- Crew Chat;
-- Chronicle edition details;
-- launch readiness;
-- Captain and Voyage options.
-
-## Captain's Console
-
-The live Captain experience is intended to show the current Voyage state and only the actions that are meaningful at that moment.
-
-Before an important command, Voyagewright can present information such as:
-
-- the target;
-- current revision/state;
-- consequence;
-- reversibility;
-- Player-visible effect.
-
-Captain operations use authoritative commands rather than secretly editing Player state in the browser.
-
-## Captaincy changes
-
-Captain authority can be transferred without rewriting the crew's Voyage history.
-
-**Transfer Captaincy**, **Relinquish Captaincy**, and **Cancel Voyage for Everyone** are deliberately different operations with different consequences.
-
-Cancellation ends the shared Voyage. Relinquishment is not cancellation.
-
----
-
-# Creator Studio
-
-Creator Studio is where Chronicles are built.
-
-A Creator can work with Chronicle settings and authored material such as:
-
-- Chapters and Passages;
-- Story Blocks;
-- locations;
-- assets and media;
-- artifacts;
-- variables and conditions;
-- versions;
-- reusable authoring material;
-- publication review.
-
-## Guided, Detailed, and Engineering views
-
-The Story Block Inspector can expose different levels of authoring detail without changing the underlying Chronicle.
-
-- **Guided** focuses on required authoring steps and plain-language help.
-- **Detailed** exposes the supported authoring controls.
-- **Engineering** exposes safe contract paths, versions, and rule information useful for advanced inspection.
-
-Switching modes changes disclosure, not Chronicle state.
-
-## Typed conditions and variables
-
-Creator Studio uses governed Story Block contracts rather than treating every block as an arbitrary bag of JSON.
-
-Creators can select destinations using human-readable Chronicle structure, work with typed variables, and build supported conditions through the visual authoring system.
-
-## Reusable authoring material
-
-Creators can preserve private reusable material such as Presets, Fragments, or Chapter templates.
-
-Reusing material is designed to retain provenance and remain compatible with ordinary Undo/Redo behavior.
-
-## Drydock and Sea Trials
-
-Drydock provides Chronicle verification and deterministic simulation support for Creator work.
-
-Sea Trials can exercise saved Chronicle scenarios against controlled outcomes, virtual time, supported synthetic faults, assertions, and coverage evidence without advancing a real Player Voyage.
-
-The purpose is to answer questions such as:
-
-- Can this Chronicle reach its intended endings?
-- Are important branches covered?
-- Does a configuration violate a governed Story Block contract?
-- What happens if a provider is unavailable?
-- Does the authored experience still behave correctly under an expected failure?
-
-## Reviewing and publishing a Version
-
-Publishing is an explicit boundary.
-
-Before publishing, Creator Studio can review:
-
-- Drydock readiness;
-- blockers, warnings, and accepted waivers;
-- the authored differences from the current Version;
-- asset readiness;
-- protected-content evidence where available;
-- compatibility;
-- Creator release notes.
-
-A successful publication produces an immutable Version and receipt rather than silently replacing an edition already in use.
-
----
-
-# Community Harbor
-
-Community Harbor is Voyagewright's public/shared discovery environment.
-
-It is separate from private Chronicle authoring and private Player history.
-
-Depending on the current deployed configuration and available content, Community Harbor can organize public material into areas such as:
-
-- Chronicles;
-- artifacts;
-- templates;
-- maps;
-- audio and reveal resources;
-- Creators;
-- collections;
-- guides;
-- Voyage Logs.
-
-Public discovery can use featured and recent shelves, search, sorting, compact filters, advanced filters, and safe detail views.
-
-Eligible signed-in accounts can use supported social/discovery actions such as saving public content or following eligible Creators.
-
-Public Community projections are allowlisted. Private drafts, private Chronicle prose, hidden answers, session secrets, exact private locations, unconsented participant information, moderation evidence, and protected account data are not supposed to become public simply because the material exists elsewhere in the system.
-
-Community availability also depends on deployment and provider configuration. A capability existing on main does not automatically mean every hosted provider is configured in every environment.
-
----
-
-# Chronicle Passport
-
-Chronicle Passport is a first-class private personal destination.
-
-It is **not** an account-settings page and it is **not** the same thing as a public Profile.
-
-Passport is about what _you experienced_.
-
-Depending on the records available to the signed-in account, Passport can include:
-
-- Voyage History;
-- detailed Voyage records;
-- Timeline;
-- People;
-- private Statistics;
-- Voyage Atlas;
-- Memories;
-- Artifact Cabinet;
-- Keepsakes;
-- saved Community items;
-- exact Chronicle edition information;
-- private Reflection;
-- replay handoffs;
-- Voyage Book presentation.
-
-## Voyage History
-
-Each historical Voyage record is tied to the edition actually played.
-
-A detailed record can include safe retained context such as:
-
-- Journey Summary;
-- path and objectives;
-- historical crew;
-- Captain and Creator attribution;
-- artifact context;
-- exact Version;
-- timing quality;
-- remembrance and Memories.
-
-Unavailable historical information is shown as unavailable rather than invented.
-
-For example, **Duration unavailable** means trustworthy duration evidence was not preserved. It does not mean the Voyage lasted zero minutes.
-
-## Shared artifacts vs. your artifacts
-
-Voyagewright distinguishes a shared artifact moment from personal custody.
-
-A Voyage record can truthfully say the crew witnessed or revealed an artifact without automatically claiming every crew member owns one personally.
-
-The **Artifact Cabinet** is the personal provenance-aware view of artifacts actually associated with the signed-in person.
-
-## Private remembrance
-
-Reflections, Memories, and private Keepsakes remain owner-authorized.
-
-Participant consent can limit how another person appears in a private Keepsake or related remembrance material without rewriting the underlying historical Voyage record.
-
-## Compare what changed
-
-Where Tideglass comparison is available, a historical Voyage can hand off to a Version comparison so a person can understand how the Chronicle has changed since the edition they played.
-
----
-
-# Personal Harbor and Profile
-
-Voyagewright separates account management, private history, and public identity instead of putting all three into one enormous settings landfill.
-
-## Personal Harbor
-
-**Personal Harbor** is the account control center.
-
-It is the natural home for areas such as:
-
-- Personal Information;
-- preferences;
-- themes and appearance;
-- accessibility preferences;
-- notifications;
-- Privacy & Safety;
-- Linked Identities;
-- Security;
-- Sessions & Devices;
-- Support Access;
-- Data & Account;
-- Sign Out.
-
-It also provides a gateway to Chronicle Passport rather than duplicating the entire Passport experience inside account settings.
-
-## Public Profile
-
-**Profile** is the identity another person may be allowed to see.
-
-It can include intentionally public information such as:
-
-- display name;
-- handle;
-- biography;
-- avatar;
-- banner;
-- other explicitly shareable profile information.
-
-The public Profile is a server-produced safe projection. Private Passport records are not merely hidden with CSS behind the same page.
-
----
-
-# Account and security model
-
-Voyagewright is designed around one account lifecycle rather than one password system per workspace.
-
-Supported account flows on current main include ordinary sign-in/account handling, email-verification and recovery infrastructure, session management, and provider-linked identity support where configured.
-
-Google and GitHub OAuth support exists in the repository and has owner-observed staging acceptance, but provider availability still depends on the environment's real configuration.
-
-Security-sensitive surfaces intentionally avoid displaying secrets such as:
-
-- password material;
-- session tokens;
-- provider access or refresh tokens;
-- encryption keys;
-- provider secrets.
-
-## Sessions & Devices
-
-Users can inspect bounded session/device information and revoke owned sessions.
-
-Revoking a session does not delete Chronicle history.
-
-## Linked Identities
-
-Linked-provider views expose bounded connection information, not provider credentials.
-
-Unlinking is protected so a person is not casually left with no accepted sign-in path.
-
-## Support Access
-
-Voyagewright includes a user-approved Support Access model for bounded administrative assistance.
-
-Support grants are scoped, time-limited, auditable, and deliberately exclude credentials and other forbidden secret material.
-
----
-
-# Privacy by design
-
-Voyagewright contains experiences that may be personal, private, or surprise-sensitive, so privacy boundaries are part of the product architecture rather than decorative policy text.
-
-Important principles include:
-
-- public views are built from explicit safe projections;
-- private data should not be sent to an unauthorized browser and merely hidden;
-- Chronicle drafts and Captain/Creator-private information remain separate from Player views;
-- one Player's private records do not become another Player's records;
-- account capability does not bypass Voyage-specific authorization;
-- protected media follows its own authenticated delivery rules;
-- Community publication does not automatically expose private source material;
-- private Chronicle packages and protected assets are handled separately from ordinary public static files.
-
-Use only content you are authorized to view or share.
-
----
-
-# Accessibility and presentation
-
-Voyagewright is designed around responsive, keyboard-accessible, reduced-motion-aware product surfaces.
-
-The current implementation includes governed work around:
-
-- keyboard navigation;
-- visible focus;
-- focus restoration;
-- responsive desktop/tablet/mobile layouts;
-- narrow mobile behavior;
-- effective 200% zoom layouts;
-- reduced-motion final states;
-- labelled loading, empty, restriction, dependency, and failure states;
-- accessible dialogs and confirmations;
-- semantic navigation and headings.
-
-Animation is intended to support the experience, not become a requirement for understanding it.
-
-Automated accessibility evidence is useful but does not replace full physical assistive-technology testing in a deployed environment.
-
----
-
-# Where should I go?
-
-For a normal Voyagewright user, these are the most useful documentation starting points:
-
-### New to Voyagewright
-
-- [Getting started](docs/user/getting-started.md)
-- [Account and workspaces](docs/user/account-workspaces.md)
-- [Personal Harbor](docs/user/personal-harbor.md)
-
-### Playing
-
-- [Player guide](docs/user/player-guide.md)
-- [Chronicle preview and start](docs/user/chronicle-preview-and-start.md)
-- [Chronicle Passport](docs/user/chronicle-passport.md)
-
-### Running a Voyage
-
-- [Captain guide](docs/user/captain-guide.md)
-
-### Creating
-
-- [Creator guide](docs/user/creator-guide.md)
-
-### Discovering and sharing
-
-- [Community Harbor](docs/user/community-harbor.md)
-- [Community reviews and saves](docs/user/community-reviews-and-saves.md)
-
-### Identity, privacy, and safety
-
-- [Profile](docs/user/profile.md)
-- [Account security](docs/user/account-security.md)
-- [Linked identities](docs/user/linked-identities.md)
-- [Privacy](docs/user/privacy.md)
-- [Support Access](docs/user/support-access.md)
-
-### Accessibility and help
-
-- [Accessibility](docs/user/accessibility.md)
-- [Troubleshooting](docs/user/troubleshooting.md)
-
-The full user-documentation hub is at [docs/README.md](docs/README.md).
-
----
-
-# Current availability
-
-This repository contains Voyagewright's current protected-main implementation.
-
-That does **not** mean every capability is necessarily deployed, enabled, or connected to its external production provider in every environment.
-
-Some capabilities depend on separately configured services such as:
-
-- email delivery;
-- external identity providers;
-- production database infrastructure;
-- protected storage;
-- scanning or security providers;
-- other deployment-specific integrations.
-
-Voyagewright should present those unavailable dependencies truthfully rather than pretending a provider is live when it is not.
-
-The repository also intentionally contains generic development material instead of real private Chronicle surprise content.
-
----
-
-# Repository note
-
-Some older internal identifiers and historical engineering records still use names such as **Forever Treasure Companion**, **Chronicles**, or earlier compatibility terminology.
-
-**Voyagewright** is the current product identity.
-
-Engineering records under `Development_Docs/` preserve architecture, implementation history, evidence, governance, and project closeout material. They are not intended to be the ordinary user manual.
-
----
-
-# Proprietary software
-
-Voyagewright is proprietary software.
-
-**Copyright © 2026 Kato Gray. All rights reserved.**
-
-This repository is source-visible but **not open-source software**. No general permission is granted to use, copy, modify, redistribute, self-host, commercialize, sublicense, or create derivative works from Voyagewright except where required by GitHub's applicable platform terms or expressly authorized in writing by the copyright holder.
-
-Third-party components remain subject to their own licenses.
-
-See [LICENSE.md](LICENSE.md) for the complete terms.
+See [LICENSE.md](LICENSE.md) for the complete terms. Third-party components remain subject to their own licenses.

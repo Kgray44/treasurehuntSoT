@@ -3,30 +3,11 @@ title: Community Harbor
 audience: creator
 status: current
 canonical_for: community-harbor-guide
-last_reviewed: 2026-09-04
+last_reviewed: 2026-09-21
 ---
-
-
-
 
 # Community Harbor
 
+Community Harbor is where people discover the Chronicle material that Creators choose to share. Share only material you have the right to publish, preserve attribution, and never publish private Chronicle content.
 
-
-
-
-
-
-Use only material you have the right to share. Preserve attribution and do not publish private Chronicle content.
-
-
-
-
-
-
-
-When you search, the results and their filters become the Harbor's active
-workspace; clear the search to return to the Home shelves. Public listing
-conversations show only preview-safe text until a person deliberately reveals
-spoiler detail. Voyage Log owner and consent routes are private workflow
-surfaces, not public Harbor districts.
+Use search and filters to explore the available shelves. Clear a search to return to the main Harbor view. Spoiler details stay hidden until a person chooses to reveal them.

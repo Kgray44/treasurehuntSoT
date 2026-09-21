@@ -3,39 +3,13 @@ title: Email verification
 audience: product-users
 status: current
 canonical_for: email-verification
-last_reviewed: 2026-08-06
+last_reviewed: 2026-09-21
 ---
-
-
-
 
 # Email verification
 
+After you register, Voyagewright sends a six-digit code to the email address you entered. Enter the code on the verification screen to confirm that address. Codes expire after a short time, work once, and are replaced when you request another one.
 
+If the address is wrong, choose **Change email** on the verification screen. If the message has not arrived, wait briefly, check your spam folder, then choose **Resend code** when it is available. A retry does not create another account.
 
-
-After registration, Voyagewright asks for the six-digit code sent to the submitted address. The code expires, can be used once, and is replaced when a new code is sent. A short cooldown protects resend. Incorrect, expired, unavailable, and successful states remain distinct; change the address from the verification screen if it was entered incorrectly.
-
-
-
-
-Round 3 automated walkthroughs use a task-owned synthetic inbox. Real delivery
-uses the selected Resend adapter and requires a verified Resend sending domain,
-server-only API key, provider acceptance, and receipt in a real inbox.
-
-
-
-
-A verification code is required after new registration, but it is not an
-ordinary returning sign-in factor. An existing account with valid active
-credentials may sign in while its primary email is unverified. The signed-in
-experience shows a non-blocking verification notice with resend and governed
-email-change actions; only operations whose policy genuinely requires a
-verified email remain restricted.
-
-
-
-
-If delivery fails after account creation, the account remains one truthful
-pending account. Use Retry sending, Change email, Sign in, or the displayed
-recovery guidance; retrying does not create another account.
+You can still sign in to an existing account while email verification is pending. Voyagewright will show what, if anything, needs verification before a particular action can continue.

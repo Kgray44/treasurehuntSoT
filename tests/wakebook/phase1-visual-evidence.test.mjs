@@ -5,7 +5,7 @@ import path from "node:path";
 import test from "node:test";
 
 const root = process.cwd();
-const evidenceRoot = path.join(root, "Development_Docs", "Project Wakebook", "evidence", "phase1");
+const evidenceRoot = path.join(root, "Development_Docs", "Projects", "Project_Wakebook", "evidence", "phase1");
 const expectedEvidenceIds = [
   "WB-P1-EV-001-archive-empty",
   "WB-P1-EV-002-archive-one-voyage",

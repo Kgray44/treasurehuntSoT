@@ -4600,7 +4600,7 @@
       ]
     },
     {
-      "path": "Development_Docs/Projects/Project Wakebook/**",
+      "path": "Development_Docs/Projects/Project_Wakebook/**",
       "suiteIds": ["unit.wakebook", "static.core"],
       "contractIds": [
         "wakebook.history.version-pinning",

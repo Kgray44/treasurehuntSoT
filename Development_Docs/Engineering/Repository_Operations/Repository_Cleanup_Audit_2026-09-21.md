@@ -1,47 +1,44 @@
 ---
-title: Repository cleanup audit and archive plan
+title: Repository cleanup audit and retention decision
 audience: engineering
 status: current
 canonical_for: repository-cleanup-audit-2026-09-21
 last_reviewed: 2026-09-21
 ---
 
-# Repository cleanup audit and archive plan
+# Repository cleanup audit and retention decision
 
 ## Scope and decisions
 
-This maintenance pass preserves application, database, authentication, authorization, and public API behavior. The proprietary license and product landing page were already current on the protected-main baseline and were retained. `docs/` is now reserved for product use; setup, deployment, configuration, route, command, and provider material is under `Development_Docs/Engineering/Repository_Operations/`.
+The cleanup work preserves application, database, authentication, authorization, and public API behavior. `docs/` is reserved for product use; engineering operations, setup, configuration, route, command, provider, and documentation-authoring records live under `Development_Docs/Engineering/`.
 
-## Documentation migration map
+The proprietary license, contribution posture, and root product landing page are maintained separately. The current package-script audit remains intentionally conservative: all 260 scripts are classified as active ordinary development, Sounding Line or CI, operations, or project tooling. No script is removed merely because its name includes a historical phase label; command-interface simplification requires a separate, justified design.
 
-| Previous location | Canonical location | Treatment |
-| --- | --- | --- |
-| `docs/administrator/` | `Development_Docs/Engineering/Repository_Operations/administrator/` | Internal operations records |
-| `docs/developer/` | `Development_Docs/Engineering/Repository_Operations/developer/` | Internal engineering records |
-| `docs/reference/` | `Development_Docs/Engineering/Repository_Operations/reference/` | Internal reference records |
-| Product status and roadmap | `Development_Docs/Engineering/Repository_Operations/product-status/` | Historical and owner-review records |
-| Root Wakebook records and evidence | `Development_Docs/Projects/Project_Wakebook/` | Project record and preserved evidence |
-| Root project families | `Development_Docs/Programs/`, `Architecture_Decisions/`, `Archive/`, `Completion_Receipts/`, or `Governing/` | Classified canonical homes |
+## Documentation and configuration normalization
 
-## Playwright configuration migration map
+| Area                                                       | Canonical location                                    | Decision                       |
+| ---------------------------------------------------------- | ----------------------------------------------------- | ------------------------------ |
+| User documentation                                         | `docs/`                                               | Product and user guidance only |
+| Documentation-authoring references                         | `Development_Docs/Engineering/Documentation/`         | Internal maintenance material  |
+| Operations, developer, and reference records               | `Development_Docs/Engineering/Repository_Operations/` | Internal engineering material  |
+| Project Wakebook governing document, records, and evidence | `Development_Docs/Projects/Project_Wakebook/`         | One canonical project home     |
+| Specialized Playwright configurations                      | `tests/config/playwright/`                            | Canonical configuration home   |
 
-The ordinary `playwright.config.ts` remains at the repository root. All 25 specialized configurations moved from the root to `tests/config/playwright/` with their filenames preserved. Package scripts, journey runners, test registries, impact maps, ownership maps, and engineering records now use the new paths. A single root `playwright.drydock-phase4.config.ts` compatibility entrypoint remains for its source-resident local browser launcher and imports the canonical configuration. Relative test and setup paths are resolved from the moved configuration directory.
+The root `playwright.config.ts` remains the ordinary configuration. `playwright.drydock-phase4.config.ts` remains as a documented compatibility entrypoint because the active Drydock browser launcher still invokes that root path; it imports the canonical specialized configuration.
 
-## Package-script audit
+Project Wakebook's governing document, records, and evidence now share the underscore-form canonical home. Project Deepwater, Project Drydock, and Project Shipwright were audited but have no parallel underscore-form directories; their established space-form homes remain in place to preserve active references rather than creating a cosmetic path churn.
 
-The 260 scripts are classified as 17 ordinary development scripts, 5 Sounding Line or CI scripts, 45 operations scripts, 193 project-tooling scripts, and 0 proven historical or unreachable scripts. No scripts were removed: a name that carries a phase label is not, by itself, proof that the invocation is obsolete.
+## Evidence-retention decision
 
-## Repository-size findings and follow-up archive plan
+The owner has explicitly confirmed that this repository is both Voyagewright's source repository and its comprehensive engineering and development record. The following content is intentional, first-class repository material:
 
-| Area | Files | Approximate size | Follow-up destination |
-| --- | ---: | ---: | --- |
-| `Development_Docs` | 1,553 | 350 MB | Keep current records; move accepted, infrequently consulted evidence to a private engineering archive after reference inventory and checksum verification. |
-| `Experience_Images` | 594 | 301 MB | Move browser and visual acceptance evidence to a private evidence repository or workflow artifacts/object storage; retain small canonical selection metadata in Git. |
-| `Codex_Chats` | 66 | 145 MB | Keep only redacted, governed summaries in Git; migrate source transcripts to a private archive after retention review. |
-| Generated test registries and browser evidence | repository-wide | audit required per generated family | Publish transient browser traces, videos, reports, and large generated evidence as workflow artifacts or private object storage. Use Git LFS only for durable, versioned binary assets that must remain repository-addressable. |
+- `Development_Docs/`
+- `Experience_Images/`
+- `Codex_Chats/`
+- governing documents, completion receipts, validation records, accepted screenshots, visual evidence, and development history
 
-No Git history is rewritten and no accepted evidence is deleted in this pass. Future migration must inventory references, copy with checksums, validate consumers, obtain owner approval, and only then remove duplicated in-repository material.
+Their size is intentional and is not a cleanup defect. This audit does not recommend extracting, pruning, summarizing, relocating, or otherwise reducing these records. No accepted evidence is deleted and no Git history is rewritten.
 
-## Intentionally retained legacy material
+## Third-party notices
 
-Historical project records, evidence screenshots, and specialized test configurations remain because their reachability is retained in test registries, engineering records, or validation history. Historical identifiers are not renamed merely for presentation.
+`THIRD_PARTY_NOTICES.md` remains a high-level, dependency-metadata-grounded notice. A deterministic, reviewed dependency-license inventory is a separate future improvement if it can be introduced without inventing unsupported legal claims or a new compliance platform.

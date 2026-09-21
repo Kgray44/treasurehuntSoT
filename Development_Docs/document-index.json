@@ -381,6 +381,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Documentation/Documentation_Assets_Policy.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Documentation/README.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Documentation/User_Guide_Template.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Repository_Operations/administrator/admiralty-bootstrap.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -4119,12 +4137,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project Wakebook/Project_Wakebook_Governing_Document.pdf",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Brightwork_Wave_5_Owner_Contract.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -7314,6 +7326,12 @@
       "path": "Development_Docs/Projects/Project_Wakebook/evidence/phase1/README.md",
       "record_type": "program-record",
       "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf",
+      "record_type": "program-record",
+      "status": "current",
       "canonical_for": null
     },
     {
