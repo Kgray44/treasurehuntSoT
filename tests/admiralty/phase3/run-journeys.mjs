@@ -52,7 +52,7 @@ try {
       );
     }
   }
-  const testArgs = ["test", "-c", "playwright.admiralty-phase3.config.ts"];
+  const testArgs = ["test", "-c", "tests/config/playwright/playwright.admiralty-phase3.config.ts"];
   if (process.env.ADMIRALTY_PHASE3_TEST_GREP) testArgs.push("--grep", process.env.ADMIRALTY_PHASE3_TEST_GREP);
   run("node_modules/@playwright/test/cli.js", testArgs, env);
   process.stdout.write(

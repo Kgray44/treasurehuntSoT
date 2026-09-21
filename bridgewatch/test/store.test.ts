@@ -207,7 +207,7 @@ describe("Phase 2 durable history migration", () => {
         observedAt: "2026-08-16T20:00:00.000Z",
         documents: [
           {
-            path: "Development_Docs/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
+            path: "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
             text: "# Project Bridgewatch v1.2\n\n## Phase 1: Raise the Board",
           },
         ],

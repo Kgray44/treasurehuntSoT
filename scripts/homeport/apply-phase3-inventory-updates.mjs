@@ -862,7 +862,7 @@ homeportOwner.sourcePaths = unique([
   "src/app/api/account/**",
   "src/app/api/passport/**",
   "src/styles/personal-harbor.css",
-  "playwright.homeport-phase3.config.ts",
+  "tests/config/playwright/playwright.homeport-phase3.config.ts",
 ]);
 homeportOwner.testPaths = unique([
   ...homeportOwner.testPaths,
@@ -903,7 +903,7 @@ for (const pathPattern of [
   upsertPathMapping(pathPattern, ["unit.homeport"], phase3Contracts);
 }
 upsertPathMapping("tests/e2e/homeport-phase3.spec.ts", ["browser.homeport"], phase3Contracts);
-upsertPathMapping("playwright.homeport-phase3.config.ts", ["browser.homeport"], phase3Contracts);
+upsertPathMapping("tests/config/playwright/playwright.homeport-phase3.config.ts", ["browser.homeport"], phase3Contracts);
 impactMap.contractMappings = impactMap.contractMappings.filter(
   (mapping) => !phase3Contracts.includes(mapping.contractId),
 );

@@ -204,6 +204,6 @@ process lists, and it cannot schedule, cancel, clean up, lease, or finalize.
 
 Focused validation uses `npm run validate`. It is implementation evidence only;
 Sounding Line remains the authority for phase, mainline, and release decisions.
-See `Development_Docs/Project_Bridgewatch_Phase_3_Deployment_Runbook.md` for
+See `Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Phase_3_Deployment_Runbook.md` for
 the private NGINX/systemd topology, online backup, restore rehearsal, and
 failure posture.

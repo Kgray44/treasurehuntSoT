@@ -592,7 +592,7 @@
       "evidenceAvailable": [
         "Development_Docs/Features/catalog/wayfarer.json#FT-030",
         "src/wayfarer/chronicle-history.ts",
-        "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+        "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
         "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-history",
         "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-history"
       ],
@@ -652,7 +652,7 @@
       "evidenceAvailable": [
         "Development_Docs/Features/catalog/sealed-hold.json#FT-024",
         "src/private-content/package.ts",
-        "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+        "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
         "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio-private-content",
         "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio-private-content"
       ],
@@ -671,7 +671,7 @@
       "evidenceAvailable": [
         "Development_Docs/Features/catalog/security-operations.json#FT-029",
         "src/components/shell/ProductShell.tsx",
-        "Development_Docs/Project_True_North_Completion_Receipt.md",
+        "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
         "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
         "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
         "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",

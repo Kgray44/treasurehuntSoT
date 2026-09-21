@@ -154,7 +154,7 @@ validation also pass.
 
 `npm run format:check` fails only on Shipwright-owned accepted-main closeout
 documents: its Phase 2 Completion Receipt, Phase 2 Mainline Safety Manifest,
-and `docs/reference/feature-status.md`. Tideglass does not rewrite another
+and `Development_Docs/Engineering/Repository_Operations/reference/feature-status.md`. Tideglass does not rewrite another
 project's accepted records. The exact paths and failure have been handed to
 Shipwright; no Tideglass authority is permitted until its narrow current-main
 repair is accepted and this check is green.

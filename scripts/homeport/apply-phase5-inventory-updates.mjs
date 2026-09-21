@@ -1311,7 +1311,7 @@ for (const sourcePath of [
   "src/app/quartermaster/page.tsx",
   "tests/homeport/phase5-*.test.mjs",
   "tests/e2e/homeport-phase5.spec.ts",
-  "playwright.homeport-phase5.config.ts",
+  "tests/config/playwright/playwright.homeport-phase5.config.ts",
 ])
   upsertPathMapping(sourcePath, ["unit.homeport", "component.homeport", "browser.homeport"], phase5Contracts);
 impactMap.contractMappings ??= [];
@@ -1338,7 +1338,7 @@ for (const suiteId of ["unit.homeport", "component.homeport", "browser.homeport"
     "scripts/homeport/phase5-*.mjs",
     "tests/homeport/phase5-*.test.mjs",
     "tests/e2e/homeport-phase5.spec.ts",
-    "playwright.homeport-phase5.config.ts",
+    "tests/config/playwright/playwright.homeport-phase5.config.ts",
   ]);
   suite.currentImplementationState = "phase-5-homeport-route-reachability-contract-family";
 }

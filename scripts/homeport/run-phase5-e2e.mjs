@@ -31,7 +31,7 @@ const env = {
 run(path.join("node_modules", "next", "dist", "bin", "next"), ["build"], env);
 run(
   path.join("node_modules", "@playwright", "test", "cli.js"),
-  ["test", "-c", "playwright.homeport-phase5.config.ts", ...process.argv.slice(2)],
+  ["test", "-c", "tests/config/playwright/playwright.homeport-phase5.config.ts", ...process.argv.slice(2)],
   env,
 );
 

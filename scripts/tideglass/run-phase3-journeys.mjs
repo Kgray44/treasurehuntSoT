@@ -26,7 +26,7 @@ const env = {
 };
 if (!(process.env.TIDEGLASS_PHASE3_REUSE_BUILD === "1" && existsSync(path.join(root, distDir, "BUILD_ID"))))
   run("node_modules/next/dist/bin/next", ["build"], env);
-run("node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.tideglass-phase3.config.ts"], env);
+run("node_modules/@playwright/test/cli.js", ["test", "-c", "tests/config/playwright/playwright.tideglass-phase3.config.ts"], env);
 process.stdout.write(
   `${JSON.stringify({ status: "TIDEGLASS_PHASE3_BROWSER_JOURNEYS_PASSED", sourceSha, fixtureVersion: fixtureReceipt.fixtureVersion, fixtureChecksum: fixtureReceipt.fixtureChecksum, taskRoot })}\n`,
 );

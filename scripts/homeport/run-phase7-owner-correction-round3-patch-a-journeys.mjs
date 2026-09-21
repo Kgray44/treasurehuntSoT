@@ -56,7 +56,7 @@ for (const journeyId of requested) {
     [
       "test",
       "-c",
-      "playwright.homeport-phase7-owner-correction-round3-patch-a.config.ts",
+      "tests/config/playwright/playwright.homeport-phase7-owner-correction-round3-patch-a.config.ts",
       "--grep",
       `Journey ${journeyId}:`,
     ],

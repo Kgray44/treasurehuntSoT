@@ -23,7 +23,7 @@ Production review should include browser performance traces on the actual low-en
 
 ## Lanternwake Phase 3 production budgets
 
-Phase 3 performance evidence runs against the owned optimized server at `http://127.0.0.1:3200` through `playwright.phase3-performance.config.ts`. The integrated harness starts and stops that server, verifies the isolated/canonical database boundary, and releases port 3200. A development-server sample, unit fake clock, or HTTP restart probe does not satisfy this gate.
+Phase 3 performance evidence runs against the owned optimized server at `http://127.0.0.1:3200` through `tests/config/playwright/playwright.phase3-performance.config.ts`. The integrated harness starts and stops that server, verifies the isolated/canonical database boundary, and releases port 3200. A development-server sample, unit fake clock, or HTTP restart probe does not satisfy this gate.
 
 | Metric                                    |       Required budget |
 | ----------------------------------------- | --------------------: |

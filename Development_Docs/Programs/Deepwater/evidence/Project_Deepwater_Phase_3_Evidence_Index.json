@@ -52,37 +52,37 @@
     },
     {
       "evidenceId": "DW-P3-EV-0011",
-      "reference": "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
+      "reference": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
       "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0012",
-      "reference": "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
+      "reference": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
       "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0013",
-      "reference": "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+      "reference": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
       "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0014",
-      "reference": "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+      "reference": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
       "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0015",
-      "reference": "Development_Docs/Project_True_North_Completion_Receipt.md",
+      "reference": "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
       "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0016",
-      "reference": "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+      "reference": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
       "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {
       "evidenceId": "DW-P3-EV-0017",
-      "reference": "Development_Docs/Projects/Project Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf",
+      "reference": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf",
       "sourceSha": "3e235e85b974183f3b0888814a15697596f73730"
     },
     {

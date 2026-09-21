@@ -37,7 +37,7 @@ Expected: fail because `classifyOrdinaryCandidate` is not yet exported.
 
 - [ ] **Step 3: Add the minimal policy allowlist**
 
-Add only `bridgewatch/**`, `deploy/nginx.conf`, `scripts/sounding-line/status-projection.mjs`, `Development_Docs/Project_Bridgewatch_*.md`, and the exact repository documentation navigation records required by the existing Bridgewatch candidate. Do not add `deploy/**`, `scripts/sounding-line/**`, or an authority path.
+Add only `bridgewatch/**`, `deploy/nginx.conf`, `scripts/sounding-line/status-projection.mjs`, `Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_*.md`, and the exact repository documentation navigation records required by the existing Bridgewatch candidate. Do not add `deploy/**`, `scripts/sounding-line/**`, or an authority path.
 
 ### Task 2: Make the authoritative workflow consume the tested classifier
 

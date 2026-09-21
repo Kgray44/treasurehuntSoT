@@ -872,7 +872,7 @@ Capture exactly 57 named semantic checkpoints: 11 Journal, 14 chapter, six map, 
 
 ### 25.6 Production performance and twenty-cycle lifecycle
 
-The performance gate runs only against the coordinator-owned optimized production server at `http://127.0.0.1:3200`, through `playwright.phase3-performance.config.ts`. Development FPS, unit fake clocks, and HTTP restart probes are not production performance evidence.
+The performance gate runs only against the coordinator-owned optimized production server at `http://127.0.0.1:3200`, through `tests/config/playwright/playwright.phase3-performance.config.ts`. Development FPS, unit fake clocks, and HTTP restart probes are not production performance evidence.
 
 | Metric                                    |        Phase 3 budget |
 | ----------------------------------------- | --------------------: |

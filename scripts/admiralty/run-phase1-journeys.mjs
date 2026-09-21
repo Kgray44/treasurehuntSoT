@@ -24,7 +24,7 @@ const env = {
 };
 if (!(process.env.ADMIRALTY_PHASE1_REUSE_BUILD === "1" && existsSync(path.join(root, distDir, "BUILD_ID"))))
   run("node_modules/next/dist/bin/next", ["build"], env);
-run("node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.admiralty-phase1.config.ts"], env);
+run("node_modules/@playwright/test/cli.js", ["test", "-c", "tests/config/playwright/playwright.admiralty-phase1.config.ts"], env);
 process.stdout.write(
   `${JSON.stringify({ status: "ADMIRALTY_PHASE1_BROWSER_JOURNEYS_PASSED", sourceSha, fixtureVersion: "admiralty-phase1-v1", taskRoot })}\n`,
 );

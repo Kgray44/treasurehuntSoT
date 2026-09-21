@@ -703,7 +703,7 @@ for (const sourcePath of [
   "src/app/community/**",
   "src/app/api/community/**",
   "tests/e2e/homeport-phase4.spec.ts",
-  "playwright.homeport-phase4.config.ts",
+  "tests/config/playwright/playwright.homeport-phase4.config.ts",
   "scripts/homeport/**",
   "Development_Docs/Projects/Project_Homeport/**",
 ])
@@ -733,7 +733,7 @@ for (const suiteId of ["unit.homeport", "component.homeport", "browser.homeport"
     "src/app/community/**",
     "src/app/api/community/**",
     "tests/e2e/homeport-phase4.spec.ts",
-    "playwright.homeport-phase4.config.ts",
+    "tests/config/playwright/playwright.homeport-phase4.config.ts",
   ]);
   suite.currentImplementationState = "phase-4-homeport-community-contract-family";
 }

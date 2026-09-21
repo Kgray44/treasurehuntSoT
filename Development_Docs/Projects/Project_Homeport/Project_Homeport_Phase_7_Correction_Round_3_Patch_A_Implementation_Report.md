@@ -58,7 +58,7 @@ The live-provider steps are:
 1. Verify the Resend sending domain's SPF, DKIM, and MX records.
 2. Place a domain-restricted Sending access key and verified From identity in
    ignored `.env.local` using the server-only names documented in
-   `docs/administrator/resend-configuration.md`.
+   `Development_Docs/Engineering/Repository_Operations/administrator/resend-configuration.md`.
 3. Use an owner-controlled inbox for one disposable-database registration send,
    then confirm Resend acceptance, inbox receipt, and six-digit verification in
    the application.

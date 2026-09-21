@@ -89,6 +89,7 @@ __pycache__/
 !/Codex_Chats/imports/README.md
 !/Codex_Chats/imports/.gitkeep
 /.codex/chat-sync-cache/
+/.codex/chat-sync.json
 /.codex/*.lock
 /Codex_Chats/**/*.tmp
 /Codex_Chats/**/*.bak
@@ -104,6 +105,8 @@ __pycache__/
 next-env.d.ts
 /.next-*/
 /.sealed-build*/
-# Deprecated repository guidance files. Do not reintroduce or track them.
-AGENTS.md
+
+# task-local validation receipts
+/artifacts/
+# Retired root planning document. Do not reintroduce it without an active owner-approved system.
 PLANS.md

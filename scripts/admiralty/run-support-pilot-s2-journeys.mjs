@@ -26,7 +26,7 @@ const env = {
 
 run("node_modules/prisma/build/index.js", ["generate", "--schema", "prisma/schema.sqlite.prisma"], env);
 run("node_modules/next/dist/bin/next", ["build"], env);
-run("node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.admiralty-support-pilot-s2.config.ts"], env);
+run("node_modules/@playwright/test/cli.js", ["test", "-c", "tests/config/playwright/playwright.admiralty-support-pilot-s2.config.ts"], env);
 process.stdout.write(
   `${JSON.stringify({ status: "ADMIRALTY_SUPPORT_PILOT_S2_BROWSER_PROOF_COMPLETE", sourceSha, taskRoot })}\n`,
 );

@@ -1,0 +1,23 @@
+{
+  "archive_directory": "Codex_Chats",
+  "automatic_push": true,
+  "branch_strategy": "current",
+  "development_docs_directory": "Development_Docs",
+  "development_docs_max_git_size_bytes": 52428800,
+  "development_docs_warn_size_bytes": 26214400,
+  "enabled": true,
+  "exclude_conversation_ids": [],
+  "import_directories": ["Codex_Chats/imports"],
+  "include_conversation_ids": [],
+  "include_reasoning": false,
+  "include_tool_output": true,
+  "preserve_deleted_conversations": true,
+  "project_identifiers": [],
+  "project_keywords": [],
+  "project_names": ["Voyagewright"],
+  "redact_secrets": true,
+  "remote": "origin",
+  "repository_identifiers": [],
+  "sync_development_docs": true,
+  "workspace_paths": []
+}

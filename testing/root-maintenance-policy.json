@@ -82,7 +82,7 @@
     "Development_Docs/Governing/ADR-EGS-001_Engineering_Governance_Simplification.md",
     "Development_Docs/INDEX.md",
     "Development_Docs/document-index.json",
-    "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv"
+    "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv"
   ],
   "generatedConsequenceGlobs": [
     "testing/generated/**",
@@ -91,7 +91,7 @@
     "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Governance_Report.md",
     "Development_Docs/Features/FEATURE_CATALOG.md",
     "Development_Docs/document-index.json",
-    "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+    "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
     "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_*.csv"
   ],
   "requiredEvidence": [

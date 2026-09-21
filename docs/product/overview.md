@@ -1,14 +1,14 @@
 ---
-title: Chronicles overview
+title: Voyagewright overview
 audience: product
 status: current
 canonical_for: product-overview
 last_reviewed: 2026-07-27
 ---
 
-# Chronicles overview
+# Voyagewright overview
 
-Chronicles supports authored, hosted story experiences. A **Chronicle** is the authored body of story material; a **Voyage** is a prepared playthrough of that material.
+Voyagewright supports private, authored story experiences. A **Chronicle** is the authored body of story material; a **Voyage** is a prepared playthrough of that material.
 
 Players receive invitations, join a library, and use a journal and story surfaces. Captains prepare and guide Voyages. Creators work in Creator Studio to arrange story blocks, locations, assets, artifacts, and publishing versions. Hosting keeps those roles connected without making Chronicles a generic game engine or map application.
 

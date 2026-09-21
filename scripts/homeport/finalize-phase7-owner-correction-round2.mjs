@@ -514,11 +514,11 @@ async function updateHumanRecords() {
   for (const relative of [
     "docs/product/current-status.md",
     "docs/product/features.md",
-    "docs/reference/feature-status.md",
-    "docs/reference/commands.md",
-    "docs/reference/environment-variables.md",
-    "docs/developer/testing.md",
-    "docs/developer/animation/testing.md",
+    "Development_Docs/Engineering/Repository_Operations/reference/feature-status.md",
+    "Development_Docs/Engineering/Repository_Operations/reference/commands.md",
+    "Development_Docs/Engineering/Repository_Operations/reference/environment-variables.md",
+    "Development_Docs/Engineering/Repository_Operations/developer/testing.md",
+    "Development_Docs/Engineering/Repository_Operations/developer/animation/testing.md",
     "docs/user/getting-started.md",
     "docs/user/account-security.md",
     "docs/user/personal-harbor.md",
@@ -531,7 +531,7 @@ async function updateHumanRecords() {
     "docs/user/chronicle-passport.md",
     "docs/user/privacy.md",
     "docs/user/accessibility.md",
-    "docs/reference/routes.md",
+    "Development_Docs/Engineering/Repository_Operations/reference/routes.md",
     "CHANGELOG.md",
   ])
     await replaceOrAppend(path.join(root, relative), "## Phase 7 correction Round 2 status", status);

@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const governedExtensions = new Set([".md", ".pdf", ".csv", ".txt", ".json"]);
 const toPosix = (value) => value.split(path.sep).join("/");
 const inventoryPath = (file) =>
-  /^(README\.md|SECURITY\.md|CHANGELOG\.md|CONTRIBUTING\.md|AGENTS\.md|PLANS\.md|docs\/|Development_Docs\/)/.test(file);
+  /^(README\.md|SECURITY\.md|CHANGELOG\.md|CONTRIBUTING\.md|AGENTS\.md|THIRD_PARTY_NOTICES\.md|docs\/|Development_Docs\/)/.test(file);
 
 async function walk(directory) {
   const entries = await fs.readdir(directory, { withFileTypes: true });
@@ -66,7 +66,7 @@ export async function generateDocumentIndex({ root = process.cwd(), baseRef = "o
       "Development_Docs/Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf" ||
     file ===
       "Development_Docs/Governing/Project_Trim_Codex_Context_and_Inference_Efficiency_Governing_Document_v1.0-R1.pdf" ||
-    (/\/Projects\/Project [^/]+\//.test(file) && /Governing_(?:Document|Amendment)[^/]*\.pdf$/i.test(file));
+    (/\/Projects\/Project_[^/]+\//.test(file) && /Governing_(?:Document|Amendment)[^/]*\.pdf$/i.test(file));
   const records = files.map((file) => ({
     path: file,
     record_type: classify(file),
@@ -83,7 +83,7 @@ export async function generateDocumentIndex({ root = process.cwd(), baseRef = "o
   if (!records.some((entry) => entry.path === indexPath)) {
     records.push({ path: indexPath, record_type: "archive-index", status: "current", canonical_for: null });
   }
-  const matrixPath = "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv";
+  const matrixPath = "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv";
   if (!records.some((entry) => entry.path === matrixPath)) {
     records.push({ path: matrixPath, record_type: "migration-record", status: "current", canonical_for: null });
   }

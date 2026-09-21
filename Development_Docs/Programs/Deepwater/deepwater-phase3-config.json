@@ -235,7 +235,7 @@
         "src/chronicle/studio-service.ts",
         "src/components/studio/TaleEditor.tsx",
         "src/app/api/studio/tales/[taleId]/versions/compare/route.ts",
-        "Development_Docs/Projects/Project Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf"
+        "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf"
       ]
     }
   ],

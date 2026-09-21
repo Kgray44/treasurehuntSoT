@@ -410,8 +410,8 @@ async function updateHumanRecords(ownerRows, acceptanceRows, frames) {
     "docs/user/chronicle-passport.md",
     "docs/user/privacy.md",
     "docs/user/accessibility.md",
-    "docs/reference/routes.md",
-    "docs/reference/feature-status.md",
+    "Development_Docs/Engineering/Repository_Operations/reference/routes.md",
+    "Development_Docs/Engineering/Repository_Operations/reference/feature-status.md",
     "CHANGELOG.md",
   ])
     await replaceOrAppend(path.join(root, relative), "## Phase 7 correction Round 1 status", guideSection);

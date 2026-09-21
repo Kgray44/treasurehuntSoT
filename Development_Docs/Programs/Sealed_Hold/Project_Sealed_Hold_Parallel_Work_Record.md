@@ -23,7 +23,7 @@ Wayfarer had an untracked design record only. It was inspected only through bran
 
 ## Ownership and reconciliation
 
-Sealed Hold owns `src/private-content/`, `scripts/private-content/`, `tests/private-content/`, its private Studio route/components, private-content migrations, and `Development_Docs/Project_Sealed_Hold_*` / `Development_Docs/Private_*` records.
+Sealed Hold owns `src/private-content/`, `scripts/private-content/`, `tests/private-content/`, its private Studio route/components, private-content migrations, and `Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_*` / `Development_Docs/Private_*` records.
 
 Likely shared files are `prisma/schema*.prisma`, migration ordering, `src/lib/security.ts`, Studio navigation/styles, `package.json`, `.env.example`, `.gitignore`, `README.md`, and security/deployment documentation. Sealed Hold will use a narrow `PrivateContentAuthorization` adapter instead of copying or redesigning Wayfarer's identity work. It will not alter identity, profiles, memberships, invitations, sessions, or privacy schemas.
 

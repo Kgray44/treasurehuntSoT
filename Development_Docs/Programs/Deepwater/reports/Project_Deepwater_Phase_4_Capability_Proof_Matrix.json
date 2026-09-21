@@ -609,7 +609,7 @@
       "screenReferences": ["BW-SCR-MISSION-CONTROL"],
       "sourceReferences": [
         "Development_Docs/Features/catalog/bridgewatch.json",
-        "Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md",
+        "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Phase_1_Design_Record.md",
         "bridgewatch/lib/server.ts"
       ],
       "terminalRung": "UI",
@@ -657,7 +657,7 @@
       "screenReferences": ["BW-SCR-MISSION-CONTROL"],
       "sourceReferences": [
         "Development_Docs/Features/catalog/bridgewatch.json",
-        "Development_Docs/Project_Bridgewatch_Phase_2_Design_Record.md",
+        "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Phase_2_Design_Record.md",
         "bridgewatch/src/sounding-line.ts",
         "bridgewatch/src/telemetry.ts"
       ],
@@ -991,9 +991,9 @@
       "screenReferences": ["screen-page-community", "screen-page-studio-exchange"],
       "sourceReferences": [
         "Development_Docs/Features/catalog/harborlight.json#FT-025",
-        "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-        "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-        "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+        "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+        "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+        "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
         "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-tales",
         "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-tales",
         "HP-JRN-006",
@@ -2314,7 +2314,7 @@
       "screenReferences": ["screen-page-account-profile", "screen-page-account-profile-view", "screen-page-passport"],
       "sourceReferences": [
         "Development_Docs/Features/catalog/wayfarer.json#FT-030",
-        "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+        "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
         "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-history",
         "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-history",
         "HP-P3-JRN-A",
@@ -2728,7 +2728,7 @@
       "screenReferences": ["screen-page-account-profile", "screen-page-account-profile-view", "screen-page-passport"],
       "sourceReferences": [
         "Development_Docs/Features/catalog/sealed-hold.json#FT-024",
-        "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+        "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
         "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio-private-content",
         "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio-private-content",
         "route-page-studio-private-content:/studio/private-content",
@@ -2955,7 +2955,7 @@
       "screenReferences": ["screen-page-root", "screen-page-account", "screen-page-passport"],
       "sourceReferences": [
         "Development_Docs/Features/catalog/security-operations.json#FT-029",
-        "Development_Docs/Project_True_North_Completion_Receipt.md",
+        "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
         "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
         "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
         "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",

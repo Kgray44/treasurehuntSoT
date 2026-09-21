@@ -34,7 +34,7 @@ describe("source-indexed Project Registry", () => {
     const phase = project?.phases.find((entry) => entry.ordinal === 3);
 
     expect(project?.state).toBe("COMPLETE");
-    expect(project?.completionReceipt).toBe("Development_Docs/Project_Bridgewatch_Completion_Receipt.md");
+    expect(project?.completionReceipt).toBe("Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Completion_Receipt.md");
     expect(project?.finalMainSha).toBe("dead22dc26aeec2b722625aa9a68dc5688111fca");
     expect(phase).toMatchObject({
       name: "Keep the Watch",

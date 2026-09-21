@@ -1,65 +1,33 @@
 ---
-title: Documentation hub
+title: Voyagewright user guide
 audience: user
 status: current
 canonical_for: documentation-navigation
-last_reviewed: 2026-08-09
+last_reviewed: 2026-09-21
 ---
 
-# Chronicles documentation
+# Voyagewright user guide
 
-## Using Chronicles
+Voyagewright helps people discover, create, and run shared Chronicle experiences. These guides explain how to use the product; engineering and operations records are maintained separately.
 
-[Getting started](user/getting-started.md), [Player guide](user/player-guide.md),
-[Profile](user/profile.md), [Chronicle Passport](user/chronicle-passport.md),
-[account security](user/account-security.md), [Support Access](user/support-access.md),
-[accessibility](user/accessibility.md), [privacy](user/privacy.md), and
-[troubleshooting](user/troubleshooting.md).
+## Start here
 
-## Creating and running Chronicles
+[Getting started](user/getting-started.md), [Personal Harbor](user/personal-harbor.md), [account and workspaces](user/account-workspaces.md), [account security](user/account-security.md), and [troubleshooting](user/troubleshooting.md).
 
-[Creator guide](user/creator-guide.md), [Captain guide](user/captain-guide.md), and [Community Harbor](user/community-harbor.md).
+## Your Chronicle experiences
 
-## Hosting Chronicles
+[Player guide](user/player-guide.md), [Captain guide](user/captain-guide.md), [Creator guide](user/creator-guide.md), [Chronicle Passport](user/chronicle-passport.md), [Chronicle preview and start](user/chronicle-preview-and-start.md), [Community Harbor](user/community-harbor.md), and [Community reviews and saves](user/community-reviews-and-saves.md).
 
-[Installation](administrator/installation.md), [configuration](administrator/configuration.md), [Admiralty bootstrap](administrator/admiralty-bootstrap.md), [Admiralty Command Center](administrator/admiralty-command-center.md), [OAuth providers](administrator/oauth-configuration.md), [self-hosting](administrator/self-hosting.md), [deployment](administrator/deployment.md), [backup and recovery](administrator/backup-and-recovery.md), [private content](administrator/private-content.md), and [upgrading](administrator/upgrading.md).
+## Account, profile, and privacy
 
-## Developing Chronicles
+[Profile](user/profile.md), [profile imagery](user/profile-imagery.md), [linked identities](user/linked-identities.md), [email verification](user/email-verification.md), [password recovery](user/password-recovery.md), [account export](user/account-export.md), [account deactivation](user/account-deactivation.md), [account deletion](user/account-deletion.md), [Support Access](user/support-access.md), [privacy and safety](user/privacy.md), and [accessibility](user/accessibility.md).
 
-[Architecture](developer/architecture.md), [local development](developer/local-development.md), [testing](developer/testing.md), [security architecture](developer/security-architecture.md), and [documentation governance](developer/documentation-governance.md).
+## Appearance
 
-## Product and reference
+[Themes and appearance](user/themes-and-appearance.md).
 
-[Overview](product/overview.md), [features](product/features.md), [current status](product/current-status.md), [roadmap](product/roadmap.md), [terminology](product/terminology.md), and [reference material](reference/commands.md), [environment variables](reference/environment-variables.md), [routes](reference/routes.md), and [feature status](reference/feature-status.md).
+## About Voyagewright
 
-The [engineering-record archive](../Development_Docs/README.md) preserves implementation history and evidence; it is not ordinary usage documentation.
+[Overview](product/overview.md), [features](product/features.md), and [terminology](product/terminology.md).
 
-## Phase 7 correction Round 1 guides
-
-- [Chronicle preview and start](user/chronicle-preview-and-start.md)
-- [Personal Harbor](user/personal-harbor.md)
-- [Linked identities](user/linked-identities.md)
-- [Account export](user/account-export.md)
-- [Account deactivation](user/account-deactivation.md)
-- [Account deletion](user/account-deletion.md)
-
-## Phase 7 correction Round 2 guides
-
-- [Themes and appearance](user/themes-and-appearance.md)
-- [Account and workspaces](user/account-workspaces.md)
-- [Community reviews and saves](user/community-reviews-and-saves.md)
-- [Chronicle preview and start](user/chronicle-preview-and-start.md)
-- [Synthetic email owner walkthrough](user/synthetic-email-owner-walkthrough.md)
-- [Owner re-review package](../Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round2/README.md)
-
-## Phase 7 correction Round 3 guides
-
-- [Email verification](user/email-verification.md)
-- [Password recovery](user/password-recovery.md)
-- [Profile imagery](user/profile-imagery.md)
-- [Themes and appearance](user/themes-and-appearance.md)
-- [Account and workspaces](user/account-workspaces.md)
-- [Local email testing](developer/local-email-testing.md)
-- [Resend configuration](administrator/resend-configuration.md)
-- [Postmark compatibility configuration](administrator/postmark-configuration.md)
-- [Owner re-review package](../Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round3/README.md)
+For internal engineering, operations, and historical records, see the separate [engineering-record archive](../Development_Docs/README.md).

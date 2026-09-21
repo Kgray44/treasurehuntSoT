@@ -6480,9 +6480,9 @@
           "HP-P7-EV-N-dependency-unavailable"
         ],
         "sourcePaths": [
-          "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-          "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-          "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+          "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+          "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+          "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
           "src/app/community/page.tsx",
           "src/app/studio/exchange/page.tsx",
           "src/community/exchange-service.ts"
@@ -6559,9 +6559,9 @@
           "outputContract": "The Project Harborlight Community Exchange contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "src/app/community/page.tsx",
             "src/app/studio/exchange/page.tsx",
             "src/community/exchange-service.ts",
@@ -6596,9 +6596,9 @@
           "outputContract": "The Project Harborlight Community Exchange contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "src/app/community/page.tsx",
             "src/app/studio/exchange/page.tsx",
             "src/community/exchange-service.ts",
@@ -6740,9 +6740,9 @@
           "outputContract": "The smallest PUBLIC_OR_ACCOUNT_GOVERNED projection required by CREATOR, VISITOR.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "src/app/community/page.tsx",
             "src/app/studio/exchange/page.tsx",
             "src/community/exchange-service.ts",
@@ -6800,9 +6800,9 @@
           "outputContract": "The Project Harborlight Community Exchange contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "src/app/community/page.tsx",
             "src/app/studio/exchange/page.tsx",
             "src/community/exchange-service.ts",
@@ -6837,9 +6837,9 @@
           "outputContract": "The Project Harborlight Community Exchange contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "src/app/community/page.tsx",
             "src/app/studio/exchange/page.tsx",
             "src/community/exchange-service.ts",
@@ -12996,7 +12996,7 @@
           "HP-P6-EV-040-passport-history-record-d--modern-mobile"
         ],
         "sourcePaths": [
-          "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+          "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
           "src/app/passport/history/[recordId]/page.tsx",
           "src/app/passport/history/page.tsx",
           "src/wayfarer/chronicle-history.ts"
@@ -13066,7 +13066,7 @@
           "outputContract": "The Personal Chronicle History contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "src/app/passport/history/[recordId]/page.tsx",
             "src/app/passport/history/page.tsx",
             "src/wayfarer/chronicle-history.ts",
@@ -13111,7 +13111,7 @@
           "outputContract": "The Personal Chronicle History contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "src/app/passport/history/[recordId]/page.tsx",
             "src/app/passport/history/page.tsx",
             "src/wayfarer/chronicle-history.ts",
@@ -13343,7 +13343,7 @@
           "outputContract": "The Personal Chronicle History contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "src/app/passport/history/[recordId]/page.tsx",
             "src/app/passport/history/page.tsx",
             "src/wayfarer/chronicle-history.ts",
@@ -13388,7 +13388,7 @@
           "outputContract": "The Personal Chronicle History contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "src/app/passport/history/[recordId]/page.tsx",
             "src/app/passport/history/page.tsx",
             "src/wayfarer/chronicle-history.ts",
@@ -15278,7 +15278,7 @@
           "HP-P6-EV-058-studio-private-content-modern-mobile"
         ],
         "sourcePaths": [
-          "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+          "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
           "src/app/studio/private-content/page.tsx",
           "src/private-content/package.ts"
         ],
@@ -15350,7 +15350,7 @@
           "outputContract": "The Project Sealed Hold Private Chronicle Protection contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -15382,7 +15382,7 @@
           "outputContract": "The Project Sealed Hold Private Chronicle Protection contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -15478,7 +15478,7 @@
           "outputContract": "The smallest PUBLIC_OR_ACCOUNT_GOVERNED projection required by CREATOR.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -15534,7 +15534,7 @@
           "outputContract": "The Project Sealed Hold Private Chronicle Protection contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -15566,7 +15566,7 @@
           "outputContract": "The Project Sealed Hold Private Chronicle Protection contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -16569,7 +16569,7 @@
           "HP-P7-EV-O-whole-voyage-anonymous-end"
         ],
         "sourcePaths": [
-          "Development_Docs/Project_True_North_Completion_Receipt.md",
+          "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
           "src/app/captain/library/page.tsx",
           "src/app/page.tsx",
           "src/app/player/library/page.tsx",
@@ -16642,7 +16642,7 @@
           "outputContract": "The True North Role-Aware Navigation Shell contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "src/app/captain/library/page.tsx",
             "src/app/page.tsx",
             "src/app/player/library/page.tsx",
@@ -16821,7 +16821,7 @@
           "outputContract": "The smallest PUBLIC_OR_ACCOUNT_GOVERNED projection required by CAPTAIN, CREATOR, PLAYER, VISITOR.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "src/app/captain/library/page.tsx",
             "src/app/page.tsx",
             "src/app/player/library/page.tsx",
@@ -16874,7 +16874,7 @@
           "outputContract": "The True North Role-Aware Navigation Shell contract forwarded without inventing a second authority.",
           "projectionBoundary": "Privacy class PUBLIC_OR_ACCOUNT_GOVERNED; useful safe truth is retained and secret or private implementation data is excluded.",
           "references": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "src/app/captain/library/page.tsx",
             "src/app/page.tsx",
             "src/app/player/library/page.tsx",

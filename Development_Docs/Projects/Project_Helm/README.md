@@ -33,10 +33,10 @@ legible in a Captain/Player muster without starting original Phase 3.
 
 ## Authority
 
-- [Project Helm governing document](../Project%20Helm/Project_Helm_Captain_Operations_and_Participating_Captain_System_Governing_Document_v1.0.pdf),
+- [Project Helm governing document](Project_Helm_Captain_Operations_and_Participating_Captain_System_Governing_Document_v1.0.pdf),
   version 1.0, SHA-256
   `93ae665c95cf117e6d1c1d4c1d4d14245b0c41da6f9ea343977549683982972d`.
-- [Project Helm Governing Amendment v1.1](../Project%20Helm/Project_Helm_Governing_Amendment_v1.1_Crew_Lifecycle_Captain_Succession_and_Muster_Experience.pdf),
+- [Project Helm Governing Amendment v1.1](Project_Helm_Governing_Amendment_v1.1_Crew_Lifecycle_Captain_Succession_and_Muster_Experience.pdf),
   SHA-256
   `a97dc9de4a5a7c94d0c74af7be5776fef8f0d710614ababbd8d19b67ee95b536`.
 - [Voyagewright Continuous Development and Mainline Integration Standard](../../Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf),
