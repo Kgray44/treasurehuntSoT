@@ -16,16 +16,16 @@ Voyagewright is designed around one simple idea:
 
 Voyagewright brings several related experiences together as one product:
 
-| Area | What it is for |
-| --- | --- |
-| **Explore Chronicles** | Discover Chronicles that are available to preview or experience |
-| **Player** | Join invitations, manage your Voyages, gather with the crew, and experience a Chronicle |
-| **Captain** | Prepare and operate a Voyage, invite the crew, manage readiness, and guide live progression |
-| **Creator Studio** | Author Chronicles, test them, manage assets and Story Blocks, and publish immutable Versions |
-| **Community Harbor** | Discover public Chronicles, Creators, artifacts, collections, guides, templates, and other shared material |
-| **Chronicle Passport** | Your private archive of Voyages, Memories, artifacts, Keepsakes, statistics, and personal history |
-| **Personal Harbor** | Your account, identity, preferences, privacy, security, linked identities, sessions, and support controls |
-| **Profile** | The deliberately shareable identity other people may see |
+| Area                   | What it is for                                                                                             |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Explore Chronicles** | Discover Chronicles that are available to preview or experience                                            |
+| **Player**             | Join invitations, manage your Voyages, gather with the crew, and experience a Chronicle                    |
+| **Captain**            | Prepare and operate a Voyage, invite the crew, manage readiness, and guide live progression                |
+| **Creator Studio**     | Author Chronicles, test them, manage assets and Story Blocks, and publish immutable Versions               |
+| **Community Harbor**   | Discover public Chronicles, Creators, artifacts, collections, guides, templates, and other shared material |
+| **Chronicle Passport** | Your private archive of Voyages, Memories, artifacts, Keepsakes, statistics, and personal history          |
+| **Personal Harbor**    | Your account, identity, preferences, privacy, security, linked identities, sessions, and support controls  |
+| **Profile**            | The deliberately shareable identity other people may see                                                   |
 
 These are not separate accounts or unrelated applications. A single Voyagewright account can have the capabilities needed to be a Player, Captain, Creator, or more than one at the same time.
 
