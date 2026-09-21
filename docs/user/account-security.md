@@ -3,43 +3,13 @@ title: Account security and connected identities
 audience: user
 status: current
 canonical_for: account-security-guide
-last_reviewed: 2026-08-08
+last_reviewed: 2026-09-21
 ---
-
-
-
 
 # Account security and connected identities
 
+Personal Harbor keeps account security and device management together without exposing your password. Use **Security** to begin password recovery. Use **Sessions & Devices** to review signed-in devices, revoke a session you no longer recognize, or choose **Sign Out Everywhere**. Revoking a session does not remove your Voyage history.
 
+**Linked Identities** shows the sign-in methods connected to your account. Voyagewright never shows connection secrets or access tokens. You cannot unlink the last sign-in method for your account.
 
-
-Personal Harbor separates ordinary account security from session management.
-**Security** starts the accepted password-reset and recovery lifecycle; it does
-not display or invent a current password. **Sessions & Devices** lists bounded
-device metadata, lets you revoke an owned session, and provides an explicit
-Sign Out Everywhere confirmation. Revocation does not delete Voyage records.
-
-
-
-
-**Linked Identities** shows safe provider summaries only. Provider secrets,
-access tokens, refresh tokens, and requested scopes are not returned to the
-page. Protected unlinking cannot remove the last accepted sign-in path and does
-not pretend a disabled or simulator adapter is a live provider.
-
-
-
-
-**Data & Account** distinguishes available controls from unsupported export,
-deactivation, or deletion operations. An unavailable operation is labelled;
-there is no decorative destructive button.
-
-
-
-
-These surfaces are available on main through Project Homeport. Google and GitHub
-OAuth are also on main and owner-accepted through the protected staging
-experience. The owner completed real sign-in/sign-up with both providers and
-returned successfully to Voyagewright without an internal-origin redirect.
-Production provider configuration and deployment remain separately governed.
+Google and GitHub sign-in may be available in the Voyagewright environment you are using. Other sign-in choices can appear as unavailable until they are supported there. See [linked identities](linked-identities.md) for details.

@@ -439,7 +439,7 @@
       "id": "project-wakebook",
       "project": "project-wakebook",
       "sourcePaths": [
-        "Development_Docs/Projects/Project Wakebook/**",
+        "Development_Docs/Projects/Project_Wakebook/**",
         "Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Phase_1_*.md",
         "src/wakebook/**",
         "src/components/wakebook/**",

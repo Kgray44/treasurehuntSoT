@@ -3,20 +3,11 @@ title: Profile imagery
 audience: product-users
 status: current
 canonical_for: profile-imagery
-last_reviewed: 2026-08-05
+last_reviewed: 2026-09-21
 ---
-
-
-
 
 # Profile imagery
 
+Personal Harbor lets you choose an avatar and banner for your Profile. Adjust the crop before saving, then pan, zoom, reset, cancel, or confirm the preview. PNG, JPEG, and WebP files are accepted within the limits shown on screen.
 
-
-
-Personal Harbor supports an avatar and banner. Selection stays local until you position and confirm the crop. Pan by dragging or keyboard controls, zoom with the slider or supported pointer gesture, reset without saving, cancel safely, then save the pending preview. PNG, JPEG, and WebP are accepted within the displayed limits. A failed replacement preserves the current image, and removal is explicit.
-
-
-
-
-Confirmed originals remain private; only server-normalized, locally validated derivatives appear on identity surfaces. The avatar propagates to the account trigger, menu, and authorized public Profile projection. The banner leads the Personal Harbor overview.
+Your original image stays private. Voyagewright uses the confirmed image only where your Profile is allowed to appear. Removing or replacing an image is always an explicit choice.

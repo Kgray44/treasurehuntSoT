@@ -3,15 +3,9 @@ title: Account deactivation
 audience: product-users
 status: current
 canonical_for: account-deactivation
-last_reviewed: 2026-08-05
+last_reviewed: 2026-09-21
 ---
-
-
-
 
 # Account deactivation
 
-
-
-
-Deactivation requires reauthentication, hides the public Profile, revokes sessions, and supports safe reactivation. It does not erase retained Chronicle or audit history.
+Deactivation asks you to confirm your identity, hides your public Profile, and signs your account out on its devices. You can reactivate later. Deactivation does not erase Voyage history that must be retained for the people and experiences involved.

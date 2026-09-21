@@ -332,14 +332,14 @@ export const projectRegistry: readonly ProjectRecord[] = [
     "wakebook",
     "Project Wakebook",
     "ACTIVE",
-    "Development_Docs/Projects/Project Wakebook/Project_Wakebook_Governing_Document.pdf",
+    "Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf",
     [
       phase(
         "wakebook",
         1,
         "Open the Wake",
         "ACTIVE",
-        "Development_Docs/Projects/Project Wakebook/Project_Wakebook_Governing_Document.pdf",
+        "Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf",
       ),
     ],
   ),

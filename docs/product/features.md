@@ -28,4 +28,4 @@ Community Harbor provides controlled discovery of shareable Chronicle material, 
 
 ## Privacy, accessibility, and support
 
-Voyagewright provides role-aware access, privacy settings, accessible interaction patterns, and owner-approved Support Access when assistance is needed. See [privacy and safety](../user/privacy.md), [accessibility](../user/accessibility.md), and [Support Access](../user/support-access.md).
+Voyagewright provides role-aware access, privacy settings, accessible interaction patterns, and consent-based Support Access when assistance is needed. See [privacy and safety](../user/privacy.md), [accessibility](../user/accessibility.md), and [Support Access](../user/support-access.md).

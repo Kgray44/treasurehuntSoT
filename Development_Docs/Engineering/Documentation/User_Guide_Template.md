@@ -3,7 +3,7 @@ title: User guide template
 audience: reference
 status: template
 canonical_for: user-guide-template
-last_reviewed: 2026-07-27
+last_reviewed: 2026-09-21
 ---
 
 # User guide template

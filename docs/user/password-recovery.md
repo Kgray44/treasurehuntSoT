@@ -3,15 +3,9 @@ title: Password recovery
 audience: product-users
 status: current
 canonical_for: password-recovery
-last_reviewed: 2026-08-05
+last_reviewed: 2026-09-21
 ---
-
-
-
 
 # Password recovery
 
-
-
-
-Use **Forgot password** from Sign In. Voyagewright returns the same safe response whether or not the address is registered, then dispatches a single-use recovery message through the governed transactional-email provider. Expired or already-used recovery links must be requested again. If delivery is unavailable, no success claim implies that an external message was accepted.
+Choose **Forgot password** from Sign In. Voyagewright gives the same safe response whether or not an address is registered, then sends a single-use recovery link when it can. Request a new link if the previous one has expired or was already used.

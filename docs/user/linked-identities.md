@@ -3,41 +3,13 @@ title: Linked identities
 audience: product-users
 status: current
 canonical_for: linked-identities
-last_reviewed: 2026-08-08
+last_reviewed: 2026-09-21
 ---
-
-
-
 
 # Linked identities
 
+When available, you can use Google or GitHub to create an account, sign in, or connect that provider from **Linked Identities** after signing in. Connected providers use the same Voyagewright account, so your workspaces and history stay together.
 
+Voyagewright does not merge accounts automatically just because two sign-in methods use the same email address. Sign in to the account you want to keep, then connect the provider deliberately.
 
-
-Google and GitHub use the same canonical account, session, and linked-identity
-lifecycle as password authentication. You can create an account with either
-provider, return through the same provider, or sign in first and explicitly
-connect a provider from **Linked Identities**. Safe summaries never expose
-provider account IDs or tokens, and provider access tokens are discarded after
-identity verification.
-
-
-
-
-Voyagewright never merges accounts merely because a provider returns an email
-already used by a password account. Sign in with the existing method and then
-connect the provider deliberately. Unlinking cannot remove the last usable
-sign-in method. A provider-only account may use a recent provider-authenticated
-session for the unlink reauthentication boundary; a password account must
-confirm its password.
-
-
-
-
-Google and GitHub are available on main and owner-accepted through the protected
-staging experience. The owner completed real sign-in/sign-up with both providers
-and returned successfully to Voyagewright without an internal-origin redirect.
-Repeatable automated proof uses an explicit non-production adapter and remains
-classified separately from that owner-observed live acceptance. Production
-deployment is not implied. Discord, Steam, and Microsoft/Xbox remain
-compatibility provider adapters with truthful configuration-required states.
+Unlinking removes that sign-in method from your account. You cannot unlink the last method you can use to sign in. Provider availability can vary by Voyagewright environment; unavailable choices are shown honestly.

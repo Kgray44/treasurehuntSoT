@@ -3,76 +3,39 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-09-11
+last_reviewed: 2026-09-21
 ---
 
 # Engineering-record index
 
-## Current development pipeline
+## Current navigation
 
-- [Clean-Slate Development Pipeline Cutover](Engineering/Clean_Slate_Development_Pipeline_Cutover.md) is the current ordinary development and release path. It replaces the former orchestration stack; the records below are preserved history unless explicitly named by the cutover record.
-
-- `Governing/`: accepted policies and foundational specifications.
-- `Governance/`: current repository-wide governance standards and their source records.
-- `Projects/`: current project governing documents and project-specific records.
-- `Architecture_Decisions/`: durable technical decisions.
-- `Projects/`: governed project and phase records, including design, validation,
-  integration, and completion evidence.
-- `Programs/`: project records grouped by program.
-- `Validation/`: test plans, ledgers, audits, and validation evidence.
-- `Migrations/`: migration, rollback, and compatibility records.
-- `Completion_Receipts/`: historical implementation receipts.
-- `Project_Bridgewatch_Phase_2_*.md`: current Phase 2 design, registry,
-  qualification, validation, integration, and closure records.
-- `Project_Bridgewatch_Phase_3_*.md`: Phase 3 history, retention, archive,
-  branch-health, validation, performance, deployment, integration, and
-  closure records.
-- `Project_Bridgewatch_Completion_Receipt.md`: final program receipt; it is
-  authoritative only after protected-main acceptance is recorded.
-- `Project_Bridgewatch_v1.2_*.md`: post-completion Mission Control amendment
-  design, data-fidelity audit, local validation, and protected-integration
-  receipt; this is a version increment, not Phase 4.
-- `Archive/`: superseded, prompt, and legacy material.
+- [Governing](Governing/) — accepted policies and foundational specifications.
+- [Governance](Governance/) — repository-wide governance standards and their source records.
+- [Projects](Projects/) — current project governing documents, records, and evidence.
+- [Programs](Programs/) — grouped project and program records.
+- [Architecture decisions](Architecture_Decisions/) — durable technical decisions.
+- [Engineering](Engineering/) — repository operations, documentation guidance, and current status references.
+- [Testing](Testing/) and [Validation](Validation/) — test plans, ledgers, audits, and validation evidence.
+- [Migrations](Migrations/) — migration, rollback, and compatibility records.
+- [Completion receipts](Completion_Receipts/) — accepted implementation receipts.
+- [Archive](Archive/) — superseded, prompt, and legacy material retained for historical context.
 
 Use [document-index.json](document-index.json) for complete path-level classification.
 
-## Voyagewright Refit V1
+## Current project references
 
-- [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md) is the current owner-directed experience-redesign control area. Its registry, packet templates, acceptance records, and preview runbook enable one coherent redesign area at a time; they do not authorize page changes or reopen Brightwork.
+- [Project Homeport](Projects/Project_Homeport/README.md)
+- [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md)
+- [Project Tideglass](Projects/Project_Tideglass/README.md)
+- [Project Bridgewatch completion receipt](Programs/Bridgewatch/Project_Bridgewatch_Completion_Receipt.md)
+- [Project Deepwater](Programs/Deepwater/README.md)
+- [Project Helm](Projects/Project_Helm/README.md)
+- [Project Admiralty](Projects/Project_Admiralty/README.md)
+- [Project Wakebook](Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf)
+- [Project Shipwright](Projects/Project%20Shipwright/README.md)
+- [Project Drydock](Projects/Project%20Drydock/README.md)
 
-## Project Landfall
+## Historical and additive governing records
 
-- [Project Landfall Governing Amendment v1.1 - Worldspaces and Virtual Navigation](Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) amends, but does not replace, the Project Landfall v1.0 governing baseline. It broadens Landfall to physical and virtual Worldspaces through one canonical Living Chart model while preserving v1.0's zero-infrastructure physical-world rules, privacy, accessibility, and provider-independence boundaries. This amendment is governing authority only; it does not authorize implementation.
-
-## Historical Project Trim
-
-- [Project Trim governing baseline v1.0-R1](Governing/Project_Trim_Codex_Context_and_Inference_Efficiency_Governing_Document_v1.0-R1.pdf) is the current Project Trim governing baseline. Phase 0 records under `Programs/Project_Trim/` are preserved program evidence, not governing authority.
-
-## Historical Project Fairlead
-
-- [Project Fairlead governing baseline v1.0](Governing/Project_Fairlead_GitHub_Interaction_and_Quota_Control_Plane_Governing_Document_v1.0.md) defines the repository-wide GitHub interaction and quota control plane: Git-first routing, REST/GraphQL selection, shared rate-state coordination, conditional caching, request coalescing, adaptive polling, GitHub App authentication, Bridgewatch and Sounding Line integration, degraded-operation behavior, and permanent automation governance.
-
-## Historical Project Nightwatch and Project Bosun
-
-- [Project Nightwatch governing baseline v1.0](Governing/Project_Nightwatch_Unattended_Autonomy_and_Overnight_Operations_Governing_Document_v1.0.md) defines the engineering operations orchestrator: parallel Product Fleet development, the persistent Integration Queue, just-in-time reconciliation, migration reservations, objective budgets and leases, loop containment, unattended continuity, and supervision of Project Bosun.
-- [Project Nightwatch v1.1 atomic integration, total-cost, and maintenance-cascade amendment](Governing/Project_Nightwatch_Atomic_Integration_and_Maintenance_Cascade_Control_Amendment_v1.1.md) adds the atomic Integration Acceptance Transaction, neutral `AWAITING_AUTHORITY` semantics, authority-before-binding dispatch, Integration Acceptance leases, semantic evidence preservation, cumulative Total Integration Cost Budgets, 30/60/90-minute standard thresholds, the global `INTEGRATION_CASCADE_BREAKER`, durable/cancellable recovery, product-value versus control-plane telemetry, maintenance-cascade accounting, event deduplication, queue-front preflight, and the mandatory Increment A.1 Atomic Acceptance Sequencer.
-- [Project Bosun governing subsystem v1.0](Governing/Project_Bosun_Autonomous_Repository_Maintenance_and_Repair_Service_Governing_Document_v1.0.md) defines the Nightwatch-subordinate autonomous repository maintenance and repair service, including deterministic `AUTO_0`, bounded Codex `AUTO_1`, protected `AUTO_2`, `OWNER` escalation, shared-baseline maintenance, repair worktrees, post-merge proof, and Bridgewatch Bosun telemetry.
-- [Project Bosun v1.1 maintenance cascade suppression and repair convergence amendment](Governing/Project_Bosun_Maintenance_Cascade_Suppression_and_Repair_Convergence_Amendment_v1.1.md) requires one root finding/one active repair lineage, compound closure planning, deterministic consequence bundling, cumulative cascade and parent-transaction budgets, repair-of-repair and parent-breaker handling, current-main PR reuse, protected maintenance integration slots, durable/cancellable work, coalesced dependent wakeup, and cascade-level Bridgewatch telemetry.
-- Nightwatch is the scheduling/orchestration authority for the three-lane engineering model. Bosun is a subordinate maintenance executor. Sounding Line remains the verification and protected-acceptance authority; Fairlead remains the GitHub interaction authority; Project Trim remains the Codex context-efficiency authority.
-- The v1.1 amendments are additive governing authority over their v1.0 baselines. They strengthen sequencing, global cost containment, durable recovery, and convergence requirements without granting Nightwatch or Bosun release authority or weakening Sounding Line.
-- [Nightwatch Increment A implementation record](Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md) records the local durable Integration Queue, migration reservation broker, leases, recovery contract, and read-only Bridgewatch projection. It does not claim Sounding Line acceptance or protected-main integration.
-
-## Historical Project Sounding Line amendments
-
-The Version 1.3 Amendment Edition is the newest Sounding Line amendment. It
-supplements the preserved Version 1.0 base documents and Version 1.1 and Version
-1.2 amendments; it does not replace them.
-
-- [Part I - Software Verification Architecture, v1.2](Governing/Project_Sounding_Line_Part_I_Governing_Document_v1.2_Amendment_Edition.pdf)
-- [Part II - Execution Infrastructure and Parallel Runtime, v1.2](Governing/Project_Sounding_Line_Part_II_Governing_Document_v1.2_Amendment_Edition.pdf)
-- [Part III - Repository Policy, Codex Governance, and Release Assurance, v1.2](Governing/Project_Sounding_Line_Part_III_Governing_Document_v1.2_Amendment_Edition.pdf)
-- [Part III - Repository Policy, Codex Governance, and Release Assurance, v1.3](Governing/Project_Sounding_Line_Part_III_Governing_Document_v1.3_Amendment_Edition.pdf)
-- [Effective Sounding Line authority](Governing/Sounding_Line_Effective_Authority.md) - human-readable projection of the canonical `testing/sounding-line-authority.json` source.
-- [v1.4 Performance & Efficiency Governing Addendum](Governing/Project_Sounding_Line_v1.4_Performance_and_Efficiency_Governing_Addendum.md) - draft performance non-regression rules and final-calibration template; it does not independently change machine-readable authority.
-- [v1.4 Bridgewatch ordinary-candidate classification repair plan](Programs/Sounding_Line/Sounding_Line_v1.4_Bridgewatch_Ordinary_Candidate_Classification_Repair_Plan.md) - bounded authority-change repair for the standalone Bridgewatch workspace and its fixed integration seams.
-- [v1.4 bounded mixed-browser batching repair plan](Programs/Sounding_Line/Sounding_Line_v1.4_Bounded_Mixed_Browser_Batching_Repair_Plan.md) - bounded authority-maintenance repair for sealed browser-case physical partitions and exact logical receipt closure.
+The [Project Landfall amendment](Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) amends rather than replaces the v1.0 baseline. Historical Project Trim, Fairlead, Nightwatch, Bosun, and Sounding Line records remain available from [Governing](Governing/) and their program homes; their preserved records remain the source for their historical claims.

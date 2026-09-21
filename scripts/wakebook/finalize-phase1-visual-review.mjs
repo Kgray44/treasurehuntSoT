@@ -5,7 +5,7 @@ import path from "node:path";
 const root = process.cwd();
 const evidenceRoot = path.resolve(
   process.env.WAKEBOOK_PHASE1_EVIDENCE_ROOT ??
-    path.join(root, "Development_Docs", "Project Wakebook", "evidence", "phase1"),
+    path.join(root, "Development_Docs", "Projects", "Project_Wakebook", "evidence", "phase1"),
 );
 const manifestPath = path.join(evidenceRoot, "manifest.json");
 const expectedSourceSha = process.env.WAKEBOOK_PHASE1_EXPECTED_SOURCE_SHA;

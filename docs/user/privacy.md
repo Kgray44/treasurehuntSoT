@@ -3,20 +3,11 @@ title: Privacy and private material
 audience: user
 status: current
 canonical_for: privacy-guide
-last_reviewed: 2026-08-09
+last_reviewed: 2026-09-21
 ---
-
-
-
 
 # Privacy and private material
 
+Voyagewright separates material meant to be shared from private Chronicle, account, and personal-history material. Your access depends on your invitation, role, and the choices made by the people who own or share the experience. Do not repost a Chronicle, artifact, or Profile detail unless you have permission.
 
-
-
-Chronicles distinguishes intentionally shareable projections from private material. Your access is determined by account role, ownership, invitation, and publication boundaries. Do not repost a Chronicle, artifact, or profile detail unless you have permission.
-
-
-
-
-Use synthetic examples in demonstrations. If you suspect unauthorized access, stop sharing, retain only the minimum safe evidence, and follow [SECURITY.md](../../SECURITY.md).
+If you suspect unauthorized access, stop sharing the material and use the private reporting process in [SECURITY.md](../../SECURITY.md).

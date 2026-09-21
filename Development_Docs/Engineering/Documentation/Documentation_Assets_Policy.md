@@ -3,7 +3,7 @@ title: Documentation assets policy
 audience: reference
 status: current
 canonical_for: documentation-assets-policy
-last_reviewed: 2026-07-27
+last_reviewed: 2026-09-21
 ---
 
 # Documentation assets policy

@@ -25,7 +25,8 @@ const privateMemory = "TOP-SECRET-WAKEBOOK-MEMORY";
 const syntheticPassword = "T!de-9Rope-4Quartz-7Beacon";
 const captureEvidence = process.env.WAKEBOOK_PHASE1_CAPTURE_EVIDENCE === "1";
 const evidenceRoot = path.resolve(
-  process.env.WAKEBOOK_PHASE1_EVIDENCE_ROOT ?? path.join("Development_Docs", "Project Wakebook", "evidence", "phase1"),
+  process.env.WAKEBOOK_PHASE1_EVIDENCE_ROOT ??
+    path.join("Development_Docs", "Projects", "Project_Wakebook", "evidence", "phase1"),
 );
 const evidenceRepositoryRoot = path.resolve(process.env.WAKEBOOK_PHASE1_EVIDENCE_REPOSITORY_ROOT ?? process.cwd());
 const expectedEvidenceSource = process.env.WAKEBOOK_PHASE1_EXPECTED_SOURCE_SHA;

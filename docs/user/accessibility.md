@@ -3,20 +3,11 @@ title: Accessibility
 audience: user
 status: current
 canonical_for: accessibility-guide
-last_reviewed: 2026-08-05
+last_reviewed: 2026-09-21
 ---
-
-
-
 
 # Accessibility
 
+Voyagewright works with browser zoom, keyboard navigation, and assistive technologies. Use your browser's text-size and contrast controls when helpful. Animation supports the story but should not be required to understand it; use the available navigation if motion or a control makes progress difficult.
 
-
-
-Chronicles is designed to work with browser zoom, keyboard navigation, and assistive technologies. Use your browser's text-size and contrast controls where needed. Animation and presentation are supplementary to the story; if motion or a control makes progress difficult, use the available navigation and contact the Captain or administrator with a minimal, non-private description.
-
-
-
-
-When reporting an issue, include the browser, assistive technology or viewport, the page purpose, and the observed versus expected behavior. Do not include private Chronicle text or screenshots.
+If you need help, contact your Captain or support with the page you were using and what happened. Avoid including private Chronicle text or screenshots in a support request.
