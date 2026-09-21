@@ -126,7 +126,7 @@ on 2026-08-18. The run failed before any worker, test receipt, finalizer, or
 `RELEASE_GO` because the trusted current-main ordinary-candidate classifier
 rejected three legitimate Phase 4 paths as unknown scope:
 
-- `Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv`
+- `Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv`
 - `README.md`
 - `scripts/tideglass/seed-phase3-fixture.mjs`
 

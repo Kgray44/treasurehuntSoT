@@ -445,21 +445,21 @@
       "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-003",
       "freshness": "CURRENT",
       "kind": "COMPLETION_RECORD",
-      "reference": "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
+      "reference": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
       "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
     },
     {
       "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-004",
       "freshness": "CURRENT",
       "kind": "COMPLETION_RECORD",
-      "reference": "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
+      "reference": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
       "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
     },
     {
       "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-005",
       "freshness": "CURRENT",
       "kind": "COMPLETION_RECORD",
-      "reference": "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+      "reference": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
       "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
     },
     {
@@ -1810,7 +1810,7 @@
       "evidenceId": "DW-EV-PERSONAL-CHRONICLE-HISTORY-003",
       "freshness": "CURRENT",
       "kind": "COMPLETION_RECORD",
-      "reference": "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+      "reference": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
       "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
     },
     {
@@ -2223,7 +2223,7 @@
       "evidenceId": "DW-EV-PRIVATE-CHRONICLE-PROTECTION-003",
       "freshness": "CURRENT",
       "kind": "COMPLETION_RECORD",
-      "reference": "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+      "reference": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
       "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
     },
     {
@@ -2349,7 +2349,7 @@
       "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-003",
       "freshness": "CURRENT",
       "kind": "COMPLETION_RECORD",
-      "reference": "Development_Docs/Project_True_North_Completion_Receipt.md",
+      "reference": "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
       "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
     },
     {

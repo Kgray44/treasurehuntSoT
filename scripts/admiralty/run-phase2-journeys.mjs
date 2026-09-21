@@ -25,7 +25,7 @@ const env = {
 run("node_modules/typescript/bin/tsc", ["-p", "bridgewatch/tsconfig.json"], env);
 if (!(process.env.ADMIRALTY_PHASE2_REUSE_BUILD === "1" && existsSync(path.join(root, distDir, "BUILD_ID"))))
   run("node_modules/next/dist/bin/next", ["build"], env);
-run("node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.admiralty-phase2.config.ts"], env);
+run("node_modules/@playwright/test/cli.js", ["test", "-c", "tests/config/playwright/playwright.admiralty-phase2.config.ts"], env);
 process.stdout.write(
   `${JSON.stringify({ status: "ADMIRALTY_PHASE2_BROWSER_JOURNEYS_PASSED", sourceSha, fixtureVersion: "admiralty-phase2-v1", taskRoot })}\n`,
 );

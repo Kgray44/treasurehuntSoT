@@ -25,7 +25,7 @@ const env = {
   VOYAGEWRIGHT_BUILD_SHA: sourceSha,
 };
 run("src/drydock/rehearse-phase4-migrations.mjs", [], env);
-run("node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.drydock-phase4.config.ts"], env);
+run("node_modules/@playwright/test/cli.js", ["test", "-c", "tests/config/playwright/playwright.drydock-phase4.config.ts"], env);
 process.stdout.write(
   `${JSON.stringify({ status: "DRYDOCK_PHASE4_LOCAL_BROWSER_AXE_PASSED", sourceSha, taskRoot, port, database: "TASK_OWNED_REHEARSED_SQLITE" })}\n`,
 );

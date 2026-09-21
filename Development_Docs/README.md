@@ -36,19 +36,19 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 ## Project Bridgewatch
 
 Project Bridgewatch's original program is complete. Phase 1 _Raise the Board_,
-[Phase 2: Wire the Signals](Project_Bridgewatch_Phase_2_Completion_Receipt.md),
-and [Phase 3: Keep the Watch](Project_Bridgewatch_Phase_3_Completion_Receipt.md)
+[Phase 2: Wire the Signals](Programs/Bridgewatch/Project_Bridgewatch_Phase_2_Completion_Receipt.md),
+and [Phase 3: Keep the Watch](Programs/Bridgewatch/Project_Bridgewatch_Phase_3_Completion_Receipt.md)
 are accepted in protected main. Phase 3 adds normalized meaningful history,
 snapshots, bounded trend/archive/branch views, browser-local since-last-visit
 display state, retention, and deployment/backup guidance while preserving the
 private, read-only observer boundary. The final program receipt and Phase 3
 integration, validation, performance, and deployment records retain the exact
-accepted evidence. The post-completion [v1.2 Mission Control amendment](Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md)
+accepted evidence. The post-completion [v1.2 Mission Control amendment](Programs/Bridgewatch/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md)
 is in implementation on its dedicated branch; it adds a version-aware observer
 and does not start, rename, or replace a Bridgewatch Phase 4. Its
-[data-fidelity audit](Project_Bridgewatch_v1.2_Data_Fidelity_and_Capability_Audit.md)
+[data-fidelity audit](Programs/Bridgewatch/Project_Bridgewatch_v1.2_Data_Fidelity_and_Capability_Audit.md)
 tracks the current implementation boundary, and its
-[local validation record](Project_Bridgewatch_v1.2_Validation_Record.md)
+[local validation record](Programs/Bridgewatch/Project_Bridgewatch_v1.2_Validation_Record.md)
 records only task-owned branch evidence pending protected integration.
 The subsequent v1.2 P2 data-fabric branch makes source-by-source fact
 provenance, explicit expected-class coverage, truthful unavailable/historical
@@ -91,20 +91,21 @@ all later Admiralty phases remain separate, and Phase 2 remains dormant.
 
 ## Project Wakebook
 
-Project Wakebook governs the private Living Journey Archive over accepted Wayfarer history. Phase 1, Open the Wake, is branch-complete and preparing its separate owner walkthrough from the frozen [design record](Project_Wakebook_Phase_1_Design_Record.md), [current-history audit](Project_Wakebook_Phase_1_Current_History_Audit.md), [test plan](Project_Wakebook_Phase_1_Test_Plan.md), [mainline-safety record](Project_Wakebook_Phase_1_Mainline_Safety_Record.md), [integration manifest](Project_Wakebook_Phase_1_Integration_Manifest.md), [validation record](Project_Wakebook_Phase_1_Validation_Record.md), and [owner walkthrough](Project_Wakebook_Phase_1_Owner_Walkthrough.md). These records authorize no schema change, duplicate history authority, Phase 2 behavior, main merge, deployment claim, or owner-acceptance claim.
+Project Wakebook governs the private Living Journey Archive over accepted Wayfarer history. Phase 1, Open the Wake, is branch-complete and preparing its separate owner walkthrough from the frozen [design record](Projects/Project_Wakebook/Project_Wakebook_Phase_1_Design_Record.md), [current-history audit](Projects/Project_Wakebook/Project_Wakebook_Phase_1_Current_History_Audit.md), [test plan](Projects/Project_Wakebook/Project_Wakebook_Phase_1_Test_Plan.md), [mainline-safety record](Projects/Project_Wakebook/Project_Wakebook_Phase_1_Mainline_Safety_Record.md), [integration manifest](Projects/Project_Wakebook/Project_Wakebook_Phase_1_Integration_Manifest.md), [validation record](Projects/Project_Wakebook/Project_Wakebook_Phase_1_Validation_Record.md), and [owner walkthrough](Projects/Project_Wakebook/Project_Wakebook_Phase_1_Owner_Walkthrough.md). These records authorize no schema change, duplicate history authority, Phase 2 behavior, main merge, deployment claim, or owner-acceptance claim.
 
 ## Current project-governance wave
 
 The following owner-authored governing documents are current repository authority. The [Continuous Development and Mainline Integration Standard](Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf) governs their concurrent implementation and protected-mainline reconciliation.
 
-- [Project Admiralty](Projects/Project%20Admiralty/Project_Admiralty_Platform_Administration_and_Operations_Governing_Document_v1.2.pdf)
+- [Project Admiralty](Projects/Project_Admiralty/Project_Admiralty_Platform_Administration_and_Operations_Governing_Document_v1.2.pdf)
 - [Project Deepwater](Projects/Project%20Deepwater/Project_Deepwater_Product_Capability_Realization_and_Systems_Audit_Program_Governing_Document.pdf)
 - [Project Drydock](Projects/Project%20Drydock/Project_Drydock_Governing_Document.pdf)
-- [Project Helm](Projects/Project%20Helm/Project_Helm_Captain_Operations_and_Participating_Captain_System_Governing_Document_v1.0.pdf)
-- [Project Helm Governing Amendment v1.1](Projects/Project%20Helm/Project_Helm_Governing_Amendment_v1.1_Crew_Lifecycle_Captain_Succession_and_Muster_Experience.pdf)
+- [Project Helm](Projects/Project_Helm/Project_Helm_Captain_Operations_and_Participating_Captain_System_Governing_Document_v1.0.pdf)
+- [Project Helm Governing Amendment v1.1](Projects/Project_Helm/Project_Helm_Governing_Amendment_v1.1_Crew_Lifecycle_Captain_Succession_and_Muster_Experience.pdf)
 - [Project Shipwright](Projects/Project%20Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf)
-- [Project Tideglass](Projects/Project%20Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf)
+- [Project Tideglass](Projects/Project_Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf)
 - [Project Wakebook](Projects/Project%20Wakebook/Project_Wakebook_Governing_Document.pdf)
+- [Project Landfall Governing Amendment v1.1 - Worldspaces and Virtual Navigation](Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) amends the preserved Project Landfall v1.0 baseline. It broadens Landfall from physical geography to physical and virtual Worldspaces with a unified Living Chart while retaining the zero-infrastructure physical-world rule and existing privacy, accessibility, and provider-independence boundaries. It authorizes no implementation by itself.
 
 ## Project Shipwright
 
@@ -127,7 +128,7 @@ Include title, program, phase, record type, status, authority, date, base, scope
 
 ## Project Sounding Line
 
-[Project Sounding Line](Project_Sounding_Line_Governing_Document.md) is the
+[Project Sounding Line](Governing/Project_Sounding_Line_Governing_Document.md) is the
 repository's governing system for software verification, parallel test
 infrastructure, evidence, release gates, and Codex testing obligations. Its
 [testing documentation index](Testing/README.md) distinguishes the retained

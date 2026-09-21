@@ -8,12 +8,9 @@ const required = [
   "CHANGELOG.md",
   "CONTRIBUTING.md",
   "AGENTS.md",
-  "PLANS.md",
   "docs/README.md",
   "docs/product/overview.md",
   "docs/product/features.md",
-  "docs/product/current-status.md",
-  "docs/product/roadmap.md",
   "docs/product/terminology.md",
   "docs/user/getting-started.md",
   "docs/user/player-guide.md",
@@ -24,24 +21,6 @@ const required = [
   "docs/user/accessibility.md",
   "docs/user/privacy.md",
   "docs/user/troubleshooting.md",
-  "docs/administrator/installation.md",
-  "docs/administrator/configuration.md",
-  "docs/administrator/self-hosting.md",
-  "docs/administrator/deployment.md",
-  "docs/administrator/backup-and-recovery.md",
-  "docs/administrator/private-content.md",
-  "docs/administrator/upgrading.md",
-  "docs/developer/architecture.md",
-  "docs/developer/domain-ownership.md",
-  "docs/developer/local-development.md",
-  "docs/developer/testing.md",
-  "docs/developer/security-architecture.md",
-  "docs/developer/database-and-migrations.md",
-  "docs/developer/documentation-governance.md",
-  "docs/reference/commands.md",
-  "docs/reference/environment-variables.md",
-  "docs/reference/routes.md",
-  "docs/reference/feature-status.md",
   "Development_Docs/README.md",
   "Development_Docs/INDEX.md",
   "Development_Docs/document-index.json",
@@ -53,8 +32,8 @@ const rootAllowlist = new Set([
   "CHANGELOG.md",
   "CONTRIBUTING.md",
   "AGENTS.md",
-  "PLANS.md",
   "LICENSE.md",
+  "THIRD_PARTY_NOTICES.md",
   "CODE_OF_CONDUCT.md",
 ]);
 const governedExtensions = new Set([".md", ".pdf", ".csv", ".txt", ".json"]);
@@ -150,7 +129,7 @@ export async function validate(root = process.cwd()) {
       if (!(await exists(path.resolve(path.dirname(file), local))))
         failures.push(`broken link in ${relative}: ${target}`);
     }
-    const isExemption = relative === "docs/developer/documentation-governance.md";
+    const isExemption = relative === "Development_Docs/Engineering/Repository_Operations/developer/documentation-governance.md";
     if (!isExemption)
       for (const pattern of forbidden)
         if (pattern.test(text)) failures.push(`restricted automation language in ${relative}: ${pattern}`);
@@ -189,7 +168,7 @@ export async function validate(root = process.cwd()) {
     for (const record of records)
       if (!(await exists(path.join(root, record.path)))) failures.push(`stale index path: ${record.path}`);
   }
-  const statusFile = path.join(root, "docs/reference/feature-status.md");
+  const statusFile = path.join(root, "Development_Docs/Engineering/Repository_Operations/reference/feature-status.md");
   if (await exists(statusFile)) {
     const rows = (await fs.readFile(statusFile, "utf8"))
       .split(/\r?\n/)

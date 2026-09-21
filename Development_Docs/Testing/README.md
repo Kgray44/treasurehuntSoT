@@ -4,7 +4,7 @@
 
 This directory defines the testing-system architecture; it does not replace `scripts/test-all.ps1` or implement the future planner, orchestrator, lease broker, cloned-baseline service, or CI distributor.
 
-- [Governing charter](../Project_Sounding_Line_Governing_Document.md)
+- [Governing charter](../Governing/Project_Sounding_Line_Governing_Document.md)
 - [Current testing-system audit](Current_Testing_System_Audit.md)
 - [Target architecture](Testing_Architecture.md)
 - [Taxonomy and ownership](Test_Taxonomy_and_Ownership.md)

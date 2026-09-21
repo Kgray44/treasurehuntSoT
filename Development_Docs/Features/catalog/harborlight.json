@@ -24,15 +24,15 @@
       { "kind": "path", "value": "src/community/exchange-service.ts" },
       {
         "kind": "completion-record",
-        "value": "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md"
+        "value": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md"
       },
       {
         "kind": "completion-record",
-        "value": "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md"
+        "value": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md"
       },
       {
         "kind": "completion-record",
-        "value": "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+        "value": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
       }
     ],
     "catalogVersion": 1

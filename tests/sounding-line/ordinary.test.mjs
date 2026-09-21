@@ -432,7 +432,7 @@ test("ordinary selection ignores documentation vocabulary when scoping product b
   const selection = selectAffectedTests({
     changedPaths: [
       "src/admiralty/bridgewatch-gateway.ts",
-      "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Test_Plan.md",
+      "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_v2.0_Light_Mission_Control_Test_Plan.md",
       "Development_Docs/Features/branch-complete/project-bridgewatch-v2-light-mission-control.json",
     ],
     unitTests: ["src/admiralty/bridgewatch-gateway.test.ts"],

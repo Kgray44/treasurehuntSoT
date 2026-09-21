@@ -687,7 +687,7 @@ phase3Test("owned production P0 performance and lifecycle budgets", async ({ pag
     provenance: Object.freeze({
       testedSourceSha,
       integratedSha,
-      config: "playwright.phase3-performance.config.ts",
+      config: "tests/config/playwright/playwright.phase3-performance.config.ts",
       browser: Object.freeze({
         engine: "chromium",
         project: "chromium-production",

@@ -21,7 +21,7 @@
       { "kind": "branch", "value": "codex/project-bridgewatch-phase1-raise-the-board" },
       { "kind": "commit", "value": "8fe1d5b416d96142815b747920ed3b1556cffbf5" },
       { "kind": "path", "value": "bridgewatch/lib/server.ts" },
-      { "kind": "completion-record", "value": "Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md" }
+      { "kind": "completion-record", "value": "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Phase_1_Design_Record.md" }
     ],
     "catalogVersion": 1
   },
@@ -70,10 +70,10 @@
       { "kind": "path", "value": "deploy/nginx.conf" },
       {
         "kind": "completion-record",
-        "value": "Development_Docs/Project_Bridgewatch_Homeport_Gateway_Validation_Record.md"
+        "value": "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Homeport_Gateway_Validation_Record.md"
       },
-      { "kind": "completion-record", "value": "Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md" },
-      { "kind": "completion-record", "value": "Development_Docs/Project_Bridgewatch_Completion_Receipt.md" }
+      { "kind": "completion-record", "value": "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Phase_2_Completion_Receipt.md" },
+      { "kind": "completion-record", "value": "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Completion_Receipt.md" }
     ],
     "catalogVersion": 1
   },
@@ -150,7 +150,7 @@
       { "kind": "test", "value": "src/admiralty/bridgewatch-gateway.test.ts" },
       {
         "kind": "completion-record",
-        "value": "Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Validation_Record.md"
+        "value": "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_v2.0_Light_Mission_Control_Validation_Record.md"
       }
     ],
     "limitations": [

@@ -43,7 +43,7 @@ if (process.env.HOMEPORT_PHASE4_REUSE_BUILD !== "1")
   run(path.join("node_modules", "next", "dist", "bin", "next"), ["build"], env);
 run(
   path.join("node_modules", "@playwright", "test", "cli.js"),
-  ["test", "-c", "playwright.homeport-phase4.config.ts", ...process.argv.slice(2)],
+  ["test", "-c", "tests/config/playwright/playwright.homeport-phase4.config.ts", ...process.argv.slice(2)],
   env,
 );
 

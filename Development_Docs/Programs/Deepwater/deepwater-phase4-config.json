@@ -31,7 +31,7 @@
       "classification": "INTERNAL_BY_DESIGN",
       "rationale": "Bridgewatch Phase 1 is a private, loopback-first, read-only operator dashboard. It has a human dashboard but is explicitly not an ordinary Voyagewright product route, public endpoint, release authority, or a completion source.",
       "sourceReferences": [
-        "Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md",
+        "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Phase_1_Design_Record.md",
         "Development_Docs/Features/catalog/bridgewatch.json",
         "bridgewatch/lib/server.ts"
       ]
@@ -45,7 +45,7 @@
       "classification": "INTERNAL_BY_DESIGN",
       "rationale": "Bridgewatch Phase 2 projects governed observation and activity signals into its private dashboard while remaining unable to authorize tests, merges, releases, project completion, or ordinary public-product behavior.",
       "sourceReferences": [
-        "Development_Docs/Project_Bridgewatch_Phase_2_Design_Record.md",
+        "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Phase_2_Design_Record.md",
         "Development_Docs/Features/catalog/bridgewatch.json",
         "bridgewatch/src/sounding-line.ts",
         "bridgewatch/src/telemetry.ts"
@@ -100,7 +100,7 @@
       "src/homeport/current-user.*",
       "src/components/auth/AccessDecisionState.tsx",
       "scripts/admiralty/**",
-      "playwright.admiralty-phase2.config.ts",
+      "tests/config/playwright/playwright.admiralty-phase2.config.ts",
       "tests/e2e/admiralty-phase2.spec.ts",
       "tests/e2e/project-helm-phase1.spec.ts"
     ],

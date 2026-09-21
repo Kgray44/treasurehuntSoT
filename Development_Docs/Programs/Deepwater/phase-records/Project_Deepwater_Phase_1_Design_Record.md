@@ -36,7 +36,7 @@ The design applies the authority order required by the implementation contract:
 1. freshly fetched `origin/main` for implementation truth;
 2. `Development_Docs/Governance/Voyagewright_Global_Product_Governance_Standard.md` for human-facing product reality;
 3. the supplied `Project_Deepwater_Product_Capability_Realization_and_Systems_Audit_Program_Governing_Document.pdf` for Deepwater semantics;
-4. `Development_Docs/Project_Sounding_Line_Governing_Document.md` and the current `testing/` control plane for verification;
+4. `Development_Docs/Governing/Project_Sounding_Line_Governing_Document.md` and the current `testing/` control plane for verification;
 5. the supplied `Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf` for phase convergence;
 6. current accepted subsystem design, architecture, completion, and integration records;
 7. historical records only as bounded evidence.

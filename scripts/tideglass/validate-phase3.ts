@@ -18,7 +18,7 @@ const requiredFiles = [
   "scripts/tideglass/prepare-phase3-fixture.mjs",
   "scripts/tideglass/seed-phase3-fixture.mjs",
   "scripts/tideglass/run-phase3-journeys.mjs",
-  "playwright.tideglass-phase3.config.ts",
+  "tests/config/playwright/playwright.tideglass-phase3.config.ts",
   "tests/e2e/tideglass-phase3.spec.ts",
   "tests/tideglass/phase3-passage.test.ts",
   "tests/tideglass/phase3-passage-service.test.ts",

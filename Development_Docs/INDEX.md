@@ -40,6 +40,10 @@ Use [document-index.json](document-index.json) for complete path-level classific
 
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md) is the current owner-directed experience-redesign control area. Its registry, packet templates, acceptance records, and preview runbook enable one coherent redesign area at a time; they do not authorize page changes or reopen Brightwork.
 
+## Project Landfall
+
+- [Project Landfall Governing Amendment v1.1 - Worldspaces and Virtual Navigation](Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) amends, but does not replace, the Project Landfall v1.0 governing baseline. It broadens Landfall to physical and virtual Worldspaces through one canonical Living Chart model while preserving v1.0's zero-infrastructure physical-world rules, privacy, accessibility, and provider-independence boundaries. This amendment is governing authority only; it does not authorize implementation.
+
 ## Historical Project Trim
 
 - [Project Trim governing baseline v1.0-R1](Governing/Project_Trim_Codex_Context_and_Inference_Efficiency_Governing_Document_v1.0-R1.pdf) is the current Project Trim governing baseline. Phase 0 records under `Programs/Project_Trim/` are preserved program evidence, not governing authority.

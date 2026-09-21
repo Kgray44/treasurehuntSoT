@@ -7,7 +7,7 @@ describe("repository discovery", () => {
       observedAt: "2026-08-16T20:00:00.000Z",
       documents: [
         {
-          path: "Development_Docs/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
+          path: "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
           text: "# Project Bridgewatch v1.2\n\n## Phase 1: Raise the Board\n## Phase 2: Wire the Signals\n## Phase 3: Keep the Watch",
         },
       ],
@@ -72,7 +72,7 @@ describe("repository discovery", () => {
       observedAt: "2026-08-16T20:00:00.000Z",
       documents: [
         {
-          path: "Development_Docs/Project_Bridgewatch_Phase_3_Keep_the_Watch.md",
+          path: "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Phase_3_Keep_the_Watch.md",
           text: "# Project Bridgewatch Phase 3 - Keep the Watch\n\nHistorical acceptance record.",
         },
       ],
@@ -110,11 +110,11 @@ describe("repository discovery", () => {
       observedAt: "2026-08-16T20:00:00.000Z",
       documents: [
         {
-          path: "Development_Docs/Project_Bridgewatch_Completion_Receipt.md",
+          path: "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Completion_Receipt.md",
           text: "# Project Bridgewatch Completion Receipt\n\nHistorical receipt evidence.",
         },
         {
-          path: "Development_Docs/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
+          path: "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
           text: "# Project Bridgewatch v1.2 — Mission Control\n\nCurrent version evidence.",
         },
       ],
@@ -135,7 +135,7 @@ describe("repository discovery", () => {
           text: "# Feature Catalog\n\nProject Homeport now includes the integrated Whole Voyage plus Owner Correction Rounds 1-3.",
         },
         {
-          path: "Development_Docs/Project_Bridgewatch_v1.2.md",
+          path: "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_v1.2.md",
           text: "---\ntitle: Project Bridgewatch v1.2 — Mission Control\n---\n\n# Implementation notes\n\nProject Homeport is historical context.",
         },
       ],

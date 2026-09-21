@@ -696,7 +696,7 @@ The public engine can import, store, deliver, recover, and govern protected Chro
 ### Evidence
 
 - path: `src/private-content/package.ts`
-- completion-record: `Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md`
+- completion-record: `Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md`
 
 ---
 
@@ -729,9 +729,9 @@ A governed community system supports immutable reusable Chronicle packages, lice
 ### Evidence
 
 - path: `src/community/exchange-service.ts`
-- completion-record: `Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md`
-- completion-record: `Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md`
-- completion-record: `Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md`
+- completion-record: `Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md`
+- completion-record: `Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md`
+- completion-record: `Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md`
 
 ---
 
@@ -835,7 +835,7 @@ A persistent, accessible navigation shell provides role-aware workspace routing 
 ### Evidence
 
 - path: `src/components/shell/ProductShell.tsx`
-- completion-record: `Development_Docs/Project_True_North_Completion_Receipt.md`
+- completion-record: `Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md`
 
 ---
 
@@ -861,7 +861,7 @@ Private, version-pinned Voyage history preserves personal records, reflections, 
 ### Evidence
 
 - path: `src/wayfarer/chronicle-history.ts`
-- completion-record: `Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md`
+- completion-record: `Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md`
 
 ---
 
@@ -980,7 +980,7 @@ A private, standalone, read-only development mission-control dashboard projects 
 - branch: `codex/project-bridgewatch-phase1-raise-the-board`
 - commit: `8fe1d5b416d96142815b747920ed3b1556cffbf5`
 - path: `bridgewatch/lib/server.ts`
-- completion-record: `Development_Docs/Project_Bridgewatch_Phase_1_Design_Record.md`
+- completion-record: `Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Phase_1_Design_Record.md`
 
 ---
 
@@ -1025,9 +1025,9 @@ A private Bridgewatch extension that projects explicit Project Registry, Soundin
 - test: `src/admiralty/bridgewatch-gateway.test.ts`
 - test: `tests/e2e/admiralty-phase2.spec.ts`
 - path: `deploy/nginx.conf`
-- completion-record: `Development_Docs/Project_Bridgewatch_Homeport_Gateway_Validation_Record.md`
-- completion-record: `Development_Docs/Project_Bridgewatch_Phase_2_Completion_Receipt.md`
-- completion-record: `Development_Docs/Project_Bridgewatch_Completion_Receipt.md`
+- completion-record: `Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Homeport_Gateway_Validation_Record.md`
+- completion-record: `Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Phase_2_Completion_Receipt.md`
+- completion-record: `Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_Completion_Receipt.md`
 
 ---
 
@@ -1224,7 +1224,7 @@ A private, read-only Bridgewatch Mission Control turns the accepted bounded data
 - test: `bridgewatch/test/operator-attention.test.ts`
 - test: `bridgewatch/test/mission-control-ui.test.ts`
 - test: `src/admiralty/bridgewatch-gateway.test.ts`
-- completion-record: `Development_Docs/Project_Bridgewatch_v2.0_Light_Mission_Control_Validation_Record.md`
+- completion-record: `Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_v2.0_Light_Mission_Control_Validation_Record.md`
 
 ---
 
@@ -1853,7 +1853,7 @@ Project Wakebook turns version-pinned Wayfarer records into a polished, owner-pr
 - path: `src/components/wakebook/WakebookArchive.tsx`
 - path: `src/components/wakebook/WakebookVoyageDetail.tsx`
 - test: `tests/e2e/wakebook-phase1.spec.ts`
-- completion-record: `Development_Docs/Project_Wakebook_Phase_1_Validation_Record.md`
+- completion-record: `Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Phase_1_Validation_Record.md`
 - commit: `cbf634d4d5db9cf47edebb89e005e8cc910068bd`
 
 ---
@@ -2067,7 +2067,7 @@ Project Wakebook Phase 6 gives an owner a printable, private Voyage Book built o
 - commit: `78eaa9ce3c27ce5aab10932e838b00c7dca2b307`
 - path: `src/components/wakebook/WakebookVoyageBook.tsx`
 - test: `src/components/wakebook/WakebookVoyageBook.test.tsx`
-- completion-record: `Development_Docs/Project_Wakebook_Program_Closeout_Record.md`
+- completion-record: `Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Program_Closeout_Record.md`
 
 ---
 

@@ -7,7 +7,7 @@ describe("bounded repository evidence collection", () => {
       documentedDiscoveryPaths({
         records: [
           {
-            path: "Development_Docs/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
+            path: "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
             record_type: "design-record",
             status: "current",
           },
@@ -21,7 +21,7 @@ describe("bounded repository evidence collection", () => {
         ],
       }),
     ).toEqual([
-      "Development_Docs/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
+      "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_v1.2_Mission_Control_Realization_Design_Record.md",
       "Development_Docs/Programs/Deepwater/status.json",
     ]);
   });

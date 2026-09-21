@@ -1,7 +1,7 @@
-# Contributing to Chronicles
+# Contribution policy
 
-Start with [local development](docs/developer/local-development.md), then create a focused branch and make a reviewable change. Run focused tests while working and the complete validation gate before requesting review when the local environment is available.
+Voyagewright is proprietary software owned and controlled by Kato Gray. It does not accept ordinary public contributions, pull requests, patches, or self-hosting work.
 
-Do not add real private Chronicle material, credentials, or personal data to source, tests, fixtures, screenshots, issues, or pull requests. Report security concerns through [SECURITY.md](SECURITY.md).
+Do not submit private Chronicle material, credentials, personal data, screenshots, or other sensitive content. Report a security concern through [SECURITY.md](SECURITY.md).
 
-For a user-visible change, review [features](docs/product/features.md), [current status](docs/product/current-status.md), [feature status](docs/reference/feature-status.md), affected guides, and [CHANGELOG.md](CHANGELOG.md). New engineering records belong in [Development_Docs](Development_Docs/README.md) and must be indexed. Run `npm run docs:validate` before review.
+The owner may authorize a specific contribution in writing and provide its applicable terms and workflow separately. Unsolicited submissions are not accepted.

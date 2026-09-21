@@ -33,7 +33,7 @@ const env = {
   NEXT_DIST_DIR: ".next-shipwright-phase3-browser",
   VOYAGEWRIGHT_BUILD_SHA: sourceSha,
 };
-run("node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.shipwright-phase3.config.ts"], env);
+run("node_modules/@playwright/test/cli.js", ["test", "-c", "tests/config/playwright/playwright.shipwright-phase3.config.ts"], env);
 process.stdout.write(
   `${JSON.stringify({ status: "SHIPWRIGHT_PHASE3_BROWSER_JOURNEY_PASSED", sourceSha, fixtureVersion: "shipwright-phase2-v1", taskRoot, port })}\n`,
 );

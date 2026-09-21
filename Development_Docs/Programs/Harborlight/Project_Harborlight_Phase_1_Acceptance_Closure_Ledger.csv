@@ -1,5 +1,5 @@
 Requirement ID,Original Prompt Section,Original Prompt Subsection,Requirement,Mandatory or Optional,Status at c1daa766,Evidence at c1daa766,Required Closure Action,Implementation Files,Test Files,Validation Command,Final Status,Final Evidence,Blocker,Reviewer Notes
-HL-001,8,Design record,Freeze community domain and convergence seams,Mandatory,PASS,Design record,Expand to implemented truth,Development_Docs/Project_Harborlight_Phase_1_Design_Record.md,,,PENDING,,,
+HL-001,8,Design record,Freeze community domain and convergence seams,Mandatory,PASS,Design record,Expand to implemented truth,Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_1_Design_Record.md,,,PENDING,,,
 HL-002,10,Taxonomy,Typed item taxonomy and capabilities,Mandatory,PASS,src/community/domain.ts,Retain and extend,src/community/domain.ts,src/community/domain.test.ts,vitest,PENDING,,,
 HL-003,11,Profile,Database-backed canonical profile relationship,Mandatory,PARTIAL,Scalar fields only,Add PlayerProfile foreign key and service,prisma/schema*.prisma src/community,src/community/*.test.ts,Prisma+Vitest,PENDING,,,
 HL-004,12,Listing,Database-backed listing ownership and lifecycle,Mandatory,PARTIAL,Schema only,Implement service/routes/projections,src/community,src/community/*.test.ts,Vitest,PENDING,,,

@@ -43,7 +43,7 @@ The final user-visible report for this reconciliation must include elapsed time,
 - Targeted Prettier and ESLint: PASS.
 - Product-language validation, repository privacy scan, staged-diff privacy scan, and Git diff check: PASS.
 - Feature Catalog: NO CHANGE REQUIRED; the existing planned classification was retained.
-- Architecture validation: BLOCKED by an inherited retired product term in `Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md`, unchanged from the preparation base and outside this task's scope.
+- Architecture validation: BLOCKED by an inherited retired product term in `Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md`, unchanged from the preparation base and outside this task's scope.
 
 The full browser matrix, Phase 2 product-concurrency matrix, active runtime integration, canonical release validation, and external-provider validation were intentionally not run.
 

@@ -4845,21 +4845,21 @@
             "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-003",
             "freshness": "BOUNDED",
             "kind": "COMPLETION_RECORD",
-            "reference": "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
+            "reference": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
             "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
           },
           {
             "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-004",
             "freshness": "BOUNDED",
             "kind": "COMPLETION_RECORD",
-            "reference": "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "reference": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
             "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
           },
           {
             "evidenceId": "DW-EV-COMMUNITY-EXCHANGE-005",
             "freshness": "BOUNDED",
             "kind": "COMPLETION_RECORD",
-            "reference": "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "reference": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
           },
           {
@@ -5373,9 +5373,9 @@
         },
         "authorization": {
           "references": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "src/app/community/page.tsx",
             "src/app/studio/exchange/page.tsx",
             "src/community/exchange-service.ts",
@@ -5386,9 +5386,9 @@
         },
         "client": {
           "references": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "src/app/community/page.tsx",
             "src/app/studio/exchange/page.tsx",
             "src/community/exchange-service.ts",
@@ -5459,9 +5459,9 @@
         },
         "projection": {
           "references": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "src/app/community/page.tsx",
             "src/app/studio/exchange/page.tsx",
             "src/community/exchange-service.ts",
@@ -5477,9 +5477,9 @@
         "suspectedFirstLossPoint": null,
         "transport": {
           "references": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "src/app/community/page.tsx",
             "src/app/studio/exchange/page.tsx",
             "src/community/exchange-service.ts",
@@ -13733,7 +13733,7 @@
             "evidenceId": "DW-EV-PERSONAL-CHRONICLE-HISTORY-003",
             "freshness": "BOUNDED",
             "kind": "COMPLETION_RECORD",
-            "reference": "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "reference": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
           },
           {
@@ -14086,7 +14086,7 @@
         },
         "authorization": {
           "references": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "src/app/passport/history/[recordId]/page.tsx",
             "src/app/passport/history/page.tsx",
             "src/wayfarer/chronicle-history.ts",
@@ -14097,7 +14097,7 @@
         },
         "client": {
           "references": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "src/app/passport/history/[recordId]/page.tsx",
             "src/app/passport/history/page.tsx",
             "src/wayfarer/chronicle-history.ts",
@@ -14174,7 +14174,7 @@
         "suspectedFirstLossPoint": null,
         "transport": {
           "references": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "src/app/passport/history/[recordId]/page.tsx",
             "src/app/passport/history/page.tsx",
             "src/wayfarer/chronicle-history.ts",
@@ -16209,7 +16209,7 @@
             "evidenceId": "DW-EV-PRIVATE-CHRONICLE-PROTECTION-003",
             "freshness": "BOUNDED",
             "kind": "COMPLETION_RECORD",
-            "reference": "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "reference": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
           },
           {
@@ -16325,7 +16325,7 @@
         },
         "authorization": {
           "references": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -16335,7 +16335,7 @@
         },
         "client": {
           "references": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -16361,7 +16361,7 @@
         },
         "projection": {
           "references": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -16376,7 +16376,7 @@
         "suspectedFirstLossPoint": null,
         "transport": {
           "references": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -17176,7 +17176,7 @@
             "evidenceId": "DW-EV-ROLE-AWARE-NAVIGATION-SHELL-003",
             "freshness": "BOUNDED",
             "kind": "COMPLETION_RECORD",
-            "reference": "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "reference": "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
           },
           {
@@ -17640,7 +17640,7 @@
         },
         "authorization": {
           "references": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "src/app/captain/library/page.tsx",
             "src/app/page.tsx",
             "src/app/player/library/page.tsx",
@@ -17656,7 +17656,7 @@
         },
         "domain": {
           "references": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "src/app/captain/library/page.tsx",
             "src/app/page.tsx",
             "src/app/player/library/page.tsx",
@@ -17748,7 +17748,7 @@
         },
         "projection": {
           "references": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "src/app/captain/library/page.tsx",
             "src/app/page.tsx",
             "src/app/player/library/page.tsx",
@@ -17760,7 +17760,7 @@
         },
         "service": {
           "references": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "src/app/captain/library/page.tsx",
             "src/app/page.tsx",
             "src/app/player/library/page.tsx",
@@ -17773,7 +17773,7 @@
         "suspectedFirstLossPoint": null,
         "transport": {
           "references": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "src/app/captain/library/page.tsx",
             "src/app/page.tsx",
             "src/app/player/library/page.tsx",

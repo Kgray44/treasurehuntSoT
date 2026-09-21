@@ -45,7 +45,7 @@ const env = {
 run("node_modules/prisma/build/index.js", ["generate", "--schema", "prisma/schema.sqlite.prisma"], env);
 run("node_modules/prisma/build/index.js", ["migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma"], env);
 run("node_modules/next/dist/bin/next", ["build"], env);
-run("node_modules/@playwright/test/cli.js", ["test", "-c", "playwright.helm-a2.config.ts", "-g", "Pass the Helm"], env);
+run("node_modules/@playwright/test/cli.js", ["test", "-c", "tests/config/playwright/playwright.helm-a2.config.ts", "-g", "Pass the Helm"], env);
 
 process.stdout.write(
   `${JSON.stringify({

@@ -2608,9 +2608,9 @@
         "source, version, and provenance identity"
       ],
       "evidence": [
-        "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-        "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-        "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+        "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+        "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+        "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
         "journey:HP-JRN-002",
         "journey:HP-JRN-006",
         "journey:HP-JRN-007",
@@ -2630,9 +2630,9 @@
       "expectedOperations": [
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -2655,16 +2655,16 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -2687,16 +2687,16 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -2719,16 +2719,16 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -2751,16 +2751,16 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -2783,16 +2783,16 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -2815,16 +2815,16 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -2847,16 +2847,16 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -2879,16 +2879,16 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -2911,16 +2911,16 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -2943,16 +2943,16 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -2975,16 +2975,16 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
             "journey:HP-JRN-002",
             "journey:HP-JRN-006",
             "journey:HP-JRN-007",
@@ -3007,9 +3007,9 @@
             "src/app/tales/page.tsx",
             "tests/e2e/harborlight-phase2.spec.ts",
             "tests/e2e/homeport-phase4.spec.ts",
-            "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-            "Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md"
           ]
         }
       ],
@@ -3031,9 +3031,9 @@
       "utilizationConsumers": [
         "audience:CREATOR",
         "audience:VISITOR",
-        "consumer:Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
-        "consumer:Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
-        "consumer:Development_Docs/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
+        "consumer:Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_3_Completion_Report.md",
+        "consumer:Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Completion_Receipt.md",
+        "consumer:Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Mainline_Integration_Receipt.md",
         "consumer:journey:HP-JRN-002",
         "consumer:journey:HP-JRN-006",
         "consumer:journey:HP-JRN-007",
@@ -7965,7 +7965,7 @@
         "source, version, and provenance identity"
       ],
       "evidence": [
-        "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+        "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
         "journey:HP-P3-JRN-A",
         "journey:HP-P3-JRN-AA",
         "journey:HP-P3-JRN-AB",
@@ -7986,7 +7986,7 @@
       "expectedOperations": [
         {
           "consumerReferences": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "journey:HP-P3-JRN-A",
             "journey:HP-P3-JRN-AA",
             "journey:HP-P3-JRN-AB",
@@ -8010,12 +8010,12 @@
             "src/app/passport/history/page.tsx",
             "tests/e2e/homeport-phase3.spec.ts",
             "tests/e2e/wayfarer-phase3.spec.ts",
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md"
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "journey:HP-P3-JRN-A",
             "journey:HP-P3-JRN-AA",
             "journey:HP-P3-JRN-AB",
@@ -8039,12 +8039,12 @@
             "src/app/passport/history/page.tsx",
             "tests/e2e/homeport-phase3.spec.ts",
             "tests/e2e/wayfarer-phase3.spec.ts",
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md"
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "journey:HP-P3-JRN-A",
             "journey:HP-P3-JRN-AA",
             "journey:HP-P3-JRN-AB",
@@ -8068,12 +8068,12 @@
             "src/app/passport/history/page.tsx",
             "tests/e2e/homeport-phase3.spec.ts",
             "tests/e2e/wayfarer-phase3.spec.ts",
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md"
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "journey:HP-P3-JRN-A",
             "journey:HP-P3-JRN-AA",
             "journey:HP-P3-JRN-AB",
@@ -8097,12 +8097,12 @@
             "src/app/passport/history/page.tsx",
             "tests/e2e/homeport-phase3.spec.ts",
             "tests/e2e/wayfarer-phase3.spec.ts",
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md"
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
             "journey:HP-P3-JRN-A",
             "journey:HP-P3-JRN-AA",
             "journey:HP-P3-JRN-AB",
@@ -8126,7 +8126,7 @@
             "src/app/passport/history/page.tsx",
             "tests/e2e/homeport-phase3.spec.ts",
             "tests/e2e/wayfarer-phase3.spec.ts",
-            "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md"
+            "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md"
           ]
         }
       ],
@@ -8147,7 +8147,7 @@
       "status": "FULLY_UTILIZED",
       "utilizationConsumers": [
         "audience:ACCOUNT_OWNER",
-        "consumer:Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+        "consumer:Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_3_Completion_Receipt.md",
         "consumer:journey:HP-P3-JRN-A",
         "consumer:journey:HP-P3-JRN-AA",
         "consumer:journey:HP-P3-JRN-AB",
@@ -9420,7 +9420,7 @@
         "failure and recovery classification"
       ],
       "evidence": [
-        "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+        "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
         "src/app/studio/private-content/page.tsx",
         "src/private-content/package.ts",
         "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -9429,7 +9429,7 @@
       "expectedOperations": [
         {
           "consumerReferences": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -9445,12 +9445,12 @@
             "src/app/studio/private-content/page.tsx",
             "tests/e2e/sealed-hold-phase4.spec.ts",
             "tests/private-content/security.test.ts",
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -9466,12 +9466,12 @@
             "src/app/studio/private-content/page.tsx",
             "tests/e2e/sealed-hold-phase4.spec.ts",
             "tests/private-content/security.test.ts",
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -9487,12 +9487,12 @@
             "src/app/studio/private-content/page.tsx",
             "tests/e2e/sealed-hold-phase4.spec.ts",
             "tests/private-content/security.test.ts",
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -9508,12 +9508,12 @@
             "src/app/studio/private-content/page.tsx",
             "tests/e2e/sealed-hold-phase4.spec.ts",
             "tests/private-content/security.test.ts",
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -9529,12 +9529,12 @@
             "src/app/studio/private-content/page.tsx",
             "tests/e2e/sealed-hold-phase4.spec.ts",
             "tests/private-content/security.test.ts",
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -9550,12 +9550,12 @@
             "src/app/studio/private-content/page.tsx",
             "tests/e2e/sealed-hold-phase4.spec.ts",
             "tests/private-content/security.test.ts",
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -9571,12 +9571,12 @@
             "src/app/studio/private-content/page.tsx",
             "tests/e2e/sealed-hold-phase4.spec.ts",
             "tests/private-content/security.test.ts",
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -9592,12 +9592,12 @@
             "src/app/studio/private-content/page.tsx",
             "tests/e2e/sealed-hold-phase4.spec.ts",
             "tests/private-content/security.test.ts",
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
             "src/app/studio/private-content/page.tsx",
             "src/private-content/package.ts",
             "tests/e2e/sealed-hold-phase4.spec.ts",
@@ -9613,7 +9613,7 @@
             "src/app/studio/private-content/page.tsx",
             "tests/e2e/sealed-hold-phase4.spec.ts",
             "tests/private-content/security.test.ts",
-            "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
+            "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md"
           ]
         }
       ],
@@ -9634,7 +9634,7 @@
       "status": "FULLY_UTILIZED",
       "utilizationConsumers": [
         "audience:CREATOR",
-        "consumer:Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+        "consumer:Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
         "consumer:src/app/studio/private-content/page.tsx",
         "consumer:src/private-content/package.ts",
         "consumer:tests/e2e/sealed-hold-phase4.spec.ts",
@@ -10147,7 +10147,7 @@
       ],
       "consumedSafeMetadata": ["authoritative lifecycle state", "authorization and audience scope"],
       "evidence": [
-        "Development_Docs/Project_True_North_Completion_Receipt.md",
+        "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
         "journey:HP-JRN-001",
         "journey:HP-JRN-003",
         "journey:HP-JRN-004",
@@ -10173,7 +10173,7 @@
       "expectedOperations": [
         {
           "consumerReferences": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "journey:HP-JRN-001",
             "journey:HP-JRN-003",
             "journey:HP-JRN-004",
@@ -10202,12 +10202,12 @@
             "src/app/studio/page.tsx",
             "src/components/shell/ProductShell.tsx",
             "tests/e2e/homeport-phase2.spec.ts",
-            "Development_Docs/Project_True_North_Completion_Receipt.md"
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "journey:HP-JRN-001",
             "journey:HP-JRN-003",
             "journey:HP-JRN-004",
@@ -10236,12 +10236,12 @@
             "src/app/studio/page.tsx",
             "src/components/shell/ProductShell.tsx",
             "tests/e2e/homeport-phase2.spec.ts",
-            "Development_Docs/Project_True_North_Completion_Receipt.md"
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "journey:HP-JRN-001",
             "journey:HP-JRN-003",
             "journey:HP-JRN-004",
@@ -10270,12 +10270,12 @@
             "src/app/studio/page.tsx",
             "src/components/shell/ProductShell.tsx",
             "tests/e2e/homeport-phase2.spec.ts",
-            "Development_Docs/Project_True_North_Completion_Receipt.md"
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md"
           ]
         },
         {
           "consumerReferences": [
-            "Development_Docs/Project_True_North_Completion_Receipt.md",
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
             "journey:HP-JRN-001",
             "journey:HP-JRN-003",
             "journey:HP-JRN-004",
@@ -10304,7 +10304,7 @@
             "src/app/studio/page.tsx",
             "src/components/shell/ProductShell.tsx",
             "tests/e2e/homeport-phase2.spec.ts",
-            "Development_Docs/Project_True_North_Completion_Receipt.md"
+            "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md"
           ]
         }
       ],
@@ -10324,7 +10324,7 @@
         "audience:CREATOR",
         "audience:PLAYER",
         "audience:VISITOR",
-        "consumer:Development_Docs/Project_True_North_Completion_Receipt.md",
+        "consumer:Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
         "consumer:journey:HP-JRN-001",
         "consumer:journey:HP-JRN-003",
         "consumer:journey:HP-JRN-004",
