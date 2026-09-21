@@ -170,13 +170,6 @@ test("ordinary classification ignores retired generated state and rejects active
   assert.equal(result.candidateClassification, "PRODUCT_AND_CONTROL_PLANE_MIXED");
 });
 
-test("Drydock's source-resident browser launcher is control-plane tooling", () => {
-  const result = classifyChanges(["src/drydock/run-phase4-browser.mjs", "testing/ownership.json"]);
-  assert.deepEqual(result.productPaths, []);
-  assert.deepEqual(result.controlPlanePaths, ["src/drydock/run-phase4-browser.mjs", "testing/ownership.json"]);
-  assert.equal(result.candidateClassification, "CONTROL_PLANE");
-});
-
 test("Admiralty-style package scripts remain ordinary-admissible", () => {
   const base = { scripts: { "test:changed": "node scripts/sounding-line/ordinary.mjs --mode ordinary" } };
   const candidate = {

@@ -25,7 +25,7 @@ This maintenance pass preserves application, database, authentication, authoriza
 
 ## Playwright configuration migration map
 
-The ordinary `playwright.config.ts` remains at the repository root. All 25 specialized configurations moved from the root to `tests/config/playwright/` with their filenames preserved. Package scripts, journey runners, test registries, impact maps, ownership maps, and engineering records now use the new paths. Relative test and setup paths are resolved from the moved configuration directory.
+The ordinary `playwright.config.ts` remains at the repository root. All 25 specialized configurations moved from the root to `tests/config/playwright/` with their filenames preserved. Package scripts, journey runners, test registries, impact maps, ownership maps, and engineering records now use the new paths. A single root `playwright.drydock-phase4.config.ts` compatibility entrypoint remains for its source-resident local browser launcher and imports the canonical configuration. Relative test and setup paths are resolved from the moved configuration directory.
 
 ## Package-script audit
 

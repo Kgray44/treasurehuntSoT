@@ -23,8 +23,6 @@ import {
 
 const sha = /^[a-f0-9]{40}$/u;
 const productRoots = new Set(["app", "components", "src", "lib", "prisma", "public", "styles"]);
-// Source-resident local verification launchers are control-plane tooling, not product behavior.
-const nonProductSourcePaths = [/^src\/drydock\/run-phase4-browser\.mjs$/u];
 const aliases = new Map([
   ["community", ["harborlight"]],
   ["exchange", ["harborlight"]],
@@ -43,7 +41,6 @@ const controlPlanePaths = [
   /^\.agents\/(?:testing-workflow|context-workflow|repository-rules|validation-isolation)\.md$/u,
   /^(?:playwright|vitest)\.config\./u,
   /^tests\/sounding-line\//u,
-  /^src\/drydock\/run-phase4-browser\.mjs$/u,
   /^testing\/(?!generated\/|contracts\.json$|impact-map\.json$|suites\.json$)/u,
 ];
 const testFile = /(?:\.test|\.spec)\.(?:[cm]?[jt]sx?)$/u;
@@ -163,9 +160,7 @@ const hash = (value) => createHash("sha256").update(JSON.stringify(value)).diges
 export function classifyChanges(paths) {
   const changed = [...new Set(paths.map((file) => file.replaceAll("\\", "/")))].sort();
   const admissionPaths = changed.filter((file) => !ignoredAdmissionPaths.some((pattern) => pattern.test(file)));
-  const productPaths = admissionPaths.filter(
-    (file) => productRoots.has(file.split("/")[0]) && !nonProductSourcePaths.some((pattern) => pattern.test(file)),
-  );
+  const productPaths = admissionPaths.filter((file) => productRoots.has(file.split("/")[0]));
   const authorityPaths = admissionPaths.filter((file) => controlPlanePaths.some((pattern) => pattern.test(file)));
   return {
     changed,
