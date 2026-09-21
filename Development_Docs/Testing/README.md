@@ -15,5 +15,6 @@ This directory defines the testing-system architecture; it does not replace `scr
 - [Failure evidence](Failure_Classification_and_Evidence.md), [flake policy](Flake_and_Quarantine_Policy.md), and [Codex obligations](Codex_Testing_Obligations.md)
 - [Release policy](Release_Validation_Policy.md), [security/privacy](Testing_Security_and_Privacy.md), and [budgets](Testing_Performance_Budgets.md)
 - [Implementation roadmap](Sounding_Line_Implementation_Roadmap.md), [integration manifest](Sounding_Line_Integration_Manifest.md), and [validation report](Sounding_Line_Documentation_Validation_Report.md)
+- [Hookline Codex lifecycle integration](Voyagewright_Hookline_Codex_Lifecycle_Integration.md)
 
 The initial machine-readable baseline is in `testing/*.json`. It is representative and conservative, not a claim that every existing test is already migrated.
