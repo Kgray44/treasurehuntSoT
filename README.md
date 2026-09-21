@@ -1,5 +1,13 @@
 # The Forever Treasure Companion
 
+## Proprietary software
+
+Voyagewright is proprietary software. Copyright © 2026 Kato Gray. All rights reserved.
+
+This repository is source-visible but **not open-source software**. No general permission is granted to use, copy, modify, redistribute, self-host, commercialize, sublicense, or create derivative works from Voyagewright except where required by GitHub's platform terms or expressly authorized in writing by the copyright holder. Third-party components remain subject to their own licenses.
+
+See [LICENSE.md](LICENSE.md) for the complete terms.
+
 ## Consolidated mainline
 
 The private **Chronicle Passport** is available at `/passport`; a safe public

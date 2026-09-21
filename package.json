@@ -2,6 +2,7 @@
   "name": "forever-treasure-companion",
   "version": "0.2.0",
   "private": true,
+  "license": "SEE LICENSE IN LICENSE.md",
   "workspaces": [
     "bridgewatch"
   ],
