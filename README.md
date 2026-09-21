@@ -389,7 +389,7 @@ Chronicle Passport is a first-class private personal destination.
 
 It is **not** an account-settings page and it is **not** the same thing as a public Profile.
 
-Passport is about what *you experienced*.
+Passport is about what _you experienced_.
 
 Depending on the records available to the signed-in account, Passport can include:
 
