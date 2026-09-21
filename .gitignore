@@ -105,5 +105,8 @@ __pycache__/
 next-env.d.ts
 /.next-*/
 /.sealed-build*/
+
+# task-local validation receipts
+/artifacts/
 # Retired root planning document. Do not reintroduce it without an active owner-approved system.
 PLANS.md
