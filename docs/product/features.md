@@ -8,6 +8,8 @@ last_reviewed: 2026-10-21
 
 # Voyagewright features
 
+**Embarkation, owner-review branch only:** first arrival and Replay Arrival use the authored 35.8-second crossing into the real Muster; subsequent visits use a short return. Global Experience quality, Audio and Volume settings govern rendering and sound, while reduced motion takes precedence. After arrival, localized flames, lantern motion and water reflections continue. Existing Muster authority, readiness, chat and layout remain canonical. [Preview scope](../../Development_Docs/Projects/Voyagewright_Refit_V1/embarkation/preview.md). Mainline availability and owner acceptance remain pending.
+
 The Spatial Studio overhaul candidate combines independent Scenes, reusable
 versioned Environments, Guided/Standard/Engineering inspection, a paged Library,
 premium models and effects, reviewed surface placement, groups and exclusions,

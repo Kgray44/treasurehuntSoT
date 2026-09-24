@@ -22,6 +22,9 @@ The current protected baseline and its source-bound Brightwork evidence are inpu
 
 ## Canonical records
 
+- [Embarkation audit publication](embarkation/publication.md) — complete draft candidate source map, retained evidence, and local-only exclusions; owner acceptance and integration remain pending.
+- [Embarkation design packet](embarkation/design-packet.md) — the owner-directed cinematic crossing into accepted Muster, with [screening and focused evidence](embarkation/preview.md). Its registry status remains `IMPLEMENTATION_ITERATING`.
+
 - [Muster design packet](muster/design-packet.md) — MAJOR_STRATEGY_RETHINK, MERGED on protected main; Refit V1 remains open; [explicit owner acceptance](muster/owner-acceptance.md), [accepted visual reference](muster/accepted-reference/manifest.json), [retained fixture matrix](muster/accepted-reference/fixture-matrix.json), and [final validation/integration](muster/final-validation.md). Earlier [source mapping](muster/iteration-2-delta.md) and [positioning delta](muster/iteration-3-delta.md) remain historical implementation evidence.
 - [Player Journal and Crossdeck editorial hierarchy](player-journal-crossdeck/design-packet.md) — UNASSESSED and PLANNED after Crossdeck/Parallax protected integration. The approved three-instance B1 editorial transfer preserves functional obligations and original review history; it grants no Refit design or owner acceptance.
 

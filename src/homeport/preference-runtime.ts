@@ -4,6 +4,9 @@ export type RuntimePreferences = {
     textScale: number;
     theme: "SYSTEM" | "LIGHT" | "DARK" | "HIGH_CONTRAST";
     contrast: "SYSTEM" | "STANDARD" | "HIGH";
+    quality?: "AUTO" | "CINEMATIC" | "BALANCED" | "PERFORMANCE";
+    experienceAudio?: boolean;
+    experienceVolume?: number;
   };
 };
 
@@ -67,6 +70,9 @@ export function applyRuntimePreferences(
   root.dataset.voyageTheme = theme;
   root.dataset.voyageContrast = contrast;
   root.dataset.motionPreference = preserveStoredMotion ? productMotion : preferences.experience.motion.toLowerCase();
+  root.dataset.experienceQuality = preferences.experience.quality ?? "AUTO";
+  root.dataset.experienceAudio = String(preferences.experience.experienceAudio ?? false);
+  root.dataset.experienceVolume = String(preferences.experience.experienceVolume ?? 50);
   root.style.setProperty("--account-text-scale", String(textScale));
   try {
     localStorage.setItem(

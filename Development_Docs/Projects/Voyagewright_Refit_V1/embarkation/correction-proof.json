@@ -1,0 +1,419 @@
+{
+  "classification": "engineering-evidence",
+  "status": "SELF_REVIEWED_OWNER_SCREENING_PENDING",
+  "ownerAccepted": false,
+  "merged": false,
+  "objective": "Owner correction: motion energy, spatial fog arrival, moon continuity and planar Stage C coverage",
+  "authoredRuntimeSeconds": 35.8,
+  "candidate": "5480f3fcda6b5a28b2a5d56d2f824cb26828e750ac25c607edd3c63b1043aca6",
+  "candidateFile": ".runtime/embarkation/motion-fog-correction/owner-preview/candidate.json",
+  "historicalProof": "delta2-proof.json",
+  "historicalEvidencePreserved": ".runtime/embarkation/motion-fog-correction/baseline/candidate.zip",
+  "ownerSupersedesPriorVisualConclusions": true,
+  "rejectedOutcomes": [
+    {
+      "id": "motion",
+      "status": "corrected-and-self-reviewed",
+      "cause": "Weak physical speeds and long extinction caused the observed lingering. Playback clock itself was correct. Terminal cache clamping was an additional latent risk, not the observed opening slowdown.",
+      "fix": "Event-age acceleration/rotation, fixed physical cache with continuation, depth-only extinction before world-space retirement.",
+      "ordinaryDebrisAbsentBy": 21.8
+    },
+    {
+      "id": "fog",
+      "status": "corrected-and-self-reviewed",
+      "cause": "Global density envelope activated an already populated viewing volume.",
+      "fix": "Staggered rear-origin banks, irregular leading profiles, growing then dwindling upstream supply and continued downstream dispersal.",
+      "screenedTimes": [
+        21.5,
+        22,
+        22.5,
+        23,
+        23.25,
+        23.5,
+        23.75,
+        24,
+        24.25,
+        24.5,
+        24.75,
+        25,
+        25.5,
+        26,
+        26.5,
+        27
+      ]
+    },
+    {
+      "id": "moon",
+      "status": "corrected-and-self-reviewed",
+      "cause": "Disc fade and independent screen-space scattering position broke the visible cue.",
+      "fix": "Shared celestial projection/light/reflection state; attenuated disc plus volumetric glow; registered adjustment hidden in traveling banks.",
+      "registration": [
+        23.85,
+        24.75
+      ],
+      "visibleCue": "Disc before fog; softened blue-white light in thinner banks; harbor moon emerging through gaps. No second drawn moon."
+    },
+    {
+      "id": "stage-c",
+      "status": "corrected-and-self-reviewed",
+      "cause": "A varying image-row depth bent scenery; water horizon needed registration to the finite shoreline.",
+      "fix": "Separate distant matte, rigid pier/boats, and ray-intersected level sea meeting the coastline plane; measured support and exact original-coordinate compositing.",
+      "activeTextures": [
+        "stage-c-water.webp",
+        "stage-c-pier.png",
+        "stage-c-extended.webp"
+      ],
+      "coverage": "correction-coverage.json",
+      "art": "correction-art.json"
+    }
+  ],
+  "clock": {
+    "rate": 1,
+    "measuredRatio": 0.999530490190599,
+    "samples": 316,
+    "hidden": false,
+    "wallRuntimeMs": 35898
+  },
+  "performance": {
+    "frameP50": 16.700000000000728,
+    "frameP95": 50,
+    "frameP99": 83.40000000000146,
+    "renderP95": 13.199999988079071,
+    "preloadMs": 3509.899999976158,
+    "qualification": "Local 1536x1024 DPR1 CINEMATIC development browser with video capture; not locked 60 FPS or broad-device qualification"
+  },
+  "evidence": {
+    "normal": ".runtime/embarkation/motion-fog-correction/owner-preview/normal.webm",
+    "ambientSeconds": 8,
+    "slow": [
+      {
+        "rate": 1,
+        "from": 21.5,
+        "to": 31.1,
+        "elapsed": 9651,
+        "errors": []
+      },
+      {
+        "rate": 0.5,
+        "from": 21.5,
+        "to": 31.1,
+        "elapsed": 19225,
+        "errors": []
+      },
+      {
+        "rate": 0.25,
+        "from": 21.5,
+        "to": 31.1,
+        "elapsed": 38440,
+        "errors": []
+      }
+    ],
+    "fullMotionHistories": ".runtime/embarkation/motion-fog-correction/owner-preview/motion-histories.json",
+    "trajectories": "correction-trajectories.json",
+    "runtimeTextures": ".runtime/embarkation/motion-fog-correction/owner-preview/runtime-textures.json",
+    "projectionViewports": [
+      [
+        1536,
+        1024
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        2560,
+        1080
+      ]
+    ],
+    "lowerThirdAndGrid": ".runtime/embarkation/motion-fog-correction/owner-preview/exterior-* and grid-*",
+    "moonDiagnostics": ".runtime/embarkation/motion-fog-correction/owner-preview/moon-diagnostic-*",
+    "alphaReview": ".runtime/embarkation/motion-fog-correction/pier-alpha-final.png",
+    "runtimeTextureRevisions": ".runtime/embarkation/motion-fog-correction/owner-preview/runtime-texture-revisions.json"
+  },
+  "validation": {
+    "focusedTests": 28,
+    "browserScenarios": [
+      {
+        "name": "cinematic-full",
+        "status": "passed"
+      },
+      {
+        "name": "short-return-and-replay",
+        "status": "passed"
+      },
+      {
+        "name": "skip-hold-cancel",
+        "status": "passed"
+      },
+      {
+        "name": "reduced-motion",
+        "status": "passed"
+      },
+      {
+        "name": "renderer-unavailable",
+        "status": "passed"
+      },
+      {
+        "name": "context-loss",
+        "status": "passed"
+      },
+      {
+        "name": "optional-material-absent",
+        "status": "passed"
+      },
+      {
+        "name": "guest-mobile",
+        "status": "passed"
+      },
+      {
+        "name": "landing-convergence",
+        "status": "passed"
+      },
+      {
+        "name": "tier-BALANCED",
+        "status": "passed"
+      },
+      {
+        "name": "tier-PERFORMANCE",
+        "status": "passed"
+      }
+    ],
+    "living": [
+      {
+        "reduced": false,
+        "status": "passed",
+        "continuousClock": true,
+        "stationaryCamera": true,
+        "liveQualityChanges": true,
+        "hiddenClockDelta": 0,
+        "ambientContextLossRestoresCSS": true,
+        "replayAndNavigationDispose": true,
+        "initialTextureBytes": 118650485.33333334
+      },
+      {
+        "reduced": true,
+        "status": "passed",
+        "continuousClock": true,
+        "stationaryCamera": true,
+        "liveQualityChanges": true,
+        "hiddenClockDelta": 0,
+        "ambientContextLossRestoresCSS": true,
+        "replayAndNavigationDispose": true,
+        "initialTextureBytes": 118912629.33333333
+      },
+      {
+        "status": "passed",
+        "preparationHoldSkip": true,
+        "incompleteCompositorDisposed": true
+      }
+    ],
+    "replay": [
+      {
+        "status": "passed",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "scrolledFrom": 328,
+        "finalScroll": 0,
+        "titleHandoffDelta": 0,
+        "errors": []
+      },
+      {
+        "status": "passed",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "scrolledFrom": 1179,
+        "finalScroll": 0,
+        "titleHandoffDelta": 0,
+        "errors": []
+      }
+    ],
+    "handoff": {
+      "thresholdConvergence": {
+        "mean": 0.02340404175588865,
+        "over20": 0.00010362761717820605,
+        "over2": 0.0017072998453485605,
+        "max": 46
+      },
+      "canonicalRoom": {
+        "mean": 0.707622810343802,
+        "over20": 0.002017950347965739,
+        "over2": 0.07320663811563169,
+        "max": 31
+      },
+      "livingHandoff": {
+        "mean": 0,
+        "over20": 0,
+        "over2": 0,
+        "max": 0
+      },
+      "livingChange": {
+        "mean": 0.27681515621282415,
+        "over20": 0.002645757122888413,
+        "over2": 0.020057752646918867,
+        "max": 242
+      },
+      "fixedCushion": {
+        "mean": 0,
+        "over20": 0,
+        "over2": 0,
+        "max": 0
+      },
+      "fixedSign": {
+        "mean": 0,
+        "over20": 0,
+        "over2": 0,
+        "max": 0
+      },
+      "water": {
+        "mean": 1.8279012345679013,
+        "over20": 0.003539094650205761,
+        "over2": 0.21290123456790122,
+        "max": 50
+      },
+      "candle": {
+        "mean": 8.161111111111111,
+        "over20": 0.08270202020202021,
+        "over2": 0.26464646464646463,
+        "max": 242
+      },
+      "state": {
+        "time": 44.713,
+        "camera": [
+          0,
+          0,
+          0
+        ],
+        "rect": {
+          "x": 0,
+          "y": 76,
+          "width": 1536,
+          "height": 948,
+          "top": 76,
+          "right": 1536,
+          "bottom": 1024,
+          "left": 0
+        }
+      },
+      "errors": []
+    },
+    "masters": [
+      {
+        "source": "Basic_Waiting_Room_startpoint.png",
+        "unchanged": true
+      },
+      {
+        "source": "P1-map-fragment.png",
+        "unchanged": true
+      },
+      {
+        "source": "P10-particles.png",
+        "unchanged": true
+      },
+      {
+        "source": "P11-mist-ribbons.png",
+        "unchanged": true
+      },
+      {
+        "source": "P12-debris-elements.png",
+        "unchanged": true
+      },
+      {
+        "source": "P13-light-accents.png",
+        "unchanged": true
+      },
+      {
+        "source": "P14-water-spray.png",
+        "unchanged": true
+      },
+      {
+        "source": "P15-embers.png",
+        "unchanged": true
+      },
+      {
+        "source": "P2-compass.png",
+        "unchanged": true
+      },
+      {
+        "source": "P3-chronicle-image-fragment.png",
+        "unchanged": true
+      },
+      {
+        "source": "P4-journal-page.png",
+        "unchanged": true
+      },
+      {
+        "source": "P5-rope-sweep.png",
+        "unchanged": true
+      },
+      {
+        "source": "P6-lantern.png",
+        "unchanged": true
+      },
+      {
+        "source": "P7-sailcloth.png",
+        "unchanged": true
+      },
+      {
+        "source": "P8-parchment-scraps.png",
+        "unchanged": true
+      },
+      {
+        "source": "P9-ink-symbols.png",
+        "unchanged": true
+      },
+      {
+        "source": "Voyagewright_Waiting_Room_Background.png",
+        "unchanged": true
+      },
+      {
+        "source": "Waiting_Room_Representative_Image.png",
+        "unchanged": true
+      },
+      {
+        "source": "cinemativ_prop_pieces.png",
+        "unchanged": true
+      },
+      {
+        "source": "cinemativ_prop_pieces_2.png",
+        "unchanged": true
+      },
+      {
+        "source": "embarkation_key.png",
+        "unchanged": true
+      },
+      {
+        "source": "stage-A-background.png",
+        "unchanged": true
+      },
+      {
+        "source": "stage-B-background.png",
+        "unchanged": true
+      }
+    ],
+    "typecheck": "passed",
+    "scopedLint": "passed",
+    "functionalChecks": "Unchanged behavior code; final visual/asset revision separately captured and final environment handoff repeated.",
+    "documentation": "passed",
+    "featureCatalog": "NO CHANGE REQUIRED; sync and validation passed"
+  },
+  "remainingKnownDefects": [],
+  "limitations": [
+    "Authored 2.5D path only; arbitrary replacement scenery requires new registered mattes.",
+    "Screened local render has long frames; reference quality retained.",
+    "Silent recordings do not establish auditory quality."
+  ],
+  "reviewBoundary": "Focused self-review only. Owner perceptual acceptance remains pending; no merge.",
+  "preview": "http://127.0.0.1:3138/dev/embarkation"
+}

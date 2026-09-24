@@ -1,0 +1,86 @@
+{
+  "classification": "engineering-evidence",
+  "source": "public\\images\\embarkation\\derived\\room-exterior-continuous.png",
+  "sourceSha256": "2a6bc0e3b876866001ee31970cf996519c897f0df8c3348bfa211d950937257a",
+  "supportingMaster": ".runtime/embarkation/masters/stage-c-fill-correction.png",
+  "sourceToGenerated": [
+    [
+      0.9890839758286526,
+      -0.002832908190943615,
+      8.355329665850359
+    ],
+    [
+      0.002832908190943615,
+      0.9890839758286526,
+      44.28287393744398
+    ]
+  ],
+  "registrationInliers": 303,
+  "canvas": {
+    "width": 1598,
+    "height": 1157,
+    "sourceRect": [
+      31,
+      113,
+      1536,
+      1024
+    ]
+  },
+  "wideSkyBacking": {
+    "source": "exterior-overscan.webp",
+    "registration": [
+      [
+        0.8546192343302499,
+        0.011610135375933616,
+        131.5778368210119
+      ],
+      [
+        -0.011610135375933616,
+        0.8546192343302499,
+        148.40538894225455
+      ]
+    ],
+    "inliers": 170,
+    "usage": "Only missing supporting edge pixels, never the original region"
+  },
+  "verifiedSupportRect": [
+    29,
+    354,
+    1570,
+    368
+  ],
+  "minimumCoverageAlpha": 255,
+  "coverage": "coverage.json",
+  "generatedPixelsUsed": "Only hidden water under the separate foreground and measured exterior bounds",
+  "sourcePreservation": "Original pixels composited at unit scale outside foreground-removal and celestial-removal masks; masters unchanged",
+  "derivatives": [
+    {
+      "file": "derived/stage-c-pier.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 2870300,
+      "sha256": "f147ae7f02359bafb64873aa7c63161997590ead24b91526c8785ba64d54411d"
+    },
+    {
+      "file": "derived/stage-c-water.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1891940,
+      "sha256": "a28a0210e3bc57d025873e414d93f28118ad1000c86fdcc2f299ca72d41d7512"
+    },
+    {
+      "file": "derived/stage-c-extended.webp",
+      "width": 1598,
+      "height": 1157,
+      "bytes": 2129508,
+      "sha256": "71edb8cd3b6c83ed9cc40244e987d8f338f308a15a5301d333bc7b7aab9b74ab"
+    }
+  ],
+  "prompt": {
+    "tool": "built-in image_gen",
+    "prompt": "Edit target: the provided moonlit coastal harbor painting. Production supporting matte, NOT a redesigned scene. Remove only the foreground right-hand wooden pier, its upright posts, close lantern, and the two adjacent near rock outcrops between roughly x=980..1536 and y=275..470 in the original 1536x1024 composition, replacing them with continuous dark blue moonlit harbor water matching surrounding wave scale, direction and reflected moonlight. Preserve the distant mountain coastline, boats near center, night sky, all distant shoreline lights, the original moon and its existing silver reflection path. Also extend the canvas: add 11 percent of original height ABOVE the original sky, 2 percent BELOW for near water, and 2 percent of original width to EACH SIDE. This measured narrow extension is required by the camera path. Keep the original horizon and original composition inside this extended frame. Do not zoom, bend, stretch, tilt or restyle the painting. Keep the original dark nighttime blue palette, painted texture and quiet waves. No new buildings, boats, moons, lights, clouds of fog or foreground props. This image is backing only: original source pixels will be composited back over it exactly outside the removed foreground silhouettes.",
+    "generation": "exec-4d5a2631-e91b-4a17-a16b-b949f7e59508.png"
+  },
+  "supportingSha256": "e80faddd8400b14abc813e078750addd2a1ca8cf0c3972c57cfee1f97410f0f8",
+  "boats": "Original silhouette on rigid shore plane; adjacent original water continues behind its small footprint."
+}

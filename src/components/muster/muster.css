@@ -1324,3 +1324,9 @@ html[data-voyage-theme="light"] .muster-scene .muster-option-buttons button:hove
   background: #f0deaf4d;
   border-color: #6e745665;
 }
+
+/* SVG material paint and CSS backdrop capture cannot share a moving surface in
+   Chromium. Restore the canonical backdrop only once its anchors are at rest. */
+[data-embarkation-materials] .muster-crew-card,
+[data-embarkation-materials] .muster-open-card,
+[data-embarkation-materials] .muster-chat { backdrop-filter: none; }

@@ -1,0 +1,653 @@
+{
+  "status": "IMPLEMENTATION_ITERATING",
+  "ownerAccepted": false,
+  "program": "embarkation-1.0.0",
+  "referenceSeed": 2595989206,
+  "authoredDurationSeconds": 25,
+  "recordedAt": "2026-09-13T03:19:45.776Z",
+  "evidenceKind": "Local development Chromium/ANGLE with task-owned synthetic fixtures; no release or owner acceptance",
+  "measurements": [
+    {
+      "tier": "CINEMATIC",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "dpr": 1
+      },
+      "preloadMs": 10682.40000000596,
+      "frames": 1108,
+      "frameP50Ms": 16.700000000000728,
+      "frameP95Ms": 50,
+      "frameP99Ms": 99.90000000000146,
+      "framesOver32Ms": 241,
+      "mainRenderP95Ms": 16.700000002980232,
+      "gpuP95Ms": 26.95112,
+      "gpuSamples": 987,
+      "longTaskCount": 19,
+      "assetBytes": 10558723,
+      "estimatedTextureBytesAtReady": 167040431.99999997,
+      "estimatedTextureBytesRetained": 83888469.33333331,
+      "jsHeap": {
+        "usedBytes": 29400000,
+        "allocatedBytes": 47400000,
+        "limitBytes": 3760000000
+      },
+      "gpu": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001114) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    {
+      "tier": "BALANCED",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "dpr": 1
+      },
+      "preloadMs": 13216.5,
+      "frames": 1077,
+      "frameP50Ms": 16.700000000000728,
+      "frameP95Ms": 50,
+      "frameP99Ms": 83.29999999999927,
+      "framesOver32Ms": 276,
+      "mainRenderP95Ms": 17.19999998807907,
+      "gpuP95Ms": 33.10088,
+      "gpuSamples": 959,
+      "longTaskCount": 30,
+      "assetBytes": 10558723,
+      "estimatedTextureBytesAtReady": 167040431.99999997,
+      "estimatedTextureBytesRetained": 83888469.3333333,
+      "jsHeap": {
+        "usedBytes": 27600000,
+        "allocatedBytes": 37300000,
+        "limitBytes": 3760000000
+      },
+      "gpu": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001114) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    {
+      "tier": "PERFORMANCE",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "dpr": 1
+      },
+      "preloadMs": 13260.39999999106,
+      "frames": 1100,
+      "frameP50Ms": 16.700000000000728,
+      "frameP95Ms": 50,
+      "frameP99Ms": 99.89999999999782,
+      "framesOver32Ms": 259,
+      "mainRenderP95Ms": 20.099999994039536,
+      "gpuP95Ms": 26.1694,
+      "gpuSamples": 792,
+      "longTaskCount": 39,
+      "assetBytes": 10558723,
+      "estimatedTextureBytesAtReady": 167040431.99999997,
+      "estimatedTextureBytesRetained": 83888469.3333333,
+      "jsHeap": {
+        "usedBytes": 44700000,
+        "allocatedBytes": 53500000,
+        "limitBytes": 3760000000
+      },
+      "gpu": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001114) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    }
+  ],
+  "browserChecks": [
+    {
+      "name": "cinematic-full",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "short-return-and-replay",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "skip-hold-cancel",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "reduced-motion",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "renderer-unavailable",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "context-loss",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "optional-material-absent",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "guest-mobile",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "landing-convergence",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "tier-BALANCED",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "tier-PERFORMANCE",
+      "status": "passed",
+      "errors": []
+    }
+  ],
+  "landingMaximumDeltaPx": 0,
+  "liveCrew": {
+    "status": "passed",
+    "crewCount": 5,
+    "readinessUpdated": true,
+    "clockPreserved": true,
+    "inviteHandoffDelta": 0,
+    "fixtureRestored": true
+  },
+  "exercise": {
+    "preferences": {
+      "persisted": true,
+      "quality": "CINEMATIC",
+      "audio": true,
+      "volume": 35
+    },
+    "audio": [
+      {
+        "time": 6.383299999999999,
+        "state": "running",
+        "clock": 10.8,
+        "lastUpdate": {
+          "time": 6.383299999999999,
+          "enabled": true,
+          "paused": false
+        },
+        "gain": 0.12911801040172577,
+        "voices": [
+          {
+            "kind": "air",
+            "gain": 0.07999619841575623,
+            "pan": 0
+          },
+          {
+            "kind": "gust",
+            "gain": 0.5646176934242249,
+            "pan": 0
+          },
+          {
+            "kind": "flutter",
+            "gain": 0.08334169536828995,
+            "pan": -0.20000000298023224
+          },
+          {
+            "kind": "pass",
+            "gain": 1.398942906636829e-17,
+            "pan": -1
+          },
+          {
+            "kind": "rope",
+            "gain": 0,
+            "pan": 1
+          },
+          {
+            "kind": "collision",
+            "gain": 0,
+            "pan": 0.10000000149011612
+          },
+          {
+            "kind": "ocean",
+            "gain": 0,
+            "pan": 0.30000001192092896
+          },
+          {
+            "kind": "wood",
+            "gain": 0,
+            "pan": -0.3499999940395355
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          }
+        ]
+      },
+      {
+        "time": 9.15,
+        "state": "running",
+        "clock": 10.970666666666666,
+        "lastUpdate": {
+          "time": 9.15,
+          "enabled": true,
+          "paused": false
+        },
+        "gain": 0.13294553756713867,
+        "voices": [
+          {
+            "kind": "air",
+            "gain": 0.07999999821186066,
+            "pan": 0
+          },
+          {
+            "kind": "gust",
+            "gain": 0.7719428539276123,
+            "pan": 0
+          },
+          {
+            "kind": "flutter",
+            "gain": 0.1186748519539833,
+            "pan": -0.20000000298023224
+          },
+          {
+            "kind": "pass",
+            "gain": 0.7904454469680786,
+            "pan": 0.10000000149011612
+          },
+          {
+            "kind": "rope",
+            "gain": 0.0005003161495551467,
+            "pan": 1
+          },
+          {
+            "kind": "collision",
+            "gain": 0,
+            "pan": 0.10000000149011612
+          },
+          {
+            "kind": "ocean",
+            "gain": 0,
+            "pan": 0.30000001192092896
+          },
+          {
+            "kind": "wood",
+            "gain": 0,
+            "pan": -0.3499999940395355
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          }
+        ]
+      },
+      {
+        "time": 10.0834,
+        "state": "running",
+        "clock": 11.090666666666667,
+        "lastUpdate": {
+          "time": 10.0834,
+          "enabled": true,
+          "paused": false
+        },
+        "gain": 0.13300000131130219,
+        "voices": [
+          {
+            "kind": "air",
+            "gain": 0.07999999821186066,
+            "pan": 0
+          },
+          {
+            "kind": "gust",
+            "gain": 0.7080462574958801,
+            "pan": 0
+          },
+          {
+            "kind": "flutter",
+            "gain": 0.12495718896389008,
+            "pan": -0.20000000298023224
+          },
+          {
+            "kind": "pass",
+            "gain": 0.021532602608203888,
+            "pan": 1
+          },
+          {
+            "kind": "rope",
+            "gain": 0.4091279208660126,
+            "pan": -0.06679999828338623
+          },
+          {
+            "kind": "collision",
+            "gain": 0,
+            "pan": 0.10000000149011612
+          },
+          {
+            "kind": "ocean",
+            "gain": 0,
+            "pan": 0.30000001192092896
+          },
+          {
+            "kind": "wood",
+            "gain": 0,
+            "pan": -0.3499999940395355
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          }
+        ]
+      },
+      {
+        "time": 23.1833,
+        "state": "running",
+        "clock": 11.221333333333334,
+        "lastUpdate": {
+          "time": 23.1833,
+          "enabled": true,
+          "paused": false
+        },
+        "gain": 0.13300000131130219,
+        "voices": [
+          {
+            "kind": "air",
+            "gain": 0.07817991822957993,
+            "pan": 0
+          },
+          {
+            "kind": "gust",
+            "gain": 0.0061044590547680855,
+            "pan": 0
+          },
+          {
+            "kind": "flutter",
+            "gain": 0.0011037481017410755,
+            "pan": -0.20000000298023224
+          },
+          {
+            "kind": "pass",
+            "gain": 0.00009897026757244021,
+            "pan": 1
+          },
+          {
+            "kind": "rope",
+            "gain": 0.003551936475560069,
+            "pan": -1
+          },
+          {
+            "kind": "collision",
+            "gain": 0,
+            "pan": 0.10000000149011612
+          },
+          {
+            "kind": "ocean",
+            "gain": 0.22278282046318054,
+            "pan": 0.30000001192092896
+          },
+          {
+            "kind": "wood",
+            "gain": 0.023246893659234047,
+            "pan": -0.3499999940395355
+          },
+          {
+            "kind": "resolve",
+            "gain": 0.01900368370115757
+          },
+          {
+            "kind": "resolve",
+            "gain": 0.01900368370115757
+          },
+          {
+            "kind": "resolve",
+            "gain": 0.01900368370115757
+          }
+        ]
+      }
+    ],
+    "liveChat": {
+      "sameNode": true,
+      "pausedClockPreserved": true
+    },
+    "source": {
+      "destination": "/captain/voyages/muster-preparing/muster",
+      "fragments": 4,
+      "genericHidden": true
+    },
+    "back": {
+      "cleaned": true
+    },
+    "status": "passed",
+    "preferencesRestored": true
+  },
+  "living": [
+    {
+      "reduced": false,
+      "status": "passed",
+      "continuousClock": true,
+      "stationaryCamera": true,
+      "liveQualityChanges": true,
+      "hiddenClockDelta": 0,
+      "ambientContextLossRestoresCSS": true,
+      "replayAndNavigationDispose": true,
+      "initialTextureBytes": 83888469.3333333
+    },
+    {
+      "reduced": true,
+      "status": "passed",
+      "continuousClock": true,
+      "stationaryCamera": true,
+      "liveQualityChanges": true,
+      "hiddenClockDelta": 0,
+      "ambientContextLossRestoresCSS": true,
+      "replayAndNavigationDispose": true,
+      "initialTextureBytes": 83888469.33333334
+    },
+    {
+      "status": "passed",
+      "preparationHoldSkip": true,
+      "incompleteCompositorDisposed": true
+    }
+  ],
+  "environment": {
+    "thresholdConvergence": {
+      "mean": 0.1909487549815608,
+      "over20": 0.0018515885230787532,
+      "over2": 0.012377459180942183,
+      "max": 186
+    },
+    "canonicalRoom": {
+      "mean": 0.4809676031257435,
+      "over20": 0.0006340801956935523,
+      "over2": 0.04895940213835356,
+      "max": 254
+    },
+    "livingHandoff": {
+      "mean": 0.004312628256602427,
+      "over20": 0.000011849794789436118,
+      "over2": 0.00042333972757554127,
+      "max": 36
+    },
+    "livingChange": {
+      "mean": 0.1794663038305972,
+      "over20": 0.0013741114977397098,
+      "over2": 0.016657326240185583,
+      "max": 191
+    },
+    "fixedCushion": {
+      "mean": 0,
+      "over20": 0,
+      "over2": 0,
+      "max": 0
+    },
+    "fixedSign": {
+      "mean": 0,
+      "over20": 0,
+      "over2": 0,
+      "max": 0
+    },
+    "water": {
+      "mean": 1.6683950617283951,
+      "over20": 0.0034979423868312758,
+      "over2": 0.1952469135802469,
+      "max": 46
+    },
+    "candle": {
+      "mean": 5.058838383838384,
+      "over20": 0.043055555555555555,
+      "over2": 0.38585858585858585,
+      "max": 189
+    },
+    "state": {
+      "time": 34.713,
+      "camera": [0, 0, 0],
+      "rect": {
+        "x": 0,
+        "y": 76,
+        "width": 1536,
+        "height": 948,
+        "top": 76,
+        "right": 1536,
+        "bottom": 1024,
+        "left": 0
+      }
+    },
+    "errors": []
+  },
+  "unitTests": {
+    "files": 8,
+    "passed": 30,
+    "execution": "Sequential focused Vitest; previous parallel CrewChat run timed out under concurrent host load, unchanged test passed in isolated run"
+  },
+  "staticChecks": {
+    "typeScript": "passed",
+    "eslint": "passed"
+  },
+  "screening": {
+    "playback": [
+      {
+        "speed": 1,
+        "authoredDuration": 25,
+        "filmElapsedMs": 25510,
+        "ambientSeconds": 8,
+        "living": {
+          "time": 35.09957199999994,
+          "camera": [0, 0, 0]
+        },
+        "errors": []
+      },
+      {
+        "speed": 0.5,
+        "authoredDuration": 25,
+        "filmElapsedMs": 50205,
+        "ambientSeconds": 8,
+        "living": {
+          "time": 34.46633600000012,
+          "camera": [0, 0, 0]
+        },
+        "errors": []
+      },
+      {
+        "speed": 0.25,
+        "authoredDuration": 25,
+        "filmElapsedMs": 100282,
+        "ambientSeconds": 8,
+        "living": {
+          "time": 35.549536000000224,
+          "camera": [0, 0, 0]
+        },
+        "errors": []
+      }
+    ],
+    "frameTimes": [
+      0, 1.5, 3, 4.5, 5.5, 6.5, 7.2, 8.03, 9.1, 11.1, 12.8, 14.5, 15.5, 16.5, 17.2, 17.8, 18.5, 19.2, 20, 21, 22.5,
+      23.2, 24, 25
+    ],
+    "viewports": [
+      {
+        "width": 1280,
+        "height": 720,
+        "times": [14, 15.5, 16.3, 17.2, 18.4, 19.5, 20, 24],
+        "errors": []
+      },
+      {
+        "width": 1536,
+        "height": 1024,
+        "times": [14, 15.5, 16.3, 17.2, 18.4, 19.5, 20, 24],
+        "errors": []
+      },
+      {
+        "width": 820,
+        "height": 1180,
+        "times": [14, 15.5, 16.3, 17.2, 18.4, 19.5, 20, 24],
+        "errors": []
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "times": [14, 15.5, 16.3, 17.2, 18.4, 19.5, 20, 24],
+        "errors": []
+      },
+      {
+        "width": 2560,
+        "height": 1080,
+        "times": [14, 15.5, 16.3, 17.2, 18.4, 19.5, 20, 24],
+        "errors": []
+      }
+    ],
+    "finalPhoneVerification": [
+      {
+        "width": 390,
+        "height": 844,
+        "times": [14, 15.5, 16.3, 17.2, 18.4, 19.5, 20, 24],
+        "errors": []
+      }
+    ]
+  },
+  "performanceBoundary": "Current adapter and host load vary. CINEMATIC is retained intact; these development measurements are not a claim of stable 60 FPS. Preparation precedes the film and has a 45-second bounded deadline with hold-to-skip.",
+  "thermal": "Not observable through browser; not measured",
+  "gpuLoad": "GPU draw timing measured; hardware utilization percentage unavailable",
+  "scrolledReplay": [
+    {
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "scrolledFrom": 328,
+      "finalScroll": 0,
+      "titleHandoffDelta": 0,
+      "errors": []
+    },
+    {
+      "status": "passed",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scrolledFrom": 1179,
+      "finalScroll": 0,
+      "titleHandoffDelta": 0,
+      "errors": []
+    }
+  ]
+}
