@@ -3,7 +3,7 @@ title: Voyagewright Refit V1
 audience: product-engineering
 status: current
 canonical_for: voyagewright-refit-v1-control-area
-last_reviewed: 2026-09-12
+last_reviewed: 2026-09-21
 ---
 
 # Voyagewright Refit V1
@@ -21,6 +21,10 @@ Brightwork remains complete. Refit V1 begins from the accepted post-Brightwork p
 The current protected baseline and its source-bound Brightwork evidence are inputs to a future packet. They are not a standing instruction to alter a page.
 
 ## Canonical records
+
+- [Embarkation audit publication](embarkation/publication.md) — complete draft candidate source map, retained evidence, and local-only exclusions; no owner acceptance or merge.
+
+- [Embarkation design packet](embarkation/design-packet.md) — Owner Screening Delta 2 with the motion/fog/exterior correction, in `IMPLEMENTATION_ITERATING`; [screening and focused evidence](embarkation/preview.md). It lands into the accepted Muster without changing its design. Owner acceptance and integration remain pending.
 
 - [Muster design packet](muster/design-packet.md) — MAJOR_STRATEGY_RETHINK, MERGED on protected main; Refit V1 remains open; [explicit owner acceptance](muster/owner-acceptance.md), [accepted visual reference](muster/accepted-reference/manifest.json), [retained fixture matrix](muster/accepted-reference/fixture-matrix.json), and [final validation/integration](muster/final-validation.md). Earlier [source mapping](muster/iteration-2-delta.md) and [positioning delta](muster/iteration-3-delta.md) remain historical implementation evidence.
 

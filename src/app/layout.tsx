@@ -19,6 +19,7 @@ import "../styles/platform.css";
 import "../styles/personal-harbor.css";
 import "../styles/community.css";
 import "../styles/admiralty.css";
+import { EmbarkationNavigationBridge } from "@/animation/embarkation/navigation";
 
 export const metadata: Metadata = {
   applicationName: canonicalTerms.product,
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <AnimationProvider>
           <CurrentUserProvider>
             <PreferenceRuntimeBridge />
+            <EmbarkationNavigationBridge />
             <ProductShell>{children}</ProductShell>
           </CurrentUserProvider>
         </AnimationProvider>

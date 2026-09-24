@@ -35,6 +35,9 @@ export const preferenceV1Schema = z
         contrast: z.enum(["SYSTEM", "STANDARD", "HIGH"]),
         textureIntensity: z.number().min(0).max(1),
         lowBandwidthMedia: z.boolean(),
+        quality: z.enum(["AUTO", "CINEMATIC", "BALANCED", "PERFORMANCE"]).default("AUTO"),
+        experienceAudio: z.boolean().default(false),
+        experienceVolume: z.number().min(0).max(100).default(50),
       })
       .strict(),
     discovery: z
@@ -69,6 +72,9 @@ export const defaultPreferences: PreferenceV1 = {
     contrast: "SYSTEM",
     textureIntensity: 1,
     lowBandwidthMedia: false,
+    quality: "AUTO",
+    experienceAudio: false,
+    experienceVolume: 50,
   },
   discovery: { searchable: false, themes: [], contentWarnings: [] },
   social: { invitationPolicy: "CREW_ONLY", providerDiscovery: false },

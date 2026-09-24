@@ -12,6 +12,8 @@ last_reviewed: 2026-09-12
 
 ### Changed
 
+- Added the Embarkation owner-review branch: an authored 35.8-second, deterministic camera crossing from the platform into the live Muster, independent derived atmospheric material, physical DOM landing, personalized welcome, persistent return/replay semantics, global experience quality/audio controls, reduced-motion/failure recovery, and a stable living Muster with localized flames, restrained lantern suspension and quiet harbor reflections. Owner Screening Delta 2 adds support-plane adhesion, rear-origin vortices and procedural weather, sustained text contact, physical incoming anchor catches, continuous exterior backing and clearer living-light response. The subsequent owner correction restores fast physical flight, removes lingering storm debris, replaces global fog activation with arriving banks, restores the moonlight cue and uses registered planar exterior water. This Refit area remains unaccepted and unmerged.
+
 - Integrated the owner-accepted shared Captain/Player Muster gathering room, including real Voyage Crew Chat, canonical Crew/invitation/readiness, published-edition parchment, fixed artwork and smooth options. Final validation corrected cover-error truth, parchment semantics, large-Crew overlap and Light-theme readability while preserving the approved reference and all ten review Voyages.
 
 - Corrected Studio sortable Passage semantics so nested selection and movement controls remain accessible without changing their appearance, keyboard selection or drag behavior. Reconciled the protected browser journeys with current account-entry labels and task-owned fixture setup. The development animation Showcase playback controls now fit narrow viewports across system fonts.

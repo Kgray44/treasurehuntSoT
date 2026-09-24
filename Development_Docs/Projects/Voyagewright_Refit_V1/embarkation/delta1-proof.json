@@ -1,0 +1,738 @@
+{
+  "status": "IMPLEMENTATION_ITERATING",
+  "ownerAccepted": false,
+  "screening": "Owner Screening Delta 1",
+  "program": "embarkation-1.0.0",
+  "referenceSeed": 2595989206,
+  "authoredDurationSeconds": 25,
+  "recordedAt": "2026-09-13T08:18:54.825210+00:00",
+  "baseline": "241a4f606850d4447209eef4ef5895a309527fbc",
+  "uncommittedSourceFingerprint": "c219b4551b15b55dca2dfc106ecc3c7d214384ed3ca4887478babdb446a0b2e0",
+  "evidenceKind": "Task-owned local development Chromium/ANGLE and native in-app browser; no mainline or owner acceptance",
+  "measurements": [
+    {
+      "tier": "CINEMATIC",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "dpr": 1
+      },
+      "preloadMs": 2418,
+      "frameCount": 1375,
+      "frameP50Ms": 16.699999999999818,
+      "frameP95Ms": 16.80000000000109,
+      "frameP99Ms": 66.59999999999854,
+      "framesOver32Ms": 62,
+      "mainRenderP95Ms": 15.300000011920929,
+      "gpuP95Ms": 13.742112,
+      "longTaskCount": 18,
+      "assetBytes": 13312475,
+      "retainedTextureBytes": 92014933.33333331,
+      "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Laptop GPU (0x00002D18) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "resourcesAtReady": {
+        "textureBytes": 185372031.99999997,
+        "assetBytes": 13312475,
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Laptop GPU (0x00002D18) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      }
+    },
+    {
+      "tier": "BALANCED",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "dpr": 1
+      },
+      "preloadMs": 1702.7999999970198,
+      "frameCount": 1401,
+      "frameP50Ms": 16.699999999999818,
+      "frameP95Ms": 33.29999999999927,
+      "frameP99Ms": 50,
+      "framesOver32Ms": 74,
+      "mainRenderP95Ms": 17.5,
+      "gpuP95Ms": 11.037856,
+      "longTaskCount": 1,
+      "assetBytes": 13312475,
+      "retainedTextureBytes": 92014933.33333331,
+      "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Laptop GPU (0x00002D18) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "resourcesAtReady": {
+        "textureBytes": 184683903.99999997,
+        "assetBytes": 13312475,
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Laptop GPU (0x00002D18) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      }
+    },
+    {
+      "tier": "PERFORMANCE",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "dpr": 1
+      },
+      "preloadMs": 2013.3999999910593,
+      "frameCount": 1401,
+      "frameP50Ms": 16.699999999999818,
+      "frameP95Ms": 33.29999999999927,
+      "frameP99Ms": 50,
+      "framesOver32Ms": 75,
+      "mainRenderP95Ms": 19.19999998807907,
+      "gpuP95Ms": 9.559072,
+      "longTaskCount": 1,
+      "assetBytes": 13312475,
+      "retainedTextureBytes": 92014933.33333331,
+      "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Laptop GPU (0x00002D18) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "resourcesAtReady": {
+        "textureBytes": 184192383.99999997,
+        "assetBytes": 13312475,
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Laptop GPU (0x00002D18) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      }
+    }
+  ],
+  "unitChecks": {
+    "files": 2,
+    "passed": 13
+  },
+  "browserChecks": [
+    {
+      "name": "cinematic-full",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "short-return-and-replay",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "skip-hold-cancel",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "reduced-motion",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "renderer-unavailable",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "context-loss",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "optional-material-absent",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "guest-mobile",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "landing-convergence",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "tier-BALANCED",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "tier-PERFORMANCE",
+      "status": "passed",
+      "errors": []
+    }
+  ],
+  "environment": {
+    "thresholdConvergence": {
+      "mean": 0.09323372070544848,
+      "over20": 0.001092736958719962,
+      "over2": 0.003214082574946467,
+      "max": 226
+    },
+    "canonicalRoom": {
+      "mean": 0.7167294938139425,
+      "over20": 0.002114375148703307,
+      "over2": 0.07375567860754223,
+      "max": 31
+    },
+    "livingHandoff": {
+      "mean": 0,
+      "over20": 0,
+      "over2": 0,
+      "max": 0
+    },
+    "livingChange": {
+      "mean": 0.31682145751546514,
+      "over20": 0.003392991241375208,
+      "over2": 0.022239044283844874,
+      "max": 237
+    },
+    "fixedCushion": {
+      "mean": 0,
+      "over20": 0,
+      "over2": 0,
+      "max": 0
+    },
+    "fixedSign": {
+      "mean": 0,
+      "over20": 0,
+      "over2": 0,
+      "max": 0
+    },
+    "water": {
+      "mean": 1.7461111111111112,
+      "over20": 0.0041563786008230455,
+      "over2": 0.20397119341563785,
+      "max": 51
+    },
+    "candle": {
+      "mean": 8.244065656565656,
+      "over20": 0.075,
+      "over2": 0.5172979797979798,
+      "max": 235
+    },
+    "state": {
+      "time": 34.713,
+      "camera": [0, 0, 0],
+      "rect": {
+        "x": 0,
+        "y": 76,
+        "width": 1536,
+        "height": 948,
+        "top": 76,
+        "right": 1536,
+        "bottom": 1024,
+        "left": 0
+      }
+    },
+    "errors": []
+  },
+  "living": [
+    {
+      "reduced": false,
+      "status": "passed",
+      "continuousClock": true,
+      "stationaryCamera": true,
+      "liveQualityChanges": true,
+      "hiddenClockDelta": 0,
+      "ambientContextLossRestoresCSS": true,
+      "replayAndNavigationDispose": true,
+      "initialTextureBytes": 92014933.3333333
+    },
+    {
+      "reduced": true,
+      "status": "passed",
+      "continuousClock": true,
+      "stationaryCamera": true,
+      "liveQualityChanges": true,
+      "hiddenClockDelta": 0,
+      "ambientContextLossRestoresCSS": true,
+      "replayAndNavigationDispose": true,
+      "initialTextureBytes": 92277077.33333333
+    },
+    {
+      "status": "passed",
+      "preparationHoldSkip": true,
+      "incompleteCompositorDisposed": true
+    }
+  ],
+  "replay": [
+    {
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "scrolledFrom": 328,
+      "finalScroll": 0,
+      "titleHandoffDelta": 0,
+      "errors": []
+    },
+    {
+      "status": "passed",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scrolledFrom": 1179,
+      "finalScroll": 0,
+      "titleHandoffDelta": 0,
+      "errors": []
+    }
+  ],
+  "liveCrew": {
+    "status": "passed",
+    "crewCount": 5,
+    "readinessUpdated": true,
+    "clockPreserved": true,
+    "inviteHandoffDelta": 0,
+    "fixtureRestored": true
+  },
+  "preferencesAudioSourceChat": {
+    "preferences": {
+      "persisted": true,
+      "quality": "CINEMATIC",
+      "audio": true,
+      "volume": 35
+    },
+    "audio": [
+      {
+        "time": 6.399899999999999,
+        "state": "running",
+        "clock": 1.552,
+        "lastUpdate": {
+          "time": 6.399899999999999,
+          "enabled": true,
+          "paused": false
+        },
+        "gain": 0.12733404338359833,
+        "voices": [
+          {
+            "kind": "air",
+            "gain": 0.07992372661828995,
+            "pan": 0
+          },
+          {
+            "kind": "gust",
+            "gain": 1.0307866334915161,
+            "pan": 0
+          },
+          {
+            "kind": "flutter",
+            "gain": 0.14743903279304504,
+            "pan": -0.20000000298023224
+          },
+          {
+            "kind": "pass",
+            "gain": 2.2501857069006566e-17,
+            "pan": -1
+          },
+          {
+            "kind": "rope",
+            "gain": 0,
+            "pan": 1
+          },
+          {
+            "kind": "collision",
+            "gain": 1.8553760401237917e-17,
+            "pan": 0.10000000149011612
+          },
+          {
+            "kind": "ocean",
+            "gain": 0,
+            "pan": 0.30000001192092896
+          },
+          {
+            "kind": "wood",
+            "gain": 0,
+            "pan": -0.3499999940395355
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          }
+        ]
+      },
+      {
+        "time": 9.133300000000002,
+        "state": "running",
+        "clock": 1.6506666666666667,
+        "lastUpdate": {
+          "time": 9.133300000000002,
+          "enabled": true,
+          "paused": false
+        },
+        "gain": 0.12946519255638123,
+        "voices": [
+          {
+            "kind": "air",
+            "gain": 0.07999999821186066,
+            "pan": 0
+          },
+          {
+            "kind": "gust",
+            "gain": 0.5663005113601685,
+            "pan": 0
+          },
+          {
+            "kind": "flutter",
+            "gain": 0.08007791638374329,
+            "pan": -0.20000000298023224
+          },
+          {
+            "kind": "pass",
+            "gain": 0.7819185256958008,
+            "pan": 0.066600002348423
+          },
+          {
+            "kind": "rope",
+            "gain": 0.00033951018122024834,
+            "pan": 1
+          },
+          {
+            "kind": "collision",
+            "gain": 0,
+            "pan": 0.10000000149011612
+          },
+          {
+            "kind": "ocean",
+            "gain": 0,
+            "pan": 0.30000001192092896
+          },
+          {
+            "kind": "wood",
+            "gain": 0,
+            "pan": -0.3499999940395355
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          }
+        ]
+      },
+      {
+        "time": 10.100000000000001,
+        "state": "running",
+        "clock": 1.7813333333333334,
+        "lastUpdate": {
+          "time": 10.100000000000001,
+          "enabled": true,
+          "paused": false
+        },
+        "gain": 0.13286517560482025,
+        "voices": [
+          {
+            "kind": "air",
+            "gain": 0.07999999821186066,
+            "pan": 0
+          },
+          {
+            "kind": "gust",
+            "gain": 0.4437373876571655,
+            "pan": 0
+          },
+          {
+            "kind": "flutter",
+            "gain": 0.07772377878427505,
+            "pan": -0.20000000298023224
+          },
+          {
+            "kind": "pass",
+            "gain": 0.015404583886265755,
+            "pan": 1
+          },
+          {
+            "kind": "rope",
+            "gain": 0.41038447618484497,
+            "pan": -0.10000000149011612
+          },
+          {
+            "kind": "collision",
+            "gain": 0,
+            "pan": 0.10000000149011612
+          },
+          {
+            "kind": "ocean",
+            "gain": 0,
+            "pan": 0.30000001192092896
+          },
+          {
+            "kind": "wood",
+            "gain": 0,
+            "pan": -0.3499999940395355
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          },
+          {
+            "kind": "resolve",
+            "gain": 0
+          }
+        ]
+      },
+      {
+        "time": 23.2168,
+        "state": "running",
+        "clock": 2.232,
+        "lastUpdate": {
+          "time": 23.2168,
+          "enabled": true,
+          "paused": false
+        },
+        "gain": 0.13300000131130219,
+        "voices": [
+          {
+            "kind": "air",
+            "gain": 0.07791174203157425,
+            "pan": 0
+          },
+          {
+            "kind": "gust",
+            "gain": 0.008967489004135132,
+            "pan": 0
+          },
+          {
+            "kind": "flutter",
+            "gain": 0.001418972504325211,
+            "pan": -0.20000000298023224
+          },
+          {
+            "kind": "pass",
+            "gain": 0,
+            "pan": 1
+          },
+          {
+            "kind": "rope",
+            "gain": 0,
+            "pan": -1
+          },
+          {
+            "kind": "collision",
+            "gain": 0,
+            "pan": 0.10000000149011612
+          },
+          {
+            "kind": "ocean",
+            "gain": 0.22399616241455078,
+            "pan": 0.30000001192092896
+          },
+          {
+            "kind": "wood",
+            "gain": 0.02337351255118847,
+            "pan": -0.3499999940395355
+          },
+          {
+            "kind": "resolve",
+            "gain": 0.01933865249156952
+          },
+          {
+            "kind": "resolve",
+            "gain": 0.01933865249156952
+          },
+          {
+            "kind": "resolve",
+            "gain": 0.01933865249156952
+          }
+        ]
+      }
+    ],
+    "liveChat": {
+      "sameNode": true,
+      "pausedClockPreserved": true
+    },
+    "source": {
+      "destination": "/captain/voyages/muster-preparing/muster",
+      "fragments": 4,
+      "genericHidden": true
+    },
+    "back": {
+      "cleaned": true
+    },
+    "status": "passed",
+    "preferencesRestored": true
+  },
+  "responsive": [
+    {
+      "width": 1280,
+      "height": 720,
+      "times": [14, 15.5, 16.3, 17.2, 18.4, 19.5, 20, 24],
+      "errors": []
+    },
+    {
+      "width": 1536,
+      "height": 1024,
+      "times": [14, 15.5, 16.3, 17.2, 18.4, 19.5, 20, 24],
+      "errors": []
+    },
+    {
+      "width": 820,
+      "height": 1180,
+      "times": [14, 15.5, 16.3, 17.2, 18.4, 19.5, 20, 24],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "times": [14, 15.5, 16.3, 17.2, 18.4, 19.5, 20, 24],
+      "errors": []
+    },
+    {
+      "width": 2560,
+      "height": 1080,
+      "times": [14, 15.5, 16.3, 17.2, 18.4, 19.5, 20, 24],
+      "errors": []
+    }
+  ],
+  "masters": [
+    {
+      "source": "Basic_Waiting_Room_startpoint.png",
+      "unchanged": true
+    },
+    {
+      "source": "P1-map-fragment.png",
+      "unchanged": true
+    },
+    {
+      "source": "P10-particles.png",
+      "unchanged": true
+    },
+    {
+      "source": "P11-mist-ribbons.png",
+      "unchanged": true
+    },
+    {
+      "source": "P12-debris-elements.png",
+      "unchanged": true
+    },
+    {
+      "source": "P13-light-accents.png",
+      "unchanged": true
+    },
+    {
+      "source": "P14-water-spray.png",
+      "unchanged": true
+    },
+    {
+      "source": "P15-embers.png",
+      "unchanged": true
+    },
+    {
+      "source": "P2-compass.png",
+      "unchanged": true
+    },
+    {
+      "source": "P3-chronicle-image-fragment.png",
+      "unchanged": true
+    },
+    {
+      "source": "P4-journal-page.png",
+      "unchanged": true
+    },
+    {
+      "source": "P5-rope-sweep.png",
+      "unchanged": true
+    },
+    {
+      "source": "P6-lantern.png",
+      "unchanged": true
+    },
+    {
+      "source": "P7-sailcloth.png",
+      "unchanged": true
+    },
+    {
+      "source": "P8-parchment-scraps.png",
+      "unchanged": true
+    },
+    {
+      "source": "P9-ink-symbols.png",
+      "unchanged": true
+    },
+    {
+      "source": "Voyagewright_Waiting_Room_Background.png",
+      "unchanged": true
+    },
+    {
+      "source": "Waiting_Room_Representative_Image.png",
+      "unchanged": true
+    },
+    {
+      "source": "cinemativ_prop_pieces.png",
+      "unchanged": true
+    },
+    {
+      "source": "cinemativ_prop_pieces_2.png",
+      "unchanged": true
+    },
+    {
+      "source": "embarkation_key.png",
+      "unchanged": true
+    },
+    {
+      "source": "stage-A-background.png",
+      "unchanged": true
+    },
+    {
+      "source": "stage-B-background.png",
+      "unchanged": true
+    }
+  ],
+  "recordings": [
+    {
+      "speed": 0.5,
+      "authoredDuration": 25,
+      "filmElapsedMs": 50096,
+      "ambientSeconds": 8,
+      "living": {
+        "time": 33.43299999999978,
+        "camera": [0, 0, 0]
+      },
+      "errors": []
+    },
+    {
+      "speed": 1,
+      "authoredDuration": 25,
+      "filmElapsedMs": 25085,
+      "ambientSeconds": 8,
+      "living": {
+        "time": 33.43299999999989,
+        "camera": [0, 0, 0]
+      },
+      "errors": []
+    },
+    {
+      "speed": 0.25,
+      "authoredDuration": 25,
+      "filmElapsedMs": 100090,
+      "ambientSeconds": 8,
+      "living": {
+        "time": 33.43296800000003,
+        "camera": [0, 0, 0]
+      },
+      "errors": []
+    }
+  ],
+  "featureCatalog": "NO CHANGE REQUIRED - unaccepted branch",
+  "nativeScreening": {
+    "viewport": [1280, 720],
+    "normalSpeed": "full film with eight sampled motion observations and settled-room inspection",
+    "quarterSpeed": "word snag and final backward threshold reviewed in motion",
+    "nativeDOMHandoffMaxDeltaPx": 0,
+    "steadyRoomInspected": true,
+    "halfSpeed": "opening pressure, bowed held surfaces, staggered release and crossing inspected in motion"
+  },
+  "documentChecks": {
+    "typecheck": "passed",
+    "eslint": "passed without warnings",
+    "docsValidate": "passed",
+    "featuresSync": "passed",
+    "featuresValidate": "passed"
+  },
+  "assetFingerprint": "891b372a6cce81d791ef2ad4184be29cf41001bb8405975d6caba83bbbe61898"
+}

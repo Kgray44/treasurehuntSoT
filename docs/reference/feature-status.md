@@ -3,10 +3,12 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-09-12
+last_reviewed: 2026-09-21
 ---
 
 # Feature status
+
+Embarkation is **IMPLEMENTATION_ITERATING**, with an isolated owner screening into the accepted Muster. Its 35.8-second cinematic, abbreviated return, replay, global experience controls, localized living flames/lanterns and quiet exterior-water reflections are branch preview behavior; they are not a mainline availability claim. [Focused evidence](../../Development_Docs/Projects/Voyagewright_Refit_V1/embarkation/preview.md). Owner Screening Delta 2 extends the authored journey with readable support-plane strain, coherent rear-origin weather, spatial landscape exploration, continuous fog, independent living-light layers and staggered real DOM anchor catches. The subsequent owner correction restores fast event-age flight, spatially arriving fog banks, a shared moonlight cue, and registered planar exterior water. Screening evidence is current; owner acceptance remains pending.
 
 The shared Muster and Voyage Crew Chat are **OWNER_ACCEPTED**, with final synthetic production-browser, role, interaction and responsive/accessibility proof. The accepted composition is preserved; four evidenced final-validation defects were corrected. Protected PR #658 is merged; Sounding Line and exact landed-tree smoke passed. Muster is the canonical mainline waiting room and its Refit registry state is MERGED.
 

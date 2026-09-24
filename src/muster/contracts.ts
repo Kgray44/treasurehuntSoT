@@ -24,6 +24,11 @@ export type MusterMessage = {
 };
 export type MusterProjection = {
   csrfToken: string;
+  arrival?: {
+    person: { key: string; displayName: string | null; registered: boolean };
+    seen: boolean;
+    program: string;
+  };
   voyage: {
     id: string;
     title: string;

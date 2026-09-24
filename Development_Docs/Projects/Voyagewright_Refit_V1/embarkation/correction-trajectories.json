@@ -1,0 +1,4811 @@
+{
+  "classification": "engineering-evidence",
+  "candidate": "5480f3fcda6b5a28b2a5d56d2f824cb26828e750ac25c607edd3c63b1043aca6",
+  "representatives": [
+    {
+      "id": "recede-2",
+      "samples": [
+        {
+          "time": 7.6,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 0.05825970924925006,
+          "z": 948.996893149793,
+          "distance": -94.99552560030281,
+          "screenPixels": -2591.9689689539405,
+          "transmission": 1,
+          "relativeForwardVelocity": null
+        },
+        {
+          "time": 8,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 0.4582597092492504,
+          "z": -104.37669929073651,
+          "distance": 918.6265906836577,
+          "screenPixels": 268.03649822743466,
+          "transmission": 1,
+          "relativeForwardVelocity": 2757.532814926749
+        },
+        {
+          "time": 8.4,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 0.8582597092492508,
+          "z": -1468.5098602670203,
+          "distance": 2245.1058702100304,
+          "screenPixels": 109.67209066288713,
+          "transmission": 1,
+          "relativeForwardVelocity": 3485.709493571893
+        },
+        {
+          "time": 8.8,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 1.2582597092492511,
+          "z": -3069.863903807762,
+          "distance": 3811.890730398888,
+          "screenPixels": 64.59404845523702,
+          "transmission": 1,
+          "relativeForwardVelocity": 4051.9669934025956
+        },
+        {
+          "time": 9.2,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 1.6582597092492497,
+          "z": -4857.0014765372825,
+          "distance": 5568.5309212659195,
+          "screenPixels": 44.217309381390486,
+          "transmission": 0.7992896110331511,
+          "relativeForwardVelocity": 4494.723914426609
+        },
+        {
+          "time": 9.6,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 2.05825970924925,
+          "z": -6831.863635127909,
+          "distance": 7516.93194662482,
+          "screenPixels": 32.7561106437863,
+          "transmission": 0.4969570404743934,
+          "relativeForwardVelocity": 5016.9213032799735
+        },
+        {
+          "time": 10,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 2.4582597092492504,
+          "z": -9043.59383058581,
+          "distance": 9685.585298373127,
+          "screenPixels": 25.42184565622613,
+          "transmission": 0.2928216564956927,
+          "relativeForwardVelocity": 5541.062018323146
+        },
+        {
+          "time": 10.4,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 2.8582597092492508,
+          "z": -11469.133151961638,
+          "distance": 12046.205887702861,
+          "screenPixels": 20.440083528441853,
+          "transmission": 0.1646468082285284,
+          "relativeForwardVelocity": 6045.99206703826
+        },
+        {
+          "time": 10.8,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 3.258259709249251,
+          "z": -14192.142322719556,
+          "distance": 14686.741541469555,
+          "screenPixels": 16.765152014843537,
+          "transmission": 0.0864675792360183,
+          "relativeForwardVelocity": 6780.809922780745
+        },
+        {
+          "time": 11.2,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 3.6582597092492497,
+          "z": -17228.94118730361,
+          "distance": 17623.13103105361,
+          "screenPixels": 13.971720128028453,
+          "transmission": 0.042248843418784314,
+          "relativeForwardVelocity": 7564.135622783333
+        },
+        {
+          "time": 11.6,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 4.05825970924925,
+          "z": -20655.912519779566,
+          "distance": 20930.717988529566,
+          "screenPixels": 11.763832214470177,
+          "transmission": 0.018856325964182998,
+          "relativeForwardVelocity": 8475.4936780969
+        },
+        {
+          "time": 12,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 4.45825970924925,
+          "z": -24472.3990822686,
+          "distance": 24612.1451760186,
+          "screenPixels": 10.004225669259007,
+          "transmission": 0.007682456727439835,
+          "relativeForwardVelocity": 9456.931366564713
+        },
+        {
+          "time": 12.4,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 4.858259709249251,
+          "z": -28629.250534815314,
+          "distance": 28621.562253565313,
+          "screenPixels": 8.602795765097794,
+          "transmission": 0.0028893535099262942,
+          "relativeForwardVelocity": 10225.289141096928
+        },
+        {
+          "time": 12.8,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 5.258259709249251,
+          "z": -33038.750371723414,
+          "distance": 32874.552715473415,
+          "screenPixels": 7.4898495707763955,
+          "transmission": 0.0010240015408020582,
+          "relativeForwardVelocity": 10725.700728961892
+        },
+        {
+          "time": 13.2,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 5.65825970924925,
+          "z": -37566.62420481385,
+          "distance": 37240.14217356385,
+          "screenPixels": 6.6118290686936705,
+          "transmission": 0.00035308025899429387,
+          "relativeForwardVelocity": 10915.179875144786
+        },
+        {
+          "time": 13.6,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 6.05825970924925,
+          "z": -42066.55702581822,
+          "distance": 41575.31561956822,
+          "screenPixels": 5.922395317416757,
+          "transmission": 0.00012265015280993558,
+          "relativeForwardVelocity": 10776.038776094574
+        },
+        {
+          "time": 14,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 6.45825970924925,
+          "z": -46414.19296156249,
+          "distance": 45759.01718031249,
+          "screenPixels": 5.380916586892766,
+          "transmission": 0.00004420867345253544,
+          "relativeForwardVelocity": 10354.055294053724
+        },
+        {
+          "time": 14.4,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 6.858259709249251,
+          "z": -50528.16925817742,
+          "distance": 49713.18410192742,
+          "screenPixels": 4.9529206184141445,
+          "transmission": 0,
+          "relativeForwardVelocity": 9739.157232940852
+        },
+        {
+          "time": 14.8,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 7.258259709249251,
+          "z": -54375.17549605183,
+          "distance": 53407.80596480183,
+          "screenPixels": 4.610289640202189,
+          "transmission": 0,
+          "relativeForwardVelocity": 9054.6662209645
+        },
+        {
+          "time": 15.2,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 7.65825970924925,
+          "z": -57952.21514897468,
+          "distance": 56843.18624272468,
+          "screenPixels": 4.331661731523165,
+          "transmission": 0,
+          "relativeForwardVelocity": 8423.869345415696
+        },
+        {
+          "time": 15.6,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 8.05825970924925,
+          "z": -61260.41930711869,
+          "distance": 60023.756025868686,
+          "screenPixels": 4.102133402637079,
+          "transmission": 0,
+          "relativeForwardVelocity": 7816.609463884306
+        },
+        {
+          "time": 16,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 8.458259709249251,
+          "z": -64342.05049863056,
+          "distance": 62995.07784238056,
+          "screenPixels": 3.908645928838014,
+          "transmission": 0,
+          "relativeForwardVelocity": 7306.392408723332
+        },
+        {
+          "time": 16.4,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 8.85825970924925,
+          "z": -67236.81553852977,
+          "distance": 65788.18221098348,
+          "screenPixels": 3.742700379770437,
+          "transmission": 0,
+          "relativeForwardVelocity": 6881.095730809393
+        },
+        {
+          "time": 16.8,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 9.258259709249252,
+          "z": -69990.57037548727,
+          "distance": 68442.47693220022,
+          "screenPixels": 3.597553238603095,
+          "transmission": 0,
+          "relativeForwardVelocity": 6563.007074958587
+        },
+        {
+          "time": 17.2,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 9.65825970924925,
+          "z": -72637.90175639972,
+          "distance": 70999.19097514972,
+          "screenPixels": 3.468003665445081,
+          "transmission": 0,
+          "relativeForwardVelocity": 6341.879678518089
+        },
+        {
+          "time": 17.6,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 10.058259709249253,
+          "z": -75204.93021959938,
+          "distance": 73490.04725663642,
+          "screenPixels": 3.350459875003271,
+          "transmission": 0,
+          "relativeForwardVelocity": 6192.90391239927
+        },
+        {
+          "time": 18,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 10.458259709249251,
+          "z": -77711.34409335718,
+          "distance": 75917.64038965348,
+          "screenPixels": 3.243323334098404,
+          "transmission": 0,
+          "relativeForwardVelocity": 6029.965460013045
+        },
+        {
+          "time": 18.4,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 10.85825970924925,
+          "z": -80172.0291268699,
+          "distance": 78291.14912686989,
+          "screenPixels": 3.144997324620298,
+          "transmission": 0,
+          "relativeForwardVelocity": 5904.880727609998
+        },
+        {
+          "time": 18.8,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 11.258259709249252,
+          "z": -82598.19477041492,
+          "distance": 80625.1251407853,
+          "screenPixels": 3.0539543859994347,
+          "transmission": 0,
+          "relativeForwardVelocity": 5814.197766810903
+        },
+        {
+          "time": 19.2,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 11.65825970924925,
+          "z": -84998.31609926965,
+          "distance": 82931.38572889927,
+          "screenPixels": 2.9690261700239726,
+          "transmission": 0,
+          "relativeForwardVelocity": 5751.588452615615
+        },
+        {
+          "time": 19.6,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 12.058259709249253,
+          "z": -87378.94379115023,
+          "distance": 85219.82379115024,
+          "screenPixels": 2.889297860423693,
+          "transmission": 0,
+          "relativeForwardVelocity": 5712.987179008269
+        },
+        {
+          "time": 20,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 12.458259709249251,
+          "z": -89753.53754115022,
+          "distance": 87507.24124485393,
+          "screenPixels": 2.8137723352115667,
+          "transmission": 0,
+          "relativeForwardVelocity": 5722.72141203699
+        },
+        {
+          "time": 20.4,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 12.85825970924925,
+          "z": -92128.13129115022,
+          "distance": 89803.01425411318,
+          "screenPixels": 2.7418395316744824,
+          "transmission": 0,
+          "relativeForwardVelocity": 5745.699189814841
+        },
+        {
+          "time": 20.8,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 13.258259709249252,
+          "z": -94502.72504115023,
+          "distance": 92110.48504115023,
+          "screenPixels": 2.6731533813490795,
+          "transmission": 0,
+          "relativeForwardVelocity": 5777.032523148155
+        },
+        {
+          "time": 21.2,
+          "id": "recede-2",
+          "birth": 7.54174029075075,
+          "age": 13.65825970924925,
+          "z": -96877.31879115022,
+          "distance": 94432.99582818725,
+          "screenPixels": 2.6074091199377034,
+          "transmission": 0,
+          "relativeForwardVelocity": 5816.7214120370045
+        }
+      ]
+    },
+    {
+      "id": "recede-4",
+      "samples": [
+        {
+          "time": 14.4,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 0.2394956877222274,
+          "z": -1723.7535119595111,
+          "distance": 908.7683557095108,
+          "screenPixels": 97.03526265403914,
+          "transmission": 1,
+          "relativeForwardVelocity": 4792.403046360721
+        },
+        {
+          "time": 14.8,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 0.6394956877222278,
+          "z": -4527.815486131282,
+          "distance": 3560.445954881282,
+          "screenPixels": 24.767283987854263,
+          "transmission": 1,
+          "relativeForwardVelocity": 7040.179095755088
+        },
+        {
+          "time": 15.2,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 1.0394956877222263,
+          "z": -7732.653570824943,
+          "distance": 6623.624664574943,
+          "screenPixels": 13.313341343083271,
+          "transmission": 0.6179350838173543,
+          "relativeForwardVelocity": 7798.414395853515
+        },
+        {
+          "time": 15.6,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 1.4394956877222267,
+          "z": -11068.741216016926,
+          "distance": 9832.077934766927,
+          "screenPixels": 8.968864636043191,
+          "transmission": 0.28254387025787064,
+          "relativeForwardVelocity": 8074.399476573708
+        },
+        {
+          "time": 16,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 1.839495687722227,
+          "z": -14447.80993820645,
+          "distance": 13100.83728195645,
+          "screenPixels": 6.731064144228702,
+          "transmission": 0.12730368520392718,
+          "relativeForwardVelocity": 8197.993997512094
+        },
+        {
+          "time": 16.4,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 2.2394956877222256,
+          "z": -17840.955895242576,
+          "distance": 16392.32256769628,
+          "screenPixels": 5.37950468725705,
+          "transmission": 0.05704122003041811,
+          "relativeForwardVelocity": 8232.674190120979
+        },
+        {
+          "time": 16.8,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 2.6394956877222278,
+          "z": -21238.710605040105,
+          "distance": 19690.617161753067,
+          "screenPixels": 4.478405900818434,
+          "transmission": 0.02551616234399336,
+          "relativeForwardVelocity": 8250.711005778012
+        },
+        {
+          "time": 17.2,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 3.0394956877222263,
+          "z": -24637.975556881378,
+          "distance": 22999.264775631378,
+          "screenPixels": 3.834147610726433,
+          "transmission": 0.011385320451109921,
+          "relativeForwardVelocity": 8279.71897880705
+        },
+        {
+          "time": 17.6,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 3.4394956877222285,
+          "z": -28037.73574916183,
+          "distance": 26322.85278619887,
+          "screenPixels": 3.350038721266032,
+          "transmission": 0.005061655601784717,
+          "relativeForwardVelocity": 8318.285369300756
+        },
+        {
+          "time": 18,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 3.839495687722227,
+          "z": -31437.65675426318,
+          "distance": 29643.953050559474,
+          "screenPixels": 2.9747239154491707,
+          "transmission": 0.0022516632584239317,
+          "relativeForwardVelocity": 8296.540413238254
+        },
+        {
+          "time": 18.4,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 4.239495687722226,
+          "z": -34837.63049373952,
+          "distance": 32956.75049373952,
+          "screenPixels": 2.675706031900896,
+          "transmission": 0.0010036765346380957,
+          "relativeForwardVelocity": 8277.833719995033
+        },
+        {
+          "time": 18.8,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 4.639495687722228,
+          "z": -38237.62268123954,
+          "distance": 36264.55305160991,
+          "screenPixels": 2.431646571307651,
+          "transmission": 0.00044793313095382826,
+          "relativeForwardVelocity": 8267.417505787016
+        },
+        {
+          "time": 19.2,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 5.039495687722226,
+          "z": -41637.618774989525,
+          "distance": 39570.688404619155,
+          "screenPixels": 2.22848223377529,
+          "transmission": 0.00019999042365305,
+          "relativeForwardVelocity": 8265.339449161693
+        },
+        {
+          "time": 19.6,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 5.4394956877222285,
+          "z": -45037.61877498955,
+          "distance": 42878.498774989544,
+          "screenPixels": 2.0565686441286366,
+          "transmission": 0.00008925402043209789,
+          "relativeForwardVelocity": 8271.61481481493
+        },
+        {
+          "time": 20,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 5.839495687722227,
+          "z": -48437.61877498953,
+          "distance": 46191.32247869323,
+          "screenPixels": 1.9090723399103333,
+          "transmission": 0.000039784631126439945,
+          "relativeForwardVelocity": 8286.23703703699
+        },
+        {
+          "time": 20.4,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 6.239495687722226,
+          "z": -51837.618774989525,
+          "distance": 49512.50173795249,
+          "screenPixels": 1.7810163694547807,
+          "transmission": 0,
+          "relativeForwardVelocity": 8309.214814814804
+        },
+        {
+          "time": 20.8,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 6.639495687722228,
+          "z": -55237.61877498953,
+          "distance": 52845.378774989535,
+          "screenPixels": 1.668690397005658,
+          "transmission": 0,
+          "relativeForwardVelocity": 8340.548148148082
+        },
+        {
+          "time": 21.2,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 7.039495687722226,
+          "z": -58637.618774989525,
+          "distance": 56193.29581202656,
+          "screenPixels": 1.5692721847626299,
+          "transmission": 0,
+          "relativeForwardVelocity": 8380.237037037004
+        },
+        {
+          "time": 21.6,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 7.4394956877222285,
+          "z": -62037.61877498955,
+          "distance": 59557.5102192666,
+          "screenPixels": 1.4806289880705081,
+          "transmission": 0,
+          "relativeForwardVelocity": 8419.043551322247
+        },
+        {
+          "time": 22,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 7.839495687722227,
+          "z": -65437.61877498953,
+          "distance": 62936.818258771316,
+          "screenPixels": 1.401128600517741,
+          "transmission": 0,
+          "relativeForwardVelocity": 8458.933208058625
+        },
+        {
+          "time": 22.4,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 8.239495687722226,
+          "z": -68837.61486873952,
+          "distance": 66322.30322089106,
+          "screenPixels": 1.329606660285205,
+          "transmission": 0,
+          "relativeForwardVelocity": 8460.436949560753
+        },
+        {
+          "time": 22.8,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 8.639495687722228,
+          "z": -72237.61486873953,
+          "distance": 69703.0748483284,
+          "screenPixels": 1.26511744682475,
+          "transmission": 0,
+          "relativeForwardVelocity": 8449.31773879136
+        },
+        {
+          "time": 23.2,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 9.039495687722226,
+          "z": -75637.61486873952,
+          "distance": 73080.20746133212,
+          "screenPixels": 1.206654703800758,
+          "transmission": 0,
+          "relativeForwardVelocity": 8440.89409426917
+        },
+        {
+          "time": 23.6,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 9.439495687722228,
+          "z": -79037.61486873955,
+          "distance": 76454.77928640113,
+          "screenPixels": 1.1533952083965604,
+          "transmission": 0,
+          "relativeForwardVelocity": 8435.166015994328
+        },
+        {
+          "time": 24,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 9.839495687722227,
+          "z": -82437.61486873953,
+          "distance": 79827.86855003418,
+          "screenPixels": 1.1046590331129904,
+          "transmission": 0,
+          "relativeForwardVelocity": 8432.133503966106
+        },
+        {
+          "time": 24.4,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 10.239495687722226,
+          "z": -85837.61486873952,
+          "distance": 83200.55347873017,
+          "screenPixels": 1.0598796810948512,
+          "transmission": 0,
+          "relativeForwardVelocity": 8431.796558185233
+        },
+        {
+          "time": 24.8,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 10.639495687722228,
+          "z": -89237.61486873953,
+          "distance": 86573.91229898797,
+          "screenPixels": 1.0185813918563376,
+          "transmission": 0,
+          "relativeForwardVelocity": 8434.155178651345
+        },
+        {
+          "time": 25.2,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 11.039495687722226,
+          "z": -92637.61486873952,
+          "distance": 89949.02323730636,
+          "screenPixels": 0.980361686144224,
+          "transmission": 0,
+          "relativeForwardVelocity": 8439.209365364732
+        },
+        {
+          "time": 25.6,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 11.439495687722228,
+          "z": -96037.61486873955,
+          "distance": 93326.96452018425,
+          "screenPixels": 0.944877791121986,
+          "transmission": 0,
+          "relativeForwardVelocity": 8446.959118325321
+        },
+        {
+          "time": 26,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 11.839495687722227,
+          "z": -99437.61486873952,
+          "distance": 96708.8143741204,
+          "screenPixels": 0.9118359754346199,
+          "transmission": 0,
+          "relativeForwardVelocity": 8457.404437532605
+        },
+        {
+          "time": 26.4,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 12.239495687722226,
+          "z": -102837.63830623952,
+          "distance": 100095.6744631137,
+          "screenPixels": 0.8809828852339455,
+          "transmission": 0,
+          "relativeForwardVelocity": 8470.62344798731
+        },
+        {
+          "time": 26.8,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 12.639495687722228,
+          "z": -106237.66955623953,
+          "distance": 103488.607388663,
+          "screenPixels": 0.8520993596596789,
+          "transmission": 0,
+          "relativeForwardVelocity": 8486.459899688998
+        },
+        {
+          "time": 27.2,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 13.039495687722226,
+          "z": -109637.70080623953,
+          "distance": 106892.21749373953,
+          "screenPixels": 0.8249672254494705,
+          "transmission": 0,
+          "relativeForwardVelocity": 8522.661562499998
+        },
+        {
+          "time": 27.6,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 13.439495687722228,
+          "z": -113037.73205623955,
+          "distance": 110391.51836873955,
+          "screenPixels": 0.7988165883668381,
+          "transmission": 0,
+          "relativeForwardVelocity": 8852.08968750012
+        },
+        {
+          "time": 28,
+          "id": "recede-4",
+          "birth": 14.160504312277773,
+          "age": 13.839495687722227,
+          "z": -116437.76330623953,
+          "distance": 114091.47424373953,
+          "screenPixels": 0.7729111808965028,
+          "transmission": 0,
+          "relativeForwardVelocity": 9389.192812499969
+        }
+      ]
+    },
+    {
+      "id": "recede-1",
+      "samples": [
+        {
+          "time": 13.6,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 0.293768067029303,
+          "z": -1790.316068814916,
+          "distance": 1299.074662564916,
+          "screenPixels": 90.11404007299477,
+          "transmission": 1,
+          "relativeForwardVelocity": 5630.7049279450985
+        },
+        {
+          "time": 14,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 0.6937680670293034,
+          "z": -4723.410439555328,
+          "distance": 4068.2346583053277,
+          "screenPixels": 28.775347548155388,
+          "transmission": 1,
+          "relativeForwardVelocity": 7118.817921641653
+        },
+        {
+          "time": 14.4,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 1.0937680670293037,
+          "z": -7907.931430819878,
+          "distance": 7092.946274569878,
+          "screenPixels": 16.50440616192118,
+          "transmission": 0.5510991421142131,
+          "relativeForwardVelocity": 7625.673221343641
+        },
+        {
+          "time": 14.8,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 1.493768067029304,
+          "z": -10967.95486065355,
+          "distance": 10000.58532940355,
+          "screenPixels": 11.70580144504091,
+          "transmission": 0.27116689144806544,
+          "relativeForwardVelocity": 7175.485408495106
+        },
+        {
+          "time": 15.2,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 1.8937680670293027,
+          "z": -13931.566093084077,
+          "distance": 12822.537186834077,
+          "screenPixels": 9.129617991701894,
+          "transmission": 0.13624483520816033,
+          "relativeForwardVelocity": 7031.691268755476
+        },
+        {
+          "time": 15.6,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 2.293768067029303,
+          "z": -16865.148937235786,
+          "distance": 15628.485655985787,
+          "screenPixels": 7.490480445579868,
+          "transmission": 0.0687224446212038,
+          "relativeForwardVelocity": 7015.038577679406
+        },
+        {
+          "time": 16,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 2.6937680670293034,
+          "z": -19789.37905843048,
+          "distance": 18442.40640218048,
+          "screenPixels": 6.347591721346418,
+          "transmission": 0.03459654139809317,
+          "relativeForwardVelocity": 7043.659987530773
+        },
+        {
+          "time": 16.4,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 3.093768067029302,
+          "z": -22710.696984901788,
+          "distance": 21262.06365735549,
+          "screenPixels": 5.505809223729281,
+          "transmission": 0.01739238446042426,
+          "relativeForwardVelocity": 7047.506245940713
+        },
+        {
+          "time": 16.8,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 3.493768067029304,
+          "z": -25631.106996850576,
+          "distance": 24083.013553563538,
+          "screenPixels": 4.86088943727165,
+          "transmission": 0.00874074892778278,
+          "relativeForwardVelocity": 7055.534363134448
+        },
+        {
+          "time": 17.2,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 3.8937680670293027,
+          "z": -28551.235283221467,
+          "distance": 26912.524501971468,
+          "screenPixels": 4.349828504256872,
+          "transmission": 0.00438360416224748,
+          "relativeForwardVelocity": 7081.289172307934
+        },
+        {
+          "time": 17.6,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 4.293768067029305,
+          "z": -31471.274345721486,
+          "distance": 29756.391382758524,
+          "screenPixels": 3.934108296075741,
+          "transmission": 0.0021907527048606163,
+          "relativeForwardVelocity": 7118.7921151621595
+        },
+        {
+          "time": 18,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 4.693768067029303,
+          "z": -34391.2869221395,
+          "distance": 32597.583218435797,
+          "screenPixels": 3.591213048394953,
+          "transmission": 0.0010955664847520038,
+          "relativeForwardVelocity": 7096.701012731446
+        },
+        {
+          "time": 18.4,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 5.093768067029302,
+          "z": -37311.290828389494,
+          "distance": 35430.4108283895,
+          "screenPixels": 3.3040787126968865,
+          "transmission": 0.0005489971678468533,
+          "relativeForwardVelocity": 7077.890058161793
+        },
+        {
+          "time": 18.8,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 5.493768067029304,
+          "z": -40231.29301930345,
+          "distance": 38258.22338967382,
+          "screenPixels": 3.0598615363771353,
+          "transmission": 0.00027544360358195606,
+          "relativeForwardVelocity": 7067.437037037016
+        },
+        {
+          "time": 19.2,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 5.893768067029303,
+          "z": -43151.29301930343,
+          "distance": 41084.36264893306,
+          "screenPixels": 2.8493776866032774,
+          "transmission": 0.00013825235071071349,
+          "relativeForwardVelocity": 7065.348148148114
+        },
+        {
+          "time": 19.6,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 6.293768067029305,
+          "z": -46071.293019303455,
+          "distance": 43912.17301930345,
+          "screenPixels": 2.665886430824687,
+          "transmission": 0.0000693641939574314,
+          "relativeForwardVelocity": 7071.614814814893
+        },
+        {
+          "time": 20,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 6.693768067029303,
+          "z": -48991.29301930344,
+          "distance": 46744.99672300714,
+          "screenPixels": 2.5043293273474445,
+          "transmission": 0.000034758988015634444,
+          "relativeForwardVelocity": 7086.237037037026
+        },
+        {
+          "time": 20.4,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 7.093768067029302,
+          "z": -51911.29301930343,
+          "distance": 49586.175982266395,
+          "screenPixels": 2.3608367429271646,
+          "transmission": 0,
+          "relativeForwardVelocity": 7109.214814814804
+        },
+        {
+          "time": 20.8,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 7.493768067029304,
+          "z": -54831.29301930344,
+          "distance": 52439.05301930344,
+          "screenPixels": 2.2323985552731855,
+          "transmission": 0,
+          "relativeForwardVelocity": 7140.548148148082
+        },
+        {
+          "time": 21.2,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 7.893768067029303,
+          "z": -57751.29301930343,
+          "distance": 55306.97005634047,
+          "screenPixels": 2.116638573419129,
+          "transmission": 0,
+          "relativeForwardVelocity": 7180.2370370370045
+        },
+        {
+          "time": 21.6,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 8.293768067029305,
+          "z": -60671.293019303455,
+          "distance": 58191.18446358051,
+          "screenPixels": 2.0117285337859574,
+          "transmission": 0,
+          "relativeForwardVelocity": 7219.043551322247
+        },
+        {
+          "time": 22,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 8.693768067029303,
+          "z": -63591.29301930344,
+          "distance": 61090.492503085225,
+          "screenPixels": 1.916253436560115,
+          "transmission": 0,
+          "relativeForwardVelocity": 7258.933208058625
+        },
+        {
+          "time": 22.4,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 9.093768067029302,
+          "z": -66511.29254372555,
+          "distance": 63995.98089587709,
+          "screenPixels": 1.8292534087516241,
+          "transmission": 0,
+          "relativeForwardVelocity": 7260.4345716713215
+        },
+        {
+          "time": 22.8,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 9.493768067029304,
+          "z": -69431.29254372558,
+          "distance": 66896.75252331444,
+          "screenPixels": 1.7499334688838335,
+          "transmission": 0,
+          "relativeForwardVelocity": 7249.317738791433
+        },
+        {
+          "time": 23.2,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 9.893768067029303,
+          "z": -72351.29254372556,
+          "distance": 69793.88513631816,
+          "screenPixels": 1.6772940204079676,
+          "transmission": 0,
+          "relativeForwardVelocity": 7240.89409426917
+        },
+        {
+          "time": 23.6,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 10.293768067029305,
+          "z": -75271.29254372558,
+          "distance": 72688.45696138716,
+          "screenPixels": 1.6105014619084985,
+          "transmission": 0,
+          "relativeForwardVelocity": 7235.166015994328
+        },
+        {
+          "time": 24,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 10.693768067029303,
+          "z": -78191.29254372558,
+          "distance": 75581.54622502023,
+          "screenPixels": 1.548855137888596,
+          "transmission": 0,
+          "relativeForwardVelocity": 7232.133503966106
+        },
+        {
+          "time": 24.4,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 11.093768067029302,
+          "z": -81111.29254372555,
+          "distance": 78474.2311537162,
+          "screenPixels": 1.4917618749380166,
+          "transmission": 0,
+          "relativeForwardVelocity": 7231.79655818516
+        },
+        {
+          "time": 24.8,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 11.493768067029304,
+          "z": -84031.29254372558,
+          "distance": 81367.58997397401,
+          "screenPixels": 1.4387161551378256,
+          "transmission": 0,
+          "relativeForwardVelocity": 7234.155178651417
+        },
+        {
+          "time": 25.2,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 11.893768067029303,
+          "z": -86951.29254372556,
+          "distance": 84262.7009122924,
+          "screenPixels": 1.3892845224844832,
+          "transmission": 0,
+          "relativeForwardVelocity": 7239.209365364804
+        },
+        {
+          "time": 25.6,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 12.293768067029305,
+          "z": -89871.45660622558,
+          "distance": 87160.80625767028,
+          "screenPixels": 1.3430906760329,
+          "transmission": 0,
+          "relativeForwardVelocity": 7247.505993325249
+        },
+        {
+          "time": 26,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 12.693768067029303,
+          "z": -92791.67535622558,
+          "distance": 90062.87486160645,
+          "screenPixels": 1.2998126739799576,
+          "transmission": 0,
+          "relativeForwardVelocity": 7257.95131253275
+        },
+        {
+          "time": 26.4,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 13.093768067029302,
+          "z": -95711.89410622556,
+          "distance": 92969.93026309974,
+          "screenPixels": 1.2591691299423364,
+          "transmission": 0,
+          "relativeForwardVelocity": 7271.092197987382
+        },
+        {
+          "time": 26.8,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 13.493768067029304,
+          "z": -98632.11285622558,
+          "distance": 95883.05068864905,
+          "screenPixels": 1.2209130326935407,
+          "transmission": 0,
+          "relativeForwardVelocity": 7286.928649689071
+        },
+        {
+          "time": 27.2,
+          "id": "recede-1",
+          "birth": 13.306231932970697,
+          "age": 13.893768067029303,
+          "z": -101552.33160622556,
+          "distance": 98806.84829372556,
+          "screenPixels": 1.1847849437741944,
+          "transmission": 0,
+          "relativeForwardVelocity": 7323.130312499925
+        }
+      ]
+    },
+    {
+      "id": "hero-chart",
+      "samples": [
+        {
+          "time": 13.6,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 0.34999999999999964,
+          "z": -524.0092773437495,
+          "distance": 32.76787109374959,
+          "screenPixels": 19275.644010400752,
+          "transmission": 1,
+          "relativeForwardVelocity": 807.585937499997
+        },
+        {
+          "time": 14,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 0.75,
+          "z": -1012.00927734375,
+          "distance": 356.83349609375,
+          "screenPixels": 1770.0743486700972,
+          "transmission": 1,
+          "relativeForwardVelocity": 811.7109374999961
+        },
+        {
+          "time": 14.4,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 1.1500000000000004,
+          "z": -1500.0092773437505,
+          "distance": 685.0241210937502,
+          "screenPixels": 922.0431788202338,
+          "transmission": 1,
+          "relativeForwardVelocity": 824.0859375000048
+        },
+        {
+          "time": 14.8,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 1.5500000000000007,
+          "z": -1988.009277343751,
+          "distance": 1020.6397460937505,
+          "screenPixels": 618.8489333275492,
+          "transmission": 1,
+          "relativeForwardVelocity": 844.7109375000048
+        },
+        {
+          "time": 15.2,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 1.9499999999999993,
+          "z": -2476.009277343749,
+          "distance": 1366.9803710937495,
+          "screenPixels": 462.0562456770644,
+          "transmission": 1,
+          "relativeForwardVelocity": 873.5859374999973
+        },
+        {
+          "time": 15.6,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 2.3499999999999996,
+          "z": -2964.0092773437495,
+          "distance": 1727.3459960937494,
+          "screenPixels": 365.66027860670584,
+          "transmission": 1,
+          "relativeForwardVelocity": 910.7109374999936
+        },
+        {
+          "time": 16,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 2.75,
+          "z": -3452.00927734375,
+          "distance": 2105.03662109375,
+          "screenPixels": 300.0526507959921,
+          "transmission": 1,
+          "relativeForwardVelocity": 956.0859374999973
+        },
+        {
+          "time": 16.4,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 3.1499999999999986,
+          "z": -3940.009277343748,
+          "distance": 2491.3759497974524,
+          "screenPixels": 253.52328629212656,
+          "transmission": 1,
+          "relativeForwardVelocity": 965.1479745370352
+        },
+        {
+          "time": 16.8,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 3.5500000000000007,
+          "z": -4428.009277343751,
+          "distance": 2879.9158340567133,
+          "screenPixels": 219.31954077008623,
+          "transmission": 1,
+          "relativeForwardVelocity": 974.800752314809
+        },
+        {
+          "time": 17.2,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 3.9499999999999993,
+          "z": -4916.009277343749,
+          "distance": 3277.2984960937492,
+          "screenPixels": 192.72636256192584,
+          "transmission": 1,
+          "relativeForwardVelocity": 1001.059085648144
+        },
+        {
+          "time": 17.6,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 4.350000000000001,
+          "z": -5404.009277343752,
+          "distance": 3689.1263143807887,
+          "screenPixels": 171.2117624489186,
+          "transmission": 1,
+          "relativeForwardVelocity": 1038.7237557870526
+        },
+        {
+          "time": 18,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 4.75,
+          "z": -5979.50927734375,
+          "distance": 4185.8055736400465,
+          "screenPixels": 150.8961195329838,
+          "transmission": 1,
+          "relativeForwardVelocity": 1436.681481481478
+        },
+        {
+          "time": 18.4,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 5.149999999999999,
+          "z": -6971.509277343745,
+          "distance": 5090.629277343745,
+          "screenPixels": 124.07539103130175,
+          "transmission": 0.8981029662994581,
+          "relativeForwardVelocity": 2537.881481481463
+        },
+        {
+          "time": 18.8,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 5.550000000000001,
+          "z": -8411.509277343754,
+          "distance": 6438.439647714124,
+          "screenPixels": 98.10169120806569,
+          "transmission": 0.6464853172756148,
+          "relativeForwardVelocity": 3647.437037037025
+        },
+        {
+          "time": 19.2,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 5.949999999999999,
+          "z": -10299.509277343746,
+          "distance": 8232.578906973376,
+          "screenPixels": 76.72223070304314,
+          "transmission": 0.41736266562834334,
+          "relativeForwardVelocity": 4765.348148148132
+        },
+        {
+          "time": 19.6,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 6.350000000000001,
+          "z": -12635.50927734376,
+          "distance": 10476.389277343758,
+          "screenPixels": 60.29002946155921,
+          "transmission": 0.2414553871024482,
+          "relativeForwardVelocity": 5891.614814814902
+        },
+        {
+          "time": 20,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 6.75,
+          "z": -15419.50927734375,
+          "distance": 13173.212981047454,
+          "screenPixels": 47.947438418443866,
+          "transmission": 0.12507616160269072,
+          "relativeForwardVelocity": 7026.237037037008
+        },
+        {
+          "time": 20.4,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 7.149999999999999,
+          "z": -18651.50927734374,
+          "distance": 16326.392240306703,
+          "screenPixels": 38.687164248232754,
+          "transmission": 0.05796588991121882,
+          "relativeForwardVelocity": 8169.214814814777
+        },
+        {
+          "time": 20.8,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 7.550000000000001,
+          "z": -22331.509277343757,
+          "distance": 19939.269277343756,
+          "screenPixels": 31.67728011474856,
+          "transmission": 0.024014677630099766,
+          "relativeForwardVelocity": 9320.5481481481
+        },
+        {
+          "time": 21.2,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 7.949999999999999,
+          "z": -26459.509277343743,
+          "distance": 24015.18631438078,
+          "screenPixels": 26.300933497384122,
+          "transmission": 0.008886551839771238,
+          "relativeForwardVelocity": 10480.237037037004
+        },
+        {
+          "time": 21.6,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 8.350000000000001,
+          "z": -31035.509277343765,
+          "distance": 28555.400721620816,
+          "screenPixels": 22.119171933160217,
+          "transmission": 0.0029363571167426105,
+          "relativeForwardVelocity": 11639.043551322284
+        },
+        {
+          "time": 22,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 8.75,
+          "z": -36059.50927734375,
+          "distance": 33558.708761125534,
+          "screenPixels": 18.821398125826878,
+          "transmission": 0.0008666246748573911,
+          "relativeForwardVelocity": 12798.933208058552
+        },
+        {
+          "time": 22.4,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 9.149999999999999,
+          "z": -41531.50927734373,
+          "distance": 39016.19762949527,
+          "screenPixels": 16.188707679303118,
+          "transmission": 0.0002289517164521522,
+          "relativeForwardVelocity": 13920.43694956068
+        },
+        {
+          "time": 22.8,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 9.55,
+          "z": -47451.509277343765,
+          "distance": 44916.96925693263,
+          "screenPixels": 14.061986563893814,
+          "transmission": 0.00005428774680333418,
+          "relativeForwardVelocity": 15029.317738791397
+        },
+        {
+          "time": 23.2,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 9.95,
+          "z": -53819.50927734374,
+          "distance": 51262.101869936334,
+          "screenPixels": 12.321418653187242,
+          "transmission": 0,
+          "relativeForwardVelocity": 16140.89409426917
+        },
+        {
+          "time": 23.6,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 10.350000000000001,
+          "z": -60635.50927734377,
+          "distance": 58052.673695005346,
+          "screenPixels": 10.880150352767659,
+          "transmission": 0,
+          "relativeForwardVelocity": 17255.166015994328
+        },
+        {
+          "time": 24,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 10.75,
+          "z": -67899.50927734375,
+          "distance": 65289.7629586384,
+          "screenPixels": 9.674132506530247,
+          "transmission": 0,
+          "relativeForwardVelocity": 18372.133503966106
+        },
+        {
+          "time": 24.4,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 11.149999999999999,
+          "z": -75611.50927734372,
+          "distance": 72974.44788733438,
+          "screenPixels": 8.65538330837367,
+          "transmission": 0,
+          "relativeForwardVelocity": 19491.79655818516
+        },
+        {
+          "time": 24.8,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 11.55,
+          "z": -83771.50927734376,
+          "distance": 81107.80670759222,
+          "screenPixels": 7.78743556041313,
+          "transmission": 0,
+          "relativeForwardVelocity": 20614.155178651417
+        },
+        {
+          "time": 25.2,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 11.95,
+          "z": -92379.50927734374,
+          "distance": 89690.91764591058,
+          "screenPixels": 7.042204882721665,
+          "transmission": 0,
+          "relativeForwardVelocity": 21739.20936536473
+        },
+        {
+          "time": 25.6,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 12.350000000000001,
+          "z": -101435.50927734378,
+          "distance": 98724.85892878848,
+          "screenPixels": 6.397799146387387,
+          "transmission": 0,
+          "relativeForwardVelocity": 22866.959118325467
+        },
+        {
+          "time": 26,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 12.75,
+          "z": -110939.50927734375,
+          "distance": 108210.70878272463,
+          "screenPixels": 5.836962212769961,
+          "transmission": 0,
+          "relativeForwardVelocity": 23997.404437532678
+        },
+        {
+          "time": 26.4,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 13.149999999999999,
+          "z": -120891.50927734372,
+          "distance": 118149.5454342179,
+          "screenPixels": 5.345952164779899,
+          "transmission": 0,
+          "relativeForwardVelocity": 25130.54532298731
+        },
+        {
+          "time": 26.8,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 13.55,
+          "z": -131291.50927734378,
+          "distance": 128542.44710976725,
+          "screenPixels": 4.913721750158159,
+          "transmission": 0,
+          "relativeForwardVelocity": 26266.38177468907
+        },
+        {
+          "time": 27.2,
+          "id": "hero-chart",
+          "birth": 13.25,
+          "age": 13.95,
+          "z": -142139.50927734372,
+          "distance": 139394.02596484372,
+          "screenPixels": 4.531197185890292,
+          "transmission": 0,
+          "relativeForwardVelocity": 27422.583437499852
+        }
+      ]
+    },
+    {
+      "id": "focus-catch",
+      "samples": [
+        {
+          "time": 10.8,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 0.2500000000000018,
+          "z": 475.5599884430203,
+          "distance": 19.03923030697956,
+          "screenPixels": 25302.779932697817,
+          "transmission": 1,
+          "relativeForwardVelocity": 1278.9777614890716
+        },
+        {
+          "time": 11.2,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 0.6500000000000004,
+          "z": -861.4091823081826,
+          "distance": 1255.599026058183,
+          "screenPixels": 383.6777860985144,
+          "transmission": 1,
+          "relativeForwardVelocity": 3403.5579598147992
+        },
+        {
+          "time": 11.6,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 1.0500000000000007,
+          "z": -1710.0522739900998,
+          "distance": 1984.8577427401,
+          "screenPixels": 242.7103183124872,
+          "transmission": 1,
+          "relativeForwardVelocity": 1001.3616294586825
+        },
+        {
+          "time": 12,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 1.450000000000001,
+          "z": -2237.2084180843194,
+          "distance": 2376.9545118343194,
+          "screenPixels": 202.67340083579757,
+          "transmission": 1,
+          "relativeForwardVelocity": 1001.9795116636283
+        },
+        {
+          "time": 12.4,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 1.8500000000000014,
+          "z": -2800.6542998207788,
+          "distance": 2792.9660185707785,
+          "screenPixels": 172.48525450802805,
+          "transmission": 1,
+          "relativeForwardVelocity": 1048.338334604009
+        },
+        {
+          "time": 12.8,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 2.2500000000000018,
+          "z": -3376.696413509901,
+          "distance": 3212.4987572599007,
+          "screenPixels": 149.95973257787625,
+          "transmission": 1,
+          "relativeForwardVelocity": 1045.1199112995027
+        },
+        {
+          "time": 13.2,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 2.6500000000000004,
+          "z": -3944.1281647047094,
+          "distance": 3617.64613345471,
+          "screenPixels": 133.16544426234594,
+          "transmission": 1,
+          "relativeForwardVelocity": 998.8227032885698
+        },
+        {
+          "time": 13.6,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 3.0500000000000007,
+          "z": -4484.587477847632,
+          "distance": 3993.3460715976316,
+          "screenPixels": 120.63704119506001,
+          "transmission": 1,
+          "relativeForwardVelocity": 916.7238339212531
+        },
+        {
+          "time": 14,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 3.450000000000001,
+          "z": -4991.979832228608,
+          "distance": 4336.804050978608,
+          "screenPixels": 111.08305768086242,
+          "transmission": 1,
+          "relativeForwardVelocity": 852.6676591374599
+        },
+        {
+          "time": 14.4,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 3.8500000000000014,
+          "z": -6175.466726254552,
+          "distance": 5360.481570004551,
+          "screenPixels": 89.86980894424482,
+          "transmission": 0.8408952441666815,
+          "relativeForwardVelocity": 3265.3543382453427
+        },
+        {
+          "time": 14.8,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 4.250000000000002,
+          "z": -8478.769570030157,
+          "distance": 7511.400038780157,
+          "screenPixels": 64.13524137421517,
+          "transmission": 0.49762801023165065,
+          "relativeForwardVelocity": 6080.378404699627
+        },
+        {
+          "time": 15.2,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 4.65,
+          "z": -11894.78900624999,
+          "distance": 10785.76009999999,
+          "screenPixels": 44.66495175851862,
+          "transmission": 0.22390647118837406,
+          "relativeForwardVelocity": 8887.267336879804
+        },
+        {
+          "time": 15.6,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 5.050000000000001,
+          "z": -16418.289659402017,
+          "distance": 15181.626378152017,
+          "screenPixels": 31.732137423612123,
+          "transmission": 0.07663592169517681,
+          "relativeForwardVelocity": 11690.27012886887
+        },
+        {
+          "time": 16,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 5.450000000000001,
+          "z": -22045.150313282313,
+          "distance": 20698.177657032313,
+          "screenPixels": 23.274776288422622,
+          "transmission": 0.019956713570198528,
+          "relativeForwardVelocity": 14491.64586123119
+        },
+        {
+          "time": 16.4,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 5.85,
+          "z": -28771.437933480956,
+          "distance": 27322.80460593466,
+          "screenPixels": 17.631625358138265,
+          "transmission": 0.00396617810109033,
+          "relativeForwardVelocity": 17246.58651074309
+        },
+        {
+          "time": 16.8,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 6.250000000000002,
+          "z": -36618.25000000001,
+          "distance": 35070.15655671297,
+          "screenPixels": 13.736621157262583,
+          "transmission": 0.0005994185957117846,
+          "relativeForwardVelocity": 20104.80075231475
+        },
+        {
+          "time": 17.2,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 6.65,
+          "z": -45646.24999999998,
+          "distance": 44007.53921874998,
+          "screenPixels": 10.946884626991382,
+          "transmission": 0.0000677693988397349,
+          "relativeForwardVelocity": 23091.059085648085
+        },
+        {
+          "time": 17.6,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 7.0500000000000025,
+          "z": -55858.25000000003,
+          "distance": 54143.36703703707,
+          "screenPixels": 8.897589509272926,
+          "transmission": 0,
+          "relativeForwardVelocity": 26088.72375578736
+        },
+        {
+          "time": 18,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 7.450000000000001,
+          "z": -67254.25,
+          "distance": 65460.5462962963,
+          "screenPixels": 7.359325300539255,
+          "transmission": 0,
+          "relativeForwardVelocity": 29026.681481481428
+        },
+        {
+          "time": 18.4,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 7.85,
+          "z": -79834.24999999994,
+          "distance": 77953.36999999994,
+          "screenPixels": 6.179918258126043,
+          "transmission": 0,
+          "relativeForwardVelocity": 31967.88148148131
+        },
+        {
+          "time": 18.8,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 8.250000000000002,
+          "z": -93598.25000000001,
+          "distance": 91625.18037037039,
+          "screenPixels": 5.2577845151095675,
+          "transmission": 0,
+          "relativeForwardVelocity": 34917.43703703694
+        },
+        {
+          "time": 19.2,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 8.65,
+          "z": -108546.24999999996,
+          "distance": 106479.31962962958,
+          "screenPixels": 4.5243100371144855,
+          "transmission": 0,
+          "relativeForwardVelocity": 37875.34814814797
+        },
+        {
+          "time": 19.6,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 9.050000000000002,
+          "z": -124678.25000000004,
+          "distance": 122519.13000000005,
+          "screenPixels": 3.93200192121389,
+          "transmission": 0,
+          "relativeForwardVelocity": 40841.61481481533
+        },
+        {
+          "time": 20,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 9.450000000000001,
+          "z": -141994.25,
+          "distance": 139747.9537037037,
+          "screenPixels": 3.447245142257042,
+          "transmission": 0,
+          "relativeForwardVelocity": 43816.23703703706
+        },
+        {
+          "time": 20.4,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 9.85,
+          "z": -160494.2499999999,
+          "distance": 158169.13296296287,
+          "screenPixels": 3.0457614929093704,
+          "transmission": 0,
+          "relativeForwardVelocity": 46799.21481481462
+        },
+        {
+          "time": 20.8,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 10.250000000000002,
+          "z": -180178.25000000003,
+          "distance": 177786.01000000004,
+          "screenPixels": 2.709692706110309,
+          "transmission": 0,
+          "relativeForwardVelocity": 49790.54814814808
+        },
+        {
+          "time": 21.2,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 10.65,
+          "z": -201046.24999999994,
+          "distance": 198601.92703703698,
+          "screenPixels": 2.425683686622107,
+          "transmission": 0,
+          "relativeForwardVelocity": 52790.23703703671
+        },
+        {
+          "time": 21.6,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 11.050000000000002,
+          "z": -223098.2500000001,
+          "distance": 220618.14144427713,
+          "screenPixels": 2.183616684429063,
+          "transmission": 0,
+          "relativeForwardVelocity": 55789.043551322975
+        },
+        {
+          "time": 22,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 11.450000000000001,
+          "z": -246334.24999999994,
+          "distance": 243833.44948378173,
+          "screenPixels": 1.975715208743324,
+          "transmission": 0,
+          "relativeForwardVelocity": 58788.93320805815
+        },
+        {
+          "time": 22.4,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 11.85,
+          "z": -270754.2499999999,
+          "distance": 268238.9383521514,
+          "screenPixels": 1.7959564614478378,
+          "transmission": 0,
+          "relativeForwardVelocity": 61750.43694956068
+        },
+        {
+          "time": 22.8,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 12.250000000000002,
+          "z": -296358.24999999994,
+          "distance": 293823.7099795888,
+          "screenPixels": 1.6395731119824204,
+          "transmission": 0,
+          "relativeForwardVelocity": 64699.31773879129
+        },
+        {
+          "time": 23.2,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 12.65,
+          "z": -323146.2499999999,
+          "distance": 320588.84259259247,
+          "screenPixels": 1.5026893969534103,
+          "transmission": 0,
+          "relativeForwardVelocity": 67650.89409426932
+        },
+        {
+          "time": 23.6,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 13.050000000000002,
+          "z": -351118.25,
+          "distance": 348535.41441766155,
+          "screenPixels": 1.3821994397624195,
+          "transmission": 0,
+          "relativeForwardVelocity": 70605.16601599491
+        },
+        {
+          "time": 24,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 13.450000000000001,
+          "z": -380274.24999999994,
+          "distance": 377664.5036812946,
+          "screenPixels": 1.27559103344272,
+          "transmission": 0,
+          "relativeForwardVelocity": 73562.13350396603
+        },
+        {
+          "time": 24.4,
+          "id": "focus-catch",
+          "birth": 10.549999999999999,
+          "age": 13.85,
+          "z": -410614.24999999977,
+          "distance": 407977.1886099904,
+          "screenPixels": 1.1808146827689026,
+          "transmission": 0,
+          "relativeForwardVelocity": 76521.79655818472
+        }
+      ]
+    },
+    {
+      "id": "eddy-0",
+      "samples": [
+        {
+          "time": 12.8,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 0,
+          "z": 25.002343749999635,
+          "distance": -189.2,
+          "screenPixels": -1018.489333077071,
+          "transmission": 1,
+          "relativeForwardVelocity": null
+        },
+        {
+          "time": 13.2,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 0.3999999999999986,
+          "z": -2530.759765624988,
+          "distance": 2204.2777343749885,
+          "screenPixels": 87.4201008398882,
+          "transmission": 1,
+          "relativeForwardVelocity": 7107.257812499965
+        },
+        {
+          "time": 13.6,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 0.7999999999999989,
+          "z": -6030.30273437499,
+          "distance": 5539.06132812499,
+          "screenPixels": 34.7889597899454,
+          "transmission": 0.8050553659331376,
+          "relativeForwardVelocity": 8557.056152343717
+        },
+        {
+          "time": 14,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 1.1999999999999993,
+          "z": -9755.308593749993,
+          "distance": 9100.132812499993,
+          "screenPixels": 21.175315326551114,
+          "transmission": 0.33776724433083144,
+          "relativeForwardVelocity": 8829.765136718715
+        },
+        {
+          "time": 14.4,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 1.5999999999999996,
+          "z": -13289.204101562496,
+          "distance": 12474.218945312496,
+          "screenPixels": 15.447715216718482,
+          "transmission": 0.1483255017271992,
+          "relativeForwardVelocity": 8347.75781250004
+        },
+        {
+          "time": 14.8,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 2,
+          "z": -16733.052734375,
+          "distance": 15765.683203125,
+          "screenPixels": 12.222634397473247,
+          "transmission": 0.06646084879206962,
+          "relativeForwardVelocity": 8204.50585937505
+        },
+        {
+          "time": 15.2,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 2.3999999999999986,
+          "z": -20147.414062499985,
+          "distance": 19038.385156249984,
+          "screenPixels": 10.121561268809725,
+          "transmission": 0.0299159877769535,
+          "relativeForwardVelocity": 8179.718749999956
+        },
+        {
+          "time": 15.6,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 2.799999999999999,
+          "z": -23552.11523437499,
+          "distance": 22315.45195312499,
+          "screenPixels": 8.635190639336209,
+          "transmission": 0.013451739938613087,
+          "relativeForwardVelocity": 8199.26562499997
+        },
+        {
+          "time": 16,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 3.1999999999999993,
+          "z": -26953.656249999996,
+          "distance": 25606.683593749996,
+          "screenPixels": 7.525308035797928,
+          "transmission": 0.006027721246647964,
+          "relativeForwardVelocity": 8238.888671874975
+        },
+        {
+          "time": 16.4,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 3.599999999999998,
+          "z": -30354.160156249978,
+          "distance": 28905.52682870368,
+          "screenPixels": 6.666482259954149,
+          "transmission": 0.0026960106022827185,
+          "relativeForwardVelocity": 8246.065943286976
+        },
+        {
+          "time": 16.8,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 4,
+          "z": -33754.32421875,
+          "distance": 32206.230775462962,
+          "screenPixels": 5.983257810007163,
+          "transmission": 0.001205293833599241,
+          "relativeForwardVelocity": 8255.093721064786
+        },
+        {
+          "time": 17.2,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 4.399999999999999,
+          "z": -37154.378906249985,
+          "distance": 35515.66812499998,
+          "screenPixels": 5.425723124226933,
+          "transmission": 0.0005376989441430806,
+          "relativeForwardVelocity": 8281.156741898085
+        },
+        {
+          "time": 17.6,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 4.800000000000001,
+          "z": -40554.39843750001,
+          "distance": 38839.515474537046,
+          "screenPixels": 4.961395101453148,
+          "transmission": 0.00023903365183163065,
+          "relativeForwardVelocity": 8318.762818287178
+        },
+        {
+          "time": 18,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 5.199999999999999,
+          "z": -43954.40234374999,
+          "distance": 42160.69864004629,
+          "screenPixels": 4.570564246654766,
+          "transmission": 0.0001063312977108208,
+          "relativeForwardVelocity": 8296.681481481464
+        },
+        {
+          "time": 18.4,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 5.599999999999998,
+          "z": -47354.40624999998,
+          "distance": 45473.52624999998,
+          "screenPixels": 4.237590477562357,
+          "transmission": 0.0000473967156403825,
+          "relativeForwardVelocity": 8277.881481481454
+        },
+        {
+          "time": 18.8,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 6,
+          "z": -50754.40625,
+          "distance": 48781.33662037037,
+          "screenPixels": 3.9502439901926323,
+          "transmission": 0,
+          "relativeForwardVelocity": 8267.437037037053
+        },
+        {
+          "time": 19.2,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 6.399999999999999,
+          "z": -54154.40624999999,
+          "distance": 52087.47587962962,
+          "screenPixels": 3.6995108433262027,
+          "transmission": 0,
+          "relativeForwardVelocity": 8265.34814814815
+        },
+        {
+          "time": 19.6,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 6.800000000000001,
+          "z": -57554.40625,
+          "distance": 55395.28625,
+          "screenPixels": 3.4786025104831335,
+          "transmission": 0,
+          "relativeForwardVelocity": 8271.614814814893
+        },
+        {
+          "time": 20,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 7.199999999999999,
+          "z": -60954.40624999999,
+          "distance": 58708.10995370369,
+          "screenPixels": 3.2823094112575015,
+          "transmission": 0,
+          "relativeForwardVelocity": 8286.23703703699
+        },
+        {
+          "time": 20.4,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 7.599999999999998,
+          "z": -64354.40624999998,
+          "distance": 62029.28921296294,
+          "screenPixels": 3.106567627376771,
+          "transmission": 0,
+          "relativeForwardVelocity": 8309.214814814732
+        },
+        {
+          "time": 20.8,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 8,
+          "z": -67754.40625,
+          "distance": 65362.16625,
+          "screenPixels": 2.9481608837923394,
+          "transmission": 0,
+          "relativeForwardVelocity": 8340.548148148155
+        },
+        {
+          "time": 21.2,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 8.399999999999999,
+          "z": -71154.40624999999,
+          "distance": 68710.08328703702,
+          "screenPixels": 2.8045109625785685,
+          "transmission": 0,
+          "relativeForwardVelocity": 8380.237037037004
+        },
+        {
+          "time": 21.6,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 8.8,
+          "z": -74554.40625,
+          "distance": 72074.29769427705,
+          "screenPixels": 2.673604710455371,
+          "transmission": 0,
+          "relativeForwardVelocity": 8419.043551322175
+        },
+        {
+          "time": 22,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 9.2,
+          "z": -77954.40624999999,
+          "distance": 75453.60573378178,
+          "screenPixels": 2.553863131446186,
+          "transmission": 0,
+          "relativeForwardVelocity": 8458.933208058588
+        },
+        {
+          "time": 22.4,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 9.599999999999998,
+          "z": -81354.40624999999,
+          "distance": 78839.09460215153,
+          "screenPixels": 2.444195773563882,
+          "transmission": 0,
+          "relativeForwardVelocity": 8460.436949560753
+        },
+        {
+          "time": 22.8,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 10,
+          "z": -84754.40625,
+          "distance": 82219.86622958886,
+          "screenPixels": 2.3436936917422835,
+          "transmission": 0,
+          "relativeForwardVelocity": 8449.317738791433
+        },
+        {
+          "time": 23.2,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 10.399999999999999,
+          "z": -88154.40624999999,
+          "distance": 85596.99884259258,
+          "screenPixels": 2.2512259124007548,
+          "transmission": 0,
+          "relativeForwardVelocity": 8440.894094269242
+        },
+        {
+          "time": 23.6,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 10.8,
+          "z": -91554.40625,
+          "distance": 88971.57066766158,
+          "screenPixels": 2.1658399460876514,
+          "transmission": 0,
+          "relativeForwardVelocity": 8435.166015994255
+        },
+        {
+          "time": 24,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 11.2,
+          "z": -94954.40624999999,
+          "distance": 92344.65993129463,
+          "screenPixels": 2.0867279381563724,
+          "transmission": 0,
+          "relativeForwardVelocity": 8432.133503966033
+        },
+        {
+          "time": 24.4,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 11.599999999999998,
+          "z": -98354.40624999999,
+          "distance": 95717.34485999064,
+          "screenPixels": 2.01320024181666,
+          "transmission": 0,
+          "relativeForwardVelocity": 8431.796558185233
+        },
+        {
+          "time": 24.8,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 12,
+          "z": -101754.40625,
+          "distance": 99090.70368024844,
+          "screenPixels": 1.9446645816543129,
+          "transmission": 0,
+          "relativeForwardVelocity": 8434.155178651417
+        },
+        {
+          "time": 25.2,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 12.399999999999999,
+          "z": -105154.43749999999,
+          "distance": 102465.84586856683,
+          "screenPixels": 1.8806089012855678,
+          "transmission": 0,
+          "relativeForwardVelocity": 8439.287490364732
+        },
+        {
+          "time": 25.6,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 12.8,
+          "z": -108554.46875,
+          "distance": 105843.8184014447,
+          "screenPixels": 1.8205898533187423,
+          "transmission": 0,
+          "relativeForwardVelocity": 8447.037243325249
+        },
+        {
+          "time": 26,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 13.2,
+          "z": -111954.5,
+          "distance": 109225.69950538088,
+          "screenPixels": 1.7642201669643578,
+          "transmission": 0,
+          "relativeForwardVelocity": 8457.48256253275
+        },
+        {
+          "time": 26.4,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 13.599999999999998,
+          "z": -115354.53124999999,
+          "distance": 112612.56740687416,
+          "screenPixels": 1.7111605414514244,
+          "transmission": 0,
+          "relativeForwardVelocity": 8470.623447987382
+        },
+        {
+          "time": 26.8,
+          "id": "eddy-0",
+          "birth": 12.8,
+          "age": 14,
+          "z": -118754.5625,
+          "distance": 116005.50033242347,
+          "screenPixels": 1.6611124581678374,
+          "transmission": 0,
+          "relativeForwardVelocity": 8486.45989968907
+        }
+      ]
+    }
+  ],
+  "pageMaterial": [
+    {
+      "id": "page-4",
+      "samples": [
+        {
+          "time": 6.8,
+          "release": 6.6,
+          "age": 0.20000000000000018,
+          "position": [
+            -427.85683436939934,
+            -150.76609697365973,
+            -708.7593727989201
+          ],
+          "rotation": [
+            -0.008116372437252538,
+            0.07637821251284256,
+            0.053576931669198975
+          ],
+          "transmission": 1,
+          "width": 145,
+          "height": 158,
+          "distance": 1644.6080632160485,
+          "screenPixels": 101.39193874187787,
+          "relativeForwardVelocity": null
+        },
+        {
+          "time": 7.2,
+          "release": 6.6,
+          "age": 0.6000000000000005,
+          "position": [
+            -448.0366022493887,
+            -179.5431448124553,
+            -3447.985281353334
+          ],
+          "rotation": [
+            0.17591010897674053,
+            0.5563245846809338,
+            0.19188410231763947
+          ],
+          "transmission": 1,
+          "width": 145,
+          "height": 158,
+          "distance": 4342.848616374683,
+          "screenPixels": 38.396456964046635,
+          "relativeForwardVelocity": 6745.601382896581
+        },
+        {
+          "time": 7.6,
+          "release": 6.6,
+          "age": 1,
+          "position": [
+            -469.83313630907026,
+            -214.10602633217826,
+            -6994.269546121215
+          ],
+          "rotation": [
+            0.1565520324495849,
+            0.7624014040455946,
+            0.321538659987086
+          ],
+          "transmission": 0.45837572243880476,
+          "width": 145,
+          "height": 158,
+          "distance": 7848.270913670705,
+          "screenPixels": 21.24671814138607,
+          "relativeForwardVelocity": 8763.555743240067
+        },
+        {
+          "time": 8,
+          "release": 6.6,
+          "age": 1.4000000000000004,
+          "position": [
+            -491.9878921031524,
+            -253.32649160112453,
+            -10755.898394589438
+          ],
+          "rotation": [
+            0.5660322790114451,
+            0.9476966460118447,
+            0.4501017626153404
+          ],
+          "transmission": 0.18491832361544241,
+          "width": 145,
+          "height": 158,
+          "distance": 11570.148285982359,
+          "screenPixels": 14.412088408756478,
+          "relativeForwardVelocity": 9304.693430779125
+        },
+        {
+          "time": 8.4,
+          "release": 6.6,
+          "age": 1.8000000000000007,
+          "position": [
+            -513.2799807104143,
+            -295.95253566113524,
+            -14574.986891882363
+          ],
+          "rotation": [
+            0.650123311964867,
+            1.5646833373426507,
+            0.5872525983034882
+          ],
+          "transmission": 0.07352409001355453,
+          "width": 145,
+          "height": 158,
+          "distance": 15351.582901825373,
+          "screenPixels": 10.862072078584982,
+          "relativeForwardVelocity": 9453.586539607528
+        },
+        {
+          "time": 8.8,
+          "release": 6.6,
+          "age": 2.200000000000001,
+          "position": [
+            -533.0319507536927,
+            -341.20123786799866,
+            -18409.407148100105
+          ],
+          "rotation": [
+            1.0710702104267353,
+            2.0110798695524945,
+            0.7376448419715891
+          ],
+          "transmission": 0.029102385978477224,
+          "width": 145,
+          "height": 158,
+          "distance": 19151.43397469123,
+          "screenPixels": 8.706919817093667,
+          "relativeForwardVelocity": 9499.627682164633
+        },
+        {
+          "time": 9.2,
+          "release": 6.6,
+          "age": 2.5999999999999996,
+          "position": [
+            -551.6154726332552,
+            -389.5558872089913,
+            -22247.91832440761
+          ],
+          "rotation": [
+            1.314012936042393,
+            2.0696572440741003,
+            0.9025866861396218
+          ],
+          "transmission": 0.011496427223708854,
+          "width": 145,
+          "height": 158,
+          "distance": 22959.447769136244,
+          "screenPixels": 7.262805346048324,
+          "relativeForwardVelocity": 9520.03448611257
+        },
+        {
+          "time": 9.6,
+          "release": 6.6,
+          "age": 3,
+          "position": [
+            -570.7956667908578,
+            -443.6297922350227,
+            -26087.521066742425
+          ],
+          "rotation": [
+            1.6616676500273913,
+            2.4984524314877246,
+            1.0810101757962058
+          ],
+          "transmission": 0.004535801353264612,
+          "width": 145,
+          "height": 158,
+          "distance": 26772.589378239336,
+          "screenPixels": 6.228385220576901,
+          "relativeForwardVelocity": 9532.85402275772
+        },
+        {
+          "time": 10,
+          "release": 6.6,
+          "age": 3.4000000000000004,
+          "position": [
+            -594.4564322003707,
+            -510.1180110831208,
+            -29927.415067856633
+          ],
+          "rotation": [
+            1.9873970409459027,
+            3.117358903111482,
+            1.2699770928114702
+          ],
+          "transmission": 0.0017966948936375703,
+          "width": 145,
+          "height": 158,
+          "distance": 30569.40653564395,
+          "screenPixels": 5.4548000402156775,
+          "relativeForwardVelocity": 9492.042893511525
+        },
+        {
+          "time": 10.4,
+          "release": 6.6,
+          "age": 3.8000000000000007,
+          "position": [
+            -625.2189717365898,
+            -592.8056056287282,
+            -33767.38678454136
+          ],
+          "rotation": [
+            2.1820374822011814,
+            3.2812932827818315,
+            1.465160217730152
+          ],
+          "transmission": 0.0007154841564724177,
+          "width": 145,
+          "height": 158,
+          "distance": 34344.45952028259,
+          "screenPixels": 4.855222715079372,
+          "relativeForwardVelocity": 9437.632461596586
+        },
+        {
+          "time": 10.8,
+          "release": 6.6,
+          "age": 4.200000000000001,
+          "position": [
+            -663.649617339895,
+            -689.1237393492837,
+            -37607.379237802386
+          ],
+          "rotation": [
+            2.510022858190967,
+            3.582189657101474,
+            1.6614259096966364
+          ],
+          "transmission": 0.0002861429245607789,
+          "width": 145,
+          "height": 158,
+          "distance": 38101.97845655239,
+          "screenPixels": 4.376413161593294,
+          "relativeForwardVelocity": 9393.797340674491
+        },
+        {
+          "time": 11.2,
+          "release": 6.6,
+          "age": 4.6,
+          "position": [
+            -707.5706547365169,
+            -787.3188876321766,
+            -41447.37722413217
+          ],
+          "rotation": [
+            2.5469643864645084,
+            4.109194820186769,
+            1.853499392247345
+          ],
+          "transmission": 0.00011493843520473644,
+          "width": 145,
+          "height": 158,
+          "distance": 41841.56706788217,
+          "screenPixels": 3.9852713864533595,
+          "relativeForwardVelocity": 9348.971528324488
+        },
+        {
+          "time": 11.6,
+          "release": 6.6,
+          "age": 5,
+          "position": [
+            -752.226069899605,
+            -867.602242522156,
+            -45287.376686831536
+          ],
+          "rotation": [
+            2.8376332506743567,
+            4.511445033818956,
+            2.036642788700662
+          ],
+          "transmission": 0.000046382839126373974,
+          "width": 145,
+          "height": 158,
+          "distance": 45562.18215558153,
+          "screenPixels": 3.659833487136272,
+          "relativeForwardVelocity": 9301.5377192484
+        },
+        {
+          "time": 12,
+          "release": 6.6,
+          "age": 5.4,
+          "position": [
+            -791.6877696218816,
+            -908.9088013305909,
+            -49127.37654346548
+          ],
+          "rotation": [
+            2.825903084468398,
+            4.798686276665492,
+            2.2072629811145896
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 49267.12263721548,
+          "screenPixels": 3.384610082222259,
+          "relativeForwardVelocity": 9262.351204084853
+        },
+        {
+          "time": 12.4,
+          "release": 6.6,
+          "age": 5.800000000000001,
+          "position": [
+            -820.984488014881,
+            -898.3874630625436,
+            -52967.3765052116
+          ],
+          "rotation": [
+            3.114836482990132,
+            5.1150656932873195,
+            2.363372374360333
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 52959.6882239616,
+          "screenPixels": 3.148621254997381,
+          "relativeForwardVelocity": 9231.413966865302
+        },
+        {
+          "time": 12.8,
+          "release": 6.6,
+          "age": 6.200000000000001,
+          "position": [
+            -838.0065053239618,
+            -837.9315764629771,
+            -56807.37649500446
+          ],
+          "rotation": [
+            3.179596245447718,
+            5.53701111074044,
+            2.5048437427258974
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 56643.17883875446,
+          "screenPixels": 2.9438672655481692,
+          "relativeForwardVelocity": 9208.726536982133
+        },
+        {
+          "time": 13.2,
+          "release": 6.6,
+          "age": 6.6,
+          "position": [
+            -844.4366939337838,
+            -743.34699617513,
+            -60647.376492280906
+          ],
+          "rotation": [
+            3.537735249769482,
+            5.9860804708994975,
+            2.633426546652635
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 60320.894461030904,
+          "screenPixels": 2.7643820850124405,
+          "relativeForwardVelocity": 9194.289055691148
+        },
+        {
+          "time": 13.6,
+          "release": 6.6,
+          "age": 7,
+          "position": [
+            -845.450375046909,
+            -636.5990313261129,
+            -64487.376491554205
+          ],
+          "rotation": [
+            3.7087460029975583,
+            6.151489835508291,
+            2.7525226420586657
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 63996.1350853042,
+          "screenPixels": 2.605626101915829,
+          "relativeForwardVelocity": 9188.101560683237
+        },
+        {
+          "time": 14,
+          "release": 6.6,
+          "age": 7.4,
+          "position": [
+            -848.23517460877,
+            -536.2438743629772,
+            -68327.3764913603
+          ],
+          "rotation": [
+            4.144858450240434,
+            6.446763745228302,
+            2.8667501410812584
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 67672.2007101103,
+          "screenPixels": 2.464084191887192,
+          "relativeForwardVelocity": 9190.164062015221
+        },
+        {
+          "time": 14.4,
+          "release": 6.6,
+          "age": 7.800000000000001,
+          "position": [
+            -857.678356316513,
+            -450.40975314484115,
+            -72167.37649130855
+          ],
+          "rotation": [
+            4.354901211999935,
+            7.068806435737031,
+            2.9813513408254635
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 71352.39133505855,
+          "screenPixels": 2.3369924522497176,
+          "relativeForwardVelocity": 9200.476562370633
+        },
+        {
+          "time": 14.8,
+          "release": 6.6,
+          "age": 8.200000000000001,
+          "position": [
+            -873.0732396971296,
+            -378.61719411468175,
+            -76007.37649129475
+          ],
+          "rotation": [
+            4.7643384636008435,
+            7.363060947229557,
+            3.101520627586192
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 75040.00696004475,
+          "screenPixels": 2.2221479815265273,
+          "relativeForwardVelocity": 9219.039062465481
+        },
+        {
+          "time": 15.2,
+          "release": 6.6,
+          "age": 8.6,
+          "position": [
+            -893.8315892926594,
+            -320.2772838795016,
+            -79847.37649129104
+          ],
+          "rotation": [
+            4.946157366475131,
+            7.442013002776284,
+            3.23173852352999
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 78738.34758504105,
+          "screenPixels": 2.1177736784468624,
+          "relativeForwardVelocity": 9245.851562490785
+        },
+        {
+          "time": 15.6,
+          "release": 6.6,
+          "age": 9,
+          "position": [
+            -915.5852769957054,
+            -273.99945616995404,
+            -83687.37649129008
+          ],
+          "rotation": [
+            5.2258319453929225,
+            8.099357439902697,
+            3.375197255290733
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 82450.71321004008,
+          "screenPixels": 2.0224203467495867,
+          "relativeForwardVelocity": 9280.914062497568
+        },
+        {
+          "time": 16,
+          "release": 6.6,
+          "age": 9.4,
+          "position": [
+            -932.2709199331407,
+            -239.76591003588686,
+            -87527.3764912898
+          ],
+          "rotation": [
+            5.358388871116816,
+            8.53707935531805,
+            3.533391490236215
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 86180.4038350398,
+          "screenPixels": 1.934894623134751,
+          "relativeForwardVelocity": 9324.226562499307
+        },
+        {
+          "time": 16.4,
+          "release": 6.6,
+          "age": 9.799999999999999,
+          "position": [
+            -938.4780633384398,
+            -218.65066691844657,
+            -91367.37649128973
+          ],
+          "rotation": [
+            5.5134687570587415,
+            8.677509582985936,
+            3.705926710616524
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 89918.74316374343,
+          "screenPixels": 1.8544520767638584,
+          "relativeForwardVelocity": 9345.84832175911
+        },
+        {
+          "time": 16.8,
+          "release": 6.6,
+          "age": 10.200000000000001,
+          "position": [
+            -930.9223134426472,
+            -211.47953766172662,
+            -95207.37649128973
+          ],
+          "rotation": [
+            5.6321669866973165,
+            8.990223302332868,
+            3.890569793245834
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 93659.28304800269,
+          "screenPixels": 1.7803894560514255,
+          "relativeForwardVelocity": 9351.349710648088
+        },
+        {
+          "time": 17.2,
+          "release": 6.6,
+          "age": 10.6,
+          "position": [
+            -908.9294151228908,
+            -217.73661450698845,
+            -99047.37649128972
+          ],
+          "rotation": [
+            5.7680656380835025,
+            9.667630966462912,
+            4.0835353100810465
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 97408.66571003971,
+          "screenPixels": 1.7118600155798398,
+          "relativeForwardVelocity": 9373.456655092592
+        },
+        {
+          "time": 17.6,
+          "release": 6.6,
+          "age": 11.000000000000002,
+          "position": [
+            -874.2124910493687,
+            -235.20631919434726,
+            -102887.37649128973
+          ],
+          "rotation": [
+            5.937608976885382,
+            9.88084418132909,
+            4.279970844144417
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 101172.49352832677,
+          "screenPixels": 1.648175251836731,
+          "relativeForwardVelocity": 9409.56954571759
+        },
+        {
+          "time": 18,
+          "release": 6.6,
+          "age": 11.4,
+          "position": [
+            -830.2378673408596,
+            -260.32723233900833,
+            -106727.37649128972
+          ],
+          "rotation": [
+            6.146931601603426,
+            10.085160073871178,
+            4.474579100205753
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 104933.67278758601,
+          "screenPixels": 1.5890990524800068,
+          "relativeForwardVelocity": 9402.94814814813
+        },
+        {
+          "time": 18.4,
+          "release": 6.6,
+          "age": 11.799999999999999,
+          "position": [
+            -781.3975495782952,
+            -289.0433132577367,
+            -110567.37649128972
+          ],
+          "rotation": [
+            6.403892854813239,
+            10.57515988457038,
+            4.662297051682775
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 108686.49649128971,
+          "screenPixels": 1.5342292316264292,
+          "relativeForwardVelocity": 9382.059259259291
+        },
+        {
+          "time": 18.8,
+          "release": 6.6,
+          "age": 12.200000000000001,
+          "position": [
+            -732.1784531573417,
+            -317.87282299539555,
+            -114407.37649128973
+          ],
+          "rotation": [
+            6.685475797243505,
+            11.094380786348951,
+            4.83894505281257
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 112434.30686166011,
+          "screenPixels": 1.4830882553060096,
+          "relativeForwardVelocity": 9369.525925925942
+        },
+        {
+          "time": 19.2,
+          "release": 6.6,
+          "age": 12.6,
+          "position": [
+            -686.4974434141902,
+            -344.903014714094,
+            -118247.37649128972
+          ],
+          "rotation": [
+            6.992108139190543,
+            11.270178586433042,
+            5.001762695790186
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 116180.44612091934,
+          "screenPixels": 1.4352673411707202,
+          "relativeForwardVelocity": 9365.34814814811
+        },
+        {
+          "time": 19.6,
+          "release": 6.6,
+          "age": 13.000000000000002,
+          "position": [
+            -647.2991968685436,
+            -370.4737287173882,
+            -122087.37649128973
+          ],
+          "rotation": [
+            7.269393200373901,
+            11.565586770594624,
+            5.149762712585132
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 119928.25649128974,
+          "screenPixels": 1.3904146101891415,
+          "relativeForwardVelocity": 9369.525925925942
+        },
+        {
+          "time": 20,
+          "release": 6.6,
+          "age": 13.4,
+          "position": [
+            -616.4103312327611,
+            -397.4236281172881,
+            -125927.37649128972
+          ],
+          "rotation": [
+            7.538057021746845,
+            12.108411029038527,
+            5.283857548974637
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 123681.08019499342,
+          "screenPixels": 1.3482256116869684,
+          "relativeForwardVelocity": 9382.059259259255
+        },
+        {
+          "time": 20.4,
+          "release": 6.6,
+          "age": 13.799999999999999,
+          "position": [
+            -594.5737863283873,
+            -430.8847755061083,
+            -129767.37649128972
+          ],
+          "rotation": [
+            7.738186775753874,
+            12.529574934983213,
+            5.4067423831985675
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 127442.25945425268,
+          "screenPixels": 1.3084356846314187,
+          "relativeForwardVelocity": 9402.948148148167
+        },
+        {
+          "time": 20.8,
+          "release": 6.6,
+          "age": 14.200000000000001,
+          "position": [
+            -578.9286344808127,
+            -472.13383725811866,
+            -133607.37649128973
+          ],
+          "rotation": [
+            7.921644117612004,
+            12.659308343739383,
+            5.522549586987579
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 131215.13649128974,
+          "screenPixels": 1.270813752581579,
+          "relativeForwardVelocity": 9432.192592592604
+        },
+        {
+          "time": 21.2,
+          "release": 6.6,
+          "age": 14.6,
+          "position": [
+            -563.0026619028743,
+            -510.3932374449339,
+            -137447.37649128973
+          ],
+          "rotation": [
+            8.049157721012245,
+            13.06903658974994,
+            5.636318929255744
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 135003.05352832677,
+          "screenPixels": 1.235157247498939,
+          "relativeForwardVelocity": 9469.7925925926
+        },
+        {
+          "time": 21.6,
+          "release": 6.6,
+          "age": 15.000000000000002,
+          "position": [
+            -547.4038795350485,
+            -543.5424782485851,
+            -141287.37649128973
+          ],
+          "rotation": [
+            8.188199163029939,
+            13.62573984478608,
+            5.75335144570992
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 138807.26793556678,
+          "screenPixels": 1.2013059725187014,
+          "relativeForwardVelocity": 9510.536018099978
+        },
+        {
+          "time": 22,
+          "release": 6.6,
+          "age": 15.4,
+          "position": [
+            -533.3612880092688,
+            -570.2983100706197,
+            -145127.37649128973
+          ],
+          "rotation": [
+            8.32308801281447,
+            13.914543477659615,
+            5.878529812396532
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 142626.57597507152,
+          "screenPixels": 1.1691369498286548,
+          "relativeForwardVelocity": 9548.270098761894
+        },
+        {
+          "time": 22.4,
+          "release": 6.6,
+          "age": 15.799999999999999,
+          "position": [
+            -522.3696932131843,
+            -589.8121031455756,
+            -148967.3764912897
+          ],
+          "rotation": [
+            8.506640848620508,
+            14.05935477687719,
+            6.015692355614519
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 146452.06484344124,
+          "screenPixels": 1.1385978079466306,
+          "relativeForwardVelocity": 9563.722170924337
+        },
+        {
+          "time": 22.8,
+          "release": 6.6,
+          "age": 16.200000000000003,
+          "position": [
+            -516.0632546540513,
+            -601.725087365708,
+            -152807.37649128976
+          ],
+          "rotation": [
+            8.721566956578139,
+            14.615393014584338,
+            6.167140954100293
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 150272.83647087862,
+          "screenPixels": 1.1096483164627993,
+          "relativeForwardVelocity": 9551.929068593403
+        },
+        {
+          "time": 23.2,
+          "release": 6.6,
+          "age": 16.6,
+          "position": [
+            -516.0340612857619,
+            -606.1422122815048,
+            -156647.37649128973
+          ],
+          "rotation": [
+            8.996558359310038,
+            15.1004885677437,
+            6.333345923550703
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 154089.96908388232,
+          "screenPixels": 1.0821599938749156,
+          "relativeForwardVelocity": 9542.83153250926
+        },
+        {
+          "time": 23.6,
+          "release": 6.6,
+          "age": 17,
+          "position": [
+            -523.6321133254492,
+            -603.5299615432059,
+            -160487.37649128973
+          ],
+          "rotation": [
+            9.283883334550367,
+            15.2350454767796,
+            6.5128857191629645
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 157904.5409089513,
+          "screenPixels": 1.056017762631342,
+          "relativeForwardVelocity": 9536.429562672442
+        },
+        {
+          "time": 24,
+          "release": 6.6,
+          "age": 17.4,
+          "position": [
+            -539.7753290978387,
+            -594.5663586791525,
+            -164327.3764912897
+          ],
+          "rotation": [
+            9.609774475707145,
+            15.544467185757009,
+            6.702629186708938
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 161717.63017258435,
+          "screenPixels": 1.0311182511272587,
+          "relativeForwardVelocity": 9532.723159082632
+        },
+        {
+          "time": 24.4,
+          "release": 6.6,
+          "age": 17.799999999999997,
+          "position": [
+            -564.7848356018895,
+            -579.9824726521268,
+            -168167.3764912897
+          ],
+          "rotation": [
+            9.888671590685254,
+            16.154770819523424,
+            6.89813699639828
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 165530.31510128037,
+          "screenPixels": 1.0073683475922424,
+          "relativeForwardVelocity": 9531.712321740086
+        },
+        {
+          "time": 24.8,
+          "release": 6.6,
+          "age": 18.200000000000003,
+          "position": [
+            -598.2547548584059,
+            -560.4352713532144,
+            -172007.37649128976
+          ],
+          "rotation": [
+            10.178567505517494,
+            16.468038969718307,
+            7.094230793159063
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 169343.6739215382,
+          "screenPixels": 0.984683963318642,
+          "relativeForwardVelocity": 9533.397050644511
+        },
+        {
+          "time": 25.2,
+          "release": 6.6,
+          "age": 18.6,
+          "position": [
+            -638.9724492814127,
+            -536.4457672754858,
+            -175847.37649128973
+          ],
+          "rotation": [
+            10.376308559427065,
+            16.590919130417184,
+            7.285657094654223
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 173158.7848598566,
+          "screenPixels": 0.9629889707008313,
+          "relativeForwardVelocity": 9537.77734579602
+        },
+        {
+          "time": 25.6,
+          "release": 6.6,
+          "age": 19,
+          "position": [
+            -684.9184948610877,
+            -508.42462001654246,
+            -179687.37649128973
+          ],
+          "rotation": [
+            10.581338075764773,
+            17.09682012382942,
+            7.467760821090689
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 176976.72614273443,
+          "screenPixels": 0.9422142879144095,
+          "relativeForwardVelocity": 9544.85320719456
+        },
+        {
+          "time": 26,
+          "release": 6.6,
+          "age": 19.4,
+          "position": [
+            -733.3806313735879,
+            -476.7865084726857,
+            -183527.3764912897
+          ],
+          "rotation": [
+            10.70633932748027,
+            17.601043389396956,
+            7.637082106020918
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 180798.57599667058,
+          "screenPixels": 0.922297087135635,
+          "relativeForwardVelocity": 9554.6246348404
+        },
+        {
+          "time": 26.4,
+          "release": 6.6,
+          "age": 19.799999999999997,
+          "position": [
+            -781.1986203960862,
+            -442.1239718000073,
+            -187367.3764912897
+          ],
+          "rotation": [
+            10.862433282073125,
+            17.808622134644967,
+            7.791799873200768
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 184625.41264816388,
+          "screenPixels": 0.9031801072681764,
+          "relativeForwardVelocity": 9567.091628733286
+        },
+        {
+          "time": 26.8,
+          "release": 6.6,
+          "age": 20.200000000000003,
+          "position": [
+            -825.116331335778,
+            -405.380056604155,
+            -191207.37649128976
+          ],
+          "rotation": [
+            10.994645262378164,
+            18.043207458539367,
+            7.931965310132649
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 188458.31432371325,
+          "screenPixels": 0.8848110554229778,
+          "relativeForwardVelocity": 9582.254188873361
+        },
+        {
+          "time": 27.2,
+          "release": 6.6,
+          "age": 20.6,
+          "position": [
+            -862.1715797702218,
+            -367.94538440078804,
+            -195047.37649128973
+          ],
+          "rotation": [
+            11.18785364727442,
+            18.622293282935242,
+            8.059495305502528
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 192301.89317878973,
+          "screenPixels": 0.8671261485968147,
+          "relativeForwardVelocity": 9608.947137691246
+        },
+        {
+          "time": 27.6,
+          "release": 6.6,
+          "age": 21,
+          "position": [
+            -890.0318252961401,
+            -331.6249711256902,
+            -198887.37649128973
+          ],
+          "rotation": [
+            11.3998003175035,
+            19.00970434915064,
+            8.177926691873092
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 196241.16280378975,
+          "screenPixels": 0.8497197917988477,
+          "relativeForwardVelocity": 9848.174062499986
+        },
+        {
+          "time": 28,
+          "release": 6.6,
+          "age": 21.4,
+          "position": [
+            -907.2026421503773,
+            -298.4705764060002,
+            -202727.3764912897
+          ],
+          "rotation": [
+            11.68016291241763,
+            19.182528082083778,
+            8.291962801280963
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 200381.0874287897,
+          "screenPixels": 0.8321643631126548,
+          "relativeForwardVelocity": 10349.811562499926
+        },
+        {
+          "time": 28.4,
+          "release": 6.6,
+          "age": 21.799999999999997,
+          "position": [
+            -913.086753641793,
+            -270.5304286614336,
+            -206567.3764912897
+          ],
+          "rotation": [
+            11.966392599201992,
+            19.5364041573444,
+            8.406870468191016
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 204734.5370537897,
+          "screenPixels": 0.8144693240310008,
+          "relativeForwardVelocity": 10883.62406250006
+        },
+        {
+          "time": 28.8,
+          "release": 6.6,
+          "age": 22.200000000000003,
+          "position": [
+            -907.9239055567446,
+            -249.5982518945114,
+            -210407.37649128976
+          ],
+          "rotation": [
+            12.295205751473736,
+            20.122794628588682,
+            8.527804787859635
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 209244.18167878976,
+          "screenPixels": 0.7969158265818713,
+          "relativeForwardVelocity": 11274.111562500051
+        },
+        {
+          "time": 29.2,
+          "release": 6.6,
+          "age": 22.6,
+          "position": [
+            -892.667776920935,
+            -237.0326546087624,
+            -214247.37649128973
+          ],
+          "rotation": [
+            12.576835804759275,
+            20.397167843015335,
+            8.659148200374396
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 213810.57130378974,
+          "screenPixels": 0.7798959564215168,
+          "relativeForwardVelocity": 11415.974062499994
+        },
+        {
+          "time": 29.6,
+          "release": 6.6,
+          "age": 23,
+          "position": [
+            -868.8487525549326,
+            -233.67711574570052,
+            -218087.37649128973
+          ],
+          "rotation": [
+            12.862198244358739,
+            20.56598029387681,
+            8.803948633994723
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 218320.21592878972,
+          "screenPixels": 0.7637863460816173,
+          "relativeForwardVelocity": 11274.111562499906
+        },
+        {
+          "time": 30,
+          "release": 6.6,
+          "age": 23.4,
+          "position": [
+            -838.4444709437557,
+            -239.86570919437733,
+            -221927.3764912897
+          ],
+          "rotation": [
+            13.065388957910162,
+            21.06616763192226,
+            8.963528741386648
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 222673.6655537897,
+          "screenPixels": 0.7488537074435476,
+          "relativeForwardVelocity": 10883.624062499986
+        },
+        {
+          "time": 30.4,
+          "release": 6.6,
+          "age": 23.799999999999997,
+          "position": [
+            -803.7530915754428,
+            -255.47218093405016,
+            -225767.3764912897
+          ],
+          "rotation": [
+            13.249245259478096,
+            21.589949435364083,
+            9.137316327148671
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 226813.5901787897,
+          "screenPixels": 0.7351852235510071,
+          "relativeForwardVelocity": 10349.8115625
+        },
+        {
+          "time": 30.8,
+          "release": 6.6,
+          "age": 24.200000000000003,
+          "position": [
+            -767.2500118401558,
+            -279.95801763458434,
+            -229607.37649128976
+          ],
+          "rotation": [
+            13.383362778539464,
+            21.729958685239882,
+            9.322917706897195
+          ],
+          "transmission": 0,
+          "width": 145,
+          "height": 158,
+          "distance": 230752.85980378976,
+          "screenPixels": 0.7226345976461064,
+          "relativeForwardVelocity": 9848.174062500131
+        }
+      ]
+    },
+    {
+      "id": "page-8",
+      "samples": [
+        {
+          "time": 9.2,
+          "release": 9.18,
+          "age": 0.019999999999999574,
+          "position": [
+            405.7399708148349,
+            -27.593236651501226,
+            -445.3937543470379
+          ],
+          "rotation": [
+            0.029335898096442655,
+            -0.015812677470974854,
+            0.012122503297354424
+          ],
+          "transmission": 1,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 1156.9231990756746,
+          "screenPixels": 352.16117874160665,
+          "relativeForwardVelocity": null
+        },
+        {
+          "time": 9.6,
+          "release": 9.18,
+          "age": 0.41999999999999993,
+          "position": [
+            395.2610162874887,
+            -2.830732555267577,
+            -2650.5444128360873
+          ],
+          "rotation": [
+            0.13245995581713027,
+            0.40585622448517794,
+            0.3311120162126973
+          ],
+          "transmission": 1,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 3335.6127243329984,
+          "screenPixels": 122.14350740656499,
+          "relativeForwardVelocity": 5446.723813143305
+        },
+        {
+          "time": 10,
+          "release": 9.18,
+          "age": 0.8200000000000003,
+          "position": [
+            391.8513283273009,
+            26.321139631205003,
+            -6217.276808366119
+          ],
+          "rotation": [
+            0.9512053648153463,
+            1.0944207230864496,
+            0.6122431867268863
+          ],
+          "transmission": 0.5834211781167868,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 6859.268276153436,
+          "screenPixels": 59.39750729920077,
+          "relativeForwardVelocity": 8809.138879551087
+        },
+        {
+          "time": 10.4,
+          "release": 9.18,
+          "age": 1.2200000000000006,
+          "position": [
+            396.58243775394277,
+            60.30650494376691,
+            -10011.599704209393
+          ],
+          "rotation": [
+            0.5648373875584319,
+            1.5328931256730687,
+            0.8401070971803202
+          ],
+          "transmission": 0.2349325816318332,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 10588.672439950617,
+          "screenPixels": 38.47729163505035,
+          "relativeForwardVelocity": 9323.510409492943
+        },
+        {
+          "time": 10.8,
+          "release": 9.18,
+          "age": 1.620000000000001,
+          "position": [
+            411.01603307623236,
+            97.67498204148919,
+            -13843.964705365714
+          ],
+          "rotation": [
+            1.5414748706215833,
+            1.582918088150634,
+            1.0400452081479807
+          ],
+          "transmission": 0.09413132740120068,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 14338.563924115713,
+          "screenPixels": 28.414521820749673,
+          "relativeForwardVelocity": 9374.728710412734
+        },
+        {
+          "time": 11.2,
+          "release": 9.18,
+          "age": 2.0199999999999996,
+          "position": [
+            435.3107873395487,
+            133.123449566145,
+            -17682.688503460624
+          ],
+          "rotation": [
+            0.8936346237610958,
+            2.748120022649933,
+            1.2266853012675019
+          ],
+          "transmission": 0.03782260355727078,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 18076.878347210622,
+          "screenPixels": 22.538373588317477,
+          "relativeForwardVelocity": 9345.786057737307
+        },
+        {
+          "time": 11.6,
+          "release": 9.18,
+          "age": 2.42,
+          "position": [
+            465.4373288685681,
+            157.60657055620015,
+            -21522.475184331724
+          ],
+          "rotation": [
+            2.219902810567537,
+            3.0723498292244686,
+            1.4095284470007667
+          ],
+          "transmission": 0.015263917427384277,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 21797.280653081725,
+          "screenPixels": 18.691480097192674,
+          "relativeForwardVelocity": 9301.005764677748
+        },
+        {
+          "time": 12,
+          "release": 9.18,
+          "age": 2.8200000000000003,
+          "position": [
+            492.14526145890585,
+            161.6088002883402,
+            -25362.43952770829
+          ],
+          "rotation": [
+            1.566099849367482,
+            3.213824342634397,
+            1.5964558325968072
+          ],
+          "transmission": 0.006183326201071473,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 25502.18562145829,
+          "screenPixels": 15.976020390863358,
+          "relativeForwardVelocity": 9262.262420941406
+        },
+        {
+          "time": 12.4,
+          "release": 9.18,
+          "age": 3.2200000000000006,
+          "position": [
+            503.95552914067036,
+            140.1184793219149,
+            -29202.433567648353
+          ],
+          "rotation": [
+            3.067551798465773,
+            4.050514034014326,
+            1.7942658284530402
+          ],
+          "transmission": 0.0025123838372780078,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 29194.745286398353,
+          "screenPixels": 13.955368800214059,
+          "relativeForwardVelocity": 9231.399162350144
+        },
+        {
+          "time": 12.8,
+          "release": 9.18,
+          "age": 3.620000000000001,
+          "position": [
+            493.02718925013494,
+            95.84134051528119,
+            -33042.43257141509
+          ],
+          "rotation": [
+            2.4459973850210934,
+            4.918340072382917,
+            2.0082237509206644
+          ],
+          "transmission": 0.001023082300438351,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 32878.23491516509,
+          "screenPixels": 12.39188899742534,
+          "relativeForwardVelocity": 9208.724071916842
+        },
+        {
+          "time": 13.2,
+          "release": 9.18,
+          "age": 4.02,
+          "position": [
+            459.34377320106057,
+            37.979108547664566,
+            -36882.43240489314
+          ],
+          "rotation": [
+            3.8562379135690894,
+            5.269840623916803,
+            2.2414920471098676
+          ],
+          "transmission": 0.00041720238610501665,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 36555.950373643136,
+          "screenPixels": 11.145201624788083,
+          "relativeForwardVelocity": 9194.288646195142
+        },
+        {
+          "time": 13.6,
+          "release": 9.18,
+          "age": 4.42,
+          "position": [
+            409.50553474192196,
+            -22.761120151152948,
+            -40722.432377058736
+          ],
+          "rotation": [
+            3.293209038575424,
+            5.762570455146863,
+            2.494749918437356
+          ],
+          "transmission": 0.00017023354643256174,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 40231.19097080873,
+          "screenPixels": 10.127053852211871,
+          "relativeForwardVelocity": 9188.101492913986
+        },
+        {
+          "time": 14,
+          "release": 9.18,
+          "age": 4.82,
+          "position": [
+            351.31707724914645,
+            -79.27061530304967,
+            -44562.43237240618
+          ],
+          "rotation": [
+            4.382255863612435,
+            6.822417666820637,
+            2.766112057280093
+          ],
+          "transmission": 0.00006944742045090329,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 43907.25659115618,
+          "screenPixels": 9.279182284006863,
+          "relativeForwardVelocity": 9190.164050868618
+        },
+        {
+          "time": 14.4,
+          "release": 9.18,
+          "age": 5.220000000000001,
+          "position": [
+            289.6235461867927,
+            -129.31377314816368,
+            -48402.4323716285
+          ],
+          "rotation": [
+            4.052416237133983,
+            7.20521917540524,
+            3.0513716843792174
+          ],
+          "transmission": 0.000028302848595048036,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 47587.4472153785,
+          "screenPixels": 8.561573720397757,
+          "relativeForwardVelocity": 9200.476560555791
+        },
+        {
+          "time": 14.8,
+          "release": 9.18,
+          "age": 5.620000000000001,
+          "position": [
+            227.48387485925008,
+            -172.315207503928,
+            -52242.432371498515
+          ],
+          "rotation": [
+            4.734665644186537,
+            7.854925497590137,
+            3.3445401861779356
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 51275.062840248516,
+          "screenPixels": 7.945839847517295,
+          "relativeForwardVelocity": 9219.039062175025
+        },
+        {
+          "time": 15.2,
+          "release": 9.18,
+          "age": 6.02,
+          "position": [
+            166.7326871782358,
+            -208.2697751453858,
+            -56082.432371476774
+          ],
+          "rotation": [
+            4.647032202047626,
+            8.125926574324026,
+            3.6386149612924696
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 54973.40346522677,
+          "screenPixels": 7.411282762540147,
+          "relativeForwardVelocity": 9245.851562445674
+        },
+        {
+          "time": 15.6,
+          "release": 9.18,
+          "age": 6.42,
+          "position": [
+            110.35139663282376,
+            -235.96190415198015,
+            -59922.43237147315
+          ],
+          "rotation": [
+            5.037520623824189,
+            9.142309430468705,
+            3.9264772138776034
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 58685.76909022315,
+          "screenPixels": 6.942457154708659,
+          "relativeForwardVelocity": 9280.914062490929
+        },
+        {
+          "time": 16,
+          "release": 9.18,
+          "age": 6.82,
+          "position": [
+            62.65903161934261,
+            -253.34908817610471,
+            -63762.43237147255
+          ],
+          "rotation": [
+            5.177300611013919,
+            9.469668665533588,
+            4.201804631941474
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 62415.45971522255,
+          "screenPixels": 6.527604528732378,
+          "relativeForwardVelocity": 9324.226562498488
+        },
+        {
+          "time": 16.4,
+          "release": 9.18,
+          "age": 7.219999999999999,
+          "position": [
+            27.813298242451424,
+            -258.9767330600407,
+            -67602.43237147243
+          ],
+          "rotation": [
+            5.478680790465894,
+            9.920567965235712,
+            4.459881948684006
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 66153.79904392613,
+          "screenPixels": 6.158730766610558,
+          "relativeForwardVelocity": 9345.848321759
+        },
+        {
+          "time": 16.8,
+          "release": 9.18,
+          "age": 7.620000000000001,
+          "position": [
+            8.425344207094838,
+            -252.90529927020626,
+            -71442.43237147243
+          ],
+          "rotation": [
+            5.845788139663972,
+            10.42241537204544,
+            4.698205469828836
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 69894.33892818539,
+          "screenPixels": 5.829133571441558,
+          "relativeForwardVelocity": 9351.349710648088
+        },
+        {
+          "time": 17.2,
+          "release": 9.18,
+          "age": 8.02,
+          "position": [
+            5.124135186150852,
+            -236.72757708289504,
+            -75282.43237147242
+          ],
+          "rotation": [
+            6.192916167311294,
+            11.359154301302867,
+            4.916804063173186
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 73643.72159022241,
+          "screenPixels": 5.5323580707536255,
+          "relativeForwardVelocity": 9373.456655092592
+        },
+        {
+          "time": 17.6,
+          "release": 9.18,
+          "age": 8.420000000000002,
+          "position": [
+            16.848680609994346,
+            -213.01753382484856,
+            -79122.43237147245
+          ],
+          "rotation": [
+            6.742038612081711,
+            11.609820478969494,
+            5.118235457561384
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 77407.54940850948,
+          "screenPixels": 5.263355326621561,
+          "relativeForwardVelocity": 9409.569545717626
+        },
+        {
+          "time": 18,
+          "release": 9.18,
+          "age": 8.82,
+          "position": [
+            41.3495130226882,
+            -184.66166764604336,
+            -82962.43237147243
+          ],
+          "rotation": [
+            7.133849807907717,
+            12.001906442395843,
+            5.307258325800525
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 81168.72866776872,
+          "screenPixels": 5.01946308864369,
+          "relativeForwardVelocity": 9402.94814814813
+        },
+        {
+          "time": 18.4,
+          "release": 9.18,
+          "age": 9.219999999999999,
+          "position": [
+            75.59861968153092,
+            -154.33261649052793,
+            -86802.43237147242
+          ],
+          "rotation": [
+            7.747188392791923,
+            12.878972757448889,
+            5.490222192576857
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 84921.55237147241,
+          "screenPixels": 4.797644721775779,
+          "relativeForwardVelocity": 9382.059259259255
+        },
+        {
+          "time": 18.8,
+          "release": 9.18,
+          "age": 9.620000000000001,
+          "position": [
+            116.09126363276744,
+            -124.17270607033728,
+            -90642.43237147243
+          ],
+          "rotation": [
+            8.080518847097563,
+            13.485522762173996,
+            5.674253385054825
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 88669.36274184281,
+          "screenPixels": 4.594861459489638,
+          "relativeForwardVelocity": 9369.525925925942
+        },
+        {
+          "time": 19.2,
+          "release": 9.18,
+          "age": 10.02,
+          "position": [
+            159.16985101874985,
+            -95.6365344955492,
+            -94482.43237147242
+          ],
+          "rotation": [
+            8.618021046282985,
+            13.70869595880086,
+            5.866341392463561
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 92415.50200110204,
+          "screenPixels": 4.40860492750601,
+          "relativeForwardVelocity": 9365.34814814811
+        },
+        {
+          "time": 19.6,
+          "release": 9.18,
+          "age": 10.420000000000002,
+          "position": [
+            201.49485496969663,
+            -69.39060824967127,
+            -98322.43237147245
+          ],
+          "rotation": [
+            8.813896869381868,
+            14.314075525781606,
+            6.072442769176011
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 96163.31237147245,
+          "screenPixels": 4.236786644018152,
+          "relativeForwardVelocity": 9369.525925925978
+        },
+        {
+          "time": 20,
+          "release": 9.18,
+          "age": 10.82,
+          "position": [
+            240.67736194507813,
+            -45.187242695358506,
+            -102162.43237147243
+          ],
+          "rotation": [
+            9.225904929835844,
+            15.21521073641998,
+            6.296717466598423
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 99916.13607517614,
+          "screenPixels": 4.077654055731876,
+          "relativeForwardVelocity": 9382.059259259255
+        },
+        {
+          "time": 20.4,
+          "release": 9.18,
+          "age": 11.219999999999999,
+          "position": [
+            275.9338762385904,
+            -21.711259495125265,
+            -106002.43237147242
+          ],
+          "rotation": [
+            9.32370769163902,
+            15.524724806791866,
+            6.540995500973399
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 103677.31533443538,
+          "screenPixels": 3.929725959683279,
+          "relativeForwardVelocity": 9402.94814814813
+        },
+        {
+          "time": 20.8,
+          "release": 9.18,
+          "age": 11.620000000000001,
+          "position": [
+            310.1071828968559,
+            2.9836750113603863,
+            -109842.43237147243
+          ],
+          "rotation": [
+            9.702477329597947,
+            15.906948866808765,
+            6.80454233367214
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 107450.19237147243,
+          "screenPixels": 3.791742280846481,
+          "relativeForwardVelocity": 9432.192592592568
+        },
+        {
+          "time": 21.2,
+          "release": 9.18,
+          "age": 12.02,
+          "position": [
+            347.15266857495516,
+            28.625064949519558,
+            -113682.43237147242
+          ],
+          "rotation": [
+            9.830071009507265,
+            16.658579317408712,
+            7.084153043712911
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 111238.10940850945,
+          "screenPixels": 3.6626246136904683,
+          "relativeForwardVelocity": 9469.7925925926
+        },
+        {
+          "time": 21.6,
+          "release": 9.18,
+          "age": 12.420000000000002,
+          "position": [
+            384.74900662044075,
+            54.14878923828819,
+            -117522.43237147245
+          ],
+          "rotation": [
+            10.301472202969524,
+            17.382210689661303,
+            7.374563218990647
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 115042.32381574949,
+          "screenPixels": 3.541509107139776,
+          "relativeForwardVelocity": 9510.53601810005
+        },
+        {
+          "time": 22,
+          "release": 9.18,
+          "age": 12.82,
+          "position": [
+            420.22695188950803,
+            78.64054105656268,
+            -121362.43237147243
+          ],
+          "rotation": [
+            10.552338736709071,
+            17.60631410181918,
+            7.669123887351733
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 118861.63185525422,
+          "screenPixels": 3.4277119634041946,
+          "relativeForwardVelocity": 9548.270098761857
+        },
+        {
+          "time": 22.4,
+          "release": 9.18,
+          "age": 13.219999999999999,
+          "position": [
+            451.10907290721076,
+            101.47357148998528,
+            -125202.43237147242
+          ],
+          "rotation": [
+            11.122323393905278,
+            18.156408342151217,
+            7.960653957062669
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 122687.12072362396,
+          "screenPixels": 3.3208329863555823,
+          "relativeForwardVelocity": 9563.722170924373
+        },
+        {
+          "time": 22.8,
+          "release": 9.18,
+          "age": 13.620000000000001,
+          "position": [
+            475.31595416414063,
+            122.33837275766616,
+            -129042.43237147243
+          ],
+          "rotation": [
+            11.470766198975802,
+            18.95552689706174,
+            8.242360878389224
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 126507.8923510613,
+          "screenPixels": 3.22053770660722,
+          "relativeForwardVelocity": 9551.929068593294
+        },
+        {
+          "time": 23.2,
+          "release": 9.18,
+          "age": 14.02,
+          "position": [
+            491.2413201693207,
+            141.14459363804002,
+            -132882.43237147245
+          ],
+          "rotation": [
+            12.035959253852113,
+            19.493155555343495,
+            8.508711491622996
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 130325.02496406504,
+          "screenPixels": 3.1262103161870884,
+          "relativeForwardVelocity": 9542.831532509406
+        },
+        {
+          "time": 23.6,
+          "release": 9.18,
+          "age": 14.420000000000002,
+          "position": [
+            497.72293933544336,
+            157.837506870678,
+            -136722.43237147245
+          ],
+          "rotation": [
+            12.369481374011245,
+            19.757225223727954,
+            8.756141413306253
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 134139.59678913403,
+          "screenPixels": 3.0373092453860973,
+          "relativeForwardVelocity": 9536.429562672405
+        },
+        {
+          "time": 24,
+          "release": 9.18,
+          "age": 14.82,
+          "position": [
+            493.96697572794665,
+            172.1936558040016,
+            -140562.43237147245
+          ],
+          "rotation": [
+            12.811450999306288,
+            20.42942512734764,
+            8.98351201283445
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 137952.6860527671,
+          "screenPixels": 2.9533563220665378,
+          "relativeForwardVelocity": 9532.723159082705
+        },
+        {
+          "time": 24.4,
+          "release": 9.18,
+          "age": 15.219999999999999,
+          "position": [
+            479.4850244605953,
+            183.65569185492788,
+            -144402.43237147242
+          ],
+          "rotation": [
+            13.0441259224215,
+            21.243227156877776,
+            9.192256392133057
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 141765.3709814631,
+          "screenPixels": 2.8739277771387046,
+          "relativeForwardVelocity": 9531.712321740013
+        },
+        {
+          "time": 24.8,
+          "release": 9.18,
+          "age": 15.620000000000001,
+          "position": [
+            454.0862551549794,
+            191.2489755603246,
+            -148242.43237147245
+          ],
+          "rotation": [
+            13.3389484853366,
+            21.576813697891755,
+            9.386195652886734
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 145578.72980172088,
+          "screenPixels": 2.7986467394990546,
+          "relativeForwardVelocity": 9533.397050644438
+        },
+        {
+          "time": 25.2,
+          "release": 9.18,
+          "age": 16.02,
+          "position": [
+            417.9438327585163,
+            193.60508510450097,
+            -152082.43237147245
+          ],
+          "rotation": [
+            13.497921380752588,
+            21.951648979121824,
+            9.571049007029238
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 149393.8407400393,
+          "screenPixels": 2.727176940373056,
+          "relativeForwardVelocity": 9537.777345796092
+        },
+        {
+          "time": 25.6,
+          "release": 9.18,
+          "age": 16.42,
+          "position": [
+            371.7297507704904,
+            189.10291484882586,
+            -155922.43237147245
+          ],
+          "rotation": [
+            13.736529872336249,
+            22.776571019462786,
+            9.753700537441421
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 153211.78202291715,
+          "screenPixels": 2.659217405610871,
+          "relativeForwardVelocity": 9544.85320719456
+        },
+        {
+          "time": 26,
+          "release": 9.18,
+          "age": 16.82,
+          "position": [
+            316.7847194059102,
+            176.12096193649512,
+            -159762.43237147242
+          ],
+          "rotation": [
+            13.936500217544344,
+            23.45855968707263,
+            9.941316614793754
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 157033.6318768533,
+          "screenPixels": 2.594497959644109,
+          "relativeForwardVelocity": 9554.6246348404
+        },
+        {
+          "time": 26.4,
+          "release": 9.18,
+          "age": 17.22,
+          "position": [
+            255.26163318489745,
+            153.3684515311604,
+            -163602.43237147242
+          ],
+          "rotation": [
+            14.236107700063927,
+            23.6488205343553,
+            10.140427123300991
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 160860.4685283466,
+          "screenPixels": 2.532775399869014,
+          "relativeForwardVelocity": 9567.091628733286
+        },
+        {
+          "time": 26.8,
+          "release": 9.18,
+          "age": 17.62,
+          "position": [
+            190.16296280561176,
+            120.23028287245164,
+            -167442.43237147245
+          ],
+          "rotation": [
+            14.569964364108065,
+            24.273097961349183,
+            10.356088288083793
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 164693.37020389593,
+          "screenPixels": 2.4738302276260185,
+          "relativeForwardVelocity": 9582.254188873289
+        },
+        {
+          "time": 27.2,
+          "release": 9.18,
+          "age": 18.02,
+          "position": [
+            125.20125152351892,
+            77.03591313906688,
+            -171282.43237147242
+          ],
+          "rotation": [
+            14.971839665574349,
+            25.137486181904322,
+            10.591234434987859
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 168536.94905897242,
+          "screenPixels": 2.417413153464878,
+          "relativeForwardVelocity": 9608.947137691246
+        },
+        {
+          "time": 27.6,
+          "release": 9.18,
+          "age": 18.42,
+          "position": [
+            64.45889603095827,
+            25.165756224330433,
+            -175122.43237147245
+          ],
+          "rotation": [
+            15.414966301982124,
+            25.557753016437438,
+            10.846301791369791
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 172476.21868397246,
+          "screenPixels": 2.3622006593646425,
+          "relativeForwardVelocity": 9848.174062500058
+        },
+        {
+          "time": 28,
+          "release": 9.18,
+          "age": 18.82,
+          "position": [
+            11.898792959730997,
+            -33.04879059246883,
+            -178962.43237147242
+          ],
+          "rotation": [
+            15.866351732562347,
+            25.844414872168375,
+            11.119172558978772
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 176616.14330897242,
+          "screenPixels": 2.3068301111481815,
+          "relativeForwardVelocity": 10349.811562499926
+        },
+        {
+          "time": 28.4,
+          "release": 9.18,
+          "age": 19.22,
+          "position": [
+            -29.15231839179421,
+            -94.60668984957721,
+            -182802.43237147242
+          ],
+          "rotation": [
+            16.282383925014773,
+            26.66824428814042,
+            11.40544642914594
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 180969.59293397242,
+          "screenPixels": 2.2513364311354245,
+          "relativeForwardVelocity": 10883.62406250006
+        },
+        {
+          "time": 28.8,
+          "release": 9.18,
+          "age": 19.62,
+          "position": [
+            -56.40070797755914,
+            -156.2129169112948,
+            -186642.43237147245
+          ],
+          "rotation": [
+            16.688594282705537,
+            27.36706247960931,
+            11.699004730309342
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 185479.23755897244,
+          "screenPixels": 2.1965986212902195,
+          "relativeForwardVelocity": 11274.111562499978
+        },
+        {
+          "time": 29.2,
+          "release": 9.18,
+          "age": 20.02,
+          "position": [
+            -68.75387804498502,
+            -214.6383746600519,
+            -190482.43237147242
+          ],
+          "rotation": [
+            16.967985187260435,
+            27.65648601018303,
+            11.992794880577891
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 190045.62718397242,
+          "screenPixels": 2.14381905828118,
+          "relativeForwardVelocity": 11415.974062499994
+        },
+        {
+          "time": 29.6,
+          "release": 9.18,
+          "age": 20.42,
+          "position": [
+            -66.23592150780223,
+            -266.9787233851358,
+            -194322.43237147245
+          ],
+          "rotation": [
+            17.281057108820534,
+            28.148085543676928,
+            12.279734573532387
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 194555.27180897244,
+          "screenPixels": 2.094126947636947,
+          "relativeForwardVelocity": 11274.111562499978
+        },
+        {
+          "time": 30,
+          "release": 9.18,
+          "age": 20.82,
+          "position": [
+            -49.71477190184237,
+            -310.7801965826125,
+            -198162.43237147242
+          ],
+          "rotation": [
+            17.464256045077203,
+            29.007656008014578,
+            12.553619774899788
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 198908.72143397242,
+          "screenPixels": 2.048293481365742,
+          "relativeForwardVelocity": 10883.624062499986
+        },
+        {
+          "time": 30.4,
+          "release": 9.18,
+          "age": 21.22,
+          "position": [
+            -20.560060749674676,
+            -344.0526318713536,
+            -202002.43237147242
+          ],
+          "rotation": [
+            17.73388217376094,
+            29.532691443902028,
+            12.809920119159075
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 203048.6460589724,
+          "screenPixels": 2.0065311707701317,
+          "relativeForwardVelocity": 10349.8115625
+        },
+        {
+          "time": 30.8,
+          "release": 9.18,
+          "age": 21.62,
+          "position": [
+            19.646700740509004,
+            -365.22033980065316,
+            -205842.43237147245
+          ],
+          "rotation": [
+            17.969489232978983,
+            29.83809582559809,
+            13.04635973118082
+          ],
+          "transmission": 0,
+          "width": 354.28125,
+          "height": 525.59375,
+          "distance": 206987.91568397245,
+          "screenPixels": 1.9683440753229815,
+          "relativeForwardVelocity": 9848.174062500058
+        }
+      ]
+    }
+  ],
+  "absence": {
+    "firstOpticallyAbsent": 21.8,
+    "rendererThreshold": 0.002,
+    "source": "Actual renderer diagnostics, 0.2-second sweep; world paths continue beyond optical exit",
+    "noResurrection": true
+  }
+}

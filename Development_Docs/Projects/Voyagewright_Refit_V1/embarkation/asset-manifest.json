@@ -1,0 +1,2503 @@
+{
+  "sourceArchive": "assets-embarkation.zip",
+  "masters": ".runtime/embarkation/masters",
+  "premultipliedUpload": false,
+  "composite": "Straight RGBA textures; fragment shader premultiplies final radiance once; ONE / ONE_MINUS_SRC_ALPHA blending.",
+  "assets": [
+    {
+      "source": "Basic_Waiting_Room_startpoint.png",
+      "sha256": "428be575ba8320b8e553de6a1b54e8c590ac83c26f35ea377a090a65c5fb382d",
+      "bytes": 1277268,
+      "width": 1617,
+      "height": 973,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0,
+      "production": false,
+      "treatment": "reference only",
+      "sourceClass": "REFERENCE_ONLY",
+      "usableRegions": [],
+      "derivativeFiles": [],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": false,
+      "lightingResponse": false,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "alphaCleanup": "reference only",
+      "productionBytes": 0,
+      "textureBytesRGBA": 0,
+      "derivatives": [],
+      "omissionReason": "Composition/reference board; never a literal runtime layer.",
+      "runtimeDerivativeFiles": []
+    },
+    {
+      "source": "P1-map-fragment.png",
+      "sha256": "2719add6b961526f49b87e8d7df282292f42c459cce06db82f8a2ce04e21383c",
+      "bytes": 3090774,
+      "width": 1672,
+      "height": 940,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.24549462995011706,
+      "production": true,
+      "treatment": "retain RGBA; trim transparent margin",
+      "derivative": "P1-map-fragment.webp",
+      "productionBytes": 553744,
+      "textureBytesRGBA": 4412800,
+      "sourceClass": "OBJECT",
+      "usableRegions": [],
+      "derivativeFiles": [
+        "P1-map-fragment.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 1600,
+      "deformationAllowed": true,
+      "lightingResponse": true,
+      "nearCameraAllowed": true,
+      "emitterSystem": false,
+      "alphaCleanup": "retain RGBA; trim transparent margin",
+      "derivatives": [
+        {
+          "file": "P1-map-fragment.webp",
+          "bytes": 553744,
+          "width": 1400,
+          "height": 788,
+          "sha256": "c6e2856b6b5388f26cf1e84f8ec1226e0b8d0c95c08790f9db60c73d95f58ad6"
+        }
+      ],
+      "runtimeDerivativeFiles": [
+        "P1-map-fragment.webp"
+      ]
+    },
+    {
+      "source": "P10-particles.png",
+      "sha256": "837e0f1e53320bdd1f40cd805116aaf066be1576bfe98edea04399b7460559eb",
+      "bytes": 2635335,
+      "width": 1752,
+      "height": 897,
+      "alphaRange": [
+        0,
+        253
+      ],
+      "transparentFraction": 0.27351254562392147,
+      "production": true,
+      "treatment": "remove dark matte; unassociate radiance; feather texture boundary",
+      "productionBytes": 17056,
+      "textureBytesRGBA": 109888,
+      "sourceClass": "EFFECT_SOURCE",
+      "usableRegions": [
+        {
+          "name": "particle-0",
+          "rect": {
+            "left": 518,
+            "top": 233,
+            "width": 105,
+            "height": 105
+          },
+          "derivative": "derived/particle-0.webp",
+          "width": 109,
+          "height": 109,
+          "bytes": 6170
+        },
+        {
+          "name": "particle-1",
+          "rect": {
+            "left": 233,
+            "top": 339,
+            "width": 87,
+            "height": 89
+          },
+          "derivative": "derived/particle-1.webp",
+          "width": 91,
+          "height": 93,
+          "bytes": 4354
+        },
+        {
+          "name": "particle-2",
+          "rect": {
+            "left": 1075,
+            "top": 198,
+            "width": 59,
+            "height": 62
+          },
+          "derivative": "derived/particle-2.webp",
+          "width": 63,
+          "height": 66,
+          "bytes": 3466
+        },
+        {
+          "name": "particle-3",
+          "rect": {
+            "left": 1352,
+            "top": 258,
+            "width": 50,
+            "height": 51
+          },
+          "derivative": "derived/particle-3.webp",
+          "width": 54,
+          "height": 55,
+          "bytes": 3066
+        }
+      ],
+      "derivativeFiles": [
+        "derived/particle-0.webp",
+        "derived/particle-1.webp",
+        "derived/particle-2.webp",
+        "derived/particle-3.webp"
+      ],
+      "blendMode": "additive",
+      "depthBands": [
+        "environment",
+        "midground",
+        "near-foreground"
+      ],
+      "maximumDisplayPixels": 32,
+      "deformationAllowed": false,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": true,
+      "alphaCleanup": "luminance unmatte, unassociated RGB, elliptical soft boundary; no sheet survives",
+      "derivatives": [
+        {
+          "file": "derived/particle-0.webp",
+          "bytes": 6170,
+          "width": 109,
+          "height": 109,
+          "sha256": "2a82b93321037035c900358857285ea601947c62dd8d74021607dbdd2a723820"
+        },
+        {
+          "file": "derived/particle-1.webp",
+          "bytes": 4354,
+          "width": 91,
+          "height": 93,
+          "sha256": "5b7701989dc37546ee8e6b5b0825bf12e2d2bf0f6ef146c75a68cdbeca1d2a54"
+        },
+        {
+          "file": "derived/particle-2.webp",
+          "bytes": 3466,
+          "width": 63,
+          "height": 66,
+          "sha256": "87c488351817ee2d91aa109fd24bdf24e8110d4f035dba68b6604f9c830d6ed0"
+        },
+        {
+          "file": "derived/particle-3.webp",
+          "bytes": 3066,
+          "width": 54,
+          "height": 55,
+          "sha256": "f9c5768ed938cdbfe58e80bb555d5abad579bc745747dabde2801c121fd4f20d"
+        }
+      ],
+      "runtimeDerivativeFiles": [
+        "derived/particle-0.webp",
+        "derived/particle-1.webp",
+        "derived/particle-2.webp",
+        "derived/particle-3.webp"
+      ]
+    },
+    {
+      "source": "P11-mist-ribbons.png",
+      "sha256": "b586cdb50c6642bc13239e7134e3d3195defa7d44c3da0b02990afe98044ad58",
+      "bytes": 2347715,
+      "width": 1603,
+      "height": 981,
+      "alphaRange": [
+        0,
+        253
+      ],
+      "transparentFraction": 0.0002321081204138774,
+      "production": true,
+      "treatment": "remove dark matte; unassociate radiance; feather texture boundary",
+      "productionBytes": 278054,
+      "textureBytesRGBA": 2225184,
+      "sourceClass": "EFFECT_SOURCE",
+      "usableRegions": [
+        {
+          "name": "mist-0",
+          "rect": {
+            "left": 32,
+            "top": 49,
+            "width": 801,
+            "height": 264
+          },
+          "derivative": "derived/mist-0.webp",
+          "width": 772,
+          "height": 257,
+          "bytes": 107346
+        },
+        {
+          "name": "mist-1",
+          "rect": {
+            "left": 480,
+            "top": 382,
+            "width": 849,
+            "height": 235
+          },
+          "derivative": "derived/mist-1.webp",
+          "width": 772,
+          "height": 217,
+          "bytes": 100322
+        },
+        {
+          "name": "mist-2",
+          "rect": {
+            "left": 897,
+            "top": 667,
+            "width": 657,
+            "height": 284
+          },
+          "derivative": "derived/mist-2.webp",
+          "width": 661,
+          "height": 288,
+          "bytes": 70386
+        }
+      ],
+      "derivativeFiles": [
+        "derived/mist-0.webp",
+        "derived/mist-1.webp",
+        "derived/mist-2.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "environment",
+        "midground",
+        "near-foreground"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": true,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": true,
+      "alphaCleanup": "luminance unmatte, unassociated RGB, elliptical soft boundary; no sheet survives",
+      "derivatives": [
+        {
+          "file": "derived/mist-0.webp",
+          "bytes": 107346,
+          "width": 772,
+          "height": 257,
+          "sha256": "d2f55ff62b8e8e4cb397655137a7d5974a4dec695366a96c3484315f3e1d466f"
+        },
+        {
+          "file": "derived/mist-1.webp",
+          "bytes": 100322,
+          "width": 772,
+          "height": 217,
+          "sha256": "8c9f27b7f86afac025db6042df8798b4f7bae8d820e03f61f1da7211ea9966bb"
+        },
+        {
+          "file": "derived/mist-2.webp",
+          "bytes": 70386,
+          "width": 661,
+          "height": 288,
+          "sha256": "cace2b321a55cb8a38788ce8fd4f9d904e1cfac719d767d164e2256fba8d86c0"
+        }
+      ],
+      "runtimeDerivativeFiles": [],
+      "runtimeUsage": "Effect vocabulary only in Delta 1; deterministic raymarched density / analytic spray use no source sheet or extracted silhouette."
+    },
+    {
+      "source": "P12-debris-elements.png",
+      "sha256": "14fb4945c6a2789c8a5d6febd03430444bfe81f62ae152039b628a543f2523c5",
+      "bytes": 2911090,
+      "width": 1536,
+      "height": 1024,
+      "alphaRange": [
+        3,
+        251
+      ],
+      "transparentFraction": 0,
+      "production": true,
+      "treatment": "dark-matte suppression; feather boundary",
+      "productionBytes": 43608,
+      "textureBytesRGBA": 247696,
+      "sourceClass": "MULTI_ELEMENT",
+      "usableRegions": [
+        {
+          "name": "debris-0",
+          "rect": {
+            "left": 648,
+            "top": 629,
+            "width": 155,
+            "height": 162
+          },
+          "derivative": "derived/debris-0.webp",
+          "width": 157,
+          "height": 164,
+          "bytes": 20150
+        },
+        {
+          "name": "debris-1",
+          "rect": {
+            "left": 821,
+            "top": 803,
+            "width": 110,
+            "height": 81
+          },
+          "derivative": "derived/debris-1.webp",
+          "width": 112,
+          "height": 83,
+          "bytes": 7910
+        },
+        {
+          "name": "debris-2",
+          "rect": {
+            "left": 382,
+            "top": 300,
+            "width": 248,
+            "height": 110
+          },
+          "derivative": "derived/debris-2.webp",
+          "width": 240,
+          "height": 112,
+          "bytes": 15548
+        }
+      ],
+      "derivativeFiles": [
+        "derived/debris-0.webp",
+        "derived/debris-1.webp",
+        "derived/debris-2.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": false,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": true,
+      "alphaCleanup": "dark-matte suppression; feather boundary",
+      "derivatives": [
+        {
+          "file": "derived/debris-0.webp",
+          "bytes": 20150,
+          "width": 157,
+          "height": 164,
+          "sha256": "d884f3bf30bc853b997e9dd7cb97c4586fc680c79f2880ecc6683a253f8c068a"
+        },
+        {
+          "file": "derived/debris-1.webp",
+          "bytes": 7910,
+          "width": 112,
+          "height": 83,
+          "sha256": "5cd66041773b58c321e7e1b5f5d1273d006d4e0c8b9197fa7e85cf546197c4af"
+        },
+        {
+          "file": "derived/debris-2.webp",
+          "bytes": 15548,
+          "width": 240,
+          "height": 112,
+          "sha256": "c9b63803f8590223b13935b7ca12a24ea704bb81d00a079fceffa5dbd8e4126d"
+        }
+      ],
+      "runtimeDerivativeFiles": [
+        "derived/debris-0.webp",
+        "derived/debris-1.webp",
+        "derived/debris-2.webp"
+      ]
+    },
+    {
+      "source": "P13-light-accents.png",
+      "sha256": "646b69294300c7a24c30591058c60a147456e02bbb011076df4606eedf900a09",
+      "bytes": 2559399,
+      "width": 1536,
+      "height": 1024,
+      "alphaRange": [
+        2,
+        252
+      ],
+      "transparentFraction": 0,
+      "production": true,
+      "treatment": "remove dark matte; unassociate radiance; feather texture boundary",
+      "productionBytes": 59432,
+      "textureBytesRGBA": 308848,
+      "sourceClass": "EFFECT_SOURCE",
+      "usableRegions": [
+        {
+          "name": "light-0",
+          "rect": {
+            "left": 38,
+            "top": 81,
+            "width": 1274,
+            "height": 174
+          },
+          "derivative": "derived/light-0.webp",
+          "width": 388,
+          "height": 56,
+          "bytes": 12280
+        },
+        {
+          "name": "light-1",
+          "rect": {
+            "left": 445,
+            "top": 501,
+            "width": 936,
+            "height": 163
+          },
+          "derivative": "derived/light-1.webp",
+          "width": 388,
+          "height": 71,
+          "bytes": 24568
+        },
+        {
+          "name": "light-2",
+          "rect": {
+            "left": 153,
+            "top": 716,
+            "width": 983,
+            "height": 174
+          },
+          "derivative": "derived/light-2.webp",
+          "width": 388,
+          "height": 72,
+          "bytes": 22584
+        }
+      ],
+      "derivativeFiles": [
+        "derived/light-0.webp",
+        "derived/light-1.webp",
+        "derived/light-2.webp"
+      ],
+      "blendMode": "additive",
+      "depthBands": [
+        "environment",
+        "midground",
+        "near-foreground"
+      ],
+      "maximumDisplayPixels": 500,
+      "deformationAllowed": false,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": true,
+      "alphaCleanup": "luminance unmatte, unassociated RGB, elliptical soft boundary; no sheet survives",
+      "derivatives": [
+        {
+          "file": "derived/light-0.webp",
+          "bytes": 12280,
+          "width": 388,
+          "height": 56,
+          "sha256": "85d2d8b815e876bcbff27c4c2a0a7b34b81c41f64e568e22eae60eac16a87ff1"
+        },
+        {
+          "file": "derived/light-1.webp",
+          "bytes": 24568,
+          "width": 388,
+          "height": 71,
+          "sha256": "a3cffae460ac9fb9d96a332d9f7c3d8aa69a338711c9d6811ec539524d54180c"
+        },
+        {
+          "file": "derived/light-2.webp",
+          "bytes": 22584,
+          "width": 388,
+          "height": 72,
+          "sha256": "160dc0e937a03df751e6aeb7393b0a83de6e6653dcd77e69f45f7e4ff6fa34ca"
+        }
+      ],
+      "runtimeDerivativeFiles": [
+        "derived/light-0.webp",
+        "derived/light-1.webp",
+        "derived/light-2.webp"
+      ]
+    },
+    {
+      "source": "P14-water-spray.png",
+      "sha256": "ee8386c10c717718a448082bcfce758dfe8cdd5d4a7a34c627ee55c3f5e72f6d",
+      "bytes": 3405479,
+      "width": 1798,
+      "height": 875,
+      "alphaRange": [
+        87,
+        249
+      ],
+      "transparentFraction": 0,
+      "production": true,
+      "treatment": "remove dark matte; unassociate radiance; feather texture boundary",
+      "productionBytes": 205508,
+      "textureBytesRGBA": 934404,
+      "sourceClass": "EFFECT_SOURCE",
+      "usableRegions": [
+        {
+          "name": "spray-0",
+          "rect": {
+            "left": 1258,
+            "top": 61,
+            "width": 269,
+            "height": 271
+          },
+          "derivative": "derived/spray-0.webp",
+          "width": 273,
+          "height": 275,
+          "bytes": 69306
+        },
+        {
+          "name": "spray-1",
+          "rect": {
+            "left": 143,
+            "top": 253,
+            "width": 215,
+            "height": 236
+          },
+          "derivative": "derived/spray-1.webp",
+          "width": 219,
+          "height": 240,
+          "bytes": 46742
+        },
+        {
+          "name": "spray-2",
+          "rect": {
+            "left": 952,
+            "top": 17,
+            "width": 215,
+            "height": 192
+          },
+          "derivative": "derived/spray-2.webp",
+          "width": 219,
+          "height": 196,
+          "bytes": 33110
+        },
+        {
+          "name": "spray-3",
+          "rect": {
+            "left": 539,
+            "top": 341,
+            "width": 233,
+            "height": 262
+          },
+          "derivative": "derived/spray-3.webp",
+          "width": 237,
+          "height": 266,
+          "bytes": 56350
+        }
+      ],
+      "derivativeFiles": [
+        "derived/spray-0.webp",
+        "derived/spray-1.webp",
+        "derived/spray-2.webp",
+        "derived/spray-3.webp"
+      ],
+      "blendMode": "soft-transmission",
+      "depthBands": [
+        "environment",
+        "midground",
+        "near-foreground"
+      ],
+      "maximumDisplayPixels": 128,
+      "deformationAllowed": true,
+      "lightingResponse": true,
+      "nearCameraAllowed": true,
+      "emitterSystem": true,
+      "alphaCleanup": "luminance unmatte, unassociated RGB, elliptical soft boundary; no sheet survives",
+      "derivatives": [
+        {
+          "file": "derived/spray-0.webp",
+          "bytes": 69306,
+          "width": 273,
+          "height": 275,
+          "sha256": "99cb95f8abaa7f53b458c950d5b24c895c47eb9332a69c65c00073218724ae60"
+        },
+        {
+          "file": "derived/spray-1.webp",
+          "bytes": 46742,
+          "width": 219,
+          "height": 240,
+          "sha256": "df224bad7131575aba37af1890828f1d2da8d77a1b7d05317b89d0e212c689bc"
+        },
+        {
+          "file": "derived/spray-2.webp",
+          "bytes": 33110,
+          "width": 219,
+          "height": 196,
+          "sha256": "e4cd5b20d31e030dda973966c563c5d9a0f3173b7db1afb5d2b28905d764bcec"
+        },
+        {
+          "file": "derived/spray-3.webp",
+          "bytes": 56350,
+          "width": 237,
+          "height": 266,
+          "sha256": "ec147c79989d1eae57b107e1eb0a81cd9af3dd87dcd7764d2af93af4b4e1a872"
+        }
+      ],
+      "runtimeDerivativeFiles": [],
+      "runtimeUsage": "Effect vocabulary only in Delta 1; deterministic raymarched density / analytic spray use no source sheet or extracted silhouette."
+    },
+    {
+      "source": "P15-embers.png",
+      "sha256": "0eaef6df1f8aa3727b0574e59e6c06ec5a8c6af256fe94e5de70441ad15f40a4",
+      "bytes": 2333402,
+      "width": 1536,
+      "height": 1024,
+      "alphaRange": [
+        4,
+        251
+      ],
+      "transparentFraction": 0,
+      "production": true,
+      "treatment": "remove dark matte; unassociate radiance; feather texture boundary",
+      "productionBytes": 9660,
+      "textureBytesRGBA": 111784,
+      "sourceClass": "EFFECT_SOURCE",
+      "usableRegions": [
+        {
+          "name": "ember-0",
+          "rect": {
+            "left": 70,
+            "top": 337,
+            "width": 61,
+            "height": 71
+          },
+          "derivative": "derived/ember-0.webp",
+          "width": 65,
+          "height": 75,
+          "bytes": 694
+        },
+        {
+          "name": "ember-1",
+          "rect": {
+            "left": 552,
+            "top": 358,
+            "width": 61,
+            "height": 76
+          },
+          "derivative": "derived/ember-1.webp",
+          "width": 65,
+          "height": 80,
+          "bytes": 4022
+        },
+        {
+          "name": "ember-2",
+          "rect": {
+            "left": 1075,
+            "top": 112,
+            "width": 107,
+            "height": 87
+          },
+          "derivative": "derived/ember-2.webp",
+          "width": 111,
+          "height": 91,
+          "bytes": 2118
+        },
+        {
+          "name": "ember-3",
+          "rect": {
+            "left": 1259,
+            "top": 727,
+            "width": 107,
+            "height": 66
+          },
+          "derivative": "derived/ember-3.webp",
+          "width": 111,
+          "height": 70,
+          "bytes": 2826
+        }
+      ],
+      "derivativeFiles": [
+        "derived/ember-0.webp",
+        "derived/ember-1.webp",
+        "derived/ember-2.webp",
+        "derived/ember-3.webp"
+      ],
+      "blendMode": "additive",
+      "depthBands": [
+        "environment",
+        "midground",
+        "near-foreground"
+      ],
+      "maximumDisplayPixels": 32,
+      "deformationAllowed": false,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": true,
+      "alphaCleanup": "luminance unmatte, unassociated RGB, elliptical soft boundary; no sheet survives",
+      "derivatives": [
+        {
+          "file": "derived/ember-0.webp",
+          "bytes": 694,
+          "width": 65,
+          "height": 75,
+          "sha256": "410ccd704d399d3e5abae2f7814012521f1a8a4b70c5f8ff84046dcdbcf27550"
+        },
+        {
+          "file": "derived/ember-1.webp",
+          "bytes": 4022,
+          "width": 65,
+          "height": 80,
+          "sha256": "c80887da0c246ef139a83930498376d47fdded994e51d95014de79d8ae159a2c"
+        },
+        {
+          "file": "derived/ember-2.webp",
+          "bytes": 2118,
+          "width": 111,
+          "height": 91,
+          "sha256": "1f93e6ace56b05219e3286924073cc9b599cdc1b9e6d11d7d1239b9377f57f8b"
+        },
+        {
+          "file": "derived/ember-3.webp",
+          "bytes": 2826,
+          "width": 111,
+          "height": 70,
+          "sha256": "a6a9f801fff6ff1dac63ce74d8c5adfd5e65a0c5ef5ecd89104534b512fdb257"
+        }
+      ],
+      "runtimeDerivativeFiles": [
+        "derived/ember-0.webp",
+        "derived/ember-1.webp",
+        "derived/ember-2.webp",
+        "derived/ember-3.webp"
+      ]
+    },
+    {
+      "source": "P2-compass.png",
+      "sha256": "8088d6ba281dbe40799884e2fafb25f34dccb832a75cf199fe04839a11bc49d2",
+      "bytes": 1971345,
+      "width": 1338,
+      "height": 1176,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.4640086228811405,
+      "production": true,
+      "treatment": "retain RGBA; trim transparent margin",
+      "derivative": "P2-compass.webp",
+      "productionBytes": 438140,
+      "textureBytesRGBA": 6051696,
+      "sourceClass": "OBJECT",
+      "usableRegions": [],
+      "derivativeFiles": [
+        "P2-compass.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": false,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "alphaCleanup": "retain RGBA; trim transparent margin",
+      "derivatives": [
+        {
+          "file": "P2-compass.webp",
+          "bytes": 438140,
+          "width": 1302,
+          "height": 1162,
+          "sha256": "46b6cf4bab65568bdd04184a9295757fe909a5d53ef2acee206f76173e9a7afe"
+        }
+      ],
+      "runtimeDerivativeFiles": [
+        "P2-compass.webp"
+      ]
+    },
+    {
+      "source": "P3-chronicle-image-fragment.png",
+      "sha256": "12bc1596ac8425bbe3e52af93e7c9329a78c90218016bc370ebe8036baa5e474",
+      "bytes": 2697836,
+      "width": 1412,
+      "height": 1114,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.2720068049699676,
+      "production": true,
+      "treatment": "retain RGBA; trim transparent margin",
+      "derivative": "P3-chronicle-image-fragment.webp",
+      "productionBytes": 601686,
+      "textureBytesRGBA": 6176800,
+      "sourceClass": "OBJECT",
+      "usableRegions": [],
+      "derivativeFiles": [
+        "P3-chronicle-image-fragment.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": false,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "alphaCleanup": "retain RGBA; trim transparent margin",
+      "derivatives": [
+        {
+          "file": "P3-chronicle-image-fragment.webp",
+          "bytes": 601686,
+          "width": 1400,
+          "height": 1103,
+          "sha256": "daf2600277548b34b93db75b22da25b2208c8cb4c824a3d2308f76368698c6df"
+        }
+      ],
+      "runtimeUse": "Retained derivative for provenance; current program binds the actual published Chronicle cover instead.",
+      "runtimeDerivativeFiles": [
+        "P3-chronicle-image-fragment.webp"
+      ]
+    },
+    {
+      "source": "P4-journal-page.png",
+      "sha256": "0e58bb033f62bd9771fcdede763485983e4e5c46b825bf128d773607c15e48f8",
+      "bytes": 2678284,
+      "width": 1199,
+      "height": 1312,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.272020382839358,
+      "production": true,
+      "treatment": "retain RGBA; trim transparent margin",
+      "derivative": "P4-journal-page.webp",
+      "productionBytes": 534558,
+      "textureBytesRGBA": 6187392,
+      "sourceClass": "OBJECT",
+      "usableRegions": [],
+      "derivativeFiles": [
+        "P4-journal-page.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": true,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "alphaCleanup": "retain RGBA; trim transparent margin",
+      "derivatives": [
+        {
+          "file": "P4-journal-page.webp",
+          "bytes": 534558,
+          "width": 1179,
+          "height": 1312,
+          "sha256": "83005df5a269e85c9049478c93093261d804c15a99ac9083aa515194ae2768f8"
+        }
+      ],
+      "runtimeDerivativeFiles": [
+        "P4-journal-page.webp"
+      ]
+    },
+    {
+      "source": "P5-rope-sweep.png",
+      "sha256": "0113e8b87b6969539c00d7d75fc7c31169318e1c6ae098f75ed33e9950963737",
+      "bytes": 2261676,
+      "width": 1536,
+      "height": 1024,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.5036214192708334,
+      "production": false,
+      "treatment": "retain RGBA; trim transparent margin",
+      "derivative": "P5-rope-sweep.webp",
+      "productionBytes": 381228,
+      "textureBytesRGBA": 5476800,
+      "sourceClass": "OBJECT",
+      "usableRegions": [],
+      "derivativeFiles": [
+        "P5-rope-sweep.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": false,
+      "lightingResponse": true,
+      "nearCameraAllowed": true,
+      "emitterSystem": false,
+      "alphaCleanup": "retain RGBA; trim transparent margin",
+      "derivatives": [
+        {
+          "file": "P5-rope-sweep.webp",
+          "bytes": 381228,
+          "width": 1400,
+          "height": 978,
+          "sha256": "1c5be746af10384bfa44433a709432cd1a8524ca9a9f3e91b4fe56dc5f3f66ed"
+        }
+      ],
+      "runtimeDerivativeFiles": [],
+      "omissionReason": "Owner Delta 2 removes the isolated rigid rope event; only room-attached suspension remains."
+    },
+    {
+      "source": "P6-lantern.png",
+      "sha256": "e9c35a32db90f223ee2e51f80b6a9a4e7f5cf995ea2bc94b5a18fbb4e2dc3063",
+      "bytes": 2554539,
+      "width": 1024,
+      "height": 1536,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.432220458984375,
+      "production": true,
+      "treatment": "retain RGBA; trim transparent margin",
+      "derivative": "P6-lantern.webp",
+      "productionBytes": 453096,
+      "textureBytesRGBA": 5928960,
+      "sourceClass": "OBJECT",
+      "usableRegions": [],
+      "derivativeFiles": [
+        "P6-lantern.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": false,
+      "lightingResponse": true,
+      "nearCameraAllowed": true,
+      "emitterSystem": false,
+      "alphaCleanup": "retain RGBA; trim transparent margin",
+      "derivatives": [
+        {
+          "file": "P6-lantern.webp",
+          "bytes": 453096,
+          "width": 965,
+          "height": 1536,
+          "sha256": "2b7d6e772aec311361f34bcaf4e325a869ca4caa8ded440ccc7d34c77d94b11d"
+        }
+      ],
+      "runtimeDerivativeFiles": [
+        "P6-lantern.webp"
+      ]
+    },
+    {
+      "source": "P7-sailcloth.png",
+      "sha256": "cd6bcfa9c28f26045c2588443fd0eade9dc41dbe644186dc065501e4b4605077",
+      "bytes": 2420751,
+      "width": 1402,
+      "height": 1122,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.3910583556467588,
+      "production": true,
+      "treatment": "retain RGBA; trim transparent margin",
+      "derivative": "P7-sailcloth.webp",
+      "productionBytes": 497314,
+      "textureBytesRGBA": 6272000,
+      "sourceClass": "OBJECT",
+      "usableRegions": [],
+      "derivativeFiles": [
+        "P7-sailcloth.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": true,
+      "lightingResponse": true,
+      "nearCameraAllowed": true,
+      "emitterSystem": false,
+      "alphaCleanup": "retain RGBA; trim transparent margin",
+      "derivatives": [
+        {
+          "file": "P7-sailcloth.webp",
+          "bytes": 497314,
+          "width": 1400,
+          "height": 1120,
+          "sha256": "9ba60ae35c37a6e6697728f978d16756193e080cb091818a352c33d1eab9a5fa"
+        }
+      ],
+      "runtimeDerivativeFiles": [
+        "P7-sailcloth.webp"
+      ]
+    },
+    {
+      "source": "P8-parchment-scraps.png",
+      "sha256": "a475ab4e4b4ddd560e73462371604334f0a32eab681a0291cb6d2b7c2a76657d",
+      "bytes": 2904616,
+      "width": 1536,
+      "height": 1024,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.44498634338378906,
+      "production": true,
+      "treatment": "retain RGBA; trim transparent margin",
+      "productionBytes": 388560,
+      "textureBytesRGBA": 3720344,
+      "sourceClass": "MULTI_ELEMENT",
+      "usableRegions": [
+        {
+          "name": "scrap-0",
+          "rect": {
+            "left": 18,
+            "top": 2,
+            "width": 506,
+            "height": 624
+          },
+          "derivative": "derived/scrap-0.webp",
+          "width": 475,
+          "height": 608,
+          "bytes": 105706
+        },
+        {
+          "name": "scrap-1",
+          "rect": {
+            "left": 537,
+            "top": 25,
+            "width": 975,
+            "height": 399
+          },
+          "derivative": "derived/scrap-1.webp",
+          "width": 804,
+          "height": 310,
+          "bytes": 128184
+        },
+        {
+          "name": "scrap-2",
+          "rect": {
+            "left": 537,
+            "top": 430,
+            "width": 599,
+            "height": 542
+          },
+          "derivative": "derived/scrap-2.webp",
+          "width": 595,
+          "height": 510,
+          "bytes": 120282
+        },
+        {
+          "name": "scrap-3",
+          "rect": {
+            "left": 1152,
+            "top": 737,
+            "width": 360,
+            "height": 276
+          },
+          "derivative": "derived/scrap-3.webp",
+          "width": 321,
+          "height": 276,
+          "bytes": 34388
+        }
+      ],
+      "derivativeFiles": [
+        "derived/scrap-0.webp",
+        "derived/scrap-1.webp",
+        "derived/scrap-2.webp",
+        "derived/scrap-3.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": true,
+      "lightingResponse": true,
+      "nearCameraAllowed": true,
+      "emitterSystem": false,
+      "alphaCleanup": "retain RGBA; trim transparent margin",
+      "derivatives": [
+        {
+          "file": "derived/scrap-0.webp",
+          "bytes": 105706,
+          "width": 475,
+          "height": 608,
+          "sha256": "e4a8b5e0008f8bd52676eff4bbfa1f15a745d26893de595d8bdaf202c2c80cd7"
+        },
+        {
+          "file": "derived/scrap-1.webp",
+          "bytes": 128184,
+          "width": 804,
+          "height": 310,
+          "sha256": "5c0e434902af1e4724c6e02996b1e06a4cd754957a426a1f1316718e2caf2c52"
+        },
+        {
+          "file": "derived/scrap-2.webp",
+          "bytes": 120282,
+          "width": 595,
+          "height": 510,
+          "sha256": "76ad18cf44a2d016e2e3f952c647d47f11a3d2b1e542fabf2fe2f397606cf691"
+        },
+        {
+          "file": "derived/scrap-3.webp",
+          "bytes": 34388,
+          "width": 321,
+          "height": 276,
+          "sha256": "ae3e2ef7ca8449a6e56473e2ef9127412e9ac43db922f0c5faa6f2f7ddba7ea7"
+        }
+      ],
+      "runtimeDerivativeFiles": [
+        "derived/scrap-0.webp",
+        "derived/scrap-1.webp",
+        "derived/scrap-2.webp",
+        "derived/scrap-3.webp"
+      ]
+    },
+    {
+      "source": "P9-ink-symbols.png",
+      "sha256": "a14ee69aef0d193b51bf51b6606833d010c0654e8397d1602ddbd06d262f2a94",
+      "bytes": 2036168,
+      "width": 1536,
+      "height": 1024,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.6124337514241537,
+      "production": true,
+      "treatment": "retain RGBA; trim transparent margin",
+      "productionBytes": 267690,
+      "textureBytesRGBA": 2422944,
+      "sourceClass": "MULTI_ELEMENT",
+      "usableRegions": [
+        {
+          "name": "ink-0",
+          "rect": {
+            "left": 448,
+            "top": 7,
+            "width": 405,
+            "height": 409
+          },
+          "derivative": "derived/ink-0.webp",
+          "width": 409,
+          "height": 408,
+          "bytes": 68562
+        },
+        {
+          "name": "ink-1",
+          "rect": {
+            "left": 821,
+            "top": 278,
+            "width": 652,
+            "height": 665
+          },
+          "derivative": "derived/ink-1.webp",
+          "width": 656,
+          "height": 669,
+          "bytes": 199128
+        }
+      ],
+      "derivativeFiles": [
+        "derived/ink-0.webp",
+        "derived/ink-1.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": false,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "alphaCleanup": "retain RGBA; trim transparent margin",
+      "derivatives": [
+        {
+          "file": "derived/ink-0.webp",
+          "bytes": 68562,
+          "width": 409,
+          "height": 408,
+          "sha256": "5004302271c4336209c312502dcf918f094bca6f2ce36d7b8b026190f699af4b"
+        },
+        {
+          "file": "derived/ink-1.webp",
+          "bytes": 199128,
+          "width": 656,
+          "height": 669,
+          "sha256": "bf2b7f4ae832d56388554f95427cbaaa042b9900528caa32cd4c4af092a170d2"
+        }
+      ],
+      "runtimeDerivativeFiles": [
+        "derived/ink-0.webp",
+        "derived/ink-1.webp"
+      ]
+    },
+    {
+      "source": "Voyagewright_Waiting_Room_Background.png",
+      "sha256": "b7ff4a97b4476084fb09bcf47f110f4a725b9ba7e2d7eb905f64898c62f5b9e7",
+      "bytes": 2536096,
+      "width": 1536,
+      "height": 1024,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0,
+      "production": true,
+      "treatment": "reference only",
+      "sourceClass": "MULTI_ELEMENT",
+      "usableRegions": [
+        {
+          "element": "window frame and balcony rail",
+          "region": "hand-authored polygons in scripts/refit/derive-embarkation-environment.mjs"
+        },
+        {
+          "element": "ceiling and overhead beams",
+          "region": "hand-authored polygons in scripts/refit/derive-embarkation-environment.mjs"
+        },
+        {
+          "element": "left timber wall and sign",
+          "region": "hand-authored polygons in scripts/refit/derive-embarkation-environment.mjs"
+        },
+        {
+          "element": "right timber/candle structure",
+          "region": "hand-authored polygons in scripts/refit/derive-embarkation-environment.mjs"
+        },
+        {
+          "element": "plants and midground furniture",
+          "region": "hand-authored polygons in scripts/refit/derive-embarkation-environment.mjs"
+        },
+        {
+          "element": "couch and cushions",
+          "region": "hand-authored polygons in scripts/refit/derive-embarkation-environment.mjs"
+        },
+        {
+          "element": "foreground table, chair, candles and objects",
+          "region": "hand-authored polygons in scripts/refit/derive-embarkation-environment.mjs"
+        },
+        {
+          "element": "nearest hanging lantern",
+          "region": "hand-authored polygons in scripts/refit/derive-embarkation-environment.mjs"
+        },
+        {
+          "element": "keyed exterior aperture",
+          "region": "hand-authored polygons in scripts/refit/derive-embarkation-environment.mjs"
+        }
+      ],
+      "derivativeFiles": [
+        "derived/room-overscan.webp",
+        "derived/room-mattes-0.png",
+        "derived/room-mattes-1.png",
+        "derived/room-mattes-2.png",
+        "derived/room-aperture.png",
+        "derived/room-backing-aperture.png",
+        "derived/room-hidden-backing.webp",
+        "derived/room-living-masks.png",
+        "derived/room-live-backing.webp",
+        "derived/room-exterior-continuous.png",
+        "derived/room-live-props.png",
+        "derived/room-live-flames.png",
+        "derived/room-static.webp",
+        "derived/room-overscan-delta2.webp",
+        "derived/exterior-overscan.webp",
+        "derived/exterior-nomoon.webp",
+        "derived/stage-c-pier.png",
+        "derived/stage-c-water.webp",
+        "derived/stage-c-extended.webp"
+      ],
+      "blendMode": "normal premultiplied alpha; spatial masked projection",
+      "depthBands": [
+        "balcony frame",
+        "ceiling / walls",
+        "mid furniture",
+        "foreground couch / table",
+        "near hanging lantern"
+      ],
+      "maximumDisplayPixels": 3072,
+      "deformationAllowed": false,
+      "lightingResponse": true,
+      "nearCameraAllowed": true,
+      "emitterSystem": false,
+      "alphaCleanup": "Window blue key constrained by hand-drawn aperture contours; ropes, wood, lanterns and vegetation retained. Original RGB remains authoritative. Packed one-hot region masks contain no painted rectangles.",
+      "productionBytes": 13819823,
+      "textureBytesRGBA": 100665088,
+      "derivatives": [
+        {
+          "file": "derived/room-overscan.webp",
+          "bytes": 460432,
+          "width": 1586,
+          "height": 992,
+          "sha256": "98697cb757aabc5975a6221d2524fb87b37ac49a53fae4ca1c297a8c3e5ff9e3"
+        },
+        {
+          "file": "derived/room-mattes-0.png",
+          "bytes": 24076,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "470df0199ca41452cccd737bb8fa9965ed46e59cf8687d42c52946d355d47661"
+        },
+        {
+          "file": "derived/room-mattes-1.png",
+          "bytes": 18037,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "4a865ffeff6538eba9176a1c34f8e09e9777bba1a04dbdf0bfca7ff03bc755e8"
+        },
+        {
+          "file": "derived/room-mattes-2.png",
+          "bytes": 13344,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "ec4d4da24394cb6bae2ef138fbf171f1285c814923fc2081d465a9a143ef5f2d"
+        },
+        {
+          "file": "derived/room-aperture.png",
+          "bytes": 32879,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "6bb5c107d28d30675e0f79b6818c155a5f2f639a7ae185bbf909988012eef20c"
+        },
+        {
+          "file": "derived/room-backing-aperture.png",
+          "bytes": 12944,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "482ce26f09d474078e30d76cc10087b2c2f317e695b66355a2d35c843e868504"
+        },
+        {
+          "file": "derived/room-hidden-backing.webp",
+          "bytes": 742640,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "4ba14b2acc525610993cdddd888206d17e6776a5ad8f5c24572e77dec629e872"
+        },
+        {
+          "file": "derived/room-living-masks.png",
+          "bytes": 60439,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "ddeaf294560536849aaa367fa882866c8b2f4d92807cb2cb557ce6beb6993755"
+        },
+        {
+          "file": "derived/room-live-backing.webp",
+          "bytes": 494152,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "87d0957fc605a78763c4be640e31047d0d9baeea4b652a28c9d0b0467a731435"
+        },
+        {
+          "file": "derived/room-exterior-continuous.png",
+          "bytes": 3270360,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "2a6bc0e3b876866001ee31970cf996519c897f0df8c3348bfa211d950937257a"
+        },
+        {
+          "file": "derived/room-live-props.png",
+          "bytes": 3099195,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "595f3debb28f42401c59f6ae31f5b35fa1ee355afe8438822f27ee34679a6165"
+        },
+        {
+          "file": "derived/room-live-flames.png",
+          "bytes": 3103681,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "8a28a6b9d324de4879c2d9cf5d7dff7392fe1199383dade28fe3a90391ca444d"
+        },
+        {
+          "file": "derived/room-static.webp",
+          "bytes": 702250,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "9f6e0b417922ffd53a27eed3622279f5a27f84906baff5bd77a9f6598a5f42a1"
+        },
+        {
+          "file": "derived/room-overscan-delta2.webp",
+          "bytes": 585346,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "daf615437eaebfeaf1adc40e3ed23468639a9a54b7356f882e37a47fd69a3711"
+        },
+        {
+          "file": "derived/exterior-overscan.webp",
+          "bytes": 512352,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "4bc4cd09dc3dadb3750938d091d4279d892cff8aa1b623160bd0d51c61a0fe99"
+        },
+        {
+          "file": "derived/exterior-nomoon.webp",
+          "bytes": 687696,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "606c7f3ab3c8f59e0fbaa97796cdca03ed7daed009a5314c792239b05f6b25e1"
+        },
+        {
+          "file": "derived/stage-c-pier.png",
+          "width": 1536,
+          "height": 1024,
+          "bytes": 2870300,
+          "sha256": "f147ae7f02359bafb64873aa7c63161997590ead24b91526c8785ba64d54411d"
+        },
+        {
+          "file": "derived/stage-c-water.webp",
+          "width": 1536,
+          "height": 1024,
+          "bytes": 1891940,
+          "sha256": "a28a0210e3bc57d025873e414d93f28118ad1000c86fdcc2f299ca72d41d7512"
+        },
+        {
+          "file": "derived/stage-c-extended.webp",
+          "width": 1598,
+          "height": 1157,
+          "bytes": 2129508,
+          "sha256": "71edb8cd3b6c83ed9cc40244e987d8f338f308a15a5301d333bc7b7aab9b74ab"
+        }
+      ],
+      "omissionReason": null,
+      "runtimeImage": "/images/muster/lantern-room.png (unchanged approved original)",
+      "scaleLimitations": "Original full-resolution painting projected through fixed 2.5D surfaces. Generated overscan continues the ceiling and outer walls beyond the original bounds. Reconstructed backing fills disoccluded furniture areas. At the final camera, the original painting remains authoritative.",
+      "hiddenAreaBacking": {
+        "tool": "built-in image_gen",
+        "sourceSha256": "b7ff4a97b4476084fb09bcf47f110f4a725b9ba7e2d7eb905f64898c62f5b9e7",
+        "generation": "exec-96b5ea36-d288-4a84-8b0f-d415a995e540",
+        "purpose": "remove nearest couch/table and reconstruct complete midground furniture and floor behind them; preserve original architecture",
+        "promptFile": "Development_Docs/Projects/Voyagewright_Refit_V1/embarkation/room-midground-prompt.txt",
+        "runtimeFile": "derived/room-hidden-backing.webp"
+      },
+      "livingEnvironment": {
+        "flames": 13,
+        "hangingLanterns": 5,
+        "water": "masked original exterior water and painted reflections",
+        "cleanBacking": "built-in image_gen exec-aaa28147-1099-4f83-93ff-56f67a9cb420, used only under original moving flame/lantern silhouettes",
+        "promptFile": "Development_Docs/Projects/Voyagewright_Refit_V1/embarkation/room-live-backing-prompt.txt",
+        "reducedMotion": "no spatial water displacement; restrained reflection shimmer; lantern sway and flame deformation substantially suppressed",
+        "clock": "Continuous film/ambient clock; residual damping begins at 31 seconds; exact camera stop at 31.",
+        "independentLayers": {
+          "props": "derived/room-live-props.png",
+          "flames": "derived/room-live-flames.png",
+          "staticBacking": "derived/room-static.webp",
+          "method": "Original-pixel contour alpha extraction; no whole-neighborhood transport; ropes included only where attached to a moving lantern."
+        }
+      },
+      "overscan": {
+        "tool": "built-in image_gen",
+        "generations": [
+          "exec-c5b88b35-d1c1-46af-9b07-daadf685cadf",
+          "exec-f65d6f20-d0e2-459d-b82c-3d084a3917fc"
+        ],
+        "purpose": "continue only hidden ceiling/wall edges, removing the closest lantern from the extension so its separated layer is not duplicated",
+        "promptFiles": [
+          "room-overscan-prompt.txt",
+          "room-overscan-clean-prompt.txt"
+        ],
+        "sourceRegistration": {
+          "scale": 0.807,
+          "x": 175,
+          "y": 125,
+          "width": 1586,
+          "height": 992
+        },
+        "runtimeFile": "derived/room-overscan.webp"
+      },
+      "exteriorBacking": {
+        "source": ".runtime/embarkation/masters/room-exterior-inpaint-delta1.png",
+        "sha256": "065677c55a4e86e11d3a96dcdbf838f8f8a86e87f51f4fc4f9280f5045264891",
+        "tool": "built-in image_gen",
+        "prompt": "room-exterior-prompt.txt",
+        "purpose": "Uninterrupted harbor outside the spatial room. Original-pixel confidence rejects interior contamination; final source RGB remains authoritative."
+      },
+      "runtimeDerivativeFiles": [
+        "derived/room-mattes-0.png",
+        "derived/room-mattes-1.png",
+        "derived/room-mattes-2.png",
+        "derived/room-aperture.png",
+        "derived/room-backing-aperture.png",
+        "derived/room-hidden-backing.webp",
+        "derived/room-living-masks.png",
+        "derived/room-live-props.png",
+        "derived/room-live-flames.png",
+        "derived/room-static.webp",
+        "derived/room-overscan-delta2.webp",
+        "derived/stage-c-pier.png",
+        "derived/stage-c-water.webp",
+        "derived/stage-c-extended.webp"
+      ],
+      "delta2Provenance": {
+        "prompts": "delta2-derived-art-prompts.json",
+        "sourceScript": "scripts/refit/derive-embarkation-live-layers.py",
+        "roomOverscan": "exec-1637a6e5-0def-4536-a78b-8782ea13f905.png",
+        "exteriorOverscan": "exec-87c4e531-cac5-4de7-9ee2-c8045555d7ff.png"
+      },
+      "stageCCorrection": {
+        "sourceClass": "MULTI_ELEMENT",
+        "usableRegions": [
+          "distant sky/coast",
+          "rigid pier, rocks and boats",
+          "level water surface"
+        ],
+        "activeRuntime": [
+          {
+            "file": "derived/stage-c-pier.png",
+            "width": 1536,
+            "height": 1024,
+            "bytes": 2870300,
+            "sha256": "f147ae7f02359bafb64873aa7c63161997590ead24b91526c8785ba64d54411d"
+          },
+          {
+            "file": "derived/stage-c-water.webp",
+            "width": 1536,
+            "height": 1024,
+            "bytes": 1891940,
+            "sha256": "a28a0210e3bc57d025873e414d93f28118ad1000c86fdcc2f299ca72d41d7512"
+          },
+          {
+            "file": "derived/stage-c-extended.webp",
+            "width": 1598,
+            "height": 1157,
+            "bytes": 2129508,
+            "sha256": "71edb8cd3b6c83ed9cc40244e987d8f338f308a15a5301d333bc7b7aab9b74ab"
+          }
+        ],
+        "formerRuntime": [
+          "exterior-nomoon.webp",
+          "exterior-overscan.webp"
+        ],
+        "blendMode": "premultiplied-normal",
+        "depthBands": [
+          "sky/coast: -12500",
+          "pier/boats: -9000",
+          "ray/plane water"
+        ],
+        "deformationAllowed": false,
+        "lightingResponse": true,
+        "nearCameraAllowed": false,
+        "emitterSystem": false,
+        "maximumDisplayPixels": 2560,
+        "scaleLimit": "Authored camera path only; five measured responsive compositions",
+        "alphaCleanup": "Source-colored silhouette refinement and subpixel feather; reviewed over dark teal and warm parchment. No opaque sheet is used for pier/boat material.",
+        "provenance": "correction-art.json",
+        "coverage": "correction-coverage.json"
+      }
+    },
+    {
+      "source": "Waiting_Room_Representative_Image.png",
+      "sha256": "6ad3cb7ef7924b5109e02490db55c978baf32eb541236c54e5ceb965ae91ec7f",
+      "bytes": 2211788,
+      "width": 1536,
+      "height": 1024,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0,
+      "production": false,
+      "treatment": "reference only",
+      "sourceClass": "REFERENCE_ONLY",
+      "usableRegions": [],
+      "derivativeFiles": [],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": false,
+      "lightingResponse": false,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "alphaCleanup": "reference only",
+      "productionBytes": 0,
+      "textureBytesRGBA": 0,
+      "derivatives": [],
+      "omissionReason": "Composition/reference board; never a literal runtime layer.",
+      "runtimeDerivativeFiles": []
+    },
+    {
+      "source": "cinemativ_prop_pieces.png",
+      "sha256": "ac6a7e09ea4b6b5a0e3927d5aa11380d925f7add2785f31b81c8524115985dbe",
+      "bytes": 1038858,
+      "width": 1387,
+      "height": 440,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0,
+      "production": false,
+      "treatment": "reference only",
+      "sourceClass": "REFERENCE_ONLY",
+      "usableRegions": [],
+      "derivativeFiles": [],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": false,
+      "lightingResponse": false,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "alphaCleanup": "reference only",
+      "productionBytes": 0,
+      "textureBytesRGBA": 0,
+      "derivatives": [],
+      "omissionReason": "Composition/reference board; never a literal runtime layer.",
+      "runtimeDerivativeFiles": []
+    },
+    {
+      "source": "cinemativ_prop_pieces_2.png",
+      "sha256": "9c2d401aecfd54b01f17b9c457c0ed03c358841b8e4f6dace0345c17afce5879",
+      "bytes": 2593933,
+      "width": 1536,
+      "height": 1024,
+      "alphaRange": [
+        0,
+        253
+      ],
+      "transparentFraction": 0.0004393259684244792,
+      "production": false,
+      "treatment": "reference only",
+      "sourceClass": "REFERENCE_ONLY",
+      "usableRegions": [],
+      "derivativeFiles": [],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": false,
+      "lightingResponse": false,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "alphaCleanup": "reference only",
+      "productionBytes": 0,
+      "textureBytesRGBA": 0,
+      "derivatives": [],
+      "omissionReason": "Composition/reference board; never a literal runtime layer.",
+      "runtimeDerivativeFiles": []
+    },
+    {
+      "source": "embarkation_key.png",
+      "sha256": "d3bd0b16ddc4d320a4d8a2e7848ad3a3435850eaa7104009d8a1d1fe6cd79216",
+      "bytes": 2470225,
+      "width": 1536,
+      "height": 1024,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0,
+      "production": false,
+      "treatment": "reference only",
+      "sourceClass": "REFERENCE_ONLY",
+      "usableRegions": [],
+      "derivativeFiles": [],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "midground",
+        "deep-background"
+      ],
+      "maximumDisplayPixels": 900,
+      "deformationAllowed": false,
+      "lightingResponse": false,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "alphaCleanup": "reference only",
+      "productionBytes": 0,
+      "textureBytesRGBA": 0,
+      "derivatives": [],
+      "omissionReason": "Composition/reference board; never a literal runtime layer.",
+      "runtimeDerivativeFiles": []
+    },
+    {
+      "source": "stage-A-background.png",
+      "sha256": "7889d09f3f124ee7b9d2c9ebb37251901874f751c855298c91e1ea21fd1caa3f",
+      "bytes": 2217613,
+      "width": 1672,
+      "height": 941,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0,
+      "production": true,
+      "treatment": "opaque environment RGB; preserve painted edges for spatial projection",
+      "derivative": "stage-A-background.webp",
+      "productionBytes": 185066,
+      "textureBytesRGBA": 6293408,
+      "sourceClass": "OBJECT",
+      "usableRegions": [
+        {
+          "name": "environment projection source",
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "width": 1672,
+            "height": 941
+          },
+          "derivative": "stage-A-background.webp"
+        }
+      ],
+      "derivativeFiles": [
+        "stage-A-background.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "far-environment",
+        "mid-environment",
+        "projected-near-scenery"
+      ],
+      "maximumDisplayPixels": 4096,
+      "deformationAllowed": true,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "alphaCleanup": "Opaque environment RGB; no alpha matte cleanup required.",
+      "derivatives": [
+        {
+          "file": "stage-A-background.webp",
+          "bytes": 185066,
+          "width": 1672,
+          "height": 941,
+          "sha256": "4cb2166d0cd8404a65d91888573c18492215a77a3457d55b3909c661e803c7fb"
+        }
+      ],
+      "scaleLimitations": "Spatial depth projection only; never a near-camera flat poster.",
+      "runtimeDerivativeFiles": [
+        "stage-A-background.webp"
+      ]
+    },
+    {
+      "source": "stage-B-background.png",
+      "sha256": "14d8304d672b2bcf2caeeba39d9304a2d74a9135c6088bc497a5f406e7d10951",
+      "bytes": 2407954,
+      "width": 1672,
+      "height": 941,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0,
+      "production": true,
+      "treatment": "opaque environment RGB; preserve painted edges for spatial projection",
+      "derivative": "stage-B-background.webp",
+      "productionBytes": 284894,
+      "textureBytesRGBA": 6293408,
+      "sourceClass": "OBJECT",
+      "usableRegions": [
+        {
+          "name": "environment projection source",
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "width": 1672,
+            "height": 941
+          },
+          "derivative": "stage-B-background.webp"
+        }
+      ],
+      "derivativeFiles": [
+        "stage-B-background.webp"
+      ],
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "far-environment",
+        "mid-environment",
+        "projected-near-scenery"
+      ],
+      "maximumDisplayPixels": 4096,
+      "deformationAllowed": true,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "alphaCleanup": "Opaque environment RGB; no alpha matte cleanup required.",
+      "derivatives": [
+        {
+          "file": "stage-B-background.webp",
+          "bytes": 284894,
+          "width": 1672,
+          "height": 941,
+          "sha256": "f97fd397e6e53a3355ddad1e4eef4f498675c3fbaf066eff0208dac6eacc2455"
+        }
+      ],
+      "runtimeUse": "Retained derivative for provenance; current program binds the actual published Chronicle cover instead.",
+      "scaleLimitations": "Spatial depth projection only; never a near-camera flat poster.",
+      "runtimeDerivativeFiles": [],
+      "omissionReason": "Delta 2 continues the owner-screened Chronicle landscape instead; supplied master preserved as reference."
+    }
+  ],
+  "productionBytes": 29664648,
+  "textureBytesRGBA": 207893300,
+  "alphaReview": "All transparent derivatives composited over dark teal and warm parchment; effect texture boundary alpha <= 2/255.",
+  "additionalSources": [
+    {
+      "source": ".runtime/muster/chronicle-assets/25423ce7-84c4-45e0-a60c-7bf463dddbd0/782a265b-7dff-485c-b9ef-d28d14fbeade.png",
+      "sourceSha256": "a73900b4a86a908e2bdee0215bd4455c372e8a81d650e52c8fa822c19c63f596",
+      "sourceClass": "MULTI_ELEMENT",
+      "method": "Original pixel contour cutouts; generated sky/water hidden backing and overscan. Fixed projection planes at four depths, no image bending.",
+      "shapes": {
+        "islands": [
+          [
+            362,
+            590
+          ],
+          [
+            423,
+            567
+          ],
+          [
+            455,
+            549
+          ],
+          [
+            486,
+            564
+          ],
+          [
+            518,
+            536
+          ],
+          [
+            552,
+            542
+          ],
+          [
+            578,
+            517
+          ],
+          [
+            601,
+            483
+          ],
+          [
+            616,
+            475
+          ],
+          [
+            633,
+            503
+          ],
+          [
+            653,
+            491
+          ],
+          [
+            673,
+            450
+          ],
+          [
+            699,
+            408
+          ],
+          [
+            712,
+            406
+          ],
+          [
+            727,
+            444
+          ],
+          [
+            749,
+            397
+          ],
+          [
+            773,
+            386
+          ],
+          [
+            794,
+            369
+          ],
+          [
+            815,
+            373
+          ],
+          [
+            824,
+            330
+          ],
+          [
+            841,
+            282
+          ],
+          [
+            855,
+            326
+          ],
+          [
+            870,
+            304
+          ],
+          [
+            894,
+            229
+          ],
+          [
+            916,
+            185
+          ],
+          [
+            940,
+            166
+          ],
+          [
+            956,
+            164
+          ],
+          [
+            972,
+            195
+          ],
+          [
+            983,
+            228
+          ],
+          [
+            992,
+            285
+          ],
+          [
+            1012,
+            356
+          ],
+          [
+            1026,
+            419
+          ],
+          [
+            1052,
+            462
+          ],
+          [
+            1067,
+            371
+          ],
+          [
+            1081,
+            346
+          ],
+          [
+            1095,
+            358
+          ],
+          [
+            1106,
+            411
+          ],
+          [
+            1121,
+            414
+          ],
+          [
+            1136,
+            380
+          ],
+          [
+            1147,
+            392
+          ],
+          [
+            1161,
+            465
+          ],
+          [
+            1183,
+            428
+          ],
+          [
+            1204,
+            399
+          ],
+          [
+            1231,
+            413
+          ],
+          [
+            1241,
+            459
+          ],
+          [
+            1260,
+            461
+          ],
+          [
+            1289,
+            505
+          ],
+          [
+            1311,
+            552
+          ],
+          [
+            1350,
+            584
+          ]
+        ],
+        "middle": [
+          [
+            52,
+            608
+          ],
+          [
+            78,
+            598
+          ],
+          [
+            97,
+            594
+          ],
+          [
+            125,
+            577
+          ],
+          [
+            137,
+            549
+          ],
+          [
+            155,
+            531
+          ],
+          [
+            174,
+            523
+          ],
+          [
+            180,
+            501
+          ],
+          [
+            191,
+            489
+          ],
+          [
+            202,
+            509
+          ],
+          [
+            209,
+            542
+          ],
+          [
+            220,
+            551
+          ],
+          [
+            227,
+            578
+          ],
+          [
+            265,
+            586
+          ],
+          [
+            291,
+            608
+          ],
+          [
+            213,
+            619
+          ],
+          [
+            100,
+            619
+          ]
+        ],
+        "near": [
+          [
+            1057,
+            723
+          ],
+          [
+            1111,
+            678
+          ],
+          [
+            1125,
+            634
+          ],
+          [
+            1157,
+            599
+          ],
+          [
+            1176,
+            584
+          ],
+          [
+            1180,
+            550
+          ],
+          [
+            1194,
+            537
+          ],
+          [
+            1209,
+            552
+          ],
+          [
+            1216,
+            517
+          ],
+          [
+            1230,
+            498
+          ],
+          [
+            1247,
+            479
+          ],
+          [
+            1259,
+            493
+          ],
+          [
+            1264,
+            540
+          ],
+          [
+            1282,
+            502
+          ],
+          [
+            1291,
+            461
+          ],
+          [
+            1303,
+            448
+          ],
+          [
+            1310,
+            378
+          ],
+          [
+            1326,
+            314
+          ],
+          [
+            1345,
+            299
+          ],
+          [
+            1360,
+            306
+          ],
+          [
+            1371,
+            304
+          ],
+          [
+            1387,
+            334
+          ],
+          [
+            1402,
+            379
+          ],
+          [
+            1416,
+            427
+          ],
+          [
+            1432,
+            405
+          ],
+          [
+            1447,
+            369
+          ],
+          [
+            1461,
+            360
+          ],
+          [
+            1476,
+            357
+          ],
+          [
+            1492,
+            391
+          ],
+          [
+            1503,
+            403
+          ],
+          [
+            1514,
+            427
+          ],
+          [
+            1534,
+            429
+          ],
+          [
+            1556,
+            429
+          ],
+          [
+            1577,
+            393
+          ],
+          [
+            1594,
+            391
+          ],
+          [
+            1610,
+            414
+          ],
+          [
+            1638,
+            440
+          ],
+          [
+            1672,
+            457
+          ],
+          [
+            1672,
+            941
+          ],
+          [
+            1320,
+            941
+          ],
+          [
+            1430,
+            884
+          ],
+          [
+            1534,
+            811
+          ],
+          [
+            1496,
+            774
+          ],
+          [
+            1290,
+            755
+          ]
+        ],
+        "rocks": [
+          [
+            104,
+            697
+          ],
+          [
+            126,
+            665
+          ],
+          [
+            140,
+            670
+          ],
+          [
+            157,
+            692
+          ],
+          [
+            188,
+            683
+          ],
+          [
+            235,
+            691
+          ],
+          [
+            282,
+            676
+          ],
+          [
+            306,
+            680
+          ],
+          [
+            331,
+            666
+          ],
+          [
+            357,
+            658
+          ],
+          [
+            366,
+            644
+          ],
+          [
+            387,
+            644
+          ],
+          [
+            401,
+            674
+          ],
+          [
+            423,
+            666
+          ],
+          [
+            439,
+            646
+          ],
+          [
+            453,
+            649
+          ],
+          [
+            470,
+            683
+          ],
+          [
+            500,
+            681
+          ],
+          [
+            514,
+            670
+          ],
+          [
+            536,
+            686
+          ],
+          [
+            551,
+            670
+          ],
+          [
+            566,
+            661
+          ],
+          [
+            593,
+            648
+          ],
+          [
+            609,
+            616
+          ],
+          [
+            629,
+            588
+          ],
+          [
+            644,
+            590
+          ],
+          [
+            654,
+            613
+          ],
+          [
+            676,
+            635
+          ],
+          [
+            698,
+            661
+          ],
+          [
+            731,
+            677
+          ],
+          [
+            779,
+            691
+          ],
+          [
+            657,
+            718
+          ],
+          [
+            449,
+            723
+          ],
+          [
+            263,
+            718
+          ]
+        ]
+      },
+      "derivatives": [
+        {
+          "file": "derived/stage-distant.webp",
+          "bytes": 395884,
+          "width": 1672,
+          "height": 941,
+          "sha256": "f4b6d98086693bd1fc5d2d742c106bbcb167da7dde4f56f54bde5e65f534bef4"
+        },
+        {
+          "file": "derived/stage-islands.png",
+          "bytes": 2380470,
+          "width": 1672,
+          "height": 941,
+          "sha256": "86c4f5f76e9dd9c06efbce8b3f49f293c7f13b33a8ae82a0f91a416759a79e83"
+        },
+        {
+          "file": "derived/stage-middle.png",
+          "bytes": 2375995,
+          "width": 1672,
+          "height": 941,
+          "sha256": "455954a3dca87083d32d73db57941fd895f1de14accd59f37561f09854fc7417"
+        },
+        {
+          "file": "derived/stage-near.png",
+          "bytes": 2381689,
+          "width": 1672,
+          "height": 941,
+          "sha256": "6c1b291a7a2444253b0ebdc364459b7dfd1239f93990139a537ccbc60c67b250"
+        },
+        {
+          "file": "derived/stage-rocks.png",
+          "bytes": 2377097,
+          "width": 1672,
+          "height": 941,
+          "sha256": "84fad41384f70366de964c16255ce317b2d66cbbc2691555e5625b4d73d723c0"
+        },
+        {
+          "file": "derived/stage-water-backing.webp",
+          "bytes": 350432,
+          "width": 1672,
+          "height": 941,
+          "sha256": "485ba880bb898763a883cd25184bccaa6ca73d23985c63bae828cb96c8aafb53"
+        },
+        {
+          "file": "derived/stage-overscan.webp",
+          "bytes": 383964,
+          "width": 1672,
+          "height": 941,
+          "sha256": "c94bdc9e1109bd5285d5601e77aec87486ff8479e936e80218bd3cd16259f768"
+        }
+      ],
+      "alphaCleanup": "Hand-authored contours refined against original pixel colors, connected-component cleanup, subpixel alpha feather and soft shoreline contact.",
+      "blendMode": "premultiplied-normal",
+      "depthBands": [
+        "near-shore",
+        "middle-island",
+        "far-island",
+        "distant-sky"
+      ],
+      "deformationAllowed": false,
+      "lightingResponse": true,
+      "nearCameraAllowed": false,
+      "emitterSystem": false,
+      "maximumDisplayPixels": 2048,
+      "runtimeDerivativeFiles": [
+        "derived/stage-distant.webp",
+        "derived/stage-islands.png",
+        "derived/stage-middle.png",
+        "derived/stage-near.png",
+        "derived/stage-rocks.png"
+      ],
+      "supportingArtPrompts": "delta2-derived-art-prompts.json"
+    }
+  ]
+}

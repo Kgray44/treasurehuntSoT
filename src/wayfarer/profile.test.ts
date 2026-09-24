@@ -22,6 +22,23 @@ describe("Wayfarer Phase 2 profile contracts", () => {
     expect(preferenceV1Schema.parse(defaultPreferences)).toEqual(defaultPreferences);
     expect(() => preferenceV1Schema.parse({ ...defaultPreferences, version: 2 })).toThrow();
   });
+  it("adds safe cinematic defaults to existing V1 preferences and validates global controls", () => {
+    const previous = structuredClone(defaultPreferences) as { experience: Record<string, unknown> };
+    delete previous.experience.quality;
+    delete previous.experience.experienceAudio;
+    delete previous.experience.experienceVolume;
+    expect(preferenceV1Schema.parse(previous).experience).toMatchObject({
+      quality: "AUTO",
+      experienceAudio: false,
+      experienceVolume: 50,
+    });
+    expect(() =>
+      preferenceV1Schema.parse({
+        ...defaultPreferences,
+        experience: { ...defaultPreferences.experience, experienceVolume: 101 },
+      }),
+    ).toThrow();
+  });
   it("makes browser accessibility outrank Chronicle/account preferences without mutating defaults", () => {
     const resolved = resolvePreferences({
       account: defaultPreferences,

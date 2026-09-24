@@ -3,10 +3,12 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-09-12
+last_reviewed: 2026-09-21
 ---
 
 # Features and subfeatures
+
+**Embarkation, owner-review branch only:** first arrival and Replay Arrival use the authored 35.8-second crossing into the real Muster; subsequent visits use a two-second return. Global Experience quality, Audio and Volume settings govern rendering and sound, while reduced-motion preference takes precedence. After arrival, localized flames, restrained lantern motion and quiet water/reflection shimmer continue while the camera and room remain fixed. Existing Muster authority, readiness, chat and layout remain canonical. [Preview scope](../../Development_Docs/Projects/Voyagewright_Refit_V1/embarkation/preview.md). Mainline availability and owner acceptance are pending. Owner Screening Delta 2 extends the authored journey with readable support-plane strain, coherent rear-origin weather, spatial landscape exploration, continuous fog, independent living-light layers and staggered real DOM anchor catches. The subsequent owner correction restores fast event-age flight, spatially arriving fog banks, a shared moonlight cue, and registered planar exterior water. Screening evidence is current; owner acceptance remains pending.
 
 **Owner-accepted and integrated:** Muster combines Captain and Player waiting rooms into the canonical illustrated gathering space with current crew/invitation/readiness cards, published-edition Chronicle details, and persistent Voyage-scoped Crew Chat. Final validation, protected Sounding Line qualification and exact landed-main smoke passed.
 

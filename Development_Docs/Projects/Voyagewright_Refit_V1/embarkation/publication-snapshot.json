@@ -1,0 +1,785 @@
+{
+  "classification": "engineering-evidence",
+  "purpose": "Publication safety and unchanged-screened-source record; not fresh acceptance",
+  "screeningCandidate": "5480f3fcda6b5a28b2a5d56d2f824cb26828e750ac25c607edd3c63b1043aca6",
+  "authoredRuntimeSeconds": 35.8,
+  "ownerAccepted": false,
+  "merged": false,
+  "source": ".runtime/embarkation/motion-fog-correction/owner-preview/candidate.json",
+  "revisions": [
+    {
+      "path": "public/images/embarkation/derived/debris-0.webp",
+      "sha256": "d884f3bf30bc853b997e9dd7cb97c4586fc680c79f2880ecc6683a253f8c068a",
+      "publicationMatch": true,
+      "repositorySha256": "d884f3bf30bc853b997e9dd7cb97c4586fc680c79f2880ecc6683a253f8c068a",
+      "gitBlob": "98c91029fbdb04be2ab3a63c9c56bd03eff56cb6"
+    },
+    {
+      "path": "public/images/embarkation/derived/debris-1.webp",
+      "sha256": "5cd66041773b58c321e7e1b5f5d1273d006d4e0c8b9197fa7e85cf546197c4af",
+      "publicationMatch": true,
+      "repositorySha256": "5cd66041773b58c321e7e1b5f5d1273d006d4e0c8b9197fa7e85cf546197c4af",
+      "gitBlob": "a85c036bcadac755ee2e554b1ad2e508ca01f891"
+    },
+    {
+      "path": "public/images/embarkation/derived/debris-2.webp",
+      "sha256": "c9b63803f8590223b13935b7ca12a24ea704bb81d00a079fceffa5dbd8e4126d",
+      "publicationMatch": true,
+      "repositorySha256": "c9b63803f8590223b13935b7ca12a24ea704bb81d00a079fceffa5dbd8e4126d",
+      "gitBlob": "b5693f022743b5f41e6d0494664af4f0bb0dd4bf"
+    },
+    {
+      "path": "public/images/embarkation/derived/ember-0.webp",
+      "sha256": "410ccd704d399d3e5abae2f7814012521f1a8a4b70c5f8ff84046dcdbcf27550",
+      "publicationMatch": true,
+      "repositorySha256": "410ccd704d399d3e5abae2f7814012521f1a8a4b70c5f8ff84046dcdbcf27550",
+      "gitBlob": "7d5422b985bdbcf804260a466b655b259013cfea"
+    },
+    {
+      "path": "public/images/embarkation/derived/ember-1.webp",
+      "sha256": "c80887da0c246ef139a83930498376d47fdded994e51d95014de79d8ae159a2c",
+      "publicationMatch": true,
+      "repositorySha256": "c80887da0c246ef139a83930498376d47fdded994e51d95014de79d8ae159a2c",
+      "gitBlob": "b485b1790275d39a82c1e7f85870bd5296743a80"
+    },
+    {
+      "path": "public/images/embarkation/derived/ember-2.webp",
+      "sha256": "1f93e6ace56b05219e3286924073cc9b599cdc1b9e6d11d7d1239b9377f57f8b",
+      "publicationMatch": true,
+      "repositorySha256": "1f93e6ace56b05219e3286924073cc9b599cdc1b9e6d11d7d1239b9377f57f8b",
+      "gitBlob": "eb75d2e6723f4be0372e743875121919f2105cce"
+    },
+    {
+      "path": "public/images/embarkation/derived/ember-3.webp",
+      "sha256": "a6a9f801fff6ff1dac63ce74d8c5adfd5e65a0c5ef5ecd89104534b512fdb257",
+      "publicationMatch": true,
+      "repositorySha256": "a6a9f801fff6ff1dac63ce74d8c5adfd5e65a0c5ef5ecd89104534b512fdb257",
+      "gitBlob": "d2f905bd60a8bf29bc68bdd68ce7786e6b3b1741"
+    },
+    {
+      "path": "public/images/embarkation/derived/exterior-nomoon.webp",
+      "sha256": "606c7f3ab3c8f59e0fbaa97796cdca03ed7daed009a5314c792239b05f6b25e1",
+      "publicationMatch": true,
+      "repositorySha256": "606c7f3ab3c8f59e0fbaa97796cdca03ed7daed009a5314c792239b05f6b25e1",
+      "gitBlob": "240a47613f227b9fe0b2a4367586db62e9cdc524"
+    },
+    {
+      "path": "public/images/embarkation/derived/exterior-overscan.webp",
+      "sha256": "4bc4cd09dc3dadb3750938d091d4279d892cff8aa1b623160bd0d51c61a0fe99",
+      "publicationMatch": true,
+      "repositorySha256": "4bc4cd09dc3dadb3750938d091d4279d892cff8aa1b623160bd0d51c61a0fe99",
+      "gitBlob": "1b1eee9b64b9319bc18e2802e3e3d1c9b5e881ef"
+    },
+    {
+      "path": "public/images/embarkation/derived/ink-0.webp",
+      "sha256": "5004302271c4336209c312502dcf918f094bca6f2ce36d7b8b026190f699af4b",
+      "publicationMatch": true,
+      "repositorySha256": "5004302271c4336209c312502dcf918f094bca6f2ce36d7b8b026190f699af4b",
+      "gitBlob": "21d428fe4df9a254b344145618642dc7378feaea"
+    },
+    {
+      "path": "public/images/embarkation/derived/ink-1.webp",
+      "sha256": "bf2b7f4ae832d56388554f95427cbaaa042b9900528caa32cd4c4af092a170d2",
+      "publicationMatch": true,
+      "repositorySha256": "bf2b7f4ae832d56388554f95427cbaaa042b9900528caa32cd4c4af092a170d2",
+      "gitBlob": "fb5f9f0a901246a18859306c3d08e855e705da69"
+    },
+    {
+      "path": "public/images/embarkation/derived/light-0.webp",
+      "sha256": "85d2d8b815e876bcbff27c4c2a0a7b34b81c41f64e568e22eae60eac16a87ff1",
+      "publicationMatch": true,
+      "repositorySha256": "85d2d8b815e876bcbff27c4c2a0a7b34b81c41f64e568e22eae60eac16a87ff1",
+      "gitBlob": "dbe058cc4d5151a9c22d44361254d78b5e87f262"
+    },
+    {
+      "path": "public/images/embarkation/derived/light-1.webp",
+      "sha256": "a3cffae460ac9fb9d96a332d9f7c3d8aa69a338711c9d6811ec539524d54180c",
+      "publicationMatch": true,
+      "repositorySha256": "a3cffae460ac9fb9d96a332d9f7c3d8aa69a338711c9d6811ec539524d54180c",
+      "gitBlob": "0df727e058c1f56b83c049411106bac3f9abaf29"
+    },
+    {
+      "path": "public/images/embarkation/derived/light-2.webp",
+      "sha256": "160dc0e937a03df751e6aeb7393b0a83de6e6653dcd77e69f45f7e4ff6fa34ca",
+      "publicationMatch": true,
+      "repositorySha256": "160dc0e937a03df751e6aeb7393b0a83de6e6653dcd77e69f45f7e4ff6fa34ca",
+      "gitBlob": "07dd1600caa908d19a8dbd9769496911dfe11897"
+    },
+    {
+      "path": "public/images/embarkation/derived/mist-0.webp",
+      "sha256": "d2f55ff62b8e8e4cb397655137a7d5974a4dec695366a96c3484315f3e1d466f",
+      "publicationMatch": true,
+      "repositorySha256": "d2f55ff62b8e8e4cb397655137a7d5974a4dec695366a96c3484315f3e1d466f",
+      "gitBlob": "6d4d74bd6d5c5f65722fc1956e16eab53743be11"
+    },
+    {
+      "path": "public/images/embarkation/derived/mist-1.webp",
+      "sha256": "8c9f27b7f86afac025db6042df8798b4f7bae8d820e03f61f1da7211ea9966bb",
+      "publicationMatch": true,
+      "repositorySha256": "8c9f27b7f86afac025db6042df8798b4f7bae8d820e03f61f1da7211ea9966bb",
+      "gitBlob": "c30acfaf57ea10090289be4e2e5ffa28980f47c2"
+    },
+    {
+      "path": "public/images/embarkation/derived/mist-2.webp",
+      "sha256": "cace2b321a55cb8a38788ce8fd4f9d904e1cfac719d767d164e2256fba8d86c0",
+      "publicationMatch": true,
+      "repositorySha256": "cace2b321a55cb8a38788ce8fd4f9d904e1cfac719d767d164e2256fba8d86c0",
+      "gitBlob": "40fe2e6ce0b6d8cfb5a1ef05797b4ad67f8b24b6"
+    },
+    {
+      "path": "public/images/embarkation/derived/particle-0.webp",
+      "sha256": "2a82b93321037035c900358857285ea601947c62dd8d74021607dbdd2a723820",
+      "publicationMatch": true,
+      "repositorySha256": "2a82b93321037035c900358857285ea601947c62dd8d74021607dbdd2a723820",
+      "gitBlob": "405d74c6edadc57b8206de1c5aef96198251cd47"
+    },
+    {
+      "path": "public/images/embarkation/derived/particle-1.webp",
+      "sha256": "5b7701989dc37546ee8e6b5b0825bf12e2d2bf0f6ef146c75a68cdbeca1d2a54",
+      "publicationMatch": true,
+      "repositorySha256": "5b7701989dc37546ee8e6b5b0825bf12e2d2bf0f6ef146c75a68cdbeca1d2a54",
+      "gitBlob": "a38380815d63a9985e444f0fe0ace271a6c56f04"
+    },
+    {
+      "path": "public/images/embarkation/derived/particle-2.webp",
+      "sha256": "87c488351817ee2d91aa109fd24bdf24e8110d4f035dba68b6604f9c830d6ed0",
+      "publicationMatch": true,
+      "repositorySha256": "87c488351817ee2d91aa109fd24bdf24e8110d4f035dba68b6604f9c830d6ed0",
+      "gitBlob": "a5b77a83248cc3d2059785f4b3a8cbd2985ace0e"
+    },
+    {
+      "path": "public/images/embarkation/derived/particle-3.webp",
+      "sha256": "f9c5768ed938cdbfe58e80bb555d5abad579bc745747dabde2801c121fd4f20d",
+      "publicationMatch": true,
+      "repositorySha256": "f9c5768ed938cdbfe58e80bb555d5abad579bc745747dabde2801c121fd4f20d",
+      "gitBlob": "bd28ca09d8eef7a5991ff628e6350fb0590dfe18"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-aperture.png",
+      "sha256": "6bb5c107d28d30675e0f79b6818c155a5f2f639a7ae185bbf909988012eef20c",
+      "publicationMatch": true,
+      "repositorySha256": "6bb5c107d28d30675e0f79b6818c155a5f2f639a7ae185bbf909988012eef20c",
+      "gitBlob": "b27e9bb07f2c3548991fce01df73a8524ee33133"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-backing-aperture.png",
+      "sha256": "482ce26f09d474078e30d76cc10087b2c2f317e695b66355a2d35c843e868504",
+      "publicationMatch": true,
+      "repositorySha256": "482ce26f09d474078e30d76cc10087b2c2f317e695b66355a2d35c843e868504",
+      "gitBlob": "6dba210be353d5f13b72a026b81a0a1bd7a14dc2"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-depth.webp",
+      "sha256": "20327032ba7dcd977cd6d3e59afefe31dadf011380aa7f7e97f2b2c58509e40d",
+      "publicationMatch": true,
+      "repositorySha256": "20327032ba7dcd977cd6d3e59afefe31dadf011380aa7f7e97f2b2c58509e40d",
+      "gitBlob": "b842e2c127125abc796134eb983c7e5e837da230"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-exterior-continuous.png",
+      "sha256": "2a6bc0e3b876866001ee31970cf996519c897f0df8c3348bfa211d950937257a",
+      "publicationMatch": true,
+      "repositorySha256": "2a6bc0e3b876866001ee31970cf996519c897f0df8c3348bfa211d950937257a",
+      "gitBlob": "8fb93590dbf5dbb602968bcd0f09618c02770396"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-hidden-backing.webp",
+      "sha256": "4ba14b2acc525610993cdddd888206d17e6776a5ad8f5c24572e77dec629e872",
+      "publicationMatch": true,
+      "repositorySha256": "4ba14b2acc525610993cdddd888206d17e6776a5ad8f5c24572e77dec629e872",
+      "gitBlob": "fc4be5e17011a8b2414f301fc40990f1701b2080"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-live-backing.webp",
+      "sha256": "87d0957fc605a78763c4be640e31047d0d9baeea4b652a28c9d0b0467a731435",
+      "publicationMatch": true,
+      "repositorySha256": "87d0957fc605a78763c4be640e31047d0d9baeea4b652a28c9d0b0467a731435",
+      "gitBlob": "7fc3a3390ef22e03589114f2d0066f8faa769be5"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-live-flames.png",
+      "sha256": "8a28a6b9d324de4879c2d9cf5d7dff7392fe1199383dade28fe3a90391ca444d",
+      "publicationMatch": true,
+      "repositorySha256": "8a28a6b9d324de4879c2d9cf5d7dff7392fe1199383dade28fe3a90391ca444d",
+      "gitBlob": "1329002b29395a9dc0759a22538b1a211b7c7408"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-live-props.png",
+      "sha256": "595f3debb28f42401c59f6ae31f5b35fa1ee355afe8438822f27ee34679a6165",
+      "publicationMatch": true,
+      "repositorySha256": "595f3debb28f42401c59f6ae31f5b35fa1ee355afe8438822f27ee34679a6165",
+      "gitBlob": "001e5e6f2aa9b78580d47863e5e043eaef4f5561"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-living-masks.png",
+      "sha256": "ddeaf294560536849aaa367fa882866c8b2f4d92807cb2cb557ce6beb6993755",
+      "publicationMatch": true,
+      "repositorySha256": "ddeaf294560536849aaa367fa882866c8b2f4d92807cb2cb557ce6beb6993755",
+      "gitBlob": "d4b9894b5e0746ee0cc943ce7bc9adce07396a9d"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-mattes-0.png",
+      "sha256": "470df0199ca41452cccd737bb8fa9965ed46e59cf8687d42c52946d355d47661",
+      "publicationMatch": true,
+      "repositorySha256": "470df0199ca41452cccd737bb8fa9965ed46e59cf8687d42c52946d355d47661",
+      "gitBlob": "2e2a7b1dc0053c642112f44227eb7d1827d0dd1c"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-mattes-1.png",
+      "sha256": "4a865ffeff6538eba9176a1c34f8e09e9777bba1a04dbdf0bfca7ff03bc755e8",
+      "publicationMatch": true,
+      "repositorySha256": "4a865ffeff6538eba9176a1c34f8e09e9777bba1a04dbdf0bfca7ff03bc755e8",
+      "gitBlob": "62c9ddc539926fa1671fbd9a4eb2b5d1baa3dbc2"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-mattes-2.png",
+      "sha256": "ec4d4da24394cb6bae2ef138fbf171f1285c814923fc2081d465a9a143ef5f2d",
+      "publicationMatch": true,
+      "repositorySha256": "ec4d4da24394cb6bae2ef138fbf171f1285c814923fc2081d465a9a143ef5f2d",
+      "gitBlob": "39c41277ca20d8405c5d94ca7b9e81a4953a4f62"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-overscan-delta2.webp",
+      "sha256": "daf615437eaebfeaf1adc40e3ed23468639a9a54b7356f882e37a47fd69a3711",
+      "publicationMatch": true,
+      "repositorySha256": "daf615437eaebfeaf1adc40e3ed23468639a9a54b7356f882e37a47fd69a3711",
+      "gitBlob": "cb306fa1bce4a118dc0f4a67bcfd5fde2e491f2c"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-overscan.webp",
+      "sha256": "98697cb757aabc5975a6221d2524fb87b37ac49a53fae4ca1c297a8c3e5ff9e3",
+      "publicationMatch": true,
+      "repositorySha256": "98697cb757aabc5975a6221d2524fb87b37ac49a53fae4ca1c297a8c3e5ff9e3",
+      "gitBlob": "06b09ec84b98587067aa0278b0451b5d0f26c4dd"
+    },
+    {
+      "path": "public/images/embarkation/derived/room-static.webp",
+      "sha256": "9f6e0b417922ffd53a27eed3622279f5a27f84906baff5bd77a9f6598a5f42a1",
+      "publicationMatch": true,
+      "repositorySha256": "9f6e0b417922ffd53a27eed3622279f5a27f84906baff5bd77a9f6598a5f42a1",
+      "gitBlob": "ae0f3fc2bc0afd7db78869dc965cb285d558b1a4"
+    },
+    {
+      "path": "public/images/embarkation/derived/scrap-0.webp",
+      "sha256": "e4a8b5e0008f8bd52676eff4bbfa1f15a745d26893de595d8bdaf202c2c80cd7",
+      "publicationMatch": true,
+      "repositorySha256": "e4a8b5e0008f8bd52676eff4bbfa1f15a745d26893de595d8bdaf202c2c80cd7",
+      "gitBlob": "a93f27f9445f093d9cb69ea4d6125d66a614a95f"
+    },
+    {
+      "path": "public/images/embarkation/derived/scrap-1.webp",
+      "sha256": "5c0e434902af1e4724c6e02996b1e06a4cd754957a426a1f1316718e2caf2c52",
+      "publicationMatch": true,
+      "repositorySha256": "5c0e434902af1e4724c6e02996b1e06a4cd754957a426a1f1316718e2caf2c52",
+      "gitBlob": "b2df7c8c3e6fbbe956811f7e561e2edf9d9ecbd2"
+    },
+    {
+      "path": "public/images/embarkation/derived/scrap-2.webp",
+      "sha256": "76ad18cf44a2d016e2e3f952c647d47f11a3d2b1e542fabf2fe2f397606cf691",
+      "publicationMatch": true,
+      "repositorySha256": "76ad18cf44a2d016e2e3f952c647d47f11a3d2b1e542fabf2fe2f397606cf691",
+      "gitBlob": "36c807e506cc667a6444065ce771f20b8945376a"
+    },
+    {
+      "path": "public/images/embarkation/derived/scrap-3.webp",
+      "sha256": "ae3e2ef7ca8449a6e56473e2ef9127412e9ac43db922f0c5faa6f2f7ddba7ea7",
+      "publicationMatch": true,
+      "repositorySha256": "ae3e2ef7ca8449a6e56473e2ef9127412e9ac43db922f0c5faa6f2f7ddba7ea7",
+      "gitBlob": "6466a87de0a97ecf58cbe733e5bf785bc278c35b"
+    },
+    {
+      "path": "public/images/embarkation/derived/spray-0.webp",
+      "sha256": "99cb95f8abaa7f53b458c950d5b24c895c47eb9332a69c65c00073218724ae60",
+      "publicationMatch": true,
+      "repositorySha256": "99cb95f8abaa7f53b458c950d5b24c895c47eb9332a69c65c00073218724ae60",
+      "gitBlob": "7aaf21c05efdb01307e53b6e6140797dd8993a59"
+    },
+    {
+      "path": "public/images/embarkation/derived/spray-1.webp",
+      "sha256": "df224bad7131575aba37af1890828f1d2da8d77a1b7d05317b89d0e212c689bc",
+      "publicationMatch": true,
+      "repositorySha256": "df224bad7131575aba37af1890828f1d2da8d77a1b7d05317b89d0e212c689bc",
+      "gitBlob": "61d71969f709548baa1057b89ba7f2a25480fec4"
+    },
+    {
+      "path": "public/images/embarkation/derived/spray-2.webp",
+      "sha256": "e4cd5b20d31e030dda973966c563c5d9a0f3173b7db1afb5d2b28905d764bcec",
+      "publicationMatch": true,
+      "repositorySha256": "e4cd5b20d31e030dda973966c563c5d9a0f3173b7db1afb5d2b28905d764bcec",
+      "gitBlob": "060e051ed10fe3d411a49a300332fbdb354fba09"
+    },
+    {
+      "path": "public/images/embarkation/derived/spray-3.webp",
+      "sha256": "ec147c79989d1eae57b107e1eb0a81cd9af3dd87dcd7764d2af93af4b4e1a872",
+      "publicationMatch": true,
+      "repositorySha256": "ec147c79989d1eae57b107e1eb0a81cd9af3dd87dcd7764d2af93af4b4e1a872",
+      "gitBlob": "0547ce3481a2171acbf019369945546b43c3e884"
+    },
+    {
+      "path": "public/images/embarkation/derived/stage-c-extended.webp",
+      "sha256": "71edb8cd3b6c83ed9cc40244e987d8f338f308a15a5301d333bc7b7aab9b74ab",
+      "publicationMatch": true,
+      "repositorySha256": "71edb8cd3b6c83ed9cc40244e987d8f338f308a15a5301d333bc7b7aab9b74ab",
+      "gitBlob": "e1d94b33a9f0f9c7df253ea44142d74199e2a3bc"
+    },
+    {
+      "path": "public/images/embarkation/derived/stage-c-pier.png",
+      "sha256": "f147ae7f02359bafb64873aa7c63161997590ead24b91526c8785ba64d54411d",
+      "publicationMatch": true,
+      "repositorySha256": "f147ae7f02359bafb64873aa7c63161997590ead24b91526c8785ba64d54411d",
+      "gitBlob": "199e5c145072103295a27a90709f6fa481d8952c"
+    },
+    {
+      "path": "public/images/embarkation/derived/stage-c-water.webp",
+      "sha256": "a28a0210e3bc57d025873e414d93f28118ad1000c86fdcc2f299ca72d41d7512",
+      "publicationMatch": true,
+      "repositorySha256": "a28a0210e3bc57d025873e414d93f28118ad1000c86fdcc2f299ca72d41d7512",
+      "gitBlob": "5f8e9237d0d4b53438933365dec943764f4fa4c3"
+    },
+    {
+      "path": "public/images/embarkation/derived/stage-distant.webp",
+      "sha256": "f4b6d98086693bd1fc5d2d742c106bbcb167da7dde4f56f54bde5e65f534bef4",
+      "publicationMatch": true,
+      "repositorySha256": "f4b6d98086693bd1fc5d2d742c106bbcb167da7dde4f56f54bde5e65f534bef4",
+      "gitBlob": "aeded6d1be75396829b7246dc9960704b26b6d75"
+    },
+    {
+      "path": "public/images/embarkation/derived/stage-islands.png",
+      "sha256": "86c4f5f76e9dd9c06efbce8b3f49f293c7f13b33a8ae82a0f91a416759a79e83",
+      "publicationMatch": true,
+      "repositorySha256": "86c4f5f76e9dd9c06efbce8b3f49f293c7f13b33a8ae82a0f91a416759a79e83",
+      "gitBlob": "950838ea573db7bebc59909dd2c5b769ef6a9755"
+    },
+    {
+      "path": "public/images/embarkation/derived/stage-middle.png",
+      "sha256": "455954a3dca87083d32d73db57941fd895f1de14accd59f37561f09854fc7417",
+      "publicationMatch": true,
+      "repositorySha256": "455954a3dca87083d32d73db57941fd895f1de14accd59f37561f09854fc7417",
+      "gitBlob": "11b292af613c349587a8520203802579e0233061"
+    },
+    {
+      "path": "public/images/embarkation/derived/stage-near.png",
+      "sha256": "6c1b291a7a2444253b0ebdc364459b7dfd1239f93990139a537ccbc60c67b250",
+      "publicationMatch": true,
+      "repositorySha256": "6c1b291a7a2444253b0ebdc364459b7dfd1239f93990139a537ccbc60c67b250",
+      "gitBlob": "ff072018923f0b273ddd94cd84809b24c165a4b9"
+    },
+    {
+      "path": "public/images/embarkation/derived/stage-overscan.webp",
+      "sha256": "c94bdc9e1109bd5285d5601e77aec87486ff8479e936e80218bd3cd16259f768",
+      "publicationMatch": true,
+      "repositorySha256": "c94bdc9e1109bd5285d5601e77aec87486ff8479e936e80218bd3cd16259f768",
+      "gitBlob": "c4ecf1c8d10e26c1dfc7bfb2efd3b4b9ab61aa95"
+    },
+    {
+      "path": "public/images/embarkation/derived/stage-rocks.png",
+      "sha256": "84fad41384f70366de964c16255ce317b2d66cbbc2691555e5625b4d73d723c0",
+      "publicationMatch": true,
+      "repositorySha256": "84fad41384f70366de964c16255ce317b2d66cbbc2691555e5625b4d73d723c0",
+      "gitBlob": "5c496e0b835c36ccc7de5fec45b9165b3f1cf428"
+    },
+    {
+      "path": "public/images/embarkation/derived/stage-water-backing.webp",
+      "sha256": "485ba880bb898763a883cd25184bccaa6ca73d23985c63bae828cb96c8aafb53",
+      "publicationMatch": true,
+      "repositorySha256": "485ba880bb898763a883cd25184bccaa6ca73d23985c63bae828cb96c8aafb53",
+      "gitBlob": "b15eb6bfa1f5425492981a4618cfa62637ea8747"
+    },
+    {
+      "path": "public/images/embarkation/derived/threshold-timber.webp",
+      "sha256": "84af3b340e7d6b797504bcdae22d51d2142079e822e8af2a95615a7d9e61229a",
+      "publicationMatch": true,
+      "repositorySha256": "84af3b340e7d6b797504bcdae22d51d2142079e822e8af2a95615a7d9e61229a",
+      "gitBlob": "8fbbf4923c8e1923795c1f058ae910080ba7f6e1"
+    },
+    {
+      "path": "src/animation/embarkation/Embarkation.tsx",
+      "sha256": "a5791d7b66bdb00a02ee780fda70991156a40bb1484b888c52c98de8bc85d188",
+      "publicationMatch": true,
+      "repositorySha256": "a5791d7b66bdb00a02ee780fda70991156a40bb1484b888c52c98de8bc85d188",
+      "gitBlob": "826af06aaeab2f8b2690270b1a2c7619b18cac63"
+    },
+    {
+      "path": "src/animation/embarkation/GenericStage.tsx",
+      "sha256": "39e9831538933e7ec85ee3aee5812a93b9a3077ca63c2fded68f0d08bd6707ed",
+      "publicationMatch": true,
+      "repositorySha256": "39e9831538933e7ec85ee3aee5812a93b9a3077ca63c2fded68f0d08bd6707ed",
+      "gitBlob": "fa901443b45fdcf4bb21ebb0ac71b1624f233fcd"
+    },
+    {
+      "path": "src/animation/embarkation/Inspector.tsx",
+      "sha256": "6172c87a4d5fea526bb463765976ca4b0c8bf9e5b20969ccb8a65cb3330726cd",
+      "publicationMatch": true,
+      "repositorySha256": "6172c87a4d5fea526bb463765976ca4b0c8bf9e5b20969ccb8a65cb3330726cd",
+      "gitBlob": "bc209d31506841a2bb2ced55316fca2db0ba4e89"
+    },
+    {
+      "path": "src/animation/embarkation/adhesion.ts",
+      "sha256": "acdb66c1939ef23a54d943f19bf3142ed1987012411b1266fcddb355dff2a6de",
+      "publicationMatch": true,
+      "repositorySha256": "acdb66c1939ef23a54d943f19bf3142ed1987012411b1266fcddb355dff2a6de",
+      "gitBlob": "67418b6da27d20230b4ae105a58892b26254f3fa"
+    },
+    {
+      "path": "src/animation/embarkation/atmosphere.ts",
+      "sha256": "6e63c38ddbb91775fec643bd6c7970df69b063aca2f97ee78bd59e5f028014d5",
+      "publicationMatch": true,
+      "repositorySha256": "6e63c38ddbb91775fec643bd6c7970df69b063aca2f97ee78bd59e5f028014d5",
+      "gitBlob": "3c9967e8b98b95b589c933a824b711cff218945b"
+    },
+    {
+      "path": "src/animation/embarkation/audio.ts",
+      "sha256": "a36fae01febc957a7bcc15840b51f3fdde793db6f1c9c60226f0a8876e95b18a",
+      "publicationMatch": true,
+      "repositorySha256": "a36fae01febc957a7bcc15840b51f3fdde793db6f1c9c60226f0a8876e95b18a",
+      "gitBlob": "1c4f776db60a54c2ac434cd83e1abbfe85154ef8"
+    },
+    {
+      "path": "src/animation/embarkation/dom-material.ts",
+      "sha256": "567d3226273d21c1cb1ab91348701dedac9edf9fa89236e244157f28e5353913",
+      "publicationMatch": true,
+      "repositorySha256": "567d3226273d21c1cb1ab91348701dedac9edf9fa89236e244157f28e5353913",
+      "gitBlob": "1524e6909360bc8682d5a830ef1a8c139d654658"
+    },
+    {
+      "path": "src/animation/embarkation/dom.ts",
+      "sha256": "557045d13a27683a1df8642c3298de11b060668fc3f1db31107fcde7a49e542e",
+      "publicationMatch": true,
+      "repositorySha256": "557045d13a27683a1df8642c3298de11b060668fc3f1db31107fcde7a49e542e",
+      "gitBlob": "2b6af4f5ce136e7b245d91bea06a3ac46980b2dc"
+    },
+    {
+      "path": "src/animation/embarkation/embarkation.css",
+      "sha256": "07763030111836b5ab3958657f37e6e97caa6dad46ee65180c955f3e782a94a6",
+      "publicationMatch": true,
+      "repositorySha256": "07763030111836b5ab3958657f37e6e97caa6dad46ee65180c955f3e782a94a6",
+      "gitBlob": "b38d6f11b214f0d3f31eb0fba2b03d3998836ed0"
+    },
+    {
+      "path": "src/animation/embarkation/environment.ts",
+      "sha256": "78741890ccd47fc70004253155e1c8e3d985431c61fb5e1835e97576cbf6d831",
+      "publicationMatch": true,
+      "repositorySha256": "78741890ccd47fc70004253155e1c8e3d985431c61fb5e1835e97576cbf6d831",
+      "gitBlob": "1fbfb5f6949f003df5a6f2cec7685d82c3fa3c2f"
+    },
+    {
+      "path": "src/animation/embarkation/living-material.ts",
+      "sha256": "33cf7ab6f0dd20dc818641e0a48fbddc2f8b913974a46557866e9903c5fcae2b",
+      "publicationMatch": true,
+      "repositorySha256": "33cf7ab6f0dd20dc818641e0a48fbddc2f8b913974a46557866e9903c5fcae2b",
+      "gitBlob": "e853291ff808a615653b27ce8a36cdffb4da8ee0"
+    },
+    {
+      "path": "src/animation/embarkation/navigation.tsx",
+      "sha256": "aad139e244f2639d6e5cd4103c051aa8d820579d60ab7f4c109f915b9c4a4284",
+      "publicationMatch": true,
+      "repositorySha256": "aad139e244f2639d6e5cd4103c051aa8d820579d60ab7f4c109f915b9c4a4284",
+      "gitBlob": "b7a9273e23f6152873719aa8e5b077e33fe7e2b4"
+    },
+    {
+      "path": "src/animation/embarkation/page-material.test.ts",
+      "sha256": "182be2f9aee3106e96fa8c7a812940702f165ed0fe36245d59ee7b7ff4013318",
+      "publicationMatch": true,
+      "repositorySha256": "182be2f9aee3106e96fa8c7a812940702f165ed0fe36245d59ee7b7ff4013318",
+      "gitBlob": "f9296a37e6b9f36ecd7685d2fab1e49277f65b87"
+    },
+    {
+      "path": "src/animation/embarkation/page-material.ts",
+      "sha256": "40429848c599ce88fd1bb5cf97dbe872dc8a690c14f810d9bcf034296c29b3b2",
+      "publicationMatch": true,
+      "repositorySha256": "40429848c599ce88fd1bb5cf97dbe872dc8a690c14f810d9bcf034296c29b3b2",
+      "gitBlob": "b49c52dbb1006fe96a2a7927d3c3d69a94e0a584"
+    },
+    {
+      "path": "src/animation/embarkation/program.test.ts",
+      "sha256": "2cc55c3f14cf20a8bdcb93a0bc309cefe97bac10652295dc6464df60c3662e4a",
+      "publicationMatch": true,
+      "repositorySha256": "2cc55c3f14cf20a8bdcb93a0bc309cefe97bac10652295dc6464df60c3662e4a",
+      "gitBlob": "c9082b4e98fdfd1cc34177960921a3ded856e376"
+    },
+    {
+      "path": "src/animation/embarkation/program.ts",
+      "sha256": "9df2c7c863f481584cd7dfc8c3a51528f5cb82063134c9cbb9b65077c1718784",
+      "publicationMatch": true,
+      "repositorySha256": "9df2c7c863f481584cd7dfc8c3a51528f5cb82063134c9cbb9b65077c1718784",
+      "gitBlob": "07c74764a55124b0d745406bef48f1fadac04f5f"
+    },
+    {
+      "path": "src/animation/embarkation/renderer.ts",
+      "sha256": "fe6ecd0bbfe5e0f6106e12ce40cd258e92dd3859b2c40e52b85fc43792833715",
+      "publicationMatch": true,
+      "repositorySha256": "fe6ecd0bbfe5e0f6106e12ce40cd258e92dd3859b2c40e52b85fc43792833715",
+      "gitBlob": "a739477c014c19ae12e7504d9cf1961dee6e7f7f"
+    },
+    {
+      "path": "src/animation/embarkation/scene-space.test.ts",
+      "sha256": "cc9d0a498c8265dde03e2681978c6b115bed6c00be632a3d72a4ae4b2fa66144",
+      "publicationMatch": true,
+      "repositorySha256": "cc9d0a498c8265dde03e2681978c6b115bed6c00be632a3d72a4ae4b2fa66144",
+      "gitBlob": "7b9e89fe957fa97347b71c4853839cebda4dc5f0"
+    },
+    {
+      "path": "src/animation/embarkation/scene-space.ts",
+      "sha256": "291765f96244256a5991eeeb6a48aaa1c7d7d16aba06ee2b34ce8e2892ccc66d",
+      "publicationMatch": true,
+      "repositorySha256": "291765f96244256a5991eeeb6a48aaa1c7d7d16aba06ee2b34ce8e2892ccc66d",
+      "gitBlob": "919a18a3ba6360190be06f130d7cba0910398912"
+    },
+    {
+      "path": "src/components/muster/MusterRoom.tsx",
+      "sha256": "4d44d41340cfd4fbd4e67192eab99b18ddecd399772b838029d1574dade77b41",
+      "publicationMatch": true,
+      "repositorySha256": "4d44d41340cfd4fbd4e67192eab99b18ddecd399772b838029d1574dade77b41",
+      "gitBlob": "200481dda8ddffb1ea9056dd99fd838919e1eb51"
+    },
+    {
+      "path": "src/components/muster/muster.css",
+      "sha256": "ded8c615f30ade8b1c58c751b48e98087c54993d8a03cfd17b18940c994ca706",
+      "publicationMatch": true,
+      "repositorySha256": "cae1492a2b36be064d760aae2f730006773b5585410314bb573568c43ff84f2f",
+      "gitBlob": "a6513b7ae3af9410d6f3a155f33efe54ffe9038e"
+    }
+  ],
+  "runtimeTextures": [
+    {
+      "key": "room",
+      "url": "/images/muster/lantern-room.png",
+      "present": true
+    },
+    {
+      "key": "crossing",
+      "url": "/images/embarkation/stage-A-background.webp",
+      "present": true
+    },
+    {
+      "key": "stage-distant",
+      "url": "/images/embarkation/derived/stage-distant.webp",
+      "present": true
+    },
+    {
+      "key": "destination",
+      "url": "/api/voyages/muster-all-ready/muster/cover",
+      "present": null
+    },
+    {
+      "key": "exterior",
+      "url": "/images/embarkation/derived/stage-c-water.webp",
+      "present": true
+    },
+    {
+      "key": "exteriorOverscan",
+      "url": "/images/embarkation/derived/stage-c-extended.webp",
+      "present": true
+    },
+    {
+      "key": "stage-c-pier",
+      "url": "/images/embarkation/derived/stage-c-pier.png",
+      "present": true
+    },
+    {
+      "key": "aperture",
+      "url": "/images/embarkation/derived/room-aperture.png",
+      "present": true
+    },
+    {
+      "key": "stage-islands",
+      "url": "/images/embarkation/derived/stage-islands.png",
+      "present": true
+    },
+    {
+      "key": "stage-middle",
+      "url": "/images/embarkation/derived/stage-middle.png",
+      "present": true
+    },
+    {
+      "key": "backingAperture",
+      "url": "/images/embarkation/derived/room-backing-aperture.png",
+      "present": true
+    },
+    {
+      "key": "matte2",
+      "url": "/images/embarkation/derived/room-mattes-2.png",
+      "present": true
+    },
+    {
+      "key": "matte0",
+      "url": "/images/embarkation/derived/room-mattes-0.png",
+      "present": true
+    },
+    {
+      "key": "matte1",
+      "url": "/images/embarkation/derived/room-mattes-1.png",
+      "present": true
+    },
+    {
+      "key": "stage-near",
+      "url": "/images/embarkation/derived/stage-near.png",
+      "present": true
+    },
+    {
+      "key": "stage-rocks",
+      "url": "/images/embarkation/derived/stage-rocks.png",
+      "present": true
+    },
+    {
+      "key": "overscan",
+      "url": "/images/embarkation/derived/room-overscan-delta2.webp",
+      "present": true
+    },
+    {
+      "key": "livingMasks",
+      "url": "/images/embarkation/derived/room-living-masks.png",
+      "present": true
+    },
+    {
+      "key": "liveBacking",
+      "url": "/images/embarkation/derived/room-static.webp",
+      "present": true
+    },
+    {
+      "key": "backing",
+      "url": "/images/embarkation/derived/room-hidden-backing.webp",
+      "present": true
+    },
+    {
+      "key": "P4-journal-page",
+      "url": "/images/embarkation/P4-journal-page.webp",
+      "present": true
+    },
+    {
+      "key": "derived/scrap-3",
+      "url": "/images/embarkation/derived/scrap-3.webp",
+      "present": true
+    },
+    {
+      "key": "P2-compass",
+      "url": "/images/embarkation/P2-compass.webp",
+      "present": true
+    },
+    {
+      "key": "P7-sailcloth",
+      "url": "/images/embarkation/P7-sailcloth.webp",
+      "present": true
+    },
+    {
+      "key": "derived/scrap-2",
+      "url": "/images/embarkation/derived/scrap-2.webp",
+      "present": true
+    },
+    {
+      "key": "derived/scrap-0",
+      "url": "/images/embarkation/derived/scrap-0.webp",
+      "present": true
+    },
+    {
+      "key": "derived/scrap-1",
+      "url": "/images/embarkation/derived/scrap-1.webp",
+      "present": true
+    },
+    {
+      "key": "liveFlames",
+      "url": "/images/embarkation/derived/room-live-flames.png",
+      "present": true
+    },
+    {
+      "key": "liveProps",
+      "url": "/images/embarkation/derived/room-live-props.png",
+      "present": true
+    },
+    {
+      "key": "derived/particle-1",
+      "url": "/images/embarkation/derived/particle-1.webp",
+      "present": true
+    },
+    {
+      "key": "derived/particle-0",
+      "url": "/images/embarkation/derived/particle-0.webp",
+      "present": true
+    },
+    {
+      "key": "derived/ink-0",
+      "url": "/images/embarkation/derived/ink-0.webp",
+      "present": true
+    },
+    {
+      "key": "derived/particle-2",
+      "url": "/images/embarkation/derived/particle-2.webp",
+      "present": true
+    },
+    {
+      "key": "derived/particle-3",
+      "url": "/images/embarkation/derived/particle-3.webp",
+      "present": true
+    },
+    {
+      "key": "derived/ember-0",
+      "url": "/images/embarkation/derived/ember-0.webp",
+      "present": true
+    },
+    {
+      "key": "P6-lantern",
+      "url": "/images/embarkation/P6-lantern.webp",
+      "present": true
+    },
+    {
+      "key": "P1-map-fragment",
+      "url": "/images/embarkation/P1-map-fragment.webp",
+      "present": true
+    },
+    {
+      "key": "derived/ember-1",
+      "url": "/images/embarkation/derived/ember-1.webp",
+      "present": true
+    },
+    {
+      "key": "derived/ember-2",
+      "url": "/images/embarkation/derived/ember-2.webp",
+      "present": true
+    },
+    {
+      "key": "derived/ember-3",
+      "url": "/images/embarkation/derived/ember-3.webp",
+      "present": true
+    },
+    {
+      "key": "derived/light-0",
+      "url": "/images/embarkation/derived/light-0.webp",
+      "present": true
+    },
+    {
+      "key": "derived/light-1",
+      "url": "/images/embarkation/derived/light-1.webp",
+      "present": true
+    },
+    {
+      "key": "derived/debris-0",
+      "url": "/images/embarkation/derived/debris-0.webp",
+      "present": true
+    },
+    {
+      "key": "derived/light-2",
+      "url": "/images/embarkation/derived/light-2.webp",
+      "present": true
+    },
+    {
+      "key": "derived/debris-1",
+      "url": "/images/embarkation/derived/debris-1.webp",
+      "present": true
+    },
+    {
+      "key": "derived/debris-2",
+      "url": "/images/embarkation/derived/debris-2.webp",
+      "present": true
+    }
+  ],
+  "checks": {
+    "credentialPatternFindings": 0,
+    "imagesWithExifXmpIptc": 0,
+    "staticTexturesPresent": true
+  },
+  "limitations": [
+    "Pattern scans are publication checks, not a security audit.",
+    "Original raw recordings, sessions, databases and supplied masters remain local.",
+    "Text hashes account for Git LF normalization; image bytes are unchanged."
+  ]
+}

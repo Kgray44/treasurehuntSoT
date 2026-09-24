@@ -3,10 +3,12 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-09-12
+last_reviewed: 2026-09-21
 ---
 
 # Current status
+
+**Embarkation screening branch:** the owner-directed preview implements the 35.8-second threshold into the existing Muster, a short return, deliberate replay, global quality/audio preferences, and reduced-motion/failure arrival. This is an isolated Refit preview awaiting owner review; it is not integrated on main. [Screening record](../../Development_Docs/Projects/Voyagewright_Refit_V1/embarkation/preview.md). Owner Screening Delta 2 extends the authored journey with readable support-plane strain, coherent rear-origin weather, spatial landscape exploration, continuous fog, independent living-light layers and staggered real DOM anchor catches. The subsequent owner correction restores fast event-age flight, spatially arriving fog banks, a shared moonlight cue, and registered planar exterior water. Screening evidence is current; owner acceptance remains pending.
 
 **Muster Refit:** the owner accepted the current design on 2026-09-12. Captain-only, Captain + Player, and Player views share one experience with persistent authorized Crew Chat, published-edition parchment, fixed room artwork and smooth options. Final local role, interaction, responsive/accessibility, production-build and migration checks passed. The accepted experience is integrated on protected main; final qualification and landed-tree checks passed. Only the Muster Refit area is MERGED; Refit V1 remains open.
 

@@ -923,6 +923,9 @@ type Preferences = {
     contrast: "SYSTEM" | "STANDARD" | "HIGH";
     textureIntensity: number;
     lowBandwidthMedia: boolean;
+    quality?: "AUTO" | "CINEMATIC" | "BALANCED" | "PERFORMANCE";
+    experienceAudio?: boolean;
+    experienceVolume?: number;
   };
   discovery: { searchable: boolean; themes: string[]; contentWarnings: string[] };
   social: { invitationPolicy: "ONLY_ME" | "CREW_ONLY" | "REGISTERED_USERS" | "PUBLIC"; providerDiscovery: boolean };
@@ -1009,6 +1012,45 @@ export function PreferenceEditor({ mode }: { mode: "preferences" | "accessibilit
   return (
     <form className="harbor-panel harbor-form" onSubmit={save}>
       <h2>{title}</h2>
+      {mode === "preferences" && (
+        <>
+          <label>
+            Experience quality
+            <select
+              aria-label="Experience quality"
+              value={draft.preferences.experience.quality ?? "AUTO"}
+              onChange={(event) => exp({ quality: event.target.value as Preferences["experience"]["quality"] })}
+            >
+              <option value="AUTO">Auto</option>
+              <option value="CINEMATIC">Cinematic</option>
+              <option value="BALANCED">Balanced</option>
+              <option value="PERFORMANCE">Performance</option>
+            </select>
+          </label>
+          <label>
+            Experience Audio
+            <select
+              aria-label="Experience Audio"
+              value={String(draft.preferences.experience.experienceAudio ?? false)}
+              onChange={(event) => exp({ experienceAudio: event.target.value === "true" })}
+            >
+              <option value="false">Off</option>
+              <option value="true">On</option>
+            </select>
+          </label>
+          <label>
+            Experience Volume <output>{draft.preferences.experience.experienceVolume ?? 50}%</output>
+            <input
+              aria-label="Experience Volume"
+              type="range"
+              min="0"
+              max="100"
+              value={draft.preferences.experience.experienceVolume ?? 50}
+              onChange={(event) => exp({ experienceVolume: Number(event.target.value) })}
+            />
+          </label>
+        </>
+      )}
       <>
         <label>
           Theme
