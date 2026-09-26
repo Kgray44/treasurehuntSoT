@@ -91,7 +91,10 @@ function configuredValue(key: string) {
 }
 
 function taskOwnedSyntheticConfigured() {
-  return process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER === "TASK_OWNED_TEST";
+  return (
+    process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER === "TASK_OWNED_TEST" ||
+    (process.env.SOUNDING_LINE_TASK_OWNED_HTTP === "1" && Boolean(process.env.SOUNDING_LINE_SUITE_PROFILE))
+  );
 }
 
 export function transactionalEmailProviderStatus(): ProviderStatus {
