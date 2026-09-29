@@ -384,9 +384,10 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     expect(names).not.toContain("chronicle_pending_invitation");
     expect(names).not.toContain("chronicle_player");
     await expect(page.getByRole("button", { name: "Homeport Invitation Navigator" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Homeport invitation/u })).toBeVisible();
-    await expect(page.locator("main.waiting-room")).toHaveAttribute("data-connection-state", /live|polling|offline/u);
-    await expect(page.locator("main.waiting-room h1")).toBeFocused();
+    await expect(page.locator("main.muster-scene").getByText(/Homeport invitation/u)).toBeVisible();
+    await expect(page.locator("main.muster-scene")).toHaveAttribute("data-viewer-role", "player");
+    await expect(page.getByRole("region", { name: "Crew Chat" }).getByText(/Live|Reconnecting|Offline/u)).toBeVisible();
+    await expect(page.locator("main.muster-scene h1")).toBeFocused();
     await capture(page, "HP-P1-EV-N-invitation-handoff");
   });
 

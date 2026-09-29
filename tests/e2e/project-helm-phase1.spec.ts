@@ -1117,9 +1117,11 @@ test("Ready the Room keeps the Captain-only, participating-Captain, and ordinary
     page.waitForURL(new RegExp(`/captain/voyages/${captainOnly.playthroughId}/muster$`, "u")),
     captainOnlyCard.getByRole("link", { name: "Open Muster Room" }).click(),
   ]);
-  await expect(page.getByRole("heading", { name: "Captain-only Voyage" })).toBeVisible();
-  await expect(page.getByText(/No Player membership exists yet/u)).toBeVisible();
-  await expect(page.getByRole("button", { name: "Begin Voyage" })).toBeVisible();
+  await expect(page.locator("main.muster-scene")).toHaveAttribute("data-viewer-role", "captain-only");
+  await expect(page.getByText(captainOnlyName, { exact: true })).toBeVisible();
+  await expect(page.getByText("Captain-only Voyage. Begin when you're ready.")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Begin the Voyage" })).toBeVisible();
+  await page.getByRole("button", { name: "Captain & Voyage options" }).click();
   await expect(page.getByRole("link", { name: "Leave Waiting Room" })).toHaveAttribute("href", "/captain/library");
   await expect(page.getByRole("button", { name: "Leave Voyage" })).toHaveCount(0);
 
@@ -1128,10 +1130,10 @@ test("Ready the Room keeps the Captain-only, participating-Captain, and ordinary
       response.url().endsWith(`/api/captain/playthroughs/${captainOnly.playthroughId}/launch`) &&
       response.request().method() === "POST",
   );
-  await page.getByRole("button", { name: "Begin Voyage" }).click();
+  await page.getByRole("button", { name: "Begin the Voyage" }).click();
   await page
-    .getByRole("dialog", { name: /Begin “Helm A3 captain-only/u })
-    .getByRole("button", { name: "Begin Voyage" })
+    .getByRole("dialog", { name: "Begin the Voyage?" })
+    .getByRole("button", { name: "Begin the Voyage" })
     .click();
   expect((await captainLaunch).status()).toBe(200);
 
@@ -1143,33 +1145,38 @@ test("Ready the Room keeps the Captain-only, participating-Captain, and ordinary
     participation: "CAPTAIN_AND_PLAYER",
   });
   await page.goto(`/player/playthroughs/${shared.playthroughId}`);
-  await expect(page.getByRole("heading", { name: sharedName })).toBeVisible({ timeout: 30_000 });
-  await expect(page.getByText("Captain review in progress")).toBeVisible();
-  await expect(page.getByText("Awaiting Captain")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Begin Voyage" })).toHaveCount(0);
-  await expect(page.locator('[data-captain="true"] .muster-badge-captain')).toHaveText("Captain");
-  await expect(page.getByRole("button", { name: "Resend invitation" })).toHaveCount(2);
+  await expect(page.locator("main.muster-scene")).toHaveAttribute("data-viewer-role", "captain-player");
+  await expect(page.getByText(sharedName, { exact: true })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole("button", { name: "Begin the Voyage" })).toBeVisible();
+  await expect(page.locator('[data-captain="true"] .muster-crew-role')).toContainText("Captain");
+  await expect(page.getByRole("button", { name: /^Manage Helm A3/u })).toHaveCount(2);
+  await page.getByRole("button", { name: "Captain & Voyage options" }).click();
   await expect(page.getByRole("link", { name: "Leave Waiting Room" })).toHaveAttribute("href", "/player/library");
-  await expect(page.getByRole("button", { name: "Leave Voyage" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Leave Voyage" })).toHaveCount(0);
 
   const guests = await Promise.all(
     shared.invitations.map((invitation) => acceptGuestInvitation(browser, invitation.link, shared.playthroughId)),
   );
   try {
     const guest = guests[0]!;
-    await expect(guest.page.getByRole("heading", { name: sharedName })).toBeVisible({ timeout: 30_000 });
+    await expect(guest.page.getByText(sharedName, { exact: true })).toBeVisible({ timeout: 30_000 });
+    await expect(guest.page.locator("main.muster-scene")).toHaveAttribute("data-viewer-role", "player");
+    await guest.page.getByRole("button", { name: "Your Voyage options" }).click();
     await expect(guest.page.getByRole("button", { name: "Leave Voyage" })).toBeVisible();
     await expect(guest.page.getByRole("link", { name: "Leave Waiting Room" })).toHaveAttribute(
       "href",
       "/player/library",
     );
-    await expect(guest.page.getByRole("button", { name: "Begin Voyage" })).toHaveCount(0);
+    await expect(guest.page.getByRole("button", { name: "Begin the Voyage" })).toHaveCount(0);
 
-    await page.getByRole("button", { name: "Reconnect and Refresh" }).click();
-    await expect(page.locator('[data-membership-status="READY"]')).toHaveCount(3, { timeout: 30_000 });
-    await expect(page.getByText("Captain launch available")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Begin Voyage" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Transfer Captaincy" })).toHaveCount(2);
+    await page.reload();
+    await expect(page.locator('[data-ready="true"]')).toHaveCount(3, { timeout: 30_000 });
+    await expect(page.getByText("All set. Begin the Voyage when you're ready.")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Begin the Voyage" })).toBeVisible();
+    for (const guestName of [`Helm A3 guest ${suffix}`, `Helm A3 reserve ${suffix}`]) {
+      await page.getByRole("button", { name: `Manage ${guestName}` }).click();
+      await expect(page.getByRole("button", { name: "Transfer Captaincy" })).toBeVisible();
+    }
 
     await page.setViewportSize({ width: 390, height: 844 });
     const overflow = await page.evaluate(
