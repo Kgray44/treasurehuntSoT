@@ -27,6 +27,7 @@ import {
   camera,
   DURATION,
   CUT,
+  SHELL_REVEAL,
   clamp,
   entryDuration,
   EMBARKATION_VERSION,
@@ -37,6 +38,7 @@ import {
   type Tier,
 } from "./program";
 import "./embarkation.css";
+import { bindArrivalKeyboard } from "./input-ownership";
 
 const Inspector = process.env.NODE_ENV !== "production" ? lazy(() => import("./Inspector")) : null;
 export type EmbarkationSnapshot = {
@@ -66,11 +68,13 @@ export type EmbarkationControls = {
   debug: (value: boolean) => void;
   freezeLiving: (value: boolean) => void;
   projection: (value: boolean) => void;
+  apertureMask: (value: boolean) => void;
+  exposureReference: (value: boolean) => void;
   fail: () => void;
 };
 declare global {
   interface Window {
-    __embarkation?: EmbarkationControls & { diagnostics: () => unknown };
+    __embarkation?: EmbarkationControls & { diagnostics: () => unknown; audioOutput: () => AudioNode | null };
     __embarkationLast?: unknown;
     __musterLiving?: {
       time: number;
@@ -343,7 +347,10 @@ export function Embarkation({
       debug = false,
       freezeLiving = false,
       projectionGrid = false,
+      apertureMask = false,
+      referenceExposure = false,
       done = false,
+      interactive = false,
       last = 0,
       raf = 0,
       preparationRaf = 0,
@@ -367,9 +374,15 @@ export function Embarkation({
       hostKey: `embarkation:${room.voyage.id}`,
     });
     let redraw = () => {};
+    let syncSound = () => {};
     const landing = new MusterLanding(main, host, () => {
-      if (preloadMs > 0) redraw();
+      if (preloadMs > 0) {
+        syncSound();
+        redraw();
+      }
     });
+    syncSound = () =>
+      audio.setCues(reduced || duration === 2 ? [] : [...(renderer?.soundCues() ?? []), ...landing.soundCues()]);
     const originalOverflow = document.body.style.overflow;
     const originalGutter = document.documentElement.style.scrollbarGutter;
     if (window.innerWidth > document.documentElement.clientWidth)
@@ -513,7 +526,7 @@ export function Embarkation({
       setActive(false);
       setReady(false);
       const title = main.querySelector<HTMLElement>("#muster-title");
-      if (title) {
+      if (title && !interactive) {
         title.tabIndex = -1;
         title.focus({ preventScroll: true });
       }
@@ -543,9 +556,11 @@ export function Embarkation({
       if (done) return;
       const start = performance.now();
       const returning = duration === 2 && !reduced;
+      let paintedLanding = false;
       filmTime = time;
       hostRoot.dataset.environmentTransit = String(!reduced);
-      const shellReveal = reduced || returning ? smooth(0.9, 1.5, time) : smooth(CUT.room, 32.3, time);
+      const shellReveal =
+        reduced || returning ? smooth(0.9, 1.5, time) : smooth(SHELL_REVEAL.start, SHELL_REVEAL.end, time);
       locked.forEach(({ n }) => {
         n.style.visibility = shellReveal > 0 ? "visible" : "hidden";
         n.style.opacity = String(shellReveal);
@@ -562,7 +577,18 @@ export function Embarkation({
         if (backgroundRef.current) backgroundRef.current.style.visibility = "visible";
         if (quietRef.current) quietRef.current.style.display = "none";
         if (preloadMs > 0)
-          renderer?.draw(filmTime, { only, freezeLiving, projectionGrid, ...(returning ? { returnTime: time } : {}) });
+          renderer?.draw(filmTime, {
+            only,
+            freezeLiving,
+            projectionGrid,
+            apertureMask,
+            referenceExposure,
+            ...(returning ? { returnTime: time } : {}),
+            incoming: (surfaces, sampleTime, present) => {
+              landing.frame(returning ? filmTime : sampleTime, returning, false, surfaces, present);
+              paintedLanding = true;
+            },
+          });
       }
       src.dataset.playing = String(time > 0);
       if (retained) retained.style.background = time > 0 ? "transparent" : "#061f23";
@@ -604,29 +630,68 @@ export function Embarkation({
         const depart = smooth(34.1, CUT.welcomeOut, filmTime);
         welcomeRef.current.style.transform = `translate(-50%,-50%) perspective(1150px) translate3d(${depart * depart * 260}px,${-depart * 150}px,${-depart * depart * 22000}px) rotateY(${depart * 45}deg) rotateZ(${-depart * 12}deg)`;
       }
-      landing.frame(
-        reduced ? CUT.room + smooth(0.75, 1.35, time) * (DURATION - CUT.room) : filmTime,
-        returning,
-        reduced,
-      );
-      if (!reduced && !returning) {
-        const still = time >= CUT.still;
+      if (!paintedLanding)
+        landing.frame(
+          reduced ? CUT.room + smooth(0.75, 1.35, time) * (DURATION - CUT.room) : filmTime,
+          returning,
+          reduced,
+        );
+      const still = time >= (!reduced && !returning ? CUT.still : duration);
+      if (still !== interactive) {
+        interactive = still;
+        holdStart.current = null;
+        holdRef.current?.style.setProperty("--hold", "0%");
         main.inert = !still;
         if (still) main.removeAttribute("aria-hidden");
         else main.setAttribute("aria-hidden", "true");
+        overlay.inert = still;
         overlay.style.pointerEvents = still ? "none" : "";
-        overlay.setAttribute("aria-modal", String(!still));
+        if (still) {
+          overlay.removeAttribute("aria-modal");
+          overlay.removeAttribute("role");
+          overlay.setAttribute("aria-hidden", "true");
+          document.body.style.overflow = originalOverflow;
+          document.documentElement.style.scrollbarGutter = originalGutter;
+          locked.forEach(({ n, inert }) => {
+            n.inert = inert;
+          });
+          if (overlay.contains(document.activeElement)) {
+            const title = main.querySelector<HTMLElement>("#muster-title");
+            if (title) {
+              title.tabIndex = -1;
+              title.focus({ preventScroll: true });
+            }
+          }
+        } else {
+          overlay.setAttribute("aria-modal", "true");
+          overlay.setAttribute("role", "dialog");
+          overlay.removeAttribute("aria-hidden");
+          document.body.style.overflow = "hidden";
+          locked.forEach(({ n }) => {
+            n.inert = true;
+          });
+        }
         if (holdRef.current) holdRef.current.style.visibility = still ? "hidden" : "visible";
       }
       const global = experience();
-      audio.update(returning ? DURATION : filmTime, global.audio && !muted, global.volume, !playing, returning);
+      audio.update(
+        returning || reduced ? DURATION : filmTime,
+        global.audio && !muted,
+        global.volume,
+        !playing,
+        returning || reduced,
+        speed,
+      );
       updateHold();
-      if (debugRef.current) {
+      if (debugRef.current && debug) {
         const dc = debugRef.current,
           ctx = dc.getContext("2d");
         if (ctx) {
-          dc.width = innerWidth;
-          dc.height = innerHeight;
+          if (dc.width !== innerWidth) dc.width = innerWidth;
+          if (dc.height !== innerHeight) dc.height = innerHeight;
+          dc.style.width = `${innerWidth}px`;
+          dc.style.height = `${innerHeight}px`;
+          ctx.clearRect(0, 0, dc.width, dc.height);
           if (debug) {
             ctx.strokeStyle = "#76edcf";
             ctx.fillStyle = "#c2fae9";
@@ -755,7 +820,8 @@ export function Embarkation({
       }
     };
     const degrade = () => {
-      if (done) return;
+      if (done || (reduced && !renderer)) return;
+      preparationController.abort();
       renderer?.dispose();
       renderer = null;
       reduced = true;
@@ -800,12 +866,14 @@ export function Embarkation({
         audio.update(filmTime, false, 0, true);
       },
       restart: () => {
+        audio.seek(0);
         time = 0;
         playing = true;
         last = 0;
       },
       seek: (t) => {
         time = clamp(t, 0, duration);
+        audio.seek(time);
         playing = false;
         draw();
       },
@@ -831,6 +899,8 @@ export function Embarkation({
       },
       debug: (v) => {
         debug = v;
+        if (!v && debugRef.current)
+          debugRef.current.getContext("2d")?.clearRect(0, 0, debugRef.current.width, debugRef.current.height);
         draw();
       },
       freezeLiving: (v) => {
@@ -841,13 +911,23 @@ export function Embarkation({
         projectionGrid = v;
         draw();
       },
+      apertureMask: (v) => {
+        apertureMask = v;
+        draw();
+      },
+      exposureReference: (v) => {
+        referenceExposure = v;
+        draw();
+      },
       fail: degrade,
     };
     setControls(controls);
-    if (process.env.NODE_ENV !== "production") window.__embarkation = { ...controls, diagnostics };
+    if (process.env.NODE_ENV !== "production")
+      window.__embarkation = { ...controls, diagnostics, audioOutput: () => audio.inspectionOutput() };
     startRef.current = async () => {
       if (done) return;
       time = 0;
+      audio.seek(0);
       src.inert = true;
       holdRef.current?.focus({ preventScroll: true });
       await audio.unlock(seed, experience().audio, experience().volume);
@@ -871,14 +951,29 @@ export function Embarkation({
         if (!reduced && !options.rendererFail) {
           try {
             renderer = new EmbarkationRenderer(canvas, seed, tier, degrade, backgroundRef.current ?? undefined);
-            await renderer.preload(
-              roomRef.current.voyage.coverUrl,
-              preparationController.signal,
-              options.optional,
-              artDirectionRef.current,
-            );
-            if (duration === DURATION) await renderer.captureSource(src, preparationController.signal);
+            // Material jobs need the real viewport before artwork finishes.
+            renderer.resize();
+            // The context/programs already exist. Artwork/prop paths, outgoing
+            // page material and incoming material are independent preparation
+            // jobs; JOIN waits for all three. Serializing their worker solves
+            // used nearly the entire readiness timeout on the reference device.
+            await Promise.all([
+              renderer.preload(
+                roomRef.current.voyage.coverUrl,
+                preparationController.signal,
+                options.optional,
+                artDirectionRef.current,
+                duration === 2,
+              ),
+              ...(duration === DURATION
+                ? [
+                    renderer.captureSource(src, preparationController.signal),
+                    landing.prepare(renderer.gl, preparationController.signal, degrade, renderer.materialBackdrop),
+                  ]
+                : []),
+            ]);
           } catch (cause) {
+            preparationController.abort();
             rendererFailure = cause instanceof Error ? cause.message : "renderer-unavailable";
             renderer?.dispose();
             renderer = null;
@@ -893,6 +988,7 @@ export function Embarkation({
           renderer?.dispose();
           return;
         }
+        syncSound();
         preloadMs = performance.now() - startedPreload;
         setReady(true);
         draw();
@@ -926,45 +1022,26 @@ export function Embarkation({
     const onResize = () => {
       renderer?.resize();
       landing.measure();
+      syncSound();
       draw();
     };
     const visibility = () => {
       last = 0;
       holdStart.current = null;
-      audio.update(filmTime, false, 0);
+      audio.update(filmTime, false, 0, true);
     };
     const cancelHold = () => {
       holdStart.current = null;
     };
-    const keyDown = (event: KeyboardEvent) => {
-      if (event.code === "Tab") {
-        const focusable = [
-          ...hostRoot.querySelectorAll<HTMLElement>('button:not(:disabled), input, select, [tabindex="0"]'),
-        ].filter(
-          (n) => !n.closest("[inert]") && n.getClientRects().length && getComputedStyle(n).visibility !== "hidden",
-        );
-        const first = focusable[0],
-          end = focusable.at(-1);
-        if (first && end && (event.shiftKey ? document.activeElement === first : document.activeElement === end)) {
-          event.preventDefault();
-          (event.shiftKey ? end : first).focus();
-        }
-      }
-      if (
-        event.code === "Space" &&
-        (playing || preloadMs === 0) &&
-        !(event.target as Element)?.closest(".embarkation-inspector")
-      ) {
-        event.preventDefault();
-        if (!event.repeat && holdStart.current === null) holdStart.current = performance.now();
-      }
-    };
-    const keyUp = (event: KeyboardEvent) => {
-      if (event.code === "Space") cancelHold();
-    };
-    window.addEventListener("keydown", keyDown);
-    window.addEventListener("keyup", keyUp);
-    window.addEventListener("blur", cancelHold);
+    const releaseKeyboard = bindArrivalKeyboard({
+      root: hostRoot,
+      ownsInput: () => !done && !interactive,
+      skipAvailable: () => playing || preloadMs === 0,
+      beginHold: () => {
+        if (holdStart.current === null) holdStart.current = performance.now();
+      },
+      cancelHold,
+    });
     window.addEventListener("resize", onResize);
     document.addEventListener("visibilitychange", visibility);
     return () => {
@@ -981,9 +1058,7 @@ export function Embarkation({
       retained?.remove();
       restore();
       host.release();
-      window.removeEventListener("keydown", keyDown);
-      window.removeEventListener("keyup", keyUp);
-      window.removeEventListener("blur", cancelHold);
+      releaseKeyboard();
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", visibility);
       if (process.env.NODE_ENV !== "production") delete window.__embarkation;

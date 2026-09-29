@@ -1,0 +1,31 @@
+{
+  "classification": "engineering-evidence",
+  "status": "DERIVED_NOT_SCREENED",
+  "sourceGuideSha256": "9aa5b55680b4b5eaff51e7766694208b6c0b4dc348f7e472362e406e7369f267",
+  "generatedMasterSha256": "f7fe6d81c91d91b90d1b7255ea80178fe09e2e57fcb460d4357834b373e01ea0",
+  "derivativeSha256": "c0e157e8800b02fb18ca14dfbce31b4745f53ae35bcd28364a4b440bd683375d",
+  "width": 2848,
+  "height": 1293,
+  "originalRect": {
+    "left": 588,
+    "top": 48,
+    "width": 1672,
+    "height": 941
+  },
+  "exactProtectedPixels": 297205,
+  "featherPixels": 36,
+  "colourMatchRadius": 80,
+  "masterRegistration": {
+    "normalizedSize": [2848, 1328],
+    "translationY": -35
+  },
+  "bounds": [-0.35167464114832536, -0.3230605738575983, 1.3516746411483254, 1.051009564293305],
+  "limitations": [
+    "Supporting fill is generated, not recovered source pixels.",
+    "Moon/reflection integration is a separate open audit item."
+  ],
+  "generation": {
+    "tool": "built-in imagegen",
+    "purpose": "Fill source-registered guide holes and measured borders with matching sky and water; no new scenery."
+  }
+}

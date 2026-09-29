@@ -1,0 +1,252 @@
+{
+  "classification": "engineering-evidence",
+  "status": "TARGETED REPAIR - broader audit remains IN_PROGRESS",
+  "recordedAt": "2026-09-29T17:38:27.952Z",
+  "baseHead": "bf0a41f8ed984df6c068cb1a0a5919e12267ef22",
+  "sourceSha256": {
+    "src/animation/embarkation/adhesion.ts": "00e0cba81bdaab92256983e7d746ed390974142a98672b9329a078dca31c9eb1",
+    "src/animation/embarkation/aperture-mask.ts": "cbf4428492a58c323fd7b3881362ead6456cb9e1cf566a32598b7be09b6b99aa",
+    "src/animation/embarkation/arrival-material.ts": "79f24c2073ed4d11e01366c6adfd2919ec1c6acee4f7ce7a5a29a21fbfe6a995",
+    "src/animation/embarkation/arrival.ts": "df26c551ffc1c2c6f40424d480f8e9a6bf0e859d6499f877b34972f13c24dc08",
+    "src/animation/embarkation/atmosphere.ts": "e9f0ec2d3fe6f403cef032151f424e1f21f015bdf8f11b7e37cf81e999eeb81b",
+    "src/animation/embarkation/audio.ts": "702891bec9d2d4163e9ef76991552cd567123f670781a63a407a4201349cf84a",
+    "src/animation/embarkation/cloth-worker.ts": "4a29730dd5f443a592a68b1c59ef60d647b2ae20080fcf2a4ad6a9881966caa2",
+    "src/animation/embarkation/cloth.ts": "25649bbcf9dd0f7979f3299ce032f5ea2115a2b03e613c91893803cee799c63c",
+    "src/animation/embarkation/depth-compositor.ts": "778fa9b126c62fd5421c768844b8168df8b9a9a6a1ea67369bcda68d374f9893",
+    "src/animation/embarkation/depth-qualification.ts": "a19f98a56e87b19e5f52b31fb69972cc0a8db7f7f9d590f8e60f512fcd858c98",
+    "src/animation/embarkation/dom-paint.ts": "8c7c70b644f875416dc0fe22d32c2d4dfc9e6d78fe4eea8bc449d8cb70b144c8",
+    "src/animation/embarkation/dom.ts": "b691ee6a23b5bcceeae270b089db21fff264508c72d7894e98fa097114796339",
+    "src/animation/embarkation/dynamics.ts": "ff8edb089122e45078af60bd6fb463b62760903fb2772b1a7579457cf55256e9",
+    "src/animation/embarkation/embarkation.css": "e0661e981d271271352e67ab299f18e9bb24d89b07fbbf7abaeb430c93ddbf1b",
+    "src/animation/embarkation/Embarkation.tsx": "d8a52217a4eedb80acef0e8c03bce5cff974874e6281ed05efe36a7ace9e7353",
+    "src/animation/embarkation/environment-set.ts": "95ad636e6980b458622c4f80429a017a15d1bf16bcfed90741af3d25fa4770bc",
+    "src/animation/embarkation/environment.ts": "bbba7e6f8f016ac50da7fe0d08a2ae3ca3e83cedf0c4d6271e0db9bc8c8dd38f",
+    "src/animation/embarkation/exposure-qualification.ts": "4c8a7cf2c242192565fca9367953f24d797ccb44a14c10b043be88b095a5d53a",
+    "src/animation/embarkation/exposure.ts": "ef9acbc8a99315aaf1f5d96bc0d4f0b7f5ec8d47eb72251564b21e2011459663",
+    "src/animation/embarkation/GenericStage.tsx": "39e9831538933e7ec85ee3aee5812a93b9a3077ca63c2fded68f0d08bd6707ed",
+    "src/animation/embarkation/input-ownership.ts": "181835d45e6e718d7241ee268911ed6fe93232f7347107b4f1084022e610094f",
+    "src/animation/embarkation/Inspector.tsx": "706677372c9be453cde0bf1b270b09ea9658aaf8c831c8291d2f471ac2882787",
+    "src/animation/embarkation/landscape-space.ts": "878f33b22c01f5d4999d32632603e66869b96cc4b0131e192c26e81789990684",
+    "src/animation/embarkation/lens-qualification.ts": "6288743a9c296a66ae237ae6ae4cb4f2a88071ee95baf77e3bdd15122043b4b6",
+    "src/animation/embarkation/lens-water.ts": "571b2f6f4eb378c8af5dbab86ea7948fb49df7c99f1b4144924f3e4d57d05ec6",
+    "src/animation/embarkation/live-paint-binding.ts": "1bb89be62a163334ac0ec31c86794cf90e7a5dc735d3c35e017588f9fc9b4344",
+    "src/animation/embarkation/live-paint.ts": "b2e18f29a2957af9bd68f458d46b61181125061d9726b92d620e42e3eb17b594",
+    "src/animation/embarkation/living-material.ts": "33cf7ab6f0dd20dc818641e0a48fbddc2f8b913974a46557866e9903c5fcae2b",
+    "src/animation/embarkation/material-backdrop.ts": "33f5979bcfa2070d785d1fdb0c26a543d42595152ed7184bff271e82b6265ac7",
+    "src/animation/embarkation/navigation.tsx": "aad139e244f2639d6e5cd4103c051aa8d820579d60ab7f4c109f915b9c4a4284",
+    "src/animation/embarkation/page-material.ts": "cd52458d31417019fdef643dc93d6f390ab19eb95f6e7326de2b8685b7152868",
+    "src/animation/embarkation/paint-mesh.ts": "672e5c92088c4ea98a8838e99d0497522cf501f302579151da43d6fe47079855",
+    "src/animation/embarkation/paint-raster.ts": "3431825b1d9ce1cb1037d16f732b8e01dacb3281df3b74c5343b04c04ecbb6e5",
+    "src/animation/embarkation/paint-surface.ts": "f9f970377c0b91237e60fcba88c9756ff714f476110e27edf420a1c65ac039f5",
+    "src/animation/embarkation/particle-sampler.ts": "56be9ef2577aa08793ce979a8908ad8b40e30e981ad7f127df769fbf3baecd65",
+    "src/animation/embarkation/prepare-materials.ts": "b5218b52ac53db86a12b0bc75933b1184f7a87e2ae1a87de7619aeb1daed033f",
+    "src/animation/embarkation/program.ts": "d5a64a82e228b2b3ab3717d86a2c745acd8856ac3e0ae9f4ec6e339d472fc50b",
+    "src/animation/embarkation/projection.ts": "c3ec2085ad10a46d2a69b1e260fd9b60a102ccb759b09f6e33170cba8e8259d2",
+    "src/animation/embarkation/prop-material.ts": "584b468228bd7a5f225ade199123acfc194c3a8d411350fa9daf57e220d67d5b",
+    "src/animation/embarkation/prop-qualification.ts": "29f10ac1c25ae8f259c8dc69d1147de387a90afb18ae5eab128d8b2f6abdf12e",
+    "src/animation/embarkation/prop-shell.ts": "227b063fea1e4d9e705ece4c65a87c3cf37e487c991db4495bd6bb531d68468b",
+    "src/animation/embarkation/renderer.ts": "9ed292ddae0ff4ba09cd6556f96a31ba3188a44704529543d71564e5a38a805b",
+    "src/animation/embarkation/room-extension.ts": "a0c57ff2013fb46daaa48768114cac1b54f2f8543f5de4ecdc6b0cab192e985a",
+    "src/animation/embarkation/scene-space.ts": "1ad5869ac5f97bf84cf2dfc44241f9f405f3a336c6a32178752b062acd17f66c",
+    "src/animation/embarkation/sound-cues.ts": "9ab10065adeb5047bb1d5508a0aef26942a3c24e55860321453ab045f279004b",
+    "src/animation/embarkation/title-snag.ts": "10e7fbdc5bbab760809074c80599c1847645bbc260dc30bd9c2bd6a517380470"
+  },
+  "productionBuildId": "6imWkrC_d1AiUwN71xvsC",
+  "auditIds": [
+    "EMB-AUD-01",
+    "EMB-AUD-02",
+    "EMB-AUD-19"
+  ],
+  "cause": "The former outgoing sheet lived in a rigid carrier. Its FlightPath began at nominal release with only camera velocity, ignoring the sheet's accumulated deformation velocity and starting 50ms before the final support disappeared.",
+  "repair": [
+    "A single constrained world-space material now owns the full pressure/strain/release/flight interval. Failure removes each support without replacing vertex position or velocity. No release kick or transport floor exists.",
+    "Material-point drag uses the same relative-airflow/projected-area response as FlightPath, with the existing page stock coefficients. Distributed pressure and support impulses produce turning and flutter; no separate prescribed rigid rotation is applied.",
+    "Moving supports remain registered to the actual platform projection. Their known rigid transform supplies a metric-preserving reference only when the bounded constraint solver requires conservative advancement, repairing narrow-header preparation without relaxing strain limits.",
+    "Prepared geometry transfers through the existing worker cache. Recession culls only after the nearest point reaches optical extinction. Focus-title diagnostics no longer build an unused page simulation on the main thread.",
+    "Anchor-release sound placement now reads the same world-space support point. The earlier shared gust and staggered release schedule, 35.8s film, moon depth repair, and later cinematic beats are unchanged."
+  ],
+  "probe": {
+    "path": ".runtime/embarkation/audit-repair/departure-worldsheet-final-20260929.json",
+    "sha256": "dd397de94c40db177e42fbbd876f4526417db73457b812f35cb33724256b794d",
+    "boundary": "Equation/mesh evidence, not perceptual acceptance."
+  },
+  "clips": [
+    {
+      "path": ".runtime/embarkation/audit-repair/embarkation-departure-world-normal-20260929.json",
+      "player": ".runtime/embarkation/audit-repair/embarkation-departure-world-normal-20260929.html",
+      "sha256": "0816e8cdc8c1f69385f8599b19c5fb51dd70392668981165b03b00c4f13a6989",
+      "frames": 269,
+      "rate": 1,
+      "start": {
+        "active": [],
+        "duration": 35.8,
+        "filmTime": 0,
+        "fps": 0,
+        "mute": true,
+        "p95": 0,
+        "reduced": false,
+        "renderMs": 1.199999988079071,
+        "seed": 2595989206,
+        "tier": "CINEMATIC",
+        "time": 0
+      },
+      "end": {
+        "active": [
+          "props",
+          "paper",
+          "particles",
+          "mist",
+          "spray"
+        ],
+        "duration": 35.8,
+        "filmTime": 10.250000000000004,
+        "fps": 46.15739672282478,
+        "mute": true,
+        "p95": 33.30000000000291,
+        "reduced": false,
+        "renderMs": 7.0999999940395355,
+        "seed": 2595989206,
+        "tier": "CINEMATIC",
+        "time": 10.250000000000004
+      },
+      "viewport": {
+        "dpr": 1.25,
+        "height": 720,
+        "width": 1280
+      },
+      "failure": null,
+      "frameP95": 33.30000000000291,
+      "method": "Native CDP screencast, JPEG90, max1280x720, every second compositor frame; silent diagnostic with capture overhead."
+    },
+    {
+      "path": ".runtime/embarkation/audit-repair/embarkation-departure-world-quarter-20260929.json",
+      "player": ".runtime/embarkation/audit-repair/embarkation-departure-world-quarter-20260929.html",
+      "sha256": "5218a960f3dd4609e87a77304d6fd6f1f7bf5ca2a4b45700ffbb32d8eac06974",
+      "frames": 406,
+      "rate": 0.25,
+      "start": {
+        "active": [
+          "particles",
+          "mist",
+          "spray"
+        ],
+        "duration": 35.8,
+        "filmTime": 3.5,
+        "fps": 46.15739672282478,
+        "mute": true,
+        "p95": 33.30000000000291,
+        "reduced": false,
+        "renderMs": 7.0999999940395355,
+        "seed": 2595989206,
+        "tier": "CINEMATIC",
+        "time": 3.5
+      },
+      "end": {
+        "active": [
+          "paper",
+          "props",
+          "particles",
+          "mist",
+          "spray"
+        ],
+        "duration": 35.8,
+        "filmTime": 7.512574999999938,
+        "fps": 58.06077027288595,
+        "mute": true,
+        "p95": 33.39999999999418,
+        "reduced": false,
+        "renderMs": 7.100000023841858,
+        "seed": 2595989206,
+        "tier": "CINEMATIC",
+        "time": 7.512574999999938
+      },
+      "viewport": {
+        "dpr": 1.25,
+        "height": 720,
+        "width": 1280
+      },
+      "failure": null,
+      "frameP95": 33.39999999999418,
+      "method": "Native CDP screencast, JPEG90, max1280x720, every second compositor frame; silent diagnostic with capture overhead."
+    }
+  ],
+  "viewports": [
+    {
+      "path": ".runtime/embarkation/audit-repair/embarkation-departure-portrait-20260929.json",
+      "sha256": "ea9dd4a9b8f0b04080fdc23bb75d2703b8837cb9de411ad30f970f373764ca3d",
+      "method": "Native Page.captureScreenshot of the complete emulated CSS viewport; no image reconstruction. Earlier screencast fit the host surface and is not used as portrait image proof.",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1.25
+      },
+      "failure": null,
+      "limitation": "Selected native frames; not a physical-device or full lifecycle qualification."
+    },
+    {
+      "path": ".runtime/embarkation/audit-repair/embarkation-departure-tablet-20260929.json",
+      "sha256": "dca874d56875d04018b81172a99aa4fb0412870c3142b36dec80062f4bd7bc38",
+      "method": "Native complete CSS viewport screenshots",
+      "viewport": {
+        "width": 1024,
+        "height": 768,
+        "dpr": 1.25
+      },
+      "failure": null,
+      "limitation": "Selected native frames; not a physical-device or full lifecycle qualification."
+    },
+    {
+      "path": ".runtime/embarkation/audit-repair/embarkation-departure-ultrawide-20260929.json",
+      "sha256": "0d70f238f38f137d4854a85e3a6a2d57747d17bea4e41c78231ce58b3afa2332",
+      "method": "Native complete CSS viewport screenshots",
+      "viewport": {
+        "width": 2560,
+        "height": 1080,
+        "dpr": 1
+      },
+      "failure": null,
+      "limitation": "Compositor screenshots repeat tiles in this IAB capture path; direct original WebGL canvas is correct. Not a passing ultrawide browser-compositor qualification."
+    },
+    {
+      "path": ".runtime/embarkation/audit-repair/embarkation-departure-ultrawide-canvas-20260929.json",
+      "sha256": "8a9812def981ce6d6fd44203df311df94ffffa17716731508d5094c7bc70aa7c",
+      "method": "Direct original canvas PNG export at paused film time 5.5; not DOM/browser-compositor proof",
+      "viewport": {
+        "width": 2560,
+        "height": 1080,
+        "dpr": 1
+      },
+      "failure": null,
+      "limitation": "Compositor screenshots repeat tiles in this IAB capture path; direct original WebGL canvas is correct. Not a passing ultrawide browser-compositor qualification."
+    }
+  ],
+  "validation": [
+    "26 focused Embarkation files / 106 tests passed; includes actual crew-card rapid recession, heavy-button contrast, moving pins, bounded narrow-header strain, nonzero release momentum and transferred-cache equality.",
+    "Production build and TypeScript passed; five existing Edge/NFT warnings remain unrelated to this repair."
+  ],
+  "limits": [
+    "Hero-prop deformation/self-contact, dynamic landing retargeting, full audio/lifecycle/browser matrix and the remaining independent-audit findings are still open.",
+    "This record does not relabel earlier sound recordings or production performance samples as measurements of the new source. Known fog high-percentile cost remains unresolved.",
+    "Selected-frame inspection and retained playback are not owner acceptance. No merge or publication was performed."
+  ],
+  "productionReplay": {
+    "path": ".runtime/embarkation/audit-repair/embarkation-departure-production-film-20260929.json",
+    "player": ".runtime/embarkation/audit-repair/embarkation-departure-production-film-20260929.html",
+    "sha256": "83231a8d806f59dd72ab2c0c732aecc4602a17cf1ba20192871c2ded6e68213e",
+    "buildId": "6imWkrC_d1AiUwN71xvsC",
+    "viewport": {
+      "dpr": 1.25,
+      "height": 720,
+      "width": 1280
+    },
+    "frames": 1033,
+    "recordedSeconds": 44.98735594749451,
+    "end": {
+      "errors": 0,
+      "overlay": false,
+      "replay": true
+    },
+    "method": "Native CDP screencast of ordinary production Replay Arrival; silent; max1280x720 JPEG85, every second compositor frame",
+    "boundary": "Ordinary production replay reached live Muster with more than eight seconds of ambience. Silent recording and selected-frame inspection are not listening or complete perceptual acceptance."
+  }
+}

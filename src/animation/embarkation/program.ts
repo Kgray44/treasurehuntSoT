@@ -1,9 +1,11 @@
 /** A seekable scene program: all values depend on identity, time and viewport, never frame count. */
+import { FlightPath, eulerFromOrientation, orientationFromEuler } from "./dynamics";
+import { FOCAL, WORLD_HEIGHT, cssToWorld } from "./projection";
 export const EMBARKATION_VERSION = "embarkation-1.0.0";
 // Delta 2 is authored in seconds. Fast releases and near passes retain their
 // physical velocities; discovery, fog travel and anchor catches get new shots.
 export const CUT = {
-  pressure: 4,
+  pressure: 3.3,
   crossing: 10,
   crest: 12.15,
   catch: 11.45,
@@ -23,11 +25,13 @@ export const CUT = {
   end: 35.8,
 } as const;
 export const DURATION = CUT.end;
+export const SHELL_REVEAL = { start: CUT.room, end: 32.3 } as const;
 export const beats = [
   [0, "The page holds"],
   [2.2, "The title catches the wind"],
-  [4, "Pressure / edge tension"],
-  [7.2, "Anchors fail"],
+  [CUT.pressure, "First gust / edge tension"],
+  [5.2, "Anchors fail"],
+  [7.2, "The page enters the storm"],
   [10, "Into the crossing"],
   [CUT.catch, "The word catches a page"],
   [CUT.crest, "Storm crest"],
@@ -77,10 +81,14 @@ export function beatAt(t: number) {
 export function gust(t: number) {
   const pressure = smooth(0.8, 9.4, t);
   const crest = 0.79 + 0.86 * Math.exp(-(((t - CUT.crest) / 1.75) ** 2));
+  // A compact first gust breaks the page's anchors. Added scenic runtime must
+  // not turn that physical event into a nine-second acceleration ramp. It
+  // affects the shared air/material/audio field and is gone before crossing.
+  const firstGust = 0.62 * smooth(2.6, 4.35, t) * (1 - smooth(5.9, 7.8, t));
   const shelter = 1 - 0.71 * smooth(14.1, 20.5, t);
   // Fog remains advected by the same field. Only the room's last anchor shot
   // removes the residual pressure, rather than resetting wind at a scene cut.
-  return pressure * crest * shelter * (1 - smooth(31.5, CUT.settled, t));
+  return (pressure * crest + firstGust) * shelter * (1 - smooth(31.5, CUT.settled, t));
 }
 export function stormEnergy(t: number) {
   return smooth(1.8, 9.5, t) * (1 - smooth(14.8, 20.4, t)) * (0.72 + 0.28 * Math.exp(-(((t - CUT.crest) / 1.5) ** 2)));
@@ -97,7 +105,12 @@ export function wind(t: number, p: Vec3, _phase = 0): Vec3 {
   void _phase; // Historical call-site phase cannot change a shared world field.
   // Field phase belongs to the world, never to an individual particle. Adjacent
   // cloth, mist and water therefore bend around the same two vortex tubes.
-  const g = gust(t),
+  // Storm supply decays, but downstream air does not suddenly stop when the
+  // viewer enters shelter. Only the actual room volume suppresses that flow.
+  const shelter = smooth(CUT.threshold, CUT.room, t) * smooth(-6000, -1700, p[2]);
+  // A sheltered fraction of the final gust still loads newly caught material.
+  // It decays with the same supply envelope; the outdoor stream keeps flowing.
+  const g = (gust(t) + 0.78 * smooth(14.1, 20.5, t)) * (1 - shelter) + gust(t) * 0.24 * shelter,
     depth = 1 + clamp(-p[2] / 6000) * 0.22;
   let x = 100 * Math.sin(p[2] * 0.0006 + t * 0.6),
     y = 45 * Math.cos(p[2] * 0.0008 - t * 0.7);
@@ -112,6 +125,23 @@ export function wind(t: number, p: Vec3, _phase = 0): Vec3 {
   }
   return [g * x, g * y, -g * (6200 * depth + 840 * Math.sin(p[2] * 0.0005 - t * 0.8) ** 2)];
 }
+// Reference streamline transports the continuous volume's fine texture. Bank
+// centers use their local integrated field; this integral is only substructure
+// advection, not a second fog velocity or an opacity clock.
+const airTravelSamples: Vec3[] = [[0, 0, 0]];
+export function airTravel(time: number): Vec3 {
+  const frame = Math.max(0, time) * 60,
+    upper = Math.ceil(frame);
+  while (airTravelSamples.length <= upper) {
+    const i = airTravelSamples.length,
+      before = wind((i - 1) / 60, [0, 0, -6000]),
+      after = wind(i / 60, [0, 0, -6000]);
+    airTravelSamples.push(before.map((v, axis) => airTravelSamples[i - 1][axis] + (v + after[axis]) / 120) as Vec3);
+  }
+  const lower = Math.floor(frame),
+    u = frame - lower;
+  return airTravelSamples[lower].map((v, axis) => mix(v, airTravelSamples[upper][axis], u)) as Vec3;
+}
 export type Material = {
   mass: number;
   area: number;
@@ -125,6 +155,7 @@ export const materials = {
   paper: { mass: 0.65, area: 1.3, drag: 1.15, inertia: 0.6, coupling: 1, flutter: 1, lift: 0.7 },
   cloth: { mass: 1.1, area: 2, drag: 1.6, inertia: 1, coupling: 0.8, flutter: 0.7, lift: 0.9 },
   card: { mass: 3.8, area: 1.4, drag: 0.6, inertia: 4.1, coupling: 0.35, flutter: 0, lift: 0.12 },
+  button: { mass: 6, area: 0.7, drag: 0.8, inertia: 6, coupling: 0.65, flutter: 0, lift: 0.04 },
   metal: { mass: 8, area: 0.4, drag: 0.2, inertia: 7, coupling: 0.1, flutter: 0, lift: 0.04 },
   rope: { mass: 3, area: 0.5, drag: 0.6, inertia: 3, coupling: 0.35, flutter: 0.15, lift: 0.1 },
   mist: { mass: 0.08, area: 3, drag: 2, inertia: 0.1, coupling: 1.8, flutter: 0.35, lift: 1 },
@@ -140,12 +171,13 @@ export type Actor = {
   size: number;
   phase: number;
   rotation: Vec3;
-  hero?: "map" | "collision" | "lantern" | "rope";
+  hero?: "map" | "lantern" | "rope";
   layer: "paper" | "props" | "mist" | "particles" | "light" | "spray";
   additive?: boolean;
 };
 export type Pose = {
   position: Vec3;
+  velocity?: Vec3;
   rotation: Vec3;
   size: number;
   alpha: number;
@@ -155,60 +187,52 @@ export type Pose = {
 };
 // Fixed-step entrainment is precomputed once per actor. Every loose material
 // starts behind the eye and overtakes it; seeking never advances a simulation.
-const dynamicsCache = new WeakMap<Actor, Float32Array>();
-// Physical seconds are independent of how long subsequent scenic beats last.
-// The cache has a fixed physical horizon, followed by ballistic continuation.
-export const FLIGHT_CACHE_SECONDS = 12;
-export function materialResponse(a: Actor, age: number): Vec3 {
-  const eye = camera(a.birth).position;
-  const origin: Vec3 = [a.position[0] + eye[0], a.position[1] + eye[1], eye[2] + 1320 + Math.abs(a.position[2]) * 0.12];
-  if (age <= 0) return origin;
-  let samples = dynamicsCache.get(a);
-  const dt = a.material === "mote" ? 1 / 45 : 1 / 90;
-  if (!samples) {
-    const count = Math.ceil(FLIGHT_CACHE_SECONDS / dt) + 1;
-    samples = new Float32Array(count * 3);
-    const p: Vec3 = [...origin],
-      v: Vec3 = [0, 0, a.material === "metal" ? -2000 : a.material === "mote" ? -5200 : -3600],
-      m = materials[a.material];
-    const drag = Math.min(10, 0.7 + (m.area * m.drag * m.coupling) / (m.mass + 0.08));
-    samples.set(p);
-    for (let step = 1; step < count; step++) {
-      const field = wind(a.birth + step * dt, p);
-      for (let axis = 0; axis < 3; axis++) {
-        const carry =
-          a.material === "metal" ? 5800 : a.material === "cloth" ? 7300 : a.material === "mote" ? 10000 : 8500;
-        const target = axis === 2 ? Math.min(-carry, field[axis]) : field[axis];
-        v[axis] += (target - v[axis]) * drag * dt;
-        p[axis] += v[axis] * dt;
-      }
-      samples.set(p, step * 3);
-    }
-    dynamicsCache.set(a, samples);
+const dynamicsCache = new WeakMap<Actor, FlightPath>();
+const birthCameraCache = new WeakMap<Actor, { birth: number; position: Vec3 }>();
+function actorEye(a: Actor) {
+  let cached = birthCameraCache.get(a);
+  if (!cached || cached.birth !== a.birth) {
+    cached = { birth: a.birth, position: camera(a.birth).position };
+    birthCameraCache.set(a, cached);
   }
-  if (age > FLIGHT_CACHE_SECONDS) {
-    const end = samples.length - 3;
-    return [0, 1, 2].map(
-      (axis) =>
-        samples![end + axis] + ((samples![end + axis] - samples![end - 3 + axis]) / dt) * (age - FLIGHT_CACHE_SECONDS),
-    ) as Vec3;
-  }
-  const frame = clamp(age / dt, 0, samples.length / 3 - 1),
-    i = Math.floor(frame),
-    j = Math.min(i + 1, samples.length / 3 - 1),
-    u = frame - i;
-  return [0, 1, 2].map((axis) => mix(samples![i * 3 + axis], samples![j * 3 + axis], u)) as Vec3;
+  return cached.position;
 }
-/** Spatially shared wind torque with material-dependent inertial response. */
-export function flowRotation(t: number, age: number, p: Vec3, phase: number, inertia: number): Vec3 {
-  const f = wind(t, p),
-    lever = 1 / Math.sqrt(inertia),
-    spin = age * (1.65 + 0.42 * Math.sin(phase));
-  return [
-    (spin * 0.61 + Math.sin(age * 1.3 + phase) * 0.35 + f[1] * 0.0016) * lever,
-    (spin + Math.sin(p[2] * 0.0005 + t * 0.45) * 0.3 + f[0] * 0.0012) * lever,
-    (spin * 0.43 + Math.sin(age * 0.9 + phase) * 0.23) * lever,
-  ];
+export function materialPath(a: Actor) {
+  let path = dynamicsCache.get(a);
+  if (!path) {
+    const eye = actorEye(a);
+    const origin: Vec3 = [
+      a.position[0] + eye[0],
+      a.position[1] + eye[1],
+      eye[2] + FOCAL + 170 + Math.abs(a.position[2]) * 0.12,
+    ];
+    // The upstream emitter is already entrained in the local air. This is an
+    // initial condition, not a minimum speed continually imposed on the body.
+    const air = wind(a.birth, origin);
+    path = new FlightPath(
+      a.birth,
+      {
+        position: origin,
+        velocity: air.map((v) => v * 0.82) as Vec3,
+        orientation: orientationFromEuler(a.rotation),
+        angularVelocity: [0, 0, 0],
+      },
+      {
+        material: materials[a.material],
+        spherical: a.material === "mote" || a.material === "mist",
+        pressureCenter: [0.14 * Math.sin(a.phase), 0.12 * Math.cos(a.phase), 0.025],
+      },
+      wind,
+    );
+    dynamicsCache.set(a, path);
+  }
+  return path;
+}
+export function materialMotion(a: Actor, age: number) {
+  return materialPath(a).at(age);
+}
+export function materialResponse(a: Actor, age: number): Vec3 {
+  return materialMotion(a, age).position;
 }
 export function composition(width: number, height: number) {
   const family = width < 600 ? "phone" : width < 1000 ? "tablet" : width / height > 2 ? "wide" : "desktop";
@@ -289,17 +313,12 @@ export function buildActors(seed: number): Actor[] {
     hero: "map",
     layer: "paper",
   });
-  add({
-    id: "focus-catch",
-    asset: "derived/scrap-2",
-    material: "paper",
-    birth: CUT.catch - 0.9,
-    life: 18,
-    position: [0, 0, 0],
-    size: 450,
-    hero: "collision",
-    layer: "paper",
-  });
+  // TitleSnag owns the measured-glyph, constrained paper hero. Preserve the
+  // seeded stream for all later actors when replacing its former rigid actor.
+  r();
+  r();
+  r();
+  r();
   add({
     id: "lantern",
     asset: "P6-lantern",
@@ -354,6 +373,7 @@ export function buildActors(seed: number): Actor[] {
     }
   return actors;
 }
+export const TITLE_TURN = { start: 4.45, edge: 4.725, end: 5.0 } as const;
 /** One title identity: measured page heading -> caught arc -> outdoor landmark. */
 export function focusPose(
   t: number,
@@ -362,15 +382,21 @@ export function focusPose(
   origin?: { x: number; y: number; width: number; height: number },
 ): Pose {
   const c = camera(t).position,
-    factor = 1100 / height;
+    factor = WORLD_HEIGHT / height;
   const from: Vec3 = origin
-    ? [(origin.x + origin.width / 2 - width / 2) * factor, (height / 2 - origin.y - origin.height / 2) * factor, 0]
+    ? cssToWorld(origin.x + origin.width / 2, origin.y + origin.height / 2, 0, { width, height })
     : [-100, 170, 0];
   const lift = smooth(1.2, 3.35, t),
     returning = smooth(3.35, 6.1, t),
     arc = Math.sin(Math.PI * returning);
   const fix = smooth(10, 16.5, t),
     release = smooth(28.2, 30.6, t);
+  // Hold the readable face against the growing wind. One brief edge-on turn
+  // resolves its cinematic typesetting; the old half revolution exposed the
+  // mirrored back for seconds and folded the opening message upside down.
+  const turn =
+    t < TITLE_TURN.edge ? smooth(TITLE_TURN.start, TITLE_TURN.edge, t) : 1 - smooth(TITLE_TURN.edge, TITLE_TURN.end, t);
+  const supported = lift * (1 - returning) * (1 - turn);
   const size = mix(origin ? origin.width * factor : 650, width < 600 ? 800 : 970, returning) * (1 + fix * 1.8);
   const home: Vec3 = [
     mix(from[0], c[0] * 0.7, returning) - 240 * lift * (1 - returning) + arc * 120,
@@ -384,27 +410,66 @@ export function focusPose(
       mix(home[2], -6600, fix) - release * release * 72000,
     ],
     rotation: [
-      lift * (1 - returning) * 0.45 + release * 2.6,
-      lift * Math.PI * (1 - returning) + release * 3.4,
-      -lift * (1 - returning) * 0.5 - release * 2.3,
+      supported * 0.16 + release * 2.6,
+      supported * 0.2 + (turn * Math.PI) / 2 + release * 3.4,
+      -supported * 0.1 - release * 2.3,
     ],
     size,
     alpha: t >= 0.45 && t < CUT.room ? 1 : 0,
-    bend: lift * (1 - returning) * 2.1 + release * 3.2,
+    bend: supported * 0.25 + release * 3.2,
     adhesion: 0,
     blur: 0,
   };
 }
+let poseContext:
+  | {
+      t: number;
+      width: number;
+      height: number;
+      composition: ReturnType<typeof composition>;
+      cameraZ: number;
+      gust: number;
+      storm: number;
+    }
+  | undefined;
 export function poseAt(a: Actor, t: number, width: number, height: number): Pose {
+  // A closed scene has no drawable actors. Do not simulate thousands of
+  // invisible paths just to return alpha=0 at the already-interactive room.
+  // Inactive poses carry asset-local coordinates; physics diagnostics use
+  // materialMotion/materialResponse, which remain valid after scene closure.
+  if (t >= CUT.room || t < a.birth)
+    return {
+      position: [...a.position],
+      rotation: [...a.rotation],
+      size: a.size,
+      alpha: 0,
+      bend: 0,
+      adhesion: 0,
+      blur: 0,
+    };
+  // All actors sampled at one shutter instant share immutable camera/shot
+  // values. This memo is keyed by exact film time and viewport, not frame rate.
+  if (!poseContext || poseContext.t !== t || poseContext.width !== width || poseContext.height !== height)
+    poseContext = {
+      t,
+      width,
+      height,
+      composition: composition(width, height),
+      cameraZ: camera(t).position[2],
+      gust: gust(t),
+      storm: stormEnergy(t),
+    };
   const age = t - a.birth,
     m = materials[a.material],
-    c = composition(width, height),
-    g = gust(t);
-  const advected = materialResponse(a, age),
-    eye = camera(a.birth).position;
+    c = poseContext.composition,
+    g = poseContext.gust;
+  // Authored hero constraints own their trajectories, so preparing a second,
+  // unused aerodynamic flight for them wastes both CPU and cache memory.
+  const motion = a.hero ? null : materialMotion(a, age),
+    advected = motion?.position ?? a.position,
+    eye = actorEye(a);
   let position: Vec3 = [eye[0] + (advected[0] - eye[0]) * c.spread, advected[1], advected[2]];
-  const rotationFlow = flowRotation(t, Math.max(0, age), position, a.phase, m.inertia);
-  let rotation: Vec3 = a.rotation.map((r, i) => r + rotationFlow[i]) as Vec3;
+  let rotation: Vec3 = motion ? eulerFromOrientation(motion.orientation) : [...a.rotation];
   let size = a.size,
     adhesion = 0;
   // Birth has full coverage BEHIND the near plane. Only physically distant
@@ -428,46 +493,26 @@ export function poseAt(a: Actor, t: number, width: number, height: number): Pose
     rotation = [0, -0.08, Math.sin(t * 1.7) * 0.025];
     alpha = age >= 0 && age <= a.life ? 1 : 0;
   }
-  if (a.hero === "collision") {
-    const catchAt = 0.9,
-      peel = smooth(CUT.peel - a.birth, CUT.peel - a.birth + 0.65, age),
-      out = Math.max(0, t - CUT.peel - 0.3);
-    const f = focusPose(t, width, height),
-      contact = smooth(0, catchAt, age);
-    const catchPoint: Vec3 = [f.position[0] + f.size * 0.09, f.position[1] - f.size * 0.024, f.position[2] + 35];
-    adhesion = smooth(0.72, 0.9, age) * (1 - peel);
-    position = [
-      mix(eye[0] - 270 * c.spread, catchPoint[0], contact) + out * out * 300,
-      mix(eye[1] + 360, catchPoint[1], contact) + Math.sin(out * 3) * 120,
-      mix(eye[2] + 1390, catchPoint[2], contact) - out * out * 3700,
-    ];
-    const releasedSpin = flowRotation(t, out, position, a.phase, m.inertia);
-    rotation = [
-      -0.4 * (1 - contact) + peel * (1.8 + releasedSpin[0]),
-      0.5 * (1 - contact) + peel * (1.2 + releasedSpin[1]),
-      0.45 * (1 - contact) - peel * 1.5 + peel * releasedSpin[2],
-    ];
-    size *= c.hero;
-  }
-  if (a.material === "mist" || a.layer === "spray") alpha *= stormEnergy(t);
-  if (a.id.startsWith("particle-")) alpha *= 0.28 + 0.72 * stormEnergy(t);
+  if (a.material === "mist" || a.layer === "spray") alpha *= poseContext.storm;
+  if (a.id.startsWith("particle-")) alpha *= 0.28 + 0.72 * poseContext.storm;
   if (a.material === "mist") alpha *= 0.35;
   if (a.layer === "particles") alpha *= 0.48 + 0.24 * Math.sin(age * 3 + a.phase) ** 2;
   // Only depth extinction can remove a nearby object. Old particles naturally
   // travel beyond the far atmospheric range before the room assembles.
-  const distance = camera(t).position[2] - position[2];
+  const distance = poseContext.cameraZ - position[2];
   alpha *= atmosphericDepth(distance);
   // A world-space downstream exit cannot be undone by the later camera reversal.
   // At this exit optical transmission is already below 0.0001 throughout the path.
   if (t >= CUT.room || eye[2] - position[2] > 48000) alpha = 0;
   return {
     position,
+    velocity: motion?.velocity,
     rotation,
     size,
     alpha,
     bend: m.flutter * g * (0.75 + 0.25 * Math.sin(age * 2 + a.phase)),
     adhesion,
-    blur: clamp((camera(t).position[2] - position[2] - 700) / 4200) * 1.8,
+    blur: clamp((distance - 700) / 4200) * 1.8,
   };
 }
 export function welcome(person: { registered: boolean; displayName: string | null }, captain: boolean) {

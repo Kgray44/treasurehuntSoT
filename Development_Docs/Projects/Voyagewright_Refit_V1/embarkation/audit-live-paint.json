@@ -1,0 +1,81 @@
+{
+  "classification": "engineering-record",
+  "status": "PARTIAL_DIAGNOSTIC_NOT_FILM_QUALIFICATION",
+  "auditedHead": "bf0a41f8ed984df6c068cb1a0a5919e12267ef22",
+  "candidateState": "Uncommitted task-owned audit repair; source hashes identify this probe",
+  "auditIds": [
+    "EMB-AUD-02",
+    "EMB-AUD-05",
+    "EMB-AUD-14",
+    "EMB-AUD-19"
+  ],
+  "sources": {
+    "src/animation/embarkation/dom-paint.ts": "0fb4085add5f3718dee765a622910819f2b6a9a8ba2ebfee9b50a0301c8458d9",
+    "src/animation/embarkation/live-paint.ts": "82019be34dc86fdf0b37f6f843fb9f1a281f9f275a1b09466633ad2f74b46590",
+    "src/animation/embarkation/live-paint-binding.ts": "3380eb57aaa06e79720ca8ecc21d79f84158a3a18485bcd338f188021397fd7b",
+    "src/animation/embarkation/paint-surface.ts": "c209df490c9c5051cee9d48eb9ac9e887d32ab0a3c6d53339fb31b3463f67b35",
+    "src/animation/embarkation/paint-mesh.ts": "b195103cdea0e00a7067cd005903975bc8d61cbb81f2d0f577cd289a215dab85",
+    "src/animation/embarkation/cloth.ts": "03cd988314a47057d869f26774addb46568930ddf2766b29efb58d9a1d43b0b1",
+    "src/animation/embarkation/projection.ts": "376d716e6ceac7b45c256a23bc140c8ddaeec9b437dc13c238247aa5ffea247d",
+    "src/app/dev/embarkation/material/page.tsx": "7b6a5924df5841999d4f4326d33e0fc933abc0dad88571308d3a41c874265b37",
+    "src/app/dev/embarkation/material/material-diagnostic.tsx": "2d23bcff2d9f2231cd6dfdc3accf8dc6e95fad6438479e491631bc50d33a380a"
+  },
+  "probeUrl": "http://127.0.0.1:3148/dev/embarkation/material",
+  "browser": {
+    "name": "Codex in-app Chromium",
+    "version": "153.0.0.0",
+    "viewport": [
+      1280,
+      720
+    ],
+    "dpr": 1.25,
+    "gpu": "ANGLE NVIDIA GeForce RTX 5070 Laptop GPU Direct3D11"
+  },
+  "capabilityFinding": {
+    "technique": "feImage reference to same-document SVG rect or foreignObject canvas",
+    "observed": "Both displacement inputs produced pass-through output after updating their data",
+    "authority": "https://drafts.csswg.org/filter-effects/#fedisplacementmap-restrictions",
+    "consequence": "Do not use local fragments as reusable displacement-map inputs; use an explicitly governed GPU presentation adapter"
+  },
+  "implementation": [
+    "Synchronous canonical content/style freeze before asynchronous resource decoding",
+    "Monotonic live-paint revisions; stale and interrupted captures are discarded and disposed",
+    "Mutation, form-value, image-load and layout invalidation, with film-owned style changes excluded",
+    "Independent descendants excluded from parent pixels while retaining layout footprint",
+    "One texture upload per committed content revision; reusable geometry buffers for deformation",
+    "Paint gutter extends only shadow/soft-edge presentation; solver vertices and pins remain unchanged"
+  ],
+  "observed": {
+    "initial": "One capture and upload per surface, ready true, GPU error 0",
+    "liveUpdate": "Both canonical and GPU text changed from revision 0 / All ready to revision 1 / Preparing",
+    "resize": "Canonical parent changed width from 380 to 440 CSS px; parent and child paint refreshed",
+    "nested": "Readiness child moved closer to camera independently; no copy remained on the flexed parent",
+    "afterUpdates": "Parent and child each revision 3, painted revision 3, captures 3, uploads 3, discarded 0, ready true; unchanged at later inspection despite ongoing render frames",
+    "constrainedFrame": {
+      "time": 0.65,
+      "air": [
+        300,
+        100,
+        -7200
+      ],
+      "material": "paper",
+      "supports": "edge",
+      "maxStrain": 0.0015101097207770309,
+      "p95Strain": 0.001179477055617939,
+      "medianStrain": 0.0003893452253358465
+    }
+  },
+  "verification": [
+    "18 focused tests passed across live-paint-binding, live-paint, paint-mesh, dom and projection",
+    "Actual GPU output and live updates inspected using native browser screenshots",
+    "No prerecorded content or owner fixture mutation"
+  ],
+  "limitations": [
+    "Not integrated into the film yet; legacy per-frame PNG deformation remains active there",
+    "No final canonical-DOM handoff pixel-error measurement yet",
+    "No production performance claim; probe contains diagnostic traversal/readback/reporting overhead",
+    "No actual incoming force-driven cloth cache or shared compositor depth/shutter/color integration yet",
+    "Only Chromium at the stated viewport/DPR was exercised"
+  ],
+  "ownerAccepted": false
+}

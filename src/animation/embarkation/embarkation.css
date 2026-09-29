@@ -36,8 +36,10 @@
 .embarkation-overlay canvas {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  /* Projection uses innerWidth/innerHeight, including a reserved scrollbar
+     gutter. A percentage of the inset overlay would compress that projection. */
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
   z-index: 2;
 }

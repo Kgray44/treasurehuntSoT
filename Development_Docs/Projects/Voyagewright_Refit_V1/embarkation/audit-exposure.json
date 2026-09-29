@@ -1,0 +1,605 @@
+{
+  "classification": "engineering-evidence",
+  "status": "IN_PROGRESS - reference exposure qualified; performance and full film remain open",
+  "recordedAt": "2026-09-25T15:33:41.385Z",
+  "auditIds": ["EMB-AUD-05", "EMB-AUD-07", "EMB-AUD-08", "EMB-AUD-14", "EMB-AUD-19"],
+  "baseHead": "bf0a41f8ed984df6c068cb1a0a5919e12267ef22",
+  "sourceState": "Uncommitted owned candidate; no publication or owner acceptance",
+  "sourceSha256": {
+    "src/animation/embarkation/adhesion.ts": "00e0cba81bdaab92256983e7d746ed390974142a98672b9329a078dca31c9eb1",
+    "src/animation/embarkation/aperture-mask.test.ts": "827369836ddf504d2654434418d5268fec46c5c228baf1b17bbe25e3e6a225e7",
+    "src/animation/embarkation/aperture-mask.ts": "cbf4428492a58c323fd7b3881362ead6456cb9e1cf566a32598b7be09b6b99aa",
+    "src/animation/embarkation/arrival-material.test.ts": "9b5ead7d125d804c64478f7d2a39736ff717a00eae20a5bbca676c16bda15635",
+    "src/animation/embarkation/arrival-material.ts": "79f24c2073ed4d11e01366c6adfd2919ec1c6acee4f7ce7a5a29a21fbfe6a995",
+    "src/animation/embarkation/arrival.test.ts": "e5ca9a6d2c387390df5bfbb7fa8d2115367cd3a91dcec376cf30659e32d63107",
+    "src/animation/embarkation/arrival.ts": "df26c551ffc1c2c6f40424d480f8e9a6bf0e859d6499f877b34972f13c24dc08",
+    "src/animation/embarkation/atmosphere.ts": "0d917c6d4297adfd6475cd561901048da67b7e9701facca7fef7e1b702b15db6",
+    "src/animation/embarkation/audio.ts": "a36fae01febc957a7bcc15840b51f3fdde793db6f1c9c60226f0a8876e95b18a",
+    "src/animation/embarkation/cloth-worker.ts": "4a29730dd5f443a592a68b1c59ef60d647b2ae20080fcf2a4ad6a9881966caa2",
+    "src/animation/embarkation/cloth.test.ts": "448ac6e56671dd47052df20bcfd09f3a610b203160f74a9d559ee466ada9dae8",
+    "src/animation/embarkation/cloth.ts": "610fd30b3ebc723c02dd5720515ce7cefb318df6ca68c1cd89a7719b98d25152",
+    "src/animation/embarkation/depth-compositor.ts": "778fa9b126c62fd5421c768844b8168df8b9a9a6a1ea67369bcda68d374f9893",
+    "src/animation/embarkation/depth-qualification.ts": "a19f98a56e87b19e5f52b31fb69972cc0a8db7f7f9d590f8e60f512fcd858c98",
+    "src/animation/embarkation/dom-paint.ts": "8c7c70b644f875416dc0fe22d32c2d4dfc9e6d78fe4eea8bc449d8cb70b144c8",
+    "src/animation/embarkation/dom.test.ts": "3a05a44e285c4213266e47ed4c0c483f9cfb798703d18faf909ab90d9d201b42",
+    "src/animation/embarkation/dom.ts": "de0f29772787f547addca3758babc4bd1a4fcab27376e766fb634b821a53136f",
+    "src/animation/embarkation/dynamics.test.ts": "83d5f9d01ab0c99eefe179912262256478e9e4e0918c8a5c25e28f4b94a95646",
+    "src/animation/embarkation/dynamics.ts": "074f9054da636a9dab81a147256c22a87472f32043000cd95df9cc492aea5f85",
+    "src/animation/embarkation/Embarkation.tsx": "91a0ad1f348915862c247a1f380e3991ffa564139f62f523e111eebc3bab32f5",
+    "src/animation/embarkation/environment-set.test.ts": "c7bfc088ccc1aff883c51ac984b35bc7f63c5a5008179e628f47bf7c1951549b",
+    "src/animation/embarkation/environment-set.ts": "95ad636e6980b458622c4f80429a017a15d1bf16bcfed90741af3d25fa4770bc",
+    "src/animation/embarkation/environment.ts": "99c0f94dc309811d9b4aca11be91a60b188baf934d96ec35a72bac5a277bd570",
+    "src/animation/embarkation/exposure-qualification.ts": "4c8a7cf2c242192565fca9367953f24d797ccb44a14c10b043be88b095a5d53a",
+    "src/animation/embarkation/exposure.test.ts": "042a6ad0256c3e697da1506458efc686cc83685ca169b6bf749c079e01ff7376",
+    "src/animation/embarkation/exposure.ts": "b45584465cbe98aa756b2cdcf58c9092b4aed8e9bff71905c05170eb02332df9",
+    "src/animation/embarkation/GenericStage.tsx": "39e9831538933e7ec85ee3aee5812a93b9a3077ca63c2fded68f0d08bd6707ed",
+    "src/animation/embarkation/input-ownership.test.ts": "9670a7063ba0761ef1fc625aa9702515572e6f02df357332240f430dbf5678e0",
+    "src/animation/embarkation/input-ownership.ts": "181835d45e6e718d7241ee268911ed6fe93232f7347107b4f1084022e610094f",
+    "src/animation/embarkation/Inspector.tsx": "dafd2f924b21664b124ffb9ec62ce67c75141f8360ded28bc2ab0bdd6dee7a43",
+    "src/animation/embarkation/landscape-space.test.ts": "279afcb09e3929e1d44f143d5be8fbd9cc7d8b212b435eaf060b800aeb5a9093",
+    "src/animation/embarkation/landscape-space.ts": "878f33b22c01f5d4999d32632603e66869b96cc4b0131e192c26e81789990684",
+    "src/animation/embarkation/lens-qualification.ts": "6288743a9c296a66ae237ae6ae4cb4f2a88071ee95baf77e3bdd15122043b4b6",
+    "src/animation/embarkation/lens-water.test.ts": "6ff60c136d7247d9c9dc376427b959dd2841bae417746bed2ac891e9f8284439",
+    "src/animation/embarkation/lens-water.ts": "571b2f6f4eb378c8af5dbab86ea7948fb49df7c99f1b4144924f3e4d57d05ec6",
+    "src/animation/embarkation/live-paint-binding.test.ts": "5eaaf4869e73b6256041df1f4eaa0d9cf3769748640445024144660b64cb7985",
+    "src/animation/embarkation/live-paint-binding.ts": "1bb89be62a163334ac0ec31c86794cf90e7a5dc735d3c35e017588f9fc9b4344",
+    "src/animation/embarkation/live-paint.test.ts": "ac87f159d4a50cc1856701d03ae552ff2a17292a84d62371022fd6561802a449",
+    "src/animation/embarkation/live-paint.ts": "b2e18f29a2957af9bd68f458d46b61181125061d9726b92d620e42e3eb17b594",
+    "src/animation/embarkation/living-material.ts": "33cf7ab6f0dd20dc818641e0a48fbddc2f8b913974a46557866e9903c5fcae2b",
+    "src/animation/embarkation/material-backdrop.test.ts": "eca9fac3bf83627a7561a7cc019248bca304dfd0928aa83f05a69c3eeef06a2d",
+    "src/animation/embarkation/material-backdrop.ts": "33f5979bcfa2070d785d1fdb0c26a543d42595152ed7184bff271e82b6265ac7",
+    "src/animation/embarkation/navigation.tsx": "aad139e244f2639d6e5cd4103c051aa8d820579d60ab7f4c109f915b9c4a4284",
+    "src/animation/embarkation/page-material.test.ts": "182be2f9aee3106e96fa8c7a812940702f165ed0fe36245d59ee7b7ff4013318",
+    "src/animation/embarkation/page-material.ts": "b2958d6bb4ee9bf7ed9fd4acdc4ca3c3839f9b49f4ccbaf63ee3ed8f118d2a4c",
+    "src/animation/embarkation/paint-mesh.test.ts": "914aec1a749eebd8cd87fea02ab9542353048205c8b3847e4b893f656ae80366",
+    "src/animation/embarkation/paint-mesh.ts": "672e5c92088c4ea98a8838e99d0497522cf501f302579151da43d6fe47079855",
+    "src/animation/embarkation/paint-raster.test.ts": "6dc1b11658f07e9c4a9462bc7bf6f10f735381abf27d86ecda129b6c93c2bedc",
+    "src/animation/embarkation/paint-raster.ts": "3431825b1d9ce1cb1037d16f732b8e01dacb3281df3b74c5343b04c04ecbb6e5",
+    "src/animation/embarkation/paint-surface.ts": "f9f970377c0b91237e60fcba88c9756ff714f476110e27edf420a1c65ac039f5",
+    "src/animation/embarkation/prepare-materials.ts": "b5218b52ac53db86a12b0bc75933b1184f7a87e2ae1a87de7619aeb1daed033f",
+    "src/animation/embarkation/program.test.ts": "65552cc1eb6eb63d042e8ac16a1ef25c13fe8ffe2916719f03f6e28022c60d9f",
+    "src/animation/embarkation/program.ts": "52a665b94f6e3ffe64f76b565f118a7ee7322c998af7328a09467dc1a6408e8a",
+    "src/animation/embarkation/projection.test.ts": "5bac8286df33725517ffc9fd2be805dbfb7e4e44edac337f40e51b11fc8ab5b3",
+    "src/animation/embarkation/projection.ts": "c3ec2085ad10a46d2a69b1e260fd9b60a102ccb759b09f6e33170cba8e8259d2",
+    "src/animation/embarkation/renderer.ts": "61af53701c2b6bf05acd4664dedfcc80e9b2db3bdd8084696272c4724a0049ad",
+    "src/animation/embarkation/scene-space.test.ts": "8a02163c215e5fe6d1967cca5179a99922b510a58403bd0394cf21167a333c82",
+    "src/animation/embarkation/scene-space.ts": "6cc8ce1cfd59dfc18b67a1140b0f3cafc9eb21b494c2dd6530911659fb12a61d",
+    "src/animation/embarkation/title-snag.test.ts": "28b7f0de2910615932e198c6ce5742e27d84a40300402a0f867419036f6f7b7b",
+    "src/animation/embarkation/title-snag.ts": "10e7fbdc5bbab760809074c80599c1847645bbc260dc30bd9c2bd6a517380470",
+    "src/app/dev/embarkation/depth/depth-diagnostic.tsx": "ade47db145df4d259e75b083dc6b75040f69c3f3aadd525f9a71af12f340877e"
+  },
+  "mechanism": {
+    "exposure": "Actual geometry/alpha/depth at nine uniform time samples over an explicit 1/120-second shutter; paired thin-lens aperture samples and one focus authority. Five/three samples in Balanced/Performance preserve the physical interval.",
+    "coverage": "Samples include rotation, deformation, camera translation/roll, opaque holdouts, outgoing page, title, props, particles and incoming canonical-DOM paint. Center sample is presented last; canonical DOM styles are written once per displayed frame.",
+    "storage": "RGBA16F linear-premultiplied accumulation when supported; RGBA8 encoded weighted running-mean fallback. Exposure decodes/encodes displayed samples; this does not complete the broader linear lighting pipeline.",
+    "layering": "Full scene accumulated together before assembly; stable room and moving incoming surfaces accumulate separately during DOM-facing assembly. Full cross-group transparency/light transport remains incomplete.",
+    "focus": "Measured title depth while held, distant wonder focus, threshold lantern focus, then exact sharp resting plane. Old texture-space center smear and per-material depth blur removed.",
+    "optimization": "Exact planes use quads. Small distant props choose tessellation from projected curvature error estimate; near passes retain full mesh. Smooth depth-consistent fog may be reprojected only inside one exposure, with neighborhood contrast/depth rejection; no history survives into the next displayed frame. Inspector Full shutter reference disables these approximations.",
+    "preparation": "Exposure and both holdout targets allocated before playback. Framebuffer validation occurs only on allocation/resize. Actor birth-camera and exact-time shot values are cached; particles grouped once. Most exposure storage is released at ambient handoff."
+  },
+  "qualification": {
+    "path": ".runtime/embarkation/audit-repair/exposure-qualification-current.json",
+    "sha256": "d03e1d5b7accc97d8c7ddd68562c4dbba19201377821237322f7e29c8ceea70f",
+    "native": {
+      "pass": true,
+      "width": 512,
+      "height": 384,
+      "shutterSeconds": 0.008333333333333333,
+      "gpuError": 0,
+      "reports": [
+        {
+          "storage": "RGBA16F",
+          "name": "stationary-center rotation",
+          "meanAlphaError": 0.0004964990553513072,
+          "relativeCoverageError": 0.0008659849310820325,
+          "expandedSilhouettePixels": 2698,
+          "partialCoveragePixels": 6108,
+          "pass": true
+        },
+        {
+          "storage": "RGBA16F",
+          "name": "deforming surface",
+          "meanAlphaError": 0.00022303761999591503,
+          "relativeCoverageError": 0.0007885884218719973,
+          "expandedSilhouettePixels": 1414,
+          "partialCoveragePixels": 3287,
+          "pass": true
+        },
+        {
+          "storage": "RGBA16F",
+          "name": "camera translation and roll",
+          "meanAlphaError": 0.0004933874591503268,
+          "relativeCoverageError": 0.0006154111734189187,
+          "expandedSilhouettePixels": 2161,
+          "partialCoveragePixels": 5190,
+          "pass": true
+        },
+        {
+          "storage": "RGBA16F",
+          "name": "near perspective pass",
+          "meanAlphaError": 0.004529486762152778,
+          "relativeCoverageError": 0.004521241585130434,
+          "expandedSilhouettePixels": 21766,
+          "partialCoveragePixels": 33364,
+          "pass": true
+        },
+        {
+          "storage": "RGBA16F",
+          "name": "focal plane",
+          "changedPixels": 0,
+          "pass": true
+        },
+        {
+          "storage": "RGBA16F",
+          "name": "near defocus",
+          "changedPixels": 10511,
+          "pass": true
+        },
+        {
+          "storage": "RGBA16F",
+          "name": "linear-light weighted exposure",
+          "expected": 225,
+          "actual": 225,
+          "pass": true
+        },
+        {
+          "storage": "RGBA8",
+          "name": "stationary-center rotation",
+          "meanAlphaError": 0.0008059832005718954,
+          "relativeCoverageError": 0.0019511560599655296,
+          "expandedSilhouettePixels": 2698,
+          "partialCoveragePixels": 6108,
+          "pass": true
+        },
+        {
+          "storage": "RGBA8",
+          "name": "deforming surface",
+          "meanAlphaError": 0.0004253711575776144,
+          "relativeCoverageError": 0.0015522859124824024,
+          "expandedSilhouettePixels": 1414,
+          "partialCoveragePixels": 3287,
+          "pass": true
+        },
+        {
+          "storage": "RGBA8",
+          "name": "camera translation and roll",
+          "meanAlphaError": 0.0007504930683210785,
+          "relativeCoverageError": 0.0019190212160629654,
+          "expandedSilhouettePixels": 2161,
+          "partialCoveragePixels": 5190,
+          "pass": true
+        },
+        {
+          "storage": "RGBA8",
+          "name": "near perspective pass",
+          "meanAlphaError": 0.005397661994485294,
+          "relativeCoverageError": 0.00939958954934675,
+          "expandedSilhouettePixels": 21766,
+          "partialCoveragePixels": 33364,
+          "pass": true
+        },
+        {
+          "storage": "RGBA8",
+          "name": "focal plane",
+          "changedPixels": 0,
+          "pass": true
+        },
+        {
+          "storage": "RGBA8",
+          "name": "near defocus",
+          "changedPixels": 10512,
+          "pass": true
+        },
+        {
+          "storage": "RGBA8",
+          "name": "linear-light weighted exposure",
+          "expected": 225,
+          "actual": 225,
+          "pass": true
+        }
+      ]
+    },
+    "depth": {
+      "coverage": {
+        "cases": 48,
+        "samples": 576,
+        "maxByteError": 0,
+        "failures": []
+      },
+      "fog": {
+        "samples": [
+          {
+            "distance": 350,
+            "range": [12, 2500, 0.35],
+            "uv": [0.5009765625, 0.5013020833333334],
+            "expected": 29.786610063234967,
+            "actual": 30,
+            "error": 0.21338993676503293
+          },
+          {
+            "distance": 350,
+            "range": [12, 2500, 0.35],
+            "uv": [0.0791015625, 0.07942708333333333],
+            "expected": 35.42594710151902,
+            "actual": 35,
+            "error": 0.4259471015190215
+          },
+          {
+            "distance": 350,
+            "range": [12, 2500, 0.35],
+            "uv": [0.9208984375, 0.9205729166666666],
+            "expected": 35.42594710151902,
+            "actual": 35,
+            "error": 0.4259471015190215
+          },
+          {
+            "distance": 350,
+            "range": [1600, 2400, 0.35],
+            "uv": [0.5009765625, 0.5013020833333334],
+            "expected": 0,
+            "actual": 0,
+            "error": 0
+          },
+          {
+            "distance": 350,
+            "range": [1600, 2400, 0.35],
+            "uv": [0.0791015625, 0.07942708333333333],
+            "expected": 0,
+            "actual": 0,
+            "error": 0
+          },
+          {
+            "distance": 350,
+            "range": [1600, 2400, 0.35],
+            "uv": [0.9208984375, 0.9205729166666666],
+            "expected": 0,
+            "actual": 0,
+            "error": 0
+          },
+          {
+            "distance": 1200,
+            "range": [12, 2500, 0.35],
+            "uv": [0.5009765625, 0.5013020833333334],
+            "expected": 90.20984643233228,
+            "actual": 90,
+            "error": 0.2098464323322844
+          },
+          {
+            "distance": 1200,
+            "range": [12, 2500, 0.35],
+            "uv": [0.0791015625, 0.07942708333333333],
+            "expected": 104.26219805022838,
+            "actual": 104,
+            "error": 0.2621980502283776
+          },
+          {
+            "distance": 1200,
+            "range": [12, 2500, 0.35],
+            "uv": [0.9208984375, 0.9205729166666666],
+            "expected": 104.26219805022838,
+            "actual": 104,
+            "error": 0.2621980502283776
+          },
+          {
+            "distance": 1200,
+            "range": [1600, 2400, 0.35],
+            "uv": [0.5009765625, 0.5013020833333334],
+            "expected": 0,
+            "actual": 0,
+            "error": 0
+          },
+          {
+            "distance": 1200,
+            "range": [1600, 2400, 0.35],
+            "uv": [0.0791015625, 0.07942708333333333],
+            "expected": 0,
+            "actual": 0,
+            "error": 0
+          },
+          {
+            "distance": 1200,
+            "range": [1600, 2400, 0.35],
+            "uv": [0.9208984375, 0.9205729166666666],
+            "expected": 0,
+            "actual": 0,
+            "error": 0
+          },
+          {
+            "distance": 3000,
+            "range": [12, 2500, 0.35],
+            "uv": [0.5009765625, 0.5013020833333334],
+            "expected": 152.80097610064024,
+            "actual": 153,
+            "error": 0.19902389935975862
+          },
+          {
+            "distance": 3000,
+            "range": [12, 2500, 0.35],
+            "uv": [0.0791015625, 0.07942708333333333],
+            "expected": 170.20324240344127,
+            "actual": 170,
+            "error": 0.20324240344126565
+          },
+          {
+            "distance": 3000,
+            "range": [12, 2500, 0.35],
+            "uv": [0.9208984375, 0.9205729166666666],
+            "expected": 170.20324240344127,
+            "actual": 170,
+            "error": 0.20324240344126565
+          },
+          {
+            "distance": 3000,
+            "range": [1600, 2400, 0.35],
+            "uv": [0.5009765625, 0.5013020833333334],
+            "expected": 64.95458135255016,
+            "actual": 65,
+            "error": 0.0454186474498357
+          },
+          {
+            "distance": 3000,
+            "range": [1600, 2400, 0.35],
+            "uv": [0.0791015625, 0.07942708333333333],
+            "expected": 76.02569528638674,
+            "actual": 76,
+            "error": 0.02569528638673546
+          },
+          {
+            "distance": 3000,
+            "range": [1600, 2400, 0.35],
+            "uv": [0.9208984375, 0.9205729166666666],
+            "expected": 76.02569528638674,
+            "actual": 76,
+            "error": 0.02569528638673546
+          }
+        ],
+        "maxByteError": 0.4259471015190215
+      },
+      "gpuError": 0,
+      "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Laptop GPU (0x00002D18) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "framebuffer": {
+        "width": 512,
+        "height": 384,
+        "depthBits": 24,
+        "samples": 4
+      },
+      "pass": true
+    },
+    "lens": {
+      "viewport": {
+        "width": 512,
+        "height": 384
+      },
+      "samples": [
+        {
+          "label": "impact",
+          "time": 6.1,
+          "changed": 250,
+          "maximumDifference": 141,
+          "trailChanged": 0,
+          "trailMaximumDifference": 0
+        },
+        {
+          "label": "held",
+          "time": 6.6,
+          "changed": 324,
+          "maximumDifference": 141,
+          "trailChanged": 0,
+          "trailMaximumDifference": 0
+        },
+        {
+          "label": "merging",
+          "time": 7.02,
+          "changed": 273,
+          "maximumDifference": 141,
+          "trailChanged": 0,
+          "trailMaximumDifference": 0
+        },
+        {
+          "label": "runoff-and-trail",
+          "time": 7.85,
+          "changed": 303,
+          "maximumDifference": 141,
+          "trailChanged": 10,
+          "trailMaximumDifference": 75
+        },
+        {
+          "label": "late-drain",
+          "time": 19,
+          "changed": 1,
+          "maximumDifference": 1.117647058823536,
+          "trailChanged": 0,
+          "trailMaximumDifference": 0
+        },
+        {
+          "label": "before-cleanup",
+          "time": 20.31999,
+          "changed": 0,
+          "maximumDifference": 0,
+          "trailChanged": 0,
+          "trailMaximumDifference": 0
+        },
+        {
+          "label": "after-cleanup",
+          "time": 20.32001,
+          "changed": 0,
+          "maximumDifference": 0,
+          "trailChanged": 0,
+          "trailMaximumDifference": 0
+        }
+      ],
+      "gpuError": 0,
+      "pass": true
+    },
+    "referenceComparison": {
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "rows": [
+        {
+          "time": 6.2,
+          "meanByteError": 0.03340787037037037,
+          "maxByteError": 2,
+          "pixelsAbove3": 0,
+          "pixelsAbove16": 0,
+          "totalPixels": 1440000,
+          "geometry": {
+            "candidates": 8,
+            "culled": 4,
+            "vertices": 3462
+          }
+        },
+        {
+          "time": 11.45,
+          "meanByteError": 0.04989004629629629,
+          "maxByteError": 2,
+          "pixelsAbove3": 0,
+          "pixelsAbove16": 0,
+          "totalPixels": 1440000,
+          "geometry": {
+            "candidates": 82,
+            "culled": 3,
+            "vertices": 40890
+          }
+        },
+        {
+          "time": 12.2,
+          "meanByteError": 0.06959097222222223,
+          "maxByteError": 2,
+          "pixelsAbove3": 0,
+          "pixelsAbove16": 0,
+          "totalPixels": 1440000,
+          "geometry": {
+            "candidates": 94,
+            "culled": 1,
+            "vertices": 49998
+          }
+        },
+        {
+          "time": 14.3,
+          "meanByteError": 0.04382175925925926,
+          "maxByteError": 3,
+          "pixelsAbove3": 0,
+          "pixelsAbove16": 0,
+          "totalPixels": 1440000,
+          "geometry": {
+            "candidates": 55,
+            "culled": 3,
+            "vertices": 32862
+          }
+        },
+        {
+          "time": 24.3,
+          "meanByteError": 0.038031944444444445,
+          "maxByteError": 4,
+          "pixelsAbove3": 2,
+          "pixelsAbove16": 0,
+          "totalPixels": 1440000,
+          "geometry": {
+            "candidates": 0,
+            "culled": 0,
+            "vertices": 0
+          }
+        },
+        {
+          "time": 28.6,
+          "meanByteError": 0.00005902777777777778,
+          "maxByteError": 1,
+          "pixelsAbove3": 0,
+          "pixelsAbove16": 0,
+          "totalPixels": 1440000,
+          "geometry": {
+            "candidates": 0,
+            "culled": 0,
+            "vertices": 0
+          }
+        },
+        {
+          "time": 32.5,
+          "meanByteError": 0.000005787037037037037,
+          "maxByteError": 1,
+          "pixelsAbove3": 0,
+          "pixelsAbove16": 0,
+          "totalPixels": 1440000,
+          "geometry": {
+            "candidates": 0,
+            "culled": 0,
+            "vertices": 0
+          }
+        }
+      ],
+      "gpuError": 0,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36"
+    },
+    "method": "Native WebGL readPixels and actual CDP screencast; development server, current Windows Chromium/ANGLE laptop",
+    "frames": []
+  },
+  "clips": [
+    {
+      "path": ".runtime/embarkation/audit-repair/exposure-current-crossing-1x.json",
+      "player": ".runtime/embarkation/audit-repair/exposure-current-crossing-1x.html",
+      "sha256": "a74ee20035cd7985da15f38c0b4d3deb0e7b8c5f58c4531a200214ae77b77108",
+      "frames": 51,
+      "method": "Native Page.startScreencast JPEG90 everyNthFrame2",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 1.25
+      },
+      "rate": 1,
+      "audio": false,
+      "from": 10.8,
+      "to": 17.900199999999995,
+      "endSnapshot": {
+        "time": 17.900199999999995,
+        "filmTime": 17.900199999999995,
+        "duration": 35.8,
+        "tier": "CINEMATIC",
+        "seed": 2595989206,
+        "fps": 7.7462606687135604,
+        "p95": 233.29999999999563,
+        "renderMs": 61,
+        "reduced": false,
+        "mute": true,
+        "active": ["paper", "props", "particles", "mist", "light", "spray"]
+      }
+    },
+    {
+      "path": ".runtime/embarkation/audit-repair/exposure-current-threshold-1x.json",
+      "player": ".runtime/embarkation/audit-repair/exposure-current-threshold-1x.html",
+      "sha256": "571f9428e4adc10f8776144557909beecbaaf33c4f549513de640df922c78634",
+      "frames": 218,
+      "method": "Native Page.startScreencast JPEG90 everyNthFrame2; final batch recovered from CDP events after normal cinematic control cleanup",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 1.25
+      },
+      "rate": 1,
+      "audio": false,
+      "from": 28.5,
+      "to": 35.8,
+      "endSnapshot": {
+        "time": 35.8,
+        "filmTime": 35.8,
+        "duration": 35.8,
+        "arrived": true,
+        "performanceSnapshot": null
+      }
+    }
+  ],
+  "inspectionScope": "Selected captured frames and native mechanism/pixel checks; not a complete uninterrupted audiovisual acceptance screening.",
+  "historicalExperiments": [
+    "The initial full-scene nine-sample reference measured development GPU median 81.28 ms / p95 141.49 ms during a partial 12.2-33.2s run. It is not a production profile.",
+    "A permissive fog cache produced up to 74-byte edge errors and was rejected. A stricter cache measured <=3-byte maximum error across six sampled desktop frames before later pose/submission optimization.",
+    "Native CPU sampling identified repeated framebuffer status checks, camera/pose recalculation and graphics synchronization. Earlier downloaded exposure clips predate the final source hashes here."
+  ],
+  "limits": [
+    "Cinematic frame cost remains above the smooth playback target; no performance acceptance claim.",
+    "Tessellation error is a curvature-based estimate, not a proven global bound; full viewport/near-angle motion screening remains required.",
+    "Fog reuse freezes transported density for less than one shutter interval in eligible smooth regions. Native sampled comparisons do not establish all-frame or all-viewport equivalence.",
+    "Nine shutter samples are finite quadrature; extreme near-lens velocity can expose sampling separation and needs motion screening.",
+    "Actual shader color-space migration, soft cross-group ordering, alpha/additive volume transport, audio and the complete browser/input/viewport matrix remain open in the reconciliation ledger."
+  ]
+}

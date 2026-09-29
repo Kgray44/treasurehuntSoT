@@ -8,7 +8,7 @@ last_reviewed: 2026-10-24
 
 # Current status
 
-**Embarkation draft branch:** PR #665 carries the owner-directed 35.8-second cinematic crossing into accepted Muster, including short return, replay, global quality/audio preferences, and reduced-motion/failure arrival. The original screening and correction evidence remains in [the Embarkation record](../../../Projects/Voyagewright_Refit_V1/embarkation/preview.md). This branch is `IMPLEMENTATION_ITERATING`; its rebase does not establish mainline availability or owner acceptance.
+**Embarkation draft branch:** PR #665 carries the owner-directed 35.8-second cinematic crossing into accepted Muster, including short return, replay, global quality/audio preferences, and reduced-motion/failure arrival. The original [screening](../../../Projects/Voyagewright_Refit_V1/embarkation/preview.md) and [independent-audit repair ledger](../../../Projects/Voyagewright_Refit_V1/embarkation/audit-reconciliation.json) remain source-bound evidence. The audit repair remains in progress across all nineteen findings; earlier screening is historical. This branch is `IMPLEMENTATION_ITERATING`; its rebase does not establish mainline availability or owner acceptance.
 
 PR #776 remains the sole combined Studio integration candidate. Its tested source
 `abb8cc83f4fdcc50e55da364a7cb37ab9bfe3096` includes accepted main

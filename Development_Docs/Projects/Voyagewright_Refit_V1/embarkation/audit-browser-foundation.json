@@ -1,0 +1,163 @@
+{
+  "classification": "engineering-record",
+  "status": "PARTIAL_MECHANISM_CHECKPOINT",
+  "date": "2026-09-24",
+  "ownerAccepted": false,
+  "runtime": "Task-owned snapshot on loopback port 3148; owner fixture on 3138 was not reseeded or edited",
+  "browser": "Codex in-app Chromium 153.0.0.0 on Windows",
+  "gpu": "ANGLE NVIDIA GeForce RTX 5070 Laptop GPU, Direct3D11",
+  "dpr": 1.25,
+  "applicationViewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "projection": {
+    "method": "Production GLSL actual WebGL2 point rasterization versus actual nested CSS getBoundingClientRect; no mock geometry",
+    "route": "/dev/embarkation/projection",
+    "cases": 240,
+    "viewports": [
+      [
+        390,
+        844
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        1536,
+        1024
+      ],
+      [
+        3440,
+        1440
+      ]
+    ],
+    "axialDepths": [
+      300,
+      1150,
+      6000
+    ],
+    "cameras": [
+      {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "roll": 0
+      },
+      {
+        "position": [
+          170,
+          -85,
+          -2900
+        ],
+        "roll": 0.17
+      }
+    ],
+    "nested": [
+      false,
+      true
+    ],
+    "beforeMaxDomErrorPx": 0.11077779910946352,
+    "repair": "Homogeneous CSS matrix scaling preserves projection while preventing observed small-coefficient precision loss in browser CSS parsing",
+    "afterMaxDomErrorPx": 0.00020638715580479443,
+    "afterMaxGpuCentroidErrorPx": 0.7071067811866278,
+    "limits": "GPU point rasterization quantizes centroids to pixel centers. This isolates the lens; nested deformation ownership, resize/live updates and depth compositing still need application-level proof."
+  },
+  "cloth": {
+    "runtimeGeometry": "Outgoing page now uploads constrained positions to reusable GPU vertex buffers, replacing the shader displacement formula for these surfaces",
+    "screenedSeekFrames": [
+      4,
+      7.2
+    ],
+    "observation": "Visible header bowing and support retention; these seeked frames are not uninterrupted motion evidence",
+    "numericalReport": "audit-cloth-metric.json",
+    "remaining": "Incoming DOM and hero-prop deformation still use legacy paths; release momentum transfer, self-contact and full film screening remain unqualified"
+  },
+  "inputHandoff": {
+    "method": "Seek 34.7, choose 0.25x, resume, type with native key events into canonical Crew Chat while film remains active",
+    "observedFilmTime": 35.571,
+    "typedAndObserved": "Audit typing keeps every space",
+    "mainInert": false,
+    "mainAriaHidden": null,
+    "activeModal": null,
+    "focusedId": "muster-chat-input",
+    "tab": "Native Tab advanced from draft input to a button",
+    "spaceButton": "Native Space toggled Your Voyage options open and closed",
+    "cleanup": "No message submitted; draft cleared with native Select All and Backspace; disabled Send verified",
+    "remaining": "Skip hold/cancel, return, replay, reduced motion and interruption matrix still need same-candidate browser qualification"
+  },
+  "preparation": {
+    "kind": "development runtime observation, not production benchmark",
+    "fullPreloadMs": 15526.40000000596,
+    "cloth": {
+      "ms": 6418.800000011921,
+      "bytes": 45718416,
+      "surfaces": 9,
+      "thread": "worker"
+    },
+    "motion": {
+      "ms": 7690.90000000596,
+      "bytes": 128361504,
+      "actors": 3986,
+      "thread": "worker"
+    },
+    "rendererFailures": [],
+    "rendererFallback": null,
+    "formerColdSeekAt10CpuMs": 1848,
+    "cachedSeekCpuSubmissionMs": [
+      {
+        "time": 4,
+        "ms": 9
+      },
+      {
+        "time": 7.2,
+        "ms": 18.3
+      },
+      {
+        "time": 10,
+        "ms": 24.3
+      },
+      {
+        "time": 14,
+        "ms": 30.3
+      },
+      {
+        "time": 19,
+        "ms": 30.8
+      },
+      {
+        "time": 26.5,
+        "ms": 68.5
+      },
+      {
+        "time": 32.5,
+        "ms": 95.2
+      },
+      {
+        "time": 34.7,
+        "ms": 1.7
+      }
+    ],
+    "limits": "These are single synchronous submissions excluding GPU completion and browser presentation, not FPS or p95/p99. Fog/UI costs, per-frame DOM PNG transport, preparation latency, memory cost and resize cache preparation require further work."
+  },
+  "focusedVerification": {
+    "testFiles": 11,
+    "testsPassed": 49,
+    "typecheck": "passed"
+  },
+  "remainingScope": "All EMB-AUD-01 through EMB-AUD-19 remain represented in audit-reconciliation.json; this checkpoint is not an owner-ready or final-candidate claim.",
+  "identities": {
+    "projection.ts": "376d716e6ceac7b45c256a23bc140c8ddaeec9b437dc13c238247aa5ffea247d",
+    "cloth.ts": "03cd988314a47057d869f26774addb46568930ddf2766b29efb58d9a1d43b0b1",
+    "cloth-worker.ts": "cff11d92e638e86f8a2a649477d3cc7c1b2600d7809693c7c4ec4537d345e791",
+    "dynamics.ts": "e25dfaf51fa05e912b69027bb906e561baebc8809127192ed55cde3c0a60618b",
+    "program.ts": "0d732f00d2dc9dfa1ed82ff52a0548ee47f52d412e0a77bbdcca923f5ce2c2dd",
+    "renderer.ts": "416f10f922f1b9cfce6a270a89a92f5e77070ed962488a2c09bdcb58b79b0190",
+    "page-material.ts": "6afcfddf06774b284dd81aabc2a36ccffa20000540831fab4add23c75bfa04b9",
+    "input-ownership.ts": "181835d45e6e718d7241ee268911ed6fe93232f7347107b4f1084022e610094f",
+    "Embarkation.tsx": "cf2bcd20353917aa581dd8c97e13c43be17706f945cdcc7f550ebb5a7df1a986"
+  }
+}

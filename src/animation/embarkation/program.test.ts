@@ -13,9 +13,28 @@ import {
   seedFor,
   welcome,
   wind,
+  TITLE_TURN,
 } from "./program";
+import { rotateEuler } from "./projection";
 
 describe("Embarkation authored scene contract", () => {
+  it("keeps the opening title face readable and resolves its type at one brief edge-on turn", () => {
+    for (let time = 0.45; time <= 4.4; time += 0.025) {
+      const pose = focusPose(time, 1280, 720);
+      expect(rotateEuler([0, 0, 1], pose.rotation)[2]).toBeGreaterThan(0.96);
+      expect(Math.abs(pose.rotation[2])).toBeLessThan(0.11);
+      expect(pose.bend).toBeLessThanOrEqual(0.25);
+    }
+    const edge = focusPose(TITLE_TURN.edge, 1280, 720);
+    expect(rotateEuler([0, 0, 1], edge.rotation)[2]).toBeCloseTo(0, 10);
+    expect(edge.bend).toBe(0);
+    for (const time of [TITLE_TURN.edge - 0.001, TITLE_TURN.edge + 0.001]) {
+      const pose = focusPose(time, 1280, 720);
+      expect(Math.hypot(...pose.position.map((v, i) => v - edge.position[i]))).toBeLessThan(1);
+      expect(rotateEuler([0, 0, 1], pose.rotation)[2]).toBeGreaterThan(0);
+    }
+    expect(rotateEuler([0, 0, 1], focusPose(TITLE_TURN.end, 1280, 720).rotation)[2]).toBeGreaterThan(0.99);
+  });
   it("reproduces arbitrary seek order and per-Voyage identity without frame-count state", () => {
     const representative = () => buildActors(seedFor("voyage-a")).filter((a, i) => a.hero || i % 97 === 0);
     const actors = representative();
@@ -36,20 +55,7 @@ describe("Embarkation authored scene contract", () => {
     expect(props.filter((a) => a.hero === "map")).toHaveLength(1);
     expect(props.some((a) => a.hero === "rope")).toBe(false);
     for (const a of props.filter((a) => a.id.startsWith("recede-")))
-      expect(poseAt(a, a.birth + a.life * 0.9, 1600, 1000).position[2]).toBeLessThan(-3000);
-  });
-  it("has a bounded paper contact, peel, and recession instead of passing through the word", () => {
-    const a = buildActors(123).find((a) => a.hero === "collision")!;
-    const contact = poseAt(a, CUT.catch + 0.01, 1600, 1000),
-      held = poseAt(a, CUT.peel - 0.1, 1600, 1000),
-      peel = poseAt(a, CUT.peel + 0.4, 1600, 1000),
-      gone = poseAt(a, CUT.peel + 2, 1600, 1000);
-    expect(contact.adhesion).toBe(1);
-    expect(held.adhesion).toBe(1);
-    const focus = focusPose(CUT.peel - 0.1, 1600, 1000);
-    expect(held.position[2] - focus.position[2]).toBe(35);
-    expect(peel.adhesion).toBeLessThan(contact.adhesion);
-    expect(gone.position[2]).toBeLessThan(-9000);
+      expect(materialResponse(a, a.life * 0.9)[2]).toBeLessThan(-3000);
   });
   it("entrains high area paper faster than a heavy metal prop", () => {
     const a = { ...buildActors(123)[0], position: [0, 0, 0] as [number, number, number], birth: 11 };

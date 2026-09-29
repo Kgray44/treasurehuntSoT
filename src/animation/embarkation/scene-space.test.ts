@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { buildActors, camera, CUT, materialResponse, poseAt } from "./program";
-import { celestialState, EXTERIOR, exteriorWaterPoint, FOG_BANKS, fogBanksAt } from "./scene-space";
+import { atmosphericDepth, buildActors, camera, CUT, materialResponse, poseAt } from "./program";
+import { celestialState, EXTERIOR, exteriorWaterPoint, exteriorPierDepth, FOG_BANKS, fogBanksAt } from "./scene-space";
+import { projectWorld, REST_CAMERA } from "./projection";
 
 describe("Owner correction: physical time, transport and projection", () => {
   it("does not slow early flight when later scenic beats are extended", () => {
@@ -26,12 +27,14 @@ describe("Owner correction: physical time, transport and projection", () => {
       Object.assign(CUT, saved);
     }
   });
-  it("continues downstream beyond the fixed cache without a visible parked endpoint", () => {
+  it("continues downstream beyond the old cache horizon and becomes optically imperceptible", () => {
     for (const material of ["paper", "cloth", "metal"] as const) {
       const actor = { ...buildActors(4)[0], material, birth: 7 };
       const positions = [11.9, 12, 12.1, 14, 18].map((age) => materialResponse(actor, age));
       for (let i = 1; i < positions.length; i++) expect(positions[i][2]).toBeLessThan(positions[i - 1][2]);
-      expect(positions[4][2]).toBeLessThan(positions[1][2] - 30000);
+      // The old 30,000-unit bound encoded the very minimum-speed floor under
+      // audit. Require continued physical motion AND imperceptibility instead.
+      expect(atmosphericDepth(camera(actor.birth + 18).position[2] - positions[4][2])).toBeLessThan(0.00001);
     }
   });
   it("loses ordinary debris to optical depth before dense fog and cannot resurrect it during reversal", () => {
@@ -81,6 +84,20 @@ describe("Owner correction: physical time, transport and projection", () => {
           }
     }
   });
+  it("registers the rigid pier foot on the sea for different final crops", () => {
+    for (const roomUV of [
+      [1, 1, 0, 0],
+      [0.948148, 0.8, 0.02963, 0.28444],
+      [0.4, 0.72, 0.26, 0.25],
+      [1.4, 1.25, -0.2, -0.05],
+    ]) {
+      const viewport = [1800, 1100],
+        v = (1 - EXTERIOR.pierWaterlineRow / 1024 - roomUV[3]) / roomUV[1];
+      const point = exteriorWaterPoint(31, [0.75, v], viewport, roomUV)!;
+      expect(point.world[2]).toBeCloseTo(exteriorPierDepth(viewport, roomUV), 8);
+      expect(point.world[2]).toBeLessThan(EXTERIOR.openingZ);
+    }
+  });
   it("reconciles one celestial state continuously, registering exactly at the final artwork", () => {
     const a = celestialState(23.84, 1536, 1024, [1, 1, 0, 0]);
     expect(a.reconciliation).toBe(0);
@@ -95,5 +112,25 @@ describe("Owner correction: physical time, transport and projection", () => {
     expect(arrived.projected[0]).toBeCloseTo(1167 / 1536, 10);
     expect(arrived.projected[1]).toBeCloseTo(1 - 240 / 1024, 10);
     expect(arrived.reflectionSourceX).toBeCloseTo(1167 / 1536, 10);
+  });
+  it("matches the source moon disc size through the actual room crop", () => {
+    for (const [width, height, roomUV] of [
+      [1280, 720, [0.948148148, 0.8, 0.029629629, 0.284444444]],
+      [390, 844, [0.247619048, 0.803809524, 0.32352381, 0.268571429]],
+      [2560, 1080, [1, 0.6328125, 0, 0.18]],
+    ] as const) {
+      const m = celestialState(31, width, height, roomUV),
+        center = projectWorld(m.position, REST_CAMERA, { width, height });
+      const edge = projectWorld([m.position[0], m.position[1] + m.radius / 2, m.position[2]], REST_CAMERA, {
+        width,
+        height,
+      });
+      // Compare projected diameter to the accepted painting's source-pixel
+      // extent under CSS cover, not to a duplicated world-space constant.
+      expect(Math.abs(center.y - edge.y) * 2).toBeCloseTo(
+        (EXTERIOR.moonDiameterPixels * height) / (1024 * roomUV[1]),
+        8,
+      );
+    }
   });
 });
