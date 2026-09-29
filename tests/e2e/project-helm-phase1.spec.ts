@@ -692,6 +692,7 @@ test("Pass the Helm keeps authority, membership, lineage, and Player privacy dis
           await expect(guestPage.getByText("Succession Hold", { exact: true })).toBeVisible({
             timeout: 30_000,
           });
+          await guestPage.getByRole("button", { name: "Your Voyage options" }).click();
           await expect(guestPage.getByRole("button", { name: "Take Captaincy" })).toBeVisible();
           await expect(guestPage.getByRole("button", { name: "Continue Solo" })).toBeVisible();
           await expect(guestPage.getByRole("button", { name: "Leave Voyage" })).toBeVisible();
