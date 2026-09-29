@@ -192,7 +192,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     await page.getByLabel("Confirm password").press("Enter");
     await expect(page).toHaveURL(/\/verify-email\?.*returnTo=%2Fplayer%2Flibrary/u);
     await page.getByLabel("Code").fill(await verificationCodeFor(email));
-    await page.getByRole("button", { name: "Continue" }).click();
+    await page.getByRole("button", { name: "Verify email" }).click();
     await expect(page).toHaveURL(/\/player\/library$/u);
     await expect(page.getByRole("button", { name: `Homeport Registration ${suffix}` })).toBeVisible();
     await expect(page.getByRole("heading", { name: "My Chronicle Library" })).toBeVisible();
@@ -430,7 +430,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     await page.evaluate(() => {
       document.documentElement.style.zoom = "2";
     });
-    await expect(page.getByRole("button", { name: "Continue" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Create account" })).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1),
     ).toBe(true);

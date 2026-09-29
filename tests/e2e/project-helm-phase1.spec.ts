@@ -192,7 +192,7 @@ async function signInThroughProduct(page: Page) {
   const signInResponse = page.waitForResponse(
     (response) => response.url().endsWith("/api/auth/sign-in") && response.request().method() === "POST",
   );
-  await page.getByRole("button", { name: "Continue" }).click({ noWaitAfter: true });
+  await page.getByRole("button", { name: "Sign in" }).click({ noWaitAfter: true });
   expect((await signInResponse).status()).toBe(200);
   await expect(page).toHaveURL((url) => url.pathname === "/" && url.search === "", { timeout: 30_000 });
   await expect(page.getByRole("button", { name: displayName, exact: true })).toBeVisible({ timeout: 30_000 });
