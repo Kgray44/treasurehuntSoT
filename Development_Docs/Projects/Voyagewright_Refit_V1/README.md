@@ -3,7 +3,7 @@ title: Voyagewright Refit V1
 audience: product-engineering
 status: current
 canonical_for: voyagewright-refit-v1-control-area
-last_reviewed: 2026-09-21
+last_reviewed: 2026-09-29
 ---
 
 # Voyagewright Refit V1
@@ -21,6 +21,15 @@ Brightwork remains complete. Refit V1 begins from the accepted post-Brightwork p
 The current protected baseline and its source-bound Brightwork evidence are inputs to a future packet. They are not a standing instruction to alter a page.
 
 ## Canonical records
+
+- [Outgoing page momentum](embarkation/audit-departure-momentum.json) — continuous world-space strain/release/flight, moving support registration, cached deterministic material, native opening recordings and responsive capture limitations.
+- [Linear color pipeline](embarkation/audit-color-pipeline.json) — explicit art/data inputs, float and sRGB fallback targets, canonical CSS boundary, native pixel references and full silent playback; broader optical qualification remains open.
+
+- [Owner wind/moon correction](embarkation/audit-owner-wind-moon.json) — native unobstructed moon regression measurements, earlier shared-gust page release, and normal/quarter-speed opening captures. Broader audit qualification remains open.
+
+- [Production fog performance](embarkation/audit-production-performance.json) — separately sealed production builds, concurrent preparation, bounded shader work, native reference comparisons and remaining frame-cost limits.
+
+- [Embarkation independent-audit repairs](embarkation/audit-reconciliation.json) — all nineteen findings retained; implementation and same-revision qualification remain in progress. [Depth and optical checks](embarkation/audit-depth-and-optics.json), [geometry exposure checks](embarkation/audit-exposure.json), [measured shader/particle cost recovery](embarkation/audit-exposure-performance.json) and [room continuity repairs](embarkation/audit-room-continuity.json), and [hero reverse/edge checks](embarkation/audit-prop-materials.json), and [event-audio execution](embarkation/audit-event-audio.json) retain source-bound native evidence and remaining limits. Earlier publication and screenings are historical evidence.
 
 - [Embarkation audit publication](embarkation/publication.md) — complete draft candidate source map, retained evidence, and local-only exclusions; no owner acceptance or merge.
 

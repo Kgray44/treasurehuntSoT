@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-09-12
+last_reviewed: 2026-09-29
 ---
 
 # Changelog
@@ -11,6 +11,14 @@ last_reviewed: 2026-09-12
 ## Unreleased
 
 ### Changed
+
+- The in-progress Embarkation renderer now uses a shared linear-light color pipeline for physical material, fog, lens effects and exposure, with explicit data masks, correct premultiplied filtering and a precision fallback. A separate CSS composition boundary preserves the accepted interface appearance at landing. Native art/color references pass; wider optical, performance and audiovisual qualification remains open.
+
+- Departing Embarkation page sections now preserve their flexing material's motion when anchors fail. One world-space sheet handles support, pressure and free flight through the same airflow response; narrow-header constraints retain their strain limits. The earlier gust and faster release timing remain. The isolated candidate is still under independent-audit qualification.
+
+- The in-progress Embarkation candidate fixes moon/sky depth flicker and gives departing page material an earlier, stronger shared gust with faster staggered release. Actor/contact preparation now overlaps to avoid the observed serial startup timeout. The full cut remains 35.8 seconds; measured fog GPU cost and broader audit qualification remain open.
+
+- Embarkation's independent-audit repair is in progress: constrained visible-letter contact, momentum-driven incoming supports, a live DOM paint adapter, shared opaque-surface depth, depth-limited fog, calibrated planar water, draining lens droplets and geometry-aware exposure are being integrated and screened. Shader/particle optimization preserves the shutter reference with measured development cost recovery. Current room-entry repairs correct focus, ceiling coverage, lantern occlusion and late aperture/moon convergence. Hero paper now has unprinted reverses, with silhouette thickness for the map and compass. Material foley now follows the visual event records and preserves room ambience through handoff; native audio is recorded, with listening review still pending. The [reconciliation ledger](Development_Docs/Projects/Voyagewright_Refit_V1/embarkation/audit-reconciliation.json) retains incomplete work and evidence limits; this is not a completed or accepted capability.
 
 - Added the Embarkation owner-review branch: an authored 35.8-second, deterministic camera crossing from the platform into the live Muster, independent derived atmospheric material, physical DOM landing, personalized welcome, persistent return/replay semantics, global experience quality/audio controls, reduced-motion/failure recovery, and a stable living Muster with localized flames, restrained lantern suspension and quiet harbor reflections. Owner Screening Delta 2 adds support-plane adhesion, rear-origin vortices and procedural weather, sustained text contact, physical incoming anchor catches, continuous exterior backing and clearer living-light response. The subsequent owner correction restores fast physical flight, removes lingering storm debris, replaces global fog activation with arriving banks, restores the moonlight cue and uses registered planar exterior water. This Refit area remains unaccepted and unmerged.
 

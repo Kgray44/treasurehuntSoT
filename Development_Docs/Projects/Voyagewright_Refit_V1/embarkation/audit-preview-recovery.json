@@ -1,0 +1,39 @@
+{
+  "classification": "engineering-record",
+  "createdAt": "2026-09-24T18:58:26.1899234Z",
+  "kind": "preview-startup-recovery",
+  "status": "PARTIAL",
+  "identities": {
+    "cloth.ts": "1de3b85eec4e0dcdfe715c987034c68df5bc0e4a27cadd854912b23b2055e983",
+    "arrival-material.test.ts": "9b5ead7d125d804c64478f7d2a39736ff717a00eae20a5bbca676c16bda15635",
+    "paint-raster.ts": "3431825b1d9ce1cb1037d16f732b8e01dacb3281df3b74c5343b04c04ecbb6e5",
+    "paint-raster.test.ts": "6dc1b11658f07e9c4a9462bc7bf6f10f735381abf27d86ecda129b6c93c2bedc",
+    "paint-mesh.ts": "672e5c92088c4ea98a8838e99d0497522cf501f302579151da43d6fe47079855",
+    "dom-paint.ts": "c8b6522dad1628a3db2bae69551e02d8fb53d80f1abeb7c0aad8b86e467c4e38",
+    "live-paint-binding.ts": "1bb89be62a163334ac0ec31c86794cf90e7a5dc735d3c35e017588f9fc9b4344",
+    "dom.ts": "8238219729d2c1390f5d29f67d24752b39258b9703e50ff957661b5701b9f1f6"
+  },
+  "reproduction": {
+    "viewport": [
+      319,
+      766
+    ],
+    "browser": "Codex in-app Chromium",
+    "effect": "Full preparation fell back to the 1.8 second ceremony",
+    "error": "New support metric projection did not converge",
+    "dpr": 1.25,
+    "surface": "crew card index 3, 90 by 161 CSS pixels",
+    "time": 32.56666666666667
+  },
+  "repair": "Allow the exceptional support-manifold metric projection additional bounded worker sweeps; retain material strain limits and exact supports. All ten measured narrow-pane incoming geometries now prepare.",
+  "proof": [
+    "66 focused Embarkation tests passed, including exact failing narrow-card dimensions and pin/strain invariants",
+    "Actual owner page reloaded at 319x766 DPR 1.25: duration 35.8, CINEMATIC, reduced motion false, enabled JOIN THE ADVENTURE, time zero"
+  ],
+  "paintRegistration": "Completed destination-device-pixel-aligned SVG raster metadata and asymmetric UV gutter integration. Unit tests pass. Native screenshot parity after this change is not yet qualified.",
+  "limitations": [
+    "This startup recovery is not full film or owner acceptance",
+    "Remaining native GPU/DOM sharpness and backdrop discrepancy requires current-source pixel comparison",
+    "All nineteen audit items remain in the active repair scope"
+  ]
+}

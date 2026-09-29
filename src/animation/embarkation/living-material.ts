@@ -9,7 +9,7 @@ vec2 imageUV(vec2 pixel){return vec2(pixel.x/1536.,1.-pixel.y/1024.);}
 float pulse(float t,float phase){return sin(t*4.73+phase)*.44+sin(t*7.19+phase*1.7)*.32+sin(t*1.137+phase*.3)*.24;}
 vec3 livingRoom(vec2 sourceUV,vec3 base){
  if(livingEnabled<.5)return base;
- base=texture(liveBacking,sourceUV).rgb;
+ base=artwork(liveBacking,sourceUV).rgb;
  vec2 pixel=vec2(sourceUV.x*1536.,(1.-sourceUV.y)*1024.);
  float scale=mix(.48,1.,livingQuality*.5), quiet=mix(1.,.12,reducedMotion);
  vec2 p=sourceUV;float water=texture(livingMasks,p).b;
@@ -18,8 +18,9 @@ vec3 livingRoom(vec2 sourceUV,vec3 base){
   float energy=(.22+nearWater*.40)*(1.+windLevel*.5)*scale*(1.-reducedMotion);
   vec2 ripple=vec2(sin(pixel.y*.171+time*.73)+sin(pixel.y*.319-time*.413)*.43,sin(pixel.x*.091+time*.317)*.37+sin(pixel.x*.217-time*.571)*.22);
   p+=ripple*vec2(1./1536.,1./1024.)*water*energy;
-  base=texture(roomOriginal,p).rgb;
-  float silver=max(smoothstep(.25,.8,dot(base,vec3(.2126,.7152,.0722))),smoothstep(.19,.48,base.r)*smoothstep(.02,.13,base.r-base.b)*.55);
+  base=artwork(roomOriginal,p).rgb;
+  vec3 displayColor=linearToSrgb(base);
+  float silver=max(smoothstep(.25,.8,dot(displayColor,vec3(.2126,.7152,.0722))),smoothstep(.19,.48,displayColor.r)*smoothstep(.02,.13,displayColor.r-displayColor.b)*.55);
   float shimmer=pulse(time*.31,pixel.y*.09+pixel.x*.017)*.085*silver;
   float sparkle=pow(max(0.,sin(pixel.x*.41+time*.291)*sin(pixel.y*.73-time*.137)),18.)*.16*silver;
   base*=1.+water*(shimmer+sparkle)*scale*mix(1.,.18,reducedMotion);
@@ -35,7 +36,7 @@ vec3 livingRoom(vec2 sourceUV,vec3 base){
   float c=cos(angle),s=sin(angle);vec2 old=center+mat2(c,s,-s,c)*local;
   // Attachment response decays to zero at the fixed hanging pivot.
   old.x+=sin(time*2.9+f)*.62*pow(clamp(local.y/(b.w-b.y),0.,1.),2.)*quiet;
-  vec2 op=imageUV(old);vec4 prop=texture(liveProps,op);
+  vec2 op=imageUV(old);vec4 prop=artwork(liveProps,op);
   base=mix(base,prop.rgb,prop.a);
   p=op;
  }
@@ -52,7 +53,7 @@ vec3 livingRoom(vec2 sourceUV,vec3 base){
   float stretch=1.+fl*.085*flameMotion;
   vec2 samplePoint=f.xy+vec2(delta.x-tip,delta.y/stretch);
   vec2 sp=imageUV(samplePoint);
-  vec4 fire=texture(liveFlames,sp);
+  vec4 fire=artwork(liveFlames,sp);
   base=mix(base,fire.rgb*(1.+fl*.072*scale),fire.a);
  }
  return base;

@@ -85,7 +85,19 @@ export default function Inspector({ controls }: { controls: EmbarkationControls 
               Layer
               <select aria-label="Isolate cinematic layer" onChange={(e) => controls.layer(e.target.value)}>
                 <option value="">All</option>
-                {["page", "environment", "paper", "props", "mist", "particles", "light", "spray"].map((l) => (
+                {[
+                  "page",
+                  "environment",
+                  "landscape",
+                  "lens",
+                  "paper",
+                  "props",
+                  "mist",
+                  "particles",
+                  "light",
+                  "spray",
+                  "contact",
+                ].map((l) => (
                   <option key={l}>{l}</option>
                 ))}
               </select>
@@ -100,7 +112,15 @@ export default function Inspector({ controls }: { controls: EmbarkationControls 
             </label>
             <label>
               <input type="checkbox" onChange={(e) => controls.projection(e.target.checked)} />
-              Exterior projection grid
+              Exterior / room projection coverage
+            </label>
+            <label>
+              <input type="checkbox" onChange={(e) => controls.apertureMask(e.target.checked)} />
+              Aperture reconciliation data mask
+            </label>
+            <label>
+              <input type="checkbox" onChange={(e) => controls.exposureReference(e.target.checked)} />
+              Full shutter reference (expensive)
             </label>
             <button onClick={() => controls.fail()}>Test compositor loss</button>
           </div>

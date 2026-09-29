@@ -3,84 +3,47 @@ import {
   DURATION,
   buildActors,
   camera,
-  clamp,
+  composition,
   gust,
   poseAt,
-  materialResponse,
+  materialPath,
   focusPose,
+  TITLE_TURN,
   smooth,
   type Actor,
   type Tier,
   type Vec3,
 } from "./program";
+import { HARBOR_ENVIRONMENT, selectEnvironment, type LandscapeSet } from "./environment-set";
 import { Atmosphere } from "./atmosphere";
-import { celestialState, fogBanksAt, EXTERIOR } from "./scene-space";
-import { anchorPoints } from "./adhesion";
-import { environmentVertex, environmentFragment } from "./environment";
-import { capturePage, pageState, pageVertex, pageFragment, type PageSurface } from "./page-material";
+import { celestialState, fogBanksAt, EXTERIOR, exteriorPierDepth } from "./scene-space";
+import { FOCAL, WORLD_HEIGHT, projectWorld, rotateEuler, sphereInView } from "./projection";
+import { FrameExposure, exposureSamples, EXPOSURE_SECONDS, setFilmLens, bindFilmLens, filmLens } from "./exposure";
+import { environmentVertex, environmentFragment, specializeEnvironment } from "./environment";
+import { capturePage, pageState, pageSheet, pageVertex, pageFragment, type PageSurface } from "./page-material";
+import type { ConstrainedSheet } from "./cloth";
+import { MaterialBackdrop } from "./material-backdrop";
+import { TitleSnag, SNAG_BIRTH, type SnagCache, type SnagSpec } from "./title-snag";
+import { landscapeFrame } from "./landscape-space";
+import { NEAR_ROOM_LANTERN_Z, ROOM_EXTENSION } from "./room-extension";
+import { SurfaceQueue, SurfaceDepth, type DepthPass } from "./depth-compositor";
 
-const vertex = `#version 300 es
-precision highp float;
-in vec2 uv; out vec2 vUV; out vec3 vWorld; out float vBend;
-uniform vec3 position,rotation,cameraPosition;
-uniform vec2 size,viewport;
-uniform float time,bend,adhesion,phase,roll,focusImpact;
-mat3 rx(float a){float c=cos(a),s=sin(a);return mat3(1,0,0,0,c,s,0,-s,c);}
-mat3 ry(float a){float c=cos(a),s=sin(a);return mat3(c,0,-s,0,1,0,s,0,c);}
-mat3 rz(float a){float c=cos(a),s=sin(a);return mat3(c,s,0,-s,c,0,0,0,1);}
-void main(){
- vUV=uv; vec2 p=(uv-.5)*size;
- float edge=pow(abs(uv.x-.46)*1.9,1.5);
- float wave=sin(uv.x*7.0+uv.y*2.2-time*14.2+phase)*.055*size.x;
- float corner=sin(uv.y*5.0-time*9.7+phase)*.035*size.x*edge;
- float curl=pow(max(0.,uv.x-.63),2.)*size.x*.9;
- float z=(wave*edge+corner+curl)*bend;
- z-=exp(-length((uv-vec2(.59,.43))*vec2(13.,8.)))*focusImpact*18.;
- float pin=1.-smoothstep(.06,.37,length(uv-vec2(.5,.5)));
- z=mix(z,-(1.-pin)*size.x*(.35+sin(uv.x*19.-time*18.)*.12+sin(uv.y*23.+time*21.)*.07),adhesion);
- vBend=z/max(size.x,1.);
- vec3 local=vec3(p.x,p.y,z);
- vWorld=rz(rotation.z)*ry(rotation.y)*rx(rotation.x)*local+position;
- vec3 view=rz(-roll)*(vWorld-cameraPosition);
- float focal=1150., distance=focal-view.z;
- gl_Position=vec4(view.x*focal/(viewport.x*.5),view.y*focal/(viewport.y*.5),distance-8.,distance);
-}`;
-const fragment = `#version 300 es
-precision highp float;
-in vec2 vUV;in vec3 vWorld;in float vBend;out vec4 color;
-uniform sampler2D art;uniform vec2 texel,motionVector;uniform vec3 eye;uniform float alpha,time,blur,emissive,atmosphere,quality;
-uniform vec3 coolLight,warmLight,depthTint,emissionTint;uniform float contactLight;
-void main(){
- vec2 flow=vec2(sin(vUV.y*12.+time*.43),cos(vUV.x*9.-time*.37))*.018*atmosphere;
- vec2 p=vUV+flow;
- vec4 sampleColor=texture(art,p);
- if(quality>.5){
-   vec2 d=texel*blur;
-   sampleColor=(sampleColor*4.+texture(art,p+d)+texture(art,p-d)+texture(art,p+vec2(d.x,-d.y))+texture(art,p+vec2(-d.x,d.y)))/8.;
-   if(quality>1.5){
-     vec4 shutter=vec4(0.); float weights=0.;
-     for(int i=-4;i<=4;i++){float f=float(i)/4.;float w=exp(-f*f*2.);shutter+=texture(art,p+motionVector*f*.5)*w;weights+=w;}
-     sampleColor=mix(sampleColor,shutter/weights,.8);
-   }
- }
- float a=sampleColor.a*alpha;
- if(a<.002)discard;
- vec3 dx=dFdx(vWorld),dy=dFdy(vWorld);vec3 normal=normalize(cross(dx,dy));
- float warm=smoothstep(26.,30.,time)*exp(-length((vWorld.xy-vec2(490.,190.))/vec2(1000.,850.)));
- float diffuse=.68+.30*abs(dot(normal,normalize(vec3(-.25,.45,1.))));
- vec3 light=mix(coolLight,warmLight,warm*.76)*diffuse;
- light+=vec3(.5,.24,.07)*warm*pow(abs(vBend)*5.,1.3);
- float depth=clamp((eye.z-vWorld.z-500.)/4800.,0.,.85);
- vec3 lit=mix(sampleColor.rgb*(light+vec3(.32,.24,.12)*contactLight),depthTint,depth*.65*(1.-contactLight*.7));
- lit=mix(lit,sampleColor.rgb*emissionTint,emissive);
- color=vec4(lit*a,a);
-}`;
+import { PAPER_BACK, propMaterial, propVertex, propFragment } from "./prop-material";
+import { propShellFromBitmap } from "./prop-shell";
+import { paperPassCue, soundPan, type SoundCue } from "./sound-cues";
+import { DEPARTURE_ANCHOR_WINDOW } from "./page-material";
+import { LENS_IMPACTS } from "./lens-water";
+import { ArtworkUpload, DATA_TEXTURES, materialBlend } from "./color";
+import { SceneColor } from "./scene-color";
+
 type Texture = { value: WebGLTexture; width: number; height: number; bytes: number };
 /** Chronicle art can enter the same film without changing timing or physics.
  * Omitted fields preserve the approved Voyagewright crossing and light script. */
 export type EmbarkationArtDirection = {
   crossingUrl?: string;
+  /** Legacy single-image input receives the documented generic environment. */
   destinationUrl?: string;
+  environment?: LandscapeSet;
   materialUrls?: Record<string, string>;
   palette?: Partial<{ coolLight: Vec3; warmLight: Vec3; depthTint: Vec3; emissionTint: Vec3 }>;
 };
@@ -91,26 +54,45 @@ const defaultPalette = {
   emissionTint: [1.12, 1.02, 0.85] as Vec3,
 };
 export type RendererDiagnostics = {
+  environment?: { id: string; reason: string };
   failures: string[];
   textureBytes: number;
   assetBytes: number;
   gpu: string;
   gpuTimingAvailable: boolean;
   gpuSamplesMs: number[];
+  materialBackdropBytes?: number;
+  surfaceDepthBytes?: number;
+  exposure?: { samples: number; seconds: number; bytes: number; storage: string };
+  color?: { working: string; samples: number; bytes: number; display: string; data: string[] };
+  propGeometry?: { candidates: number; culled: number; vertices: number };
   runtimeTextures?: Record<string, { url: string; width: number; height: number }>;
+  clothPreparation?: { ms: number; bytes: number; surfaces: number; thread: "worker" };
+  motionPreparation?: { ms: number; bytes: number; actors: number; thread: "worker" };
+  titleContactPreparation?: {
+    ms: number;
+    bytes: number;
+    glyphSha256: string;
+    families: Array<{ family: string; contact: SnagCache["contact"] }>;
+  };
 };
 export type RenderOptions = {
   ambient?: boolean;
   reduced?: boolean;
   freezeLiving?: boolean;
   projectionGrid?: boolean;
+  apertureMask?: boolean;
+  referenceExposure?: boolean;
   layers?: Set<string>;
   trajectories?: boolean;
   only?: string;
   returnTime?: number;
+  incoming?: (surfaces: SurfaceQueue, sampleTime: number, present: boolean) => void;
 };
 export class EmbarkationRenderer {
+  private landscape = HARBOR_ENVIRONMENT;
   readonly gl: WebGL2RenderingContext;
+  readonly materialBackdrop: MaterialBackdrop;
   readonly actors: Actor[];
   readonly diagnostics: RendererDiagnostics = {
     failures: [],
@@ -122,11 +104,33 @@ export class EmbarkationRenderer {
   };
   private props: WebGLProgram;
   private environment: WebGLProgram;
+  private environmentPrograms = new Map<number, WebGLProgram>();
   private pageProgram: WebGLProgram;
   private weather: Atmosphere | null;
+  private surfaceDepth: SurfaceDepth;
+  private shutterDepth: SurfaceDepth;
+  private exposure: FrameExposure;
+  private sceneColor: SceneColor;
+  private artworkUpload: ArtworkUpload;
+  private sceneColorBytes = 0;
   private pageSurfaces: PageSurface[] = [];
+  private pageGeometry = new Map<
+    PageSurface,
+    { sheet: ConstrainedSheet; vao: WebGLVertexArrayObject; positions: WebGLBuffer; buffers: WebGLBuffer[] }
+  >();
   private focusSurface: PageSurface | null = null;
+  private snags = new Map<string, TitleSnag>();
+  private snagGeometry: {
+    sheet: ConstrainedSheet;
+    vao: WebGLVertexArrayObject;
+    positions: WebGLBuffer;
+    buffers: WebGLBuffer[];
+  } | null = null;
   private grid: WebGLVertexArrayObject;
+  private propGrids = new Map<number, { vao: WebGLVertexArrayObject; count: number }>();
+  private propShells = new Map<string, { vao: WebGLVertexArrayObject; count: number }>();
+  private soundCache: { key: string; cues: SoundCue[] } | null = null;
+  private propGridLevels: number[];
   private quad: WebGLVertexArrayObject;
   private environmentGrid: WebGLVertexArrayObject;
   private environmentCount: number;
@@ -176,15 +180,32 @@ export class EmbarkationRenderer {
       depth: true,
     });
     if (!gl) throw new Error("compositor-unavailable");
+    this.materialBackdrop = new MaterialBackdrop(gl);
     this.gl = gl;
+    this.surfaceDepth = new SurfaceDepth(gl);
+    this.shutterDepth = new SurfaceDepth(gl);
+    this.exposure = new FrameExposure(gl);
+    this.sceneColor = new SceneColor(gl);
+    this.artworkUpload = new ArtworkUpload(gl);
     this.actors = buildActors(seed);
-    this.props = this.program(vertex, fragment);
+    this.props = this.program(propVertex, propFragment);
     this.environment = this.program(environmentVertex, environmentFragment);
+    for (let mode = 0; mode <= 6; mode++)
+      this.environmentPrograms.set(
+        mode,
+        this.program(specializeEnvironment(environmentVertex, mode), specializeEnvironment(environmentFragment, mode)),
+      );
     this.pageProgram = this.program(pageVertex, pageFragment);
     this.weather = new Atmosphere(gl, seed, tier);
     const grid = this.mesh(tier === "CINEMATIC" ? 40 : tier === "BALANCED" ? 26 : 16);
     this.grid = grid.vao;
     this.gridCount = grid.count;
+    this.propGrids.set(tier === "CINEMATIC" ? 40 : tier === "BALANCED" ? 26 : 16, grid);
+    for (const divisions of [1, 4, 8, 16, 24]) {
+      if (divisions < (tier === "CINEMATIC" ? 40 : tier === "BALANCED" ? 26 : 16))
+        this.propGrids.set(divisions, this.mesh(divisions));
+    }
+    this.propGridLevels = [...this.propGrids.keys()].sort((a, b) => a - b);
     this.quad = this.mesh(1).vao;
     const environmentGrid = this.mesh(tier === "CINEMATIC" ? 112 : tier === "BALANCED" ? 72 : 48);
     this.environmentGrid = environmentGrid.vao;
@@ -222,6 +243,7 @@ export class EmbarkationRenderer {
       g.deleteShader(s);
     }
     g.bindAttribLocation(p, 0, "uv");
+    g.bindAttribLocation(p, 1, "deformed");
     g.linkProgram(p);
     if (!g.getProgramParameter(p, g.LINK_STATUS)) throw new Error("shader-link");
     return p;
@@ -260,27 +282,32 @@ export class EmbarkationRenderer {
     return map.get(name)!;
   }
   async preload(
-    cover: string,
+    _cover: string,
     signal: AbortSignal,
     omitOptional = false,
     direction: EmbarkationArtDirection = {},
     ambientOnly = false,
   ) {
     this.palette = { ...defaultPalette, ...direction.palette };
+    const selection = selectEnvironment(direction);
+    this.landscape = selection.set;
+    this.diagnostics.environment = { id: selection.set.id, reason: selection.reason };
     const urls = new Map<string, string>([
+      ["derived/scrap-2", direction.materialUrls?.["derived/scrap-2"] ?? "/images/embarkation/derived/scrap-2.webp"],
       ["crossing", direction.crossingUrl ?? "/images/embarkation/stage-A-background.webp"],
-      ["destination", direction.destinationUrl ?? cover],
       ["room", "/images/muster/lantern-room.png"],
+      ["paperBack", PAPER_BACK.url],
       ["exterior", "/images/embarkation/derived/stage-c-water.webp"],
       ["exteriorOverscan", "/images/embarkation/derived/stage-c-extended.webp"],
       ["stage-c-pier", "/images/embarkation/derived/stage-c-pier.png"],
-      ["stage-distant", "/images/embarkation/derived/stage-distant.webp"],
-      ["stage-islands", "/images/embarkation/derived/stage-islands.png"],
-      ["stage-middle", "/images/embarkation/derived/stage-middle.png"],
-      ["stage-near", "/images/embarkation/derived/stage-near.png"],
-      ["stage-rocks", "/images/embarkation/derived/stage-rocks.png"],
+      ["stage-distant", this.landscape.textures["stage-distant"]],
+      ["stage-islands", this.landscape.textures["stage-islands"]],
+      ["stage-middle", this.landscape.textures["stage-middle"]],
+      ["stage-near", this.landscape.textures["stage-near"]],
+      ["stage-rocks", this.landscape.textures["stage-rocks"]],
       ["aperture", "/images/embarkation/derived/room-aperture.png"],
-      ["overscan", "/images/embarkation/derived/room-overscan-delta2.webp"],
+      ["reconciliationMask", "/images/embarkation/derived/room-reconciliation-mask.png"],
+      ["overscan", ROOM_EXTENSION.url],
       ["backingAperture", "/images/embarkation/derived/room-backing-aperture.png"],
       ["matte0", "/images/embarkation/derived/room-mattes-0.png"],
       ["matte1", "/images/embarkation/derived/room-mattes-1.png"],
@@ -292,8 +319,9 @@ export class EmbarkationRenderer {
       ["liveFlames", "/images/embarkation/derived/room-live-flames.png"],
     ]);
     if (ambientOnly) {
+      urls.delete("derived/scrap-2");
+      urls.delete("paperBack");
       urls.delete("crossing");
-      urls.delete("destination");
       for (const key of [...urls.keys()]) if (key.startsWith("stage-")) urls.delete(key);
     }
     for (const a of ambientOnly ? [] : this.actors.filter((a) => a.material !== "mist" && a.layer !== "spray"))
@@ -307,31 +335,41 @@ export class EmbarkationRenderer {
           const blob = await response.blob();
           const bitmap = await createImageBitmap(blob, {
             premultiplyAlpha: "none",
-            colorSpaceConversion: "default",
+            colorSpaceConversion: DATA_TEXTURES.has(key) ? "none" : "default",
             imageOrientation: "flipY",
           });
           if (signal.aborted || this.disposed) {
             bitmap.close();
             return;
           }
-          const g = this.gl,
-            texture = g.createTexture()!;
-          g.bindTexture(g.TEXTURE_2D, texture);
-          g.texImage2D(g.TEXTURE_2D, 0, g.RGBA, g.RGBA, g.UNSIGNED_BYTE, bitmap);
-          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_S, g.CLAMP_TO_EDGE);
-          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_T, g.CLAMP_TO_EDGE);
-          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MIN_FILTER, g.LINEAR_MIPMAP_LINEAR);
-          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MAG_FILTER, g.LINEAR);
-          g.generateMipmap(g.TEXTURE_2D);
-          this.textures.set(key, {
-            value: texture,
-            width: bitmap.width,
-            height: bitmap.height,
-            bytes: (bitmap.width * bitmap.height * 4 * 4) / 3,
-          });
-          this.diagnostics.textureBytes += (bitmap.width * bitmap.height * 4 * 4) / 3;
+          const g = this.gl;
+          // Normalize color images through a declared sRGB canvas. Data maps
+          // bypass browser color conversion and retain their numeric channels.
+          let image: ImageBitmap | OffscreenCanvas = bitmap;
+          if (!DATA_TEXTURES.has(key)) {
+            const normalized = new OffscreenCanvas(bitmap.width, bitmap.height);
+            normalized.getContext("2d", { colorSpace: "srgb" })!.drawImage(bitmap, 0, 0);
+            image = normalized;
+          }
+          const texture = this.artworkUpload.upload(image, bitmap.width, bitmap.height, DATA_TEXTURES.has(key), false);
+          this.textures.set(key, texture);
+          this.diagnostics.textureBytes += texture.bytes;
           this.diagnostics.assetBytes += blob.size;
           (this.diagnostics.runtimeTextures ??= {})[key] = { url, width: bitmap.width, height: bitmap.height };
+          if (propMaterial(key).thicknessRatio > 0) {
+            const vertices = propShellFromBitmap(bitmap, key === "P2-compass" ? 1 : 40);
+            const vao = g.createVertexArray()!,
+              buffer = g.createBuffer()!;
+            this.buffers.push(buffer);
+            g.bindVertexArray(vao);
+            g.bindBuffer(g.ARRAY_BUFFER, buffer);
+            g.bufferData(g.ARRAY_BUFFER, vertices, g.STATIC_DRAW);
+            g.enableVertexAttribArray(0);
+            g.vertexAttribPointer(0, 2, g.FLOAT, false, 16, 0);
+            g.enableVertexAttribArray(2);
+            g.vertexAttribPointer(2, 2, g.FLOAT, false, 16, 8);
+            this.propShells.set(key, { vao, count: vertices.length / 4 });
+          }
           bitmap.close();
         } catch {
           if (!signal.aborted) this.diagnostics.failures.push(key);
@@ -344,7 +382,6 @@ export class EmbarkationRenderer {
           ? []
           : [
               "crossing",
-              "destination",
               "stage-distant",
               "stage-islands",
               "stage-middle",
@@ -356,6 +393,7 @@ export class EmbarkationRenderer {
             ]),
         "room",
         "aperture",
+        "reconciliationMask",
         "matte0",
         "matte1",
         "matte2",
@@ -376,13 +414,21 @@ export class EmbarkationRenderer {
       this.draw(DURATION, { ambient: true });
       return;
     }
-    // Prepare deterministic trajectories during loading, not on an actor's
-    // first visible frame. Yield between batches so hold-to-skip stays live.
-    for (let first = 0; first < this.actors.length; first += 80) {
-      if (signal.aborted) throw new DOMException("Preparation cancelled", "AbortError");
-      for (const actor of this.actors.slice(first, first + 80)) materialResponse(actor, 0.01);
-      await new Promise<void>((resolve) => setTimeout(resolve, 0));
-    }
+    // The old 0.01s warm-up left almost the entire simulation on the first
+    // visible/seeked frame. Prepare the complete visible physical horizon in
+    // a worker, including reverse-seek support, without changing its equations.
+    const prepareMotions = async () => {
+      const motionStarted = performance.now();
+      const motions = await this.prepare<Array<{ id: string; samples: Float64Array }>>({ actors: this.actors }, signal);
+      const actorById = new Map(this.actors.map((a) => [a.id, a]));
+      for (const motion of motions) materialPath(actorById.get(motion.id)!).importCache(motion.samples);
+      this.diagnostics.motionPreparation = {
+        ms: performance.now() - motionStarted,
+        bytes: motions.reduce((n, m) => n + m.samples.byteLength, 0),
+        actors: motions.length,
+        thread: "worker",
+      };
+    };
     const focus = document.createElement("canvas");
     focus.width = 1800;
     focus.height = 620;
@@ -406,51 +452,130 @@ export class EmbarkationRenderer {
     ctx.font = "72px Georgia";
     ctx.textAlign = "center";
     ctx.fillText("✧", 900, 540);
-    const g = this.gl,
-      texture = g.createTexture()!;
-    g.bindTexture(g.TEXTURE_2D, texture);
-    g.texImage2D(g.TEXTURE_2D, 0, g.RGBA, g.RGBA, g.UNSIGNED_BYTE, focus);
-    g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MIN_FILTER, g.LINEAR);
-    g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MAG_FILTER, g.LINEAR);
-    g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_S, g.CLAMP_TO_EDGE);
-    g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_T, g.CLAMP_TO_EDGE);
-    this.textures.set("focus-line", { value: texture, width: 1800, height: 620, bytes: 1800 * 620 * 4 });
-    this.diagnostics.textureBytes += 1800 * 620 * 4;
+    const texture = this.artworkUpload.upload(focus, focus.width, focus.height);
+    this.textures.set("focus-line", texture);
+    this.diagnostics.textureBytes += texture.bytes;
+    const scrap = this.textures.get("derived/scrap-2");
+    const prepareContact = async () => {
+      if (!scrap) return;
+      const started = performance.now();
+      const pixels = ctx.getImageData(0, 0, focus.width, focus.height).data;
+      const glyph = {
+        width: focus.width,
+        height: focus.height,
+        alpha: Uint8Array.from({ length: focus.width * focus.height }, (_, i) => pixels[i * 4 + 3]),
+      };
+      const specs: SnagSpec[] = [
+        [390, 844],
+        [800, 1100],
+        [1280, 720],
+        [2560, 1080],
+      ].map(([width, height]) => ({ viewport: { width, height }, aspect: scrap.height / scrap.width, glyph }));
+      const caches = await this.prepare<SnagCache[]>({ snags: specs }, signal);
+      signal.throwIfAborted();
+      specs.forEach((spec, i) =>
+        this.snags.set(composition(spec.viewport.width, spec.viewport.height).family, new TitleSnag(spec, caches[i])),
+      );
+      this.diagnostics.titleContactPreparation = {
+        ms: performance.now() - started,
+        bytes: caches.reduce((sum, cache) => sum + cache.sheet.samples.byteLength, 0),
+        glyphSha256: Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", glyph.alpha)), (v) =>
+          v.toString(16).padStart(2, "0"),
+        ).join(""),
+        families: specs.map((spec, i) => ({
+          family: composition(spec.viewport.width, spec.viewport.height).family,
+          contact: caches[i].contact,
+        })),
+      };
+    };
+    // Contact geometry depends on the glyph raster, not on the loose-actor
+    // trajectories. Serial preparation exhausted the production watchdog:
+    // 26.6 s of actor work followed by a still-running 15.2 s contact solve.
+    // Run these independent jobs together; keep every physical sample/family.
+    await Promise.all([prepareMotions(), prepareContact()]);
     this.resize();
     this.draw(0);
     this.gl.finish();
   }
   async captureSource(root: HTMLElement, signal: AbortSignal) {
+    this.soundCache = null;
     this.pageSurfaces = await capturePage(root, signal);
+    signal.throwIfAborted();
     this.focusSurface = this.pageSurfaces.find((s) => s.node.dataset.departure === "focus-title") ?? null;
-    const g = this.gl;
     for (const surface of this.pageSurfaces) {
-      const tx = g.createTexture()!;
       // SVG foreignObject is decoded entirely from inlined local resources.
-      // Draw into a bounded raster once; WebGL cannot upload vector images.
+      // Draw into a bounded raster once at the selected source resolution.
       const raster = document.createElement("canvas");
       const ratio = Math.min(devicePixelRatio || 1, this.tier === "CINEMATIC" ? 2 : 1);
       raster.width = Math.ceil(surface.rect.width * ratio);
       raster.height = Math.ceil(surface.rect.height * ratio);
       raster.getContext("2d")!.drawImage(surface.image, 0, 0, raster.width, raster.height);
-      g.activeTexture(g.TEXTURE0);
-      g.bindTexture(g.TEXTURE_2D, tx);
-      g.texImage2D(g.TEXTURE_2D, 0, g.RGBA, g.RGBA, g.UNSIGNED_BYTE, raster);
-      g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MIN_FILTER, g.LINEAR_MIPMAP_LINEAR);
-      g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MAG_FILTER, g.LINEAR);
-      g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_S, g.CLAMP_TO_EDGE);
-      g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_T, g.CLAMP_TO_EDGE);
-      g.generateMipmap(g.TEXTURE_2D);
-      this.textures.set(surface.id, {
-        value: tx,
-        width: raster.width,
-        height: raster.height,
-        bytes: (raster.width * raster.height * 4 * 4) / 3,
-      });
-      this.diagnostics.textureBytes += (raster.width * raster.height * 4 * 4) / 3;
+      const texture = this.artworkUpload.upload(raster, raster.width, raster.height);
+      this.textures.set(surface.id, texture);
+      this.diagnostics.textureBytes += texture.bytes;
     }
+    const started = performance.now();
+    const surfaces = this.pageSurfaces.filter((s) => s !== this.focusSurface);
+    const caches = await this.prepare<Array<{ id: string; samples: Float32Array; limitedSteps: number }>>(
+      {
+        width: this.width,
+        height: this.height,
+        surfaces: surfaces.map((s) => ({
+          id: s.id,
+          material: s.material,
+          attachment: s.attachment,
+          anchors: s.anchors,
+          phase: s.phase,
+          release: s.release,
+          rect: { x: s.rect.x, y: s.rect.y, width: s.rect.width, height: s.rect.height },
+        })),
+      },
+      signal,
+    );
+    signal.throwIfAborted();
+    for (const cache of caches) {
+      const surface = surfaces.find((s) => s.id === cache.id)!;
+      pageSheet(surface, this.width, this.height).importCache(cache);
+    }
+    this.diagnostics.clothPreparation = {
+      ms: performance.now() - started,
+      bytes: caches.reduce((sum, c) => sum + c.samples.byteLength, 0),
+      surfaces: caches.length,
+      thread: "worker",
+    };
+  }
+  private prepare<T>(payload: object, signal: AbortSignal): Promise<T> {
+    return new Promise((resolve, reject) => {
+      const worker = new Worker(new URL("./cloth-worker.ts", import.meta.url), { type: "module" });
+      const cleanup = () => {
+        signal.removeEventListener("abort", abort);
+        worker.terminate();
+      };
+      const abort = () => {
+        cleanup();
+        reject(new DOMException("Aborted", "AbortError"));
+      };
+      worker.onmessage = (event) => {
+        cleanup();
+        if (event.data.error) reject(new Error(event.data.error));
+        else resolve(event.data.caches);
+      };
+      worker.onerror = () => {
+        cleanup();
+        reject(new Error("material-worker-unavailable"));
+      };
+      signal.addEventListener("abort", abort, { once: true });
+      if (signal.aborted) {
+        abort();
+        return;
+      }
+      worker.postMessage(payload);
+    });
   }
   releaseDeparture() {
+    this.diagnostics.textureBytes -= this.exposure.bytes;
+    this.exposure.begin(1, 1);
+    this.diagnostics.textureBytes += this.exposure.bytes;
     this.diagnostics.textureBytes -= this.weather?.bytes ?? 0;
     this.weather?.dispose();
     this.weather = null;
@@ -460,6 +585,7 @@ export class EmbarkationRenderer {
       "exterior",
       "exteriorOverscan",
       "aperture",
+      "reconciliationMask",
       "backingAperture",
       "overscan",
       "matte0",
@@ -477,7 +603,90 @@ export class EmbarkationRenderer {
         this.textures.delete(key);
         this.diagnostics.textureBytes -= tx.bytes;
       }
+    for (const geometry of this.pageGeometry.values()) {
+      geometry.buffers.forEach((b) => this.gl.deleteBuffer(b));
+      this.gl.deleteVertexArray(geometry.vao);
+    }
+    this.pageGeometry.clear();
+    this.releaseSnag();
     this.pageSurfaces = [];
+  }
+  soundCues(): readonly SoundCue[] {
+    const viewport = { width: this.width, height: this.height },
+      key = `${this.width}:${this.height}`;
+    if (this.soundCache?.key === key) return this.soundCache.cues;
+    const cues: SoundCue[] = [];
+    for (const surface of this.pageSurfaces) {
+      if (surface === this.focusSurface) continue;
+      for (const [anchor, release] of surface.anchors.entries()) {
+        const time = release + DEPARTURE_ANCHOR_WINDOW.after;
+        const sheet = pageSheet(surface, this.width, this.height),
+          frame = sheet.at(time),
+          index = sheet.pins[anchor] * 3;
+        const point: Vec3 = [frame.positions[index], frame.positions[index + 1], frame.positions[index + 2]];
+        const pan = soundPan(point, time, viewport);
+        cues.push({
+          id: `depart:${surface.id}:${anchor}`,
+          time,
+          duration: surface.material === "cloth" ? 0.38 : 0.18,
+          kind: `${surface.material}-release`,
+          energy:
+            (anchor === surface.anchors.indexOf(Math.max(...surface.anchors)) ? 0.72 : 0.35) *
+            (0.45 + 0.55 * gust(time)),
+          pan: [pan, pan],
+          source: `${surface.id}:anchor-${anchor}:zero-hold`,
+        });
+      }
+    }
+    const snag = this.snags.get(composition(this.width, this.height).family);
+    if (snag?.contact) {
+      const contact = snag.contact,
+        pan = soundPan(contact.point, contact.time, viewport),
+        endPan = soundPan(snag.glyphPoint(CUT.peel, contact.uv), CUT.peel, viewport);
+      cues.push({
+        id: "snag:contact",
+        time: contact.time,
+        duration: 0.13,
+        kind: "paper-contact",
+        energy: Math.min(1, Math.hypot(...contact.velocity) / 2400),
+        pan: [pan, pan],
+        source: "TitleSnag.contact",
+      });
+      cues.push({
+        id: "snag:strain",
+        time: contact.time + 0.08,
+        duration: Math.max(0.02, CUT.peel - contact.time - 0.08),
+        kind: "paper-strain",
+        energy: 0.55,
+        pan: [pan, endPan],
+        source: "TitleSnag.constraint-held",
+      });
+      cues.push({
+        id: "snag:release",
+        time: CUT.peel,
+        duration: 0.29,
+        kind: "paper-peel",
+        energy: 0.7,
+        pan: [endPan, endPan + 0.1],
+        source: "TitleSnag.constraint-release",
+      });
+    }
+    for (const actor of this.actors.filter((a) => a.hero === "map" || a.id.startsWith("eddy-"))) {
+      const cue = paperPassCue(actor, viewport);
+      if (cue) cues.push(cue);
+    }
+    for (const hit of LENS_IMPACTS)
+      cues.push({
+        id: `lens:${hit.id}`,
+        time: hit.time,
+        duration: 0.16,
+        kind: "wet-hit",
+        energy: hit.radius / 0.024,
+        pan: [(hit.x - 0.5) * 1.7, (hit.x - 0.5) * 1.7],
+        source: `LENS_IMPACTS:${hit.id}`,
+      });
+    this.soundCache = { key, cues };
+    return cues;
   }
   sourceDiagnostics(time: number) {
     return this.pageSurfaces.map((s) => ({
@@ -487,7 +696,21 @@ export class EmbarkationRenderer {
       height: s.rect.height,
       material: s.material,
       release: s.release,
-      ...pageState(s, time, this.width, this.height),
+      // The focus title has its own continuous identity/geometry. Inspecting
+      // it must not create an unused departure simulation on the main thread.
+      ...(s === this.focusSurface ? { motion: "focus-title" } : pageState(s, time, this.width, this.height)),
+      ...(s === this.focusSurface || time >= 28 || pageState(s, time, this.width, this.height).alpha < 0.002
+        ? {}
+        : {
+            sheet: (() => {
+              const sheet = pageSheet(s, this.width, this.height);
+              return {
+                strain: sheet.strain(sheet.at(time)),
+                limitedSteps: sheet.limitedSteps,
+                cacheBytes: sheet.bytes,
+              };
+            })(),
+          }),
     }));
   }
   resize() {
@@ -496,17 +719,37 @@ export class EmbarkationRenderer {
     this.height = window.innerHeight;
     this.pixelRatio = Math.min(
       window.devicePixelRatio || 1,
-      this.tier === "CINEMATIC" ? 2 : this.tier === "BALANCED" ? 1.35 : 1,
+      this.tier === "CINEMATIC" ? window.devicePixelRatio || 1 : this.tier === "BALANCED" ? 1.35 : 1,
     );
     this.canvas.width = Math.round(this.width * this.pixelRatio);
     this.canvas.height = Math.round(this.height * this.pixelRatio);
+    // With scrollbar-gutter:stable Chromium also subtracts the gutter from
+    // viewport CSS units. The shared projection uses innerWidth: set that exact
+    // CSS extent so the GPU image is not rescaled again by its inset parent.
+    this.canvas.style.width = `${this.width}px`;
+    this.canvas.style.height = `${this.height}px`;
     g.viewport(0, 0, this.canvas.width, this.canvas.height);
+    this.diagnostics.textureBytes -= this.sceneColorBytes;
+    this.sceneColor.resize(this.canvas.width, this.canvas.height);
+    this.sceneColorBytes = this.sceneColor.bytes;
+    this.diagnostics.textureBytes += this.sceneColorBytes;
     this.diagnostics.textureBytes -= this.weather?.bytes ?? 0;
     this.weather?.resize(this.canvas.width, this.canvas.height);
     this.diagnostics.textureBytes += this.weather?.bytes ?? 0;
+    if (this.weather) {
+      // Allocate exposure and holdout storage during preparation/resize, not
+      // when the first supported page section begins to move.
+      this.diagnostics.textureBytes -= this.exposure.bytes + this.surfaceDepth.bytes + this.shutterDepth.bytes;
+      this.exposure.begin(this.canvas.width, this.canvas.height);
+      this.surfaceDepth.capture(() => {});
+      this.shutterDepth.capture(() => {});
+      this.diagnostics.textureBytes += this.exposure.bytes + this.surfaceDepth.bytes + this.shutterDepth.bytes;
+    }
     if (this.backgroundCanvas) {
       this.backgroundCanvas.width = this.canvas.width;
       this.backgroundCanvas.height = this.canvas.height;
+      this.backgroundCanvas.style.width = `${this.width}px`;
+      this.backgroundCanvas.style.height = `${this.height}px`;
     }
     const room = document.querySelector<HTMLElement>(".muster-environment");
     const texture = this.textures.get("room");
@@ -524,14 +767,7 @@ export class EmbarkationRenderer {
   }
   draw(time: number, options: RenderOptions = {}) {
     if (this.disposed) return;
-    const returning = options.returnTime !== undefined;
-    const returnTime = options.returnTime ?? 0;
-    if (returning) time = CUT.still + returnTime;
-    const g = this.gl,
-      p = this.props,
-      cam = returning ? { position: [0, 0, 0] as Vec3, roll: 0 } : camera(time),
-      worldH = 1100,
-      worldW = (worldH * this.width) / this.height;
+    const g = this.gl;
     if (this.timer) {
       this.queries = this.queries.filter((query) => {
         if (!g.getQueryParameter(query, g.QUERY_RESULT_AVAILABLE)) return true;
@@ -545,37 +781,157 @@ export class EmbarkationRenderer {
     }
     const query = this.timer && this.queries.length < 8 ? g.createQuery() : null;
     if (query) g.beginQuery(this.timer!.TIME_ELAPSED_EXT, query);
+    const temporal =
+      !options.ambient &&
+      !options.reduced &&
+      options.returnTime === undefined &&
+      time >= 0.45 + EXPOSURE_SECONDS / 2 &&
+      time < CUT.settled - EXPOSURE_SECONDS / 2;
+    try {
+      if (temporal) {
+        const samples = exposureSamples(time, this.tier, this.width, this.height, this.focusSurface?.rect);
+        // Before assembly there is no intervening live DOM: expose the complete
+        // scene together. At assembly, stable room paint remains below the live
+        // shell/landed nodes and incoming transparent material remains above it.
+        const split = time >= CUT.room;
+        const exposureBefore = this.exposure.bytes;
+        this.exposure.begin(this.canvas.width, this.canvas.height);
+        this.diagnostics.textureBytes += this.exposure.bytes - exposureBefore;
+        this.weather?.beginExposure(!options.referenceExposure);
+        for (const [index, sample] of samples.entries()) {
+          setFilmLens(g, sample);
+          this.drawInstant(sample.time, options, {
+            split,
+            weight: sample.weight,
+            first: index === 0,
+            present: index === samples.length - 1,
+          });
+          this.exposure.capture(1, sample.weight, this.sceneColor.resolve());
+        }
+        if (split) {
+          this.exposure.present(0);
+          this.copyBackground();
+        } else {
+          this.backgroundCanvas
+            ?.getContext("2d")
+            ?.clearRect(0, 0, this.backgroundCanvas.width, this.backgroundCanvas.height);
+        }
+        this.exposure.present(1);
+        this.diagnostics.exposure = {
+          samples: samples.length,
+          seconds: EXPOSURE_SECONDS,
+          bytes: this.exposure.bytes,
+          storage: this.exposure.floating ? "RGBA16F linear premultiplied" : "RGBA8 encoded running mean",
+        };
+      } else {
+        setFilmLens(g, { aperture: [0, 0], focus: FOCAL });
+        this.drawInstant(time, options);
+        this.sceneColor.present();
+        this.diagnostics.exposure = {
+          samples: 1,
+          seconds: 0,
+          bytes: this.exposure.bytes,
+          storage: this.exposure.floating ? "RGBA16F linear premultiplied" : "RGBA8 encoded running mean",
+        };
+      }
+    } finally {
+      this.diagnostics.textureBytes += this.sceneColor.bytes - this.sceneColorBytes;
+      this.sceneColorBytes = this.sceneColor.bytes;
+      this.diagnostics.color = {
+        working: this.sceneColor.storage.label,
+        samples: this.sceneColor.samples,
+        bytes: this.sceneColor.bytes,
+        display: "sRGB transfer; explicit CSS composition groups",
+        data: [...DATA_TEXTURES],
+      };
+      this.weather?.endExposure();
+      setFilmLens(g, { aperture: [0, 0], focus: FOCAL });
+      if (query) {
+        g.endQuery(this.timer!.TIME_ELAPSED_EXT);
+        this.queries.push(query);
+      }
+    }
+  }
+  private copyBackground() {
+    if (!this.backgroundCanvas) return;
+    const b = this.backgroundCanvas.getContext("2d");
+    b?.clearRect(0, 0, this.backgroundCanvas.width, this.backgroundCanvas.height);
+    b?.drawImage(this.canvas, 0, 0);
+  }
+  private drawInstant(
+    time: number,
+    options: RenderOptions,
+    exposure?: { split: boolean; weight: number; first: boolean; present: boolean },
+  ) {
+    const returning = options.returnTime !== undefined;
+    const returnTime = options.returnTime ?? 0;
+    if (returning) time = CUT.still + returnTime;
+    const g = this.gl,
+      p = this.props,
+      cam = returning ? { position: [0, 0, 0] as Vec3, roll: 0 } : camera(time),
+      worldH = WORLD_HEIGHT,
+      worldW = (worldH * this.width) / this.height;
+    this.sceneColor.bind();
+    g.viewport(0, 0, this.canvas.width, this.canvas.height);
     g.clearColor(0, 0, 0, 0);
-    g.clear(g.COLOR_BUFFER_BIT);
+    g.depthMask(true);
+    g.clearDepth(1);
+    g.clear(g.COLOR_BUFFER_BIT | g.DEPTH_BUFFER_BIT);
+    g.depthMask(false);
+    const scenery = new SurfaceQueue(g),
+      surfaces = new SurfaceQueue(g);
+    let bindScenery = () => {};
     g.blendFunc(g.ONE, g.ONE_MINUS_SRC_ALPHA);
-    if (!options.only || options.only === "environment") {
-      const e = this.environment;
-      g.useProgram(e);
-      g.uniform1f(this.u(e, "time"), time);
-      const moon = celestialState(time, this.width, this.height, this.roomUV);
-      this.weather?.setMoon(moon.position);
-      g.uniform3fv(this.u(e, "moonPosition"), moon.position);
-      g.uniform1f(this.u(e, "moonRadius"), moon.radius);
-      g.uniform1f(this.u(e, "moonReflectionSourceX"), moon.reflectionSourceX);
-      g.uniform1f(this.u(e, "projectionGrid"), options.projectionGrid ? 1 : 0);
-      g.uniform1f(this.u(e, "windLevel"), gust(time));
-      g.uniform1f(
-        this.u(e, "livingQuality"),
-        (this.ambientTier ?? this.tier) === "CINEMATIC" ? 2 : (this.ambientTier ?? this.tier) === "BALANCED" ? 1 : 0,
-      );
-      g.uniform1f(this.u(e, "reducedMotion"), options.reduced ? 1 : 0);
-      g.uniform1f(this.u(e, "livingEnabled"), options.freezeLiving ? 0 : 1);
-      g.uniform3fv(this.u(e, "cameraPosition"), cam.position);
-      g.uniform1f(this.u(e, "roll"), cam.roll);
-      g.uniform2f(this.u(e, "worldViewport"), worldW, worldH);
-      g.uniform2f(this.u(e, "viewport"), this.canvas.width, this.canvas.height);
-      g.uniform4fv(this.u(e, "roomUV"), this.roomUV);
-      g.uniform4fv(
-        this.u(e, "roomRect"),
-        this.roomRect.map((n) => n * this.pixelRatio),
-      );
-      for (const [unit, key, uniform] of [
+    if (!options.only || options.only === "environment" || options.only === "landscape" || options.only === "lens") {
+      const prepared = new Set<WebGLProgram>();
+      const moon = celestialState(time, this.width, this.height, this.roomUV, this.landscape.calibration);
+      const pierZ = exteriorPierDepth([worldW, worldH], this.roomUV as [number, number, number, number]);
+      const prepareEnvironment = (e: WebGLProgram) => {
+        g.useProgram(e);
+        if (prepared.has(e)) return;
+        prepared.add(e);
+        bindFilmLens(g, e);
+        g.uniform1f(this.u(e, "time"), time);
+        this.weather?.setMoon(moon.position);
+        g.uniform3fv(this.u(e, "moonPosition"), moon.position);
+        g.uniform1f(this.u(e, "moonRadius"), moon.radius);
+        g.uniform1f(this.u(e, "moonReflectionSourceX"), moon.reflectionSourceX);
+        g.uniform1f(this.u(e, "projectionGrid"), options.projectionGrid ? 1 : 0);
+        g.uniform1f(this.u(e, "apertureDebug"), options.apertureMask ? 1 : 0);
+        g.uniform2f(
+          this.u(e, "stageCalibration"),
+          this.landscape.calibration.width / this.landscape.calibration.height,
+          this.landscape.calibration.referenceCameraZ,
+        );
+        g.uniform4fv(this.u(e, "stageDepths"), this.landscape.calibration.depths);
+        const landscape = landscapeFrame({ width: this.width, height: this.height }, this.landscape.calibration);
+        g.uniform2fv(this.u(e, "stagePlaneSize"), landscape.size);
+        g.uniform2f(this.u(e, "stageWater"), landscape.slope, landscape.eyeHeight);
+        g.uniform1f(this.u(e, "stageEyeZ"), landscape.eyeZ);
+        g.uniform1f(this.u(e, "stageSkyZ"), this.landscape.calibration.depths[0]);
+        g.uniform4fv(this.u(e, "stageBackingBounds"), this.landscape.calibration.backingBounds);
+        g.uniform1f(this.u(e, "windLevel"), gust(time));
+        g.uniform1f(this.u(e, "exteriorPierZ"), pierZ);
+        g.uniform1f(
+          this.u(e, "livingQuality"),
+          (this.ambientTier ?? this.tier) === "CINEMATIC" ? 2 : (this.ambientTier ?? this.tier) === "BALANCED" ? 1 : 0,
+        );
+        g.uniform1f(this.u(e, "reducedMotion"), options.reduced ? 1 : 0);
+        g.uniform1f(this.u(e, "livingEnabled"), options.freezeLiving ? 0 : 1);
+        g.uniform3fv(this.u(e, "cameraPosition"), cam.position);
+        g.uniform1f(this.u(e, "roll"), cam.roll);
+        g.uniform2f(this.u(e, "worldViewport"), worldW, worldH);
+        g.uniform2f(this.u(e, "viewport"), this.canvas.width, this.canvas.height);
+        g.uniform4fv(this.u(e, "roomUV"), this.roomUV);
+        g.uniform4fv(
+          this.u(e, "roomRect"),
+          this.roomRect.map((n) => n * this.pixelRatio),
+        );
+        for (const [unit, , uniform] of environmentTextures) g.uniform1i(this.u(e, uniform), unit);
+      };
+      const environmentTextures = [
         [1, "aperture", "apertureMap"],
+        [10, "reconciliationMask", "reconciliationMask"],
         [2, "matte0", "matte0"],
         [3, "matte1", "matte1"],
         [4, "overscan", "roomOverscan"],
@@ -588,28 +944,70 @@ export class EmbarkationRenderer {
         [9, "room", "roomOriginal"],
         [13, "exterior", "exterior"],
         [12, "exteriorOverscan", "exteriorOverscan"],
-      ] as const) {
-        g.activeTexture(g.TEXTURE0 + unit);
-        g.bindTexture(g.TEXTURE_2D, this.textures.get(key)!.value);
-        g.uniform1i(this.u(e, uniform), unit);
-      }
+      ] as const;
+      bindScenery = () => {
+        for (const [unit, key] of environmentTextures) {
+          g.activeTexture(g.TEXTURE0 + unit);
+          g.bindTexture(g.TEXTURE_2D, this.textures.get(key)!.value);
+        }
+      };
+      bindScenery();
       const scene = (key: string, mode: number, post = 0) => {
         const tx = this.textures.get(key);
         if (!tx) return;
-        g.activeTexture(g.TEXTURE0);
-        g.bindTexture(g.TEXTURE_2D, tx.value);
-        g.uniform1i(this.u(e, "art"), 0);
-        g.uniform2f(this.u(e, "artSize"), tx.width, tx.height);
-        g.uniform1f(this.u(e, "mode"), mode);
-        g.uniform1f(this.u(e, "post"), post);
-        g.clear(g.DEPTH_BUFFER_BIT);
-        if (mode > 0) {
-          g.enable(g.DEPTH_TEST);
-          g.depthFunc(g.LEQUAL);
-        } else g.disable(g.DEPTH_TEST);
-        const fullQuad = mode === 0 || mode === 4 || mode === 6 || (mode === 1 && post === 1);
-        g.bindVertexArray(fullQuad ? this.quad : this.environmentGrid);
-        g.drawArrays(g.TRIANGLES, 0, fullQuad ? 6 : this.environmentCount);
+        const e = options.referenceExposure ? this.environment : this.environmentPrograms.get(mode)!;
+        const draw = (pass: DepthPass) => {
+          prepareEnvironment(e);
+          g.uniform1f(this.u(e, "depthPass"), pass);
+          g.activeTexture(g.TEXTURE0);
+          g.bindTexture(g.TEXTURE_2D, tx.value);
+          g.uniform1i(this.u(e, "art"), 0);
+          g.uniform2f(this.u(e, "artSize"), tx.width, tx.height);
+          g.uniform1f(this.u(e, "mode"), mode);
+          g.uniform1f(this.u(e, "post"), post);
+          // These branches are exact planes or ray intersections. Subdividing
+          // them 112x112 changes neither their projection nor their material.
+          // Keep tessellation for curved storm and nonplanar room surfaces.
+          const fullQuad =
+            mode === 0 ||
+            mode === 1 ||
+            mode === 4 ||
+            mode === 5 ||
+            mode === 6 ||
+            (mode === 3 && [0, 3, 4, 7, 8, 9].includes(post));
+          g.bindVertexArray(fullQuad ? this.quad : this.environmentGrid);
+          g.drawArrays(g.TRIANGLES, 0, fullQuad ? 6 : this.environmentCount);
+        };
+        if (mode === 0) {
+          g.disable(g.DEPTH_TEST);
+          draw(0);
+        } else {
+          // Spatial depths select order for soft boundaries; opaque overlap is
+          // resolved per fragment, including both ray-intersected water planes.
+          const z =
+            mode === 5
+              ? this.landscape.calibration.depths[Math.min(3, post)]
+              : mode === 6
+                ? moon.position[2]
+                : mode === 1
+                  ? post === 2
+                    ? pierZ
+                    : -12500
+                  : mode === 2
+                    ? -2390
+                    : mode === 4
+                      ? -1200
+                      : post === 8
+                        ? -12500
+                        : post === 9
+                          ? 0
+                          : [-2722.5, -1400, -1089, -2722.5, -2722.5, 200, 690, NEAR_ROOM_LANTERN_Z][Math.max(0, post)];
+          // The painted storm is a distant cloud background, not a solid shell
+          // that can stop rays. Extinction belongs to the advected volume. The
+          // settled original room is a CSS background projection: canonical UI
+          // lives above it; its flat Z=0 quad is not room geometry.
+          scenery.add({ z, draw, holdout: mode !== 2 && !(mode === 3 && post === 9) });
+        }
       };
       if (time < CUT.room) {
         scene("stage-distant", 0);
@@ -620,6 +1018,7 @@ export class EmbarkationRenderer {
         }
         if (time < 24.66) {
           scene("stage-distant", 5, 0);
+          scene("stage-distant", 5, 4);
           scene("stage-islands", 5, 1);
           scene("stage-middle", 5, 2);
           scene("stage-rocks", 5, 3);
@@ -627,12 +1026,9 @@ export class EmbarkationRenderer {
         }
         if (time > 14.5) scene("room", 6);
       }
-      if (time < 19.4) scene("crossing", 2);
+      if (time < 19.4 && !options.projectionGrid && options.only !== "landscape") scene("crossing", 2);
       if (!returning && !options.ambient && !options.only) {
-        this.weather?.mist(time, this.actors, this.width, this.height);
-        this.paintFocus(time, cam.position, cam.roll, worldW, worldH);
-        g.useProgram(e);
-        g.blendFunc(g.ONE, g.ONE_MINUS_SRC_ALPHA);
+        this.queueTitle(surfaces, time, cam.position, cam.roll, worldW, worldH);
       }
       if (time >= CUT.room) {
         // At the calibrated final viewpoint every projection has converged.
@@ -640,25 +1036,33 @@ export class EmbarkationRenderer {
         // living room, avoiding eight redundant fullscreen ambient passes.
         scene("room", 3, 9);
       } else if (time >= CUT.threshold) {
-        scene("room", 3, 8);
         scene("backing", 3, -1);
         scene("room", 3, 0);
         if (time < CUT.room) scene("P6-lantern", 4);
         for (const layer of [4, 2, 3, 1, 7, 5, 6]) scene("room", 3, layer);
       }
+      scenery.flush();
+    }
+    if (options.only === "contact") {
+      this.queueTitle(surfaces, time, cam.position, cam.roll, worldW, worldH, true);
     }
     g.disable(g.DEPTH_TEST);
-    if (!returning && !options.only) this.weather?.captureScenery(time);
-    if (this.backgroundCanvas) {
-      const b = this.backgroundCanvas.getContext("2d");
-      b?.clearRect(0, 0, this.backgroundCanvas.width, this.backgroundCanvas.height);
-      b?.drawImage(this.canvas, 0, 0);
+    if (!returning && (!options.only || options.only === "lens")) this.weather?.captureScenery(time);
+    if (!returning && time >= CUT.assembly - 0.1 && time < CUT.settled) this.materialBackdrop.capture();
+    this.diagnostics.materialBackdropBytes = this.materialBackdrop.bytes;
+    if (exposure?.split) {
+      this.exposure.capture(0, exposure.weight, this.sceneColor.resolve());
+      g.clear(g.COLOR_BUFFER_BIT);
+    } else if (!exposure && this.backgroundCanvas) {
+      this.sceneColor.present();
+      this.copyBackground();
+      this.sceneColor.bind();
       g.clear(g.COLOR_BUFFER_BIT);
     }
     if (!returning && time >= 0.45 && time < 28 && (!options.only || options.only === "page")) {
       const program = this.pageProgram;
       g.useProgram(program);
-      g.bindVertexArray(this.grid);
+      bindFilmLens(g, program);
       g.activeTexture(g.TEXTURE0);
       g.uniform1i(this.u(program, "art"), 0);
       g.uniform2f(this.u(program, "viewport"), worldW, worldH);
@@ -666,45 +1070,85 @@ export class EmbarkationRenderer {
       g.uniform1f(this.u(program, "roll"), cam.roll);
       g.uniform1f(this.u(program, "time"), time);
       g.blendFunc(g.ONE, g.ONE_MINUS_SRC_ALPHA);
-      const surfaces = this.pageSurfaces
+      const departures = this.pageSurfaces
         .filter((s) => s !== this.focusSurface)
         .map((s) => ({ s, state: pageState(s, time, this.width, this.height) }))
         .sort((a, b) => a.state.position[2] - b.state.position[2]);
-      for (const { s, state } of surfaces) {
+      for (const { s, state } of departures) {
         if (state.alpha < 0.002) continue;
         const tx = this.textures.get(s.id);
         if (!tx) continue;
-        g.bindTexture(g.TEXTURE_2D, tx.value);
-        g.uniform3fv(this.u(program, "position"), state.position);
-        g.uniform3fv(this.u(program, "rotation"), state.rotation);
-        g.uniform2f(this.u(program, "size"), (s.rect.width * 1100) / this.height, (s.rect.height * 1100) / this.height);
-        g.uniform4fv(this.u(program, "anchorHold"), state.anchors);
-        g.uniform2fv(this.u(program, "anchorPoints[0]"), anchorPoints(s.attachment).flat());
-        for (const [name, value] of Object.entries({
-          alpha: state.alpha,
-          pressure: state.pressure,
-          phase: s.phase,
-          released: state.released,
-          stiffness: state.stiffness,
-          weathering: state.weathering,
-        }))
-          g.uniform1f(this.u(program, name), value);
-        if (state.released === 0) {
-          g.uniform1f(this.u(program, "support"), 1);
-          g.drawArrays(g.TRIANGLES, 0, this.gridCount);
+        const sheet = pageSheet(s, this.width, this.height);
+        let geometry = this.pageGeometry.get(s);
+        if (!geometry || geometry.sheet !== sheet) {
+          if (geometry) {
+            geometry.buffers.forEach((b) => g.deleteBuffer(b));
+            g.deleteVertexArray(geometry.vao);
+          }
+          const vao = g.createVertexArray()!,
+            positions = g.createBuffer()!,
+            uv = g.createBuffer()!,
+            indices = g.createBuffer()!;
+          g.bindVertexArray(vao);
+          g.bindBuffer(g.ARRAY_BUFFER, uv);
+          g.bufferData(g.ARRAY_BUFFER, sheet.uv, g.STATIC_DRAW);
+          g.enableVertexAttribArray(0);
+          g.vertexAttribPointer(0, 2, g.FLOAT, false, 0, 0);
+          g.bindBuffer(g.ARRAY_BUFFER, positions);
+          g.bufferData(g.ARRAY_BUFFER, sheet.rest.length * 4, g.DYNAMIC_DRAW);
+          g.enableVertexAttribArray(1);
+          g.vertexAttribPointer(1, 3, g.FLOAT, false, 0, 0);
+          g.bindBuffer(g.ELEMENT_ARRAY_BUFFER, indices);
+          g.bufferData(g.ELEMENT_ARRAY_BUFFER, sheet.indices, g.STATIC_DRAW);
+          geometry = { sheet, vao, positions, buffers: [positions, uv, indices] };
+          this.pageGeometry.set(s, geometry);
         }
-        g.uniform1f(this.u(program, "support"), 0);
-        g.drawArrays(g.TRIANGLES, 0, this.gridCount);
+        const mesh = geometry;
+        let uploaded = false;
+        surfaces.add({
+          z: state.position[2],
+          draw: (pass) => {
+            g.useProgram(program);
+            g.activeTexture(g.TEXTURE0);
+            g.uniform1f(this.u(program, "depthPass"), pass);
+            g.bindVertexArray(mesh.vao);
+            if (!uploaded) {
+              g.bindBuffer(g.ARRAY_BUFFER, mesh.positions);
+              g.bufferSubData(g.ARRAY_BUFFER, 0, sheet.at(time).positions);
+              uploaded = true;
+            }
+            g.bindTexture(g.TEXTURE_2D, tx.value);
+            g.uniform3fv(this.u(program, "position"), state.supportPosition);
+            g.uniform3fv(this.u(program, "rotation"), state.supportRotation);
+            g.uniform2f(
+              this.u(program, "size"),
+              (s.rect.width * 1100) / this.height,
+              (s.rect.height * 1100) / this.height,
+            );
+            for (const [name, value] of Object.entries({
+              // Recession selects visibility, not physical transparency. Fog
+              // now integrates to this opaque sheet instead of past it.
+              alpha: 1,
+              pressure: state.pressure,
+              phase: s.phase,
+              released: state.released,
+              stiffness: state.stiffness,
+              weathering: state.weathering,
+            }))
+              g.uniform1f(this.u(program, name), value);
+            if (state.released === 0) {
+              g.uniform1f(this.u(program, "support"), 1);
+              g.drawElements(g.TRIANGLES, sheet.indices.length, g.UNSIGNED_SHORT, 0);
+            }
+            g.uniform1f(this.u(program, "support"), 0);
+            g.drawElements(g.TRIANGLES, sheet.indices.length, g.UNSIGNED_SHORT, 0);
+          },
+        });
       }
     }
-    if (options.ambient) {
-      if (query) {
-        g.endQuery(this.timer!.TIME_ELAPSED_EXT);
-        this.queries.push(query);
-      }
-      return;
-    }
+    if (options.ambient) return;
     g.useProgram(p);
+    bindFilmLens(g, p);
     g.bindVertexArray(this.grid);
     g.activeTexture(g.TEXTURE0);
     g.uniform1i(this.u(p, "art"), 0);
@@ -714,7 +1158,6 @@ export class EmbarkationRenderer {
     for (const [name, color] of Object.entries(this.palette)) g.uniform3fv(this.u(p, name), color);
     g.uniform1f(this.u(p, "roll"), cam.roll);
     g.uniform1f(this.u(p, "time"), time);
-    g.uniform1f(this.u(p, "quality"), this.tier === "CINEMATIC" ? 2 : this.tier === "BALANCED" ? 1 : 0);
     const objects = this.actors
       .filter(
         (a) =>
@@ -747,50 +1190,83 @@ export class EmbarkationRenderer {
         object.pose.position[0] += returnTime * 45;
       }
     objects.sort((a, b) => a.pose.position[2] - b.pose.position[2]);
+    const geometryCost = { candidates: objects.length, culled: 0, vertices: 0 };
+    const lens = filmLens(g);
     for (const { a, pose } of objects) {
       const tx = this.textures.get(a.asset);
       if (!tx) continue;
-      const prev = poseAt(a, Math.max(0, time - 0.012), this.width, this.height);
-      g.bindTexture(g.TEXTURE_2D, tx.value);
-      g.blendFunc(g.ONE, a.additive ? g.ONE : g.ONE_MINUS_SRC_ALPHA);
-      g.uniform3fv(this.u(p, "position"), pose.position);
-      g.uniform3fv(this.u(p, "rotation"), pose.rotation);
-      g.uniform2f(this.u(p, "size"), pose.size, (pose.size * tx.height) / tx.width);
-      g.uniform1f(this.u(p, "alpha"), pose.alpha);
-      g.uniform1f(this.u(p, "bend"), pose.bend);
-      g.uniform1f(this.u(p, "adhesion"), pose.adhesion);
-      g.uniform1f(this.u(p, "phase"), a.phase);
-      g.uniform1f(
-        this.u(p, "focusImpact"),
+      // Bound every authored vertex term, including curl and adhesion. A
+      // sphere/frustum test removes only geometry wholly outside the view;
+      // partially framed lens passes retain their full shape and exposure.
+      const distance = FOCAL + cam.position[2] - pose.position[2];
+      const radius =
+        Math.hypot(
+          pose.size / 2,
+          (pose.size * tx.height) / tx.width / 2,
+          pose.size * (0.218 * Math.abs(pose.bend) + 0.54 * pose.adhesion),
+        ) +
+        Math.hypot(...lens.aperture) * (1 + Math.abs(distance) / lens.focus);
+      if (
+        !options.referenceExposure &&
+        !sphereInView(pose.position, radius, cam, { width: this.width, height: this.height })
+      ) {
+        geometryCost.culled++;
+        continue;
+      }
+      const displayPixels =
+        ((((pose.size * FOCAL) / Math.max(1, distance)) * this.height) / WORLD_HEIGHT) * this.pixelRatio;
+      // Projected interpolation error controls distant tessellation, not a
+      // different deformation/motion model. Near passes keep the reference
+      // mesh. Rigid zero-bend material is exactly planar and needs one quad.
+      const divisions =
+        pose.adhesion > 0 || distance < pose.size * 3
+          ? 40
+          : Math.ceil(Math.sqrt((displayPixels * Math.abs(pose.bend) * 12) / (8 * 0.25)));
+      const selected = options.referenceExposure ? undefined : this.propGridLevels.find((n) => n >= divisions);
+      const material = propMaterial(a.asset);
+      const mesh =
+        this.propShells.get(a.asset) ??
+        (selected === undefined ? { vao: this.grid, count: this.gridCount } : this.propGrids.get(selected)!);
+      geometryCost.vertices += mesh.count;
+      const objectData = new Float32Array([
+        ...pose.position,
+        a.additive ? pose.alpha : 1,
+        ...pose.rotation,
+        pose.bend,
+        pose.size,
+        (pose.size * tx.height) / tx.width,
+        pose.adhesion,
+        a.phase,
         a.id === "focus-line" ? smooth(7.93, 8.02, time) * (1 - smooth(8.3, 8.7, time)) : 0,
-      );
-      const relativeDepth = pose.position[2] - cam.position[2];
-      const wordFocus = smooth(CUT.catch - 0.5, CUT.catch, time) * (1 - smooth(CUT.peel, CUT.peel + 0.65, time));
-      const focalDepth =
-        -smooth(16, 21, time) * 850 * (1 - smooth(CUT.threshold, CUT.room, time)) * (1 - wordFocus) +
-        (focusPose(time, this.width, this.height).position[2] - cam.position[2]) * wordFocus;
-      g.uniform1f(this.u(p, "contactLight"), a.hero === "collision" ? pose.adhesion : 0);
-      g.uniform1f(
-        this.u(p, "blur"),
-        a.id === "focus-line"
-          ? 0
-          : clamp(Math.abs(relativeDepth - focalDepth) / 3000) * 3 + clamp((relativeDepth - 210) / 250) * 4,
-      );
-      g.uniform1f(this.u(p, "emissive"), a.additive || a.id === "focus-line" ? 1 : 0);
-      g.uniform1f(this.u(p, "atmosphere"), a.material === "mist" ? 1 : 0);
-      g.uniform2f(this.u(p, "texel"), 1 / tx.width, 1 / tx.height);
-      const nowScreen = this.project(pose.position, time),
-        previousScreen = this.project(prev.position, Math.max(0, time - 0.012));
-      const displaySize = Math.max(1, (((pose.size * 1150) / (1150 - relativeDepth)) * this.height) / 1100);
-      g.uniform2f(
-        this.u(p, "motionVector"),
-        a.id === "focus-line" ? 0 : clamp((nowScreen.x - previousScreen.x) / displaySize, -0.035, 0.035),
-        a.id === "focus-line" ? 0 : clamp((previousScreen.y - nowScreen.y) / displaySize, -0.035, 0.035),
-      );
-      g.drawArrays(g.TRIANGLES, 0, this.gridCount);
+        0,
+        a.additive || a.id === "focus-line" ? 1 : 0,
+        a.material === "mist" ? 1 : 0,
+        0,
+        0,
+        material.backing,
+        this.propShells.has(a.asset) ? pose.size * material.thicknessRatio : 0,
+      ]);
+      surfaces.add({
+        z: pose.position[2],
+        additive: a.additive,
+        draw: (pass) => {
+          g.useProgram(p);
+          g.bindVertexArray(mesh.vao);
+          g.activeTexture(g.TEXTURE0);
+          g.uniform1f(this.u(p, "depthPass"), pass);
+          g.bindTexture(g.TEXTURE_2D, tx.value);
+          this.bindPropBacking();
+          materialBlend(g, a.additive);
+          g.uniform4fv(this.u(p, "objectData[0]"), objectData);
+          g.drawArrays(g.TRIANGLES, 0, mesh.count);
+        },
+      });
     }
+    this.diagnostics.propGeometry = geometryCost;
+    // Incoming canonical-DOM paint contributes to the same surface queue.
+    options.incoming?.(surfaces, time, exposure?.present ?? true);
+    surfaces.flush();
     if (!returning && !options.ambient) {
-      if (options.only === "mist") this.weather?.mist(time, this.actors, this.width, this.height);
       this.weather?.particlesAt(
         time,
         this.actors,
@@ -799,26 +1275,66 @@ export class EmbarkationRenderer {
         (k) => this.textures.get(k)?.value,
         options.only,
         options.layers,
+        options.referenceExposure,
       );
       if (!options.only || options.only === "mist")
-        this.weather?.mist(time, this.actors, this.width, this.height, true);
-      if (!options.only) this.weather?.lensAt(time);
-    }
-    if (query) {
-      g.endQuery(this.timer!.TIME_ELAPSED_EXT);
-      this.queries.push(query);
+        this.weather?.mist(time, this.actors, this.width, this.height, () => {
+          const target = exposure && !exposure.first ? this.shutterDepth : this.surfaceDepth;
+          const before = target.bytes;
+          const texture = target.capture(() => {
+            bindScenery();
+            scenery.holdout();
+            surfaces.holdout();
+          });
+          this.diagnostics.surfaceDepthBytes = this.surfaceDepth.bytes + this.shutterDepth.bytes;
+          this.diagnostics.textureBytes += target.bytes - before;
+          return texture;
+        });
+      if (!options.only || options.only === "lens") this.weather?.lensAt(time);
     }
   }
-  private paintFocus(time: number, cam: Vec3, roll: number, w: number, h: number) {
+  private bindPropBacking() {
+    const g = this.gl;
+    g.activeTexture(g.TEXTURE7);
+    // A missing optional material cannot substitute the printed face for its
+    // reverse. The program also has an explicit texture-independent fallback.
+    g.bindTexture(g.TEXTURE_2D, this.textures.get("paperBack")?.value ?? null);
+    g.uniform1i(this.u(this.props, "paperBack"), 7);
+    g.uniform1f(this.u(this.props, "backingAvailable"), this.textures.has("paperBack") ? 1 : 0);
+    g.activeTexture(g.TEXTURE0);
+  }
+  private queueTitle(
+    queue: SurfaceQueue,
+    time: number,
+    cam: Vec3,
+    roll: number,
+    w: number,
+    h: number,
+    diagnostic = false,
+  ) {
+    queue.add({
+      z: focusPose(time, this.width, this.height, this.focusSurface?.rect).position[2],
+      draw: (pass) => this.paintFocus(time, cam, roll, w, h, pass),
+    });
+    const snag = this.snags.get(composition(this.width, this.height).family);
+    if (snag && time >= SNAG_BIRTH && time < CUT.room) {
+      const points = snag.sheet.at(time).positions;
+      let z = 0;
+      for (let i = 2; i < points.length; i += 3) z += points[i] / (points.length / 3);
+      queue.add({ z, draw: (pass) => this.paintSnag(time, cam, roll, w, h, diagnostic, pass) });
+    }
+  }
+  private paintFocus(time: number, cam: Vec3, roll: number, w: number, h: number, pass: DepthPass = 0) {
     const pose = focusPose(time, this.width, this.height, this.focusSurface?.rect),
       // The same measured heading mesh survives departure. Its casing/layout
       // resolves at the edge-on turn, so no second message appears or fades in.
-      tx = this.textures.get(this.focusSurface && time < 4.725 ? this.focusSurface.id : "focus-line");
+      tx = this.textures.get(this.focusSurface && time < TITLE_TURN.edge ? this.focusSurface.id : "focus-line");
     if (!tx || pose.alpha < 0.001) return;
     const g = this.gl,
       p = this.props;
-    g.disable(g.DEPTH_TEST);
     g.useProgram(p);
+    bindFilmLens(g, p);
+    g.uniform1f(this.u(p, "depthPass"), pass);
     g.bindVertexArray(this.grid);
     g.activeTexture(g.TEXTURE0);
     g.bindTexture(g.TEXTURE_2D, tx.value);
@@ -826,36 +1342,137 @@ export class EmbarkationRenderer {
     g.uniform2f(this.u(p, "viewport"), w, h);
     g.uniform3fv(this.u(p, "cameraPosition"), cam);
     g.uniform3fv(this.u(p, "eye"), cam);
-    g.uniform3fv(this.u(p, "position"), pose.position);
-    g.uniform3fv(this.u(p, "rotation"), pose.rotation);
-    g.uniform2f(this.u(p, "size"), pose.size, (pose.size * tx.height) / tx.width);
-    for (const [name, value] of Object.entries({
-      time,
-      roll,
-      alpha: pose.alpha,
-      bend: pose.bend,
-      adhesion: 0,
-      contactLight: 0,
-      phase: 0,
-      quality: 0,
-      focusImpact: smooth(CUT.catch - 0.05, CUT.catch + 0.05, time) * (1 - smooth(CUT.peel, CUT.peel + 0.45, time)),
-      blur: 0,
-      emissive: 1,
-      atmosphere: 0,
-    }))
-      g.uniform1f(this.u(p, name), value);
+    g.uniform1f(this.u(p, "time"), time);
+    g.uniform1f(this.u(p, "roll"), roll);
+    g.uniform4fv(
+      this.u(p, "objectData[0]"),
+      new Float32Array([
+        ...pose.position,
+        pose.alpha,
+        ...pose.rotation,
+        pose.bend,
+        pose.size,
+        (pose.size * tx.height) / tx.width,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+      ]),
+    );
     for (const [name, value] of Object.entries(this.palette)) g.uniform3fv(this.u(p, name), value);
-    g.uniform2f(this.u(p, "texel"), 1 / tx.width, 1 / tx.height);
-    g.uniform2f(this.u(p, "motionVector"), 0, 0);
     g.blendFunc(g.ONE, g.ONE_MINUS_SRC_ALPHA);
     g.drawArrays(g.TRIANGLES, 0, this.gridCount);
   }
+  private releaseSnag() {
+    if (this.snagGeometry) {
+      this.snagGeometry.buffers.forEach((b) => this.gl.deleteBuffer(b));
+      this.gl.deleteVertexArray(this.snagGeometry.vao);
+      this.snagGeometry = null;
+    }
+    this.snags.clear();
+  }
+  private paintSnag(
+    time: number,
+    cam: Vec3,
+    roll: number,
+    w: number,
+    h: number,
+    diagnostic = false,
+    pass: DepthPass = 0,
+  ) {
+    const snag = this.snags.get(composition(this.width, this.height).family);
+    const tx = this.textures.get("derived/scrap-2");
+    if (!snag || !tx || time < SNAG_BIRTH || time >= CUT.room) return;
+    const g = this.gl,
+      p = this.props,
+      sheet = snag.sheet;
+    let geometry = this.snagGeometry;
+    if (!geometry || geometry.sheet !== sheet) {
+      if (geometry) {
+        geometry.buffers.forEach((b) => g.deleteBuffer(b));
+        g.deleteVertexArray(geometry.vao);
+      }
+      const vao = g.createVertexArray()!,
+        positions = g.createBuffer()!,
+        uv = g.createBuffer()!,
+        indices = g.createBuffer()!;
+      g.bindVertexArray(vao);
+      g.bindBuffer(g.ARRAY_BUFFER, uv);
+      g.bufferData(g.ARRAY_BUFFER, sheet.uv, g.STATIC_DRAW);
+      g.enableVertexAttribArray(0);
+      g.vertexAttribPointer(0, 2, g.FLOAT, false, 0, 0);
+      g.bindBuffer(g.ARRAY_BUFFER, positions);
+      g.bufferData(g.ARRAY_BUFFER, sheet.rest.length * 4, g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(1);
+      g.vertexAttribPointer(1, 3, g.FLOAT, false, 0, 0);
+      g.bindBuffer(g.ELEMENT_ARRAY_BUFFER, indices);
+      g.bufferData(g.ELEMENT_ARRAY_BUFFER, sheet.indices, g.STATIC_DRAW);
+      geometry = { sheet, vao, positions, buffers: [positions, uv, indices] };
+      this.snagGeometry = geometry;
+    }
+    const frame = sheet.at(time);
+    g.useProgram(p);
+    bindFilmLens(g, p);
+    g.uniform1f(this.u(p, "depthPass"), pass);
+    g.bindVertexArray(geometry.vao);
+    g.bindBuffer(g.ARRAY_BUFFER, geometry.positions);
+    g.bufferSubData(g.ARRAY_BUFFER, 0, frame.positions);
+    g.activeTexture(g.TEXTURE0);
+    g.bindTexture(g.TEXTURE_2D, tx.value);
+    g.uniform1i(this.u(p, "art"), 0);
+    this.bindPropBacking();
+    g.uniform3fv(this.u(p, "cameraPosition"), cam);
+    g.uniform3fv(this.u(p, "eye"), cam);
+    g.uniform2f(this.u(p, "viewport"), w, h);
+    g.uniform1f(this.u(p, "time"), time);
+    g.uniform1f(this.u(p, "roll"), roll);
+    g.uniform4fv(
+      this.u(p, "objectData[0]"),
+      new Float32Array([
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        time < CUT.peel ? 0.45 : 0,
+        0,
+        0,
+        1,
+        diagnostic ? 1 : 0,
+        1,
+        0,
+      ]),
+    );
+    for (const [name, value] of Object.entries(this.palette)) g.uniform3fv(this.u(p, name), value);
+    g.enable(g.DEPTH_TEST);
+    g.depthFunc(g.LEQUAL);
+    g.blendFunc(g.ONE, g.ONE_MINUS_SRC_ALPHA);
+    g.drawElements(g.TRIANGLES, sheet.indices.length, g.UNSIGNED_SHORT, 0);
+  }
   inspectScene(time: number) {
-    const moon = celestialState(time, this.width, this.height, this.roomUV);
+    const moon = celestialState(time, this.width, this.height, this.roomUV, this.landscape.calibration);
     return {
       roomUV: this.roomUV,
       moon,
       waterSurface: EXTERIOR,
+      titleSnag:
+        time >= SNAG_BIRTH && time < CUT.room
+          ? this.snags.get(composition(this.width, this.height).family)?.inspect(time)
+          : null,
       fogBanks: fogBanksAt(time),
       stormActors: this.actors
         .filter(
@@ -882,14 +1499,7 @@ export class EmbarkationRenderer {
     };
   }
   project(p: Vec3, t: number) {
-    const c = camera(t),
-      h = 1100,
-      f = 1150,
-      scale = f / (f - (p[2] - c.position[2]));
-    return {
-      x: this.width / 2 + ((p[0] - c.position[0]) * scale * this.height) / h,
-      y: this.height / 2 - ((p[1] - c.position[1]) * scale * this.height) / h,
-    };
+    return projectWorld(p, camera(t), { width: this.width, height: this.height });
   }
   dispose() {
     if (this.disposed) return;
@@ -897,16 +1507,32 @@ export class EmbarkationRenderer {
     this.removeContextListener();
     const g = this.gl;
     this.weather?.dispose();
+    this.surfaceDepth.dispose();
+    this.shutterDepth.dispose();
+    this.exposure.dispose();
+    this.sceneColor.dispose();
+    this.artworkUpload.dispose();
+    this.materialBackdrop.dispose();
     this.queries.forEach((query) => g.deleteQuery(query));
     this.queries = [];
     for (const t of this.textures.values()) g.deleteTexture(t.value);
     this.textures.clear();
     this.buffers.forEach((b) => g.deleteBuffer(b));
-    g.deleteVertexArray(this.grid);
+    for (const geometry of this.pageGeometry.values()) {
+      geometry.buffers.forEach((b) => g.deleteBuffer(b));
+      g.deleteVertexArray(geometry.vao);
+    }
+    this.pageGeometry.clear();
+    this.releaseSnag();
+    for (const mesh of this.propGrids.values()) g.deleteVertexArray(mesh.vao);
+    for (const mesh of this.propShells.values()) g.deleteVertexArray(mesh.vao);
+    this.propGrids.clear();
     g.deleteVertexArray(this.quad);
     g.deleteVertexArray(this.environmentGrid);
     g.deleteProgram(this.props);
     g.deleteProgram(this.environment);
+    for (const program of this.environmentPrograms.values()) g.deleteProgram(program);
+    this.environmentPrograms.clear();
     g.deleteProgram(this.pageProgram);
     this.pageSurfaces = [];
   }

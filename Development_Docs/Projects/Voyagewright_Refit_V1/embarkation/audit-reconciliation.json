@@ -1,0 +1,266 @@
+{
+  "classification": "engineering-record",
+  "status": "IN_PROGRESS",
+  "auditedRevision": "bf0a41f8ed984df6c068cb1a0a5919e12267ef22",
+  "referenceAudit": "Owner-supplied EMBARKATION_INDEPENDENT_AUDIT.md, read in full; source review and transcribed probes are not rendered evidence.",
+  "durationSeconds": 35.8,
+  "ownerAccepted": false,
+  "entries": [
+    {
+      "id": "EMB-AUD-01",
+      "title": "Shared relative airflow",
+      "source": "program.ts; page-material.ts; atmosphere.ts; dom.ts",
+      "reproduction": "Confirmed hidden carry target and independent 9600-unit page transport in current source.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "dynamics.test.ts: relative flow, projected area, integrated torque, deterministic seeks and worker transfer; no still-air transport floor",
+        "audit-title-contact.json: constrained glyph contact, actual native1x/0.5x/0.25x recordings, scope and remaining limits",
+        "audit-owner-wind-moon.json: source-bound moon depth regression measurements, earlier shared gust, material-specific release response, normal/quarter-speed native opening captures; wider audit remains open"
+      ],
+      "remaining": "Outgoing release now preserves world-space sheet momentum; see audit-departure-momentum.json. Incoming motion, hero steering and broader coherent rendered-motion screening remain open."
+    },
+    {
+      "id": "EMB-AUD-02",
+      "title": "Bounded strain and material resistance",
+      "source": "cloth.ts; cloth-worker.ts; page-material.ts; arrival-material.ts; dom.ts; renderer.ts",
+      "reproduction": "Replaced outgoing shader warp with cached constrained geometry. Initial metric solve failed narrow-cell/card cases; mesh conditioning and conservative advancement corrected those cases without changing declared limits.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "audit-cloth-metric.json: 48 constructed cases with maximum/p95/median strain and exact support error",
+        "cloth.test.ts",
+        "audit-browser-foundation.json: actual outgoing geometry at 4 and 7.2 seconds",
+        "audit-live-paint.json: isolated current-content GPU adapter, constrained mesh and nested ownership browser probe; not yet film integration",
+        "audit-arrival-material.json: constrained incoming support/strain and final mesh proof for 24 static geometry cases",
+        "audit-preview-recovery.json: actual narrow viewing-pane failure repaired, 66 focused tests, full-film readiness restored",
+        "audit-title-contact.json: constrained glyph contact, actual native1x/0.5x/0.25x recordings, scope and remaining limits",
+        "audit-owner-wind-moon.json: source-bound moon depth regression measurements, earlier shared gust, material-specific release response, normal/quarter-speed native opening captures; wider audit remains open"
+      ],
+      "remaining": "Incoming constrained material is integrated; hero-prop deformation remains legacy. Outgoing release momentum and moving supports have focused proof in audit-departure-momentum.json; self-contact, dynamic retargeting and full motion screening remain required."
+    },
+    {
+      "id": "EMB-AUD-03",
+      "title": "Visible title contact",
+      "source": "title-snag.ts; cloth.ts; cloth-worker.ts; renderer.ts; title-snag.test.ts",
+      "reproduction": "Replaced center+35 offset, zero-velocity ease, prescribed peel rotation and unconstrained shader adhesion with measured-glyph contact and direct world-space constrained paper.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "audit-title-contact.json: constrained glyph contact, actual native1x/0.5x/0.25x recordings, scope and remaining limits"
+      ],
+      "remaining": "Triangle-level contact/self-contact, exposed backside/thickness, shutter/focus, full viewport/browser screening and synchronized audio remain open; global cross-group depth is still pending."
+    },
+    {
+      "id": "EMB-AUD-04",
+      "title": "Momentum-driven incoming anchors",
+      "source": "arrival.ts; arrival-material.ts; dom.ts; cloth.ts",
+      "reproduction": "Removed the prescribed depth ease and damped sine from full incoming flight. Integrated bodies now enter finite support regions; captured points arrest momentum through spring force and torque. Initial-condition shooting uses the same air response; no flight steering force is hidden in wind.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "arrival.test.ts: nonzero capture velocity, energy dissipation without flow, arbitrary seeks and exact handoff limits across 24 authored geometry/window cases",
+        "audit-arrival-capture.json: minimum initial capture speed 1157.62 world units/s; maximum final projected corner error 0.01222 CSS px",
+        "Actual application incoming capture seek inspected at 32.5 seconds"
+      ],
+      "remaining": "Incoming GPU material integrated with independent parent/subpart ownership. Full motion/audio capture, responsive retargeting and native handoff pixel qualification remain required."
+    },
+    {
+      "id": "EMB-AUD-05",
+      "title": "Shared projection and nested ownership",
+      "source": "projection.ts; dom.ts; renderer.ts; environment.ts; atmosphere.ts; app/dev/embarkation/projection",
+      "reproduction": "Shared camera mapping replaced independent lenses. Actual browser probe exposed small-coefficient CSS precision loss; homogeneous scaling reduced worst nested error from 0.11078 to 0.00021 CSS px.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "audit-browser-foundation.json: 240 actual GPU/DOM cases",
+        "projection.test.ts",
+        "dom.test.ts: clean ancestor measurement, resize and live node registration",
+        "audit-live-paint.json: isolated current-content GPU adapter, constrained mesh and nested ownership browser probe; not yet film integration",
+        "audit-preview-recovery.json: canvas registration and paint raster repair in progress; current native pixel parity remains unqualified"
+      ],
+      "remaining": "Full-film ten-surface integration and reversible isolated text paint probe succeeded. Native captures exposed scrollbar-width projection mismatch (fixed) and remaining sharpness/backdrop differences. Responsive trajectory retargeting still jumps; canonical server-driven live-update matrix and full handoff proof remain required."
+    },
+    {
+      "id": "EMB-AUD-06",
+      "title": "Cross-group depth and atmosphere",
+      "source": "depth-compositor.ts; renderer.ts; paint-surface.ts; environment.ts; atmosphere.ts; depth-qualification.ts",
+      "reproduction": "Confirmed scene helper clears depth per environment and separate groups disable depth.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "audit-title-contact.json: constrained glyph contact, actual native1x/0.5x/0.25x recordings, scope and remaining limits",
+        "audit-depth-and-optics.json: native depth/fog/optical probes, source-bound clips, threshold water/pier repair and remaining limits",
+        "audit-room-continuity.json: source-bound full silent film and ambient tail, corrected room focus/ceiling/lantern/aperture/painted-disc convergence; residual contour and broader qualification limits retained"
+      ],
+      "remaining": "Shared opaque cores and surface-limited fog now have native pixel proof. Cross-group soft ordering, intersecting transparent geometry, translucent/additive fog transport and final-room geometric holdouts remain open. The19s wedge was lens water, not paper; see EMB-AUD-13."
+    },
+    {
+      "id": "EMB-AUD-07",
+      "title": "Geometry-aware shutter/focus",
+      "source": "exposure.ts; projection.ts; renderer.ts; atmosphere.ts; paint-surface.ts; exposure-qualification.ts",
+      "reproduction": "Replaced center-only UV smear with actual temporal geometry/alpha/depth integration and a shared thin-lens focus model. Native reference sampling covers stationary-center rotation, deformation, camera motion, near passes and both accumulation formats.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "exposure.test.ts: deterministic fixed shutter, measured-title focus, ray/projection inversion and final sharpness",
+        "audit-exposure.json: native raster/reference comparisons, source-bound clips and measured performance failure",
+        "audit-room-continuity.json: source-bound full silent film and ambient tail, corrected room focus/ceiling/lantern/aperture/painted-disc convergence; residual contour and broader qualification limits retained",
+        "audit-exposure-performance.json: exact shader specialization, packed uniforms and equivalent particle sampling; native reference comparisons and measured development cost recovery, before subsequent focus/room repairs",
+        "audit-production-performance.json: separately sealed production builds, parallel preparation, native fog work/pixel/reference comparisons, measured full-film and ambient CPU/GPU cost; high-percentile fog cost remains open"
+      ],
+      "remaining": "Nine-sample geometry exposure is retained. The measured development cost regression was reduced by exact shader/particle work. Extreme near-pass sampling, finite-aperture artifacts, production per-shot cost and the complete cadence/viewport/handoff matrix remain unqualified."
+    },
+    {
+      "id": "EMB-AUD-08",
+      "title": "Optical path length and surface limits",
+      "source": "atmosphere.ts",
+      "reproduction": "Audit expression identified; analytic runtime-module reproducer pending.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "projection.test.ts: physical segment length and camera roll",
+        "Shared filmRay and physical optical increments now used by the fog shader; bank transport uses shared air dynamics",
+        "audit-depth-and-optics.json: native depth/fog/optical probes, source-bound clips, threshold water/pier repair and remaining limits",
+        "audit-production-performance.json: separately sealed production builds, parallel preparation, native fog work/pixel/reference comparisons, measured full-film and ambient CPU/GPU cost; high-percentile fog cost remains open"
+      ],
+      "remaining": "Native homogeneous slabs pass within0.426byte. Transparent-fragment integration, light-path transport, hidden-edit contrast and production cost remain open."
+    },
+    {
+      "id": "EMB-AUD-09",
+      "title": "Moon hidden edit",
+      "source": "scene-space.ts; environment.ts; atmosphere.ts",
+      "reproduction": "Confirmed hidden-stage registration and late painted-disc size mismatch. Destination disc diameter is now calibrated through the room crop, and disc ownership transfers with sky material at convergence.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "audit-room-continuity.json: source-bound full silent film and ambient tail, corrected room focus/ceiling/lantern/aperture/painted-disc convergence; residual contour and broader qualification limits retained",
+        "audit-owner-wind-moon.json: source-bound moon depth regression measurements, earlier shared gust, material-specific release response, normal/quarter-speed native opening captures; wider audit remains open"
+      ],
+      "remaining": "Earlier fog-concealed bearing edit, disc/glow/reflection agreement throughout the full path and all viewport/quality variants still require visual qualification. Late diameter correction is not complete moon-continuity acceptance."
+    },
+    {
+      "id": "EMB-AUD-10",
+      "title": "Spatial environment travel",
+      "source": "environment.ts; landscape-space.ts; environment-set.ts; derive-embarkation-landscape*.mjs; room-extension.ts",
+      "reproduction": "Replaced confirmed image-row depth bending with fixed planar intersection. Initial land-depth calibration left incorrect sea contact; source shoreline anchors now determine rigid layer depths.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "audit-landscape.json: stationary Stage B sea/sky, calibrated shorelines, bounded source coverage, native 1x/0.5x/0.25x desktop captures and remaining limits",
+        "audit-depth-and-optics.json: native depth/fog/optical probes, source-bound clips, threshold water/pier repair and remaining limits",
+        "audit-room-continuity.json: source-bound full silent film and ambient tail, corrected room focus/ceiling/lantern/aperture/painted-disc convergence; residual contour and broader qualification limits retained"
+      ],
+      "remaining": "Current threshold corrects exhausted ceiling pixels, hidden near-lantern housing, black header cut and blocked aperture restoration. Native full film, slow entry and fifteen resized coverage samples retained. Alpha-matte contour discrepancies remain measured; full fresh-entry browser/viewport paths and production qualification remain open."
+    },
+    {
+      "id": "EMB-AUD-11",
+      "title": "Aperture data mask",
+      "source": "environment.ts; aperture-mask.ts",
+      "reproduction": "Confirmed normalized B-R cannot reach smoothstep upper edge 14. Sampled approved RGB/aperture positive/negative pixels.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "Focused unit contracts passed; renderer screening pending",
+        "audit-room-continuity.json: source-bound full silent film and ambient tail, corrected room focus/ceiling/lantern/aperture/painted-disc convergence; residual contour and broader qualification limits retained"
+      ],
+      "remaining": "The immutable reconciliation mask now drives the existing exterior surfaces rather than a depth-blocked far-plane poster. Full hidden-edit contrast and all quality/viewports remain unqualified."
+    },
+    {
+      "id": "EMB-AUD-12",
+      "title": "Declared linear-light pipeline",
+      "source": "color.ts; scene-color.ts; renderer.ts; environment.ts; living-material.ts; prop-material.ts; page-material.ts; atmosphere.ts; exposure.ts; material-backdrop.ts; depth-compositor.ts; dom.ts",
+      "reproduction": "Earlier shaders lit and blended encoded art; only shutter averaging decoded sRGB. Native references expose the expected 188-byte half-white linear composite versus 128-byte CSS composite. Float targets also reveal additive-alpha overflow and the incoming adapter default-target reset.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "audit-color-pipeline.json: native float/fallback art and mask references, linear alpha/additive/fog gradients, explicit canonical CSS grouping, source-bound full silent film and living tail"
+      ],
+      "remaining": "Reference pixels and full native playback pass. Transparent-fragment fog edges, responsive/other-browser appearance, current audio and isolated production cost still require broader qualification; no owner acceptance."
+    },
+    {
+      "id": "EMB-AUD-13",
+      "title": "Lens-film runoff",
+      "source": "lens-water.ts; lens-qualification.ts; atmosphere.ts",
+      "reproduction": "Native lens-only19s rendering reproduced the apparent paper wedge. Old runoff stretched without bound; trailing film reused a zero bulb normal and produced no meaningful refraction.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "audit-depth-and-optics.json: native depth/fog/optical probes, source-bound clips, threshold water/pier repair and remaining limits"
+      ],
+      "remaining": "Compact beads, coalescence and draining/refracting trails have focused/native proof. Actual spray-hit and sound event bindings, viewport matrix and full uninterrupted screening remain required."
+    },
+    {
+      "id": "EMB-AUD-14",
+      "title": "Hot-path waste and profiling",
+      "source": "dom.ts; live-paint.ts; Embarkation.tsx; renderer.ts; atmosphere.ts; exposure.ts; program.ts",
+      "reproduction": "Confirmed per-update toDataURL and inactive debug resize. Debug work corrected; other hot paths/profile pending.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "audit-browser-foundation.json: actor and cloth worker preparation; measured cold-seek stall removed without changing physical equations",
+        "audit-live-paint.json: isolated current-content GPU adapter, constrained mesh and nested ownership browser probe; not yet film integration",
+        "audit-title-contact.json: constrained glyph contact, actual native1x/0.5x/0.25x recordings, scope and remaining limits",
+        "audit-depth-and-optics.json: native depth/fog/optical probes, source-bound clips, threshold water/pier repair and remaining limits",
+        "audit-exposure-performance.json: exact shader specialization, packed uniforms and equivalent particle sampling; native reference comparisons and measured development cost recovery, before subsequent focus/room repairs",
+        "audit-production-performance.json: separately sealed production builds, parallel preparation, native fog work/pixel/reference comparisons, measured full-film and ambient CPU/GPU cost; high-percentile fog cost remains open"
+      ],
+      "remaining": "Exact environment specialization, packed prop uniforms and equivalent particle translation sampling recover measured development frame cost while retaining nine samples. Complete production-shaped CPU/GPU/copy/preparation/memory and per-shot p95/p99 profiling, live-DOM transport/resize work and broader hardware/browser qualification."
+    },
+    {
+      "id": "EMB-AUD-15",
+      "title": "Event audio",
+      "source": "sound-cues.ts; audio.ts; renderer.ts; dom.ts; Embarkation.tsx",
+      "reproduction": "Replaced literal-timed collision/pass loops with seeded material foley sourced from visual release/contact/impact/capture events. The ambient audio bed now retains identical settled source/gain ownership through handoff.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "sound-cues.test.ts and audio.test.ts: lookahead, no duplicates, late-tail resume, replay/rate changes, bounded synthesis, node cleanup and gain continuity",
+        "audit-event-audio.json: native full-film run, 91 unique cues, direct stereo output recording, no clipped samples, retained room-ambience tail"
+      ],
+      "remaining": "Listening review and full native pause/mute/seek/replay/interruption/preference matrix. Clock-aligned recording does not prove sample-exact audiovisual perception. Requalify after further physical/contact edits."
+    },
+    {
+      "id": "EMB-AUD-16",
+      "title": "Hero backfaces and thickness",
+      "source": "prop-material.ts; prop-shell.ts; renderer.ts; material/prop-diagnostic.tsx",
+      "reproduction": "Confirmed shared printed front/reverse. Replaced with asset-specific unprinted reverse materials; map and compass have alpha-contour extrusion. Preserved original art and trajectories.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "prop-shell.test.ts: closed contour topology including holes and feathered alpha; ink-only glyph exemption",
+        "audit-prop-materials.json: native print-substitution invariance, edge-on pixel difference, full-revolution error checks, teal/warm views, silent normal/quarter-speed captures"
+      ],
+      "remaining": "Finish integrated largest-pass/bent-contact and viewport/quality screening with current optics. Compass is shallow artwork relief; sampled desktop flight stays in its supported face range. Full same-revision audiovisual/performance qualification remains open."
+    },
+    {
+      "id": "EMB-AUD-17",
+      "title": "Truthful environment selection",
+      "source": "renderer.ts; environment-set.ts",
+      "reproduction": "Confirmed cover/destination loaded as required but not drawn. Registered layer/calibration contract and generic fallback implemented; renderer proof pending.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "Focused unit contracts passed; renderer screening pending"
+      ],
+      "remaining": "Full mechanism repair and same-revision visual/audio/performance qualification as applicable."
+    },
+    {
+      "id": "EMB-AUD-18",
+      "title": "Input ownership at arrival",
+      "source": "Embarkation.tsx; input-ownership.ts",
+      "reproduction": "Confirmed interactive main at 34.7 while keyboard handling lasts 35.8. Listener/boundary correction implemented; real-browser typing proof pending.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "input-ownership.test.ts",
+        "audit-browser-foundation.json: native typing with spaces at film time 35.571 while playing; no inert/modal restrictions; native Space button behavior"
+      ],
+      "remaining": "Full mechanism repair and same-revision visual/audio/performance qualification as applicable."
+    },
+    {
+      "id": "EMB-AUD-19",
+      "title": "Renderer evidence and finishing",
+      "source": "focused tests; inspector; scripts/refit",
+      "reproduction": "Existing source-equation evidence is narrower than requested rendered contracts. New diagnostics/evidence remain in progress.",
+      "repairStatus": "IN_PROGRESS",
+      "proof": [
+        "Task-owned audit fixture copied using SQLite online backup; loopback 3148 preserves owner runtime and DB",
+        "audit-browser-foundation.json (earlier source identities retained)",
+        "audit-arrival-capture.json",
+        "53 focused tests across 12 files, typecheck, documentation validation and feature validation passed after incoming capture integration",
+        "audit-live-paint.json: isolated current-content GPU adapter, constrained mesh and nested ownership browser probe; not yet film integration",
+        "audit-title-contact.json: constrained glyph contact, actual native1x/0.5x/0.25x recordings, scope and remaining limits",
+        "audit-landscape.json: stationary Stage B sea/sky, calibrated shorelines, bounded source coverage, native 1x/0.5x/0.25x desktop captures and remaining limits",
+        "audit-depth-and-optics.json: native depth/fog/optical probes, source-bound clips, threshold water/pier repair and remaining limits",
+        "audit-room-continuity.json: source-bound full silent film and ambient tail, corrected room focus/ceiling/lantern/aperture/painted-disc convergence; residual contour and broader qualification limits retained",
+        "audit-exposure-performance.json: exact shader specialization, packed uniforms and equivalent particle sampling; native reference comparisons and measured development cost recovery, before subsequent focus/room repairs",
+        "audit-owner-wind-moon.json: source-bound moon depth regression measurements, earlier shared gust, material-specific release response, normal/quarter-speed native opening captures; wider audit remains open",
+        "audit-production-performance.json: separately sealed production builds, parallel preparation, native fog work/pixel/reference comparisons, measured full-film and ambient CPU/GPU cost; high-percentile fog cost remains open"
+      ],
+      "remaining": "Full same-candidate uninterrupted film, audio capture/listening, production profiling, viewport/browser/data/lifecycle matrix, reviewed commits and draft PR update remain required."
+    }
+  ]
+}

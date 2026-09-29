@@ -1,5 +1,6 @@
-/** The same membrane law describes a page losing its anchors and a room finding them.
- * Coordinates are material UVs; held regions remain on the rigid support plane. */
+/** Shared support layouts in material UVs. Outgoing and incoming page material
+ * use ConstrainedSheet. The analytic hero deformation below remains a separate
+ * legacy path until the title-contact repair replaces it. */
 export type Attachment = "center" | "edge" | "corner" | "multi";
 export const attachments: Attachment[] = ["center", "edge", "corner", "multi"];
 export function anchorPoints(kind: Attachment): [number, number][] {

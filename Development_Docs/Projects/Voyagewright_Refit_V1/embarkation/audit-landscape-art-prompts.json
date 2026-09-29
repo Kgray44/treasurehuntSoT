@@ -1,0 +1,17 @@
+{
+  "classification": "engineering-record",
+  "tool": "built-in imagegen",
+  "purpose": "Supporting sky/water reconstruction and measured source overscan for EMB-AUD-10. Original land cutouts and final Muster art are unchanged.",
+  "inputGuide": ".runtime/embarkation/audit-repair/stage-b-fill-guide.png",
+  "acceptedFillMaster": ".runtime/embarkation/audit-repair/stage-b-fill-master.png",
+  "runtimeDerivative": "public/images/embarkation/derived/stage-b-spatial-backing.png",
+  "prompt": "Use case: precise-object-edit. Fill ONLY the transparent/black missing regions in this technical matte painting guide. Preserve the full wide 2848x1328 canvas and all existing visible pixels in their EXACT locations. Do not crop or zoom the central image; fill the wide missing borders and the holes where foreground islands were removed. Continue quiet blue nighttime water below, and the existing dark blue/pink twilight cloud sky above. The horizon is fixed across the canvas at 47.6% of image height, following the surviving thin far shore on the left. No foreground land, no islands, no moon, no light beams, no boats or structures. Fill erased mountain silhouettes with continuous sky above that fixed horizon and water below. Continue only very low distant horizon ridges. The result should be an opaque complete background with no black holes or transparency, natural ripples and no repeated edge fill. Keep the existing subdued painted palette; do not make the sky more orange or add a bright sunset. This is a clean supporting background for original islands rendered separately, so matching the guide's registration is critical.",
+  "qualification": "The generator did not preserve original pixels exactly or the precise horizon location. The deterministic derivation restores protected original sky, translates the fill after resolution normalization, and harmonizes support colors in float precision. Derived pixels were inspected before renderer integration. Full viewport/movie acceptance remains pending.",
+  "rejectedFirstGeneration": "Direct source-plus-text overscan moved the horizon substantially and was not used. The second generation used a registered transparent guide.",
+  "reproduction": [
+    "node scripts/refit/derive-embarkation-landscape-guide.mjs",
+    "Use the built-in edit tool with that guide and the recorded prompt; preserve the selected master locally.",
+    "node scripts/refit/derive-embarkation-landscape.mjs .runtime/embarkation/audit-repair/stage-b-fill-master.png .runtime/embarkation/audit-repair/stage-b-fill-guide.png public/images/embarkation/derived/stage-b-spatial-backing.png",
+    "npx tsx scripts/refit/probe-embarkation-landscape.ts"
+  ]
+}

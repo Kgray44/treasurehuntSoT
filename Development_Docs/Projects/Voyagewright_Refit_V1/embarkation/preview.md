@@ -3,19 +3,82 @@ title: Embarkation - Owner Screening Correction
 audience: product-engineering
 status: current
 canonical_for: refit-v1-embarkation-local-screening
-last_reviewed: 2026-09-21
+last_reviewed: 2026-09-29
 ---
 
 # Embarkation — Owner Screening Correction
 
-**IMPLEMENTATION_ITERATING — owner-requested motion/fog/Stage C correction.**
+**IMPLEMENTATION_ITERATING — independent-audit repair EMB-AUD-01 through EMB-AUD-19.**
 The owner's rejection supersedes the affected Delta 2 visual conclusions, which
-remain preserved as historical evidence. Current work is tracked in
-[the correction record](correction-proof.json). The full authored film
+remain preserved as historical evidence. Current repairs and incomplete proof are tracked in
+[the audit reconciliation](audit-reconciliation.json), including
+[native title-contact recordings and limitations](audit-title-contact.json).
+[Stage B projection and native landscape footage](audit-landscape.json) records
+the fixed sea plane, shoreline calibration, supporting-art provenance, and
+the outstanding compositor/viewport qualification.
+[Shared depth, fog and lens-water proof](audit-depth-and-optics.json) records
+native GPU pixel checks, the corrected threshold sea/pier registration, and
+desktop diagnostic footage from that source revision.
+[Geometry exposure and focus checks](audit-exposure.json) record the subsequent
+shutter implementation and its native raster proof.
+[Shader and particle cost measurements](audit-exposure-performance.json) retain
+the subsequent measured recovery without reducing the nine geometry samples.
+[Room continuity repairs](audit-room-continuity.json) record the corrected focus,
+ceiling coverage, lantern depth, aperture material convergence and moon size,
+with a current-source full silent recording and more than eight seconds of ambience.
+Soft transparent ordering, light transport, production performance, complete sound
+integration and the full screening matrix remain open. This remains an implementation
+preview, not a ready owner-acceptance candidate.
+[The correction record](correction-proof.json) describes an earlier revision.
+The full authored film
 is **35.8 seconds**, following the owner's Delta 2 runtime update. First entry
 and Replay Arrival use that program. Normal return remains two seconds; reduced
 motion retains the 1.8-second ceremony. No merge, owner acceptance or adjacent
 Refit work is included.
+[Hero reverse and edge checks](audit-prop-materials.json) record unprinted material
+backs, preserved-alpha print substitution tests and actual silhouette thickness
+for the map/compass. Normal/quarter-speed silent captures and dark/warm material
+views are retained; broader optical and audiovisual qualification remains open.
+[Event-audio execution](audit-event-audio.json) records the shared physical cue
+sources, transport/lifecycle tests and a native audio-enabled full-film run.
+All 91 cues fired once; the retained stereo track includes arrival ambience.
+Signal checks passed, while listening review and the wider native audio matrix
+remain pending.
+[The owner's wind/moon correction](audit-owner-wind-moon.json) records the
+coplanar-depth flicker repair, an earlier shared gust and faster staggered page
+releases. Native moon-center luminance now stays within 235.1–237.5 across 121
+unobstructed samples, compared with 111.5–237.3 before repair. Normal/quarter-speed
+opening captures are retained. The older audio recording predates these new
+release times. Production preparation now runs contact and actor jobs concurrently;
+the later fog passage still has a measured GPU slowdown under investigation.
+[Production timing and fog work reduction](audit-production-performance.json)
+retain separately sealed builds, a native full-film run, worker preparation,
+per-shot CPU/GPU measurements and three viewport reference comparisons. The fog
+median improves from 76.6 to 39.2 ms on the measured machine; its high-percentile
+cost remains above target. No ray steps, exposure samples or authored density
+were removed. Reference differences and remaining qualification limits are
+recorded explicitly.
+
+[Outgoing momentum continuity](audit-departure-momentum.json) records the next
+opening repair: one world-space constrained sheet now carries strain, support
+failure and free flight without restarting velocity at release. It retains the
+earlier shared gust and staggered timing. Moving pins stay registered, including
+narrow headers; worker caches preserve the complete material state. Normal and
+quarter-speed native recordings and a new production replay are retained. The
+focused suite passes 106 tests. Portrait/tablet frames were inspected; ultrawide
+renderer pixels are correct but this IAB's compositor capture repeats tiles, so
+full ultrawide browser-compositor qualification remains open.
+
+[Linear color and native references](audit-color-pipeline.json) record the shared
+linear-light scene, fog, lens and shutter pipeline. Artwork is decoded before
+premultiplication and filtering; masks remain numeric data. Canonical CSS paint
+and blur use an explicit display-referred boundary to preserve DOM handoff.
+Both the float reference and sRGB fallback reproduce the accepted room artwork
+exactly in native no-effect checks, with at most one byte of error for soft edges,
+alpha/additive references and fog gradients. A fresh 45-second silent native
+capture includes the whole film and living ambience. Transparent-fragment fog,
+production cost, current audiovisual review and the wider qualification matrix
+remain open; this does not supersede those limitations or claim owner acceptance.
 
 Owned branch `codex/refit-v1-embarkation`, worktree
 `D:\CodexWorktrees\treasurehunt-refit-v1-embarkation`, accepted Muster baseline
@@ -32,19 +95,30 @@ Sera is Captain. The historical `role=captain` URL selects Kato's fixture accoun
 it does not confer Captain permissions or change the helm.
 
 The scrubber supports exact time, frame stepping, 1× / 0.5× / 0.25×, material
-isolation, camera/depth/moon visualization, an exterior projection grid, quality,
+isolation (including checker title contact and landscape without weather), camera/depth/moon visualization, exterior/room projection coverage, quality,
 reduced motion, mute, material freeze and compositor-loss testing. Collapse it
 for unobstructed playback.
 Hold Space or the compass for three seconds to skip; releasing early cancels.
 After arrival, leave the room running for at least eight seconds to see residual
 suspension damping and quiet persistent flame/water life.
 
+The isolated audit preview at port 3148 also exposes a
+[native depth and optical probe](http://127.0.0.1:3148/dev/embarkation/depth).
+It exchanges overlapping material depths and measures homogeneous fog and
+refracting lens trails, rotating/deforming silhouettes and common focus on the actual GPU.
+The inspector's **Full shutter reference** disables shutter-local fog reuse,
+projected-size tessellation selection and conservative prop culling for comparisons.
+Its constructed geometry is focused
+mechanism evidence, not a replacement for screening the film. The **lens**
+isolation option separates optical artifacts from paper/prop occlusion.
+
 ## Authored pacing and physical continuity
 
 | Time        | Event                                                                                                 |
 | ----------- | ----------------------------------------------------------------------------------------------------- |
-| 0–4         | Recognizable platform, original heading arcs/curls into JOIN, pressure against rigid supports         |
-| 4–10        | Free edges strain, anchors fail in sequence, components reorient and accelerate into depth            |
+| 0–3.3       | Recognizable platform, original heading arcs/curls into JOIN, rear-origin pressure begins             |
+| 3.3–7.2     | First gust, free edges strain, staggered 3.75–6.31s releases accelerate material into depth           |
+| 7.2–10      | Released page joins the growing storm; camera travel and physical crossing build                      |
 | 10–16       | Maximum crossing energy near 12.15; contact at 11.45, peel at 13.65, slower chart pass from 13.25     |
 | 16–22       | Separated landscape planes, forward exploration, readable moon and water, remaining material recedes  |
 | 22–27       | Continuous patchy fog travels from behind the eye; one celestial anchor reconciles behind dense banks |
@@ -64,7 +138,9 @@ The two UI transformations use the same membrane law. The old platform retains
 held regions while free edges peel away. The incoming mounted Muster begins
 behind the eye, travels past it, catches new supports and remains under tension
 before relaxing. Existing nodes, fonts, crew data and controls remain live;
-there is no raster proxy-to-DOM exchange.
+short-lived GPU paint surfaces consume current canonical DOM content and return
+visual ownership to those same nodes. Native pixel parity, responsive retargeting,
+and server-driven live-update qualification remain open in the audit ledger.
 
 ## Environment, weather and liquid
 
@@ -119,12 +195,12 @@ bounding sampling and update cost.
 The owner's rejection supersedes the affected visual conclusions in the
 historical Delta 2 record. The current correction keeps the 35.8-second cut.
 
-| Rejected outcome | Actual cause | Correction |
-| --- | --- | --- |
+| Rejected outcome                   | Actual cause                                                                                                                                                                                                                       | Correction                                                                                                                                                                                                                                                             |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Slow releases and miniature debris | The presentation clock was correct. Low release/transport speeds and a long extinction range kept material visibly present. Cache sampling also had a terminal-clamping risk, although that was not the observed opening slowdown. | Event age remains seconds since release. Faster material-specific impulses, entrainment, rotation and flutter restore force. A fixed 12-second cache extrapolates velocity beyond its horizon. Depth extinction removes remote material before world-space retirement. |
-| Abrupt fog coverage | Advected noise was already present across the viewing volume; a global density envelope made that whole volume appear. | Successive irregular banks originate behind the eye, overtake it and disperse downstream. Their upstream supply grows and dwindles. Coverage follows their positions, widths and optical depth; no global visibility ramp supplies or removes them. |
-| Missing moon continuity | The disc was faded off at the fog cue, while scattering used an unrelated screen position. | One celestial state supplies the projected disc, volumetric light direction and existing-reflection modulation. Registration reconciles from 23.85–24.75 behind moving fog. The disc is attenuated by fog; softened blue-white light remains in thinner regions. |
-| Lower exterior stretching | Image-row-dependent depth bent the entire exterior, including rigid foreground objects. Its water vanishing line also needed a finite shoreline intersection. | A ray-intersected level water plane meets the distant matte at the shoreline. Sky/coast and rigid pier/boats have separate fixed depths. Controlled source registration supplies measured supporting coverage. The 27–31-second backward glide is unchanged. |
+| Abrupt fog coverage                | Advected noise was already present across the viewing volume; a global density envelope made that whole volume appear.                                                                                                             | Successive irregular banks originate behind the eye, overtake it and disperse downstream. Their upstream supply grows and dwindles. Coverage follows their positions, widths and optical depth; no global visibility ramp supplies or removes them.                    |
+| Missing moon continuity            | The disc was faded off at the fog cue, while scattering used an unrelated screen position.                                                                                                                                         | One celestial state supplies the projected disc, volumetric light direction and existing-reflection modulation. Registration reconciles from 23.85–24.75 behind moving fog. The disc is attenuated by fog; softened blue-white light remains in thinner regions.       |
+| Lower exterior stretching          | Image-row-dependent depth bent the entire exterior, including rigid foreground objects. Its water vanishing line also needed a finite shoreline intersection.                                                                      | A ray-intersected level water plane meets the distant matte at the shoreline. Sky/coast and rigid pier/boats have separate fixed depths. Controlled source registration supplies measured supporting coverage. The 27–31-second backward glide is unchanged.           |
 
 The written chart retains its local 4.5-second near pass and then accelerates
 downstream. The text-contact interval remains readable; released paper regains
