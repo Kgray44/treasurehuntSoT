@@ -186,8 +186,8 @@ async function signInThroughProduct(page: Page) {
   signInClientOrdinal += 1;
   await page.context().setExtraHTTPHeaders({ "x-forwarded-for": `198.18.0.${signInClientOrdinal}` });
   await page.goto("/sign-in");
-  await expect(page.getByLabel("Email or legacy Player name")).toBeVisible({ timeout: 30_000 });
-  await page.getByLabel("Email or legacy Player name").fill(email);
+  await expect(page.getByLabel("Email or Player name")).toBeVisible({ timeout: 30_000 });
+  await page.getByLabel("Email or Player name").fill(email);
   await page.getByLabel("Password").fill(password);
   const signInResponse = page.waitForResponse(
     (response) => response.url().endsWith("/api/auth/sign-in") && response.request().method() === "POST",

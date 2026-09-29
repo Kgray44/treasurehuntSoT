@@ -50,7 +50,10 @@ test("Drydock Phase 4 exposes current launch and compatibility decisions without
   const studioReady = page.waitForResponse(
     (response) => response.url().endsWith("/api/studio/tales") && response.request().method() === "GET",
   );
-  await page.getByRole("link", { name: "Create Chronicle", exact: true }).click();
+  await page
+    .getByRole("navigation", { name: "Studio destinations" })
+    .getByRole("link", { name: "Create Chronicle" })
+    .click();
   expect((await studioReady).ok()).toBeTruthy();
   await expect(page.getByRole("button", { name: "Create and open Chronicle" })).toBeEnabled();
   await page.getByLabel("Title", { exact: true }).fill("Synthetic Drydock browser Chronicle");

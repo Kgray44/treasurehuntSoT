@@ -79,7 +79,7 @@ async function signInFromGateway(page: Page, account: AccountFixture, destinatio
   await page.getByRole("link", { name: "Continue to account sign-in" }).click();
   await expect(page.getByRole("link", { name: "Create Account" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Forgot Password" })).toBeVisible();
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  await page.getByLabel("Email or Player name").fill(account.email);
   await page.getByLabel("Password").fill(password);
   await page.getByLabel("Password").press("Enter");
   await expect(page).toHaveURL(new RegExp(`${destination.replaceAll("/", "\\/")}$`, "u"));
@@ -160,9 +160,9 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
           (window as typeof window & { homeportAnonymousFlash?: string[] }).homeportAnonymousFlash?.push("anonymous");
       }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
     });
-    await page.getByLabel("Email or legacy Player name").fill(player.email);
+    await page.getByLabel("Email or Player name").fill(player.email);
     await page.getByLabel("Password").fill(password);
-    await expect(page.getByLabel("Email or legacy Player name")).toHaveValue(player.email);
+    await expect(page.getByLabel("Email or Player name")).toHaveValue(player.email);
     await expect(page.getByLabel("Password")).toHaveValue(password);
     await page.getByLabel("Password").press("Enter");
     expect(pageErrors).toEqual([]);
@@ -248,7 +248,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     await expect(page).toHaveURL(/\/sign-in\?.*reason=expired/u);
     await expect(page.getByText(/Your session expired/u)).toBeVisible();
     await capture(page, "HP-P1-EV-H-session-expired");
-    await page.getByLabel("Email or legacy Player name").fill(player.email);
+    await page.getByLabel("Email or Player name").fill(player.email);
     await page.getByLabel("Password").fill(password);
     await page.getByLabel("Password").press("Enter");
     await expect(page).toHaveURL(/\/player\/library$/u);
@@ -393,7 +393,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
   test("Journey O: malicious return destinations fall back internally", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/sign-in?returnTo=https%3A%2F%2Fattacker.invalid%2Fcollect");
-    await page.getByLabel("Email or legacy Player name").fill(safeReturnPlayer.email);
+    await page.getByLabel("Email or Player name").fill(safeReturnPlayer.email);
     await page.getByLabel("Password").fill(password);
     await page.getByLabel("Password").press("Enter");
     await expect(page).toHaveURL(/\/$/u);
