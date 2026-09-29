@@ -724,13 +724,13 @@ test("Pass the Helm keeps authority, membership, lineage, and Player privacy dis
       );
       await Promise.all(
         guestPages.map((guestPage) =>
-          expect(guestPage.getByRole("dialog", { name: /Take Captaincy for/u })).toBeVisible({ timeout: 30_000 }),
+          expect(guestPage.getByRole("dialog", { name: "Take Captaincy?" })).toBeVisible({ timeout: 30_000 }),
         ),
       );
       await Promise.all(
         guestPages.map((guestPage) =>
           guestPage
-            .getByRole("dialog", { name: /Take Captaincy for/u })
+            .getByRole("dialog", { name: "Take Captaincy?" })
             .getByRole("button", { name: "Take Captaincy" })
             .click({ noWaitAfter: true, timeout: 30_000 }),
         ),
