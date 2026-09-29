@@ -1151,7 +1151,7 @@ test("Ready the Room keeps the Captain-only, participating-Captain, and ordinary
   await expect(page.locator('[data-captain="true"] .muster-crew-role')).toContainText("Captain");
   await expect(page.getByRole("button", { name: /^Manage Helm A3/u })).toHaveCount(2);
   await page.getByRole("button", { name: "Captain & Voyage options" }).click();
-  await expect(page.getByRole("link", { name: "Leave Waiting Room" })).toHaveAttribute("href", "/player/library");
+  await expect(page.getByRole("link", { name: "Leave Waiting Room" })).toHaveAttribute("href", "/captain/library");
   await expect(page.getByRole("button", { name: "Leave Voyage" })).toHaveCount(0);
 
   const guests = await Promise.all(
