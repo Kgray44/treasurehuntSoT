@@ -1118,7 +1118,7 @@ test("Ready the Room keeps the Captain-only, participating-Captain, and ordinary
     captainOnlyCard.getByRole("link", { name: "Open Muster Room" }).click(),
   ]);
   await expect(page.locator("main.muster-scene")).toHaveAttribute("data-viewer-role", "captain-only");
-  await expect(page.getByText(captainOnlyName, { exact: true })).toBeVisible();
+  await expect(page.locator("main.muster-scene .muster-voyage-name")).toHaveText(captainOnlyName);
   await expect(page.getByText("Captain-only Voyage. Begin when you're ready.")).toBeVisible();
   await expect(page.getByRole("button", { name: "Begin the Voyage" })).toBeVisible();
   await page.getByRole("button", { name: "Captain & Voyage options" }).click();
@@ -1146,7 +1146,7 @@ test("Ready the Room keeps the Captain-only, participating-Captain, and ordinary
   });
   await page.goto(`/player/playthroughs/${shared.playthroughId}`);
   await expect(page.locator("main.muster-scene")).toHaveAttribute("data-viewer-role", "captain-player");
-  await expect(page.getByText(sharedName, { exact: true })).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator("main.muster-scene .muster-voyage-name")).toHaveText(sharedName, { timeout: 30_000 });
   await expect(page.getByRole("button", { name: "Begin the Voyage" })).toBeVisible();
   await expect(page.locator('[data-captain="true"] .muster-crew-role')).toContainText("Captain");
   await expect(page.getByRole("button", { name: /^Manage Helm A3/u })).toHaveCount(2);
@@ -1159,7 +1159,9 @@ test("Ready the Room keeps the Captain-only, participating-Captain, and ordinary
   );
   try {
     const guest = guests[0]!;
-    await expect(guest.page.getByText(sharedName, { exact: true })).toBeVisible({ timeout: 30_000 });
+    await expect(guest.page.locator("main.muster-scene .muster-voyage-name")).toHaveText(sharedName, {
+      timeout: 30_000,
+    });
     await expect(guest.page.locator("main.muster-scene")).toHaveAttribute("data-viewer-role", "player");
     await guest.page.getByRole("button", { name: "Your Voyage options" }).click();
     await expect(guest.page.getByRole("button", { name: "Leave Voyage" })).toBeVisible();
