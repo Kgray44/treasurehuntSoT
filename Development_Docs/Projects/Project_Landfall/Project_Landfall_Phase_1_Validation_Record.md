@@ -8,7 +8,7 @@ last_reviewed: 2026-09-29
 
 # Phase 1 Validation Record
 
-This record is updated only with commands and outcomes actually observed on the Phase 1 candidate. Protected PR checks and the ordinary Sounding Line are recorded after the candidate is frozen.
+This record contains commands and outcomes observed on the Phase 1 candidate. Hosted PR checks and protected integration are tracked by the PR rather than inferred from local proof.
 
 ## Local proof
 
@@ -22,7 +22,7 @@ This record is updated only with commands and outcomes actually observed on the 
 | TypeScript and affected ESLint               | `npm run typecheck` passed; affected ESLint passed with one existing unused `_publishedAt` warning in `src/chronicle/snapshot.ts` |
 | Production build                             | `npm run build` passed on the candidate worktree; existing Edge-runtime/NFT warnings remain outside Landfall                      |
 | Documentation and feature catalog validation | `npm run docs:index`, `docs:validate`, `features:sync`, and `features:validate` passed                                            |
-| Ordinary Sounding Line                       | Pending frozen candidate commit                                                                                                   |
-| PR checks / protected integration            | Pending candidate publication                                                                                                     |
+| Ordinary Sounding Line                       | PASS on code candidate `66d42bb6`; the selected generic browser profile passed 23/23 tests in a task-owned built-server runtime   |
+| PR checks / protected integration            | Tracked by the PR; local qualification alone does not establish hosted acceptance or protected integration                        |
 
-The browser mock tests use synthetic positions and a fictional virtual chart. They establish deterministic behavior and DOM projection but do not constitute live hardware, actual map tiles, deployment database proof, or owner acceptance.
+The browser mock tests use synthetic positions and a fictional virtual chart. They establish deterministic behavior and DOM projection but do not constitute live hardware, actual map tiles, deployment database proof, or owner acceptance. The selected legacy Homeport, Helm, and Drydock browser journeys were aligned with the already accepted sign-in, Studio, and Muster UI before the ordinary Sounding Line passed; no unrelated product behavior was changed for those tests.
