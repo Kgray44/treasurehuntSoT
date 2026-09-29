@@ -675,7 +675,8 @@ test("Pass the Helm keeps authority, membership, lineage, and Player privacy dis
       await page.getByRole("button", { name: "Relinquish Captaincy" }).click();
       await page.getByRole("dialog").getByRole("button", { name: "Relinquish Captaincy" }).click();
       expect((await relinquishResponse).status()).toBe(200);
-      await expect(page.getByRole("heading", { name: "This Voyage needs a Captain" })).toBeVisible({ timeout: 30_000 });
+      await expect(page.getByText("Succession Hold", { exact: true })).toBeVisible({ timeout: 30_000 });
+      await expect(page.getByText("Captaincy vacant", { exact: true })).toBeVisible();
       const source = await db.taleSession.findUniqueOrThrow({ where: { id: held.playthroughId } });
       expect(source).toMatchObject({ status: "READY", captainAccountId: null, captainAuthorityState: "VACANT" });
     });
@@ -688,7 +689,7 @@ test("Pass the Helm keeps authority, membership, lineage, and Player privacy dis
       ]);
       await Promise.all(
         [heldGuest.page, heldSecondGuest.page].map(async (guestPage) => {
-          await expect(guestPage.getByRole("heading", { name: "This Voyage needs a Captain" })).toBeVisible({
+          await expect(guestPage.getByText("Succession Hold", { exact: true })).toBeVisible({
             timeout: 30_000,
           });
           await expect(guestPage.getByRole("button", { name: "Take Captaincy" })).toBeVisible();

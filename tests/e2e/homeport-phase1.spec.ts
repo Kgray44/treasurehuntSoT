@@ -235,7 +235,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     await signInFromGateway(page, player);
     await page.goto("/community/moderation");
     await expect(page.getByRole("heading", { name: "Permission required" })).toBeVisible();
-    await expect(page.getByText(/does not have Moderator permission/u)).toBeVisible();
+    await expect(page.locator("#main-content").getByText(/does not have Moderator permission/u)).toBeVisible();
     await expect(page.getByRole("button", { name: player.displayName })).toBeVisible();
     await capture(page, "HP-P1-EV-G-permission-denied");
   });
