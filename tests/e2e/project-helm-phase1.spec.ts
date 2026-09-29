@@ -771,6 +771,7 @@ test("Pass the Helm keeps authority, membership, lineage, and Player privacy dis
 
     await test.step("A2-4 Continue Solo creates a same-edition child without changing the parent", async () => {
       await page.goto(`/player/playthroughs/${held.playthroughId}`);
+      await page.getByRole("button", { name: "Your Voyage options" }).click();
       await expect(page.getByRole("button", { name: "Continue Solo" })).toBeVisible({ timeout: 30_000 });
       const before = await db.taleSession.findUniqueOrThrow({ where: { id: held.playthroughId } });
       const forkResponse = page.waitForResponse(
@@ -779,7 +780,7 @@ test("Pass the Helm keeps authority, membership, lineage, and Player privacy dis
           response.request().method() === "POST",
       );
       await page.getByRole("button", { name: "Continue Solo" }).click();
-      await page.getByRole("dialog").getByRole("button", { name: "Create Solo Voyage" }).click();
+      await page.getByRole("dialog").getByRole("button", { name: "Continue Solo" }).click();
       const response = await forkResponse;
       expect(response.status()).toBe(200);
       const result = (await response.json()) as { voyageId: string };
