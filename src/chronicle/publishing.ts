@@ -10,6 +10,7 @@ import { getDrydockReadiness } from "@/drydock/readiness-store";
 import { createDrydockPublishingEvidencePayload } from "@/drydock/publishing-evidence";
 import { publishedSourceChecksum, snapshotFromStudio } from "@/chronicle/snapshot";
 import type { PublishedTaleSnapshot } from "@/chronicle/types";
+import { validateLandfallDefinition } from "@/landfall/definition";
 export { snapshotFromStudio } from "@/chronicle/snapshot";
 
 export class PublishValidationError extends Error {
@@ -183,5 +184,6 @@ export function parsePublishedSnapshot(raw: string): PublishedTaleSnapshot {
   inspect(snapshot);
   if (snapshot.schemaVersion !== 1 || !Array.isArray(snapshot.chapters))
     throw new Error("This Chronicle version uses an unsupported format. Update Voyagewright, then try again.");
+  if (snapshot.landfall !== undefined) snapshot.landfall = validateLandfallDefinition(snapshot.landfall);
   return snapshot;
 }

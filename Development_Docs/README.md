@@ -24,10 +24,11 @@ Use [INDEX.md](INDEX.md) for the current taxonomy and [document-index.json](docu
 - [Project Wakebook](Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf) — private Journey Archive governing document, records, and evidence in one canonical home.
 - [Project Shipwright](Projects/Project%20Shipwright/README.md) — Creator Studio program records.
 - [Project Drydock](Projects/Project%20Drydock/README.md) — Chronicle authoring-contract and simulation records.
+- [Project Landfall](Projects/Project_Landfall/README.md) — governing baseline, Worldspaces amendment, and Phase 1 engineering records.
 
 ## Governing documents
 
-The [Governing](Governing/) and [Governance](Governance/) directories hold repository-wide and project authority. The [Project Landfall amendment](Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) amends, but does not replace, the preserved v1.0 baseline; it broadens Landfall to physical and virtual Worldspaces while preserving its zero-infrastructure physical-world rule.
+The [Governing](Governing/) and [Governance](Governance/) directories hold repository-wide and project authority. The [Project Landfall v1.0 governing document](Projects/Project_Landfall/Project_Landfall_Governing_Document_v1.0.pdf) is Landfall's foundational baseline. The [v1.1 Worldspaces and Virtual Navigation amendment](Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) adds physical and virtual Worldspaces but does not replace v1.0 or weaken its zero-infrastructure physical-world rule.
 
 ## Repository operations
 

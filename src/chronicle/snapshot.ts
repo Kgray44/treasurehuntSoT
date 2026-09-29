@@ -7,6 +7,7 @@ import { parseDrydockBlock, runtimeCompatibilityProjection } from "@/drydock/con
 export function snapshotFromStudio(studio: Awaited<ReturnType<typeof getStudioTale>>): PublishedTaleSnapshot {
   return {
     schemaVersion: 1,
+    ...(studio.draft.landfall ? { landfall: studio.draft.landfall } : {}),
     tale: {
       id: studio.tale.id,
       slug: studio.tale.slug,

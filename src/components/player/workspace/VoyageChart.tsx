@@ -18,6 +18,8 @@ import type {
 import type { PublicMapLocation, PublicSnapshot } from "@/domain/story";
 import { LottieEffect } from "@/components/animation/LottieEffect";
 import { RiveStatefulObject, type RiveRuntimeStatus, type RiveSignal } from "@/components/animation/RiveStatefulObject";
+import { LandfallMapRenderer } from "@/landfall/map-renderer";
+import type { LandfallMapScene } from "@/landfall/map-projection";
 
 type ChartRoute = PublicSnapshot["mapRoutes"][number];
 
@@ -44,6 +46,8 @@ export type VoyageChartTargetRegistration = Readonly<{
 export type VoyageChartProps = Readonly<{
   snapshot: PublicSnapshot;
   mode: MotionMode;
+  /** Phase 1 internal seam: supplied only from the authorized canonical Landfall projection. */
+  landfallScene?: LandfallMapScene;
   /** Exact progress identity; it never falls back to array or DOM order. */
   progressLocationKey?: PublicMapLocation["key"];
   /** Exact progress identity; it never falls back to the final rendered route. */
@@ -622,6 +626,13 @@ function VoyageCompassAdapter({
 
 export function VoyageChart(props: VoyageChartProps) {
   const headingId = useId();
+
+  if (props.landfallScene)
+    return (
+      <section className="physical-section voyage-chart-section" aria-label="Voyage Chart" data-landfall-phase1-preview>
+        <LandfallMapRenderer scene={props.landfallScene} />
+      </section>
+    );
 
   return (
     <SceneHost

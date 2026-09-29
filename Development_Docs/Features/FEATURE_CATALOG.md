@@ -1326,6 +1326,41 @@ Project Drydock Phase 4 gives Creators source-bound launch readiness, compatibil
 
 ---
 
+## FT-044 - Landfall Living World Navigation Foundation
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Landfall Phase 1
+
+Version-pinned physical and virtual Worldspaces share strict geometry, observation, confidence, privacy, offline-reconciliation, map, and deterministic Drydock contracts.
+
+### Important subfeatures
+
+- Strict versioned physical and virtual Worldspace definitions and geometry
+- Owner-protected draft persistence and immutable published edition pinning
+- Foreground physical observation and provider-neutral virtual confidence
+- Bounded privacy-safe journey and map projections
+- Local queued versus canonical server-confirmed reconciliation
+- Deterministic Drydock simulation and narrow One Voyage completion proposal
+- Optional MapLibre and virtual chart rendering seam
+
+### Primary surfaces
+
+`src/landfall`, `/api/studio/tales/[taleId]/landfall`, `src/components/player/workspace/VoyageChart.tsx`
+
+### Meaningful limitations
+
+- The ordinary Player, Creator, and Captain Landfall experiences are not exposed by Phase 1; the map seam is optional and internal.
+- Live hardware, production map tiles, production MySQL, deployment, and owner acceptance require separate evidence.
+
+### Evidence
+
+- path: `src/landfall/runtime.ts`
+- path: `src/landfall/schema.ts`
+- test: `src/landfall/landfall.test.ts`
+- completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_1_Validation_Record.md`
+
+---
+
 ## FT-B001 - Unified Identity and Session Authority
 
 **Status:** MAINLINE
@@ -2077,7 +2112,7 @@ Project Wakebook Phase 6 gives an owner a printable, private Voyage Book built o
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
 - Project Sounding Line's local governance and verification control plane is cataloged, and its focused hosted workflow has passed; remote workers, provider/MySQL proof, production signing, branch protection, and the P34 browser matrix remain separate non-pass work.
-- Project Landfall is governed but not implemented.
+- Project Landfall Phase 1 provides an internal navigation foundation; final Creator, Player, and Captain Landfall experiences remain later work.
 - Vision Waypoint recognition is not implemented beyond its provider seam and simulator.
 - Production multi-instance pub/sub, distributed rate limiting, production scanner/KMS/storage/alerting, and full deployment proof remain separate work.
 - Real private Chronicle story material is intentionally absent from the public repository.

@@ -15,7 +15,7 @@ describe("Drydock adjacent adapter registry", () => {
       unsupportedBehavior: "EXTERNAL_EVIDENCE_REQUIRED_WHEN_USED",
     });
     expect(drydockAdjacentAdapter("landfall")).toMatchObject({
-      state: "UNAVAILABLE",
+      state: "SIMULATION_AVAILABLE",
       unsupportedBehavior: "EXTERNAL_EVIDENCE_REQUIRED_WHEN_USED",
     });
   });

@@ -1,4 +1,6 @@
 import type { DrydockValidationReport } from "@/drydock/reports";
+import type { LandfallDefinition } from "@/landfall/schema";
+import { validateLandfallDefinition } from "@/landfall/definition";
 
 export type JsonObject = Record<string, unknown>;
 
@@ -118,6 +120,7 @@ export type PublishedChapter = Omit<StudioChapterInput, "blocks"> & {
 
 export type PublishedTaleSnapshot = {
   schemaVersion: 1;
+  landfall?: LandfallDefinition;
   tale: {
     id: string;
     slug: string;
@@ -208,5 +211,6 @@ export function parsePublishedSnapshot(value: string): PublishedTaleSnapshot {
   const snapshot = parsed as Partial<PublishedTaleSnapshot>;
   if (snapshot.schemaVersion !== 1 || !snapshot.tale || !Array.isArray(snapshot.chapters))
     throw new Error("Published Chronicle snapshot is incomplete.");
+  if (snapshot.landfall !== undefined) snapshot.landfall = validateLandfallDefinition(snapshot.landfall);
   return snapshot as PublishedTaleSnapshot;
 }

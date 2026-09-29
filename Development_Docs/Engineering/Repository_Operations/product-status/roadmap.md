@@ -3,7 +3,7 @@ title: Product roadmap
 audience: product
 status: current
 canonical_for: product-roadmap
-last_reviewed: 2026-07-29
+last_reviewed: 2026-09-29
 ---
 
 # Roadmap
@@ -20,10 +20,12 @@ Catalog governance, and Lanternwake presentation systems.
 Broader validation of external operational integrations and refinement of
 connected role experiences. The accepted P34-BME-20260729 exception leaves
 browser-matrix remediation as validation work, not an implementation pass.
+Project Landfall Phase 1 supplies an internal navigation foundation; the
+Creator, Player, and Captain experiences remain later work.
 
 ## Planned and research
 
-Project Sounding Line, Harborlight Phase 4, Project Drydock, Project Landfall,
+Project Sounding Line, Harborlight Phase 4, Project Drydock,
 and Project Watchglass remain planned or governed work subject to accepted
 design and validation. Dates are not committed here.
 
