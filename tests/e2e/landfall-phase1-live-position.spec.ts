@@ -160,6 +160,7 @@ async function installLocationProbe(page: Page) {
 
 async function openJournalMap(page: Page, sessionId: string) {
   await page.goto(`/player/playthroughs/${sessionId}/journal`);
+  await page.getByRole("dialog", { name: "Open the voyage journal" }).getByRole("button", { name: /Open the journal/u }).click();
   const map = page.getByRole("navigation", { name: "Journal tools" }).getByRole("button", { name: "map", exact: true });
   await expect(map).toBeVisible({ timeout: 45_000 });
   await map.click();
