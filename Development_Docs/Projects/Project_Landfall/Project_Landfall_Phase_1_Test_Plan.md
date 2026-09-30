@@ -20,7 +20,7 @@ Run TypeScript, affected ESLint, production build, `npm run docs:index`, `npm ru
 
 ## Browser and privacy proof
 
-The focused tests cover pinned Player projection, membership and no-store API behavior, foreground geolocation qualification, weak/stale fixes, MapLibre marker data, virtual rendering, and degraded fallback. Run `tests/e2e/landfall-phase1-live-position.spec.ts` under its dedicated Sounding Line browser profile. Its four production-browser journeys cover explicit grant/stop/close and no canonical visit, denial, virtual navigation without GPS, and unauthorized/hidden-geometry protection. Fixtures use synthetic geography and a fictional chart; they do not collect a physical trail. A real handset field test is optional owner evidence, not a local correctness gate.
+The focused tests cover pinned Player projection, membership and no-store API behavior, foreground geolocation qualification, weak/stale fixes, MapLibre marker data, virtual rendering, and degraded fallback. Run the dedicated `tests/e2e/landfall-phase1-live-position.spec.ts` through Sounding Line's existing generic, nonce-checked isolated browser harness. Its four production-browser journeys cover explicit grant/stop/close and no canonical visit, denial, virtual navigation without GPS, and unauthorized/hidden-geometry protection. Fixtures use synthetic geography and a fictional chart; they do not collect a physical trail. A real handset field test is optional owner evidence, not a local correctness gate.
 
 ## Acceptance distinction
 

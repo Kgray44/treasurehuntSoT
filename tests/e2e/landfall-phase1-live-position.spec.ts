@@ -3,6 +3,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { db } from "../../src/lib/db";
 import { landfallFixture } from "../../src/landfall/fixtures";
 import { createAccountSession } from "../../src/wayfarer/accounts";
+import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 
 const suffix = randomUUID().slice(0, 10);
 let playerToken = "";
@@ -186,6 +187,7 @@ async function emitFollowUpFix(page: Page, latitude: number, longitude: number, 
 }
 
 test.beforeAll(async ({ request }) => {
+  ensureGenericSoundingLineIsolation();
   const isolation = await request.get("/api/dev/validation/database-identity");
   expect(isolation.status(), await isolation.text()).toBe(200);
   expect(await isolation.json()).toEqual({ validationDatabase: true, nonceMatch: true });
