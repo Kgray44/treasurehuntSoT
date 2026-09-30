@@ -42,7 +42,10 @@ export function requiredScenarioClasses(snapshot: PublishedTaleSnapshot): readon
     required.push(
       policy("ANSWER_MATCH_AND_NO_MATCH", "TEXT_ANSWER", "Text-answer outcomes must both be deterministic."),
     );
-  if (["visionLocation", "visionObject", "externalWebhook"].some((mode) => modes.has(mode)))
+  if (
+    ["visionLocation", "visionObject", "externalWebhook", "landfall"].some((mode) => modes.has(mode)) ||
+    blocks.some((block) => ["waypointJourney", "routeJourney"].includes(block.blockType))
+  )
     required.push(
       policy("PROVIDER_OUTCOMES", "PROVIDER", "Used provider outcomes need deterministic fallback evidence."),
     );

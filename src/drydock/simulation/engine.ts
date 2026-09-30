@@ -182,11 +182,16 @@ function requiredInputKind(block: NonNullable<ReturnType<typeof blockAtCursor>>)
       block.configuration.completionMode ??
       "playerConfirmation",
   );
-  if (block.blockType === "choice") return "CHOICE" as const;
+  if (["choice", "locationChoice"].includes(block.blockType)) return "CHOICE" as const;
   if (provider === "textAnswer" || ["riddle", "textAnswer"].includes(block.blockType)) return "TEXT_ANSWER" as const;
   if (provider === "captainManual" || block.blockType === "captainApproval") return "CAPTAIN" as const;
   if (provider === "timer" || block.blockType === "wait") return "ADVANCE_TIME" as const;
-  if (provider === "visionLocation") return "PROVIDER" as const;
+  if (
+    provider === "visionLocation" ||
+    provider === "landfall" ||
+    ["waypointJourney", "routeJourney"].includes(block.blockType)
+  )
+    return "PROVIDER" as const;
   return "CONTINUE" as const;
 }
 

@@ -18,8 +18,8 @@ describe("Drydock Phase 2 canonical graph analysis", () => {
     blocks.at(-1)!.connections = [];
     const result = analyzeDrydockGraph(blocks);
     expect(result.issues).toEqual([]);
-    expect(result.reachableBlockIds.size).toBe(23);
-    expect(result.completionReachableBlockIds.size).toBe(23);
+    expect(result.reachableBlockIds.size).toBe(29);
+    expect(result.completionReachableBlockIds.size).toBe(29);
   });
 
   it("reports an unreachable Passage and a reachable branch with no terminal path", () => {

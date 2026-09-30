@@ -1,10 +1,12 @@
 import { z } from "zod";
+import { landfallCompletionOptionsSchema } from "@/landfall/completion";
 
 export const drydockProviderIds = [
   "captainManual",
   "playerConfirmation",
   "textAnswer",
   "timer",
+  "landfall",
   "visionLocation",
   "visionObject",
   "externalWebhook",
@@ -103,6 +105,24 @@ export const drydockProviderRegistry = {
     captainOverride: "SUPPORTED",
     configurationSchema: emptyConfiguration,
     evidenceSchema: noEvidence,
+  },
+  landfall: {
+    id: "landfall",
+    version: 1,
+    owner: "Project Landfall",
+    state: "AVAILABLE",
+    runtimeCapability: "landfall.canonical-waypoint-completion",
+    simulatorCapability: "NOT_IMPLEMENTED_PHASE_1",
+    outcomes: ["NEARBY", "LIKELY_INSIDE", "CONFIRMED"],
+    faultModes: ["providerUnavailable", "permissionDenied", "uncertain", "offlinePending"],
+    retryPolicy: "CREATOR_DECLARED",
+    privacyClass: "PRIVATE_EVIDENCE",
+    requiresFallback: true,
+    captainOverride: "SUPPORTED",
+    configurationSchema: landfallCompletionOptionsSchema,
+    evidenceSchema: z
+      .object({ waypointId: z.string().min(1), outcome: z.enum(["NEARBY", "LIKELY_INSIDE", "CONFIRMED"]) })
+      .strict(),
   },
   visionLocation: {
     id: "visionLocation",

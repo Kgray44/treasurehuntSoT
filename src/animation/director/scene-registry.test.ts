@@ -12,7 +12,7 @@ import { sceneContracts, sceneReachabilityEvidence, sceneRegistry } from "./scen
 import { progressionEventPresentationPolicy } from "@/components/player/progression/event-policy";
 
 const expectedReachability: Record<SceneReachability, number> = {
-  production: 28,
+  production: 31,
   legacy: 4,
   "future-contract": 5,
   deprecated: 3,
@@ -318,9 +318,9 @@ describe("scene registry", () => {
   });
 
   it("preserves Phase 2 declaration identity and cardinality while Phase 3 moves Player visuals host-local", () => {
-    expect(Object.values(sceneContracts).flatMap((contract) => requiredTargets(contract))).toHaveLength(55);
+    expect(Object.values(sceneContracts).flatMap((contract) => requiredTargets(contract))).toHaveLength(58);
     expect(Object.values(sceneContracts).flatMap((contract) => optionalTargets(contract))).toHaveLength(103);
-    expect(Object.values(sceneContracts).filter((contract) => contract.playbackPolicy.replayable)).toHaveLength(23);
+    expect(Object.values(sceneContracts).filter((contract) => contract.playbackPolicy.replayable)).toHaveLength(26);
     expect(
       Object.values(sceneContracts).filter(
         (contract) => contract.acknowledgmentPolicy.acknowledgmentOwner === "player-presentation",

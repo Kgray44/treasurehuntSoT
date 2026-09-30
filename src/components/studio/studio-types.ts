@@ -1,4 +1,5 @@
 import type { InspectorField, JsonObject } from "@/chronicle/types";
+import type { LandfallDefinition } from "@/landfall/schema";
 
 export type Block = {
   id: string;
@@ -125,6 +126,7 @@ export type EditorData = {
   tale: Tale;
   draft: {
     id: string;
+    landfall?: LandfallDefinition | null;
     autosaveVersion: number;
     validationState: string;
     validationSummary: JsonObject;
@@ -139,7 +141,7 @@ export type EditorData = {
   registry: RegistryItem[];
 };
 
-export type DraftState = { tale: Tale; chapters: Chapter[] };
+export type DraftState = { tale: Tale; chapters: Chapter[]; landfall?: LandfallDefinition | null };
 
 export type UploadEntry = {
   id: string;

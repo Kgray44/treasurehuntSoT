@@ -172,7 +172,7 @@ describe("AnimationShowcase", () => {
   });
 
   it("represents every registered scene and derives every row label from its reachability contract", () => {
-    expect(showcaseCoverage).toEqual({ rows: 50, uniqueScenes: 40, registeredScenes: 40 });
+    expect(showcaseCoverage).toEqual({ rows: 53, uniqueScenes: 43, registeredScenes: 43 });
     expect(new Set(showcaseDemos.map((demo) => demo.scene))).toEqual(new Set(sceneNames));
     expect(showcaseDemos.every((demo) => showcaseDemoLabel(demo).startsWith(`${demo.label} — `))).toBe(true);
     expect(showcaseDemos.some((demo) => demo.scene === "prepare-chapter")).toBe(true);
@@ -214,7 +214,7 @@ describe("AnimationShowcase", () => {
     expect(main).toHaveAttribute("data-active-scene-host-kind", "gateway");
     expect(main).toHaveAttribute("data-harness-only", "true");
     expect(screen.getByText(/development harness only · never production proof/i)).toBeVisible();
-    expect(screen.getByText(/50 harness rows · 40\/40 registered scene contracts represented/i)).toBeVisible();
+    expect(screen.getByText(/53 harness rows · 43\/43 registered scene contracts represented/i)).toBeVisible();
 
     const sceneSelect = screen.getByLabelText("Scene");
     expect(within(sceneSelect).getByRole("option", { name: "Journal cover opening — deprecated" })).toBeVisible();

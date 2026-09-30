@@ -3,6 +3,7 @@ import { journalPresentationSchema } from "@/chronicle/journal-contract";
 import type { JsonObject } from "@/chronicle/types";
 import { drydockExpressionSchema } from "@/drydock/expressions";
 import { drydockExtensionsSchema } from "@/drydock/extensions";
+import { landfallCompletionOptionsSchema } from "@/landfall/completion";
 
 const id = z
   .string()
@@ -25,6 +26,7 @@ const providerOptionsSchema = z.discriminatedUnion("id", [
   z.object({ id: z.literal("playerConfirmation"), version: z.literal(1), options: z.object({}).strict() }).strict(),
   z.object({ id: z.literal("textAnswer"), version: z.literal(1), options: z.object({}).strict() }).strict(),
   z.object({ id: z.literal("timer"), version: z.literal(1), options: z.object({}).strict() }).strict(),
+  z.object({ id: z.literal("landfall"), version: z.literal(1), options: landfallCompletionOptionsSchema }).strict(),
   z
     .object({
       id: z.literal("visionLocation"),
@@ -66,7 +68,7 @@ export const drydockCompletionSchema = z
         message: "Provider options must match the completion mode.",
         path: ["provider"],
       });
-    if (["visionLocation", "visionObject", "externalWebhook"].includes(value.mode)) {
+    if (["visionLocation", "visionObject", "externalWebhook", "landfall"].includes(value.mode)) {
       if (!value.provider)
         context.addIssue({
           code: "custom",
@@ -118,6 +120,55 @@ const artifactRecipientPolicies = [
 ] as const;
 
 export const drydockConfigurationSchemas = {
+  livingChart: withExtensions({ heading: requiredText(240), body: optionalText(10000), worldspaceId: id }),
+  waypointJourney: withExtensions({
+    heading: requiredText(240),
+    prompt: optionalText(4000),
+    worldspaceId: id,
+    waypointId: id,
+  }),
+  routeJourney: withExtensions({
+    heading: requiredText(240),
+    prompt: optionalText(4000),
+    worldspaceId: id,
+    routeId: id,
+  }),
+  locationReveal: withExtensions({
+    heading: requiredText(240),
+    body: optionalText(10000),
+    worldspaceId: id,
+    targetType: z.enum(["WAYPOINT", "ROUTE", "OVERLAY"]),
+    targetId: id,
+  }),
+  locationObservation: withExtensions({
+    heading: requiredText(240),
+    prompt: requiredText(4000),
+    worldspaceId: id,
+    waypointId: id,
+  }),
+  locationChoice: withExtensions({
+    prompt: requiredText(4000),
+    worldspaceId: id,
+    reversible: z.boolean(),
+    choices: z
+      .array(
+        z
+          .object({
+            id,
+            label: requiredText(240),
+            targetBlockId: id,
+            targetWaypointId: optionalId,
+            targetRouteId: optionalId,
+          })
+          .strict()
+          .refine(
+            (value) => Boolean(value.targetWaypointId) !== Boolean(value.targetRouteId),
+            "Choose exactly one waypoint or route for each destination.",
+          ),
+      )
+      .min(2)
+      .max(20),
+  }),
   narrative: withExtensions({
     heading: requiredText(240),
     body: requiredText(20000),

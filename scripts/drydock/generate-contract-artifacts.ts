@@ -13,6 +13,39 @@ const terminalId = "drydock-fixture-taleComplete-v1";
 const chapterCompleteId = "drydock-fixture-chapterComplete-v1";
 
 const overrides: Record<string, Record<string, unknown>> = {
+  livingChart: { heading: "Synthetic chart", worldspaceId: "worldspace-fixture" },
+  waypointJourney: {
+    heading: "Synthetic waypoint",
+    worldspaceId: "worldspace-fixture",
+    waypointId: "waypoint-fixture",
+  },
+  routeJourney: { heading: "Synthetic route", worldspaceId: "worldspace-fixture", routeId: "route-fixture" },
+  locationReveal: {
+    heading: "Synthetic reveal",
+    worldspaceId: "worldspace-fixture",
+    targetType: "WAYPOINT",
+    targetId: "waypoint-fixture",
+  },
+  locationObservation: {
+    heading: "Synthetic observation",
+    prompt: "Observe the synthetic place.",
+    worldspaceId: "worldspace-fixture",
+    waypointId: "waypoint-fixture",
+  },
+  locationChoice: {
+    prompt: "Choose a synthetic destination.",
+    worldspaceId: "worldspace-fixture",
+    reversible: false,
+    choices: [
+      {
+        id: "landfall-choice-a",
+        label: "First destination",
+        targetBlockId: chapterCompleteId,
+        targetWaypointId: "waypoint-fixture",
+      },
+      { id: "landfall-choice-b", label: "Second route", targetBlockId: terminalId, targetRouteId: "route-fixture" },
+    ],
+  },
   captainsNote: { body: "Synthetic fixture note." },
   riddle: { riddleText: "What follows a wake?", acceptedAnswers: ["a ship"] },
   information: { body: "Synthetic fixture information." },
@@ -58,7 +91,7 @@ const fixtureBlocks = blockTypeIds.map((type) => {
   const connections =
     type === "taleComplete"
       ? []
-      : type === "choice"
+      : type === "choice" || type === "locationChoice"
         ? [
             { targetBlockId: chapterCompleteId, connectionType: "CHOICE", label: "First course" },
             { targetBlockId: terminalId, connectionType: "CHOICE", label: "Second course" },
@@ -104,7 +137,7 @@ const artifacts = new Map<string, unknown>([
       schemaVersion: 1,
       fixtureSetId: "drydock-current-authoring-v1",
       classification: "SYNTHETIC_NO_PRIVATE_CONTENT",
-      frozenAt: "2026-08-09",
+      frozenAt: "2026-09-30",
       blocks: fixtureBlocks,
     },
   ],
@@ -138,7 +171,7 @@ const artifacts = new Map<string, unknown>([
     {
       schemaVersion: 1,
       fixtureSetId: "drydock-current-authoring-v1",
-      frozenAt: "2026-08-09",
+      frozenAt: "2026-09-30",
       classification: "SYNTHETIC_NO_PRIVATE_CONTENT",
       sourcePath: "tests/fixtures/drydock/current-authoring-v1.json",
       immutablePublishedSnapshotsRewritten: false,

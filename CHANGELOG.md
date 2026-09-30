@@ -12,6 +12,8 @@ last_reviewed: 2026-09-30
 
 ### Added
 
+- Added Project Landfall Phase 2 source: Creator Living Chart authoring, six Chronicle location blocks and typed completion, canonical Player and Captain progression, private map overlays, field-test receipts, Lanternwake outcomes, completed-voyage replay, and bounded web offline reconciliation. External geocoding, virtual telemetry, physical device proof, and deployment remain separate.
+
 - Added Project Landfall Phase 1's physical and virtual Worldspace foundation: version-pinned definitions, foreground location and virtual evidence contracts, confidence, privacy-safe journey and map projections, and deterministic Drydock simulation. The Player Journal now opens a released Voyage Chart with explicit foreground browser position and an accuracy indication for supported physical Voyages; virtual charts never request GPS. The original v1.0 governing PDF is preserved and indexed beside its v1.1 amendment. Creator/Captain Landfall controls, virtual telemetry, and live-provider deployment remain later work.
 
 ### Changed

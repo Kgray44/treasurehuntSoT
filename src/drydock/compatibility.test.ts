@@ -89,7 +89,7 @@ describe("Drydock current product compatibility", () => {
       artifacts: [],
     };
     const snapshot = snapshotFromStudio(studio as never);
-    expect(snapshot.chapters[0].blocks).toHaveLength(23);
+    expect(snapshot.chapters[0].blocks).toHaveLength(29);
     expect(snapshot.chapters[0].blocks.every((block) => block.schemaVersion === 2)).toBe(true);
     const wait = snapshot.chapters[0].blocks.find((block) => block.blockType === "wait")!;
     expect(wait.completion?.mode).toBe("timer");

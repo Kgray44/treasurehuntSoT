@@ -1326,12 +1326,12 @@ Project Drydock Phase 4 gives Creators source-bound launch readiness, compatibil
 
 ---
 
-## FT-044 - Landfall Living World Navigation Foundation
+## FT-044 - Landfall Living World Navigation
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Landfall Phase 1
+**Program or subsystem:** Project Landfall Phases 1 and 2
 
-Version-pinned physical and virtual Worldspaces share strict geometry, observation, confidence, privacy, offline-reconciliation, map, and deterministic Drydock contracts. Active Players can open a released Voyage Chart and explicitly see qualified foreground physical position.
+Creators author versioned physical and virtual Living Charts in Chronicle Studio; six location blocks and a typed completion provider connect them to Drydock and canonical One Voyage progression. Players see released charts, visits, route outcomes, safe replay, and bounded offline reconciliation, while Captains govern safe location actions.
 
 ### Important subfeatures
 
@@ -1342,14 +1342,19 @@ Version-pinned physical and virtual Worldspaces share strict geometry, observati
 - Local queued versus canonical server-confirmed reconciliation
 - Deterministic Drydock simulation and narrow One Voyage completion proposal
 - Ordinary Player Journal physical and virtual Voyage Chart with explicit foreground physical position, accuracy status, and watch teardown
+- Creator Studio Living Chart authoring, structured maps and geometry, previews, validation warnings, and owner-bound field-test receipts
+- Six Landfall Chronicle Story Blocks and a typed reusable location completion provider
+- Canonical Player visit and Captain reveal, selection, skip, confirmation, pause, and resume events
+- Private custom image overlays, released geometry, historical replay, and Lanternwake arrival and reveal outcomes
+- Bounded web shell cache and tab-local evidence queue with explicit reconnect reconciliation
 
 ### Primary surfaces
 
-`src/landfall`, `/api/studio/tales/[taleId]/landfall`, `/api/player/playthroughs/[playthroughId]/landfall`, `src/components/player/workspace/VoyageChart.tsx`, `src/components/player/journal/LandfallJournalChart.tsx`
+`src/landfall`, `/api/studio/tales/[taleId]/landfall`, `/api/player/playthroughs/[playthroughId]/landfall`, `/studio/tales/[taleId]/landfall`, `/api/captain/voyages/[voyageId]/landfall`, `src/components/player/workspace/VoyageChart.tsx`, `src/components/player/journal/LandfallJournalChart.tsx`
 
 ### Meaningful limitations
 
-- Creator and Captain Landfall controls, virtual game telemetry, and canonical visit writes from the Player chart are outside Phase 1.
+- External address/place lookup and virtual game telemetry need configured providers; map tiles and private media are not guaranteed offline.
 - Live hardware, production map tiles, production MySQL, deployment, and owner acceptance require separate evidence.
 
 ### Evidence
@@ -1358,7 +1363,10 @@ Version-pinned physical and virtual Worldspaces share strict geometry, observati
 - path: `src/landfall/schema.ts`
 - test: `src/landfall/landfall.test.ts`
 - test: `tests/e2e/landfall-phase1-live-position.spec.ts`
+- test: `tests/e2e/landfall-phase2.spec.ts`
+- test: `src/landfall/journey-projection.test.ts`
 - completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_1_Validation_Record.md`
+- path: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_2_Implementation_Record.md`
 
 ---
 

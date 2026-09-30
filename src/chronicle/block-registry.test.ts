@@ -8,8 +8,14 @@ import {
 } from "@/chronicle/block-registry";
 
 describe("Voyagewright Studio Passage registry", () => {
-  it("registers every required Phase 1 block type exactly once", () => {
+  it("registers the Phase 1 and Landfall Phase 2 block types exactly once", () => {
     expect(blockTypeIds).toEqual([
+      "livingChart",
+      "waypointJourney",
+      "routeJourney",
+      "locationReveal",
+      "locationObservation",
+      "locationChoice",
       "narrative",
       "captainsNote",
       "riddle",

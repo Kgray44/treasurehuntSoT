@@ -22,13 +22,30 @@ export async function GET(request: Request, context: { params: Promise<{ assetId
       if (sessionId && (await authorizeTaleSessionPlayer(sessionId))) {
         const playthrough = await db.taleSession.findFirst({
           where: { id: sessionId, publishedVersionId: version },
-          include: { version: true, events: { select: { blockId: true } } },
+          include: {
+            version: true,
+            events: {
+              select: {
+                id: true,
+                blockId: true,
+                eventType: true,
+                sequence: true,
+                payload: true,
+                createdAt: true,
+              },
+            },
+          },
         });
         if (playthrough?.version)
           authorized = playerSafeAssetIds(
             playthrough.version.contentSnapshot,
             playthrough.events.map((event) => event.blockId),
             playthrough.inventory,
+            {
+              events: playthrough.events.filter((event) => event.eventType.startsWith("landfall")),
+              chapterId: playthrough.currentChapterId,
+              blockId: playthrough.currentBlockId,
+            },
           ).has(assetId);
       } else if (invitationId && (await pendingInvitationMatches(invitationId))) {
         const invitation = await db.invitation.findFirst({
@@ -68,8 +85,7 @@ export async function GET(request: Request, context: { params: Promise<{ assetId
       headers: {
         "Content-Type": variant.mimeType,
         "Content-Length": String(buffer.length),
-        "Cache-Control":
-          version && !version.startsWith("draft:") ? "public, max-age=31536000, immutable" : "private, no-store",
+        "Cache-Control": "private, no-store",
         "X-Content-Type-Options": "nosniff",
         ...(download ? { "Content-Disposition": `attachment; filename="${safeFilename}"` } : {}),
       },

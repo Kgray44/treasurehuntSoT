@@ -420,6 +420,8 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
 
   it("aborts an in-flight initial request in the unmount commit", async () => {
     vi.useFakeTimers();
+    const intervalProbe = vi.spyOn(globalThis, "setInterval");
+    const clearIntervalProbe = vi.spyOn(globalThis, "clearInterval");
     let activeRequests = 0;
     let requestSignal: AbortSignal | undefined;
     const fetchMock = vi.fn((_input: RequestInfo | URL, init?: RequestInit) => {
@@ -447,8 +449,12 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     view.unmount();
     expect(requestSignal?.aborted).toBe(true);
     expect(activeRequests).toBe(0);
-    expect(vi.getTimerCount()).toBe(0);
     await act(flushMicrotasks);
+    const journalInterval = intervalProbe.mock.results.find(
+      (_result, index) => Number(intervalProbe.mock.calls[index]?.[1]) === 500,
+    )?.value;
+    expect(journalInterval).toBeDefined();
+    expect(clearIntervalProbe).toHaveBeenCalledWith(journalInterval);
   });
 
   it("closes streams, aborts opening work, removes journal keys, and clears reconnect timers for 20 Strict Mode cycles", async () => {

@@ -990,10 +990,35 @@ model TaleDraft {
   createdByAccount             UserAccount?                       @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
   drydockRuleWaivers           DrydockRuleWaiver[]
   reusableAuthoringUsages      ReusableAuthoringUsage[]
+  landfallFieldTestReceipts    LandfallFieldTestReceipt[]
 
   @@unique([taleId, revisionNumber])
   @@index([taleId, updatedAt])
   @@index([createdByAccountId])
+}
+
+model LandfallFieldTestReceipt {
+  id                String    @id @default(cuid())
+  draftId           String
+  sourceVersion     Int
+  definitionHash    String
+  worldspaceId      String
+  mapId             String
+  waypointId        String?
+  routeId           String?
+  providerClass     String
+  result            String
+  permission        String
+  accuracyBand      String?
+  confidence        String
+  sampleCount       Int
+  dwellSeconds      Int
+  networkState      String
+  warnings          String    @db.LongText
+  testedAt          DateTime  @default(now())
+  draft             TaleDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@index([draftId, testedAt])
 }
 
 model DrydockValidationRun {

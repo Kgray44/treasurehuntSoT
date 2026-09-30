@@ -4,6 +4,7 @@ import { captainAuthorityClauses, type CanonicalCaptainActor } from "@/chronicle
 import { aggregateMembershipPresence, type MembershipPresenceProjection } from "@/platform/membership-presence";
 import { buildCaptainProgressMap, countCurrentHints, deriveCaptainConsoleCommands } from "@/helm/command-console";
 import { deriveHelmPassageResilience } from "@/helm/passage-resilience";
+import { projectLandfallJourney } from "@/landfall/journey-projection";
 
 export const captainOperationalStatuses = [
   "SETUP",
@@ -458,6 +459,32 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
     attention,
   });
   const snapshot = session.version ? parsePublishedSnapshot(session.version.contentSnapshot) : null;
+  const landfallEvents = snapshot?.landfall
+    ? await db.taleSessionEvent.findMany({
+        where: { sessionId: session.id, eventType: { startsWith: "landfall" } },
+        orderBy: [{ sequence: "asc" }, { id: "asc" }],
+        take: 2048,
+        select: { id: true, sequence: true, eventType: true, payload: true, createdAt: true },
+      })
+    : [];
+  const landfallJourney = snapshot?.landfall
+    ? projectLandfallJourney(snapshot.landfall, landfallEvents, {
+        chapterId: session.currentChapterId,
+        blockId: session.currentBlockId,
+      })
+    : null;
+  const lastLandfallConfirmation = [...landfallEvents]
+    .reverse()
+    .find((item) => item.eventType === "landfallWaypointConfirmed");
+  const lastLandfallReceipt = (() => {
+    try {
+      return lastLandfallConfirmation
+        ? (JSON.parse(lastLandfallConfirmation.payload) as Record<string, unknown>)
+        : null;
+    } catch {
+      return null;
+    }
+  })();
   const chapter = snapshot?.chapters.find((item) => item.id === session.currentChapterId) ?? null;
   const block = chapter?.blocks.find((item) => item.id === session.currentBlockId) ?? null;
   const crew: CaptainCrewMemberProjection[] = session.memberships.map((membership, index) => {
@@ -598,6 +625,48 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
     events: [...session.events.map(projectCaptainOperationalEvent).reverse(), ...presenceEvents],
     resilience,
     commandConsole,
+    landfall:
+      snapshot?.landfall && landfallJourney
+        ? {
+            worldspaceId: landfallJourney.activeWorldspaceId,
+            worldspaceName:
+              snapshot.landfall.worldspaces.find((item) => item.id === landfallJourney.activeWorldspaceId)?.name ??
+              "Worldspace",
+            paused: landfallJourney.paused,
+            currentWaypointId: landfallJourney.activeWaypointId,
+            routeName: landfallJourney.activeRoute?.name ?? null,
+            visitedCount: landfallJourney.visitedIds.length,
+            permissionState: "UNKNOWN" as const,
+            queuedOfflineState: "UNKNOWN" as const,
+            lastCanonicalEventAt: landfallEvents.at(-1)?.createdAt.toISOString() ?? null,
+            lastConfirmationConfidence: ["LOW", "MEDIUM", "HIGH"].includes(String(lastLandfallReceipt?.confidenceClass))
+              ? String(lastLandfallReceipt?.confidenceClass)
+              : null,
+            lastConfirmationMethod: ["BROWSER_GEOLOCATION", "PLAYER_CONFIRMATION", "CAPTAIN_CONFIRMATION"].includes(
+              String(lastLandfallReceipt?.method),
+            )
+              ? String(lastLandfallReceipt?.method)
+              : null,
+            waypoints: snapshot.landfall.waypoints
+              .filter((item) => item.worldspaceId === landfallJourney.activeWorldspaceId)
+              .map((item) => ({
+                id: item.id,
+                name: item.visibility.publicLabel ?? item.name,
+                available: landfallJourney.availableWaypoints.some((candidate) => candidate.id === item.id),
+                visited: landfallJourney.visitedIds.includes(item.id),
+                skipped: landfallJourney.skippedIds.includes(item.id),
+                hidden: item.visibility.hiddenUntilRevealed && !landfallJourney.revealedWaypointIds.includes(item.id),
+                captainFallback: item.evidenceProfile.allowCaptainOverride,
+              })),
+            routes: snapshot.landfall.routes
+              .filter((item) => item.worldspaceId === landfallJourney.activeWorldspaceId)
+              .map((item) => ({
+                id: item.id,
+                name: item.name,
+                hidden: item.model === "HIDDEN" && !landfallJourney.revealedRouteIds.includes(item.id),
+              })),
+          }
+        : null,
   };
 }
 

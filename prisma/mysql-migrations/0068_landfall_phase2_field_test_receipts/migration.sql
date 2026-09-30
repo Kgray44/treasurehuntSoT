@@ -1,0 +1,23 @@
+CREATE TABLE `LandfallFieldTestReceipt` (
+  `id` VARCHAR(191) NOT NULL,
+  `draftId` VARCHAR(191) NOT NULL,
+  `sourceVersion` INTEGER NOT NULL,
+  `definitionHash` VARCHAR(191) NOT NULL,
+  `worldspaceId` VARCHAR(191) NOT NULL,
+  `mapId` VARCHAR(191) NOT NULL,
+  `waypointId` VARCHAR(191) NULL,
+  `routeId` VARCHAR(191) NULL,
+  `providerClass` VARCHAR(191) NOT NULL,
+  `result` VARCHAR(191) NOT NULL,
+  `permission` VARCHAR(191) NOT NULL,
+  `accuracyBand` VARCHAR(191) NULL,
+  `confidence` VARCHAR(191) NOT NULL,
+  `sampleCount` INTEGER NOT NULL,
+  `dwellSeconds` INTEGER NOT NULL,
+  `networkState` VARCHAR(191) NOT NULL,
+  `warnings` LONGTEXT NOT NULL,
+  `testedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`),
+  INDEX `LandfallFieldTestReceipt_draftId_testedAt_idx` (`draftId`, `testedAt`),
+  CONSTRAINT `LandfallFieldTestReceipt_draftId_fkey` FOREIGN KEY (`draftId`) REFERENCES `TaleDraft`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -77,4 +77,25 @@ describe("Landfall map projection", () => {
     expect(geometry.type).toBe("MultiPolygon");
     if (geometry.type === "MultiPolygon") expect(geometry.coordinates.map((polygon) => polygon.length)).toEqual([2, 1]);
   });
+  it("withholds a hidden route until a canonical reveal and limits the next leg", () => {
+    const definition = structuredClone(landfallFixture);
+    const route = definition.routes.find((item) => item.id === "town-route")!;
+    route.presentation = { visibility: "HIDDEN", revealOnSelection: false, deviationResponse: "NONE" };
+    const chart = {
+      activeWorldspaceId: "town",
+      availableLocations: [{ id: "town-arrival" }],
+      activeRouteId: "town-route",
+      activeWaypointId: "town-arrival",
+    };
+    expect(projectLandfallMap(definition, chart).features.map((item) => item.id)).toEqual(["town-arrival"]);
+    expect(
+      projectLandfallMap(definition, { ...chart, revealedRouteIds: ["town-route"] }).features.map((item) => item.id),
+    ).toEqual(["town-arrival", "town-route"]);
+    route.presentation.visibility = "NEXT_SEGMENT";
+    const segment = projectLandfallMap(definition, chart).features.find((item) => item.id === "town-route");
+    expect(segment?.kind).toBe("LINE");
+    expect(segment?.coordinates.length).toBeGreaterThanOrEqual(2);
+    route.presentation.visibility = "ROUGH_BEARING";
+    expect(projectLandfallMap(definition, chart).features.map((item) => item.id)).toEqual(["town-arrival"]);
+  });
 });

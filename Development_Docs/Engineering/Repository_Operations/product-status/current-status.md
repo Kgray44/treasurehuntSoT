@@ -214,8 +214,12 @@ change the external-validation boundary.
 Landfall Phase 1 adds a physical and virtual navigation foundation and a Player
 Journal chart with explicit foreground live position for supported physical
 Voyages. PR #667 passed hosted ordinary Sounding Line and closed Phase 1 on main.
-Creator and Captain Landfall experiences, virtual telemetry, live hardware
-validation, deployment, and owner acceptance remain pending.
+The Phase 2 candidate adds Creator Living Chart authoring and field-test receipts,
+six Chronicle location blocks and typed completion, canonical Player and Captain
+progression, completed-Voyage replay, Lanternwake outcomes, and bounded web
+offline reconciliation. It is pending protected integration; virtual telemetry,
+external geocoding, live hardware validation, deployment, and owner acceptance
+remain separate.
 
 **Planned or not validated:** Project Homeport owner acceptance, Harborlight
 Phase 4, and Project Watchglass remain pending. Project Sounding Line is the

@@ -71,7 +71,7 @@ function connectionIssues(block: CanonicalDrydockBlock): DrydockIssue[] {
         compatibilityStatus: "MIGRATION_REQUIRED",
       }),
     );
-  if (block.blockType === "choice") {
+  if (["choice", "locationChoice"].includes(block.blockType)) {
     const configured = Array.isArray(block.configuration.choices)
       ? block.configuration.choices.map((choice) =>
           choice && typeof choice === "object" ? String((choice as Record<string, unknown>).targetBlockId ?? "") : "",
@@ -348,7 +348,7 @@ export function canonicalTargetMigrationPreview(block: CanonicalDrydockBlock): {
   nextBlockId: string | null;
 } {
   const configuration = structuredClone(block.configuration);
-  if (block.blockType === "choice" && Array.isArray(configuration.choices)) {
+  if (["choice", "locationChoice"].includes(block.blockType) && Array.isArray(configuration.choices)) {
     const edges = block.connections.filter((connection) => connection.connectionType === "CHOICE");
     configuration.choices = configuration.choices.map((choice, index) =>
       choice && typeof choice === "object"

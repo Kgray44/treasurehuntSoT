@@ -13,8 +13,8 @@ describe("Drydock validation foundation", () => {
   it("validates the complete current synthetic fixture and indexes dependencies", () => {
     const result = validateDrydockDraftContracts(draft);
     expect(result.valid).toBe(true);
-    expect(result.checkedBlockCount).toBe(23);
-    expect(result.blocks).toHaveLength(23);
+    expect(result.checkedBlockCount).toBe(29);
+    expect(result.blocks).toHaveLength(29);
     expect(result.variableRegistry.declarations).toHaveLength(1);
     expect(result.variableUsageIndex.usages.some((usage) => usage.kind === "EXPRESSION")).toBe(true);
     expect(result.dependencyIndex.records.some((record) => record.kind === "PROVIDER")).toBe(true);
@@ -75,7 +75,7 @@ describe("Drydock validation foundation", () => {
     expect(() => canonicalJson({ prose: "x".repeat(33 * 1024) })).toThrow("Canonical authored content exceeds");
   });
 
-  it("validates a 230-block contract sample within the local unit budget", () => {
+  it("validates a 290-block contract sample within the local unit budget", () => {
     const sample = {
       schemaVersion: 1 as const,
       chapters: Array.from({ length: 10 }, (_, chapterIndex) => ({
@@ -89,7 +89,7 @@ describe("Drydock validation foundation", () => {
             ...connection,
             targetBlockId: remap(connection.targetBlockId),
           }));
-          if (clone.blockType === "choice") {
+          if (clone.blockType === "choice" || clone.blockType === "locationChoice") {
             const choices = clone.configuration.choices as Array<{ id: string; label: string; targetBlockId: string }>;
             clone.configuration.choices = choices.map((choice) => ({
               ...choice,
@@ -107,7 +107,7 @@ describe("Drydock validation foundation", () => {
     const started = performance.now();
     const result = validateDrydockDraftContracts(sample);
     expect(result.valid).toBe(true);
-    expect(result.checkedBlockCount).toBe(230);
+    expect(result.checkedBlockCount).toBe(290);
     expect(performance.now() - started).toBeLessThan(3000);
   });
 });

@@ -2,6 +2,72 @@
   "currentSchemaVersion": 2,
   "migrations": [
     {
+      "blockType": "livingChart",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-livingChart-v1"],
+      "fromVersion": 1,
+      "id": "drydock.livingChart.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "waypointJourney",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-waypointJourney-v1"],
+      "fromVersion": 1,
+      "id": "drydock.waypointJourney.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "routeJourney",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-routeJourney-v1"],
+      "fromVersion": 1,
+      "id": "drydock.routeJourney.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "locationReveal",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-locationReveal-v1"],
+      "fromVersion": 1,
+      "id": "drydock.locationReveal.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "locationObservation",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-locationObservation-v1"],
+      "fromVersion": 1,
+      "id": "drydock.locationObservation.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "locationChoice",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-locationChoice-v1"],
+      "fromVersion": 1,
+      "id": "drydock.locationChoice.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
       "blockType": "narrative",
       "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
       "dataLoss": "NONE",

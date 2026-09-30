@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-type StudioSection = "story" | "settings" | "assets" | "locations" | "artifacts" | "versions" | "trials";
+type StudioSection = "story" | "settings" | "assets" | "locations" | "landfall" | "artifacts" | "versions" | "trials";
 
 const sectionLabels: Record<StudioSection, string> = {
   story: "Passages",
@@ -10,6 +10,7 @@ const sectionLabels: Record<StudioSection, string> = {
   settings: "Chronicle settings",
   assets: "Assets",
   locations: "Waypoints",
+  landfall: "Living Chart",
   artifacts: "Artifacts",
   versions: "Versions",
 };

@@ -5,11 +5,13 @@ import { resolve, join } from "node:path";
 const root = resolve(import.meta.dirname, "..", "..");
 const migrationsRoot = join(root, "prisma", "migrations");
 const phaseMigration = "202609290001_landfall_phase1_definition";
-const migrations = (await readdir(migrationsRoot, { withFileTypes: true }))
+const allMigrations = (await readdir(migrationsRoot, { withFileTypes: true }))
   .filter((item) => item.isDirectory())
   .map((item) => item.name)
   .sort();
-if (migrations.at(-1) !== phaseMigration) throw new Error("LANDFALL_MIGRATION_ORDER_INVALID");
+const phaseIndex = allMigrations.indexOf(phaseMigration);
+if (phaseIndex < 0) throw new Error("LANDFALL_MIGRATION_MISSING");
+const migrations = allMigrations.slice(0, phaseIndex + 1);
 
 async function apply(database, names) {
   database.exec("PRAGMA foreign_keys = ON;");

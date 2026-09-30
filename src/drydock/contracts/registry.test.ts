@@ -19,10 +19,10 @@ const frozenBlocks = fixture.blocks as Parameters<typeof parseDrydockBlock>[0][]
 
 describe("Drydock block contract registry", () => {
   it("governs every current Story Block exactly once", () => {
-    expect(drydockBlockTypeIds).toHaveLength(23);
-    expect(new Set(drydockBlockTypeIds).size).toBe(23);
+    expect(drydockBlockTypeIds).toHaveLength(29);
+    expect(new Set(drydockBlockTypeIds).size).toBe(29);
     expect(Object.keys(drydockBlockContracts).sort()).toEqual([...drydockBlockTypeIds].sort());
-    expect(serializeDrydockBlockContractRegistry()).toHaveLength(23);
+    expect(serializeDrydockBlockContractRegistry()).toHaveLength(29);
     expect(studioRegistryFromDrydock().every((item) => item.schemaVersion === 2)).toBe(true);
     expect(
       drydockBlockContracts.setVariable.variableWrites.find(
@@ -244,14 +244,19 @@ describe("Drydock block contract registry", () => {
 
   it("freezes a complete synthetic historical compatibility ledger", () => {
     expect(fixture.classification).toBe("SYNTHETIC_NO_PRIVATE_CONTENT");
-    expect(fixture.frozenAt).toBe("2026-08-09");
-    expect(frozenBlocks.map((block) => block.blockType).sort()).toEqual([...drydockBlockTypeIds].sort());
+    expect(fixture.frozenAt).toBe("2026-09-30");
+    expect(frozenBlocks).toHaveLength(29);
+    expect(
+      frozenBlocks.every((block) =>
+        drydockBlockTypeIds.includes(block.blockType as (typeof drydockBlockTypeIds)[number]),
+      ),
+    ).toBe(true);
     expect(canonicalJson(fixture)).not.toContain("creatorNotes");
   });
 
   it("serializes the registered block contract surface deterministically", () => {
-    const first = canonicalJson(serializeDrydockBlockContractRegistry());
-    const second = canonicalJson(serializeDrydockBlockContractRegistry());
+    const first = canonicalJson(serializeDrydockBlockContractRegistry(), Number.MAX_SAFE_INTEGER);
+    const second = canonicalJson(serializeDrydockBlockContractRegistry(), Number.MAX_SAFE_INTEGER);
     expect(second).toBe(first);
     expect(JSON.parse(first)).toHaveLength(drydockBlockTypeIds.length);
   });

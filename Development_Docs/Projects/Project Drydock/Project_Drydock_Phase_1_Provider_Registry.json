@@ -57,6 +57,20 @@
       "version": 1
     },
     {
+      "captainOverride": "SUPPORTED",
+      "faultModes": ["providerUnavailable", "permissionDenied", "uncertain", "offlinePending"],
+      "id": "landfall",
+      "outcomes": ["NEARBY", "LIKELY_INSIDE", "CONFIRMED"],
+      "owner": "Project Landfall",
+      "privacyClass": "PRIVATE_EVIDENCE",
+      "requiresFallback": true,
+      "retryPolicy": "CREATOR_DECLARED",
+      "runtimeCapability": "landfall.canonical-waypoint-completion",
+      "simulatorCapability": "NOT_IMPLEMENTED_PHASE_1",
+      "state": "AVAILABLE",
+      "version": 1
+    },
+    {
       "captainOverride": "REQUIRED",
       "faultModes": ["providerUnavailable", "permissionDenied", "uncertain"],
       "id": "visionLocation",

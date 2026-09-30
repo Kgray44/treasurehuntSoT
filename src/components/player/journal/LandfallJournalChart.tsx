@@ -3,50 +3,126 @@
 import { useEffect, useRef, useState } from "react";
 import type { MotionMode } from "@/animation/core/animation-types";
 import { VoyageChart } from "@/components/player/workspace/VoyageChart";
+import { LandfallPresentation } from "@/components/player/journal/LandfallPresentation";
 import { BrowserGeolocationProvider } from "@/landfall/browser-geolocation";
+import { distance } from "@/landfall/geometry";
 import type { LandfallCurrentPosition } from "@/landfall/map-projection";
 import { LandfallProviderRegistry } from "@/landfall/observation";
 import type { PlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import { LandfallRuntime } from "@/landfall/runtime";
+import type { LandfallObservation } from "@/landfall/observation";
+import type { PlayerLandfallEvidence } from "@/landfall/server-evidence";
+import {
+  clearLandfallEvidence,
+  pendingLandfallEvidence,
+  queueLandfallEvidence,
+  rememberRevealedChart,
+  restoreRevealedChart,
+} from "@/landfall/offline-web";
+
+const bootstrapCache = new Map<string, { value: PlayerLandfallBootstrap; cachedAt: number }>();
+
+function physicalGuidance(
+  position: LandfallCurrentPosition | null,
+  waypoint: PlayerLandfallBootstrap["runtimeDefinition"]["waypoints"][number] | undefined,
+  worldspace: PlayerLandfallBootstrap["runtimeDefinition"]["worldspaces"][number],
+) {
+  if (!position || !waypoint || waypoint.geometry.type !== "POINT_RADIUS" || worldspace.kind !== "PHYSICAL")
+    return null;
+  const center = waypoint.geometry.center;
+  if (center.type !== "WGS84") return null;
+  const origin = { ...center, longitude: position.coordinates[0], latitude: position.coordinates[1] };
+  const meters = distance(origin, center, worldspace);
+  const radians = Math.PI / 180;
+  const delta = (center.longitude - origin.longitude) * radians;
+  const y = Math.sin(delta) * Math.cos(center.latitude * radians);
+  const x =
+    Math.cos(origin.latitude * radians) * Math.sin(center.latitude * radians) -
+    Math.sin(origin.latitude * radians) * Math.cos(center.latitude * radians) * Math.cos(delta);
+  const bearing = (Math.atan2(y, x) / radians + 360) % 360;
+  const direction = ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"][
+    Math.round(bearing / 45) % 8
+  ];
+  return { meters, direction };
+}
 
 export function LandfallJournalChart({
   sessionId,
   publishedVersionId,
   mode,
+  historical,
+  csrfToken,
+  onProgress,
 }: {
   sessionId: string;
   publishedVersionId: string;
   mode: MotionMode;
+  historical: boolean;
+  csrfToken: string;
+  onProgress: () => void;
 }) {
   const [bootstrap, setBootstrap] = useState<PlayerLandfallBootstrap | null>(null);
   const [message, setMessage] = useState("Loading Voyage Chart…");
   const [tracking, setTracking] = useState(false);
   const [browserAvailable, setBrowserAvailable] = useState(false);
   const [position, setPosition] = useState<LandfallCurrentPosition | null>(null);
+  const [replayId, setReplayId] = useState<string | null>(null);
   const runtime = useRef<LandfallRuntime | null>(null);
   const browser = useRef<BrowserGeolocationProvider | null>(null);
+  const samples = useRef<LandfallObservation[]>([]);
+  const submitting = useRef(false);
+  const submittedEvidenceIds = useRef(new Set<string>());
+  const pendingEvidence = useRef<PlayerLandfallEvidence | null>(
+    pendingLandfallEvidence(sessionId, publishedVersionId, csrfToken),
+  );
+  const initialReconcileAttempted = useRef(false);
+
+  useEffect(() => {
+    if ("serviceWorker" in navigator)
+      void navigator.serviceWorker.register("/landfall-offline-sw.js", { scope: "/player/" }).catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     const abort = new AbortController();
     let mounted = true;
     const load = async () => {
       try {
-        const response = await fetch(`/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall`, {
-          cache: "no-store",
-          signal: abort.signal,
-        });
-        if (!response.ok) throw new Error("Voyage Chart is unavailable.");
-        const body = (await response.json()) as
-          | { available: false }
-          | { available: true; bootstrap: PlayerLandfallBootstrap };
+        const cacheKey = `${sessionId}:${publishedVersionId}:${csrfToken}:${historical ? "history" : "live"}`;
+        let offlineCacheUsed = false;
+        let body: { available: false } | { available: true; bootstrap: PlayerLandfallBootstrap };
+        try {
+          const response = await fetch(`/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall`, {
+            cache: "no-store",
+            signal: abort.signal,
+          });
+          if (!response.ok) throw new Error("Voyage Chart is unavailable.");
+          body = (await response.json()) as typeof body;
+        } catch (cause) {
+          if (abort.signal.aborted) throw cause;
+          const cached = bootstrapCache.get(cacheKey);
+          const restored =
+            cached && Date.now() - cached.cachedAt <= 30 * 60_000
+              ? cached.value
+              : await restoreRevealedChart(sessionId, publishedVersionId, csrfToken);
+          if (!restored) throw cause;
+          body = { available: true, bootstrap: restored };
+          offlineCacheUsed = true;
+        }
         if (!mounted) return;
         if (!body.available) {
+          bootstrapCache.delete(cacheKey);
           setMessage("");
           return;
         }
         const next = body.bootstrap;
         if (next.sessionId !== sessionId || next.publishedVersionId !== publishedVersionId)
           throw new Error("Voyage Chart version changed. Reopen the map.");
+        if (historical && !next.replayOnly) throw new Error("Historical chart state is unavailable.");
+        if (!offlineCacheUsed) {
+          bootstrapCache.set(cacheKey, { value: next, cachedAt: Date.now() });
+          while (bootstrapCache.size > 4) bootstrapCache.delete(bootstrapCache.keys().next().value!);
+          void rememberRevealedChart(next, csrfToken);
+        }
         const registry = new LandfallProviderRegistry();
         registry.register({
           id: "browser-geolocation",
@@ -56,6 +132,7 @@ export function LandfallJournalChart({
         });
         const active = new LandfallRuntime(next.runtimeDefinition, next, registry);
         active.setActiveWaypoint(next.activeWaypointId);
+        if (next.runtimeDefinition.routes[0]?.geometry) active.setActiveRoute(next.runtimeDefinition.routes[0].id);
         runtime.current = active;
         const worldspace = next.runtimeDefinition.worldspaces[0];
         const waypoint = next.runtimeDefinition.waypoints.find((item) => item.id === next.activeWaypointId);
@@ -69,13 +146,15 @@ export function LandfallJournalChart({
         setBrowserAvailable(Boolean(browser.current));
         setBootstrap(next);
         setMessage(
-          worldspace.kind === "VIRTUAL"
-            ? "Virtual chart ready. No live virtual position source is connected."
-            : !next.activeWaypointId
-              ? "No released waypoint is ready for location evaluation."
-              : !browser.current
-                ? "This physical chart has no supported browser location source."
-                : "Location is off. Use my location only while this map is open.",
+          offlineCacheUsed
+            ? "Offline chart from this open session. Location results are local until synchronization; no new visit is confirmed."
+            : worldspace.kind === "VIRTUAL"
+              ? "Virtual chart ready. No live virtual position source is connected."
+              : !next.activeWaypointId
+                ? "No released waypoint is ready for location evaluation."
+                : !browser.current
+                  ? "This physical chart has no supported browser location source."
+                  : "Location is off. Use my location only while this map is open.",
         );
       } catch {
         if (mounted && !abort.signal.aborted) setMessage("Voyage Chart is unavailable.");
@@ -89,8 +168,9 @@ export function LandfallJournalChart({
       browser.current = null;
       runtime.current?.pause();
       runtime.current = null;
+      samples.current = [];
     };
-  }, [publishedVersionId, sessionId]);
+  }, [csrfToken, historical, publishedVersionId, sessionId]);
 
   useEffect(() => {
     if (!tracking) return;
@@ -122,12 +202,80 @@ export function LandfallJournalChart({
     runtime.current?.pause();
     setTracking(false);
     setPosition(null);
+    samples.current = [];
     setMessage("Location is off. Use my location to resume.");
   };
+  const sendEvidence = async (evidence: PlayerLandfallEvidence) => {
+    if (submitting.current) return;
+    if (!navigator.onLine) {
+      pendingEvidence.current = evidence;
+      queueLandfallEvidence(sessionId, publishedVersionId, csrfToken, evidence);
+      setMessage(
+        "Evidence queued locally in this open tab. The Voyage has not confirmed a visit. Reconnect to synchronize.",
+      );
+      return;
+    }
+    submitting.current = true;
+    setMessage(
+      pendingEvidence.current ? "Reconciling queued evidence with the Voyage…" : "Checking arrival with the Voyage…",
+    );
+    try {
+      const response = await fetch(`/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken },
+        body: JSON.stringify(evidence),
+      });
+      if (!response.ok) {
+        pendingEvidence.current = null;
+        clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
+        setMessage(
+          response.status === 409
+            ? "Queued evidence could not be reconciled because the Voyage changed. Reopen the chart for the current objective."
+            : "Evidence was rejected. No visit was recorded; use a fresh reading or configured fallback.",
+        );
+        return;
+      }
+      pendingEvidence.current = null;
+      clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
+      browser.current?.stop();
+      runtime.current?.pause();
+      setTracking(false);
+      setPosition(null);
+      setMessage(
+        evidence.method === "PLAYER_FALLBACK"
+          ? "Your confirmation was recorded without a location claim."
+          : "Arrival recorded in the Voyage.",
+      );
+      onProgress();
+    } catch {
+      pendingEvidence.current = evidence;
+      queueLandfallEvidence(sessionId, publishedVersionId, csrfToken, evidence);
+      setMessage("Evidence is queued locally in this open tab. Reconnect to synchronize; no visit has been recorded.");
+    } finally {
+      submitting.current = false;
+    }
+  };
+  useEffect(() => {
+    const reconnect = () => {
+      if (pendingEvidence.current) void sendEvidence(pendingEvidence.current);
+      else
+        setMessage((current) =>
+          current.includes("offline") ? "Connected. Use my location for a fresh reading." : current,
+        );
+    };
+    window.addEventListener("online", reconnect);
+    return () => window.removeEventListener("online", reconnect);
+  });
+  useEffect(() => {
+    if (bootstrap && navigator.onLine && pendingEvidence.current && !initialReconcileAttempted.current) {
+      initialReconcileAttempted.current = true;
+      void sendEvidence(pendingEvidence.current);
+    }
+  });
   const start = () => {
     const provider = browser.current;
     const active = runtime.current;
-    if (!provider || !active || !bootstrap?.activeWaypointId) return;
+    if (!provider || !active || !bootstrap?.activeWaypointId || historical || bootstrap.replayOnly) return;
     active.resume();
     setTracking(true);
     setMessage("Requesting location for this open map…");
@@ -136,6 +284,8 @@ export function LandfallJournalChart({
       (observation) => {
         const now = Date.now();
         const outcome = active.ingest(observation, now);
+        if (!outcome.rejection && observation.kind === "PHYSICAL_POSITION")
+          samples.current = [...samples.current, observation].slice(-20);
         const fix = active.currentPosition(now);
         setPosition(
           fix && fix.coordinate.type === "WGS84"
@@ -148,14 +298,45 @@ export function LandfallJournalChart({
             : null,
         );
         setMessage(
-          outcome.failure === "WEAK_ACCURACY"
-            ? "Location accuracy is too weak for a reliable position. Waiting for a better fix."
-            : outcome.rejection
-              ? "Location signal could not be used. Waiting for a fresh fix."
-              : outcome.confidence === "CONFIRMED"
-                ? "Location signal is locally confirmed. No visit has been recorded."
-                : `Location signal: ${outcome.confidence.toLowerCase().replaceAll("_", " ")}. No visit has been recorded.`,
+          outcome.failure === "ROUTE_MISMATCH"
+            ? bootstrap.runtimeDefinition.routes[0]?.presentation?.deviationResponse === "CAPTAIN_REVIEW"
+              ? "You appear off the authored route. Pause and ask your Captain for guidance. No visit has been recorded."
+              : bootstrap.runtimeDefinition.routes[0]?.presentation?.deviationResponse === "NONE"
+                ? "The route check did not qualify this reading. No visit has been recorded."
+                : "You appear off the authored route. Return toward the route or use an available fallback. No visit has been recorded."
+            : outcome.failure === "WEAK_ACCURACY"
+              ? "Location accuracy is too weak for a reliable position. Waiting for a better fix."
+              : outcome.rejection
+                ? "Location signal could not be used. Waiting for a fresh fix."
+                : outcome.confidence === "CONFIRMED"
+                  ? "Location signal is locally confirmed. No visit has been recorded."
+                  : `Location signal: ${outcome.confidence.toLowerCase().replaceAll("_", " ")}. No visit has been recorded.`,
         );
+        const waypoint = bootstrap.runtimeDefinition.waypoints.find((item) => item.id === bootstrap.activeWaypointId);
+        if (
+          waypoint &&
+          outcome.confidence === "CONFIRMED" &&
+          !bootstrap.paused &&
+          csrfToken &&
+          !submitting.current &&
+          !pendingEvidence.current &&
+          !submittedEvidenceIds.current.has(observation.id)
+        ) {
+          submittedEvidenceIds.current.add(observation.id);
+          const evidence = [...samples.current];
+          void sendEvidence({
+            schemaVersion: 1,
+            sessionId,
+            publishedVersionId,
+            worldspaceId: bootstrap.runtimeDefinition.worldspaces[0].id,
+            waypointId: waypoint.id,
+            evidenceId: observation.id,
+            expectedSequence: bootstrap.currentSequence,
+            idempotencyKey: crypto.randomUUID(),
+            method: "FOREGROUND_LOCATION",
+            observations: evidence,
+          });
+        }
       },
       (permission) => {
         active.setPermission(permission);
@@ -172,22 +353,153 @@ export function LandfallJournalChart({
     );
   };
 
+  const confirmFallback = async () => {
+    if (
+      !bootstrap?.activeWaypointId ||
+      !csrfToken ||
+      submitting.current ||
+      pendingEvidence.current ||
+      bootstrap.paused ||
+      historical ||
+      bootstrap.replayOnly
+    )
+      return;
+    await sendEvidence({
+      schemaVersion: 1,
+      sessionId,
+      publishedVersionId,
+      worldspaceId: bootstrap.runtimeDefinition.worldspaces[0].id,
+      waypointId: bootstrap.activeWaypointId,
+      evidenceId: crypto.randomUUID(),
+      expectedSequence: bootstrap.currentSequence,
+      idempotencyKey: crypto.randomUUID(),
+      method: "PLAYER_FALLBACK",
+    });
+  };
+
   if (!bootstrap) return message ? <p role="status">{message}</p> : null;
   const worldspace = bootstrap.runtimeDefinition.worldspaces[0];
   const activeWaypoint = bootstrap.runtimeDefinition.waypoints.find((item) => item.id === bootstrap.activeWaypointId);
+  const activeRoute = bootstrap.runtimeDefinition.routes[0];
+  const guidance = physicalGuidance(position, activeWaypoint, worldspace);
+  const replay = bootstrap.journeyPath.find((item) => item.id === replayId);
   return (
     <div className="landfall-journal-chart" data-landfall-player-chart data-worldspace-kind={worldspace.kind}>
       <p>{bootstrap.worldspaceName}</p>
-      <p>
-        Current objective:{" "}
-        {activeWaypoint ? (activeWaypoint.visibility.publicLabel ?? activeWaypoint.name) : "No released location"}
-      </p>
-      <VoyageChart mode={mode} landfallScene={bootstrap.scene} landfallPosition={position} />
-      {worldspace.kind === "PHYSICAL" && browserAvailable && bootstrap.activeWaypointId && (
-        <button type="button" onClick={tracking ? stop : start}>
-          {tracking ? "Stop using my location" : "Use my location"}
-        </button>
+      {bootstrap.replayOnly && (
+        <p>Historical Landfall chart. Replay is presentation only and never requests location or changes progress.</p>
       )}
+      {!bootstrap.replayOnly && (
+        <p>
+          Current objective:{" "}
+          {activeWaypoint ? (activeWaypoint.visibility.publicLabel ?? activeWaypoint.name) : "No released location"}
+        </p>
+      )}
+      {activeWaypoint?.description && <p>{activeWaypoint.description}</p>}
+      {activeWaypoint?.guidance?.clue && <p>{activeWaypoint.guidance.clue}</p>}
+      {activeWaypoint?.guidance?.nearbyClue &&
+        position &&
+        ["NEARBY", "LIKELY_INSIDE", "CONFIRMED"].includes(position.confidence) && (
+          <p>{activeWaypoint.guidance.nearbyClue}</p>
+        )}
+      {activeWaypoint?.guidance?.wrongDirectionClue && position?.confidence === "OUTSIDE" && (
+        <p>{activeWaypoint.guidance.wrongDirectionClue}</p>
+      )}
+      {guidance &&
+        (activeWaypoint?.guidance?.showDistance ||
+          activeWaypoint?.guidance?.showBearing ||
+          activeRoute?.presentation?.visibility === "ROUGH_BEARING") && (
+          <p>
+            {activeWaypoint?.guidance?.showDistance
+              ? `Approximately ${Math.round(guidance.meters / 25) * 25} meters away. `
+              : ""}
+            {activeWaypoint?.guidance?.showBearing || activeRoute?.presentation?.visibility === "ROUGH_BEARING"
+              ? `Rough bearing: ${guidance.direction}.`
+              : ""}
+          </p>
+        )}
+      <p>
+        Map offline availability: {bootstrap.offlineMap.toLowerCase()}.{" "}
+        {bootstrap.offlineMap === "UNAVAILABLE"
+          ? "The chart list remains readable while this tab is open; map data may need a connection."
+          : bootstrap.offlineMap === "PARTIAL"
+            ? "The map image is not guaranteed after a reload."
+            : "This authored vector chart needs no external tiles."}
+      </p>
+      {bootstrap.paused && (
+        <p role="status">The Captain paused Landfall progression. Current chart details remain readable.</p>
+      )}
+      {activeRoute && (
+        <section aria-label="Route progress">
+          <strong>{activeRoute.name}</strong>
+          <ol>
+            {activeRoute.waypointIds.map((id) => {
+              const waypoint = bootstrap.runtimeDefinition.waypoints.find((item) => item.id === id);
+              if (!waypoint) return null;
+              const visited = bootstrap.visitedIds.includes(id);
+              return (
+                <li key={id}>
+                  {waypoint.visibility.publicLabel ?? waypoint.name} ·{" "}
+                  {visited ? "visited" : id === bootstrap.activeWaypointId ? "next" : "ahead"}
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+      )}
+      {bootstrap.journeyPath.length > 0 && (
+        <section aria-label="Journey history">
+          <strong>Places reached</strong>
+          <ol>
+            {bootstrap.journeyPath
+              .filter((item) => item.kind === "VISIT")
+              .map((item) => {
+                return (
+                  <li key={item.id}>
+                    {item.label}
+                    {bootstrap.replayOnly && (
+                      <button type="button" onClick={() => setReplayId(item.id)}>
+                        Replay arrival
+                      </button>
+                    )}
+                  </li>
+                );
+              })}
+          </ol>
+          {bootstrap.replayOnly && replay && (
+            <p role="status" className="completion-stamp">
+              Arrival recorded: {replay.label}
+              {replay.confirmedAt ? ` · ${new Date(replay.confirmedAt).toLocaleString()}` : ""}
+            </p>
+          )}
+        </section>
+      )}
+      <VoyageChart mode={mode} landfallScene={bootstrap.scene} landfallPosition={position} />
+      <LandfallPresentation bootstrap={bootstrap} />
+      {worldspace.kind === "PHYSICAL" &&
+        browserAvailable &&
+        bootstrap.activeWaypointId &&
+        !bootstrap.paused &&
+        !bootstrap.replayOnly && (
+          <button type="button" onClick={tracking ? stop : start}>
+            {tracking ? "Stop using my location" : "Use my location"}
+          </button>
+        )}
+      {activeWaypoint?.fallback.mode === "PLAYER" &&
+        activeWaypoint.evidenceProfile.allowManualFallback &&
+        activeWaypoint.evidenceProfile.acceptedSources.includes("PLAYER_CONFIRMATION") &&
+        worldspace.observationPolicy.allowedSources.includes("PLAYER_CONFIRMATION") &&
+        !bootstrap.paused &&
+        !bootstrap.replayOnly && (
+          <button
+            type="button"
+            onClick={() => {
+              void confirmFallback();
+            }}
+          >
+            Confirm arrival myself
+          </button>
+        )}
       <p role="status" aria-live="polite">
         {message}
       </p>

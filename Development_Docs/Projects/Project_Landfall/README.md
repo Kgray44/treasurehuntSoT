@@ -28,3 +28,12 @@ The amendment broadens Landfall to physical and virtual Worldspaces and supersed
 - [Live Position Closure Record](Project_Landfall_Phase_1_Live_Position_Closure_Record.md)
 
 These records describe the Phase 1 foundation, the Player live-position correction, and their proof. They do not claim Phase 2 authoring, background tracking, virtual telemetry, or real-device acceptance.
+
+## Phase 2 engineering records
+
+- [Design record](Project_Landfall_Phase_2_Design_Record.md)
+- [Threat model](Project_Landfall_Phase_2_Threat_Model.md)
+- [Test plan](Project_Landfall_Phase_2_Test_Plan.md)
+- [Bring the World Aboard implementation record](Project_Landfall_Phase_2_Implementation_Record.md) describes the Creator, Chronicle, Player, Captain, replay, field-test, and web offline source on the Phase 2 candidate.
+- [Validation record](Project_Landfall_Phase_2_Validation_Record.md)
+- [Integration manifest](Project_Landfall_Phase_2_Integration_Manifest.md)

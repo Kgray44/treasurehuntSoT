@@ -6,7 +6,7 @@ import type { JsonObject, StudioDraftInput } from "@/chronicle/types";
 import { parseJsonObject, parsePublishedSnapshot } from "@/chronicle/types";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { studioRegistryFromDrydock } from "@/drydock/contracts/registry";
-import { parseStoredLandfallDefinition } from "@/landfall/definition";
+import { parseStoredLandfallDefinition, validateLandfallDefinition } from "@/landfall/definition";
 
 export const slugSchema = z
   .string()
@@ -52,6 +52,7 @@ const blockInputSchema = z.object({
 
 export const studioDraftSchema = z.object({
   autosaveVersion: z.number().int().min(1),
+  landfall: z.unknown().nullable().optional(),
   tale: z.object({
     title: z.string().min(1).max(160),
     slug: slugSchema,
@@ -331,6 +332,11 @@ function json(value: unknown) {
 
 export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInput, userId: string) {
   const input = studioDraftSchema.parse(unchecked);
+  const landfall = input.landfall == null ? input.landfall : validateLandfallDefinition(input.landfall);
+  if (landfall && landfall.taleId !== taleId) throw new Error("LANDFALL_TALE_MISMATCH");
+  const serializedLandfall = landfall ? JSON.stringify(landfall) : null;
+  if (serializedLandfall && Buffer.byteLength(serializedLandfall, "utf8") > 1024 * 1024)
+    throw new Error("LANDFALL_DEFINITION_TOO_LARGE");
   for (const chapter of input.chapters) {
     for (const block of chapter.blocks) {
       if (!getBlockDefinition(block.blockType))
@@ -353,6 +359,7 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
       where: { id: draft.id, autosaveVersion: input.autosaveVersion },
       data: {
         autosaveVersion: { increment: 1 },
+        ...(landfall !== undefined ? { landfallDefinition: serializedLandfall } : {}),
         validationState: "STALE",
         validationSummary: "{}",
         lastValidatedAt: null,
@@ -416,7 +423,11 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
       for (let blockIndex = 0; blockIndex < chapter.blocks.length; blockIndex += 1) {
         const block = chapter.blocks[blockIndex];
         const canonicalConfiguration = structuredClone(block.configuration);
-        if (block.connections && block.blockType === "choice" && Array.isArray(canonicalConfiguration.choices)) {
+        if (
+          block.connections &&
+          ["choice", "locationChoice"].includes(block.blockType) &&
+          Array.isArray(canonicalConfiguration.choices)
+        ) {
           const choiceTargets = [...block.connections]
             .filter((connection) => connection.connectionType === "CHOICE")
             .sort((left, right) => (left.orderIndex ?? 0) - (right.orderIndex ?? 0));

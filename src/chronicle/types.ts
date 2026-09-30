@@ -51,6 +51,8 @@ export type StudioChapterInput = {
 
 export type StudioDraftInput = {
   autosaveVersion: number;
+  /** When supplied, Landfall participates in the same Studio autosave revision. */
+  landfall?: unknown;
   tale: {
     title: string;
     slug: string;

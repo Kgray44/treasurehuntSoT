@@ -2956,3 +2956,188 @@ html[data-voyage-theme="light"]
     grid-template-columns: 1fr;
   }
 }
+
+.landfall-workspace {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1rem, 2.5vw, 2rem);
+  color: var(--text-primary, #edf3ec);
+}
+.landfall-workspace-heading,
+.landfall-worldspace-create,
+.landfall-workspace-toolbar,
+.landfall-map-column,
+.landfall-inspector,
+.landfall-findings {
+  border: 1px solid rgb(201 169 95 / 28%);
+  border-radius: 16px;
+  background: rgb(6 24 29 / 88%);
+  box-shadow: 0 16px 44px rgb(0 0 0 / 15%);
+}
+.landfall-workspace-heading,
+.landfall-map-column,
+.landfall-inspector,
+.landfall-findings {
+  padding: 1.2rem;
+}
+.landfall-workspace-heading h2 {
+  margin: 0.2rem 0;
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+}
+.landfall-workspace-heading p:last-child,
+.landfall-provider-status,
+.landfall-inspector p {
+  color: var(--text-secondary, #bbccc8);
+}
+.landfall-worldspace-create,
+.landfall-workspace-toolbar {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  padding: 1rem;
+}
+.landfall-workspace :where(label) {
+  display: grid;
+  gap: 0.35rem;
+  min-width: min(100%, 10rem);
+  font-size: 0.85rem;
+}
+.landfall-workspace :where(input, select) {
+  min-height: 2.7rem;
+  border: 1px solid rgb(201 169 95 / 35%);
+  border-radius: 8px;
+  padding: 0.45rem 0.65rem;
+  color: inherit;
+  background: rgb(2 17 23 / 80%);
+}
+.landfall-workspace :where(button) {
+  min-height: 2.7rem;
+  border: 1px solid rgb(201 169 95 / 35%);
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  color: inherit;
+  background: rgb(37 65 68 / 85%);
+  cursor: pointer;
+}
+.landfall-workspace :where(button:hover, button[aria-pressed="true"]) {
+  border-color: #d7b977;
+  background: rgb(102 76 40 / 70%);
+}
+.landfall-workspace :where(button, input, select):focus-visible {
+  outline: 3px solid #e6c880;
+  outline-offset: 2px;
+}
+.landfall-editor-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(18rem, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+.landfall-map-column {
+  min-width: 0;
+}
+.landfall-tool-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+.landfall-map-canvas,
+.landfall-mobile-preview {
+  overflow: hidden;
+  border: 1px solid rgb(201 169 95 / 35%);
+  border-radius: 12px;
+  background: #17333a;
+}
+.landfall-mobile-preview {
+  width: min(100%, 25rem);
+  margin: auto;
+  padding: 1rem 0.5rem;
+  border-radius: 28px;
+}
+.landfall-provider-status {
+  margin: 0.8rem 0;
+}
+.landfall-inspector {
+  display: grid;
+  gap: 0.9rem;
+}
+.landfall-inspector h3,
+.landfall-inspector h4 {
+  margin: 0;
+  color: #e4c98d;
+}
+.landfall-object-list {
+  display: grid;
+  gap: 0.35rem;
+  max-height: 16rem;
+  overflow: auto;
+}
+.landfall-object-list button {
+  text-align: left;
+}
+.landfall-inspector-fields {
+  display: grid;
+  gap: 0.8rem;
+  border-top: 1px solid rgb(201 169 95 / 24%);
+  padding-top: 1rem;
+}
+.landfall-inspector-fields fieldset {
+  display: grid;
+  gap: 0.35rem;
+  border: 1px solid rgb(201 169 95 / 28%);
+  border-radius: 8px;
+}
+.landfall-workspace .landfall-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.landfall-check input {
+  min-height: auto;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.landfall-findings ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+}
+html[data-voyage-theme="light"]
+  :where(
+    .landfall-workspace-heading,
+    .landfall-worldspace-create,
+    .landfall-workspace-toolbar,
+    .landfall-map-column,
+    .landfall-inspector,
+    .landfall-findings
+  ) {
+  color: var(--text-primary);
+  background: var(--surface-default);
+  border-color: var(--border-default);
+}
+html[data-voyage-theme="light"] .landfall-workspace :where(input, select, button) {
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+  border-color: var(--border-default);
+}
+html[data-voyage-theme="light"] .landfall-workspace :where(button:hover, button[aria-pressed="true"]) {
+  background: color-mix(in srgb, var(--surface-overlay) 80%, #d7b977);
+}
+@media (max-width: 64rem) {
+  .landfall-editor-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 36rem) {
+  .landfall-worldspace-create > *,
+  .landfall-workspace-toolbar > * {
+    flex: 1 1 100%;
+  }
+  .landfall-workspace {
+    padding: 0.7rem;
+  }
+}

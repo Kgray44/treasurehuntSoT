@@ -27,6 +27,9 @@ import {
   hasCaptainAuthority,
   type CanonicalCaptainActor,
 } from "@/chronicle/captain-authorization";
+import { projectLandfallJourney } from "@/landfall/journey-projection";
+import { landfallCompletionOptions, landfallOutcomeSatisfies } from "@/landfall/completion";
+import { playerLandfallEvidenceSchema, qualifyPlayerLandfallEvidence } from "@/landfall/server-evidence";
 
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
@@ -219,6 +222,77 @@ async function enterBlock(
     payload: { chapterId: chapter?.id, blockType: block.blockType },
     correlationId,
   });
+  if (snapshot.landfall) {
+    const prior = await tx.taleSessionEvent.findMany({
+      where: { sessionId: session.id, eventType: { startsWith: "landfall" } },
+      orderBy: [{ sequence: "asc" }, { id: "asc" }],
+      take: 2048,
+      select: { id: true, sequence: true, eventType: true, payload: true, createdAt: true },
+    });
+    const journey = projectLandfallJourney(snapshot.landfall, prior);
+    const transition = snapshot.landfall.transitions.find(
+      (item) =>
+        item.fromWorldspaceId === journey.activeWorldspaceId &&
+        ((item.trigger.type === "BLOCK" && item.trigger.id === block.id) ||
+          (item.trigger.type === "CHAPTER" && item.trigger.id === chapter?.id)),
+    );
+    if (transition)
+      await appendEvent(tx, session, {
+        eventType: "landfallWorldspaceEntered",
+        sourceType: "progression",
+        blockId: block.id,
+        idempotencyKey: `${correlationId}:landfall:world:${transition.id}`,
+        payload: { worldspaceId: transition.toWorldspaceId, transitionId: transition.id },
+        correlationId,
+      });
+    const activeWorldspaceId = transition?.toWorldspaceId ?? journey.activeWorldspaceId;
+    const worldspaceId = String(block.configuration.worldspaceId ?? "");
+    if (worldspaceId === activeWorldspaceId && block.blockType === "routeJourney") {
+      const routeId = String(block.configuration.routeId ?? "");
+      if (snapshot.landfall.routes.some((item) => item.id === routeId && item.worldspaceId === worldspaceId)) {
+        const selectedRoute = snapshot.landfall.routes.find((item) => item.id === routeId)!;
+        if (selectedRoute.presentation?.revealOnSelection !== false)
+          await appendEvent(tx, session, {
+            eventType: "landfallRouteRevealed",
+            sourceType: "progression",
+            blockId: block.id,
+            idempotencyKey: `${correlationId}:landfall:route-reveal:${routeId}`,
+            payload: { routeId },
+            correlationId,
+          });
+        await appendEvent(tx, session, {
+          eventType: "landfallRouteSelected",
+          sourceType: "progression",
+          blockId: block.id,
+          idempotencyKey: `${correlationId}:landfall:route-select:${routeId}`,
+          payload: { routeId },
+          correlationId,
+        });
+        for (const waypointId of selectedRoute.waypointIds)
+          if (snapshot.landfall.waypoints.some((item) => item.id === waypointId && item.visibility.hiddenUntilRevealed))
+            await appendEvent(tx, session, {
+              eventType: "landfallWaypointRevealed",
+              sourceType: "progression",
+              blockId: block.id,
+              idempotencyKey: `${correlationId}:landfall:route-waypoint:${waypointId}`,
+              payload: { waypointId },
+              correlationId,
+            });
+      }
+    }
+    if (worldspaceId === activeWorldspaceId && block.blockType === "waypointJourney") {
+      const waypointId = String(block.configuration.waypointId ?? "");
+      if (snapshot.landfall.waypoints.some((item) => item.id === waypointId && item.worldspaceId === worldspaceId))
+        await appendEvent(tx, session, {
+          eventType: "landfallWaypointSelected",
+          sourceType: "progression",
+          blockId: block.id,
+          idempotencyKey: `${correlationId}:landfall:waypoint-select:${waypointId}`,
+          payload: { waypointId },
+          correlationId,
+        });
+    }
+  }
   const request = await createRequest(tx, session.id, block);
   if (request)
     await appendEvent(tx, session, {
@@ -354,6 +428,121 @@ async function completeBlock(
     payload: { blockType: block.blockType },
     correlationId: key,
   });
+  if (snapshot.landfall && block.blockType === "locationReveal") {
+    const { worldspaceId, targetType, targetId } = block.configuration;
+    const targetExists =
+      targetType === "WAYPOINT"
+        ? snapshot.landfall.waypoints.some((item) => item.id === targetId && item.worldspaceId === worldspaceId)
+        : targetType === "ROUTE"
+          ? snapshot.landfall.routes.some((item) => item.id === targetId && item.worldspaceId === worldspaceId)
+          : targetType === "OVERLAY"
+            ? snapshot.landfall.maps.some(
+                (item) =>
+                  item.worldspaceId === worldspaceId && item.overlays?.some((overlay) => overlay.id === targetId),
+              )
+            : false;
+    if (!targetExists) throw new Error("LANDFALL_REVEAL_TARGET_UNAVAILABLE");
+    await appendEvent(tx, session, {
+      eventType:
+        targetType === "WAYPOINT"
+          ? "landfallWaypointRevealed"
+          : targetType === "OVERLAY"
+            ? "landfallOverlayRevealed"
+            : "landfallRouteRevealed",
+      sourceType,
+      sourceId,
+      blockId: block.id,
+      idempotencyKey: `${key}:landfall:reveal`,
+      payload:
+        targetType === "WAYPOINT"
+          ? { waypointId: targetId }
+          : targetType === "OVERLAY"
+            ? { overlayId: targetId }
+            : { routeId: targetId },
+      correlationId: key,
+    });
+    if (targetType === "ROUTE") {
+      const route = snapshot.landfall.routes.find((item) => item.id === targetId)!;
+      for (const waypointId of route.waypointIds)
+        if (snapshot.landfall.waypoints.some((item) => item.id === waypointId && item.visibility.hiddenUntilRevealed))
+          await appendEvent(tx, session, {
+            eventType: "landfallWaypointRevealed",
+            sourceType,
+            sourceId,
+            blockId: block.id,
+            idempotencyKey: `${key}:landfall:route-waypoint:${waypointId}`,
+            payload: { waypointId },
+            correlationId: key,
+          });
+    }
+  }
+  if (snapshot.landfall && block.blockType === "locationChoice" && selectedTarget) {
+    const options = Array.isArray(block.configuration.choices) ? block.configuration.choices : [];
+    const selected = options.find(
+      (item) => item && typeof item === "object" && (item as JsonObject).targetBlockId === selectedTarget,
+    ) as JsonObject | undefined;
+    const waypointId = String(selected?.targetWaypointId ?? "");
+    const routeId = String(selected?.targetRouteId ?? "");
+    const worldspaceId = String(block.configuration.worldspaceId ?? "");
+    if (
+      waypointId &&
+      snapshot.landfall.waypoints.some((item) => item.id === waypointId && item.worldspaceId === worldspaceId)
+    ) {
+      await appendEvent(tx, session, {
+        eventType: "landfallWaypointRevealed",
+        sourceType,
+        sourceId,
+        blockId: block.id,
+        idempotencyKey: `${key}:landfall:choice-reveal`,
+        payload: { waypointId },
+        correlationId: key,
+      });
+      await appendEvent(tx, session, {
+        eventType: "landfallWaypointSelected",
+        sourceType,
+        sourceId,
+        blockId: block.id,
+        idempotencyKey: `${key}:landfall:choice`,
+        payload: { waypointId },
+        correlationId: key,
+      });
+    } else if (
+      routeId &&
+      snapshot.landfall.routes.some((item) => item.id === routeId && item.worldspaceId === worldspaceId)
+    ) {
+      const selectedRoute = snapshot.landfall.routes.find((item) => item.id === routeId)!;
+      if (selectedRoute.presentation?.revealOnSelection !== false)
+        await appendEvent(tx, session, {
+          eventType: "landfallRouteRevealed",
+          sourceType,
+          sourceId,
+          blockId: block.id,
+          idempotencyKey: `${key}:landfall:choice-reveal`,
+          payload: { routeId },
+          correlationId: key,
+        });
+      await appendEvent(tx, session, {
+        eventType: "landfallRouteSelected",
+        sourceType,
+        sourceId,
+        blockId: block.id,
+        idempotencyKey: `${key}:landfall:choice`,
+        payload: { routeId },
+        correlationId: key,
+      });
+      for (const waypointId of selectedRoute.waypointIds)
+        if (snapshot.landfall.waypoints.some((item) => item.id === waypointId && item.visibility.hiddenUntilRevealed))
+          await appendEvent(tx, session, {
+            eventType: "landfallWaypointRevealed",
+            sourceType,
+            sourceId,
+            blockId: block.id,
+            idempotencyKey: `${key}:landfall:choice-waypoint:${waypointId}`,
+            payload: { waypointId },
+            correlationId: key,
+          });
+    } else throw new Error("LANDFALL_CHOICE_TARGET_UNAVAILABLE");
+  }
   if (session.publishedVersionId)
     await tx.revealState.updateMany({
       where: { playthroughId: session.id, contentType: "BLOCK", contentKey: block.id },
@@ -686,7 +875,7 @@ export async function getTaleSessionState(
   captain = false,
   authorizedPlayer = false,
 ) {
-  const [session, journalEvents, presentationEvents] = await Promise.all([
+  const [session, journalEvents, presentationEvents, landfallEvents] = await Promise.all([
     db.taleSession.findUniqueOrThrow({
       where: { id: sessionId },
       include: {
@@ -705,6 +894,12 @@ export async function getTaleSessionState(
       where: { sessionId },
       orderBy: [{ sequence: "desc" }, { id: "desc" }],
       take: MAX_CANONICAL_PLAYER_PRESENTATION_HISTORY,
+      select: { id: true, eventType: true, sequence: true, payload: true, createdAt: true },
+    }),
+    db.taleSessionEvent.findMany({
+      where: { sessionId, eventType: { startsWith: "landfall" } },
+      orderBy: [{ sequence: "asc" }, { id: "asc" }],
+      take: 2048,
       select: { id: true, eventType: true, sequence: true, payload: true, createdAt: true },
     }),
   ]);
@@ -780,6 +975,7 @@ export async function getTaleSessionState(
         session.version?.contentSnapshot ?? session.previewSnapshot ?? JSON.stringify(snapshot),
         session.events.map((event) => event.blockId),
         session.inventory,
+        { events: landfallEvents, chapterId: session.currentChapterId, blockId: session.currentBlockId },
       );
   return {
     session: {
@@ -877,6 +1073,8 @@ export async function interactWithTaleSession(
   const snapshot = snapshotOf(session);
   const block = blockById(snapshot, session.currentBlockId);
   if (!block) throw new Error("The current Passage is unavailable.");
+  if (block.completion?.mode === "landfall" || ["waypointJourney", "routeJourney"].includes(block.blockType))
+    throw new Error("This Passage waits for its configured Landfall location outcome or fallback.");
   const request = await db.taleVerificationRequest.findFirst({
     where: { sessionId, blockId: block.id, status: "PENDING" },
     orderBy: { requestedAt: "desc" },
@@ -939,6 +1137,299 @@ export async function interactWithTaleSession(
   });
   emit(sessionId, event);
   return { accepted: true, state: await getTaleSessionState(sessionId, token, false, authorizedPlayer) };
+}
+
+/**
+ * A bounded observation is checked against the pinned Landfall definition in
+ * the same One Voyage transaction that writes the durable visit. No browser
+ * confidence flag or raw coordinate is stored as canonical progress.
+ */
+export async function submitPlayerLandfallEvidence(unchecked: unknown) {
+  const request = playerLandfallEvidenceSchema.parse(unchecked);
+  const canonicalKey = `landfall:${request.sessionId}:${request.evidenceId}`;
+  const result = await db.$transaction(async (tx) => {
+    const duplicate = await tx.taleSessionEvent.findUnique({ where: { idempotencyKey: canonicalKey } });
+    if (duplicate) {
+      const prior = (() => {
+        try {
+          return JSON.parse(duplicate.payload) as Record<string, unknown>;
+        } catch {
+          return null;
+        }
+      })();
+      if (
+        duplicate.sessionId !== request.sessionId ||
+        duplicate.eventType !== "landfallWaypointConfirmed" ||
+        prior?.evidenceId !== request.evidenceId ||
+        prior?.waypointId !== request.waypointId ||
+        prior?.worldspaceId !== request.worldspaceId
+      )
+        throw new Error("LANDFALL_EVIDENCE_IDENTITY_MISMATCH");
+      const pinned = await tx.taleSession.findUniqueOrThrow({
+        where: { id: request.sessionId },
+        select: { publishedVersionId: true },
+      });
+      if (pinned.publishedVersionId !== request.publishedVersionId) throw new Error("LANDFALL_STALE_VERSION");
+      return { event: duplicate, duplicate: true, advanced: false };
+    }
+    const session = await tx.taleSession.findUniqueOrThrow({
+      where: { id: request.sessionId },
+      include: { version: true },
+    });
+    if (session.status !== "ACTIVE" || session.previewMode || session.captainAuthorityState === "VACANT")
+      throw new Error("LANDFALL_SESSION_UNAVAILABLE");
+    if (identity(session) !== request.publishedVersionId) throw new Error("LANDFALL_STALE_VERSION");
+    if (session.currentSequence !== request.expectedSequence) throw new CaptainCommandConflictError();
+    const snapshot = snapshotOf(session);
+    if (!snapshot.landfall) throw new Error("LANDFALL_DEFINITION_UNAVAILABLE");
+    const events = await tx.taleSessionEvent.findMany({
+      where: { sessionId: session.id, eventType: { startsWith: "landfall" } },
+      orderBy: [{ sequence: "asc" }, { id: "asc" }],
+      take: 2048,
+      select: { id: true, sequence: true, eventType: true, payload: true, createdAt: true },
+    });
+    const journey = projectLandfallJourney(snapshot.landfall, events, {
+      chapterId: session.currentChapterId,
+      blockId: session.currentBlockId,
+      now: Date.now(),
+    });
+    const block = blockById(snapshot, session.currentBlockId);
+    const requirement = block ? landfallCompletionOptions(block.completion ?? {}) : null;
+    if (
+      request.method === "PLAYER_FALLBACK" &&
+      requirement &&
+      requirement.worldspaceId === request.worldspaceId &&
+      requirement.locationId === request.waypointId &&
+      !requirement.allowPlayerFallback
+    )
+      throw new Error("LANDFALL_PLAYER_FALLBACK_UNAVAILABLE");
+    const qualified = qualifyPlayerLandfallEvidence({
+      definition: snapshot.landfall,
+      request,
+      journey,
+      now: Date.now(),
+      minimumDwellSeconds:
+        requirement?.worldspaceId === request.worldspaceId && requirement.locationId === request.waypointId
+          ? requirement.dwellSeconds
+          : undefined,
+    });
+    const event = await appendEvent(tx, session, {
+      eventType: "landfallWaypointConfirmed",
+      sourceType: "landfall",
+      blockId: session.currentBlockId,
+      idempotencyKey: canonicalKey,
+      payload: qualified,
+      correlationId: request.idempotencyKey,
+    });
+    const waypointJourneyComplete = Boolean(
+      block?.blockType === "waypointJourney" &&
+        block.configuration.worldspaceId === qualified.worldspaceId &&
+        block.configuration.waypointId === qualified.waypointId,
+    );
+    const routeJourneyComplete = Boolean(
+      block?.blockType === "routeJourney" &&
+        block.configuration.worldspaceId === qualified.worldspaceId &&
+        snapshot.landfall.routes.some(
+          (route) =>
+            route.id === block.configuration.routeId &&
+            route.worldspaceId === qualified.worldspaceId &&
+            route.waypointIds.every((id) => journey.visitedIds.includes(id) || id === qualified.waypointId),
+        ),
+    );
+    const advanced = Boolean(
+      waypointJourneyComplete ||
+        routeJourneyComplete ||
+        (requirement &&
+          requirement.worldspaceId === qualified.worldspaceId &&
+          requirement.locationId === qualified.waypointId &&
+          landfallOutcomeSatisfies(qualified.outcome, requirement.requiredOutcome)),
+    );
+    if (advanced && block) await completeBlock(tx, session, snapshot, block, "landfall", null, canonicalKey);
+    return { event, duplicate: false, advanced };
+  });
+  if (!result.duplicate) emit(request.sessionId, result.event);
+  return {
+    duplicate: result.duplicate,
+    advanced: result.advanced,
+    receipt: {
+      sessionId: request.sessionId,
+      evidenceId: request.evidenceId,
+      publishedVersionId: request.publishedVersionId,
+      waypointId: request.waypointId,
+      status: "CONFIRMED" as const,
+      confirmedAt: result.event.createdAt.toISOString(),
+      canonicalEventId: result.event.id,
+      canonicalSequence: result.event.sequence,
+    },
+  };
+}
+
+export const captainLandfallCommandSchema = z.strictObject({
+  action: z.enum([
+    "revealWaypoint",
+    "revealRoute",
+    "selectWaypoint",
+    "selectRoute",
+    "skipWaypoint",
+    "confirmArrival",
+    "pause",
+    "resume",
+  ]),
+  targetId: z.string().min(1).max(191).optional(),
+  reason: z.string().trim().min(1).max(500).optional(),
+  expectedSequence: z.number().int().nonnegative(),
+  idempotencyKey: z.string().trim().min(12).max(191),
+});
+
+/** Landfall owner command on the same Captain authority and Tale Session event stream as Helm. */
+export async function captainLandfallCommand(sessionId: string, actorId: string, unchecked: unknown) {
+  const command = captainLandfallCommandSchema.parse(unchecked);
+  const actor = await resolveCaptainActor(actorId);
+  const eventType = {
+    revealWaypoint: "landfallWaypointRevealed",
+    revealRoute: "landfallRouteRevealed",
+    selectWaypoint: "landfallWaypointSelected",
+    selectRoute: "landfallRouteSelected",
+    skipWaypoint: "landfallWaypointSkipped",
+    confirmArrival: "landfallWaypointConfirmed",
+    pause: "landfallProgressPaused",
+    resume: "landfallProgressResumed",
+  }[command.action];
+  const result = await db.$transaction(async (tx) => {
+    const session = await tx.taleSession.findUniqueOrThrow({ where: { id: sessionId }, include: { version: true } });
+    if (!hasCaptainAuthority(session, actor) || session.previewMode || session.status !== "ACTIVE")
+      throw new Error("LANDFALL_CAPTAIN_AUTHORITY_UNAVAILABLE");
+    const duplicate = await tx.taleSessionEvent.findUnique({ where: { idempotencyKey: command.idempotencyKey } });
+    if (duplicate) {
+      const prior = parseJsonObject(duplicate.payload);
+      if (
+        duplicate.sessionId !== sessionId ||
+        duplicate.eventType !== eventType ||
+        prior.action !== command.action ||
+        prior.targetId !== (command.targetId ?? null)
+      )
+        throw new Error("LANDFALL_COMMAND_IDENTITY_MISMATCH");
+      return { event: duplicate, duplicate: true };
+    }
+    if (session.currentSequence !== command.expectedSequence) throw new CaptainCommandConflictError();
+    const snapshot = snapshotOf(session);
+    if (!snapshot.landfall) throw new Error("LANDFALL_DEFINITION_UNAVAILABLE");
+    const events = await tx.taleSessionEvent.findMany({
+      where: { sessionId, eventType: { startsWith: "landfall" } },
+      orderBy: [{ sequence: "asc" }, { id: "asc" }],
+      take: 2048,
+      select: { id: true, sequence: true, eventType: true, payload: true, createdAt: true },
+    });
+    const journey = projectLandfallJourney(snapshot.landfall, events, {
+      chapterId: session.currentChapterId,
+      blockId: session.currentBlockId,
+    });
+    const waypoint = snapshot.landfall.waypoints.find(
+      (item) => item.id === command.targetId && item.worldspaceId === journey.activeWorldspaceId,
+    );
+    const route = snapshot.landfall.routes.find(
+      (item) => item.id === command.targetId && item.worldspaceId === journey.activeWorldspaceId,
+    );
+    if (["revealWaypoint", "selectWaypoint", "skipWaypoint", "confirmArrival"].includes(command.action) && !waypoint)
+      throw new Error("LANDFALL_WAYPOINT_UNAVAILABLE");
+    if (["revealRoute", "selectRoute"].includes(command.action) && !route)
+      throw new Error("LANDFALL_ROUTE_UNAVAILABLE");
+    if (
+      ["selectWaypoint", "skipWaypoint", "confirmArrival"].includes(command.action) &&
+      !journey.availableWaypoints.some((item) => item.id === waypoint?.id)
+    )
+      throw new Error("LANDFALL_WAYPOINT_NOT_RELEASED");
+    if (command.action === "selectRoute" && route?.model === "HIDDEN" && !journey.revealedRouteIds.includes(route.id))
+      throw new Error("LANDFALL_ROUTE_NOT_RELEASED");
+    if (["skipWaypoint", "confirmArrival"].includes(command.action) && !waypoint?.evidenceProfile.allowCaptainOverride)
+      throw new Error("LANDFALL_CAPTAIN_OVERRIDE_UNAVAILABLE");
+    if (
+      ["skipWaypoint", "confirmArrival", "selectWaypoint"].includes(command.action) &&
+      journey.visitedIds.includes(waypoint!.id)
+    )
+      throw new Error("LANDFALL_WAYPOINT_ALREADY_VISITED");
+    if (["skipWaypoint", "confirmArrival"].includes(command.action) && waypoint?.id !== journey.activeWaypointId)
+      throw new Error("LANDFALL_WRONG_WAYPOINT");
+    if (
+      command.action === "selectWaypoint" &&
+      journey.activeRoute &&
+      !["FLEXIBLE", "BRANCHING", "CAPTAIN_DIRECTED"].includes(journey.activeRoute.model) &&
+      waypoint?.id !== journey.activeWaypointId
+    )
+      throw new Error("LANDFALL_ROUTE_SEQUENCE_CONFLICT");
+    const activeBlock = blockById(snapshot, session.currentBlockId);
+    const activeRequirement = activeBlock ? landfallCompletionOptions(activeBlock.completion ?? {}) : null;
+    if (
+      ["skipWaypoint", "confirmArrival"].includes(command.action) &&
+      activeRequirement &&
+      activeRequirement.worldspaceId === waypoint?.worldspaceId &&
+      activeRequirement.locationId === waypoint?.id &&
+      !activeRequirement.allowCaptainOverride
+    )
+      throw new Error("LANDFALL_CAPTAIN_OVERRIDE_UNAVAILABLE");
+    if (["skipWaypoint", "confirmArrival"].includes(command.action) && !command.reason)
+      throw new Error("LANDFALL_CAPTAIN_REASON_REQUIRED");
+    if (command.action === "pause" && journey.paused) throw new Error("LANDFALL_ALREADY_PAUSED");
+    if (command.action === "resume" && !journey.paused) throw new Error("LANDFALL_NOT_PAUSED");
+    const payload = {
+      action: command.action,
+      targetId: command.targetId ?? null,
+      ...(waypoint ? { waypointId: waypoint.id, worldspaceId: waypoint.worldspaceId } : {}),
+      ...(route ? { routeId: route.id, worldspaceId: route.worldspaceId } : {}),
+      ...(command.reason ? { reason: command.reason } : {}),
+      ...(command.action === "confirmArrival"
+        ? {
+            method: "CAPTAIN_CONFIRMATION",
+            outcome: "CONFIRMED",
+            captainAccountId: actor.accountId,
+            publishedVersionId: identity(session),
+            observedAt: new Date().toISOString(),
+          }
+        : {}),
+    };
+    const event = await appendEvent(tx, session, {
+      eventType,
+      sourceType: "captain",
+      sourceId: actor.accountId,
+      blockId: session.currentBlockId,
+      idempotencyKey: command.idempotencyKey,
+      payload,
+      correlationId: command.idempotencyKey,
+    });
+    const block = activeBlock;
+    if (block && waypoint && ["confirmArrival", "skipWaypoint"].includes(command.action)) {
+      const requirement = activeRequirement;
+      const currentWaypointComplete =
+        block.blockType === "waypointJourney" && block.configuration.waypointId === waypoint.id;
+      const routeJourneyComplete =
+        block.blockType === "routeJourney" &&
+        snapshot.landfall.routes.some(
+          (item) =>
+            item.id === block.configuration.routeId &&
+            item.waypointIds.every(
+              (id) => journey.visitedIds.includes(id) || journey.skippedIds.includes(id) || id === waypoint.id,
+            ),
+        );
+      const providerComplete =
+        command.action === "confirmArrival" &&
+        Boolean(
+          requirement &&
+            requirement.allowCaptainOverride &&
+            requirement.locationId === waypoint.id &&
+            requirement.worldspaceId === waypoint.worldspaceId,
+        );
+      if (currentWaypointComplete || routeJourneyComplete || providerComplete)
+        await completeBlock(tx, session, snapshot, block, "captain", actor.accountId, command.idempotencyKey);
+    }
+    return { event, duplicate: false };
+  });
+  if (!result.duplicate) emit(sessionId, result.event);
+  return {
+    accepted: true,
+    duplicate: result.duplicate,
+    canonicalEventId: result.event.id,
+    canonicalSequence: result.event.sequence,
+  };
 }
 
 export async function submitVerification(

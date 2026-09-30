@@ -11,6 +11,13 @@ export type LandfallMapDataProvider = Readonly<{
   style: () => Promise<import("maplibre-gl").StyleSpecification>;
 }>;
 
+/** Optional Creator interaction on the same renderer used by the Player Chart. */
+export type LandfallMapInteraction = Readonly<{
+  onPlace: (x: number, y: number) => void;
+  onSelect: (featureId: string) => void;
+  onMovePoint: (featureId: string, x: number, y: number) => void;
+}>;
+
 const blankStyle = (scene: LandfallMapScene): import("maplibre-gl").StyleSpecification => ({
   version: 8,
   sources: { landfall: { type: "geojson", data: mapLibreFeatures(scene) } },
@@ -59,26 +66,66 @@ const blankStyle = (scene: LandfallMapScene): import("maplibre-gl").StyleSpecifi
   ],
 });
 
+/** Trusted, interactive web tiles only. Browser HTTP caching follows the provider headers; no prefetch. */
+const osmStyle = (scene: LandfallMapScene): import("maplibre-gl").StyleSpecification => ({
+  version: 8,
+  sources: {
+    "osm-standard": {
+      type: "raster",
+      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      tileSize: 256,
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+    },
+  },
+  layers: [
+    { id: "osm-background", type: "background", paint: { "background-color": scene.background } },
+    { id: "osm-tiles", type: "raster", source: "osm-standard" },
+  ],
+});
+
 function PhysicalMap({
   scene,
   provider,
   position,
+  interaction,
 }: {
   scene: LandfallMapScene;
   provider?: LandfallMapDataProvider;
   position?: LandfallCurrentPosition | null;
+  interaction?: LandfallMapInteraction;
 }) {
   const element = useRef<HTMLDivElement>(null);
   const mapRef = useRef<import("maplibre-gl").Map | null>(null);
   const positionRef = useRef(position);
+  const interactionRef = useRef(interaction);
   const [failure, setFailure] = useState(false);
+  const overlaySignature = JSON.stringify(scene.overlays);
   useEffect(() => {
     positionRef.current = position;
   }, [position]);
   useEffect(() => {
+    interactionRef.current = interaction;
+  }, [interaction]);
+  useEffect(() => {
     const source = mapRef.current?.getSource("landfall") as import("maplibre-gl").GeoJSONSource | undefined;
     source?.setData(mapLibreFeatures(scene, position));
   }, [scene, position]);
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map?.isStyleLoaded()) return;
+    if (map.getLayer("landfall-background"))
+      map.setPaintProperty("landfall-background", "background-color", scene.background);
+    if (map.getLayer("landfall-polygons")) map.setPaintProperty("landfall-polygons", "fill-color", scene.foreground);
+    if (map.getLayer("landfall-lines")) map.setPaintProperty("landfall-lines", "line-color", scene.foreground);
+    if (map.getLayer("landfall-points")) map.setPaintProperty("landfall-points", "circle-color", scene.foreground);
+  }, [scene.background, scene.foreground]);
+  useEffect(() => {
+    mapRef.current?.jumpTo({
+      center: [...scene.camera.center],
+      zoom: scene.camera.zoom,
+      bearing: scene.camera.bearing,
+    });
+  }, [scene.camera.center, scene.camera.zoom, scene.camera.bearing]);
   useEffect(() => {
     if (!element.current) return;
     let disposed = false;
@@ -86,19 +133,45 @@ function PhysicalMap({
     const start = async () => {
       try {
         const maplibre = await import("maplibre-gl");
-        const base = provider ? validateLandfallMapStyle(await provider.style()) : blankStyle(scene);
+        const suppliedBase = Boolean(provider) || scene.baseProviderId === "osm-standard";
+        const base = provider
+          ? validateLandfallMapStyle(await provider.style())
+          : scene.baseProviderId === "osm-standard"
+            ? osmStyle(scene)
+            : blankStyle(scene);
         if (disposed || !element.current) return;
+        const availableOverlays = scene.overlays.filter((overlay) => Boolean(overlay.imageUrl));
+        const overlaySources = Object.fromEntries(
+          availableOverlays.map((overlay) => [
+            `landfall-overlay-${overlay.id}`,
+            {
+              type: "image" as const,
+              url: overlay.imageUrl!,
+              coordinates: overlay.coordinates.map((point) => [...point]) as [number, number][],
+            },
+          ]),
+        );
+        const overlayLayers: import("maplibre-gl").LayerSpecification[] = availableOverlays.map((overlay) => ({
+          id: `landfall-overlay-${overlay.id}`,
+          type: "raster",
+          source: `landfall-overlay-${overlay.id}`,
+          paint: { "raster-opacity": overlay.opacity },
+        }));
         // The provider supplies only a trusted base style. Landfall overlays are canonical.
         const style: import("maplibre-gl").StyleSpecification = {
           ...base,
           sources: {
             ...base.sources,
+            ...overlaySources,
             landfall: { type: "geojson", data: mapLibreFeatures(scene, positionRef.current) },
           },
-          layers: [
-            ...base.layers.filter((layer) => !layer.id.startsWith("landfall-")),
-            ...blankStyle(scene).layers.filter((layer) => layer.id !== "landfall-background"),
-          ],
+          layers: suppliedBase
+            ? [
+                ...base.layers.filter((layer) => !layer.id.startsWith("landfall-")),
+                ...overlayLayers,
+                ...blankStyle(scene).layers.filter((layer) => layer.id !== "landfall-background"),
+              ]
+            : [blankStyle(scene).layers[0], ...overlayLayers, ...blankStyle(scene).layers.slice(1)],
         };
         map = new maplibre.Map({
           container: element.current,
@@ -114,6 +187,38 @@ function PhysicalMap({
           source?.setData(mapLibreFeatures(scene, positionRef.current));
         });
         map.on("error", () => setFailure(true));
+        let dragging: string | null = null;
+        map.on("mousedown", "landfall-points", (event) => {
+          const id = event.features?.[0]?.properties?.id;
+          if (typeof id !== "string" || !interactionRef.current) return;
+          dragging = id;
+          map?.dragPan.disable();
+          interactionRef.current.onSelect(id);
+        });
+        map.on("mousemove", (event) => {
+          if (!dragging || !map) return;
+          const data = mapLibreFeatures(scene, positionRef.current);
+          const point = data.features.find((item) => item.properties?.id === dragging);
+          if (point && point.geometry.type === "Point") {
+            point.geometry.coordinates = [event.lngLat.lng, event.lngLat.lat];
+            (map.getSource("landfall") as import("maplibre-gl").GeoJSONSource | undefined)?.setData(data);
+          }
+        });
+        map.on("mouseup", (event) => {
+          if (!dragging) return;
+          const id = dragging;
+          dragging = null;
+          map?.dragPan.enable();
+          interactionRef.current?.onMovePoint(id, event.lngLat.lng, event.lngLat.lat);
+        });
+        map.on("click", (event) => {
+          if (!interactionRef.current) return;
+          const selected = map?.queryRenderedFeatures(event.point, {
+            layers: ["landfall-points", "landfall-lines", "landfall-polygons"],
+          })[0]?.properties?.id;
+          if (typeof selected === "string") interactionRef.current.onSelect(selected);
+          else interactionRef.current.onPlace(event.lngLat.lng, event.lngLat.lat);
+        });
       } catch {
         if (!disposed) setFailure(true);
       }
@@ -127,7 +232,7 @@ function PhysicalMap({
     // The mounted Player scene is immutable by map/worldspace identity; only its
     // ephemeral position changes. Position updates use GeoJSON setData above.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scene.mapId, scene.worldspaceId, provider]);
+  }, [scene.mapId, scene.worldspaceId, provider, overlaySignature]);
   return (
     <div>
       <div ref={element} style={{ width: "100%", height: 320 }} aria-label="Physical Landfall map" />
@@ -140,14 +245,30 @@ function PhysicalMap({
       {failure && <p role="status">Map data is unavailable. Use the location list and route summary.</p>}
       <ul aria-label="Visible map locations">
         {scene.features.map((item) => (
-          <li key={item.id}>{item.label}</li>
+          <li key={item.id}>
+            {interaction ? (
+              <button type="button" onClick={() => interaction.onSelect(item.id)}>
+                {item.label}
+              </button>
+            ) : (
+              item.label
+            )}
+          </li>
         ))}
       </ul>
     </div>
   );
 }
 
-function VirtualMap({ scene }: { scene: LandfallMapScene }) {
+function VirtualMap({ scene, interaction }: { scene: LandfallMapScene; interaction?: LandfallMapInteraction }) {
+  const [drag, setDrag] = useState<{ id: string; x: number; y: number } | null>(null);
+  const svg = useRef<SVGSVGElement>(null);
+  const coordinate = (event: React.PointerEvent<SVGElement>) => {
+    const inverse = svg.current?.getScreenCTM()?.inverse();
+    if (!inverse) return null;
+    const point = new DOMPoint(event.clientX, event.clientY).matrixTransform(inverse);
+    return { x: point.x, y: point.y };
+  };
   const bounds = scene.bounds;
   if (!bounds) return <p role="status">Virtual map bounds are unavailable.</p>;
   const width = bounds.maxX - bounds.minX,
@@ -156,10 +277,16 @@ function VirtualMap({ scene }: { scene: LandfallMapScene }) {
   return (
     <div>
       <svg
+        ref={svg}
         role="img"
         aria-label="Virtual Landfall chart"
         viewBox={`${bounds.minX} ${bounds.minY} ${width} ${height}`}
         style={{ width: "100%", maxHeight: 400, background: scene.background }}
+        onClick={(event) => {
+          if (!interaction || (event.target as Element).closest("[data-landfall-feature]")) return;
+          const point = coordinate(event as unknown as React.PointerEvent<SVGElement>);
+          if (point) interaction.onPlace(point.x, point.y);
+        }}
       >
         {imageUrl && (
           <image
@@ -175,14 +302,34 @@ function VirtualMap({ scene }: { scene: LandfallMapScene }) {
           item.hiddenCenter ? null : item.kind === "POINT" ? (
             <circle
               key={item.id}
-              cx={item.coordinates[0][0]}
-              cy={item.coordinates[0][1]}
+              data-landfall-feature={item.id}
+              cx={drag?.id === item.id ? drag.x : item.coordinates[0][0]}
+              cy={drag?.id === item.id ? drag.y : item.coordinates[0][1]}
               r={Math.min(width, height) * 0.015}
               fill={scene.foreground}
+              onPointerDown={(event) => {
+                if (!interaction) return;
+                event.preventDefault();
+                event.currentTarget.setPointerCapture(event.pointerId);
+                interaction.onSelect(item.id);
+                setDrag({ id: item.id, x: item.coordinates[0][0], y: item.coordinates[0][1] });
+              }}
+              onPointerMove={(event) => {
+                if (!drag || drag.id !== item.id) return;
+                const point = coordinate(event);
+                if (point) setDrag({ id: item.id, ...point });
+              }}
+              onPointerUp={(event) => {
+                if (!drag || drag.id !== item.id) return;
+                const point = coordinate(event);
+                if (point) interaction?.onMovePoint(item.id, point.x, point.y);
+                setDrag(null);
+              }}
             />
           ) : item.kind === "POLYGON" ? (
             <path
               key={item.id}
+              data-landfall-feature={item.id}
               d={(item.polygons ?? [[item.coordinates]])
                 .map((polygon) =>
                   polygon
@@ -195,21 +342,32 @@ function VirtualMap({ scene }: { scene: LandfallMapScene }) {
               fillOpacity={0.2}
               stroke={scene.foreground}
               strokeWidth={Math.min(width, height) * 0.006}
+              onClick={() => interaction?.onSelect(item.id)}
             />
           ) : (
             <polyline
               key={item.id}
+              data-landfall-feature={item.id}
               points={item.coordinates.map(([x, y]) => `${x},${y}`).join(" ")}
               fill="none"
               stroke={scene.foreground}
               strokeWidth={Math.min(width, height) * 0.006}
+              onClick={() => interaction?.onSelect(item.id)}
             />
           ),
         )}
       </svg>
       <ul aria-label="Visible map locations">
         {scene.features.map((item) => (
-          <li key={item.id}>{item.label}</li>
+          <li key={item.id}>
+            {interaction ? (
+              <button type="button" onClick={() => interaction.onSelect(item.id)}>
+                {item.label}
+              </button>
+            ) : (
+              item.label
+            )}
+          </li>
         ))}
       </ul>
     </div>
@@ -219,16 +377,18 @@ function VirtualMap({ scene }: { scene: LandfallMapScene }) {
 export function LandfallMapRenderer({
   scene,
   provider,
+  interaction,
 }: {
   scene: LandfallMapScene;
   provider?: LandfallMapDataProvider;
+  interaction?: LandfallMapInteraction;
 }) {
   return (
     <section aria-label="Landfall map preview">
       {scene.worldspaceKind === "PHYSICAL" ? (
-        <PhysicalMap scene={scene} provider={provider} position={scene.currentPosition} />
+        <PhysicalMap scene={scene} provider={provider} position={scene.currentPosition} interaction={interaction} />
       ) : (
-        <VirtualMap scene={scene} />
+        <VirtualMap scene={scene} interaction={interaction} />
       )}
       {scene.attribution.length > 0 && (
         <p>
@@ -239,6 +399,16 @@ export function LandfallMapRenderer({
           ))}
         </p>
       )}
+      {scene.overlays
+        .filter((item) => Boolean(item.imageUrl))
+        .map((item) => (
+          <p key={item.id}>
+            Overlay:{" "}
+            <a href={item.attributionUrl} rel="noreferrer">
+              {item.attributionLabel}
+            </a>
+          </p>
+        ))}
     </section>
   );
 }

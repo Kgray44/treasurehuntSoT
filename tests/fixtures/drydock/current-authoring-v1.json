@@ -1,6 +1,124 @@
 {
   "blocks": [
     {
+      "blockType": "livingChart",
+      "completion": {},
+      "configuration": {
+        "body": "",
+        "completionMode": "playerConfirmation",
+        "heading": "Synthetic chart",
+        "worldspaceId": "worldspace-fixture"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-livingChart-v1",
+      "id": "drydock-fixture-livingChart-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "waypointJourney",
+      "completion": {},
+      "configuration": {
+        "completionMode": "automatic",
+        "heading": "Synthetic waypoint",
+        "prompt": "",
+        "waypointId": "waypoint-fixture",
+        "worldspaceId": "worldspace-fixture"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-waypointJourney-v1",
+      "id": "drydock-fixture-waypointJourney-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "routeJourney",
+      "completion": {},
+      "configuration": {
+        "completionMode": "automatic",
+        "heading": "Synthetic route",
+        "prompt": "",
+        "routeId": "route-fixture",
+        "worldspaceId": "worldspace-fixture"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-routeJourney-v1",
+      "id": "drydock-fixture-routeJourney-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "locationReveal",
+      "completion": {},
+      "configuration": {
+        "body": "",
+        "completionMode": "playerConfirmation",
+        "heading": "Synthetic reveal",
+        "targetId": "waypoint-fixture",
+        "targetType": "WAYPOINT",
+        "worldspaceId": "worldspace-fixture"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-locationReveal-v1",
+      "id": "drydock-fixture-locationReveal-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "locationObservation",
+      "completion": {},
+      "configuration": {
+        "completionMode": "playerConfirmation",
+        "heading": "Synthetic observation",
+        "prompt": "Observe the synthetic place.",
+        "waypointId": "waypoint-fixture",
+        "worldspaceId": "worldspace-fixture"
+      },
+      "connections": [{ "connectionType": "DEFAULT", "targetBlockId": "drydock-fixture-taleComplete-v1" }],
+      "fixtureId": "drydock-fixture-locationObservation-v1",
+      "id": "drydock-fixture-locationObservation-v1",
+      "nextBlockId": "drydock-fixture-taleComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
+      "blockType": "locationChoice",
+      "completion": {},
+      "configuration": {
+        "choices": [
+          {
+            "id": "landfall-choice-a",
+            "label": "First destination",
+            "targetBlockId": "drydock-fixture-chapterComplete-v1",
+            "targetWaypointId": "waypoint-fixture"
+          },
+          {
+            "id": "landfall-choice-b",
+            "label": "Second route",
+            "targetBlockId": "drydock-fixture-taleComplete-v1",
+            "targetRouteId": "route-fixture"
+          }
+        ],
+        "completionMode": "playerConfirmation",
+        "prompt": "Choose a synthetic destination.",
+        "reversible": false,
+        "worldspaceId": "worldspace-fixture"
+      },
+      "connections": [
+        { "connectionType": "CHOICE", "label": "First course", "targetBlockId": "drydock-fixture-chapterComplete-v1" },
+        { "connectionType": "CHOICE", "label": "Second course", "targetBlockId": "drydock-fixture-taleComplete-v1" }
+      ],
+      "fixtureId": "drydock-fixture-locationChoice-v1",
+      "id": "drydock-fixture-locationChoice-v1",
+      "nextBlockId": "drydock-fixture-chapterComplete-v1",
+      "presentation": {},
+      "schemaVersion": 1
+    },
+    {
       "blockType": "narrative",
       "completion": {},
       "configuration": {
@@ -442,6 +560,6 @@
   ],
   "classification": "SYNTHETIC_NO_PRIVATE_CONTENT",
   "fixtureSetId": "drydock-current-authoring-v1",
-  "frozenAt": "2026-08-09",
+  "frozenAt": "2026-09-30",
   "schemaVersion": 1
 }
