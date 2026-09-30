@@ -8,7 +8,7 @@ last_reviewed: 2026-09-30
 
 # Project Landfall
 
-Project Landfall governs the Living World Navigation System. Phase 1, **Lay the Bearings**, includes the domain foundation and the ordinary Player Journal live-position chart. The governing sources below define its scope; implementation and validation records describe only work actually completed.
+Project Landfall governs the Living World Navigation System. Phase 1, **Lay the Bearings**, is fully closed on protected main through PR #667: it includes the domain foundation and the ordinary Player Journal live-position chart. The governing sources below define its scope; implementation and validation records describe only work actually completed. Deployment, live-device field behavior, and owner acceptance remain separate evidence.
 
 ## Governing authority
 

@@ -8,7 +8,7 @@ last_reviewed: 2026-09-30
 
 # Phase 1 Validation Record
 
-This record separates the original Phase 1 foundation from the live-position closure candidate. Hosted PR checks and protected integration are tracked by their PRs rather than inferred from local proof.
+This record separates the original Phase 1 foundation from the live-position closure. Hosted PR checks and protected integration are stated with their exact source identities rather than inferred from local proof.
 
 ## Local proof
 
@@ -27,6 +27,8 @@ This record separates the original Phase 1 foundation from the live-position clo
 
 The browser mock tests use synthetic positions and a fictional virtual chart. They establish deterministic behavior and DOM projection but do not constitute live hardware, actual map tiles, deployment database proof, or owner acceptance. The selected legacy Homeport, Helm, and Drydock browser journeys were aligned with the already accepted sign-in, Studio, and Muster UI before the ordinary Sounding Line passed; no unrelated product behavior was changed for those tests.
 
-## Live-position closure candidate
+## Live-position closure and protected integration
 
-The original candidate lacked the ordinary Player Journal live-position path required by v1.0 section 23.1. The [closure record](Project_Landfall_Phase_1_Live_Position_Closure_Record.md) documents the source correction. On the closure candidate, `npm run typecheck` passed, focused Landfall/API Vitest files passed, and the dedicated task-owned production-browser suite passed 4/4 journeys. The browser run used synthetic physical coordinates, a fictional virtual chart, a nonce-bound isolated SQLite database, and the built Player route. It verified explicit grant, current-position status, watch teardown, denial, virtual no-GPS behavior, nonmember rejection, hidden-geometry exclusion, and no canonical visit from local confidence. Final ordinary Sounding Line, hosted checks, and landed-tree smoke will be recorded after the candidate is frozen and integrated.
+The original candidate lacked the ordinary Player Journal live-position path required by v1.0 section 23.1. The [closure record](Project_Landfall_Phase_1_Live_Position_Closure_Record.md) documents the source correction. The final implementation candidate `1e169d73952a94e16b86c78b04207370329ce999` passed local ordinary Sounding Line with 10/10 obligations, including 1,133 selected Vitest tests across two chunks and 4/4 task-owned production-browser journeys. The browser run used synthetic physical coordinates, a fictional virtual chart, a nonce-bound isolated SQLite database, and the built Player route. It verified explicit grant, current-position updates, weak accuracy, watch teardown, denial, virtual no-GPS behavior, nonmember rejection, hidden-geometry exclusion, and no canonical visit from local confidence.
+
+Hosted ordinary Sounding Line [run 36671631942](https://github.com/Kgray44/treasurehuntSoT/actions/runs/36671631942), job `109747669540`, passed on the same exact head. PR #667 merged as `621c277499f2057ec5364d6c4f177711d9c14c9b`. The landed tree matched the candidate tree (`cba95e14e7ba38b1046721f1dbd64ef607aa3c19`). Landed smoke passed `docs:index`, `docs:validate`, `features:sync`, `features:validate`, and focused Landfall/API Vitest (11 files, 42 tests). These results establish source, synthetic browser, and protected integration proof; they do not establish physical handset accuracy, production map tiles, production MySQL, deployment, or owner acceptance.
