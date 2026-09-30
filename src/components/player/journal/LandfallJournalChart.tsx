@@ -21,6 +21,7 @@ export function LandfallJournalChart({
   const [bootstrap, setBootstrap] = useState<PlayerLandfallBootstrap | null>(null);
   const [message, setMessage] = useState("Loading Voyage Chart…");
   const [tracking, setTracking] = useState(false);
+  const [browserAvailable, setBrowserAvailable] = useState(false);
   const [position, setPosition] = useState<LandfallCurrentPosition | null>(null);
   const runtime = useRef<LandfallRuntime | null>(null);
   const browser = useRef<BrowserGeolocationProvider | null>(null);
@@ -55,8 +56,15 @@ export function LandfallJournalChart({
         active.setActiveWaypoint(next.activeWaypointId);
         runtime.current = active;
         const worldspace = next.runtimeDefinition.worldspaces[0];
-        if (worldspace.kind === "PHYSICAL" && worldspace.coordinateReference.type === "WGS84")
+        const waypoint = next.runtimeDefinition.waypoints.find((item) => item.id === next.activeWaypointId);
+        if (
+          worldspace.kind === "PHYSICAL" &&
+          worldspace.coordinateReference.type === "WGS84" &&
+          worldspace.observationPolicy.allowedSources.includes("BROWSER_GEOLOCATION") &&
+          waypoint?.evidenceProfile.acceptedSources.includes("BROWSER_GEOLOCATION")
+        )
           browser.current = new BrowserGeolocationProvider(navigator.geolocation ?? null, worldspace);
+        setBrowserAvailable(Boolean(browser.current));
         setBootstrap(next);
         setMessage(
           worldspace.kind === "VIRTUAL"
@@ -94,6 +102,19 @@ export function LandfallJournalChart({
     return () => window.clearInterval(timer);
   }, [tracking]);
 
+  useEffect(() => {
+    const stopInBackground = () => {
+      if (document.visibilityState === "visible") return;
+      browser.current?.stop();
+      runtime.current?.pause();
+      setTracking(false);
+      setPosition(null);
+      setMessage("Location is off while this tab is in the background. Use my location to resume.");
+    };
+    document.addEventListener("visibilitychange", stopInBackground);
+    return () => document.removeEventListener("visibilitychange", stopInBackground);
+  }, []);
+
   const stop = () => {
     browser.current?.stop();
     runtime.current?.pause();
@@ -116,7 +137,7 @@ export function LandfallJournalChart({
         const fix = active.currentPosition(now);
         setPosition(
           fix && fix.coordinate.type === "WGS84"
-            ? { coordinates: [fix.coordinate.longitude, fix.coordinate.latitude], accuracyMeters: fix.accuracy }
+            ? { coordinates: [fix.coordinate.longitude, fix.coordinate.latitude], accuracyMeters: fix.accuracy, confidence: outcome.confidence, observedAt: fix.observedAt }
             : null,
         );
         setMessage(
@@ -146,11 +167,13 @@ export function LandfallJournalChart({
 
   if (!bootstrap) return message ? <p role="status">{message}</p> : null;
   const worldspace = bootstrap.runtimeDefinition.worldspaces[0];
+  const activeWaypoint = bootstrap.runtimeDefinition.waypoints.find((item) => item.id === bootstrap.activeWaypointId);
   return (
     <div className="landfall-journal-chart" data-landfall-player-chart data-worldspace-kind={worldspace.kind}>
       <p>{bootstrap.worldspaceName}</p>
+      <p>Current objective: {activeWaypoint ? activeWaypoint.visibility.publicLabel ?? activeWaypoint.name : "No released location"}</p>
       <VoyageChart mode={mode} landfallScene={bootstrap.scene} landfallPosition={position} />
-      {worldspace.kind === "PHYSICAL" && browser.current && bootstrap.activeWaypointId && (
+      {worldspace.kind === "PHYSICAL" && browserAvailable && bootstrap.activeWaypointId && (
         <button type="button" onClick={tracking ? stop : start}>
           {tracking ? "Stop using my location" : "Use my location"}
         </button>

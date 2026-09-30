@@ -58,8 +58,10 @@ function PhysicalMap({ scene, provider, position }: { scene: LandfallMapScene; p
   const element = useRef<HTMLDivElement>(null);
   const mapRef = useRef<import("maplibre-gl").Map | null>(null);
   const positionRef = useRef(position);
-  positionRef.current = position;
   const [failure, setFailure] = useState(false);
+  useEffect(() => {
+    positionRef.current = position;
+  }, [position]);
   useEffect(() => {
     const source = mapRef.current?.getSource("landfall") as import("maplibre-gl").GeoJSONSource | undefined;
     source?.setData(mapLibreFeatures(scene, position));
@@ -106,15 +108,18 @@ function PhysicalMap({ scene, provider, position }: { scene: LandfallMapScene; p
       mapRef.current = null;
       map?.remove();
     };
-  }, [scene, provider]);
+    // The mounted Player scene is immutable by map/worldspace identity; only its
+    // ephemeral position changes. Position updates use GeoJSON setData above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scene.mapId, scene.worldspaceId, provider]);
   return (
     <div>
       <div ref={element} style={{ width: "100%", height: 320 }} aria-label="Physical Landfall map" />
-      {position && <p role="status">Current position shown. Estimated accuracy: {Math.round(position.accuracyMeters)} meters.</p>}
+      {position && <p role="status">Current position shown. Location signal: {position.confidence.toLowerCase().replaceAll("_", " ")}. Estimated accuracy: {Math.round(position.accuracyMeters)} meters.</p>}
       {failure && <p role="status">Map data is unavailable. Use the location list and route summary.</p>}
       <ul aria-label="Visible map locations">
         {scene.features.map((item) => (
-          <li key={item.id}>{item.id}</li>
+          <li key={item.id}>{item.label}</li>
         ))}
       </ul>
     </div>
@@ -183,7 +188,7 @@ function VirtualMap({ scene }: { scene: LandfallMapScene }) {
       </svg>
       <ul aria-label="Visible map locations">
         {scene.features.map((item) => (
-          <li key={item.id}>{item.id}</li>
+          <li key={item.id}>{item.label}</li>
         ))}
       </ul>
     </div>
@@ -193,16 +198,14 @@ function VirtualMap({ scene }: { scene: LandfallMapScene }) {
 export function LandfallMapRenderer({
   scene,
   provider,
-  position,
 }: {
   scene: LandfallMapScene;
   provider?: LandfallMapDataProvider;
-  position?: LandfallCurrentPosition | null;
 }) {
   return (
     <section aria-label="Landfall map preview">
       {scene.worldspaceKind === "PHYSICAL" ? (
-        <PhysicalMap scene={scene} provider={provider} position={position} />
+        <PhysicalMap scene={scene} provider={provider} position={scene.currentPosition} />
       ) : (
         <VirtualMap scene={scene} />
       )}

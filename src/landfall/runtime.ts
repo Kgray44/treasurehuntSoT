@@ -625,6 +625,7 @@ export class LandfallRuntime {
       !latest ||
       !waypoint ||
       this.trackingState !== "TRACKING" ||
+      Boolean(this.currentOutcome.rejection) ||
       this.currentOutcome.failure === "WEAK_ACCURACY" ||
       now - latest.observedAt > Math.min(10_000, waypoint.evidenceProfile.maximumAgeSeconds * 1000)
     ) return null;

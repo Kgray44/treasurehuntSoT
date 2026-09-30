@@ -3,7 +3,7 @@ title: Project Landfall Phase 1 Design Record
 audience: product-engineering
 status: current
 canonical_for: project-landfall-phase-1-design
-last_reviewed: 2026-09-29
+last_reviewed: 2026-09-30
 ---
 
 # Phase 1 Design Record
@@ -12,7 +12,7 @@ last_reviewed: 2026-09-29
 
 The [v1.0 governing baseline](Project_Landfall_Governing_Document_v1.0.pdf) remains the governing source for physical navigation, foreground consent, zero-infrastructure operation, confidence, safety, privacy, and One Voyage ownership. The [v1.1 amendment](../../Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) explicitly extends the domain to `PHYSICAL` and `VIRTUAL` Worldspaces. A hybrid Chronicle contains multiple Worldspaces, not a third kind. Existing Chronicle and Drydock source defines their current integration contracts.
 
-The recovered v1.0 PDF was checked against the Phase 1 implementation. The original physical-only assumption is superseded by v1.1; the physical provider and confidence path still honor v1.0. No governing conflict required a rewrite of already compliant Phase 1 code. The recovered baseline is preserved byte-for-byte, and this record is explanatory rather than a substitute.
+The recovered v1.0 PDF was checked against the Phase 1 implementation. The original physical-only assumption is superseded by v1.1; the physical provider and confidence path still honor v1.0. The initial integration omitted v1.0 section 23.1's ordinary Player live-position Chart, despite providing an internal scene seam. The [closure correction](Project_Landfall_Phase_1_Live_Position_Closure_Record.md) connects that seam to the Player Journal while retaining the compliant domain/runtime code. The recovered baseline is preserved byte-for-byte, and this record is explanatory rather than a substitute.
 
 ## Ownership
 
@@ -37,7 +37,7 @@ The recovered v1.0 PDF was checked against the Phase 1 implementation. The origi
 
 `TaleDraft.landfallDefinition` is nullable in SQLite and MySQL. Studio saves are owner protected and use the existing `autosaveVersion` concurrency field. Published snapshots may include an optional validated Landfall definition; old snapshots remain readable. A Tale Session resolves Landfall from its pinned `PublishedTaleVersion`, never from the mutable draft.
 
-`projectLandfallMap` accepts a role-filtered Chart projection and rejects public map output in Phase 1. The MapLibre-compatible physical adapter accepts only trusted application style providers; the virtual adapter draws an image/vector scene. Both have bounded feature input and a text fallback. The existing Voyage Chart accepts an optional Phase 1 scene; normal non-Landfall chart behavior remains intact. This is a minimal rendering seam, not the final Living Chart.
+`projectLandfallMap` accepts a role-filtered Chart projection and rejects public map output in Phase 1. The MapLibre-compatible physical adapter accepts only trusted application style providers; the virtual adapter draws an image/vector scene. Both have bounded feature input and a text fallback. The Player bootstrap checks Tale Session membership and the pinned edition before returning only released evaluation geometry. The ordinary Player Journal map drawer mounts the existing Voyage Chart, whose physical scene can display a qualified foreground position and accuracy. Virtual scenes display without GPS; no virtual live source is assumed. Normal non-Landfall chart behavior remains intact. This bounded Phase 1 chart is not the final Living Chart.
 
 ## Intentional limits
 

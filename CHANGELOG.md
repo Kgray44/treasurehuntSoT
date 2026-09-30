@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-09-29
+last_reviewed: 2026-09-30
 ---
 
 # Changelog
@@ -12,7 +12,7 @@ last_reviewed: 2026-09-29
 
 ### Added
 
-- Added Project Landfall Phase 1's internal physical and virtual Worldspace foundation: version-pinned definitions, foreground location and virtual evidence contracts, confidence, privacy-safe journey and map projections, deterministic Drydock simulation, and a minimal optional chart renderer. The original v1.0 governing PDF is preserved and indexed beside its v1.1 amendment. Final role-facing navigation and live-provider deployment remain later work.
+- Added Project Landfall Phase 1's physical and virtual Worldspace foundation: version-pinned definitions, foreground location and virtual evidence contracts, confidence, privacy-safe journey and map projections, and deterministic Drydock simulation. The Player Journal now opens a released Voyage Chart with explicit foreground browser position and an accuracy indication for supported physical Voyages; virtual charts never request GPS. The original v1.0 governing PDF is preserved and indexed beside its v1.1 amendment. Creator/Captain Landfall controls, virtual telemetry, and live-provider deployment remain later work.
 
 ### Changed
 

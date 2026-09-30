@@ -631,7 +631,7 @@ export function VoyageChart(props: VoyageChartProps) {
   if (props.landfallScene)
     return (
       <section className="physical-section voyage-chart-section" aria-label="Voyage Chart" data-landfall-phase1-preview>
-        <LandfallMapRenderer scene={props.landfallScene} position={props.landfallPosition} />
+        <LandfallMapRenderer scene={{ ...props.landfallScene, currentPosition: props.landfallPosition }} />
       </section>
     );
 

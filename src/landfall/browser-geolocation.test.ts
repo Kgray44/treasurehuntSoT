@@ -157,6 +157,18 @@ describe("foreground browser geolocation provider", () => {
       coords: { latitude: 44, longitude: -72, accuracy: 8 },
     } as GeolocationPosition);
     expect(outcomes).toEqual(["LIKELY_INSIDE", "CONFIRMED"]);
+    expect(runtime.currentPosition(start + 2000)).toMatchObject({ accuracy: 8, coordinate: { latitude: 44 } });
+    expect(runtime.currentPosition(start + 12_001)).toBeNull();
+    success?.({
+      timestamp: start + 3000,
+      coords: { latitude: 44, longitude: -72, accuracy: 100 },
+    } as GeolocationPosition);
+    expect(runtime.currentPosition(start + 3000)).toBeNull();
+    success?.({
+      timestamp: start + 4000,
+      coords: { latitude: 46, longitude: -72, accuracy: 8 },
+    } as GeolocationPosition);
+    expect(runtime.currentPosition(start + 4000)).toBeNull();
     expect(runtime.projection("PLAYER", start + 2000).visitedLocationIds).toEqual([]);
     expect(runtime.projection("PUBLIC", start + 2000)).not.toHaveProperty("currentContext.coordinate");
     expect(

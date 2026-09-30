@@ -33,7 +33,7 @@ describe("Landfall internal map presentation proof", () => {
       activeRouteId: null,
     }), imageUrl: "/api/media/synthetic-chart?version=version-1&session=session-1" };
     rerender(<LandfallMapRenderer scene={revealed} />);
-    expect(screen.getByText("isle-region")).toBeInTheDocument();
+    expect(screen.getByText("Secret Isle")).toBeInTheDocument();
     expect(
       screen.getByRole("img", { name: "Virtual Landfall chart" }).querySelector("image")?.getAttribute("href"),
     ).toBe("/api/media/synthetic-chart?version=version-1&session=session-1");
@@ -72,7 +72,7 @@ describe("Landfall internal map presentation proof", () => {
       />,
     );
     await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Map data is unavailable"));
-    expect(screen.getByRole("list", { name: "Visible map locations" })).toHaveTextContent("town-arrival");
+    expect(screen.getByRole("list", { name: "Visible map locations" })).toHaveTextContent("Town arrival");
     expect(mapConstructed).not.toHaveBeenCalled();
   });
 });

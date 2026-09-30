@@ -64,4 +64,12 @@ describe("Player Landfall bootstrap route", () => {
     });
     expect((await GET(new Request("https://example.test"), context)).status).toBe(409);
   });
+
+  it("fails closed without exposing malformed pinned content", async () => {
+    mocks.pinned.mockRejectedValueOnce(new Error("private snapshot details"));
+    const response = await GET(new Request("https://example.test"), context);
+    expect(response.status).toBe(503);
+    expect(response.headers.get("cache-control")).toContain("no-store");
+    expect(await response.text()).not.toContain("private snapshot details");
+  });
 });

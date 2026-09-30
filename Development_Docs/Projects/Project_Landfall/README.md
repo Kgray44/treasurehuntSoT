@@ -3,12 +3,12 @@ title: Project Landfall engineering home
 audience: product-engineering
 status: current
 canonical_for: project-landfall-engineering-home
-last_reviewed: 2026-09-29
+last_reviewed: 2026-09-30
 ---
 
 # Project Landfall
 
-Project Landfall governs the Living World Navigation System. Phase 1, **Lay the Bearings**, is in implementation. The governing sources below define its scope; implementation and validation records will describe only work actually completed.
+Project Landfall governs the Living World Navigation System. Phase 1, **Lay the Bearings**, includes the domain foundation and the ordinary Player Journal live-position chart. The governing sources below define its scope; implementation and validation records describe only work actually completed.
 
 ## Governing authority
 
@@ -25,5 +25,6 @@ The amendment broadens Landfall to physical and virtual Worldspaces and supersed
 - [Implementation Record](Project_Landfall_Phase_1_Implementation_Record.md)
 - [Validation Record](Project_Landfall_Phase_1_Validation_Record.md)
 - [Integration Manifest](Project_Landfall_Phase_1_Integration_Manifest.md)
+- [Live Position Closure Record](Project_Landfall_Phase_1_Live_Position_Closure_Record.md)
 
-These records describe the Phase 1 foundation and its proof. They do not make Phase 2 authoring, tracking, or final chart claims.
+These records describe the Phase 1 foundation, the Player live-position correction, and their proof. They do not claim Phase 2 authoring, background tracking, virtual telemetry, or real-device acceptance.

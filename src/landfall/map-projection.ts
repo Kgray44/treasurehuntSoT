@@ -6,9 +6,11 @@ import type {
   LandfallMapDefinition,
   LandfallWorldspace,
 } from "@/landfall/schema";
+import type { LandfallConfidence } from "@/landfall/runtime";
 
 export type LandfallMapFeature = Readonly<{
   id: string;
+  label: string;
   kind: "POINT" | "POLYGON" | "LINE" | "GATE";
   coordinates: readonly (readonly [number, number])[];
   polygons?: readonly (readonly (readonly [number, number])[])[][];
@@ -27,6 +29,8 @@ export type LandfallMapScene = Readonly<{
   imageUrl?: string;
   bounds?: Readonly<{ minX: number; minY: number; maxX: number; maxY: number }>;
   features: readonly LandfallMapFeature[];
+  /** Ephemeral Player-only presentation state; never part of the pinned definition. */
+  currentPosition?: LandfallCurrentPosition | null;
 }>;
 
 function pair(coordinate: LandfallCoordinate, worldspace: LandfallWorldspace): readonly [number, number] {
@@ -39,15 +43,16 @@ function pair(coordinate: LandfallCoordinate, worldspace: LandfallWorldspace): r
   return [coordinate.x, coordinate.y];
 }
 
-function feature(id: string, geometry: LandfallGeometry, worldspace: LandfallWorldspace): LandfallMapFeature {
+function feature(id: string, label: string, geometry: LandfallGeometry, worldspace: LandfallWorldspace): LandfallMapFeature {
   switch (geometry.type) {
     case "POINT_RADIUS":
-      return { id, kind: "POINT", coordinates: [pair(geometry.center, worldspace)] };
+      return { id, label, kind: "POINT", coordinates: [pair(geometry.center, worldspace)] };
     case "APPROXIMATE_REGION":
-      return { id, kind: "POINT", coordinates: [], hiddenCenter: true };
+      return { id, label, kind: "POINT", coordinates: [], hiddenCenter: true };
     case "POLYGON":
       return {
         id,
+        label,
         kind: "POLYGON",
         coordinates: geometry.rings[0].map((item) => pair(item, worldspace)),
         polygons: [geometry.rings.map((ring) => ring.map((item) => pair(item, worldspace)))],
@@ -55,15 +60,16 @@ function feature(id: string, geometry: LandfallGeometry, worldspace: LandfallWor
     case "MULTIPOLYGON":
       return {
         id,
+        label,
         kind: "POLYGON",
         coordinates: geometry.polygons[0][0].map((item) => pair(item, worldspace)),
         polygons: geometry.polygons.map((polygon) => polygon.map((ring) => ring.map((item) => pair(item, worldspace)))),
       };
     case "ROUTE_LINE":
     case "CORRIDOR":
-      return { id, kind: "LINE", coordinates: geometry.points.map((item) => pair(item, worldspace)) };
+      return { id, label, kind: "LINE", coordinates: geometry.points.map((item) => pair(item, worldspace)) };
     case "ENTRANCE_GATE":
-      return { id, kind: "GATE", coordinates: [pair(geometry.start, worldspace), pair(geometry.end, worldspace)] };
+      return { id, label, kind: "GATE", coordinates: [pair(geometry.start, worldspace), pair(geometry.end, worldspace)] };
   }
 }
 
@@ -88,11 +94,11 @@ export function projectLandfallMap(
   const visibleIds = new Set(chart.availableLocations.map((item) => item.id));
   const features = definition.waypoints
     .filter((item) => item.worldspaceId === worldspace.id && visibleIds.has(item.id))
-    .map((item) => feature(item.id, item.geometry, worldspace));
+    .map((item) => feature(item.id, item.visibility.publicLabel ?? item.name, item.geometry, worldspace));
   const route = definition.routes.find(
     (item) => item.id === chart.activeRouteId && item.worldspaceId === worldspace.id,
   );
-  if (route?.geometry) features.push(feature(route.id, route.geometry, worldspace));
+  if (route?.geometry) features.push(feature(route.id, route.name, route.geometry, worldspace));
   return {
     mapId: map.id,
     worldspaceId: worldspace.id,
@@ -111,9 +117,11 @@ export function projectLandfallMap(
 export type LandfallCurrentPosition = Readonly<{
   coordinates: readonly [number, number];
   accuracyMeters: number;
+  confidence: LandfallConfidence;
+  observedAt: number;
 }>;
 
-export function mapLibreFeatures(scene: LandfallMapScene, position?: LandfallCurrentPosition | null): GeoJSON.FeatureCollection {
+export function mapLibreFeatures(scene: LandfallMapScene, position = scene.currentPosition): GeoJSON.FeatureCollection {
   if (scene.worldspaceKind !== "PHYSICAL") throw new Error("LANDFALL_MAPLIBRE_REQUIRES_PHYSICAL_WORLDSPACE");
   return {
     type: "FeatureCollection" as const,
@@ -146,7 +154,7 @@ export function mapLibreFeatures(scene: LandfallMapScene, position?: LandfallCur
       ),
       ...(position ? [{
         type: "Feature" as const,
-        properties: { id: "current-position", kind: "CURRENT_POSITION", accuracyMeters: position.accuracyMeters },
+        properties: { id: "current-position", kind: "CURRENT_POSITION", accuracyMeters: position.accuracyMeters, confidence: position.confidence },
         geometry: { type: "Point" as const, coordinates: [...position.coordinates] },
       }] : []),
     ],

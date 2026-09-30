@@ -10,7 +10,7 @@ let outsiderToken = "";
 let physicalSessionId = "";
 let virtualSessionId = "";
 
-test.describe.configure({ mode: "serial", timeout: 240_000 });
+test.describe.configure({ mode: "serial", timeout: 120_000 });
 
 async function createPlayer(label: string) {
   const now = new Date();
@@ -50,7 +50,7 @@ async function seedVoyage(profileId: string, accountId: string, virtual: boolean
   if (virtual) {
     definition.worldspaces = [definition.worldspaces[1], definition.worldspaces[0]];
     definition.maps[1].renderer = "VECTOR_2D";
-    definition.maps[1].source = { type: "BUILTIN_VECTOR", providerId: "synthetic-vector", styleId: "synthetic-style" };
+    definition.maps[1].source = { type: "ASSET_VECTOR", assetId: "synthetic-vector" };
     definition.waypoints[1].visibility = { hiddenUntilRevealed: false, publicLabel: "Open harbor" };
   }
   const publishedAt = new Date().toISOString();
@@ -160,8 +160,10 @@ async function installLocationProbe(page: Page) {
 
 async function openJournalMap(page: Page, sessionId: string) {
   await page.goto(`/player/playthroughs/${sessionId}/journal`);
-  await page.getByRole("dialog", { name: "Open the voyage journal" }).getByRole("button", { name: /Open the journal/u }).click();
+  const opening = page.getByRole("dialog", { name: "Open the voyage journal" });
   const map = page.getByRole("navigation", { name: "Journal tools" }).getByRole("button", { name: "map", exact: true });
+  await expect.poll(async () => (await opening.isVisible()) || (await map.isVisible()), { timeout: 45_000 }).toBe(true);
+  if (await opening.isVisible()) await opening.getByRole("button", { name: /Open the journal/u }).click();
   await expect(map).toBeVisible({ timeout: 45_000 });
   await map.click();
   await expect(page.locator("[data-landfall-player-chart]")).toBeVisible({ timeout: 30_000 });
@@ -193,15 +195,18 @@ test("A: explicit foreground grant draws a qualified current position and stops 
   await context.setGeolocation({ latitude: 44, longitude: -72, accuracy: 8 });
   const page = await context.newPage();
   await installLocationProbe(page);
-  const map = await openJournalMap(page, physicalSessionId);
+  await openJournalMap(page, physicalSessionId);
   expect(await page.evaluate(() => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches)).toBe(0);
   const before = await db.taleSessionEvent.count({ where: { sessionId: physicalSessionId } });
   await page.getByRole("button", { name: "Use my location" }).click();
   await expect(page.getByText(/Current position shown\. Estimated accuracy/u)).toBeVisible({ timeout: 30_000 });
   expect(await page.evaluate(() => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches)).toBe(1);
   expect(await db.taleSessionEvent.count({ where: { sessionId: physicalSessionId } })).toBe(before);
-  await map.click();
+  await page.getByRole("button", { name: "Stop using my location" }).click();
   await expect.poll(() => page.evaluate(() => (window as unknown as { __landfallLocationProbe: { clears: number } }).__landfallLocationProbe.clears)).toBeGreaterThan(0);
+  await page.getByRole("button", { name: "Use my location" }).click();
+  await page.getByRole("button", { name: "Close journal tool drawer" }).click();
+  await expect.poll(() => page.evaluate(() => (window as unknown as { __landfallLocationProbe: { clears: number } }).__landfallLocationProbe.clears)).toBeGreaterThan(1);
   await context.close();
 });
 
@@ -213,7 +218,7 @@ test("B: denied permission leaves the chart usable without a false position", as
   await openJournalMap(page, physicalSessionId);
   await page.getByRole("button", { name: "Use my location" }).click();
   await expect(page.getByText(/Location permission was denied/u)).toBeVisible({ timeout: 30_000 });
-  await expect(page.getByRole("list", { name: "Visible map locations" })).toContainText("town-arrival");
+  await expect(page.getByRole("list", { name: "Visible map locations" })).toContainText("Town arrival");
   await expect(page.getByText(/Current position shown/u)).toHaveCount(0);
   await context.close();
 });
