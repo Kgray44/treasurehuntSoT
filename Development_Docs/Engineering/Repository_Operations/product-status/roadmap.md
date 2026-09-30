@@ -22,8 +22,8 @@ connected role experiences. The accepted P34-BME-20260729 exception leaves
 browser-matrix remediation as validation work, not an implementation pass.
 Project Landfall Phase 1 supplies the physical and virtual navigation foundation
 and the ordinary Player Journal live-position chart on protected main. Phase 2
-Creator, Chronicle, Player, and Captain integration is a local candidate pending
-hosted qualification and protected integration. Indoor positioning, Watchglass,
+Creator, Chronicle, Player, and Captain integration is on protected main through
+PR #669 with hosted ordinary qualification. Indoor positioning, Watchglass,
 live-device field proof, and deployment remain later work.
 
 ## Planned and research
