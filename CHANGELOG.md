@@ -3,12 +3,16 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-09-12
+last_reviewed: 2026-09-29
 ---
 
 # Changelog
 
 ## Unreleased
+
+### Added
+
+- Added Project Landfall Phase 1's internal physical and virtual Worldspace foundation: version-pinned definitions, foreground location and virtual evidence contracts, confidence, privacy-safe journey and map projections, deterministic Drydock simulation, and a minimal optional chart renderer. The original v1.0 governing PDF is preserved and indexed beside its v1.1 amendment. Final role-facing navigation and live-provider deployment remain later work.
 
 ### Changed
 

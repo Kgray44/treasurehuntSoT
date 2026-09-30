@@ -2,10 +2,11 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { getBlockDefinition } from "@/chronicle/block-registry";
 import { journalPresentationSchema } from "@/chronicle/journal-contract";
-import type { JsonObject, PublishedTaleSnapshot, StudioDraftInput } from "@/chronicle/types";
-import { parseJsonObject } from "@/chronicle/types";
+import type { JsonObject, StudioDraftInput } from "@/chronicle/types";
+import { parseJsonObject, parsePublishedSnapshot } from "@/chronicle/types";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { studioRegistryFromDrydock } from "@/drydock/contracts/registry";
+import { parseStoredLandfallDefinition } from "@/landfall/definition";
 
 export const slugSchema = z
   .string()
@@ -255,6 +256,7 @@ export async function getStudioTale(taleId: string) {
     },
     draft: {
       id: draft.id,
+      landfall: parseStoredLandfallDefinition(draft.landfallDefinition),
       revisionNumber: draft.revisionNumber,
       autosaveVersion: draft.autosaveVersion,
       validationState: draft.validationState,
@@ -611,7 +613,7 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
     db.publishedTaleVersion.findFirstOrThrow({ where: { id: versionId, taleId } }),
     db.taleDraft.findFirst({ where: { taleId }, orderBy: { revisionNumber: "desc" } }),
   ]);
-  const snapshot = JSON.parse(version.contentSnapshot) as PublishedTaleSnapshot;
+  const snapshot = parsePublishedSnapshot(version.contentSnapshot);
   if (snapshot.schemaVersion !== 1 || !Array.isArray(snapshot.chapters))
     throw new Error("This Chronicle version cannot be copied into the current draft.");
 
@@ -621,6 +623,7 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
       taleId,
       revisionNumber: (latestDraft?.revisionNumber ?? 0) + 1,
       basedOnPublishedVersionId: version.id,
+      landfallDefinition: snapshot.landfall ? JSON.stringify(snapshot.landfall) : null,
       createdBy: creatorId,
     },
   });
@@ -681,7 +684,7 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
 
 export async function forkPublishedVersion(taleId: string, versionId: string, creatorId: string) {
   const version = await db.publishedTaleVersion.findFirstOrThrow({ where: { id: versionId, taleId } });
-  const snapshot = JSON.parse(version.contentSnapshot) as PublishedTaleSnapshot;
+  const snapshot = parsePublishedSnapshot(version.contentSnapshot);
   let slug = slugify(`${snapshot.tale.slug}-copy`);
   let suffix = 2;
   const base = slug;

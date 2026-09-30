@@ -35,7 +35,8 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Project Wakebook](Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf)
 - [Project Shipwright](Projects/Project%20Shipwright/README.md)
 - [Project Drydock](Projects/Project%20Drydock/README.md)
+- [Project Landfall](Projects/Project_Landfall/README.md)
 
 ## Historical and additive governing records
 
-The [Project Landfall amendment](Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) amends rather than replaces the v1.0 baseline. Historical Project Trim, Fairlead, Nightwatch, Bosun, and Sounding Line records remain available from [Governing](Governing/) and their program homes; their preserved records remain the source for their historical claims.
+The [Project Landfall v1.0 governing document](Projects/Project_Landfall/Project_Landfall_Governing_Document_v1.0.pdf) is the foundational baseline. The [v1.1 Worldspaces and Virtual Navigation amendment](Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) adds to it and supersedes only explicitly amended portions. Historical Project Trim, Fairlead, Nightwatch, Bosun, and Sounding Line records remain available from [Governing](Governing/) and their program homes; their preserved records remain the source for their historical claims.

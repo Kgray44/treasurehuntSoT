@@ -967,6 +967,7 @@ model Chronicle {
 model TaleDraft {
   id                           String                             @id @default(cuid())
   taleId                       String
+  landfallDefinition           String?                            @db.LongText
   revisionNumber               Int                                @default(1)
   basedOnPublishedVersionId    String?
   createdBy                    String

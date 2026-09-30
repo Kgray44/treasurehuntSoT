@@ -1,0 +1,35 @@
+{
+  "id": "FT-044",
+  "title": "Landfall Living World Navigation Foundation",
+  "summary": "Version-pinned physical and virtual Worldspaces share strict geometry, observation, confidence, privacy, offline-reconciliation, map, and deterministic Drydock contracts.",
+  "status": "MAINLINE",
+  "program": "Project Landfall Phase 1",
+  "surfaces": [
+    "src/landfall",
+    "/api/studio/tales/[taleId]/landfall",
+    "src/components/player/workspace/VoyageChart.tsx"
+  ],
+  "subfeatures": [
+    "Strict versioned physical and virtual Worldspace definitions and geometry",
+    "Owner-protected draft persistence and immutable published edition pinning",
+    "Foreground physical observation and provider-neutral virtual confidence",
+    "Bounded privacy-safe journey and map projections",
+    "Local queued versus canonical server-confirmed reconciliation",
+    "Deterministic Drydock simulation and narrow One Voyage completion proposal",
+    "Optional MapLibre and virtual chart rendering seam"
+  ],
+  "evidence": [
+    { "kind": "path", "value": "src/landfall/runtime.ts" },
+    { "kind": "path", "value": "src/landfall/schema.ts" },
+    { "kind": "test", "value": "src/landfall/landfall.test.ts" },
+    {
+      "kind": "completion-record",
+      "value": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_1_Validation_Record.md"
+    }
+  ],
+  "limitations": [
+    "The ordinary Player, Creator, and Captain Landfall experiences are not exposed by Phase 1; the map seam is optional and internal.",
+    "Live hardware, production map tiles, production MySQL, deployment, and owner acceptance require separate evidence."
+  ],
+  "catalogVersion": 1
+}

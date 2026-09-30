@@ -11,7 +11,7 @@ export const branchFragmentRoot = path.join(catalogRoot, "branch-complete");
 export const exclusionNotes = [
   "Harborlight Phase 4 is planned and is not cataloged as an implemented capability.",
   "Project Sounding Line's local governance and verification control plane is cataloged, and its focused hosted workflow has passed; remote workers, provider/MySQL proof, production signing, branch protection, and the P34 browser matrix remain separate non-pass work.",
-  "Project Landfall is governed but not implemented.",
+  "Project Landfall Phase 1 provides an internal navigation foundation; final Creator, Player, and Captain Landfall experiences remain later work.",
   "Vision Waypoint recognition is not implemented beyond its provider seam and simulator.",
   "Production multi-instance pub/sub, distributed rate limiting, production scanner/KMS/storage/alerting, and full deployment proof remain separate work.",
   "Real private Chronicle story material is intentionally absent from the public repository.",

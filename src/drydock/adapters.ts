@@ -3,7 +3,7 @@ export type DrydockAdjacentAdapter = Readonly<{
   owner: string;
   version: string;
   /** CONTRACT_ONLY is a declared/read-only contract, not an installed runtime handoff. */
-  state: "CONTRACT_ONLY" | "UNAVAILABLE";
+  state: "CONTRACT_ONLY" | "UNAVAILABLE" | "SIMULATION_AVAILABLE";
   supportedAuthoringContracts: readonly string[];
   validationContribution: string;
   externalEvidenceKind?: string;
@@ -48,10 +48,11 @@ export const drydockAdjacentAdapters: readonly DrydockAdjacentAdapter[] = [
   {
     id: "landfall",
     owner: "Project Landfall",
-    version: "adapter-unavailable",
-    state: "UNAVAILABLE",
-    supportedAuthoringContracts: [],
-    validationContribution: "Reserves source-bound location-provider and field-evidence integration.",
+    version: "landfall-observation-v1",
+    state: "SIMULATION_AVAILABLE",
+    supportedAuthoringContracts: ["landfall-definition-v1", "landfall-observation-v1"],
+    validationContribution:
+      "Strictly validates published Landfall definitions and runs deterministic physical or virtual observation evaluation without live progression.",
     externalEvidenceKind: "field-evidence",
     unsupportedBehavior: "EXTERNAL_EVIDENCE_REQUIRED_WHEN_USED",
   },

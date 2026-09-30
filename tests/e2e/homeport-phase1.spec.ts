@@ -79,7 +79,7 @@ async function signInFromGateway(page: Page, account: AccountFixture, destinatio
   await page.getByRole("link", { name: "Continue to account sign-in" }).click();
   await expect(page.getByRole("link", { name: "Create Account" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Forgot Password" })).toBeVisible();
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  await page.getByLabel("Email or Player name").fill(account.email);
   await page.getByLabel("Password").fill(password);
   await page.getByLabel("Password").press("Enter");
   await expect(page).toHaveURL(new RegExp(`${destination.replaceAll("/", "\\/")}$`, "u"));
@@ -160,9 +160,9 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
           (window as typeof window & { homeportAnonymousFlash?: string[] }).homeportAnonymousFlash?.push("anonymous");
       }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
     });
-    await page.getByLabel("Email or legacy Player name").fill(player.email);
+    await page.getByLabel("Email or Player name").fill(player.email);
     await page.getByLabel("Password").fill(password);
-    await expect(page.getByLabel("Email or legacy Player name")).toHaveValue(player.email);
+    await expect(page.getByLabel("Email or Player name")).toHaveValue(player.email);
     await expect(page.getByLabel("Password")).toHaveValue(password);
     await page.getByLabel("Password").press("Enter");
     expect(pageErrors).toEqual([]);
@@ -192,7 +192,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     await page.getByLabel("Confirm password").press("Enter");
     await expect(page).toHaveURL(/\/verify-email\?.*returnTo=%2Fplayer%2Flibrary/u);
     await page.getByLabel("Code").fill(await verificationCodeFor(email));
-    await page.getByRole("button", { name: "Continue" }).click();
+    await page.getByRole("button", { name: "Verify email" }).click();
     await expect(page).toHaveURL(/\/player\/library$/u);
     await expect(page.getByRole("button", { name: `Homeport Registration ${suffix}` })).toBeVisible();
     await expect(page.getByRole("heading", { name: "My Chronicle Library" })).toBeVisible();
@@ -235,7 +235,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     await signInFromGateway(page, player);
     await page.goto("/community/moderation");
     await expect(page.getByRole("heading", { name: "Permission required" })).toBeVisible();
-    await expect(page.getByText(/does not have Moderator permission/u)).toBeVisible();
+    await expect(page.locator("#main-content").getByText(/does not have Moderator permission/u)).toBeVisible();
     await expect(page.getByRole("button", { name: player.displayName })).toBeVisible();
     await capture(page, "HP-P1-EV-G-permission-denied");
   });
@@ -248,7 +248,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     await expect(page).toHaveURL(/\/sign-in\?.*reason=expired/u);
     await expect(page.getByText(/Your session expired/u)).toBeVisible();
     await capture(page, "HP-P1-EV-H-session-expired");
-    await page.getByLabel("Email or legacy Player name").fill(player.email);
+    await page.getByLabel("Email or Player name").fill(player.email);
     await page.getByLabel("Password").fill(password);
     await page.getByLabel("Password").press("Enter");
     await expect(page).toHaveURL(/\/player\/library$/u);
@@ -384,16 +384,17 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     expect(names).not.toContain("chronicle_pending_invitation");
     expect(names).not.toContain("chronicle_player");
     await expect(page.getByRole("button", { name: "Homeport Invitation Navigator" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Homeport invitation/u })).toBeVisible();
-    await expect(page.locator("main.waiting-room")).toHaveAttribute("data-connection-state", /live|polling|offline/u);
-    await expect(page.locator("main.waiting-room h1")).toBeFocused();
+    await expect(page.locator("main.muster-scene").getByText(/Homeport invitation/u)).toBeVisible();
+    await expect(page.locator("main.muster-scene")).toHaveAttribute("data-viewer-role", "player");
+    await expect(page.getByRole("region", { name: "Crew Chat" }).getByText(/Live|Reconnecting|Offline/u)).toBeVisible();
+    await expect(page.locator("main.muster-scene h1")).toBeVisible();
     await capture(page, "HP-P1-EV-N-invitation-handoff");
   });
 
   test("Journey O: malicious return destinations fall back internally", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/sign-in?returnTo=https%3A%2F%2Fattacker.invalid%2Fcollect");
-    await page.getByLabel("Email or legacy Player name").fill(safeReturnPlayer.email);
+    await page.getByLabel("Email or Player name").fill(safeReturnPlayer.email);
     await page.getByLabel("Password").fill(password);
     await page.getByLabel("Password").press("Enter");
     await expect(page).toHaveURL(/\/$/u);
@@ -430,7 +431,7 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
     await page.evaluate(() => {
       document.documentElement.style.zoom = "2";
     });
-    await expect(page.getByRole("button", { name: "Continue" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Create account" })).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1),
     ).toBe(true);
