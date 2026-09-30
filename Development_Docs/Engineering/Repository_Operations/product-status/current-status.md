@@ -210,14 +210,18 @@ local adapters and tests do not establish those external boundaries.
 for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
+**Available on protected main, Phase 1 source and browser validated:** Project
+Landfall Phase 1 adds a physical and virtual navigation foundation and a Player
+Journal chart with explicit foreground live position for supported physical
+Voyages. PR #667 passed hosted ordinary Sounding Line and closed Phase 1 on main.
+Creator and Captain Landfall experiences, virtual telemetry, live hardware
+validation, deployment, and owner acceptance remain pending.
+
 **Planned or not validated:** Project Homeport owner acceptance, Harborlight
-Phase 4, and Project Watchglass remain pending. Project Landfall Phase 1 adds a
-physical and virtual navigation foundation and a Player Journal chart with explicit
-foreground live position for supported physical Voyages. Creator and Captain
-Landfall experiences, virtual telemetry, live hardware validation, and deployment remain pending. Project Sounding
-Line is the repository validation authority used for Homeport decisions; that
-use does not claim a new user-facing Sounding Line product. Historic records
-are evidence, not a release promise.
+Phase 4, and Project Watchglass remain pending. Project Sounding Line is the
+repository validation authority used for Homeport decisions; that use does not
+claim a new user-facing Sounding Line product. Historic records are evidence,
+not a release promise.
 
 ## Phase 7 correction Round 1 status
 
