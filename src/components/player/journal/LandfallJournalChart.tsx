@@ -36,7 +36,9 @@ export function LandfallJournalChart({
           signal: abort.signal,
         });
         if (!response.ok) throw new Error("Voyage Chart is unavailable.");
-        const body = (await response.json()) as { available: false } | { available: true; bootstrap: PlayerLandfallBootstrap };
+        const body = (await response.json()) as
+          | { available: false }
+          | { available: true; bootstrap: PlayerLandfallBootstrap };
         if (!mounted) return;
         if (!body.available) {
           setMessage("");
@@ -137,7 +139,12 @@ export function LandfallJournalChart({
         const fix = active.currentPosition(now);
         setPosition(
           fix && fix.coordinate.type === "WGS84"
-            ? { coordinates: [fix.coordinate.longitude, fix.coordinate.latitude], accuracyMeters: fix.accuracy, confidence: outcome.confidence, observedAt: fix.observedAt }
+            ? {
+                coordinates: [fix.coordinate.longitude, fix.coordinate.latitude],
+                accuracyMeters: fix.accuracy,
+                confidence: outcome.confidence,
+                observedAt: fix.observedAt,
+              }
             : null,
         );
         setMessage(
@@ -171,14 +178,19 @@ export function LandfallJournalChart({
   return (
     <div className="landfall-journal-chart" data-landfall-player-chart data-worldspace-kind={worldspace.kind}>
       <p>{bootstrap.worldspaceName}</p>
-      <p>Current objective: {activeWaypoint ? activeWaypoint.visibility.publicLabel ?? activeWaypoint.name : "No released location"}</p>
+      <p>
+        Current objective:{" "}
+        {activeWaypoint ? (activeWaypoint.visibility.publicLabel ?? activeWaypoint.name) : "No released location"}
+      </p>
       <VoyageChart mode={mode} landfallScene={bootstrap.scene} landfallPosition={position} />
       {worldspace.kind === "PHYSICAL" && browserAvailable && bootstrap.activeWaypointId && (
         <button type="button" onClick={tracking ? stop : start}>
           {tracking ? "Stop using my location" : "Use my location"}
         </button>
       )}
-      <p role="status" aria-live="polite">{message}</p>
+      <p role="status" aria-live="polite">
+        {message}
+      </p>
     </div>
   );
 }

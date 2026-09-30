@@ -48,7 +48,10 @@ describe("Player Landfall bootstrap route", () => {
     expect(mocks.member).toHaveBeenCalledWith("session-1", "player-1");
     const body = await response.json();
     expect(body.available).toBe(true);
-    expect(body.bootstrap.scene.features.map((item: { id: string }) => item.id)).toEqual(["town-arrival", "town-route"]);
+    expect(body.bootstrap.scene.features.map((item: { id: string }) => item.id)).toEqual([
+      "town-arrival",
+      "town-route",
+    ]);
     expect(JSON.stringify(body)).not.toContain("isle-region");
   });
 

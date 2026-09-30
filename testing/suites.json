@@ -2574,7 +2574,10 @@
         "admiralty.phase1.registry",
         "admiralty.phase1.responsive-consent"
       ],
-      "affectedPaths": ["tests/e2e/admiralty-phase2.spec.ts", "tests/config/playwright/playwright.admiralty-phase2.config.ts"],
+      "affectedPaths": [
+        "tests/e2e/admiralty-phase2.spec.ts",
+        "tests/config/playwright/playwright.admiralty-phase2.config.ts"
+      ],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "phase-2-owner-accepted-mainline-candidate",
       "adapter": "admiralty-phase2-browser"

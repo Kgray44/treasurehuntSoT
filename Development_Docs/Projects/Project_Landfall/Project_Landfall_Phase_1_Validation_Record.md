@@ -12,17 +12,17 @@ This record separates the original Phase 1 foundation from the live-position clo
 
 ## Local proof
 
-| Check                                        | Observed result                                                                                                                   |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| Recovered v1.0 PDF integrity                 | Attached source and repository copy have identical SHA-256 `6d37b0c634fc1aa578debbbd79d6eb5a478526ab1143e0e80ee89393203aec5`      |
-| Focused Landfall/Drydock/Chronicle tests     | 14 files, 50 tests passed on the candidate worktree; includes mock browser intake and DOM map rendering                           |
-| SQLite migration rehearsal                   | Passed 70 migrations on fresh and upgrade in-memory histories with preserved pre-existing row                                     |
-| SQLite and MySQL Prisma schema validation    | Passed both schemas using non-secret local placeholder connection strings                                                         |
-| MySQL server migration                       | Not run; no isolated supported MySQL server in this worktree                                                                      |
-| TypeScript and affected ESLint               | `npm run typecheck` passed; affected ESLint passed with one existing unused `_publishedAt` warning in `src/chronicle/snapshot.ts` |
-| Production build                             | `npm run build` passed on the candidate worktree; existing Edge-runtime/NFT warnings remain outside Landfall                      |
-| Documentation and feature catalog validation | `npm run docs:index`, `docs:validate`, `features:sync`, and `features:validate` passed                                            |
-| Ordinary Sounding Line                       | PASS on code candidate `66d42bb6`; the selected generic browser profile passed 23/23 tests in a task-owned built-server runtime   |
+| Check                                             | Observed result                                                                                                                                                             |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Recovered v1.0 PDF integrity                      | Attached source and repository copy have identical SHA-256 `6d37b0c634fc1aa578debbbd79d6eb5a478526ab1143e0e80ee89393203aec5`                                                |
+| Focused Landfall/Drydock/Chronicle tests          | 14 files, 50 tests passed on the candidate worktree; includes mock browser intake and DOM map rendering                                                                     |
+| SQLite migration rehearsal                        | Passed 70 migrations on fresh and upgrade in-memory histories with preserved pre-existing row                                                                               |
+| SQLite and MySQL Prisma schema validation         | Passed both schemas using non-secret local placeholder connection strings                                                                                                   |
+| MySQL server migration                            | Not run; no isolated supported MySQL server in this worktree                                                                                                                |
+| TypeScript and affected ESLint                    | `npm run typecheck` passed; affected ESLint passed with one existing unused `_publishedAt` warning in `src/chronicle/snapshot.ts`                                           |
+| Production build                                  | `npm run build` passed on the candidate worktree; existing Edge-runtime/NFT warnings remain outside Landfall                                                                |
+| Documentation and feature catalog validation      | `npm run docs:index`, `docs:validate`, `features:sync`, and `features:validate` passed                                                                                      |
+| Ordinary Sounding Line                            | PASS on code candidate `66d42bb6`; the selected generic browser profile passed 23/23 tests in a task-owned built-server runtime                                             |
 | Original PR #666 hosted and protected integration | Hosted Sounding Line run `36649910643`, job `109681401517`, passed on head `9e0e66bd010526af1248d89b64d5bf297c1f1e65`; merged as `3e59bd2a7b5c2463932e23c28de50df8ce3e1aad` |
 
 The browser mock tests use synthetic positions and a fictional virtual chart. They establish deterministic behavior and DOM projection but do not constitute live hardware, actual map tiles, deployment database proof, or owner acceptance. The selected legacy Homeport, Helm, and Drydock browser journeys were aligned with the already accepted sign-in, Studio, and Muster UI before the ordinary Sounding Line passed; no unrelated product behavior was changed for those tests.

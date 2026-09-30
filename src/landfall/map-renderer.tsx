@@ -49,12 +49,25 @@ const blankStyle = (scene: LandfallMapScene): import("maplibre-gl").StyleSpecifi
       type: "circle",
       source: "landfall",
       filter: ["==", ["get", "kind"], "CURRENT_POSITION"],
-      paint: { "circle-color": "#1878a8", "circle-stroke-color": "#ffffff", "circle-stroke-width": 2, "circle-radius": 7 },
+      paint: {
+        "circle-color": "#1878a8",
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 2,
+        "circle-radius": 7,
+      },
     },
   ],
 });
 
-function PhysicalMap({ scene, provider, position }: { scene: LandfallMapScene; provider?: LandfallMapDataProvider; position?: LandfallCurrentPosition | null }) {
+function PhysicalMap({
+  scene,
+  provider,
+  position,
+}: {
+  scene: LandfallMapScene;
+  provider?: LandfallMapDataProvider;
+  position?: LandfallCurrentPosition | null;
+}) {
   const element = useRef<HTMLDivElement>(null);
   const mapRef = useRef<import("maplibre-gl").Map | null>(null);
   const positionRef = useRef(position);
@@ -78,7 +91,10 @@ function PhysicalMap({ scene, provider, position }: { scene: LandfallMapScene; p
         // The provider supplies only a trusted base style. Landfall overlays are canonical.
         const style: import("maplibre-gl").StyleSpecification = {
           ...base,
-          sources: { ...base.sources, landfall: { type: "geojson", data: mapLibreFeatures(scene, positionRef.current) } },
+          sources: {
+            ...base.sources,
+            landfall: { type: "geojson", data: mapLibreFeatures(scene, positionRef.current) },
+          },
           layers: [
             ...base.layers.filter((layer) => !layer.id.startsWith("landfall-")),
             ...blankStyle(scene).layers.filter((layer) => layer.id !== "landfall-background"),
@@ -115,7 +131,12 @@ function PhysicalMap({ scene, provider, position }: { scene: LandfallMapScene; p
   return (
     <div>
       <div ref={element} style={{ width: "100%", height: 320 }} aria-label="Physical Landfall map" />
-      {position && <p role="status">Current position shown. Location signal: {position.confidence.toLowerCase().replaceAll("_", " ")}. Estimated accuracy: {Math.round(position.accuracyMeters)} meters.</p>}
+      {position && (
+        <p role="status">
+          Current position shown. Location signal: {position.confidence.toLowerCase().replaceAll("_", " ")}. Estimated
+          accuracy: {Math.round(position.accuracyMeters)} meters.
+        </p>
+      )}
       {failure && <p role="status">Map data is unavailable. Use the location list and route summary.</p>}
       <ul aria-label="Visible map locations">
         {scene.features.map((item) => (

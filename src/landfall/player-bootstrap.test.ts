@@ -46,7 +46,9 @@ describe("authorized Player Landfall bootstrap projection", () => {
     const released = projectPlayerLandfallBootstrap(pinned, {
       chapterId: "chapter-isles",
       blockId: "chapter-isles-opening",
-      releasedAssets: [{ id: "synthetic-chart", url: "/api/media/synthetic-chart?version=version-1&session=session-1" }],
+      releasedAssets: [
+        { id: "synthetic-chart", url: "/api/media/synthetic-chart?version=version-1&session=session-1" },
+      ],
     });
     expect(released.scene.imageUrl).toContain("session=session-1");
     expect(released.scene.features).toEqual([]);

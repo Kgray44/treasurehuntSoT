@@ -16,11 +16,9 @@ export async function GET(_: Request, context: { params: Promise<{ playthroughId
     if (!(await playerCanAccessPlaythrough(playthroughId, identity.playerProfileId)))
       return NextResponse.json({ error: "Voyage not found." }, { status: 404, headers: privateHeaders });
     const state = await getTaleSessionState(playthroughId, undefined, false, true);
-    if (state.session.status !== "ACTIVE")
-      return NextResponse.json({ available: false }, { headers: privateHeaders });
+    if (state.session.status !== "ACTIVE") return NextResponse.json({ available: false }, { headers: privateHeaders });
     const pinned = await loadPinnedLandfallDefinition(playthroughId);
-    if (!pinned)
-      return NextResponse.json({ available: false }, { headers: privateHeaders });
+    if (!pinned) return NextResponse.json({ available: false }, { headers: privateHeaders });
     if (pinned.publishedVersionId !== state.session.versionId)
       return NextResponse.json({ error: "Pinned version changed." }, { status: 409, headers: privateHeaders });
     return NextResponse.json(

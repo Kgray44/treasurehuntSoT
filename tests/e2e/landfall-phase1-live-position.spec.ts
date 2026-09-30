@@ -44,7 +44,14 @@ async function seedVoyage(profileId: string, accountId: string, virtual: boolean
   const chapterId = `${slug}-chapter`;
   const blockId = `${slug}-block`;
   const tale = await db.chronicle.create({
-    data: { slug, title: virtual ? "Synthetic Virtual Voyage" : "Synthetic Physical Voyage", creatorId: profileId, creatorAccountId: accountId, status: "PUBLISHED", visibility: "PRIVATE" },
+    data: {
+      slug,
+      title: virtual ? "Synthetic Virtual Voyage" : "Synthetic Physical Voyage",
+      creatorId: profileId,
+      creatorAccountId: accountId,
+      status: "PUBLISHED",
+      visibility: "PRIVATE",
+    },
   });
   const definition = structuredClone(landfallFixture);
   definition.taleId = tale.id;
@@ -72,32 +79,36 @@ async function seedVoyage(profileId: string, accountId: string, virtual: boolean
       estimatedDuration: null,
       contentWarnings: null,
     },
-    chapters: [{
-      id: chapterId,
-      title: "First Passage",
-      subtitle: null,
-      description: null,
-      coverAssetId: null,
-      estimatedDuration: null,
-      isOptional: false,
-      metadata: {},
-      orderIndex: 0,
-      entryBlockId: blockId,
-      completionBlockId: blockId,
-      blocks: [{
-        id: blockId,
-        chapterId,
-        blockType: "NARRATIVE",
-        title: "Arrival",
-        configuration: {},
-        presentation: {},
-        completion: {},
+    chapters: [
+      {
+        id: chapterId,
+        title: "First Passage",
+        subtitle: null,
+        description: null,
+        coverAssetId: null,
+        estimatedDuration: null,
+        isOptional: false,
+        metadata: {},
         orderIndex: 0,
-        isEnabled: true,
-        nextBlockId: null,
-        connections: [],
-      }],
-    }],
+        entryBlockId: blockId,
+        completionBlockId: blockId,
+        blocks: [
+          {
+            id: blockId,
+            chapterId,
+            blockType: "NARRATIVE",
+            title: "Arrival",
+            configuration: {},
+            presentation: {},
+            completion: {},
+            orderIndex: 0,
+            isEnabled: true,
+            nextBlockId: null,
+            connections: [],
+          },
+        ],
+      },
+    ],
     assets: [],
     locations: [],
     artifacts: [],
@@ -177,13 +188,17 @@ async function accountContext(context: BrowserContext, token: string, baseURL: s
 }
 
 async function emitFollowUpFix(page: Page, latitude: number, longitude: number, accuracy: number) {
-  await page.evaluate(({ latitude, longitude, accuracy }) => {
-    const probe = (window as unknown as { __landfallLocationProbe: { emit: PositionCallback | null } }).__landfallLocationProbe;
-    probe.emit?.({
-      coords: { latitude, longitude, accuracy, altitude: null, altitudeAccuracy: null, heading: null, speed: null },
-      timestamp: Date.now(),
-    } as GeolocationPosition);
-  }, { latitude, longitude, accuracy });
+  await page.evaluate(
+    ({ latitude, longitude, accuracy }) => {
+      const probe = (window as unknown as { __landfallLocationProbe: { emit: PositionCallback | null } })
+        .__landfallLocationProbe;
+      probe.emit?.({
+        coords: { latitude, longitude, accuracy, altitude: null, altitudeAccuracy: null, heading: null, speed: null },
+        timestamp: Date.now(),
+      } as GeolocationPosition);
+    },
+    { latitude, longitude, accuracy },
+  );
 }
 
 test.beforeAll(async ({ request }) => {
@@ -201,7 +216,10 @@ test.beforeAll(async ({ request }) => {
 
 test.afterAll(async () => db.$disconnect());
 
-test("A: explicit foreground grant draws a qualified current position and stops on close", async ({ browser, baseURL }) => {
+test("A: explicit foreground grant draws a qualified current position and stops on close", async ({
+  browser,
+  baseURL,
+}) => {
   const context = await browser.newContext({ reducedMotion: "reduce" });
   await accountContext(context, playerToken, baseURL!);
   await context.grantPermissions(["geolocation"], { origin: baseURL! });
@@ -209,26 +227,50 @@ test("A: explicit foreground grant draws a qualified current position and stops 
   const page = await context.newPage();
   await installLocationProbe(page);
   await openJournalMap(page, physicalSessionId);
-  expect(await page.evaluate(() => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches)).toBe(0);
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches,
+    ),
+  ).toBe(0);
   const before = await db.taleSessionEvent.count({ where: { sessionId: physicalSessionId } });
   await page.getByRole("button", { name: "Use my location" }).click();
-  await expect(page.getByText(/Current position shown\. Location signal: .*Estimated accuracy: 8 meters/u)).toBeVisible({ timeout: 30_000 });
-  expect(await page.evaluate(() => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches)).toBe(1);
+  await expect(page.getByText(/Current position shown\. Location signal: .*Estimated accuracy: 8 meters/u)).toBeVisible(
+    { timeout: 30_000 },
+  );
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches,
+    ),
+  ).toBe(1);
   await page.waitForTimeout(300);
   // Chromium's live override update emits POSITION_UNAVAILABLE in this test environment.
   // The first fix above is browser-native; follow-up fixes exercise the retained watch callback.
   await emitFollowUpFix(page, 44.00001, -72.00001, 12);
-  await expect(page.getByText(/Current position shown\. Location signal: .*Estimated accuracy: 12 meters/u)).toBeVisible();
+  await expect(
+    page.getByText(/Current position shown\. Location signal: .*Estimated accuracy: 12 meters/u),
+  ).toBeVisible();
   await page.waitForTimeout(300);
   await emitFollowUpFix(page, 44.00001, -72.00001, 1_000);
   await expect(page.getByText(/Location accuracy is too weak/u)).toBeVisible();
   await expect(page.getByText(/Current position shown/u)).toHaveCount(0);
   expect(await db.taleSessionEvent.count({ where: { sessionId: physicalSessionId } })).toBe(before);
   await page.getByRole("button", { name: "Stop using my location" }).click();
-  await expect.poll(() => page.evaluate(() => (window as unknown as { __landfallLocationProbe: { clears: number } }).__landfallLocationProbe.clears)).toBeGreaterThan(0);
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => (window as unknown as { __landfallLocationProbe: { clears: number } }).__landfallLocationProbe.clears,
+      ),
+    )
+    .toBeGreaterThan(0);
   await page.getByRole("button", { name: "Use my location" }).click();
   await page.getByRole("button", { name: "Close journal tool drawer" }).click();
-  await expect.poll(() => page.evaluate(() => (window as unknown as { __landfallLocationProbe: { clears: number } }).__landfallLocationProbe.clears)).toBeGreaterThan(1);
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => (window as unknown as { __landfallLocationProbe: { clears: number } }).__landfallLocationProbe.clears,
+      ),
+    )
+    .toBeGreaterThan(1);
   await context.close();
 });
 
@@ -253,7 +295,11 @@ test("C: virtual chart renders with no browser geolocation request", async ({ br
   await openJournalMap(page, virtualSessionId);
   await expect(page.getByRole("img", { name: "Virtual Landfall chart" })).toBeVisible();
   await expect(page.getByText(/No live virtual position source is connected/u)).toBeVisible();
-  expect(await page.evaluate(() => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches)).toBe(0);
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches,
+    ),
+  ).toBe(0);
   await expect(page.getByRole("button", { name: "Use my location" })).toHaveCount(0);
   await context.close();
 });

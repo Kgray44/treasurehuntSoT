@@ -53,18 +53,17 @@ export function projectPlayerLandfallBootstrap(
       item.waypointIds.every((id) => releasedIds.has(id)),
   );
   const imageAssetId = map.source.type === "ASSET_IMAGE" ? map.source.assetId : null;
-  const asset = imageAssetId
-    ? context.releasedAssets.find((item) => item.id === imageAssetId)
-    : undefined;
+  const asset = imageAssetId ? context.releasedAssets.find((item) => item.id === imageAssetId) : undefined;
   const scene = projectLandfallMap(definition, {
     audience: "PLAYER",
     activeWorldspaceId: worldspace.id,
     availableLocations: waypoints.map(({ id }) => ({ id })),
     activeRouteId: routes[0]?.id ?? null,
   });
-  const coordinateReference = worldspace.coordinateReference.type === "NORMALIZED_IMAGE_2D" && !asset
-    ? { ...worldspace.coordinateReference, imageAssetId: "withheld" }
-    : worldspace.coordinateReference;
+  const coordinateReference =
+    worldspace.coordinateReference.type === "NORMALIZED_IMAGE_2D" && !asset
+      ? { ...worldspace.coordinateReference, imageAssetId: "withheld" }
+      : worldspace.coordinateReference;
   return {
     sessionId: pinned.sessionId,
     publishedVersionId: pinned.publishedVersionId,

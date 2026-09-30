@@ -1233,14 +1233,17 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
           ×
         </button>
         <h2>{drawerTitle(reading.openDrawer)}</h2>
-        {identitySession && reading.openDrawer === "map" && state?.session.status === "ACTIVE" && connection === "live" && (
-          <LandfallJournalChart
-            key={`${state.session.versionId}:${state.session.currentSequence}`}
-            sessionId={sessionId}
-            publishedVersionId={state.session.versionId}
-            mode={mode}
-          />
-        )}
+        {identitySession &&
+          reading.openDrawer === "map" &&
+          state?.session.status === "ACTIVE" &&
+          connection === "live" && (
+            <LandfallJournalChart
+              key={`${state.session.versionId}:${state.session.currentSequence}`}
+              sessionId={sessionId}
+              publishedVersionId={state.session.versionId}
+              mode={mode}
+            />
+          )}
         {contextBlocks
           .filter((block) => drawerIncludes(reading.openDrawer, block))
           .map((block) => (

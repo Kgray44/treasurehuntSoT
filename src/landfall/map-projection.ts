@@ -43,7 +43,12 @@ function pair(coordinate: LandfallCoordinate, worldspace: LandfallWorldspace): r
   return [coordinate.x, coordinate.y];
 }
 
-function feature(id: string, label: string, geometry: LandfallGeometry, worldspace: LandfallWorldspace): LandfallMapFeature {
+function feature(
+  id: string,
+  label: string,
+  geometry: LandfallGeometry,
+  worldspace: LandfallWorldspace,
+): LandfallMapFeature {
   switch (geometry.type) {
     case "POINT_RADIUS":
       return { id, label, kind: "POINT", coordinates: [pair(geometry.center, worldspace)] };
@@ -69,7 +74,12 @@ function feature(id: string, label: string, geometry: LandfallGeometry, worldspa
     case "CORRIDOR":
       return { id, label, kind: "LINE", coordinates: geometry.points.map((item) => pair(item, worldspace)) };
     case "ENTRANCE_GATE":
-      return { id, label, kind: "GATE", coordinates: [pair(geometry.start, worldspace), pair(geometry.end, worldspace)] };
+      return {
+        id,
+        label,
+        kind: "GATE",
+        coordinates: [pair(geometry.start, worldspace), pair(geometry.end, worldspace)],
+      };
   }
 }
 
@@ -127,36 +137,48 @@ export function mapLibreFeatures(scene: LandfallMapScene, position = scene.curre
     type: "FeatureCollection" as const,
     features: [
       ...scene.features
-      .filter((feature) => !feature.hiddenCenter)
-      .map(
-        (feature): GeoJSON.Feature => ({
-          type: "Feature" as const,
-          properties: { id: feature.id, kind: feature.kind },
-          geometry:
-            feature.kind === "POINT"
-              ? { type: "Point" as const, coordinates: [...feature.coordinates[0]] }
-              : feature.kind === "POLYGON" && feature.polygons && feature.polygons.length > 1
-                ? {
-                    type: "MultiPolygon" as const,
-                    coordinates: feature.polygons.map((polygon) =>
-                      polygon.map((ring) => ring.map((position) => [...position])),
-                    ),
-                  }
-                : feature.kind === "POLYGON"
+        .filter((feature) => !feature.hiddenCenter)
+        .map(
+          (feature): GeoJSON.Feature => ({
+            type: "Feature" as const,
+            properties: { id: feature.id, kind: feature.kind },
+            geometry:
+              feature.kind === "POINT"
+                ? { type: "Point" as const, coordinates: [...feature.coordinates[0]] }
+                : feature.kind === "POLYGON" && feature.polygons && feature.polygons.length > 1
                   ? {
-                      type: "Polygon" as const,
-                      coordinates: (feature.polygons?.[0] ?? [feature.coordinates]).map((ring) =>
-                        ring.map((position) => [...position]),
+                      type: "MultiPolygon" as const,
+                      coordinates: feature.polygons.map((polygon) =>
+                        polygon.map((ring) => ring.map((position) => [...position])),
                       ),
                     }
-                  : { type: "LineString" as const, coordinates: feature.coordinates.map((position) => [...position]) },
-        }),
-      ),
-      ...(position ? [{
-        type: "Feature" as const,
-        properties: { id: "current-position", kind: "CURRENT_POSITION", accuracyMeters: position.accuracyMeters, confidence: position.confidence },
-        geometry: { type: "Point" as const, coordinates: [...position.coordinates] },
-      }] : []),
+                  : feature.kind === "POLYGON"
+                    ? {
+                        type: "Polygon" as const,
+                        coordinates: (feature.polygons?.[0] ?? [feature.coordinates]).map((ring) =>
+                          ring.map((position) => [...position]),
+                        ),
+                      }
+                    : {
+                        type: "LineString" as const,
+                        coordinates: feature.coordinates.map((position) => [...position]),
+                      },
+          }),
+        ),
+      ...(position
+        ? [
+            {
+              type: "Feature" as const,
+              properties: {
+                id: "current-position",
+                kind: "CURRENT_POSITION",
+                accuracyMeters: position.accuracyMeters,
+                confidence: position.confidence,
+              },
+              geometry: { type: "Point" as const, coordinates: [...position.coordinates] },
+            },
+          ]
+        : []),
     ],
   };
 }
