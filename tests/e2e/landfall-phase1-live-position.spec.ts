@@ -9,6 +9,7 @@ const suffix = randomUUID().slice(0, 10);
 let playerToken = "";
 let outsiderToken = "";
 let physicalSessionId = "";
+let deniedSessionId = "";
 let virtualSessionId = "";
 
 test.describe.configure({ mode: "serial", timeout: 120_000 });
@@ -39,8 +40,8 @@ async function createPlayer(label: string) {
   };
 }
 
-async function seedVoyage(profileId: string, accountId: string, virtual: boolean) {
-  const slug = `landfall-browser-${virtual ? "virtual" : "physical"}-${suffix}`;
+async function seedVoyage(profileId: string, accountId: string, virtual: boolean, variant = "") {
+  const slug = `landfall-browser-${virtual ? "virtual" : "physical"}-${variant ? `${variant}-` : ""}${suffix}`;
   const chapterId = `${slug}-chapter`;
   const blockId = `${slug}-block`;
   const tale = await db.chronicle.create({
@@ -211,12 +212,13 @@ test.beforeAll(async ({ request }) => {
   playerToken = player.token;
   outsiderToken = outsider.token;
   physicalSessionId = await seedVoyage(player.profileId, player.accountId, false);
+  deniedSessionId = await seedVoyage(player.profileId, player.accountId, false, "denied");
   virtualSessionId = await seedVoyage(player.profileId, player.accountId, true);
 });
 
 test.afterAll(async () => db.$disconnect());
 
-test("A: explicit foreground grant draws a qualified current position and stops on close", async ({
+test("A: explicit foreground grant shows weak accuracy, confirms arrival, and stops the watch", async ({
   browser,
   baseURL,
 }) => {
@@ -245,16 +247,15 @@ test("A: explicit foreground grant draws a qualified current position and stops 
   await page.waitForTimeout(300);
   // Chromium's live override update emits POSITION_UNAVAILABLE in this test environment.
   // The first fix above is browser-native; follow-up fixes exercise the retained watch callback.
-  await emitFollowUpFix(page, 44.00001, -72.00001, 12);
-  await expect(
-    page.getByText(/Current position shown\. Location signal: .*Estimated accuracy: 12 meters/u),
-  ).toBeVisible();
-  await page.waitForTimeout(300);
   await emitFollowUpFix(page, 44.00001, -72.00001, 1_000);
   await expect(page.getByText(/Location accuracy is too weak/u)).toBeVisible();
   await expect(page.getByText(/Current position shown/u)).toHaveCount(0);
   expect(await db.taleSessionEvent.count({ where: { sessionId: physicalSessionId } })).toBe(before);
-  await page.getByRole("button", { name: "Stop using my location" }).click();
+  await page.waitForTimeout(300);
+  await emitFollowUpFix(page, 44.00001, -72.00001, 12);
+  await page.waitForTimeout(300);
+  await emitFollowUpFix(page, 44.00002, -72.00002, 12);
+  await expect(page.getByText(/Arrival recorded: Town arrival/u)).toBeVisible({ timeout: 30_000 });
   await expect
     .poll(() =>
       page.evaluate(
@@ -262,15 +263,18 @@ test("A: explicit foreground grant draws a qualified current position and stops 
       ),
     )
     .toBeGreaterThan(0);
-  await page.getByRole("button", { name: "Use my location" }).click();
+  const events = await db.taleSessionEvent.findMany({ where: { sessionId: physicalSessionId } });
+  expect(events.filter((event) => event.eventType === "landfallWaypointConfirmed")).toHaveLength(1);
+  expect(JSON.stringify(events.map((event) => event.payload))).not.toMatch(/latitude|longitude|observations/u);
+  const watches = await page.evaluate(
+    () => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches,
+  );
   await page.getByRole("button", { name: "Close journal tool drawer" }).click();
-  await expect
-    .poll(() =>
-      page.evaluate(
-        () => (window as unknown as { __landfallLocationProbe: { clears: number } }).__landfallLocationProbe.clears,
-      ),
-    )
-    .toBeGreaterThan(1);
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches,
+    ),
+  ).toBe(watches);
   await context.close();
 });
 
@@ -279,7 +283,7 @@ test("B: denied permission leaves the chart usable without a false position", as
   await accountContext(context, playerToken, baseURL!);
   await context.grantPermissions([], { origin: baseURL! });
   const page = await context.newPage();
-  await openJournalMap(page, physicalSessionId);
+  await openJournalMap(page, deniedSessionId);
   await page.getByRole("button", { name: "Use my location" }).click();
   await expect(page.getByText(/Location permission was denied/u)).toBeVisible({ timeout: 30_000 });
   await expect(page.getByRole("list", { name: "Visible map locations" })).toContainText("Town arrival");

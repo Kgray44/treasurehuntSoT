@@ -214,10 +214,12 @@ change the external-validation boundary.
 Landfall Phase 1 adds a physical and virtual navigation foundation and a Player
 Journal chart with explicit foreground live position for supported physical
 Voyages. PR #667 passed hosted ordinary Sounding Line and closed Phase 1 on main.
-The Phase 2 candidate adds Creator Living Chart authoring and field-test receipts,
+**Available on protected main, Phase 2 source and browser validated:** PR #669
+adds Creator Living Chart authoring and field-test receipts,
 six Chronicle location blocks and typed completion, canonical Player and Captain
 progression, completed-Voyage replay, Lanternwake outcomes, and bounded web
-offline reconciliation. It is pending protected integration; virtual telemetry,
+offline reconciliation. Hosted ordinary Sounding Line passed on the exact candidate
+and merged as `1a1e6756c745a7dd66e38064f2271cd8cbd2d77e`; virtual telemetry,
 external geocoding, live hardware validation, deployment, and owner acceptance
 remain separate.
 

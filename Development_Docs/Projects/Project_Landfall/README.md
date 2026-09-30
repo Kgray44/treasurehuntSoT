@@ -8,7 +8,7 @@ last_reviewed: 2026-09-30
 
 # Project Landfall
 
-Project Landfall governs the Living World Navigation System. Phase 1, **Lay the Bearings**, is fully closed on protected main through PR #667: it includes the domain foundation and the ordinary Player Journal live-position chart. The governing sources below define its scope; implementation and validation records describe only work actually completed. Deployment, live-device field behavior, and owner acceptance remain separate evidence.
+Project Landfall governs the Living World Navigation System. Phase 1, **Lay the Bearings**, is closed on protected main through PR #667. Phase 2, **Bring the World Aboard**, is integrated through PR #669: Creator authoring, Chronicle blocks, canonical progression, Player and Captain surfaces, replay, field testing, and bounded web offline behavior. The governing sources below define scope; implementation and validation records describe only work actually completed. Deployment, live-device field behavior, and owner acceptance remain separate evidence.
 
 ## Governing authority
 
@@ -34,6 +34,6 @@ These records describe the Phase 1 foundation, the Player live-position correcti
 - [Design record](Project_Landfall_Phase_2_Design_Record.md)
 - [Threat model](Project_Landfall_Phase_2_Threat_Model.md)
 - [Test plan](Project_Landfall_Phase_2_Test_Plan.md)
-- [Bring the World Aboard implementation record](Project_Landfall_Phase_2_Implementation_Record.md) describes the Creator, Chronicle, Player, Captain, replay, field-test, and web offline source on the Phase 2 candidate.
+- [Bring the World Aboard implementation record](Project_Landfall_Phase_2_Implementation_Record.md) describes the Creator, Chronicle, Player, Captain, replay, field-test, and web offline source integrated by PR #669.
 - [Validation record](Project_Landfall_Phase_2_Validation_Record.md)
 - [Integration manifest](Project_Landfall_Phase_2_Integration_Manifest.md)
