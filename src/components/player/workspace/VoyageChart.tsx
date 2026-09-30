@@ -19,7 +19,7 @@ import type { PublicMapLocation, PublicSnapshot } from "@/domain/story";
 import { LottieEffect } from "@/components/animation/LottieEffect";
 import { RiveStatefulObject, type RiveRuntimeStatus, type RiveSignal } from "@/components/animation/RiveStatefulObject";
 import { LandfallMapRenderer } from "@/landfall/map-renderer";
-import type { LandfallMapScene } from "@/landfall/map-projection";
+import type { LandfallCurrentPosition, LandfallMapScene } from "@/landfall/map-projection";
 
 type ChartRoute = PublicSnapshot["mapRoutes"][number];
 
@@ -44,10 +44,11 @@ export type VoyageChartTargetRegistration = Readonly<{
 }>;
 
 export type VoyageChartProps = Readonly<{
-  snapshot: PublicSnapshot;
+  snapshot?: PublicSnapshot;
   mode: MotionMode;
   /** Phase 1 internal seam: supplied only from the authorized canonical Landfall projection. */
   landfallScene?: LandfallMapScene;
+  landfallPosition?: LandfallCurrentPosition | null;
   /** Exact progress identity; it never falls back to array or DOM order. */
   progressLocationKey?: PublicMapLocation["key"];
   /** Exact progress identity; it never falls back to the final rendered route. */
@@ -386,7 +387,7 @@ function VoyageChartContents({
   onLocationActivate,
   onTargetRegistrationChange,
   onCompassStatusChange,
-}: VoyageChartProps & Readonly<{ headingId: string }>) {
+}: VoyageChartProps & Readonly<{ headingId: string; snapshot: PublicSnapshot }>) {
   const [scale, setScale] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const chartLocations = useMemo(() => uniqueByKey(snapshot.mapLocations), [snapshot.mapLocations]);
@@ -630,10 +631,11 @@ export function VoyageChart(props: VoyageChartProps) {
   if (props.landfallScene)
     return (
       <section className="physical-section voyage-chart-section" aria-label="Voyage Chart" data-landfall-phase1-preview>
-        <LandfallMapRenderer scene={props.landfallScene} />
+        <LandfallMapRenderer scene={{ ...props.landfallScene, currentPosition: props.landfallPosition }} />
       </section>
     );
 
+  if (!props.snapshot) return null;
   return (
     <SceneHost
       as="section"
@@ -643,7 +645,7 @@ export function VoyageChart(props: VoyageChartProps) {
       data-section-heading
       tabIndex={-1}
     >
-      <VoyageChartContents {...props} headingId={headingId} />
+      <VoyageChartContents {...props} snapshot={props.snapshot} headingId={headingId} />
     </SceneHost>
   );
 }

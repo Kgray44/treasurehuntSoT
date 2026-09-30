@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-09-29
+last_reviewed: 2026-09-30
 ---
 
 # Current status
@@ -211,9 +211,10 @@ for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
 **Planned or not validated:** Project Homeport owner acceptance, Harborlight
-Phase 4, and Project Watchglass remain pending. Project Landfall Phase 1 adds an
-internal physical and virtual navigation foundation; ordinary Player, Creator,
-and Captain Landfall experiences, live hardware, and deployment remain pending. Project Sounding
+Phase 4, and Project Watchglass remain pending. Project Landfall Phase 1 adds a
+physical and virtual navigation foundation and a Player Journal chart with explicit
+foreground live position for supported physical Voyages. Creator and Captain
+Landfall experiences, virtual telemetry, live hardware validation, and deployment remain pending. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records
 are evidence, not a release promise.

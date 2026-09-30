@@ -26,6 +26,7 @@ import type {
 import { resolveStoryMotion } from "@/animation/presentation/story-motion";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
 import { ChronicleJournalPageContent, type JournalAsset } from "@/components/player/journal/ChronicleJournalPage";
+import { LandfallJournalChart } from "@/components/player/journal/LandfallJournalChart";
 import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 import {
   emptyJournalReadingState,
@@ -1232,6 +1233,17 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
           ×
         </button>
         <h2>{drawerTitle(reading.openDrawer)}</h2>
+        {identitySession &&
+          reading.openDrawer === "map" &&
+          state?.session.status === "ACTIVE" &&
+          connection === "live" && (
+            <LandfallJournalChart
+              key={`${state.session.versionId}:${state.session.currentSequence}`}
+              sessionId={sessionId}
+              publishedVersionId={state.session.versionId}
+              mode={mode}
+            />
+          )}
         {contextBlocks
           .filter((block) => drawerIncludes(reading.openDrawer, block))
           .map((block) => (

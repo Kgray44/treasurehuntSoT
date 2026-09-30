@@ -3,7 +3,7 @@ title: Project Landfall Phase 1 Test Plan
 audience: product-engineering
 status: current
 canonical_for: project-landfall-phase-1-test-plan
-last_reviewed: 2026-09-29
+last_reviewed: 2026-09-30
 ---
 
 # Phase 1 Test Plan
@@ -20,7 +20,7 @@ Run TypeScript, affected ESLint, production build, `npm run docs:index`, `npm ru
 
 ## Browser and privacy proof
 
-The foreground geolocation callback is mocked with a real `GeolocationPosition` shape and fed through the runtime. Physical MapLibre and virtual SVG component tests inspect DOM output and degraded fallback. The fixture uses synthetic geography and a fictional chart; it does not ask for real device permission or collect a physical trail. A real handset field test is optional owner evidence, not a local correctness gate.
+The focused tests cover pinned Player projection, membership and no-store API behavior, foreground geolocation qualification, weak/stale fixes, MapLibre marker data, virtual rendering, and degraded fallback. Run the dedicated `tests/e2e/landfall-phase1-live-position.spec.ts` through Sounding Line's existing generic, nonce-checked isolated browser harness. Its four production-browser journeys cover explicit grant/stop/close and no canonical visit, denial, virtual navigation without GPS, and unauthorized/hidden-geometry protection. Fixtures use synthetic geography and a fictional chart; they do not collect a physical trail. A real handset field test is optional owner evidence, not a local correctness gate.
 
 ## Acceptance distinction
 

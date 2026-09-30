@@ -1331,7 +1331,7 @@ Project Drydock Phase 4 gives Creators source-bound launch readiness, compatibil
 **Status:** MAINLINE
 **Program or subsystem:** Project Landfall Phase 1
 
-Version-pinned physical and virtual Worldspaces share strict geometry, observation, confidence, privacy, offline-reconciliation, map, and deterministic Drydock contracts.
+Version-pinned physical and virtual Worldspaces share strict geometry, observation, confidence, privacy, offline-reconciliation, map, and deterministic Drydock contracts. Active Players can open a released Voyage Chart and explicitly see qualified foreground physical position.
 
 ### Important subfeatures
 
@@ -1341,15 +1341,15 @@ Version-pinned physical and virtual Worldspaces share strict geometry, observati
 - Bounded privacy-safe journey and map projections
 - Local queued versus canonical server-confirmed reconciliation
 - Deterministic Drydock simulation and narrow One Voyage completion proposal
-- Optional MapLibre and virtual chart rendering seam
+- Ordinary Player Journal physical and virtual Voyage Chart with explicit foreground physical position, accuracy status, and watch teardown
 
 ### Primary surfaces
 
-`src/landfall`, `/api/studio/tales/[taleId]/landfall`, `src/components/player/workspace/VoyageChart.tsx`
+`src/landfall`, `/api/studio/tales/[taleId]/landfall`, `/api/player/playthroughs/[playthroughId]/landfall`, `src/components/player/workspace/VoyageChart.tsx`, `src/components/player/journal/LandfallJournalChart.tsx`
 
 ### Meaningful limitations
 
-- The ordinary Player, Creator, and Captain Landfall experiences are not exposed by Phase 1; the map seam is optional and internal.
+- Creator and Captain Landfall controls, virtual game telemetry, and canonical visit writes from the Player chart are outside Phase 1.
 - Live hardware, production map tiles, production MySQL, deployment, and owner acceptance require separate evidence.
 
 ### Evidence
@@ -1357,6 +1357,7 @@ Version-pinned physical and virtual Worldspaces share strict geometry, observati
 - path: `src/landfall/runtime.ts`
 - path: `src/landfall/schema.ts`
 - test: `src/landfall/landfall.test.ts`
+- test: `tests/e2e/landfall-phase1-live-position.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_1_Validation_Record.md`
 
 ---

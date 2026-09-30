@@ -3,7 +3,7 @@ title: Project Landfall Phase 1 Implementation Record
 audience: product-engineering
 status: current
 canonical_for: project-landfall-phase-1-implementation
-last_reviewed: 2026-09-29
+last_reviewed: 2026-09-30
 ---
 
 # Phase 1 Implementation Record
@@ -20,7 +20,8 @@ The original [v1.0 PDF](Project_Landfall_Governing_Document_v1.0.pdf) was copied
 - `src/landfall/definition-store.ts` and the private Studio Landfall route: draft persistence, owner/CSRF authorization, optimistic concurrency, and no-store response headers.
 - `src/landfall/published.ts` and `progression-boundary.ts`: pinned immutable edition loading and a typed One Voyage completion proposal; no parallel canonical progression write.
 - `src/drydock/landfall-adapter.ts`: deterministic physical and virtual simulation mapped into Drydock's accepted result vocabulary.
-- `src/components/player/workspace/VoyageChart.tsx`: optional scene rendering seam; existing non-Landfall chart path remains the default.
+- `src/app/api/player/playthroughs/[playthroughId]/landfall/route.ts` and `src/landfall/player-bootstrap.ts`: member-authorized, no-store projection from the pinned published edition to currently released evaluation geometry and map assets.
+- `src/components/player/journal/LandfallJournalChart.tsx` and `src/components/player/workspace/VoyageChart.tsx`: ordinary Player Journal map drawer, explicit foreground location control, local current-position overlay, and virtual chart fallback. Existing non-Landfall chart behavior remains available.
 - Prisma SQLite/MySQL schemas and their Phase 1 migrations: nullable `landfallDefinition` on `TaleDraft`. Chronicle snapshot and publication parsers accept optional version-1 Landfall while retaining old versions without it.
 
 ## Reconciliation with v1.0 and v1.1
@@ -29,4 +30,4 @@ The physical path is foreground only, with explicit start/stop, accuracy, freshn
 
 ## Availability boundary
 
-Phase 1 provides backend contracts and an optional minimal render seam. The ordinary Studio authoring canvas, Player voyage flow, Captain controls, background/native location, offline map-package download, Watchglass, and public map publication are not enabled by this change. One Voyage must issue the canonical completion receipt before Landfall marks a location visited. A forged provider ID or client-side `CONFIRMED` result is never server authority by itself.
+Phase 1 now exposes a bounded Player Journal chart for active identity-backed Voyages with a Landfall-enabled pinned edition. The ordinary Studio authoring canvas, Captain controls, background/native location, offline map-package download, virtual game telemetry, Watchglass, and public map publication remain outside this change. One Voyage must issue the canonical completion receipt before Landfall marks a location visited. A forged provider ID or client-side `CONFIRMED` result is never server authority by itself. The [Live Position Closure Record](Project_Landfall_Phase_1_Live_Position_Closure_Record.md) reconciles the v1.0 chart requirement and v1.1 virtual boundary with the ordinary Player route.

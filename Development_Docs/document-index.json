@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-29",
+  "generated_at": "2026-09-30",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -7066,6 +7066,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_1_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_1_Live_Position_Closure_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

@@ -12,6 +12,15 @@ describe("Landfall map projection", () => {
     expect(scene.renderer).toBe("MAPLIBRE_STYLE");
     expect(mapLibreFeatures(scene).features.map((item) => item.properties?.id)).toEqual(["town-arrival", "town-route"]);
     expect(mapLibreFeatures(scene).features[0].geometry).toMatchObject({ type: "Point", coordinates: [-72, 44] });
+    expect(
+      mapLibreFeatures({
+        ...scene,
+        currentPosition: { coordinates: [-72, 44], accuracyMeters: 8, confidence: "NEARBY", observedAt: 1000 },
+      }).features.at(-1),
+    ).toMatchObject({
+      properties: { kind: "CURRENT_POSITION", accuracyMeters: 8, confidence: "NEARBY" },
+      geometry: { type: "Point", coordinates: [-72, 44] },
+    });
   });
   it("keeps unrevealed virtual regions out of image map data", () => {
     const hidden = projectLandfallMap(landfallFixture, {

@@ -3,7 +3,7 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-09-21
+last_reviewed: 2026-09-30
 ---
 
 # Voyagewright features
@@ -13,6 +13,8 @@ Voyagewright is a private, role-aware home for shared Chronicle experiences.
 ## Player and Personal Harbor
 
 Players can accept invitations, use a personal library, follow a Chronicle through a Voyage, and keep private history in Chronicle Passport. Personal Harbor brings account, privacy, profile, and workspace choices together. See the [Player guide](../user/player-guide.md), [Personal Harbor](../user/personal-harbor.md), and [Chronicle Passport guide](../user/chronicle-passport.md).
+
+For a Landfall-enabled published Voyage, the Player Journal map drawer shows the released physical or virtual chart. On a supported physical chart, the Player can explicitly turn on foreground browser location to see a current-position marker with an accuracy indication, then stop it at once. Virtual charts do not request GPS. Local position confidence does not itself record a visit.
 
 ## Captain
 

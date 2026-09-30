@@ -1,13 +1,15 @@
 {
   "id": "FT-044",
   "title": "Landfall Living World Navigation Foundation",
-  "summary": "Version-pinned physical and virtual Worldspaces share strict geometry, observation, confidence, privacy, offline-reconciliation, map, and deterministic Drydock contracts.",
+  "summary": "Version-pinned physical and virtual Worldspaces share strict geometry, observation, confidence, privacy, offline-reconciliation, map, and deterministic Drydock contracts. Active Players can open a released Voyage Chart and explicitly see qualified foreground physical position.",
   "status": "MAINLINE",
   "program": "Project Landfall Phase 1",
   "surfaces": [
     "src/landfall",
     "/api/studio/tales/[taleId]/landfall",
-    "src/components/player/workspace/VoyageChart.tsx"
+    "/api/player/playthroughs/[playthroughId]/landfall",
+    "src/components/player/workspace/VoyageChart.tsx",
+    "src/components/player/journal/LandfallJournalChart.tsx"
   ],
   "subfeatures": [
     "Strict versioned physical and virtual Worldspace definitions and geometry",
@@ -16,19 +18,20 @@
     "Bounded privacy-safe journey and map projections",
     "Local queued versus canonical server-confirmed reconciliation",
     "Deterministic Drydock simulation and narrow One Voyage completion proposal",
-    "Optional MapLibre and virtual chart rendering seam"
+    "Ordinary Player Journal physical and virtual Voyage Chart with explicit foreground physical position, accuracy status, and watch teardown"
   ],
   "evidence": [
     { "kind": "path", "value": "src/landfall/runtime.ts" },
     { "kind": "path", "value": "src/landfall/schema.ts" },
     { "kind": "test", "value": "src/landfall/landfall.test.ts" },
+    { "kind": "test", "value": "tests/e2e/landfall-phase1-live-position.spec.ts" },
     {
       "kind": "completion-record",
       "value": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_1_Validation_Record.md"
     }
   ],
   "limitations": [
-    "The ordinary Player, Creator, and Captain Landfall experiences are not exposed by Phase 1; the map seam is optional and internal.",
+    "Creator and Captain Landfall controls, virtual game telemetry, and canonical visit writes from the Player chart are outside Phase 1.",
     "Live hardware, production map tiles, production MySQL, deployment, and owner acceptance require separate evidence."
   ],
   "catalogVersion": 1

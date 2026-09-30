@@ -2,7 +2,7 @@
 
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef, useState } from "react";
-import { mapLibreFeatures, type LandfallMapScene } from "@/landfall/map-projection";
+import { mapLibreFeatures, type LandfallCurrentPosition, type LandfallMapScene } from "@/landfall/map-projection";
 import { validateLandfallMapStyle } from "@/landfall/map-style";
 
 /** A map-data provider is trusted application code, not Creator-supplied style JSON or URL. */
@@ -37,12 +37,48 @@ const blankStyle = (scene: LandfallMapScene): import("maplibre-gl").StyleSpecifi
       filter: ["==", ["get", "kind"], "POINT"],
       paint: { "circle-color": scene.foreground, "circle-radius": 8 },
     },
+    {
+      id: "landfall-position-halo",
+      type: "circle",
+      source: "landfall",
+      filter: ["==", ["get", "kind"], "CURRENT_POSITION"],
+      paint: { "circle-color": "#1878a8", "circle-opacity": 0.16, "circle-radius": 24 },
+    },
+    {
+      id: "landfall-position",
+      type: "circle",
+      source: "landfall",
+      filter: ["==", ["get", "kind"], "CURRENT_POSITION"],
+      paint: {
+        "circle-color": "#1878a8",
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 2,
+        "circle-radius": 7,
+      },
+    },
   ],
 });
 
-function PhysicalMap({ scene, provider }: { scene: LandfallMapScene; provider?: LandfallMapDataProvider }) {
+function PhysicalMap({
+  scene,
+  provider,
+  position,
+}: {
+  scene: LandfallMapScene;
+  provider?: LandfallMapDataProvider;
+  position?: LandfallCurrentPosition | null;
+}) {
   const element = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<import("maplibre-gl").Map | null>(null);
+  const positionRef = useRef(position);
   const [failure, setFailure] = useState(false);
+  useEffect(() => {
+    positionRef.current = position;
+  }, [position]);
+  useEffect(() => {
+    const source = mapRef.current?.getSource("landfall") as import("maplibre-gl").GeoJSONSource | undefined;
+    source?.setData(mapLibreFeatures(scene, position));
+  }, [scene, position]);
   useEffect(() => {
     if (!element.current) return;
     let disposed = false;
@@ -55,7 +91,10 @@ function PhysicalMap({ scene, provider }: { scene: LandfallMapScene; provider?: 
         // The provider supplies only a trusted base style. Landfall overlays are canonical.
         const style: import("maplibre-gl").StyleSpecification = {
           ...base,
-          sources: { ...base.sources, landfall: { type: "geojson", data: mapLibreFeatures(scene) } },
+          sources: {
+            ...base.sources,
+            landfall: { type: "geojson", data: mapLibreFeatures(scene, positionRef.current) },
+          },
           layers: [
             ...base.layers.filter((layer) => !layer.id.startsWith("landfall-")),
             ...blankStyle(scene).layers.filter((layer) => layer.id !== "landfall-background"),
@@ -69,6 +108,11 @@ function PhysicalMap({ scene, provider }: { scene: LandfallMapScene; provider?: 
           bearing: scene.camera.bearing,
           attributionControl: { compact: true },
         });
+        mapRef.current = map;
+        map.on("load", () => {
+          const source = map?.getSource("landfall") as import("maplibre-gl").GeoJSONSource | undefined;
+          source?.setData(mapLibreFeatures(scene, positionRef.current));
+        });
         map.on("error", () => setFailure(true));
       } catch {
         if (!disposed) setFailure(true);
@@ -77,16 +121,26 @@ function PhysicalMap({ scene, provider }: { scene: LandfallMapScene; provider?: 
     void start();
     return () => {
       disposed = true;
+      mapRef.current = null;
       map?.remove();
     };
-  }, [scene, provider]);
+    // The mounted Player scene is immutable by map/worldspace identity; only its
+    // ephemeral position changes. Position updates use GeoJSON setData above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scene.mapId, scene.worldspaceId, provider]);
   return (
     <div>
       <div ref={element} style={{ width: "100%", height: 320 }} aria-label="Physical Landfall map" />
+      {position && (
+        <p role="status">
+          Current position shown. Location signal: {position.confidence.toLowerCase().replaceAll("_", " ")}. Estimated
+          accuracy: {Math.round(position.accuracyMeters)} meters.
+        </p>
+      )}
       {failure && <p role="status">Map data is unavailable. Use the location list and route summary.</p>}
       <ul aria-label="Visible map locations">
         {scene.features.map((item) => (
-          <li key={item.id}>{item.id}</li>
+          <li key={item.id}>{item.label}</li>
         ))}
       </ul>
     </div>
@@ -98,7 +152,7 @@ function VirtualMap({ scene }: { scene: LandfallMapScene }) {
   if (!bounds) return <p role="status">Virtual map bounds are unavailable.</p>;
   const width = bounds.maxX - bounds.minX,
     height = bounds.maxY - bounds.minY;
-  const imageUrl = scene.imageAssetId ? `/api/media/${encodeURIComponent(scene.imageAssetId)}` : null;
+  const imageUrl = scene.imageUrl ?? null;
   return (
     <div>
       <svg
@@ -155,7 +209,7 @@ function VirtualMap({ scene }: { scene: LandfallMapScene }) {
       </svg>
       <ul aria-label="Visible map locations">
         {scene.features.map((item) => (
-          <li key={item.id}>{item.id}</li>
+          <li key={item.id}>{item.label}</li>
         ))}
       </ul>
     </div>
@@ -172,7 +226,7 @@ export function LandfallMapRenderer({
   return (
     <section aria-label="Landfall map preview">
       {scene.worldspaceKind === "PHYSICAL" ? (
-        <PhysicalMap scene={scene} provider={provider} />
+        <PhysicalMap scene={scene} provider={provider} position={scene.currentPosition} />
       ) : (
         <VirtualMap scene={scene} />
       )}
