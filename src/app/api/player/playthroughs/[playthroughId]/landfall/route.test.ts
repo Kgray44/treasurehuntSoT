@@ -1,0 +1,67 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { landfallFixture } from "@/landfall/fixtures";
+
+const mocks = vi.hoisted(() => ({ identity: vi.fn(), member: vi.fn(), state: vi.fn(), pinned: vi.fn() }));
+vi.mock("@/platform/auth", () => ({ requirePlayerIdentity: mocks.identity, playerCanAccessPlaythrough: mocks.member }));
+vi.mock("@/chronicle/progression", () => ({ getTaleSessionState: mocks.state }));
+vi.mock("@/landfall/published", () => ({ loadPinnedLandfallDefinition: mocks.pinned }));
+
+import { GET } from "./route";
+
+const context = { params: Promise.resolve({ playthroughId: "session-1" }) };
+
+describe("Player Landfall bootstrap route", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mocks.identity.mockResolvedValue({ playerProfileId: "player-1" });
+    mocks.member.mockResolvedValue(true);
+    mocks.state.mockResolvedValue({
+      session: { status: "ACTIVE", versionId: "version-1" },
+      chapter: null,
+      block: null,
+      assets: [],
+    });
+    mocks.pinned.mockResolvedValue({
+      sessionId: "session-1",
+      taleId: "fixture-tale",
+      publishedVersionId: "version-1",
+      currentSequence: 4,
+      definition: landfallFixture,
+    });
+  });
+
+  it("blocks missing identity and membership before reading published geometry", async () => {
+    mocks.identity.mockResolvedValueOnce(null);
+    const anonymous = await GET(new Request("https://example.test"), context);
+    expect(anonymous.status).toBe(401);
+    expect(anonymous.headers.get("cache-control")).toContain("no-store");
+    mocks.member.mockResolvedValueOnce(false);
+    const outsider = await GET(new Request("https://example.test"), context);
+    expect(outsider.status).toBe(404);
+    expect(mocks.pinned).not.toHaveBeenCalled();
+  });
+
+  it("uses only the authorized pinned snapshot and no-store response", async () => {
+    const response = await GET(new Request("https://example.test"), context);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("cache-control")).toContain("no-store");
+    expect(mocks.member).toHaveBeenCalledWith("session-1", "player-1");
+    const body = await response.json();
+    expect(body.available).toBe(true);
+    expect(body.bootstrap.scene.features.map((item: { id: string }) => item.id)).toEqual(["town-arrival", "town-route"]);
+    expect(JSON.stringify(body)).not.toContain("isle-region");
+  });
+
+  it("withholds the chart when paused or the pinned version changes", async () => {
+    mocks.state.mockResolvedValueOnce({ session: { status: "PAUSED", versionId: "version-1" } });
+    expect(await (await GET(new Request("https://example.test"), context)).json()).toEqual({ available: false });
+    mocks.pinned.mockResolvedValueOnce({
+      sessionId: "session-1",
+      taleId: "fixture-tale",
+      publishedVersionId: "other-version",
+      currentSequence: 4,
+      definition: landfallFixture,
+    });
+    expect((await GET(new Request("https://example.test"), context)).status).toBe(409);
+  });
+});

@@ -24,6 +24,7 @@ export type LandfallMapScene = Readonly<{
   camera: Readonly<{ center: readonly [number, number]; zoom: number; bearing: number }>;
   attribution: readonly { label: string; url: string }[];
   imageAssetId?: string;
+  imageUrl?: string;
   bounds?: Readonly<{ minX: number; minY: number; maxX: number; maxY: number }>;
   features: readonly LandfallMapFeature[];
 }>;
@@ -107,11 +108,17 @@ export function projectLandfallMap(
   };
 }
 
-export function mapLibreFeatures(scene: LandfallMapScene): GeoJSON.FeatureCollection {
+export type LandfallCurrentPosition = Readonly<{
+  coordinates: readonly [number, number];
+  accuracyMeters: number;
+}>;
+
+export function mapLibreFeatures(scene: LandfallMapScene, position?: LandfallCurrentPosition | null): GeoJSON.FeatureCollection {
   if (scene.worldspaceKind !== "PHYSICAL") throw new Error("LANDFALL_MAPLIBRE_REQUIRES_PHYSICAL_WORLDSPACE");
   return {
     type: "FeatureCollection" as const,
-    features: scene.features
+    features: [
+      ...scene.features
       .filter((feature) => !feature.hiddenCenter)
       .map(
         (feature): GeoJSON.Feature => ({
@@ -137,5 +144,11 @@ export function mapLibreFeatures(scene: LandfallMapScene): GeoJSON.FeatureCollec
                   : { type: "LineString" as const, coordinates: feature.coordinates.map((position) => [...position]) },
         }),
       ),
+      ...(position ? [{
+        type: "Feature" as const,
+        properties: { id: "current-position", kind: "CURRENT_POSITION", accuracyMeters: position.accuracyMeters },
+        geometry: { type: "Point" as const, coordinates: [...position.coordinates] },
+      }] : []),
+    ],
   };
 }

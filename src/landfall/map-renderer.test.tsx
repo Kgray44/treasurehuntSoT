@@ -27,16 +27,16 @@ describe("Landfall internal map presentation proof", () => {
     const { rerender } = render(<LandfallMapRenderer scene={hidden} />);
     expect(screen.getByRole("img", { name: "Virtual Landfall chart" })).toBeInTheDocument();
     expect(screen.getByRole("list", { name: "Visible map locations" })).toBeEmptyDOMElement();
-    const revealed = projectLandfallMap(landfallFixture, {
+    const revealed = { ...projectLandfallMap(landfallFixture, {
       activeWorldspaceId: "isles",
       availableLocations: [{ id: "isle-region" }],
       activeRouteId: null,
-    });
+    }), imageUrl: "/api/media/synthetic-chart?version=version-1&session=session-1" };
     rerender(<LandfallMapRenderer scene={revealed} />);
     expect(screen.getByText("isle-region")).toBeInTheDocument();
     expect(
       screen.getByRole("img", { name: "Virtual Landfall chart" }).querySelector("image")?.getAttribute("href"),
-    ).toBe("/api/media/synthetic-chart");
+    ).toBe("/api/media/synthetic-chart?version=version-1&session=session-1");
   });
   it("mounts the physical MapLibre adapter with canonical GeoJSON overlays", async () => {
     const scene = projectLandfallMap(landfallFixture, {

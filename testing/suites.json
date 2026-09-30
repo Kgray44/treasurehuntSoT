@@ -2729,6 +2729,42 @@
       "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
+    },
+    {
+      "id": "unit.landfall",
+      "name": "Landfall pinned Player projection and foreground observation unit tests",
+      "tier": 1,
+      "owner": "project-landfall",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 60000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": ["landfall.player-live-position"],
+      "affectedPaths": ["src/landfall/**", "src/app/api/player/playthroughs/[playthroughId]/landfall/**"],
+      "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-family",
+      "adapter": "vitest-family"
+    },
+    {
+      "id": "browser.landfall",
+      "name": "Landfall Player foreground live-position browser journeys",
+      "tier": 4,
+      "owner": "project-landfall",
+      "command": "registry-selected Playwright cases",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 240000,
+      "hardBudgetMs": 600000,
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["unit.landfall"],
+      "contracts": ["landfall.player-live-position"],
+      "affectedPaths": ["tests/e2e/landfall-phase1-live-position.spec.ts"],
+      "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-browser-family",
+      "adapter": "playwright-family"
     }
   ]
 }

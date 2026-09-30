@@ -17,9 +17,23 @@ const profileByTest = new Map([
   ["tests/e2e/phase3-player-motion.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/phase3-replay-resilience.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/phase3-visual-checkpoints.spec.ts", "lanternwake-phase3"],
+  ["tests/e2e/landfall-phase1-live-position.spec.ts", "landfall-phase1"],
 ]);
 
 export const browserSuiteProfiles = Object.freeze({
+  "landfall-phase1": Object.freeze({
+    id: "landfall-phase1",
+    bootstrap: true,
+    seed: true,
+    taskOwnedProductionHttp: true,
+    validationIsolation: true,
+    cookieAdapter: "isolated-loopback",
+    environment: Object.freeze({ SOUNDING_LINE_BROWSER_PORT: "3228", FOREVER_VALIDATION_NODE_ENV: "test" }),
+    preparers: Object.freeze([
+      Object.freeze({ runtime: "node", script: "scripts/sounding-line/prepare-validation-isolation.mjs" }),
+    ]),
+    fixtureArguments: [],
+  }),
   generic: Object.freeze({
     id: "generic",
     bootstrap: true,

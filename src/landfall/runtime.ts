@@ -137,7 +137,7 @@ export class LandfallRuntime {
   routeFraction: number | null = null;
 
   constructor(
-    definition: LandfallDefinition,
+    definition: Pick<LandfallDefinition, "worldspaces" | "waypoints" | "routes" | "transitions">,
     identity: { sessionId: string; publishedVersionId: string },
     private readonly providers: LandfallProviderRegistry,
   ) {
@@ -616,6 +616,19 @@ export class LandfallRuntime {
           ? []
           : [...this.pending.values()].map(({ id, waypointId, state }) => ({ id, waypointId, state })),
     };
+  }
+  /** Foreground Player-only fix. Never persist or include it in a server/public projection. */
+  currentPosition(now: number): Readonly<{ coordinate: LandfallCoordinate; accuracy: number; observedAt: number }> | null {
+    const latest = this.fixes.at(-1);
+    const waypoint = this.activeWaypointId ? this.waypoints.get(this.activeWaypointId) : null;
+    if (
+      !latest ||
+      !waypoint ||
+      this.trackingState !== "TRACKING" ||
+      this.currentOutcome.failure === "WEAK_ACCURACY" ||
+      now - latest.observedAt > Math.min(10_000, waypoint.evidenceProfile.maximumAgeSeconds * 1000)
+    ) return null;
+    return { coordinate: { ...latest.coordinate }, accuracy: latest.accuracy, observedAt: latest.observedAt };
   }
   diagnostics() {
     return {

@@ -4758,9 +4758,38 @@
       "path": "src/styles/community.css",
       "suiteIds": ["unit.community", "component.community", "browser.community"],
       "contractIds": ["community-public-projection", "community-moderation-integrity"]
+    },
+    {
+      "path": "src/landfall/**",
+      "suiteIds": ["unit.landfall", "browser.landfall"],
+      "contractIds": ["landfall.player-live-position"]
+    },
+    {
+      "path": "src/components/player/journal/LandfallJournalChart.tsx",
+      "suiteIds": ["unit.landfall", "browser.landfall"],
+      "contractIds": ["landfall.player-live-position"]
+    },
+    {
+      "path": "src/components/player/journal/ChronicleJournalSession.tsx",
+      "suiteIds": ["browser.landfall"],
+      "contractIds": ["landfall.player-live-position"]
+    },
+    {
+      "path": "src/app/api/player/playthroughs/[playthroughId]/landfall/**",
+      "suiteIds": ["unit.landfall", "browser.landfall"],
+      "contractIds": ["landfall.player-live-position"]
+    },
+    {
+      "path": "tests/e2e/landfall-phase1-live-position.spec.ts",
+      "suiteIds": ["browser.landfall"],
+      "contractIds": ["landfall.player-live-position"]
     }
   ],
   "contractMappings": [
+    {
+      "contractId": "landfall.player-live-position",
+      "suiteIds": ["unit.landfall", "browser.landfall"]
+    },
     {
       "contractId": "helm.authority-membership.independent",
       "suiteIds": ["unit.helm", "browser.helm"]
