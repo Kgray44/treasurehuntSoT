@@ -1,10 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { landfallFixture } from "@/landfall/fixtures";
 
-const mocks = vi.hoisted(() => ({ identity: vi.fn(), member: vi.fn(), state: vi.fn(), pinned: vi.fn() }));
+const mocks = vi.hoisted(() => ({
+  identity: vi.fn(),
+  member: vi.fn(),
+  state: vi.fn(),
+  pinned: vi.fn(),
+  events: vi.fn(),
+}));
 vi.mock("@/platform/auth", () => ({ requirePlayerIdentity: mocks.identity, playerCanAccessPlaythrough: mocks.member }));
 vi.mock("@/chronicle/progression", () => ({ getTaleSessionState: mocks.state }));
 vi.mock("@/landfall/published", () => ({ loadPinnedLandfallDefinition: mocks.pinned }));
+vi.mock("@/lib/db", () => ({ db: { taleSessionEvent: { findMany: mocks.events } } }));
 
 import { GET } from "./route";
 
@@ -28,6 +35,7 @@ describe("Player Landfall bootstrap route", () => {
       currentSequence: 4,
       definition: landfallFixture,
     });
+    mocks.events.mockResolvedValue([]);
   });
 
   it("blocks missing identity and membership before reading published geometry", async () => {

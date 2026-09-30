@@ -2,6 +2,54 @@
   "classification": "SYNTHETIC_NO_PRIVATE_CONTENT",
   "fixtures": [
     {
+      "authoredChecksum": "95a817f63f73b7f1baa66c30741edffbbb53185df3da5d6123692379906f3491",
+      "blockType": "livingChart",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.livingChart.v1-to-v2",
+      "fixtureId": "drydock-fixture-livingChart-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "00ddc2bc9d792fd29ffe294792a2ab11334bad00aa0d98ab62ddab1e46bf38da",
+      "blockType": "waypointJourney",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.waypointJourney.v1-to-v2",
+      "fixtureId": "drydock-fixture-waypointJourney-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "d89df181d13a5e84513a71fa21525482a2e25ed82328bd9a9f86b974efdcb36d",
+      "blockType": "routeJourney",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.routeJourney.v1-to-v2",
+      "fixtureId": "drydock-fixture-routeJourney-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "8fcbebd210af6b65733d5d2661b60819de3684e69da5b702976ce9c07bbd450a",
+      "blockType": "locationReveal",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.locationReveal.v1-to-v2",
+      "fixtureId": "drydock-fixture-locationReveal-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "1ed995ccdda7a9695882068ed1f6b1352abd4d7a47e506e9fa472bba85a975f6",
+      "blockType": "locationObservation",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.locationObservation.v1-to-v2",
+      "fixtureId": "drydock-fixture-locationObservation-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
+      "authoredChecksum": "ae7b84c36f35a1e71ec0df16a01514fe7c83f1cf846303d60c9b00fbe0cb6132",
+      "blockType": "locationChoice",
+      "expectedCurrentSchemaVersion": 2,
+      "expectedMigrationId": "drydock.locationChoice.v1-to-v2",
+      "fixtureId": "drydock-fixture-locationChoice-v1",
+      "sourceSchemaVersion": 1
+    },
+    {
       "authoredChecksum": "e6dda5cedbe3e283cf06500d1bb8979155d5df6d696848883a87f7701ca2e7c9",
       "blockType": "narrative",
       "expectedCurrentSchemaVersion": 2,
@@ -187,7 +235,7 @@
     }
   ],
   "fixtureSetId": "drydock-current-authoring-v1",
-  "frozenAt": "2026-08-09",
+  "frozenAt": "2026-09-30",
   "immutablePublishedSnapshotsRewritten": false,
   "schemaVersion": 1,
   "sourcePath": "tests/fixtures/drydock/current-authoring-v1.json"

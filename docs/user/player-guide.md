@@ -14,6 +14,8 @@ If the published Voyage includes Landfall, open **map** in the Journal tools to 
 
 If you are also the Captain, your Player view stays separate from your Captain controls. Your personal history and artifact eligibility follow your Player membership.
 
+When the Chronicle permits it, **Confirm arrival myself** sends the configured location-free fallback for server review. The chart distinguishes a local reading or queued evidence from a recorded visit. If the connection drops, keep the tab open; one pending evidence package can retry when the connection returns. The offline status describes which chart parts may remain available. Map tiles and private media are not guaranteed offline. After a Voyage completes, arrival replay is presentation only and does not request location or change progress.
+
 The Waiting Room shows safe crew invitation, readiness, and connection information. **Leave Waiting Room** returns to My Voyages. **Leave Voyage** ends only your membership after confirmation. If a Captain steps down, the Voyage can enter **Succession Hold** and show the choices available to you, such as taking Captaincy, continuing solo, or leaving.
 
 See [Chronicle Passport](chronicle-passport.md) to revisit your private history.

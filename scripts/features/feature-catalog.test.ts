@@ -32,7 +32,7 @@ describe("Feature Catalog", () => {
     expect(entries.find((item) => item.id === "FT-B009")?.program).toBe("Project Tideglass Phases 1-4");
     expect(entries.find((item) => item.id === "FT-036")?.program).toBe("Project Drydock Phase 3");
     expect(entries.find((item) => item.id === "FT-039")?.program).toBe("Project Bridgewatch v1.2 P2 - Flood the Board");
-    expect(entries.find((item) => item.id === "FT-044")?.program).toBe("Project Landfall Phase 1");
+    expect(entries.find((item) => item.id === "FT-044")?.program).toBe("Project Landfall Phases 1 and 2");
   });
 
   it("rejects duplicate and empty subfeatures", () => {

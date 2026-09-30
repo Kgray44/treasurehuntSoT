@@ -2,6 +2,287 @@
   "contracts": [
     {
       "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": { "body": "", "heading": "The living chart", "worldspaceId": "" },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "livingChart",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-livingChart-v1"],
+          "fromVersion": 1,
+          "id": "drydock.livingChart.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "livingChart",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "automatic" },
+      "defaultConfiguration": { "heading": "Find the waypoint", "prompt": "", "waypointId": "", "worldspaceId": "" },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "waypointJourney",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-waypointJourney-v1"],
+          "fromVersion": 1,
+          "id": "drydock.waypointJourney.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "waypointJourney",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "automatic" },
+      "defaultConfiguration": { "heading": "Follow the route", "prompt": "", "routeId": "", "worldspaceId": "" },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "routeJourney",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-routeJourney-v1"],
+          "fromVersion": 1,
+          "id": "drydock.routeJourney.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "routeJourney",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "body": "",
+        "heading": "A new mark appears",
+        "targetId": "",
+        "targetType": "WAYPOINT",
+        "worldspaceId": ""
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "locationReveal",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-locationReveal-v1"],
+          "fromVersion": 1,
+          "id": "drydock.locationReveal.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "locationReveal",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["DEFAULT"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["nextBlockId"],
+        "maximum": 1,
+        "minimum": 0,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": { "heading": "Look around", "prompt": "", "waypointId": "", "worldspaceId": "" },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "locationObservation",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-locationObservation-v1"],
+          "fromVersion": 1,
+          "id": "drydock.locationObservation.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "locationObservation",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
+      "assetRequirements": [],
+      "canonicalization": {
+        "arrayOrder": "PRESERVE",
+        "finiteNumbersOnly": true,
+        "objectKeys": "LEXICOGRAPHIC",
+        "prose": "PRESERVE_EXACTLY"
+      },
+      "compatibility": {
+        "duplicatedTargetFields": ["configuration.choices[].targetBlockId", "nextBlockId"],
+        "legacyCompletionField": "configuration.completionMode",
+        "legacyConfigurationVersion": 1
+      },
+      "connectionPolicy": {
+        "allowedTypes": ["CHOICE"],
+        "canonicalAuthority": "BLOCK_CONNECTION",
+        "legacyMirrors": ["configuration.choices[].targetBlockId", "nextBlockId"],
+        "maximum": 20,
+        "minimum": 2,
+        "terminal": false
+      },
+      "currentVersion": 2,
+      "defaultCompletion": { "mode": "playerConfirmation" },
+      "defaultConfiguration": {
+        "choices": [],
+        "prompt": "Choose your course",
+        "reversible": false,
+        "worldspaceId": ""
+      },
+      "defaultPresentation": {},
+      "migrations": [
+        {
+          "blockType": "locationChoice",
+          "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+          "dataLoss": "NONE",
+          "fixtureIds": ["drydock-fixture-locationChoice-v1"],
+          "fromVersion": 1,
+          "id": "drydock.locationChoice.v1-to-v2",
+          "idempotent": true,
+          "toVersion": 2,
+          "warnings": []
+        }
+      ],
+      "minimumReaderVersion": 1,
+      "providerContract": "CONFIGURED_COMPLETION",
+      "type": "locationChoice",
+      "variableReads": [],
+      "variableWrites": []
+    },
+    {
+      "accessibilityRules": [],
       "assetRequirements": [
         {
           "fieldPath": "configuration.backgroundAssetId",

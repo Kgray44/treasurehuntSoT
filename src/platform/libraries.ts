@@ -16,6 +16,7 @@ import {
   summarizeCrewPresence,
 } from "@/helm/operations";
 import { aggregateMembershipPresence } from "@/platform/membership-presence";
+import { projectLandfallJourney, type LandfallJourneyEvent } from "@/landfall/journey-projection";
 
 const pendingInvitationStates = ["CREATED", "SENT", "COPIED", "VIEWED"];
 const validMembershipStates = ["INVITED", "ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"];
@@ -677,7 +678,12 @@ export async function listCaptainLibrary(captainId: string | null, captainAccoun
   };
 }
 
-export function playerSafeAssetIds(snapshotRaw: string, eventBlockIds: Array<string | null>, inventoryRaw: string) {
+export function playerSafeAssetIds(
+  snapshotRaw: string,
+  eventBlockIds: Array<string | null>,
+  inventoryRaw: string,
+  landfallContext?: { events: readonly LandfallJourneyEvent[]; chapterId: string | null; blockId: string | null },
+) {
   const snapshot = parsePublishedSnapshot(snapshotRaw);
   const visited = new Set(eventBlockIds.filter(Boolean) as string[]);
   const values = new Set(parseJsonArray<string>(inventoryRaw));
@@ -685,6 +691,19 @@ export function playerSafeAssetIds(snapshotRaw: string, eventBlockIds: Array<str
     for (const block of chapter.blocks)
       if (visited.has(block.id)) stringValues(safeObject(block.configuration), values);
   if (snapshot.tale.coverAssetId) values.add(snapshot.tale.coverAssetId);
+  if (snapshot.landfall && landfallContext) {
+    const journey = projectLandfallJourney(snapshot.landfall, landfallContext.events, landfallContext);
+    const worldspace = snapshot.landfall.worldspaces.find((item) => item.id === journey.activeWorldspaceId);
+    const objective = snapshot.landfall.waypoints.find((item) => item.id === journey.activeWaypointId);
+    const map = snapshot.landfall.maps.find(
+      (item) =>
+        item.id === (objective?.mapId ?? worldspace?.defaultMapDefinitionId) && item.worldspaceId === worldspace?.id,
+    );
+    if (map && (map.source.type === "ASSET_IMAGE" || map.source.type === "ASSET_VECTOR"))
+      values.add(map.source.assetId);
+    for (const overlay of map?.overlays ?? [])
+      if (!overlay.hiddenUntilRevealed || journey.revealedOverlayIds.includes(overlay.id)) values.add(overlay.assetId);
+  }
   return values;
 }
 

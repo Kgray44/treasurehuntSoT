@@ -53,6 +53,29 @@ type Projection = {
       outgoingCount: number;
     }>;
   };
+  landfall: null | {
+    worldspaceId: string;
+    worldspaceName: string;
+    paused: boolean;
+    currentWaypointId: string | null;
+    routeName: string | null;
+    visitedCount: number;
+    permissionState: "UNKNOWN";
+    queuedOfflineState: "UNKNOWN";
+    lastCanonicalEventAt: string | null;
+    lastConfirmationConfidence: string | null;
+    lastConfirmationMethod: string | null;
+    waypoints: Array<{
+      id: string;
+      name: string;
+      available: boolean;
+      visited: boolean;
+      skipped: boolean;
+      hidden: boolean;
+      captainFallback: boolean;
+    }>;
+    routes: Array<{ id: string; name: string; hidden: boolean }>;
+  };
   attention: Array<{ key: string; severity: string; title: string; explanation: string; stale: boolean }>;
   crew: Array<{
     id: string;
@@ -95,6 +118,17 @@ type Preview = {
     passage: string | null;
   };
 };
+
+const landfallActionLabels = {
+  revealWaypoint: "Reveal waypoint",
+  revealRoute: "Reveal route",
+  selectWaypoint: "Set next waypoint",
+  selectRoute: "Set route",
+  skipWaypoint: "Skip waypoint",
+  confirmArrival: "Confirm arrival without sensor evidence",
+  pause: "Pause Landfall progress",
+  resume: "Resume Landfall progress",
+} as const;
 
 function words(value: string) {
   return value.replaceAll("_", " ").toLocaleLowerCase();
@@ -167,6 +201,17 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
   const [preview, setPreview] = useState<Preview | null>(null);
   const [busy, setBusy] = useState("");
   const [moveTarget, setMoveTarget] = useState("");
+  const [landfallAction, setLandfallAction] = useState<
+    | "revealWaypoint"
+    | "revealRoute"
+    | "selectWaypoint"
+    | "selectRoute"
+    | "skipWaypoint"
+    | "confirmArrival"
+    | "pause"
+    | "resume"
+  >("revealWaypoint");
+  const [landfallTarget, setLandfallTarget] = useState("");
   const idempotencyKeys = useRef<Record<string, string>>({});
 
   const load = useCallback(async () => {
@@ -292,6 +337,81 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
     }
   }
 
+  async function prepareLandfall() {
+    if (!projection?.landfall || busy) return;
+    const requiresTarget = landfallAction !== "pause" && landfallAction !== "resume";
+    if (requiresTarget && !landfallTarget) {
+      setError("Choose a Landfall waypoint or route before preparing this action.");
+      return;
+    }
+    const action = landfallAction;
+    const targetId = requiresTarget ? landfallTarget : undefined;
+    const label = landfallActionLabels[action];
+    const values = await requestAction({
+      eyebrow: "Landfall authority action",
+      title: `${label}?`,
+      detail: `Worldspace: ${projection.landfall.worldspaceName}. Target: ${
+        targetId
+          ? (projection.landfall.waypoints.find((item) => item.id === targetId)?.name ??
+            projection.landfall.routes.find((item) => item.id === targetId)?.name ??
+            targetId)
+          : "this Voyage"
+      }. Current canonical revision: ${projection.progress.currentSequence}. This action records a durable event and may change Player progress.`,
+      confirmLabel: label,
+      destructive: ["skipWaypoint", "confirmArrival"].includes(action),
+      fields: ["skipWaypoint", "confirmArrival"].includes(action)
+        ? [
+            {
+              id: "reason",
+              label: "Captain reason",
+              description: "Recorded with the canonical Landfall event.",
+              required: true,
+              multiline: true,
+              maxLength: 500,
+            },
+          ]
+        : undefined,
+    });
+    if (!values) return;
+    const keyId = `landfall:${action}:${targetId ?? ""}`;
+    const idempotencyKey = idempotencyKeys.current[keyId] ?? crypto.randomUUID();
+    idempotencyKeys.current[keyId] = idempotencyKey;
+    setBusy(keyId);
+    setError("");
+    try {
+      const response = await fetch(`/api/captain/voyages/${voyageId}/landfall`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": projection.csrfToken },
+        body: JSON.stringify({
+          action,
+          targetId,
+          reason: values.reason,
+          expectedSequence: projection.progress.currentSequence,
+          idempotencyKey,
+          confirmed: true,
+        }),
+      });
+      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      if (!response.ok) {
+        setError(
+          response.status === 409
+            ? "Voyage changed. Refresh before preparing another Landfall action."
+            : (body.error ?? "The Landfall command was not recorded."),
+        );
+        await load();
+        return;
+      }
+      delete idempotencyKeys.current[keyId];
+      setNotice(`${label} was recorded in the canonical Voyage.`);
+      setLandfallTarget("");
+      await load();
+    } catch {
+      setError("The Landfall response was lost. Retry the same action to reconcile its result.");
+    } finally {
+      setBusy("");
+    }
+  }
+
   if (!authenticated) return null;
   if (!projection)
     return (
@@ -311,6 +431,17 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
   const directCommands = projection.commandConsole.commands.filter((command) => command.target === "NONE");
   const moveCommand = projection.commandConsole.commands.find((command) => command.target === "PASSAGE");
   const moveTargets = projection.commandConsole.progressMap.filter((node) => node.state !== "CURRENT");
+  const landfallTargets = !projection.landfall
+    ? []
+    : ["revealRoute", "selectRoute"].includes(landfallAction)
+      ? projection.landfall.routes.filter((item) => (landfallAction === "revealRoute" ? item.hidden : !item.hidden))
+      : projection.landfall.waypoints.filter((item) =>
+          landfallAction === "revealWaypoint"
+            ? item.hidden
+            : landfallAction === "skipWaypoint" || landfallAction === "confirmArrival"
+              ? item.id === projection.landfall?.currentWaypointId && item.captainFallback
+              : item.available && !item.visited && !item.skipped,
+        );
   return (
     <main
       className="captain-command-console"
@@ -441,6 +572,78 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
             </p>
           ) : null}
         </section>
+        {projection.landfall && (
+          <section className="captain-command-console__commands" aria-labelledby="captain-landfall-heading">
+            <p className="card-kicker">Landfall · safe operational status</p>
+            <h2 id="captain-landfall-heading">{projection.landfall.worldspaceName}</h2>
+            <p>
+              Current waypoint:{" "}
+              {projection.landfall.waypoints.find((item) => item.id === projection.landfall?.currentWaypointId)?.name ??
+                "none released"}
+              . {projection.landfall.visitedCount} visited. Route: {projection.landfall.routeName ?? "none selected"}.{" "}
+              Progress {projection.landfall.paused ? "paused" : "active"}.
+            </p>
+            <p>
+              Live permission and offline queue state are unknown until a Player reports them. Exact Player coordinates
+              are unavailable here.
+            </p>
+            <p>
+              Last recorded arrival:{" "}
+              {projection.landfall.lastConfirmationMethod
+                ? `${words(projection.landfall.lastConfirmationMethod)} (${words(projection.landfall.lastConfirmationConfidence ?? "unknown confidence")})`
+                : "none"}
+              . This is canonical history, not a live position.
+            </p>
+            <p>
+              Last canonical Landfall event:{" "}
+              {projection.landfall.lastCanonicalEventAt
+                ? new Date(projection.landfall.lastCanonicalEventAt).toLocaleString()
+                : "none yet"}
+              .
+            </p>
+            <label>
+              Captain Landfall action
+              <select
+                value={landfallAction}
+                onChange={(event) => {
+                  setLandfallAction(event.target.value as typeof landfallAction);
+                  setLandfallTarget("");
+                }}
+              >
+                {(Object.keys(landfallActionLabels) as Array<keyof typeof landfallActionLabels>)
+                  .filter((item) => item !== (projection.landfall?.paused ? "pause" : "resume"))
+                  .map((item) => (
+                    <option key={item} value={item}>
+                      {landfallActionLabels[item]}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            {!(["pause", "resume"] as string[]).includes(landfallAction) && (
+              <label>
+                Target
+                <select value={landfallTarget} onChange={(event) => setLandfallTarget(event.target.value)}>
+                  <option value="">Choose target</option>
+                  {landfallTargets.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            <button
+              type="button"
+              className="button-secondary"
+              disabled={
+                Boolean(busy) || (!(["pause", "resume"] as string[]).includes(landfallAction) && !landfallTarget)
+              }
+              onClick={() => void prepareLandfall()}
+            >
+              Review Landfall action
+            </button>
+          </section>
+        )}
         <section className="captain-command-console__map" aria-labelledby="captain-map-heading">
           <p className="card-kicker">Operational map</p>
           <h2 id="captain-map-heading">Voyage progression</h2>

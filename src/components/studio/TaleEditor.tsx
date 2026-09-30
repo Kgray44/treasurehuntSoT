@@ -45,6 +45,7 @@ import { DrydockScenarioLab } from "@/components/studio/DrydockScenarioLab";
 import { DrydockLaunchGate } from "@/components/studio/DrydockLaunchGate";
 import { DrydockCompatibilityPanel } from "@/components/studio/DrydockCompatibilityPanel";
 import { ShipwrightPublishingReview } from "@/components/studio/ShipwrightPublishingReview";
+import { LandfallWorkspace } from "@/components/studio/LandfallWorkspace";
 import {
   TideglassStudioComparison,
   type TideglassStudioComparisonDto,
@@ -193,7 +194,7 @@ export function TaleEditor({
   authenticated,
 }: {
   taleId: string;
-  initialSection?: "story" | "settings" | "assets" | "locations" | "artifacts" | "versions" | "trials";
+  initialSection?: "story" | "settings" | "assets" | "locations" | "landfall" | "artifacts" | "versions" | "trials";
   authenticated: boolean;
 }) {
   const { requestAction, dialog } = useActionDialog();
@@ -341,7 +342,7 @@ export function TaleEditor({
       setError(body.error ?? "This Chronicle could not be opened. Reload the page and try again.");
       return;
     }
-    const nextDraft = { tale: body.tale, chapters: body.draft.chapters };
+    const nextDraft = { tale: body.tale, chapters: body.draft.chapters, landfall: body.draft.landfall ?? null };
     draftRevision.current = 0;
     autosaveVersionRef.current = body.draft.autosaveVersion;
     setData(body);
@@ -704,6 +705,7 @@ export function TaleEditor({
               autosaveVersion: autosaveVersionRef.current ?? data.draft.autosaveVersion,
               tale: state.tale,
               chapters: state.chapters,
+              landfall: state.landfall,
               reusableUsage,
             }),
           });
@@ -728,6 +730,7 @@ export function TaleEditor({
                   tale: state.tale,
                   draft: {
                     ...current.draft,
+                    landfall: state.landfall,
                     autosaveVersion: nextAutosaveVersion,
                     savedAt: body.savedAt ?? new Date().toISOString(),
                     validationState: "STALE",
@@ -1997,13 +2000,14 @@ export function TaleEditor({
     );
   }
 
-  const nav = ["story", "trials", "settings", "assets", "locations", "artifacts", "versions"] as const;
+  const nav = ["story", "trials", "settings", "assets", "locations", "landfall", "artifacts", "versions"] as const;
   const navLabels = {
     story: "Passages",
     trials: "Sea Trials",
     settings: "Chronicle",
     assets: "Assets",
     locations: "Waypoints",
+    landfall: "Living Chart",
     artifacts: "Artifacts",
     versions: "Versions",
   } as const;
@@ -2920,6 +2924,7 @@ export function TaleEditor({
                       assets={data.assets}
                       locations={data.locations}
                       artifacts={data.artifacts}
+                      landfall={draft?.landfall ?? null}
                       validation={validation}
                       onChange={updateSelected}
                       onTitleChange={(title) =>
@@ -3262,6 +3267,29 @@ export function TaleEditor({
             <DrydockCompatibilityPanel taleId={taleId} csrfToken={data.csrfToken} />
             <DrydockScenarioLab taleId={taleId} csrfToken={data.csrfToken} />
           </>
+        )}
+        {initialSection === "landfall" && (
+          <LandfallWorkspace
+            taleId={taleId}
+            draftId={data.draft.id}
+            sourceVersion={data.draft.autosaveVersion}
+            csrfToken={data.csrfToken}
+            unsaved={dirty}
+            chapterOptions={draft.chapters.map((chapter) => ({
+              id: chapter.id,
+              title: chapter.title,
+              blocks: chapter.blocks.map((block) => ({ id: block.id, title: block.title })),
+            }))}
+            definition={draft.landfall ?? null}
+            assets={data.assets}
+            locations={data.locations}
+            taleVisibility={draft.tale.visibility}
+            onChange={(landfall) =>
+              change((next) => {
+                next.landfall = landfall;
+              })
+            }
+          />
         )}
         {initialSection === "settings" && (
           <section className="editor-single-panel settings-panel">

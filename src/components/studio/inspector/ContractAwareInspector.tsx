@@ -4,6 +4,7 @@ import { useMemo, useState, type RefObject } from "react";
 import { readStayStoryMotion, storyMotionPresets } from "@/animation/presentation/story-motion";
 import type { DraftValidationResult, JsonObject, ValidationIssue } from "@/chronicle/types";
 import type { Asset, Block, Chapter, LibraryRecord, RegistryItem } from "@/components/studio/studio-types";
+import type { LandfallDefinition } from "@/landfall/schema";
 import { type DrydockVariableType, type DrydockVariableValue } from "@/drydock/variables";
 import {
   authoringModes,
@@ -62,6 +63,7 @@ type Props = {
   assets: Asset[];
   locations: LibraryRecord[];
   artifacts: LibraryRecord[];
+  landfall: LandfallDefinition | null;
   validation: DraftValidationResult | null;
   onChange: (mutator: (block: Block) => void) => void;
   onTitleChange: (title: string) => void;
@@ -412,6 +414,7 @@ function ContractField({
   assets,
   locations,
   artifacts,
+  landfall,
   mode,
   issues,
   onChange,
@@ -424,6 +427,7 @@ function ContractField({
   assets: Asset[];
   locations: LibraryRecord[];
   artifacts: LibraryRecord[];
+  landfall: LandfallDefinition | null;
   mode: AuthoringMode;
   issues: readonly ValidationIssue[];
   onChange: (value: unknown) => void;
@@ -454,6 +458,51 @@ function ContractField({
       {effectiveValueLabel(effective)}
     </small>
   );
+  if (
+    ["worldspaceId", "waypointId", "routeId", "targetId"].includes(field.key) &&
+    [
+      "livingChart",
+      "waypointJourney",
+      "routeJourney",
+      "locationReveal",
+      "locationObservation",
+      "locationChoice",
+    ].includes(block.blockType)
+  ) {
+    const worldspaceId = String(block.configuration.worldspaceId ?? "");
+    const choices =
+      field.key === "worldspaceId"
+        ? (landfall?.worldspaces.map((item) => ({ id: item.id, name: item.name })) ?? [])
+        : field.key === "routeId" || (field.key === "targetId" && block.configuration.targetType === "ROUTE")
+          ? (landfall?.routes
+              .filter((item) => item.worldspaceId === worldspaceId)
+              .map((item) => ({ id: item.id, name: item.name })) ?? [])
+          : field.key === "targetId" && block.configuration.targetType === "OVERLAY"
+            ? (landfall?.maps
+                .filter((item) => item.worldspaceId === worldspaceId)
+                .flatMap((item) =>
+                  (item.overlays ?? []).map((overlay) => ({ id: overlay.id, name: `${item.name} image overlay` })),
+                ) ?? [])
+            : (landfall?.waypoints
+                .filter((item) => item.worldspaceId === worldspaceId)
+                .map((item) => ({ id: item.id, name: item.name })) ?? []);
+    return (
+      <label className="contract-field" data-inspector-field={field.path}>
+        {label}
+        <select value={String(effective.effective ?? "")} onChange={(event) => update(event.target.value)}>
+          <option value="">Choose {field.label.toLowerCase()}</option>
+          {choices.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+        {!landfall && <small>Create a Worldspace in the Living Chart first.</small>}
+        {descriptor}
+        <InlineIssues issues={matchingIssues} mode={mode} />
+      </label>
+    );
+  }
 
   if (field.kind === "textarea")
     return (
@@ -647,12 +696,27 @@ function SafeStructuredControl({
   );
 }
 
-function setChoiceTargets(block: Block, choices: Array<{ id: string; label: string; targetBlockId: string }>) {
+function setChoiceTargets(
+  block: Block,
+  choices: Array<{
+    id: string;
+    label: string;
+    targetBlockId: string;
+    targetWaypointId?: string;
+    targetRouteId?: string;
+  }>,
+) {
   const currentChoices = Array.isArray(block.configuration.choices) ? block.configuration.choices : [];
   block.configuration.choices = choices.map((choice, index) => ({
     ...object(currentChoices[index]),
     id: choice.id,
     label: choice.label,
+    ...(block.blockType === "locationChoice"
+      ? {
+          targetWaypointId: choice.targetWaypointId,
+          targetRouteId: choice.targetRouteId,
+        }
+      : {}),
   }));
   applyCanonicalTargetSelection(
     block,
@@ -673,12 +737,14 @@ function ChoiceEditor({
   mode,
   issues,
   onChange,
+  landfall,
 }: {
   block: Block;
   candidates: Array<{ block: Block; chapter: Chapter }>;
   mode: AuthoringMode;
   issues: readonly ValidationIssue[];
   onChange: Props["onChange"];
+  landfall: LandfallDefinition | null;
 }) {
   const choices = Array.isArray(block.configuration.choices)
     ? block.configuration.choices.map((choice, index) => {
@@ -690,6 +756,8 @@ function ChoiceEditor({
           id: String(value.id ?? `choice-${index + 1}`),
           label: String(value.label ?? ""),
           targetBlockId: String(target ?? value.targetBlockId ?? ""),
+          targetWaypointId: typeof value.targetWaypointId === "string" ? value.targetWaypointId : undefined,
+          targetRouteId: typeof value.targetRouteId === "string" ? value.targetRouteId : undefined,
         };
       })
     : [];
@@ -729,6 +797,49 @@ function ChoiceEditor({
               update(choices.map((item, itemIndex) => (itemIndex === index ? { ...item, targetBlockId } : item)))
             }
           />
+          {block.blockType === "locationChoice" && (
+            <label className="contract-field">
+              <span>Landfall destination for choice {index + 1}</span>
+              <select
+                value={
+                  choice.targetWaypointId
+                    ? `waypoint:${choice.targetWaypointId}`
+                    : choice.targetRouteId
+                      ? `route:${choice.targetRouteId}`
+                      : ""
+                }
+                onChange={(event) =>
+                  update(
+                    choices.map((item, itemIndex) => {
+                      if (itemIndex !== index) return item;
+                      const [kind, targetId] = event.target.value.split(":");
+                      return {
+                        ...item,
+                        targetWaypointId: kind === "waypoint" ? targetId : undefined,
+                        targetRouteId: kind === "route" ? targetId : undefined,
+                      };
+                    }),
+                  )
+                }
+              >
+                <option value="">Choose a location or route</option>
+                {landfall?.waypoints
+                  .filter((item) => item.worldspaceId === block.configuration.worldspaceId)
+                  .map((item) => (
+                    <option key={item.id} value={`waypoint:${item.id}`}>
+                      Waypoint · {item.name}
+                    </option>
+                  ))}
+                {landfall?.routes
+                  .filter((item) => item.worldspaceId === block.configuration.worldspaceId)
+                  .map((item) => (
+                    <option key={item.id} value={`route:${item.id}`}>
+                      Route · {item.name}
+                    </option>
+                  ))}
+              </select>
+            </label>
+          )}
           <button
             type="button"
             onClick={() => update(choices.filter((_, itemIndex) => itemIndex !== index))}
@@ -740,13 +851,163 @@ function ChoiceEditor({
       ))}
       <button
         type="button"
-        onClick={() => update([...choices, { id: crypto.randomUUID(), label: "New path", targetBlockId: "" }])}
+        onClick={() =>
+          update([
+            ...choices,
+            {
+              id: crypto.randomUUID(),
+              label: "New path",
+              targetBlockId: "",
+              targetWaypointId: undefined,
+              targetRouteId: undefined,
+            },
+          ])
+        }
         disabled={choices.length >= 20}
       >
         Add choice
       </button>
       <InlineIssues issues={issuesForContractPath(block, "configuration.choices", issues)} mode={mode} />
     </div>
+  );
+}
+
+function LandfallCompletionControl({
+  block,
+  landfall,
+  onChange,
+}: {
+  block: Block;
+  landfall: LandfallDefinition | null;
+  onChange: Props["onChange"];
+}) {
+  if (["waypointJourney", "routeJourney"].includes(block.blockType))
+    return (
+      <p className="contract-tip">
+        This journey advances when its configured canonical waypoint or route is completed.
+      </p>
+    );
+  const active = block.completion.mode === "landfall";
+  const provider = object(block.completion.provider);
+  const options = object(provider.options);
+  const selectedWorldspace = String(options.worldspaceId ?? block.configuration.worldspaceId ?? "");
+  const available = landfall?.waypoints.filter((item) => item.worldspaceId === selectedWorldspace) ?? [];
+  const enable = () => {
+    const waypoint =
+      landfall?.waypoints.find((item) => item.id === block.configuration.waypointId) ?? landfall?.waypoints[0];
+    if (!waypoint) return;
+    onChange((current) => {
+      current.completion = {
+        mode: "landfall",
+        fallbackMode: "playerConfirmation",
+        provider: {
+          id: "landfall",
+          version: 1,
+          options: {
+            worldspaceId: waypoint.worldspaceId,
+            locationId: waypoint.id,
+            requiredOutcome: waypoint.completion.requiredOutcome,
+            allowCaptainOverride: waypoint.evidenceProfile.allowCaptainOverride,
+            allowPlayerFallback: waypoint.evidenceProfile.allowManualFallback,
+            replayPolicy: "PRESENTATION_ONLY",
+          },
+        },
+      };
+    });
+  };
+  const update = (patch: JsonObject) =>
+    onChange((current) => {
+      const currentProvider = object(current.completion.provider);
+      current.completion.provider = {
+        id: "landfall",
+        version: 1,
+        options: { ...object(currentProvider.options), ...patch },
+      };
+    });
+  if (!active || provider.id !== "landfall")
+    return (
+      <div className="contract-field">
+        <button type="button" onClick={enable} disabled={!landfall?.waypoints.length}>
+          {active ? "Configure Landfall arrival" : "Require a Landfall arrival"}
+        </button>
+        {!landfall?.waypoints.length && <small>Author a waypoint in the Living Chart first.</small>}
+      </div>
+    );
+  return (
+    <fieldset className="purpose-built-editor" data-inspector-field="completion.provider">
+      <legend>Landfall completion</legend>
+      <label className="contract-field">
+        <span>Worldspace</span>
+        <select
+          value={selectedWorldspace}
+          onChange={(event) => {
+            const waypoint = landfall?.waypoints.find((item) => item.worldspaceId === event.target.value);
+            update({ worldspaceId: event.target.value, locationId: waypoint?.id ?? "" });
+          }}
+        >
+          <option value="">Choose Worldspace</option>
+          {landfall?.worldspaces.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="contract-field">
+        <span>Waypoint or region</span>
+        <select
+          value={String(options.locationId ?? "")}
+          onChange={(event) => update({ locationId: event.target.value })}
+        >
+          <option value="">Choose waypoint</option>
+          {available.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="contract-field">
+        <span>Required outcome</span>
+        <select
+          value={String(options.requiredOutcome ?? "CONFIRMED")}
+          onChange={(event) => update({ requiredOutcome: event.target.value })}
+        >
+          <option value="NEARBY">Nearby</option>
+          <option value="LIKELY_INSIDE">Likely inside</option>
+          <option value="CONFIRMED">Confirmed</option>
+        </select>
+      </label>
+      <label className="contract-field">
+        <span>Minimum dwell, seconds</span>
+        <input
+          type="number"
+          min="0"
+          max="3600"
+          value={typeof options.dwellSeconds === "number" ? options.dwellSeconds : 0}
+          onChange={(event) => update({ dwellSeconds: Number(event.target.value) })}
+        />
+      </label>
+      <label className="contract-field contract-toggle">
+        <input
+          type="checkbox"
+          checked={Boolean(options.allowPlayerFallback)}
+          onChange={(event) => update({ allowPlayerFallback: event.target.checked })}
+        />{" "}
+        Player confirmation fallback
+      </label>
+      <label className="contract-field contract-toggle">
+        <input
+          type="checkbox"
+          checked={Boolean(options.allowCaptainOverride)}
+          onChange={(event) => update({ allowCaptainOverride: event.target.checked })}
+        />{" "}
+        Captain override
+      </label>
+      <p className="contract-tip">
+        Location samples remain private. Published history records only the qualified outcome and method.
+      </p>
+    </fieldset>
   );
 }
 
@@ -1631,6 +1892,7 @@ export function ContractAwareInspector({
   assets,
   locations,
   artifacts,
+  landfall,
   validation,
   onChange,
   onTitleChange,
@@ -1665,7 +1927,7 @@ export function ContractAwareInspector({
       .filter(
         (field) =>
           !(
-            (block.blockType === "choice" && field.key === "choices") ||
+            (["choice", "locationChoice"].includes(block.blockType) && field.key === "choices") ||
             (block.blockType === "condition" &&
               ["variable", "operator", "value", "successTargetBlockId", "failureTargetBlockId"].includes(field.key)) ||
             (block.blockType === "setVariable" &&
@@ -1682,6 +1944,7 @@ export function ContractAwareInspector({
           assets={assets}
           locations={locations}
           artifacts={artifacts}
+          landfall={landfall}
           mode={mode}
           issues={allIssues}
           contract={contract}
@@ -1689,8 +1952,17 @@ export function ContractAwareInspector({
           defaultCompletion={registry?.defaultCompletion}
           onChange={(value) =>
             onChange((current) => {
-              if (field.path === "completion.mode") current.completion.mode = value;
-              else current.configuration[field.key] = value;
+              if (field.path === "completion.mode") {
+                current.completion.mode = value;
+                if (value !== "landfall") delete current.completion.provider;
+              } else {
+                current.configuration[field.key] = value;
+                if (field.key === "worldspaceId") {
+                  delete current.configuration.waypointId;
+                  delete current.configuration.routeId;
+                  delete current.configuration.targetId;
+                }
+              }
             })
           }
         />
@@ -1729,8 +2001,15 @@ export function ContractAwareInspector({
         issues={blockIssues.filter((issue) => sectionForFieldPath(issue.field) === "CONTENT")}
         initialOpen={focusedSection === "CONTENT" || true}
       >
-        {block.blockType === "choice" ? (
-          <ChoiceEditor block={block} candidates={candidates} mode={mode} issues={allIssues} onChange={onChange} />
+        {["choice", "locationChoice"].includes(block.blockType) ? (
+          <ChoiceEditor
+            block={block}
+            candidates={candidates}
+            mode={mode}
+            issues={allIssues}
+            onChange={onChange}
+            landfall={landfall}
+          />
         ) : null}
         {block.blockType === "narrative" ? <NarrativeEditor block={block} mode={mode} /> : null}
         {block.blockType === "artifactReveal" ? <ArtifactRevealEditor block={block} mode={mode} /> : null}
@@ -1788,6 +2067,7 @@ export function ContractAwareInspector({
         initialOpen={focusedSection === "COMPLETION"}
       >
         {renderFields("COMPLETION")}
+        <LandfallCompletionControl block={block} landfall={landfall} onChange={onChange} />
         <p className="contract-summary">
           Provider: {contract?.providerContract ?? "Not required"}. Connections:{" "}
           {contract?.connectionPolicy.terminal

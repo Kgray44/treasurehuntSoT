@@ -164,7 +164,7 @@ else if (command === "versions")
 else if (command === "validate-registry") {
   const contracts = serializeDrydockBlockContractRegistry();
   const identities = contracts.map((contract) => `${contract.type}:${contract.currentVersion}`);
-  const valid = contracts.length === 23 && new Set(identities).size === identities.length;
+  const valid = contracts.length === 29 && new Set(identities).size === identities.length;
   print({ schemaVersion: 1, valid, contractCount: contracts.length, identities });
   if (!valid) process.exitCode = 1;
 } else if (command === "verify-migrations") {

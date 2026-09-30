@@ -3,7 +3,7 @@ title: Captain guide
 audience: captain
 status: current
 canonical_for: captain-guide
-last_reviewed: 2026-09-21
+last_reviewed: 2026-09-30
 ---
 
 # Captain guide
@@ -21,6 +21,8 @@ Use **Open Muster Room** to review the Chronicle, crew invitations, readiness, a
 ## Guide the Voyage
 
 The Captain's Console shows the current Voyage and the actions available to you. Review an action's effect before confirming it. Captain controls do not reveal Player-private information, Creator notes, drafts, hidden answers, or private account details.
+
+For a Landfall Voyage, the Console shows safe Worldspace, location, route, and last-arrival status. You can review and confirm a permitted reveal, route or location selection, skip, arrival confirmation, pause, or resume. Give a reason for the canonical event. These controls do not expose a Player's exact physical position.
 
 ## Change Captains safely
 

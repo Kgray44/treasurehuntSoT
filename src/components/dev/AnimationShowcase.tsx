@@ -41,6 +41,9 @@ export type ShowcaseDemo = {
 
 export const showcaseDemos: ShowcaseDemo[] = [
   { id: "arrival", label: "First arrival", scene: "first-arrival", libraries: ["gsap", "lottie", "rive", "motion"] },
+  { id: "landfall-arrival", label: "Landfall arrival", scene: "landfall-arrival", libraries: ["gsap", "motion"] },
+  { id: "landfall-route", label: "Landfall route", scene: "landfall-route", libraries: ["gsap", "motion"] },
+  { id: "landfall-reveal", label: "Landfall reveal", scene: "landfall-reveal", libraries: ["gsap", "motion"] },
   { id: "reentry", label: "Same-session reentry", scene: "session-reentry", libraries: ["gsap", "motion"] },
   {
     id: "access-listening",

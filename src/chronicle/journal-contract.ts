@@ -111,12 +111,17 @@ export function sanitizePlayerObject(value: JsonObject): JsonObject {
 export function journalKindForBlock(blockType: string): ChronicleJournalContentKind | null {
   if (["narrative", "information", "image"].includes(blockType)) return "story";
   if (["riddle", "textAnswer"].includes(blockType)) return "riddle";
-  if (["travelDirection", "location"].includes(blockType)) return "map";
+  if (
+    ["travelDirection", "location", "livingChart", "waypointJourney", "routeJourney", "locationReveal"].includes(
+      blockType,
+    )
+  )
+    return "map";
   if (["imageTransformation", "hiddenMessageReveal", "artifactReveal", "collectionUpdate"].includes(blockType))
     return "artifact";
-  if (blockType === "choice") return "decision";
+  if (["choice", "locationChoice"].includes(blockType)) return "decision";
   if (["confirmation", "wait"].includes(blockType)) return "objective";
-  if (["arrivalCheck", "captainApproval"].includes(blockType)) return "locationVerification";
+  if (["arrivalCheck", "captainApproval", "locationObservation"].includes(blockType)) return "locationVerification";
   if (blockType === "captainsNote") return "message";
   if (["cinematic", "audio"].includes(blockType)) return "cinematic";
   if (["chapterComplete", "taleComplete"].includes(blockType)) return "chapterComplete";

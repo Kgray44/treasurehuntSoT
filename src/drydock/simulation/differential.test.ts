@@ -40,9 +40,15 @@ function sourceFor(blockType: string): PublishedTaleSnapshot {
     connections:
       blockType === "taleComplete"
         ? []
-        : [{ targetBlockId: "finish", connectionType: blockType === "choice" ? "CHOICE" : "DEFAULT", orderIndex: 0 }],
+        : [
+            {
+              targetBlockId: "finish",
+              connectionType: ["choice", "locationChoice"].includes(blockType) ? "CHOICE" : "DEFAULT",
+              orderIndex: 0,
+            },
+          ],
   };
-  if (blockType === "choice") {
+  if (["choice", "locationChoice"].includes(blockType)) {
     block.configuration.choices = [{ id: "choice", label: "Finish", targetBlockId: "finish" }];
     block.connections = [{ targetBlockId: "finish", connectionType: "CHOICE", orderIndex: 0 }];
   }
@@ -89,7 +95,8 @@ function sourceFor(blockType: string): PublishedTaleSnapshot {
 }
 
 function inputFor(blockType: string): DrydockScenarioInput {
-  if (blockType === "choice") return { kind: "CHOICE", targetBlockId: "finish" };
+  if (["choice", "locationChoice"].includes(blockType)) return { kind: "CHOICE", targetBlockId: "finish" };
+  if (["waypointJourney", "routeJourney"].includes(blockType)) return { kind: "PROVIDER", outcome: "MATCH" };
   if (["riddle", "textAnswer"].includes(blockType)) return { kind: "TEXT_ANSWER", outcome: "MATCH" };
   if (["arrivalCheck", "captainApproval"].includes(blockType)) return { kind: "CAPTAIN", outcome: "APPROVE" };
   if (blockType === "wait") return { kind: "ADVANCE_TIME", milliseconds: 5_000 };
@@ -125,7 +132,7 @@ function scenarioFor(snapshot: PublishedTaleSnapshot, blockType: string): Drydoc
 
 describe("Drydock One Voyage transition differential", () => {
   it("uses the canonical production planner for every current Passage type", () => {
-    expect(blockTypeIds).toHaveLength(23);
+    expect(blockTypeIds).toHaveLength(29);
     for (const blockType of blockTypeIds) {
       const snapshot = sourceFor(blockType);
       const scenario = scenarioFor(snapshot, blockType);

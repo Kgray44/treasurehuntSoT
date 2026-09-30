@@ -200,11 +200,38 @@ const mapSchema = z.strictObject({
   renderer: z.enum(["MAPLIBRE_STYLE", "IMAGE_2D", "VECTOR_2D"]),
   source: z.discriminatedUnion("type", [
     z.strictObject({ type: z.literal("BUILTIN_VECTOR"), providerId: landfallId, styleId: landfallId }),
+    z.strictObject({ type: z.literal("BUILTIN_RASTER"), providerId: landfallId, styleId: landfallId }),
     z.strictObject({ type: z.literal("ASSET_IMAGE"), assetId: landfallId }),
     z.strictObject({ type: z.literal("ASSET_VECTOR"), assetId: landfallId }),
+    z.strictObject({ type: z.literal("AUTHORED_VECTOR") }),
   ]),
   transform: affine.optional(),
   attribution: z.array(z.strictObject({ label: text, url: z.url().regex(/^https:\/\//) })).max(8),
+  overlays: z
+    .array(
+      z.strictObject({
+        id: landfallId,
+        assetId: landfallId,
+        bounds: z
+          .strictObject({
+            west: finite.min(-180).max(180),
+            south: finite.min(-90).max(90),
+            east: finite.min(-180).max(180),
+            north: finite.min(-90).max(90),
+          })
+          .refine(
+            (value) => value.west < value.east && value.south < value.north,
+            "Overlay bounds must have positive area.",
+          ),
+        opacity: finite.min(0).max(1),
+        hiddenUntilRevealed: z.boolean().optional(),
+        attributionLabel: text,
+        attributionUrl: z.url().regex(/^https:\/\//),
+        privacyClassification: privacyClassSchema,
+      }),
+    )
+    .max(8)
+    .optional(),
   camera: z.strictObject({
     center: coordinateSchema,
     zoom: finite.min(0).max(24),
@@ -235,6 +262,17 @@ const waypointSchema = z.strictObject({
   worldspaceId: landfallId,
   mapId: landfallId,
   name: text,
+  description: z.string().max(1000).optional(),
+  icon: z.enum(["PIN", "FLAG", "STAR", "COMPASS", "DOOR", "CLUE"]).optional(),
+  guidance: z
+    .strictObject({
+      clue: z.string().max(500).optional(),
+      nearbyClue: z.string().max(500).optional(),
+      wrongDirectionClue: z.string().max(500).optional(),
+      showDistance: z.boolean(),
+      showBearing: z.boolean(),
+    })
+    .optional(),
   type: z.enum([
     "ARRIVAL_POINT",
     "SEARCH_REGION",
@@ -289,6 +327,13 @@ const routeSchema = z.strictObject({
   geometry: geometrySchema.optional(),
   travelMode: z.enum(["WALKING", "CYCLING", "VEHICLE", "BOAT", "INDOOR", "MIXED", "UNSPECIFIED"]),
   offRouteTolerance: nonnegative.max(10_000),
+  presentation: z
+    .strictObject({
+      visibility: z.enum(["FULL", "NEXT_SEGMENT", "ROUGH_BEARING", "HIDDEN"]),
+      revealOnSelection: z.boolean(),
+      deviationResponse: z.enum(["GUIDANCE", "WARNING", "CAPTAIN_REVIEW", "NONE"]),
+    })
+    .optional(),
   privacyClassification: privacyClassSchema,
 });
 export type LandfallRoute = z.infer<typeof routeSchema>;
@@ -420,10 +465,24 @@ export const landfallDefinitionSchema = z
         issue(["maps", i, "renderer"], "Image source requires image renderer.");
       if (map.source.type === "ASSET_VECTOR" && map.renderer !== "VECTOR_2D")
         issue(["maps", i, "renderer"], "Vector asset requires vector renderer.");
+      if (map.source.type === "AUTHORED_VECTOR" && (map.renderer !== "VECTOR_2D" || worldspace?.kind !== "VIRTUAL"))
+        issue(["maps", i, "renderer"], "Authored vector maps require a virtual vector renderer.");
       if (map.source.type === "BUILTIN_VECTOR" && map.renderer !== "MAPLIBRE_STYLE")
         issue(["maps", i, "renderer"], "Built-in vector source requires MapLibre renderer.");
+      if (
+        map.source.type === "BUILTIN_RASTER" &&
+        (map.renderer !== "MAPLIBRE_STYLE" ||
+          worldspace?.kind !== "PHYSICAL" ||
+          map.source.providerId !== "osm-standard" ||
+          map.source.styleId !== "standard")
+      )
+        issue(["maps", i, "source"], "Built-in raster source requires the supported physical map provider.");
       if (worldspace?.kind === "VIRTUAL" && map.renderer === "MAPLIBRE_STYLE")
         issue(["maps", i, "renderer"], "Virtual Worldspace needs a virtual map renderer.");
+      if (map.overlays?.length && (worldspace?.kind !== "PHYSICAL" || map.renderer !== "MAPLIBRE_STYLE"))
+        issue(["maps", i, "overlays"], "Georeferenced image overlays need a physical MapLibre map.");
+      if (map.overlays && new Set(map.overlays.map((overlay) => overlay.id)).size !== map.overlays.length)
+        issue(["maps", i, "overlays"], "Overlay IDs must be unique.");
       if (
         worldspace?.coordinateReference.type === "NORMALIZED_IMAGE_2D" &&
         map.source.type === "ASSET_IMAGE" &&

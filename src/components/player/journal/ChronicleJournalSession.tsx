@@ -971,7 +971,9 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
   const openingActive = !journalReady;
   const currentBlock = findCurrentBlock(state.journal);
   const choices =
-    currentBlock?.blockType === "choice" && Array.isArray(currentBlock.configuration.choices)
+    currentBlock &&
+    ["choice", "locationChoice"].includes(currentBlock.blockType) &&
+    Array.isArray(currentBlock.configuration.choices)
       ? (currentBlock.configuration.choices as Array<Record<string, unknown>>)
       : [];
   const waitRemaining = Math.max(0, Date.parse(state.pendingVerification?.expiresAt ?? "") - now);
@@ -1235,13 +1237,17 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
         <h2>{drawerTitle(reading.openDrawer)}</h2>
         {identitySession &&
           reading.openDrawer === "map" &&
-          state?.session.status === "ACTIVE" &&
-          connection === "live" && (
+          (state?.session.status === "ACTIVE" || state?.session.status === "COMPLETED") && (
             <LandfallJournalChart
               key={`${state.session.versionId}:${state.session.currentSequence}`}
               sessionId={sessionId}
               publishedVersionId={state.session.versionId}
               mode={mode}
+              historical={state.session.status === "COMPLETED"}
+              csrfToken={state.csrfToken ?? ""}
+              onProgress={() => {
+                void load();
+              }}
             />
           )}
         {contextBlocks

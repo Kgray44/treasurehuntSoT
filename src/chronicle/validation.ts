@@ -5,6 +5,8 @@ import type { DraftValidationResult, ValidationIssue } from "@/chronicle/types";
 import { drydockDraftInputFromStudio, validateDrydockDraftContracts } from "@/drydock/incremental";
 import { createDrydockValidationReport } from "@/drydock/reports";
 import { publishedSourceIdentity, snapshotFromStudio } from "@/chronicle/snapshot";
+import { landfallAuthoringFindings } from "@/landfall/authoring";
+import { validateLandfallBlockContracts } from "@/landfall/block-validation";
 
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
 
@@ -38,6 +40,31 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
   const allBlocks = studio.draft.chapters.flatMap((chapter) =>
     chapter.blocks.map((block) => ({ ...block, chapterId: chapter.id })),
   );
+  if (studio.draft.landfall) {
+    for (const finding of landfallAuthoringFindings(studio.draft.landfall, studio.tale.visibility)) {
+      const report = finding.severity === "blocker" ? error : warn;
+      report({ code: finding.code, message: finding.message, field: "landfall" });
+    }
+    for (const map of studio.draft.landfall.maps) {
+      const assetId =
+        map.source.type === "ASSET_IMAGE" || map.source.type === "ASSET_VECTOR" ? map.source.assetId : null;
+      if (assetId && !studio.assets.some((asset) => asset.id === assetId))
+        error({
+          code: "LANDFALL_MAP_ASSET_MISSING",
+          message: `${map.name} uses an unavailable map asset.`,
+          field: "landfall",
+        });
+      for (const overlay of map.overlays ?? [])
+        if (!studio.assets.some((asset) => asset.id === overlay.assetId && asset.mimeType.startsWith("image/")))
+          error({
+            code: "LANDFALL_OVERLAY_ASSET_MISSING",
+            message: `${map.name} uses an unavailable image overlay.`,
+            field: "landfall",
+          });
+    }
+  }
+  for (const finding of validateLandfallBlockContracts(studio.draft.landfall, allBlocks))
+    error({ code: finding.code, message: finding.message, blockId: finding.blockId, field: "landfall" });
   const blockIds = new Set(allBlocks.map((block) => block.id));
   const outgoing = new Map<string, string[]>();
   const referencedAssetIds = new Set<string>();
@@ -205,7 +232,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
           chapterId: chapter.id,
           blockId: block.id,
         });
-      if (block.blockType === "choice") {
+      if (["choice", "locationChoice"].includes(block.blockType)) {
         const choices = block.configuration.choices;
         if (!Array.isArray(choices) || choices.length < 2)
           error({

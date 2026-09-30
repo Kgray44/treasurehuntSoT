@@ -109,7 +109,7 @@ export function planCanonicalCompletion(
     intents.push({ eventType: "artifactGranted", blockId: block.id });
   }
   variables = mutateVariables(block, variables);
-  if (block.blockType === "choice" && input.selectedTargetId)
+  if (["choice", "locationChoice"].includes(block.blockType) && input.selectedTargetId)
     variables = { ...variables, [`choice:${block.id}`]: input.selectedTargetId };
   intents.push({ eventType: "blockCompleted", blockId: block.id });
 

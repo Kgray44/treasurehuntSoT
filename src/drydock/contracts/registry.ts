@@ -108,7 +108,7 @@ function connectionPolicy(type: DrydockBlockType): DrydockConnectionPolicy {
       terminal: true,
       legacyMirrors: ["nextBlockId"],
     };
-  if (type === "choice")
+  if (type === "choice" || type === "locationChoice")
     return {
       canonicalAuthority: "BLOCK_CONNECTION",
       allowedTypes: ["CHOICE"],

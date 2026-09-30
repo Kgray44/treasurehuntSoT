@@ -19,6 +19,7 @@ import type {
   SceneVisibilityRule,
 } from "../core/animation-types";
 import { firstArrivalScene, sessionReentryScene } from "../scenes/arrival.scene";
+import { landfallArrivalScene, landfallRevealScene, landfallRouteScene } from "../scenes/landfall.scene";
 import { playerAccessScene, quartermasterLoginScene, studioPublishScene } from "../scenes/access.scene";
 import { markSolvedScene, pauseScene, prepareChapterScene, resumeScene, undoScene } from "../scenes/command.scene";
 import { communityHarborScenes, governedCommunitySceneNames } from "../scenes/community.scene";
@@ -437,6 +438,33 @@ const coreSceneReachabilityEvidence: Readonly<
     caller: playerEventCaller('MAP_ROUTE_REVEALED: "route-draw"'),
     additionalCallers: quartermasterProductionCaller('REVEAL_ROUTE: "route-draw"'),
   },
+  "landfall-arrival": {
+    reachability: "production",
+    caller: {
+      sourcePath: "src/components/player/journal/LandfallPresentation.tsx",
+      callerSymbol: "function LandfallPresentationContent",
+      sceneBinding: "presentation.sceneName",
+      invocation: "director.play(presentation.sceneName,",
+    },
+  },
+  "landfall-route": {
+    reachability: "production",
+    caller: {
+      sourcePath: "src/components/player/journal/LandfallPresentation.tsx",
+      callerSymbol: "function LandfallPresentationContent",
+      sceneBinding: "presentation.sceneName",
+      invocation: "director.play(presentation.sceneName,",
+    },
+  },
+  "landfall-reveal": {
+    reachability: "production",
+    caller: {
+      sourcePath: "src/components/player/journal/LandfallPresentation.tsx",
+      callerSymbol: "function LandfallPresentationContent",
+      sceneBinding: "presentation.sceneName",
+      invocation: "director.play(presentation.sceneName,",
+    },
+  },
   "marker-stamp": {
     reachability: "future-contract",
     disposition: "Registered map subscene contract only; no current production caller.",
@@ -818,6 +846,54 @@ const coreSceneContracts = {
     finalStatePolicy: v2Reconcile("route-readable", "global-route-path"),
     reducedFallback: "semantic-final-state",
   }),
+  "landfall-arrival": v2Contract("landfall-arrival", {
+    reachability: "production",
+    expectedHostKinds: ["player-section-enhancement"],
+    targets: [v2Required("landfall-status", ["transform", "opacity"])],
+    timeoutMs: 3_000,
+    playbackPolicy: playback("automatic", {
+      replayable: true,
+      allowUserSkip: true,
+      userSkipFinalState: "landfall-status-readable",
+      allowedFallback: "static-landfall-status",
+      priority: 60,
+    }),
+    acknowledgmentPolicy: callerAcknowledgment(),
+    finalStatePolicy: v2StaticFallback("landfall-status-readable", "static-landfall-status"),
+    reducedFallback: "semantic-final-state",
+  }),
+  "landfall-route": v2Contract("landfall-route", {
+    reachability: "production",
+    expectedHostKinds: ["player-section-enhancement"],
+    targets: [v2Required("landfall-status", ["transform", "opacity"])],
+    timeoutMs: 3_000,
+    playbackPolicy: playback("automatic", {
+      replayable: true,
+      allowUserSkip: true,
+      userSkipFinalState: "landfall-status-readable",
+      allowedFallback: "static-landfall-status",
+      priority: 60,
+    }),
+    acknowledgmentPolicy: callerAcknowledgment(),
+    finalStatePolicy: v2StaticFallback("landfall-status-readable", "static-landfall-status"),
+    reducedFallback: "semantic-final-state",
+  }),
+  "landfall-reveal": v2Contract("landfall-reveal", {
+    reachability: "production",
+    expectedHostKinds: ["player-section-enhancement"],
+    targets: [v2Required("landfall-status", ["transform", "opacity"])],
+    timeoutMs: 3_000,
+    playbackPolicy: playback("automatic", {
+      replayable: true,
+      allowUserSkip: true,
+      userSkipFinalState: "landfall-status-readable",
+      allowedFallback: "static-landfall-status",
+      priority: 60,
+    }),
+    acknowledgmentPolicy: callerAcknowledgment(),
+    finalStatePolicy: v2StaticFallback("landfall-status-readable", "static-landfall-status"),
+    reducedFallback: "semantic-final-state",
+  }),
   "marker-stamp": v2Contract("marker-stamp", {
     reachability: "future-contract",
     expectedHostKinds: ["player-section-enhancement"],
@@ -1180,6 +1256,9 @@ const definitions: AnySceneDefinition[] = [
   chapterReleaseScene,
   mapRevealScene,
   routeDrawScene,
+  landfallArrivalScene,
+  landfallRouteScene,
+  landfallRevealScene,
   markerStampScene,
   shipCourseScene,
   artifactAwardScene,

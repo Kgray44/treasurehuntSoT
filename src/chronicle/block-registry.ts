@@ -6,6 +6,7 @@ const completionOptions = [
   { value: "captainManual", label: "Captain approval" },
   { value: "automatic", label: "Continue automatically after presentation" },
   { value: "textAnswer", label: "Accepted text answer" },
+  { value: "landfall", label: "Landfall arrival" },
 ] as const;
 
 const text = (key: string, label: string, required = false, help?: string): InspectorField => ({
@@ -74,6 +75,145 @@ function define(input: Omit<BlockDefinition, "schemaVersion" | "validationSchema
 }
 
 export const blockRegistry = {
+  livingChart: define({
+    type: "livingChart",
+    displayName: "Living Chart",
+    category: "Directions and waypoints",
+    icon: "◈",
+    description: "A canonical chart embedded in the Voyage Journal.",
+    defaultTitle: "Living Chart",
+    defaultConfiguration: {
+      heading: "The living chart",
+      body: "",
+      worldspaceId: "",
+      completionMode: "playerConfirmation",
+    },
+    fields: [
+      text("heading", "Heading", true),
+      area("body", "Introduction"),
+      text("worldspaceId", "Worldspace ID", true),
+      completion(),
+    ],
+  }),
+  waypointJourney: define({
+    type: "waypointJourney",
+    displayName: "Waypoint Journey",
+    category: "Directions and waypoints",
+    icon: "⌖",
+    description: "A released objective anchored to one canonical waypoint.",
+    defaultTitle: "Waypoint Journey",
+    defaultConfiguration: {
+      heading: "Find the waypoint",
+      prompt: "",
+      worldspaceId: "",
+      waypointId: "",
+      completionMode: "automatic",
+    },
+    fields: [
+      text("heading", "Heading", true),
+      area("prompt", "Objective"),
+      text("worldspaceId", "Worldspace ID", true),
+      text("waypointId", "Waypoint ID", true),
+      completion(),
+    ],
+  }),
+  routeJourney: define({
+    type: "routeJourney",
+    displayName: "Route Journey",
+    category: "Directions and waypoints",
+    icon: "➶",
+    description: "Present a canonical route and its ordered locations.",
+    defaultTitle: "Route Journey",
+    defaultConfiguration: {
+      heading: "Follow the route",
+      prompt: "",
+      worldspaceId: "",
+      routeId: "",
+      completionMode: "automatic",
+    },
+    fields: [
+      text("heading", "Heading", true),
+      area("prompt", "Objective"),
+      text("worldspaceId", "Worldspace ID", true),
+      text("routeId", "Route ID", true),
+      completion(),
+    ],
+  }),
+  locationReveal: define({
+    type: "locationReveal",
+    displayName: "Location Reveal",
+    category: "Reveals",
+    icon: "✦",
+    description: "Reveal a governed waypoint or route on the Living Chart.",
+    defaultTitle: "Location Reveal",
+    defaultConfiguration: {
+      heading: "A new mark appears",
+      body: "",
+      worldspaceId: "",
+      targetType: "WAYPOINT",
+      targetId: "",
+      completionMode: "playerConfirmation",
+    },
+    fields: [
+      text("heading", "Heading", true),
+      area("body", "Reveal text"),
+      text("worldspaceId", "Worldspace ID", true),
+      {
+        key: "targetType",
+        label: "Reveal",
+        kind: "select",
+        options: [
+          { value: "WAYPOINT", label: "Waypoint" },
+          { value: "ROUTE", label: "Route" },
+          { value: "OVERLAY", label: "Map overlay" },
+        ],
+      },
+      text("targetId", "Target ID", true),
+      completion(),
+    ],
+  }),
+  locationObservation: define({
+    type: "locationObservation",
+    displayName: "Location Observation",
+    category: "Interactions",
+    icon: "◇",
+    description: "Ask the Player to observe and respond without claiming sensor identification.",
+    defaultTitle: "Location Observation",
+    defaultConfiguration: {
+      heading: "Look around",
+      prompt: "",
+      worldspaceId: "",
+      waypointId: "",
+      completionMode: "playerConfirmation",
+    },
+    fields: [
+      text("heading", "Heading", true),
+      area("prompt", "Observation prompt", true),
+      text("worldspaceId", "Worldspace ID", true),
+      text("waypointId", "Waypoint ID", true),
+      completion(),
+    ],
+  }),
+  locationChoice: define({
+    type: "locationChoice",
+    displayName: "Location Choice",
+    category: "Interactions",
+    icon: "⑂",
+    description: "Choose a governed destination or route in the existing Chronicle choice flow.",
+    defaultTitle: "Location Choice",
+    defaultConfiguration: {
+      prompt: "Choose your course",
+      worldspaceId: "",
+      choices: [],
+      reversible: false,
+      completionMode: "playerConfirmation",
+    },
+    fields: [
+      area("prompt", "Choice prompt", true),
+      text("worldspaceId", "Worldspace ID", true),
+      { key: "choices", label: "Destination choices", kind: "json", required: true },
+    ],
+  }),
   narrative: define({
     type: "narrative",
     displayName: "Narrative",
@@ -760,13 +900,15 @@ export function providerForBlock(
   configuration: JsonObject,
   completion: JsonObject = {},
 ): VerificationProviderType | null {
+  if (["waypointJourney", "routeJourney"].includes(type)) return null;
+  if (completion.mode === "landfall") return null;
   if (type === "captainApproval") return "captainManual";
   if (type === "textAnswer" || type === "riddle") return "textAnswer";
   if (type === "wait") return "timer";
   const configured = String(
     completion.mode ?? configuration.verificationProvider ?? configuration.completionMode ?? "playerConfirmation",
   );
-  if (configured === "automatic") return null;
+  if (configured === "automatic" || configured === "landfall") return null;
   if (
     [
       "captainManual",
