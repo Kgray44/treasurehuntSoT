@@ -138,7 +138,7 @@ async function seedVoyage(profileId: string, accountId: string, virtual: boolean
 
 async function installLocationProbe(page: Page) {
   await page.addInitScript(() => {
-    const locationProbe = { watches: 0, clears: 0 };
+    const locationProbe = { watches: 0, clears: 0, emit: null as PositionCallback | null };
     Object.defineProperty(window, "__landfallLocationProbe", { value: locationProbe });
     const geo = navigator.geolocation;
     const watch = geo.watchPosition.bind(geo);
@@ -146,6 +146,7 @@ async function installLocationProbe(page: Page) {
     Object.defineProperty(geo, "watchPosition", {
       value: (...args: Parameters<Geolocation["watchPosition"]>) => {
         locationProbe.watches += 1;
+        locationProbe.emit = args[0];
         return watch(...args);
       },
     });
@@ -172,6 +173,16 @@ async function openJournalMap(page: Page, sessionId: string) {
 
 async function accountContext(context: BrowserContext, token: string, baseURL: string) {
   await context.addCookies([{ name: "wayfarer_account", value: token, url: baseURL, sameSite: "Lax" }]);
+}
+
+async function emitFollowUpFix(page: Page, latitude: number, longitude: number, accuracy: number) {
+  await page.evaluate(({ latitude, longitude, accuracy }) => {
+    const probe = (window as unknown as { __landfallLocationProbe: { emit: PositionCallback | null } }).__landfallLocationProbe;
+    probe.emit?.({
+      coords: { latitude, longitude, accuracy, altitude: null, altitudeAccuracy: null, heading: null, speed: null },
+      timestamp: Date.now(),
+    } as GeolocationPosition);
+  }, { latitude, longitude, accuracy });
 }
 
 test.beforeAll(async ({ request }) => {
@@ -202,10 +213,12 @@ test("A: explicit foreground grant draws a qualified current position and stops 
   await expect(page.getByText(/Current position shown\. Location signal: .*Estimated accuracy: 8 meters/u)).toBeVisible({ timeout: 30_000 });
   expect(await page.evaluate(() => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches)).toBe(1);
   await page.waitForTimeout(300);
-  await context.setGeolocation({ latitude: 44.0001, longitude: -72.0001, accuracy: 12 });
+  // Chromium's live override update emits POSITION_UNAVAILABLE in this test environment.
+  // The first fix above is browser-native; follow-up fixes exercise the retained watch callback.
+  await emitFollowUpFix(page, 44.00001, -72.00001, 12);
   await expect(page.getByText(/Current position shown\. Location signal: .*Estimated accuracy: 12 meters/u)).toBeVisible();
   await page.waitForTimeout(300);
-  await context.setGeolocation({ latitude: 44.0001, longitude: -72.0001, accuracy: 1_000 });
+  await emitFollowUpFix(page, 44.00001, -72.00001, 1_000);
   await expect(page.getByText(/Location accuracy is too weak/u)).toBeVisible();
   await expect(page.getByText(/Current position shown/u)).toHaveCount(0);
   expect(await db.taleSessionEvent.count({ where: { sessionId: physicalSessionId } })).toBe(before);
