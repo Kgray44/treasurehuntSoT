@@ -199,8 +199,15 @@ test("A: explicit foreground grant draws a qualified current position and stops 
   expect(await page.evaluate(() => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches)).toBe(0);
   const before = await db.taleSessionEvent.count({ where: { sessionId: physicalSessionId } });
   await page.getByRole("button", { name: "Use my location" }).click();
-  await expect(page.getByText(/Current position shown\. Estimated accuracy/u)).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText(/Current position shown\. Location signal: .*Estimated accuracy: 8 meters/u)).toBeVisible({ timeout: 30_000 });
   expect(await page.evaluate(() => (window as unknown as { __landfallLocationProbe: { watches: number } }).__landfallLocationProbe.watches)).toBe(1);
+  await page.waitForTimeout(300);
+  await context.setGeolocation({ latitude: 44.0001, longitude: -72.0001, accuracy: 12 });
+  await expect(page.getByText(/Current position shown\. Location signal: .*Estimated accuracy: 12 meters/u)).toBeVisible();
+  await page.waitForTimeout(300);
+  await context.setGeolocation({ latitude: 44.0001, longitude: -72.0001, accuracy: 1_000 });
+  await expect(page.getByText(/Location accuracy is too weak/u)).toBeVisible();
+  await expect(page.getByText(/Current position shown/u)).toHaveCount(0);
   expect(await db.taleSessionEvent.count({ where: { sessionId: physicalSessionId } })).toBe(before);
   await page.getByRole("button", { name: "Stop using my location" }).click();
   await expect.poll(() => page.evaluate(() => (window as unknown as { __landfallLocationProbe: { clears: number } }).__landfallLocationProbe.clears)).toBeGreaterThan(0);
