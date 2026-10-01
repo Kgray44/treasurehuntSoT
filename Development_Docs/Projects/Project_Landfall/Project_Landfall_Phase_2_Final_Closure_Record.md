@@ -36,7 +36,7 @@ The [original validation record](Project_Landfall_Phase_2_Validation_Record.md) 
 - Production build: PASS, 148 static pages. Existing Node-in-Edge and dynamic NFT warnings are retained baseline warnings.
 - Combined task-owned production browser: **24/24 PASS** (15 closure, four Phase 1 compatibility, five retained Phase 2). Cleanup receipt: 30 ms, no infrastructure or product failure. All four Player viewports and scoped physical/virtual/Creator/Captain axe scans passed.
 - Focused Landfall/command/controller suite: 19 files, 117 tests PASS; the subsequent revocation case and existing Journal/auth lifecycle tests passed as well. The command/progression file contains 41 tests, including all eight Captain transaction branches.
-- Full unit qualification: final isolated single-fork run is in progress on frozen functional source. Exact totals are a required protected-completion evidence field.
+- Full unit qualification: **400 files / 2,262 tests PASS** on final functional source (`vitest run --pool forks --maxWorkers 1`, 461.59 seconds). Functional checkpoint: `de8b26f1211e789d25c88bab940811d25a4e5d80`; the subsequent local acceptance commit changes only this evidence record.
 - TypeScript, affected ESLint, formatting, Drydock validation, One Voyage architecture, documentation index/validation, Feature Catalog sync/validation, repository/build/staged private-content scans and whitespace review: PASS.
 - Earlier local qualification attempts are not completion proof: three existing Journal/auth regressions were corrected; a multi-thread full run's streaming RSS assertion failed because unrelated workers share the measured process, while its isolated focused retest passed. Browser fixture races were corrected without removing acceptance assertions.
 
