@@ -191,7 +191,6 @@ test("Creator uploads and aligns a floor, draws regions, configures natural refe
   });
   const field = workspace.getByRole("region", { name: "Creator field test" });
   await expect(field.getByRole("button", { name: "Start test walk" })).toBeEnabled();
-  await page.screenshot({ path: testInfo.outputPath("creator-authored-floor-and-references.png"), fullPage: true });
   expect((await geoAudit(page)).calls).toBe(0);
   await field.getByLabel("Allow optional foreground heading and motion hints for this test").check();
   await field.getByRole("button", { name: "Start test walk" }).click();
@@ -214,6 +213,7 @@ test("Creator uploads and aligns a floor, draws regions, configures natural refe
   expect(JSON.stringify(receipts[0])).not.toMatch(
     /latitude|longitude|acceleration|degrees|referenceAssetIds|rawTrail/u,
   );
+  await page.screenshot({ path: testInfo.outputPath("creator-authored-floor-and-references.png"), fullPage: true });
   await region.getByLabel("Region name", { exact: true }).fill("Synthetic renamed mezzanine");
   await region.getByLabel("Region name", { exact: true }).press("Tab");
   await expect(field.getByText(/stale after draft edits/u)).toBeVisible();

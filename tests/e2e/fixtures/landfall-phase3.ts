@@ -26,6 +26,14 @@ export async function phase3Voyage(
   const seed = await closureVoyage(owner, player, "waypointJourney", { captain: options.captain });
   const definition = compactSiteFixture(options.kind ?? "MUSEUM");
   definition.taleId = seed.taleId;
+  if (options.start && options.start !== "arrival") {
+    // Focused suffix scenarios publish only their remaining ordered route
+    // checkpoints. The full museum retains the complete route and must visit
+    // its earlier checkpoints through the production controls.
+    const startWaypoint = options.start === "landmark" ? "compact-landmark-target" : "compact-observation";
+    const route = definition.routes[0];
+    route.waypointIds = route.waypointIds.slice(route.waypointIds.indexOf(startWaypoint));
+  }
   const version = await db.publishedTaleVersion.findUniqueOrThrow({ where: { id: seed.versionId } });
   const snapshot = JSON.parse(version.contentSnapshot);
   for (const negative of [false, true]) {
@@ -239,7 +247,15 @@ export async function syntheticLandmarkCamera(context: BrowserContext) {
         const width = this.canvas.width / 2,
           height = this.canvas.height / 2;
         palette.forEach((colour, i) => {
-          this.fillStyle = palette[audit.negative ? 3 - i : i];
+          // Consecutive synthetic stills vary slightly in brightness, as a
+          // steady live view does. Duplicate decoded frames must not supply
+          // independent evidence to the protected multi-frame comparator.
+          const viewColour = palette[audit.negative ? 3 - i : i];
+          const brightness = audit.frames % 2 ? -2 : 2;
+          const channels = [1, 3, 5].map((offset) =>
+            Math.max(0, Math.min(255, Number.parseInt(viewColour.slice(offset, offset + 2), 16) + brightness)),
+          );
+          this.fillStyle = `rgb(${channels.join(",")})`;
           this.fillRect((i % 2) * width, Math.floor(i / 2) * height, width, height);
         });
         return;

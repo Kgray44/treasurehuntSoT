@@ -1,6 +1,6 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { landfallFixture } from "@/landfall/fixtures";
+import { landfallFixture, physicalObservation } from "@/landfall/fixtures";
 import type { LandfallDefinition } from "@/landfall/schema";
 import { LandfallFieldTestPanel } from "@/components/studio/LandfallFieldTestPanel";
 
@@ -70,6 +70,41 @@ afterEach(() => {
 });
 
 describe("Creator foreground context field controls", () => {
+  it("reports qualified elevation availability without displaying the absolute height", async () => {
+    const regional: LandfallDefinition = {
+      ...definition,
+      context: {
+        regions: [
+          {
+            id: "synthetic-region",
+            name: "Synthetic broad site",
+            kind: "SITE",
+            worldspaceId: "town",
+            mapId: "town-map",
+            geometry: landfallFixture.waypoints[0].geometry,
+            hiddenUntilRevealed: false,
+            privacyClassification: "APPROXIMATE_REAL_WORLD",
+          },
+        ],
+        landmarks: [],
+      },
+    };
+    render(<LandfallFieldTestPanel {...props} definition={regional} />);
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
+    fireEvent.click(screen.getByRole("button", { name: "Start test walk" }));
+    const [identity, emit] = mocks.locationStart.mock.calls[0];
+    act(() =>
+      emit({
+        ...physicalObservation("synthetic-height", new Date().toISOString()),
+        ...identity,
+        providerId: "browser-geolocation",
+        altitudeMeters: 345.6789,
+        altitudeAccuracyMeters: 4,
+      }),
+    );
+    expect(screen.getByText("not enabled; elevation available")).toBeInTheDocument();
+    expect(screen.queryByText(/345\.6789/u)).not.toBeInTheDocument();
+  });
   it("collects optional hints only after consent and clears lifecycle ownership when source changes", async () => {
     const view = render(<LandfallFieldTestPanel {...props} />);
     await waitFor(() => expect(fetch).toHaveBeenCalled());

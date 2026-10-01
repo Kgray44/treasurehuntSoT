@@ -401,7 +401,10 @@ export function LandfallFieldTestPanel({
             </div>
             <div>
               <dt>Optional sensors</dt>
-              <dd>{contextConsent ? contextPermission.toLowerCase() : "not enabled"}; elevation unavailable</dd>
+              <dd>
+                {contextConsent ? contextPermission.toLowerCase() : "not enabled"}; elevation{" "}
+                {contextSnapshot?.evidenceCategories.includes("ELEVATION") ? "available" : "unavailable"}
+              </dd>
             </div>
             <div>
               <dt>Context route</dt>

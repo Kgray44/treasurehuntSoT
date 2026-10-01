@@ -37,4 +37,10 @@ The exact-target publication validator now consults the actual shared completion
 
 ## Evidence boundary
 
+Frozen candidate `e07727bba8c668448f91cc010a104d596a13306f` failed local ordinary Sounding Line: 4/10 Phase 3 browser cases passed; Creator consent/reflow and four strengthened keyboard fallback cases failed. Static and unit obligations passed. The suffix viewport fixtures bypassed earlier guided-route stops; the server correctly rejected their fallback, so those fixtures now author a valid route suffix. Control hit-target assertions remain intact. Creator repairs remain subject to revised-head qualification. Hosted run [36827797237](https://github.com/Kgray44/treasurehuntSoT/actions/runs/36827797237) also failed; neither run is acceptance evidence.
+
+Decoder review added an explicit decoded raster-format allowlist, preventing vector content disguised by a raster data-URL prefix. Vision and compact server regression: 13/13 PASS, including the new malformed-format case.
+
+The final bounded trust review caught optional motion/course/elevation fields nested in otherwise accepted short-lived position delivery. Outbox parsing now strips those fields before encryption without mutating the input or extending expiry; the restored-encryption regression passes (13 store tests). Comparison now counts distinct decoded views and rejects a contradictory negative frame set; Vision/compact regression passes (14 tests). Synthetic camera captures supply distinct matching views rather than copied stills. The focused Creator production-browser repair passes 2/2 with real consent, sanitized receipt and all four 200%-text width/axe checks; an additional category-only elevation availability label has focused coverage.
+
 Fixtures are fictional; accounts, hardware input and runtime/database/browser resources are synthetic and owned. Authored-view comparison and canonical trust boundaries are tested here; museum field recognition across angles, light, crowds and devices is not established. Physical GPS quality, production providers/MySQL, live assistive technology, deployment and owner acceptance remain separate. Phase 4 is not implemented.

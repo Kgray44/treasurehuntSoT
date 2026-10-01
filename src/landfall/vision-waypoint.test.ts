@@ -17,6 +17,37 @@ async function image(invert = false, brightness = 0) {
     .toBuffer();
 }
 describe("bounded natural landmark reference comparison", () => {
+  it("does not count copied stills as several views or confirm a contradicted frame set", async () => {
+    const positive = await image(),
+      dim = await image(false, -4),
+      negative = await image(true);
+    expect(
+      await compareVisionWaypoint({
+        frames: [positive, positive],
+        references: [positive],
+        negatives: [],
+        minimumFrames: 2,
+      }),
+    ).toEqual({ result: "insufficient", frameCount: 1 });
+    expect(
+      (
+        await compareVisionWaypoint({
+          frames: [positive, dim, negative],
+          references: [positive],
+          negatives: [negative],
+          minimumFrames: 2,
+        })
+      ).result,
+    ).toBe("insufficient");
+  });
+  it("rejects vector input even when transported as a declared raster still", async () => {
+    const vector = Buffer.from(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="32" height="64" fill="black"/><rect x="32" width="32" height="64" fill="white"/></svg>',
+    );
+    await expect(
+      compareVisionWaypoint({ frames: [vector, vector], references: [await image()], negatives: [], minimumFrames: 2 }),
+    ).rejects.toThrow("LANDFALL_REFERENCE_INVALID");
+  });
   it("requires several clear frames and supports several authored positive views", async () => {
     const positive = await image(),
       dim = await image(false, -4),

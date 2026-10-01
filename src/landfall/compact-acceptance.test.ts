@@ -61,6 +61,7 @@ describe("museum and mixed compact site server acceptance", () => {
   it("verifies multiple reference frames only inside plausible authored regional context", async () => {
     const definition = compactSiteFixture();
     const image = await patternedImage();
+    const secondView = await sharp(image).linear(1, -2).png().toBuffer();
     definition.context!.landmarks[0].negativeReferenceAssetIds = [];
     const input = {
       definition,
@@ -68,7 +69,7 @@ describe("museum and mixed compact site server acceptance", () => {
         ...request,
         landmarkId: "compact-mural",
         observations: fixes,
-        frames: [0, 1].map(() => `data:image/png;base64,${image.toString("base64")}`),
+        frames: [image, secondView].map((view) => `data:image/png;base64,${view.toString("base64")}`),
       },
       playerProfileId: "player-1",
       events,

@@ -1,4 +1,5 @@
 import sharp from "sharp";
+import { createHash } from "node:crypto";
 import type { LandmarkResult } from "@/landfall/landmark-contract";
 
 type Descriptor = { pixels: Uint8Array; contrast: number };
@@ -10,7 +11,13 @@ async function descriptor(buffer: Buffer): Promise<Descriptor> {
   if (!buffer.length || buffer.length > 4 * 1024 * 1024) throw new Error("LANDFALL_REFERENCE_TOO_LARGE");
   const image = sharp(buffer, { limitInputPixels: 4_000_000, failOn: "error" });
   const metadata = await image.metadata();
-  if (!metadata.width || !metadata.height || (metadata.pages ?? 1) !== 1) throw new Error("LANDFALL_REFERENCE_INVALID");
+  if (
+    !metadata.width ||
+    !metadata.height ||
+    (metadata.pages ?? 1) !== 1 ||
+    !["png", "jpeg", "webp", "heif"].includes(metadata.format ?? "")
+  )
+    throw new Error("LANDFALL_REFERENCE_INVALID");
   const pixels = await image
     .rotate()
     .resize(24, 24, { fit: "fill" })
@@ -46,17 +53,27 @@ export async function compareVisionWaypoint(input: {
   const references = await Promise.all(input.references.map(descriptor));
   const negatives = await Promise.all(input.negatives.map(descriptor));
   let strong = 0,
-    possible = 0;
+    possible = 0,
+    contradicted = false;
+  const uniqueViews = new Set<string>();
   for (const frame of input.frames) {
     const view = await descriptor(frame);
+    const fingerprint = createHash("sha256").update(view.pixels).digest("hex");
+    if (uniqueViews.has(fingerprint)) continue;
+    uniqueViews.add(fingerprint);
     if (view.contrast < 18) continue;
     const best = Math.min(...references.filter((ref) => ref.contrast >= 18).map((ref) => difference(view, ref)));
     const negative = Math.min(...negatives.map((ref) => difference(view, ref)));
-    if (negative <= best + 8) continue;
+    if (negative <= best + 8) {
+      contradicted = true;
+      continue;
+    }
     if (best <= 8) strong++;
     else if (best <= 20) possible++;
   }
+  if (contradicted || uniqueViews.size < input.minimumFrames)
+    return { result: "insufficient", frameCount: uniqueViews.size };
   const result: LandmarkResult =
     strong >= input.minimumFrames ? "confirmed" : strong ? "likely" : possible ? "possible" : "insufficient";
-  return { result, frameCount: input.frames.length };
+  return { result, frameCount: uniqueViews.size };
 }

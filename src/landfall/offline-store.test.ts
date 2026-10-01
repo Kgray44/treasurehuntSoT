@@ -143,6 +143,31 @@ describe("durable session-bound Landfall offline store", () => {
       }),
     ).rejects.toThrow();
   });
+  it("restores accepted position delivery without persisting foreground hints or mutating the input", async () => {
+    const sample = physicalObservation("queued-evidence", new Date(clock).toISOString());
+    if (sample.kind !== "PHYSICAL_POSITION") throw new Error("physical fixture required");
+    const input = {
+      ...evidence,
+      method: "FOREGROUND_LOCATION" as const,
+      observations: [
+        { ...sample, headingDegrees: 90, speedMetersPerSecond: 2, altitudeMeters: 30, altitudeAccuracyMeters: 1 },
+      ],
+    };
+    const before = structuredClone(input);
+    await new LandfallOfflineRepository(storage, () => clock).enqueue(binding, input);
+    const durable = await storage.all();
+    expect(durable).toHaveLength(1);
+    expect(JSON.stringify(durable)).not.toMatch(
+      /latitude|longitude|headingDegrees|speedMetersPerSecond|altitudeMeters|altitudeAccuracyMeters/,
+    );
+    const restored = await new LandfallOfflineRepository(storage, () => clock).pending(binding);
+    expect(restored).toEqual({ ...evidence, method: "FOREGROUND_LOCATION", observations: [sample] });
+    expect(JSON.stringify(restored)).not.toMatch(
+      /headingDegrees|speedMetersPerSecond|altitudeMeters|altitudeAccuracyMeters/,
+    );
+    expect(input).toEqual(before);
+    expect(durable[0].expiresAt).toBe(clock + landfallOfflineLimits.outboxTtlMs);
+  });
   it("evicts the oldest Voyage deterministically and removes its outbox", async () => {
     const store = new LandfallOfflineRepository(storage, () => clock);
     for (let i = 0; i < 5; i++) {

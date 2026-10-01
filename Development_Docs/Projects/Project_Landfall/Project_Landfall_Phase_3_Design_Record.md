@@ -42,6 +42,8 @@ For a matching exact-target `locationObservation`, qualified likely-inside broad
 
 ## Privacy, offline and qualification
 
+Comparison rejects non-raster decoded formats, copied decoded views and contradictory negative frames. Several distinct clear views must agree. These are conservative appearance checks, not camera attestation. Optional course, speed and elevation fields are removed from the existing short-lived position outbox; they remain transient guidance even when bundled with an accepted position sample.
+
 Local snapshots, optional sensor hints and camera stills are transient. Canonical summaries and field receipts retain IDs/categories/outcomes rather than exact coordinates or frames. Landmark receipts and contextual streams are excluded from the offline outbox. Released floor assets share the accepted six-image/four-MiB encrypted cache; partial caching and online-only external tiles remain visible. Same-tab lease, authorization, edition, sequence and TTL requalification are preserved. Offline camera verification needs reconnect or fallback.
 
 Freshness loss, denial, backgrounding, sign-out, edition/source change and unmount release owned acquisition. Invalid/stale evidence, impossible jumps, floor/corridor ambiguity and reference mismatch yield understandable uncertainty. Mandatory visual/exact targets have readable accessible alternatives.

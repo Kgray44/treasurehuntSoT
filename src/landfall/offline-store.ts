@@ -190,6 +190,15 @@ export class LandfallOfflineRepository {
     if (input.method === "LANDMARK" || input.landmarkReceipt || input.contextualEvidence?.length)
       throw new Error("LANDFALL_CONTEXT_REQUIRES_FRESH_ONLINE_VERIFICATION");
     const evidence = playerLandfallEvidenceSchema.parse(input);
+    // Zod produces owned values. Only accepted position delivery survives offline;
+    // optional motion, course and elevation hints remain foreground-only.
+    for (const observation of evidence.observations ?? []) {
+      if (observation.kind !== "PHYSICAL_POSITION") continue;
+      delete observation.headingDegrees;
+      delete observation.speedMetersPerSecond;
+      delete observation.altitudeMeters;
+      delete observation.altitudeAccuracyMeters;
+    }
     if (evidence.sessionId !== binding.sessionId || evidence.publishedVersionId !== binding.versionId)
       throw new Error("LANDFALL_OFFLINE_IDENTITY_MISMATCH");
     const prior = await this.pending(binding);

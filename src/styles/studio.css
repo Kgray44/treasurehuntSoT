@@ -2959,6 +2959,9 @@ html[data-voyage-theme="light"]
 
 .landfall-workspace {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  width: 100%;
   gap: 1rem;
   padding: clamp(1rem, 2.5vw, 2rem);
   color: var(--text-primary, #edf3ec);
@@ -3125,6 +3128,8 @@ html[data-voyage-theme="light"]
   min-height: auto;
   width: 1.1rem;
   height: 1.1rem;
+  padding: 0;
+  flex: 0 0 auto;
 }
 .landfall-findings ul {
   display: grid;
