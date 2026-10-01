@@ -74,6 +74,7 @@ export function readWatchglassHandoff(
     Date.parse(receipt.observedAt) > now + 1000 ||
     now - Date.parse(receipt.observedAt) > 30_000 ||
     Date.parse(receipt.expiresAt) <= now ||
+    Date.parse(receipt.expiresAt) <= Date.parse(receipt.observedAt) ||
     Date.parse(receipt.expiresAt) > Date.parse(receipt.observedAt) + 30_000
   )
     throw new Error("LANDFALL_WATCHGLASS_STALE");

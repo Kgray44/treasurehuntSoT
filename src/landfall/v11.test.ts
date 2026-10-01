@@ -381,6 +381,23 @@ describe("conditional certified Watchglass handoff", () => {
     });
     expect(q).toMatchObject({ method: "WATCHGLASS", outcome: "CONFIRMED", worldspaceId: "town" });
   });
+  it("enforces the waypoint freshness limit against server time and rejects inverted validity", () => {
+    const d = definition();
+    d.waypoints[0].evidenceProfile.maximumAgeSeconds = 1;
+    expect(() =>
+      qualifyPlayerLandfallEvidence({
+        definition: d,
+        request: request(),
+        journey: projectLandfallJourney(d, []),
+        now: base + 3000,
+        playerProfileId: "player-1",
+        watchglassProvider: provider(receipt(d)),
+      }),
+    ).toThrow("LANDFALL_WATCHGLASS_STALE");
+    expect(() =>
+      readWatchglassHandoff(provider({ ...receipt(), expiresAt: at(1.5) }), "opaque", target(), "VIRTUAL", base + 1000),
+    ).toThrow("LANDFALL_WATCHGLASS_STALE");
+  });
   it("enforces authored visual support and richer policy without counting a contextual prior", () => {
     const d = definition();
     d.waypoints[0].landmarkId = "virtual-arch";

@@ -100,6 +100,12 @@ export function qualifyPlayerLandfallEvidence(input: {
       now,
     );
     if (handoff.state !== "AVAILABLE") throw new Error("LANDFALL_WATCHGLASS_UNAVAILABLE");
+    if (
+      handoff.observations.some(
+        (item) => now - Date.parse(item.observedAt) > waypoint.evidenceProfile.maximumAgeSeconds * 1000,
+      )
+    )
+      throw new Error("LANDFALL_WATCHGLASS_STALE");
     const landmark = definition.context?.landmarks.find((item) => item.id === waypoint.landmarkId);
     if (landmark && handoff.observations.length < landmark.minimumFrames)
       throw new Error("LANDFALL_WATCHGLASS_SUPPORT_REQUIRED");
