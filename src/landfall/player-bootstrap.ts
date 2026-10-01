@@ -44,6 +44,7 @@ export function projectPlayerLandfallBootstrap(
     releasedAssets: readonly { id: string; url: string }[];
     events?: readonly LandfallJourneyEvent[];
     replayOnly?: boolean;
+    observationWaypointId?: string | null;
   },
 ): PlayerLandfallBootstrap {
   const definition = pinned.definition;

@@ -27,6 +27,8 @@ The browser uses synthetic accounts, fictional virtual geography, and synthetic 
 
 ## Completion classification
 
+The classification below is the preserved original integration assertion. The independent post-merge audit found contract gaps that require the [final closure correction record](Project_Landfall_Phase_2_Final_Closure_Record.md) and its stronger local, hosted and landed acceptance gates. Do not treat the original five-scenario browser coverage as proof of durable offline reload, embedded Charts, all eight Captain controls or complete responsive/accessibility closure.
+
 PROJECT LANDFALL — PHASE 2: BRING THE WORLD ABOARD — FULLY CLOSED ON PROTECTED MAIN.
 
 This classification covers the authored Chronicle subsystem and its protected source integration. It does not classify Phase 3, Phase 4, deployment, physical field acceptance, or owner acceptance as complete.

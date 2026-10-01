@@ -212,6 +212,7 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
     | "resume"
   >("revealWaypoint");
   const [landfallTarget, setLandfallTarget] = useState("");
+  const [landfallError, setLandfallError] = useState("");
   const idempotencyKeys = useRef<Record<string, string>>({});
 
   const load = useCallback(async () => {
@@ -339,6 +340,7 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
 
   async function prepareLandfall() {
     if (!projection?.landfall || busy) return;
+    setLandfallError("");
     const requiresTarget = landfallAction !== "pause" && landfallAction !== "resume";
     if (requiresTarget && !landfallTarget) {
       setError("Choose a Landfall waypoint or route before preparing this action.");
@@ -393,12 +395,12 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
       });
       const body = (await response.json().catch(() => ({}))) as { error?: string };
       if (!response.ok) {
-        setError(
+        const failure =
           response.status === 409
             ? "Voyage changed. Refresh before preparing another Landfall action."
-            : (body.error ?? "The Landfall command was not recorded."),
-        );
+            : (body.error ?? "The Landfall command was not recorded.");
         await load();
+        setLandfallError(failure);
         return;
       }
       delete idempotencyKeys.current[keyId];
@@ -406,7 +408,7 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
       setLandfallTarget("");
       await load();
     } catch {
-      setError("The Landfall response was lost. Retry the same action to reconcile its result.");
+      setLandfallError("The Landfall response was lost. Retry the same action to reconcile its result.");
     } finally {
       setBusy("");
     }
@@ -642,6 +644,7 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
             >
               Review Landfall action
             </button>
+            {landfallError && <p role="alert">{landfallError}</p>}
           </section>
         )}
         <section className="captain-command-console__map" aria-labelledby="captain-map-heading">
@@ -734,7 +737,7 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
         </section>
         <section className="captain-command-console__history" aria-labelledby="captain-history-heading">
           <h2 id="captain-history-heading">Recent Voyage results</h2>
-          <ol>
+          <ol tabIndex={0} aria-label="Recent Voyage results">
             {projection.events.map((event) => (
               <li key={event.id}>
                 <strong>{event.summary}</strong>

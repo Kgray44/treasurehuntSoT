@@ -22,7 +22,9 @@ The [v1.0 governing document](Project_Landfall_Governing_Document_v1.0.pdf), [v1
 
 Physical maps use attributed interactive raster geography when online. Virtual maps use an authored vector plane or an existing Chronicle image asset. Private overlays use the existing asset authorization path. Map projection filters hidden features and trims a `NEXT_SEGMENT` route to the currently eligible leg; `ROUGH_BEARING` and unrevealed `HIDDEN` routes do not put a path on the map. Accessible text continues to present the current objective and visited history.
 
-The web offline foundation stores only already released chart data for the current tab/session/version and a single pending evidence package for reconnect. The service worker caches versioned shell assets, not tiles, media, API responses, or raw trails. Online-only map dependencies remain labeled as such.
+The active `livingChart` Passage and Map drawer consume one Journal controller. Historical Passage snapshots are released, as-of-completion projections and own no location watcher. `locationObservation` requires a matching block-bound canonical arrival before projecting its prompt; a separate configured response advances the normal block transaction. Earlier visits do not answer a later observation; fresh qualified context can revisit that waypoint without duplicating the journey's visited set.
+
+The web offline foundation uses encrypted IndexedDB for already released chart data, Landfall pages and authorized first-party images. A tab-scoped session/edition/CSRF capability opens the records; sign-out and access changes revoke it. The 30-minute chart budget is four Voyages, 512 KiB chart data and six images totaling 4 MiB per Voyage. The single 48 KiB delivery item holds at most 20 temporary fixes for 90 seconds. It is never canonical until reauthentication and server requalification succeed. Public versioned shell/static assets are separate from authenticated responses and external tiles. The public data-free fallback restores the authorized tab's bounded records after reload.
 
 ## Boundaries
 

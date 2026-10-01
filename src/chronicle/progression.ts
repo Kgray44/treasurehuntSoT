@@ -29,6 +29,7 @@ import {
 } from "@/chronicle/captain-authorization";
 import { projectLandfallJourney } from "@/landfall/journey-projection";
 import { landfallCompletionOptions, landfallOutcomeSatisfies } from "@/landfall/completion";
+import { observationContextReached } from "@/landfall/observation-context";
 import { playerLandfallEvidenceSchema, qualifyPlayerLandfallEvidence } from "@/landfall/server-evidence";
 
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
@@ -227,7 +228,7 @@ async function enterBlock(
       where: { sessionId: session.id, eventType: { startsWith: "landfall" } },
       orderBy: [{ sequence: "asc" }, { id: "asc" }],
       take: 2048,
-      select: { id: true, sequence: true, eventType: true, payload: true, createdAt: true },
+      select: { id: true, blockId: true, sequence: true, eventType: true, payload: true, createdAt: true },
     });
     const journey = projectLandfallJourney(snapshot.landfall, prior);
     const transition = snapshot.landfall.transitions.find(
@@ -280,7 +281,7 @@ async function enterBlock(
             });
       }
     }
-    if (worldspaceId === activeWorldspaceId && block.blockType === "waypointJourney") {
+    if (worldspaceId === activeWorldspaceId && ["waypointJourney", "locationObservation"].includes(block.blockType)) {
       const waypointId = String(block.configuration.waypointId ?? "");
       if (snapshot.landfall.waypoints.some((item) => item.id === waypointId && item.worldspaceId === worldspaceId))
         await appendEvent(tx, session, {
@@ -894,13 +895,13 @@ export async function getTaleSessionState(
       where: { sessionId },
       orderBy: [{ sequence: "desc" }, { id: "desc" }],
       take: MAX_CANONICAL_PLAYER_PRESENTATION_HISTORY,
-      select: { id: true, eventType: true, sequence: true, payload: true, createdAt: true },
+      select: { id: true, blockId: true, eventType: true, sequence: true, payload: true, createdAt: true },
     }),
     db.taleSessionEvent.findMany({
       where: { sessionId, eventType: { startsWith: "landfall" } },
       orderBy: [{ sequence: "asc" }, { id: "asc" }],
       take: 2048,
-      select: { id: true, eventType: true, sequence: true, payload: true, createdAt: true },
+      select: { id: true, blockId: true, eventType: true, sequence: true, payload: true, createdAt: true },
     }),
   ]);
   if (!captain && !authorizedPlayer && (!token || digest(token) !== session.accessTokenHash))
@@ -929,7 +930,12 @@ export async function getTaleSessionState(
       .filter(([key, value]) => key.startsWith("choice:") && typeof value === "string")
       .map(([key, value]) => [key.slice("choice:".length), String(value)]),
   );
-  const playerBlock = block ? projectPlayerBlock(block, { releasedHintCount: releasedHintCounts.get(block.id) }) : null;
+  const playerBlock = block
+    ? projectPlayerBlock(block, {
+        releasedHintCount: releasedHintCounts.get(block.id),
+        locationContextReached: observationContextReached(block, landfallEvents),
+      })
+    : null;
   const presentationHistory = buildCanonicalPlayerPresentationHistory(presentationEvents);
   const journal = {
     mode: session.previewMode
@@ -950,6 +956,7 @@ export async function getTaleSessionState(
           .map((candidate) => {
             const projected = projectPlayerBlock(candidate, {
               releasedHintCount: releasedHintCounts.get(candidate.id),
+              locationContextReached: observationContextReached(candidate, landfallEvents),
             });
             if (!projected) return null;
             const complete = completedAt.get(candidate.id) ?? null;
@@ -1073,7 +1080,10 @@ export async function interactWithTaleSession(
   const snapshot = snapshotOf(session);
   const block = blockById(snapshot, session.currentBlockId);
   if (!block) throw new Error("The current Passage is unavailable.");
-  if (block.completion?.mode === "landfall" || ["waypointJourney", "routeJourney"].includes(block.blockType))
+  if (
+    (block.completion?.mode === "landfall" && block.blockType !== "locationObservation") ||
+    ["waypointJourney", "routeJourney"].includes(block.blockType)
+  )
     throw new Error("This Passage waits for its configured Landfall location outcome or fallback.");
   const request = await db.taleVerificationRequest.findFirst({
     where: { sessionId, blockId: block.id, status: "PENDING" },
@@ -1113,11 +1123,42 @@ export async function interactWithTaleSession(
     )
       throw new Error("That choice is not connected to this block.");
   } else if (request?.providerType === "captainManual") throw new Error("The Captain must resolve this verification.");
+  if (block.blockType === "locationObservation" && request?.providerType === "textAnswer" && input.action !== "answer")
+    throw new Error("LANDFALL_OBSERVATION_RESPONSE_REQUIRED");
   const event = await db.$transaction(async (tx) => {
     const current = await tx.taleSession.findUniqueOrThrow({ where: { id: sessionId }, include: { version: true } });
     if (current.status !== "ACTIVE" || current.captainAuthorityState === "VACANT")
       throw new Error("This shared Voyage is in Succession Hold while Captaincy is vacant.");
     if (current.currentBlockId !== block.id) throw new Error("The story has already advanced.");
+    if (block.blockType === "locationObservation") {
+      const arrivals = await tx.taleSessionEvent.findMany({
+        where: { sessionId, blockId: block.id, eventType: "landfallWaypointConfirmed" },
+        select: { id: true, blockId: true, sequence: true, eventType: true, payload: true },
+        take: 128,
+      });
+      if (!observationContextReached(block, arrivals)) throw new Error("LANDFALL_OBSERVATION_CONTEXT_REQUIRED");
+      const responseAction =
+        request?.providerType === "textAnswer"
+          ? "answer"
+          : request?.providerType === "timer"
+            ? "timer"
+            : block.connections.some((connection) => connection.connectionType === "CHOICE")
+              ? "choice"
+              : "confirm";
+      if (input.action !== responseAction) throw new Error("LANDFALL_OBSERVATION_RESPONSE_REQUIRED");
+      await appendEvent(tx, current, {
+        eventType: "landfallObservationResponded",
+        sourceType: "player",
+        blockId: block.id,
+        idempotencyKey: `${input.idempotencyKey}:observation`,
+        payload: {
+          worldspaceId: block.configuration.worldspaceId,
+          waypointId: block.configuration.waypointId,
+          response: responseAction === "confirm" ? "PLAYER_CONFIRMATION" : responseAction.toUpperCase(),
+        },
+        correlationId: input.idempotencyKey,
+      });
+    }
     if (request)
       await tx.taleVerificationRequest.update({
         where: { id: request.id },
@@ -1186,14 +1227,20 @@ export async function submitPlayerLandfallEvidence(unchecked: unknown) {
       where: { sessionId: session.id, eventType: { startsWith: "landfall" } },
       orderBy: [{ sequence: "asc" }, { id: "asc" }],
       take: 2048,
-      select: { id: true, sequence: true, eventType: true, payload: true, createdAt: true },
+      select: { id: true, blockId: true, sequence: true, eventType: true, payload: true, createdAt: true },
     });
+    const block = blockById(snapshot, session.currentBlockId);
+    const observationRevisit =
+      block?.blockType === "locationObservation" &&
+      block.configuration.worldspaceId === request.worldspaceId &&
+      block.configuration.waypointId === request.waypointId &&
+      !observationContextReached(block, events);
     const journey = projectLandfallJourney(snapshot.landfall, events, {
       chapterId: session.currentChapterId,
       blockId: session.currentBlockId,
       now: Date.now(),
+      observationWaypointId: observationRevisit ? request.waypointId : null,
     });
-    const block = blockById(snapshot, session.currentBlockId);
     const requirement = block ? landfallCompletionOptions(block.completion ?? {}) : null;
     if (
       request.method === "PLAYER_FALLBACK" &&
@@ -1208,6 +1255,11 @@ export async function submitPlayerLandfallEvidence(unchecked: unknown) {
       request,
       journey,
       now: Date.now(),
+      observationRevisit,
+      minimumOutcome:
+        requirement?.worldspaceId === request.worldspaceId && requirement.locationId === request.waypointId
+          ? requirement.requiredOutcome
+          : undefined,
       minimumDwellSeconds:
         requirement?.worldspaceId === request.worldspaceId && requirement.locationId === request.waypointId
           ? requirement.dwellSeconds
@@ -1244,8 +1296,10 @@ export async function submitPlayerLandfallEvidence(unchecked: unknown) {
           requirement.locationId === qualified.waypointId &&
           landfallOutcomeSatisfies(qualified.outcome, requirement.requiredOutcome)),
     );
-    if (advanced && block) await completeBlock(tx, session, snapshot, block, "landfall", null, canonicalKey);
-    return { event, duplicate: false, advanced };
+    const responsePending = block?.blockType === "locationObservation";
+    if (advanced && block && !responsePending)
+      await completeBlock(tx, session, snapshot, block, "landfall", null, canonicalKey);
+    return { event, duplicate: false, advanced: advanced && !responsePending };
   });
   if (!result.duplicate) emit(request.sessionId, result.event);
   return {
@@ -1306,7 +1360,9 @@ export async function captainLandfallCommand(sessionId: string, actorId: string,
         duplicate.sessionId !== sessionId ||
         duplicate.eventType !== eventType ||
         prior.action !== command.action ||
-        prior.targetId !== (command.targetId ?? null)
+        prior.targetId !== (command.targetId ?? null) ||
+        prior.reason !== command.reason ||
+        duplicate.sourceId !== actor.accountId
       )
         throw new Error("LANDFALL_COMMAND_IDENTITY_MISMATCH");
       return { event: duplicate, duplicate: true };
@@ -1318,11 +1374,18 @@ export async function captainLandfallCommand(sessionId: string, actorId: string,
       where: { sessionId, eventType: { startsWith: "landfall" } },
       orderBy: [{ sequence: "asc" }, { id: "asc" }],
       take: 2048,
-      select: { id: true, sequence: true, eventType: true, payload: true, createdAt: true },
+      select: { id: true, blockId: true, sequence: true, eventType: true, payload: true, createdAt: true },
     });
+    const activeBlock = blockById(snapshot, session.currentBlockId);
+    const observationRevisit =
+      command.action === "confirmArrival" &&
+      activeBlock?.blockType === "locationObservation" &&
+      activeBlock.configuration.waypointId === command.targetId &&
+      !observationContextReached(activeBlock, events);
     const journey = projectLandfallJourney(snapshot.landfall, events, {
       chapterId: session.currentChapterId,
       blockId: session.currentBlockId,
+      observationWaypointId: observationRevisit ? command.targetId : null,
     });
     const waypoint = snapshot.landfall.waypoints.find(
       (item) => item.id === command.targetId && item.worldspaceId === journey.activeWorldspaceId,
@@ -1345,7 +1408,8 @@ export async function captainLandfallCommand(sessionId: string, actorId: string,
       throw new Error("LANDFALL_CAPTAIN_OVERRIDE_UNAVAILABLE");
     if (
       ["skipWaypoint", "confirmArrival", "selectWaypoint"].includes(command.action) &&
-      journey.visitedIds.includes(waypoint!.id)
+      journey.visitedIds.includes(waypoint!.id) &&
+      !observationRevisit
     )
       throw new Error("LANDFALL_WAYPOINT_ALREADY_VISITED");
     if (["skipWaypoint", "confirmArrival"].includes(command.action) && waypoint?.id !== journey.activeWaypointId)
@@ -1357,7 +1421,6 @@ export async function captainLandfallCommand(sessionId: string, actorId: string,
       waypoint?.id !== journey.activeWaypointId
     )
       throw new Error("LANDFALL_ROUTE_SEQUENCE_CONFLICT");
-    const activeBlock = blockById(snapshot, session.currentBlockId);
     const activeRequirement = activeBlock ? landfallCompletionOptions(activeBlock.completion ?? {}) : null;
     if (
       ["skipWaypoint", "confirmArrival"].includes(command.action) &&
@@ -1418,7 +1481,10 @@ export async function captainLandfallCommand(sessionId: string, actorId: string,
             requirement.locationId === waypoint.id &&
             requirement.worldspaceId === waypoint.worldspaceId,
         );
-      if (currentWaypointComplete || routeJourneyComplete || providerComplete)
+      if (
+        block.blockType !== "locationObservation" &&
+        (currentWaypointComplete || routeJourneyComplete || providerComplete)
+      )
         await completeBlock(tx, session, snapshot, block, "captain", actor.accountId, command.idempotencyKey);
     }
     return { event, duplicate: false };
@@ -1511,6 +1577,27 @@ export async function submitVerification(
     if (actor.expectedSequence !== undefined && current.currentSequence !== actor.expectedSequence)
       throw new CaptainCommandConflictError();
     if (current.captainAuthorityState === "VACANT") throw new VerificationRejectedError("successionHold");
+    if (block.blockType === "locationObservation" && submission.result === "match") {
+      const arrivals = await tx.taleSessionEvent.findMany({
+        where: { sessionId: current.id, blockId: block.id, eventType: "landfallWaypointConfirmed" },
+        select: { id: true, blockId: true, sequence: true, eventType: true, payload: true },
+        take: 128,
+      });
+      if (!observationContextReached(block, arrivals)) throw new VerificationRejectedError("locationContextRequired");
+      await appendEvent(tx, current, {
+        eventType: "landfallObservationResponded",
+        sourceType: actor.sourceType,
+        sourceId: actor.sourceId,
+        blockId: block.id,
+        idempotencyKey: `${submission.idempotencyKey}:observation`,
+        payload: {
+          worldspaceId: block.configuration.worldspaceId,
+          waypointId: block.configuration.waypointId,
+          response: submission.providerType,
+        },
+        correlationId: submission.eventId,
+      });
+    }
     if (submission.result !== "match")
       return appendEvent(tx, current, {
         eventType: submission.result === "uncertain" ? "verificationUncertain" : "verificationRejected",

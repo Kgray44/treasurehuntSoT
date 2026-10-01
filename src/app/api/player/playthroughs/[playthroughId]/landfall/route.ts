@@ -10,7 +10,7 @@ import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 const privateHeaders = { "Cache-Control": "private, no-store, max-age=0" };
 export const dynamic = "force-dynamic";
 
-export async function GET(_: Request, context: { params: Promise<{ playthroughId: string }> }) {
+export async function GET(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
   try {
     const identity = await requirePlayerIdentity();
     if (!identity)
@@ -25,8 +25,26 @@ export async function GET(_: Request, context: { params: Promise<{ playthroughId
     if (!pinned) return NextResponse.json({ available: false }, { headers: privateHeaders });
     if (pinned.publishedVersionId !== state.session.versionId)
       return NextResponse.json({ error: "Pinned version changed." }, { status: 409, headers: privateHeaders });
+    const blockId = new URL(request.url).searchParams.get("block");
+    const passage = blockId
+      ? state.journal?.chapters.flatMap((chapter) => chapter.blocks).find((block) => block.id === blockId)
+      : null;
+    if (blockId && (!passage || passage.blockType !== "livingChart"))
+      return NextResponse.json(
+        { error: "Released Chart Passage not found." },
+        { status: 404, headers: privateHeaders },
+      );
+    const completed =
+      passage?.progress === "completed"
+        ? await db.taleSessionEvent.findFirst({
+            where: { sessionId: playthroughId, blockId: passage.id, eventType: "blockCompleted" },
+            orderBy: { sequence: "asc" },
+            select: { sequence: true },
+          })
+        : null;
+    const asOfSequence = completed?.sequence ?? pinned.currentSequence;
     const events = await db.taleSessionEvent.findMany({
-      where: { sessionId: playthroughId, eventType: { startsWith: "landfall" } },
+      where: { sessionId: playthroughId, eventType: { startsWith: "landfall" }, sequence: { lte: asOfSequence } },
       orderBy: [{ sequence: "asc" }, { id: "asc" }],
       take: 2048,
       select: { id: true, sequence: true, eventType: true, payload: true, createdAt: true },
@@ -34,13 +52,22 @@ export async function GET(_: Request, context: { params: Promise<{ playthroughId
     return NextResponse.json(
       {
         available: true,
-        bootstrap: projectPlayerLandfallBootstrap(pinned, {
-          chapterId: state.chapter?.id ?? null,
-          blockId: state.block?.id ?? null,
-          releasedAssets: state.assets,
-          events,
-          replayOnly: state.session.status === "COMPLETED",
-        }),
+        bootstrap: projectPlayerLandfallBootstrap(
+          { ...pinned, currentSequence: asOfSequence },
+          {
+            chapterId: passage?.chapterId ?? state.chapter?.id ?? null,
+            blockId: passage?.id ?? state.block?.id ?? null,
+            observationWaypointId:
+              !passage &&
+              state.block?.blockType === "locationObservation" &&
+              !("locationContextReached" in state.block && state.block.locationContextReached)
+                ? String(state.block.configuration.waypointId ?? "")
+                : null,
+            releasedAssets: state.assets,
+            events,
+            replayOnly: Boolean(passage && passage.progress !== "active") || state.session.status === "COMPLETED",
+          },
+        ),
       },
       { headers: privateHeaders },
     );

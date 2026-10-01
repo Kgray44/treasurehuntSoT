@@ -1241,7 +1241,14 @@ html[data-voyage-theme="light"]
 
 /* Canonical published Chronicle journal. The library keeps cards; this shell keeps the physical book. */
 .chronicle-journal-shell {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
   padding-bottom: 12rem;
+}
+.product-route-layer:has(.chronicle-journal-shell) {
+  min-width: 0;
+  max-width: 100%;
 }
 .chronicle-session-header {
   display: flex;
@@ -1389,6 +1396,32 @@ html[data-voyage-theme="light"]
   min-height: 0;
   flex: 1;
   flex-direction: column;
+}
+
+[data-landfall-chart-passage] {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.landfall-journal-chart {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.landfall-journal-chart button,
+.landfall-offline-journal button {
+  min-height: 48px;
+  max-width: 100%;
+  margin: 0.25rem 0.25rem 0.25rem 0;
+  white-space: normal;
+}
+.landfall-journal-chart .voyage-chart-section {
+  min-width: 0;
+  padding: 0;
+}
+.landfall-offline-journal {
+  width: min(100% - 2rem, 48rem);
+  margin: 1rem auto;
+  padding-bottom: env(safe-area-inset-bottom);
+  overflow-wrap: anywhere;
 }
 
 .voyage-shell[data-motion-mode="reduced"]
@@ -1912,6 +1945,23 @@ html[data-motion-level="reduced"]
     display: grid;
     justify-items: end;
     min-width: 0;
+  }
+  .journal-session-tools :where(button, input, select, label) {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+  .product-shell:has(.chronicle-journal-shell) .product-mark,
+  .product-shell:has(.chronicle-journal-shell) .product-mark > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .product-shell:has(.chronicle-journal-shell) .product-shell-header {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+  .product-shell:has(.chronicle-journal-shell) .shell-profile-region {
+    grid-column: 3;
   }
   .runtime-connection {
     max-width: 140px;

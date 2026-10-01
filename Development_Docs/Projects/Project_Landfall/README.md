@@ -31,6 +31,8 @@ These records describe the Phase 1 foundation, the Player live-position correcti
 
 ## Phase 2 engineering records
 
+The [final closure correction record](Project_Landfall_Phase_2_Final_Closure_Record.md) reconciles the original completion claim and tracks the independent audit corrections and protected acceptance gates.
+
 - [Design record](Project_Landfall_Phase_2_Design_Record.md)
 - [Threat model](Project_Landfall_Phase_2_Threat_Model.md)
 - [Test plan](Project_Landfall_Phase_2_Test_Plan.md)

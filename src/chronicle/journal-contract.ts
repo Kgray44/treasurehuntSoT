@@ -52,6 +52,7 @@ export type PlayerJournalBlock = {
   releasedAt: string | null;
   completedAt: string | null;
   selectedTargetId: string | null;
+  locationContextReached?: boolean;
 };
 
 export type PlayerJournalChapter = {
@@ -158,10 +159,14 @@ export function parseJournalPresentation(value: JsonObject | undefined, blockTyp
   };
 }
 
-export function projectPlayerBlock(block: PublishedBlock, options: { releasedHintCount?: number } = {}) {
+export function projectPlayerBlock(
+  block: PublishedBlock,
+  options: { releasedHintCount?: number; locationContextReached?: boolean } = {},
+) {
   const kind = journalKindForBlock(block.blockType);
   if (!kind) return null;
   const configuration = sanitizePlayerObject(block.configuration);
+  if (block.blockType === "locationObservation" && !options.locationContextReached) delete configuration.prompt;
   if (options.releasedHintCount && Array.isArray(block.configuration.hints))
     configuration.releasedHints = sanitizePlayerValue(block.configuration.hints.slice(0, options.releasedHintCount));
   return {
@@ -172,6 +177,9 @@ export function projectPlayerBlock(block: PublishedBlock, options: { releasedHin
     title: block.title,
     orderIndex: block.orderIndex,
     configuration,
+    ...(block.blockType === "locationObservation"
+      ? { locationContextReached: Boolean(options.locationContextReached) }
+      : {}),
     presentation: parseJournalPresentation(block.presentation, block.blockType),
     connections: block.connections
       .filter((connection) => connection.connectionType === "CHOICE")

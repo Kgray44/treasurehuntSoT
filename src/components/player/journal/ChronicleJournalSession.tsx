@@ -26,7 +26,7 @@ import type {
 import { resolveStoryMotion } from "@/animation/presentation/story-motion";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
 import { ChronicleJournalPageContent, type JournalAsset } from "@/components/player/journal/ChronicleJournalPage";
-import { LandfallJournalChart } from "@/components/player/journal/LandfallJournalChart";
+import { LandfallJournalChart, LandfallJournalProvider } from "@/components/player/journal/LandfallJournalChart";
 import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 import {
   emptyJournalReadingState,
@@ -763,13 +763,31 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
   );
   const flipPages = useMemo<FlipBookPage[]>(
     () =>
-      pages.map((page) => ({
+      pages.map((page, index) => ({
         id: page.id,
         density: page.density,
         label: page.label,
-        content: <ChronicleJournalPageContent page={page} assets={state?.assets ?? []} />,
+        content: (
+          <ChronicleJournalPageContent
+            page={page}
+            assets={state?.assets ?? []}
+            chart={
+              index === currentPage && reading.openDrawer !== "map" && page.block?.blockType === "livingChart" ? (
+                <LandfallJournalChart
+                  readOnly={page.block.progress !== "active" || state?.session.status === "COMPLETED"}
+                  blockId={page.block.id}
+                  worldspaceId={String(page.block.configuration.worldspaceId ?? "")}
+                />
+              ) : undefined
+            }
+          />
+        ),
       })),
-    [pages, state?.assets],
+    [pages, state?.assets, state?.session, currentPage, reading.openDrawer],
+  );
+  const contextBlocks = useMemo(
+    () => state?.journal.chapters.flatMap((chapter) => chapter.blocks) ?? [],
+    [state?.journal],
   );
   const initialPage = useMemo(
     () => pageIndexForReadingState(pages, reading.pageId, state?.journal.currentBlockId ?? null),
@@ -979,362 +997,372 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
   const waitRemaining = Math.max(0, Date.parse(state.pendingVerification?.expiresAt ?? "") - now);
   const currentObjective = objectiveOf(currentBlock);
   const historical = state.journal.mode === "historical";
-  const contextBlocks = state.journal.chapters.flatMap((chapter) => chapter.blocks);
 
   return (
-    <main
-      ref={root}
-      className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode}`}
-      data-journal-phase={openingPhase}
-      data-journal-opening-outcome={openingOutcome}
-      data-journal-ready-reason={readyReceipt?.reason}
-      data-live-event={liveNotice ? "revealed" : "idle"}
-      data-motion-mode={mode}
-      data-motion-level={motionPolicy.level}
-      style={
-        {
-          "--player-text-scale": reading.textScale,
-          "--texture-opacity": 1,
-        } as React.CSSProperties
+    <LandfallJournalProvider
+      revision={state.session.currentSequence}
+      sessionId={sessionId}
+      publishedVersionId={state.session.versionId}
+      mode={mode}
+      passages={contextBlocks}
+      historical={state.session.status === "COMPLETED"}
+      csrfToken={state.csrfToken ?? ""}
+      loadEnabled={
+        journalReady && (reading.openDrawer === "map" || pages[currentPage]?.block?.blockType === "livingChart")
       }
+      enabled={
+        journalReady &&
+        (reading.openDrawer === "map" ||
+          (pages[currentPage]?.block?.blockType === "livingChart" && pages[currentPage]?.block?.progress === "active"))
+      }
+      onProgress={() => {
+        void load();
+      }}
     >
-      <div className="ocean-depth" aria-hidden="true">
-        <div data-scene-part="sky" />
-        <div data-scene-part="horizon" />
-        <div data-scene-part="ocean" />
-        <div data-scene-part="fog-near" />
-      </div>
-      <header
-        className="chronicle-session-header persistent-interface"
-        data-opening-actor="persistent-interface"
-        aria-hidden={openingActive}
-        inert={openingActive ? true : undefined}
+      <main
+        ref={root}
+        className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode}`}
+        data-journal-phase={openingPhase}
+        data-journal-opening-outcome={openingOutcome}
+        data-journal-ready-reason={readyReceipt?.reason}
+        data-live-event={liveNotice ? "revealed" : "idle"}
+        data-motion-mode={mode}
+        data-motion-level={motionPolicy.level}
+        style={
+          {
+            "--player-text-scale": reading.textScale,
+            "--texture-opacity": 1,
+          } as React.CSSProperties
+        }
       >
-        <div>
-          <Link href="/player/library">← {platformCopy.chronicleLibrary.value}</Link>
-          <p className="eyebrow">{historical ? "Voyage Record" : (state.chapter?.title ?? "Active Voyage")}</p>
-          <h1>{state.tale.title}</h1>
+        <div className="ocean-depth" aria-hidden="true">
+          <div data-scene-part="sky" />
+          <div data-scene-part="horizon" />
+          <div data-scene-part="ocean" />
+          <div data-scene-part="fog-near" />
         </div>
-        <div className="journal-session-tools">
-          <span className={`runtime-connection ${connection}`} role="status">
-            <i />
-            {connection === "live"
-              ? "Captain channel connected"
-              : connection === "archived"
-                ? "Completed archive"
-                : connection === "revoked"
-                  ? "Access revoked"
-                  : connection === "offline"
-                    ? "Offline"
-                    : "Reconnecting"}
-          </span>
-          <button onClick={changeMotionMode}>Motion: {mode}</button>
-          {replayControlsMounted && (
-            <div role="group" aria-label="Journal opening replay">
-              <button onClick={(event) => void replayOpening("manual-full-replay", event.currentTarget)}>
-                Replay full opening
-              </button>
-              <button onClick={(event) => void replayOpening("manual-abbreviated-replay", event.currentTarget)}>
-                Replay short opening
-              </button>
-            </div>
-          )}
-          <label>
-            <span>Text size</span>
-            <input
-              aria-label="Journal text size"
-              type="range"
-              min="0.85"
-              max="1.5"
-              step="0.05"
-              value={reading.textScale}
-              onChange={(event) => saveReading({ textScale: Number(event.target.value) })}
-            />
-          </label>
-        </div>
-      </header>
-
-      <section
-        className="physical-section journal-workspace chronicle-journal-workspace"
-        aria-labelledby="chronicle-journal-heading"
-        aria-hidden={openingActive}
-        inert={openingActive ? true : undefined}
-      >
-        <header className="section-masthead">
-          <div>
-            <p className="eyebrow">{historical ? "Preserved Voyage Record" : "Active Voyage"}</p>
-            <h2 ref={journalHeading} id="chronicle-journal-heading" tabIndex={-1}>
-              {state.session.versionLabel} Voyage Journal
-            </h2>
-          </div>
-          <p>
-            {historical
-              ? "Read-only pages from the exact edition this crew experienced."
-              : "The Captain releases each Passage for this Voyage."}
-          </p>
-        </header>
-        <PhysicalJournalBook
-          ref={book}
-          pages={flipPages}
-          revision={state.session.currentSequence}
-          mode={mode}
-          openingPhase={openingPhase}
-          interactive={journalReady}
-          initialPage={initialPage}
-          coverTitle={state.tale.title}
-          coverSubtitle={historical ? "Preserved Voyage Record" : "Voyage Journal"}
-          sealedMessage={
-            historical
-              ? "This completed voyage remains sealed to its original edition."
-              : "The first released leaf waits beneath the Captain's seal."
-          }
-          tabs={state.journal.chapters.map((chapter) => ({
-            id: chapter.id,
-            ordinal: chapter.orderIndex + 1,
-            label: chapter.title,
-            state: chapter.blocks.every((block) => block.progress === "completed") ? "complete" : "released",
-            pageIndex: pageIndexForJournalChapter(pages, chapter.id),
-          }))}
-          onReadinessChange={recordPageFlipReadiness}
-          onSelectTab={turnTo}
-          turnExitMotion={turnExitMotion}
-          onPageChange={(page) => {
-            setCurrentPage(page);
-            const currentPageBlock = pages[page]?.blockId ?? null;
-            followingCurrent.current = currentPageBlock === state.journal.currentBlockId;
-            if (followingCurrent.current) setNewContent(false);
-            saveReading({ pageId: pages[page]?.id ?? null });
-          }}
-          onPageTurn={() => {
-            audio.current.unlock();
-            audio.current.playValidated({
-              name: "page-turn",
-              motionPolicy,
-              motionOnly: true,
-              presentationValidated: true,
-              semanticLabel: "page-turn-complete",
-              allowedSemanticLabels: ["page-turn-complete"],
-            });
-          }}
-          onTurnLifecycle={(event: PageTurnLifecycleEvent) => {
-            if (event.phase !== "turn-start") return;
-            setTurnExitMotion(resolveStoryMotion(pages[event.fromPage]?.block?.presentation.transitionOut, "minimize"));
-          }}
-        />
-      </section>
-
-      {historical ? (
-        <aside className="journal-historical-volume" aria-label="Historical volume information">
-          <span>Historical volume</span>
-          <strong>Preserved Voyage record</strong>
-          <p>This completed Voyage is read-only and remains bound to the exact edition this Crew experienced.</p>
-        </aside>
-      ) : null}
-
-      {(openingPhase === "ENTRY_IDLE" || openingPhase === "ENTRY_ACTIVATED") && (
-        <div
-          ref={openingStatus}
-          className="journal-opening chronicle-opening"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="journal-opening-heading"
-          tabIndex={-1}
-        >
-          <h2 id="journal-opening-heading" className="sr-only">
-            Open the voyage journal
-          </h2>
-          <button className="wax-open" onClick={(event) => void openJournal(event.currentTarget)}>
-            <span>✦</span>
-            <strong>Open the journal</strong>
-            <small>{reading.hasOpened ? "Return to your place" : platformCopy.beginVoyage.value}</small>
-          </button>
-          <Link href="/player/library">Return to {platformCopy.chronicleLibrary.value}</Link>
-        </div>
-      )}
-      {openingPhase !== "ENTRY_IDLE" && !journalReady && (
-        <div
-          ref={openingStatus}
-          className="journal-opening-status"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Journal opening in progress"
-          tabIndex={-1}
-        >
-          <span>{openingLabel(openingPhase)}</span>
-          {openingNotice && openingOutcome === "failure" && <p role="alert">{openingNotice}</p>}
-          <button onClick={skipOpening}>Skip ceremony</button>
-          <button onClick={changeMotionMode}>Motion: {mode}</button>
-          <Link href="/player/library">Return to {platformCopy.chronicleLibrary.value}</Link>
-        </div>
-      )}
-      {openingNotice && (journalReady || openingOutcome === "aborted") && (
-        <p
-          className="journal-opening-status journal-degradation-note"
-          role={openingOutcome === "failure" ? "alert" : "status"}
-        >
-          {openingNotice}
-        </p>
-      )}
-
-      {readyReceipt && readyReceipt.reason !== "completed" ? (
-        <aside className="journal-technical-details" aria-label="Journal presentation details">
-          <TechnicalDetails
-            summary="Show journal presentation details"
-            description="The readable Journal remains available. These details explain the presentation state for support or diagnosis."
-          >
-            <dl>
-              <div>
-                <dt>Opening result</dt>
-                <dd>{openingOutcome.replaceAll("-", " ")}</dd>
-              </div>
-              <div>
-                <dt>Readable presentation</dt>
-                <dd>{readyReceipt.reason.replaceAll("-", " ")}</dd>
-              </div>
-              <div>
-                <dt>Page presentation</dt>
-                <dd>{pagePresentation}</dd>
-              </div>
-            </dl>
-          </TechnicalDetails>
-        </aside>
-      ) : null}
-
-      <aside
-        ref={chapterDrawer}
-        className={`journal-context-drawer journal-chapters-drawer ${reading.openDrawer === "chapters" ? "open" : ""}`}
-        aria-hidden={reading.openDrawer !== "chapters"}
-        inert={openingActive || reading.openDrawer !== "chapters" ? true : undefined}
-      >
-        <button
-          className="drawer-close"
-          onClick={() => saveReading({ openDrawer: null })}
-          aria-label="Close chapter drawer"
-        >
-          ×
-        </button>
-        <h2>Released chapters</h2>
-        {state.journal.chapters.map((chapter) => (
-          <button key={chapter.id} onClick={() => turnTo(pageIndexForJournalChapter(pages, chapter.id))}>
-            <strong>{chapter.title}</strong>
-            <span>{chapter.blocks.length} released leaves</span>
-          </button>
-        ))}
-      </aside>
-      <aside
-        ref={objectDrawer}
-        className={`journal-context-drawer journal-objects-drawer ${reading.openDrawer && reading.openDrawer !== "chapters" ? "open" : ""}`}
-        aria-hidden={!reading.openDrawer || reading.openDrawer === "chapters"}
-        inert={openingActive || !reading.openDrawer || reading.openDrawer === "chapters" ? true : undefined}
-      >
-        <button
-          className="drawer-close"
-          onClick={() => saveReading({ openDrawer: null })}
-          aria-label="Close journal tool drawer"
-        >
-          ×
-        </button>
-        <h2>{drawerTitle(reading.openDrawer)}</h2>
-        {identitySession &&
-          reading.openDrawer === "map" &&
-          (state?.session.status === "ACTIVE" || state?.session.status === "COMPLETED") && (
-            <LandfallJournalChart
-              key={`${state.session.versionId}:${state.session.currentSequence}`}
-              sessionId={sessionId}
-              publishedVersionId={state.session.versionId}
-              mode={mode}
-              historical={state.session.status === "COMPLETED"}
-              csrfToken={state.csrfToken ?? ""}
-              onProgress={() => {
-                void load();
-              }}
-            />
-          )}
-        {contextBlocks
-          .filter((block) => drawerIncludes(reading.openDrawer, block))
-          .map((block) => (
-            <button key={block.id} onClick={() => turnTo(pageIndexForJournalBlock(pages, block.id))}>
-              <strong>{block.title}</strong>
-              <span>{block.progress}</span>
-            </button>
-          ))}
-        {!contextBlocks.some((block) => drawerIncludes(reading.openDrawer, block)) && (
-          <p>No released pages of this kind yet.</p>
-        )}
-      </aside>
-
-      <nav
-        className="journal-context-tabs persistent-interface"
-        aria-label="Journal tools"
-        aria-hidden={openingActive}
-        inert={openingActive ? true : undefined}
-      >
-        {(["chapters", "map", "artifacts", "messages"] as const).map((drawer) => (
-          <button
-            key={drawer}
-            aria-expanded={reading.openDrawer === drawer}
-            onClick={(event) => toggleDrawer(drawer, event.currentTarget)}
-          >
-            {drawer}
-          </button>
-        ))}
-      </nav>
-
-      {!historical ? (
-        <aside
-          className="chronicle-objective-tray persistent-objective"
-          data-opening-actor="objective"
+        <header
+          className="chronicle-session-header persistent-interface"
+          data-opening-actor="persistent-interface"
           aria-hidden={openingActive}
           inert={openingActive ? true : undefined}
         >
           <div>
-            <p>Current objective</p>
-            <strong>{currentObjective}</strong>
-            <span>{state.session.status.replaceAll("_", " ").toLocaleLowerCase()}</span>
+            <Link href="/player/library">← {platformCopy.chronicleLibrary.value}</Link>
+            <p className="eyebrow">{historical ? "Voyage Record" : (state.chapter?.title ?? "Active Voyage")}</p>
+            <h1>{state.tale.title}</h1>
           </div>
-          {newContent && (
-            <button className="return-current" onClick={returnToCurrent}>
-              Return to Current Objective
-            </button>
-          )}
-          <JournalActions
-            state={state}
-            currentBlock={currentBlock}
-            choices={choices}
-            answer={answer}
-            setAnswer={setAnswer}
-            waitRemaining={waitRemaining}
-            busy={busy}
-            act={act}
+          <div className="journal-session-tools">
+            <span className={`runtime-connection ${connection}`} role="status">
+              <i />
+              {connection === "live"
+                ? "Captain channel connected"
+                : connection === "archived"
+                  ? "Completed archive"
+                  : connection === "revoked"
+                    ? "Access revoked"
+                    : connection === "offline"
+                      ? "Offline"
+                      : "Reconnecting"}
+            </span>
+            <button onClick={changeMotionMode}>Motion: {mode}</button>
+            {replayControlsMounted && (
+              <div role="group" aria-label="Journal opening replay">
+                <button onClick={(event) => void replayOpening("manual-full-replay", event.currentTarget)}>
+                  Replay full opening
+                </button>
+                <button onClick={(event) => void replayOpening("manual-abbreviated-replay", event.currentTarget)}>
+                  Replay short opening
+                </button>
+              </div>
+            )}
+            <label>
+              <span>Text size</span>
+              <input
+                aria-label="Journal text size"
+                type="range"
+                min="0.85"
+                max="1.5"
+                step="0.05"
+                value={reading.textScale}
+                onChange={(event) => saveReading({ textScale: Number(event.target.value) })}
+              />
+            </label>
+          </div>
+        </header>
+
+        <section
+          className="physical-section journal-workspace chronicle-journal-workspace"
+          aria-labelledby="chronicle-journal-heading"
+          aria-hidden={openingActive}
+          inert={openingActive ? true : undefined}
+        >
+          <header className="section-masthead">
+            <div>
+              <p className="eyebrow">{historical ? "Preserved Voyage Record" : "Active Voyage"}</p>
+              <h2 ref={journalHeading} id="chronicle-journal-heading" tabIndex={-1}>
+                {state.session.versionLabel} Voyage Journal
+              </h2>
+            </div>
+            <p>
+              {historical
+                ? "Read-only pages from the exact edition this crew experienced."
+                : "The Captain releases each Passage for this Voyage."}
+            </p>
+          </header>
+          <PhysicalJournalBook
+            ref={book}
+            pages={flipPages}
+            revision={state.session.currentSequence}
+            mode={mode}
+            openingPhase={openingPhase}
+            interactive={journalReady}
+            initialPage={initialPage}
+            coverTitle={state.tale.title}
+            coverSubtitle={historical ? "Preserved Voyage Record" : "Voyage Journal"}
+            sealedMessage={
+              historical
+                ? "This completed voyage remains sealed to its original edition."
+                : "The first released leaf waits beneath the Captain's seal."
+            }
+            tabs={state.journal.chapters.map((chapter) => ({
+              id: chapter.id,
+              ordinal: chapter.orderIndex + 1,
+              label: chapter.title,
+              state: chapter.blocks.every((block) => block.progress === "completed") ? "complete" : "released",
+              pageIndex: pageIndexForJournalChapter(pages, chapter.id),
+            }))}
+            onReadinessChange={recordPageFlipReadiness}
+            onSelectTab={turnTo}
+            turnExitMotion={turnExitMotion}
+            onPageChange={(page) => {
+              setCurrentPage(page);
+              const currentPageBlock = pages[page]?.blockId ?? null;
+              followingCurrent.current = currentPageBlock === state.journal.currentBlockId;
+              if (followingCurrent.current) setNewContent(false);
+              saveReading({ pageId: pages[page]?.id ?? null });
+            }}
+            onPageTurn={() => {
+              audio.current.unlock();
+              audio.current.playValidated({
+                name: "page-turn",
+                motionPolicy,
+                motionOnly: true,
+                presentationValidated: true,
+                semanticLabel: "page-turn-complete",
+                allowedSemanticLabels: ["page-turn-complete"],
+              });
+            }}
+            onTurnLifecycle={(event: PageTurnLifecycleEvent) => {
+              if (event.phase !== "turn-start") return;
+              setTurnExitMotion(
+                resolveStoryMotion(pages[event.fromPage]?.block?.presentation.transitionOut, "minimize"),
+              );
+            }}
           />
+        </section>
+
+        {historical ? (
+          <aside className="journal-historical-volume" aria-label="Historical volume information">
+            <span>Historical volume</span>
+            <strong>Preserved Voyage record</strong>
+            <p>This completed Voyage is read-only and remains bound to the exact edition this Crew experienced.</p>
+          </aside>
+        ) : null}
+
+        {(openingPhase === "ENTRY_IDLE" || openingPhase === "ENTRY_ACTIVATED") && (
+          <div
+            ref={openingStatus}
+            className="journal-opening chronicle-opening"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="journal-opening-heading"
+            tabIndex={-1}
+          >
+            <h2 id="journal-opening-heading" className="sr-only">
+              Open the voyage journal
+            </h2>
+            <button className="wax-open" onClick={(event) => void openJournal(event.currentTarget)}>
+              <span>✦</span>
+              <strong>Open the journal</strong>
+              <small>{reading.hasOpened ? "Return to your place" : platformCopy.beginVoyage.value}</small>
+            </button>
+            <Link href="/player/library">Return to {platformCopy.chronicleLibrary.value}</Link>
+          </div>
+        )}
+        {openingPhase !== "ENTRY_IDLE" && !journalReady && (
+          <div
+            ref={openingStatus}
+            className="journal-opening-status"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Journal opening in progress"
+            tabIndex={-1}
+          >
+            <span>{openingLabel(openingPhase)}</span>
+            {openingNotice && openingOutcome === "failure" && <p role="alert">{openingNotice}</p>}
+            <button onClick={skipOpening}>Skip ceremony</button>
+            <button onClick={changeMotionMode}>Motion: {mode}</button>
+            <Link href="/player/library">Return to {platformCopy.chronicleLibrary.value}</Link>
+          </div>
+        )}
+        {openingNotice && (journalReady || openingOutcome === "aborted") && (
+          <p
+            className="journal-opening-status journal-degradation-note"
+            role={openingOutcome === "failure" ? "alert" : "status"}
+          >
+            {openingNotice}
+          </p>
+        )}
+
+        {readyReceipt && readyReceipt.reason !== "completed" ? (
+          <aside className="journal-technical-details" aria-label="Journal presentation details">
+            <TechnicalDetails
+              summary="Show journal presentation details"
+              description="The readable Journal remains available. These details explain the presentation state for support or diagnosis."
+            >
+              <dl>
+                <div>
+                  <dt>Opening result</dt>
+                  <dd>{openingOutcome.replaceAll("-", " ")}</dd>
+                </div>
+                <div>
+                  <dt>Readable presentation</dt>
+                  <dd>{readyReceipt.reason.replaceAll("-", " ")}</dd>
+                </div>
+                <div>
+                  <dt>Page presentation</dt>
+                  <dd>{pagePresentation}</dd>
+                </div>
+              </dl>
+            </TechnicalDetails>
+          </aside>
+        ) : null}
+
+        <aside
+          ref={chapterDrawer}
+          className={`journal-context-drawer journal-chapters-drawer ${reading.openDrawer === "chapters" ? "open" : ""}`}
+          aria-hidden={reading.openDrawer !== "chapters"}
+          inert={openingActive || reading.openDrawer !== "chapters" ? true : undefined}
+        >
+          <button
+            className="drawer-close"
+            onClick={() => saveReading({ openDrawer: null })}
+            aria-label="Close chapter drawer"
+          >
+            ×
+          </button>
+          <h2>Released chapters</h2>
+          {state.journal.chapters.map((chapter) => (
+            <button key={chapter.id} onClick={() => turnTo(pageIndexForJournalChapter(pages, chapter.id))}>
+              <strong>{chapter.title}</strong>
+              <span>{chapter.blocks.length} released leaves</span>
+            </button>
+          ))}
         </aside>
-      ) : null}
+        <aside
+          ref={objectDrawer}
+          className={`journal-context-drawer journal-objects-drawer ${reading.openDrawer && reading.openDrawer !== "chapters" ? "open" : ""}`}
+          aria-hidden={!reading.openDrawer || reading.openDrawer === "chapters"}
+          inert={openingActive || !reading.openDrawer || reading.openDrawer === "chapters" ? true : undefined}
+        >
+          <button
+            className="drawer-close"
+            onClick={() => saveReading({ openDrawer: null })}
+            aria-label="Close journal tool drawer"
+          >
+            ×
+          </button>
+          <h2>{drawerTitle(reading.openDrawer)}</h2>
+          {identitySession &&
+            reading.openDrawer === "map" &&
+            (state?.session.status === "ACTIVE" || state?.session.status === "COMPLETED") && <LandfallJournalChart />}
+          {contextBlocks
+            .filter((block) => drawerIncludes(reading.openDrawer, block))
+            .map((block) => (
+              <button key={block.id} onClick={() => turnTo(pageIndexForJournalBlock(pages, block.id))}>
+                <strong>{block.title}</strong>
+                <span>{block.progress}</span>
+              </button>
+            ))}
+          {!contextBlocks.some((block) => drawerIncludes(reading.openDrawer, block)) && (
+            <p>No released pages of this kind yet.</p>
+          )}
+        </aside>
 
-      {error && (
-        <p className="journal-degradation-note" role="alert">
-          {error}
+        <nav
+          className="journal-context-tabs persistent-interface"
+          aria-label="Journal tools"
+          aria-hidden={openingActive}
+          inert={openingActive ? true : undefined}
+        >
+          {(["chapters", "map", "artifacts", "messages"] as const).map((drawer) => (
+            <button
+              key={drawer}
+              aria-expanded={reading.openDrawer === drawer}
+              onClick={(event) => toggleDrawer(drawer, event.currentTarget)}
+            >
+              {drawer}
+            </button>
+          ))}
+        </nav>
+
+        {!historical ? (
+          <aside
+            className="chronicle-objective-tray persistent-objective"
+            data-opening-actor="objective"
+            aria-hidden={openingActive}
+            inert={openingActive ? true : undefined}
+          >
+            <div>
+              <p>Current objective</p>
+              <strong>{currentObjective}</strong>
+              <span>{state.session.status.replaceAll("_", " ").toLocaleLowerCase()}</span>
+            </div>
+            {newContent && (
+              <button className="return-current" onClick={returnToCurrent}>
+                Return to Current Objective
+              </button>
+            )}
+            <JournalActions
+              state={state}
+              currentBlock={currentBlock}
+              choices={choices}
+              answer={answer}
+              setAnswer={setAnswer}
+              waitRemaining={waitRemaining}
+              busy={busy}
+              act={act}
+            />
+          </aside>
+        ) : null}
+
+        {error && (
+          <p className="journal-degradation-note" role="alert">
+            {error}
+          </p>
+        )}
+
+        {connection === "revoked" && journalReady && (
+          <div className="journal-connection-note" role="alert">
+            <strong>Your access to this Voyage was revoked.</strong>
+            <span>
+              The released Passages remain readable, but this Journal will not reconnect or request new progress.
+            </span>
+          </div>
+        )}
+        {connection !== "live" && connection !== "archived" && connection !== "revoked" && journalReady && (
+          <div className="journal-connection-note" role="status">
+            <strong>{connection === "offline" ? "You appear to be offline." : "Reconnecting to the Captain."}</strong>
+            <span>Your released Passages remain available while Voyage updates reconnect.</span>
+            <button onClick={() => void load()}>Retry now</button>
+          </div>
+        )}
+        <p className="sr-only" aria-live="assertive">
+          {liveNotice}
         </p>
-      )}
-
-      {connection === "revoked" && journalReady && (
-        <div className="journal-connection-note" role="alert">
-          <strong>Your access to this Voyage was revoked.</strong>
-          <span>
-            The released Passages remain readable, but this Journal will not reconnect or request new progress.
-          </span>
-        </div>
-      )}
-      {connection !== "live" && connection !== "archived" && connection !== "revoked" && journalReady && (
-        <div className="journal-connection-note" role="status">
-          <strong>{connection === "offline" ? "You appear to be offline." : "Reconnecting to the Captain."}</strong>
-          <span>Your released Passages remain available while Voyage updates reconnect.</span>
-          <button onClick={() => void load()}>Retry now</button>
-        </div>
-      )}
-      <p className="sr-only" aria-live="assertive">
-        {liveNotice}
-      </p>
-    </main>
+      </main>
+    </LandfallJournalProvider>
   );
 }
 
@@ -1363,6 +1391,20 @@ function JournalActions({
         <strong>The Captain has paused this Voyage.</strong>
         <p>Your current Passage and progress are preserved.</p>
       </div>
+    );
+  if (currentBlock?.blockType === "locationObservation" && !currentBlock.locationContextReached)
+    return (
+      <p role="status">Travel to the observation location. The response unlocks after your arrival is recorded.</p>
+    );
+  if (
+    currentBlock?.blockType === "locationObservation" &&
+    (!state.pendingVerification || state.pendingVerification.providerType === "playerConfirmation") &&
+    !choices.length
+  )
+    return (
+      <button className="brass-button" disabled={busy} onClick={() => void act("confirm")}>
+        Confirm my observation
+      </button>
     );
   if (state.pendingVerification?.providerType === "captainManual")
     return (

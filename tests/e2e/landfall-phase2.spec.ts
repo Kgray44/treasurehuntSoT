@@ -97,7 +97,7 @@ async function openMap(page: Page, voyageId: string) {
   await expect.poll(async () => (await opening.isVisible()) || (await map.isVisible()), { timeout: 45_000 }).toBe(true);
   if (await opening.isVisible()) await opening.getByRole("button", { name: /Open the journal/u }).click();
   const chart = page.locator("[data-landfall-player-chart]");
-  if (!(await chart.isVisible())) await map.click();
+  if ((await map.getAttribute("aria-expanded")) !== "true") await map.click();
   await expect(chart).toBeVisible({ timeout: 30_000 });
 }
 
@@ -358,8 +358,12 @@ test("Creator authors a physical and virtual Worldspace through the Studio draft
   await page.getByRole("button", { name: "Add Worldspace" }).click();
   await expect(page.getByRole("combobox", { name: "Worldspace", exact: true })).toContainText("Imaginary sea");
   await expect
-    .poll(async () => (await db.taleDraft.findFirst({ where: { taleId: draftTaleId } }))?.landfallDefinition)
-    .not.toBeNull();
+    .poll(async () =>
+      JSON.parse(
+        (await db.taleDraft.findFirstOrThrow({ where: { taleId: draftTaleId } })).landfallDefinition ?? "{}",
+      ).worldspaces?.map((item: { kind: string }) => item.kind),
+    )
+    .toEqual(["PHYSICAL", "VIRTUAL"]);
   const saved = await db.taleDraft.findFirstOrThrow({ where: { taleId: draftTaleId } });
   const authored = JSON.parse(saved.landfallDefinition!);
   expect(authored.worldspaces.map((item: { kind: string }) => item.kind)).toEqual(["PHYSICAL", "VIRTUAL"]);
@@ -480,7 +484,7 @@ test("Offline Player evidence is visibly local, then reconciles once on reconnec
   await openMap(page, offlineVoyageId);
   await context.setOffline(true);
   await page.getByRole("button", { name: "Confirm arrival myself" }).click();
-  await expect(page.getByText(/Evidence queued locally in this open tab/u)).toBeVisible();
+  await expect(page.getByText(/Evidence queued durably on this device/u)).toBeVisible();
   expect(
     await db.taleSessionEvent.count({ where: { sessionId: offlineVoyageId, eventType: "landfallWaypointConfirmed" } }),
   ).toBe(0);
