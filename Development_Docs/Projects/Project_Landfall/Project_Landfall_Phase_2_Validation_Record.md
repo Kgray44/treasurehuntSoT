@@ -10,6 +10,10 @@ last_reviewed: 2026-09-30
 
 Phase 2 integrated through protected PR #669. The exact candidate, hosted decision, merge, and landed smoke are recorded below. A small follow-up updates the legacy browser assertion to reflect Phase 2 canonical arrival behavior.
 
+## Final audit correction
+
+Protected PR #671 completes the independent audit correction. The [final closure record](Project_Landfall_Phase_2_Final_Closure_Record.md) is current authority for the corrected implementation: 400 files / 2,262 unit tests; 24 combined production browser cases; exact-head ordinary Sounding Line run `36798719325`, job `110168004122`, PASS; protected merge `14d4ea4bfe202b2e5c24935352ae242493546a76`; and 21 files / 149 landed focused tests PASS. Its classification is **FULLY CLOSED ON PROTECTED MAIN — POST-MERGE AUDIT CORRECTIONS COMPLETE**. The original evidence below remains historical and is not used alone to establish that stronger classification.
+
 ## Local candidate evidence
 
 | Check                           | Observed result                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |

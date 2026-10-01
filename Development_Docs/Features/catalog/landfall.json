@@ -1,7 +1,7 @@
 {
   "id": "FT-044",
   "title": "Landfall Living World Navigation",
-  "summary": "Creators author versioned physical and virtual Living Charts in Chronicle Studio; six location blocks and a typed completion provider connect them to Drydock and canonical One Voyage progression. Players see released charts, visits, route outcomes, safe replay, and bounded offline reconciliation, while Captains govern safe location actions.",
+  "summary": "Creators author versioned physical and virtual Living Charts in Chronicle Studio; embedded charts, contextual observations and four further location block families connect to Drydock and canonical One Voyage progression. Players use released charts, safe replay and encrypted reload-safe web offline reconciliation, while Captains govern eight authorized location actions.",
   "status": "MAINLINE",
   "program": "Project Landfall Phases 1 and 2",
   "surfaces": [
@@ -25,15 +25,36 @@
     "Six Landfall Chronicle Story Blocks and a typed reusable location completion provider",
     "Canonical Player visit and Captain reveal, selection, skip, confirmation, pause, and resume events",
     "Private custom image overlays, released geometry, historical replay, and Lanternwake arrival and reveal outcomes",
-    "Bounded web shell cache and tab-local evidence queue with explicit reconnect reconciliation"
+    "Embedded Living Chart and Journal drawer share canonical state and one explicit foreground controller; historical charts are read-only",
+    "Block-bound canonical arrival unlocks locationObservation, followed by a separate configured response",
+    "Encrypted bounded chart, released pages, first-party images and one expiring evidence item survive same-tab offline reload and requalify against current server authority",
+    "All eight Captain command branches, source-bound physical Creator receipts, phone/tablet/desktop and keyboard accessibility have direct synthetic acceptance"
   ],
   "evidence": [
-    { "kind": "path", "value": "src/landfall/runtime.ts" },
-    { "kind": "path", "value": "src/landfall/schema.ts" },
-    { "kind": "test", "value": "src/landfall/landfall.test.ts" },
-    { "kind": "test", "value": "tests/e2e/landfall-phase1-live-position.spec.ts" },
-    { "kind": "test", "value": "tests/e2e/landfall-phase2.spec.ts" },
-    { "kind": "test", "value": "src/landfall/journey-projection.test.ts" },
+    {
+      "kind": "path",
+      "value": "src/landfall/runtime.ts"
+    },
+    {
+      "kind": "path",
+      "value": "src/landfall/schema.ts"
+    },
+    {
+      "kind": "test",
+      "value": "src/landfall/landfall.test.ts"
+    },
+    {
+      "kind": "test",
+      "value": "tests/e2e/landfall-phase1-live-position.spec.ts"
+    },
+    {
+      "kind": "test",
+      "value": "tests/e2e/landfall-phase2.spec.ts"
+    },
+    {
+      "kind": "test",
+      "value": "src/landfall/journey-projection.test.ts"
+    },
     {
       "kind": "completion-record",
       "value": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_1_Validation_Record.md"
@@ -41,11 +62,32 @@
     {
       "kind": "path",
       "value": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_2_Implementation_Record.md"
+    },
+    {
+      "kind": "test",
+      "value": "tests/e2e/landfall-closure.spec.ts"
+    },
+    {
+      "kind": "test",
+      "value": "src/chronicle/landfall-commands.test.ts"
+    },
+    {
+      "kind": "test",
+      "value": "src/landfall/offline-store.test.ts"
+    },
+    {
+      "kind": "completion-record",
+      "value": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_2_Final_Closure_Record.md"
+    },
+    {
+      "kind": "commit",
+      "value": "14d4ea4bfe202b2e5c24935352ae242493546a76"
     }
   ],
   "limitations": [
-    "External address/place lookup and virtual game telemetry need configured providers; map tiles and private media are not guaranteed offline.",
-    "Live hardware, production map tiles, production MySQL, deployment, and owner acceptance require separate evidence."
+    "External address/place lookup and virtual game telemetry require configured providers; external tiles and arbitrary private media are not cached.",
+    "Offline chart access requires the same-tab session/edition/CSRF capability and expires after 30 minutes; one pending evidence item expires after 90 seconds. At most six authorized same-origin images totaling 4 MiB are retained. Logout or access changes clear storage; reconnect requires current server authorization and sequence requalification.",
+    "Live hardware and outdoor GPS quality, physical assistive technology, production map tiles, production MySQL, deployment and owner acceptance require separate evidence."
   ],
   "catalogVersion": 1
 }
