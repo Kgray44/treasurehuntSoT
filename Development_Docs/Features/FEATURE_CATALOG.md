@@ -1331,7 +1331,7 @@ Project Drydock Phase 4 gives Creators source-bound launch readiness, compatibil
 **Status:** MAINLINE
 **Program or subsystem:** Project Landfall Phases 1 and 2
 
-Creators author versioned physical and virtual Living Charts in Chronicle Studio; six location blocks and a typed completion provider connect them to Drydock and canonical One Voyage progression. Players see released charts, visits, route outcomes, safe replay, and bounded offline reconciliation, while Captains govern safe location actions.
+Creators author versioned physical and virtual Living Charts in Chronicle Studio; embedded charts, contextual observations and four further location block families connect to Drydock and canonical One Voyage progression. Players use released charts, safe replay and encrypted reload-safe web offline reconciliation, while Captains govern eight authorized location actions.
 
 ### Important subfeatures
 
@@ -1346,7 +1346,10 @@ Creators author versioned physical and virtual Living Charts in Chronicle Studio
 - Six Landfall Chronicle Story Blocks and a typed reusable location completion provider
 - Canonical Player visit and Captain reveal, selection, skip, confirmation, pause, and resume events
 - Private custom image overlays, released geometry, historical replay, and Lanternwake arrival and reveal outcomes
-- Bounded web shell cache and tab-local evidence queue with explicit reconnect reconciliation
+- Embedded Living Chart and Journal drawer share canonical state and one explicit foreground controller; historical charts are read-only
+- Block-bound canonical arrival unlocks locationObservation, followed by a separate configured response
+- Encrypted bounded chart, released pages, first-party images and one expiring evidence item survive same-tab offline reload and requalify against current server authority
+- All eight Captain command branches, source-bound physical Creator receipts, phone/tablet/desktop and keyboard accessibility have direct synthetic acceptance
 
 ### Primary surfaces
 
@@ -1354,8 +1357,9 @@ Creators author versioned physical and virtual Living Charts in Chronicle Studio
 
 ### Meaningful limitations
 
-- External address/place lookup and virtual game telemetry need configured providers; map tiles and private media are not guaranteed offline.
-- Live hardware, production map tiles, production MySQL, deployment, and owner acceptance require separate evidence.
+- External address/place lookup and virtual game telemetry require configured providers; external tiles and arbitrary private media are not cached.
+- Offline chart access requires the same-tab session/edition/CSRF capability and expires after 30 minutes; one pending evidence item expires after 90 seconds. At most six authorized same-origin images totaling 4 MiB are retained. Logout or access changes clear storage; reconnect requires current server authorization and sequence requalification.
+- Live hardware and outdoor GPS quality, physical assistive technology, production map tiles, production MySQL, deployment and owner acceptance require separate evidence.
 
 ### Evidence
 
@@ -1367,6 +1371,11 @@ Creators author versioned physical and virtual Living Charts in Chronicle Studio
 - test: `src/landfall/journey-projection.test.ts`
 - completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_1_Validation_Record.md`
 - path: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_2_Implementation_Record.md`
+- test: `tests/e2e/landfall-closure.spec.ts`
+- test: `src/chronicle/landfall-commands.test.ts`
+- test: `src/landfall/offline-store.test.ts`
+- completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_2_Final_Closure_Record.md`
+- commit: `14d4ea4bfe202b2e5c24935352ae242493546a76`
 
 ---
 

@@ -10,14 +10,17 @@ last_reviewed: 2026-09-30
 
 ## Reconciliation of the earlier claim
 
-The [original validation record](Project_Landfall_Phase_2_Validation_Record.md) asserted “FULLY CLOSED ON PROTECTED MAIN” after PR #669 and the #670 evidence follow-up. Those integrations and their evidence remain historical facts. The subsequent independent audit identified missing functional and acceptance depth in embedded Living Charts, two-stage observations, durable offline reload, Captain command coverage, physical Creator field walks, responsive layouts and accessibility. The earlier assertion is preserved; it is insufficient for final contract closure until this correction's protected completion gates pass.
+The [original validation record](Project_Landfall_Phase_2_Validation_Record.md) asserted “FULLY CLOSED ON PROTECTED MAIN” after PR #669 and the #670 evidence follow-up. Those integrations and their evidence remain historical facts. The subsequent independent audit identified missing functional and acceptance depth in embedded Living Charts, two-stage observations, durable offline reload, Captain command coverage, physical Creator field walks, responsive layouts and accessibility. The earlier assertion is preserved; final contract closure is now established by the correction and stronger acceptance gates below.
 
 ## Correction identity and state
 
 - Starting protected main: `b742c389da9f7bad1a42897fae688dbabe9acfa3` (includes #669 product merge and #670 evidence reconciliation).
 - Owned branch: `codex/landfall-phase2-final-closure`.
-- Product correction: [PR #671](https://github.com/Kgray44/treasurehuntSoT/pull/671); final candidate, hosted PASS, protected merge and landed smoke remain pending.
-- Feature Catalog FT-044: reviewed; its meaningful offline/interaction limitation update is deferred until the product correction lands.
+- Product correction: protected [PR #671](https://github.com/Kgray44/treasurehuntSoT/pull/671), merged as `14d4ea4bfe202b2e5c24935352ae242493546a76`.
+- Final candidate: `9bc1f28198f65123fc8e8b14710bc329d95146da`; tree `d9588193c23a7ca2495aebe6cc5635d2d0f9aedd` matches landed product main exactly.
+- Hosted ordinary Sounding Line: [run 36798719325](https://github.com/Kgray44/treasurehuntSoT/actions/runs/36798719325), job `110168004122`, exact head/base/tree decision **PASS**, all nine obligations satisfied with no remainder. Hosted production browsers: **20/20 PASS** (15 closure and five retained Phase 2); Phase 1 compatibility is separately covered by the combined local run.
+- Landed product main: `14d4ea4bfe202b2e5c24935352ae242493546a76`. Landed docs index/validation, Feature Catalog sync/validation and **21 files / 149 focused tests PASS** (18.39 seconds).
+- Feature Catalog FT-044: reconciled only after the product correction landed; embedded Charts, contextual observation, durable encrypted offline reload and bounded first-party imagery replace the prior tab-memory limitation. Evidence publication uses `codex/landfall-phase2-final-evidence`, without changing the qualified runtime tree.
 
 ## Acceptance coverage
 
@@ -45,8 +48,10 @@ The [original validation record](Project_Landfall_Phase_2_Validation_Record.md) 
 
 Fixtures use synthetic accounts, fictional maps and synthetic browser geolocation in a task-owned production runtime and isolated SQLite database. A native `watchPosition` first fix is counted separately from deterministic follow-up callbacks; no outdoor GPS, physical-device quality, external map-provider availability, production MySQL, deployment or owner acceptance is claimed. No schema migration is changed. Phase 3 Read the Ground, Phase 4 Hold the Bearing and the separate Watchglass project have not started.
 
-## Protected completion gates
+## Completion classification
 
-This record must receive the stable local unit/browser totals, exact candidate and PR, ordinary hosted Sounding Line PASS, protected merge identity, landed-tree smoke, final FT-044 reconciliation and final protected main identity before the classification becomes:
+PROJECT LANDFALL — PHASE 2: BRING THE WORLD ABOARD
 
-`FULLY CLOSED ON PROTECTED MAIN — POST-MERGE AUDIT CORRECTIONS COMPLETE`.
+**FULLY CLOSED ON PROTECTED MAIN — POST-MERGE AUDIT CORRECTIONS COMPLETE.**
+
+The product qualification and landed-main identity above establish this classification. The subsequent minimal catalog/evidence publication advances documentation only; its protected merge identity is available from Git history. This classification does not imply deployment, owner acceptance, physical field acceptance, Phase 3, Phase 4 or another Final Four project.

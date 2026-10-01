@@ -8,11 +8,11 @@ last_reviewed: 2026-09-30
 
 # Project Landfall Phase 2: Bring the World Aboard
 
-## Final closure correction candidate
+## Protected final closure correction
 
 The final correction embeds the actual canonical Chart in `livingChart`, shares one foreground controller with the drawer, releases read-only historical snapshots, and separates block-bound arrival from observation response. Provider-required outcomes are checked before consuming a visit. All eight Captain actions have direct transaction and browser acceptance; stale conflicts persist in the Console. Creator field walks stop on source/selection/background/unmount changes and retain only sanitized source-bound receipts. Released chart/pages, authorized first-party images and one short-lived encrypted evidence item survive appropriate offline reload and reconcile through existing server authority. Responsive and accessibility corrections are limited to evidenced Landfall/Journal/Console defects.
 
-The [final closure record](Project_Landfall_Phase_2_Final_Closure_Record.md) reconciles the earlier completion assertion with exact correction qualification and integration evidence. No Phase 3 or Phase 4 implementation is included.
+The [final closure record](Project_Landfall_Phase_2_Final_Closure_Record.md) reconciles the earlier completion assertion with exact correction qualification and integration evidence. Protected PR #671 landed as `14d4ea4bfe202b2e5c24935352ae242493546a76` after exact-head ordinary Sounding Line PASS; landed focused smoke passed 149 tests. No Phase 3 or Phase 4 implementation is included.
 
 This record describes source implemented from the accepted Phase 1 mainline (`27f6e08c6ed24ff636a9b31d28abe101344abedf`). Protected integration and hosted qualification are recorded separately in the Phase 2 validation record.
 

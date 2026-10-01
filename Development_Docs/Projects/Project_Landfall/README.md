@@ -31,7 +31,7 @@ These records describe the Phase 1 foundation, the Player live-position correcti
 
 ## Phase 2 engineering records
 
-The [final closure correction record](Project_Landfall_Phase_2_Final_Closure_Record.md) reconciles the original completion claim and tracks the independent audit corrections and protected acceptance gates.
+The [final closure correction record](Project_Landfall_Phase_2_Final_Closure_Record.md) reconciles the original completion claim. Protected PR #671 and its exact-head hosted PASS and landed smoke complete the independent audit corrections: **FULLY CLOSED ON PROTECTED MAIN — POST-MERGE AUDIT CORRECTIONS COMPLETE**. Live-device, deployment and owner acceptance remain separate.
 
 - [Design record](Project_Landfall_Phase_2_Design_Record.md)
 - [Threat model](Project_Landfall_Phase_2_Threat_Model.md)
