@@ -14,7 +14,7 @@ last_reviewed: 2026-10-01
 
 ### Added
 
-- Added the local Landfall Phase 3 v1.1 follow-up: authored-unit virtual context, versioned independent-source/conflict policy, virtual landmark authoring and a scoped certified Watchglass receipt seam. Recognition remains unconfigured with explicit readable fallback; publication and protected integration await approval. The amendment record tracks local qualification separately from the accepted baseline.
+- Added the Landfall Phase 3 v1.1 follow-up: authored-unit virtual context, versioned independent-source/conflict policy, virtual landmark authoring and a scoped certified Watchglass receipt seam. Recognition remains unconfigured with explicit readable fallback. Local ordinary qualification passes all nine obligations and 13 production browsers; draft publication is approved, with protected integration and deployment separate. The amendment record preserves exact identities and earlier failed evidence.
 
 - Added Project Landfall Phase 3 contextual navigation: aligned floor/site maps and region hierarchies, corridor continuity and uncertainty, foreground motion/heading/elevation hints, region-gated landmark reference comparison, independent exact-target observation, accessible fallbacks and sanitized Creator/Captain/replay projections. Physical field quality remains separate evidence; native/background Phase 4 work is deferred.
 

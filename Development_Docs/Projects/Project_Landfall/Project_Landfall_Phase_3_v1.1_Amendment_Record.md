@@ -10,7 +10,7 @@ last_reviewed: 2026-10-01
 
 This bounded follow-up implements the Phase 3 expansion in the [v1.1 governing amendment](../../Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf), section 29 (page 29), with sections 8.3, 17 and 18 governing fusion, Watchglass ownership and progression. It reuses the [accepted Phase 3 baseline](Project_Landfall_Phase_3_Accepted_Capsule.md) at protected main `d38cb756afe61f7b13251cf980d0deb8dbfc38f1`. PR #673/#674 qualification remains evidence for that baseline, not these changed files.
 
-Owned local clone: `landfall-v11`; branch: `codex/landfall-phase3-v11`. Publication requires explicit user approval. No push, PR, protected integration, deployment, production recognition package or Phase 4 acceptance is claimed.
+Owned clone: `landfall-v11`; branch: `codex/landfall-phase3-v11`. The user approved push and draft PR publication after passing checks. Protected integration, merge, deployment, production recognition packages and Phase 4 acceptance are not authorized or claimed. This record remains draft until a separately authorized protected integration.
 
 ## Acceptance contracts
 
@@ -28,7 +28,12 @@ Owned local clone: `landfall-v11`; branch: `codex/landfall-phase3-v11`. Publicat
 
 - Focused follow-up: five files / 67 tests PASS, 4.46 seconds, covering the amendment and retained contextual/domain, encrypted offline and Creator controls. The prior 43-test run was reused during review.
 - The original saved TypeScript fixture was corrected and a fresh typecheck passed. Added coverage exposed missing synthetic landmark privacy fields and union-geometry typing; both were repaired. A post-conflict rejection expectation was corrected to honest unavailable. Failed runs remain in `tmp/landfall-v11` and are not passing proof.
-- Final ordinary local qualification and affected production browser results are pending at this checkpoint. Evidence lives in `artifacts/sounding-line` and `tmp/landfall-v11`; update this ledger from completed results only.
+- Final local ordinary Sounding Line: **PASS**, candidate `90495f1c31dab6f7837a3bd01747d29833a7eb74`, tree `c7304a2672a25b92b881f338ba50dc1dd4ab3b95`, against starting protected main above. All **9 obligations satisfied**, empty remainder and no finalization errors. Six obligations executed fresh; valid reconciliation avoided 121,860 ms of repeated work.
+- Selected unit qualification: **175 files / 1,241 tests PASS** (110 files / 820 tests and 65 files / 421 tests). The frozen browser-fixture revisions preserve the qualified application/unit/dependency source and reused its matching evidence. The amendment's additional server-time freshness and validity-interval regression is included.
+- Exact-candidate production browsers: **13/13 PASS**, 55.5 seconds; three virtual Creator/Player cases plus all ten retained Phase 3 cases. Virtual authoring persists references, policy and canonical fallback; phone/desktop Players use first-party imagery, accessible keyboard fallback, canonical visit and released historical replay with no camera/GPS acquisition. Scoped axe, pointer reachability and width checks pass; virtual Creator and Player screenshots were visually reviewed. Retained physical cases cover museum, garden, exact-target observation, offline floors and four viewports at 200% text.
+- The first complete candidate `86ef57e39a45f0069a84cfb2a9db9267f3b927c1` failed three newly added browser cases: a select-label locator and an unsupported historical lookup for a waypointJourney. Candidate `33009d9d7c4a87398821569f72be7e59d4cfa20a` repaired those fixtures but failed two asynchronous event-count assertions. Role locators, a released Living Chart and explicit waiting for the canonical visit fixed the harness without weakening assertions. A focused three-case virtual run passed before final qualification. These earlier failed identities remain failures.
+- TypeScript, affected lint/format, production build, repository/build/staged privacy checks and required migration sentinels pass within ordinary qualification. Documentation index/validation and catalog sync/validation pass separately. No database schema or dependency changes.
+- Machine decision and retained local logs: `artifacts/sounding-line/ordinary-decision.json`, `tmp/landfall-v11/ordinary-final.log` and the preserved failed/focused logs. Subsequent evidence-document edits preserve the qualified application and test source. Hosted qualification must bind the exact published draft head; the existing workflow's owner dispatch supports this while automatic draft checks are skipped. A future PR check or protected merge must not be inferred from this local result.
 
 ## Boundaries and publication
 
@@ -36,4 +41,4 @@ Legacy definitions omit the optional fields; no database migration is needed. Ex
 
 Production Watchglass operations, optional game telemetry, native/background providers, real physical/game recognition quality, live assistive technology, MySQL, deployment, owner acceptance and launch readiness require separate evidence. Stronger source policies require actual independent qualifying sources; contextual priors cannot satisfy them. Unavailability follows the authored alternate path required by section 17.
 
-Feature Catalog decision: review FT-044 and run sync/validation, without promoting this unintegrated follow-up into the accepted mainline catalog. Publication remains paused for explicit approval.
+Feature Catalog decision: FT-044 was reviewed; sync/validation pass. Its accepted mainline entry is preserved without promoting this unintegrated follow-up. Draft publication is approved; protected integration remains a separate action.
