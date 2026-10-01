@@ -7137,7 +7137,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_Accepted_Capsule.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_Qualification_Receipt.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

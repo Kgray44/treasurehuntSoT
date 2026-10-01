@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "phase": "LANDFALL_PHASE_3",
+  "startingMain": "01cf22976dcf32e7fa4a3bf75d47b96d677f26ec",
+  "implementationPr": "https://github.com/Kgray44/treasurehuntSoT/pull/673",
+  "candidate": "ecc21f730758dd4b0901c6467b21fab637e604e9",
+  "candidateTree": "9879fe4928ab6a96e6cd31b5a34a05dbf4f75a14",
+  "landedProductMain": "660461e11c8d8462169b17f762a7d398a4d01465",
+  "treeEquality": "PASS",
+  "schemaMigration": "NONE",
+  "fullUnits": {
+    "source": "96008206894623428b20b0464cbcae1029c7cab6",
+    "files": 408,
+    "tests": 2324,
+    "seconds": 435.52,
+    "result": "PASS",
+    "finalRevision": "E2E assertion only; identical application/unit/dependency trees"
+  },
+  "combinedBrowsers": {
+    "tests": 34,
+    "phase3": 10,
+    "retained": 24,
+    "executionMs": 101868,
+    "cleanupMs": 41,
+    "result": "PASS"
+  },
+  "landedSmoke": {
+    "files": 27,
+    "tests": 180,
+    "seconds": 26.53,
+    "result": "PASS"
+  },
+  "evidencePublication": "EVIDENCE_PR",
+  "finalMainResolution": "merge_commit_sha of the evidence-only protected publication; application tree preserved",
+  "physicalFieldAcceptance": "NOT_CLAIMED",
+  "deployment": "NOT_CLAIMED",
+  "phase4": "DEFERRED",
+  "local": {
+    "decision": "PASS",
+    "baseSha": "01cf22976dcf32e7fa4a3bf75d47b96d677f26ec",
+    "candidateSha": "ecc21f730758dd4b0901c6467b21fab637e604e9",
+    "candidateTree": "9879fe4928ab6a96e6cd31b5a34a05dbf4f75a14",
+    "requiredObligations": 10,
+    "finalization": {
+      "authority": "SOUNDING_LINE_EVIDENCE_FINALIZER",
+      "requiredObligations": 10,
+      "closure": [
+        {
+          "obligationId": "preflight.43c9dbfa96b214204d680e8f",
+          "receiptId": "sl14-083c5934bc2bef54cc721ba51ae2035a",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.7b6587f5d57d3163f84b90a2",
+          "receiptId": "sl14-3956616426796d0d05c1ec9032c2df8e",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.b6afec1badc6d034b0aaa5a0",
+          "receiptId": "sl14-ee904d10e12a7a3298d49b5417f83bc8",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.06bb2802ffe5ab9677efa486",
+          "receiptId": "sl14-c9e09b83cf3e3272ff17687332d43d08",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.bda79721781de0679d88e863",
+          "receiptId": "sl14-23aaf5144f2c1cbc7c646dfc1bdbed8a",
+          "satisfied": true
+        },
+        {
+          "obligationId": "unit.1212cae3be58869eb0671362",
+          "receiptId": "sl14-a921c73415f4145dcc385ecc43006979",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.a33fe1c49394c96f35c83fd8",
+          "receiptId": "sl14-cbf87776a41963783323cbe1c9bd5a20",
+          "satisfied": true
+        },
+        {
+          "obligationId": "migration.881c319da844d6391aac0892",
+          "receiptId": "sl14-f02b2f12f019d7e90bbc674cc76ab9ca",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.fce717a1f98e59c77e5a2305",
+          "receiptId": "sl14-825fb7f5a9e25bb0012fec5740e923e4",
+          "satisfied": true
+        },
+        {
+          "obligationId": "browser.50e0161cb8ac97096a469763",
+          "receiptId": "sl14-5083c0513a9c521f820c8bbe78998b16",
+          "satisfied": true
+        }
+      ],
+      "remainder": [],
+      "counts": {
+        "FRESH": 2,
+        "PRESERVED": 0,
+        "REBOUND": 3,
+        "INVALIDATED": 5,
+        "CONSERVATIVE_FALLBACK": 0
+      },
+      "errors": [],
+      "decision": "PASS"
+    },
+    "browserTiming": {
+      "serverPreparationMs": 8,
+      "serverReadinessMs": 1623,
+      "browserExecutionMs": 43472,
+      "infrastructureFailureWaitMs": 0,
+      "cleanupMs": 31
+    }
+  },
+  "hosted": {
+    "decision": "PASS",
+    "baseSha": "01cf22976dcf32e7fa4a3bf75d47b96d677f26ec",
+    "candidateSha": "ecc21f730758dd4b0901c6467b21fab637e604e9",
+    "candidateTree": "9879fe4928ab6a96e6cd31b5a34a05dbf4f75a14",
+    "requiredObligations": 10,
+    "finalization": {
+      "authority": "SOUNDING_LINE_EVIDENCE_FINALIZER",
+      "requiredObligations": 10,
+      "closure": [
+        {
+          "obligationId": "preflight.43c9dbfa96b214204d680e8f",
+          "receiptId": "sl14-b32fb8e1b26cdc778263b71b17017864",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.7b6587f5d57d3163f84b90a2",
+          "receiptId": "sl14-d30b0c1f9d47a693fec69b967c4830d2",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.b6afec1badc6d034b0aaa5a0",
+          "receiptId": "sl14-8c6db9a42b7fd2df1dcccd021519cde7",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.06bb2802ffe5ab9677efa486",
+          "receiptId": "sl14-220bcded6fe83b1fb6ff1d4dd5f3b7a3",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.bda79721781de0679d88e863",
+          "receiptId": "sl14-07feea0d2dcf0ea2af4f06746a8e2dd9",
+          "satisfied": true
+        },
+        {
+          "obligationId": "unit.1212cae3be58869eb0671362",
+          "receiptId": "sl14-55680ea129ee79937dc328ea9e96eadc",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.626397032f8030d2781f7950",
+          "receiptId": "sl14-f791ee2a9066c50014ac4a9526abd6dd",
+          "satisfied": true
+        },
+        {
+          "obligationId": "migration.881c319da844d6391aac0892",
+          "receiptId": "sl14-283b8b4676d16abeffa3469f4a3d9a0a",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.a508463bcaa3504abf1c92dc",
+          "receiptId": "sl14-94a6327b0452565aa12bf7055b78f3b4",
+          "satisfied": true
+        },
+        {
+          "obligationId": "browser.50e0161cb8ac97096a469763",
+          "receiptId": "sl14-eeddfbc09caf7f9719baa25452b03228",
+          "satisfied": true
+        }
+      ],
+      "remainder": [],
+      "counts": {
+        "FRESH": 10,
+        "PRESERVED": 0,
+        "REBOUND": 0,
+        "INVALIDATED": 0,
+        "CONSERVATIVE_FALLBACK": 0
+      },
+      "errors": [],
+      "decision": "PASS"
+    },
+    "browserTiming": {
+      "serverPreparationMs": 2,
+      "serverReadinessMs": 1632,
+      "browserExecutionMs": 62593,
+      "infrastructureFailureWaitMs": 0,
+      "cleanupMs": 5002
+    },
+    "run": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/36831085150",
+    "job": "110267605499"
+  }
+}

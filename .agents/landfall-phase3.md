@@ -1,6 +1,6 @@
 # Landfall Phase 3 context packet and read/search logbook
 
-Execution: Project Trim STANDARD_AUTONOMOUS; product-phase profile. This is active automation material. Permanent design and acceptance evidence belongs under Development_Docs/Projects/Project_Landfall. Do not claim acceptance before exact-candidate protected qualification and landed verification.
+Execution: Project Trim STANDARD_AUTONOMOUS; product-phase profile. This is closed Phase 3 automation material; no work remains active after its protected evidence publication. Permanent design and acceptance evidence belongs under Development_Docs/Projects/Project_Landfall. Do not claim acceptance before exact-candidate protected qualification and landed verification.
 
 ## Accepted baseline
 
@@ -49,3 +49,7 @@ Expand only for concrete questions; record meaningful conclusions here. Focused 
 Follow-up expansion: exact-head keyboard fallback traces required the route seam. Suffix fixtures omitted prior guided checkpoints; canonical rejection was correct. They now author a valid suffix and retain control-hit and canonical assertions. Decoder metadata review required untrusted still-format bounds: decoded raster allowlist rejects disguised vector input. Both conclusions stay within Phase 3 acceptance/trust scope.
 
 Final bounded trust review expanded only to nested outbox hints and independent visual frames. Optional heading/speed/elevation now strip before encrypted position delivery; distinct decoded-view hashes and negative contradiction prevent copied/contradictory stills from confirming. Existing short-lived position delivery, canonical writer and no-context definitions stay intact.
+
+## Closure handoff
+
+Product PR #673 landed as 660461e11c8d8462169b17f762a7d398a4d01465. Final exact candidate ecc21f730758dd4b0901c6467b21fab637e604e9 passed local and hosted ordinary Sounding Line with 10/10 obligations and no remainder. The accepted Phase 3 capsule under Development_Docs/Projects/Project_Landfall is the next-phase authority; evidence publication is EVIDENCE_PR. Phase 4 remains deferred.
