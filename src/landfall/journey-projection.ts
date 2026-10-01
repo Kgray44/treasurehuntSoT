@@ -8,6 +8,63 @@ export type LandfallJourneyEvent = Readonly<{
   createdAt?: Date | string;
 }>;
 
+/** Durable contextual claims contain identifiers/categories only, never sensor samples. */
+export type LandfallContextSummary = Readonly<{
+  state: "KNOWN" | "LIKELY" | "NEARBY" | "INFERRED" | "UNCERTAIN" | "UNAVAILABLE" | "CONFIRMED";
+  regionId: string | null;
+  mapId: string | null;
+  level: string | null;
+  evidenceCategories: readonly string[];
+  landmarkId?: string;
+  fallbackUsed?: boolean;
+}>;
+
+export function sanitizeLandfallContextSummary(
+  value: unknown,
+  definition: LandfallDefinition,
+): LandfallContextSummary | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const input = value as Record<string, unknown>;
+  const states = ["KNOWN", "LIKELY", "NEARBY", "INFERRED", "UNCERTAIN", "UNAVAILABLE", "CONFIRMED"];
+  if (typeof input.state !== "string" || !states.includes(input.state)) return null;
+  const region = definition.context?.regions.find((item) => item.id === input.regionId);
+  if (!region || region.privacyClassification === "APPROXIMATE_REAL_WORLD") return null;
+  const allowed = [
+    "POSITION",
+    "MOTION",
+    "HEADING",
+    "ELEVATION",
+    "LANDMARK",
+    "OBSERVATION",
+    "PLAYER_CONFIRMATION",
+    "CAPTAIN_CONFIRMATION",
+    "BROWSER_GEOLOCATION",
+    "ROUTE",
+    "GPS",
+    "CONTINUITY",
+  ];
+  return {
+    state: input.state as LandfallContextSummary["state"],
+    regionId: region.id,
+    mapId: region.mapId,
+    level: region.level ?? null,
+    evidenceCategories: Array.isArray(input.evidenceCategories)
+      ? [
+          ...new Set(
+            input.evidenceCategories.filter(
+              (item): item is string => typeof item === "string" && allowed.includes(item),
+            ),
+          ),
+        ].slice(0, 8)
+      : [],
+    ...(typeof input.landmarkId === "string" &&
+    definition.context?.landmarks.some((item) => item.id === input.landmarkId && item.regionId === region.id)
+      ? { landmarkId: input.landmarkId }
+      : {}),
+    ...(input.fallbackUsed === true ? { fallbackUsed: true } : {}),
+  };
+}
+
 export type LandfallJourneyProjection = Readonly<{
   activeWorldspaceId: string;
   visitedIds: readonly string[];
@@ -19,12 +76,14 @@ export type LandfallJourneyProjection = Readonly<{
   selectedRouteId: string | null;
   selectedWaypointId: string | null;
   paused: boolean;
+  contextualSummary: LandfallContextSummary | null;
   journeyPath: readonly Readonly<{
     id: string;
     worldspaceId: string;
     kind: "VISIT" | "TRANSITION";
     targetId: string;
     confirmedAt: string | null;
+    contextualSummary?: LandfallContextSummary | null;
   }>[];
   availableWaypoints: readonly LandfallWaypoint[];
   activeWaypointId: string | null;
@@ -61,6 +120,7 @@ export function projectLandfallJourney(
   let selectedRouteId: string | null = null;
   let selectedWaypointId: string | null = null;
   let paused = false;
+  let contextualSummary: LandfallContextSummary | null = null;
   let explicitTransition = false;
   for (const event of [...events].sort((a, b) => a.sequence - b.sequence || a.id.localeCompare(b.id))) {
     const payload = payloadOf(event);
@@ -72,12 +132,14 @@ export function projectLandfallJourney(
         if (!waypointId || !waypoints.has(waypointId) || visited.has(waypointId)) break;
         visited.add(waypointId);
         discovered.add(waypointId);
+        contextualSummary = sanitizeLandfallContextSummary(payload.contextualSummary, definition);
         path.push({
           id: event.id,
           worldspaceId: waypoints.get(waypointId)!.worldspaceId,
           kind: "VISIT",
           targetId: waypointId,
           confirmedAt: event.createdAt ? new Date(event.createdAt).toISOString() : null,
+          ...(contextualSummary ? { contextualSummary } : {}),
         });
         break;
       case "landfallWaypointSkipped":
@@ -117,6 +179,7 @@ export function projectLandfallJourney(
           selectedRouteId = null;
           selectedWaypointId = null;
           explicitTransition = true;
+          contextualSummary = null;
           path.push({
             id: event.id,
             worldspaceId: destinationId,
@@ -178,6 +241,7 @@ export function projectLandfallJourney(
     selectedRouteId,
     selectedWaypointId,
     paused,
+    contextualSummary,
     journeyPath: path,
     availableWaypoints,
     activeWaypointId,

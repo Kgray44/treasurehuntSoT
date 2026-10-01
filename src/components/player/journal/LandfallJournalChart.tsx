@@ -4,6 +4,10 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 import type { MotionMode } from "@/animation/core/animation-types";
 import { VoyageChart } from "@/components/player/workspace/VoyageChart";
 import { LandfallPresentation } from "@/components/player/journal/LandfallPresentation";
+import { LandfallContextGuidance } from "@/components/player/journal/LandfallContextGuidance";
+import { LandfallLandmarkPanel } from "@/components/player/journal/LandfallLandmarkPanel";
+import { BrowserContextProvider, type BrowserContextTarget } from "@/landfall/browser-context";
+import type { ContextualEvidence, ContextualSnapshot } from "@/landfall/contextual";
 import { BrowserGeolocationProvider } from "@/landfall/browser-geolocation";
 import { distance } from "@/landfall/geometry";
 import type { LandfallCurrentPosition } from "@/landfall/map-projection";
@@ -80,8 +84,14 @@ function useLandfallController({
   const [position, setPosition] = useState<LandfallCurrentPosition | null>(null);
   const [replayId, setReplayId] = useState<string | null>(null);
   const [availability, setAvailability] = useState<OfflineAvailability | null>(null);
+  const [contextSnapshot, setContextSnapshot] = useState<ContextualSnapshot | null>(null);
+  const [contextTracking, setContextTracking] = useState(false);
+  const [contextMessage, setContextMessage] = useState("Optional motion and heading hints are off.");
+  const [landmarkObservations, setLandmarkObservations] = useState<LandfallObservation[]>([]);
   const runtime = useRef<LandfallRuntime | null>(null);
   const browser = useRef<BrowserGeolocationProvider | null>(null);
+  const contextBrowser = useRef<BrowserContextProvider | null>(null);
+  const contextSamples = useRef<ContextualEvidence[]>([]);
   const samples = useRef<LandfallObservation[]>([]);
   const submitting = useRef(false);
   const submittedEvidenceIds = useRef(new Set<string>());
@@ -122,6 +132,9 @@ function useLandfallController({
       if (!mounted) return;
       setTracking(false);
       setPosition(null);
+      setContextSnapshot(null);
+      setContextTracking(false);
+      setLandmarkObservations([]);
       try {
         const cacheKey = `${sessionId}:${publishedVersionId}:${csrfToken}:${historical ? "history" : "live"}`;
         let offlineCacheUsed = false;
@@ -183,6 +196,8 @@ function useLandfallController({
         if (next.runtimeDefinition.routes[0]?.geometry) active.setActiveRoute(next.runtimeDefinition.routes[0].id);
         runtime.current = active;
         const worldspace = next.runtimeDefinition.worldspaces[0];
+        if (!historical && !next.replayOnly && next.runtimeDefinition.context && worldspace.kind === "PHYSICAL")
+          contextBrowser.current = new BrowserContextProvider(window as unknown as BrowserContextTarget, worldspace.id);
         const waypoint = next.runtimeDefinition.waypoints.find((item) => item.id === next.activeWaypointId);
         if (
           worldspace.kind === "PHYSICAL" &&
@@ -216,30 +231,41 @@ function useLandfallController({
       mounted = false;
       abort.abort();
       browser.current?.stop();
+      contextBrowser.current?.stop();
+      contextBrowser.current = null;
+      contextSamples.current = [];
       browser.current = null;
       runtime.current?.pause();
       runtime.current = null;
       samples.current = [];
+      setLandmarkObservations([]);
       releaseOfflineAssets();
     };
   }, [csrfToken, historical, publishedVersionId, sessionId, revision, passages, loadEnabled]);
 
   useEffect(() => {
-    if (!tracking) return;
+    if (!tracking && !contextTracking) return;
     const timer = window.setInterval(() => {
       const fix = runtime.current?.currentPosition(Date.now());
-      if (!fix) {
+      setContextSnapshot(runtime.current?.contextSnapshot(Date.now()) ?? null);
+      if (tracking && !fix) {
         setPosition(null);
         setMessage("Location signal is stale or uncertain. Waiting for a fresh accurate fix.");
       }
     }, 2_000);
     return () => window.clearInterval(timer);
-  }, [tracking]);
+  }, [tracking, contextTracking]);
 
   useEffect(() => {
     const stopInBackground = () => {
       if (document.visibilityState === "visible") return;
       browser.current?.stop();
+      contextBrowser.current?.stop();
+      contextSamples.current = [];
+      samples.current = [];
+      setLandmarkObservations([]);
+      setContextTracking(false);
+      setContextSnapshot(null);
       runtime.current?.pause();
       setTracking(false);
       setPosition(null);
@@ -251,15 +277,25 @@ function useLandfallController({
 
   const stop = () => {
     browser.current?.stop();
+    contextBrowser.current?.stop();
+    contextSamples.current = [];
+    setContextTracking(false);
+    setContextSnapshot(null);
     runtime.current?.pause();
     setTracking(false);
     setPosition(null);
     samples.current = [];
+    setLandmarkObservations([]);
     setMessage("Location is off. Use my location to resume.");
   };
   const sendEvidence = async (evidence: PlayerLandfallEvidence) => {
     if (submitting.current) return;
+    const ephemeral = evidence.method === "LANDMARK";
     if (!navigator.onLine) {
+      if (ephemeral) {
+        setMessage("Landmark verification needs a connection. Use the readable fallback; no visit was recorded.");
+        return;
+      }
       pendingEvidence.current = evidence;
       try {
         await queueLandfallEvidence(sessionId, publishedVersionId, csrfToken, evidence);
@@ -337,6 +373,12 @@ function useLandfallController({
       await clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
       setAvailability((value) => (value ? { ...value, pendingEvidence: 0 } : value));
       browser.current?.stop();
+      contextBrowser.current?.stop();
+      contextSamples.current = [];
+      samples.current = [];
+      setLandmarkObservations([]);
+      setContextTracking(false);
+      setContextSnapshot(null);
       runtime.current?.pause();
       setTracking(false);
       setPosition(null);
@@ -347,6 +389,10 @@ function useLandfallController({
       );
       onProgress();
     } catch {
+      if (ephemeral) {
+        setMessage("Landmark verification could not be recorded. Retry online or use the configured fallback.");
+        return;
+      }
       pendingEvidence.current = evidence;
       try {
         await queueLandfallEvidence(sessionId, publishedVersionId, csrfToken, evidence);
@@ -392,8 +438,11 @@ function useLandfallController({
       (observation) => {
         const now = Date.now();
         const outcome = active.ingest(observation, now);
-        if (!outcome.rejection && observation.kind === "PHYSICAL_POSITION")
+        setContextSnapshot(active.contextSnapshot(now));
+        if (!outcome.rejection && observation.kind === "PHYSICAL_POSITION") {
           samples.current = [...samples.current, observation].slice(-20);
+          setLandmarkObservations(samples.current);
+        }
         const fix = active.currentPosition(now);
         setPosition(
           fix && fix.coordinate.type === "WGS84"
@@ -423,7 +472,10 @@ function useLandfallController({
         const waypoint = bootstrap.runtimeDefinition.waypoints.find((item) => item.id === bootstrap.activeWaypointId);
         if (
           waypoint &&
-          outcome.confidence === "CONFIRMED" &&
+          (outcome.confidence === "CONFIRMED" ||
+            (outcome.confidence === "LIKELY_INSIDE" &&
+              (waypoint.completion.requiredOutcome === "LIKELY_INSIDE" ||
+                bootstrap.contextualArrivalWaypointId === waypoint.id))) &&
           !bootstrap.paused &&
           csrfToken &&
           !submitting.current &&
@@ -485,9 +537,72 @@ function useLandfallController({
     });
   };
 
+  const toggleContext = async () => {
+    if (contextTracking) {
+      contextBrowser.current?.stop();
+      contextSamples.current = [];
+      setContextTracking(false);
+      setContextMessage("Optional motion and heading hints are off.");
+      setContextSnapshot(runtime.current?.contextSnapshot(Date.now()) ?? null);
+      return;
+    }
+    const provider = contextBrowser.current;
+    const active = runtime.current;
+    if (!enabled || historical || bootstrap?.replayOnly || bootstrap?.paused || !provider || !active) return;
+    active.resume();
+    await provider.start(
+      { sessionId, publishedVersionId },
+      (evidence) => {
+        contextSamples.current = [...contextSamples.current, evidence].slice(-16);
+        setContextSnapshot(active.ingestContext(evidence, Date.now()));
+      },
+      (permission) => {
+        setContextTracking(permission === "GRANTED");
+        setContextMessage(
+          permission === "GRANTED"
+            ? "Optional motion and heading hints are on while this chart is open."
+            : permission === "DENIED"
+              ? "Motion permission was denied. Your chart and fallback remain available."
+              : permission === "UNAVAILABLE"
+                ? "Motion and heading are unavailable. Your chart and fallback remain available."
+                : "Requesting motion permission…",
+        );
+      },
+      true,
+    );
+  };
+  const confirmLandmark = async (receipt: string) => {
+    if (
+      !enabled ||
+      historical ||
+      bootstrap?.replayOnly ||
+      bootstrap?.paused ||
+      !bootstrap?.activeWaypointId ||
+      submitting.current ||
+      pendingEvidence.current
+    )
+      return;
+    await sendEvidence({
+      schemaVersion: 1,
+      sessionId,
+      publishedVersionId,
+      worldspaceId: bootstrap.runtimeDefinition.worldspaces[0].id,
+      waypointId: bootstrap.activeWaypointId,
+      evidenceId: crypto.randomUUID(),
+      expectedSequence: bootstrap.currentSequence,
+      idempotencyKey: crypto.randomUUID(),
+      method: "LANDMARK",
+      landmarkReceipt: receipt,
+      observations: [...samples.current],
+      ...(contextSamples.current.length ? { contextualEvidence: [...contextSamples.current] } : {}),
+    });
+  };
+
   useEffect(() => {
     if (enabled) return;
     browser.current?.stop();
+    contextBrowser.current?.stop();
+    contextSamples.current = [];
     runtime.current?.pause();
     samples.current = [];
     let active = true;
@@ -495,6 +610,9 @@ function useLandfallController({
       if (active) {
         setTracking(false);
         setPosition(null);
+        setContextTracking(false);
+        setContextSnapshot(null);
+        setLandmarkObservations([]);
       }
     });
     return () => {
@@ -507,9 +625,15 @@ function useLandfallController({
       bootstrapCache.clear();
       pendingEvidence.current = null;
       browser.current?.stop();
+      contextBrowser.current?.stop();
+      contextSamples.current = [];
+      samples.current = [];
+      setLandmarkObservations([]);
       runtime.current?.pause();
       setTracking(false);
       setPosition(null);
+      setContextTracking(false);
+      setContextSnapshot(null);
       setBootstrap(null);
       setMessage("Offline access cleared. Sign in and reopen the Voyage to continue.");
     };
@@ -529,6 +653,14 @@ function useLandfallController({
     confirmFallback,
     mode,
     availability,
+    contextSnapshot,
+    contextTracking,
+    contextMessage,
+    toggleContext,
+    confirmLandmark,
+    observations: landmarkObservations,
+    acquisitionEnabled: enabled,
+    csrfToken,
   };
 }
 
@@ -550,6 +682,7 @@ export function LandfallJournalChart({
 }: { readOnly?: boolean; worldspaceId?: string; blockId?: string } = {}) {
   const controller = useContext(LandfallControllerContext);
   const [historicalChart, setHistoricalChart] = useState<PlayerLandfallBootstrap | null>(null);
+  const [viewingMapId, setViewingMapId] = useState<string | null>(null);
   useEffect(() => {
     if (!readOnly || !blockId || !controller?.bootstrap) return;
     const abort = new AbortController();
@@ -581,6 +714,14 @@ export function LandfallJournalChart({
     confirmFallback,
     mode,
     availability,
+    contextSnapshot,
+    contextTracking,
+    contextMessage,
+    toggleContext,
+    confirmLandmark,
+    observations,
+    acquisitionEnabled,
+    csrfToken,
   } = controller;
   const bootstrap = readOnly && blockId ? historicalChart : currentBootstrap;
   const position = readOnly ? null : livePosition;
@@ -604,6 +745,16 @@ export function LandfallJournalChart({
   const activeRoute = bootstrap.runtimeDefinition.routes[0];
   const guidance = physicalGuidance(position, activeWaypoint, worldspace);
   const replay = bootstrap.journeyPath.find((item) => item.id === replayId);
+  const viewingMap =
+    bootstrap.availableMaps?.find((item) => item.id === viewingMapId) ??
+    bootstrap.availableMaps?.find((item) => item.id === bootstrap.scene.mapId);
+  const isHistorical = bootstrap.replayOnly || readOnly;
+  const contextual = isHistorical
+    ? (replay?.contextualSummary ?? bootstrap.contextualSummary ?? null)
+    : contextSnapshot;
+  const landmark = bootstrap.runtimeDefinition.context?.landmarks.find(
+    (item) => item.id === activeWaypoint?.landmarkId,
+  );
   return (
     <div className="landfall-journal-chart" data-landfall-player-chart data-worldspace-kind={worldspace.kind}>
       <p>{bootstrap.worldspaceName}</p>
@@ -696,7 +847,54 @@ export function LandfallJournalChart({
           )}
         </section>
       )}
-      <VoyageChart mode={mode} landfallScene={bootstrap.scene} landfallPosition={position} />
+      <LandfallContextGuidance
+        bootstrap={bootstrap}
+        snapshot={contextual}
+        historical={isHistorical}
+        viewingMapId={viewingMap?.id ?? bootstrap.scene.mapId}
+        onViewingMapChange={setViewingMapId}
+      />
+      <VoyageChart
+        mode={mode}
+        landfallScene={viewingMap?.scene ?? bootstrap.scene}
+        landfallPosition={!viewingMap || viewingMap.id === bootstrap.scene.mapId ? position : null}
+      />
+      {bootstrap.runtimeDefinition.context && worldspace.kind === "PHYSICAL" && !isHistorical && !bootstrap.paused && (
+        <>
+          <button type="button" onClick={() => void toggleContext()}>
+            {contextTracking ? "Stop motion and heading hints" : "Allow motion and heading hints"}
+          </button>
+          <p role="status">
+            {contextMessage} These hints are temporary; bounded recent hints may qualify an online landmark check. They
+            do not establish an exact room or object.
+          </p>
+        </>
+      )}
+      {landmark && activeWaypoint && !isHistorical && !bootstrap.paused && (
+        <LandfallLandmarkPanel
+          sessionId={bootstrap.sessionId}
+          publishedVersionId={bootstrap.publishedVersionId}
+          expectedSequence={bootstrap.currentSequence}
+          csrfToken={csrfToken}
+          worldspaceId={worldspace.id}
+          waypointId={activeWaypoint.id}
+          landmark={landmark}
+          observations={observations}
+          eligible={Boolean(contextSnapshot?.eligibleLandmarkIds.includes(landmark.id))}
+          historical={isHistorical || !acquisitionEnabled}
+          onVerified={confirmLandmark}
+        />
+      )}
+      {activeWaypoint && activeWaypoint.fallback.mode !== "NONE" && (
+        <p>
+          Fallback:{" "}
+          {activeWaypoint.fallback.mode === "PLAYER"
+            ? "Use Confirm arrival myself when you have checked the objective."
+            : activeWaypoint.fallback.mode === "CAPTAIN"
+              ? "Ask your Captain to verify arrival using the configured Captain action."
+              : "Use the alternate waypoint provided by your Captain."}
+        </p>
+      )}
       <LandfallPresentation bootstrap={bootstrap} />
       {worldspace.kind === "PHYSICAL" &&
         browserAvailable &&

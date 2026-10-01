@@ -4780,7 +4780,7 @@
       "contractIds": ["landfall.player-live-position"]
     },
     {
-      "path": "tests/e2e/landfall-phase1-live-position.spec.ts",
+      "path": "tests/e2e/landfall-*.spec.ts",
       "suiteIds": ["browser.landfall"],
       "contractIds": ["landfall.player-live-position"]
     }

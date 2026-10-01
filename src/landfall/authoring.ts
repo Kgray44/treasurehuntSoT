@@ -199,10 +199,22 @@ export function createLandfallWaypoint(
 export function landfallAuthoringFindings(
   definition: LandfallDefinition,
   taleVisibility: string,
+  assets?: ReadonlyArray<{ id: string; mimeType: string; variants: ReadonlyArray<{ processingState: string }> }>,
 ): LandfallAuthoringFinding[] {
   const findings: LandfallAuthoringFinding[] = [];
   for (const waypoint of definition.waypoints) {
     const worldspace = definition.worldspaces.find((item) => item.id === waypoint.worldspaceId)!;
+    if (
+      worldspace.kind === "PHYSICAL" &&
+      waypoint.evidenceProfile.precisionProfile === "EXACT_OBJECT" &&
+      waypoint.evidenceProfile.acceptedSources.every((source) => source === "BROWSER_GEOLOCATION")
+    )
+      findings.push({
+        code: "LANDFALL_EXACT_TARGET_INDEPENDENT_EVIDENCE",
+        severity: "blocker",
+        targetId: waypoint.id,
+        message: `${waypoint.name}: GPS alone cannot identify an exact object. Configure independent target evidence and a readable fallback.`,
+      });
     if (worldspace.kind === "PHYSICAL" && waypoint.geometry.type === "POINT_RADIUS") {
       const accuracy = waypoint.evidenceProfile.requiredAccuracyMeters;
       if (accuracy && waypoint.geometry.radius < accuracy * 2)
@@ -226,6 +238,64 @@ export function landfallAuthoringFindings(
         severity: "warning",
         message: `${waypoint.name}: private real-world geometry must be excluded from any public or Community projection.`,
         targetId: waypoint.id,
+      });
+  }
+  for (const region of definition.context?.regions ?? []) {
+    const map = definition.maps.find((item) => item.id === region.mapId);
+    if (["FLOOR", "ROOM", "GALLERY", "EXHIBIT_ZONE"].includes(region.kind) && !region.level && !map?.level)
+      findings.push({
+        code: "LANDFALL_CONTEXT_LEVEL_UNSUPPORTED",
+        severity: "warning",
+        targetId: region.id,
+        message: `${region.name}: label its floor or level. Browser GPS cannot distinguish rooms or floors; these areas remain inferred until independently verified.`,
+      });
+    if (taleVisibility === "PUBLIC" && region.privacyClassification === "PRIVATE_REAL_WORLD")
+      findings.push({
+        code: "LANDFALL_PUBLIC_PRIVATE_CONTEXT",
+        severity: "blocker",
+        targetId: region.id,
+        message: `${region.name}: a private real-world layout cannot be offered as public geometry. Restrict the Chronicle or remove the private layout.`,
+      });
+    if (region.kind === "CORRIDOR" && region.geometry.type !== "CORRIDOR")
+      findings.push({
+        code: "LANDFALL_CONTEXT_CORRIDOR_GEOMETRY",
+        severity: "warning",
+        targetId: region.id,
+        message: `${region.name}: draw a corridor centerline with a usable width to support continuity-aware guidance.`,
+      });
+  }
+  for (const landmark of definition.context?.landmarks ?? []) {
+    const waypoint = definition.waypoints.find((item) => item.id === landmark.waypointId);
+    if (waypoint && !waypoint.sequence.optional && landmark.fallback.mode === "NONE")
+      findings.push({
+        code: "LANDFALL_LANDMARK_REQUIRED_FALLBACK",
+        severity: "blocker",
+        targetId: landmark.id,
+        message: `${landmark.name}: a mandatory landmark needs a readable Player, Captain, or alternate waypoint fallback.`,
+      });
+    if (!landmark.referenceAssetIds.length)
+      findings.push({
+        code: "LANDFALL_LANDMARK_REFERENCES_MISSING",
+        severity: "blocker",
+        targetId: landmark.id,
+        message: `${landmark.name}: choose at least one processed Chronicle image as a positive reference.`,
+      });
+    if (
+      assets &&
+      [...landmark.referenceAssetIds, ...landmark.negativeReferenceAssetIds].some((assetId) => {
+        const asset = assets.find((item) => item.id === assetId);
+        return (
+          !asset ||
+          !asset.mimeType.startsWith("image/") ||
+          !asset.variants.some((variant) => variant.processingState === "READY")
+        );
+      })
+    )
+      findings.push({
+        code: "LANDFALL_LANDMARK_REFERENCE_UNAVAILABLE",
+        severity: "blocker",
+        targetId: landmark.id,
+        message: `${landmark.name}: every reference must be a processed image in this Chronicle's protected asset library.`,
       });
   }
   for (const map of definition.maps) {

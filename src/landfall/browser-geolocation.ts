@@ -57,6 +57,19 @@ export class BrowserGeolocationProvider {
               longitude: position.coords.longitude,
             },
             accuracyMeters: position.coords.accuracy,
+            ...(position.coords.heading !== null && Number.isFinite(position.coords.heading)
+              ? { headingDegrees: position.coords.heading }
+              : {}),
+            ...(position.coords.speed !== null && Number.isFinite(position.coords.speed) && position.coords.speed >= 0
+              ? { speedMetersPerSecond: position.coords.speed }
+              : {}),
+            ...(position.coords.altitude !== null &&
+            Number.isFinite(position.coords.altitude) &&
+            position.coords.altitudeAccuracy !== null &&
+            Number.isFinite(position.coords.altitudeAccuracy) &&
+            position.coords.altitudeAccuracy > 0
+              ? { altitudeMeters: position.coords.altitude, altitudeAccuracyMeters: position.coords.altitudeAccuracy }
+              : {}),
           });
         },
         (error) => {

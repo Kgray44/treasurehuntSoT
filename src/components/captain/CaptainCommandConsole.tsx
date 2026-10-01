@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useActionDialog } from "@/components/ui/ActionDialog";
 import { ErrorState, StatusBanner } from "@/components/ui/AsyncState";
 import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
+import type { LandfallContextSummary } from "@/landfall/journey-projection";
 
 type Command = {
   id: string;
@@ -65,6 +66,7 @@ type Projection = {
     lastCanonicalEventAt: string | null;
     lastConfirmationConfidence: string | null;
     lastConfirmationMethod: string | null;
+    contextualSummary?: LandfallContextSummary | null;
     waypoints: Array<{
       id: string;
       name: string;
@@ -603,6 +605,23 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
                 : "none yet"}
               .
             </p>
+            {projection.landfall.contextualSummary && (
+              <p>
+                Recorded context: {words(projection.landfall.contextualSummary.state)}. Region:{" "}
+                {projection.landfall.contextualSummary.regionId ?? "unknown"}.
+                {projection.landfall.contextualSummary.mapId
+                  ? ` Recorded map: ${projection.landfall.contextualSummary.mapId}.`
+                  : ""}
+                {projection.landfall.contextualSummary.level
+                  ? ` Recorded level: ${projection.landfall.contextualSummary.level}.`
+                  : ""}
+                {projection.landfall.contextualSummary.evidenceCategories.length
+                  ? ` Evidence: ${projection.landfall.contextualSummary.evidenceCategories.map(words).join(", ")}.`
+                  : ""}{" "}
+                This derived summary is historical; use the existing configured Captain fallback when independent
+                verification is needed.
+              </p>
+            )}
             <label>
               Captain Landfall action
               <select

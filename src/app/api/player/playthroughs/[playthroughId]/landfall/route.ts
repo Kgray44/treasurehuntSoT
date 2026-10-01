@@ -101,7 +101,9 @@ export async function POST(request: Request, context: { params: Promise<{ playth
         { error: "Location evidence belongs to another Voyage." },
         { status: 409, headers: privateHeaders },
       );
-    return NextResponse.json(await submitPlayerLandfallEvidence(input), { headers: privateHeaders });
+    return NextResponse.json(await submitPlayerLandfallEvidence(input, identity.playerProfileId), {
+      headers: privateHeaders,
+    });
   } catch (cause) {
     const response = apiError(cause);
     response.headers.set("Cache-Control", privateHeaders["Cache-Control"]);

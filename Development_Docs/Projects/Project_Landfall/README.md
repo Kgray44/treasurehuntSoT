@@ -3,7 +3,7 @@ title: Project Landfall engineering home
 audience: product-engineering
 status: current
 canonical_for: project-landfall-engineering-home
-last_reviewed: 2026-09-30
+last_reviewed: 2026-10-01
 ---
 
 # Project Landfall
@@ -39,3 +39,8 @@ The [final closure correction record](Project_Landfall_Phase_2_Final_Closure_Rec
 - [Bring the World Aboard implementation record](Project_Landfall_Phase_2_Implementation_Record.md) describes the Creator, Chronicle, Player, Captain, replay, field-test, and web offline source integrated by PR #669.
 - [Validation record](Project_Landfall_Phase_2_Validation_Record.md)
 - [Integration manifest](Project_Landfall_Phase_2_Integration_Manifest.md)
+
+## Phase 3 engineering records
+
+- [Read the Ground design](Project_Landfall_Phase_3_Design_Record.md): floor/site hierarchy, contextual continuity, regional natural landmarks and independent exact-object observation.
+- [Validation and acceptance record](Project_Landfall_Phase_3_Validation_Record.md): measured qualification and external boundaries. Protected acceptance is pending.

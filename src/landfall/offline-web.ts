@@ -68,12 +68,13 @@ export async function rememberRevealedChart(
   passages: PlayerJournalBlock[] = [],
 ) {
   const generation = cacheGeneration;
-  const urls = [bootstrap.scene.imageUrl, ...bootstrap.scene.overlays.map((item) => item.imageUrl)]
-    .filter((url): url is string => Boolean(url))
-    .slice(0, 6);
+  const scenes = [bootstrap.scene, ...(bootstrap.availableMaps ?? []).map((map) => map.scene)];
+  const urls = scenes
+    .flatMap((scene) => [scene.imageUrl, ...scene.overlays.map((item) => item.imageUrl)])
+    .filter((url): url is string => Boolean(url));
   const assets: { url: string; mime: string; bytes: number[] }[] = [];
   let assetBytes = 0;
-  for (const url of [...new Set(urls)]) {
+  for (const url of [...new Set(urls)].slice(0, 6)) {
     try {
       const asset = await authorizedAsset(url, bootstrap);
       if (asset && assetBytes + asset.bytes.length <= 4 * 1024 * 1024) {
@@ -97,7 +98,14 @@ export async function rememberRevealedChart(
   };
   if (generation !== cacheGeneration) throw new Error("LANDFALL_OFFLINE_ACCESS_CLEARED");
   await repository.remember(binding(bootstrap.sessionId, bootstrap.publishedVersionId, csrfToken), {
-    bootstrap: { ...bootstrap, scene: { ...bootstrap.scene, currentPosition: null } },
+    bootstrap: {
+      ...bootstrap,
+      scene: { ...bootstrap.scene, currentPosition: null },
+      availableMaps: bootstrap.availableMaps?.map((map) => ({
+        ...map,
+        scene: { ...map.scene, currentPosition: null },
+      })),
+    },
     passages: passages.filter((item) => passageKinds.has(item.blockType)),
     assets,
     availability,
@@ -138,6 +146,18 @@ export async function restoreOfflineVoyage(sessionId: string, versionId: string,
           imageUrl: overlay.imageUrl ? assets.get(overlay.imageUrl) : undefined,
         })),
       },
+      availableMaps: record.bootstrap.availableMaps?.map((map) => ({
+        ...map,
+        scene: {
+          ...map.scene,
+          currentPosition: null,
+          imageUrl: map.scene.imageUrl ? assets.get(map.scene.imageUrl) : undefined,
+          overlays: map.scene.overlays.map((overlay) => ({
+            ...overlay,
+            imageUrl: overlay.imageUrl ? assets.get(overlay.imageUrl) : undefined,
+          })),
+        },
+      })),
     },
   };
 }

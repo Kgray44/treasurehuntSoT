@@ -3,10 +3,12 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-09-30
+last_reviewed: 2026-10-01
 ---
 
 # Current status
+
+**Landfall Phase 3 candidate:** Read the Ground extends the accepted Phase 2 baseline with floor/site regions, corridor continuity, contextual confidence, region-gated landmark reference comparison and independent exact-object observation. Implementation and focused acceptance exist in the Phase 3 branch; protected qualification and landed closure are pending. Physical field quality, deployment and owner acceptance remain separate. See the [Phase 3 record](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_Validation_Record.md).
 
 **Muster Refit:** the owner accepted the current design on 2026-09-12. Captain-only, Captain + Player, and Player views share one experience with persistent authorized Crew Chat, published-edition parchment, fixed room artwork and smooth options. Final local role, interaction, responsive/accessibility, production-build and migration checks passed. The accepted experience is integrated on protected main; final qualification and landed-tree checks passed. Only the Muster Refit area is MERGED; Refit V1 remains open.
 

@@ -703,6 +703,27 @@ export function playerSafeAssetIds(
       values.add(map.source.assetId);
     for (const overlay of map?.overlays ?? [])
       if (!overlay.hiddenUntilRevealed || journey.revealedOverlayIds.includes(overlay.id)) values.add(overlay.assetId);
+    // Additional floors are viewable only when a released objective/region reaches them.
+    const visibleWaypointIds = new Set(journey.availableWaypoints.map((item) => item.id));
+    const visibleRegions = (snapshot.landfall.context?.regions ?? []).filter(
+      (region) =>
+        region.worldspaceId === worldspace?.id &&
+        (!region.hiddenUntilRevealed || journey.availableWaypoints.some((waypoint) => waypoint.regionId === region.id)),
+    );
+    for (const floor of snapshot.landfall.maps.filter(
+      (candidate) =>
+        candidate.worldspaceId === worldspace?.id &&
+        (visibleRegions.some((region) => region.mapId === candidate.id) ||
+          journey.availableWaypoints.some((waypoint) => waypoint.mapId === candidate.id)),
+    )) {
+      if (floor.source.type === "ASSET_IMAGE" || floor.source.type === "ASSET_VECTOR") values.add(floor.source.assetId);
+      for (const overlay of floor.overlays ?? [])
+        if (!overlay.hiddenUntilRevealed || journey.revealedOverlayIds.includes(overlay.id))
+          values.add(overlay.assetId);
+    }
+    for (const landmark of snapshot.landfall.context?.landmarks ?? [])
+      if (visibleWaypointIds.has(landmark.waypointId))
+        for (const reference of landmark.referenceAssetIds) values.add(reference);
   }
   return values;
 }

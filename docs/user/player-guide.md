@@ -3,7 +3,7 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-09-30
+last_reviewed: 2026-10-01
 ---
 
 # Player guide
@@ -13,6 +13,8 @@ After accepting an invitation, use the Player Library to find the Voyages availa
 If the published Voyage includes Landfall, open **map** in the Journal tools to see the released Voyage Chart. On a physical chart, select **Use my location** when you want a live position and its estimated accuracy. Select **Stop using my location** to stop; closing the map, leaving the Journal, pausing the Voyage, or putting the tab in the background also stops it. If permission is denied or the signal is weak, the chart stays available without a reliable position marker. A virtual chart does not ask for browser location. A location signal is not a recorded visit until the Voyage confirms it.
 
 If you are also the Captain, your Player view stays separate from your Captain controls. Your personal history and artifact eligibility follow your Player membership.
+
+Indoor and compact Charts can show a likely region, uncertain floor or nearby target. Choosing a floor to view does not confirm that you are on it. Optional heading/motion hints need your explicit action and stop with foreground tracking. Reach a landmark's surrounding area before opening its camera, align with the described view, then ask to compare. A few transient stills are processed and are not saved. If comparison or permission is unavailable, use the configured observation or Captain path. Broad exact-target arrival unlocks its prompt; the separate response still completes the objective. Camera verification needs a connection, while released floor images share the bounded offline cache.
 
 An active Living Chart Passage shows the same released map as the **map** drawer. Location remains off until you choose it. An observation Passage first requires an approved arrival, then unlocks its prompt and separate response. Arrival alone does not answer the observation.
 

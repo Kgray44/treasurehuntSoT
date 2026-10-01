@@ -3090,6 +3090,32 @@ html[data-voyage-theme="light"]
   border: 1px solid rgb(201 169 95 / 28%);
   border-radius: 8px;
 }
+.landfall-context-editor,
+.landfall-context-editor fieldset {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  grid-template-columns: minmax(0, 1fr);
+}
+.landfall-context-editor :where(label, legend, p, h3, button) {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.landfall-context-editor :where(input, select, textarea) {
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+.landfall-context-editor .landfall-check input {
+  flex: 0 0 auto;
+  width: 1.1rem;
+}
+.landfall-context-editor textarea:focus-visible {
+  outline: 3px solid #e6c880;
+  outline-offset: 2px;
+}
 .landfall-workspace .landfall-check {
   display: flex;
   align-items: center;

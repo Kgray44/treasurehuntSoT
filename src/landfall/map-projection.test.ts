@@ -3,6 +3,38 @@ import { landfallFixture, physicalCoordinate } from "@/landfall/fixtures";
 import { mapLibreFeatures, projectLandfallMap } from "@/landfall/map-projection";
 
 describe("Landfall map projection", () => {
+  it("requires explicit released region IDs and rejects public access even to authorized private geometry", () => {
+    const definition = structuredClone(landfallFixture);
+    const region = {
+      id: "gallery",
+      worldspaceId: "town",
+      mapId: definition.maps[0].id,
+      name: "Gallery",
+      kind: "GALLERY" as const,
+      geometry: definition.waypoints[0].geometry,
+      privacyClassification: "PUBLIC_REAL_WORLD" as const,
+      hiddenUntilRevealed: false,
+    };
+    definition.context = {
+      regions: [region, { ...region, id: "private", privacyClassification: "PRIVATE_REAL_WORLD" }],
+      landmarks: [],
+    };
+    const chart = {
+      audience: "PLAYER" as const,
+      activeWorldspaceId: "town",
+      availableLocations: [],
+      activeRouteId: null,
+    };
+    expect(projectLandfallMap(definition, chart).features).toEqual([]);
+    expect(
+      projectLandfallMap(definition, { ...chart, availableRegionIds: ["gallery", "private"] }).features.map(
+        (item) => item.id,
+      ),
+    ).toEqual(["gallery", "private"]);
+    expect(() =>
+      projectLandfallMap(definition, { ...chart, audience: "PUBLIC", availableRegionIds: ["private"] }),
+    ).toThrow("LANDFALL_PUBLIC_MAP_NOT_AVAILABLE_PHASE_1");
+  });
   it("builds physical MapLibre geography only from visible locations", () => {
     const scene = projectLandfallMap(landfallFixture, {
       activeWorldspaceId: "town",

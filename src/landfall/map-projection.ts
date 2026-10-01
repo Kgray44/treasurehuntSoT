@@ -110,6 +110,7 @@ export function projectLandfallMap(
     activeWaypointId?: string | null;
     visitedIds?: readonly string[];
     revealedRouteIds?: readonly string[];
+    availableRegionIds?: readonly string[];
   },
   mapId?: string,
 ): LandfallMapScene {
@@ -122,8 +123,17 @@ export function projectLandfallMap(
   if (!map) throw new Error("LANDFALL_MAP_UNAVAILABLE");
   const visibleIds = new Set(chart.availableLocations.map((item) => item.id));
   const features = definition.waypoints
-    .filter((item) => item.worldspaceId === worldspace.id && visibleIds.has(item.id))
+    .filter((item) => item.worldspaceId === worldspace.id && item.mapId === map.id && visibleIds.has(item.id))
     .map((item) => feature(item.id, item.visibility.publicLabel ?? item.name, item.geometry, worldspace));
+  for (const region of definition.context?.regions ?? []) {
+    if (region.worldspaceId !== worldspace.id || region.mapId !== map.id) continue;
+    if (
+      chart.audience !== "CREATOR_TEST" &&
+      (!chart.availableRegionIds?.includes(region.id) || region.privacyClassification === "APPROXIMATE_REAL_WORLD")
+    )
+      continue;
+    features.push(feature(region.id, region.name, region.geometry, worldspace));
+  }
   const route = definition.routes.find(
     (item) => item.id === chart.activeRouteId && item.worldspaceId === worldspace.id,
   );
@@ -199,6 +209,9 @@ export function projectLandfallMap(
     ...(map.source.type === "ASSET_IMAGE" ? { imageAssetId: map.source.assetId } : {}),
     overlays: (map.overlays ?? [])
       .filter((overlay) => !overlay.hiddenUntilRevealed || chart.availableOverlayIds?.includes(overlay.id))
+      .filter(
+        (overlay) => chart.audience === "CREATOR_TEST" || overlay.privacyClassification !== "APPROXIMATE_REAL_WORLD",
+      )
       .map((overlay) => ({
         id: overlay.id,
         assetId: overlay.assetId,

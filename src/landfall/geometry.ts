@@ -200,6 +200,42 @@ export function routeProgress(
   };
 }
 
+/** All segments are retained so a contextual matcher can reason about crossings and continuity. */
+export function routeSegmentMatches(
+  point: LandfallCoordinate,
+  points: LandfallCoordinate[],
+  worldspace: LandfallWorldspace,
+): {
+  segmentIndex: number;
+  fraction: number;
+  distance: number;
+  distanceAlong: number;
+  length: number;
+  bearing: number;
+}[] {
+  if (points.length < 2 || points.length > 1024) throw new LandfallGeometryError("INVALID_GEOMETRY");
+  const projectedPoint = localPoint(point, worldspace, point);
+  const projected = points.map((coordinate) => localPoint(coordinate, worldspace, point));
+  let along = 0;
+  return points.slice(1).map((end, index) => {
+    const length = distance(points[index], end, worldspace);
+    const match = segmentDistance(projectedPoint, projected[index], projected[index + 1]);
+    const result = {
+      segmentIndex: index,
+      fraction: match.fraction,
+      distance: match.distance,
+      distanceAlong: along + match.fraction * length,
+      length,
+      bearing:
+        (degrees(Math.atan2(projected[index + 1].x - projected[index].x, projected[index + 1].y - projected[index].y)) +
+          360) %
+        360,
+    };
+    along += length;
+    return result;
+  });
+}
+
 function orientation(a: XY, b: XY, c: XY): number {
   return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 }

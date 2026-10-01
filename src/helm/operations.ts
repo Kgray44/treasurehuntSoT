@@ -633,6 +633,7 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
               snapshot.landfall.worldspaces.find((item) => item.id === landfallJourney.activeWorldspaceId)?.name ??
               "Worldspace",
             paused: landfallJourney.paused,
+            contextualSummary: landfallJourney.contextualSummary,
             currentWaypointId: landfallJourney.activeWaypointId,
             routeName: landfallJourney.activeRoute?.name ?? null,
             visitedCount: landfallJourney.visitedIds.length,
@@ -642,9 +643,12 @@ export async function getCaptainVoyageProjection(voyageId: string, actor: Canoni
             lastConfirmationConfidence: ["LOW", "MEDIUM", "HIGH"].includes(String(lastLandfallReceipt?.confidenceClass))
               ? String(lastLandfallReceipt?.confidenceClass)
               : null,
-            lastConfirmationMethod: ["BROWSER_GEOLOCATION", "PLAYER_CONFIRMATION", "CAPTAIN_CONFIRMATION"].includes(
-              String(lastLandfallReceipt?.method),
-            )
+            lastConfirmationMethod: [
+              "BROWSER_GEOLOCATION",
+              "PLAYER_CONFIRMATION",
+              "CAPTAIN_CONFIRMATION",
+              "VISION_WAYPOINT",
+            ].includes(String(lastLandfallReceipt?.method))
               ? String(lastLandfallReceipt?.method)
               : null,
             waypoints: snapshot.landfall.waypoints

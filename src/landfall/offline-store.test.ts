@@ -70,6 +70,30 @@ describe("durable session-bound Landfall offline store", () => {
     expect(JSON.stringify(restored)).not.toContain("isle-region");
     expect(restored?.bootstrap.scene.currentPosition).toBeUndefined();
   });
+  it("rejects transient landmark receipts and sensor context before writing the outbox", async () => {
+    const store = new LandfallOfflineRepository(storage, () => clock);
+    for (const input of [
+      { ...evidence, method: "LANDMARK" as const },
+      { ...evidence, landmarkReceipt: "synthetic-expiring-receipt" },
+      {
+        ...evidence,
+        contextualEvidence: [
+          {
+            kind: "HEADING" as const,
+            id: "heading",
+            sessionId: binding.sessionId,
+            publishedVersionId: binding.versionId,
+            worldspaceId: "town",
+            observedAt: new Date(clock).toISOString(),
+            degrees: 90,
+            accuracyDegrees: 10,
+          },
+        ],
+      },
+    ])
+      await expect(store.enqueue(binding, input)).rejects.toThrow("REQUIRES_FRESH_ONLINE_VERIFICATION");
+    expect(await storage.all()).toEqual([]);
+  });
   it.each([
     { csrfToken: "another-account-session" },
     { sessionId: "another-voyage" },

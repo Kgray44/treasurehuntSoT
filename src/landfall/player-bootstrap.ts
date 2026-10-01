@@ -1,7 +1,11 @@
 import { projectLandfallMap, type LandfallMapScene } from "@/landfall/map-projection";
 import type { PinnedLandfallDefinition } from "@/landfall/published";
 import type { LandfallDefinition } from "@/landfall/schema";
-import { projectLandfallJourney, type LandfallJourneyEvent } from "@/landfall/journey-projection";
+import {
+  projectLandfallJourney,
+  type LandfallJourneyEvent,
+  type LandfallContextSummary,
+} from "@/landfall/journey-projection";
 
 function presentationPayload(event: LandfallJourneyEvent): Record<string, unknown> {
   try {
@@ -18,6 +22,7 @@ export type PlayerLandfallBootstrap = Readonly<{
   currentSequence: number;
   worldspaceName: string;
   activeWaypointId: string | null;
+  contextualArrivalWaypointId?: string;
   visitedIds: readonly string[];
   discoveredIds: readonly string[];
   journeyPath: readonly (ReturnType<typeof projectLandfallJourney>["journeyPath"][number] & { label: string })[];
@@ -32,7 +37,15 @@ export type PlayerLandfallBootstrap = Readonly<{
     label: string;
   }>[];
   scene: LandfallMapScene;
-  runtimeDefinition: Pick<LandfallDefinition, "worldspaces" | "waypoints" | "routes" | "transitions">;
+  contextualSummary?: LandfallContextSummary | null;
+  availableMaps?: readonly Readonly<{
+    id: string;
+    name: string;
+    level?: string;
+    scene: LandfallMapScene;
+    offlineMap: "READY" | "PARTIAL" | "UNAVAILABLE";
+  }>[];
+  runtimeDefinition: Pick<LandfallDefinition, "worldspaces" | "waypoints" | "routes" | "transitions" | "context">;
 }>;
 
 /** The Player gets only the current published, released evaluation surface. */
@@ -55,6 +68,47 @@ export function projectPlayerLandfallBootstrap(
   if (!map) throw new Error("LANDFALL_MAP_UNAVAILABLE");
 
   const waypoints = journey.availableWaypoints.filter((item) => item.mapId === map.id);
+  const releasedWaypointIds = new Set(journey.availableWaypoints.map((item) => item.id));
+  const regions = (definition.context?.regions ?? []).filter(
+    (region) =>
+      region.worldspaceId === worldspace.id &&
+      region.privacyClassification !== "APPROXIMATE_REAL_WORLD" &&
+      (!region.hiddenUntilRevealed ||
+        definition.waypoints.some(
+          (waypoint) =>
+            waypoint.regionId === region.id &&
+            (journey.revealedWaypointIds.includes(waypoint.id) || journey.visitedIds.includes(waypoint.id)),
+        )),
+  );
+  const regionIds = new Set(regions.map((region) => region.id));
+  const safeRegions = regions.map((region) => ({
+    ...region,
+    parentId: region.parentId && regionIds.has(region.parentId) ? region.parentId : undefined,
+  }));
+  const landmarks = (definition.context?.landmarks ?? [])
+    .filter(
+      (landmark) =>
+        regionIds.has(landmark.regionId) &&
+        releasedWaypointIds.has(landmark.waypointId) &&
+        landmark.privacyClassification !== "APPROXIMATE_REAL_WORLD",
+    )
+    .map((landmark) => ({
+      ...landmark,
+      referenceAssetIds: landmark.referenceAssetIds.filter((id) =>
+        context.releasedAssets.some((asset) => asset.id === id),
+      ),
+      negativeReferenceAssetIds: landmark.negativeReferenceAssetIds.filter((id) =>
+        context.releasedAssets.some((asset) => asset.id === id),
+      ),
+    }));
+  const safeWaypoint = (waypoint: LandfallDefinition["waypoints"][number]) => ({
+    ...waypoint,
+    regionId: waypoint.regionId && regionIds.has(waypoint.regionId) ? waypoint.regionId : undefined,
+    landmarkId:
+      waypoint.landmarkId && landmarks.some((landmark) => landmark.id === waypoint.landmarkId)
+        ? waypoint.landmarkId
+        : undefined,
+  });
   const releasedIds = new Set(waypoints.map((item) => item.id));
   const routes =
     journey.activeRoute && journey.activeRoute.waypointIds.every((id) => releasedIds.has(id))
@@ -73,6 +127,7 @@ export function projectPlayerLandfallBootstrap(
       activeWaypointId: journey.activeWaypointId,
       visitedIds: journey.visitedIds,
       revealedRouteIds: journey.revealedRouteIds,
+      availableRegionIds: [...regionIds],
     },
     map.id,
   );
@@ -80,6 +135,68 @@ export function projectPlayerLandfallBootstrap(
     worldspace.coordinateReference.type === "NORMALIZED_IMAGE_2D" && !asset
       ? { ...worldspace.coordinateReference, imageAssetId: "withheld" }
       : worldspace.coordinateReference;
+  const releaseScene = (value: LandfallMapScene): LandfallMapScene => {
+    const image = context.releasedAssets.find((item) => item.id === value.imageAssetId);
+    return {
+      ...value,
+      ...(image ? { imageUrl: image.url } : {}),
+      imageAssetId: image ? value.imageAssetId : undefined,
+      overlays: value.overlays.flatMap((overlay) => {
+        const released = context.releasedAssets.find((item) => item.id === overlay.assetId);
+        return released ? [{ ...overlay, imageUrl: released.url }] : [];
+      }),
+    };
+  };
+  const availableMaps = definition.maps
+    .filter(
+      (candidate) =>
+        candidate.worldspaceId === worldspace.id &&
+        (candidate.id === map.id ||
+          !candidate.source.type.startsWith("ASSET_") ||
+          ("assetId" in candidate.source &&
+            context.releasedAssets.some((item) => item.id === (candidate.source as { assetId: string }).assetId))) &&
+        (candidate.id === map.id ||
+          !definition.context?.regions.some((region) => region.mapId === candidate.id) ||
+          safeRegions.some((region) => region.mapId === candidate.id)),
+    )
+    .map((candidate) => ({
+      id: candidate.id,
+      name: candidate.name,
+      ...(candidate.level ? { level: candidate.level } : {}),
+      scene: releaseScene(
+        projectLandfallMap(
+          definition,
+          {
+            audience: context.replayOnly ? "REPLAY" : "PLAYER",
+            activeWorldspaceId: worldspace.id,
+            availableLocations: journey.availableWaypoints
+              .filter((item) => item.mapId === candidate.id)
+              .map(({ id }) => ({ id })),
+            activeRouteId: candidate.id === map.id ? (routes[0]?.id ?? null) : null,
+            availableOverlayIds: journey.revealedOverlayIds,
+            availableRegionIds: [...regionIds],
+            activeWaypointId: journey.activeWaypointId,
+            visitedIds: journey.visitedIds,
+            revealedRouteIds: journey.revealedRouteIds,
+          },
+          candidate.id,
+        ),
+      ),
+      offlineMap:
+        candidate.source.type === "AUTHORED_VECTOR"
+          ? ("READY" as const)
+          : candidate.overlays?.some((overlay) => context.releasedAssets.some((item) => item.id === overlay.assetId)) ||
+              (candidate.source.type === "ASSET_IMAGE" &&
+                context.releasedAssets.some(
+                  (item) => "assetId" in candidate.source && item.id === candidate.source.assetId,
+                ))
+            ? ("PARTIAL" as const)
+            : ("UNAVAILABLE" as const),
+    }));
+  const contextualSummary =
+    journey.contextualSummary && regionIds.has(journey.contextualSummary.regionId ?? "")
+      ? journey.contextualSummary
+      : null;
   const visibleRoutes = routes.flatMap((route) => {
     const visibility = route.presentation?.visibility ?? "FULL";
     if (visibility === "HIDDEN" && !journey.revealedRouteIds.includes(route.id)) return [];
@@ -150,10 +267,16 @@ export function projectPlayerLandfallBootstrap(
       !context.replayOnly && waypoints.some((item) => item.id === journey.activeWaypointId)
         ? journey.activeWaypointId
         : null,
+    ...(context.observationWaypointId === objective?.id &&
+    objective?.evidenceProfile.precisionProfile === "EXACT_OBJECT"
+      ? { contextualArrivalWaypointId: objective.id }
+      : {}),
     visitedIds: journey.visitedIds,
     discoveredIds: journey.discoveredIds,
     journeyPath: journey.journeyPath.map((item) => ({
       ...item,
+      contextualSummary:
+        item.contextualSummary && regionIds.has(item.contextualSummary.regionId ?? "") ? item.contextualSummary : null,
       label:
         item.kind === "VISIT"
           ? (definition.waypoints.find((waypoint) => waypoint.id === item.targetId)?.visibility.publicLabel ??
@@ -171,6 +294,8 @@ export function projectPlayerLandfallBootstrap(
           ? "PARTIAL"
           : "UNAVAILABLE",
     presentations,
+    contextualSummary,
+    availableMaps,
     scene: {
       ...scene,
       ...(asset ? { imageUrl: asset.url } : {}),
@@ -183,10 +308,14 @@ export function projectPlayerLandfallBootstrap(
         })),
     },
     runtimeDefinition: {
-      worldspaces: [{ ...worldspace, coordinateReference, mapDefinitionIds: [map.id] }],
-      waypoints,
-      routes: visibleRoutes,
+      worldspaces: [{ ...worldspace, coordinateReference, mapDefinitionIds: availableMaps.map((item) => item.id) }],
+      waypoints: waypoints.map(safeWaypoint),
+      routes: visibleRoutes.map((route) => ({
+        ...route,
+        segmentRegionIds: route.segmentRegionIds?.every((id) => regionIds.has(id)) ? route.segmentRegionIds : undefined,
+      })),
       transitions: [],
+      ...(definition.context ? { context: { regions: safeRegions, landmarks } } : {}),
     },
   };
 }

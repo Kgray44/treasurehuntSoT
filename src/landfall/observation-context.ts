@@ -17,7 +17,10 @@ export function observationContextReached(
         payload.worldspaceId === block.configuration.worldspaceId &&
         payload.waypointId === block.configuration.waypointId &&
         ["NEARBY", "LIKELY_INSIDE", "CONFIRMED"].includes(payload.outcome) &&
-        landfallOutcomeSatisfies(payload.outcome, requirement?.requiredOutcome ?? "CONFIRMED")
+        landfallOutcomeSatisfies(
+          payload.outcome,
+          payload.contextualArrival === true ? "LIKELY_INSIDE" : (requirement?.requiredOutcome ?? "CONFIRMED"),
+        )
       );
     } catch {
       return false;

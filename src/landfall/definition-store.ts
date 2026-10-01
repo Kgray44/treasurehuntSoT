@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { DraftConflictError } from "@/chronicle/studio-service";
 import { parseStoredLandfallDefinition, validateLandfallDefinition } from "@/landfall/definition";
+import { landfallReferenceAssetIds, validateLandfallReferenceAssets } from "@/landfall/context-assets";
 
 export async function getDraftLandfallDefinition(taleId: string) {
   const draft = await db.taleDraft.findFirst({
@@ -26,6 +27,13 @@ export async function saveDraftLandfallDefinition(
     throw new Error("LANDFALL_DEFINITION_TOO_LARGE");
   const definition = input === null ? null : validateLandfallDefinition(input);
   if (definition && definition.taleId !== taleId) throw new Error("LANDFALL_TALE_MISMATCH");
+  if (definition && landfallReferenceAssetIds(definition).length) {
+    const assets = await db.taleAsset.findMany({
+      where: { taleId, id: { in: landfallReferenceAssetIds(definition) }, deletedAt: null },
+      select: { id: true, mimeType: true, mediaType: true },
+    });
+    validateLandfallReferenceAssets(definition, assets);
+  }
   const serialized = definition ? JSON.stringify(definition) : null;
   if (serialized && Buffer.byteLength(serialized, "utf8") > 1024 * 1024)
     throw new Error("LANDFALL_DEFINITION_TOO_LARGE");

@@ -1,5 +1,5 @@
 import type { PlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
-import { playerLandfallEvidenceSchema, type PlayerLandfallEvidence } from "@/landfall/server-evidence";
+import { playerLandfallEvidenceSchema, type PlayerLandfallEvidence } from "@/landfall/player-evidence-contract";
 import type { PlayerJournalBlock } from "@/chronicle/journal-contract";
 
 export const landfallOfflineLimits = {
@@ -187,6 +187,8 @@ export class LandfallOfflineRepository {
     return this.read<ChartRecord>(binding, "chart");
   }
   async enqueue(binding: Binding, input: PlayerLandfallEvidence) {
+    if (input.method === "LANDMARK" || input.landmarkReceipt || input.contextualEvidence?.length)
+      throw new Error("LANDFALL_CONTEXT_REQUIRES_FRESH_ONLINE_VERIFICATION");
     const evidence = playerLandfallEvidenceSchema.parse(input);
     if (evidence.sessionId !== binding.sessionId || evidence.publishedVersionId !== binding.versionId)
       throw new Error("LANDFALL_OFFLINE_IDENTITY_MISMATCH");
