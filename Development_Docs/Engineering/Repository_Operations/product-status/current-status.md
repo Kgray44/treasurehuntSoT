@@ -8,7 +8,7 @@ last_reviewed: 2026-10-01
 
 # Current status
 
-**Landfall Phase 3 candidate:** Read the Ground extends the accepted Phase 2 baseline with floor/site regions, corridor continuity, contextual confidence, region-gated landmark reference comparison and independent exact-object observation. Implementation and focused acceptance exist in the Phase 3 branch; protected qualification and landed closure are pending. Physical field quality, deployment and owner acceptance remain separate. See the [Phase 3 record](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_Validation_Record.md).
+**Landfall Phase 3 is available on protected main:** Read the Ground adds aligned floor/site hierarchy, continuity-aware corridor guidance, optional foreground hints, region-gated natural landmark authored-view comparison and independent exact-object observations. Protected PR #673 passed exact-head local/hosted Sounding Line and landed tree verification. The [accepted capsule](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_Accepted_Capsule.md) records full-unit, retained browser, landed and evidence/catalog closure proof. Physical field quality, deployment and owner acceptance remain separate; Phase 4 is deferred.
 
 **Muster Refit:** the owner accepted the current design on 2026-09-12. Captain-only, Captain + Player, and Player views share one experience with persistent authorized Crew Chat, published-edition parchment, fixed room artwork and smooth options. Final local role, interaction, responsive/accessibility, production-build and migration checks passed. The accepted experience is integrated on protected main; final qualification and landed-tree checks passed. Only the Muster Refit area is MERGED; Refit V1 remains open.
 
@@ -138,7 +138,7 @@ contract, TypeScript, and isolated synthetic browser evidence passed. Deployment
 live-Voyage behavior, production MySQL execution, and external-provider proof
 remain separate.
 
-Landfall Phase 2's independent audit corrections are complete on protected main through PR #671: embedded Charts, arrival-gated observations, durable encrypted offline reload, Captain command acceptance, physical Creator browser field tests and responsive/accessibility behavior. The [final closure record](../../../Projects/Project_Landfall/Project_Landfall_Phase_2_Final_Closure_Record.md) records exact-head ordinary run `36798719325` PASS, product merge `14d4ea4bfe202b2e5c24935352ae242493546a76`, 2,262 unit tests, 24 production browser cases and 149 landed focused tests. Physical hardware quality, deployment and owner acceptance remain separate; Phase 3 and Phase 4 have not started.
+Landfall Phase 2's independent audit corrections are complete on protected main through PR #671: embedded Charts, arrival-gated observations, durable encrypted offline reload, Captain command acceptance, physical Creator browser field tests and responsive/accessibility behavior. The [final closure record](../../../Projects/Project_Landfall/Project_Landfall_Phase_2_Final_Closure_Record.md) records exact-head ordinary run `36798719325` PASS, product merge `14d4ea4bfe202b2e5c24935352ae242493546a76`, 2,262 unit tests, 24 production browser cases and 149 landed focused tests. Physical hardware quality, deployment and owner acceptance remain separate; Phase 3 is now accepted through PR #673; Phase 4 remains deferred.
 
 **Available on main and accepted on protected staging, not production deployed:**
 Google and GitHub application OAuth adds

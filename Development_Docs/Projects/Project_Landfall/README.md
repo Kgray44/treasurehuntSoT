@@ -43,4 +43,6 @@ The [final closure correction record](Project_Landfall_Phase_2_Final_Closure_Rec
 ## Phase 3 engineering records
 
 - [Read the Ground design](Project_Landfall_Phase_3_Design_Record.md): floor/site hierarchy, contextual continuity, regional natural landmarks and independent exact-object observation.
-- [Validation and acceptance record](Project_Landfall_Phase_3_Validation_Record.md): measured qualification and external boundaries. Protected acceptance is pending.
+- [Validation and acceptance record](Project_Landfall_Phase_3_Validation_Record.md): measured qualification and external boundaries. Protected product acceptance is complete through PR #673; see the accepted capsule for qualification and closure identities.
+
+- [Accepted Phase 3 capsule](Project_Landfall_Phase_3_Accepted_Capsule.md): authoritative Project Trim starting context for Phase 4; no Phase 4 implementation.

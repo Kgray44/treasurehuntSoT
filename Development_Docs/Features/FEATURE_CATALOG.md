@@ -1329,9 +1329,9 @@ Project Drydock Phase 4 gives Creators source-bound launch readiness, compatibil
 ## FT-044 - Landfall Living World Navigation
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Landfall Phases 1 and 2
+**Program or subsystem:** Project Landfall Phases 1, 2 and 3
 
-Creators author versioned physical and virtual Living Charts in Chronicle Studio; embedded charts, contextual observations and four further location block families connect to Drydock and canonical One Voyage progression. Players use released charts, safe replay and encrypted reload-safe web offline reconciliation, while Captains govern eight authorized location actions.
+Creators author versioned physical and virtual Living Charts, aligned floor/site regions and natural landmarks. Players receive honest contextual corridor guidance, region-gated authored-view comparison and separate exact-target observations through canonical One Voyage progression, with sanitized Captain/replay state and bounded encrypted web offline reconciliation.
 
 ### Important subfeatures
 
@@ -1350,6 +1350,13 @@ Creators author versioned physical and virtual Living Charts in Chronicle Studio
 - Block-bound canonical arrival unlocks locationObservation, followed by a separate configured response
 - Encrypted bounded chart, released pages, first-party images and one expiring evidence item survive same-tab offline reload and requalify against current server authority
 - All eight Captain command branches, source-bound physical Creator receipts, phone/tablet/desktop and keyboard accessibility have direct synthetic acceptance
+- Protected aligned floor/site maps and hierarchical contextual regions share existing geometry and released Player projections
+- Continuity-aware compact corridor matching, direction, loops, hysteresis, freshness and impossible-jump rejection with categorical uncertainty
+- Explicit optional foreground motion, heading and elevation hints support guidance without claiming exact indoor position or calibrated floor height
+- Creator natural-landmark positive/negative reference authoring and bounded region-gated multi-view appearance comparison with expiring actor/session/edition/sequence-bound verification
+- Independent exact-object observations unlock after contextual arrival; publication enforces an effective verifier and readable mandatory fallback
+- Sanitized contextual Captain/history/field receipts, transient camera and hints, and floor imagery within the existing encrypted offline bounds
+- Synthetic museum and compact outdoor acceptance retains Phase 1/2 journeys, four viewports, 200 percent text, keyboard/focus, forced colors and reduced motion
 
 ### Primary surfaces
 
@@ -1360,6 +1367,8 @@ Creators author versioned physical and virtual Living Charts in Chronicle Studio
 - External address/place lookup and virtual game telemetry require configured providers; external tiles and arbitrary private media are not cached.
 - Offline chart access requires the same-tab session/edition/CSRF capability and expires after 30 minutes; one pending evidence item expires after 90 seconds. At most six authorized same-origin images totaling 4 MiB are retained. Logout or access changes clear storage; reconnect requires current server authorization and sequence requalification.
 - Live hardware and outdoor GPS quality, physical assistive technology, production map tiles, production MySQL, deployment and owner acceptance require separate evidence.
+- Fine indoor/exact-object GPS is capped at likely context. Browser elevation has no authored absolute-height calibration and cannot confirm a floor. Optional hints degrade to readable fallback when unavailable.
+- Natural-landmark verification is conservative authored-view comparison, not general object recognition or camera attestation. Changed angle/light/occlusion/crowds may require fallback; fresh online regional qualification is required. Process-local signed receipts expire after 30 seconds and restart requires re-verification.
 
 ### Evidence
 
@@ -1376,6 +1385,12 @@ Creators author versioned physical and virtual Living Charts in Chronicle Studio
 - test: `src/landfall/offline-store.test.ts`
 - completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_2_Final_Closure_Record.md`
 - commit: `14d4ea4bfe202b2e5c24935352ae242493546a76`
+- path: `src/landfall/contextual.ts`
+- test: `src/landfall/compact-acceptance.test.ts`
+- test: `tests/e2e/landfall-phase3.spec.ts`
+- test: `tests/e2e/landfall-phase3-creator.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_Accepted_Capsule.md`
+- commit: `660461e11c8d8462169b17f762a7d398a4d01465`
 
 ---
 

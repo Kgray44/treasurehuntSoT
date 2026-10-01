@@ -8,7 +8,7 @@ last_reviewed: 2026-10-01
 
 # Phase 3 qualification
 
-Starting protected main: `01cf22976dcf32e7fa4a3bf75d47b96d677f26ec`. Owned branch: `codex/landfall-phase3-read-the-ground`. Current-main delta at startup: empty. No existing Phase 3 implementation was found. This engineering record distinguishes implementation from pending exact-candidate protected acceptance.
+Starting protected main: `01cf22976dcf32e7fa4a3bf75d47b96d677f26ec`. Owned branch: `codex/landfall-phase3-read-the-ground`. Current-main delta at startup: empty. No existing Phase 3 implementation was found. This engineering record preserves preparatory attempts and the final exact-candidate protected acceptance below.
 
 ## Focused proof
 
@@ -44,3 +44,17 @@ Decoder review added an explicit decoded raster-format allowlist, preventing vec
 The final bounded trust review caught optional motion/course/elevation fields nested in otherwise accepted short-lived position delivery. Outbox parsing now strips those fields before encryption without mutating the input or extending expiry; the restored-encryption regression passes (13 store tests). Comparison now counts distinct decoded views and rejects a contradictory negative frame set; Vision/compact regression passes (14 tests). Synthetic camera captures supply distinct matching views rather than copied stills. The focused Creator production-browser repair passes 2/2 with real consent, sanitized receipt and all four 200%-text width/axe checks; an additional category-only elevation availability label has focused coverage.
 
 Fixtures are fictional; accounts, hardware input and runtime/database/browser resources are synthetic and owned. Authored-view comparison and canonical trust boundaries are tested here; museum field recognition across angles, light, crowds and devices is not established. Physical GPS quality, production providers/MySQL, live assistive technology, deployment and owner acceptance remain separate. Phase 4 is not implemented.
+
+## Final exact acceptance and landed proof
+
+- Final functional source `96008206894623428b20b0464cbcae1029c7cab6`: **408 files / 2,324 tests PASS**, single fork worker, 435.52 seconds. The final revision changes only one E2E assertion; application, unit and dependency trees are identical.
+- Final candidate `ecc21f730758dd4b0901c6467b21fab637e604e9`, tree `9879fe4928ab6a96e6cd31b5a34a05dbf4f75a14`: **34/34 combined production browser scenarios PASS**, 101,868 ms and 41 ms owned cleanup. Ten Phase 3 scenarios plus all 24 retained Phase 1/2/closure cases passed. Smallest-phone 200% keyboard focus scrolls the entire objective action into view; center-hit assertion and viewport capture passed. No product repair was needed for the existing scrollable tray.
+- Exact local ordinary Sounding Line: **PASS**, matching starting base/head/tree, **10/10 obligations satisfied with empty remainder**, including 249 focused files / 1,505 tests and 10/10 Phase 3 production browsers. Browser cleanup 31 ms.
+- Exact hosted required check: [run 36831085150](https://github.com/Kgray44/treasurehuntSoT/actions/runs/36831085150), job `110267605499`, **PASS**, matching base/head/tree, **10/10 obligations satisfied with empty remainder**, 10/10 browsers. Downloaded ordinary decision was checked against the local decision before merge. Intermediate hosted `36829657704` also passed but is not the final-head authority.
+- Protected implementation [PR #673](https://github.com/Kgray44/treasurehuntSoT/pull/673) merged without bypass as `660461e11c8d8462169b17f762a7d398a4d01465`. Explicit main fetch and Git diff proved exact candidate/landed tree equality.
+- Landed focused domain, canonical command, Player and Creator smoke: **27 files / 180 tests PASS**, 26.53 seconds on the protected product merge.
+- Permanent capsule, FT-044, human status and navigation reconciliation use the separate evidence-only protected [PR #674](https://github.com/Kgray44/treasurehuntSoT/pull/674). The [accepted capsule](Project_Landfall_Phase_3_Accepted_Capsule.md) is authoritative after that protected publication; the compact [qualification receipt](Project_Landfall_Phase_3_Qualification_Receipt.json) preserves machine-readable final product bindings.
+
+This closes Read the Ground's repository implementation and synthetic acceptance. Earlier failures above remain failures. Physical field quality, deployment, owner acceptance and deferred Phase 4 remain outside this acceptance.
+
+The first evidence-publication candidate `7150724f2450523d4b20ab7470c746cd49b6cea6` failed ordinary qualification on a catalog regression that still expected FT-044 to name only Phases 1 and 2 (one failure among 662 selected tests). The completed Phase 3 fragment is retained; the existing stable-ordering test now expects all three accepted phases. That failed attempt is not closure proof. Revised-head protected qualification is required.
