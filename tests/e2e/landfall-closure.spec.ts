@@ -431,6 +431,8 @@ test("durable offline reload retains authorized chart and outbox, then reconcile
   await page.reload();
   await expect(page.getByRole("heading", { name: "Offline Voyage Journal" })).toBeVisible({ timeout: 30_000 });
   await expect(chart(page)).toContainText("Offline chart restored");
+  await expect(chart(page)).toContainText("Pending evidence: 1");
+  await expect(chart(page)).toContainText("Offline shell: prepared");
   await expect(chart(page).getByRole("list", { name: "Visible map locations" })).toContainText("Town arrival");
   await expect(page.locator('[data-landfall-feature="town-hidden"]')).toHaveCount(0);
   expect(await events(voyage.id, "landfallWaypointConfirmed")).toHaveLength(0);

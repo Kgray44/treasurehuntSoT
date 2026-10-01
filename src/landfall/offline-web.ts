@@ -113,6 +113,11 @@ export async function rememberRevealedChart(
 export async function restoreOfflineVoyage(sessionId: string, versionId: string, csrfToken: string) {
   const record = await repository.restore(binding(sessionId, versionId, csrfToken));
   if (!record) return null;
+  const availability: OfflineAvailability = {
+    ...record.availability,
+    shell: navigator.serviceWorker?.controller ? "READY" : "ONLINE_REQUIRED",
+    pendingEvidence: (await repository.pending(binding(sessionId, versionId, csrfToken))) ? 1 : 0,
+  };
   const assets = new Map(
     record.assets.map((asset) => {
       const url = URL.createObjectURL(new Blob([new Uint8Array(asset.bytes)], { type: asset.mime }));
@@ -122,6 +127,7 @@ export async function restoreOfflineVoyage(sessionId: string, versionId: string,
   );
   return {
     ...record,
+    availability,
     bootstrap: {
       ...record.bootstrap,
       scene: {

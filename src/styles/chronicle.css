@@ -1919,6 +1919,24 @@ html[data-motion-level="reduced"]
   }
 }
 
+@media (max-width: 960px) {
+  .product-shell:has(.chronicle-journal-shell) .product-shell-header {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+  .product-shell:has(.chronicle-journal-shell) .shell-profile-region {
+    grid-column: 3;
+  }
+  .product-shell:has(.chronicle-journal-shell) .shell-profile-trigger {
+    min-width: 2.8rem;
+    grid-template-columns: auto;
+    justify-content: center;
+    padding: 0.35rem;
+  }
+  .product-shell:has(.chronicle-journal-shell) :where(.shell-profile-name, .shell-profile-caret) {
+    display: none;
+  }
+}
+
 @media (max-width: 760px) {
   .chronicle-journal-shell {
     padding-bottom: calc(15rem + env(safe-area-inset-bottom));
