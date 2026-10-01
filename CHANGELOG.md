@@ -8,6 +8,8 @@ last_reviewed: 2026-09-30
 
 # Changelog
 
+- Corrected Landfall Phase 2 closure gaps: embedded canonical Living Charts, arrival-gated observation responses, durable encrypted offline reload/reconciliation and first-party imagery, foreground field-test cleanup, persistent Captain conflict feedback, and responsive/keyboard accessibility acceptance. Protected completion evidence is tracked in the Landfall final closure record.
+
 ## Unreleased
 
 ### Added

@@ -64,6 +64,39 @@ export function LandfallFieldTestPanel({
   const identity = { sessionId: `field-test-${draftId}`, publishedVersionId: `draft-${draftId}-${sourceVersion}` };
 
   useEffect(() => {
+    provider.current?.stop();
+    runtime.current?.pause();
+    samples.current = [];
+    let active = true;
+    queueMicrotask(() => {
+      if (!active) return;
+      setWalking(false);
+      setSampleCount(0);
+      setConfidence("UNAVAILABLE");
+      setAccuracy(null);
+      setLastAt(null);
+      setRouteProgress(null);
+    });
+    return () => {
+      active = false;
+    };
+  }, [sourceVersion, worldspaceId, mapId, waypointId, routeId, unsaved]);
+
+  useEffect(() => {
+    const background = () => {
+      if (document.visibilityState === "visible") return;
+      provider.current?.stop();
+      runtime.current?.pause();
+      samples.current = [];
+      setWalking(false);
+      setSampleCount(0);
+      setMessage("Test walk stopped while this tab is in the background. Start a new foreground test to continue.");
+    };
+    document.addEventListener("visibilitychange", background);
+    return () => document.removeEventListener("visibilitychange", background);
+  }, []);
+
+  useEffect(() => {
     let active = true;
     void fetch(`/api/studio/tales/${encodeURIComponent(taleId)}/landfall/field-tests`, { cache: "no-store" })
       .then((response) => (response.ok ? response.json() : Promise.reject()))

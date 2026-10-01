@@ -24,6 +24,8 @@ The Captain's Console shows the current Voyage and the actions available to you.
 
 For a Landfall Voyage, the Console shows safe Worldspace, location, route, and last-arrival status. You can review and confirm a permitted reveal, route or location selection, skip, arrival confirmation, pause, or resume. Give a reason for the canonical event. These controls do not expose a Player's exact physical position.
 
+If the Voyage changes while a reviewed action is open, the Console keeps the conflict visible so you can review the current state before retrying. Arrival approval unlocks a location observation's context; its configured response remains a separate action. Recent Voyage results can receive keyboard focus for scrolling.
+
 ## Change Captains safely
 
 Use **Transfer Captaincy** to choose another joined Player as Captain. **Relinquish Captaincy** puts a shared Voyage into **Succession Hold** until someone takes over; it does not cancel the Voyage. **Cancel Voyage for Everyone** is a separate action.

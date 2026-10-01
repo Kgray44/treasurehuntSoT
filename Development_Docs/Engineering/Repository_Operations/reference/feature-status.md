@@ -8,6 +8,8 @@ last_reviewed: 2026-09-30
 
 # Feature status
 
+Landfall Phase 2's original mainline integration remains available. Its [final closure correction](../../../Projects/Project_Landfall/Project_Landfall_Phase_2_Final_Closure_Record.md) strengthens embedded Chart, observation, durable offline, Captain, field-test and responsive/accessibility acceptance. The correction is pending exact-head hosted qualification and protected landed smoke.
+
 The shared Muster and Voyage Crew Chat are **OWNER_ACCEPTED**, with final synthetic production-browser, role, interaction and responsive/accessibility proof. The accepted composition is preserved; four evidenced final-validation defects were corrected. Protected PR #658 is merged; Sounding Line and exact landed-tree smoke passed. Muster is the canonical mainline waiting room and its Refit registry state is MERGED.
 
 | Feature                                               | Status                 | Validation state      | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |

@@ -22,6 +22,8 @@ Open **Living Chart** in a Chronicle draft. Add a real or virtual Worldspace, se
 
 Set location evidence and a location-free fallback before requiring a Player visit. Use the Landfall Story Blocks in Passages to reveal places, guide journeys, record observations, and make route choices. Run validation and use the field-test panel to record a source-bound synthetic or physical test receipt. A receipt becomes stale when the draft changes. Browser location is used only while a field test is open; raw observations are not kept in the receipt. External address and place search is currently unavailable; use coordinates or existing Chronicle locations.
 
+A Living Chart Passage embeds the released interactive chart. A location observation requires arrival at its configured place before offering the observation prompt and normal response. Field walks require a saved draft and a selected physical waypoint. Saving or stopping a walk, changing the selected place or draft, leaving the panel, or backgrounding the tab stops browser location. Saving a receipt needs a connection; editing the draft marks earlier receipts stale.
+
 ## Review and publish
 
 Open **Versions**, then choose **Review and publish**. Save your draft, review the available readiness guidance, changes, media, and release notes, then confirm publication when everything is ready. A successful publication creates an immutable edition and offers the next available actions, such as previewing it or preparing a Voyage.

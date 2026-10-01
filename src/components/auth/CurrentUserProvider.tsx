@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { bindLandfallOfflineIdentity, clearLandfallOfflineData } from "@/landfall/offline-store";
 import {
   CURRENT_USER_CONTEXT_VERSION,
   isCurrentUserContext,
@@ -60,8 +61,13 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
       const next = isCurrentUserContext(body) ? body : unavailableContext();
       if (generation === requestGeneration.current) {
         setState((previous) => (sameContext(previous, next) ? previous : next));
-        if (next.status === "authenticated") sessionStorage.setItem("wayfarer-csrf", next.csrfToken);
-        else sessionStorage.removeItem("wayfarer-csrf");
+        if (next.status === "authenticated") {
+          await bindLandfallOfflineIdentity(next.csrfToken);
+          sessionStorage.setItem("wayfarer-csrf", next.csrfToken);
+        } else {
+          sessionStorage.removeItem("wayfarer-csrf");
+          if (next.status !== "unavailable") await clearLandfallOfflineData();
+        }
         lastRefreshAt.current = Date.now();
       }
       return next;
@@ -79,6 +85,7 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
   }, []);
 
   const invalidate = useCallback(async () => {
+    await clearLandfallOfflineData();
     channel.current?.postMessage(invalidationMessage);
     return refresh();
   }, [refresh]);
@@ -97,8 +104,9 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
     if (typeof BroadcastChannel !== "undefined") {
       channel.current = new BroadcastChannel(channelName);
       channel.current.addEventListener("message", (event) => {
-        if (event.data?.type === invalidationMessage.type && event.data?.version === invalidationMessage.version)
-          void refresh();
+        if (event.data?.type === invalidationMessage.type && event.data?.version === invalidationMessage.version) {
+          void clearLandfallOfflineData().then(refresh);
+        }
       });
     }
     return () => {

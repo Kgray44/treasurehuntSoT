@@ -136,6 +136,8 @@ contract, TypeScript, and isolated synthetic browser evidence passed. Deployment
 live-Voyage behavior, production MySQL execution, and external-provider proof
 remain separate.
 
+Landfall Phase 2's original completion assertion is under final audit correction for embedded Charts, arrival-gated observations, durable offline reload, Captain command acceptance, physical Creator field tests and responsive/accessibility behavior. The [final closure record](../../../Projects/Project_Landfall/Project_Landfall_Phase_2_Final_Closure_Record.md) tracks the correction gates; protected completion requires exact-head qualification and landed smoke.
+
 **Available on main and accepted on protected staging, not production deployed:**
 Google and GitHub application OAuth adds
 sign-up, sign-in, returning identity reuse, explicit account linking,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import type { MotionMode } from "@/animation/core/animation-types";
 import { VoyageChart } from "@/components/player/workspace/VoyageChart";
 import { LandfallPresentation } from "@/components/player/journal/LandfallPresentation";
@@ -12,15 +12,19 @@ import type { PlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import { LandfallRuntime } from "@/landfall/runtime";
 import type { LandfallObservation } from "@/landfall/observation";
 import type { PlayerLandfallEvidence } from "@/landfall/server-evidence";
+import type { PlayerJournalBlock } from "@/chronicle/journal-contract";
+import { clearLandfallOfflineData, type OfflineAvailability } from "@/landfall/offline-store";
 import {
   clearLandfallEvidence,
   pendingLandfallEvidence,
   queueLandfallEvidence,
   rememberRevealedChart,
-  restoreRevealedChart,
+  restoreOfflineVoyage,
+  releaseOfflineAssets,
 } from "@/landfall/offline-web";
 
 const bootstrapCache = new Map<string, { value: PlayerLandfallBootstrap; cachedAt: number }>();
+const emptyPassages: PlayerJournalBlock[] = [];
 
 function physicalGuidance(
   position: LandfallCurrentPosition | null,
@@ -46,13 +50,17 @@ function physicalGuidance(
   return { meters, direction };
 }
 
-export function LandfallJournalChart({
+function useLandfallController({
   sessionId,
   publishedVersionId,
   mode,
   historical,
   csrfToken,
   onProgress,
+  enabled,
+  loadEnabled = enabled,
+  revision,
+  passages = emptyPassages,
 }: {
   sessionId: string;
   publishedVersionId: string;
@@ -60,6 +68,10 @@ export function LandfallJournalChart({
   historical: boolean;
   csrfToken: string;
   onProgress: () => void;
+  enabled: boolean;
+  loadEnabled?: boolean;
+  revision: number;
+  passages?: PlayerJournalBlock[];
 }) {
   const [bootstrap, setBootstrap] = useState<PlayerLandfallBootstrap | null>(null);
   const [message, setMessage] = useState("Loading Voyage Chart…");
@@ -67,25 +79,49 @@ export function LandfallJournalChart({
   const [browserAvailable, setBrowserAvailable] = useState(false);
   const [position, setPosition] = useState<LandfallCurrentPosition | null>(null);
   const [replayId, setReplayId] = useState<string | null>(null);
+  const [availability, setAvailability] = useState<OfflineAvailability | null>(null);
   const runtime = useRef<LandfallRuntime | null>(null);
   const browser = useRef<BrowserGeolocationProvider | null>(null);
   const samples = useRef<LandfallObservation[]>([]);
   const submitting = useRef(false);
   const submittedEvidenceIds = useRef(new Set<string>());
-  const pendingEvidence = useRef<PlayerLandfallEvidence | null>(
-    pendingLandfallEvidence(sessionId, publishedVersionId, csrfToken),
-  );
+  const pendingEvidence = useRef<PlayerLandfallEvidence | null>(null);
   const initialReconcileAttempted = useRef(false);
+  const loadAbort = useRef<AbortController | null>(null);
 
   useEffect(() => {
+    if (!loadEnabled) return;
     if ("serviceWorker" in navigator)
       void navigator.serviceWorker.register("/landfall-offline-sw.js", { scope: "/player/" }).catch(() => undefined);
+  }, [loadEnabled]);
+
+  useEffect(() => {
+    const connectivity = () => {
+      navigator.serviceWorker?.controller?.postMessage({ type: "LANDFALL_CONNECTIVITY", offline: !navigator.onLine });
+      if (navigator.serviceWorker?.controller)
+        setAvailability((value) => (value ? { ...value, shell: "READY" } : value));
+    };
+    window.addEventListener("online", connectivity);
+    window.addEventListener("offline", connectivity);
+    navigator.serviceWorker?.addEventListener("controllerchange", connectivity);
+    connectivity();
+    return () => {
+      window.removeEventListener("online", connectivity);
+      window.removeEventListener("offline", connectivity);
+      navigator.serviceWorker?.removeEventListener("controllerchange", connectivity);
+    };
   }, []);
 
   useEffect(() => {
+    if (!loadEnabled) return;
     const abort = new AbortController();
+    loadAbort.current = abort;
     let mounted = true;
     const load = async () => {
+      await Promise.resolve();
+      if (!mounted) return;
+      setTracking(false);
+      setPosition(null);
       try {
         const cacheKey = `${sessionId}:${publishedVersionId}:${csrfToken}:${historical ? "history" : "live"}`;
         let offlineCacheUsed = false;
@@ -95,20 +131,28 @@ export function LandfallJournalChart({
             cache: "no-store",
             signal: abort.signal,
           });
-          if (!response.ok) throw new Error("Voyage Chart is unavailable.");
+          if (!response.ok) {
+            if ([401, 403, 404, 409].includes(response.status)) {
+              await clearLandfallOfflineData();
+              bootstrapCache.clear();
+              setBootstrap(null);
+              return;
+            }
+            throw new Error("Voyage Chart is unavailable.");
+          }
           body = (await response.json()) as typeof body;
         } catch (cause) {
           if (abort.signal.aborted) throw cause;
           const cached = bootstrapCache.get(cacheKey);
+          const record = await restoreOfflineVoyage(sessionId, publishedVersionId, csrfToken);
           const restored =
-            cached && Date.now() - cached.cachedAt <= 30 * 60_000
-              ? cached.value
-              : await restoreRevealedChart(sessionId, publishedVersionId, csrfToken);
+            record?.bootstrap ?? (cached && Date.now() - cached.cachedAt <= 30 * 60_000 ? cached.value : null);
           if (!restored) throw cause;
+          if (record) setAvailability(record.availability);
           body = { available: true, bootstrap: restored };
           offlineCacheUsed = true;
         }
-        if (!mounted) return;
+        if (!mounted || abort.signal.aborted) return;
         if (!body.available) {
           bootstrapCache.delete(cacheKey);
           setMessage("");
@@ -121,7 +165,11 @@ export function LandfallJournalChart({
         if (!offlineCacheUsed) {
           bootstrapCache.set(cacheKey, { value: next, cachedAt: Date.now() });
           while (bootstrapCache.size > 4) bootstrapCache.delete(bootstrapCache.keys().next().value!);
-          void rememberRevealedChart(next, csrfToken);
+          void rememberRevealedChart(next, csrfToken, passages)
+            .then(setAvailability)
+            .catch(() => {
+              setAvailability(null);
+            });
         }
         const registry = new LandfallProviderRegistry();
         registry.register({
@@ -144,10 +192,13 @@ export function LandfallJournalChart({
         )
           browser.current = new BrowserGeolocationProvider(navigator.geolocation ?? null, worldspace);
         setBrowserAvailable(Boolean(browser.current));
+        pendingEvidence.current = await pendingLandfallEvidence(sessionId, publishedVersionId, csrfToken).catch(
+          () => null,
+        );
         setBootstrap(next);
         setMessage(
           offlineCacheUsed
-            ? "Offline chart from this open session. Location results are local until synchronization; no new visit is confirmed."
+            ? "Offline chart restored from your authorized cache. Location results are local until synchronization; no new visit is confirmed."
             : worldspace.kind === "VIRTUAL"
               ? "Virtual chart ready. No live virtual position source is connected."
               : !next.activeWaypointId
@@ -169,8 +220,9 @@ export function LandfallJournalChart({
       runtime.current?.pause();
       runtime.current = null;
       samples.current = [];
+      releaseOfflineAssets();
     };
-  }, [csrfToken, historical, publishedVersionId, sessionId]);
+  }, [csrfToken, historical, publishedVersionId, sessionId, revision, passages, loadEnabled]);
 
   useEffect(() => {
     if (!tracking) return;
@@ -209,10 +261,19 @@ export function LandfallJournalChart({
     if (submitting.current) return;
     if (!navigator.onLine) {
       pendingEvidence.current = evidence;
-      queueLandfallEvidence(sessionId, publishedVersionId, csrfToken, evidence);
+      try {
+        await queueLandfallEvidence(sessionId, publishedVersionId, csrfToken, evidence);
+      } catch {
+        pendingEvidence.current = null;
+        setMessage(
+          "Offline storage is unavailable or full. No visit was recorded. Keep a connection or use a fresh reading later.",
+        );
+        return;
+      }
       setMessage(
-        "Evidence queued locally in this open tab. The Voyage has not confirmed a visit. Reconnect to synchronize.",
+        "Evidence queued durably on this device for at most 90 seconds. The Voyage has not confirmed a visit. Reconnect to synchronize.",
       );
+      setAvailability((value) => (value ? { ...value, pendingEvidence: 1 } : value));
       return;
     }
     submitting.current = true;
@@ -220,14 +281,51 @@ export function LandfallJournalChart({
       pendingEvidence.current ? "Reconciling queued evidence with the Voyage…" : "Checking arrival with the Voyage…",
     );
     try {
+      if (pendingEvidence.current) {
+        const current = await fetch(`/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall`, {
+          cache: "no-store",
+        });
+        if (!current.ok) {
+          if ([401, 403, 404].includes(current.status)) {
+            pendingEvidence.current = null;
+            await clearLandfallOfflineData();
+            setMessage("Voyage access expired or was revoked. Sign in and verify access before continuing.");
+            return;
+          }
+          throw new Error("LANDFALL_REAUTHENTICATION_REQUIRED");
+        }
+        const value = await current.json();
+        const queued = await pendingLandfallEvidence(sessionId, publishedVersionId, csrfToken);
+        if (
+          !queued ||
+          !value.available ||
+          value.bootstrap.publishedVersionId !== evidence.publishedVersionId ||
+          value.bootstrap.currentSequence !== evidence.expectedSequence ||
+          value.bootstrap.replayOnly
+        ) {
+          pendingEvidence.current = null;
+          await clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
+          setMessage(
+            "Queued evidence expired or the Voyage changed. No new visit was confirmed. Refresh the Chart and use a fresh reading.",
+          );
+          onProgress();
+          return;
+        }
+      }
       const response = await fetch(`/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken },
         body: JSON.stringify(evidence),
       });
       if (!response.ok) {
+        if (response.status >= 500 || response.status === 429) throw new Error("LANDFALL_RETRY_REQUIRED");
         pendingEvidence.current = null;
-        clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
+        if ([401, 403, 404].includes(response.status)) {
+          await clearLandfallOfflineData();
+          setMessage("Voyage access expired or was revoked. Sign in and verify access before continuing.");
+          return;
+        }
+        await clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
         setMessage(
           response.status === 409
             ? "Queued evidence could not be reconciled because the Voyage changed. Reopen the chart for the current objective."
@@ -236,7 +334,8 @@ export function LandfallJournalChart({
         return;
       }
       pendingEvidence.current = null;
-      clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
+      await clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
+      setAvailability((value) => (value ? { ...value, pendingEvidence: 0 } : value));
       browser.current?.stop();
       runtime.current?.pause();
       setTracking(false);
@@ -249,8 +348,17 @@ export function LandfallJournalChart({
       onProgress();
     } catch {
       pendingEvidence.current = evidence;
-      queueLandfallEvidence(sessionId, publishedVersionId, csrfToken, evidence);
-      setMessage("Evidence is queued locally in this open tab. Reconnect to synchronize; no visit has been recorded.");
+      try {
+        await queueLandfallEvidence(sessionId, publishedVersionId, csrfToken, evidence);
+        setMessage(
+          "Evidence is queued durably on this device for at most 90 seconds. Reconnect to synchronize; no visit has been confirmed.",
+        );
+      } catch {
+        pendingEvidence.current = null;
+        setMessage(
+          "The evidence could not be saved offline. No visit was confirmed. Use a fresh reading when connected.",
+        );
+      }
     } finally {
       submitting.current = false;
     }
@@ -275,7 +383,7 @@ export function LandfallJournalChart({
   const start = () => {
     const provider = browser.current;
     const active = runtime.current;
-    if (!provider || !active || !bootstrap?.activeWaypointId || historical || bootstrap.replayOnly) return;
+    if (!enabled || !provider || !active || !bootstrap?.activeWaypointId || historical || bootstrap.replayOnly) return;
     active.resume();
     setTracking(true);
     setMessage("Requesting location for this open map…");
@@ -377,8 +485,121 @@ export function LandfallJournalChart({
     });
   };
 
-  if (!bootstrap) return message ? <p role="status">{message}</p> : null;
+  useEffect(() => {
+    if (enabled) return;
+    browser.current?.stop();
+    runtime.current?.pause();
+    samples.current = [];
+    let active = true;
+    void Promise.resolve().then(() => {
+      if (active) {
+        setTracking(false);
+        setPosition(null);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [enabled]);
+  useEffect(() => {
+    const clear = () => {
+      loadAbort.current?.abort();
+      bootstrapCache.clear();
+      pendingEvidence.current = null;
+      browser.current?.stop();
+      runtime.current?.pause();
+      setTracking(false);
+      setPosition(null);
+      setBootstrap(null);
+      setMessage("Offline access cleared. Sign in and reopen the Voyage to continue.");
+    };
+    window.addEventListener("landfall-offline-cleared", clear);
+    return () => window.removeEventListener("landfall-offline-cleared", clear);
+  }, []);
+  return {
+    bootstrap,
+    message,
+    tracking,
+    browserAvailable,
+    position,
+    replayId,
+    setReplayId,
+    start,
+    stop,
+    confirmFallback,
+    mode,
+    availability,
+  };
+}
+
+const LandfallControllerContext = createContext<ReturnType<typeof useLandfallController> | null>(null);
+
+/** Exactly one provider owns browser location, evidence intake and reconciliation per Journal. */
+export function LandfallJournalProvider({
+  children,
+  ...props
+}: Parameters<typeof useLandfallController>[0] & { children: ReactNode }) {
+  const controller = useLandfallController(props);
+  return <LandfallControllerContext.Provider value={controller}>{children}</LandfallControllerContext.Provider>;
+}
+
+export function LandfallJournalChart({
+  readOnly = false,
+  worldspaceId,
+  blockId,
+}: { readOnly?: boolean; worldspaceId?: string; blockId?: string } = {}) {
+  const controller = useContext(LandfallControllerContext);
+  const [historicalChart, setHistoricalChart] = useState<PlayerLandfallBootstrap | null>(null);
+  useEffect(() => {
+    if (!readOnly || !blockId || !controller?.bootstrap) return;
+    const abort = new AbortController();
+    const sessionId = controller.bootstrap.sessionId;
+    void fetch(
+      `/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall?block=${encodeURIComponent(blockId)}`,
+      { cache: "no-store", signal: abort.signal },
+    )
+      .then(async (response) => {
+        if (!response.ok) return;
+        const value = await response.json();
+        if (value.available && value.bootstrap.replayOnly && value.bootstrap.sessionId === sessionId)
+          setHistoricalChart(value.bootstrap);
+      })
+      .catch(() => undefined);
+    return () => abort.abort();
+  }, [readOnly, blockId, controller?.bootstrap]);
+  if (!controller) return null;
+  const {
+    bootstrap: currentBootstrap,
+    message,
+    tracking,
+    browserAvailable,
+    position: livePosition,
+    replayId,
+    setReplayId,
+    start,
+    stop,
+    confirmFallback,
+    mode,
+    availability,
+  } = controller;
+  const bootstrap = readOnly && blockId ? historicalChart : currentBootstrap;
+  const position = readOnly ? null : livePosition;
+  if (!bootstrap)
+    return (
+      <p role="status">
+        {readOnly && blockId
+          ? "Loading the released historical Chart. A connection is needed if this snapshot was not prepared."
+          : message}
+      </p>
+    );
   const worldspace = bootstrap.runtimeDefinition.worldspaces[0];
+  if (worldspaceId && worldspaceId !== worldspace.id)
+    return (
+      <p role="status">
+        This Passage’s Worldspace is not currently released. The current Voyage Chart remains available in the Map
+        drawer.
+      </p>
+    );
   const activeWaypoint = bootstrap.runtimeDefinition.waypoints.find((item) => item.id === bootstrap.activeWaypointId);
   const activeRoute = bootstrap.runtimeDefinition.routes[0];
   const guidance = physicalGuidance(position, activeWaypoint, worldspace);
@@ -386,10 +607,10 @@ export function LandfallJournalChart({
   return (
     <div className="landfall-journal-chart" data-landfall-player-chart data-worldspace-kind={worldspace.kind}>
       <p>{bootstrap.worldspaceName}</p>
-      {bootstrap.replayOnly && (
+      {(bootstrap.replayOnly || readOnly) && (
         <p>Historical Landfall chart. Replay is presentation only and never requests location or changes progress.</p>
       )}
-      {!bootstrap.replayOnly && (
+      {!bootstrap.replayOnly && !readOnly && (
         <p>
           Current objective:{" "}
           {activeWaypoint ? (activeWaypoint.visibility.publicLabel ?? activeWaypoint.name) : "No released location"}
@@ -419,12 +640,13 @@ export function LandfallJournalChart({
           </p>
         )}
       <p>
-        Map offline availability: {bootstrap.offlineMap.toLowerCase()}.{" "}
-        {bootstrap.offlineMap === "UNAVAILABLE"
-          ? "The chart list remains readable while this tab is open; map data may need a connection."
-          : bootstrap.offlineMap === "PARTIAL"
-            ? "The map image is not guaranteed after a reload."
-            : "This authored vector chart needs no external tiles."}
+        Offline chart: {availability ? "saved" : "restored or preparing"}. First-party map assets:{" "}
+        {availability?.firstPartyAssets.toLowerCase() ?? "see map availability"}.
+        {bootstrap.scene.renderer === "MAPLIBRE_STYLE"
+          ? " External map tiles require a connection and are unavailable offline."
+          : " This authored chart does not need external tiles."}
+        {availability &&
+          ` Last synchronized sequence ${availability.sequence} at ${new Date(availability.synchronizedAt).toLocaleTimeString()}. Offline shell: ${availability.shell === "READY" ? "prepared" : "requires connection until prepared"}. Pending evidence: ${availability.pendingEvidence}.`}
       </p>
       {bootstrap.paused && (
         <p role="status">The Captain paused Landfall progression. Current chart details remain readable.</p>
@@ -457,7 +679,7 @@ export function LandfallJournalChart({
                 return (
                   <li key={item.id}>
                     {item.label}
-                    {bootstrap.replayOnly && (
+                    {(bootstrap.replayOnly || readOnly) && (
                       <button type="button" onClick={() => setReplayId(item.id)}>
                         Replay arrival
                       </button>
@@ -466,7 +688,7 @@ export function LandfallJournalChart({
                 );
               })}
           </ol>
-          {bootstrap.replayOnly && replay && (
+          {(bootstrap.replayOnly || readOnly) && replay && (
             <p role="status" className="completion-stamp">
               Arrival recorded: {replay.label}
               {replay.confirmedAt ? ` · ${new Date(replay.confirmedAt).toLocaleString()}` : ""}
@@ -480,7 +702,8 @@ export function LandfallJournalChart({
         browserAvailable &&
         bootstrap.activeWaypointId &&
         !bootstrap.paused &&
-        !bootstrap.replayOnly && (
+        !bootstrap.replayOnly &&
+        !readOnly && (
           <button type="button" onClick={tracking ? stop : start}>
             {tracking ? "Stop using my location" : "Use my location"}
           </button>
@@ -490,7 +713,8 @@ export function LandfallJournalChart({
         activeWaypoint.evidenceProfile.acceptedSources.includes("PLAYER_CONFIRMATION") &&
         worldspace.observationPolicy.allowedSources.includes("PLAYER_CONFIRMATION") &&
         !bootstrap.paused &&
-        !bootstrap.replayOnly && (
+        !bootstrap.replayOnly &&
+        !readOnly && (
           <button
             type="button"
             onClick={() => {

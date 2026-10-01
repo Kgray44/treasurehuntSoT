@@ -44,7 +44,7 @@ function payloadOf(event: LandfallJourneyEvent): Record<string, unknown> {
 export function projectLandfallJourney(
   definition: LandfallDefinition,
   events: readonly LandfallJourneyEvent[],
-  current?: { chapterId?: string | null; blockId?: string | null; now?: number },
+  current?: { chapterId?: string | null; blockId?: string | null; now?: number; observationWaypointId?: string | null },
 ): LandfallJourneyProjection {
   const worlds = new Map(definition.worldspaces.map((item) => [item.id, item]));
   const waypoints = new Map(definition.waypoints.map((item) => [item.id, item]));
@@ -154,6 +154,7 @@ export function projectLandfallJourney(
   );
   const currentWaypoints = availableWaypoints.filter((item) => !visited.has(item.id) && !skipped.has(item.id));
   const activeWaypointId =
+    availableWaypoints.find((item) => item.id === current?.observationWaypointId && !skipped.has(item.id))?.id ??
     currentWaypoints.find((item) => item.id === selectedWaypointId)?.id ??
     currentWaypoints.find((item) => !item.sequence.optional)?.id ??
     currentWaypoints[0]?.id ??

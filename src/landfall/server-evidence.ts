@@ -46,17 +46,28 @@ export function qualifyPlayerLandfallEvidence(input: {
   journey: LandfallJourneyProjection;
   now: number;
   minimumDwellSeconds?: number;
+  minimumOutcome?: keyof typeof rank;
+  observationRevisit?: boolean;
 }): QualifiedLandfallEvidence {
   const { definition, request, journey, now } = input;
   if (request.worldspaceId !== journey.activeWorldspaceId) throw new Error("LANDFALL_WRONG_WORLDSPACE");
   if (journey.paused) throw new Error("LANDFALL_PROGRESS_PAUSED");
   const waypoint = journey.availableWaypoints.find((item) => item.id === request.waypointId);
-  if (!waypoint || journey.visitedIds.includes(waypoint.id) || journey.skippedIds.includes(waypoint.id))
+  if (
+    !waypoint ||
+    (journey.visitedIds.includes(waypoint.id) && !input.observationRevisit) ||
+    journey.skippedIds.includes(waypoint.id)
+  )
     throw new Error("LANDFALL_WAYPOINT_UNAVAILABLE");
   if (waypoint.id !== journey.activeWaypointId && !waypoint.sequence.optional)
     throw new Error("LANDFALL_WRONG_WAYPOINT");
   const route = journey.activeRoute;
-  if (route && route.waypointIds.includes(waypoint.id) && !["FLEXIBLE", "BRANCHING"].includes(route.model)) {
+  if (
+    !input.observationRevisit &&
+    route &&
+    route.waypointIds.includes(waypoint.id) &&
+    !["FLEXIBLE", "BRANCHING"].includes(route.model)
+  ) {
     const next = route.waypointIds.find((id) => !journey.visitedIds.includes(id) && !journey.skippedIds.includes(id));
     if (next !== waypoint.id) throw new Error("LANDFALL_ROUTE_SEQUENCE_CONFLICT");
   }
@@ -134,7 +145,14 @@ export function qualifyPlayerLandfallEvidence(input: {
     if (final.rejection) throw new Error(`LANDFALL_EVIDENCE_${final.rejection}`);
   }
   const outcome = outcomeOf(final?.confidence ?? "UNAVAILABLE");
-  if (!outcome || rank[outcome] < rank[waypoint.completion.requiredOutcome])
+  if (
+    !outcome ||
+    rank[outcome] <
+      Math.max(
+        rank[waypoint.completion.requiredOutcome],
+        rank[input.minimumOutcome ?? waypoint.completion.requiredOutcome],
+      )
+  )
     throw new Error("LANDFALL_EVIDENCE_NOT_QUALIFIED");
   const last = observations.at(-1) as Extract<LandfallObservation, { kind: "PHYSICAL_POSITION" }>;
   return {

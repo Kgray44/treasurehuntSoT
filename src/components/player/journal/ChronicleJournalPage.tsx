@@ -2,6 +2,7 @@
 
 import type { PlayerJournalBlock } from "@/chronicle/journal-contract";
 import type { ChronicleJournalPage } from "@/chronicle/journal-page-model";
+import type { ReactNode } from "react";
 import { ResilientAudio, ResilientImage, ResilientVideo } from "@/components/ui/ResilientImage";
 import { readStayStoryMotion, resolveStoryMotion } from "@/animation/presentation/story-motion";
 
@@ -13,7 +14,15 @@ export type JournalAsset = {
   url: string;
 };
 
-export function ChronicleJournalPageContent({ page, assets }: { page: ChronicleJournalPage; assets: JournalAsset[] }) {
+export function ChronicleJournalPageContent({
+  page,
+  assets,
+  chart,
+}: {
+  page: ChronicleJournalPage;
+  assets: JournalAsset[];
+  chart?: ReactNode;
+}) {
   return (
     <div className={`journal-leaf chronicle-leaf page-kind-${page.kind}`}>
       <div className="paper-fibers" aria-hidden="true" />
@@ -49,7 +58,7 @@ export function ChronicleJournalPageContent({ page, assets }: { page: ChronicleJ
         </>
       )}
       {page.kind === "block" && page.block && (
-        <JournalBlock block={page.block} part={page.part ?? "primary"} assets={assets} />
+        <JournalBlock block={page.block} part={page.part ?? "primary"} assets={assets} chart={chart} />
       )}
       {page.kind === "endpaper" && (
         <>
@@ -76,15 +85,40 @@ function JournalBlock({
   block,
   part,
   assets,
+  chart,
 }: {
   block: PlayerJournalBlock;
   part: "primary" | "secondary";
   assets: JournalAsset[];
+  chart?: ReactNode;
 }) {
   const config = block.configuration;
+  if (block.blockType === "locationObservation" && !block.locationContextReached) {
+    return (
+      <section className="journal-block journal-locationVerification-page" aria-label={block.title}>
+        <h3>{value(config, "heading") || block.title}</h3>
+        <p role="status">
+          Reach the authored location to unlock the observation. Open the chart for travel guidance or an available
+          fallback.
+        </p>
+      </section>
+    );
+  }
   const asset = (id: unknown) => assets.find((item) => item.id === id);
   const text = blockText(block);
   const copy = splitCopy(text, part, block.presentation.spreadMode === "two-page");
+  if (block.blockType === "livingChart")
+    return (
+      <section className="journal-block journal-map-page" aria-label={block.title} data-landfall-chart-passage>
+        <h3>{value(config, "heading") || block.title}</h3>
+        {copy.map((line, index) => (
+          <p className="journal-prose" key={index}>
+            {line}
+          </p>
+        ))}
+        {chart ?? <p>The canonical Chart is shown when you read this Passage.</p>}
+      </section>
+    );
   const heading =
     value(config, "heading") ||
     value(config, "riddleTitle") ||
