@@ -148,9 +148,9 @@ test("virtual Creator configures a Watchglass landmark and versioned independent
     .click();
   const editor = workspace.getByRole("region", { name: "Floors, regions and landmarks" });
   await expect(editor).toContainText("configured certified Watchglass provider");
-  await editor.getByLabel("First positive reference", { exact: true }).selectOption(reference.id);
+  await editor.getByRole("combobox", { name: "First positive reference", exact: true }).selectOption(reference.id);
   await editor.getByRole("button", { name: "Add natural landmark" }).click();
-  await workspace.getByLabel("Independent evidence sources", { exact: true }).selectOption("2");
+  await workspace.getByRole("combobox", { name: "Independent evidence sources", exact: true }).selectOption("2");
   await expect
     .poll(async () => (await stored(tale.id)).definition.waypoints[0].evidenceProfile.fusionPolicy)
     .toEqual({ version: 1, minimumIndependentSources: 2 });
@@ -164,7 +164,7 @@ test("virtual Creator configures a Watchglass landmark and versioned independent
     .locator(".landfall-object-list")
     .getByRole("button", { name: /Synthetic arch/ })
     .click();
-  await expect(workspace.getByLabel("Independent evidence sources", { exact: true })).toHaveValue("2");
+  await expect(workspace.getByRole("combobox", { name: "Independent evidence sources", exact: true })).toHaveValue("2");
   expect((await geoAudit(page)).calls).toBe(0);
   expect(
     (
