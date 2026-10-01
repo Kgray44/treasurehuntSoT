@@ -8,8 +8,104 @@ import {
   landfallAuthoringFindings,
 } from "@/landfall/authoring";
 import { validateLandfallDefinition } from "@/landfall/definition";
+import type { LandfallDefinition } from "@/landfall/schema";
 
 describe("Landfall Studio authoring model", () => {
+  it("makes private layouts and unusable landmark references visible before publication", () => {
+    const base = createLandfallWorldspace({ taleId: "synthetic-tale", name: "Synthetic museum", kind: "PHYSICAL" });
+    const waypoint = createLandfallWaypoint(
+      base.worldspaces[0],
+      base.maps[0],
+      base.maps[0].camera.center,
+      "Synthetic exhibit",
+    );
+    const definition = validateLandfallDefinition({
+      ...base,
+      worldspaces: base.worldspaces.map((item) => ({
+        ...item,
+        observationPolicy: {
+          ...item.observationPolicy,
+          allowedSources: [...item.observationPolicy.allowedSources, "VISION_WAYPOINT"],
+        },
+      })),
+      waypoints: [
+        {
+          ...waypoint,
+          regionId: "private-room",
+          landmarkId: "exhibit",
+          evidenceProfile: {
+            ...waypoint.evidenceProfile,
+            acceptedSources: [...waypoint.evidenceProfile.acceptedSources, "VISION_WAYPOINT"],
+          },
+        },
+      ],
+      context: {
+        regions: [
+          {
+            id: "private-room",
+            worldspaceId: base.worldspaces[0].id,
+            mapId: base.maps[0].id,
+            name: "Synthetic private room",
+            kind: "ROOM",
+            geometry: waypoint.geometry,
+            hiddenUntilRevealed: false,
+            privacyClassification: "PRIVATE_REAL_WORLD",
+          },
+        ],
+        landmarks: [
+          {
+            id: "exhibit",
+            regionId: "private-room",
+            waypointId: waypoint.id,
+            name: "Synthetic exhibit",
+            guidance: "Use the readable fallback.",
+            referenceAssetIds: ["missing-image"],
+            negativeReferenceAssetIds: [],
+            minimumFrames: 2,
+            fallback: waypoint.fallback,
+            privacyClassification: "PRIVATE_REAL_WORLD",
+          },
+        ],
+      },
+    });
+    const findings = landfallAuthoringFindings(definition, "PUBLIC", []);
+    expect(findings.find((item) => item.code === "LANDFALL_PUBLIC_PRIVATE_CONTEXT")?.severity).toBe("blocker");
+    expect(findings.find((item) => item.code === "LANDFALL_LANDMARK_REFERENCE_UNAVAILABLE")?.severity).toBe("blocker");
+    expect(findings.map((item) => item.code)).toContain("LANDFALL_CONTEXT_LEVEL_UNSUPPORTED");
+  });
+
+  it("does not treat fallback configuration as a GPS precision guarantee", () => {
+    const base = createLandfallWorldspace({ taleId: "synthetic-tale", name: "Synthetic park", kind: "PHYSICAL" });
+    const waypoint = createLandfallWaypoint(
+      base.worldspaces[0],
+      base.maps[0],
+      base.maps[0].camera.center,
+      "Synthetic marker",
+    );
+    const definition: LandfallDefinition = {
+      ...base,
+      waypoints: [
+        {
+          ...waypoint,
+          evidenceProfile: {
+            ...waypoint.evidenceProfile,
+            precisionProfile: "EXACT_OBJECT" as const,
+            acceptedSources: ["BROWSER_GEOLOCATION" as const],
+          },
+        },
+      ],
+    };
+    expect(
+      landfallAuthoringFindings(definition, "PRIVATE").find(
+        (item) => item.code === "LANDFALL_EXACT_TARGET_INDEPENDENT_EVIDENCE",
+      )?.severity,
+    ).toBe("blocker");
+    // Independent text/confirmation/Captain observation blocks are checked by publication validation.
+    definition.waypoints[0].evidenceProfile.acceptedSources.push("PLAYER_CONFIRMATION");
+    expect(landfallAuthoringFindings(definition, "PRIVATE").map((item) => item.code)).not.toContain(
+      "LANDFALL_EXACT_TARGET_INDEPENDENT_EVIDENCE",
+    );
+  });
   it("creates compatible real and virtual Worldspaces in one Chronicle without mixing coordinates", () => {
     const physical = createLandfallWorldspace({
       taleId: "synthetic-tale",

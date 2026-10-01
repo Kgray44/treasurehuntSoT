@@ -25,6 +25,10 @@ export const observationSchema = z.discriminatedUnion("kind", [
     kind: z.literal("PHYSICAL_POSITION"),
     coordinate: coordinateSchema,
     accuracyMeters: z.number().finite().positive().max(100_000),
+    headingDegrees: z.number().finite().min(0).max(360).optional(),
+    speedMetersPerSecond: z.number().finite().nonnegative().max(100).optional(),
+    altitudeMeters: z.number().finite().min(-12000).max(100000).optional(),
+    altitudeAccuracyMeters: z.number().finite().positive().max(100000).optional(),
   }),
   z.strictObject({
     ...common,

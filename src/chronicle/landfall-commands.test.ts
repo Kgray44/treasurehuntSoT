@@ -226,6 +226,34 @@ beforeEach(() => {
 });
 
 describe("Captain Landfall command transaction branches", () => {
+  it("records a regional Captain confirmation without camera or physical evidence", async () => {
+    definition.context = {
+      regions: [
+        {
+          id: "synthetic-site",
+          name: "Fictional site",
+          worldspaceId: "town",
+          mapId: definition.waypoints[0].mapId,
+          kind: "SITE",
+          geometry: structuredClone(definition.waypoints[0].geometry),
+          privacyClassification: definition.waypoints[0].privacyClassification,
+          hiddenUntilRevealed: false,
+        },
+      ],
+      landmarks: [],
+    };
+    definition.waypoints[0].regionId = "synthetic-site";
+    publish();
+    await command("confirmArrival", "town-arrival", { reason: "Synthetic accessible fallback" });
+    const payload = JSON.parse(persistence.events.at(-1)!.payload);
+    expect(payload.contextualSummary).toMatchObject({
+      state: "CONFIRMED",
+      regionId: "synthetic-site",
+      evidenceCategories: ["CAPTAIN_CONFIRMATION"],
+      fallbackUsed: true,
+    });
+    expect(JSON.stringify(payload)).not.toMatch(/latitude|longitude|LANDMARK|frames/);
+  });
   it.each([
     ["revealWaypoint", "town-hidden", "landfallWaypointRevealed"],
     ["revealRoute", "hidden-route", "landfallRouteRevealed"],

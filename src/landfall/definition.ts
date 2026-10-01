@@ -9,6 +9,8 @@ export function validateLandfallDefinition(input: unknown): LandfallDefinition {
     validateGeometry(waypoint.geometry, worldspaces.get(waypoint.worldspaceId)!);
   for (const route of definition.routes)
     if (route.geometry) validateGeometry(route.geometry, worldspaces.get(route.worldspaceId)!);
+  for (const region of definition.context?.regions ?? [])
+    validateGeometry(region.geometry, worldspaces.get(region.worldspaceId)!);
   return definition;
 }
 

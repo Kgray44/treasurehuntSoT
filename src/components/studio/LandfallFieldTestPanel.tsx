@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { BrowserGeolocationProvider, type ForegroundPermission } from "@/landfall/browser-geolocation";
+import {
+  BrowserContextProvider,
+  type BrowserContextTarget,
+  type BrowserContextPermission,
+} from "@/landfall/browser-context";
+import type { ContextualEvidence, ContextualSnapshot } from "@/landfall/contextual";
 import type { LandfallObservation } from "@/landfall/observation";
 import { LandfallProviderRegistry } from "@/landfall/observation";
 import { LandfallRuntime } from "@/landfall/runtime";
@@ -55,6 +61,11 @@ export function LandfallFieldTestPanel({
   const [sampleCount, setSampleCount] = useState(0);
   const [routeProgress, setRouteProgress] = useState<number | null>(null);
   const [battery, setBattery] = useState("unavailable");
+  const [contextConsent, setContextConsent] = useState(false);
+  const [contextPermission, setContextPermission] = useState<BrowserContextPermission>("PROMPT");
+  const [contextSnapshot, setContextSnapshot] = useState<ContextualSnapshot | null>(null);
+  const contextProvider = useRef<BrowserContextProvider | null>(null);
+  const contextSamples = useRef<ContextualEvidence[]>([]);
   const provider = useRef<BrowserGeolocationProvider | null>(null);
   const runtime = useRef<LandfallRuntime | null>(null);
   const samples = useRef<LandfallObservation[]>([]);
@@ -65,8 +76,10 @@ export function LandfallFieldTestPanel({
 
   useEffect(() => {
     provider.current?.stop();
+    contextProvider.current?.stop();
     runtime.current?.pause();
     samples.current = [];
+    contextSamples.current = [];
     let active = true;
     queueMicrotask(() => {
       if (!active) return;
@@ -76,6 +89,8 @@ export function LandfallFieldTestPanel({
       setAccuracy(null);
       setLastAt(null);
       setRouteProgress(null);
+      setContextSnapshot(null);
+      setContextPermission("PROMPT");
     });
     return () => {
       active = false;
@@ -86,10 +101,13 @@ export function LandfallFieldTestPanel({
     const background = () => {
       if (document.visibilityState === "visible") return;
       provider.current?.stop();
+      contextProvider.current?.stop();
       runtime.current?.pause();
       samples.current = [];
+      contextSamples.current = [];
       setWalking(false);
       setSampleCount(0);
+      setContextSnapshot(null);
       setMessage("Test walk stopped while this tab is in the background. Start a new foreground test to continue.");
     };
     document.addEventListener("visibilitychange", background);
@@ -116,14 +134,19 @@ export function LandfallFieldTestPanel({
     return () => {
       active = false;
       provider.current?.stop();
+      contextProvider.current?.stop();
       runtime.current?.pause();
       samples.current = [];
+      contextSamples.current = [];
     };
   }, [taleId, sourceVersion]);
 
   useEffect(() => {
     if (!walking) return;
-    const timer = window.setInterval(() => setClock(Date.now()), 1000);
+    const timer = window.setInterval(() => {
+      setClock(Date.now());
+      if (runtime.current) setContextSnapshot(runtime.current.contextSnapshot(Date.now()));
+    }, 1000);
     return () => window.clearInterval(timer);
   }, [walking]);
 
@@ -144,7 +167,13 @@ export function LandfallFieldTestPanel({
       state: "AVAILABLE",
     });
     const engine = new LandfallRuntime(
-      { worldspaces: [worldspace], waypoints: [waypoint], routes: route ? [route] : [], transitions: [] },
+      {
+        worldspaces: [worldspace],
+        waypoints: [waypoint],
+        routes: route ? [route] : [],
+        transitions: [],
+        context: definition.context,
+      },
       identity,
       registry,
     );
@@ -153,10 +182,12 @@ export function LandfallFieldTestPanel({
     engine.resume();
     runtime.current = engine;
     samples.current = [];
+    contextSamples.current = [];
     setSampleCount(0);
     setConfidence("UNAVAILABLE");
     setAccuracy(null);
     setLastAt(null);
+    setContextSnapshot(null);
     const location = new BrowserGeolocationProvider(navigator.geolocation ?? null, worldspace);
     provider.current = location;
     setWalking(true);
@@ -167,6 +198,7 @@ export function LandfallFieldTestPanel({
         const outcome = engine.ingest(observation, Date.now());
         setConfidence(outcome.confidence);
         setRouteProgress(engine.routeFraction);
+        setContextSnapshot(engine.contextSnapshot(Date.now()));
         if (!outcome.rejection && observation.kind === "PHYSICAL_POSITION") {
           samples.current = [...samples.current, observation].slice(-20);
           setSampleCount(samples.current.length);
@@ -180,15 +212,33 @@ export function LandfallFieldTestPanel({
         engine.setPermission(state);
         setPermission(state);
         if (state === "DENIED" || state === "UNAVAILABLE") {
+          location.stop();
+          contextProvider.current?.stop();
+          engine.pause();
           setWalking(false);
           setMessage("Browser location is unavailable. Save an incomplete receipt or test the configured fallback.");
         }
       },
     );
+    if (definition.context && contextConsent && location.active) {
+      const hints = new BrowserContextProvider(window as unknown as BrowserContextTarget, worldspace.id);
+      contextProvider.current = hints;
+      void hints.start(
+        identity,
+        (evidence) => {
+          const snapshot = engine.ingestContext(evidence, Date.now());
+          setContextSnapshot(snapshot);
+          if (!snapshot.rejection) contextSamples.current = [...contextSamples.current, evidence].slice(-40);
+        },
+        setContextPermission,
+        true,
+      );
+    } else setContextPermission(contextConsent ? "UNAVAILABLE" : "PROMPT");
   }
 
   function stop() {
     provider.current?.stop();
+    contextProvider.current?.stop();
     runtime.current?.pause();
     setWalking(false);
     setMessage("Test walk stopped. The latest 20 readings remain in memory until saved or this panel closes.");
@@ -218,6 +268,7 @@ export function LandfallFieldTestPanel({
           permission,
           networkState: "ONLINE",
           observations: mode === "PHYSICAL_WALK" ? samples.current : [],
+          contextualEvidence: mode === "PHYSICAL_WALK" ? contextSamples.current : [],
         }),
       });
       if (!response.ok)
@@ -226,6 +277,7 @@ export function LandfallFieldTestPanel({
         );
       const result = (await response.json()) as { result: string; warnings: string[] };
       samples.current = [];
+      contextSamples.current = [];
       setMessage(`Sanitized ${result.result.toLowerCase()} receipt saved. ${result.warnings[0] ?? "No warning."}`);
       const list = await fetch(`/api/studio/tales/${encodeURIComponent(taleId)}/landfall/field-tests`, {
         cache: "no-store",
@@ -244,6 +296,17 @@ export function LandfallFieldTestPanel({
         is saved.
       </p>
       <div className="landfall-test-controls">
+        {definition.context && worldspace.kind === "PHYSICAL" && (
+          <label className="landfall-check">
+            <input
+              type="checkbox"
+              checked={contextConsent}
+              disabled={walking}
+              onChange={(event) => setContextConsent(event.target.checked)}
+            />
+            Allow optional foreground heading and motion hints for this test
+          </label>
+        )}
         {worldspace.kind === "PHYSICAL" && waypoint && (
           <button type="button" disabled={unsaved && !walking} onClick={walking ? stop : start}>
             {walking ? "Stop test walk" : "Start test walk"}
@@ -318,6 +381,45 @@ export function LandfallFieldTestPanel({
           <dt>Battery</dt>
           <dd>{battery}</dd>
         </div>
+        {definition.context && (
+          <>
+            <div>
+              <dt>Region guidance</dt>
+              <dd>
+                {contextSnapshot
+                  ? `${contextSnapshot.state.toLowerCase()} · ${definition.context.regions.find((item) => item.id === contextSnapshot.regionId)?.name ?? "region unavailable"}`
+                  : "unavailable"}
+              </dd>
+            </div>
+            <div>
+              <dt>Context evidence</dt>
+              <dd>
+                {contextSnapshot?.evidenceCategories.length
+                  ? contextSnapshot.evidenceCategories.join(", ").toLowerCase()
+                  : "unavailable"}
+              </dd>
+            </div>
+            <div>
+              <dt>Optional sensors</dt>
+              <dd>
+                {contextConsent ? contextPermission.toLowerCase() : "not enabled"}; elevation{" "}
+                {contextSnapshot?.evidenceCategories.includes("ELEVATION") ? "available" : "unavailable"}
+              </dd>
+            </div>
+            <div>
+              <dt>Context route</dt>
+              <dd>
+                {contextSnapshot?.routeMatch
+                  ? `segment ${contextSnapshot.routeMatch.segmentIndex + 1} · ${contextSnapshot.routeMatch.direction.toLowerCase()}${contextSnapshot.routeMatch.ambiguous ? " · uncertain" : ""}`
+                  : "unavailable"}
+              </dd>
+            </div>
+            <div>
+              <dt>Landmark recognition</dt>
+              <dd>unavailable · use the configured readable fallback</dd>
+            </div>
+          </>
+        )}
       </dl>
       <p role="status" aria-live="polite">
         {message}

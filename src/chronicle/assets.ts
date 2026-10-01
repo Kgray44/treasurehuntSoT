@@ -257,6 +257,16 @@ export async function assetUsages(taleId: string, assetId: string) {
   for (const artifact of studio.artifacts)
     for (const field of ["artworkAssetId", "revealVideoAssetId", "modelAssetId"] as const)
       if (artifact[field] === assetId) usages.push({ type: "artifact", id: artifact.id, label: artifact.name, field });
+  for (const map of studio.draft.landfall?.maps ?? []) {
+    if ((map.source.type === "ASSET_IMAGE" || map.source.type === "ASSET_VECTOR") && map.source.assetId === assetId)
+      usages.push({ type: "landfall", id: map.id, label: map.name, field: "map" });
+    for (const overlay of map.overlays ?? [])
+      if (overlay.assetId === assetId)
+        usages.push({ type: "landfall", id: overlay.id, label: map.name, field: "overlay" });
+  }
+  for (const landmark of studio.draft.landfall?.context?.landmarks ?? [])
+    if ([...landmark.referenceAssetIds, ...landmark.negativeReferenceAssetIds].includes(assetId))
+      usages.push({ type: "landfall", id: landmark.id, label: landmark.name, field: "landmark reference" });
   return usages;
 }
 

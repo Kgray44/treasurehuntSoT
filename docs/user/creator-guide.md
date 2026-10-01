@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-09-30
+last_reviewed: 2026-10-01
 ---
 
 # Creator guide
@@ -25,6 +25,10 @@ Set location evidence and a location-free fallback before requiring a Player vis
 A Living Chart Passage embeds the released interactive chart. A location observation requires arrival at its configured place before offering the observation prompt and normal response. Field walks require a saved draft and a selected physical waypoint. Saving or stopping a walk, changing the selected place or draft, leaving the panel, or backgrounding the tab stops browser location. Saving a receipt needs a connection; editing the draft marks earlier receipts stale.
 
 ## Review and publish
+
+For an indoor or compact experience, use Living Chart's contextual controls to add an aligned floor/site map, label its level, and draw regions such as entrances, rooms, galleries, corridors or stairs. Associate a waypoint with its region and a route segment with the region it crosses. Coordinate controls support keyboard drawing. Keep private layouts inside the authorized Chronicle and review privacy findings before public publication.
+
+Natural landmarks use existing scenery. Select positive and negative images from your Chronicle's library, describe the view, and configure a readable observation or Captain fallback. Camera comparison supports a view aligned with these references; changed angle or lighting may need the fallback. Exact-object targets need an independent Location Observation or landmark pattern. GPS establishes the surrounding area but cannot identify an object. Optional foreground heading/motion hints assist test walks; sanitized receipts retain categories and region IDs, not raw streams or Player images.
 
 Open **Versions**, then choose **Review and publish**. Save your draft, review the available readiness guidance, changes, media, and release notes, then confirm publication when everything is ready. A successful publication creates an immutable edition and offers the next available actions, such as previewing it or preparing a Voyage.
 

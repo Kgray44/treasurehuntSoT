@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { ZodError } from "zod";
 import type { Asset, LibraryRecord } from "@/components/studio/studio-types";
 import { LandfallFieldTestPanel } from "@/components/studio/LandfallFieldTestPanel";
+import { LandfallContextEditor } from "@/components/studio/LandfallContextEditor";
 import {
   addLandfallWorldspace,
   applyLandfallPreset,
@@ -137,6 +138,8 @@ export function LandfallWorkspace({
   const [worldspaceId, setWorldspaceId] = useState<string | null>(null);
   const [mapId, setMapId] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedRegionId, setSelectedRegionId] = useState<string | null>(null);
+  const [drawingRegionId, setDrawingRegionId] = useState<string | null>(null);
   const [tool, setTool] = useState<Tool>("INSPECT");
   const [preview, setPreview] = useState<Preview>("CREATOR");
   const [mobilePreview, setMobilePreview] = useState(false);
@@ -182,7 +185,7 @@ export function LandfallWorkspace({
   const selectedRoute = routes.find((item) => item.id === selectedId);
   const routeLength = drawnRouteLength(selectedRoute, worldspace);
   const selectedMap = map?.id === selectedId ? map : null;
-  const findings = definition ? landfallAuthoringFindings(definition, taleVisibility) : [];
+  const findings = definition ? landfallAuthoringFindings(definition, taleVisibility, assets) : [];
   const scene = useMemo(() => {
     if (!definition || !worldspace || !map || preview === "PUBLIC") return null;
     const journey = projectLandfallJourney(definition, previewEvents(definition, worldspace.id, selectedId, preview));
@@ -307,9 +310,20 @@ export function LandfallWorkspace({
 
   function updateWaypoint(patch: (waypoint: LandfallWaypoint) => LandfallWaypoint) {
     if (!definition || !selectedWaypoint) return;
+    const updated = patch(selectedWaypoint);
     commit({
       ...definition,
-      waypoints: definition.waypoints.map((item) => (item.id === selectedWaypoint.id ? patch(item) : item)),
+      waypoints: definition.waypoints.map((item) => (item.id === selectedWaypoint.id ? updated : item)),
+      ...(definition.context
+        ? {
+            context: {
+              ...definition.context,
+              landmarks: definition.context.landmarks.map((item) =>
+                item.waypointId === updated.id ? { ...item, fallback: updated.fallback } : item,
+              ),
+            },
+          }
+        : {}),
     });
   }
 
@@ -344,6 +358,36 @@ export function LandfallWorkspace({
   function finishDrawing() {
     if (!definition || !worldspace || !map) return;
     const points = pendingPoints.map(([x, y]) => coordinateAt(worldspace, x, y));
+    if (drawingRegionId && definition.context) {
+      const geometry =
+        tool === "POLYGON" && points.length >= 3
+          ? { type: "POLYGON" as const, rings: [[...points, points[0]]] }
+          : tool === "CORRIDOR" && points.length >= 2
+            ? { type: "CORRIDOR" as const, points, width: worldspace.kind === "PHYSICAL" ? 3 : 10 }
+            : tool === "GATE" && points.length === 2
+              ? { type: "ENTRANCE_GATE" as const, start: points[0], end: points[1], direction: "EITHER" as const }
+              : null;
+      if (!geometry)
+        return setError(
+          "A boundary needs at least three points; a corridor needs two; an entrance or exit needs exactly two.",
+        );
+      if (
+        commit({
+          ...definition,
+          context: {
+            ...definition.context,
+            regions: definition.context.regions.map((region) =>
+              region.id === drawingRegionId ? { ...region, geometry } : region,
+            ),
+          },
+        })
+      ) {
+        setPendingPoints([]);
+        setDrawingRegionId(null);
+        setTool("INSPECT");
+      }
+      return;
+    }
     if ((tool === "POLYGON" || tool === "MULTIPOLYGON") && selectedWaypoint && points.length >= 3) {
       const ring = [...points, points[0]];
       if (
@@ -403,6 +447,7 @@ export function LandfallWorkspace({
               ? {
                   ...item,
                   semantics: "NAVIGATIONAL",
+                  segmentRegionIds: undefined,
                   geometry:
                     tool === "CORRIDOR"
                       ? { type: "CORRIDOR", points, width: worldspace.kind === "PHYSICAL" ? 30 : 10 }
@@ -420,7 +465,10 @@ export function LandfallWorkspace({
     preview === "CREATOR" && worldspace
       ? {
           onPlace: place,
-          onSelect: setSelectedId,
+          onSelect: (id) => {
+            setSelectedId(id);
+            if (definition?.context?.regions.some((item) => item.id === id)) setSelectedRegionId(id);
+          },
           onMovePoint: (featureId, x, y) => {
             if (!definition) return;
             const waypoint = definition.waypoints.find((item) => item.id === featureId);
@@ -800,6 +848,7 @@ export function LandfallWorkspace({
                     aria-pressed={tool === item}
                     onClick={() => {
                       setTool(item);
+                      setDrawingRegionId(null);
                       setPendingPoints([]);
                     }}
                   >
@@ -884,6 +933,20 @@ export function LandfallWorkspace({
                     onChange={(event) => setManualY(Number(event.target.value))}
                   />
                 </label>
+                {drawingRegionId && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const center = map.camera.center;
+                      place(
+                        manualX ?? (center.type === "WGS84" ? center.longitude : center.x),
+                        manualY ?? (center.type === "WGS84" ? center.latitude : center.y),
+                      );
+                    }}
+                  >
+                    Add region point at coordinates
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={() => {
@@ -991,6 +1054,17 @@ export function LandfallWorkspace({
               {selectedMap && (
                 <div className="landfall-inspector-fields">
                   <h4>Map definition</h4>
+                  <label>
+                    Floor or level label
+                    <input
+                      key={map.id + "level" + (map.level ?? "")}
+                      defaultValue={map.level ?? ""}
+                      maxLength={80}
+                      onBlur={(event) =>
+                        updateMap((item) => ({ ...item, level: event.target.value.trim() || undefined }))
+                      }
+                    />
+                  </label>
                   <label>
                     Name
                     <input
@@ -2181,6 +2255,16 @@ export function LandfallWorkspace({
                         commit({
                           ...definition,
                           waypoints: definition.waypoints.filter((item) => item.id !== selectedWaypoint.id),
+                          ...(definition.context
+                            ? {
+                                context: {
+                                  ...definition.context,
+                                  landmarks: definition.context.landmarks.filter(
+                                    (item) => item.waypointId !== selectedWaypoint.id,
+                                  ),
+                                },
+                              }
+                            : {}),
                           routes: definition.routes
                             .map((item) => ({
                               ...item,
@@ -2462,6 +2546,30 @@ export function LandfallWorkspace({
               )}
             </aside>
           </div>
+          <LandfallContextEditor
+            definition={definition}
+            worldspace={worldspace}
+            map={map}
+            assets={assets}
+            waypoint={selectedWaypoint}
+            route={selectedRoute}
+            selectedRegionId={selectedRegionId}
+            onSelectRegion={setSelectedRegionId}
+            onSelectMap={(id) => {
+              setMapId(id);
+              setSelectedId(id);
+            }}
+            onChange={commit}
+            onDrawRegion={(id, shape) => {
+              const region = definition.context?.regions.find((item) => item.id === id);
+              if (region) setMapId(region.mapId);
+              setSelectedRegionId(id);
+              setDrawingRegionId(id);
+              setTool(shape);
+              setPendingPoints([]);
+              document.querySelector(".landfall-tool-row")?.scrollIntoView({ block: "nearest", behavior: "instant" });
+            }}
+          />
           {findings.length > 0 && (
             <section aria-label="Landfall authoring findings" className="landfall-findings">
               <h3>Authoring findings</h3>

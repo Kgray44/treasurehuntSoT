@@ -12,6 +12,47 @@ const event = (sequence: number, eventType: string, payload: Record<string, unkn
 });
 
 describe("canonical Landfall journey projection", () => {
+  it("replays only canonical contextual IDs and categories, discarding coordinates and unrecognized text", () => {
+    const definition = structuredClone(landfallFixture);
+    definition.context = {
+      regions: [
+        {
+          id: "gallery",
+          worldspaceId: "town",
+          mapId: definition.maps[0].id,
+          name: "Gallery",
+          kind: "GALLERY",
+          level: "1",
+          geometry: definition.waypoints[0].geometry,
+          privacyClassification: "PUBLIC_REAL_WORLD",
+          hiddenUntilRevealed: false,
+        },
+      ],
+      landmarks: [],
+    };
+    const journey = projectLandfallJourney(definition, [
+      event(1, "landfallWaypointConfirmed", {
+        waypointId: "town-arrival",
+        contextualSummary: {
+          state: "CONFIRMED",
+          regionId: "gallery",
+          mapId: "forged",
+          level: "forged",
+          evidenceCategories: ["LANDMARK", "raw secret", "LANDMARK"],
+          latitude: 45.123,
+        },
+      }),
+    ]);
+    expect(journey.contextualSummary).toEqual({
+      state: "CONFIRMED",
+      regionId: "gallery",
+      mapId: definition.maps[0].id,
+      level: "1",
+      evidenceCategories: ["LANDMARK"],
+    });
+    expect(journey.journeyPath[0].contextualSummary).toEqual(journey.contextualSummary);
+    expect(JSON.stringify(journey)).not.toMatch(/45.123|raw secret|forged/);
+  });
   it("releases prerequisites after a durable visit without exposing a future location before it", () => {
     const definition = structuredClone(landfallFixture);
     definition.waypoints.push({

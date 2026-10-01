@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { parseStoredLandfallDefinition } from "@/landfall/definition";
 import { LandfallProviderRegistry, observationSchema } from "@/landfall/observation";
 import { LandfallRuntime } from "@/landfall/runtime";
+import { contextualEvidenceSchema } from "@/landfall/contextual";
 import { landfallId } from "@/landfall/schema";
 
 export const fieldTestSubmissionSchema = z.strictObject({
@@ -16,6 +17,7 @@ export const fieldTestSubmissionSchema = z.strictObject({
   permission: z.enum(["PROMPT", "GRANTED", "DENIED", "UNAVAILABLE"]),
   networkState: z.enum(["ONLINE", "OFFLINE"]),
   observations: z.array(observationSchema).max(20),
+  contextualEvidence: z.array(contextualEvidenceSchema).max(40).optional(),
 });
 export type FieldTestSubmission = z.infer<typeof fieldTestSubmissionSchema>;
 
@@ -63,7 +65,7 @@ export async function listLandfallFieldTests(taleId: string) {
   };
 }
 
-/** Raw fixes are evaluated in memory and never written to the database or response. */
+/** Raw fixes, hints and recognition outcomes are evaluated in memory, never persisted. */
 export async function recordLandfallFieldTest(taleId: string, input: FieldTestSubmission) {
   const { draft, definition, hash } = await currentDraft(taleId);
   if (draft.autosaveVersion !== input.sourceVersion) throw new Error("LANDFALL_FIELD_TEST_SOURCE_CHANGED");
@@ -77,7 +79,7 @@ export async function recordLandfallFieldTest(taleId: string, input: FieldTestSu
     throw new Error("LANDFALL_FIELD_TEST_TARGET_CHANGED");
   if (input.mode === "PHYSICAL_WALK" && (worldspace.kind !== "PHYSICAL" || !waypoint))
     throw new Error("LANDFALL_FIELD_TEST_REQUIRES_PHYSICAL_WAYPOINT");
-  if (input.mode !== "PHYSICAL_WALK" && input.observations.length)
+  if (input.mode !== "PHYSICAL_WALK" && (input.observations.length || input.contextualEvidence?.length))
     throw new Error("LANDFALL_FIELD_TEST_UNEXPECTED_SENSOR_DATA");
 
   const warnings: string[] = [];
@@ -93,7 +95,13 @@ export async function recordLandfallFieldTest(taleId: string, input: FieldTestSu
       state: "AVAILABLE",
     });
     const runtime = new LandfallRuntime(
-      { worldspaces: [worldspace], waypoints: [waypoint], routes: route ? [route] : [], transitions: [] },
+      {
+        worldspaces: [worldspace],
+        waypoints: [waypoint],
+        routes: route ? [route] : [],
+        transitions: [],
+        context: definition.context,
+      },
       { sessionId: `field-test-${draft.id}`, publishedVersionId: `draft-${draft.id}-${draft.autosaveVersion}` },
       registry,
     );
@@ -103,7 +111,25 @@ export async function recordLandfallFieldTest(taleId: string, input: FieldTestSu
     runtime.resume();
     let firstAccepted: number | null = null;
     let lastAccepted: number | null = null;
-    for (const observation of input.observations) {
+    const collected = [
+      ...input.observations.map((evidence) => ({ type: "POSITION" as const, evidence })),
+      ...(input.contextualEvidence ?? []).map((evidence) => ({ type: "CONTEXT" as const, evidence })),
+    ].sort((a, b) => Date.parse(a.evidence.observedAt) - Date.parse(b.evidence.observedAt));
+    for (const reading of collected) {
+      if (reading.type === "CONTEXT") {
+        const evidence = reading.evidence;
+        if (
+          evidence.worldspaceId !== worldspace.id ||
+          evidence.sessionId !== `field-test-${draft.id}` ||
+          evidence.publishedVersionId !== `draft-${draft.id}-${draft.autosaveVersion}`
+        )
+          throw new Error("LANDFALL_FIELD_TEST_CONTEXT_IDENTITY_MISMATCH");
+        const outcome = runtime.ingestContext(evidence, Date.now());
+        if (outcome.rejection)
+          warnings.push(`Context reading rejected: ${outcome.rejection.toLowerCase().replaceAll("_", " ")}.`);
+        continue;
+      }
+      const observation = reading.evidence;
       if (
         observation.kind !== "PHYSICAL_POSITION" ||
         observation.source !== "BROWSER_GEOLOCATION" ||
@@ -127,6 +153,18 @@ export async function recordLandfallFieldTest(taleId: string, input: FieldTestSu
             "The arrival radius is smaller than twice the observed accuracy; nearby arrivals may be missed.",
           );
       }
+    }
+    if (definition.context) {
+      const snapshot = runtime.contextSnapshot(Date.now());
+      const landmark = definition.context.landmarks.find((item) => item.waypointId === waypoint.id);
+      warnings.unshift(
+        `Context: ${snapshot.state.toLowerCase()}; region ${snapshot.regionId ?? "unavailable"}; map ${snapshot.mapId ?? "unavailable"}.`,
+        `Evidence categories: ${snapshot.evidenceCategories.join(", ").toLowerCase() || "unavailable"}.`,
+        snapshot.routeMatch
+          ? `Context route: ${snapshot.routeMatch.routeId}; segment ${snapshot.routeMatch.segmentIndex + 1}; ${snapshot.routeMatch.direction.toLowerCase()}; ${snapshot.routeMatch.ambiguous ? "uncertain" : "matched"}.`
+          : "Context route: unavailable.",
+        `Landmark recognition: unavailable; readable fallback: ${(landmark?.fallback.mode ?? waypoint.fallback.mode).toLowerCase().replaceAll("_", " ")}.`,
+      );
     }
     dwellSeconds =
       firstAccepted !== null && lastAccepted !== null

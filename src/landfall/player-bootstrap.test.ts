@@ -11,6 +11,96 @@ const pinned = {
 };
 
 describe("authorized Player Landfall bootstrap projection", () => {
+  it("marks a released physical floor overlay partial rather than unavailable offline", () => {
+    const definition = structuredClone(landfallFixture);
+    definition.maps[0].overlays = [
+      {
+        id: "floor",
+        assetId: "floor-image",
+        bounds: { west: -72.001, east: -71.999, south: 43.999, north: 44.001 },
+        opacity: 1,
+        hiddenUntilRevealed: false,
+        attributionLabel: "Floor",
+        attributionUrl: "https://example.invalid/floor",
+        privacyClassification: "PRIVATE_REAL_WORLD",
+      },
+    ];
+    const result = projectPlayerLandfallBootstrap(
+      { ...pinned, definition },
+      { chapterId: null, blockId: null, releasedAssets: [{ id: "floor-image", url: "/api/media/floor-image" }] },
+    );
+    expect(result.availableMaps?.[0].offlineMap).toBe("PARTIAL");
+    expect(result.availableMaps?.[0].scene.overlays[0].imageUrl).toBe("/api/media/floor-image");
+  });
+  it("marks exact observation arrival separately while preserving the pinned exact requirement", () => {
+    const definition = structuredClone(landfallFixture);
+    definition.waypoints[0].evidenceProfile.precisionProfile = "EXACT_OBJECT";
+    const ordinary = projectPlayerLandfallBootstrap(
+      { ...pinned, definition },
+      { chapterId: null, blockId: null, releasedAssets: [] },
+    );
+    const observation = projectPlayerLandfallBootstrap(
+      { ...pinned, definition },
+      { chapterId: null, blockId: null, releasedAssets: [], observationWaypointId: "town-arrival" },
+    );
+    expect(ordinary.contextualArrivalWaypointId).toBeUndefined();
+    expect(observation.contextualArrivalWaypointId).toBe("town-arrival");
+    expect(observation.runtimeDefinition.waypoints[0].completion.requiredOutcome).toBe("CONFIRMED");
+  });
+  it("keeps authorized private layouts, filters unrevealed context, and offers released floors without changing the objective", () => {
+    const definition = structuredClone(landfallFixture);
+    const base = {
+      id: "building",
+      worldspaceId: "town",
+      mapId: "town-map",
+      name: "Building",
+      kind: "BUILDING" as const,
+      geometry: definition.waypoints[0].geometry,
+      privacyClassification: "PUBLIC_REAL_WORLD" as const,
+      hiddenUntilRevealed: false,
+    };
+    base.mapId = definition.maps[0].id;
+    definition.context = {
+      regions: [
+        base,
+        { ...base, id: "secret-room", name: "Secret room", hiddenUntilRevealed: true },
+        { ...base, id: "private-room", name: "Private room", privacyClassification: "PRIVATE_REAL_WORLD" },
+      ],
+      landmarks: [],
+    };
+    definition.maps.push(
+      {
+        ...definition.maps[0],
+        id: "floor-two",
+        name: "Floor two",
+        role: "FLOOR",
+        level: "2",
+        source: { type: "AUTHORED_VECTOR" },
+      },
+      {
+        ...definition.maps[0],
+        id: "unreleased-floor",
+        name: "Unreleased floor",
+        source: { type: "ASSET_IMAGE", assetId: "secret-floor-asset" },
+      },
+    );
+    definition.context.regions.push({ ...base, id: "upper-floor", mapId: "floor-two", kind: "FLOOR", level: "2" });
+    const result = projectPlayerLandfallBootstrap(
+      { ...pinned, definition },
+      { chapterId: null, blockId: null, releasedAssets: [] },
+    );
+    expect(result.availableMaps?.map((item) => item.id)).toEqual([definition.maps[0].id, "floor-two"]);
+    expect(result.activeWaypointId).toBe("town-arrival");
+    expect(result.runtimeDefinition.context?.regions.map((item) => item.id)).toEqual([
+      "building",
+      "private-room",
+      "upper-floor",
+    ]);
+    expect(
+      result.availableMaps?.find((item) => item.id === "floor-two")?.scene.features.map((item) => item.id),
+    ).toEqual(["upper-floor"]);
+    expect(JSON.stringify(result)).not.toMatch(/secret-room|unreleased-floor|secret-floor-asset/);
+  });
   it("sends only initial released evaluation geometry from the pinned version", () => {
     const definition = structuredClone(landfallFixture);
     definition.waypoints.push({

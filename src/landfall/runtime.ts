@@ -23,6 +23,7 @@ import type {
   LandfallWorldspace,
 } from "@/landfall/schema";
 import { createLandfallCompletionRequest, type LandfallCompletionRequest } from "@/landfall/progression-boundary";
+import { ContextualLandfallEngine, type ContextualSnapshot } from "@/landfall/contextual";
 
 export type LandfallConfidence = "UNAVAILABLE" | "WEAK" | "OUTSIDE" | "NEARBY" | "LIKELY_INSIDE" | "CONFIRMED";
 export type LandfallSyncState = "LOCAL_OBSERVED" | "QUEUED" | "SERVER_CONFIRMED" | "REJECTED";
@@ -108,6 +109,8 @@ function stabilizedCoordinate(fixes: QualifiedFix[]): LandfallCoordinate {
 }
 
 export class LandfallRuntime {
+  private readonly contextual: ContextualLandfallEngine;
+  private readonly fineRegionIds: Set<string>;
   readonly sessionId: string;
   readonly publishedVersionId: string;
   private readonly worldspaces: Map<string, LandfallWorldspace>;
@@ -137,12 +140,18 @@ export class LandfallRuntime {
   routeFraction: number | null = null;
 
   constructor(
-    definition: Pick<LandfallDefinition, "worldspaces" | "waypoints" | "routes" | "transitions">,
+    definition: Pick<LandfallDefinition, "worldspaces" | "waypoints" | "routes" | "transitions" | "context">,
     identity: { sessionId: string; publishedVersionId: string },
     private readonly providers: LandfallProviderRegistry,
   ) {
     this.sessionId = identity.sessionId;
     this.publishedVersionId = identity.publishedVersionId;
+    this.contextual = new ContextualLandfallEngine(definition, identity);
+    this.fineRegionIds = new Set(
+      (definition.context?.regions ?? [])
+        .filter((region) => !["SITE", "BUILDING", "OUTDOOR_COMPACT"].includes(region.kind))
+        .map((region) => region.id),
+    );
     this.worldspaces = new Map(definition.worldspaces.map((item) => [item.id, item]));
     this.waypoints = new Map(definition.waypoints.map((item) => [item.id, item]));
     this.routes = new Map(definition.routes.map((item) => [item.id, item]));
@@ -181,6 +190,7 @@ export class LandfallRuntime {
     this.offlineState = state;
   }
   private resetEvidence(): void {
+    this.contextual.reset();
     this.fixes = [];
     this.consecutive = 0;
     this.dwellStart = null;
@@ -231,7 +241,10 @@ export class LandfallRuntime {
       return this.reject("POSITION_KIND_MISMATCH", now);
     }
     const waypoint = this.activeWaypointId ? this.waypoints.get(this.activeWaypointId) : null;
-    if (!waypoint) return { confidence: "UNAVAILABLE", sync: null, retryable: true };
+    if (!waypoint) {
+      if (observation.kind === "PHYSICAL_POSITION") this.contextual.ingestPosition(observation, now);
+      return { confidence: "UNAVAILABLE", sync: null, retryable: true };
+    }
     if (!waypoint.evidenceProfile.acceptedSources.includes(observation.source))
       return this.reject("SOURCE_NOT_ALLOWED", now);
     const observedAt = Date.parse(observation.observedAt);
@@ -331,6 +344,8 @@ export class LandfallRuntime {
       accuracy: uncertainty,
     });
     if (this.fixes.length > 12) this.fixes.shift();
+    if (physical)
+      this.contextual.ingestPosition(observation as Extract<LandfallObservation, { kind: "PHYSICAL_POSITION" }>, now);
     const stableCoordinate = stabilizedCoordinate(this.fixes);
     if (this.activeRouteId) {
       const route = this.routes.get(this.activeRouteId);
@@ -394,8 +409,15 @@ export class LandfallRuntime {
       waypoint.evidenceProfile.requiredSamples,
       waypoint.evidenceProfile.minimumCorroboration,
     );
+    const finePhysical =
+      physical &&
+      (["EXACT_OBJECT", "INDOOR_REGION"].includes(waypoint.evidenceProfile.precisionProfile) ||
+        waypoint.type === "NATURAL_LANDMARK" ||
+        (waypoint.regionId !== undefined && this.fineRegionIds.has(waypoint.regionId)));
     const confirmed =
-      this.consecutive >= samplesNeeded && now - this.dwellStart >= waypoint.evidenceProfile.dwellSeconds * 1000;
+      !finePhysical &&
+      this.consecutive >= samplesNeeded &&
+      now - this.dwellStart >= waypoint.evidenceProfile.dwellSeconds * 1000;
     return {
       confidence: confirmed ? "CONFIRMED" : "LIKELY_INSIDE",
       observationId: observation.id,
@@ -633,6 +655,24 @@ export class LandfallRuntime {
     )
       return null;
     return { coordinate: { ...latest.coordinate }, accuracy: latest.accuracy, observedAt: latest.observedAt };
+  }
+  /** Local context guidance never creates canonical completion evidence. */
+  ingestContext(input: unknown, now: number): ContextualSnapshot {
+    if (this.trackingState === "PAUSED") return { ...this.contextual.snapshot(now), rejection: "PAUSED" };
+    const kind = (input as { kind?: unknown } | null)?.kind;
+    if (
+      (this.permissionState === "DENIED" || this.permissionState === "UNAVAILABLE") &&
+      kind !== "OBSERVATION" &&
+      kind !== "LANDMARK"
+    )
+      return { ...this.contextual.snapshot(now), rejection: "PERMISSION_UNAVAILABLE" };
+    const candidate = input as { worldspaceId?: unknown } | null;
+    if (candidate?.worldspaceId !== this.activeWorldspaceId)
+      return { ...this.contextual.snapshot(now), rejection: "WRONG_WORLDSPACE" };
+    return this.contextual.ingestEvidence(input, now);
+  }
+  contextSnapshot(now: number): ContextualSnapshot {
+    return this.contextual.snapshot(now);
   }
   diagnostics() {
     return {

@@ -1,5 +1,6 @@
 import type { JsonObject } from "@/chronicle/types";
 import { landfallCompletionOptions } from "@/landfall/completion";
+import { providerForBlock } from "@/chronicle/block-registry";
 import type { LandfallDefinition } from "@/landfall/schema";
 
 export type LandfallBlockFinding = Readonly<{ code: string; message: string; blockId: string }>;
@@ -24,6 +25,33 @@ export function validateLandfallBlockContracts(
   }[],
 ): LandfallBlockFinding[] {
   const findings: LandfallBlockFinding[] = [];
+  for (const waypoint of definition?.waypoints ?? []) {
+    if (waypoint.evidenceProfile.precisionProfile !== "EXACT_OBJECT") continue;
+    const independentObservation = blocks.some((block) => {
+      const provider = providerForBlock(block.blockType, block.configuration, block.completion);
+      return (
+        block.blockType === "locationObservation" &&
+        block.configuration.worldspaceId === waypoint.worldspaceId &&
+        block.configuration.waypointId === waypoint.id &&
+        String(block.configuration.prompt ?? "").trim().length > 0 &&
+        ["playerConfirmation", "textAnswer", "captainManual"].includes(provider ?? "") &&
+        (provider !== "textAnswer" ||
+          (Array.isArray(block.configuration.acceptedAnswers) &&
+            block.configuration.acceptedAnswers.some(
+              (answer) => typeof answer === "string" && answer.trim().length > 0,
+            )))
+      );
+    });
+    const independentLandmark = definition?.context?.landmarks.some(
+      (landmark) => landmark.waypointId === waypoint.id && landmark.id === waypoint.landmarkId,
+    );
+    if (!independentObservation && !independentLandmark)
+      findings.push({
+        code: "LANDFALL_EXACT_TARGET_VERIFICATION",
+        message: `${waypoint.name}: add a Location Observation with a readable prompt and verified response, or a natural landmark with a fallback. GPS arrival and its fallback alone cannot identify an exact object.`,
+        blockId: blocks.find((block) => block.configuration.waypointId === waypoint.id)?.id ?? waypoint.id,
+      });
+  }
   for (const block of blocks) {
     const ownsLandfall = landfallBlocks.has(block.blockType);
     const usesProvider = block.completion.mode === "landfall";

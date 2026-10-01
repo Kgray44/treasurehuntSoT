@@ -7,6 +7,7 @@ import { createDrydockValidationReport } from "@/drydock/reports";
 import { publishedSourceIdentity, snapshotFromStudio } from "@/chronicle/snapshot";
 import { landfallAuthoringFindings } from "@/landfall/authoring";
 import { validateLandfallBlockContracts } from "@/landfall/block-validation";
+import { validateLandfallReferenceAssets } from "@/landfall/context-assets";
 
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
 
@@ -41,6 +42,15 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
     chapter.blocks.map((block) => ({ ...block, chapterId: chapter.id })),
   );
   if (studio.draft.landfall) {
+    try {
+      validateLandfallReferenceAssets(studio.draft.landfall, studio.assets);
+    } catch {
+      error({
+        code: "LANDFALL_LANDMARK_REFERENCE_UNAVAILABLE",
+        message: "Choose available image references from this Chronicle's library for each natural landmark.",
+        field: "landfall",
+      });
+    }
     for (const finding of landfallAuthoringFindings(studio.draft.landfall, studio.tale.visibility)) {
       const report = finding.severity === "blocker" ? error : warn;
       report({ code: finding.code, message: finding.message, field: "landfall" });

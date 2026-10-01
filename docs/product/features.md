@@ -3,7 +3,7 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-09-30
+last_reviewed: 2026-10-01
 ---
 
 # Voyagewright features
@@ -29,5 +29,7 @@ Creators use Creator Studio to compose Chronicle material, manage versions and a
 Community Harbor provides controlled discovery of shareable Chronicle material, Creator profiles, collections, reviews, and saves. See the [Community Harbor guide](../user/community-harbor.md).
 
 ## Privacy, accessibility, and support
+
+Landfall contextual Charts support aligned floor/site maps, hierarchical regions and compact-route continuity. Creators configure natural landmark reference views and independent exact-object observations with readable fallbacks. Players see uncertainty, optional foreground hints and separate floor-viewing controls. Region-gated comparison uses transient stills and server-bound evidence; Captain summaries and replay retain derived context without live sensor acquisition. GPS alone cannot confirm rooms or exact objects.
 
 Voyagewright provides role-aware access, privacy settings, accessible interaction patterns, and consent-based Support Access when assistance is needed. See [privacy and safety](../user/privacy.md), [accessibility](../user/accessibility.md), and [Support Access](../user/support-access.md).

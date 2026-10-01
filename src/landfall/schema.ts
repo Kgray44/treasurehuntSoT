@@ -137,6 +137,7 @@ export const observationSourceSchema = z.enum([
   "PLAYER_CONFIRMATION",
   "CAPTAIN_CONFIRMATION",
   "WATCHGLASS",
+  "VISION_WAYPOINT",
   "STORY_PROGRESSION",
   "CREATOR_LOGIC",
   "GAME_INTEGRATION",
@@ -151,7 +152,7 @@ const evidenceProfile = z.strictObject({
     "EXACT_OBJECT",
     "VIRTUAL_CONTEXT",
   ]),
-  acceptedSources: z.array(observationSourceSchema).min(1).max(9),
+  acceptedSources: z.array(observationSourceSchema).min(1).max(10),
   requiredAccuracyMeters: positive.max(10_000).optional(),
   requiredSamples: z.number().int().min(1).max(20),
   dwellSeconds: nonnegative.max(3600),
@@ -174,7 +175,7 @@ const worldspaceSchema = z.strictObject({
   mapDefinitionIds: z.array(landfallId).min(1).max(16),
   defaultMapDefinitionId: landfallId,
   observationPolicy: z.strictObject({
-    allowedSources: z.array(observationSourceSchema).min(1).max(9),
+    allowedSources: z.array(observationSourceSchema).min(1).max(10),
     requiredFallback: z.boolean(),
   }),
   routePolicy: z.strictObject({ allowOffRoute: z.boolean(), maximumRoutePoints: z.number().int().min(2).max(1024) }),
@@ -195,6 +196,7 @@ const mapSchema = z.strictObject({
   id: landfallId,
   worldspaceId: landfallId,
   name: text,
+  level: text.optional(),
   role: z.enum(["PRIMARY", "FLOOR", "DETAIL", "OVERVIEW", "ILLUSTRATIVE"]),
   referenceId: landfallId,
   renderer: z.enum(["MAPLIBRE_STYLE", "IMAGE_2D", "VECTOR_2D"]),
@@ -261,6 +263,8 @@ const waypointSchema = z.strictObject({
   id: landfallId,
   worldspaceId: landfallId,
   mapId: landfallId,
+  regionId: landfallId.optional(),
+  landmarkId: landfallId.optional(),
   name: text,
   description: z.string().max(1000).optional(),
   icon: z.enum(["PIN", "FLAG", "STAR", "COMPASS", "DOOR", "CLUE"]).optional(),
@@ -324,6 +328,7 @@ const routeSchema = z.strictObject({
   ]),
   semantics: z.enum(["NAVIGATIONAL", "ILLUSTRATIVE", "STORY_ORDER_ONLY"]),
   waypointIds: z.array(landfallId).min(1).max(256),
+  segmentRegionIds: z.array(landfallId).min(1).max(1023).optional(),
   geometry: geometrySchema.optional(),
   travelMode: z.enum(["WALKING", "CYCLING", "VEHICLE", "BOAT", "INDOOR", "MIXED", "UNSPECIFIED"]),
   offRouteTolerance: nonnegative.max(10_000),
@@ -349,6 +354,46 @@ const transitionSchema = z.strictObject({
 });
 export type LandfallTransition = z.infer<typeof transitionSchema>;
 
+export const landfallRegionSchema = z.strictObject({
+  id: landfallId,
+  worldspaceId: landfallId,
+  mapId: landfallId,
+  name: text,
+  kind: z.enum([
+    "SITE",
+    "BUILDING",
+    "FLOOR",
+    "WING",
+    "ROOM",
+    "GALLERY",
+    "CORRIDOR",
+    "EXHIBIT_ZONE",
+    "OUTDOOR_COMPACT",
+    "ENTRANCE",
+    "EXIT",
+    "STAIRS",
+  ]),
+  parentId: landfallId.optional(),
+  level: text.optional(),
+  geometry: geometrySchema,
+  privacyClassification: privacyClassSchema,
+  hiddenUntilRevealed: z.boolean(),
+});
+export type LandfallRegion = z.infer<typeof landfallRegionSchema>;
+export const landfallLandmarkSchema = z.strictObject({
+  id: landfallId,
+  regionId: landfallId,
+  waypointId: landfallId,
+  name: text,
+  guidance: z.string().min(1).max(1000),
+  referenceAssetIds: z.array(landfallId).min(1).max(8),
+  negativeReferenceAssetIds: z.array(landfallId).max(8),
+  minimumFrames: z.number().int().min(2).max(5),
+  fallback: waypointSchema.shape.fallback,
+  privacyClassification: privacyClassSchema,
+});
+export type LandfallLandmark = z.infer<typeof landfallLandmarkSchema>;
+
 export const landfallDefinitionSchema = z
   .strictObject({
     schemaVersion: z.literal(1),
@@ -358,6 +403,12 @@ export const landfallDefinitionSchema = z
     waypoints: z.array(waypointSchema).max(512),
     routes: z.array(routeSchema).max(128),
     transitions: z.array(transitionSchema).max(64),
+    context: z
+      .strictObject({
+        regions: z.array(landfallRegionSchema).max(256),
+        landmarks: z.array(landfallLandmarkSchema).max(256),
+      })
+      .optional(),
   })
   .superRefine((definition, context) => {
     const issue = (path: (string | number)[], message: string) => context.addIssue({ code: "custom", path, message });
@@ -380,6 +431,8 @@ export const landfallDefinitionSchema = z
       definition.waypoints,
       definition.routes,
       definition.transitions,
+      definition.context?.regions ?? [],
+      definition.context?.landmarks ?? [],
     ]) {
       for (const item of collection) {
         if (allIds.has(item.id)) issue([], `ID ${item.id} is reused across Landfall collections.`);
@@ -389,6 +442,8 @@ export const landfallDefinitionSchema = z
     const worldspaces = new Map(definition.worldspaces.map((worldspace) => [worldspace.id, worldspace]));
     const maps = new Map(definition.maps.map((map) => [map.id, map]));
     const waypoints = new Map(definition.waypoints.map((waypoint) => [waypoint.id, waypoint]));
+    const regions = new Map((definition.context?.regions ?? []).map((region) => [region.id, region]));
+    const landmarks = new Map((definition.context?.landmarks ?? []).map((landmark) => [landmark.id, landmark]));
     const validateCoordinate = (coordinate: LandfallCoordinate, worldspaceId: string, path: (string | number)[]) => {
       const worldspace = worldspaces.get(worldspaceId);
       const reference = worldspace?.coordinateReference;
@@ -494,6 +549,18 @@ export const landfallDefinitionSchema = z
       const worldspace = worldspaces.get(waypoint.worldspaceId);
       if (!worldspace || maps.get(waypoint.mapId)?.worldspaceId !== waypoint.worldspaceId)
         issue(["waypoints", i], "Waypoint requires a map in its Worldspace.");
+      if (
+        waypoint.regionId &&
+        (regions.get(waypoint.regionId)?.worldspaceId !== waypoint.worldspaceId ||
+          regions.get(waypoint.regionId)?.mapId !== waypoint.mapId)
+      )
+        issue(["waypoints", i, "regionId"], "Waypoint region must use the same Worldspace and map.");
+      if (
+        waypoint.landmarkId &&
+        (landmarks.get(waypoint.landmarkId)?.waypointId !== waypoint.id ||
+          landmarks.get(waypoint.landmarkId)?.regionId !== waypoint.regionId)
+      )
+        issue(["waypoints", i, "landmarkId"], "Waypoint landmark must bind this waypoint and region.");
       geometryCoordinates(waypoint.geometry).forEach((coordinate, j) =>
         validateCoordinate(coordinate, waypoint.worldspaceId, ["waypoints", i, "geometry", j]),
       );
@@ -556,9 +623,95 @@ export const landfallDefinitionSchema = z
       visited.add(id);
     };
     for (const id of waypoints.keys()) visit(id);
+    const privacyRank = {
+      FICTIONAL: 0,
+      GENERIC: 0,
+      PUBLIC_REAL_WORLD: 1,
+      APPROXIMATE_REAL_WORLD: 2,
+      PRIVATE_REAL_WORLD: 3,
+    };
+    definition.context?.regions.forEach((region, i) => {
+      const path = ["context", "regions", i];
+      const map = maps.get(region.mapId),
+        worldspace = worldspaces.get(region.worldspaceId);
+      if (!worldspace || map?.worldspaceId !== region.worldspaceId)
+        issue(path, "Region requires a map in its Worldspace.");
+      if (region.level && map?.level && region.level !== map.level) issue(path, "Region level must match its map.");
+      if (region.kind === "FLOOR" && !region.level) issue(path, "Floor region requires a level.");
+      const parent = region.parentId ? regions.get(region.parentId) : undefined;
+      if (region.parentId && (!parent || parent.worldspaceId !== region.worldspaceId))
+        issue(path, "Parent region must belong to the same Worldspace.");
+      if (parent?.level && region.level && region.kind !== "STAIRS" && parent.level !== region.level)
+        issue(path, "Child region must match its parent level.");
+      if (map && privacyRank[region.privacyClassification] < privacyRank[map.privacyClassification])
+        issue(path, "Region cannot expose more precise privacy than its map.");
+      if (parent && privacyRank[region.privacyClassification] < privacyRank[parent.privacyClassification])
+        issue(path, "Child region cannot relax parent privacy.");
+      const ancestry = new Set([region.id]);
+      let current = parent;
+      while (current) {
+        if (ancestry.has(current.id)) {
+          issue(path, "Region hierarchy contains a cycle.");
+          break;
+        }
+        ancestry.add(current.id);
+        current = current.parentId ? regions.get(current.parentId) : undefined;
+      }
+      geometryCoordinates(region.geometry).forEach((coordinate, j) =>
+        validateCoordinate(coordinate, region.worldspaceId, [...path, "geometry", j]),
+      );
+    });
+    definition.context?.landmarks.forEach((landmark, i) => {
+      const path = ["context", "landmarks", i],
+        region = regions.get(landmark.regionId),
+        waypoint = waypoints.get(landmark.waypointId);
+      if (!region || !waypoint || waypoint.worldspaceId !== region.worldspaceId || waypoint.mapId !== region.mapId)
+        issue(path, "Landmark must bind a waypoint in its region Worldspace and map.");
+      if (waypoint?.regionId && waypoint.regionId !== landmark.regionId)
+        issue(path, "Landmark region must match waypoint region.");
+      if (
+        waypoint &&
+        (landmark.fallback.mode !== waypoint.fallback.mode ||
+          landmark.fallback.alternateWaypointId !== waypoint.fallback.alternateWaypointId)
+      )
+        issue([...path, "fallback"], "Landmark fallback must match its waypoint canonical fallback.");
+      if (waypoint && !waypoint.evidenceProfile.acceptedSources.includes("VISION_WAYPOINT"))
+        issue(path, "Landmark waypoint must accept VISION_WAYPOINT evidence.");
+      if (region && !worldspaces.get(region.worldspaceId)?.observationPolicy.allowedSources.includes("VISION_WAYPOINT"))
+        issue(path, "Landmark Worldspace must allow VISION_WAYPOINT evidence.");
+      if (region && privacyRank[landmark.privacyClassification] < privacyRank[region.privacyClassification])
+        issue(path, "Landmark cannot relax region privacy.");
+      const assets = [...landmark.referenceAssetIds, ...landmark.negativeReferenceAssetIds];
+      if (new Set(assets).size !== assets.length)
+        issue(path, "Reference and negative assets must be distinct and unique.");
+      if (waypoint && !waypoint.sequence.optional && landmark.fallback.mode === "NONE")
+        issue(path, "Mandatory landmark requires a readable fallback.");
+      if (landmark.fallback.mode === "PLAYER" && !waypoint?.evidenceProfile.allowManualFallback)
+        issue(path, "Player landmark fallback must be allowed.");
+      if (landmark.fallback.mode === "CAPTAIN" && !waypoint?.evidenceProfile.allowCaptainOverride)
+        issue(path, "Captain landmark fallback must be allowed.");
+      if (
+        landmark.fallback.mode === "ALTERNATE_WAYPOINT" &&
+        (!region ||
+          waypoints.get(landmark.fallback.alternateWaypointId ?? "")?.worldspaceId !== region.worldspaceId ||
+          landmark.fallback.alternateWaypointId === landmark.waypointId)
+      )
+        issue(path, "Landmark alternate fallback must be another waypoint in the Worldspace.");
+    });
     definition.routes.forEach((route, i) => {
       const worldspace = worldspaces.get(route.worldspaceId);
       if (!worldspace) issue(["routes", i, "worldspaceId"], "Route Worldspace does not exist.");
+      if (route.segmentRegionIds) {
+        if (
+          !route.geometry ||
+          !["ROUTE_LINE", "CORRIDOR"].includes(route.geometry.type) ||
+          !("points" in route.geometry) ||
+          route.segmentRegionIds.length !== route.geometry.points.length - 1
+        )
+          issue(["routes", i, "segmentRegionIds"], "Segment regions require one region per route line segment.");
+        if (route.segmentRegionIds.some((id) => regions.get(id)?.worldspaceId !== route.worldspaceId))
+          issue(["routes", i, "segmentRegionIds"], "Segment regions must belong to route Worldspace.");
+      }
       if (
         route.geometry &&
         (route.geometry.type === "ROUTE_LINE" || route.geometry.type === "CORRIDOR") &&

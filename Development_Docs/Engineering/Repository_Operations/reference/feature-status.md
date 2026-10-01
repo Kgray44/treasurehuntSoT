@@ -3,10 +3,12 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-09-30
+last_reviewed: 2026-10-01
 ---
 
 # Feature status
+
+Phase 3 Read the Ground is a locally implemented candidate: contextual regions/floors, compact corridor continuity, optional foreground hints, natural landmark authored-view comparison and independent exact-object observation. Its [qualification record](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_Validation_Record.md) distinguishes measured local proof from pending protected acceptance and separate physical field quality. Watchglass general object recognition remains outside this Landfall phase.
 
 Landfall Phase 2's [final closure correction](../../../Projects/Project_Landfall/Project_Landfall_Phase_2_Final_Closure_Record.md) is available on protected main through PR #671: embedded Chart, contextual observation, durable offline, Captain, field-test and responsive/accessibility acceptance. Exact-head hosted qualification and protected landed smoke passed. FT-044 now reflects encrypted reload-safe chart/pages, bounded first-party imagery and expiring evidence; external tiles, live hardware, deployment and owner acceptance remain separate.
 

@@ -3,7 +3,7 @@ title: Captain guide
 audience: captain
 status: current
 canonical_for: captain-guide
-last_reviewed: 2026-09-30
+last_reviewed: 2026-10-01
 ---
 
 # Captain guide
@@ -27,6 +27,8 @@ For a Landfall Voyage, the Console shows safe Worldspace, location, route, and l
 If the Voyage changes while a reviewed action is open, the Console keeps the conflict visible so you can review the current state before retrying. Arrival approval unlocks a location observation's context; its configured response remains a separate action. Recent Voyage results can receive keyboard focus for scrolling.
 
 ## Change Captains safely
+
+Contextual Chronicles may show the last recorded region, level and categorical evidence summary. This is historical context rather than a live sensor feed. Use the configured Captain fallback when a Player cannot use a camera or an exact-object observation. Arrival approval and the separate observation response retain their existing authority and sequence checks.
 
 Use **Transfer Captaincy** to choose another joined Player as Captain. **Relinquish Captaincy** puts a shared Voyage into **Succession Hold** until someone takes over; it does not cancel the Voyage. **Cancel Voyage for Everyone** is a separate action.
 

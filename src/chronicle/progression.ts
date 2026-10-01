@@ -1185,7 +1185,7 @@ export async function interactWithTaleSession(
  * the same One Voyage transaction that writes the durable visit. No browser
  * confidence flag or raw coordinate is stored as canonical progress.
  */
-export async function submitPlayerLandfallEvidence(unchecked: unknown) {
+export async function submitPlayerLandfallEvidence(unchecked: unknown, playerProfileId?: string) {
   const request = playerLandfallEvidenceSchema.parse(unchecked);
   const canonicalKey = `landfall:${request.sessionId}:${request.evidenceId}`;
   const result = await db.$transaction(async (tx) => {
@@ -1256,9 +1256,14 @@ export async function submitPlayerLandfallEvidence(unchecked: unknown) {
       journey,
       now: Date.now(),
       observationRevisit,
+      playerProfileId,
       minimumOutcome:
         requirement?.worldspaceId === request.worldspaceId && requirement.locationId === request.waypointId
-          ? requirement.requiredOutcome
+          ? observationRevisit &&
+            snapshot.landfall.waypoints.find((item) => item.id === request.waypointId)?.evidenceProfile
+              .precisionProfile === "EXACT_OBJECT"
+            ? "LIKELY_INSIDE"
+            : requirement.requiredOutcome
           : undefined,
       minimumDwellSeconds:
         requirement?.worldspaceId === request.worldspaceId && requirement.locationId === request.waypointId
@@ -1447,6 +1452,20 @@ export async function captainLandfallCommand(sessionId: string, actorId: string,
             captainAccountId: actor.accountId,
             publishedVersionId: identity(session),
             observedAt: new Date().toISOString(),
+            ...(waypoint?.regionId
+              ? {
+                  contextualSummary: {
+                    state: "CONFIRMED",
+                    regionId: waypoint.regionId,
+                    mapId: waypoint.mapId,
+                    level:
+                      snapshot.landfall.context?.regions.find((region) => region.id === waypoint.regionId)?.level ??
+                      null,
+                    evidenceCategories: ["CAPTAIN_CONFIRMATION"],
+                    fallbackUsed: true,
+                  },
+                }
+              : {}),
           }
         : {}),
     };
