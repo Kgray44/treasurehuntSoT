@@ -112,6 +112,7 @@ for (const viewport of [
     await expect(chart(page).getByRole("button", { name: "Use my location" })).toHaveCount(0);
     await expect(chart(page).getByRole("button", { name: /compare.*landmark/i })).toHaveCount(0);
     await expect(chart(page).locator("image")).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     const fallback = chart(page).getByRole("button", { name: "Confirm arrival myself" });
     await reachableDrawerControl(fallback);
     expect((await fallback.boundingBox())!.height).toBeGreaterThanOrEqual(44);
@@ -127,6 +128,7 @@ for (const viewport of [
     await fallback.focus();
     await page.keyboard.press("Enter");
     await expect.poll(() => block(voyage.id)).toBe(voyage.activeId);
+    await expect.poll(async () => (await events(voyage.id, "landfallWaypointConfirmed")).length).toBe(1);
     const confirmed = await events(voyage.id, "landfallWaypointConfirmed");
     expect(confirmed).toHaveLength(1);
     expect(JSON.stringify(confirmed[0].payload)).toContain("PLAYER_CONFIRMATION");

@@ -175,6 +175,7 @@ test("virtual Creator configures a Watchglass landmark and versioned independent
     ).violations,
   ).toEqual([]);
   const capture = testInfo.outputPath("virtual-creator-policy.png");
+  await workspace.getByRole("combobox", { name: "Independent evidence sources", exact: true }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: capture, fullPage: false });
   await testInfo.attach("virtual-creator-policy", { path: capture, contentType: "image/png" });
   await context.close();
