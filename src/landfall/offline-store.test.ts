@@ -74,6 +74,8 @@ describe("durable session-bound Landfall offline store", () => {
     const store = new LandfallOfflineRepository(storage, () => clock);
     for (const input of [
       { ...evidence, method: "LANDMARK" as const },
+      { ...evidence, method: "WATCHGLASS" as const, watchglassReceipt: "synthetic-certified-receipt" },
+      { ...evidence, watchglassReceipt: "synthetic-certified-receipt" },
       { ...evidence, landmarkReceipt: "synthetic-expiring-receipt" },
       {
         ...evidence,
@@ -150,7 +152,14 @@ describe("durable session-bound Landfall offline store", () => {
       ...evidence,
       method: "FOREGROUND_LOCATION" as const,
       observations: [
-        { ...sample, headingDegrees: 90, speedMetersPerSecond: 2, altitudeMeters: 30, altitudeAccuracyMeters: 1 },
+        {
+          ...sample,
+          headingDegrees: 90,
+          speedMetersPerSecond: 2,
+          altitudeMeters: 30,
+          altitudeAccuracyMeters: 1,
+          provenance: { independentEvidenceRef: "transient-root", contextEvidenceRefs: ["context-prior"] },
+        },
       ],
     };
     const before = structuredClone(input);
@@ -162,6 +171,7 @@ describe("durable session-bound Landfall offline store", () => {
     );
     const restored = await new LandfallOfflineRepository(storage, () => clock).pending(binding);
     expect(restored).toEqual({ ...evidence, method: "FOREGROUND_LOCATION", observations: [sample] });
+    expect(JSON.stringify(restored)).not.toMatch(/transient-root|context-prior|provenance/);
     expect(JSON.stringify(restored)).not.toMatch(
       /headingDegrees|speedMetersPerSecond|altitudeMeters|altitudeAccuracyMeters/,
     );

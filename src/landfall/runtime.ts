@@ -1,3 +1,4 @@
+import { LandfallEvidenceFusion } from "@/landfall/evidence-fusion";
 import {
   crossesGate,
   distance,
@@ -110,6 +111,7 @@ function stabilizedCoordinate(fixes: QualifiedFix[]): LandfallCoordinate {
 
 export class LandfallRuntime {
   private readonly contextual: ContextualLandfallEngine;
+  private readonly fusion = new LandfallEvidenceFusion();
   private readonly fineRegionIds: Set<string>;
   readonly sessionId: string;
   readonly publishedVersionId: string;
@@ -191,6 +193,7 @@ export class LandfallRuntime {
   }
   private resetEvidence(): void {
     this.contextual.reset();
+    this.fusion.reset();
     this.fixes = [];
     this.consecutive = 0;
     this.dwellStart = null;
@@ -242,7 +245,7 @@ export class LandfallRuntime {
     }
     const waypoint = this.activeWaypointId ? this.waypoints.get(this.activeWaypointId) : null;
     if (!waypoint) {
-      if (observation.kind === "PHYSICAL_POSITION") this.contextual.ingestPosition(observation, now);
+      if (observation.kind !== "SEMANTIC_LOCATION") this.contextual.ingestPosition(observation, now);
       return { confidence: "UNAVAILABLE", sync: null, retryable: true };
     }
     if (!waypoint.evidenceProfile.acceptedSources.includes(observation.source))
@@ -273,6 +276,31 @@ export class LandfallRuntime {
         now,
         cause instanceof LandfallGeometryError && cause.code === "TRANSFORM_FAILED" ? "TRANSFORM_FAILED" : undefined,
       );
+    }
+    if (observation.kind === "SEMANTIC_LOCATION") this.contextual.ingestSemantic(observation, now);
+    const fusion = this.fusion.consider(
+      observation,
+      ["LIKELY_INSIDE", "CONFIRMED"].includes(outcome.confidence)
+        ? true
+        : outcome.confidence === "OUTSIDE"
+          ? false
+          : null,
+      waypoint.evidenceProfile,
+      now,
+    );
+    this.contextual.setEvidenceConflict(fusion === "CONFLICT", now);
+    if (fusion === "CONFLICT") {
+      outcome = { ...outcome, confidence: "WEAK", sync: null };
+      this.consecutive = 0;
+      this.dwellStart = null;
+      this.lastStableAt = 0;
+      this.lastSafeOutcome = outcome;
+    } else if (fusion === "INSUFFICIENT" && outcome.confidence === "CONFIRMED")
+      outcome = { ...outcome, confidence: "LIKELY_INSIDE", sync: null };
+    if (fusion !== "SUPPORTED") {
+      for (const evidence of this.pending.values()) {
+        if (evidence.waypointId === waypoint.id && evidence.state !== "SERVER_CONFIRMED") evidence.state = "REJECTED";
+      }
     }
     const qualifiedOutcome =
       outcome.confidence === "CONFIRMED" && this.offlineState === "OFFLINE_UNAVAILABLE"
@@ -344,8 +372,7 @@ export class LandfallRuntime {
       accuracy: uncertainty,
     });
     if (this.fixes.length > 12) this.fixes.shift();
-    if (physical)
-      this.contextual.ingestPosition(observation as Extract<LandfallObservation, { kind: "PHYSICAL_POSITION" }>, now);
+    this.contextual.ingestPosition(observation, now);
     const stableCoordinate = stabilizedCoordinate(this.fixes);
     if (this.activeRouteId) {
       const route = this.routes.get(this.activeRouteId);

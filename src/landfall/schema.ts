@@ -163,6 +163,12 @@ const evidenceProfile = z.strictObject({
   minimumCorroboration: z.number().int().min(1).max(4),
   allowManualFallback: z.boolean(),
   allowCaptainOverride: z.boolean(),
+  fusionPolicy: z
+    .strictObject({
+      version: z.literal(1),
+      minimumIndependentSources: z.number().int().min(1).max(4),
+    })
+    .optional(),
 });
 export type LandfallEvidenceProfile = z.infer<typeof evidenceProfile>;
 
@@ -584,6 +590,15 @@ export const landfallDefinitionSchema = z
         )
       )
         issue(["waypoints", i, "evidenceProfile"], "Exact object cannot rely on GPS alone.");
+      if (
+        waypoint.evidenceProfile.fusionPolicy &&
+        waypoint.evidenceProfile.fusionPolicy.minimumIndependentSources >
+          new Set(waypoint.evidenceProfile.acceptedSources.filter((source) => source !== "STORY_PROGRESSION")).size
+      )
+        issue(
+          ["waypoints", i, "evidenceProfile", "fusionPolicy"],
+          "Independent corroboration needs enough distinct accepted sources.",
+        );
       if (waypoint.type === "PASS_THROUGH_GATE" && waypoint.geometry.type !== "ENTRANCE_GATE")
         issue(["waypoints", i, "geometry"], "Pass-through waypoint requires entrance gate geometry.");
       if (waypoint.type === "MOVING_TEMPORARY_WAYPOINT" && !waypoint.expiresAt)
@@ -675,10 +690,19 @@ export const landfallDefinitionSchema = z
           landmark.fallback.alternateWaypointId !== waypoint.fallback.alternateWaypointId)
       )
         issue([...path, "fallback"], "Landmark fallback must match its waypoint canonical fallback.");
-      if (waypoint && !waypoint.evidenceProfile.acceptedSources.includes("VISION_WAYPOINT"))
-        issue(path, "Landmark waypoint must accept VISION_WAYPOINT evidence.");
-      if (region && !worldspaces.get(region.worldspaceId)?.observationPolicy.allowedSources.includes("VISION_WAYPOINT"))
-        issue(path, "Landmark Worldspace must allow VISION_WAYPOINT evidence.");
+      const visualSources =
+        worldspaces.get(region?.worldspaceId ?? "")?.kind === "VIRTUAL"
+          ? ["WATCHGLASS" as const]
+          : ["VISION_WAYPOINT" as const, "WATCHGLASS" as const];
+      if (waypoint && !visualSources.some((source) => waypoint.evidenceProfile.acceptedSources.includes(source)))
+        issue(path, `Landmark waypoint must accept ${visualSources.join(" or ")} evidence.`);
+      if (
+        region &&
+        !visualSources.some((source) =>
+          worldspaces.get(region.worldspaceId)?.observationPolicy.allowedSources.includes(source),
+        )
+      )
+        issue(path, `Landmark Worldspace must allow ${visualSources.join(" or ")} evidence.`);
       if (region && privacyRank[landmark.privacyClassification] < privacyRank[region.privacyClassification])
         issue(path, "Landmark cannot relax region privacy.");
       const assets = [...landmark.referenceAssetIds, ...landmark.negativeReferenceAssetIds];

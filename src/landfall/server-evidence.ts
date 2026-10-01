@@ -1,3 +1,4 @@
+import { readWatchglassHandoff, type WatchglassEvidenceProvider } from "@/landfall/watchglass-handoff";
 import { projectLandfallJourney, type LandfallJourneyProjection } from "@/landfall/journey-projection";
 import { LandfallProviderRegistry, type LandfallObservation } from "@/landfall/observation";
 import { LandfallRuntime, type LandfallConfidence } from "@/landfall/runtime";
@@ -11,7 +12,7 @@ export type QualifiedLandfallEvidence = Readonly<{
   waypointId: string;
   worldspaceId: string;
   evidenceId: string;
-  method: "BROWSER_GEOLOCATION" | "PLAYER_CONFIRMATION" | "VISION_WAYPOINT";
+  method: "BROWSER_GEOLOCATION" | "PLAYER_CONFIRMATION" | "VISION_WAYPOINT" | "WATCHGLASS";
   outcome: "NEARBY" | "LIKELY_INSIDE" | "CONFIRMED";
   observedAt: string;
   confidenceClass: "LOW" | "MEDIUM" | "HIGH";
@@ -48,6 +49,7 @@ export function qualifyPlayerLandfallEvidence(input: {
   minimumOutcome?: keyof typeof rank;
   observationRevisit?: boolean;
   playerProfileId?: string;
+  watchglassProvider?: WatchglassEvidenceProvider;
 }): QualifiedLandfallEvidence {
   const { definition, request, journey, now } = input;
   if (request.worldspaceId !== journey.activeWorldspaceId) throw new Error("LANDFALL_WRONG_WORLDSPACE");
@@ -75,7 +77,83 @@ export function qualifyPlayerLandfallEvidence(input: {
   if (request.method !== "LANDMARK" && request.landmarkReceipt) throw new Error("LANDFALL_UNEXPECTED_LANDMARK_RECEIPT");
   if (request.contextualEvidence?.some((item) => item.kind === "LANDMARK" || item.kind === "OBSERVATION"))
     throw new Error("LANDFALL_UNTRUSTED_CONTEXT_CONFIRMATION");
+  if (request.method !== "WATCHGLASS" && request.watchglassReceipt)
+    throw new Error("LANDFALL_UNEXPECTED_WATCHGLASS_RECEIPT");
+  if (request.method === "WATCHGLASS") {
+    if (request.observations?.length || request.contextualEvidence?.length || request.landmarkReceipt)
+      throw new Error("LANDFALL_WATCHGLASS_UNTRUSTED_INPUT");
+    if (!input.playerProfileId) throw new Error("LANDFALL_WATCHGLASS_ACTOR_REQUIRED");
+    const handoff = readWatchglassHandoff(
+      input.watchglassProvider,
+      request.watchglassReceipt ?? "",
+      {
+        sessionId: request.sessionId,
+        playerProfileId: input.playerProfileId,
+        publishedVersionId: request.publishedVersionId,
+        expectedSequence: request.expectedSequence,
+        worldspaceId: worldspace.id,
+        worldspaceVersion: worldspace.version,
+        waypointId: waypoint.id,
+        definitionHash: landmarkDefinitionHash(definition),
+      },
+      worldspace.kind,
+      now,
+    );
+    if (handoff.state !== "AVAILABLE") throw new Error("LANDFALL_WATCHGLASS_UNAVAILABLE");
+    const landmark = definition.context?.landmarks.find((item) => item.id === waypoint.landmarkId);
+    if (landmark && handoff.observations.length < landmark.minimumFrames)
+      throw new Error("LANDFALL_WATCHGLASS_SUPPORT_REQUIRED");
+    const providers = new LandfallProviderRegistry();
+    providers.register({
+      id: handoff.observation.providerId,
+      source: "WATCHGLASS",
+      worldspaceKinds: [worldspace.kind],
+      state: "AVAILABLE",
+    });
+    const runtime = new LandfallRuntime(
+      definition,
+      { sessionId: request.sessionId, publishedVersionId: request.publishedVersionId },
+      providers,
+    );
+    if (runtime.projection("CREATOR_TEST", now).activeWorldspaceId !== worldspace.id)
+      runtime.transition(worldspace.id, "watchglass-qualification", new Date(now).toISOString(), true);
+    runtime.setActiveWaypoint(waypoint.id);
+    if (input.minimumDwellSeconds) {
+      // Qualified signed observations must also satisfy the Passage's stronger dwell contract.
+      const elapsed =
+        Date.parse(handoff.observations.at(-1)!.observedAt) - Date.parse(handoff.observations[0].observedAt);
+      if (elapsed < input.minimumDwellSeconds * 1000) throw new Error("LANDFALL_WATCHGLASS_DWELL_REQUIRED");
+    }
+    let outcome = runtime.ingest(handoff.observations[0], Date.parse(handoff.observations[0].observedAt));
+    for (const observation of handoff.observations.slice(1))
+      outcome = runtime.ingest(observation, Date.parse(observation.observedAt));
+    if (outcome.rejection || outcome.confidence !== "CONFIRMED") throw new Error("LANDFALL_WATCHGLASS_NOT_QUALIFIED");
+    const region = definition.context?.regions.find((item) => item.id === waypoint.regionId);
+    return {
+      waypointId: waypoint.id,
+      worldspaceId: worldspace.id,
+      evidenceId: request.evidenceId,
+      method: "WATCHGLASS",
+      outcome: "CONFIRMED",
+      observedAt: handoff.observation.observedAt,
+      confidenceClass: "HIGH",
+      ...(region
+        ? {
+            contextualSummary: {
+              state: "CONFIRMED",
+              regionId: region.id,
+              mapId: region.mapId,
+              level: region.level ?? null,
+              evidenceCategories: ["WATCHGLASS"],
+            },
+          }
+        : {}),
+    };
+  }
   if (request.method === "LANDMARK") {
+    // The regional prior gates the comparison; it is not another independent verifier.
+    if ((waypoint.evidenceProfile.fusionPolicy?.minimumIndependentSources ?? 1) > 1)
+      throw new Error("LANDFALL_INDEPENDENT_EVIDENCE_REQUIRED");
     if (
       !waypoint.evidenceProfile.acceptedSources.includes("VISION_WAYPOINT") ||
       !worldspace.observationPolicy.allowedSources.includes("VISION_WAYPOINT")

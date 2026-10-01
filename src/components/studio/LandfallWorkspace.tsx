@@ -1906,6 +1906,46 @@ export function LandfallWorkspace({
                     ))}
                   </fieldset>
                   <label>
+                    Independent evidence sources
+                    <select
+                      value={selectedWaypoint.evidenceProfile.fusionPolicy?.minimumIndependentSources ?? 0}
+                      onChange={(event) =>
+                        updateWaypoint((item) => ({
+                          ...item,
+                          evidenceProfile: {
+                            ...item.evidenceProfile,
+                            fusionPolicy: Number(event.target.value)
+                              ? { version: 1, minimumIndependentSources: Number(event.target.value) }
+                              : undefined,
+                          },
+                        }))
+                      }
+                    >
+                      <option value="0">Existing reading policy</option>
+                      {[1, 2, 3, 4].map((count) => (
+                        <option
+                          key={count}
+                          value={count}
+                          disabled={
+                            count >
+                            new Set(
+                              selectedWaypoint.evidenceProfile.acceptedSources.filter(
+                                (source) => source !== "STORY_PROGRESSION",
+                              ),
+                            ).size
+                          }
+                        >
+                          {count} independent {count === 1 ? "source" : "sources"}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <p>
+                    Repeated readings and contextual priors do not count as separate sources. Conflicting evidence
+                    remains uncertain; the configured fallback remains available. Watchglass visual verification
+                    requires a separately certified provider.
+                  </p>
+                  <label>
                     Required readings
                     <input
                       type="number"

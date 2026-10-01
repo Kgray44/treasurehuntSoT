@@ -14,6 +14,8 @@ last_reviewed: 2026-10-01
 
 ### Added
 
+- Added the local Landfall Phase 3 v1.1 follow-up: authored-unit virtual context, versioned independent-source/conflict policy, virtual landmark authoring and a scoped certified Watchglass receipt seam. Recognition remains unconfigured with explicit readable fallback; publication and protected integration await approval. The amendment record tracks local qualification separately from the accepted baseline.
+
 - Added Project Landfall Phase 3 contextual navigation: aligned floor/site maps and region hierarchies, corridor continuity and uncertainty, foreground motion/heading/elevation hints, region-gated landmark reference comparison, independent exact-target observation, accessible fallbacks and sanitized Creator/Captain/replay projections. Physical field quality remains separate evidence; native/background Phase 4 work is deferred.
 
 - Added Project Landfall Phase 2 source: Creator Living Chart authoring, six Chronicle location blocks and typed completion, canonical Player and Captain progression, private map overlays, field-test receipts, Lanternwake outcomes, completed-voyage replay, and bounded web offline reconciliation. External geocoding, virtual telemetry, physical device proof, and deployment remain separate.

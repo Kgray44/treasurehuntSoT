@@ -870,7 +870,7 @@ export function LandfallJournalChart({
           </p>
         </>
       )}
-      {landmark && activeWaypoint && !isHistorical && !bootstrap.paused && (
+      {landmark && worldspace.kind === "PHYSICAL" && activeWaypoint && !isHistorical && !bootstrap.paused && (
         <LandfallLandmarkPanel
           sessionId={bootstrap.sessionId}
           publishedVersionId={bootstrap.publishedVersionId}

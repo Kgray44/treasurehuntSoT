@@ -6,6 +6,7 @@ import {
   authenticateClosure,
   auditNativeGeolocation,
   closureAccount,
+  closureVoyage,
   geoAudit,
   openClosureJournal,
   openClosureMap,
@@ -81,6 +82,60 @@ async function reachableDrawerControl(control: Locator) {
       }),
     )
     .toMatchObject({ unobscured: true, withinDrawer: true });
+}
+
+for (const viewport of [
+  { width: 375, height: 812 },
+  { width: 1280, height: 900 },
+]) {
+  test(`virtual v1.1 context preserves unavailable visual verification and canonical fallback at ${viewport.width}x${viewport.height}`, async ({
+    browser,
+    baseURL,
+  }, testInfo) => {
+    const voyage = await closureVoyage(owner, player, "waypointJourney", {
+      virtual: true,
+      image: true,
+      contextual: true,
+    });
+    const context = await browser.newContext({ viewport, reducedMotion: "reduce" });
+    await authenticateClosure(context, player, baseURL!);
+    await auditNativeGeolocation(context);
+    await syntheticLandmarkCamera(context);
+    const page = await context.newPage();
+    await openClosureJournal(page, voyage.id);
+    await openClosureMap(page);
+    await expect(chart(page)).toHaveAttribute("data-worldspace-kind", "VIRTUAL");
+    await expect(chart(page)).toContainText("No live game position is assumed");
+    await expect(chart(page)).toContainText("Visual verification is not configured");
+    await expect(chart(page).getByRole("button", { name: "Use my location" })).toHaveCount(0);
+    await expect(chart(page).getByRole("button", { name: /compare.*landmark/i })).toHaveCount(0);
+    await expect(chart(page).locator("image")).toBeVisible();
+    const fallback = chart(page).getByRole("button", { name: "Confirm arrival myself" });
+    await reachableDrawerControl(fallback);
+    expect((await fallback.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .include(".journal-objects-drawer")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+    await capturePlayerView(page, testInfo, "virtual-context-fallback");
+    await fallback.focus();
+    await page.keyboard.press("Enter");
+    await expect.poll(() => block(voyage.id)).toBe(voyage.nextId);
+    const confirmed = await events(voyage.id, "landfallWaypointConfirmed");
+    expect(confirmed).toHaveLength(1);
+    expect(JSON.stringify(confirmed[0].payload)).toContain("PLAYER_CONFIRMATION");
+    expect(JSON.stringify(confirmed[0].payload)).not.toMatch(/coordinate|frame|watchglassReceipt/);
+    const replay = await context.request.get(`/api/player/playthroughs/${voyage.id}/landfall?block=${voyage.activeId}`);
+    expect(replay.status()).toBe(200);
+    expect((await replay.json()).bootstrap.replayOnly).toBe(true);
+    expect((await geoAudit(page)).calls).toBe(0);
+    expect((await cameraAudit(page)).calls).toBe(0);
+    await context.close();
+  });
 }
 
 test("museum journey keeps room inference honest, verifies multiple landmark frames, then requires the separate plaque answer", async ({

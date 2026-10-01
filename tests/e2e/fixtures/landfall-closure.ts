@@ -46,7 +46,7 @@ export async function closureVoyage(
   owner: ClosureAccount,
   player: ClosureAccount,
   kind = "livingChart",
-  options: { virtual?: boolean; image?: boolean; route?: boolean; captain?: boolean } = {},
+  options: { virtual?: boolean; image?: boolean; route?: boolean; captain?: boolean; contextual?: boolean } = {},
 ) {
   const suffix = randomUUID();
   const tale = await db.chronicle.create({
@@ -128,6 +128,45 @@ export async function closureVoyage(
   const worldspaceId = options.virtual ? "isles" : "town";
   const waypointId = options.virtual ? "isle-region" : "town-arrival";
   const routeId = options.virtual ? "isle-route" : "town-route";
+  if (options.contextual) {
+    const waypoint = definition.waypoints.find((item) => item.id === waypointId)!;
+    waypoint.regionId = "synthetic-virtual-region";
+    waypoint.evidenceProfile.acceptedSources.push("WATCHGLASS");
+    definition.worldspaces
+      .find((item) => item.id === worldspaceId)!
+      .observationPolicy.allowedSources.push("WATCHGLASS");
+    definition.context = {
+      regions: [
+        {
+          id: waypoint.regionId,
+          worldspaceId,
+          mapId: waypoint.mapId,
+          name: "Synthetic island context",
+          kind: "SITE",
+          geometry: structuredClone(waypoint.geometry),
+          hiddenUntilRevealed: false,
+          privacyClassification: "FICTIONAL",
+        },
+      ],
+      landmarks: [],
+    };
+    if (assets.length) {
+      waypoint.landmarkId = "synthetic-virtual-landmark";
+      definition.context.landmarks.push({
+        id: waypoint.landmarkId,
+        regionId: waypoint.regionId,
+        waypointId,
+        name: "Synthetic island arch",
+        privacyClassification: "FICTIONAL",
+        referenceAssetIds: [assets[0].id],
+        negativeReferenceAssetIds: [],
+        minimumFrames: 2,
+        guidance:
+          "Observe the authored island arch; use the configured confirmation when visual verification is unavailable.",
+        fallback: waypoint.fallback,
+      });
+    }
+  }
   const chapterId = `chapter-${suffix}`;
   const activeId = `active-${suffix}`;
   const nextId = `next-${suffix}`;

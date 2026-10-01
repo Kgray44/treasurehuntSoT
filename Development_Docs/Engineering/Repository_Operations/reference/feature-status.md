@@ -8,6 +8,8 @@ last_reviewed: 2026-10-01
 
 # Feature status
 
+The [Landfall Phase 3 v1.1 follow-up](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) implements virtual context, independent evidence policies and a conditional certified Watchglass handoff in a local candidate. Its qualification/publication status is separate from the protected baseline below; no production Watchglass package is enabled.
+
 Phase 3 Read the Ground is available on protected main through PR #673: contextual regions/floors, compact corridor continuity, optional foreground hints, region-gated authored-view comparison and independent exact-object observation. Its [accepted capsule](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_Accepted_Capsule.md) binds exact local/hosted qualification and landed proof. Physical field quality and Watchglass general object recognition remain separate.
 
 Landfall Phase 2's [final closure correction](../../../Projects/Project_Landfall/Project_Landfall_Phase_2_Final_Closure_Record.md) is available on protected main through PR #671: embedded Chart, contextual observation, durable offline, Captain, field-test and responsive/accessibility acceptance. Exact-head hosted qualification and protected landed smoke passed. FT-044 now reflects encrypted reload-safe chart/pages, bounded first-party imagery and expiring evidence; external tiles, live hardware, deployment and owner acceptance remain separate.

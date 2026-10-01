@@ -13,9 +13,10 @@ export const playerLandfallEvidenceSchema = z.strictObject({
   evidenceId: landfallId,
   expectedSequence: z.number().int().nonnegative(),
   idempotencyKey: landfallId,
-  method: z.enum(["FOREGROUND_LOCATION", "PLAYER_FALLBACK", "LANDMARK"]),
+  method: z.enum(["FOREGROUND_LOCATION", "PLAYER_FALLBACK", "LANDMARK", "WATCHGLASS"]),
   observations: z.array(observationSchema).max(20).optional(),
   contextualEvidence: z.array(contextualEvidenceSchema).max(40).optional(),
+  watchglassReceipt: z.string().min(1).max(8192).optional(),
   landmarkReceipt: z.string().min(1).max(4096).optional(),
 });
 export type PlayerLandfallEvidence = z.infer<typeof playerLandfallEvidenceSchema>;

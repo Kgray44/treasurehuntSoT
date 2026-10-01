@@ -72,14 +72,16 @@ function fixture(): LandfallDefinition {
 }
 function Harness({
   saved,
+  initial,
   draw = vi.fn(),
   selectMap = vi.fn(),
 }: {
   saved: (definition: LandfallDefinition) => void;
+  initial?: LandfallDefinition;
   draw?: (id: string, shape: "POLYGON" | "CORRIDOR" | "GATE") => void;
   selectMap?: (id: string) => void;
 }) {
-  const [definition, setDefinition] = useState(fixture);
+  const [definition, setDefinition] = useState(() => initial ?? fixture());
   const [region, setRegion] = useState<string | null>("synthetic-region");
   return (
     <LandfallContextEditor
@@ -102,6 +104,49 @@ function Harness({
   );
 }
 describe("Creator contextual authoring", () => {
+  it("uses certified Watchglass policy for virtual landmarks and keeps readable fallback", () => {
+    const base = createLandfallWorldspace({
+      taleId: "synthetic-tale",
+      name: "Synthetic island",
+      kind: "VIRTUAL",
+      imageAssetId: "synthetic-positive",
+    });
+    const waypoint = createLandfallWaypoint(
+      base.worldspaces[0],
+      base.maps[0],
+      base.maps[0].camera.center,
+      "Synthetic arch",
+    );
+    const initial = validateLandfallDefinition({
+      ...base,
+      waypoints: [{ ...waypoint, regionId: "synthetic-region", geometry: { ...waypoint.geometry, radius: 0.1 } }],
+      context: {
+        regions: [
+          {
+            id: "synthetic-region",
+            worldspaceId: base.worldspaces[0].id,
+            mapId: base.maps[0].id,
+            name: "Synthetic island",
+            kind: "SITE",
+            geometry: { ...waypoint.geometry, radius: 0.2 },
+            hiddenUntilRevealed: false,
+            privacyClassification: "FICTIONAL",
+          },
+        ],
+        landmarks: [],
+      },
+    });
+    const saved = vi.fn();
+    render(<Harness saved={saved} initial={initial} />);
+    expect(screen.getByText(/configured certified Watchglass provider/)).toBeTruthy();
+    fireEvent.change(screen.getByLabelText("First positive reference"), { target: { value: "synthetic-positive" } });
+    fireEvent.click(screen.getByRole("button", { name: "Add natural landmark" }));
+    const next = saved.mock.calls.at(-1)?.[0] as LandfallDefinition;
+    expect(next.worldspaces[0].observationPolicy.allowedSources).toContain("WATCHGLASS");
+    expect(next.waypoints[0].evidenceProfile.acceptedSources).toContain("WATCHGLASS");
+    expect(next.waypoints[0].evidenceProfile.acceptedSources).not.toContain("VISION_WAYPOINT");
+    expect(next.context?.landmarks[0].fallback).toEqual(next.waypoints[0].fallback);
+  });
   it("enables declared vision evidence and keeps landmark and waypoint fallback canonical", () => {
     const saved = vi.fn();
     render(<Harness saved={saved} />);

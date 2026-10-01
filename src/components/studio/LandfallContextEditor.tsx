@@ -146,6 +146,7 @@ export function LandfallContextEditor({
   }
 
   function addLandmark() {
+    const visualSource = worldspace.kind === "PHYSICAL" ? "VISION_WAYPOINT" : "WATCHGLASS";
     const regionId = waypoint?.regionId ?? selected?.id;
     const region = regions.find((item) => item.id === regionId);
     if (!waypoint || !region || region.mapId !== waypoint.mapId || !referenceId) return;
@@ -173,9 +174,9 @@ export function LandfallContextEditor({
               type: "NATURAL_LANDMARK",
               evidenceProfile: {
                 ...item.evidenceProfile,
-                acceptedSources: item.evidenceProfile.acceptedSources.includes("VISION_WAYPOINT")
+                acceptedSources: item.evidenceProfile.acceptedSources.includes(visualSource)
                   ? item.evidenceProfile.acceptedSources
-                  : [...item.evidenceProfile.acceptedSources, "VISION_WAYPOINT"],
+                  : [...item.evidenceProfile.acceptedSources, visualSource],
               },
             }
           : item,
@@ -186,9 +187,9 @@ export function LandfallContextEditor({
               ...item,
               observationPolicy: {
                 ...item.observationPolicy,
-                allowedSources: item.observationPolicy.allowedSources.includes("VISION_WAYPOINT")
+                allowedSources: item.observationPolicy.allowedSources.includes(visualSource)
                   ? item.observationPolicy.allowedSources
-                  : [...item.observationPolicy.allowedSources, "VISION_WAYPOINT"],
+                  : [...item.observationPolicy.allowedSources, visualSource],
               },
             }
           : item,
@@ -261,8 +262,9 @@ export function LandfallContextEditor({
     <section aria-label="Floors, regions and landmarks" className="landfall-inspector-fields landfall-context-editor">
       <h3>Floors, regions and landmarks</h3>
       <p>
-        GPS can establish a broad site or building. Room and floor guidance stays uncertain until independently
-        verified.
+        {worldspace.kind === "VIRTUAL"
+          ? "Virtual regions and landmarks use authored map coordinates. Visual verification needs a configured certified Watchglass provider; keep an observation, Player or Captain fallback."
+          : "GPS can establish a broad site or building. Room and floor guidance stays uncertain until independently verified."}
       </p>
       <fieldset>
         <legend>Floor charts</legend>

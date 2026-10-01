@@ -60,7 +60,9 @@ export type ContextualSnapshot = {
   expiresAt: number | null;
   rejection?: string;
 };
-type PhysicalPosition = Extract<LandfallObservation, { kind: "PHYSICAL_POSITION" }>;
+type ContextPosition = Extract<LandfallObservation, { kind: "PHYSICAL_POSITION" | "VIRTUAL_POSITION" }>;
+const uncertaintyOf = (position: ContextPosition) =>
+  position.kind === "PHYSICAL_POSITION" ? position.accuracyMeters : position.uncertaintyUnits;
 type RouteMemory = NonNullable<ContextualSnapshot["routeMatch"]> & { distanceAlong: number; observedAt: number };
 const POSITION_AGE = 15_000,
   CONTINUITY_GRACE = 10_000,
@@ -81,7 +83,9 @@ const empty = (): ContextualSnapshot => ({
 
 /** Transient foreground guidance. These claims never write Voyage progression. */
 export class ContextualLandfallEngine {
-  private position: PhysicalPosition | null = null;
+  private position: ContextPosition | null = null;
+  private semantic: Extract<LandfallObservation, { kind: "SEMANTIC_LOCATION" }> | null = null;
+  private conflictUntil = 0;
   private hints = new Map<ContextualEvidence["kind"], ContextualEvidence>();
   private seen: string[] = [];
   private clocks = new Map<string, number>();
@@ -99,6 +103,8 @@ export class ContextualLandfallEngine {
 
   reset(): void {
     this.position = null;
+    this.semantic = null;
+    this.conflictUntil = 0;
     this.hints.clear();
     this.seen = [];
     this.clocks.clear();
@@ -140,9 +146,9 @@ export class ContextualLandfallEngine {
     if (this.seen.length > 128) this.seen.shift();
     this.clocks.set(key, Date.parse(input.observedAt));
   }
-  ingestPosition(input: PhysicalPosition, now: number): ContextualSnapshot {
+  ingestPosition(input: ContextPosition, now: number): ContextualSnapshot {
     const parsed = observationSchema.safeParse(input);
-    if (!parsed.success || parsed.data.kind !== "PHYSICAL_POSITION") return this.reject("INVALID", now);
+    if (!parsed.success || parsed.data.kind === "SEMANTIC_LOCATION") return this.reject("INVALID", now);
     const position = parsed.data,
       world = this.definition.worldspaces.find((item) => item.id === position.worldspaceId);
     const rejection = this.identityCheck(position, now, "POSITION", POSITION_AGE);
@@ -154,11 +160,13 @@ export class ContextualLandfallEngine {
     } catch {
       return this.reject("POSITION_KIND_MISMATCH", now);
     }
-    if (position.accuracyMeters > 100) return this.reject("WEAK_ACCURACY", now);
-    if (this.position) {
+    if (position.kind === "PHYSICAL_POSITION" && position.accuracyMeters > 100)
+      return this.reject("WEAK_ACCURACY", now);
+    if (position.kind === "VIRTUAL_POSITION" && position.confidence < 0.8) return this.reject("WEAK_CONFIDENCE", now);
+    if (this.position && position.kind === "PHYSICAL_POSITION") {
       const elapsed = (Date.parse(position.observedAt) - Date.parse(this.position.observedAt)) / 1000;
       const travelled = distance(this.position.coordinate, position.coordinate, world!);
-      if (travelled > 12 * elapsed + this.position.accuracyMeters + position.accuracyMeters)
+      if (travelled > 12 * elapsed + uncertaintyOf(this.position) + position.accuracyMeters)
         return this.reject("IMPOSSIBLE_SPEED", now);
     }
     this.accept(position, "POSITION");
@@ -170,14 +178,18 @@ export class ContextualLandfallEngine {
       observedAt: position.observedAt,
     };
     const normalized: ContextualEvidence[] = [];
-    if (position.speedMetersPerSecond !== undefined)
+    if (position.kind === "PHYSICAL_POSITION" && position.speedMetersPerSecond !== undefined)
       normalized.push({
         ...hintIdentity,
         id: `${position.id.slice(0, 110)}:motion`,
         kind: "MOTION",
         moving: position.speedMetersPerSecond >= 0.7,
       });
-    if (position.headingDegrees !== undefined && (position.speedMetersPerSecond ?? 0) >= 1.5)
+    if (
+      position.kind === "PHYSICAL_POSITION" &&
+      position.headingDegrees !== undefined &&
+      (position.speedMetersPerSecond ?? 0) >= 1.5
+    )
       normalized.push({
         ...hintIdentity,
         id: `${position.id.slice(0, 110)}:heading`,
@@ -185,7 +197,11 @@ export class ContextualLandfallEngine {
         degrees: position.headingDegrees,
         accuracyDegrees: 30,
       });
-    if (position.altitudeMeters !== undefined && position.altitudeAccuracyMeters !== undefined)
+    if (
+      position.kind === "PHYSICAL_POSITION" &&
+      position.altitudeMeters !== undefined &&
+      position.altitudeAccuracyMeters !== undefined
+    )
       normalized.push({
         ...hintIdentity,
         id: `${position.id.slice(0, 110)}:elevation`,
@@ -206,6 +222,11 @@ export class ContextualLandfallEngine {
     const parsed = contextualEvidenceSchema.safeParse(input);
     if (!parsed.success) return this.reject("INVALID", now);
     const evidence = parsed.data;
+    if (
+      ["HEADING", "MOTION", "ELEVATION"].includes(evidence.kind) &&
+      this.definition.worldspaces.find((world) => world.id === evidence.worldspaceId)?.kind !== "PHYSICAL"
+    )
+      return this.reject("PHYSICAL_HINT_IN_VIRTUAL_WORLDSPACE", now);
     const maximumAge = ["LANDMARK", "OBSERVATION"].includes(evidence.kind) ? INDEPENDENT_AGE : HINT_AGE;
     const rejection = this.identityCheck(evidence, now, evidence.kind, maximumAge);
     if (rejection) return this.reject(rejection, now);
@@ -230,6 +251,36 @@ export class ContextualLandfallEngine {
     this.hints.set(evidence.kind, evidence);
     this.recompute(now, false);
     return this.snapshot(now);
+  }
+  ingestSemantic(input: Extract<LandfallObservation, { kind: "SEMANTIC_LOCATION" }>, now: number): ContextualSnapshot {
+    const rejection = this.identityCheck(input, now, `SEMANTIC:${input.source}`, INDEPENDENT_AGE);
+    if (rejection) return this.reject(rejection, now);
+    if (input.expiresAt && Date.parse(input.expiresAt) <= now) return this.reject("STALE", now);
+    this.accept(input, `SEMANTIC:${input.source}`);
+    this.semantic = input;
+    this.recompute(now, false);
+    return this.snapshot(now);
+  }
+  setEvidenceConflict(conflict: boolean, now: number): void {
+    this.conflictUntil = conflict ? now + INDEPENDENT_AGE : 0;
+    this.recompute(now, false);
+  }
+  private semanticRegion(now: number): LandfallRegion | undefined {
+    const observation = this.semantic;
+    if (
+      !observation ||
+      observation.assertion !== "PRESENT" ||
+      observation.confidence < 0.8 ||
+      now - Date.parse(observation.observedAt) > INDEPENDENT_AGE ||
+      (observation.expiresAt && Date.parse(observation.expiresAt) <= now)
+    )
+      return undefined;
+    const waypoint = this.definition.waypoints.find(
+      (item) => item.id === observation.targetLocationId && item.worldspaceId === observation.worldspaceId,
+    );
+    return this.definition.context?.regions.find(
+      (item) => item.id === waypoint?.regionId && item.worldspaceId === observation.worldspaceId,
+    );
   }
   private ancestry(id: string): string[] {
     const ids: string[] = [];
@@ -267,11 +318,13 @@ export class ContextualLandfallEngine {
         [region.geometry.start, region.geometry.end],
         world,
       )[0];
-      return { inside: match.distance <= 1, boundaryDistance: match.distance };
+      return { inside: match.distance <= this.coordinateUnit(world), boundaryDistance: match.distance };
     }
     return geometryMatch(this.position!.coordinate, region.geometry, world);
   }
   private plausible(region: LandfallRegion, now: number): boolean {
+    const semantic = this.semanticRegion(now);
+    if (semantic && this.ancestry(semantic.id).includes(region.id)) return true;
     const observation = this.fresh("OBSERVATION", now);
     if (observation?.kind === "OBSERVATION" && this.ancestry(observation.regionId).includes(region.id)) return true;
     if (!this.position || now - Date.parse(this.position.observedAt) > POSITION_AGE) return false;
@@ -283,7 +336,8 @@ export class ContextualLandfallEngine {
       return (
         match.inside ||
         match.boundaryDistance <=
-          this.position!.accuracyMeters + toWgs84(this.position!.coordinate, world).uncertaintyMeters
+          uncertaintyOf(this.position!) +
+            (world.kind === "PHYSICAL" ? toWgs84(this.position!.coordinate, world).uncertaintyMeters : 0)
       );
     });
   }
@@ -320,6 +374,11 @@ export class ContextualLandfallEngine {
     }
     if (observation?.kind === "OBSERVATION") {
       region = regions.find((item) => item.id === observation.regionId);
+      ambiguous = false;
+    }
+    const semanticRegion = this.semanticRegion(now);
+    if (semanticRegion) {
+      region = semanticRegion;
       ambiguous = false;
     }
     if (ambiguous) {
@@ -379,6 +438,17 @@ export class ContextualLandfallEngine {
               : "Position supports a regional inference, not exact arrival.",
           ]
         : ["No current regional evidence."];
+    if (region && semanticRegion?.id === region.id) {
+      state = this.semantic?.source === "STORY_PROGRESSION" ? "KNOWN" : "CONFIRMED";
+      categories.push(this.semantic!.source);
+      reasons.splice(
+        0,
+        reasons.length,
+        this.semantic?.source === "STORY_PROGRESSION"
+          ? "Story progress establishes coarse named context, not exact position."
+          : "Independent provider evidence supports this named region, not an invented position.",
+      );
+    }
     if (region && observation?.kind === "OBSERVATION" && observation.regionId === region.id) {
       state = "CONFIRMED";
       reasons.splice(0, reasons.length, "Independent regional observation supports this region.");
@@ -432,7 +502,8 @@ export class ContextualLandfallEngine {
       if (
         !match.inside ||
         match.boundaryDistance <
-          this.position.accuracyMeters + toWgs84(this.position.coordinate, world).uncertaintyMeters
+          uncertaintyOf(this.position) +
+            (world.kind === "PHYSICAL" ? toWgs84(this.position.coordinate, world).uncertaintyMeters : 0)
       )
         state = "NEARBY";
     }
@@ -450,10 +521,18 @@ export class ContextualLandfallEngine {
       state = "UNCERTAIN";
       reasons.push("Elevation suggests a level transition; independent verification is needed for the floor.");
     }
+    if (this.conflictUntil > now) {
+      state = "UNCERTAIN";
+      reasons.splice(
+        0,
+        reasons.length,
+        "Independent evidence conflicts; use another reading or the configured fallback.",
+      );
+    }
     const eligibleLandmarkIds = (this.definition.context?.landmarks ?? [])
       .filter((item) => {
         const candidate = regions.find((value) => value.id === item.regionId);
-        return !!candidate && this.plausible(candidate, now);
+        return this.conflictUntil <= now && !!candidate && this.plausible(candidate, now);
       })
       .map((item) => item.id);
     const deadlines = [...this.hints.keys()]
@@ -464,6 +543,13 @@ export class ContextualLandfallEngine {
           Date.parse(item.observedAt) + (["OBSERVATION", "LANDMARK"].includes(item.kind) ? INDEPENDENT_AGE : HINT_AGE),
       );
     if (this.position) deadlines.push(Date.parse(this.position.observedAt) + POSITION_AGE);
+    if (this.semanticRegion(now) && this.semantic)
+      deadlines.push(
+        Math.min(
+          Date.parse(this.semantic.observedAt) + INDEPENDENT_AGE,
+          this.semantic.expiresAt ? Date.parse(this.semantic.expiresAt) : Infinity,
+        ),
+      );
     const currentDeadlines = deadlines.filter((at) => at >= now);
     this.current = {
       state,
@@ -491,12 +577,26 @@ export class ContextualLandfallEngine {
       expiresAt: currentDeadlines.length ? Math.min(...currentDeadlines) : null,
     };
   }
+  private coordinateUnit(world: LandfallDefinition["worldspaces"][number]): number {
+    const reference = world.coordinateReference;
+    return world.kind === "PHYSICAL"
+      ? 1
+      : reference.type === "NORMALIZED_IMAGE_2D"
+        ? 0.01
+        : "bounds" in reference
+          ? Math.max(reference.bounds.maxX - reference.bounds.minX, reference.bounds.maxY - reference.bounds.minY) / 100
+          : 1;
+  }
   private matchRoute(now: number): void {
     if (!this.position) return;
     const world = this.definition.worldspaces.find((item) => item.id === this.position!.worldspaceId)!;
-    const uncertainty = this.position.accuracyMeters + toWgs84(this.position.coordinate, world).uncertaintyMeters;
+    const uncertainty =
+      uncertaintyOf(this.position) +
+      (world.kind === "PHYSICAL" ? toWgs84(this.position.coordinate, world).uncertaintyMeters : 0);
     const previous = this.route && now - this.route.observedAt < POSITION_AGE ? this.route : null;
-    const heading = this.fresh("HEADING", now);
+    const heading = world.kind === "PHYSICAL" ? this.fresh("HEADING", now) : null;
+    // Route scoring is expressed in the authored coordinate units, never assumed meters.
+    const unit = this.coordinateUnit(world);
     const matches = this.definition.routes
       .filter(
         (route) =>
@@ -510,7 +610,7 @@ export class ContextualLandfallEngine {
         const segments = routeSegmentMatches(this.position!.coordinate, route.geometry.points, world);
         const totalDistance = segments.reduce((sum, segment) => sum + segment.length, 0);
         const looping =
-          route.model === "LOOP" && distance(route.geometry.points[0], route.geometry.points.at(-1)!, world) <= 1;
+          route.model === "LOOP" && distance(route.geometry.points[0], route.geometry.points.at(-1)!, world) <= unit;
         return segments
           .filter(
             (match) =>
@@ -526,13 +626,14 @@ export class ContextualLandfallEngine {
             let change = previous?.routeId === route.id ? match.distanceAlong - previous.distanceAlong : null;
             if (looping && change !== null && Math.abs(change) > totalDistance / 2)
               change += change > 0 ? -totalDistance : totalDistance;
-            if (previous && (route.id !== previous.routeId || !adjacent)) score += uncertainty + 8;
+            if (previous && (route.id !== previous.routeId || !adjacent)) score += uncertainty + 8 * unit;
             if (
+              world.kind === "PHYSICAL" &&
               previous &&
               route.id === previous.routeId &&
               Math.abs(change ?? 0) > 12 * ((now - previous.observedAt) / 1000) + uncertainty * 2
             )
-              score += 1000;
+              score += 1000 * unit;
             if (heading?.kind === "HEADING" && heading.accuracyDegrees <= 30) {
               const delta = Math.abs(((match.bearing - heading.degrees + 540) % 360) - 180);
               score += Math.min(delta, 180 - delta) / 15;
@@ -542,7 +643,7 @@ export class ContextualLandfallEngine {
       })
       .sort((a, b) => a.score - b.score || a.routeId.localeCompare(b.routeId) || a.segmentIndex - b.segmentIndex);
     const best = matches[0];
-    if (!best || best.score >= 1000) {
+    if (!best || best.score >= 1000 * unit) {
       this.route = null;
       return;
     }
@@ -566,7 +667,7 @@ export class ContextualLandfallEngine {
       direction:
         change === null
           ? "UNKNOWN"
-          : Math.abs(change) <= Math.max(1, uncertainty / 2)
+          : Math.abs(change) <= Math.max(unit, uncertainty / 2)
             ? "STATIONARY"
             : change > 0
               ? "FORWARD"
@@ -574,14 +675,34 @@ export class ContextualLandfallEngine {
     };
   }
   snapshot(now: number): ContextualSnapshot {
+    if (this.conflictUntil > now) {
+      this.recompute(now, false);
+      return {
+        ...structuredClone(this.current),
+        state: "UNCERTAIN",
+        regionId: null,
+        mapId: null,
+        level: null,
+        eligibleLandmarkIds: [],
+        routeMatch: null,
+        expiresAt: this.conflictUntil,
+      };
+    }
     const latestIndependent = Math.max(
       ...["LANDMARK", "OBSERVATION"].map((kind) => {
         const hint = this.fresh(kind as ContextualEvidence["kind"], now);
         return hint ? Date.parse(hint.observedAt) + INDEPENDENT_AGE : 0;
       }),
     );
+    const semanticExpiry =
+      this.semanticRegion(now) && this.semantic
+        ? Math.min(
+            Date.parse(this.semantic.observedAt) + INDEPENDENT_AGE,
+            this.semantic.expiresAt ? Date.parse(this.semantic.expiresAt) : Infinity,
+          )
+        : 0;
     const positionExpiry = this.position ? Date.parse(this.position.observedAt) + POSITION_AGE : 0;
-    if (latestIndependent <= now && positionExpiry < now) {
+    if (latestIndependent <= now && semanticExpiry <= now && positionExpiry < now) {
       if (positionExpiry && now <= positionExpiry + CONTINUITY_GRACE && this.current.regionId)
         return {
           ...structuredClone(this.current),
