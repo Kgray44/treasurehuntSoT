@@ -347,6 +347,43 @@ for (const viewport of [
     await reachableDrawerControl(fallback);
     expect((await fallback.boundingBox())!.height).toBeGreaterThanOrEqual(44);
     await capturePlayerView(page, testInfo, `player-${viewport.width}x${viewport.height}-200pct-forced-colors`);
+    if (viewport.width === 360) {
+      await page.keyboard.press("Escape");
+      await expect(mapButton).toBeFocused();
+      const objectiveAction = page
+        .locator(".chronicle-objective-tray")
+        .getByRole("button", { name: "Continue Voyage", exact: true });
+      for (let step = 0; step < 8; step++) {
+        if (await objectiveAction.evaluate((element) => element === document.activeElement)) break;
+        await page.keyboard.press("Tab");
+      }
+      await expect(objectiveAction).toBeFocused();
+      await expect
+        .poll(() =>
+          objectiveAction.evaluate((element) => {
+            const box = element.getBoundingClientRect();
+            const tray = element.closest<HTMLElement>(".chronicle-objective-tray")!.getBoundingClientRect();
+            const hit = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+            return {
+              fullyVisible:
+                box.top >= Math.max(0, tray.top) - 1 &&
+                box.bottom <= Math.min(innerHeight, tray.bottom) + 1 &&
+                box.left >= Math.max(0, tray.left) - 1 &&
+                box.right <= Math.min(innerWidth, tray.right) + 1,
+              unobscured: hit === element || element.contains(hit),
+            };
+          }),
+        )
+        .toEqual({ fullyVisible: true, unobscured: true });
+      await capturePlayerView(page, testInfo, "player-360x640-200pct-objective-action-focused");
+      // Focus proves the internally scrolled action remains reachable. Arrival
+      // evidence is still required, so do not activate Continue Voyage here.
+      expect(await events(voyage.id, "landfallWaypointConfirmed")).toHaveLength(0);
+      await mapButton.focus();
+      await page.keyboard.press("Enter");
+      await expect(chart(page)).toBeVisible();
+      await reachableDrawerControl(fallback);
+    }
     await fallback.focus();
     await expect(fallback).toBeFocused();
     await page.keyboard.press("Space");
