@@ -30,7 +30,7 @@
     "seconds": 26.53,
     "result": "PASS"
   },
-  "evidencePublication": "EVIDENCE_PR",
+  "evidencePublication": "https://github.com/Kgray44/treasurehuntSoT/pull/674",
   "finalMainResolution": "merge_commit_sha of the evidence-only protected publication; application tree preserved",
   "physicalFieldAcceptance": "NOT_CLAIMED",
   "deployment": "NOT_CLAIMED",

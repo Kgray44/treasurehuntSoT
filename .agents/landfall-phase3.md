@@ -52,4 +52,4 @@ Final bounded trust review expanded only to nested outbox hints and independent 
 
 ## Closure handoff
 
-Product PR #673 landed as 660461e11c8d8462169b17f762a7d398a4d01465. Final exact candidate ecc21f730758dd4b0901c6467b21fab637e604e9 passed local and hosted ordinary Sounding Line with 10/10 obligations and no remainder. The accepted Phase 3 capsule under Development_Docs/Projects/Project_Landfall is the next-phase authority; evidence publication is EVIDENCE_PR. Phase 4 remains deferred.
+Product PR #673 landed as 660461e11c8d8462169b17f762a7d398a4d01465. Final exact candidate ecc21f730758dd4b0901c6467b21fab637e604e9 passed local and hosted ordinary Sounding Line with 10/10 obligations and no remainder. The accepted Phase 3 capsule under Development_Docs/Projects/Project_Landfall is the next-phase authority; evidence publication is PR #674. Phase 4 remains deferred.
