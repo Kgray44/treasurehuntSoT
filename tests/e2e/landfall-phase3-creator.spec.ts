@@ -12,6 +12,9 @@ import {
   authenticateClosure,
   closureAccount,
   geoAudit,
+  closureVoyage,
+  openClosureJournal,
+  openClosureMap,
   type ClosureAccount,
 } from "./fixtures/landfall-closure";
 
@@ -385,5 +388,71 @@ test("Creator regional controls reflow at narrow width and 200 percent text with
       fullPage: true,
     });
   }
+  await context.close();
+});
+
+test("ordinary physical Creator defaults survive save, reload and published private Player context", async ({
+  browser,
+  baseURL,
+}, testInfo) => {
+  const tale = await db.chronicle.create({
+    data: {
+      slug: `landfall-default-audit-${randomUUID()}`,
+      title: "Synthetic ordinary private site",
+      creatorId: owner.profileId,
+      creatorAccountId: owner.id,
+      status: "DRAFT",
+      visibility: "PRIVATE",
+    },
+  });
+  await db.taleDraft.create({ data: { taleId: tale.id, createdBy: owner.profileId, createdByAccountId: owner.id } });
+  const context = await browser.newContext({
+    reducedMotion: "reduce",
+    permissions: ["geolocation"],
+    geolocation: { latitude: 44, longitude: -72, accuracy: 2 },
+  });
+  await authenticateClosure(context, owner, baseURL!);
+  await auditNativeGeolocation(context);
+  const page = await context.newPage();
+  await open(page, tale.id);
+  const workspace = page.getByRole("region", { name: "Landfall authoring workspace" });
+  await workspace.getByLabel("Worldspace name", { exact: true }).fill("Synthetic ordinary site");
+  await workspace.getByLabel("Starting latitude", { exact: true }).fill("44");
+  await workspace.getByLabel("Starting longitude", { exact: true }).fill("-72");
+  await workspace.getByRole("button", { name: "Add Worldspace", exact: true }).click();
+  const editor = workspace.getByRole("region", { name: "Floors, regions and landmarks" });
+  await editor.getByLabel("Region name", { exact: true }).fill("Synthetic ordinary room");
+  await editor.getByRole("button", { name: "Add region", exact: true }).click();
+  await workspace.getByLabel("Longitude", { exact: true }).fill("-72");
+  await workspace.getByLabel("Latitude", { exact: true }).fill("44");
+  await workspace.getByRole("button", { name: "Place at coordinates", exact: true }).click();
+  await editor
+    .getByRole("combobox", { name: "Context region", exact: true })
+    .selectOption({ label: "Synthetic ordinary room" });
+  await expect.poll(async () => (await stored(tale.id)).definition?.waypoints[0]?.regionId).toBeTruthy();
+  const authored = (await stored(tale.id)).definition;
+  expect(authored.worldspaces[0].privacyPolicy.classification).toBe("APPROXIMATE_REAL_WORLD");
+  expect(authored.context!.regions[0].privacyClassification).toBe("PRIVATE_REAL_WORLD");
+  await page.reload();
+  await expect(editor.getByRole("combobox", { name: "Inspect region", exact: true })).toContainText(
+    "Synthetic ordinary room",
+  );
+  expect((await stored(tale.id)).definition.context).toEqual(authored.context);
+  const voyage = await closureVoyage(owner, owner, "livingChart", { authoredDefinition: authored });
+  const response = await context.request.get(`/api/player/playthroughs/${voyage.id}/landfall?block=${voyage.activeId}`);
+  expect(response.status()).toBe(200);
+  expect(response.headers()["cache-control"]).toContain("no-store");
+  const bootstrap = (await response.json()).bootstrap;
+  expect(bootstrap.runtimeDefinition.context.regions).toContainEqual(
+    expect.objectContaining({ id: authored.context!.regions[0].id, privacyClassification: "PRIVATE_REAL_WORLD" }),
+  );
+  await openClosureJournal(page, voyage.id);
+  await openClosureMap(page);
+  const chart = page.locator("[data-landfall-player-chart]:visible");
+  await chart.getByRole("button", { name: "Use my location", exact: true }).click();
+  await expect.poll(async () => (await geoAudit(page)).nativeSamples).toBeGreaterThan(0);
+  await expect(chart).toContainText("Synthetic ordinary room");
+  await expect(chart).toContainText(/likely|inferred|nearby/i);
+  await page.screenshot({ path: testInfo.outputPath("ordinary-private-context.png"), fullPage: false });
   await context.close();
 });

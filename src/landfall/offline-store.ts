@@ -190,6 +190,8 @@ export class LandfallOfflineRepository {
     if (
       input.method === "LANDMARK" ||
       input.method === "WATCHGLASS" ||
+      input.method === "EVIDENCE_BUNDLE" ||
+      input.sources ||
       input.watchglassReceipt ||
       input.landmarkReceipt ||
       input.contextualEvidence?.length

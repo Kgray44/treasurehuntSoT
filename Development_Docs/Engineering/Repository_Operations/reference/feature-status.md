@@ -3,12 +3,12 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-01
+last_reviewed: 2026-10-03
 ---
 
 # Feature status
 
-The [Landfall Phase 3 v1.1 follow-up](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) implements virtual context, independent evidence policies and a conditional certified Watchglass handoff in a local candidate. Its qualification/publication status is separate from the protected baseline below; no production Watchglass package is enabled.
+The [Landfall Phase 3 v1.1 follow-up](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) is proceeding through protected PR #675 after audit corrections to default contextual privacy, operational multi-source server qualification and completion-time expiry. Its exact current qualification and landed status are recorded separately from the historical baseline below; Watchglass remains not configured.
 
 Phase 3 Read the Ground is available on protected main through PR #673: contextual regions/floors, compact corridor continuity, optional foreground hints, region-gated authored-view comparison and independent exact-object observation. Its [accepted capsule](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_Accepted_Capsule.md) binds exact local/hosted qualification and landed proof. Physical field quality and Watchglass general object recognition remain separate.
 

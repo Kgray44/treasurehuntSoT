@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-10-01
+last_reviewed: 2026-10-03
 ---
 
 # Creator guide
@@ -27,6 +27,10 @@ A Living Chart Passage embeds the released interactive chart. A location observa
 ## Review and publish
 
 For an indoor or compact experience, use Living Chart's contextual controls to add an aligned floor/site map, label its level, and draw regions such as entrances, rooms, galleries, corridors or stairs. Associate a waypoint with its region and a route segment with the region it crosses. Coordinate controls support keyboard drawing. Keep private layouts inside the authorized Chronicle and review privacy findings before public publication.
+
+New physical rooms and other contextual regions default to private geometry within the authorized Chronicle. Private layouts cannot be published publicly. Approximate privacy is suitable only for a broad site or compact outdoor area; fine room/floor/corridor targets need private geometry or an intentional public-exact classification. The floor image alignment control uses north-up rectangular geographic bounds.
+
+Independent evidence settings describe separate checks, not repeated readings or story hints. A two-source broad physical target can combine foreground location with the Player's deliberate confirmation. Watchglass and game integration are not configured; stronger policies need real available checks or a readable fallback. Studio warns when providers cannot fulfill a policy and blocks an impossible policy without an effective fallback.
 
 Natural landmarks use existing scenery. Select positive and negative images from your Chronicle's library, describe the view, and configure a readable observation or Captain fallback. Camera comparison supports a view aligned with these references; changed angle or lighting may need the fallback. Exact-object targets need an independent Location Observation or landmark pattern. GPS establishes the surrounding area but cannot identify an object. Optional foreground heading/motion hints assist test walks; sanitized receipts retain categories and region IDs, not raw streams or Player images.
 

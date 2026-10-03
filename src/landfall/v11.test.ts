@@ -1,5 +1,8 @@
+import { createHash } from "node:crypto";
+import { playerLandfallEvidenceSchema } from "@/landfall/player-evidence-contract";
+import { landfallAuthoringFindings } from "@/landfall/authoring";
 import { describe, expect, it, vi } from "vitest";
-import { landfallFixture, virtualCoordinate, virtualObservation } from "@/landfall/fixtures";
+import { landfallFixture, physicalObservation, virtualCoordinate, virtualObservation } from "@/landfall/fixtures";
 import { validateLandfallDefinition } from "@/landfall/definition";
 import { LandfallProviderRegistry, type LandfallObservation } from "@/landfall/observation";
 import { LandfallRuntime } from "@/landfall/runtime";
@@ -257,6 +260,26 @@ describe("Landfall v1.1 contextual and evidence contracts", () => {
     expect(r.ingest(virtualObservation("human-again", at(4)), base + 4000).confidence).toBe("LIKELY_INSIDE");
     expect(() => r.completionRequest("visual", 4, "expired-support")).toThrow();
   });
+  it("expires pending corroboration when delivery is requested without any new observation", () => {
+    const d = definition();
+    d.waypoints[0].evidenceProfile.fusionPolicy = { version: 1, minimumIndependentSources: 2 };
+    const r = runtime(d);
+    r.ingest(virtualObservation("human", at(1)), base + 1000);
+    expect(
+      r.ingest(
+        {
+          ...virtualObservation("visual", at(2)),
+          source: "WATCHGLASS",
+          providerId: "certified-test",
+          expiresAt: at(3),
+        },
+        base + 2000,
+      ).confidence,
+    ).toBe("CONFIRMED");
+    expect(r.completionRequest("visual", 4, "fresh", base + 2500)).toHaveProperty("outcome", "CONFIRMED");
+    expect(() => r.completionRequest("visual", 4, "expired", base + 3000)).toThrow("LANDFALL_EVIDENCE_STALE");
+    expect(() => r.completionRequest("visual", 4, "retry", base + 2500)).toThrow("LANDFALL_EVIDENCE_UNAVAILABLE");
+  });
   it("keeps normalized entrance proximity in authored units", () => {
     const d = definition();
     d.context!.regions[0].geometry = {
@@ -278,7 +301,7 @@ describe("Landfall v1.1 contextual and evidence contracts", () => {
     const r = runtime();
     r.ingest(virtualObservation("local", at(1)), base + 1000);
     expect(r.projection("PLAYER", base + 1000).visitedLocationIds).toEqual([]);
-    expect(r.completionRequest("local", 4, "repeatable")).toMatchObject({
+    expect(r.completionRequest("local", 4, "repeatable", base + 1000)).toMatchObject({
       expectedSequence: 4,
       publishedVersionId: "version-1",
       idempotencyKey: "repeatable",
@@ -457,5 +480,191 @@ describe("conditional certified Watchglass handoff", () => {
         request: { ...request(), method: "PLAYER_FALLBACK", watchglassReceipt: undefined },
       }).method,
     ).toBe("PLAYER_CONFIRMATION");
+  });
+});
+
+describe("canonical independently qualified evidence bundles", () => {
+  function setup(minimum = 2) {
+    const d = definition();
+    d.waypoints[0].evidenceProfile.fusionPolicy = { version: 1, minimumIndependentSources: minimum };
+    const input = {
+      definition: d,
+      journey: projectLandfallJourney(d, []),
+      now: base + 3000,
+      playerProfileId: "player-1",
+      watchglassProvider: provider(receipt(d)),
+    };
+    const human = { method: "PLAYER_FALLBACK" as const, evidenceId: "deliberate-human" };
+    const visual = { method: "WATCHGLASS" as const, evidenceId: "visual", watchglassReceipt: "opaque" };
+    const submit = (sources: NonNullable<PlayerLandfallEvidence["sources"]>, overrides = {}) =>
+      qualifyPlayerLandfallEvidence({
+        ...input,
+        ...overrides,
+        request: { ...request(), method: "EVIDENCE_BUNDLE", watchglassReceipt: undefined, sources },
+      });
+    return { d, input, human, visual, submit };
+  }
+  it("supports one fresh source and safely rejects stale or conflicting evidence", () => {
+    const { d, human, visual, submit } = setup(1);
+    expect(submit([visual])).toMatchObject({ method: "FUSED", outcome: "CONFIRMED" });
+    expect(() => submit([visual], { watchglassProvider: provider({ ...receipt(d), expiresAt: at(3) }) })).toThrow(
+      "LANDFALL_INDEPENDENT_EVIDENCE_REQUIRED",
+    );
+    expect(() =>
+      submit([human, visual], { watchglassProvider: provider({ ...receipt(d), result: "notMatch" }) }),
+    ).toThrow("LANDFALL_EVIDENCE_CONFLICT");
+  });
+  it("does not count a source twice, or story/context priors as another source", () => {
+    const { human, visual, submit } = setup();
+    for (const packets of [
+      [human],
+      [human, { ...human, evidenceId: "repeat" }],
+      [visual],
+      [visual, { ...visual, evidenceId: "copy" }],
+    ])
+      expect(() => submit(packets)).toThrow("LANDFALL_INDEPENDENT_EVIDENCE_REQUIRED");
+    expect(
+      playerLandfallEvidenceSchema.safeParse({
+        ...request(),
+        method: "EVIDENCE_BUNDLE",
+        watchglassReceipt: undefined,
+        sources: [human, { method: "STORY_PROGRESSION", evidenceId: "story" }],
+      }).success,
+    ).toBe(false);
+  });
+  it("makes two actual independent server-qualified sources operational and sanitizes their result", () => {
+    const { human, visual, submit } = setup();
+    const q = submit([human, visual]);
+    expect(q).toMatchObject({
+      method: "FUSED",
+      outcome: "CONFIRMED",
+      evidenceCategories: ["PLAYER_CONFIRMATION", "WATCHGLASS"],
+      fallbackUsed: true,
+    });
+    expect(JSON.stringify(q)).not.toMatch(/opaque|test-certificate|visual-root|provenance|coordinate|package/);
+  });
+  it("rejects shared/correlated provenance, and removes expired support", () => {
+    const { d, human, visual, submit } = setup();
+    const root = createHash("sha256")
+      .update("PLAYER_CONFIRMATION:player-1:session-1:version-1:4:isle-region")
+      .digest("hex");
+    expect(() =>
+      submit([human, visual], { watchglassProvider: provider({ ...receipt(d), independentEvidenceRef: root }) }),
+    ).toThrow("LANDFALL_INDEPENDENT_EVIDENCE_REQUIRED");
+    expect(() =>
+      submit([human, visual], { watchglassProvider: provider({ ...receipt(d), contextEvidenceRefs: [root] }) }),
+    ).toThrow("LANDFALL_INDEPENDENT_EVIDENCE_REQUIRED");
+    expect(() =>
+      submit([human, visual], { watchglassProvider: provider({ ...receipt(d), expiresAt: at(3) }) }),
+    ).toThrow("LANDFALL_INDEPENDENT_EVIDENCE_REQUIRED");
+  });
+  it("keeps trusted absence a conflict and unavailable providers unavailable", () => {
+    const { d, human, visual, submit } = setup();
+    expect(() =>
+      submit([human, visual], { watchglassProvider: provider({ ...receipt(d), result: "notMatch" }) }),
+    ).toThrow("LANDFALL_EVIDENCE_CONFLICT");
+    expect(() => submit([human, visual], { watchglassProvider: undefined })).toThrow(
+      "LANDFALL_INDEPENDENT_EVIDENCE_REQUIRED",
+    );
+  });
+  it("rejects circular trusted provenance across packets", () => {
+    const { d, visual, submit } = setup();
+    const p = provider(receipt(d));
+    p.verifyReceipt = (token) => ({
+      ...receipt(d),
+      independentEvidenceRef: token,
+      contextEvidenceRefs: [token === "root-a" ? "root-b" : "root-a"],
+    });
+    expect(() =>
+      submit(
+        [
+          { ...visual, watchglassReceipt: "root-a" },
+          { ...visual, evidenceId: "visual-b", watchglassReceipt: "root-b" },
+        ],
+        { watchglassProvider: p },
+      ),
+    ).toThrow("LANDFALL_CIRCULAR_EVIDENCE");
+  });
+  it("warns or blocks unsupported three/four-source policies rather than inventing providers", () => {
+    const d = definition();
+    d.waypoints[0].evidenceProfile.acceptedSources.push("GAME_INTEGRATION", "CREATOR_LOGIC");
+    d.worldspaces[0].observationPolicy.allowedSources.push("GAME_INTEGRATION", "CREATOR_LOGIC");
+    for (const minimum of [3, 4]) {
+      d.waypoints[0].evidenceProfile.fusionPolicy = { version: 1, minimumIndependentSources: minimum };
+      expect(landfallAuthoringFindings(validateLandfallDefinition(d), "PRIVATE")).toContainEqual(
+        expect.objectContaining({ code: "LANDFALL_FUSION_PROVIDER_UNAVAILABLE", severity: "warning" }),
+      );
+      const noFallback = structuredClone(d);
+      noFallback.waypoints[0].fallback = { mode: "NONE" };
+      noFallback.waypoints[0].evidenceProfile.allowManualFallback = false;
+      expect(landfallAuthoringFindings(noFallback, "PRIVATE")).toContainEqual(
+        expect.objectContaining({ code: "LANDFALL_FUSION_PROVIDER_UNAVAILABLE", severity: "blocker" }),
+      );
+    }
+  });
+});
+
+describe("physical canonical multi-source qualification", () => {
+  it("qualifies fresh GPS plus a human, while preserving freshness, conflict and source scope", () => {
+    const d = structuredClone(landfallFixture);
+    const waypoint = d.waypoints[0];
+    waypoint.evidenceProfile.dwellSeconds = 0;
+    waypoint.evidenceProfile.acceptedSources.push("PLAYER_CONFIRMATION");
+    waypoint.evidenceProfile.fusionPolicy = { version: 1, minimumIndependentSources: 2 };
+    const human = { method: "PLAYER_FALLBACK" as const, evidenceId: "human" };
+    const gps = {
+      method: "FOREGROUND_LOCATION" as const,
+      evidenceId: "gps-2",
+      observations: [physicalObservation("gps-1", at(1)), physicalObservation("gps-2", at(2))].map((item) => ({
+        ...item,
+        providerId: "browser-geolocation",
+      })),
+    };
+    const input = {
+      definition: d,
+      journey: projectLandfallJourney(d, []),
+      now: base + 3000,
+      playerProfileId: "player-1",
+      request: {
+        ...request(),
+        worldspaceId: "town",
+        waypointId: waypoint.id,
+        method: "EVIDENCE_BUNDLE" as const,
+        watchglassReceipt: undefined,
+        sources: [gps, human],
+      },
+    };
+    expect(qualifyPlayerLandfallEvidence(input)).toMatchObject({
+      method: "FUSED",
+      outcome: "CONFIRMED",
+      evidenceCategories: ["BROWSER_GEOLOCATION", "PLAYER_CONFIRMATION"],
+    });
+    expect(() => qualifyPlayerLandfallEvidence({ ...input, now: base + 1000000 })).toThrow(
+      "LANDFALL_INDEPENDENT_EVIDENCE_REQUIRED",
+    );
+    const wrongScope = structuredClone(input);
+    wrongScope.request.sources[0] = {
+      ...gps,
+      observations: gps.observations.map((item) => ({ ...item, sessionId: "another-session" })),
+    };
+    expect(() => qualifyPlayerLandfallEvidence(wrongScope)).toThrow("LANDFALL_EVIDENCE_IDENTITY_MISMATCH");
+    const conflicting = structuredClone(input);
+    conflicting.request.sources[0] = {
+      ...gps,
+      observations: gps.observations.map((item) => ({
+        ...item,
+        kind: "PHYSICAL_POSITION" as const,
+        coordinate: {
+          type: "WGS84" as const,
+          worldspaceId: "town",
+          referenceId: "town-wgs84",
+          referenceVersion: 1,
+          latitude: 45,
+          longitude: -72,
+        },
+        accuracyMeters: 2,
+      })),
+    };
+    expect(() => qualifyPlayerLandfallEvidence(conflicting)).toThrow("LANDFALL_EVIDENCE_CONFLICT");
   });
 });

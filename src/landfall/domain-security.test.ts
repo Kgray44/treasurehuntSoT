@@ -99,7 +99,7 @@ describe("Landfall authored data and evidence boundaries", () => {
     runtime.setActiveWaypoint("second-arrival");
     runtime.ingest(physicalObservation("prereq-1", at(1)), now(1));
     runtime.ingest(physicalObservation("prereq-2", at(2)), now(2));
-    expect(() => runtime.completionRequest("prereq-2", 0, "attempt-1")).toThrow("LANDFALL_PREREQUISITE_UNMET");
+    expect(() => runtime.completionRequest("prereq-2", 0, "attempt-1", now(2))).toThrow("LANDFALL_PREREQUISITE_UNMET");
   });
 
   it("keeps polygon holes and multiple regions distinct, and rejects self crossings", () => {

@@ -3,12 +3,14 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-01
+last_reviewed: 2026-10-03
 ---
 
 # Current status
 
 **Landfall Phase 3 is available on protected main:** Read the Ground adds aligned floor/site hierarchy, continuity-aware corridor guidance, optional foreground hints, region-gated natural landmark authored-view comparison and independent exact-object observations. Protected PR #673 passed exact-head local/hosted Sounding Line and landed tree verification. The [accepted capsule](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_Accepted_Capsule.md) records full-unit, retained browser, landed and evidence/catalog closure proof. Physical field quality, deployment and owner acceptance remain separate; Phase 4 is deferred.
+
+The physical/virtual v1.1 follow-up in PR #675 is undergoing final protected qualification after audit corrections. The [amendment record](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) retains exact candidate and acceptance identities. No Watchglass package or Phase 4 implementation is enabled.
 
 **Muster Refit:** the owner accepted the current design on 2026-09-12. Captain-only, Captain + Player, and Player views share one experience with persistent authorized Crew Chat, published-edition parchment, fixed room artwork and smooth options. Final local role, interaction, responsive/accessibility, production-build and migration checks passed. The accepted experience is integrated on protected main; final qualification and landed-tree checks passed. Only the Muster Refit area is MERGED; Refit V1 remains open.
 

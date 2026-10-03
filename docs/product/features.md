@@ -3,7 +3,7 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-01
+last_reviewed: 2026-10-03
 ---
 
 # Voyagewright features
@@ -33,3 +33,5 @@ Community Harbor provides controlled discovery of shareable Chronicle material, 
 Landfall contextual Charts support aligned floor/site maps, hierarchical regions and compact-route continuity. Creators configure natural landmark reference views and independent exact-object observations with readable fallbacks. Players see uncertainty, optional foreground hints and separate floor-viewing controls. Region-gated comparison uses transient stills and server-bound evidence; Captain summaries and replay retain derived context without live sensor acquisition. GPS alone cannot confirm rooms or exact objects.
 
 Voyagewright provides role-aware access, privacy settings, accessible interaction patterns, and consent-based Support Access when assistance is needed. See [privacy and safety](../user/privacy.md), [accessibility](../user/accessibility.md), and [Support Access](../user/support-access.md).
+
+Landfall's physical/virtual v1.1 candidate adds authored-unit virtual context and bounded independent-source qualification. Physical rooms default to private Chronicle-authorized evaluation; broad approximate regions use intentionally reduced precision. A two-source physical check combines foreground location and deliberate Player confirmation. Watchglass remains unconfigured with an authored fallback. The [amendment record](../../Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) records the separate protected qualification and closure status.

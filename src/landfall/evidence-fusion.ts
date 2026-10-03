@@ -22,14 +22,6 @@ export class LandfallEvidenceFusion {
     profile: LandfallEvidenceProfile,
     now: number,
   ): "SUPPORTED" | "INSUFFICIENT" | "CONFLICT" {
-    for (const [source, item] of this.latest) {
-      if (
-        now - Date.parse(item.observation.observedAt) > profile.maximumAgeSeconds * 1000 ||
-        (item.observation.expiresAt && Date.parse(item.observation.expiresAt) <= now)
-      )
-        this.latest.delete(source);
-    }
-    // Abstention and weak evidence do not veto stronger independent evidence.
     const abstains =
       present === null ||
       (observation.kind === "SEMANTIC_LOCATION" &&
@@ -37,6 +29,28 @@ export class LandfallEvidenceFusion {
       (observation.kind === "VIRTUAL_POSITION" && observation.confidence < 0.8) ||
       (observation.kind === "PHYSICAL_POSITION" && observation.accuracyMeters > (profile.requiredAccuracyMeters ?? 50));
     if (!abstains && present !== null) this.latest.set(observation.source, { observation, present });
+    return this.status(profile, now);
+  }
+  validUntil(profile: LandfallEvidenceProfile): number {
+    return Math.min(
+      ...[...this.latest.values()]
+        .filter((item) => item.present && item.observation.source !== "STORY_PROGRESSION")
+        .map((item) =>
+          Math.min(
+            Date.parse(item.observation.observedAt) + profile.maximumAgeSeconds * 1000,
+            item.observation.expiresAt ? Date.parse(item.observation.expiresAt) : Infinity,
+          ),
+        ),
+    );
+  }
+  status(profile: LandfallEvidenceProfile, now: number): "SUPPORTED" | "INSUFFICIENT" | "CONFLICT" {
+    for (const [source, item] of this.latest) {
+      if (
+        now - Date.parse(item.observation.observedAt) > profile.maximumAgeSeconds * 1000 ||
+        (item.observation.expiresAt && Date.parse(item.observation.expiresAt) <= now)
+      )
+        this.latest.delete(source);
+    }
     const items = [...this.latest.values()];
     if (items.some((item) => item.present) && items.some((item) => !item.present)) return "CONFLICT";
     const contextualRoots = new Set(items.flatMap((item) => item.observation.provenance?.contextEvidenceRefs ?? []));

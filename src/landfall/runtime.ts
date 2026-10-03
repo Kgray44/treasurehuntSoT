@@ -82,6 +82,7 @@ type PendingEvidence = {
   observedAt: string;
   source: LandfallObservation["source"];
   state: LandfallSyncState;
+  validUntil: number;
 };
 const median = (values: number[]) => {
   const sorted = [...values].sort((a, b) => a - b);
@@ -319,6 +320,7 @@ export class LandfallRuntime {
         publishedVersionId: this.publishedVersionId,
         observedAt: observation.observedAt,
         source: observation.source,
+        validUntil: this.fusion.validUntil(waypoint.evidenceProfile),
         state: this.offlineState === "ONLINE" ? "LOCAL_OBSERVED" : "QUEUED",
       });
       while (this.pending.size > 64) this.pending.delete(this.pending.keys().next().value!);
@@ -500,13 +502,29 @@ export class LandfallRuntime {
     observationId: string,
     expectedSequence: number,
     idempotencyKey: string,
+    now: number = Date.now(),
   ): LandfallCompletionRequest {
     const evidence = this.pending.get(observationId);
     if (!evidence || evidence.state === "REJECTED") throw new Error("LANDFALL_EVIDENCE_UNAVAILABLE");
     const waypoint = this.waypoints.get(evidence.waypointId)!;
+    if (
+      evidence.state !== "SERVER_CONFIRMED" &&
+      (!Number.isFinite(now) ||
+        this.activeWaypointId !== evidence.waypointId ||
+        now >= evidence.validUntil ||
+        evidence.worldspaceId !== this.activeWorldspaceId ||
+        evidence.publishedVersionId !== this.publishedVersionId ||
+        now - Date.parse(evidence.observedAt) > waypoint.evidenceProfile.maximumAgeSeconds * 1000 ||
+        Date.parse(evidence.observedAt) > now + 5000 ||
+        this.fusion.status(waypoint.evidenceProfile, now) !== "SUPPORTED")
+    ) {
+      evidence.state = "REJECTED";
+      this.currentOutcome = { confidence: "UNAVAILABLE", sync: null, retryable: true, failure: "STALE_EVIDENCE" };
+      this.contextual.setEvidenceConflict(false, now);
+      throw new Error("LANDFALL_EVIDENCE_STALE");
+    }
     if (waypoint.completion.mode !== "OBSERVED") throw new Error("LANDFALL_STORY_ORDER_OWNED_BY_ONE_VOYAGE");
-    if (waypoint.expiresAt && Date.parse(waypoint.expiresAt) <= Date.parse(evidence.observedAt))
-      throw new Error("LANDFALL_WAYPOINT_EXPIRED");
+    if (waypoint.expiresAt && Date.parse(waypoint.expiresAt) <= now) throw new Error("LANDFALL_WAYPOINT_EXPIRED");
     if (!waypoint.sequence.afterWaypointIds.every((id) => this.visited.has(id)))
       throw new Error("LANDFALL_PREREQUISITE_UNMET");
     return createLandfallCompletionRequest({

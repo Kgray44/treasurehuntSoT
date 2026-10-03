@@ -73,6 +73,11 @@ describe("durable session-bound Landfall offline store", () => {
   it("rejects transient landmark receipts and sensor context before writing the outbox", async () => {
     const store = new LandfallOfflineRepository(storage, () => clock);
     for (const input of [
+      {
+        ...evidence,
+        method: "EVIDENCE_BUNDLE" as const,
+        sources: [{ method: "PLAYER_FALLBACK" as const, evidenceId: "human" }],
+      },
       { ...evidence, method: "LANDMARK" as const },
       { ...evidence, method: "WATCHGLASS" as const, watchglassReceipt: "synthetic-certified-receipt" },
       { ...evidence, watchglassReceipt: "synthetic-certified-receipt" },

@@ -3,14 +3,36 @@ title: Project Landfall Phase 3 v1.1 amendment implementation and local qualific
 audience: product-engineering
 status: draft
 canonical_for: project-landfall-phase-3-v11-amendment-record
-last_reviewed: 2026-10-01
+last_reviewed: 2026-10-03
 ---
 
 # Read the Ground: physical and virtual amendment follow-up
 
 This bounded follow-up implements the Phase 3 expansion in the [v1.1 governing amendment](../../Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf), section 29 (page 29), with sections 8.3, 17 and 18 governing fusion, Watchglass ownership and progression. It reuses the [accepted Phase 3 baseline](Project_Landfall_Phase_3_Accepted_Capsule.md) at protected main `d38cb756afe61f7b13251cf980d0deb8dbfc38f1`. PR #673/#674 qualification remains evidence for that baseline, not these changed files.
 
-Owned clone: `landfall-v11`; branch: `codex/landfall-phase3-v11`. The user approved push and draft PR publication after passing checks. Protected integration, merge, deployment, production recognition packages and Phase 4 acceptance are not authorized or claimed. This record remains draft until a separately authorized protected integration.
+Historical October 1 local qualification used owned clone `landfall-v11`; branch: `codex/landfall-phase3-v11`. At that stage, the user approved push and draft PR publication after passing checks. Protected integration had not yet been authorized. The October 3 audit now authorizes normal protected integration and closure of the same PR #675. Deployment, production recognition and Phase 4 remain outside scope.
+
+## Final audit corrections (October 3)
+
+The resumed owned worktree is `landfall-phase3`; the existing branch is `codex/landfall-phase3-v11` and the closure vehicle remains [PR #675](https://github.com/Kgray44/treasurehuntSoT/pull/675). Refreshed protected main starts at `d38cb756afe61f7b13251cf980d0deb8dbfc38f1`. The audited draft head was `60faf44d8e6027d7b10288d314357673c44f82ad`, tree `dbba815e7e46567c921314b065d2f427d265a869`. The earlier qualification ledger below remains historical proof, not qualification for these corrections.
+
+Three concrete defects required source changes: ordinary physical regions inherited an approximate classification and disappeared from Player evaluation; canonical submissions could carry only one method and could not fulfill stronger independent-source policies; pending local completion did not age out until another observation arrived.
+
+Physical contextual authoring now defaults to private Chronicle-authorized geometry. Authorized Player evaluation and released map projection retain that authored geometry; public/community projections exclude private regions, and public publication blocks private layouts. Approximate WGS84 site/compact-outdoor regions receive a rounded center (0.001 degree) and a covering radius of at least 500 meters in Player evaluation without changing the canonical definition. Fine rooms, floors, corridors and exact targets cannot use that broad privacy projection: publication requires a private or intentionally public-exact classification. Approximate custom georeferences require explicit classification rather than a silent omitted region. Existing private/no-store authorization remains authoritative; this does not publish live Player position.
+
+The canonical request supports a strict bundle of at most four bounded sources. Each source is independently qualified on the server against the same actor, session, immutable edition/definition, sequence, Worldspace/version and target. Source identity and provenance are server-assigned or taken from the trusted verified adapter. Fusion rejects duplicate/shared/correlated roots, circular dependencies, stale support, unavailable providers and strong conflicts. Story/context priors do not manufacture a verifier. Canonical summaries retain categorical attribution; raw fixes, frames, opaque receipts, signatures and provenance stay transient. Bundles require fresh online verification and are rejected before offline-outbox writes.
+
+The shipped two-source Player path combines foreground location with deliberate Player confirmation for an authored two-source broad physical target. Watchglass plus another independent source is tested with synthetic certified adapters only. Watchglass and game/native providers remain **NOT_CONFIGURED**. Creator capability findings use deployable source paths; unavailable three/four-source policies warn with an effective fallback and block without one. No future provider is invented to satisfy the count.
+
+Pending completion rechecks the current clock, active target, Worldspace, edition, source age/expiry and current fusion status at delivery. Expired unsubmitted claims reject even when no new observation arrives. Canonical server qualification independently repeats freshness checks; server-confirmed history remains immutable.
+
+The ordinary Creator regression uses actual physical Worldspace and room controls without a privacy override, saves/reloads the draft and installs that validated definition into an isolated synthetic published Voyage. Player bootstrap and foreground context inference must retain the region. The canonical two-source browser regression drives the real Player control and checks one sanitized One Voyage visit.
+
+Alignment scope is explicit: the current floor/site overlay editor authors **north-up rectangular geographic bounds**. Schema/custom-georeference transform support does not imply an arbitrary rotated/affine control-point editor. No such editor is added in this correction.
+
+No schema, migration or dependency change is required. Physical and authored-unit virtual references, uncertainty, routes/gates and coarse semantic context remain one Landfall domain. Phase 4, Watchglass implementation, Storytide and Figurehead are not started.
+
+Final acceptance identities and measured full-suite/browser/protected/landed results will be reconciled here after qualification; the prior local ledger cannot substitute for them.
 
 ## Acceptance contracts
 

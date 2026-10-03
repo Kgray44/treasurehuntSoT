@@ -109,7 +109,7 @@ describe("Landfall Phase 1 Worldspace foundation", () => {
     const outcome = runtime.ingest(physicalObservation("second", at(2)), now(2));
     expect(outcome.sync).toBe("QUEUED");
     expect(runtime.projection("PLAYER", now(2)).visitedLocationIds).toEqual([]);
-    expect(runtime.completionRequest("second", 4, "retry-key")).toMatchObject({
+    expect(runtime.completionRequest("second", 4, "retry-key", now(2))).toMatchObject({
       expectedSequence: 4,
       publishedVersionId: "version-1",
       waypointId: "town-arrival",

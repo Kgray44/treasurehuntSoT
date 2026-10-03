@@ -39,6 +39,8 @@ export function sanitizeLandfallContextSummary(
     "PLAYER_CONFIRMATION",
     "CAPTAIN_CONFIRMATION",
     "BROWSER_GEOLOCATION",
+    "WATCHGLASS",
+    "VISION_WAYPOINT",
     "ROUTE",
     "GPS",
     "CONTINUITY",

@@ -10,6 +10,7 @@ import {
   closureAccount,
   closureVoyage,
   geoAudit,
+  qualifiedFollowUpFixes,
   openClosureJournal,
   openClosureMap,
   type ClosureAccount,
@@ -459,3 +460,42 @@ for (const viewport of [
     await context.close();
   });
 }
+
+test("two independent location and deliberate Player checks qualify through canonical One Voyage", async ({
+  browser,
+  baseURL,
+}, testInfo) => {
+  const voyage = await closureVoyage(owner, player, "livingChart", { fusion: true });
+  const context = await browser.newContext({
+    reducedMotion: "reduce",
+    permissions: ["geolocation"],
+    geolocation: { latitude: 44, longitude: -72, accuracy: 5 },
+  });
+  await authenticateClosure(context, player, baseURL!);
+  await auditNativeGeolocation(context);
+  const page = await context.newPage();
+  await openClosureJournal(page, voyage.id);
+  await openClosureMap(page);
+  await chart(page).getByRole("button", { name: "Use my location", exact: true }).click();
+  await expect.poll(async () => (await geoAudit(page)).nativeSamples).toBeGreaterThan(0);
+  await qualifiedFollowUpFixes(page);
+  expect(await events(voyage.id, "landfallWaypointConfirmed")).toHaveLength(0);
+  const button = chart(page).getByRole("button", { name: "Check location and my confirmation together", exact: true });
+  await expect(button).toBeVisible();
+  const response = page.waitForResponse(
+    (response) =>
+      response.url().endsWith(`/api/player/playthroughs/${voyage.id}/landfall`) &&
+      response.request().method() === "POST",
+  );
+  await button.click();
+  expect((await response).ok()).toBe(true);
+  await expect.poll(async () => (await events(voyage.id, "landfallWaypointConfirmed")).length).toBe(1);
+  const confirmed = (await events(voyage.id, "landfallWaypointConfirmed"))[0];
+  expect(JSON.stringify(confirmed.payload)).toContain("FUSED");
+  expect(JSON.stringify(confirmed.payload)).toContain("BROWSER_GEOLOCATION");
+  expect(JSON.stringify(confirmed.payload)).toContain("PLAYER_CONFIRMATION");
+  expect(JSON.stringify(confirmed.payload)).not.toMatch(/latitude|longitude|observations|watchglassReceipt|provenance/);
+  await expect(chart(page)).toContainText("visited");
+  await page.screenshot({ path: testInfo.outputPath("canonical-two-source-arrival.png"), fullPage: false });
+  await context.close();
+});

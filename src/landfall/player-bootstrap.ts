@@ -1,3 +1,4 @@
+import { projectContextRegion } from "@/landfall/context-projection";
 import { projectLandfallMap, type LandfallMapScene } from "@/landfall/map-projection";
 import type { PinnedLandfallDefinition } from "@/landfall/published";
 import type { LandfallDefinition } from "@/landfall/schema";
@@ -72,7 +73,6 @@ export function projectPlayerLandfallBootstrap(
   const regions = (definition.context?.regions ?? []).filter(
     (region) =>
       region.worldspaceId === worldspace.id &&
-      region.privacyClassification !== "APPROXIMATE_REAL_WORLD" &&
       (!region.hiddenUntilRevealed ||
         definition.waypoints.some(
           (waypoint) =>
@@ -80,8 +80,12 @@ export function projectPlayerLandfallBootstrap(
             (journey.revealedWaypointIds.includes(waypoint.id) || journey.visitedIds.includes(waypoint.id)),
         )),
   );
-  const regionIds = new Set(regions.map((region) => region.id));
-  const safeRegions = regions.map((region) => ({
+  const projectedRegions = regions.flatMap((region) => {
+    const safe = projectContextRegion(region, worldspace, "PLAYER");
+    return safe ? [safe] : [];
+  });
+  const regionIds = new Set(projectedRegions.map((region) => region.id));
+  const safeRegions = projectedRegions.map((region) => ({
     ...region,
     parentId: region.parentId && regionIds.has(region.parentId) ? region.parentId : undefined,
   }));

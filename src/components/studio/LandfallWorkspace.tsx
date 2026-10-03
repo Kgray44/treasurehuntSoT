@@ -1,5 +1,7 @@
 "use client";
 
+import { landfallSourceCapabilities } from "@/landfall/source-capabilities";
+
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import { ZodError } from "zod";
@@ -1941,9 +1943,10 @@ export function LandfallWorkspace({
                     </select>
                   </label>
                   <p>
-                    Repeated readings and contextual priors do not count as separate sources. Conflicting evidence
-                    remains uncertain; the configured fallback remains available. Watchglass visual verification
-                    requires a separately certified provider.
+                    {landfallSourceCapabilities(definition, selectedWaypoint).description} Repeated readings and
+                    contextual priors do not count as separate sources. Conflicting evidence remains uncertain; the
+                    configured fallback remains available. Watchglass visual verification requires a separately
+                    certified provider.
                   </p>
                   <label>
                     Required readings

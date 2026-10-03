@@ -14,7 +14,7 @@ last_reviewed: 2026-10-01
 
 ### Added
 
-- Added the Landfall Phase 3 v1.1 follow-up: authored-unit virtual context, versioned independent-source/conflict policy, virtual landmark authoring and a scoped certified Watchglass receipt seam. Recognition remains unconfigured with explicit readable fallback. Local ordinary qualification passes all nine obligations and 13 production browsers; draft publication is approved, with protected integration and deployment separate. The amendment record preserves exact identities and earlier failed evidence.
+- Corrected the Landfall physical/virtual v1.1 candidate in PR #675: ordinary physical regions preserve authorized private Player context, strict bounded source bundles independently qualify real checks through One Voyage, pending completion rechecks expiry at delivery, and Creator findings reflect actual provider availability. Watchglass remains not configured; the amendment record preserves historical failures and the final protected qualification/landed status.
 
 - Added Project Landfall Phase 3 contextual navigation: aligned floor/site maps and region hierarchies, corridor continuity and uncertainty, foreground motion/heading/elevation hints, region-gated landmark reference comparison, independent exact-target observation, accessible fallbacks and sanitized Creator/Captain/replay projections. Physical field quality remains separate evidence; native/background Phase 4 work is deferred.
 
