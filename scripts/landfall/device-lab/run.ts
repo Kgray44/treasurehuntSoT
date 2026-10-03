@@ -70,6 +70,7 @@ async function main() {
       "package.json",
       "prisma/schema.sqlite.prisma",
       "prisma/migrations",
+      "public/landfall-offline-sw.js",
       ".agents/landfall-device-lab-hosted.yml",
     ])
   )

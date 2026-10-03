@@ -15,6 +15,7 @@ export async function executeLandfallOsScenario(
   destination: string,
 ) {
   const root = process.cwd();
+  const publicWorker = await readFile(path.join(root, "public", "landfall-offline-sw.js"));
   await mkdir(destination, { recursive: true });
   const host = await discoverDeviceLabHost();
   const bundle = await build({
@@ -30,7 +31,9 @@ export async function executeLandfallOsScenario(
   let network = "ONLINE";
   let canonicalProgressionEvents: number | null = null;
   let ready = false;
+  const startups: { restarted: boolean; leaseRestored: boolean; publicShellControlled: boolean }[] = [];
   let clientError = false;
+  let clientErrorReason = "LANDFALL_NATIVE_CLIENT_FAILED";
   let current: { index: number; action: unknown } | null = null;
   let stop = false;
   const results = new Map<number, DeviceLabStepResult>();
@@ -41,6 +44,12 @@ export async function executeLandfallOsScenario(
   const server = createServer(async (request, response) => {
     const route = request.url?.split("?")[0];
     response.setHeader("Cache-Control", "no-store");
+    if (request.method === "GET" && route === "/player") {
+      response.statusCode = 302;
+      response.setHeader("Location", "/player/");
+      response.end();
+      return;
+    }
     if (request.method === "GET" && route === "/lab/os/next") {
       if (stop) response.end(JSON.stringify({ stop: true }));
       else if (osCurrent) {
@@ -52,14 +61,36 @@ export async function executeLandfallOsScenario(
       }
       return;
     }
-    if (request.method === "GET" && route === "/player") {
+    if (request.method === "GET" && route === "/landfall-offline-sw.js") {
+      response.setHeader("Content-Type", "text/javascript");
+      response.setHeader("Service-Worker-Allowed", "/player/");
+      response.end(publicWorker);
+      return;
+    }
+    if (request.method === "GET" && route === "/lab/connectivity") {
+      response.setHeader("Content-Type", "application/json");
+      response.end(JSON.stringify({ state: network }));
+      return;
+    }
+    if (
+      request.method === "GET" &&
+      (route === "/player/" ||
+        route === "/player/offline-landfall" ||
+        route === "/player/playthroughs/session-1/journal")
+    ) {
+      // The owned control plane stays reachable, but an offline Journal navigation
+      // must use the actual production public service worker and cached shell.
+      if (network === "OFFLINE" && route !== "/player/") {
+        request.socket.destroy();
+        return;
+      }
       response.setHeader("Content-Type", "text/html");
       response.end(
-        '<!doctype html><html><meta name="viewport" content="width=device-width,initial-scale=1"><title>Landfall Device Lab</title><body><h1>Landfall Device Lab</h1><p>Synthetic isolated Voyage. Canonical server confirmation is required.</p><script src="/lab.js"></script></body></html>',
+        '<!doctype html><html><meta name="viewport" content="width=device-width,initial-scale=1"><title>Landfall Device Lab</title><body><h1>Landfall Device Lab</h1><p>Synthetic isolated Voyage. Canonical server confirmation is required.</p><script src="/_next/static/chunks/landfall-lab.js"></script></body></html>',
       );
       return;
     }
-    if (request.method === "GET" && route === "/lab.js") {
+    if (request.method === "GET" && route === "/_next/static/chunks/landfall-lab.js") {
       response.setHeader("Content-Type", "text/javascript");
       response.end(bundle.outputFiles[0].contents);
       return;
@@ -112,7 +143,7 @@ export async function executeLandfallOsScenario(
       }
     }
     try {
-      const value = route === "/lab/error" ? null : JSON.parse(body);
+      const value = JSON.parse(body);
       if (route === "/lab/commit") {
         if (network === "OFFLINE") {
           response.statusCode = 503;
@@ -137,9 +168,17 @@ export async function executeLandfallOsScenario(
         ["PASS", "FAIL", "UNSUPPORTED"].includes(value.state)
       )
         osResults.set(value.index, { index: value.index, action: "LIFECYCLE", state: value.state });
-      else if (route === "/lab/ready") ready = ["GRANTED", "APPROXIMATE"].includes(value.permission);
-      else if (route === "/lab/error") clientError = true;
-      else if (
+      else if (route === "/lab/ready") {
+        ready = ["GRANTED", "APPROXIMATE"].includes(value.permission) && value.publicShellControlled === true;
+        startups.push({
+          restarted: value.restarted === true,
+          leaseRestored: value.leaseRestored === true,
+          publicShellControlled: value.publicShellControlled === true,
+        });
+      } else if (route === "/lab/error") {
+        clientError = true;
+        if (typeof value.reason === "string" && /^[A-Z_]{1,128}$/.test(value.reason)) clientErrorReason = value.reason;
+      } else if (
         route === "/lab/result" &&
         Number.isInteger(value.index) &&
         value.index >= 0 &&
@@ -186,7 +225,7 @@ export async function executeLandfallOsScenario(
   const wait = async (predicate: () => boolean, budget: number) => {
     const deadline = Date.now() + budget;
     while (!predicate()) {
-      if (clientError) throw new Error("LANDFALL_NATIVE_CLIENT_FAILED");
+      if (clientError) throw new Error(clientErrorReason);
       if (uiFailed) throw new Error("LANDFALL_NATIVE_UI_DRIVER_FAILED");
       if (Date.now() > deadline) throw new Error("LANDFALL_NATIVE_CLIENT_TIMEOUT");
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -311,6 +350,7 @@ export async function executeLandfallOsScenario(
       }
       if (step.action.type === "LIFECYCLE") {
         const action = step.action;
+        if (action.state === "RELAUNCH") ready = false;
         if (target === "ios-simulator") {
           if (
             !["DEFAULT", "FORCE_STOP", undefined].includes(action.operation) ||
@@ -376,6 +416,7 @@ export async function executeLandfallOsScenario(
         }
         foreground = ["FOREGROUND", "RELAUNCH"].includes(action.state);
         if (foreground) {
+          await wait(() => ready, 60000);
           current = { index, action };
           await wait(() => results.has(index), 30000);
           steps.push(results.get(index)!);
@@ -502,6 +543,15 @@ export async function executeLandfallOsScenario(
         error instanceof Error && /^[A-Z_]{1,128}$/.test(error.message) ? error.message : "NATIVE_OS_EXECUTION_FAILED",
     });
   } finally {
+    const startupFile = path.join(destination, "native-startups.json");
+    await writeFile(startupFile, JSON.stringify(startups, null, 2));
+    artifacts.push({
+      path: startupFile,
+      sha256: createHash("sha256")
+        .update(await readFile(startupFile))
+        .digest("hex"),
+      kind: "TEST_RESULT",
+    });
     stop = true;
     if (uiRunner) {
       let timer: ReturnType<typeof setTimeout> | undefined;
@@ -581,6 +631,36 @@ export async function executeLandfallOsScenario(
     if (!(await authority.cleanup())) remainingResources.push("one-voyage-authority");
   }
   await mkdir(destination, { recursive: true });
+  for (const result of steps) {
+    const action = scenario.timeline[result.index]?.action;
+    result.translation =
+      action?.type === "LOCATION"
+        ? {
+            method: "OS_LOCATION_INJECTION",
+            limitation: "Virtual coordinate delivery does not prove field GPS accuracy, multipath or sensor physics.",
+          }
+        : action?.type === "LIFECYCLE"
+          ? {
+              method: "OS_LIFECYCLE",
+              limitation: "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
+            }
+          : action?.type === "NETWORK"
+            ? target === "android-emulator"
+              ? {
+                  method: "OS_NETWORK_AND_SERVICE_FAULT",
+                  limitation:
+                    "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
+                }
+              : {
+                  method: "CONTROLLED_SERVICE_FAULT",
+                  limitation:
+                    "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
+                }
+            : action?.type === "RECONCILE" ||
+                (action?.type === "ASSERT" && ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
+              ? { method: "REAL_CANONICAL_AUTHORITY" }
+              : { method: "SHARED_WEB_CONTRACT" };
+  }
   const cleanup = {
     result: remainingResources.length ? ("FAIL" as const) : ("PASS" as const),
     ownedResources: ["loopback-native-lab-server", ...(ownedDevice ? [ownedDevice] : [])],

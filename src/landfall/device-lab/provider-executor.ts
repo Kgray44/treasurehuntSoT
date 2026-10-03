@@ -162,6 +162,7 @@ export class LandfallProviderScenarioExecutor {
   }> {
     const steps: DeviceLabStepResult[] = [];
     try {
+      if (this.authority) this.canonicalCount = (await this.authority.counts()).canonicalProgressionEvents;
       for (const [index, step] of this.scenario.timeline.entries()) {
         this.now = epoch + step.atMs;
         try {
@@ -170,6 +171,7 @@ export class LandfallProviderScenarioExecutor {
             index,
             action: step.action.type,
             state: supported ? "PASS" : "UNSUPPORTED",
+            translation: { method: "LOGICAL_PROVIDER" },
             ...(!supported ? { reason: "ADAPTER_NOT_IMPLEMENTED" } : {}),
           });
         } catch (error) {
@@ -177,7 +179,13 @@ export class LandfallProviderScenarioExecutor {
             error instanceof Error && /^[A-Z0-9_:.-]{1,128}$/.test(error.message)
               ? error.message
               : "SCENARIO_ASSERTION_FAILED";
-          steps.push({ index, action: step.action.type, state: "FAIL", reason: safeReason });
+          steps.push({
+            index,
+            action: step.action.type,
+            state: "FAIL",
+            reason: safeReason,
+            translation: { method: "LOGICAL_PROVIDER" },
+          });
         }
       }
     } finally {

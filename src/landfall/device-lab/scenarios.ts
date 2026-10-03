@@ -385,6 +385,28 @@ scenario(
   "ONE_VOYAGE",
 );
 
+scenario(
+  "offline-restart-canonical-reconcile",
+  ["LOCATION", "OFFLINE_PACKAGE"],
+  [
+    network("OFFLINE"),
+    location(),
+    location(),
+    assertion("completionRequests", 1),
+    assertion("canonicalProgressionEvents", 0),
+    lifecycle("TERMINATED", "FORCE_STOP"),
+    lifecycle("RELAUNCH"),
+    assertion("completionRequests", 1),
+    assertion("clientConfirmed", false),
+    network("ONLINE"),
+    { type: "RECONCILE", outcome: "ACCEPT" },
+    assertion("clientConfirmed", true),
+    assertion("canonicalProgressionEvents", 1),
+  ],
+  ["FIELD_ENVIRONMENT"],
+  "ONE_VOYAGE",
+);
+
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);
 }

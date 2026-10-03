@@ -212,6 +212,17 @@ export type DeviceLabStepResult = {
   action: DeviceLabAction["type"];
   state: "PASS" | "FAIL" | "UNSUPPORTED";
   reason?: string;
+  translation?: {
+    method:
+      | "LOGICAL_PROVIDER"
+      | "OS_LOCATION_INJECTION"
+      | "OS_LIFECYCLE"
+      | "OS_NETWORK_AND_SERVICE_FAULT"
+      | "CONTROLLED_SERVICE_FAULT"
+      | "REAL_CANONICAL_AUTHORITY"
+      | "SHARED_WEB_CONTRACT";
+    limitation?: string;
+  };
 };
 export type DeviceLabReceipt = {
   version: 1;

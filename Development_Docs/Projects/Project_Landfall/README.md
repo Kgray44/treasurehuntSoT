@@ -53,3 +53,5 @@ The [final closure correction record](Project_Landfall_Phase_2_Final_Closure_Rec
 ## Phase 4 execution
 
 Hold the Bearing is in development. The Device Lab addendum is governing scope; development checkpoints are not phase acceptance, protected integration, or Project Landfall closure. Native companion deployment and physical/field evidence remain separately classified.
+
+- [Native companion and restart design](Project_Landfall_Phase_4_Native_Companion_Design.md): origin-bound acquisition, encrypted restart leases, shared reconciliation, development proof and remaining acceptance work.

@@ -8,10 +8,47 @@ import type { LandfallObservation } from "@/landfall/observation";
 import { queueLandfallEvidence, pendingLandfallEvidence, clearLandfallEvidence } from "@/landfall/offline-web";
 import { LandfallOutboxReconciler, type LandfallReconciliationTransport } from "@/landfall/offline-reconcile";
 import type { PlayerLandfallEvidence } from "@/landfall/player-evidence-contract";
+import { offlineLease, rememberOfflineLease } from "@/landfall/offline-store";
+import { restoreNativeLandfallLeases } from "@/landfall/native-private-store";
 
 /** Test-only local origin entrypoint, bundled by the Device Lab, never shipped in the release app. */
 async function main() {
   const identity = { sessionId: "session-1", publishedVersionId: "version-1" };
+  await restoreNativeLandfallLeases();
+  const restarted = !["/player", "/player/"].includes(location.pathname);
+  const lease = restarted ? offlineLease(identity.sessionId) : null;
+  if (restarted && (!lease || lease.versionId !== identity.publishedVersionId))
+    throw new Error("NATIVE_RESTART_LEASE_UNAVAILABLE");
+  const csrf = lease?.csrfToken ?? "synthetic-native-lab-csrf";
+  if (!navigator.serviceWorker) throw new Error("NATIVE_OFFLINE_SHELL_UNSUPPORTED");
+  await navigator.serviceWorker.register("/landfall-offline-sw.js", { scope: "/player/" });
+  let shellTimer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    await Promise.race([
+      navigator.serviceWorker.ready,
+      new Promise<never>((_resolve, reject) => {
+        shellTimer = setTimeout(() => reject(new Error("NATIVE_OFFLINE_SHELL_TIMEOUT")), 20000);
+      }),
+    ]);
+  } finally {
+    clearTimeout(shellTimer);
+  }
+  if (!navigator.serviceWorker.controller)
+    await new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(() => {
+        navigator.serviceWorker.removeEventListener("controllerchange", changed);
+        reject(new Error("NATIVE_OFFLINE_SHELL_TIMEOUT"));
+      }, 20000);
+      const changed = () => {
+        if (navigator.serviceWorker.controller) {
+          clearTimeout(timer);
+          navigator.serviceWorker.removeEventListener("controllerchange", changed);
+          resolve();
+        }
+      };
+      navigator.serviceWorker.addEventListener("controllerchange", changed);
+      changed();
+    });
   const definition = structuredClone(landfallFixture);
   const world = definition.worldspaces.find((world) => world.kind === "PHYSICAL")!;
   definition.worldspaces = [world];
@@ -38,13 +75,13 @@ async function main() {
   let outcome: LandfallOutcome = { confidence: "UNAVAILABLE", sync: null, retryable: true };
   let latest: LandfallObservation | null = null;
   let count = 0;
-  let requests = 0;
+  let requests = (await pendingLandfallEvidence(identity.sessionId, identity.publishedVersionId, csrf)) ? 1 : 0;
   let samples: LandfallObservation[] = [];
   let queued = Promise.resolve();
-  let network = "ONLINE";
+  let network = (await (await fetch("/lab/connectivity", { cache: "no-store" })).json()).state as "ONLINE" | "OFFLINE";
+  runtime.setOffline(network === "ONLINE" ? "ONLINE" : "OFFLINE_READY");
   let canonicalCount = 0;
   let serverConfirmed = false;
-  const csrf = "synthetic-native-lab-csrf";
   let waiting: ((observation: LandfallObservation) => void) | null = null;
   const start = () =>
     provider.start(
@@ -90,7 +127,13 @@ async function main() {
   });
   await fetch("/lab/ready", {
     method: "POST",
-    body: JSON.stringify({ platform: driver.platform, permission: provider.permissionState }),
+    body: JSON.stringify({
+      platform: driver.platform,
+      permission: provider.permissionState,
+      restarted,
+      leaseRestored: lease !== null,
+      publicShellControlled: navigator.serviceWorker.controller !== null,
+    }),
   });
   while (true) {
     const response = await fetch("/lab/next", { cache: "no-store" });
@@ -171,8 +214,16 @@ async function main() {
           state = "UNSUPPORTED";
           reason = "NATIVE_NETWORK_PROFILE_UNSUPPORTED";
         } else {
-          network = action.state;
+          network = action.state === "OFFLINE" ? "OFFLINE" : "ONLINE";
           runtime.setOffline(network === "ONLINE" ? "ONLINE" : "OFFLINE_READY");
+          if (network === "OFFLINE") {
+            const stored = await rememberOfflineLease({
+              sessionId: identity.sessionId,
+              versionId: identity.publishedVersionId,
+              csrfToken: csrf,
+            });
+            if (stored !== "NATIVE_PREPARED") throw new Error("NATIVE_RESTART_LEASE_STORAGE_UNAVAILABLE");
+          }
         }
       } else if (action.type === "RECONCILE") {
         if (!["ACCEPT", "DUPLICATE", "LOST_RESPONSE"].includes(action.outcome)) {
@@ -229,12 +280,15 @@ async function main() {
         error instanceof Error && /^[A-Z_:a-z]{1,128}$/.test(error.message) ? error.message : "OS_SCENARIO_FAILED";
     }
     // Only categorical counters/outcomes leave the virtual device. No raw fix or coordinate trace.
+    await queued;
     await fetch("/lab/result", {
       method: "POST",
       body: JSON.stringify({ index: step.index, action: action.type, state, reason }),
     });
   }
 }
-main().catch(() => {
-  void fetch("/lab/error", { method: "POST", body: "NATIVE_CLIENT_FAILED" });
+main().catch((error: unknown) => {
+  const reason =
+    error instanceof Error && /^[A-Z_]{1,128}$/.test(error.message) ? error.message : "NATIVE_CLIENT_FAILED";
+  void fetch("/lab/error", { method: "POST", body: JSON.stringify({ reason }) });
 });
