@@ -8,6 +8,27 @@ vi.mock("@/drydock/external-evidence-store", () => ({
 }));
 import { GET, POST } from "./route";
 const context = { params: Promise.resolve({ taleId: "tale-1" }) };
+const deviceLabReference = {
+  kind: "LANDFALL_DEVICE_LAB_REFERENCE",
+  sourceChecksum: "a".repeat(64),
+  receiptChecksum: "b".repeat(64),
+  sourceSha: "c".repeat(40),
+  sourceTree: "d".repeat(40),
+  fixtureHash: "e".repeat(64),
+  scenarioId: "gps-perfect-walk",
+  scenarioVersion: 2,
+  target: "provider-simulation",
+  deviceProfile: "primary-phone",
+  providerFamily: "LOCATION",
+  evidenceClass: "PROVIDER_SIMULATION_PROVEN",
+  result: "PASS",
+};
+const referenceRequest = (body: unknown = deviceLabReference) =>
+  new Request("http://localhost/external", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-csrf-token": "synthetic" },
+    body: JSON.stringify(body),
+  });
 
 describe("Drydock external evidence route", () => {
   beforeEach(() => {
@@ -49,5 +70,28 @@ describe("Drydock external evidence route", () => {
     expect(mocks.record).toHaveBeenCalledWith(
       expect.objectContaining({ taleId: "tale-1", providerId: "landfall", safeSummary: "Authorized field reference" }),
     );
+  });
+  it("records bounded Device Lab metadata with current-source review still required", async () => {
+    const response = await POST(referenceRequest(), context);
+    expect(response.status).toBe(201);
+    expect(response.headers.get("Cache-Control")).toBe("private, no-store");
+    expect(mocks.record).toHaveBeenCalledWith(
+      expect.objectContaining({
+        taleId: "tale-1",
+        expectedSourceChecksum: deviceLabReference.sourceChecksum,
+        status: "EXTERNAL_VALIDATION_REQUIRED",
+      }),
+    );
+    expect(
+      (await POST(referenceRequest({ ...deviceLabReference, evidenceClass: "FIELD_PROVEN" }), context)).status,
+    ).toBe(400);
+    expect(mocks.record).toHaveBeenCalledTimes(1);
+  });
+  it("keeps Device Lab authorization ahead of parsing and recording", async () => {
+    mocks.authorization.mockResolvedValueOnce(null);
+    expect((await POST(referenceRequest(), context)).status).toBe(404);
+    mocks.authorization.mockResolvedValueOnce({ session: { account: { roles: [{ role: "CREATOR" }] } } });
+    expect((await POST(referenceRequest({ privateData: "must not be processed" }), context)).status).toBe(403);
+    expect(mocks.record).not.toHaveBeenCalled();
   });
 });

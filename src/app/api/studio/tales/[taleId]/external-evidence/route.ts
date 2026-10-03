@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { apiError } from "@/chronicle/api";
 import { requireOwnedStudioTale } from "@/chronicle/studio-authorization";
+import { drydockDeviceLabReference } from "@/drydock/device-lab-reference";
 import {
   listCurrentDrydockExternalEvidence,
   recordCurrentDrydockExternalEvidence,
@@ -48,7 +49,15 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
       { status: 403, headers: privateHeaders },
     );
   try {
-    const input = body.parse(await request.json());
+    const payload = await request.json();
+    if (payload?.kind === "LANDFALL_DEVICE_LAB_REFERENCE") {
+      const input = drydockDeviceLabReference(payload);
+      return NextResponse.json(await recordCurrentDrydockExternalEvidence({ taleId, ...input }), {
+        status: 201,
+        headers: privateHeaders,
+      });
+    }
+    const input = body.parse(payload);
     return NextResponse.json(
       await recordCurrentDrydockExternalEvidence({
         taleId,

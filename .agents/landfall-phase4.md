@@ -213,6 +213,44 @@ list of canonical scenario IDs after candidate/platform/tier. Use it for the fre
 Apple GPS regression before broad matrix repetition; defaults retain native
 permission/sensor/power/offline/virtual cases. Never treat a subset as closure proof.
 
+Device Lab verification consumers: unit.landfall-device-lab is registered through
+the existing declarative suites/contracts/impact map. Its test executes the full
+provider CLI and verifies source/fixture/class/gates, actual canonical event counts
+and cleanup. A disconnect regression proves the real owned authority database and
+its sidecars disappear when the caller exits without requesting cleanup. The worker
+also handles POSIX SIGTERM, which remains a POSIX-host regression. Windows forces
+exit for that signal, so the Windows test proves IPC disconnect rather than a
+graceful signal. Two Windows provider/cleanup tests pass. Failed forced-exit fixture
+artifacts/landfall-device-lab/disconnect-38355f7d-8fe6-4bbd-b801-9775ad11a59e/
+one-voyage.db remains: no live owner or sidecars; automatic approval review rejected
+both bounded and exact-path deletion with only "blocked by policy". Do not bypass
+that rejection or count the retained fixture as cleaned. The existing Sounding Line
+authority tests pass 57/57; no authority executable or workflow was changed.
+
+Drydock's existing Administrator/CSRF-protected external reference route accepts
+LANDFALL_DEVICE_LAB_REFERENCE bounded metadata. Separate Chronicle/code/tree/fixture/
+receipt binding, scenario/version, target/profile, capability family and class are
+retained; stale Chronicle source, stale scenarios, raw payload extensions, wrong
+scope and inflated fidelity are refused. PASS remains EXTERNAL_VALIDATION_REQUIRED,
+so reference ingestion does not satisfy launch/physical gates. Nine focused helper/
+store/route tests pass, including the existing authorization boundary.
+
+Apple focused GPS retry is dispatched at 91a3b47e: run 37159079087,
+transport bb016d0b90988c468c2b8f73cc53a2cdc95b7524. Harvest verified 2,828
+artifacts and deletion of its unchanged owned transport branch. The version-2
+GPS scenario passes all five steps on iPhone 17e/iOS 26.5, Xcode 26.6, with
+SIMULATOR_PROVEN and cleanup PASS. Source tree
+2af7d3a72f15da5d5e8634303bb48f08f0e9a95a, clean fingerprint
+9361a910d6044b4c1afa445f2d76f6ef68eee600ce0a48dc302b81229cc5892c.
+This subset proves native GPS delivery/confidence and no unsolicited canonical
+progression, not the broad Apple closure matrix. The focused local consumer and
+product regression run passes 92 files/541 tests; full TypeScript, documentation
+validation and 57 ordinary Sounding Line authority tests also pass.
+Android 37156247496 partial artifacts show compatibility success, primary 9/10
+(first GPS times out) and low-resource 0/10 (measured profile mismatch). Tablet
+and whole-run harvest remain pending. Preserve these failures and diagnose the
+provisioned memory from terminal logs; never loosen the low-resource receipt claim.
+
 Remaining: native lifecycle/power orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;
 deployed provider preflight and health integration; full security/privacy/performance

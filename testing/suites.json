@@ -2734,6 +2734,24 @@
       "adapter": "playwright-family"
     },
     {
+      "id": "unit.landfall-device-lab",
+      "name": "Landfall Device Lab canonical provider corpus and owned authority cleanup",
+      "tier": 2,
+      "owner": "project-landfall",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 60000,
+      "hardBudgetMs": 240000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool", "owned-sqlite-fixture"],
+      "dependencies": [],
+      "contracts": ["landfall.device-lab-evidence"],
+      "affectedPaths": ["src/landfall/device-lab/**", "scripts/landfall/device-lab/**", "native/**"],
+      "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-family",
+      "adapter": "vitest-family"
+    },
+    {
       "id": "unit.landfall",
       "name": "Landfall pinned Player projection and foreground observation unit tests",
       "tier": 1,

@@ -190,6 +190,30 @@ accepts only bounded, unique canonical scenario IDs compatible with the selected
 platform; full matrix defaults remain available. The transport receipt records the
 selected corpus and profiles.
 
+### Verification consumers
+
+The declarative Sounding Line registration includes a Device Lab provider suite.
+Its Vitest entry executes the canonical CLI corpus and consumes the generated
+receipts, checking exact source/fixture versions, evidence classes, external gates,
+actual One Voyage event counts and cleanup. This is provider evidence; it does not
+replace the hosted native matrix. Authority workers coalesce database cleanup and
+exit when their caller disconnects or the worker receives POSIX termination, including
+failure paths that never sent the explicit cleanup command.
+Windows Node signal termination force-stops the worker; graceful cleanup uses IPC
+disconnection. A failed forced-exit development fixture was retained after local
+deletion was rejected by automatic approval review. That fixture is an explicit
+cleanup exception, not successful cleanup evidence.
+
+Drydock's existing Administrator/CSRF-protected external-evidence route accepts a
+strict Device Lab metadata reference. It keeps Chronicle source checksum, code
+commit/tree, scenario/version, target/profile, provider family, fixture digest and
+receipt digest distinct. Unknown/raw payload extensions, stale scenarios, wrong
+capability scope and inflated fidelity are rejected. A changed Chronicle source
+rejects the reference before recording it. Profiles/targets have separate reference
+kinds. A referenced PASS remains EXTERNAL_VALIDATION_REQUIRED; it is not promoted
+to a Chronicle-specific launch acceptance or physical proof. Drydock references
+the evidence and does not duplicate execution.
+
 The corpus also covers Virtual Worldspace manual navigation and encrypted offline
 reconciliation. Its native WebView executor selects the virtual definition without
 requesting location permission or starting native acquisition. The owned canonical
@@ -207,7 +231,12 @@ restored the encrypted native lease, used the production public worker with a
 synthetic public shell, reopened its encrypted outbox and wrote exactly one
 canonical event. This proves the shared restart path on that emulator; it does not
 prove the full rendered Player Journal, physical storage persistence or iOS restart.
-Hosted Apple native tests previously passed while end-to-end cases failed; updated
-hosted evidence is pending. Successful profile matrices, power orchestration, optional hardware
+Hosted Apple GPS end-to-end run 37159079087 passes on clean source 91a3b47e:
+two distinct Core Location fixes reach the production native provider and all five
+scenario steps pass. Receipts classify it SIMULATOR_PROVEN, retain the field gate,
+and verify simulator/server/database and transport-branch cleanup. The Xcode build
+and test invocation succeeded; its archived result bundle remains the detailed
+native test record. This focused subset does not establish the broader Apple
+offline/lifecycle matrix. Successful profile matrices, power orchestration, optional hardware
 handoffs, provider deployment preflight, full product UX, security/performance
 acceptance and final protected qualification remain required work.

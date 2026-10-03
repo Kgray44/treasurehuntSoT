@@ -317,6 +317,30 @@ async function worker() {
     process.argv[3],
     (process.argv[4] ?? "PHYSICAL") as "PHYSICAL" | "VIRTUAL",
   );
+  let closing: Promise<boolean> | null = null;
+  const cleanup = () => (closing ??= voyage.cleanup());
+  const disconnected = async () => {
+    let removed = false;
+    try {
+      removed = await cleanup();
+      await writeFile(
+        path.join(process.argv[3], "worker-cleanup.json"),
+        JSON.stringify({ result: removed ? "PASS" : "FAIL", remainingResources: removed ? [] : ["one-voyage.db"] }),
+      );
+    } finally {
+      process.exit(removed ? 0 : 1);
+    }
+  };
+  process.once("disconnect", () => {
+    void disconnected();
+  });
+  process.once("SIGTERM", () => {
+    void disconnected();
+  });
+  if (!process.connected) {
+    await disconnected();
+    return;
+  }
   process.send?.({ ready: true, fixtureHash: voyage.fixtureHash });
   process.on("message", async (message: unknown) => {
     const input = message as { id?: unknown; operation?: unknown; value?: unknown };
@@ -327,12 +351,14 @@ async function worker() {
       else if (input.operation === "counts") value = await voyage.counts();
       else if (input.operation === "authorize")
         value = await voyage.authorize(input.value as { evidenceId: string } | undefined);
-      else if (input.operation === "cleanup") value = await voyage.cleanup();
+      else if (input.operation === "cleanup") value = await cleanup();
       else throw new Error("LANDFALL_LAB_AUTHORITY_OPERATION_INVALID");
+      if (!process.connected) return;
       process.send?.({ id: input.id, value }, () => {
         if (input.operation === "cleanup") process.disconnect();
       });
     } catch (error) {
+      if (!process.connected) return;
       process.send?.({
         id: input.id,
         error: error instanceof Error ? error.message.slice(0, 160) : "LANDFALL_LAB_AUTHORITY_FAILED",
