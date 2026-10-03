@@ -94,6 +94,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "PRIVATE_STORE_GET": replyHandler(["value": foreground ? privateStore?.get(payload["key"] as? String ?? "") as Any? ?? NSNull() : NSNull()], nil)
         case "PRIVATE_STORE_LIST": replyHandler(["keys": foreground ? privateStore?.list() ?? [] : []], nil)
         case "PRIVATE_STORE_DELETE": if foreground { privateStore?.remove(payload["key"] as? String ?? "") }; replyHandler(["accepted": foreground], nil)
+        case "LOCATION_PERMISSION_STATE": replyHandler(["state": permission()], nil)
         case "LOCATION_PERMISSION":
             guard foreground, permissionReply == nil else { replyHandler(["state": "UNAVAILABLE"], nil); return }
             if location.authorizationStatus == .notDetermined { permissionReply = replyHandler; location.requestWhenInUseAuthorization() }

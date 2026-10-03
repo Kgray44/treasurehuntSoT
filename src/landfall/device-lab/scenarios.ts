@@ -126,6 +126,28 @@ scenario(
   ],
 );
 scenario(
+  "permission-denied-native",
+  ["LOCATION"],
+  [
+    { type: "PERMISSION", permission: "FOREGROUND_LOCATION", state: "DENIED" },
+    location(),
+    assertion("completionRequests", 0),
+    assertion("powerProfile", "SUSPENDED"),
+    assertion("serverConfirmed", false),
+  ],
+);
+scenario(
+  "permission-approximate-native",
+  ["LOCATION"],
+  [
+    { type: "PERMISSION", permission: "FOREGROUND_LOCATION", state: "APPROXIMATE" },
+    assertion("powerProfile", "BALANCED_ACTIVE"),
+    assertion("completionRequests", 0),
+    assertion("serverConfirmed", false),
+  ],
+);
+cases[cases.length - 1].targets = ["provider-simulation", "android-emulator", "real-android", "real-ios"];
+scenario(
   "gps-urban-canyon-synthetic",
   ["LOCATION"],
   [

@@ -107,6 +107,7 @@ public final class LandfallActivity extends Activity implements LocationListener
     JSONObject payload = request.optJSONObject("payload");
     if (payload == null) payload = new JSONObject();
     switch (operation) {
+      case "LOCATION_PERMISSION_STATE": reply(proxy, id, state(permission())); break;
       case "LOCATION_PERMISSION":
         if (!foreground || permissionReply != null) { reply(proxy, id, state("UNAVAILABLE")); break; }
         if (!permission().equals("DENIED")) { reply(proxy, id, state(permission())); break; }

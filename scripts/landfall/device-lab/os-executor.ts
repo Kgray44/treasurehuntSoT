@@ -37,6 +37,7 @@ export async function executeLandfallOsScenario(
   let network = "ONLINE";
   let canonicalProgressionEvents: number | null = null;
   let ready = false;
+  let maximumCompletionRequests = 0;
   const startups: { restarted: boolean; leaseRestored: boolean; publicShellControlled: boolean }[] = [];
   let clientError = false;
   let clientErrorReason = "LANDFALL_NATIVE_CLIENT_FAILED";
@@ -181,7 +182,7 @@ export async function executeLandfallOsScenario(
         if (osCurrent?.index === value.index) osCurrent = null;
       } else if (route === "/lab/ready") {
         ready =
-          (["GRANTED", "APPROXIMATE"].includes(value.permission) ||
+          (["GRANTED", "APPROXIMATE", "DENIED", "PROMPTABLE"].includes(value.permission) ||
             (scenario.worldspace === "VIRTUAL" && value.permission === "NOT_REQUIRED")) &&
           value.publicShellControlled === true;
         startups.push({
@@ -199,6 +200,16 @@ export async function executeLandfallOsScenario(
         value.index < scenario.timeline.length &&
         ["PASS", "FAIL", "UNSUPPORTED"].includes(value.state)
       ) {
+        if (
+          !Number.isInteger(value.completionRequests) ||
+          value.completionRequests < 0 ||
+          value.completionRequests > 128
+        ) {
+          response.statusCode = 400;
+          response.end();
+          return;
+        }
+        maximumCompletionRequests = Math.max(maximumCompletionRequests, value.completionRequests);
         if (!results.has(value.index))
           results.set(value.index, {
             index: value.index,
@@ -384,13 +395,15 @@ export async function executeLandfallOsScenario(
       if (remaining > 0) await new Promise((resolve) => setTimeout(resolve, remaining));
       if (
         step.action.type === "ASSERT" &&
-        ["serverConfirmed", "canonicalProgressionEvents"].includes(step.action.field)
+        ["serverConfirmed", "canonicalProgressionEvents", "completionRequests"].includes(step.action.field)
       ) {
         const counts = await authority.counts();
         const actual =
-          step.action.field === "serverConfirmed"
-            ? counts.canonicalProgressionEvents > 0
-            : counts.canonicalProgressionEvents;
+          step.action.field === "completionRequests"
+            ? maximumCompletionRequests
+            : step.action.field === "serverConfirmed"
+              ? counts.canonicalProgressionEvents > 0
+              : counts.canonicalProgressionEvents;
         steps.push({
           index,
           action: "ASSERT",
@@ -485,6 +498,77 @@ export async function executeLandfallOsScenario(
         steps.push({ index, action: step.action.type, state: "UNSUPPORTED", reason: "FRESH_FOREGROUND_REQUIRED" });
         continue;
       }
+      if (step.action.type === "PERMISSION") {
+        const action = step.action;
+        if (
+          scenario.worldspace !== "PHYSICAL" ||
+          action.permission !== "FOREGROUND_LOCATION" ||
+          !["GRANTED", "APPROXIMATE", "DENIED", "REVOKED"].includes(action.state) ||
+          (target === "ios-simulator" && action.state === "APPROXIMATE")
+        ) {
+          steps.push({
+            index,
+            action: "PERMISSION",
+            state: "UNSUPPORTED",
+            reason: "OS_PERMISSION_CONTROL_UNSUPPORTED",
+          });
+          continue;
+        }
+        if (target === "android-emulator") {
+          // Android may terminate the app when a runtime grant is revoked. The
+          // owned launcher restores the lab origin, never assumes the old page survived.
+          ready = false;
+          const granted = action.state === "GRANTED";
+          const coarse = granted || action.state === "APPROXIMATE";
+          await adb([
+            "shell",
+            "pm",
+            granted ? "grant" : "revoke",
+            "com.voyagewright.landfall",
+            "android.permission.ACCESS_FINE_LOCATION",
+          ]);
+          await adb([
+            "shell",
+            "pm",
+            coarse ? "grant" : "revoke",
+            "com.voyagewright.landfall",
+            "android.permission.ACCESS_COARSE_LOCATION",
+          ]);
+          const packageState = await adb(["shell", "dumpsys", "package", "com.voyagewright.landfall"]);
+          for (const [permission, expected] of [
+            ["ACCESS_FINE_LOCATION", granted],
+            ["ACCESS_COARSE_LOCATION", coarse],
+          ] as const) {
+            if (!packageState.includes(`android.permission.${permission}: granted=${expected}`))
+              throw new Error("ANDROID_PERMISSION_CONTROL_NOT_OBSERVED");
+          }
+          await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
+          await adb([
+            "shell",
+            "am",
+            "start",
+            "-n",
+            "com.voyagewright.landfall/.LandfallActivity",
+            "--es",
+            "labOrigin",
+            `http://127.0.0.1:${port}`,
+          ]);
+          await wait(() => ready, 60000);
+        } else {
+          await labTool(
+            "xcrun",
+            [
+              "simctl",
+              "privacy",
+              ownedDevice!,
+              action.state === "GRANTED" ? "grant" : "revoke",
+              "location",
+              "com.voyagewright.landfall",
+            ],
+            60000,
+          );
+        }
+      }
       if (step.action.type === "POWER") {
         const action = step.action;
         if (target !== "android-emulator" || action.thermal || action.doze) {
@@ -520,7 +604,7 @@ export async function executeLandfallOsScenario(
         // fault is controlled here; iOS radio fidelity remains explicitly external.
         network = step.action.state;
       }
-      if (!["LOCATION", "ASSERT", "NETWORK", "RECONCILE", "POWER"].includes(step.action.type)) {
+      if (!["LOCATION", "ASSERT", "NETWORK", "RECONCILE", "POWER", "PERMISSION"].includes(step.action.type)) {
         steps.push({
           index,
           action: step.action.type,
@@ -718,39 +802,45 @@ export async function executeLandfallOsScenario(
   for (const result of steps) {
     const action = scenario.timeline[result.index]?.action;
     result.translation =
-      action?.type === "LOCATION" && action.coordinate.type === "WGS84"
+      action?.type === "PERMISSION" || result.reason === "OS_PERMISSION_PREVENTED_ACQUISITION"
         ? {
-            method: "OS_LOCATION_INJECTION",
-            limitation: "Virtual coordinate delivery does not prove field GPS accuracy, multipath or sensor physics.",
+            method: "OS_PERMISSION_CONTROL",
+            limitation:
+              "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external.",
           }
-        : action?.type === "LIFECYCLE"
+        : action?.type === "LOCATION" && action.coordinate.type === "WGS84"
           ? {
-              method: "OS_LIFECYCLE",
-              limitation: "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
+              method: "OS_LOCATION_INJECTION",
+              limitation: "Virtual coordinate delivery does not prove field GPS accuracy, multipath or sensor physics.",
             }
-          : action?.type === "POWER"
+          : action?.type === "LIFECYCLE"
             ? {
-                method: "OS_POWER_CONTROL",
-                limitation:
-                  "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy.",
+                method: "OS_LIFECYCLE",
+                limitation: "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
               }
-            : action?.type === "NETWORK"
-              ? target === "android-emulator"
-                ? {
-                    method: "OS_NETWORK_AND_SERVICE_FAULT",
-                    limitation:
-                      "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
-                  }
-                : {
-                    method: "CONTROLLED_SERVICE_FAULT",
-                    limitation:
-                      "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
-                  }
-              : action?.type === "RECONCILE" ||
-                  (action?.type === "ASSERT" &&
-                    ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
-                ? { method: "REAL_CANONICAL_AUTHORITY" }
-                : { method: "SHARED_WEB_CONTRACT" };
+            : action?.type === "POWER"
+              ? {
+                  method: "OS_POWER_CONTROL",
+                  limitation:
+                    "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy.",
+                }
+              : action?.type === "NETWORK"
+                ? target === "android-emulator"
+                  ? {
+                      method: "OS_NETWORK_AND_SERVICE_FAULT",
+                      limitation:
+                        "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
+                    }
+                  : {
+                      method: "CONTROLLED_SERVICE_FAULT",
+                      limitation:
+                        "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
+                    }
+                : action?.type === "RECONCILE" ||
+                    (action?.type === "ASSERT" &&
+                      ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
+                  ? { method: "REAL_CANONICAL_AUTHORITY" }
+                  : { method: "SHARED_WEB_CONTRACT" };
   }
   const cleanup = {
     result: remainingResources.length ? ("FAIL" as const) : ("PASS" as const),

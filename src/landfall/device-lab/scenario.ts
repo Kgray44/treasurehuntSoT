@@ -235,6 +235,7 @@ export type DeviceLabStepResult = {
   translation?: {
     method:
       | "OS_POWER_CONTROL"
+      | "OS_PERMISSION_CONTROL"
       | "LOGICAL_PROVIDER"
       | "OS_LOCATION_INJECTION"
       | "OS_LIFECYCLE"

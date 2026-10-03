@@ -158,6 +158,20 @@ pass. Full rendered/native Player acceptance remains open. Product features,
 current status, feature status, Player guide and changelog were reviewed; final
 phase acceptance must update them together with the catalog and closure records.
 
+Passive permission development: both native shells expose LOCATION_PERMISSION_STATE
+separately from deliberate LOCATION_PERMISSION prompting. The OS lab no longer asks
+permission during readiness. Android grant controls verify dumpsys package state,
+handle grant-change termination by relaunching the owned app and observe the native
+grant. A denied LOCATION step verifies rejection by the real native start operation.
+Completion-request assertions retain the maximum observed count across restarts so
+relaunch cannot hide a pre-revocation request. Android revoked/denied/approximate/GPS
+cases pass 4/4 with cleanup, source fingerprint
+275bbac3237498863ddbbeb1ae92bb1255f71028e4bfd95e18ff18c91bcefb85 (dirty at ce229c28).
+The expanded 124-case provider corpus passes. New Swift passive-permission source
+still requires hosted compilation/execution; no grant UX or physical-device proof is
+claimed. Local emulator sensor inventory enables acceleration, orientation and
+pressure, so those OS paths remain locally attainable integration work.
+
 Remaining: native lifecycle/power/sensor orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;
 deployed provider preflight and health integration; full security/privacy/performance

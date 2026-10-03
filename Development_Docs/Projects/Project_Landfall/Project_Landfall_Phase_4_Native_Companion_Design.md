@@ -52,6 +52,16 @@ hardware, deployment or successful offline presentation on iOS; those need recei
 
 ## Power and optional sensors
 
+Both native bridges distinguish passive foreground-permission inspection from an
+explicit Player permission request. Device Lab readiness and revocation checks use
+the passive operation. Its Android executor verifies actual fine/coarse OS grants
+and handles grant-change process termination by relaunching only the owned app.
+Denied acquisition is checked against the real native start operation. A denied
+grant cannot become a synthetic location fix, and request-count assertions retain
+the maximum observed count across app restarts. The local Android permission
+development suite passes; updated Apple compilation and grant execution remain
+required. Approximate-permission control is unsupported in the current iOS lab.
+
 Native power snapshots report bounded current OS categories. Android observes
 PowerManager saver/thermal changes and current low battery; iOS observes ProcessInfo
 power/thermal changes and low battery. Constrained acquisition requests at least

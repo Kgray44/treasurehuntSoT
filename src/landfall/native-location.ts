@@ -17,6 +17,8 @@ export const nativeFixSchema = z.strictObject({
 export type NativeLocationDriver = {
   platform: "IOS" | "ANDROID";
   permission(): Promise<PermissionState>;
+  /** Passive inspection must not open an OS permission prompt. */
+  readPermission?(): Promise<PermissionState>;
   start(options: { background: boolean; intervalMs: number; precise: boolean }): Promise<void>;
   stop(): Promise<void>;
   subscribe(

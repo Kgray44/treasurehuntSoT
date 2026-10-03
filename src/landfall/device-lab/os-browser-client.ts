@@ -70,7 +70,8 @@ async function main() {
   } else definition.waypoints[0].visibility.hiddenUntilRevealed = false;
   const driver = createLandfallNativeDriver();
   if (!driver) throw new Error("NATIVE_BRIDGE_UNAVAILABLE");
-  let foregroundPermission = world.kind === "PHYSICAL" ? await driver.permission() : ("GRANTED" as const);
+  if (!driver.readPermission) throw new Error("NATIVE_PASSIVE_PERMISSION_UNSUPPORTED");
+  let foregroundPermission = world.kind === "PHYSICAL" ? await driver.readPermission() : ("GRANTED" as const);
   const registry = new LandfallProviderRegistry();
   registry.register({
     id: driver.platform === "IOS" ? "ios-core-location" : "android-location",
@@ -209,39 +210,59 @@ async function main() {
           state = "UNSUPPORTED";
           reason = "OS_CANNOT_INJECT_REQUESTED_OBSERVATION";
         } else {
-          await start();
-          const before = count;
-          await new Promise<void>((resolve, reject) => {
-            const timer = setTimeout(() => {
-              waiting = null;
-              reject(new Error("OS_LOCATION_TIMEOUT"));
-            }, 120000);
-            const accept = (sample: LandfallObservation) => {
-              if (
-                sample.kind === "PHYSICAL_POSITION" &&
-                sample.coordinate.type === "WGS84" &&
-                action.coordinate.type === "WGS84" &&
-                Math.abs(sample.coordinate.latitude - action.coordinate.latitude) < 0.00001 &&
-                Math.abs(sample.coordinate.longitude - action.coordinate.longitude) < 0.00001 &&
-                sample.accuracyMeters <= action.accuracy
-              ) {
-                clearTimeout(timer);
+          foregroundPermission = await driver.readPermission();
+          if (!["GRANTED", "APPROXIMATE", "LIMITED"].includes(foregroundPermission)) {
+            runtime.setPermission("DENIED");
+            await provider?.stop();
+            let rejected = false;
+            try {
+              await driver.start({ background: false, intervalMs: 1000, precise: true });
+            } catch {
+              rejected = true;
+            }
+            if (!rejected) {
+              await driver.stop();
+              throw new Error("NATIVE_DENIED_ACQUISITION_ACCEPTED");
+            }
+            if (provider?.active) throw new Error("NATIVE_REVOKED_PROVIDER_ACTIVE");
+            // Negative acquisition is verified by the real native operation, not
+            // by inventing a fix after the OS grant has disappeared.
+            reason = "OS_PERMISSION_PREVENTED_ACQUISITION";
+          } else {
+            await start();
+            const before = count;
+            await new Promise<void>((resolve, reject) => {
+              const timer = setTimeout(() => {
                 waiting = null;
-                resolve();
-              }
-            };
-            waiting = accept;
-            if (count > before && latest) accept(latest);
-            // The host injects through the OS only after acquisition and this
-            // listener are ready. Cold native startup is not a GPS observation.
-            void fetch("/lab/location-ready", { method: "POST", body: JSON.stringify({ index: step.index }) }).catch(
-              () => {
-                clearTimeout(timer);
-                waiting = null;
-                reject(new Error("OS_LOCATION_HANDSHAKE_FAILED"));
-              },
-            );
-          });
+                reject(new Error("OS_LOCATION_TIMEOUT"));
+              }, 120000);
+              const accept = (sample: LandfallObservation) => {
+                if (
+                  sample.kind === "PHYSICAL_POSITION" &&
+                  sample.coordinate.type === "WGS84" &&
+                  action.coordinate.type === "WGS84" &&
+                  Math.abs(sample.coordinate.latitude - action.coordinate.latitude) < 0.00001 &&
+                  Math.abs(sample.coordinate.longitude - action.coordinate.longitude) < 0.00001 &&
+                  sample.accuracyMeters <= action.accuracy
+                ) {
+                  clearTimeout(timer);
+                  waiting = null;
+                  resolve();
+                }
+              };
+              waiting = accept;
+              if (count > before && latest) accept(latest);
+              // The host injects through the OS only after acquisition and this
+              // listener are ready. Cold native startup is not a GPS observation.
+              void fetch("/lab/location-ready", { method: "POST", body: JSON.stringify({ index: step.index }) }).catch(
+                () => {
+                  clearTimeout(timer);
+                  waiting = null;
+                  reject(new Error("OS_LOCATION_HANDSHAKE_FAILED"));
+                },
+              );
+            });
+          }
         }
       } else if (action.type === "ASSERT") {
         const observed: Record<string, unknown> = {
@@ -258,6 +279,29 @@ async function main() {
           state = "UNSUPPORTED";
           reason = "OS_ASSERTION_NOT_IMPLEMENTED";
         } else if (observed[action.field] !== action.value) throw new Error(`ASSERT_FAILED:${action.field}`);
+      } else if (action.type === "PERMISSION") {
+        if (world.kind !== "PHYSICAL" || action.permission !== "FOREGROUND_LOCATION") {
+          state = "UNSUPPORTED";
+          reason = "NATIVE_PERMISSION_TRANSLATION_UNAVAILABLE";
+        } else {
+          const expected = ["REVOKED", "DENIED", "DENIED_PERMANENTLY"].includes(action.state) ? "DENIED" : action.state;
+          const deadline = Date.now() + 5000;
+          foregroundPermission = await driver.readPermission();
+          while (foregroundPermission !== expected && Date.now() < deadline) {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            foregroundPermission = await driver.readPermission();
+          }
+          if (foregroundPermission !== expected) throw new Error("NATIVE_PERMISSION_STATE_MISMATCH");
+          runtime.setPermission(
+            ["GRANTED", "APPROXIMATE", "LIMITED"].includes(foregroundPermission) ? "GRANTED" : "DENIED",
+          );
+          if (foregroundPermission === "DENIED") {
+            await provider?.stop();
+            samples = [];
+            latest = null;
+          }
+          powerProfile = projectPower(await readNativeLandfallPower());
+        }
       } else if (action.type === "POWER") {
         const deadline = Date.now() + 5000;
         let power = await readNativeLandfallPower();
@@ -342,7 +386,7 @@ async function main() {
     await queued;
     await fetch("/lab/result", {
       method: "POST",
-      body: JSON.stringify({ index: step.index, action: action.type, state, reason }),
+      body: JSON.stringify({ index: step.index, action: action.type, state, reason, completionRequests: requests }),
     });
   }
 }
