@@ -2,6 +2,12 @@ import { createHash, createPrivateKey, createPublicKey, sign } from "node:crypto
 import { NativeLandfallSensorFusion } from "@/landfall/native-sensors";
 import { LandfallNearbyProvider } from "@/landfall/nearby-provider";
 import {
+  readWatchglassHandoff,
+  type WatchglassEvidenceProvider,
+  type WatchglassTarget,
+  type WatchglassVerifiedReceipt,
+} from "@/landfall/watchglass-handoff";
+import {
   LandfallOfflinePackageRepository,
   offlineManifestPayload,
   type OfflinePackageBinding,
@@ -102,6 +108,7 @@ export class LandfallProviderScenarioExecutor {
   private sensorState = "NONE";
   private nearbyState = "NONE";
   private tokenState = "NONE";
+  private watchglassState = "NONE";
   private sensors!: NativeLandfallSensorFusion;
   private readonly nearby = {
     BLE: new LandfallNearbyProvider("BLE", new Set(["lab-peer"])),
@@ -253,6 +260,69 @@ export class LandfallProviderScenarioExecutor {
       this.native = new NativeLocationProvider(driver, this.definition.worldspaces[0], () => this.now);
   }
   private async action(action: DeviceLabAction): Promise<boolean> {
+    if (action.type === "WATCHGLASS") {
+      const target: WatchglassTarget = {
+        ...this.scope,
+        worldspaceVersion: this.definition.worldspaces[0].version,
+        definitionHash: this.fixtureHash(),
+      };
+      const receipt: WatchglassVerifiedReceipt = {
+        ...target,
+        id: "synthetic-watchglass-receipt",
+        packageId: "synthetic-package",
+        packageVersion: "synthetic-package-v1",
+        certificationRef: "synthetic-contract-fixture",
+        observedAt: new Date(this.now).toISOString(),
+        expiresAt: new Date(this.now + 10000).toISOString(),
+        result: action.fixture === "UNCERTAIN" ? "uncertain" : action.fixture === "NOT_MATCH" ? "notMatch" : "match",
+        confidence: action.fixture === "UNCERTAIN" ? 0.4 : 0.99,
+        supportingObservations: [
+          { id: "synthetic-frame-1", observedAt: new Date(this.now - 1000).toISOString() },
+          { id: "synthetic-frame-2", observedAt: new Date(this.now).toISOString() },
+        ],
+        independentEvidenceRef: "synthetic-independent-proof",
+        contextEvidenceRefs: [],
+      };
+      if (action.fixture === "WRONG_SCOPE") receipt.playerProfileId = "wrong-actor";
+      if (action.fixture === "WRONG_PACKAGE") receipt.packageVersion = "wrong-package-version";
+      if (action.fixture === "EXPIRED") receipt.expiresAt = new Date(this.now).toISOString();
+      if (action.fixture === "CIRCULAR") receipt.contextEvidenceRefs.push(receipt.independentEvidenceRef);
+      // Synthetic authenticated adapter only: this tests the handoff contract,
+      // never frames, a recognition model or a real package certification.
+      const provider: WatchglassEvidenceProvider | undefined =
+        action.fixture === "NOT_CONFIGURED"
+          ? undefined
+          : {
+              id: "synthetic-watchglass-adapter",
+              state: "AVAILABLE",
+              packageId: "synthetic-package",
+              packageVersion: "synthetic-package-v1",
+              certificationRef: "synthetic-contract-fixture",
+              worldspaceKinds: ["PHYSICAL", "VIRTUAL"],
+              verifyReceipt: (opaque) => {
+                if (opaque !== "synthetic-authenticated-reference")
+                  throw new Error("LANDFALL_WATCHGLASS_RECEIPT_INVALID");
+                return receipt;
+              },
+            };
+      try {
+        const result = readWatchglassHandoff(
+          provider,
+          "synthetic-authenticated-reference",
+          target,
+          this.scenario.worldspace,
+          this.now,
+        );
+        this.watchglassState =
+          result.state === "AVAILABLE" && result.observation.kind === "SEMANTIC_LOCATION"
+            ? result.observation.assertion
+            : result.state;
+      } catch (error) {
+        if (!(error instanceof Error) || !error.message.startsWith("LANDFALL_WATCHGLASS_")) throw error;
+        this.watchglassState = error.message;
+      }
+      return true;
+    }
     if (action.type === "LOCATION") {
       const id = `${this.scenario.id}-${this.scenario.seed}-${action.duplicate ? this.sequence : ++this.sequence}`;
       if (this.lifecycle !== "FOREGROUND") {
@@ -636,6 +706,7 @@ export class LandfallProviderScenarioExecutor {
           precisionRequested: true,
         }).profile,
         physicalAcquisitionStarts: this.physicalAcquisitionStarts,
+        watchglassState: this.watchglassState,
         providerState: this.health
           .snapshot()
           .find((status) => status.id === `synthetic-${this.scenario.providers[0].toLowerCase().replaceAll("_", "-")}`)

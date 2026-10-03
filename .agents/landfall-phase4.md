@@ -135,6 +135,17 @@ pass nine assertions including cross-worldspace rejection. The corpus passes all
 106 scenarios, including logical 5/30-minute walks; 39 files / 289 tests passed
 before adding those two walk checks. The focused lab suite now passes 25 tests.
 
+Checkpoint 3897b1fd: local native instrumentation passes all four tests and the
+six-case power/virtual/restart run passes with cleanup. Hosted iOS run 37156238449
+has passed native build/XCTest and is executing six end-to-end cases. Hosted Android
+closure run 37156247496 is queued behind it. These runs are still pending acceptance.
+The corpus now includes 16 contract-only Watchglass cases (scope, package, expiry,
+uncertainty, circular evidence and unconfigured behavior across both Worldspaces).
+All 122 provider cases and 30 focused lab tests pass. Synthetic receipt adapters
+make no recognition, certification or installed Watchglass claim. Future hosted
+transport branches have distinct concurrency groups so independent platform runs
+do not serialize behind an unrelated run of the same source.
+
 Remaining: native lifecycle/power/sensor orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;
 deployed provider preflight and health integration; full security/privacy/performance

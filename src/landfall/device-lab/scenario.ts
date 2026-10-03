@@ -66,6 +66,19 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
   }),
   z.strictObject({ type: z.literal("PROVIDER"), family: providerFamilySchema, health: providerHealthSchema }),
   z.strictObject({
+    type: z.literal("WATCHGLASS"),
+    fixture: z.enum([
+      "MATCH",
+      "UNCERTAIN",
+      "NOT_MATCH",
+      "NOT_CONFIGURED",
+      "WRONG_SCOPE",
+      "WRONG_PACKAGE",
+      "EXPIRED",
+      "CIRCULAR",
+    ]),
+  }),
+  z.strictObject({
     type: z.literal("SENSOR"),
     kind: z.enum([
       "HEADING",
@@ -150,6 +163,7 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
       "nearbyState",
       "tokenState",
       "physicalAcquisitionStarts",
+      "watchglassState",
       "reconciliationState",
     ]),
     value: z.union([z.string().max(128), z.number().int().nonnegative(), z.boolean(), z.null()]),

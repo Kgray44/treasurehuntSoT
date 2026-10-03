@@ -478,6 +478,42 @@ for (const minutes of [5, 30]) {
   );
 }
 
+for (const worldspace of ["PHYSICAL", "VIRTUAL"] as const) {
+  for (const [fixture, expected] of [
+    ["MATCH", "PRESENT"],
+    ["UNCERTAIN", "UNCERTAIN"],
+    ["NOT_MATCH", "ABSENT"],
+    ["NOT_CONFIGURED", "NOT_CONFIGURED"],
+    ["WRONG_SCOPE", "LANDFALL_WATCHGLASS_SCOPE_MISMATCH"],
+    ["WRONG_PACKAGE", "LANDFALL_WATCHGLASS_SCOPE_MISMATCH"],
+    ["EXPIRED", "LANDFALL_WATCHGLASS_STALE"],
+    ["CIRCULAR", "LANDFALL_WATCHGLASS_CIRCULAR_EVIDENCE"],
+  ] as const) {
+    scenario(
+      `watchglass-${worldspace.toLowerCase()}-${fixture.toLowerCase().replaceAll("_", "-")}`,
+      ["VISION"],
+      [
+        { type: "WATCHGLASS", fixture },
+        assertion("watchglassState", expected),
+        assertion("completionRequests", 0),
+        assertion("serverConfirmed", false),
+      ],
+      [],
+      "NONE",
+      worldspace,
+    );
+    const generated = cases.pop()!;
+    cases.push(
+      deviceLabScenarioSchema.parse({
+        ...generated,
+        targets: ["provider-simulation"],
+        description:
+          "Synthetic trusted Watchglass handoff contract only. No recognition model, frames, installed package or real certification is exercised.",
+      }),
+    );
+  }
+}
+
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);
 }
