@@ -4,6 +4,7 @@ import { expect, test, type Page } from "@playwright/test";
 import sharp from "sharp";
 import { db } from "../../src/lib/db";
 import { compactSiteFixture } from "../../src/landfall/compact-fixtures";
+import { createLandfallWaypoint, createLandfallWorldspace } from "../../src/landfall/authoring";
 import type { LandfallDefinition } from "../../src/landfall/schema";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import {
@@ -11,6 +12,9 @@ import {
   authenticateClosure,
   closureAccount,
   geoAudit,
+  closureVoyage,
+  openClosureJournal,
+  openClosureMap,
   type ClosureAccount,
 } from "./fixtures/landfall-closure";
 
@@ -73,6 +77,112 @@ async function image(name: string, background: string) {
     .toBuffer();
   return { name: `${name}.png`, mimeType: "image/png", buffer };
 }
+
+test("virtual Creator configures a Watchglass landmark and versioned independent evidence policy without physical acquisition", async ({
+  browser,
+  baseURL,
+}, testInfo) => {
+  const tale = await db.chronicle.create({
+    data: {
+      slug: `landfall-v11-creator-${randomUUID()}`,
+      title: "Synthetic v1.1 island",
+      creatorId: owner.profileId,
+      creatorAccountId: owner.id,
+      status: "DRAFT",
+      visibility: "PRIVATE",
+    },
+  });
+  const definition = createLandfallWorldspace({ taleId: tale.id, name: "Synthetic island", kind: "VIRTUAL" });
+  const waypoint = createLandfallWaypoint(
+    definition.worldspaces[0],
+    definition.maps[0],
+    definition.maps[0].camera.center,
+    "Synthetic arch",
+  );
+  waypoint.regionId = "synthetic-island-region";
+  definition.waypoints = [waypoint];
+  definition.context = {
+    regions: [
+      {
+        id: waypoint.regionId,
+        worldspaceId: waypoint.worldspaceId,
+        mapId: waypoint.mapId,
+        name: "Synthetic island region",
+        kind: "SITE",
+        geometry: { type: "POINT_RADIUS", center: definition.maps[0].camera.center, radius: 100 },
+        hiddenUntilRevealed: false,
+        privacyClassification: "FICTIONAL",
+      },
+    ],
+    landmarks: [],
+  };
+  await db.taleDraft.create({
+    data: {
+      taleId: tale.id,
+      createdBy: owner.profileId,
+      createdByAccountId: owner.id,
+      landfallDefinition: JSON.stringify(definition),
+    },
+  });
+  const context = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1280, height: 900 } });
+  await authenticateClosure(context, owner, baseURL!);
+  await auditNativeGeolocation(context);
+  const page = await context.newPage();
+  await page.goto(`/studio/tales/${tale.id}/assets`);
+  await page.getByRole("button", { name: "Upload media", exact: true }).click();
+  await page
+    .getByRole("complementary", { name: "Asset drawer" })
+    .locator('input[type="file"]')
+    .setInputFiles(await image("synthetic-virtual-positive", "#305060"));
+  await expect
+    .poll(
+      async () =>
+        (await db.taleAsset.findMany({ where: { taleId: tale.id }, include: { variants: true } })).filter((item) =>
+          item.variants.some((variant) => variant.processingState === "READY"),
+        ).length,
+    )
+    .toBe(1);
+  const reference = await db.taleAsset.findFirstOrThrow({ where: { taleId: tale.id } });
+  await open(page, tale.id);
+  const workspace = page.getByRole("region", { name: "Landfall authoring workspace" });
+  await workspace
+    .locator(".landfall-object-list")
+    .getByRole("button", { name: /Synthetic arch/ })
+    .click();
+  const editor = workspace.getByRole("region", { name: "Floors, regions and landmarks" });
+  await expect(editor).toContainText("configured certified Watchglass provider");
+  await editor.getByRole("combobox", { name: "First positive reference", exact: true }).selectOption(reference.id);
+  await editor.getByRole("button", { name: "Add natural landmark" }).click();
+  await workspace.getByRole("combobox", { name: "Independent evidence sources", exact: true }).selectOption("2");
+  await expect
+    .poll(async () => (await stored(tale.id)).definition.waypoints[0].evidenceProfile.fusionPolicy)
+    .toEqual({ version: 1, minimumIndependentSources: 2 });
+  const authored = (await stored(tale.id)).definition;
+  expect(authored.waypoints[0].evidenceProfile.acceptedSources).toContain("WATCHGLASS");
+  expect(authored.waypoints[0].evidenceProfile.acceptedSources).not.toContain("VISION_WAYPOINT");
+  expect(authored.context?.landmarks[0].fallback).toEqual({ mode: "PLAYER" });
+  expect(authored.worldspaces[0].observationPolicy.allowedSources).toContain("WATCHGLASS");
+  await page.reload();
+  await workspace
+    .locator(".landfall-object-list")
+    .getByRole("button", { name: /Synthetic arch/ })
+    .click();
+  await expect(workspace.getByRole("combobox", { name: "Independent evidence sources", exact: true })).toHaveValue("2");
+  expect((await geoAudit(page)).calls).toBe(0);
+  expect(
+    (
+      await new AxeBuilder({ page })
+        .include('[aria-label="Landfall authoring workspace"]')
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+        .analyze()
+    ).violations,
+  ).toEqual([]);
+  const capture = testInfo.outputPath("virtual-creator-policy.png");
+  await workspace.getByRole("combobox", { name: "Independent evidence sources", exact: true }).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: capture, fullPage: false });
+  await testInfo.attach("virtual-creator-policy", { path: capture, contentType: "image/png" });
+  await context.close();
+});
 
 test("Creator uploads and aligns a floor, draws regions, configures natural references and saves a sanitized field receipt", async ({
   browser,
@@ -278,5 +388,71 @@ test("Creator regional controls reflow at narrow width and 200 percent text with
       fullPage: true,
     });
   }
+  await context.close();
+});
+
+test("ordinary physical Creator defaults survive save, reload and published private Player context", async ({
+  browser,
+  baseURL,
+}, testInfo) => {
+  const tale = await db.chronicle.create({
+    data: {
+      slug: `landfall-default-audit-${randomUUID()}`,
+      title: "Synthetic ordinary private site",
+      creatorId: owner.profileId,
+      creatorAccountId: owner.id,
+      status: "DRAFT",
+      visibility: "PRIVATE",
+    },
+  });
+  await db.taleDraft.create({ data: { taleId: tale.id, createdBy: owner.profileId, createdByAccountId: owner.id } });
+  const context = await browser.newContext({
+    reducedMotion: "reduce",
+    permissions: ["geolocation"],
+    geolocation: { latitude: 44, longitude: -72, accuracy: 2 },
+  });
+  await authenticateClosure(context, owner, baseURL!);
+  await auditNativeGeolocation(context);
+  const page = await context.newPage();
+  await open(page, tale.id);
+  const workspace = page.getByRole("region", { name: "Landfall authoring workspace" });
+  await workspace.getByLabel("Worldspace name", { exact: true }).fill("Synthetic ordinary site");
+  await workspace.getByLabel("Starting latitude", { exact: true }).fill("44");
+  await workspace.getByLabel("Starting longitude", { exact: true }).fill("-72");
+  await workspace.getByRole("button", { name: "Add Worldspace", exact: true }).click();
+  const editor = workspace.getByRole("region", { name: "Floors, regions and landmarks" });
+  await editor.getByLabel("Region name", { exact: true }).fill("Synthetic ordinary room");
+  await editor.getByRole("button", { name: "Add region", exact: true }).click();
+  await workspace.getByLabel("Longitude", { exact: true }).fill("-72");
+  await workspace.getByLabel("Latitude", { exact: true }).fill("44");
+  await workspace.getByRole("button", { name: "Place at coordinates", exact: true }).click();
+  await editor
+    .getByRole("combobox", { name: "Context region", exact: true })
+    .selectOption({ label: "Synthetic ordinary room" });
+  await expect.poll(async () => (await stored(tale.id)).definition?.waypoints[0]?.regionId).toBeTruthy();
+  const authored = (await stored(tale.id)).definition;
+  expect(authored.worldspaces[0].privacyPolicy.classification).toBe("APPROXIMATE_REAL_WORLD");
+  expect(authored.context!.regions[0].privacyClassification).toBe("PRIVATE_REAL_WORLD");
+  await page.reload();
+  await expect(editor.getByRole("combobox", { name: "Inspect region", exact: true })).toContainText(
+    "Synthetic ordinary room",
+  );
+  expect((await stored(tale.id)).definition.context).toEqual(authored.context);
+  const voyage = await closureVoyage(owner, owner, "livingChart", { authoredDefinition: authored });
+  const response = await context.request.get(`/api/player/playthroughs/${voyage.id}/landfall?block=${voyage.activeId}`);
+  expect(response.status()).toBe(200);
+  expect(response.headers()["cache-control"]).toContain("no-store");
+  const bootstrap = (await response.json()).bootstrap;
+  expect(bootstrap.runtimeDefinition.context.regions).toContainEqual(
+    expect.objectContaining({ id: authored.context!.regions[0].id, privacyClassification: "PRIVATE_REAL_WORLD" }),
+  );
+  await openClosureJournal(page, voyage.id);
+  await openClosureMap(page);
+  const chart = page.locator("[data-landfall-player-chart]:visible");
+  await chart.getByRole("button", { name: "Use my location", exact: true }).click();
+  await expect.poll(async () => (await geoAudit(page)).nativeSamples).toBeGreaterThan(0);
+  await expect(chart).toContainText("Synthetic ordinary room");
+  await expect(chart).toContainText(/likely|inferred|nearby/i);
+  await page.screenshot({ path: testInfo.outputPath("ordinary-private-context.png"), fullPage: false });
   await context.close();
 });

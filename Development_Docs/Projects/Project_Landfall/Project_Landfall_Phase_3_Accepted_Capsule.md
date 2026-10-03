@@ -12,6 +12,8 @@ This is the Project Trim starting context for Phase 4. Product acceptance is est
 
 ## Accepted identity
 
+This capsule binds the accepted PR #673/#674 baseline. It does not certify the later physical/virtual v1.1 expansion; the [amendment follow-up record](Project_Landfall_Phase_3_v1.1_Amendment_Record.md) tracks that local implementation and its separate qualification/publication status.
+
 - Starting protected main: `01cf22976dcf32e7fa4a3bf75d47b96d677f26ec`; startup current-main delta was empty. Prior accepted context: [Phase 2 final closure](Project_Landfall_Phase_2_Final_Closure_Record.md).
 - Implementation [PR #673](https://github.com/Kgray44/treasurehuntSoT/pull/673), frozen candidate `ecc21f730758dd4b0901c6467b21fab637e604e9`, tree `9879fe4928ab6a96e6cd31b5a34a05dbf4f75a14`.
 - Protected product merge/main: `660461e11c8d8462169b17f762a7d398a4d01465`. Its tree exactly equals the qualified candidate; the landed smoke ran on that merge.

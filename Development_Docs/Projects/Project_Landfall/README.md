@@ -46,3 +46,5 @@ The [final closure correction record](Project_Landfall_Phase_2_Final_Closure_Rec
 - [Validation and acceptance record](Project_Landfall_Phase_3_Validation_Record.md): measured qualification and external boundaries. Protected product acceptance is complete through PR #673; see the accepted capsule for qualification and closure identities.
 
 - [Accepted Phase 3 capsule](Project_Landfall_Phase_3_Accepted_Capsule.md): authoritative Project Trim starting context for Phase 4; no Phase 4 implementation.
+
+- [Phase 3 v1.1 amendment follow-up](Project_Landfall_Phase_3_v1.1_Amendment_Record.md): physical/virtual context, independent evidence policies and conditional certified Watchglass handoff. Local qualification and publication status are separate from the accepted PR #673/#674 baseline.

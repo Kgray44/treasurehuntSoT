@@ -16,6 +16,12 @@ const common = {
   worldspaceId: landfallId,
   providerId: landfallId,
   source: observationSourceSchema,
+  provenance: z
+    .strictObject({
+      independentEvidenceRef: landfallId,
+      contextEvidenceRefs: z.array(landfallId).max(16),
+    })
+    .optional(),
   observedAt: z.string().datetime({ offset: true }),
   expiresAt: z.string().datetime({ offset: true }).optional(),
 };

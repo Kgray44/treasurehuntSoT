@@ -14,6 +14,8 @@ last_reviewed: 2026-10-01
 
 ### Added
 
+- Corrected the Landfall physical/virtual v1.1 candidate in PR #675: ordinary physical regions preserve authorized private Player context, strict bounded source bundles independently qualify real checks through One Voyage, pending completion rechecks expiry at delivery, and Creator findings reflect actual provider availability. Watchglass remains not configured; the amendment record preserves historical failures and the final protected qualification/landed status.
+
 - Added Project Landfall Phase 3 contextual navigation: aligned floor/site maps and region hierarchies, corridor continuity and uncertainty, foreground motion/heading/elevation hints, region-gated landmark reference comparison, independent exact-target observation, accessible fallbacks and sanitized Creator/Captain/replay projections. Physical field quality remains separate evidence; native/background Phase 4 work is deferred.
 
 - Added Project Landfall Phase 2 source: Creator Living Chart authoring, six Chronicle location blocks and typed completion, canonical Player and Captain progression, private map overlays, field-test receipts, Lanternwake outcomes, completed-voyage replay, and bounded web offline reconciliation. External geocoding, virtual telemetry, physical device proof, and deployment remain separate.

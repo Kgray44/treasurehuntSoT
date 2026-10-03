@@ -290,10 +290,10 @@ function useLandfallController({
   };
   const sendEvidence = async (evidence: PlayerLandfallEvidence) => {
     if (submitting.current) return;
-    const ephemeral = evidence.method === "LANDMARK";
+    const ephemeral = evidence.method === "LANDMARK" || evidence.method === "EVIDENCE_BUNDLE";
     if (!navigator.onLine) {
       if (ephemeral) {
-        setMessage("Landmark verification needs a connection. Use the readable fallback; no visit was recorded.");
+        setMessage("Verification needs a connection. Use the readable fallback; no visit was recorded.");
         return;
       }
       pendingEvidence.current = evidence;
@@ -390,7 +390,9 @@ function useLandfallController({
       onProgress();
     } catch {
       if (ephemeral) {
-        setMessage("Landmark verification could not be recorded. Retry online or use the configured fallback.");
+        setMessage(
+          "Verification could not be recorded. Retry with fresh evidence online or use the configured fallback.",
+        );
         return;
       }
       pendingEvidence.current = evidence;
@@ -513,9 +515,10 @@ function useLandfallController({
     );
   };
 
-  const confirmFallback = async () => {
+  const confirmFallback = async (corroborate = false) => {
     if (
       !bootstrap?.activeWaypointId ||
+      (corroborate && samples.current.length < 2) ||
       !csrfToken ||
       submitting.current ||
       pendingEvidence.current ||
@@ -533,7 +536,19 @@ function useLandfallController({
       evidenceId: crypto.randomUUID(),
       expectedSequence: bootstrap.currentSequence,
       idempotencyKey: crypto.randomUUID(),
-      method: "PLAYER_FALLBACK",
+      method: corroborate ? "EVIDENCE_BUNDLE" : "PLAYER_FALLBACK",
+      ...(corroborate
+        ? {
+            sources: [
+              {
+                method: "FOREGROUND_LOCATION" as const,
+                evidenceId: samples.current.at(-1)!.id,
+                observations: [...samples.current],
+              },
+              { method: "PLAYER_FALLBACK" as const, evidenceId: crypto.randomUUID() },
+            ],
+          }
+        : {}),
     });
   };
 
@@ -870,7 +885,7 @@ export function LandfallJournalChart({
           </p>
         </>
       )}
-      {landmark && activeWaypoint && !isHistorical && !bootstrap.paused && (
+      {landmark && worldspace.kind === "PHYSICAL" && activeWaypoint && !isHistorical && !bootstrap.paused && (
         <LandfallLandmarkPanel
           sessionId={bootstrap.sessionId}
           publishedVersionId={bootstrap.publishedVersionId}
@@ -920,6 +935,22 @@ export function LandfallJournalChart({
             }}
           >
             Confirm arrival myself
+          </button>
+        )}
+      {worldspace.kind === "PHYSICAL" &&
+        (activeWaypoint?.evidenceProfile.fusionPolicy?.minimumIndependentSources ?? 1) === 2 &&
+        activeWaypoint?.fallback.mode === "PLAYER" &&
+        activeWaypoint.evidenceProfile.allowManualFallback &&
+        activeWaypoint.evidenceProfile.acceptedSources.includes("PLAYER_CONFIRMATION") &&
+        worldspace.observationPolicy.allowedSources.includes("PLAYER_CONFIRMATION") &&
+        activeWaypoint.evidenceProfile.acceptedSources.includes("BROWSER_GEOLOCATION") &&
+        tracking &&
+        position?.confidence === "LIKELY_INSIDE" &&
+        !bootstrap.paused &&
+        !bootstrap.replayOnly &&
+        !readOnly && (
+          <button type="button" onClick={() => void confirmFallback(true)}>
+            Check location and my confirmation together
           </button>
         )}
       <p role="status" aria-live="polite">

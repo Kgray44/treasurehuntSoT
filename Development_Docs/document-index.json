@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-01",
+  "generated_at": "2026-10-03",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -7150,6 +7150,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_Qualification_Receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

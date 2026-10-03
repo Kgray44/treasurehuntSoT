@@ -20,6 +20,8 @@ export function LandfallContextGuidance({
 }) {
   if (!bootstrap.runtimeDefinition.context) return null;
   const region = bootstrap.runtimeDefinition.context.regions.find((item) => item.id === snapshot?.regionId);
+  const worldspace = bootstrap.runtimeDefinition.worldspaces.find((item) => item.id === bootstrap.scene.worldspaceId);
+  const virtual = worldspace?.kind === "VIRTUAL";
   const maps = bootstrap.availableMaps ?? [];
   const viewing = maps.find((item) => item.id === viewingMapId);
   const words = (value: string) => value.toLowerCase().replaceAll("_", " ");
@@ -33,8 +35,9 @@ export function LandfallContextGuidance({
       </p>
       {!historical && (
         <p>
-          GPS can identify a broad site or building. Rooms, floors and exact objects need independent evidence or the
-          configured fallback.
+          {virtual
+            ? "Named locations come from story progress or explicit confirmation. No live game position is assumed. Visual verification is not configured; use the authored observation, Player or Captain path."
+            : "GPS can identify a broad site or building. Rooms, floors and exact objects need independent evidence or the configured fallback."}
         </p>
       )}
       {maps.length > 1 && (

@@ -1243,7 +1243,8 @@ export async function submitPlayerLandfallEvidence(unchecked: unknown, playerPro
     });
     const requirement = block ? landfallCompletionOptions(block.completion ?? {}) : null;
     if (
-      request.method === "PLAYER_FALLBACK" &&
+      (request.method === "PLAYER_FALLBACK" ||
+        request.sources?.some((source) => source.method === "PLAYER_FALLBACK")) &&
       requirement &&
       requirement.worldspaceId === request.worldspaceId &&
       requirement.locationId === request.waypointId &&

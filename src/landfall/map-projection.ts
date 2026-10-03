@@ -1,3 +1,4 @@
+import { projectContextRegion } from "@/landfall/context-projection";
 import { toWgs84 } from "@/landfall/geometry";
 import type {
   LandfallCoordinate,
@@ -127,12 +128,9 @@ export function projectLandfallMap(
     .map((item) => feature(item.id, item.visibility.publicLabel ?? item.name, item.geometry, worldspace));
   for (const region of definition.context?.regions ?? []) {
     if (region.worldspaceId !== worldspace.id || region.mapId !== map.id) continue;
-    if (
-      chart.audience !== "CREATOR_TEST" &&
-      (!chart.availableRegionIds?.includes(region.id) || region.privacyClassification === "APPROXIMATE_REAL_WORLD")
-    )
-      continue;
-    features.push(feature(region.id, region.name, region.geometry, worldspace));
+    if (chart.audience !== "CREATOR_TEST" && !chart.availableRegionIds?.includes(region.id)) continue;
+    const safeRegion = projectContextRegion(region, worldspace, chart.audience ?? "PLAYER");
+    if (safeRegion) features.push(feature(safeRegion.id, safeRegion.name, safeRegion.geometry, worldspace));
   }
   const route = definition.routes.find(
     (item) => item.id === chart.activeRouteId && item.worldspaceId === worldspace.id,

@@ -1,3 +1,5 @@
+import { approximateContextKinds, projectContextRegion } from "@/landfall/context-projection";
+import { landfallSourceCapabilities } from "@/landfall/source-capabilities";
 import { validateLandfallDefinition } from "@/landfall/definition";
 import type {
   LandfallCoordinate,
@@ -203,6 +205,14 @@ export function landfallAuthoringFindings(
 ): LandfallAuthoringFinding[] {
   const findings: LandfallAuthoringFinding[] = [];
   for (const waypoint of definition.waypoints) {
+    const capability = landfallSourceCapabilities(definition, waypoint);
+    if ((waypoint.evidenceProfile.fusionPolicy?.minimumIndependentSources ?? 1) > capability.count)
+      findings.push({
+        code: "LANDFALL_FUSION_PROVIDER_UNAVAILABLE",
+        severity: capability.fallback ? "warning" : "blocker",
+        targetId: waypoint.id,
+        message: `${waypoint.name}: this evidence policy exceeds the currently available independent checks. ${capability.description} ${capability.fallback ? "Use the configured alternate path until the required providers exist." : "Configure a valid fallback or reduce the policy before publishing."}`,
+      });
     const worldspace = definition.worldspaces.find((item) => item.id === waypoint.worldspaceId)!;
     if (
       worldspace.kind === "PHYSICAL" &&
@@ -241,6 +251,18 @@ export function landfallAuthoringFindings(
       });
   }
   for (const region of definition.context?.regions ?? []) {
+    const worldspace = definition.worldspaces.find((item) => item.id === region.worldspaceId)!;
+    if (
+      worldspace.kind === "PHYSICAL" &&
+      ["APPROXIMATE_REAL_WORLD", "GENERIC"].includes(region.privacyClassification) &&
+      (!approximateContextKinds.has(region.kind) || !projectContextRegion(region, worldspace, "PLAYER"))
+    )
+      findings.push({
+        code: "LANDFALL_CONTEXT_PRIVACY_PRECISION",
+        severity: "blocker",
+        targetId: region.id,
+        message: `${region.name}: generalized privacy cannot safely evaluate this fine region. Use a private Chronicle layout or an intentionally public exact location.`,
+      });
     const map = definition.maps.find((item) => item.id === region.mapId);
     if (["FLOOR", "ROOM", "GALLERY", "EXHIBIT_ZONE"].includes(region.kind) && !region.level && !map?.level)
       findings.push({

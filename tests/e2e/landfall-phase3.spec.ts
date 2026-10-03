@@ -1,4 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
+import { randomUUID } from "node:crypto";
+import { interactWithTaleSession } from "../../src/chronicle/progression";
 import { expect, test, type Page, type TestInfo, type Locator } from "@playwright/test";
 import { db } from "../../src/lib/db";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
@@ -6,7 +8,9 @@ import {
   authenticateClosure,
   auditNativeGeolocation,
   closureAccount,
+  closureVoyage,
   geoAudit,
+  qualifiedFollowUpFixes,
   openClosureJournal,
   openClosureMap,
   type ClosureAccount,
@@ -81,6 +85,66 @@ async function reachableDrawerControl(control: Locator) {
       }),
     )
     .toMatchObject({ unobscured: true, withinDrawer: true });
+}
+
+for (const viewport of [
+  { width: 375, height: 812 },
+  { width: 1280, height: 900 },
+]) {
+  test(`virtual v1.1 context preserves unavailable visual verification and canonical fallback at ${viewport.width}x${viewport.height}`, async ({
+    browser,
+    baseURL,
+  }, testInfo) => {
+    const voyage = await closureVoyage(owner, player, "livingChart", {
+      virtual: true,
+      image: true,
+      contextual: true,
+    });
+    const context = await browser.newContext({ viewport, reducedMotion: "reduce" });
+    await authenticateClosure(context, player, baseURL!);
+    await auditNativeGeolocation(context);
+    await syntheticLandmarkCamera(context);
+    const page = await context.newPage();
+    await openClosureJournal(page, voyage.id);
+    await openClosureMap(page);
+    await expect(chart(page)).toHaveAttribute("data-worldspace-kind", "VIRTUAL");
+    await expect(chart(page)).toContainText("No live game position is assumed");
+    await expect(chart(page)).toContainText("Visual verification is not configured");
+    await expect(chart(page).getByRole("button", { name: "Use my location" })).toHaveCount(0);
+    await expect(chart(page).getByRole("button", { name: /compare.*landmark/i })).toHaveCount(0);
+    await expect(chart(page).locator("image")).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    const fallback = chart(page).getByRole("button", { name: "Confirm arrival myself" });
+    await reachableDrawerControl(fallback);
+    expect((await fallback.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .include(".journal-objects-drawer")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+    await capturePlayerView(page, testInfo, "virtual-context-fallback");
+    await fallback.focus();
+    await page.keyboard.press("Enter");
+    await expect.poll(() => block(voyage.id)).toBe(voyage.activeId);
+    await expect.poll(async () => (await events(voyage.id, "landfallWaypointConfirmed")).length).toBe(1);
+    const confirmed = await events(voyage.id, "landfallWaypointConfirmed");
+    expect(confirmed).toHaveLength(1);
+    expect(JSON.stringify(confirmed[0].payload)).toContain("PLAYER_CONFIRMATION");
+    expect(JSON.stringify(confirmed[0].payload)).not.toMatch(/coordinate|frame|watchglassReceipt/);
+    // A Living Chart's canonical visit does not complete its enclosing Passage.
+    // Advance through the existing action to establish the released historical chart.
+    await interactWithTaleSession(voyage.id, undefined, { action: "continue", idempotencyKey: randomUUID() }, true);
+    expect(await block(voyage.id)).toBe(voyage.nextId);
+    const replay = await context.request.get(`/api/player/playthroughs/${voyage.id}/landfall?block=${voyage.activeId}`);
+    expect(replay.status()).toBe(200);
+    expect((await replay.json()).bootstrap.replayOnly).toBe(true);
+    expect((await geoAudit(page)).calls).toBe(0);
+    expect((await cameraAudit(page)).calls).toBe(0);
+    await context.close();
+  });
 }
 
 test("museum journey keeps room inference honest, verifies multiple landmark frames, then requires the separate plaque answer", async ({
@@ -396,3 +460,42 @@ for (const viewport of [
     await context.close();
   });
 }
+
+test("two independent location and deliberate Player checks qualify through canonical One Voyage", async ({
+  browser,
+  baseURL,
+}, testInfo) => {
+  const voyage = await closureVoyage(owner, player, "livingChart", { fusion: true });
+  const context = await browser.newContext({
+    reducedMotion: "reduce",
+    permissions: ["geolocation"],
+    geolocation: { latitude: 44, longitude: -72, accuracy: 5 },
+  });
+  await authenticateClosure(context, player, baseURL!);
+  await auditNativeGeolocation(context);
+  const page = await context.newPage();
+  await openClosureJournal(page, voyage.id);
+  await openClosureMap(page);
+  await chart(page).getByRole("button", { name: "Use my location", exact: true }).click();
+  await expect.poll(async () => (await geoAudit(page)).nativeSamples).toBeGreaterThan(0);
+  await qualifiedFollowUpFixes(page);
+  expect(await events(voyage.id, "landfallWaypointConfirmed")).toHaveLength(0);
+  const button = chart(page).getByRole("button", { name: "Check location and my confirmation together", exact: true });
+  await expect(button).toBeVisible();
+  const response = page.waitForResponse(
+    (response) =>
+      response.url().endsWith(`/api/player/playthroughs/${voyage.id}/landfall`) &&
+      response.request().method() === "POST",
+  );
+  await button.click();
+  expect((await response).ok()).toBe(true);
+  await expect.poll(async () => (await events(voyage.id, "landfallWaypointConfirmed")).length).toBe(1);
+  const confirmed = (await events(voyage.id, "landfallWaypointConfirmed"))[0];
+  expect(JSON.stringify(confirmed.payload)).toContain("FUSED");
+  expect(JSON.stringify(confirmed.payload)).toContain("BROWSER_GEOLOCATION");
+  expect(JSON.stringify(confirmed.payload)).toContain("PLAYER_CONFIRMATION");
+  expect(JSON.stringify(confirmed.payload)).not.toMatch(/latitude|longitude|observations|watchglassReceipt|provenance/);
+  await expect(chart(page)).toContainText("visited");
+  await page.screenshot({ path: testInfo.outputPath("canonical-two-source-arrival.png"), fullPage: false });
+  await context.close();
+});

@@ -187,12 +187,21 @@ export class LandfallOfflineRepository {
     return this.read<ChartRecord>(binding, "chart");
   }
   async enqueue(binding: Binding, input: PlayerLandfallEvidence) {
-    if (input.method === "LANDMARK" || input.landmarkReceipt || input.contextualEvidence?.length)
+    if (
+      input.method === "LANDMARK" ||
+      input.method === "WATCHGLASS" ||
+      input.method === "EVIDENCE_BUNDLE" ||
+      input.sources ||
+      input.watchglassReceipt ||
+      input.landmarkReceipt ||
+      input.contextualEvidence?.length
+    )
       throw new Error("LANDFALL_CONTEXT_REQUIRES_FRESH_ONLINE_VERIFICATION");
     const evidence = playerLandfallEvidenceSchema.parse(input);
     // Zod produces owned values. Only accepted position delivery survives offline;
     // optional motion, course and elevation hints remain foreground-only.
     for (const observation of evidence.observations ?? []) {
+      delete observation.provenance;
       if (observation.kind !== "PHYSICAL_POSITION") continue;
       delete observation.headingDegrees;
       delete observation.speedMetersPerSecond;

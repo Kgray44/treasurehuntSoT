@@ -1,5 +1,6 @@
 "use client";
 
+import { defaultContextPrivacy } from "@/landfall/context-projection";
 import { useState } from "react";
 import type { Asset } from "@/components/studio/studio-types";
 import type {
@@ -111,7 +112,7 @@ export function LandfallContextEditor({
       kind,
       ...(regionLevel.trim() || map.level ? { level: regionLevel.trim() || map.level } : {}),
       geometry: { type: "POINT_RADIUS", center: map.camera.center, radius: worldspace.kind === "PHYSICAL" ? 10 : 30 },
-      privacyClassification: worldspace.privacyPolicy.classification,
+      privacyClassification: defaultContextPrivacy(worldspace),
       hiddenUntilRevealed: false,
     };
     if (onChange({ ...definition, context: { ...context, regions: [...context.regions, region] } })) {
@@ -146,6 +147,7 @@ export function LandfallContextEditor({
   }
 
   function addLandmark() {
+    const visualSource = worldspace.kind === "PHYSICAL" ? "VISION_WAYPOINT" : "WATCHGLASS";
     const regionId = waypoint?.regionId ?? selected?.id;
     const region = regions.find((item) => item.id === regionId);
     if (!waypoint || !region || region.mapId !== waypoint.mapId || !referenceId) return;
@@ -173,9 +175,9 @@ export function LandfallContextEditor({
               type: "NATURAL_LANDMARK",
               evidenceProfile: {
                 ...item.evidenceProfile,
-                acceptedSources: item.evidenceProfile.acceptedSources.includes("VISION_WAYPOINT")
+                acceptedSources: item.evidenceProfile.acceptedSources.includes(visualSource)
                   ? item.evidenceProfile.acceptedSources
-                  : [...item.evidenceProfile.acceptedSources, "VISION_WAYPOINT"],
+                  : [...item.evidenceProfile.acceptedSources, visualSource],
               },
             }
           : item,
@@ -186,9 +188,9 @@ export function LandfallContextEditor({
               ...item,
               observationPolicy: {
                 ...item.observationPolicy,
-                allowedSources: item.observationPolicy.allowedSources.includes("VISION_WAYPOINT")
+                allowedSources: item.observationPolicy.allowedSources.includes(visualSource)
                   ? item.observationPolicy.allowedSources
-                  : [...item.observationPolicy.allowedSources, "VISION_WAYPOINT"],
+                  : [...item.observationPolicy.allowedSources, visualSource],
               },
             }
           : item,
@@ -261,8 +263,9 @@ export function LandfallContextEditor({
     <section aria-label="Floors, regions and landmarks" className="landfall-inspector-fields landfall-context-editor">
       <h3>Floors, regions and landmarks</h3>
       <p>
-        GPS can establish a broad site or building. Room and floor guidance stays uncertain until independently
-        verified.
+        {worldspace.kind === "VIRTUAL"
+          ? "Virtual regions and landmarks use authored map coordinates. Visual verification needs a configured certified Watchglass provider; keep an observation, Player or Captain fallback."
+          : "GPS can establish a broad site or building. Room and floor guidance stays uncertain until independently verified."}
       </p>
       <fieldset>
         <legend>Floor charts</legend>
@@ -331,6 +334,16 @@ export function LandfallContextEditor({
       {selected && (
         <fieldset key={selected.id}>
           <legend>{selected.name}</legend>
+          {worldspace.kind === "PHYSICAL" && (
+            <p>
+              {selected.privacyClassification === "PRIVATE_REAL_WORLD"
+                ? "Authorized Players receive the exact released layout for this Chronicle. Public and Community maps cannot receive it; restrict the Chronicle before publishing."
+                : selected.privacyClassification === "APPROXIMATE_REAL_WORLD" ||
+                    selected.privacyClassification === "GENERIC"
+                  ? "Players receive a generalized broad area, with reduced public precision. Rooms, floors and exact targets need a private layout or an intentionally public exact location before publishing."
+                  : "Authorized Players use the exact released geometry. Intentionally public locations may expose that geometry publicly; this does not share a Player's live position."}
+            </p>
+          )}
           <label>
             Region name
             <input

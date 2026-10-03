@@ -2,6 +2,8 @@ import { createHash, randomUUID } from "node:crypto";
 import { expect, type BrowserContext, type Page } from "@playwright/test";
 import sharp from "sharp";
 import { db } from "../../../src/lib/db";
+import type { LandfallDefinition } from "../../../src/landfall/schema";
+import { validateLandfallDefinition } from "../../../src/landfall/definition";
 import { landfallFixture } from "../../../src/landfall/fixtures";
 import { createAccountSession } from "../../../src/wayfarer/accounts";
 import { ingestAsset } from "../../../src/chronicle/assets";
@@ -46,7 +48,15 @@ export async function closureVoyage(
   owner: ClosureAccount,
   player: ClosureAccount,
   kind = "livingChart",
-  options: { virtual?: boolean; image?: boolean; route?: boolean; captain?: boolean } = {},
+  options: {
+    virtual?: boolean;
+    image?: boolean;
+    route?: boolean;
+    captain?: boolean;
+    contextual?: boolean;
+    authoredDefinition?: LandfallDefinition;
+    fusion?: boolean;
+  } = {},
 ) {
   const suffix = randomUUID();
   const tale = await db.chronicle.create({
@@ -59,7 +69,7 @@ export async function closureVoyage(
       visibility: "PRIVATE",
     },
   });
-  const definition = structuredClone(landfallFixture);
+  let definition = structuredClone(landfallFixture);
   definition.taleId = tale.id;
   definition.waypoints[0].evidenceProfile.acceptedSources.push("PLAYER_CONFIRMATION");
   definition.waypoints[0].evidenceProfile.dwellSeconds = 0;
@@ -125,9 +135,59 @@ export async function closureVoyage(
       definition.maps[1].source = { type: "AUTHORED_VECTOR" };
     }
   }
-  const worldspaceId = options.virtual ? "isles" : "town";
-  const waypointId = options.virtual ? "isle-region" : "town-arrival";
-  const routeId = options.virtual ? "isle-route" : "town-route";
+  let worldspaceId = options.virtual ? "isles" : "town";
+  let waypointId = options.virtual ? "isle-region" : "town-arrival";
+  let routeId: string | undefined = options.virtual ? "isle-route" : "town-route";
+  if (options.contextual) {
+    const waypoint = definition.waypoints.find((item) => item.id === waypointId)!;
+    waypoint.regionId = "synthetic-virtual-region";
+    waypoint.evidenceProfile.acceptedSources.push("WATCHGLASS");
+    definition.worldspaces
+      .find((item) => item.id === worldspaceId)!
+      .observationPolicy.allowedSources.push("WATCHGLASS");
+    definition.context = {
+      regions: [
+        {
+          id: waypoint.regionId,
+          worldspaceId,
+          mapId: waypoint.mapId,
+          name: "Synthetic island context",
+          kind: "SITE",
+          geometry: structuredClone(waypoint.geometry),
+          hiddenUntilRevealed: false,
+          privacyClassification: "FICTIONAL",
+        },
+      ],
+      landmarks: [],
+    };
+    if (assets.length) {
+      waypoint.landmarkId = "synthetic-virtual-landmark";
+      definition.context.landmarks.push({
+        id: waypoint.landmarkId,
+        regionId: waypoint.regionId,
+        waypointId,
+        name: "Synthetic island arch",
+        privacyClassification: "FICTIONAL",
+        referenceAssetIds: [assets[0].id],
+        negativeReferenceAssetIds: [],
+        minimumFrames: 2,
+        guidance:
+          "Observe the authored island arch; use the configured confirmation when visual verification is unavailable.",
+        fallback: waypoint.fallback,
+      });
+    }
+  }
+  if (options.authoredDefinition) {
+    definition = validateLandfallDefinition({ ...structuredClone(options.authoredDefinition), taleId: tale.id });
+    worldspaceId = definition.worldspaces[0].id;
+    waypointId = definition.waypoints[0].id;
+    routeId = definition.routes[0]?.id;
+  }
+  if (options.fusion)
+    definition.waypoints.find((item) => item.id === waypointId)!.evidenceProfile.fusionPolicy = {
+      version: 1,
+      minimumIndependentSources: 2,
+    };
   const chapterId = `chapter-${suffix}`;
   const activeId = `active-${suffix}`;
   const nextId = `next-${suffix}`;
