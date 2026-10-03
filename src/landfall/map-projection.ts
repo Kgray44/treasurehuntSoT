@@ -47,6 +47,8 @@ export type LandfallMapScene = Readonly<{
   features: readonly LandfallMapFeature[];
   /** Ephemeral Player-only presentation state; never part of the pinned definition. */
   currentPosition?: LandfallCurrentPosition | null;
+  /** Deliberate search selection affects presentation only. */
+  selectedFeatureId?: string;
 }>;
 
 function pair(coordinate: LandfallCoordinate, worldspace: LandfallWorldspace): readonly [number, number] {
@@ -244,7 +246,7 @@ export function mapLibreFeatures(scene: LandfallMapScene, position = scene.curre
         .map(
           (feature): GeoJSON.Feature => ({
             type: "Feature" as const,
-            properties: { id: feature.id, kind: feature.kind },
+            properties: { id: feature.id, kind: feature.kind, selected: feature.id === scene.selectedFeatureId },
             geometry:
               feature.kind === "POINT"
                 ? { type: "Point" as const, coordinates: [...feature.coordinates[0]] }

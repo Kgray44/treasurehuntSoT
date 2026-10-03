@@ -4,7 +4,11 @@ import { LandfallJournalChart, LandfallJournalProvider } from "./LandfallJournal
 import { landfallFixture } from "@/landfall/fixtures";
 import { projectPlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 
-vi.mock("@/components/player/workspace/VoyageChart", () => ({ VoyageChart: () => <div>Released map</div> }));
+vi.mock("@/components/player/workspace/VoyageChart", () => ({
+  VoyageChart: ({ landfallScene }: { landfallScene: { selectedFeatureId?: string } }) => (
+    <div data-selected-place={landfallScene.selectedFeatureId}>Released map</div>
+  ),
+}));
 vi.mock("@/components/player/journal/LandfallPresentation", () => ({ LandfallPresentation: () => null }));
 vi.mock("@/landfall/offline-web", () => ({
   rememberRevealedChart: async () => null,
@@ -228,6 +232,24 @@ const journal = (revision = 4) => (
     <LandfallJournalChart />
   </LandfallJournalProvider>
 );
+it("search selects only released presentation and never starts acquisition or submits arrival", async () => {
+  const view = render(journal());
+  await screen.findAllByText("Released map");
+  const fetch = vi.mocked(globalThis.fetch);
+  const readCount = fetch.mock.calls.length;
+  fireEvent.change(screen.getAllByRole("searchbox", { name: "Find a place on your released maps" })[0], {
+    target: { value: "Town" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "View Town arrival · Town Chart" }));
+  expect(screen.getAllByText("Released map")[0]).toHaveAttribute("data-selected-place", "town-arrival");
+  expect(screen.getAllByText("Released map")[1]).not.toHaveAttribute("data-selected-place");
+  expect(watch).not.toHaveBeenCalled();
+  expect(fetch.mock.calls).toHaveLength(readCount);
+  fireEvent.change(screen.getAllByRole("searchbox")[0], { target: { value: "Secret Isle" } });
+  expect(screen.getByText("No released places match.")).toBeInTheDocument();
+  expect(screen.getAllByText("Released map")[0]).not.toHaveAttribute("data-selected-place");
+  view.unmount();
+});
 it("two chart surfaces share one explicit watch; revision and unmount stop it", async () => {
   const view = render(journal());
   await screen.findAllByText("Released map");

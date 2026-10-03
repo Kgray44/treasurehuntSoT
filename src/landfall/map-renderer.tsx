@@ -28,21 +28,24 @@ const blankStyle = (scene: LandfallMapScene): import("maplibre-gl").StyleSpecifi
       type: "fill",
       source: "landfall",
       filter: ["==", ["get", "kind"], "POLYGON"],
-      paint: { "fill-color": scene.foreground, "fill-opacity": 0.25 },
+      paint: {
+        "fill-color": scene.foreground,
+        "fill-opacity": ["case", ["==", ["get", "selected"], true], 0.45, 0.25],
+      },
     },
     {
       id: "landfall-lines",
       type: "line",
       source: "landfall",
       filter: ["in", ["get", "kind"], ["literal", ["LINE", "GATE"]]],
-      paint: { "line-color": scene.foreground, "line-width": 3 },
+      paint: { "line-color": scene.foreground, "line-width": ["case", ["==", ["get", "selected"], true], 6, 3] },
     },
     {
       id: "landfall-points",
       type: "circle",
       source: "landfall",
       filter: ["==", ["get", "kind"], "POINT"],
-      paint: { "circle-color": scene.foreground, "circle-radius": 8 },
+      paint: { "circle-color": scene.foreground, "circle-radius": ["case", ["==", ["get", "selected"], true], 11, 8] },
     },
     {
       id: "landfall-position-halo",
@@ -97,6 +100,7 @@ function PhysicalMap({
   const element = useRef<HTMLDivElement>(null);
   const mapRef = useRef<import("maplibre-gl").Map | null>(null);
   const positionRef = useRef(position);
+  const sceneRef = useRef(scene);
   const interactionRef = useRef(interaction);
   const [failure, setFailure] = useState(false);
   const overlaySignature = JSON.stringify(scene.overlays);
@@ -107,6 +111,7 @@ function PhysicalMap({
     interactionRef.current = interaction;
   }, [interaction]);
   useEffect(() => {
+    sceneRef.current = scene;
     const source = mapRef.current?.getSource("landfall") as import("maplibre-gl").GeoJSONSource | undefined;
     source?.setData(mapLibreFeatures(scene, position));
   }, [scene, position]);
@@ -176,15 +181,15 @@ function PhysicalMap({
         map = new maplibre.Map({
           container: element.current,
           style,
-          center: [...scene.camera.center],
-          zoom: scene.camera.zoom,
-          bearing: scene.camera.bearing,
+          center: [...sceneRef.current.camera.center],
+          zoom: sceneRef.current.camera.zoom,
+          bearing: sceneRef.current.camera.bearing,
           attributionControl: { compact: true },
         });
         mapRef.current = map;
         map.on("load", () => {
           const source = map?.getSource("landfall") as import("maplibre-gl").GeoJSONSource | undefined;
-          source?.setData(mapLibreFeatures(scene, positionRef.current));
+          source?.setData(mapLibreFeatures(sceneRef.current, positionRef.current));
         });
         map.on("error", () => setFailure(true));
         let dragging: string | null = null;
@@ -245,13 +250,16 @@ function PhysicalMap({
       {failure && <p role="status">Map data is unavailable. Use the location list and route summary.</p>}
       <ul aria-label="Visible map locations">
         {scene.features.map((item) => (
-          <li key={item.id}>
+          <li key={item.id} data-selected={item.id === scene.selectedFeatureId ? "true" : undefined}>
             {interaction ? (
               <button type="button" onClick={() => interaction.onSelect(item.id)}>
                 {item.label}
               </button>
             ) : (
-              item.label
+              <>
+                {item.label}
+                {item.id === scene.selectedFeatureId ? " · selected for viewing" : ""}
+              </>
             )}
           </li>
         ))}
@@ -305,7 +313,7 @@ function VirtualMap({ scene, interaction }: { scene: LandfallMapScene; interacti
               data-landfall-feature={item.id}
               cx={drag?.id === item.id ? drag.x : item.coordinates[0][0]}
               cy={drag?.id === item.id ? drag.y : item.coordinates[0][1]}
-              r={Math.min(width, height) * 0.015}
+              r={Math.min(width, height) * (item.id === scene.selectedFeatureId ? 0.023 : 0.015)}
               fill={scene.foreground}
               onPointerDown={(event) => {
                 if (!interaction) return;
@@ -339,9 +347,9 @@ function VirtualMap({ scene, interaction }: { scene: LandfallMapScene; interacti
                 .join(" ")}
               fill={scene.foreground}
               fillRule="evenodd"
-              fillOpacity={0.2}
+              fillOpacity={item.id === scene.selectedFeatureId ? 0.45 : 0.2}
               stroke={scene.foreground}
-              strokeWidth={Math.min(width, height) * 0.006}
+              strokeWidth={Math.min(width, height) * (item.id === scene.selectedFeatureId ? 0.012 : 0.006)}
               onClick={() => interaction?.onSelect(item.id)}
             />
           ) : (
@@ -351,7 +359,7 @@ function VirtualMap({ scene, interaction }: { scene: LandfallMapScene; interacti
               points={item.coordinates.map(([x, y]) => `${x},${y}`).join(" ")}
               fill="none"
               stroke={scene.foreground}
-              strokeWidth={Math.min(width, height) * 0.006}
+              strokeWidth={Math.min(width, height) * (item.id === scene.selectedFeatureId ? 0.012 : 0.006)}
               onClick={() => interaction?.onSelect(item.id)}
             />
           ),
@@ -359,13 +367,16 @@ function VirtualMap({ scene, interaction }: { scene: LandfallMapScene; interacti
       </svg>
       <ul aria-label="Visible map locations">
         {scene.features.map((item) => (
-          <li key={item.id}>
+          <li key={item.id} data-selected={item.id === scene.selectedFeatureId ? "true" : undefined}>
             {interaction ? (
               <button type="button" onClick={() => interaction.onSelect(item.id)}>
                 {item.label}
               </button>
             ) : (
-              item.label
+              <>
+                {item.label}
+                {item.id === scene.selectedFeatureId ? " · selected for viewing" : ""}
+              </>
             )}
           </li>
         ))}

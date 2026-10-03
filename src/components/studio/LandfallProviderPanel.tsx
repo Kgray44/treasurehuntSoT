@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { LandfallDefinition, LandfallWorldspace } from "@/landfall/schema";
 import { landfallProviderCatalog } from "@/landfall/provider-catalog";
 import type { LandfallProviderPlan } from "@/landfall/provider-policy";
+import { localLandfallProviderPreflight } from "@/landfall/local-provider-preflight";
 
 const catalog = landfallProviderCatalog().filter((provider) => !provider.simulation);
 const defaultPlan: LandfallProviderPlan = {
@@ -139,6 +140,11 @@ export function LandfallProviderPanel({
           return (
             <li key={`${requirement.providerId}:${index}`}>
               <strong>{provider?.label ?? requirement.family}</strong>
+              <p>
+                {localLandfallProviderPreflight(definition, requirement).length
+                  ? "Authored data is available for this capability. Players can use only places and maps released to their journey."
+                  : "Readiness is not established here. Device capabilities, external services and credentials need their own runtime check."}
+              </p>
               <label>
                 Capability{" "}
                 <select value={requirement.capability} onChange={(event) => change({ capability: event.target.value })}>

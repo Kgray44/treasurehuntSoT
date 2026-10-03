@@ -104,6 +104,26 @@ pending evidence within its lease; expired location evidence requires a fresh ch
 The current location outbox expires after 90 seconds and never establishes an
 unlimited offline arrival queue.
 
+## Local lookup and authored readiness
+
+The Player Chart searches only the released map scenes on the device. Search
+does not index evaluation geometry, internal waypoint names or another Worldspace.
+Both physical and virtual labels are available; approximate regions retain their
+withheld centers. Selecting a result chooses the released map and highlights its
+feature. A displayed physical point may move the viewing camera at the existing
+zoom. Selection does not acquire a location, generate an observation, infer a
+floor or submit progression. Search text and selection stay in component memory.
+The coordinate lookup separately excludes approximate centers and honors public
+labels. An unknown address still needs a configured external geocoder.
+
+Creator and the existing Drydock authoring findings use capability-scoped local
+preflight for implemented authored search, routes, floor labels, virtual regions
+and semantic maps. Data in one Worldspace cannot satisfy a requirement in another.
+Explicit runtime statuses override the local data check. Device availability,
+permissions, credentials and external health remain unestablished until their
+adapters provide evidence. Authored routes do not establish an accessibility
+assessment, and approximate labels cannot provide reverse-coordinate lookup.
+
 ## Development evidence and remaining proof
 
 ### Provisioned device profiles

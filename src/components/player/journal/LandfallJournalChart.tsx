@@ -5,6 +5,8 @@ import type { MotionMode } from "@/animation/core/animation-types";
 import { VoyageChart } from "@/components/player/workspace/VoyageChart";
 import { LandfallPresentation } from "@/components/player/journal/LandfallPresentation";
 import { LandfallContextGuidance } from "@/components/player/journal/LandfallContextGuidance";
+import { LandfallPlaceSearch } from "@/components/player/journal/LandfallPlaceSearch";
+import { selectReleasedChartPlace } from "@/landfall/chart-search";
 import { LandfallLandmarkPanel } from "@/components/player/journal/LandfallLandmarkPanel";
 import { BrowserContextProvider, type BrowserContextTarget } from "@/landfall/browser-context";
 import type { ContextualEvidence, ContextualSnapshot } from "@/landfall/contextual";
@@ -711,6 +713,7 @@ export function LandfallJournalChart({
   const controller = useContext(LandfallControllerContext);
   const [historicalChart, setHistoricalChart] = useState<PlayerLandfallBootstrap | null>(null);
   const [viewingMapId, setViewingMapId] = useState<string | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<{ mapId: string; featureId: string; scope: string } | null>(null);
   useEffect(() => {
     if (!readOnly || !blockId || !controller?.bootstrap) return;
     const abort = new AbortController();
@@ -777,6 +780,18 @@ export function LandfallJournalChart({
     bootstrap.availableMaps?.find((item) => item.id === viewingMapId) ??
     bootstrap.availableMaps?.find((item) => item.id === bootstrap.scene.mapId);
   const isHistorical = bootstrap.replayOnly || readOnly;
+  const searchScope = JSON.stringify([
+    bootstrap.sessionId,
+    bootstrap.publishedVersionId,
+    bootstrap.currentSequence,
+    blockId ?? null,
+    isHistorical,
+  ]);
+  const viewedScene = viewingMap?.scene ?? bootstrap.scene;
+  const searchedScene =
+    selectedPlace?.scope === searchScope && selectedPlace.mapId === viewedScene.mapId
+      ? selectReleasedChartPlace(viewedScene, selectedPlace.featureId)
+      : viewedScene;
   const contextual = isHistorical
     ? (replay?.contextualSummary ?? bootstrap.contextualSummary ?? null)
     : contextSnapshot;
@@ -894,11 +909,23 @@ export function LandfallJournalChart({
         snapshot={contextual}
         historical={isHistorical}
         viewingMapId={viewingMap?.id ?? bootstrap.scene.mapId}
-        onViewingMapChange={setViewingMapId}
+        onViewingMapChange={(id) => {
+          setViewingMapId(id);
+          setSelectedPlace(null);
+        }}
+      />
+      <LandfallPlaceSearch
+        key={searchScope}
+        bootstrap={bootstrap}
+        onSelect={(place) => {
+          setViewingMapId(place.mapId);
+          setSelectedPlace({ mapId: place.mapId, featureId: place.id, scope: searchScope });
+        }}
+        onClear={() => setSelectedPlace(null)}
       />
       <VoyageChart
         mode={mode}
-        landfallScene={viewingMap?.scene ?? bootstrap.scene}
+        landfallScene={searchedScene}
         landfallPosition={!viewingMap || viewingMap.id === bootstrap.scene.mapId ? position : null}
       />
       {bootstrap.runtimeDefinition.context && worldspace.kind === "PHYSICAL" && !isHistorical && !bootstrap.paused && (

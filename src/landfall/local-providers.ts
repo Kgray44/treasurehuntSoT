@@ -10,9 +10,16 @@ export class AuthoredGeocodingProvider {
   private readonly places: LandfallPlace[];
   constructor(private readonly domain: ReleasedDomain) {
     this.places = domain.waypoints.flatMap((waypoint) => {
-      if (!["POINT_RADIUS", "APPROXIMATE_REGION"].includes(waypoint.geometry.type)) return [];
-      const geometry = waypoint.geometry as Extract<typeof waypoint.geometry, { center: LandfallCoordinate }>;
-      return [{ id: waypoint.id, label: waypoint.name, coordinate: geometry.center }];
+      // Approximate regions deliberately withhold their center in the Player map.
+      // A secondary lookup must not recover that center from evaluation geometry.
+      if (waypoint.geometry.type !== "POINT_RADIUS") return [];
+      return [
+        {
+          id: waypoint.id,
+          label: waypoint.visibility.publicLabel ?? waypoint.name,
+          coordinate: waypoint.geometry.center,
+        },
+      ];
     });
   }
   forward(input: {

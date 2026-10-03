@@ -1,13 +1,14 @@
 import type { LandfallDefinition } from "@/landfall/schema";
 import { landfallProviderCatalog } from "@/landfall/provider-catalog";
 import type { ProviderDescriptor, ProviderStatus } from "@/landfall/provider-policy";
+import { localLandfallProviderPreflight } from "@/landfall/local-provider-preflight";
 
 type Finding = { code: string; severity: "warning" | "blocker"; message: string; targetId?: string };
 /** Findings join the existing Drydock/authoring path; no independent publishing authority. */
 export function landfallProviderFindings(
   definition: LandfallDefinition,
   providers: readonly ProviderDescriptor[] = landfallProviderCatalog(),
-  statuses: readonly ProviderStatus[] = [],
+  statuses?: readonly ProviderStatus[],
 ): Finding[] {
   const plan = definition.providerPlan;
   if (!plan) return [];
@@ -15,6 +16,7 @@ export function landfallProviderFindings(
   const push = (code: string, message: string, targetId?: string, severity: Finding["severity"] = "blocker") =>
     findings.push({ code, message, targetId, severity });
   for (const requirement of plan.requirements) {
+    const readiness = statuses ?? localLandfallProviderPreflight(definition, requirement);
     const worldspace = definition.worldspaces.find((item) => item.id === requirement.worldspaceId);
     if (!worldspace) {
       push(
@@ -44,21 +46,10 @@ export function landfallProviderFindings(
               ["ASSET_IMAGE", "ASSET_VECTOR", "AUTHORED_VECTOR"].includes(map.source.type),
           );
         case "GEOCODING":
-          return waypoints.some((waypoint) => ["POINT_RADIUS", "APPROXIMATE_REGION"].includes(waypoint.geometry.type));
         case "ROUTING":
-          return definition.routes.some(
-            (route) => route.worldspaceId === worldspace.id && route.waypointIds.length > 0,
-          );
         case "ELEVATION":
-          return (
-            ["floor", "authored", "virtual"].includes(requirement.capability) &&
-            !!definition.context?.regions.some((region) => region.worldspaceId === worldspace.id && region.level)
-          );
         case "VIRTUAL_REGION":
-          return (
-            worldspace.kind === "VIRTUAL" &&
-            !!definition.context?.regions.some((region) => region.worldspaceId === worldspace.id)
-          );
+          return localLandfallProviderPreflight(definition, { ...requirement, providerId: undefined }).length > 0;
         default:
           return false;
       }
@@ -87,7 +78,7 @@ export function landfallProviderFindings(
       );
     else {
       const configured = candidates.some((provider) =>
-        statuses.some(
+        readiness.some(
           (status) =>
             status.id === provider.id &&
             status.enabled &&

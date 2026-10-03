@@ -146,6 +146,18 @@ make no recognition, certification or installed Watchglass claim. Future hosted
 transport branches have distinct concurrency groups so independent platform runs
 do not serialize behind an unrelated run of the same source.
 
+Player integration development: local released-map search is connected to the
+Journal Chart, keeps queries in component memory, supports both Worldspace map
+projections and changes only the viewed map/camera/highlight. It cannot recover
+approximate centers or internal names from evaluation geometry. Coordinate lookup
+excludes withheld centers. Creator/Drydock local preflight is scoped to the requested
+Worldspace and capability; explicit runtime absence still wins, and external/device
+readiness or accessibility assessments are never invented. Focused suite: 41 files /
+303 tests plus two subsequent renderer tests pass; TypeScript and docs validation
+pass. Full rendered/native Player acceptance remains open. Product features,
+current status, feature status, Player guide and changelog were reviewed; final
+phase acceptance must update them together with the catalog and closure records.
+
 Remaining: native lifecycle/power/sensor orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;
 deployed provider preflight and health integration; full security/privacy/performance

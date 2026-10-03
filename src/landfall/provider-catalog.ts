@@ -77,7 +77,7 @@ const entries: Entry[] = [
     ["vector", "raster", "overlay", "floor-plan"],
     { platforms: ["WEB", ...native], privacy: "FIRST_PARTY" },
   ],
-  ["authored-places", "Local authored places", "GEOCODING", ["forward", "reverse", "bounded", "local"]],
+  ["authored-places", "Local authored places", "GEOCODING", ["forward", "reverse", "bounded", "proximity", "local"]],
   [
     "configured-geocoder",
     "Configured place search",
