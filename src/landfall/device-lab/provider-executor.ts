@@ -13,6 +13,7 @@ import { projectPlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import { LandfallOfflineRepository, type LandfallOfflineStorage } from "@/landfall/offline-store";
 import { LandfallOutboxReconciler } from "@/landfall/offline-reconcile";
 import type { LandfallObservation } from "@/landfall/observation";
+import type { PlayerLandfallEvidence } from "@/landfall/player-evidence-contract";
 import {
   landfallInteractionPayload,
   verifyLandfallInteractionToken,
@@ -123,7 +124,14 @@ export class LandfallProviderScenarioExecutor {
     expectedSequence: 0,
   };
   private readonly definition = structuredClone(landfallFixture);
-  constructor(private readonly scenario: DeviceLabScenario) {
+  private canonicalCount: number | null = null;
+  constructor(
+    private readonly scenario: DeviceLabScenario,
+    private readonly authority?: {
+      submit(evidence: PlayerLandfallEvidence): Promise<unknown>;
+      counts(): Promise<{ canonicalProgressionEvents: number }>;
+    },
+  ) {
     deviceLabScenarioSchema.parse(scenario);
     const world = this.definition.worldspaces.find((item) => item.kind === scenario.worldspace)!;
     this.definition.worldspaces = [world];
@@ -148,7 +156,7 @@ export class LandfallProviderScenarioExecutor {
   async run(): Promise<{
     steps: DeviceLabStepResult[];
     cleanup: { result: "PASS" | "FAIL"; ownedResources: string[]; remainingResources: string[] };
-    canonicalProgressionEvents: null;
+    canonicalProgressionEvents: number | null;
   }> {
     const steps: DeviceLabStepResult[] = [];
     try {
@@ -183,7 +191,7 @@ export class LandfallProviderScenarioExecutor {
     }
     return {
       steps,
-      canonicalProgressionEvents: null,
+      canonicalProgressionEvents: this.canonicalCount,
       cleanup: {
         result: this.nativeStopped && this.journal === null ? "PASS" : "FAIL",
         ownedResources: ["logical-native-listener", "synthetic-background-storage"],
@@ -317,8 +325,24 @@ export class LandfallProviderScenarioExecutor {
                     currentSequence: action.outcome === "CONFLICT" ? 1 : 0,
                     replayOnly: false,
                   },
-          submit: async () => {
+          submit: async (evidence) => {
             submissions++;
+            if (this.scenario.canonicalAuthority === "ONE_VOYAGE") {
+              if (!this.authority) throw new Error("LANDFALL_LAB_AUTHORITY_NOT_CONFIGURED");
+              // Logical fixtures have synthetic timestamps. Replay their relative age
+              // against the real writer clock; this remains provider simulation evidence.
+              const observations = evidence.observations ?? [];
+              const offset = Date.now() - Date.parse(observations.at(-1)?.observedAt ?? "") - 1000;
+              const replay = {
+                ...evidence,
+                observations: observations.map((sample) => ({
+                  ...sample,
+                  observedAt: new Date(Date.parse(sample.observedAt) + offset).toISOString(),
+                })),
+              };
+              await this.authority.submit(replay);
+              this.canonicalCount = (await this.authority.counts()).canonicalProgressionEvents;
+            }
             return action.outcome === "DUPLICATE" ? "DUPLICATE" : "ACCEPTED";
           },
         },
@@ -562,10 +586,10 @@ export class LandfallProviderScenarioExecutor {
         confidence: this.outcome.confidence,
         rejection: this.outcome.rejection ?? null,
         completionRequests: this.requests.size,
-        serverConfirmed: false,
+        serverConfirmed: (this.canonicalCount ?? 0) > 0,
         backgroundResult: this.backgroundResult,
         notificationState: this.notificationState,
-        canonicalProgressionEvents: null,
+        canonicalProgressionEvents: this.canonicalCount,
         sensorState: this.sensorState,
         nearbyState: this.nearbyState,
         tokenState: this.tokenState,

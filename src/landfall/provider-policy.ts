@@ -246,6 +246,7 @@ export function selectLandfallProviders(
 export class LandfallProviderHealthRegistry {
   private readonly descriptors = new Map<string, ProviderDescriptor>();
   private readonly statuses = new Map<string, ProviderStatus>();
+  private readonly clocks = new Map<string, number>();
   constructor(providers: readonly ProviderDescriptor[]) {
     if (providers.length > 128) throw new Error("LANDFALL_PROVIDER_LIMIT");
     for (const input of providers) {
@@ -284,6 +285,8 @@ export class LandfallProviderHealthRegistry {
       (retryAfter !== undefined && (!Number.isFinite(retryAfter) || retryAfter < now || retryAfter > now + 86_400_000))
     )
       throw new Error("LANDFALL_PROVIDER_TIME_INVALID");
+    if (now < (this.clocks.get(providerId) ?? -Infinity)) return;
+    this.clocks.set(providerId, now);
     this.statuses.set(providerId, {
       ...status,
       health,

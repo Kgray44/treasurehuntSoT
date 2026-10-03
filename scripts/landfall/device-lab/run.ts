@@ -10,6 +10,7 @@ import {
 } from "../../../src/landfall/device-lab/scenario";
 import { discoverDeviceLabHost, labTool } from "./host";
 import { executeLandfallOsScenario } from "./os-executor";
+import { startDeviceLabAuthority } from "./authority-client";
 
 async function main() {
   const argv = process.argv.slice(2);
@@ -51,7 +52,7 @@ async function main() {
   }
   const scenarios =
     options.scenario && options.scenario !== "all"
-      ? [landfallDeviceScenario(options.scenario)]
+      ? options.scenario.split(",").map((id) => landfallDeviceScenario(id))
       : landfallDeviceScenarios();
   const sourceSha = (await labTool("git", ["rev-parse", "HEAD"])).trim();
   const sourceTree = (await labTool("git", ["rev-parse", "HEAD^{tree}"])).trim();
@@ -62,10 +63,14 @@ async function main() {
       "--cached",
       "--others",
       "--exclude-standard",
-      "src/landfall",
+      "src",
       "scripts/landfall/device-lab",
       "native",
       "package-lock.json",
+      "package.json",
+      "prisma/schema.sqlite.prisma",
+      "prisma/migrations",
+      ".agents/landfall-device-lab-hosted.yml",
     ])
   )
     .trim()
@@ -83,7 +88,11 @@ async function main() {
   const receipts: DeviceLabReceipt[] = [];
   for (const scenario of scenarios) {
     const startedAt = new Date().toISOString();
-    const executor = new LandfallProviderScenarioExecutor(scenario);
+    const authority =
+      target === "provider-simulation" && scenario.canonicalAuthority === "ONE_VOYAGE"
+        ? await startDeviceLabAuthority(path.join(destination, scenario.id, "authority"))
+        : null;
+    const executor = new LandfallProviderScenarioExecutor(scenario, authority ?? undefined);
     const supported = scenario.targets.includes(target);
     const nativeConfigured =
       target === "android-emulator"
@@ -98,8 +107,13 @@ async function main() {
         : (target === "android-emulator" || target === "ios-simulator") && nativeConfigured
           ? await executeLandfallOsScenario(scenario, target, path.join(destination, scenario.id))
           : null;
+    const authorityClean = authority ? await authority.cleanup() : true;
+    if (result && !authorityClean) {
+      result.cleanup.result = "FAIL";
+      result.cleanup.remainingResources.push("one-voyage-authority");
+    }
     const state = result
-      ? result.steps.some((step) => step.state === "FAIL")
+      ? result.cleanup.result === "FAIL" || result.steps.some((step) => step.state === "FAIL")
         ? "FAIL"
         : result.steps.some((step) => step.state === "UNSUPPORTED")
           ? "UNSUPPORTED"
@@ -124,13 +138,17 @@ async function main() {
             : "unconfigured-native-backend",
       deviceProfile:
         options.profile ?? (target === "provider-simulation" ? "synthetic-provider-profile" : "primary-phone"),
-      osVersion: host.osVersion,
-      runtimeVersion: host.nodeVersion,
+      osVersion:
+        result && "osVersion" in result && typeof result.osVersion === "string" ? result.osVersion : host.osVersion,
+      runtimeVersion:
+        result && "runtimeVersion" in result && typeof result.runtimeVersion === "string"
+          ? result.runtimeVersion
+          : host.nodeVersion,
       providerVersions: Object.fromEntries(scenario.providers.map((family) => [family, "landfall-contract-v1"])),
       publishedFixture: scenario.publishedFixture,
       fixtureHash: executor.fixtureHash(),
       timing: target === "provider-simulation" ? scenario.timing : "WALL_CLOCK",
-      toleranceMs: scenario.toleranceMs,
+      toleranceMs: target === "provider-simulation" ? scenario.toleranceMs : Math.max(2000, scenario.toleranceMs),
       startedAt,
       endedAt: new Date().toISOString(),
       evidenceClass:
@@ -152,8 +170,18 @@ async function main() {
           state: "UNSUPPORTED" as const,
           reason: "NATIVE_BACKEND_NOT_CONFIGURED",
         })),
-      canonicalProgressionEvents: null,
-      artifacts: [],
+      canonicalProgressionEvents: result?.canonicalProgressionEvents ?? null,
+      ...(result?.canonicalProgressionEvents !== null && result?.canonicalProgressionEvents !== undefined
+        ? {
+            canonicalAuthority: "ONE_VOYAGE_REAL_SQLITE" as const,
+            authorityFixtureHash:
+              authority?.fixtureHash ??
+              (result && "authorityFixtureHash" in result && typeof result.authorityFixtureHash === "string"
+                ? result.authorityFixtureHash
+                : undefined),
+          }
+        : {}),
+      artifacts: result && "artifacts" in result && Array.isArray(result.artifacts) ? result.artifacts : [],
       externalRequirements: [
         ...scenario.physicalRequired.map((requirement) => `REAL_DEVICE_REQUIRED:${requirement}`),
         ...(state === "NOT_CONFIGURED"

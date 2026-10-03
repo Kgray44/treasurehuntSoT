@@ -35,15 +35,44 @@ export function landfallProviderFindings(
     const waypoints = definition.waypoints.filter(
       (waypoint) => waypoint.worldspaceId === worldspace.id && !waypoint.sequence.optional,
     );
+    const authoredFallback = (() => {
+      switch (requirement.family) {
+        case "MAP_DATA":
+          return definition.maps.some(
+            (map) =>
+              map.worldspaceId === worldspace.id &&
+              ["ASSET_IMAGE", "ASSET_VECTOR", "AUTHORED_VECTOR"].includes(map.source.type),
+          );
+        case "GEOCODING":
+          return waypoints.some((waypoint) => ["POINT_RADIUS", "APPROXIMATE_REGION"].includes(waypoint.geometry.type));
+        case "ROUTING":
+          return definition.routes.some(
+            (route) => route.worldspaceId === worldspace.id && route.waypointIds.length > 0,
+          );
+        case "ELEVATION":
+          return (
+            ["floor", "authored", "virtual"].includes(requirement.capability) &&
+            !!definition.context?.regions.some((region) => region.worldspaceId === worldspace.id && region.level)
+          );
+        case "VIRTUAL_REGION":
+          return (
+            worldspace.kind === "VIRTUAL" &&
+            !!definition.context?.regions.some((region) => region.worldspaceId === worldspace.id)
+          );
+        default:
+          return false;
+      }
+    })();
     const fallback =
-      (requirement.fallback === "AUTHORED" &&
-        ["MAP_DATA", "GEOCODING", "ROUTING", "ELEVATION", "VIRTUAL_REGION"].includes(requirement.family)) ||
+      (requirement.fallback === "AUTHORED" && authoredFallback) ||
       (waypoints.length > 0 &&
         waypoints.every(
           (waypoint) =>
             (requirement.fallback === "PLAYER" &&
               waypoint.fallback.mode === "PLAYER" &&
-              waypoint.evidenceProfile.allowManualFallback) ||
+              waypoint.evidenceProfile.allowManualFallback &&
+              worldspace.observationPolicy.allowedSources.includes("PLAYER_CONFIRMATION") &&
+              waypoint.evidenceProfile.acceptedSources.includes("PLAYER_CONFIRMATION")) ||
             (requirement.fallback === "CAPTAIN" &&
               waypoint.fallback.mode === "CAPTAIN" &&
               waypoint.evidenceProfile.allowCaptainOverride),
@@ -116,6 +145,15 @@ export function landfallProviderFindings(
           "LANDFALL_OFFLINE_SOURCE_RIGHTS",
           "Interactive public tiles cannot be downloaded as an offline region. Use authorized map data or a floor plan.",
           mapId,
+          plan.requirements.some(
+            (requirement) =>
+              requirement.worldspaceId === map.worldspaceId &&
+              requirement.family === "MAP_DATA" &&
+              requirement.required &&
+              requirement.offlineRequired,
+          )
+            ? "blocker"
+            : "warning",
         );
     }
     for (const routeId of plan.offline.routeIds)

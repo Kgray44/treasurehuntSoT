@@ -34,6 +34,12 @@ function ready() {
   return registry;
 }
 describe("provider capability truth", () => {
+  it("does not let an old health callback overwrite a newer failure", () => {
+    const registry = ready();
+    registry.record(browser.id, "UNAVAILABLE", 2000);
+    registry.record(browser.id, "READY", 1500);
+    expect(registry.snapshot()[0].health).toBe("UNAVAILABLE");
+  });
   it("has one or more real contracts and a test adapter contract for every family without startup success", () => {
     const catalog = landfallProviderCatalog();
     const synthetic = landfallSimulationCatalog();

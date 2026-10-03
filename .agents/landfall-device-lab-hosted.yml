@@ -30,6 +30,7 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - run: npx --no-install tsx scripts/landfall/device-lab/one-voyage.ts
       - run: npm run landfall:device-lab -- --platform provider
       - uses: actions/upload-artifact@v4
         if: always()
@@ -53,8 +54,9 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: brew install xcodegen
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
       - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts
-      - run: npm run landfall:device-lab -- --platform ios --scenario gps-perfect-walk
+      - run: npm run landfall:device-lab -- --platform ios --scenario gps-perfect-walk,offline-native-canonical-reconcile
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -84,14 +86,23 @@ jobs:
           gradle-version: "8.11.1"
       - run: npm ci --ignore-scripts
       - run: gradle -p native/android --console plain assembleDebug
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - name: Enable ephemeral runner KVM access
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 36
           target: google_apis
           arch: x86_64
           profile: pixel_7
+          ram-size: 3072M
+          emulator-boot-timeout: 300
+          disable-linux-hw-accel: false
           disable-animations: true
-          script: npm run landfall:device-lab -- --platform android --scenario gps-perfect-walk
+          script: npm run landfall:device-lab -- --platform android --scenario gps-perfect-walk,offline-native-canonical-reconcile
       - uses: actions/upload-artifact@v4
         if: always()
         with:

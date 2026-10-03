@@ -10,7 +10,7 @@ final class CompanionTests: XCTestCase {
     func testNativeWakeJournalIsEncryptedBoundedAndClearable() {
         let hints=LandfallSecureHints();hints.clear()
         for _ in 0..<40 { hints.append(handle: String(repeating: "a", count: 64), event: "ENTER") }
-        XCTAssertEqual(hints.read().count,32)
+        XCTAssertEqual(hints.read().count,32, hints.storageState)
         XCTAssertFalse(hints.read().contains { $0["latitude"] != nil || $0["longitude"] != nil })
         hints.clear();XCTAssertTrue(hints.read().isEmpty)
     }

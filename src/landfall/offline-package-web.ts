@@ -12,7 +12,7 @@ import {
 const databaseName = "landfall-regions-v1";
 const leasePrefix = "landfall-region-lease-v1:";
 let generation = 0;
-const clients = new Set<LandfallOfflinePackageRepository>();
+const clients = new Map<string, LandfallOfflinePackageRepository>();
 const urls = new Set<string>();
 async function operation<T>(mode: IDBTransactionMode, callback: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> {
   const openedAt = generation;
@@ -81,11 +81,16 @@ async function open(descriptor: Descriptor, csrfToken: string): Promise<Landfall
     "verify",
   ]);
   if (generationAtStart !== generation) throw new Error("LANDFALL_REGION_REVOKED");
-  const repository = new LandfallOfflinePackageRepository(
-    storage,
-    new Map([[descriptor.verificationKey.id, verificationKey]]),
-  );
-  clients.add(repository);
+  const clientKey = `${descriptor.verificationKey.id}:${descriptor.verificationKey.jwk.x}`;
+  let repository = clients.get(clientKey);
+  if (!repository) {
+    if (clients.size >= 16) throw new Error("LANDFALL_REGION_KEY_CAPACITY");
+    repository = new LandfallOfflinePackageRepository(
+      storage,
+      new Map([[descriptor.verificationKey.id, verificationKey]]),
+    );
+    clients.set(clientKey, repository);
+  }
   return {
     descriptor,
     repository,
@@ -212,7 +217,7 @@ export function extendLandfallRegionLease(client: LandfallWebPackage, csrfToken:
 }
 export async function clearLandfallRegions() {
   generation++;
-  for (const client of clients) await client.revoke();
+  for (const client of clients.values()) await client.revoke();
   clients.clear();
   await operation("readwrite", (store) => store.clear());
   for (let index = sessionStorage.length - 1; index >= 0; index--) {

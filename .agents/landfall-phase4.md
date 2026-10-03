@@ -55,3 +55,30 @@ exact-candidate acceptance, protected merge and landed verification are complete
 | Final testing authority              | Sounding_Line_Effective_Authority.md, package scripts           | Focused development tests, ordinary exact-head Mainline Decision, protected merge and landed smoke                                   |
 
 Update this packet as shared contracts and accepted plateaus become concrete.
+
+## Development plateau, 2026-10-03
+
+Provider policy, native foreground shells, wake-only geofences, opaque notification
+return, optional native sensors/scanners, signed encrypted web regions and a shared
+Device Lab are in development. This is not a qualified Phase 4 plateau.
+
+100 provider scenarios pass locally. A dedicated child process binds only a fresh
+owned SQLite database before loading the actual One Voyage writer. The canonical
+offline scenario passes on the Windows-hosted Android emulator through OS location,
+the restricted WebView bridge, encrypted IndexedDB outbox and the actual writer.
+Measured event count is one; cleanup checks the database, app process/data and ADB
+reverse. Logical fixtures explicitly translate relative age to the real server clock;
+native observations retain their actual timestamps. 33 focused files / 255 tests pass.
+
+Hosted Windows/Linux provider baseline passed at checkpoint 44999582. Hosted Apple
+compiles at 4cf34883 but its wake-journal test failed; simulator signing/Keychain
+diagnostics are being repaired. First hosted Android lacked KVM access and timed out.
+These failed development runs are evidence, not acceptance. Use focused hosted jobs;
+do not use ordinary Sounding Line as a debug loop.
+
+Remaining: native lifecycle/power/sensor orchestration and supported device profiles;
+optional hardware/token production handoffs; native restart-safe offline presentation;
+deployed provider preflight and health integration; full security/privacy/performance
+and product UX regressions; permanent implementation/validation/gate records; final
+catalog review, exact-candidate ordinary qualification, protected merge and landed
+smoke. All locally attainable work and successful hosted Apple evidence remain required.

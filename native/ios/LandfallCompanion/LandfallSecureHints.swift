@@ -4,6 +4,7 @@ import Security
 
 /** Actor-neutral opaque wake hints only; private app storage and a device-only Keychain key. */
 final class LandfallSecureHints {
+    private(set) var storageState = "UNKNOWN"
     private let alias = "com.voyagewright.landfall.wake-hints-v1"
     private let registrations = "landfall-geofence-registrations-v1"
     private func handleHash(_ handle:String)->String { SHA256.hash(data:Data(handle.utf8)).map {String(format:"%02x",$0)}.joined() }
@@ -25,7 +26,8 @@ final class LandfallSecureHints {
         let generated = bytes.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, 32, $0.baseAddress!) }
         guard generated == errSecSuccess else { throw CocoaError(.fileWriteUnknown) }
         let item: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrAccount as String: alias, kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, kSecValueData as String: bytes]
-        guard SecItemAdd(item as CFDictionary, nil) == errSecSuccess else { throw CocoaError(.fileWriteNoPermission) }
+        let added = SecItemAdd(item as CFDictionary, nil)
+        guard added == errSecSuccess else { throw NSError(domain: NSOSStatusErrorDomain, code: Int(added)) }
         return SymmetricKey(data: bytes)
     }
     func read() -> [[String: Any]] {
@@ -46,7 +48,8 @@ final class LandfallSecureHints {
             try FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
             try encrypted.combined?.write(to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
             var resource=file; var values=URLResourceValues(); values.isExcludedFromBackup=true; try resource.setResourceValues(values)
-        } catch { /* Fail closed without private-content logging. */ }
+            storageState = "READY"
+        } catch { let value = error as NSError; storageState = "ERROR:\(value.domain):\(value.code)" }
     }
     func clear() { UserDefaults.standard.removeObject(forKey:registrations);try? FileManager.default.removeItem(at: file); SecItemDelete([kSecClass as String: kSecClassGenericPassword, kSecAttrAccount as String: alias] as CFDictionary) }
 }

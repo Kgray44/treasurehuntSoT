@@ -38,6 +38,7 @@ function scenario(
   providers: DeviceLabScenario["providers"],
   actions: DeviceLabAction[],
   physicalRequired: DeviceLabScenario["physicalRequired"] = [],
+  canonicalAuthority: DeviceLabScenario["canonicalAuthority"] = "NONE",
 ) {
   cases.push(
     deviceLabScenarioSchema.parse({
@@ -47,6 +48,7 @@ function scenario(
       description: `Reproduce ${id.replaceAll("-", " ")} through canonical Landfall adapters.`,
       worldspace: "PHYSICAL",
       publishedFixture: "landfall-device-lab-v1",
+      canonicalAuthority,
       targets: ["provider-simulation", "android-emulator", "ios-simulator", "real-android", "real-ios"],
       deviceProfiles: ["primary-phone", "compatibility-phone"],
       providers,
@@ -344,6 +346,23 @@ scenario(
     assertion("serverConfirmed", false),
   ],
   ["SUSPENSION", "BATTERY", "GPS_MULTIPATH", "FIELD_ENVIRONMENT"],
+);
+
+scenario(
+  "offline-native-canonical-reconcile",
+  ["LOCATION", "OFFLINE_PACKAGE"],
+  [
+    network("OFFLINE"),
+    location(),
+    location(),
+    assertion("serverConfirmed", false),
+    network("ONLINE"),
+    { type: "RECONCILE", outcome: "ACCEPT" },
+    assertion("serverConfirmed", true),
+    assertion("canonicalProgressionEvents", 1),
+  ],
+  ["FIELD_ENVIRONMENT"],
+  "ONE_VOYAGE",
 );
 
 /** One semantic corpus; backends translate these actions rather than maintaining independent test stories. */

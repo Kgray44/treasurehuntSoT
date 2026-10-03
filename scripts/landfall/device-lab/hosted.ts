@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { mkdir, readFile, writeFile, rm } from "node:fs/promises";
+import { mkdir, writeFile, rm } from "node:fs/promises";
 import path from "node:path";
 import { labTool } from "./host";
 
@@ -10,8 +10,9 @@ export async function dispatchLandfallHostedLab(candidate: string, root = proces
   if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error("LANDFALL_HOSTED_CANDIDATE_INVALID");
   if (!["all", "provider", "android", "ios"].includes(target)) throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   await labTool("git", ["cat-file", "-e", `${candidate}^{commit}`]);
-  const template = await readFile(path.join(root, ".agents", "landfall-device-lab-hosted.yml"), "utf8");
-  const workflow = template.replaceAll("__CANDIDATE_SHA__", candidate)
+  const template = await labTool("git", ["show", `${candidate}:.agents/landfall-device-lab-hosted.yml`]);
+  const workflow = template
+    .replaceAll("__CANDIDATE_SHA__", candidate)
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
     .replaceAll("__RUN_ANDROID__", String(target === "all" || target === "android"));

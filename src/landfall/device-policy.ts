@@ -43,7 +43,7 @@ export function landfallPowerPolicy(input: {
         : profile === "PRECISION_ACTIVE"
           ? 1000
           : profile === "BACKGROUND_LOW_POWER"
-            ? 60_000
+            ? null
             : constrained
               ? 15_000
               : 5000,

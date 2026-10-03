@@ -94,7 +94,10 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "NFC_READ": replyHandler(["state": hardware?.startNfc(foreground: foreground) ?? "UNAVAILABLE"], nil)
         case "QR_SCAN": replyHandler(["state": hardware?.startQr(foreground: foreground, presenter: web?.window?.rootViewController) ?? "UNAVAILABLE"], nil)
         case "CLEAR_PRIVATE_DATA":
-            pause(); for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear()
+            stopLocation(); stopSensors(); hardware?.stop()
+            for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear()
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
             replyHandler(["accepted": true], nil)
         default: replyHandler(["state": "UNSUPPORTED"], nil)
         }

@@ -10,6 +10,7 @@ import { BrowserContextProvider, type BrowserContextTarget } from "@/landfall/br
 import type { ContextualEvidence, ContextualSnapshot } from "@/landfall/contextual";
 import { BrowserGeolocationProvider } from "@/landfall/browser-geolocation";
 import { createLandfallNativeDriver, NativeForegroundLocationProvider } from "@/landfall/native-bridge";
+import { NativeContextProvider } from "@/landfall/native-context";
 import { LandfallOfflineRegionPanel } from "@/components/player/journal/LandfallOfflineRegionPanel";
 import { LandfallBackgroundPanel } from "@/components/player/journal/LandfallBackgroundPanel";
 import { distance } from "@/landfall/geometry";
@@ -93,7 +94,7 @@ function useLandfallController({
   const [landmarkObservations, setLandmarkObservations] = useState<LandfallObservation[]>([]);
   const runtime = useRef<LandfallRuntime | null>(null);
   const browser = useRef<BrowserGeolocationProvider | NativeForegroundLocationProvider | null>(null);
-  const contextBrowser = useRef<BrowserContextProvider | null>(null);
+  const contextBrowser = useRef<BrowserContextProvider | NativeContextProvider | null>(null);
   const contextSamples = useRef<ContextualEvidence[]>([]);
   const samples = useRef<LandfallObservation[]>([]);
   const submitting = useRef(false);
@@ -208,7 +209,9 @@ function useLandfallController({
         runtime.current = active;
         const worldspace = next.runtimeDefinition.worldspaces[0];
         if (!historical && !next.replayOnly && next.runtimeDefinition.context && worldspace.kind === "PHYSICAL")
-          contextBrowser.current = new BrowserContextProvider(window as unknown as BrowserContextTarget, worldspace.id);
+          contextBrowser.current = createLandfallNativeDriver()
+            ? new NativeContextProvider(worldspace.id)
+            : new BrowserContextProvider(window as unknown as BrowserContextTarget, worldspace.id);
         const waypoint = next.runtimeDefinition.waypoints.find((item) => item.id === next.activeWaypointId);
         if (
           worldspace.kind === "PHYSICAL" &&

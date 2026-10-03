@@ -14,9 +14,11 @@ async function main() {
     .sort((a, b) => b.id.localeCompare(a.id, undefined, { numeric: true }))[0];
   if (!runtime) throw new Error("LANDFALL_APPLE_RUNTIME_UNAVAILABLE");
   const types = JSON.parse(await labTool("xcrun", ["simctl", "list", "devicetypes", "--json"]));
-  const compatibleNames = new Set(host.apple.devices
-    .filter((item) => item.available && item.runtime === runtime.id && item.name.includes("iPhone"))
-    .map((item) => item.name));
+  const compatibleNames = new Set(
+    host.apple.devices
+      .filter((item) => item.available && item.runtime === runtime.id && item.name.includes("iPhone"))
+      .map((item) => item.name),
+  );
   const deviceType = types.devicetypes
     .filter(
       (item: { identifier: string; name: string }) =>
@@ -54,7 +56,8 @@ async function main() {
         path.join(destination, "DerivedData"),
         "-resultBundlePath",
         path.join(destination, "NativeTests.xcresult"),
-        "CODE_SIGNING_ALLOWED=NO",
+        "CODE_SIGNING_ALLOWED=YES",
+        "CODE_SIGN_IDENTITY=-",
         "test",
       ],
       1200000,
@@ -81,6 +84,18 @@ async function main() {
         deviceType: deviceType.identifier,
       }),
     );
+  } catch (error) {
+    const summary = await labTool("xcrun", [
+      "xcresulttool",
+      "get",
+      "test-results",
+      "summary",
+      "--path",
+      path.join(destination, "NativeTests.xcresult"),
+    ]).catch(() => "XCRESULT_SUMMARY_UNAVAILABLE");
+    await writeFile(path.join(destination, "test-summary.json"), summary);
+    process.stderr.write(`${summary.slice(-16000)}\n`);
+    throw error;
   } finally {
     await labTool("xcrun", ["simctl", "shutdown", id]).catch(() => undefined);
     await labTool("xcrun", ["simctl", "delete", id]);

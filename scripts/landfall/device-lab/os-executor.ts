@@ -1,8 +1,11 @@
 import { createServer } from "node:http";
+import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { build } from "esbuild";
 import { discoverDeviceLabHost, labTool } from "./host";
+import { startDeviceLabAuthority } from "./authority-client";
+import { playerLandfallEvidenceSchema } from "../../../src/landfall/player-evidence-contract";
 import { type DeviceLabScenario, type DeviceLabStepResult } from "../../../src/landfall/device-lab/scenario";
 
 export async function executeLandfallOsScenario(
@@ -11,6 +14,7 @@ export async function executeLandfallOsScenario(
   destination: string,
 ) {
   const root = process.cwd();
+  await mkdir(destination, { recursive: true });
   const host = await discoverDeviceLabHost();
   const bundle = await build({
     entryPoints: [path.join(root, "src", "landfall", "device-lab", "os-browser-client.ts")],
@@ -21,6 +25,9 @@ export async function executeLandfallOsScenario(
     target: "es2020",
     logLevel: "silent",
   });
+  const authority = await startDeviceLabAuthority(path.join(destination, "authority"));
+  let network = "ONLINE";
+  let canonicalProgressionEvents: number | null = null;
   let ready = false;
   let clientError = false;
   let current: { index: number; action: unknown } | null = null;
@@ -32,7 +39,7 @@ export async function executeLandfallOsScenario(
     if (request.method === "GET" && route === "/player") {
       response.setHeader("Content-Type", "text/html");
       response.end(
-        '<!doctype html><html><meta name="viewport" content="width=device-width,initial-scale=1"><title>Landfall Device Lab</title><body><h1>Landfall Device Lab</h1><p>Synthetic native acquisition. No Voyage writes.</p><script src="/lab.js"></script></body></html>',
+        '<!doctype html><html><meta name="viewport" content="width=device-width,initial-scale=1"><title>Landfall Device Lab</title><body><h1>Landfall Device Lab</h1><p>Synthetic isolated Voyage. Canonical server confirmation is required.</p><script src="/lab.js"></script></body></html>',
       );
       return;
     }
@@ -52,6 +59,16 @@ export async function executeLandfallOsScenario(
       }
       return;
     }
+    if (request.method === "GET" && route === "/lab/authority") {
+      response.setHeader("Content-Type", "application/json");
+      response.end(JSON.stringify(network === "OFFLINE" ? { state: "UNAVAILABLE" } : await authority.authorize()));
+      return;
+    }
+    if (request.method === "GET" && route === "/lab/counts") {
+      response.setHeader("Content-Type", "application/json");
+      response.end(JSON.stringify(await authority.counts()));
+      return;
+    }
     if (request.method !== "POST") {
       response.statusCode = 404;
       response.end();
@@ -60,7 +77,7 @@ export async function executeLandfallOsScenario(
     let body = "";
     for await (const bytes of request) {
       body += bytes.toString();
-      if (body.length > 8192) {
+      if (body.length > 48 * 1024) {
         response.statusCode = 413;
         response.end();
         return;
@@ -68,6 +85,16 @@ export async function executeLandfallOsScenario(
     }
     try {
       const value = route === "/lab/error" ? null : JSON.parse(body);
+      if (route === "/lab/commit") {
+        if (network === "OFFLINE") {
+          response.statusCode = 503;
+          response.end();
+          return;
+        }
+        const evidence = playerLandfallEvidenceSchema.parse(value);
+        response.end(JSON.stringify(await authority.submit(evidence)));
+        return;
+      }
       if (route === "/lab/ready") ready = ["GRANTED", "APPROXIMATE"].includes(value.permission);
       else if (route === "/lab/error") clientError = true;
       else if (
@@ -102,6 +129,10 @@ export async function executeLandfallOsScenario(
   const port = address.port;
   let ownedDevice: string | null = null;
   let androidSerial: string | null = null;
+  let osVersion = host.osVersion;
+  let runtimeVersion = host.nodeVersion;
+  const remainingResources: string[] = [];
+  const artifacts: { path: string; sha256: string; kind: "SCREENSHOT" | "TEST_RESULT" }[] = [];
   const adb = async (args: string[]) => {
     if (!host.android.adb || !androidSerial) throw new Error("LANDFALL_ANDROID_NOT_CONFIGURED");
     return labTool(host.android.adb, ["-P", process.env.LANDFALL_LAB_ADB_PORT ?? "5037", "-s", androidSerial, ...args]);
@@ -128,6 +159,8 @@ export async function executeLandfallOsScenario(
       }
       if (!androidSerial || !/^emulator-[0-9]+$/.test(androidSerial))
         throw new Error("LANDFALL_OWNED_ANDROID_REQUIRED");
+      osVersion = (await adb(["shell", "getprop", "ro.build.version.release"])).trim();
+      runtimeVersion = `Android API ${(await adb(["shell", "getprop", "ro.build.version.sdk"])).trim()}; ${host.android.emulatorVersion}`;
       await adb([
         "install",
         "-r",
@@ -153,6 +186,8 @@ export async function executeLandfallOsScenario(
       const app = JSON.parse(
         await readFile(path.join(root, "artifacts", "landfall-device-lab", "apple-app.json"), "utf8"),
       );
+      osVersion = app.runtime;
+      runtimeVersion = host.apple.xcodeVersion ?? "UNAVAILABLE";
       ownedDevice = (
         await labTool("xcrun", ["simctl", "create", `landfall-os-${process.pid}`, app.deviceType, app.runtime])
       ).trim();
@@ -170,8 +205,30 @@ export async function executeLandfallOsScenario(
       ]);
     }
     await wait(() => ready, 60000);
+    const timelineStartedAt = Date.now();
     for (const [index, step] of scenario.timeline.entries()) {
-      if (step.action.type !== "LOCATION" && step.action.type !== "ASSERT") {
+      const remaining = timelineStartedAt + step.atMs - Date.now();
+      if (remaining > 0) await new Promise((resolve) => setTimeout(resolve, remaining));
+      if (
+        step.action.type === "NETWORK" &&
+        target === "android-emulator" &&
+        step.action.latencyMs === 0 &&
+        ["OFFLINE", "ONLINE"].includes(step.action.state)
+      ) {
+        network = step.action.state;
+        await adb(["shell", "svc", "wifi", network === "ONLINE" ? "enable" : "disable"]);
+        await adb(["shell", "svc", "data", network === "ONLINE" ? "enable" : "disable"]);
+      } else if (
+        step.action.type === "NETWORK" &&
+        target === "ios-simulator" &&
+        step.action.latencyMs === 0 &&
+        ["OFFLINE", "ONLINE"].includes(step.action.state)
+      ) {
+        // Simulator cannot disable the host network safely. The first-party service
+        // fault is controlled here; iOS radio fidelity remains explicitly external.
+        network = step.action.state;
+      }
+      if (!["LOCATION", "ASSERT", "NETWORK", "RECONCILE"].includes(step.action.type)) {
         steps.push({
           index,
           action: step.action.type,
@@ -198,6 +255,23 @@ export async function executeLandfallOsScenario(
       await wait(() => results.has(index), 30000);
       steps.push(results.get(index)!);
     }
+    const screenshot = path.join(destination, "native-final.png");
+    if (target === "android-emulator") {
+      const deviceFile = `/data/local/tmp/landfall-lab-${process.pid}.png`;
+      try {
+        await adb(["shell", "screencap", "-p", deviceFile]);
+        await adb(["pull", deviceFile, screenshot]);
+      } finally {
+        await adb(["shell", "rm", "-f", deviceFile]);
+      }
+    } else await labTool("xcrun", ["simctl", "io", ownedDevice!, "screenshot", screenshot]);
+    artifacts.push({
+      path: screenshot,
+      sha256: createHash("sha256")
+        .update(await readFile(screenshot))
+        .digest("hex"),
+      kind: "SCREENSHOT",
+    });
   } catch (error) {
     steps.push({
       index: steps.length,
@@ -210,18 +284,82 @@ export async function executeLandfallOsScenario(
     stop = true;
     if (androidSerial) await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]).catch(() => undefined);
     if (androidSerial) await adb(["reverse", "--remove", `tcp:${port}`]).catch(() => undefined);
+    if (androidSerial) {
+      const cleared = await adb(["shell", "pm", "clear", "com.voyagewright.landfall"]).catch(() => "FAIL");
+      if (!cleared.includes("Success")) remainingResources.push("native-app-private-data");
+      await adb(["shell", "svc", "wifi", "enable"]).catch(() => undefined);
+      await adb(["shell", "svc", "data", "enable"]).catch(() => undefined);
+    }
+    if (androidSerial) {
+      const active = await adb(["shell", "pidof", "com.voyagewright.landfall"]).catch(
+        (error: { stdout?: string; code?: number }) => {
+          if (error.code === 1 && !error.stdout?.trim()) return "";
+          return "UNVERIFIED";
+        },
+      );
+      if (active.trim()) remainingResources.push("native-app-process");
+      const reverse = await adb(["reverse", "--list"]).catch(() => "UNVERIFIED");
+      if (reverse === "UNVERIFIED" || reverse.split(/\s+/).includes(`tcp:${port}`))
+        remainingResources.push("owned-adb-reverse");
+    }
     if (ownedDevice) {
       await labTool("xcrun", ["simctl", "shutdown", ownedDevice]).catch(() => undefined);
-      await labTool("xcrun", ["simctl", "delete", ownedDevice]);
+      await labTool("xcrun", ["simctl", "delete", ownedDevice]).catch(() => undefined);
+      const devices = await labTool("xcrun", ["simctl", "list", "devices", "--json"]).catch(() => "UNVERIFIED");
+      if (devices === "UNVERIFIED" || devices.includes(ownedDevice)) remainingResources.push(ownedDevice);
     }
+    server.closeAllConnections();
     await new Promise<void>((resolve) => server.close(() => resolve()));
+    if (server.listening) remainingResources.push("loopback-native-lab-server");
+    try {
+      const counts = await authority.counts();
+      canonicalProgressionEvents = counts.canonicalProgressionEvents;
+      if (counts.rawLocationsRetained)
+        steps.push({
+          index: scenario.timeline.length - 1,
+          action: "ASSERT",
+          state: "FAIL",
+          reason: "LANDFALL_NATIVE_RAW_LOCATION_RETAINED",
+        });
+      const file = path.join(destination, "authority", "receipt.json");
+      await writeFile(
+        file,
+        JSON.stringify({ fixtureHash: authority.fixtureHash, counts, clock: "NATIVE_UNMODIFIED_TIMESTAMPS" }, null, 2),
+      );
+      artifacts.push({
+        path: file,
+        sha256: createHash("sha256")
+          .update(await readFile(file))
+          .digest("hex"),
+        kind: "TEST_RESULT",
+      });
+    } catch {
+      remainingResources.push("unverified-one-voyage-counts");
+    }
+    if (!(await authority.cleanup())) remainingResources.push("one-voyage-authority");
   }
   await mkdir(destination, { recursive: true });
   const cleanup = {
-    result: "PASS" as const,
+    result: remainingResources.length ? ("FAIL" as const) : ("PASS" as const),
     ownedResources: ["loopback-native-lab-server", ...(ownedDevice ? [ownedDevice] : [])],
-    remainingResources: [],
+    remainingResources,
   };
   await writeFile(path.join(destination, "native-steps.json"), JSON.stringify({ steps, cleanup }, null, 2));
-  return { steps, cleanup, canonicalProgressionEvents: null };
+  const stepsFile = path.join(destination, "native-steps.json");
+  artifacts.push({
+    path: stepsFile,
+    sha256: createHash("sha256")
+      .update(await readFile(stepsFile))
+      .digest("hex"),
+    kind: "TEST_RESULT",
+  });
+  return {
+    steps,
+    cleanup,
+    artifacts,
+    osVersion,
+    runtimeVersion,
+    canonicalProgressionEvents,
+    authorityFixtureHash: authority.fixtureHash,
+  };
 }

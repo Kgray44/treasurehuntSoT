@@ -157,6 +157,7 @@ export const deviceLabScenarioSchema = z
     seed: z.number().int().min(1).max(2147483647),
     worldspace: z.enum(["PHYSICAL", "VIRTUAL"]),
     publishedFixture: z.literal("landfall-device-lab-v1"),
+    canonicalAuthority: z.enum(["NONE", "ONE_VOYAGE"]).default("NONE"),
     targets: z.array(deviceLabTargetSchema).min(1).max(6),
     deviceProfiles: z
       .array(z.enum(["primary-phone", "compatibility-phone", "low-resource", "tablet", "nearby-peer"]))
@@ -237,6 +238,8 @@ export type DeviceLabReceipt = {
   result: "PASS" | "FAIL" | "UNSUPPORTED" | "NOT_CONFIGURED";
   steps: DeviceLabStepResult[];
   canonicalProgressionEvents: number | null;
+  canonicalAuthority?: "ONE_VOYAGE_REAL_SQLITE";
+  authorityFixtureHash?: string;
   artifacts: { path: string; sha256: string; kind: "LOG" | "SCREENSHOT" | "VIDEO" | "TEST_RESULT" | "METRIC" }[];
   externalRequirements: string[];
   cleanup: { result: "PASS" | "FAIL"; ownedResources: string[]; remainingResources: string[] };
@@ -267,6 +270,10 @@ export function validateDeviceLabFidelity(receipt: DeviceLabReceipt): void {
       receipt.cleanup.remainingResources.length)
   )
     throw new Error("LANDFALL_LAB_FIDELITY_INVALID");
-  if (receipt.target === "provider-simulation" && receipt.canonicalProgressionEvents !== null)
+  if (
+    receipt.canonicalProgressionEvents !== null &&
+    (receipt.canonicalAuthority !== "ONE_VOYAGE_REAL_SQLITE" ||
+      !/^[a-f0-9]{64}$/.test(receipt.authorityFixtureHash ?? ""))
+  )
     throw new Error("LANDFALL_LAB_CANONICAL_PROOF_REQUIRES_ONE_VOYAGE");
 }
