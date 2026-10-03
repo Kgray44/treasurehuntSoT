@@ -14,3 +14,7 @@ Owner: PR #675 / `codex/landfall-phase3-v11`; owned `landfall-phase3` worktree. 
 | How to prove defaults and operational fusion               | Existing owned generic browser harness and closure fixtures                                                                 | Service tests cannot prove ordinary controls/autosave/published Player use | Actual Creator defaults/save/reload and synthetic immutable Voyage; real location + human canonical visit        |
 
 Development: focused tests and subsystem gate. Candidate freeze: full unit once, complete nonduplicate Landfall browser corpus, static/privacy/docs/catalog checks. Ordinary exact-head Sounding Line, required hosted PASS, protected merge, landed smoke and permanent receipt follow. Phase 4, provider implementation, deployment and hardware recognition are excluded.
+
+## Closure evidence
+
+Product candidate `d609c30473d818e4c3cb8513c0cc48f8930c2f19` / tree `11ac3173934cf6c8b7881a6ee7cd8e71b0468b78` passed full units 410/2364 and 39 production cases. Local and required hosted run `37134281447`, job `111235498558`, satisfy 9/9 obligations with empty remainder/errors. Protected PR #675 merged as `64c780a0c926ac8f78535fc43e9afc48f3b4880c`; tree matches candidate. Landed smoke passed 29 files/220 tests and five production cases. An evidence-only protected follow-up is necessary to commit measured post-merge identities because merged #675 cannot receive new source commits. It preserves application/test/schema/dependency source, promotes FT-044, and publishes the additive accepted capsule. No Phase 4 work.
