@@ -19,6 +19,17 @@ export function landfallNativeHost(): NativeHost | null {
     ? host
     : null;
 }
+/** Native lifecycle is independent of WebView document visibility on mobile OSes. */
+export function subscribeLandfallNativeLifecycle(listener: (state: "FOREGROUND" | "BACKGROUND") => void) {
+  if (typeof window === "undefined") return () => undefined;
+  const receive = (event: Event) => {
+    const value = (event as CustomEvent).detail;
+    if (value?.type === "lifecycle" && (value.state === "FOREGROUND" || value.state === "BACKGROUND"))
+      listener(value.state);
+  };
+  window.addEventListener("landfall-native-event", receive);
+  return () => window.removeEventListener("landfall-native-event", receive);
+}
 export async function landfallNativeRequest(
   operation:
     | "LOCATION_PERMISSION"

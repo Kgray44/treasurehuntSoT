@@ -35,8 +35,18 @@ async function exists(file: string) {
   }
 }
 /** Only trusted fixed tool/argv calls. Scenario data can never become an executable or a shell command. */
-export async function labTool(command: string, args: string[], timeoutMs = 30000): Promise<string> {
-  const result = await execute(command, args, { timeout: timeoutMs, maxBuffer: 2 * 1024 * 1024, windowsHide: true });
+export async function labTool(
+  command: string,
+  args: string[],
+  timeoutMs = 30000,
+  signal?: AbortSignal,
+): Promise<string> {
+  const result = await execute(command, args, {
+    timeout: timeoutMs,
+    signal,
+    maxBuffer: 8 * 1024 * 1024,
+    windowsHide: true,
+  });
   return result.stdout;
 }
 export async function discoverDeviceLabHost(): Promise<DeviceLabHostCapabilities> {
@@ -79,8 +89,10 @@ export async function discoverDeviceLabHost(): Promise<DeviceLabHostCapabilities
   if (process.platform === "darwin") {
     try {
       inventory.apple.xcodeVersion = (await labTool("xcodebuild", ["-version"])).trim().slice(0, 200);
-      const runtimes = JSON.parse(await labTool("xcrun", ["simctl", "list", "runtimes", "--json"]));
-      const devices = JSON.parse(await labTool("xcrun", ["simctl", "list", "devices", "--json"]));
+      // CoreSimulator can initialize slowly on a fresh hosted machine. Its real
+      // inventory must finish before declaring this host unavailable.
+      const runtimes = JSON.parse(await labTool("xcrun", ["simctl", "list", "runtimes", "--json"], 120000));
+      const devices = JSON.parse(await labTool("xcrun", ["simctl", "list", "devices", "--json"], 120000));
       inventory.apple.runtimes = (runtimes.runtimes ?? [])
         .filter(
           (item: { identifier: unknown; name: unknown }) =>

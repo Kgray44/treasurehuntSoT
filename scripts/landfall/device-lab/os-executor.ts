@@ -33,9 +33,24 @@ export async function executeLandfallOsScenario(
   let current: { index: number; action: unknown } | null = null;
   let stop = false;
   const results = new Map<number, DeviceLabStepResult>();
+  const locationReady = new Set<number>();
+  const osResults = new Map<number, DeviceLabStepResult>();
+  let osReady = false;
+  let osCurrent: { index: number; action: unknown } | null = null;
   const server = createServer(async (request, response) => {
     const route = request.url?.split("?")[0];
     response.setHeader("Cache-Control", "no-store");
+    if (request.method === "GET" && route === "/lab/os/next") {
+      if (stop) response.end(JSON.stringify({ stop: true }));
+      else if (osCurrent) {
+        response.end(JSON.stringify(osCurrent));
+        osCurrent = null;
+      } else {
+        response.statusCode = 204;
+        response.end();
+      }
+      return;
+    }
     if (request.method === "GET" && route === "/player") {
       response.setHeader("Content-Type", "text/html");
       response.end(
@@ -95,7 +110,21 @@ export async function executeLandfallOsScenario(
         response.end(JSON.stringify(await authority.submit(evidence)));
         return;
       }
-      if (route === "/lab/ready") ready = ["GRANTED", "APPROXIMATE"].includes(value.permission);
+      if (
+        route === "/lab/location-ready" &&
+        Number.isInteger(value.index) &&
+        scenario.timeline[value.index]?.action.type === "LOCATION"
+      )
+        locationReady.add(value.index);
+      else if (route === "/lab/os/ready") osReady = true;
+      else if (
+        route === "/lab/os/result" &&
+        Number.isInteger(value.index) &&
+        scenario.timeline[value.index]?.action.type === "LIFECYCLE" &&
+        ["PASS", "FAIL", "UNSUPPORTED"].includes(value.state)
+      )
+        osResults.set(value.index, { index: value.index, action: "LIFECYCLE", state: value.state });
+      else if (route === "/lab/ready") ready = ["GRANTED", "APPROXIMATE"].includes(value.permission);
       else if (route === "/lab/error") clientError = true;
       else if (
         route === "/lab/result" &&
@@ -129,6 +158,10 @@ export async function executeLandfallOsScenario(
   const port = address.port;
   let ownedDevice: string | null = null;
   let androidSerial: string | null = null;
+  let foreground = true;
+  let uiRunner: Promise<void> | null = null;
+  const uiAbort = new AbortController();
+  let uiFailed = false;
   let osVersion = host.osVersion;
   let runtimeVersion = host.nodeVersion;
   const remainingResources: string[] = [];
@@ -141,6 +174,7 @@ export async function executeLandfallOsScenario(
     const deadline = Date.now() + budget;
     while (!predicate()) {
       if (clientError) throw new Error("LANDFALL_NATIVE_CLIENT_FAILED");
+      if (uiFailed) throw new Error("LANDFALL_NATIVE_UI_DRIVER_FAILED");
       if (Date.now() > deadline) throw new Error("LANDFALL_NATIVE_CLIENT_TIMEOUT");
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
@@ -203,12 +237,136 @@ export async function executeLandfallOsScenario(
         "com.voyagewright.landfall",
         `--landfall-lab-origin=http://127.0.0.1:${port}`,
       ]);
+      if (scenario.timeline.some((step) => step.action.type === "LIFECYCLE")) {
+        uiRunner = labTool(
+          "xcodebuild",
+          [
+            "-quiet",
+            "-project",
+            path.join(root, "native", "ios", "LandfallCompanion.xcodeproj"),
+            "-scheme",
+            "LandfallCompanion",
+            "-destination",
+            `platform=iOS Simulator,id=${ownedDevice}`,
+            "-derivedDataPath",
+            path.join(root, "artifacts", "landfall-device-lab", "apple-build", "DerivedData"),
+            "-resultBundlePath",
+            path.join(destination, "NativeLifecycle.xcresult"),
+            "-only-testing:LandfallCompanionUiTests/NativeLifecycleTests/testCanonicalScenarioOperations",
+            "CODE_SIGNING_ALLOWED=YES",
+            "CODE_SIGN_IDENTITY=-",
+            `LANDFALL_LAB_ORIGIN=http://127.0.0.1:${port}`,
+            "test-without-building",
+          ],
+          2100000,
+          uiAbort.signal,
+        )
+          .then(() => undefined)
+          .catch(() => {
+            uiFailed = true;
+          });
+        await wait(() => osReady, 120000);
+      }
     }
     await wait(() => ready, 60000);
     const timelineStartedAt = Date.now();
     for (const [index, step] of scenario.timeline.entries()) {
       const remaining = timelineStartedAt + step.atMs - Date.now();
       if (remaining > 0) await new Promise((resolve) => setTimeout(resolve, remaining));
+      if (
+        step.action.type === "ASSERT" &&
+        ["serverConfirmed", "canonicalProgressionEvents"].includes(step.action.field)
+      ) {
+        const counts = await authority.counts();
+        const actual =
+          step.action.field === "serverConfirmed"
+            ? counts.canonicalProgressionEvents > 0
+            : counts.canonicalProgressionEvents;
+        steps.push({
+          index,
+          action: "ASSERT",
+          state: actual === step.action.value ? "PASS" : "FAIL",
+          ...(actual === step.action.value ? {} : { reason: "NATIVE_CANONICAL_COUNT_MISMATCH" }),
+        });
+        continue;
+      }
+      if (step.action.type === "LIFECYCLE") {
+        const action = step.action;
+        if (target === "ios-simulator") {
+          if (
+            !["DEFAULT", "FORCE_STOP", undefined].includes(action.operation) ||
+            !["FOREGROUND", "BACKGROUND", "TERMINATED", "RELAUNCH"].includes(action.state)
+          ) {
+            steps.push({ index, action: "LIFECYCLE", state: "UNSUPPORTED", reason: "SIMULATOR_LIFECYCLE_UNSUPPORTED" });
+            continue;
+          }
+          osCurrent = { index, action };
+          await wait(() => osResults.has(index), 30000);
+          const result = osResults.get(index)!;
+          if (result.state !== "PASS") {
+            steps.push(result);
+            continue;
+          }
+        } else if (action.state === "FOREGROUND" || action.state === "RELAUNCH") {
+          if (action.operation === "REBOOT" || action.operation === "ACTIVITY_RECREATE") {
+            steps.push({ index, action: "LIFECYCLE", state: "UNSUPPORTED", reason: "ANDROID_RECREATE_NOT_CONFIGURED" });
+            continue;
+          }
+          await adb(["shell", "input", "keyevent", "224"]);
+          await adb(["shell", "input", "keyevent", "82"]);
+          await adb([
+            "shell",
+            "am",
+            "start",
+            "-n",
+            "com.voyagewright.landfall/.LandfallActivity",
+            "--es",
+            "labOrigin",
+            `http://127.0.0.1:${port}`,
+          ]);
+        } else if (action.state === "BACKGROUND") {
+          await adb(["shell", "input", "keyevent", "3"]);
+          const activity = await adb(["shell", "dumpsys", "activity", "activities"]);
+          const resumed = activity
+            .split(/\r?\n/)
+            .filter((line) => /(?:mResumedActivity|topResumedActivity)/.test(line));
+          if (!resumed.length || resumed.some((line) => line.includes("com.voyagewright.landfall")))
+            throw new Error("ANDROID_BACKGROUND_NOT_OBSERVED");
+        } else if (action.state === "SCREEN_LOCKED") {
+          await adb(["shell", "input", "keyevent", "223"]);
+          let asleep = false;
+          for (let attempt = 0; attempt < 30 && !asleep; attempt++) {
+            const power = await adb(["shell", "dumpsys", "power"]);
+            asleep = /mWakefulness=Asleep|state=OFF/.test(power);
+            if (!asleep) await new Promise((resolve) => setTimeout(resolve, 100));
+          }
+          if (!asleep) throw new Error("ANDROID_SCREEN_OFF_NOT_OBSERVED");
+        } else if (action.state === "TERMINATED") {
+          if (action.operation === "PROCESS_KILL") {
+            const pid = (await adb(["shell", "pidof", "com.voyagewright.landfall"])).trim();
+            if (!/^[0-9]+$/.test(pid)) throw new Error("ANDROID_OWNED_APP_PID_INVALID");
+            await adb(["shell", "run-as", "com.voyagewright.landfall", "kill", "-9", pid]);
+          } else await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
+          const pid = await adb(["shell", "pidof", "com.voyagewright.landfall"]).catch((error: { code?: number }) =>
+            error.code === 1 ? "" : "UNVERIFIED",
+          );
+          if (pid.trim()) throw new Error("ANDROID_TERMINATION_NOT_OBSERVED");
+        } else {
+          steps.push({ index, action: "LIFECYCLE", state: "UNSUPPORTED", reason: "NATIVE_SUSPENSION_UNSUPPORTED" });
+          continue;
+        }
+        foreground = ["FOREGROUND", "RELAUNCH"].includes(action.state);
+        if (foreground) {
+          current = { index, action };
+          await wait(() => results.has(index), 30000);
+          steps.push(results.get(index)!);
+        } else steps.push({ index, action: "LIFECYCLE", state: "PASS" });
+        continue;
+      }
+      if (!foreground) {
+        steps.push({ index, action: step.action.type, state: "UNSUPPORTED", reason: "FRESH_FOREGROUND_REQUIRED" });
+        continue;
+      }
       if (
         step.action.type === "NETWORK" &&
         target === "android-emulator" &&
@@ -240,7 +398,11 @@ export async function executeLandfallOsScenario(
       current = { index, action: step.action };
       if (step.action.type === "LOCATION" && step.action.coordinate.type === "WGS84") {
         const coordinate = step.action.coordinate;
-        await new Promise((resolve) => setTimeout(resolve, 250));
+        await wait(() => locationReady.has(index) || results.has(index), 30000);
+        if (results.has(index)) {
+          steps.push(results.get(index)!);
+          continue;
+        }
         if (target === "android-emulator")
           await adb(["emu", "geo", "fix", String(coordinate.longitude), String(coordinate.latitude)]);
         else
@@ -282,6 +444,27 @@ export async function executeLandfallOsScenario(
     });
   } finally {
     stop = true;
+    if (uiRunner) {
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const done = await Promise.race([
+        uiRunner.then(() => true),
+        new Promise<boolean>((resolve) => {
+          timer = setTimeout(() => resolve(false), 30000);
+        }),
+      ]);
+      clearTimeout(timer);
+      if (!done) {
+        uiAbort.abort();
+        await uiRunner;
+      }
+      if (!done || uiFailed)
+        steps.push({
+          index: scenario.timeline.length - 1,
+          action: "LIFECYCLE",
+          state: "FAIL",
+          reason: "NATIVE_UI_DRIVER_FAILED",
+        });
+    }
     if (androidSerial) await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]).catch(() => undefined);
     if (androidSerial) await adb(["reverse", "--remove", `tcp:${port}`]).catch(() => undefined);
     if (androidSerial) {

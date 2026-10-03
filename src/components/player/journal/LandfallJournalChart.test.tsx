@@ -27,6 +27,7 @@ const bootstrap = projectPlayerLandfallBootstrap(
 const watch = vi.fn(() => 17);
 const clear = vi.fn();
 beforeEach(() => {
+  delete window.LandfallNative;
   watch.mockClear();
   clear.mockClear();
   Object.defineProperty(document, "visibilityState", { configurable: true, value: "visible" });
@@ -38,6 +39,58 @@ beforeEach(() => {
     "fetch",
     vi.fn(async () => ({ ok: true, json: async () => ({ available: true, bootstrap }) })),
   );
+});
+
+it("native background pauses the shared chart while document visibility remains visible and never resumes automatically", async () => {
+  const definition = structuredClone(landfallFixture);
+  definition.worldspaces[0].observationPolicy.allowedSources.push("NATIVE_LOCATION");
+  definition.waypoints
+    .filter((waypoint) => waypoint.worldspaceId === "town")
+    .forEach((waypoint) => waypoint.evidenceProfile.acceptedSources.push("NATIVE_LOCATION"));
+  const nativeBootstrap = projectPlayerLandfallBootstrap(
+    {
+      sessionId: bootstrap.sessionId,
+      publishedVersionId: "version-1",
+      taleId: "fixture",
+      currentSequence: 4,
+      definition,
+    },
+    { releasedAssets: [], blockId: null, chapterId: null },
+  );
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => ({ ok: true, json: async () => ({ available: true, bootstrap: nativeBootstrap }) })),
+  );
+  const operations: string[] = [];
+  window.LandfallNative = {
+    version: 1,
+    platform: "ANDROID",
+    request: async (message) => {
+      const { operation } = JSON.parse(message);
+      operations.push(operation);
+      return operation === "LOCATION_PERMISSION" ? { state: "GRANTED" } : { accepted: true };
+    },
+  };
+  const view = render(journal());
+  await screen.findAllByText("Released map");
+  fireEvent.click(screen.getAllByRole("button", { name: "Use my location" })[0]);
+  await waitFor(() => expect(operations).toContain("LOCATION_START"));
+  act(() =>
+    window.dispatchEvent(
+      new CustomEvent("landfall-native-event", { detail: { type: "lifecycle", state: "BACKGROUND" } }),
+    ),
+  );
+  await waitFor(() => expect(operations.at(-1)).toBe("LOCATION_STOP"));
+  expect(document.visibilityState).toBe("visible");
+  const starts = operations.filter((operation) => operation === "LOCATION_START").length;
+  act(() =>
+    window.dispatchEvent(
+      new CustomEvent("landfall-native-event", { detail: { type: "lifecycle", state: "FOREGROUND" } }),
+    ),
+  );
+  expect(operations.filter((operation) => operation === "LOCATION_START")).toHaveLength(starts);
+  view.unmount();
+  delete window.LandfallNative;
 });
 
 it("two chart surfaces share explicit motion consent, and closing the foreground removes sensor listeners", async () => {

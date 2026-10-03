@@ -9,7 +9,11 @@ import { LandfallLandmarkPanel } from "@/components/player/journal/LandfallLandm
 import { BrowserContextProvider, type BrowserContextTarget } from "@/landfall/browser-context";
 import type { ContextualEvidence, ContextualSnapshot } from "@/landfall/contextual";
 import { BrowserGeolocationProvider } from "@/landfall/browser-geolocation";
-import { createLandfallNativeDriver, NativeForegroundLocationProvider } from "@/landfall/native-bridge";
+import {
+  createLandfallNativeDriver,
+  NativeForegroundLocationProvider,
+  subscribeLandfallNativeLifecycle,
+} from "@/landfall/native-bridge";
 import { NativeContextProvider } from "@/landfall/native-context";
 import { LandfallOfflineRegionPanel } from "@/components/player/journal/LandfallOfflineRegionPanel";
 import { LandfallBackgroundPanel } from "@/components/player/journal/LandfallBackgroundPanel";
@@ -279,8 +283,8 @@ function useLandfallController({
   }, [tracking, contextTracking]);
 
   useEffect(() => {
-    const stopInBackground = () => {
-      if (document.visibilityState === "visible") return;
+    const stopInBackground = (nativeBackground = false) => {
+      if (!nativeBackground && document.visibilityState === "visible") return;
       browser.current?.stop();
       contextBrowser.current?.stop();
       contextSamples.current = [];
@@ -293,8 +297,15 @@ function useLandfallController({
       setPosition(null);
       setMessage("Location is off while this tab is in the background. Use my location to resume.");
     };
-    document.addEventListener("visibilitychange", stopInBackground);
-    return () => document.removeEventListener("visibilitychange", stopInBackground);
+    const visibility = () => stopInBackground();
+    const unsubscribe = subscribeLandfallNativeLifecycle((state) => {
+      if (state === "BACKGROUND") stopInBackground(true);
+    });
+    document.addEventListener("visibilitychange", visibility);
+    return () => {
+      document.removeEventListener("visibilitychange", visibility);
+      unsubscribe();
+    };
   }, []);
 
   const stop = () => {

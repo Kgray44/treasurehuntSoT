@@ -1,5 +1,5 @@
 import { NativeLocationProvider } from "@/landfall/native-location";
-import { createLandfallNativeDriver } from "@/landfall/native-bridge";
+import { createLandfallNativeDriver, subscribeLandfallNativeLifecycle } from "@/landfall/native-bridge";
 import { landfallFixture } from "@/landfall/fixtures";
 import { LandfallRuntime, type LandfallOutcome } from "@/landfall/runtime";
 import { LandfallProviderRegistry } from "@/landfall/observation";
@@ -80,6 +80,14 @@ async function main() {
       },
     );
   await start();
+  const unsubscribeLifecycle = subscribeLandfallNativeLifecycle((state) => {
+    if (state === "BACKGROUND") {
+      runtime.pause();
+      samples = [];
+      latest = null;
+      void provider.stop();
+    }
+  });
   await fetch("/lab/ready", {
     method: "POST",
     body: JSON.stringify({ platform: driver.platform, permission: provider.permissionState }),
@@ -93,6 +101,7 @@ async function main() {
     const step = await response.json();
     if (step.stop) {
       await provider.stop();
+      unsubscribeLifecycle();
       break;
     }
     const action = deviceLabActionSchema.parse(step.action);
@@ -133,6 +142,15 @@ async function main() {
             };
             waiting = accept;
             if (count > before && latest) accept(latest);
+            // The host injects through the OS only after acquisition and this
+            // listener are ready. Cold native startup is not a GPS observation.
+            void fetch("/lab/location-ready", { method: "POST", body: JSON.stringify({ index: step.index }) }).catch(
+              () => {
+                clearTimeout(timer);
+                waiting = null;
+                reject(new Error("OS_LOCATION_HANDSHAKE_FAILED"));
+              },
+            );
           });
         }
       } else if (action.type === "ASSERT") {
@@ -187,7 +205,7 @@ async function main() {
             .canonicalProgressionEvents;
         }
       } else if (action.type === "LIFECYCLE") {
-        if (action.state === "FOREGROUND") {
+        if (action.state === "FOREGROUND" || action.state === "RELAUNCH") {
           runtime.resume();
           await start();
         } else {

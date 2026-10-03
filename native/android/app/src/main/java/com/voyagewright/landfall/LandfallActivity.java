@@ -184,6 +184,6 @@ public final class LandfallActivity extends Activity implements LocationListener
   @Override public void onResume() { super.onResume(); foreground=true; if (web!=null) { web.onResume(); try { event(new JSONObject().put("type", "lifecycle").put("state", "FOREGROUND").put("pendingHints", LandfallSecureHints.read(this))); } catch(Exception ignored){} } }
   private void openReturn(Intent intent){String handle=intent.getStringExtra("returnHandle");web.loadUrl(origin+(handle!=null&&handle.matches("[A-Za-z0-9_-]{32,2048}")?"/player/landfall-return?handle="+Uri.encode(handle):"/player"));}
   @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);if(web!=null)openReturn(intent);}
-  @Override public void onPause() { foreground=false; stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(web!=null)web.onPause(); super.onPause(); }
+  @Override public void onPause() { try { event(new JSONObject().put("type", "lifecycle").put("state", "BACKGROUND")); } catch(Exception ignored){} foreground=false; stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(web!=null)web.onPause(); super.onPause(); }
   @Override public void onDestroy() { stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(web!=null){web.destroy();web=null;} super.onDestroy(); }
 }

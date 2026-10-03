@@ -1,13 +1,18 @@
 import SwiftUI
 import WebKit
 
+final class LandfallDelegate: NSObject, UIApplicationDelegate {
+    // Construct even for an OS region/notification wake without a foreground scene.
+    let companion = LandfallCompanion()
+}
+
 @main
 struct LandfallApp: App {
-    @StateObject private var companion = LandfallCompanion()
+    @UIApplicationDelegateAdaptor(LandfallDelegate.self) private var delegate
     var body: some Scene {
         WindowGroup {
-            if companion.origin != nil {
-                LandfallWebView(companion: companion).ignoresSafeArea(.container, edges: .bottom)
+            if delegate.companion.origin != nil {
+                LandfallWebView(companion: delegate.companion).ignoresSafeArea(.container, edges: .bottom)
             } else {
                 Text("Landfall companion is not configured. Build with your VoyageWright HTTPS origin.").padding()
             }

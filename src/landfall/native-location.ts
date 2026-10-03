@@ -31,7 +31,13 @@ export class NativeLocationProvider {
   private generation = 0;
   private unsubscribe: (() => void) | null = null;
   private state: PermissionState = "UNKNOWN";
-  private starting = false;
+  private starting: number | null = null;
+  private driverTail = Promise.resolve();
+  private operate(operation: () => Promise<void>) {
+    const result = this.driverTail.then(operation);
+    this.driverTail = result.catch(() => undefined);
+    return result;
+  }
   private lastAt = -1;
   constructor(
     private readonly driver: NativeLocationDriver,
@@ -56,9 +62,9 @@ export class NativeLocationProvider {
     if (!options.userAction) throw new Error("LANDFALL_NATIVE_CONSENT_REQUIRED");
     if (!Number.isInteger(options.intervalMs) || options.intervalMs < 1000 || options.intervalMs > 60000)
       throw new Error("LANDFALL_NATIVE_RATE_INVALID");
-    if (this.starting || this.active) return;
+    if (this.starting !== null || this.active) return;
     const generation = ++this.generation;
-    this.starting = true;
+    this.starting = generation;
     try {
       const permission = await this.driver.permission();
       if (generation !== this.generation) return;
@@ -109,12 +115,14 @@ export class NativeLocationProvider {
         this.lastAt = fix.timestamp;
         emit(observation.data);
       });
-      await this.driver.start({
-        background: false,
-        intervalMs: options.intervalMs,
-        precise: options.precise && permission === "GRANTED",
+      await this.operate(async () => {
+        if (generation !== this.generation) return;
+        await this.driver.start({
+          background: false,
+          intervalMs: options.intervalMs,
+          precise: options.precise && permission === "GRANTED",
+        });
       });
-      if (generation !== this.generation) await this.driver.stop();
     } catch {
       if (generation === this.generation) {
         this.state = "UNAVAILABLE";
@@ -122,13 +130,14 @@ export class NativeLocationProvider {
         await this.stop();
       }
     } finally {
-      this.starting = false;
+      if (this.starting === generation) this.starting = null;
     }
   }
   async stop() {
     this.generation++;
+    this.starting = null;
     this.unsubscribe?.();
     this.unsubscribe = null;
-    await this.driver.stop();
+    await this.operate(() => this.driver.stop());
   }
 }

@@ -163,7 +163,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private func sensor(_ kind: String, _ values: [Double], accuracy: Double) { guard foreground else { return }; event(["type": "sensor", "frame": ["id": UUID().uuidString, "observedAt": Int(Date().timeIntervalSince1970*1000), "kind": kind, "values": values, "accuracy": accuracy]]) }
     private func stopLocation() { acquiring=false; location.stopUpdatingLocation() }
     private func stopSensors() { location.stopUpdatingHeading(); motion.stopAccelerometerUpdates(); motion.stopDeviceMotionUpdates(); altimeter.stopRelativeAltitudeUpdates() }
-    private func pause() { foreground=false; stopLocation(); stopSensors(); hardware?.stop() }
+    private func pause() { event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); stopSensors(); hardware?.stop() }
     private func event(_ payload: [String: Any]) {
         guard foreground, let web=web, accepts(web.url), JSONSerialization.isValidJSONObject(payload), let data=try? JSONSerialization.data(withJSONObject: payload, options: [.fragmentsAllowed]), let json=String(data: data, encoding: .utf8) else { return }
         DispatchQueue.main.async { web.evaluateJavaScript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:\(json)}))", completionHandler: nil) }

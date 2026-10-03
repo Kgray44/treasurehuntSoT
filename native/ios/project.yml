@@ -31,7 +31,9 @@ targets:
         CODE_SIGN_ENTITLEMENTS: LandfallCompanion/Landfall.entitlements
         TARGETED_DEVICE_FAMILY: "1,2"
     scheme:
-      testTargets: [LandfallCompanionTests]
+      testTargets: [LandfallCompanionTests, LandfallCompanionUiTests]
+      environmentVariables:
+        LANDFALL_LAB_ORIGIN: $(LANDFALL_LAB_ORIGIN)
   LandfallCompanionTests:
     type: bundle.unit-test
     platform: iOS
@@ -41,3 +43,16 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.voyagewright.landfall.tests
         GENERATE_INFOPLIST_FILE: YES
+  LandfallCompanionUiTests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [LandfallCompanionUiTests]
+    dependencies: [{ target: LandfallCompanion }]
+    info:
+      path: LandfallCompanionUiTests/Info.plist
+      properties:
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.voyagewright.landfall.ui-tests

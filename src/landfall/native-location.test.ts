@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { NativeLocationProvider, type NativeLocationDriver } from "@/landfall/native-location";
 import { landfallFixture, physicalObservation } from "@/landfall/fixtures";
 import { projectLandfallJourney } from "@/landfall/journey-projection";
@@ -56,8 +56,49 @@ describe("native foreground acquisition lifecycle", () => {
     listener({ type: "permission", state: "REVOKED" });
     listener({ type: "fix", fix: { ...fix, timestamp: 9500 } });
     expect(provider.active).toBe(false);
-    expect(stops).toBe(1);
+    await vi.waitFor(() => expect(stops).toBe(1));
     expect(emitted).toHaveLength(1);
+  });
+  it("serializes a slow native start, stop, and explicit restart without stopping the new acquisition", async () => {
+    let finishFirst: (() => void) | undefined;
+    const operations: string[] = [];
+    const driver: NativeLocationDriver = {
+      platform: "ANDROID",
+      permission: async () => "GRANTED",
+      subscribe: () => () => undefined,
+      start: async () => {
+        operations.push("start");
+        if (operations.length === 1)
+          await new Promise<void>((resolve) => {
+            finishFirst = resolve;
+          });
+      },
+      stop: async () => {
+        operations.push("stop");
+      },
+    };
+    const provider = new NativeLocationProvider(driver, landfallFixture.worldspaces[0]);
+    const identity = { sessionId: "session", publishedVersionId: "version" };
+    const options = { userAction: true, intervalMs: 1000, precise: true };
+    const first = provider.start(
+      identity,
+      options,
+      () => undefined,
+      () => undefined,
+    );
+    await vi.waitFor(() => expect(finishFirst).toBeDefined());
+    const stop = provider.stop();
+    const restart = provider.start(
+      identity,
+      options,
+      () => undefined,
+      () => undefined,
+    );
+    finishFirst!();
+    await Promise.all([first, stop, restart]);
+    expect(operations).toEqual(["start", "stop", "start"]);
+    expect(provider.active).toBe(true);
+    await provider.stop();
   });
 });
 describe("one canonical native/browser qualification", () => {

@@ -7,7 +7,13 @@ async function main() {
   const root = process.cwd();
   const destination = path.join(root, "artifacts", "landfall-device-lab", "apple-build");
   await mkdir(destination, { recursive: true });
-  const host = await discoverDeviceLabHost();
+  let host = await discoverDeviceLabHost();
+  if (!host.apple.configured) {
+    // Ephemeral Apple hosts provision the official runtime when none is usable.
+    // A failed provisioning command remains a failure, never simulated proof.
+    await labTool("xcodebuild", ["-downloadPlatform", "iOS"], 900000);
+    host = await discoverDeviceLabHost();
+  }
   await writeFile(path.join(destination, "capabilities.json"), JSON.stringify(host, null, 2));
   const runtime = host.apple.runtimes
     .filter((item) => item.available && item.id.includes("iOS"))
