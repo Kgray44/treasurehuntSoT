@@ -1,4 +1,10 @@
 import { NativeLocationProvider } from "@/landfall/native-location";
+import { NativeContextProvider } from "@/landfall/native-context";
+import {
+  androidSensorControl,
+  matchesAndroidSensorContext,
+  type AndroidSensorControl,
+} from "@/landfall/device-lab/android-sensors";
 import {
   createLandfallNativeDriver,
   subscribeLandfallNativeLifecycle,
@@ -90,6 +96,20 @@ async function main() {
   runtime.setPermission(["GRANTED", "APPROXIMATE", "LIMITED"].includes(foregroundPermission) ? "GRANTED" : "DENIED");
   runtime.resume();
   const provider = world.kind === "PHYSICAL" ? new NativeLocationProvider(driver, world) : null;
+  const nativeContext = world.kind === "PHYSICAL" ? new NativeContextProvider(world.id) : null;
+  const sensorFrames = new Map<string, unknown>();
+  let sensorState = "UNAVAILABLE";
+  let expectedSensor: AndroidSensorControl | null = null;
+  let waitingSensor: (() => void) | null = null;
+  let failSensor: ((error: Error) => void) | null = null;
+  let sensorReadySent = false;
+  const receiveSensor = (event: Event) => {
+    const value = (event as CustomEvent).detail;
+    if (value?.type !== "sensor" || typeof value.frame?.id !== "string") return;
+    sensorFrames.set(value.frame.id, value.frame);
+    while (sensorFrames.size > 64) sensorFrames.delete(sensorFrames.keys().next().value!);
+  };
+  window.addEventListener("landfall-native-event", receiveSensor);
   let physicalAcquisitionStarts = 0;
   let outcome: LandfallOutcome = { confidence: "UNAVAILABLE", sync: null, retryable: true };
   let latest: LandfallObservation | null = null;
@@ -156,6 +176,9 @@ async function main() {
       samples = [];
       latest = null;
       void provider?.stop();
+      nativeContext?.stop();
+      sensorFrames.clear();
+      sensorState = "UNAVAILABLE";
     }
   });
   await fetch("/lab/ready", {
@@ -177,6 +200,9 @@ async function main() {
     const step = await response.json();
     if (step.stop) {
       await provider?.stop();
+      nativeContext?.stop();
+      window.removeEventListener("landfall-native-event", receiveSensor);
+      sensorFrames.clear();
       unsubscribeLifecycle();
       break;
     }
@@ -274,11 +300,70 @@ async function main() {
           canonicalProgressionEvents: canonicalCount,
           physicalAcquisitionStarts,
           powerProfile,
+          sensorState,
         };
         if (!(action.field in observed)) {
           state = "UNSUPPORTED";
           reason = "OS_ASSERTION_NOT_IMPLEMENTED";
         } else if (observed[action.field] !== action.value) throw new Error(`ASSERT_FAILED:${action.field}`);
+      } else if (action.type === "SENSOR") {
+        expectedSensor = androidSensorControl(action);
+        if (driver.platform !== "ANDROID" || !nativeContext || !expectedSensor) {
+          state = "UNSUPPORTED";
+          reason = "NATIVE_SENSOR_CONTROL_UNSUPPORTED";
+        } else {
+          sensorReadySent = false;
+          await new Promise<void>((resolve, reject) => {
+            const timer = setTimeout(() => {
+              waitingSensor = null;
+              failSensor = null;
+              reject(new Error("NATIVE_SENSOR_FRAME_TIMEOUT"));
+            }, 15000);
+            failSensor = (error) => {
+              clearTimeout(timer);
+              waitingSensor = null;
+              failSensor = null;
+              reject(error);
+            };
+            waitingSensor = () => {
+              clearTimeout(timer);
+              waitingSensor = null;
+              failSensor = null;
+              resolve();
+            };
+            void nativeContext
+              .start(
+                identity,
+                (evidence) => {
+                  runtime.ingestContext(evidence, Date.now());
+                  if (
+                    sensorReadySent &&
+                    expectedSensor &&
+                    matchesAndroidSensorContext(expectedSensor, sensorFrames.get(evidence.id), evidence)
+                  ) {
+                    sensorState = "READY";
+                    waitingSensor?.();
+                  }
+                },
+                (permission) => {
+                  if (permission !== "GRANTED") {
+                    sensorState = "UNAVAILABLE";
+                    failSensor?.(new Error("NATIVE_SENSOR_ADAPTER_UNAVAILABLE"));
+                  }
+                },
+                true,
+              )
+              .then(async () => {
+                await fetch("/lab/sensor-ready", { method: "POST", body: JSON.stringify({ index: step.index }) });
+                sensorReadySent = true;
+              })
+              .catch((error) => {
+                clearTimeout(timer);
+                waitingSensor = null;
+                reject(error);
+              });
+          });
+        }
       } else if (action.type === "PERMISSION") {
         if (world.kind !== "PHYSICAL" || action.permission !== "FOREGROUND_LOCATION") {
           state = "UNSUPPORTED";

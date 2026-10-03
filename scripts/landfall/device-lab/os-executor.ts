@@ -6,6 +6,11 @@ import { build } from "esbuild";
 import { discoverDeviceLabHost, labTool } from "./host";
 import { startDeviceLabAuthority } from "./authority-client";
 import { playerLandfallEvidenceSchema } from "../../../src/landfall/player-evidence-contract";
+import {
+  androidSensorControl,
+  readAndroidSensorValues,
+  type AndroidControlledSensor,
+} from "../../../src/landfall/device-lab/android-sensors";
 import { landfallId } from "../../../src/landfall/schema";
 import { type DeviceLabScenario, type DeviceLabStepResult } from "../../../src/landfall/device-lab/scenario";
 import {
@@ -45,6 +50,7 @@ export async function executeLandfallOsScenario(
   let stop = false;
   const results = new Map<number, DeviceLabStepResult>();
   const locationReady = new Set<number>();
+  const sensorReady = new Set<number>();
   const osResults = new Map<number, DeviceLabStepResult>();
   let osReady = false;
   let osCurrent: { index: number; action: unknown } | null = null;
@@ -170,6 +176,12 @@ export async function executeLandfallOsScenario(
         scenario.timeline[value.index]?.action.type === "LOCATION"
       )
         locationReady.add(value.index);
+      else if (
+        route === "/lab/sensor-ready" &&
+        Number.isInteger(value.index) &&
+        scenario.timeline[value.index]?.action.type === "SENSOR"
+      )
+        sensorReady.add(value.index);
       else if (route === "/lab/os/ready") osReady = true;
       else if (
         route === "/lab/os/result" &&
@@ -238,6 +250,7 @@ export async function executeLandfallOsScenario(
   let ownedDevice: string | null = null;
   let androidSerial: string | null = null;
   let androidPowerMode: string | null = null;
+  const androidSensorBaselines = new Map<AndroidControlledSensor, readonly number[]>();
   let foreground = true;
   let uiRunner: Promise<void> | null = null;
   const uiAbort = new AbortController();
@@ -498,6 +511,36 @@ export async function executeLandfallOsScenario(
         steps.push({ index, action: step.action.type, state: "UNSUPPORTED", reason: "FRESH_FOREGROUND_REQUIRED" });
         continue;
       }
+      if (step.action.type === "SENSOR") {
+        const control = androidSensorControl(step.action);
+        const status = target === "android-emulator" && control ? await adb(["emu", "sensor", "status"]) : "";
+        if (target !== "android-emulator" || !control || !status.includes(`${control.sensor}: enabled.`)) {
+          steps.push({ index, action: "SENSOR", state: "UNSUPPORTED", reason: "OS_SENSOR_CONTROL_UNAVAILABLE" });
+          continue;
+        }
+        const controls = [{ sensor: control.sensor, values: control.values }, ...(control.drivingInputs ?? [])];
+        if (controls.some((input) => !status.includes(`${input.sensor}: enabled.`))) {
+          steps.push({ index, action: "SENSOR", state: "UNSUPPORTED", reason: "OS_SENSOR_CONTROL_UNAVAILABLE" });
+          continue;
+        }
+        for (const input of controls)
+          if (!androidSensorBaselines.has(input.sensor))
+            androidSensorBaselines.set(
+              input.sensor,
+              readAndroidSensorValues(input.sensor, await adb(["emu", "sensor", "get", input.sensor])),
+            );
+        current = { index, action: step.action };
+        await wait(() => sensorReady.has(index) || results.has(index), 30000);
+        for (const input of controls) {
+          await adb(["emu", "sensor", "set", input.sensor, input.values.join(":")]);
+          const measured = readAndroidSensorValues(input.sensor, await adb(["emu", "sensor", "get", input.sensor]));
+          if (measured.some((value, i) => Math.abs(value - input.values[i]) > 0.02))
+            throw new Error("ANDROID_SENSOR_CONTROL_NOT_OBSERVED");
+        }
+        await wait(() => results.has(index), 30000);
+        steps.push(results.get(index)!);
+        continue;
+      }
       if (step.action.type === "PERMISSION") {
         const action = step.action;
         if (
@@ -733,6 +776,16 @@ export async function executeLandfallOsScenario(
     if (androidSerial) await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]).catch(() => undefined);
     if (androidSerial) await adb(["reverse", "--remove", `tcp:${port}`]).catch(() => undefined);
     if (androidSerial) {
+      for (const [sensor, values] of androidSensorBaselines) {
+        try {
+          await adb(["emu", "sensor", "set", sensor, values.join(":")]);
+          const restored = readAndroidSensorValues(sensor, await adb(["emu", "sensor", "get", sensor]));
+          if (restored.some((value, i) => Math.abs(value - values[i]) > 0.02))
+            remainingResources.push(`android-sensor-${sensor}`);
+        } catch {
+          remainingResources.push(`android-sensor-${sensor}`);
+        }
+      }
       if (androidPowerMode !== null) {
         await adb(["shell", "dumpsys", "battery", "reset", "-f"]).catch(() =>
           remainingResources.push("android-battery-fixture"),
@@ -802,49 +855,68 @@ export async function executeLandfallOsScenario(
   for (const result of steps) {
     const action = scenario.timeline[result.index]?.action;
     result.translation =
-      action?.type === "PERMISSION" || result.reason === "OS_PERMISSION_PREVENTED_ACQUISITION"
+      action?.type === "SENSOR"
         ? {
-            method: "OS_PERMISSION_CONTROL",
+            method: "OS_SENSOR_CONTROL",
             limitation:
-              "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external.",
+              "Controlled virtual sensor vectors traverse SensorManager, the native bridge and production context adapter. Physical drift and environmental fidelity remain external.",
           }
-        : action?.type === "LOCATION" && action.coordinate.type === "WGS84"
+        : action?.type === "PERMISSION" || result.reason === "OS_PERMISSION_PREVENTED_ACQUISITION"
           ? {
-              method: "OS_LOCATION_INJECTION",
-              limitation: "Virtual coordinate delivery does not prove field GPS accuracy, multipath or sensor physics.",
+              method: "OS_PERMISSION_CONTROL",
+              limitation:
+                "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external.",
             }
-          : action?.type === "LIFECYCLE"
+          : action?.type === "LOCATION" && action.coordinate.type === "WGS84"
             ? {
-                method: "OS_LIFECYCLE",
-                limitation: "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
+                method: "OS_LOCATION_INJECTION",
+                limitation:
+                  "Virtual coordinate delivery does not prove field GPS accuracy, multipath or sensor physics.",
               }
-            : action?.type === "POWER"
+            : action?.type === "LIFECYCLE"
               ? {
-                  method: "OS_POWER_CONTROL",
-                  limitation:
-                    "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy.",
+                  method: "OS_LIFECYCLE",
+                  limitation: "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
                 }
-              : action?.type === "NETWORK"
-                ? target === "android-emulator"
-                  ? {
-                      method: "OS_NETWORK_AND_SERVICE_FAULT",
-                      limitation:
-                        "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
-                    }
-                  : {
-                      method: "CONTROLLED_SERVICE_FAULT",
-                      limitation:
-                        "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
-                    }
-                : action?.type === "RECONCILE" ||
-                    (action?.type === "ASSERT" &&
-                      ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
-                  ? { method: "REAL_CANONICAL_AUTHORITY" }
-                  : { method: "SHARED_WEB_CONTRACT" };
+              : action?.type === "POWER"
+                ? {
+                    method: "OS_POWER_CONTROL",
+                    limitation:
+                      "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy.",
+                  }
+                : action?.type === "NETWORK"
+                  ? target === "android-emulator"
+                    ? {
+                        method: "OS_NETWORK_AND_SERVICE_FAULT",
+                        limitation:
+                          "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
+                      }
+                    : {
+                        method: "CONTROLLED_SERVICE_FAULT",
+                        limitation:
+                          "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
+                      }
+                  : action?.type === "RECONCILE" ||
+                      (action?.type === "ASSERT" &&
+                        ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
+                    ? { method: "REAL_CANONICAL_AUTHORITY" }
+                    : { method: "SHARED_WEB_CONTRACT" };
   }
   const cleanup = {
     result: remainingResources.length ? ("FAIL" as const) : ("PASS" as const),
-    ownedResources: ["loopback-native-lab-server", ...(ownedDevice ? [ownedDevice] : [])],
+    ownedResources: [
+      "loopback-native-lab-server",
+      ...(ownedDevice ? [ownedDevice] : []),
+      ...(androidSerial
+        ? [
+            "native-app-process",
+            "native-app-private-data",
+            "owned-adb-reverse",
+            ...[...androidSensorBaselines.keys()].map((sensor) => `android-sensor-${sensor}`),
+            ...(androidPowerMode !== null ? ["android-power-fixture", "android-battery-fixture"] : []),
+          ]
+        : []),
+    ],
     remainingResources,
   };
   await writeFile(path.join(destination, "native-steps.json"), JSON.stringify({ steps, cleanup }, null, 2));

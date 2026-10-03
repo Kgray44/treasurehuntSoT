@@ -2,14 +2,14 @@ import { z } from "zod";
 import type { ContextualEvidence } from "@/landfall/contextual";
 import { landfallId } from "@/landfall/schema";
 
-const sensorFrameSchema = z.strictObject({
+export const nativeSensorFrameSchema = z.strictObject({
   id: landfallId,
   observedAt: z.number().int().nonnegative(),
   kind: z.enum(["HEADING", "MOTION", "PRESSURE", "ORIENTATION", "ACCELEROMETER", "STEPS"]),
   values: z.array(z.number().finite().min(-100000).max(100000)).min(1).max(4),
   accuracy: z.number().finite().nonnegative().max(100000),
 });
-export type NativeSensorFrame = z.infer<typeof sensorFrameSchema>;
+export type NativeSensorFrame = z.infer<typeof nativeSensorFrameSchema>;
 
 /** Bounded ephemeral context. Relative pressure height is a hint, never a calibrated floor or independent position. */
 export class NativeLandfallSensorFusion {
@@ -40,7 +40,7 @@ export class NativeLandfallSensorFusion {
       this.reset();
       return result("UNAVAILABLE");
     }
-    const parsed = sensorFrameSchema.safeParse(input);
+    const parsed = nativeSensorFrameSchema.safeParse(input);
     if (!parsed.success || !Number.isFinite(now)) return result("INVALID");
     const frame = parsed.data;
     const previous = this.times.get(frame.kind);

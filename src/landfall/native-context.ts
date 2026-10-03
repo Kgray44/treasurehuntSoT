@@ -42,6 +42,11 @@ export class NativeContextProvider {
       const value = (event as CustomEvent).detail;
       if (value?.type !== "sensor") return;
       const result = fusion.ingest(value.frame, Date.now(), true);
+      if (result.state === "CONFLICT" || result.state === "INVALID") {
+        this.stop();
+        onState("UNAVAILABLE");
+        return;
+      }
       if (result.state === "READY" && result.evidence) emit(result.evidence);
     };
     try {

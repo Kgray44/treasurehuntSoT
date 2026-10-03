@@ -236,6 +236,7 @@ export type DeviceLabStepResult = {
     method:
       | "OS_POWER_CONTROL"
       | "OS_PERMISSION_CONTROL"
+      | "OS_SENSOR_CONTROL"
       | "LOGICAL_PROVIDER"
       | "OS_LOCATION_INJECTION"
       | "OS_LIFECYCLE"

@@ -287,13 +287,21 @@ for (const [id, kind, values] of [
   ["sensor-missing", "MISSING", []],
   ["accelerometer-walk", "ACCELEROMETER", [1, 0, 9.8]],
   ["orientation-turn", "ORIENTATION", [90, 0, 0]],
-] as const)
+] as const) {
   scenario(
     id,
     [kind === "HEADING" ? "HEADING" : kind === "BAROMETER" ? "BAROMETER" : "MOTION"],
-    [{ type: "SENSOR", kind, values: [...values] }, assertion("completionRequests", 0)],
+    [
+      { type: "SENSOR", kind, values: kind === "BAROMETER" ? [values[0]] : [...values] },
+      ...(kind === "BAROMETER" ? [{ type: "SENSOR" as const, kind, values: [values[1]] }] : []),
+      assertion("sensorState", kind === "CONFLICT" ? "CONFLICT" : kind === "MISSING" ? "UNAVAILABLE" : "READY"),
+      assertion("completionRequests", 0),
+      assertion("serverConfirmed", false),
+    ],
     ["SENSOR_DRIFT"],
   );
+  cases[cases.length - 1].version = 2;
+}
 for (const family of ["UWB", "BLE"] as const)
   for (const state of (family === "UWB"
     ? ["APPROACH", "RETREAT", "DIRECTION", "DISCONNECT", "RECONNECT", "PEER_LOST", "UNSUPPORTED"]

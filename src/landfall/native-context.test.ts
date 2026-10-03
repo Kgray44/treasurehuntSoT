@@ -6,7 +6,9 @@ afterEach(() => {
 });
 describe("native Player context bridge", () => {
   it("keeps sensor frames ephemeral and rejects stale callbacks after stop", async () => {
-    const request = vi.fn(async (_raw: string) => ({ accepted: true }));
+    const request = vi.fn(async (raw: string) => ({
+      accepted: ["SENSORS_START", "SENSORS_STOP"].includes(JSON.parse(raw).operation),
+    }));
     window.LandfallNative = { version: 1, platform: "IOS", request };
     const provider = new NativeContextProvider("town");
     const emit = vi.fn();
@@ -54,5 +56,30 @@ describe("native Player context bridge", () => {
     await starting;
     expect(provider.active).toBe(false);
     expect(state).not.toHaveBeenCalled();
+  });
+  it("a conflicting native heading stops hints, clears their availability and ignores later callbacks until deliberate restart", async () => {
+    const request = vi.fn(async (raw: string) => ({
+      accepted: ["SENSORS_START", "SENSORS_STOP"].includes(JSON.parse(raw).operation),
+    }));
+    window.LandfallNative = { version: 1, platform: "ANDROID", request };
+    const provider = new NativeContextProvider("town");
+    const emit = vi.fn();
+    const state = vi.fn();
+    await provider.start({ sessionId: "session", publishedVersionId: "pin" }, emit, state, true);
+    const now = Date.now();
+    for (const [id, at, degrees] of [
+      ["first", now, 0],
+      ["conflict", now + 300, 180],
+      ["late", now + 600, 30],
+    ] as const)
+      window.dispatchEvent(
+        new CustomEvent("landfall-native-event", {
+          detail: { type: "sensor", frame: { id, observedAt: at, kind: "HEADING", values: [degrees], accuracy: 10 } },
+        }),
+      );
+    expect(emit).toHaveBeenCalledTimes(1);
+    expect(state).toHaveBeenLastCalledWith("UNAVAILABLE");
+    expect(provider.active).toBe(false);
+    await vi.waitFor(() => expect(JSON.parse(request.mock.calls.at(-1)![0]).operation).toBe("SENSORS_STOP"));
   });
 });

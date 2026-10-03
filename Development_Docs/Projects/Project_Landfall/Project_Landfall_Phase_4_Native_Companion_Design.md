@@ -76,6 +76,19 @@ and [Apple power notification guidance](https://developer.apple.com/documentatio
 An emulator's controlled battery/saver state proves adaptation; it does not prove
 physical battery endurance, heat or vendor suspension behavior.
 
+Android sensor scenarios discover enabled emulator controls, preserve their initial
+values, inject bounded vectors and verify readback. Native SensorManager callbacks
+cross the restricted bridge and the production `NativeContextProvider`; matching
+requires the same raw-frame identity and derived context category. Heading controls
+also supply gravity and magnetic vectors because the production provider uses the
+OS fused rotation vector. Checks preserve its declared angular uncertainty. Pressure
+uses successive inputs through the same relative-height adapter; it does not
+establish a calibrated floor. Cleanup restores and verifies every changed input.
+Conflicting or malformed native sensor frames stop optional hints and report
+unavailable, so the Player clears prior hints and must deliberately restart them.
+Physical calibration, magnetic interference, pressure drift and iOS sensor injection
+remain separate fidelity or unsupported-lab gates.
+
 ## Offline bytes and restart leases
 
 The public service worker caches only the public offline shell and bounded

@@ -172,7 +172,20 @@ still requires hosted compilation/execution; no grant UX or physical-device proo
 claimed. Local emulator sensor inventory enables acceleration, orientation and
 pressure, so those OS paths remain locally attainable integration work.
 
-Remaining: native lifecycle/power/sensor orchestration and supported device profiles;
+Android sensor development: five native motion/stationary/pressure/orientation/heading
+cases pass through SensorManager and the canonical NativeContextProvider, with changed
+inputs restored and read back during cleanup. Direct legacy orientation injection did
+not drive Android's fused rotation vector; the adapter now controls gravity/magnetic
+inputs and matches actual native callbacks within their declared accuracy. The final
+five-case development fingerprint is
+d4f2d91c258ee40e8249e50702dbf59a17dbe5957298a3ac77703005ea4f773b
+(dirty at d7d7efca). Pressure asserts successive relative-height context only. Conflict
+or invalid frames stop hints until deliberate restart. No physical sensor precision,
+magnetic drift or floor accuracy is claimed. All 124 provider cases, 43 focused files /
+311 tests, TypeScript and documentation validation pass. Hosted Apple/Android runs
+37156238449/37156247496 remain in progress/pending at this checkpoint.
+
+Remaining: native lifecycle/power orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;
 deployed provider preflight and health integration; full security/privacy/performance
 and product UX regressions; permanent implementation/validation/gate records; final
