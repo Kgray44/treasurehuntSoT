@@ -14,7 +14,13 @@ export type QualifiedLandfallEvidence = Readonly<{
   waypointId: string;
   worldspaceId: string;
   evidenceId: string;
-  method: "BROWSER_GEOLOCATION" | "PLAYER_CONFIRMATION" | "VISION_WAYPOINT" | "WATCHGLASS" | "FUSED";
+  method:
+    | "BROWSER_GEOLOCATION"
+    | "NATIVE_LOCATION"
+    | "PLAYER_CONFIRMATION"
+    | "VISION_WAYPOINT"
+    | "WATCHGLASS"
+    | "FUSED";
   outcome: "NEARBY" | "LIKELY_INSIDE" | "CONFIRMED";
   observedAt: string;
   confidenceClass: "LOW" | "MEDIUM" | "HIGH";
@@ -241,17 +247,27 @@ function qualifyEvidence(
         : {}),
     };
   }
-  if (worldspace.kind !== "PHYSICAL" || !waypoint.evidenceProfile.acceptedSources.includes("BROWSER_GEOLOCATION"))
-    throw new Error("LANDFALL_LOCATION_PROVIDER_UNAVAILABLE");
   const observations = request.observations ?? [];
+  const source = observations[0]?.source;
+  const providerId = observations[0]?.providerId;
+  const supportedProvider =
+    (source === "BROWSER_GEOLOCATION" && providerId === "browser-geolocation") ||
+    (source === "NATIVE_LOCATION" && ["ios-core-location", "android-location"].includes(providerId ?? ""));
+  if (
+    worldspace.kind !== "PHYSICAL" ||
+    !supportedProvider ||
+    !waypoint.evidenceProfile.acceptedSources.includes(source) ||
+    !worldspace.observationPolicy.allowedSources.includes(source)
+  )
+    throw new Error("LANDFALL_LOCATION_PROVIDER_UNAVAILABLE");
   if (!observations.length || observations.length > 20 || observations.at(-1)?.id !== request.evidenceId)
     throw new Error("LANDFALL_EVIDENCE_INCOMPLETE");
   if (
     observations.some(
       (item) =>
         item.kind !== "PHYSICAL_POSITION" ||
-        item.source !== "BROWSER_GEOLOCATION" ||
-        item.providerId !== "browser-geolocation" ||
+        item.source !== source ||
+        item.providerId !== providerId ||
         item.sessionId !== request.sessionId ||
         item.publishedVersionId !== request.publishedVersionId ||
         item.worldspaceId !== request.worldspaceId,
@@ -260,8 +276,8 @@ function qualifyEvidence(
     throw new Error("LANDFALL_EVIDENCE_IDENTITY_MISMATCH");
   const providers = new LandfallProviderRegistry();
   providers.register({
-    id: "browser-geolocation",
-    source: "BROWSER_GEOLOCATION",
+    id: providerId!,
+    source: source as "BROWSER_GEOLOCATION" | "NATIVE_LOCATION",
     worldspaceKinds: ["PHYSICAL"],
     state: "AVAILABLE",
   });
@@ -325,7 +341,7 @@ function qualifyEvidence(
     waypointId: waypoint.id,
     worldspaceId: worldspace.id,
     evidenceId: request.evidenceId,
-    method: "BROWSER_GEOLOCATION",
+    method: source as "BROWSER_GEOLOCATION" | "NATIVE_LOCATION",
     outcome,
     observedAt: last.observedAt,
     confidenceClass: outcome === "CONFIRMED" ? "HIGH" : "MEDIUM",
@@ -413,7 +429,9 @@ function qualifyBundle(
     };
     const source: LandfallObservation["source"] =
       packet.method === "FOREGROUND_LOCATION"
-        ? "BROWSER_GEOLOCATION"
+        ? packet.observations[0]?.source === "NATIVE_LOCATION"
+          ? "NATIVE_LOCATION"
+          : "BROWSER_GEOLOCATION"
         : packet.method === "LANDMARK"
           ? "VISION_WAYPOINT"
           : packet.method === "WATCHGLASS"
@@ -502,7 +520,7 @@ function qualifyBundle(
       observedAt = packet.observations.at(-1)!.observedAt;
       expiresAt = new Date(Date.parse(observedAt) + waypoint.evidenceProfile.maximumAgeSeconds * 1000).toISOString();
       root = rootHash(
-        `browser:${request.sessionId}:${request.publishedVersionId}:${packet.observations.map((item) => item.id).join(":")}`,
+        `physical-device-location:${input.playerProfileId}:${request.sessionId}:${request.publishedVersionId}:${request.expectedSequence}:${waypointId}`,
       );
     }
     if (packet.method === "LANDMARK" && qualified) {

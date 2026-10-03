@@ -1,0 +1,90 @@
+import { webcrypto } from "node:crypto";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  deviceLabScenarioSchema,
+  validateDeviceLabFidelity,
+  type DeviceLabReceipt,
+} from "@/landfall/device-lab/scenario";
+import { landfallDeviceScenario, landfallDeviceScenarios } from "@/landfall/device-lab/scenarios";
+import { LandfallProviderScenarioExecutor } from "@/landfall/device-lab/provider-executor";
+
+describe("canonical Device Lab scenarios", () => {
+  beforeEach(() => vi.stubGlobal("crypto", webcrypto));
+  it("has a stable permanent corpus with assertions, bounds, no executable commands and explicit physical gates", () => {
+    const scenarios = landfallDeviceScenarios();
+    expect(scenarios.length).toBeGreaterThan(80);
+    expect(new Set(scenarios.map((scenario) => scenario.id)).size).toBe(scenarios.length);
+    scenarios.forEach((scenario) => expect(deviceLabScenarioSchema.safeParse(scenario).success).toBe(true));
+    const malicious = { ...scenarios[0], command: "rm -rf /" };
+    expect(deviceLabScenarioSchema.safeParse(malicious).success).toBe(false);
+    const reversed = structuredClone(scenarios[0]);
+    reversed.timeline.reverse();
+    expect(deviceLabScenarioSchema.safeParse(reversed).success).toBe(false);
+    expect(landfallDeviceScenario("compound-chaos").physicalRequired).toContain("SUSPENSION");
+  });
+  for (const id of [
+    "gps-perfect-walk",
+    "gps-noisy-walk",
+    "gps-stale",
+    "gps-impossible-jump",
+    "permission-revoked-mid-route",
+    "background-geofence-arrival",
+    "geofence-duplicate",
+    "notification-revoked",
+    "battery-low",
+    "network-flapping",
+    "provider-rate-limit",
+    "qr-valid",
+    "qr-tampered",
+    "nfc-replay",
+    "sensor-conflict",
+    "uwb-unsupported",
+    "ble-weak",
+  ])
+    it(`executes ${id} through production contracts under logical time`, async () => {
+      const result = await new LandfallProviderScenarioExecutor(landfallDeviceScenario(id)).run();
+      expect(result.steps.filter((step) => step.state !== "PASS")).toEqual([]);
+      expect(result.canonicalProgressionEvents).toBeNull();
+      expect(result.cleanup).toMatchObject({ result: "PASS", remainingResources: [] });
+    });
+  it("cannot promote provider proof to a native-device proof or invent canonical events", () => {
+    const receipt: DeviceLabReceipt = {
+      version: 1,
+      scenarioId: "gps-perfect-walk",
+      scenarioVersion: 1,
+      seed: 1,
+      sourceSha: "a".repeat(40),
+      sourceTree: "b".repeat(40),
+      sourceFingerprint: "c".repeat(64),
+      dirty: false,
+      target: "provider-simulation",
+      hostPlatform: "win32",
+      environment: "logical",
+      deviceProfile: "synthetic",
+      osVersion: "Windows",
+      runtimeVersion: "node",
+      providerVersions: {},
+      publishedFixture: "landfall-device-lab-v1",
+      fixtureHash: "d".repeat(64),
+      timing: "LOGICAL",
+      toleranceMs: 0,
+      startedAt: "2026-10-03T12:00:00Z",
+      endedAt: "2026-10-03T12:00:01Z",
+      evidenceClass: "PROVIDER_SIMULATION_PROVEN",
+      result: "PASS",
+      steps: [{ index: 0, action: "ASSERT", state: "PASS" }],
+      canonicalProgressionEvents: null,
+      artifacts: [],
+      externalRequirements: [],
+      cleanup: { result: "PASS", ownedResources: [], remainingResources: [] },
+    };
+    expect(() => validateDeviceLabFidelity(receipt)).not.toThrow();
+    expect(() => validateDeviceLabFidelity({ ...receipt, evidenceClass: "REAL_DEVICE_PROVEN" })).toThrow(
+      "FIDELITY_INVALID",
+    );
+    expect(() => validateDeviceLabFidelity({ ...receipt, canonicalProgressionEvents: 1 })).toThrow("ONE_VOYAGE");
+    expect(() =>
+      validateDeviceLabFidelity({ ...receipt, steps: [{ index: 0, action: "LOCATION", state: "UNSUPPORTED" }] }),
+    ).toThrow("FIDELITY_INVALID");
+  });
+});

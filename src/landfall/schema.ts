@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { landfallProviderPlanSchema } from "@/landfall/provider-policy";
 
 /** Landfall definitions are authored data, never executable map or provider code. */
 export const landfallId = z
@@ -404,6 +405,7 @@ export const landfallDefinitionSchema = z
   .strictObject({
     schemaVersion: z.literal(1),
     taleId: landfallId,
+    providerPlan: landfallProviderPlanSchema.optional(),
     worldspaces: z.array(worldspaceSchema).min(1).max(16),
     maps: z.array(mapSchema).min(1).max(64),
     waypoints: z.array(waypointSchema).max(512),

@@ -9,6 +9,9 @@ import { LandfallLandmarkPanel } from "@/components/player/journal/LandfallLandm
 import { BrowserContextProvider, type BrowserContextTarget } from "@/landfall/browser-context";
 import type { ContextualEvidence, ContextualSnapshot } from "@/landfall/contextual";
 import { BrowserGeolocationProvider } from "@/landfall/browser-geolocation";
+import { createLandfallNativeDriver, NativeForegroundLocationProvider } from "@/landfall/native-bridge";
+import { LandfallOfflineRegionPanel } from "@/components/player/journal/LandfallOfflineRegionPanel";
+import { LandfallBackgroundPanel } from "@/components/player/journal/LandfallBackgroundPanel";
 import { distance } from "@/landfall/geometry";
 import type { LandfallCurrentPosition } from "@/landfall/map-projection";
 import { LandfallProviderRegistry } from "@/landfall/observation";
@@ -89,7 +92,7 @@ function useLandfallController({
   const [contextMessage, setContextMessage] = useState("Optional motion and heading hints are off.");
   const [landmarkObservations, setLandmarkObservations] = useState<LandfallObservation[]>([]);
   const runtime = useRef<LandfallRuntime | null>(null);
-  const browser = useRef<BrowserGeolocationProvider | null>(null);
+  const browser = useRef<BrowserGeolocationProvider | NativeForegroundLocationProvider | null>(null);
   const contextBrowser = useRef<BrowserContextProvider | null>(null);
   const contextSamples = useRef<ContextualEvidence[]>([]);
   const samples = useRef<LandfallObservation[]>([]);
@@ -191,6 +194,14 @@ function useLandfallController({
           worldspaceKinds: ["PHYSICAL"],
           state: "AVAILABLE",
         });
+        const nativeDriver = createLandfallNativeDriver();
+        if (nativeDriver)
+          registry.register({
+            id: nativeDriver.platform === "IOS" ? "ios-core-location" : "android-location",
+            source: "NATIVE_LOCATION",
+            worldspaceKinds: ["PHYSICAL"],
+            state: "AVAILABLE",
+          });
         const active = new LandfallRuntime(next.runtimeDefinition, next, registry);
         active.setActiveWaypoint(next.activeWaypointId);
         if (next.runtimeDefinition.routes[0]?.geometry) active.setActiveRoute(next.runtimeDefinition.routes[0].id);
@@ -200,6 +211,14 @@ function useLandfallController({
           contextBrowser.current = new BrowserContextProvider(window as unknown as BrowserContextTarget, worldspace.id);
         const waypoint = next.runtimeDefinition.waypoints.find((item) => item.id === next.activeWaypointId);
         if (
+          worldspace.kind === "PHYSICAL" &&
+          worldspace.coordinateReference.type === "WGS84" &&
+          nativeDriver &&
+          worldspace.observationPolicy.allowedSources.includes("NATIVE_LOCATION") &&
+          waypoint?.evidenceProfile.acceptedSources.includes("NATIVE_LOCATION")
+        )
+          browser.current = new NativeForegroundLocationProvider(nativeDriver, worldspace);
+        else if (
           worldspace.kind === "PHYSICAL" &&
           worldspace.coordinateReference.type === "WGS84" &&
           worldspace.observationPolicy.allowedSources.includes("BROWSER_GEOLOCATION") &&
@@ -817,6 +836,20 @@ export function LandfallJournalChart({
       {bootstrap.paused && (
         <p role="status">The Captain paused Landfall progression. Current chart details remain readable.</p>
       )}
+      {!readOnly && !bootstrap.replayOnly && (
+        <LandfallOfflineRegionPanel
+          sessionId={bootstrap.sessionId}
+          publishedVersionId={bootstrap.publishedVersionId}
+          sequence={bootstrap.currentSequence}
+          csrfToken={csrfToken}
+        />
+      )}
+      {!readOnly &&
+        !bootstrap.replayOnly &&
+        worldspace.kind === "PHYSICAL" &&
+        worldspace.observationPolicy.allowedSources.includes("NATIVE_LOCATION") && (
+          <LandfallBackgroundPanel sessionId={bootstrap.sessionId} csrfToken={csrfToken} />
+        )}
       {activeRoute && (
         <section aria-label="Route progress">
           <strong>{activeRoute.name}</strong>

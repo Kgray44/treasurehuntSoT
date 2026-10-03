@@ -8,6 +8,7 @@ import { ZodError } from "zod";
 import type { Asset, LibraryRecord } from "@/components/studio/studio-types";
 import { LandfallFieldTestPanel } from "@/components/studio/LandfallFieldTestPanel";
 import { LandfallContextEditor } from "@/components/studio/LandfallContextEditor";
+import { LandfallProviderPanel } from "@/components/studio/LandfallProviderPanel";
 import {
   addLandfallWorldspace,
   applyLandfallPreset,
@@ -646,6 +647,7 @@ export function LandfallWorkspace({
             </label>
           </div>
           <section className="landfall-worldspace-settings" aria-label="Worldspace settings">
+            <LandfallProviderPanel definition={definition} worldspace={worldspace} onChange={commit} />
             <h3>{worldspace.name} settings</h3>
             <label>
               Name

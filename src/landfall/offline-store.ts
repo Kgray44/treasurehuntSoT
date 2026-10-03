@@ -245,11 +245,11 @@ export class LandfallOfflineRepository {
   }
 }
 
-export function rememberOfflineLease(binding: Binding) {
-  sessionStorage.setItem(
-    leasePrefix + binding.sessionId,
-    JSON.stringify({ ...binding, expiresAt: Date.now() + landfallOfflineLimits.chartTtlMs }),
-  );
+export function rememberOfflineLease(binding: Binding, regionExpiresAt?: number) {
+  const expiresAt = regionExpiresAt ?? Date.now() + landfallOfflineLimits.chartTtlMs;
+  if (!Number.isSafeInteger(expiresAt) || expiresAt <= Date.now() || expiresAt > Date.now() + 86400_000)
+    throw new Error("LANDFALL_OFFLINE_LEASE_INVALID");
+  sessionStorage.setItem(leasePrefix + binding.sessionId, JSON.stringify({ ...binding, expiresAt }));
 }
 export function offlineLease(sessionId: string): OfflineLease | null {
   try {

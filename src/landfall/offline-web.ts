@@ -2,6 +2,7 @@ import type { PlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import type { PlayerLandfallEvidence } from "@/landfall/server-evidence";
 import type { PlayerJournalBlock } from "@/chronicle/journal-contract";
 import { LandfallOfflineRepository, rememberOfflineLease, type OfflineAvailability } from "@/landfall/offline-store";
+import { restoreLandfallRegionChart } from "@/landfall/offline-package-web";
 
 const repository = new LandfallOfflineRepository();
 const restoredUrls = new Set<string>();
@@ -120,7 +121,7 @@ export async function rememberRevealedChart(
 
 export async function restoreOfflineVoyage(sessionId: string, versionId: string, csrfToken: string) {
   const record = await repository.restore(binding(sessionId, versionId, csrfToken));
-  if (!record) return null;
+  if (!record) return restoreLandfallRegionChart(sessionId, versionId, csrfToken);
   const availability: OfflineAvailability = {
     ...record.availability,
     shell: navigator.serviceWorker?.controller ? "READY" : "ONLINE_REQUIRED",

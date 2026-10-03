@@ -1,0 +1,43 @@
+name: LandfallCompanion
+options:
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGNING_ALLOWED: NO
+    LANDFALL_ORIGIN: ""
+targets:
+  LandfallCompanion:
+    type: application
+    platform: iOS
+    sources: [LandfallCompanion]
+    info:
+      path: LandfallCompanion/Info.plist
+      properties:
+        CFBundleDisplayName: VoyageWright Landfall
+        LandfallOrigin: $(LANDFALL_ORIGIN)
+        UILaunchScreen: {}
+        UIBackgroundModes: [location]
+        NSLocationWhenInUseUsageDescription: Your position helps check arrival at a released physical waypoint. The chart and readable fallback remain available without location.
+        NSLocationAlwaysAndWhenInUseUsageDescription: Optional broad arrival reminders can wake this journey. A fresh foreground reading is still required to confirm arrival.
+        NSMotionUsageDescription: Optional movement hints help interpret uncertain navigation while this journey is open.
+        NSBluetoothAlwaysUsageDescription: Optional configured nearby providers can supply proximity hints. Bluetooth never completes a waypoint by itself.
+        NFCReaderUsageDescription: Read an optional signed journey token. Unsigned tags and links cannot change Voyage progress.
+        NSCameraUsageDescription: Read an optional signed QR journey token. Images are not stored or uploaded by this scanner.
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.voyagewright.landfall
+        CODE_SIGN_ENTITLEMENTS: LandfallCompanion/Landfall.entitlements
+        TARGETED_DEVICE_FAMILY: "1,2"
+    scheme:
+      testTargets: [LandfallCompanionTests]
+  LandfallCompanionTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [LandfallCompanionTests]
+    dependencies: [{ target: LandfallCompanion }]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.voyagewright.landfall.tests
+        GENERATE_INFOPLIST_FILE: YES
