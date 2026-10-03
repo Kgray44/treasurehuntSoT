@@ -106,6 +106,26 @@ unlimited offline arrival queue.
 
 ## Development evidence and remaining proof
 
+### Provisioned device profiles
+
+Device Lab profile labels now require measured configuration. Android receipts
+include actual API level, model, memory, pixel dimensions and density. Primary
+phones use API 36; compatibility phones use API 35; low-resource phones use API 36
+with at most 2 GiB of measured memory; tablet profiles require a smallest dimension
+of at least 600 density-independent pixels. A mismatched profile fails rather than
+relabeling the existing emulator. The hosted closure template provisions four
+distinct Android jobs, including a 1536 MiB low-resource allocation.
+
+Apple builds choose available device types in the detected iOS runtime: a current
+numbered iPhone, a distinct older available iPhone, or an iPad. Receipts bind the
+created device type and runtime. The compatibility profile exercises a different
+device type on that runtime; it does not claim a previous iOS version. Apple
+resource throttling is unsupported. Development and candidate tiers keep narrower
+matrices. The expanded hosted matrices still require execution and successful
+source-bound receipts before acceptance.
+
+### Canonical and native evidence
+
 The shared corpus exercises production contracts under explicitly logical provider
 time. Canonical scenarios use a dedicated child process and fresh owned SQLite
 database containing the real One Voyage writer. Native scenarios acquire OS fixes

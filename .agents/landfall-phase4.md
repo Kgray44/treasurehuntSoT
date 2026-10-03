@@ -106,6 +106,16 @@ needs hosted compilation and native execution.
 These failed development runs are evidence, not acceptance. Use focused hosted jobs;
 do not use ordinary Sounding Line as a debug loop.
 
+Cold-start/relaunch repair is committed as cd66c4c5; hosted iOS run 37155251734
+tests that immutable source and remains pending. Device profile work adds checked
+Android API/memory/screen configurations and bound Apple device/runtime selection,
+plus development/candidate/closure hosted tiers. The closure template parses with
+four Android and three Apple jobs. Primary Android GPS and encrypted restart pass
+in the profile development run, with cleanup passing; 22 Device Lab tests and
+TypeScript pass. Expanded hosted profile execution remains required. The real
+SQLite authority's eight assertions pass after moving import initialization into
+its owned database cleanup boundary.
+
 Remaining: native lifecycle/power/sensor orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;
 deployed provider preflight and health integration; full security/privacy/performance

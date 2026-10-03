@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  deviceLabProfileSchema,
+  validateDeviceLabProfile,
+  type DeviceLabConfiguration,
+} from "@/landfall/device-lab/device-profile";
 import { landfallId, coordinateSchema } from "@/landfall/schema";
 import { providerFamilySchema, providerHealthSchema, permissionNameSchema } from "@/landfall/provider-policy";
 
@@ -238,6 +243,7 @@ export type DeviceLabReceipt = {
   hostPlatform: string;
   environment: string;
   deviceProfile: string;
+  deviceConfiguration?: DeviceLabConfiguration;
   osVersion: string;
   runtimeVersion: string;
   providerVersions: Record<string, string>;
@@ -260,6 +266,12 @@ export type DeviceLabReceipt = {
 
 /** Receipts must make the fidelity boundary explicit, even if every software assertion passed. */
 export function validateDeviceLabFidelity(receipt: DeviceLabReceipt): void {
+  if (receipt.result === "PASS" && ["android-emulator", "ios-simulator"].includes(receipt.target)) {
+    if (!receipt.deviceConfiguration) throw new Error("LANDFALL_LAB_DEVICE_CONFIGURATION_UNBOUND");
+    validateDeviceLabProfile(deviceLabProfileSchema.parse(receipt.deviceProfile), receipt.deviceConfiguration);
+    if ((receipt.target === "android-emulator") !== (receipt.deviceConfiguration.platform === "ANDROID"))
+      throw new Error("LANDFALL_LAB_PROFILE_MISMATCH");
+  }
   const actualClass = {
     "provider-simulation": "PROVIDER_SIMULATION_PROVEN",
     "android-emulator": "EMULATOR_PROVEN",

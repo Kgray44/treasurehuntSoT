@@ -50,7 +50,7 @@ function scenario(
       publishedFixture: "landfall-device-lab-v1",
       canonicalAuthority,
       targets: ["provider-simulation", "android-emulator", "ios-simulator", "real-android", "real-ios"],
-      deviceProfiles: ["primary-phone", "compatibility-phone"],
+      deviceProfiles: ["primary-phone", "compatibility-phone", "low-resource", "tablet"],
       providers,
       timing: "LOGICAL",
       toleranceMs: 0,

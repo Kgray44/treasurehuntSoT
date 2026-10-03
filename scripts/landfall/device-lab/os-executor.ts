@@ -8,11 +8,17 @@ import { startDeviceLabAuthority } from "./authority-client";
 import { playerLandfallEvidenceSchema } from "../../../src/landfall/player-evidence-contract";
 import { landfallId } from "../../../src/landfall/schema";
 import { type DeviceLabScenario, type DeviceLabStepResult } from "../../../src/landfall/device-lab/scenario";
+import {
+  validateDeviceLabProfile,
+  type DeviceLabConfiguration,
+  type DeviceLabProfile,
+} from "../../../src/landfall/device-lab/device-profile";
 
 export async function executeLandfallOsScenario(
   scenario: DeviceLabScenario,
   target: "android-emulator" | "ios-simulator",
   destination: string,
+  profile: DeviceLabProfile = "primary-phone",
 ) {
   const root = process.cwd();
   const publicWorker = await readFile(path.join(root, "public", "landfall-offline-sw.js"));
@@ -219,6 +225,7 @@ export async function executeLandfallOsScenario(
   let uiFailed = false;
   let osVersion = host.osVersion;
   let runtimeVersion = host.nodeVersion;
+  let deviceConfiguration: DeviceLabConfiguration | undefined;
   const remainingResources: string[] = [];
   const artifacts: { path: string; sha256: string; kind: "SCREENSHOT" | "TEST_RESULT" }[] = [];
   const adb = async (args: string[]) => {
@@ -250,7 +257,25 @@ export async function executeLandfallOsScenario(
       if (!androidSerial || !/^emulator-[0-9]+$/.test(androidSerial))
         throw new Error("LANDFALL_OWNED_ANDROID_REQUIRED");
       osVersion = (await adb(["shell", "getprop", "ro.build.version.release"])).trim();
-      runtimeVersion = `Android API ${(await adb(["shell", "getprop", "ro.build.version.sdk"])).trim()}; ${host.android.emulatorVersion}`;
+      const api = Number((await adb(["shell", "getprop", "ro.build.version.sdk"])).trim());
+      const memory = /MemTotal:\s+([0-9]+)\s+kB/.exec(await adb(["shell", "cat", "/proc/meminfo"]));
+      const size = /(?:Override|Physical) size:\s*([0-9]+)x([0-9]+)/g;
+      const sizes = [...(await adb(["shell", "wm", "size"])).matchAll(size)];
+      const densities = [
+        ...(await adb(["shell", "wm", "density"])).matchAll(/(?:Override|Physical) density:\s*([0-9]+)/g),
+      ];
+      const measuredSize = sizes.at(-1);
+      deviceConfiguration = validateDeviceLabProfile(profile, {
+        platform: "ANDROID",
+        virtual: true,
+        api,
+        model: (await adb(["shell", "getprop", "ro.product.model"])).trim(),
+        memoryKiB: Number(memory?.[1]),
+        widthPixels: Number(measuredSize?.[1]),
+        heightPixels: Number(measuredSize?.[2]),
+        densityDpi: Number(densities.at(-1)?.[1]),
+      });
+      runtimeVersion = `Android API ${api}; ${host.android.emulatorVersion}`;
       await adb([
         "install",
         "-r",
@@ -278,6 +303,13 @@ export async function executeLandfallOsScenario(
       );
       osVersion = app.runtime;
       runtimeVersion = host.apple.xcodeVersion ?? "UNAVAILABLE";
+      if (app.profile !== profile) throw new Error("LANDFALL_LAB_PROFILE_MISMATCH");
+      deviceConfiguration = validateDeviceLabProfile(profile, {
+        platform: "IOS",
+        virtual: true,
+        runtime: app.runtime,
+        deviceType: app.deviceType,
+      });
       ownedDevice = (
         await labTool("xcrun", ["simctl", "create", `landfall-os-${process.pid}`, app.deviceType, app.runtime])
       ).trim();
@@ -732,6 +764,7 @@ export async function executeLandfallOsScenario(
     artifacts,
     osVersion,
     runtimeVersion,
+    deviceConfiguration,
     canonicalProgressionEvents,
     authorityFixtureHash: authority.fixtureHash,
   };

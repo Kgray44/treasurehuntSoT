@@ -83,6 +83,33 @@ describe("canonical Device Lab scenarios", () => {
       "FIDELITY_INVALID",
     );
     expect(() => validateDeviceLabFidelity({ ...receipt, canonicalProgressionEvents: 1 })).toThrow("ONE_VOYAGE");
+    const native = {
+      ...receipt,
+      target: "android-emulator" as const,
+      evidenceClass: "EMULATOR_PROVEN" as const,
+      deviceProfile: "primary-phone",
+    };
+    expect(() => validateDeviceLabFidelity(native)).toThrow("CONFIGURATION_UNBOUND");
+    const configuration = {
+      platform: "ANDROID" as const,
+      virtual: true as const,
+      api: 35,
+      model: "Synthetic",
+      memoryKiB: 3 * 1024 * 1024,
+      widthPixels: 1080,
+      heightPixels: 2400,
+      densityDpi: 420,
+    };
+    expect(() => validateDeviceLabFidelity({ ...native, deviceConfiguration: configuration })).toThrow(
+      "PROFILE_MISMATCH",
+    );
+    expect(() =>
+      validateDeviceLabFidelity({
+        ...native,
+        deviceProfile: "compatibility-phone",
+        deviceConfiguration: configuration,
+      }),
+    ).not.toThrow();
     expect(() =>
       validateDeviceLabFidelity({ ...receipt, steps: [{ index: 0, action: "LOCATION", state: "UNSUPPORTED" }] }),
     ).toThrow("FIDELITY_INVALID");

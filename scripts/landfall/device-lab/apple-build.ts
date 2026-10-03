@@ -1,10 +1,12 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { discoverDeviceLabHost, labTool } from "./host";
+import { deviceLabProfileSchema, selectAppleLabDevice } from "../../../src/landfall/device-lab/device-profile";
 
 async function main() {
   if (process.platform !== "darwin") throw new Error("LANDFALL_APPLE_REQUIRES_MACOS");
   const root = process.cwd();
+  const profile = deviceLabProfileSchema.parse(process.env.LANDFALL_LAB_PROFILE ?? "primary-phone");
   const destination = path.join(root, "artifacts", "landfall-device-lab", "apple-build");
   await mkdir(destination, { recursive: true });
   let host = await discoverDeviceLabHost();
@@ -21,17 +23,15 @@ async function main() {
   if (!runtime) throw new Error("LANDFALL_APPLE_RUNTIME_UNAVAILABLE");
   const types = JSON.parse(await labTool("xcrun", ["simctl", "list", "devicetypes", "--json"]));
   const compatibleNames = new Set(
-    host.apple.devices
-      .filter((item) => item.available && item.runtime === runtime.id && item.name.includes("iPhone"))
-      .map((item) => item.name),
+    host.apple.devices.filter((item) => item.available && item.runtime === runtime.id).map((item) => item.name),
   );
-  const deviceType = types.devicetypes
-    .filter(
+  const deviceType = selectAppleLabDevice(
+    profile,
+    types.devicetypes.filter(
       (item: { identifier: string; name: string }) =>
-        item.identifier?.includes("iPhone") && compatibleNames.has(item.name),
-    )
-    .at(-1);
-  if (!deviceType) throw new Error("LANDFALL_APPLE_DEVICE_TYPE_UNAVAILABLE");
+        typeof item.identifier === "string" && compatibleNames.has(item.name),
+    ),
+  );
   const name = `landfall-owned-${process.pid}`;
   const id = (await labTool("xcrun", ["simctl", "create", name, deviceType.identifier, runtime.id])).trim();
   if (!/^[A-Fa-f0-9-]{36}$/.test(id)) throw new Error("LANDFALL_APPLE_DEVICE_ID_INVALID");
@@ -95,6 +95,7 @@ async function main() {
         ),
         runtime: runtime.id,
         deviceType: deviceType.identifier,
+        profile,
       }),
     );
   } catch (error) {

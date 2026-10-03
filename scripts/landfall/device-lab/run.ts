@@ -11,6 +11,7 @@ import {
 import { discoverDeviceLabHost, labTool } from "./host";
 import { executeLandfallOsScenario } from "./os-executor";
 import { startDeviceLabAuthority } from "./authority-client";
+import { deviceLabProfileSchema, deviceLabConfigurationSchema } from "../../../src/landfall/device-lab/device-profile";
 
 async function main() {
   const argv = process.argv.slice(2);
@@ -41,6 +42,7 @@ async function main() {
     !["provider", "android", "ios", "real-android", "real-ios", "field"].includes(options.platform)
   )
     throw new Error("LANDFALL_LAB_PLATFORM_INVALID");
+  const profile = deviceLabProfileSchema.parse(options.profile ?? process.env.LANDFALL_LAB_PROFILE ?? "primary-phone");
   const runId = `${new Date().toISOString().replaceAll(/[^0-9TZ]/g, "")}-${process.pid}`;
   const destination = path.join(root, "artifacts", "landfall-device-lab", runId);
   await mkdir(destination, { recursive: true });
@@ -94,7 +96,9 @@ async function main() {
         ? await startDeviceLabAuthority(path.join(destination, scenario.id, "authority"))
         : null;
     const executor = new LandfallProviderScenarioExecutor(scenario, authority ?? undefined);
-    const supported = scenario.targets.includes(target);
+    const supported =
+      scenario.targets.includes(target) &&
+      (target === "provider-simulation" || scenario.deviceProfiles.includes(profile));
     const nativeConfigured =
       target === "android-emulator"
         ? Boolean(host.android.adb && (process.env.LANDFALL_LAB_ANDROID_SERIAL || host.hosted))
@@ -106,7 +110,7 @@ async function main() {
       : target === "provider-simulation"
         ? await executor.run()
         : (target === "android-emulator" || target === "ios-simulator") && nativeConfigured
-          ? await executeLandfallOsScenario(scenario, target, path.join(destination, scenario.id))
+          ? await executeLandfallOsScenario(scenario, target, path.join(destination, scenario.id), profile)
           : null;
     const authorityClean = authority ? await authority.cleanup() : true;
     if (result && !authorityClean) {
@@ -137,8 +141,10 @@ async function main() {
           : nativeConfigured
             ? "native-platform-and-origin-bound-webview"
             : "unconfigured-native-backend",
-      deviceProfile:
-        options.profile ?? (target === "provider-simulation" ? "synthetic-provider-profile" : "primary-phone"),
+      deviceProfile: target === "provider-simulation" ? "synthetic-provider-profile" : profile,
+      ...(result && "deviceConfiguration" in result && result.deviceConfiguration
+        ? { deviceConfiguration: deviceLabConfigurationSchema.parse(result.deviceConfiguration) }
+        : {}),
       osVersion:
         result && "osVersion" in result && typeof result.osVersion === "string" ? result.osVersion : host.osVersion,
       runtimeVersion:

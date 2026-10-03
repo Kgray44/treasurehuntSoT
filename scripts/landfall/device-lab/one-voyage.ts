@@ -44,13 +44,22 @@ export async function createDeviceLabVoyage(destination: string) {
   } finally {
     if (sqlite.isOpen) sqlite.close();
   }
-  process.env.DATABASE_URL = `file:${file.replaceAll("\\", "/")}`;
-  const { db } = await import("../../../src/lib/db");
-  const { landfallFixture, physicalObservation } = await import("../../../src/landfall/fixtures");
-  const { submitPlayerLandfallEvidence } = await import("../../../src/chronicle/progression");
-  const { playerCanAccessPlaythrough } = await import("../../../src/platform/auth");
-  const { projectRecordedLandfallEvidence } = await import("../../../src/landfall/recorded-evidence");
+  let disconnect: (() => Promise<void>) | undefined;
+  const removeDatabase = async () => {
+    try {
+      await disconnect?.();
+    } finally {
+      for (const suffix of ["", "-journal", "-wal", "-shm"]) await rm(file + suffix, { force: true });
+    }
+  };
   try {
+    process.env.DATABASE_URL = `file:${file.replaceAll("\\", "/")}`;
+    const { db } = await import("../../../src/lib/db");
+    disconnect = () => db.$disconnect();
+    const { landfallFixture, physicalObservation } = await import("../../../src/landfall/fixtures");
+    const { submitPlayerLandfallEvidence } = await import("../../../src/chronicle/progression");
+    const { playerCanAccessPlaythrough } = await import("../../../src/platform/auth");
+    const { projectRecordedLandfallEvidence } = await import("../../../src/landfall/recorded-evidence");
     const definition = structuredClone(landfallFixture);
     definition.worldspaces[0].observationPolicy.allowedSources.push("NATIVE_LOCATION");
     definition.waypoints[0].evidenceProfile.acceptedSources.push("NATIVE_LOCATION");
@@ -207,8 +216,7 @@ export async function createDeviceLabVoyage(destination: string) {
         ),
       }),
       cleanup: async () => {
-        await db.$disconnect();
-        for (const suffix of ["", "-journal", "-wal", "-shm"]) await rm(file + suffix, { force: true });
+        await removeDatabase();
         return !(await stat(file).then(
           () => true,
           () => false,
@@ -216,8 +224,7 @@ export async function createDeviceLabVoyage(destination: string) {
       },
     };
   } catch (error) {
-    await db.$disconnect();
-    for (const suffix of ["", "-journal", "-wal", "-shm"]) await rm(file + suffix, { force: true });
+    await removeDatabase();
     throw error;
   }
 }

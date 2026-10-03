@@ -40,9 +40,15 @@ jobs:
           retention-days: 14
   apple:
     if: __RUN_APPLE__
-    name: Native / iOS Simulator
+    name: Native / iOS / ${{ matrix.profile }}
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: __APPLE_PROFILES__
     runs-on: macos-latest
     timeout-minutes: 60
+    env:
+      LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -60,14 +66,20 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: landfall-ios-__CANDIDATE_SHA__
+          name: landfall-ios-${{ matrix.profile }}-__CANDIDATE_SHA__
           path: artifacts/landfall-device-lab
           retention-days: 14
   android:
     if: __RUN_ANDROID__
-    name: Native / Android Emulator
+    name: Native / Android / ${{ matrix.profile }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: __ANDROID_PROFILES__
     runs-on: ubuntu-latest
     timeout-minutes: 35
+    env:
+      LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -94,11 +106,11 @@ jobs:
           sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 36
+          api-level: ${{ matrix.api }}
           target: google_apis
           arch: x86_64
-          profile: pixel_7
-          ram-size: 3072M
+          profile: ${{ matrix.device }}
+          ram-size: ${{ matrix.ram }}
           emulator-boot-timeout: 300
           disable-linux-hw-accel: false
           disable-animations: true
@@ -108,6 +120,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: landfall-android-__CANDIDATE_SHA__
+          name: landfall-android-${{ matrix.profile }}-__CANDIDATE_SHA__
           path: artifacts/landfall-device-lab
           retention-days: 14
