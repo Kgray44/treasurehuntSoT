@@ -333,5 +333,9 @@ The optimized production build and all five Phase 4 Player browser journeys pass
 including the phone sharing choice with synthetic intercepted endpoints, zero
 acquisition and unchanged canonical progression. Its capture was reviewed.
 This development proof does not establish deployed provider licensing/availability
-or ordinary final acceptance. Trusted injected style-provider privacy gating and
-remote geocoding/routing/elevation integration remain open work.
+or ordinary final acceptance. Injected application map-style providers also require
+the sharing choice unless they explicitly declare LOCAL or FIRST_PARTY privacy.
+The style function itself is not invoked before third-party consent. LOCAL styles
+cannot contain network URLs; FIRST_PARTY URLs must match the page origin. Twelve
+focused style/renderer/configuration tests pass, including those mismatch checks
+and consent revocation. Remote geocoding/routing/elevation integration remains open.

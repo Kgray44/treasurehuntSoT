@@ -1,7 +1,10 @@
 import type { StyleSpecification } from "maplibre-gl";
 
 /** A trusted application provider still has to return bounded, declarative map data. */
-export function validateLandfallMapStyle(input: unknown): StyleSpecification {
+export function validateLandfallMapStyle(
+  input: unknown,
+  policy?: { privacy: "LOCAL" | "FIRST_PARTY" | "THIRD_PARTY"; origin?: string },
+): StyleSpecification {
   if (!input || typeof input !== "object" || Array.isArray(input)) throw new Error("LANDFALL_MAP_STYLE_INVALID");
   let encoded: string;
   try {
@@ -42,6 +45,8 @@ export function validateLandfallMapStyle(input: unknown): StyleSpecification {
     }
     if (parsed.protocol !== "https:" || parsed.username || parsed.password)
       throw new Error("LANDFALL_MAP_STYLE_URL_UNSAFE");
+    if (policy?.privacy === "LOCAL" || (policy?.privacy === "FIRST_PARTY" && parsed.origin !== policy.origin))
+      throw new Error("LANDFALL_MAP_STYLE_PRIVACY_MISMATCH");
   };
   const checkUrls = (value: unknown, depth: number): void => {
     if (depth > 20) throw new Error("LANDFALL_MAP_STYLE_INVALID");

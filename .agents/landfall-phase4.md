@@ -383,7 +383,8 @@ Stopping removes the source; renderer identity changes reset consent. Released
 geometry/list fallback does not acquire location or write progression. No tile
 packaging/prefetch or availability claim is added. The metadata endpoint does not
 probe providers or echo invalid input. Trusted injected provider-style privacy
-gating and deployed geocoder/router/elevation are still open.
+gating was then open; its subsequent implementation is recorded below. Deployed
+geocoder/router/elevation are still open.
 Six focused files pass 20 tests (map config/rendering/projection/privacy/endpoint).
 Full uncached TypeScript and changed-code ESLint pass; fresh optimized production
 build passes with its existing 13 Edge/NFT warnings. Five Phase 4 browser journeys
@@ -396,6 +397,18 @@ case are synthetic and intercepted; no real public service is contacted. The fir
 attempt used a nonconforming isolated DB filename and was refused before build;
 the successful wrapper uses the existing strict owned isolation filename contract.
 Documentation indexing/validation passes. These remain focused development checks.
+
+Map-data checkpoint 22a0dc437117a63b839cbfeed43f316d55996c8b (tree
+05990f8c4220161edc9509df8dfdce077138cd74) is pushed. Injected map providers now
+declare optional canonical LOCAL/FIRST_PARTY/THIRD_PARTY privacy; omission defaults
+to third-party and requires the same deliberate sharing choice before the style
+function is invoked. LOCAL styles cannot include network URLs; FIRST_PARTY URLs
+must match the page origin. Renderer identity includes provider/privacy so changing
+that context resets consent. Focused style/rendering/config tests pass 3 files/12
+tests and changed-code ESLint passes. A transient formatter file-open failure was
+retried successfully. The 8821f560 Android/Apple runs are still pending terminal
+harvest, with the Android low-resource job green; no new matrix was launched for
+these web-only changes.
 
 Remaining: native lifecycle/power orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;

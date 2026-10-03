@@ -34,6 +34,22 @@ describe("Landfall internal map presentation proof", () => {
     mapState.load = undefined;
   });
   afterEach(() => cleanup());
+  it("does not call an injected third-party style provider before consent", async () => {
+    const style = vi.fn().mockResolvedValue({ version: 8, sources: {}, layers: [] });
+    const scene = projectLandfallMap(landfallFixture, {
+      activeWorldspaceId: "town",
+      availableLocations: [{ id: "town-arrival" }],
+      activeRouteId: null,
+    });
+    render(<LandfallMapRenderer scene={scene} provider={{ id: "remote-style", style }} />);
+    await waitFor(() => expect(mapConstructed).toHaveBeenCalled());
+    expect(style).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Load online background maps" }));
+    await waitFor(() => expect(style).toHaveBeenCalledTimes(1));
+    fireEvent.click(screen.getByRole("button", { name: "Stop loading online background maps" }));
+    await waitFor(() => expect(mapConstructed.mock.calls.at(-1)?.[0].style.sources.landfall).toBeDefined());
+    expect(style).toHaveBeenCalledTimes(1);
+  });
   it("never requests raster tiles before deliberate consent and stops them when consent is revoked", async () => {
     const request = vi.fn().mockResolvedValue({
       ok: true,
@@ -144,6 +160,7 @@ describe("Landfall internal map presentation proof", () => {
         }}
       />,
     );
+    fireEvent.click(screen.getByRole("button", { name: "Load online background maps" }));
     await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Map data is unavailable"));
     expect(screen.getByRole("list", { name: "Visible map locations" })).toHaveTextContent("Town arrival");
     expect(
@@ -151,7 +168,7 @@ describe("Landfall internal map presentation proof", () => {
         .getByRole("img", { name: "Released physical chart" })
         .querySelector('[data-landfall-feature="town-arrival"]'),
     ).not.toBeNull();
-    expect(mapConstructed).not.toHaveBeenCalled();
+    expect(mapConstructed.mock.calls.every(([options]) => !options.style.sources.bad)).toBe(true);
   });
   it("preserves a deliberate selection when MapLibre finishes loading after a search", async () => {
     const scene = projectLandfallMap(landfallFixture, {

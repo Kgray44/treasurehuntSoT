@@ -10,6 +10,8 @@ import { mapDataConfigurationSchema, type RasterMapConfiguration } from "@/landf
 /** A map-data provider is trusted application code, not Creator-supplied style JSON or URL. */
 export type LandfallMapDataProvider = Readonly<{
   id: string;
+  /** Omission fails closed as third-party. A local provider cannot contain URLs. */
+  privacy?: "LOCAL" | "FIRST_PARTY" | "THIRD_PARTY";
   style: () => Promise<import("maplibre-gl").StyleSpecification>;
 }>;
 
@@ -114,6 +116,7 @@ function PhysicalMap({
   const [rasterConsent, setRasterConsent] = useState<string | null>(null);
   const mapKey = `${scene.worldspaceId}:${scene.mapId}:${scene.baseProviderId ?? "authored"}`;
   const rasterEnabled = rasterConsent === mapKey;
+  const providerNeedsConsent = Boolean(provider && (!provider.privacy || provider.privacy === "THIRD_PARTY"));
   const [rasterChecked, setRasterChecked] = useState(false);
   const overlaySignature = JSON.stringify(scene.overlays);
   useEffect(() => {
@@ -174,9 +177,13 @@ function PhysicalMap({
     const start = async () => {
       try {
         const maplibre = await import("maplibre-gl");
-        const suppliedBase = Boolean(provider) || Boolean(rasterEnabled && raster);
-        const base = provider
-          ? validateLandfallMapStyle(await provider.style())
+        const activeProvider = provider && (!providerNeedsConsent || rasterEnabled) ? provider : undefined;
+        const suppliedBase = Boolean(activeProvider) || Boolean(rasterEnabled && raster);
+        const base = activeProvider
+          ? validateLandfallMapStyle(await activeProvider.style(), {
+              privacy: activeProvider.privacy ?? "THIRD_PARTY",
+              origin: window.location.origin,
+            })
           : rasterEnabled && raster
             ? rasterStyle(scene, raster)
             : blankStyle(scene);
@@ -276,9 +283,17 @@ function PhysicalMap({
     // The mounted Player scene is immutable by map/worldspace identity; only its
     // ephemeral position changes. Position updates use GeoJSON setData above.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scene.mapId, scene.worldspaceId, provider, overlaySignature, raster, rasterEnabled]);
+  }, [scene.mapId, scene.worldspaceId, provider, providerNeedsConsent, overlaySignature, raster, rasterEnabled]);
   return (
     <div>
+      {providerNeedsConsent && (
+        <div>
+          <p>Online background maps share the displayed map area with the configured map provider.</p>
+          <button type="button" onClick={() => setRasterConsent(rasterEnabled ? null : mapKey)}>
+            {rasterEnabled ? "Stop loading online background maps" : "Load online background maps"}
+          </button>
+        </div>
+      )}
       {!provider &&
         scene.baseProviderId === "osm-standard" &&
         (raster ? (
@@ -469,7 +484,7 @@ export function LandfallMapRenderer({
     <section aria-label="Landfall map preview">
       {scene.worldspaceKind === "PHYSICAL" ? (
         <PhysicalMap
-          key={`${scene.worldspaceId}:${scene.mapId}:${scene.baseProviderId ?? "authored"}:${provider?.id ?? "default"}`}
+          key={`${scene.worldspaceId}:${scene.mapId}:${scene.baseProviderId ?? "authored"}:${provider?.id ?? "default"}:${provider?.privacy ?? "THIRD_PARTY"}`}
           scene={scene}
           provider={provider}
           position={scene.currentPosition}
