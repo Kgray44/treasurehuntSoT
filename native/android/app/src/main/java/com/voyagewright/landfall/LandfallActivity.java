@@ -36,6 +36,7 @@ public final class LandfallActivity extends Activity implements LocationListener
   private String permissionRequestId;
   private LandfallSensors sensors;
   private LandfallHardware hardware;
+  private LandfallPrivateStore privateStore;
   private static final int LOCATION_REQUEST = 41;
 
   @Override public void onCreate(Bundle state) {
@@ -46,6 +47,7 @@ public final class LandfallActivity extends Activity implements LocationListener
       if (lab.matches("http://(10\\.0\\.2\\.2|127\\.0\\.0\\.1):[0-9]{2,5}")) origin = lab;
     }
     if (origin.isEmpty()) { TextView message = new TextView(this); message.setText("Landfall companion is not configured. Build with your VoyageWright HTTPS origin."); setContentView(message); return; }
+    privateStore = new LandfallPrivateStore(origin);
     locations = (LocationManager)getSystemService(LOCATION_SERVICE);
     sensors = new LandfallSensors(this, this::event);
     hardware = new LandfallHardware(this, this::event);
@@ -142,7 +144,11 @@ public final class LandfallActivity extends Activity implements LocationListener
           .addOnSuccessListener(barcode -> { String token=barcode.getRawValue(); if(token!=null && token.length()<=2048) try { event(new JSONObject().put("type","interaction").put("medium","QR").put("token",token)); } catch(Exception ignored){} })
           .addOnFailureListener(error -> { try { event(new JSONObject().put("type","error")); }catch(Exception ignored){} });
         reply(proxy,id,state("GRANTED")); break;
-      case "CLEAR_PRIVATE_DATA": stopLocation(); sensors.stop(); hardware.stop(); LocationServices.getGeofencingClient(this).removeGeofences(geofenceIntent()); LandfallSecureHints.clear(this); web.clearCache(true); reply(proxy, id, new JSONObject().put("accepted", true)); break;
+      case "PRIVATE_STORE_PUT": reply(proxy,id,new JSONObject().put("accepted",foreground && privateStore.put(this,payload.optString("key"),payload.optString("value"),payload.optLong("expiresAt")))); break;
+      case "PRIVATE_STORE_GET": reply(proxy,id,new JSONObject().put("value",foreground ? privateStore.get(this,payload.optString("key")) : JSONObject.NULL)); break;
+      case "PRIVATE_STORE_LIST": reply(proxy,id,new JSONObject().put("keys",foreground ? privateStore.list(this) : new JSONArray())); break;
+      case "PRIVATE_STORE_DELETE": if(foreground)privateStore.remove(this,payload.optString("key"));reply(proxy,id,new JSONObject().put("accepted",foreground));break;
+      case "CLEAR_PRIVATE_DATA": stopLocation(); sensors.stop(); hardware.stop(); LocationServices.getGeofencingClient(this).removeGeofences(geofenceIntent()); LandfallSecureHints.clear(this); privateStore.clear(this); web.clearCache(true); reply(proxy, id, new JSONObject().put("accepted", true)); break;
       default: reply(proxy, id, state("UNSUPPORTED"));
     }
   }
@@ -182,7 +188,7 @@ public final class LandfallActivity extends Activity implements LocationListener
     if (code == LOCATION_REQUEST && permissionReply != null) { try { reply(permissionReply, permissionRequestId, state(permission())); } catch(Exception ignored){} permissionReply=null; permissionRequestId=null; }
   }
   @Override public void onResume() { super.onResume(); foreground=true; if (web!=null) { web.onResume(); try { event(new JSONObject().put("type", "lifecycle").put("state", "FOREGROUND").put("pendingHints", LandfallSecureHints.read(this))); } catch(Exception ignored){} } }
-  private void openReturn(Intent intent){String handle=intent.getStringExtra("returnHandle");web.loadUrl(origin+(handle!=null&&handle.matches("[A-Za-z0-9_-]{32,2048}")?"/player/landfall-return?handle="+Uri.encode(handle):"/player"));}
+  private void openReturn(Intent intent){String handle=intent.getStringExtra("returnHandle");String saved=privateStore.lastJourney(this);web.loadUrl(origin+(handle!=null&&handle.matches("[A-Za-z0-9_-]{32,2048}")?"/player/landfall-return?handle="+Uri.encode(handle):saved!=null?"/player/playthroughs/"+Uri.encode(saved)+"/journal":"/player"));}
   @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);if(web!=null)openReturn(intent);}
   @Override public void onPause() { try { event(new JSONObject().put("type", "lifecycle").put("state", "BACKGROUND")); } catch(Exception ignored){} foreground=false; stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(web!=null)web.onPause(); super.onPause(); }
   @Override public void onDestroy() { stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(web!=null){web.destroy();web=null;} super.onDestroy(); }

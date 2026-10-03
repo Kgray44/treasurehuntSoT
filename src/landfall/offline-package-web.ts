@@ -2,6 +2,12 @@ import { z } from "zod";
 import type { PlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import { rememberOfflineLease, type OfflineAvailability } from "@/landfall/offline-store";
 import {
+  persistNativeLandfallLease,
+  restoreNativeLandfallLeases,
+  removeNativeLandfallLease,
+} from "@/landfall/native-private-store";
+import { landfallNativeHost } from "@/landfall/native-bridge";
+import {
   LandfallOfflinePackageRepository,
   offlinePackageEnvelopeSchema,
   type EncryptedOfflinePackageRecord,
@@ -66,6 +72,7 @@ export type LandfallWebPackage = {
   descriptor: Descriptor;
   binding: OfflinePackageBinding;
   repository: LandfallOfflinePackageRepository;
+  nativeDescriptorStored?: boolean;
 };
 async function open(descriptor: Descriptor, csrfToken: string): Promise<LandfallWebPackage> {
   const generationAtStart = generation;
@@ -112,10 +119,18 @@ export async function prepareLandfallRegion(sessionId: string, csrfToken: string
   const client = await open(descriptor, csrfToken);
   if (startedGeneration !== generation) throw new Error("LANDFALL_REGION_REVOKED");
   sessionStorage.setItem(leasePrefix + sessionId, JSON.stringify(descriptor));
+  client.nativeDescriptorStored = await persistNativeLandfallLease(
+    leasePrefix + sessionId,
+    JSON.stringify(descriptor),
+    descriptor.envelope.manifest.expiresAt,
+  );
+  if (startedGeneration !== generation) throw new Error("LANDFALL_REGION_REVOKED");
   return client;
 }
 export async function restoreLandfallRegion(sessionId: string, publishedVersionId: string, csrfToken: string) {
+  const startedGeneration = generation;
   try {
+    if (!sessionStorage.getItem(leasePrefix + sessionId)) await restoreNativeLandfallLeases();
     const descriptor = descriptorSchema.parse(JSON.parse(sessionStorage.getItem(leasePrefix + sessionId) ?? "null"));
     if (
       descriptor.envelope.manifest.scope.sessionId !== sessionId ||
@@ -123,7 +138,14 @@ export async function restoreLandfallRegion(sessionId: string, publishedVersionI
       descriptor.envelope.manifest.expiresAt <= Date.now()
     )
       return null;
-    return await open(descriptor, csrfToken);
+    const client = await open(descriptor, csrfToken);
+    client.nativeDescriptorStored = await persistNativeLandfallLease(
+      leasePrefix + sessionId,
+      JSON.stringify(descriptor),
+      descriptor.envelope.manifest.expiresAt,
+    );
+    if (startedGeneration !== generation) return null;
+    return client;
   } catch {
     return null;
   }
@@ -209,11 +231,18 @@ export async function restoreLandfallRegionChart(sessionId: string, publishedVer
     availability,
   };
 }
-export function extendLandfallRegionLease(client: LandfallWebPackage, csrfToken: string) {
-  rememberOfflineLease(
+export async function extendLandfallRegionLease(client: LandfallWebPackage, csrfToken: string) {
+  const restart = await rememberOfflineLease(
     { sessionId: client.binding.scope.sessionId, versionId: client.binding.scope.publishedVersionId, csrfToken },
     client.binding.leaseExpiresAt,
   );
+  return landfallNativeHost() && !client.nativeDescriptorStored ? "UNAVAILABLE" : restart;
+}
+export async function removeLandfallRegionLease(sessionId: string) {
+  for (const key of [leasePrefix + sessionId, "landfall-offline-lease-v2:" + sessionId]) {
+    sessionStorage.removeItem(key);
+    await removeNativeLandfallLease(key);
+  }
 }
 export async function clearLandfallRegions() {
   generation++;

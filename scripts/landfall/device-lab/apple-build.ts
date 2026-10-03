@@ -48,6 +48,13 @@ async function main() {
       JSON.stringify({ NSAllowsArbitraryLoadsInWebContent: true }),
       path.join(root, "native", "ios", "LandfallCompanion", "Info.plist"),
     ]);
+    await labTool("plutil", [
+      "-replace",
+      "WKAppBoundDomains",
+      "-json",
+      '["127.0.0.1"]',
+      path.join(root, "native", "ios", "LandfallCompanion", "Info.plist"),
+    ]);
     const output = await labTool(
       "xcodebuild",
       [

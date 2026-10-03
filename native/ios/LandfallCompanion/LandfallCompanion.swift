@@ -15,11 +15,14 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private var web: WKWebView?
     private var foreground = true
     private var acquiring = false
+    private var locationIntervalMs = 5000
+    private var lastLocationAt = 0.0
     private var permissionReply: ((Any?, String?) -> Void)?
     private let hints = LandfallSecureHints()
     private var hardware: LandfallHardware?
     private var observers: [NSObjectProtocol] = []
     private var pendingReturn:String?
+    private var privateStore: LandfallPrivateStore?
 
     static func allowedOrigin(_ raw: String) -> URL? {
         guard let url = URL(string: raw), let parts = URLComponents(url: url, resolvingAgainstBaseURL: false), parts.scheme == "https", parts.host != nil, parts.user == nil, parts.password == nil, parts.query == nil, parts.fragment == nil, (parts.path.isEmpty || parts.path == "/") else { return nil }
@@ -30,8 +33,15 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         #if DEBUG
         if let argument = ProcessInfo.processInfo.arguments.first(where: { $0.hasPrefix("--landfall-lab-origin=") }), let url=URL(string: String(argument.dropFirst("--landfall-lab-origin=".count))), url.scheme=="http", url.host=="127.0.0.1", url.port != nil, url.path.isEmpty, url.user==nil, url.password==nil, url.query==nil, url.fragment==nil { configured=url }
         #endif
+        // WebKit's app-bound domain list is also required for the persistent
+        // public offline shell. An incomplete deployment remains unconfigured.
+        if let host = configured?.host {
+            let domains = Bundle.main.object(forInfoDictionaryKey: "WKAppBoundDomains") as? [String] ?? []
+            if !domains.contains(host) { configured = nil }
+        }
         origin = configured
         super.init()
+        if let origin = origin { privateStore = LandfallPrivateStore(origin: origin.absoluteString) }
         location.delegate = self
         UNUserNotificationCenter.current().delegate=self
         observers.append(NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in self?.pause() })
@@ -49,13 +59,20 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     }
     func makeWebView() -> WKWebView {
         let configuration = WKWebViewConfiguration()
+        configuration.limitsNavigationsToAppBoundDomains = true
         configuration.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: "landfall")
         let script = "Object.defineProperty(window,'LandfallNative',{value:Object.freeze({version:1,platform:'IOS',request:message=>window.webkit.messageHandlers.landfall.postMessage(JSON.parse(message))}),configurable:false})"
         configuration.userContentController.addUserScript(WKUserScript(source: script, injectionTime: .atDocumentStart, forMainFrameOnly: true))
         let view = WKWebView(frame: .zero, configuration: configuration)
         view.navigationDelegate = self
         web = view
-        if let origin = origin, let player = URL(string: pendingReturn.map{"/player/landfall-return?handle=\($0)"} ?? "/player", relativeTo: origin) { view.load(URLRequest(url: player));pendingReturn=nil }
+        if let origin = origin {
+            var target = URLComponents(url: origin, resolvingAgainstBaseURL: false)!
+            if let handle = pendingReturn { target.path = "/player/landfall-return"; target.queryItems = [URLQueryItem(name: "handle", value: handle)] }
+            else if let saved = privateStore?.lastJourney() { target.path = "/player/playthroughs/\(saved)/journal" }
+            else { target.path = "/player" }
+            if let player = target.url { view.load(URLRequest(url: player)); pendingReturn = nil }
+        }
         return view
     }
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) { decisionHandler(accepts(navigationAction.request.url) ? .allow : .cancel) }
@@ -65,6 +82,10 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
               JSONSerialization.isValidJSONObject(request), let encoded = try? JSONSerialization.data(withJSONObject: request), encoded.count <= 16384 else { replyHandler(nil, "INVALID_NATIVE_REQUEST"); return }
         let payload = request["payload"] as? [String: Any] ?? [:]
         switch operation {
+        case "PRIVATE_STORE_PUT": replyHandler(["accepted": foreground && (privateStore?.put(payload["key"] as? String ?? "", value: payload["value"] as? String ?? "", expiresAt: payload["expiresAt"] as? Double ?? 0) ?? false)], nil)
+        case "PRIVATE_STORE_GET": replyHandler(["value": foreground ? privateStore?.get(payload["key"] as? String ?? "") as Any? ?? NSNull() : NSNull()], nil)
+        case "PRIVATE_STORE_LIST": replyHandler(["keys": foreground ? privateStore?.list() ?? [] : []], nil)
+        case "PRIVATE_STORE_DELETE": if foreground { privateStore?.remove(payload["key"] as? String ?? "") }; replyHandler(["accepted": foreground], nil)
         case "LOCATION_PERMISSION":
             guard foreground, permissionReply == nil else { replyHandler(["state": "UNAVAILABLE"], nil); return }
             if location.authorizationStatus == .notDetermined { permissionReply = replyHandler; location.requestWhenInUseAuthorization() }
@@ -73,7 +94,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             let interval = payload["intervalMs"] as? Int ?? 5000
             guard foreground, payload["background"] as? Bool != true, (1000...60000).contains(interval), ["GRANTED", "APPROXIMATE"].contains(permission()) else { replyHandler(["accepted": false], nil); return }
             location.desiredAccuracy = payload["precise"] as? Bool == true && location.accuracyAuthorization == .fullAccuracy ? kCLLocationAccuracyBest : kCLLocationAccuracyHundredMeters
-            location.distanceFilter = interval >= 15000 ? 10 : 3
+            // Time-bound foreground sampling must also support stationary dwell.
+            location.distanceFilter = interval >= 15000 ? 10 : kCLDistanceFilterNone
+            locationIntervalMs = interval; lastLocationAt = 0
             location.allowsBackgroundLocationUpdates = false
             location.pausesLocationUpdatesAutomatically = true
             acquiring = true; location.startUpdatingLocation(); replyHandler(["accepted": true], nil)
@@ -95,7 +118,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "QR_SCAN": replyHandler(["state": hardware?.startQr(foreground: foreground, presenter: web?.window?.rootViewController) ?? "UNAVAILABLE"], nil)
         case "CLEAR_PRIVATE_DATA":
             stopLocation(); stopSensors(); hardware?.stop()
-            for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear()
+            for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear(); privateStore?.clear()
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             UNUserNotificationCenter.current().removeAllDeliveredNotifications()
             replyHandler(["accepted": true], nil)
@@ -118,6 +141,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard foreground, acquiring, ["GRANTED", "APPROXIMATE"].contains(permission()) else { return }
         for sample in locations.suffix(4) where sample.horizontalAccuracy > 0 {
+            let timestamp = sample.timestamp.timeIntervalSince1970 * 1000
+            guard timestamp > lastLocationAt, timestamp - lastLocationAt >= Double(locationIntervalMs) else { continue }
+            lastLocationAt = timestamp
             var fix: [String: Any] = ["id": UUID().uuidString, "timestamp": Int(sample.timestamp.timeIntervalSince1970 * 1000), "latitude": sample.coordinate.latitude, "longitude": sample.coordinate.longitude, "accuracyMeters": sample.horizontalAccuracy]
             if sample.course >= 0 { fix["headingDegrees"] = sample.course }
             if sample.speed >= 0 { fix["speedMetersPerSecond"] = sample.speed }
@@ -125,7 +151,11 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             event(["type": "fix", "fix": fix])
         }
     }
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { event(["type": "error"]) }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        if let value = error as? CLError, value.code == .locationUnknown { return }
+        if let value = error as? CLError, value.code == .headingFailure { manager.stopUpdatingHeading(); event(["type":"provider-health","family":"HEADING","state":"UNAVAILABLE"]); return }
+        event(["type": "error"])
+    }
     private func registerGeofence(_ payload: [String: Any], reply: @escaping (Any?, String?) -> Void) {
         guard foreground, location.authorizationStatus == .authorizedAlways, CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self), location.monitoredRegions.count < 20,
               let handle = payload["returnHandle"] as? String, (32...2048).contains(handle.count), handle.range(of: "^[A-Za-z0-9_-]+$", options: .regularExpression) != nil,
@@ -150,7 +180,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         }
         completionHandler()
     }
-    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) { event(["type": "error"]) }
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) { event(["type": "provider-health", "family":"GEOFENCE", "state":"UNAVAILABLE"]) }
     private func startSensors() -> Bool {
         guard foreground else { return false }
         stopSensors()

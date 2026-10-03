@@ -56,7 +56,7 @@ jobs:
       - run: brew install xcodegen
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
       - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts
-      - run: npm run landfall:device-lab -- --platform ios --scenario gps-perfect-walk,offline-native-canonical-reconcile
+      - run: npm run landfall:device-lab -- --platform ios --scenario gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -85,7 +85,7 @@ jobs:
         with:
           gradle-version: "8.11.1"
       - run: npm ci --ignore-scripts
-      - run: gradle -p native/android --console plain assembleDebug
+      - run: gradle -p native/android --console plain assembleDebug assembleDebugAndroidTest
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
       - name: Enable ephemeral runner KVM access
         run: |
@@ -102,7 +102,9 @@ jobs:
           emulator-boot-timeout: 300
           disable-linux-hw-accel: false
           disable-animations: true
-          script: npm run landfall:device-lab -- --platform android --scenario gps-perfect-walk,offline-native-canonical-reconcile
+          script: |
+            npx --no-install tsx scripts/landfall/device-lab/android-test.ts
+            npm run landfall:device-lab -- --platform android --scenario gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile
       - uses: actions/upload-artifact@v4
         if: always()
         with:

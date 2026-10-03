@@ -62,17 +62,24 @@ Provider policy, native foreground shells, wake-only geofences, opaque notificat
 return, optional native sensors/scanners, signed encrypted web regions and a shared
 Device Lab are in development. This is not a qualified Phase 4 plateau.
 
-100 provider scenarios pass locally. A dedicated child process binds only a fresh
+101 provider scenarios pass locally. A dedicated child process binds only a fresh
 owned SQLite database before loading the actual One Voyage writer. The canonical
 offline scenario passes on the Windows-hosted Android emulator through OS location,
 the restricted WebView bridge, encrypted IndexedDB outbox and the actual writer.
 Measured event count is one; cleanup checks the database, app process/data and ADB
 reverse. Logical fixtures explicitly translate relative age to the real server clock;
-native observations retain their actual timestamps. 33 focused files / 255 tests pass.
+native observations retain their actual timestamps. 35 focused files / 270 tests
+passed at e7716f46, before the native restart-lease work. Its web corruption,
+Unicode chunking, removal ordering and revocation-race tests also pass locally;
+full focused rerun remains required.
 
-Hosted Windows/Linux provider baseline passed at checkpoint 44999582. Hosted Apple
-compiles at 4cf34883 but its wake-journal test failed; simulator signing/Keychain
-diagnostics are being repaired. First hosted Android lacked KVM access and timed out.
+Hosted Windows/Linux actual-writer/provider checks passed at 26eff066. Hosted
+Android's canonical offline case passed at that checkpoint after enabling KVM.
+Hosted Apple native XCTest/build passed at 8b18aeea, but its two native end-to-end
+cases failed (first GPS delivery and subsequent simulator setup). OS diagnostics,
+temporary CoreLocation errors and cold-boot timing are being repaired. Local
+Android canonical lost-response recovery and native encrypted-store instrumentation
+passed. Restart/relaunch presentation and updated hosted Apple proof remain open.
 These failed development runs are evidence, not acceptance. Use focused hosted jobs;
 do not use ordinary Sounding Line as a debug loop.
 

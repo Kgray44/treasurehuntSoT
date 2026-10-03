@@ -5,6 +5,7 @@ import {
   restoreLandfallRegion,
   downloadLandfallRegion,
   extendLandfallRegionLease,
+  removeLandfallRegionLease,
   type LandfallWebPackage,
 } from "@/landfall/offline-package-web";
 
@@ -61,10 +62,12 @@ export function LandfallOfflineRegionPanel({
         throw new Error("VERSION_CHANGED");
       client.current = prepared;
       const state = await downloadLandfallRegion(prepared);
-      if (["READY", "PARTIAL"].includes(state)) extendLandfallRegionLease(prepared, csrfToken);
+      const restart = ["READY", "PARTIAL"].includes(state)
+        ? await extendLandfallRegionLease(prepared, csrfToken)
+        : "UNAVAILABLE";
       setAvailable(true);
       setStatus(
-        `Offline region: ${state.toLowerCase()}. First-party assets: ${prepared.descriptor.availability.assets.toLowerCase()}. External map tiles require a connection. Evidence remains unconfirmed until the Voyage accepts it online.`,
+        `Offline region: ${state.toLowerCase()}. First-party assets: ${prepared.descriptor.availability.assets.toLowerCase()}. ${restart === "NATIVE_PREPARED" ? "The companion saved a bounded restart lease; keep the prepared offline shell available." : restart === "TAB_ONLY" ? "Keep this tab open to retain offline access." : "Restart access could not be prepared; keep this view open."} External map tiles require a connection. Evidence remains unconfirmed until the Voyage accepts it online.`,
       );
     } catch {
       setStatus(
@@ -79,6 +82,7 @@ export function LandfallOfflineRegionPanel({
     setBusy(true);
     try {
       await client.current.repository.remove(client.current.descriptor.envelope.manifest.id, client.current.binding);
+      await removeLandfallRegionLease(sessionId);
       setAvailable(false);
       setStatus("Offline region removed from this device.");
     } catch {

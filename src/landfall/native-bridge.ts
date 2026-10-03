@@ -45,7 +45,11 @@ export async function landfallNativeRequest(
     | "BLE_STOP"
     | "NFC_READ"
     | "QR_SCAN"
-    | "CLEAR_PRIVATE_DATA",
+    | "CLEAR_PRIVATE_DATA"
+    | "PRIVATE_STORE_PUT"
+    | "PRIVATE_STORE_GET"
+    | "PRIVATE_STORE_LIST"
+    | "PRIVATE_STORE_DELETE",
   payload: Record<string, unknown> = {},
 ) {
   const host = landfallNativeHost();

@@ -241,9 +241,13 @@ export async function executeLandfallOsScenario(
       ).trim();
       if (!/^[A-Fa-f0-9-]{36}$/.test(ownedDevice)) throw new Error("LANDFALL_APPLE_DEVICE_ID_INVALID");
       await labTool("xcrun", ["simctl", "boot", ownedDevice]);
-      await labTool("xcrun", ["simctl", "bootstatus", ownedDevice, "-b"], 180000);
+      executionStage = "APPLE_BOOT";
+      await labTool("xcrun", ["simctl", "bootstatus", ownedDevice, "-b"], 420000);
+      executionStage = "APPLE_INSTALL";
       await labTool("xcrun", ["simctl", "install", ownedDevice, app.app]);
+      executionStage = "APPLE_PERMISSION";
       await labTool("xcrun", ["simctl", "privacy", ownedDevice, "grant", "location", "com.voyagewright.landfall"]);
+      executionStage = "APPLE_LAUNCH";
       await labTool("xcrun", [
         "simctl",
         "launch",
@@ -420,14 +424,19 @@ export async function executeLandfallOsScenario(
         }
         if (target === "android-emulator")
           await adb(["emu", "geo", "fix", String(coordinate.longitude), String(coordinate.latitude)]);
-        else
-          await labTool("xcrun", [
-            "simctl",
-            "location",
-            ownedDevice!,
-            "set",
-            `${coordinate.latitude},${coordinate.longitude}`,
-          ]);
+        else {
+          const deadline = Date.now() + 50000;
+          while (!results.has(index) && Date.now() < deadline) {
+            await labTool("xcrun", [
+              "simctl",
+              "location",
+              ownedDevice!,
+              "set",
+              `${coordinate.latitude},${coordinate.longitude}`,
+            ]);
+            if (!results.has(index)) await new Promise((resolve) => setTimeout(resolve, 1000));
+          }
+        }
       }
       await wait(() => results.has(index), 30000);
       steps.push(results.get(index)!);

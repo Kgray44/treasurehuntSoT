@@ -125,7 +125,7 @@ async function main() {
             const timer = setTimeout(() => {
               waiting = null;
               reject(new Error("OS_LOCATION_TIMEOUT"));
-            }, 20000);
+            }, 45000);
             const accept = (sample: LandfallObservation) => {
               if (
                 sample.kind === "PHYSICAL_POSITION" &&

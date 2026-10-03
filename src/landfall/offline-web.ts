@@ -98,6 +98,10 @@ export async function rememberRevealedChart(
     synchronizedAt: Date.now(),
   };
   if (generation !== cacheGeneration) throw new Error("LANDFALL_OFFLINE_ACCESS_CLEARED");
+  availability.restart = await rememberOfflineLease(
+    binding(bootstrap.sessionId, bootstrap.publishedVersionId, csrfToken),
+  );
+  if (generation !== cacheGeneration) throw new Error("LANDFALL_OFFLINE_ACCESS_CLEARED");
   await repository.remember(binding(bootstrap.sessionId, bootstrap.publishedVersionId, csrfToken), {
     bootstrap: {
       ...bootstrap,
@@ -115,7 +119,6 @@ export async function rememberRevealedChart(
     await repository.clear();
     throw new Error("LANDFALL_OFFLINE_ACCESS_CLEARED");
   }
-  rememberOfflineLease(binding(bootstrap.sessionId, bootstrap.publishedVersionId, csrfToken));
   return availability;
 }
 
