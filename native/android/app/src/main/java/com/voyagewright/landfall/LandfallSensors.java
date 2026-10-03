@@ -17,14 +17,16 @@ final class LandfallSensors implements SensorEventListener {
   private final HashMap<Integer, Long> last = new HashMap<>();
   private boolean active;
   LandfallSensors(Activity activity, Consumer<JSONObject> emit) { manager=(SensorManager)activity.getSystemService(Activity.SENSOR_SERVICE); this.emit=emit; }
-  void start(boolean foreground) {
-    stop(); if(!foreground)return; active=true;
+  boolean start(boolean foreground) {
+    stop(); if(!foreground || manager==null)return false;
+    boolean registered=false;
     for(int type:new int[]{Sensor.TYPE_ROTATION_VECTOR,Sensor.TYPE_ACCELEROMETER,Sensor.TYPE_PRESSURE,Sensor.TYPE_STEP_COUNTER}) {
       Sensor sensor=manager.getDefaultSensor(type);
-      if(sensor!=null) try { manager.registerListener(this,sensor,250000); } catch(SecurityException ignored){}
+      if(sensor!=null) try { registered=manager.registerListener(this,sensor,250000)||registered; } catch(SecurityException ignored){}
     }
+    active=registered; return registered;
   }
-  void stop(){ active=false; manager.unregisterListener(this); last.clear(); }
+  void stop(){ active=false; if(manager!=null)manager.unregisterListener(this); last.clear(); }
   @Override public void onSensorChanged(SensorEvent input) {
     int type=input.sensor.getType(); long now=System.currentTimeMillis();
     if(!active || now-last.getOrDefault(type,0L)<250 || input.accuracy==SensorManager.SENSOR_STATUS_UNRELIABLE)return;

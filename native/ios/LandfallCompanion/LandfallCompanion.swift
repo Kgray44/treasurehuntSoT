@@ -87,7 +87,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             guard foreground else {replyHandler(["state":"UNAVAILABLE"],nil);return}
             UNUserNotificationCenter.current().requestAuthorization(options:[.alert,.sound]){ granted,_ in replyHandler(["state":granted ? "GRANTED":"DENIED"],nil) }
         case "GEOFENCE_CLEAR": for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear(); replyHandler(["accepted": true], nil)
-        case "SENSORS_START": startSensors(); replyHandler(["accepted": foreground], nil)
+        case "SENSORS_START": replyHandler(["accepted": startSensors()], nil)
         case "SENSORS_STOP": stopSensors(); replyHandler(["accepted": true], nil)
         case "BLE_START": replyHandler(["state": hardware?.startBle(foreground: foreground) ?? "UNAVAILABLE"], nil)
         case "BLE_STOP": hardware?.stop(); replyHandler(["accepted": true], nil)
@@ -148,12 +148,13 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         completionHandler()
     }
     func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) { event(["type": "error"]) }
-    private func startSensors() {
-        guard foreground else { return }
+    private func startSensors() -> Bool {
+        guard foreground else { return false }
         stopSensors()
         if CLLocationManager.headingAvailable() { location.headingFilter=10; location.startUpdatingHeading() }
         if motion.isAccelerometerAvailable { motion.accelerometerUpdateInterval=0.25; motion.startAccelerometerUpdates(to: .main) { [weak self] sample, _ in if let value=sample?.acceleration { self?.sensor("ACCELEROMETER", [value.x*9.80665,value.y*9.80665,value.z*9.80665], accuracy: 1) } } }
         if CMAltimeter.isRelativeAltitudeAvailable() { altimeter.startRelativeAltitudeUpdates(to: .main) { [weak self] sample, _ in if let sample=sample { self?.sensor("PRESSURE", [sample.pressure.doubleValue*10], accuracy: 1) } } }
+        return CLLocationManager.headingAvailable() || motion.isAccelerometerAvailable || CMAltimeter.isRelativeAltitudeAvailable()
     }
     func locationManager(_ manager: CLLocationManager, didUpdateHeading heading: CLHeading) { if heading.headingAccuracy>=0 { sensor("HEADING", [heading.magneticHeading], accuracy: heading.headingAccuracy) } }
     private func sensor(_ kind: String, _ values: [Double], accuracy: Double) { guard foreground else { return }; event(["type": "sensor", "frame": ["id": UUID().uuidString, "observedAt": Int(Date().timeIntervalSince1970*1000), "kind": kind, "values": values, "accuracy": accuracy]]) }

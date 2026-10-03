@@ -15,6 +15,8 @@ import com.google.android.gms.location.GeofencingEvent;
 /** A wake hint cannot call the server, open an Activity, or complete a waypoint. */
 public final class LandfallGeofenceReceiver extends BroadcastReceiver {
   @Override public void onReceive(Context context,Intent intent){
+    if(context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED ||
+       (android.os.Build.VERSION.SDK_INT>=29 && context.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)!=PackageManager.PERMISSION_GRANTED))return;
     GeofencingEvent event=GeofencingEvent.fromIntent(intent);
     if(event==null||event.hasError()||event.getTriggeringGeofences()==null)return;
     String transition=event.getGeofenceTransition()==Geofence.GEOFENCE_TRANSITION_ENTER?"ENTER":event.getGeofenceTransition()==Geofence.GEOFENCE_TRANSITION_EXIT?"EXIT":null;
@@ -25,7 +27,7 @@ public final class LandfallGeofenceReceiver extends BroadcastReceiver {
         NotificationManager manager=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);manager.createNotificationChannel(new NotificationChannel("landfall-nearby","Optional journey reminders",NotificationManager.IMPORTANCE_DEFAULT));
         Intent open=new Intent(context,LandfallActivity.class).putExtra("returnHandle",fence.getRequestId()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent returnIntent=PendingIntent.getActivity(context,fence.getRequestId().hashCode(),open,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
-        manager.notify(fence.getRequestId().hashCode(),new Notification.Builder(context,"landfall-nearby").setSmallIcon(android.R.drawable.ic_dialog_map).setContentTitle("Your journey may be nearby").setContentText("Open your current Chart for a fresh check. No visit has been confirmed.").setContentIntent(returnIntent).setAutoCancel(true).build());
+        manager.notify(fence.getRequestId().hashCode(),new Notification.Builder(context,"landfall-nearby").setSmallIcon(android.R.drawable.ic_dialog_map).setContentTitle("Your journey may be nearby").setContentText("Open your current Chart for a fresh check. No visit has been confirmed.").setContentIntent(returnIntent).setOnlyAlertOnce(true).setAutoCancel(true).build());
       }
     }
   }

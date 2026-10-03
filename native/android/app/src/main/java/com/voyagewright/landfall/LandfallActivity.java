@@ -130,7 +130,7 @@ public final class LandfallActivity extends Activity implements LocationListener
         break;
       case "GEOFENCE_REGISTER": registerGeofence(payload, proxy, id); break;
       case "GEOFENCE_CLEAR": LocationServices.getGeofencingClient(this).removeGeofences(geofenceIntent()); LandfallSecureHints.clear(this); reply(proxy, id, new JSONObject().put("accepted", true)); break;
-      case "SENSORS_START": sensors.start(foreground); reply(proxy, id, new JSONObject().put("accepted", foreground)); break;
+      case "SENSORS_START": reply(proxy, id, new JSONObject().put("accepted", sensors.start(foreground))); break;
       case "SENSORS_STOP": sensors.stop(); reply(proxy, id, new JSONObject().put("accepted", true)); break;
       case "BLE_START": reply(proxy, id, state(hardware.startBle(foreground))); break;
       case "BLE_STOP": hardware.stop(); reply(proxy, id, new JSONObject().put("accepted", true)); break;

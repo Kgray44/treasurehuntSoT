@@ -7,7 +7,11 @@ final class LandfallSecureHints {
     private let alias = "com.voyagewright.landfall.wake-hints-v1"
     private let registrations = "landfall-geofence-registrations-v1"
     private func handleHash(_ handle:String)->String { SHA256.hash(data:Data(handle.utf8)).map {String(format:"%02x",$0)}.joined() }
-    func register(handle:String,expiresAt:Double,notifications:Bool){var rows=UserDefaults.standard.dictionary(forKey:registrations)??[:];rows[handleHash(handle)]=["expiresAt":expiresAt,"notifications":notifications] as [String:Any];UserDefaults.standard.set(rows,forKey:registrations)}
+    func register(handle: String, expiresAt: Double, notifications: Bool) {
+        var rows = UserDefaults.standard.dictionary(forKey: registrations) ?? [:]
+        rows[handleHash(handle)] = ["expiresAt": expiresAt, "notifications": notifications] as [String: Any]
+        UserDefaults.standard.set(rows, forKey: registrations)
+    }
     func active(handle:String)->Bool{guard let rows=UserDefaults.standard.dictionary(forKey:registrations),let row=rows[handleHash(handle)] as? [String:Any],let expiry=row["expiresAt"] as? Double else{return false};return expiry>Date().timeIntervalSince1970*1000}
     func notices(handle:String)->Bool{guard active(handle:handle),let rows=UserDefaults.standard.dictionary(forKey:registrations),let row=rows[handleHash(handle)] as? [String:Any] else{return false};return row["notifications"] as? Bool==true}
     private var file: URL { FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("landfall-wake-hints.enc") }
