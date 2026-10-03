@@ -29,7 +29,9 @@ describe("native Player context bridge", () => {
       }),
     );
     expect(emit).toHaveBeenCalledTimes(1);
-    expect(request.mock.calls.map(([raw]) => JSON.parse(raw).operation)).toEqual(["SENSORS_START", "SENSORS_STOP"]);
+    await vi.waitFor(() =>
+      expect(request.mock.calls.map(([raw]) => JSON.parse(raw).operation)).toEqual(["SENSORS_START", "SENSORS_STOP"]),
+    );
   });
   it("cannot become active from a permission reply delivered after teardown", async () => {
     let reply!: (value: unknown) => void;
@@ -46,6 +48,7 @@ describe("native Player context bridge", () => {
     const provider = new NativeContextProvider("town");
     const state = vi.fn();
     const starting = provider.start({ sessionId: "session", publishedVersionId: "pin" }, vi.fn(), state, true);
+    await vi.waitFor(() => expect(typeof reply).toBe("function"));
     provider.stop();
     reply({ accepted: true });
     await starting;

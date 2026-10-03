@@ -6,7 +6,7 @@ import {
   restoreNativeLandfallLeases,
   removeNativeLandfallLease,
 } from "@/landfall/native-private-store";
-import { landfallNativeHost } from "@/landfall/native-bridge";
+import { landfallNativeHost, readNativeLandfallPower } from "@/landfall/native-bridge";
 import {
   LandfallOfflinePackageRepository,
   offlinePackageEnvelopeSchema,
@@ -150,7 +150,12 @@ export async function restoreLandfallRegion(sessionId: string, publishedVersionI
     return null;
   }
 }
-export function downloadLandfallRegion(client: LandfallWebPackage) {
+export async function downloadLandfallRegion(client: LandfallWebPackage) {
+  if (landfallNativeHost()) {
+    const power = await readNativeLandfallPower();
+    if (!power || power.state !== "READY" || power.lowPower || power.thermalPressure)
+      throw new Error("LANDFALL_DOWNLOAD_POWER_PAUSED");
+  }
   return client.repository.install(client.descriptor.envelope, client.binding, async (resource) => {
     const manifest = client.descriptor.envelope.manifest;
     const query = new URLSearchParams({

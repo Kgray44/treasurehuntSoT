@@ -37,6 +37,9 @@ public final class LandfallActivity extends Activity implements LocationListener
   private LandfallSensors sensors;
   private LandfallHardware hardware;
   private LandfallPrivateStore privateStore;
+  private LandfallPower power;
+  private long requestedInterval=5000;
+  private boolean requestedPrecise;
   private static final int LOCATION_REQUEST = 41;
 
   @Override public void onCreate(Bundle state) {
@@ -51,6 +54,8 @@ public final class LandfallActivity extends Activity implements LocationListener
     locations = (LocationManager)getSystemService(LOCATION_SERVICE);
     sensors = new LandfallSensors(this, this::event);
     hardware = new LandfallHardware(this, this::event);
+    power = new LandfallPower(this, this::powerChanged);
+    power.watch();
     web = new WebView(this);
     web.getSettings().setJavaScriptEnabled(true);
     web.getSettings().setDomStorageEnabled(true);
@@ -112,11 +117,8 @@ public final class LandfallActivity extends Activity implements LocationListener
         if (!foreground || payload.optBoolean("background") || permission().equals("DENIED")) { reply(proxy, id, new JSONObject().put("accepted", false)); break; }
         long interval = payload.optLong("intervalMs", 5000);
         if (interval < 1000 || interval > 60000) { reply(proxy, id, new JSONObject().put("accepted", false)); break; }
-        stopLocation();
-        String provider = permission().equals("GRANTED") && payload.optBoolean("precise") ? LocationManager.GPS_PROVIDER : LocationManager.NETWORK_PROVIDER;
-        if (!locations.isProviderEnabled(provider)) provider = LocationManager.NETWORK_PROVIDER;
-        try { locations.requestLocationUpdates(provider, interval, 0, this); acquiring = true; reply(proxy, id, new JSONObject().put("accepted", true)); }
-        catch (SecurityException | IllegalArgumentException error) { reply(proxy, id, new JSONObject().put("accepted", false)); }
+        requestedInterval=interval;requestedPrecise=payload.optBoolean("precise");
+        reply(proxy,id,new JSONObject().put("accepted",startLocation()));
         break;
       case "LOCATION_STOP": stopLocation(); reply(proxy, id, new JSONObject().put("accepted", true)); break;
       case "BACKGROUND_PERMISSION":
@@ -132,13 +134,14 @@ public final class LandfallActivity extends Activity implements LocationListener
         break;
       case "GEOFENCE_REGISTER": registerGeofence(payload, proxy, id); break;
       case "GEOFENCE_CLEAR": LocationServices.getGeofencingClient(this).removeGeofences(geofenceIntent()); LandfallSecureHints.clear(this); reply(proxy, id, new JSONObject().put("accepted", true)); break;
-      case "SENSORS_START": reply(proxy, id, new JSONObject().put("accepted", sensors.start(foreground))); break;
+      case "POWER_STATE": reply(proxy,id,power.snapshot());break;
+      case "SENSORS_START": reply(proxy, id, new JSONObject().put("accepted", sensors.start(foreground && !power.constrained()))); break;
       case "SENSORS_STOP": sensors.stop(); reply(proxy, id, new JSONObject().put("accepted", true)); break;
-      case "BLE_START": reply(proxy, id, state(hardware.startBle(foreground))); break;
+      case "BLE_START": reply(proxy, id, state(hardware.startBle(foreground && !power.critical()))); break;
       case "BLE_STOP": hardware.stop(); reply(proxy, id, new JSONObject().put("accepted", true)); break;
-      case "NFC_READ": reply(proxy, id, state(hardware.startNfc(foreground))); break;
+      case "NFC_READ": reply(proxy, id, state(hardware.startNfc(foreground && !power.critical()))); break;
       case "QR_SCAN":
-        if (!foreground) { reply(proxy,id,state("UNAVAILABLE")); break; }
+        if (!foreground || power.critical()) { reply(proxy,id,state("UNAVAILABLE")); break; }
         com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions options = new com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions.Builder().setBarcodeFormats(com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE).build();
         com.google.mlkit.vision.codescanner.GmsBarcodeScanning.getClient(this, options).startScan()
           .addOnSuccessListener(barcode -> { String token=barcode.getRawValue(); if(token!=null && token.length()<=2048) try { event(new JSONObject().put("type","interaction").put("medium","QR").put("token",token)); } catch(Exception ignored){} })
@@ -168,6 +171,19 @@ public final class LandfallActivity extends Activity implements LocationListener
       .addOnFailureListener(error -> { try { reply(proxy, id, state("UNAVAILABLE")); } catch(Exception ignored){} });
   }
   private void stopLocation() { if (locations != null) locations.removeUpdates(this); acquiring = false; }
+  private boolean startLocation(){
+    stopLocation();if(!foreground || permission().equals("DENIED") || power.critical())return false;
+    String provider=permission().equals("GRANTED") && requestedPrecise?LocationManager.GPS_PROVIDER:LocationManager.NETWORK_PROVIDER;
+    if(!locations.isProviderEnabled(provider))provider=LocationManager.NETWORK_PROVIDER;
+    try{locations.requestLocationUpdates(provider,power.interval(requestedInterval),0,this);acquiring=true;return true;}catch(SecurityException|IllegalArgumentException error){return false;}
+  }
+  private void powerChanged(){
+    if(!foreground || power==null)return;
+    if(power.constrained() && sensors!=null)sensors.stop();
+    if(power.critical() && hardware!=null)hardware.stop();
+    if(acquiring && !startLocation())try{event(new JSONObject().put("type","error"));}catch(Exception ignored){}
+    try{event(new JSONObject().put("type","power").put("power",power.snapshot()));}catch(Exception ignored){}
+  }
   private void event(JSONObject value) {
     if (web == null || !foreground || !isAllowed(Uri.parse(web.getUrl()==null ? origin : web.getUrl()))) return;
     runOnUiThread(() -> web.evaluateJavascript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:" + value.toString() + "}))", null));
@@ -191,5 +207,5 @@ public final class LandfallActivity extends Activity implements LocationListener
   private void openReturn(Intent intent){String handle=intent.getStringExtra("returnHandle");String saved=privateStore.lastJourney(this);web.loadUrl(origin+(handle!=null&&handle.matches("[A-Za-z0-9_-]{32,2048}")?"/player/landfall-return?handle="+Uri.encode(handle):saved!=null?"/player/playthroughs/"+Uri.encode(saved)+"/journal":"/player"));}
   @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);if(web!=null)openReturn(intent);}
   @Override public void onPause() { try { event(new JSONObject().put("type", "lifecycle").put("state", "BACKGROUND")); } catch(Exception ignored){} foreground=false; stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(web!=null)web.onPause(); super.onPause(); }
-  @Override public void onDestroy() { stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(web!=null){web.destroy();web=null;} super.onDestroy(); }
+  @Override public void onDestroy() { stopLocation(); if(power!=null)power.close(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(web!=null){web.destroy();web=null;} super.onDestroy(); }
 }

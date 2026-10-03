@@ -83,6 +83,15 @@ passed. Local Android force-stop/relaunch restored its encrypted native lease,
 production public service worker and encrypted outbox, then wrote one real canonical
 event; its synthetic lab shell does not establish full Player UI proof. Hosted iOS
 run 37153478036 is testing 76456767. Updated Apple end-to-end proof remains open.
+
+Clean checkpoint c9abab21 passes four Android native cases: GPS, offline canonical
+delivery, lost-response acknowledgment and encrypted restart/relaunch. Native
+Android instrumentation now passes four tests including actual virtual low-battery
+rate adaptation. The four power cases initially passed three; saver lost a command
+after WebView recreation. Acknowledgment-based redelivery fixes the isolated saver
+rerun. Combined frozen-source rerun remains required. 38 focused files / 285 tests
+and TypeScript pass during power development; the new Swift power source still
+needs hosted compilation and native execution.
 These failed development runs are evidence, not acceptance. Use focused hosted jobs;
 do not use ordinary Sounding Line as a debug loop.
 

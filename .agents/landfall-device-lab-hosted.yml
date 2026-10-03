@@ -42,7 +42,7 @@ jobs:
     if: __RUN_APPLE__
     name: Native / iOS Simulator
     runs-on: macos-latest
-    timeout-minutes: 35
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
@@ -56,7 +56,7 @@ jobs:
       - run: brew install xcodegen
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
       - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts
-      - run: npm run landfall:device-lab -- --platform ios --scenario gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile
+      - run: npm run landfall:device-lab -- --platform ios --scenario gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -104,7 +104,7 @@ jobs:
           disable-animations: true
           script: |
             npx --no-install tsx scripts/landfall/device-lab/android-test.ts
-            npm run landfall:device-lab -- --platform android --scenario gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile
+            npm run landfall:device-lab -- --platform android --scenario gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -69,9 +69,11 @@ export function LandfallOfflineRegionPanel({
       setStatus(
         `Offline region: ${state.toLowerCase()}. First-party assets: ${prepared.descriptor.availability.assets.toLowerCase()}. ${restart === "NATIVE_PREPARED" ? "The companion saved a bounded restart lease; keep the prepared offline shell available." : restart === "TAB_ONLY" ? "Keep this tab open to retain offline access." : "Restart access could not be prepared; keep this view open."} External map tiles require a connection. Evidence remains unconfirmed until the Voyage accepts it online.`,
       );
-    } catch {
+    } catch (error) {
       setStatus(
-        "The region could not be prepared. A connection and current Voyage access are required; the chart remains readable where already saved.",
+        error instanceof Error && error.message === "LANDFALL_DOWNLOAD_POWER_PAUSED"
+          ? "Region download is paused to conserve power or reduce heat. Saved guidance remains available. Try again when the device recovers."
+          : "The region could not be prepared. A connection and current Voyage access are required; the chart remains readable where already saved.",
       );
     } finally {
       setBusy(false);

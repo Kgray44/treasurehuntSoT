@@ -1,5 +1,11 @@
 import { NativeLocationProvider } from "@/landfall/native-location";
-import { createLandfallNativeDriver, subscribeLandfallNativeLifecycle } from "@/landfall/native-bridge";
+import {
+  createLandfallNativeDriver,
+  subscribeLandfallNativeLifecycle,
+  readNativeLandfallPower,
+  type NativeLandfallPower,
+} from "@/landfall/native-bridge";
+import { landfallPowerPolicy } from "@/landfall/device-policy";
 import { landfallFixture } from "@/landfall/fixtures";
 import { LandfallRuntime, type LandfallOutcome } from "@/landfall/runtime";
 import { LandfallProviderRegistry } from "@/landfall/observation";
@@ -82,6 +88,7 @@ async function main() {
   runtime.setOffline(network === "ONLINE" ? "ONLINE" : "OFFLINE_READY");
   let canonicalCount = 0;
   let serverConfirmed = false;
+  let powerProfile = "SUSPENDED";
   let waiting: ((observation: LandfallObservation) => void) | null = null;
   const start = () =>
     provider.start(
@@ -117,6 +124,19 @@ async function main() {
       },
     );
   await start();
+  const projectPower = (power: NativeLandfallPower | null) =>
+    landfallPowerPolicy({
+      lifecycle: "FOREGROUND",
+      connectivity: network,
+      foregroundConsent: true,
+      backgroundConsent: false,
+      foregroundPermission: provider.permissionState,
+      backgroundPermission: "DENIED",
+      lowPower: power?.state !== "READY" || power.lowPower,
+      thermalPressure: power?.thermalPressure ?? false,
+      precisionRequested: true,
+    }).profile;
+  powerProfile = projectPower(await readNativeLandfallPower());
   const unsubscribeLifecycle = subscribeLandfallNativeLifecycle((state) => {
     if (state === "BACKGROUND") {
       runtime.pause();
@@ -204,11 +224,23 @@ async function main() {
           serverConfirmed,
           clientConfirmed: serverConfirmed,
           canonicalProgressionEvents: canonicalCount,
+          powerProfile,
         };
         if (!(action.field in observed)) {
           state = "UNSUPPORTED";
           reason = "OS_ASSERTION_NOT_IMPLEMENTED";
         } else if (observed[action.field] !== action.value) throw new Error(`ASSERT_FAILED:${action.field}`);
+      } else if (action.type === "POWER") {
+        const deadline = Date.now() + 5000;
+        let power = await readNativeLandfallPower();
+        const expected = action.saver || action.batteryPercent <= 15;
+        while ((!power || power.lowPower !== expected) && Date.now() < deadline) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          power = await readNativeLandfallPower();
+        }
+        if (!power || power.state !== "READY" || power.lowPower !== expected)
+          throw new Error("NATIVE_POWER_STATE_MISMATCH");
+        powerProfile = projectPower(power);
       } else if (action.type === "NETWORK") {
         if (action.latencyMs !== 0 || !["ONLINE", "OFFLINE"].includes(action.state)) {
           state = "UNSUPPORTED";

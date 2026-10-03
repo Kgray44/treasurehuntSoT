@@ -214,6 +214,7 @@ export type DeviceLabStepResult = {
   reason?: string;
   translation?: {
     method:
+      | "OS_POWER_CONTROL"
       | "LOGICAL_PROVIDER"
       | "OS_LOCATION_INJECTION"
       | "OS_LIFECYCLE"

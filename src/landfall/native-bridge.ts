@@ -12,6 +12,39 @@ declare global {
   }
 }
 const replySchema = z.object({ state: permissionStateSchema.optional(), accepted: z.boolean().optional() });
+export const nativeLandfallPowerSchema = z
+  .strictObject({
+    state: z.enum(["READY", "UNAVAILABLE"]),
+    lowPower: z.boolean(),
+    thermalPressure: z.boolean(),
+    critical: z.boolean(),
+    observedAt: z.number().int().nonnegative(),
+  })
+  .refine((value) => !value.critical || value.thermalPressure);
+export type NativeLandfallPower = z.infer<typeof nativeLandfallPowerSchema>;
+function currentPower(input: unknown): NativeLandfallPower | null {
+  const parsed = nativeLandfallPowerSchema.safeParse(input);
+  return parsed.success && parsed.data.observedAt <= Date.now() + 1000 && Date.now() - parsed.data.observedAt <= 30000
+    ? parsed.data
+    : null;
+}
+export async function readNativeLandfallPower(): Promise<NativeLandfallPower | null> {
+  try {
+    return currentPower(await landfallNativeRequest("POWER_STATE"));
+  } catch {
+    return null;
+  }
+}
+export function subscribeNativeLandfallPower(listener: (power: NativeLandfallPower) => void) {
+  if (typeof window === "undefined") return () => undefined;
+  const receive = (event: Event) => {
+    const value = (event as CustomEvent).detail;
+    const power = value?.type === "power" ? currentPower(value.power) : null;
+    if (power) listener(power);
+  };
+  window.addEventListener("landfall-native-event", receive);
+  return () => window.removeEventListener("landfall-native-event", receive);
+}
 export function landfallNativeHost(): NativeHost | null {
   if (typeof window === "undefined") return null;
   const host = window.LandfallNative;
@@ -45,6 +78,7 @@ export async function landfallNativeRequest(
     | "BLE_STOP"
     | "NFC_READ"
     | "QR_SCAN"
+    | "POWER_STATE"
     | "CLEAR_PRIVATE_DATA"
     | "PRIVATE_STORE_PUT"
     | "PRIVATE_STORE_GET"

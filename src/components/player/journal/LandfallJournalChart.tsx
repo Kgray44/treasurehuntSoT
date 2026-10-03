@@ -567,7 +567,7 @@ function useLandfallController({
       contextSamples.current = [];
       setContextTracking(false);
       setContextMessage("Optional motion and heading hints are off.");
-      setContextSnapshot(runtime.current?.contextSnapshot(Date.now()) ?? null);
+      setContextSnapshot(runtime.current?.discardSensorHints(Date.now()) ?? null);
       return;
     }
     const provider = contextBrowser.current;
@@ -582,6 +582,10 @@ function useLandfallController({
       },
       (permission) => {
         setContextTracking(permission === "GRANTED");
+        if (permission !== "GRANTED") {
+          contextSamples.current = [];
+          setContextSnapshot(active.discardSensorHints(Date.now()));
+        }
         setContextMessage(
           permission === "GRANTED"
             ? "Optional motion and heading hints are on while this chart is open."

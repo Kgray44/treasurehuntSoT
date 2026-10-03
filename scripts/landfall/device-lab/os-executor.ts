@@ -54,7 +54,6 @@ export async function executeLandfallOsScenario(
       if (stop) response.end(JSON.stringify({ stop: true }));
       else if (osCurrent) {
         response.end(JSON.stringify(osCurrent));
-        osCurrent = null;
       } else {
         response.statusCode = 204;
         response.end();
@@ -99,7 +98,6 @@ export async function executeLandfallOsScenario(
       if (stop) response.end(JSON.stringify({ stop: true }));
       else if (current) {
         response.end(JSON.stringify(current));
-        current = null;
       } else {
         response.statusCode = 204;
         response.end();
@@ -166,9 +164,11 @@ export async function executeLandfallOsScenario(
         Number.isInteger(value.index) &&
         scenario.timeline[value.index]?.action.type === "LIFECYCLE" &&
         ["PASS", "FAIL", "UNSUPPORTED"].includes(value.state)
-      )
-        osResults.set(value.index, { index: value.index, action: "LIFECYCLE", state: value.state });
-      else if (route === "/lab/ready") {
+      ) {
+        if (!osResults.has(value.index))
+          osResults.set(value.index, { index: value.index, action: "LIFECYCLE", state: value.state });
+        if (osCurrent?.index === value.index) osCurrent = null;
+      } else if (route === "/lab/ready") {
         ready = ["GRANTED", "APPROXIMATE"].includes(value.permission) && value.publicShellControlled === true;
         startups.push({
           restarted: value.restarted === true,
@@ -184,16 +184,18 @@ export async function executeLandfallOsScenario(
         value.index >= 0 &&
         value.index < scenario.timeline.length &&
         ["PASS", "FAIL", "UNSUPPORTED"].includes(value.state)
-      )
-        results.set(value.index, {
-          index: value.index,
-          action: scenario.timeline[value.index].action.type,
-          state: value.state,
-          ...(typeof value.reason === "string" && /^[A-Za-z_:]{1,128}$/.test(value.reason)
-            ? { reason: value.reason }
-            : {}),
-        });
-      else {
+      ) {
+        if (!results.has(value.index))
+          results.set(value.index, {
+            index: value.index,
+            action: scenario.timeline[value.index].action.type,
+            state: value.state,
+            ...(typeof value.reason === "string" && /^[A-Za-z_:]{1,128}$/.test(value.reason)
+              ? { reason: value.reason }
+              : {}),
+          });
+        if (current?.index === value.index) current = null;
+      } else {
         response.statusCode = 400;
         response.end();
         return;
@@ -210,6 +212,7 @@ export async function executeLandfallOsScenario(
   const port = address.port;
   let ownedDevice: string | null = null;
   let androidSerial: string | null = null;
+  let androidPowerMode: string | null = null;
   let foreground = true;
   let uiRunner: Promise<void> | null = null;
   const uiAbort = new AbortController();
@@ -427,6 +430,22 @@ export async function executeLandfallOsScenario(
         steps.push({ index, action: step.action.type, state: "UNSUPPORTED", reason: "FRESH_FOREGROUND_REQUIRED" });
         continue;
       }
+      if (step.action.type === "POWER") {
+        const action = step.action;
+        if (target !== "android-emulator" || action.thermal || action.doze) {
+          steps.push({ index, action: "POWER", state: "UNSUPPORTED", reason: "NATIVE_POWER_INJECTION_UNSUPPORTED" });
+          continue;
+        }
+        if (androidPowerMode === null) {
+          androidPowerMode = (await adb(["shell", "settings", "get", "global", "low_power"])).trim();
+          if (!["0", "1"].includes(androidPowerMode)) throw new Error("ANDROID_POWER_BASELINE_UNAVAILABLE");
+        }
+        await adb(["shell", "cmd", "power", "set-mode", "0"]);
+        await adb(["shell", "dumpsys", "battery", "set", "ac", action.charging ? "1" : "0"]);
+        await adb(["shell", "dumpsys", "battery", "set", "usb", "0"]);
+        await adb(["shell", "dumpsys", "battery", "set", "level", String(action.batteryPercent)]);
+        await adb(["shell", "cmd", "power", "set-mode", action.saver ? "1" : "0"]);
+      }
       if (
         step.action.type === "NETWORK" &&
         target === "android-emulator" &&
@@ -446,7 +465,7 @@ export async function executeLandfallOsScenario(
         // fault is controlled here; iOS radio fidelity remains explicitly external.
         network = step.action.state;
       }
-      if (!["LOCATION", "ASSERT", "NETWORK", "RECONCILE"].includes(step.action.type)) {
+      if (!["LOCATION", "ASSERT", "NETWORK", "RECONCILE", "POWER"].includes(step.action.type)) {
         steps.push({
           index,
           action: step.action.type,
@@ -577,6 +596,18 @@ export async function executeLandfallOsScenario(
     if (androidSerial) await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]).catch(() => undefined);
     if (androidSerial) await adb(["reverse", "--remove", `tcp:${port}`]).catch(() => undefined);
     if (androidSerial) {
+      if (androidPowerMode !== null) {
+        await adb(["shell", "dumpsys", "battery", "reset"]).catch(() =>
+          remainingResources.push("android-battery-fixture"),
+        );
+        await adb(["shell", "cmd", "power", "set-mode", androidPowerMode]).catch(() =>
+          remainingResources.push("android-power-fixture"),
+        );
+        const restored = (
+          await adb(["shell", "settings", "get", "global", "low_power"]).catch(() => "UNVERIFIED")
+        ).trim();
+        if (restored !== androidPowerMode) remainingResources.push("android-power-baseline");
+      }
       const cleared = await adb(["shell", "pm", "clear", "com.voyagewright.landfall"]).catch(() => "FAIL");
       if (!cleared.includes("Success")) remainingResources.push("native-app-private-data");
       await adb(["shell", "svc", "wifi", "enable"]).catch(() => undefined);
@@ -644,22 +675,29 @@ export async function executeLandfallOsScenario(
               method: "OS_LIFECYCLE",
               limitation: "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
             }
-          : action?.type === "NETWORK"
-            ? target === "android-emulator"
-              ? {
-                  method: "OS_NETWORK_AND_SERVICE_FAULT",
-                  limitation:
-                    "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
-                }
-              : {
-                  method: "CONTROLLED_SERVICE_FAULT",
-                  limitation:
-                    "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
-                }
-            : action?.type === "RECONCILE" ||
-                (action?.type === "ASSERT" && ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
-              ? { method: "REAL_CANONICAL_AUTHORITY" }
-              : { method: "SHARED_WEB_CONTRACT" };
+          : action?.type === "POWER"
+            ? {
+                method: "OS_POWER_CONTROL",
+                limitation:
+                  "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy.",
+              }
+            : action?.type === "NETWORK"
+              ? target === "android-emulator"
+                ? {
+                    method: "OS_NETWORK_AND_SERVICE_FAULT",
+                    limitation:
+                      "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
+                  }
+                : {
+                    method: "CONTROLLED_SERVICE_FAULT",
+                    limitation:
+                      "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
+                  }
+              : action?.type === "RECONCILE" ||
+                  (action?.type === "ASSERT" &&
+                    ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
+                ? { method: "REAL_CANONICAL_AUTHORITY" }
+                : { method: "SHARED_WEB_CONTRACT" };
   }
   const cleanup = {
     result: remainingResources.length ? ("FAIL" as const) : ("PASS" as const),

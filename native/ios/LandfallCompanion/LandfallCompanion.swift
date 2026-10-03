@@ -23,6 +23,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private var observers: [NSObjectProtocol] = []
     private var pendingReturn:String?
     private var privateStore: LandfallPrivateStore?
+    private let power = LandfallPower()
+    private var requestedIntervalMs = 5000
+    private var requestedPrecise = true
 
     static func allowedOrigin(_ raw: String) -> URL? {
         guard let url = URL(string: raw), let parts = URLComponents(url: url, resolvingAgainstBaseURL: false), parts.scheme == "https", parts.host != nil, parts.user == nil, parts.password == nil, parts.query == nil, parts.fragment == nil, (parts.path.isEmpty || parts.path == "/") else { return nil }
@@ -51,6 +54,11 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             self?.event(["type": "lifecycle", "state": "FOREGROUND", "pendingHints": self?.hints.read() ?? []])
         })
         hardware = LandfallHardware { [weak self] event in self?.event(event) }
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        _ = ProcessInfo.processInfo.thermalState
+        for name in [Notification.Name.NSProcessInfoPowerStateDidChange, ProcessInfo.thermalStateDidChangeNotification, UIDevice.batteryLevelDidChangeNotification] {
+            observers.append(NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in self?.powerChanged() })
+        }
     }
     deinit { for observer in observers { NotificationCenter.default.removeObserver(observer) }; location.stopUpdatingLocation(); location.stopUpdatingHeading(); motion.stopDeviceMotionUpdates(); altimeter.stopRelativeAltitudeUpdates() }
     func accepts(_ url: URL?) -> Bool {
@@ -92,11 +100,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             else { replyHandler(["state": permission()], nil) }
         case "LOCATION_START":
             let interval = payload["intervalMs"] as? Int ?? 5000
-            guard foreground, payload["background"] as? Bool != true, (1000...60000).contains(interval), ["GRANTED", "APPROXIMATE"].contains(permission()) else { replyHandler(["accepted": false], nil); return }
-            location.desiredAccuracy = payload["precise"] as? Bool == true && location.accuracyAuthorization == .fullAccuracy ? kCLLocationAccuracyBest : kCLLocationAccuracyHundredMeters
-            // Time-bound foreground sampling must also support stationary dwell.
-            location.distanceFilter = interval >= 15000 ? 10 : kCLDistanceFilterNone
-            locationIntervalMs = interval; lastLocationAt = 0
+            guard foreground, !power.critical, payload["background"] as? Bool != true, (1000...60000).contains(interval), ["GRANTED", "APPROXIMATE"].contains(permission()) else { replyHandler(["accepted": false], nil); return }
+            requestedIntervalMs = interval; requestedPrecise = payload["precise"] as? Bool == true
+            configureLocationPower(); lastLocationAt = 0
             location.allowsBackgroundLocationUpdates = false
             location.pausesLocationUpdatesAutomatically = true
             acquiring = true; location.startUpdatingLocation(); replyHandler(["accepted": true], nil)
@@ -110,12 +116,13 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             guard foreground else {replyHandler(["state":"UNAVAILABLE"],nil);return}
             UNUserNotificationCenter.current().requestAuthorization(options:[.alert,.sound]){ granted,_ in replyHandler(["state":granted ? "GRANTED":"DENIED"],nil) }
         case "GEOFENCE_CLEAR": for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear(); replyHandler(["accepted": true], nil)
+        case "POWER_STATE": replyHandler(power.snapshot(), nil)
         case "SENSORS_START": replyHandler(["accepted": startSensors()], nil)
         case "SENSORS_STOP": stopSensors(); replyHandler(["accepted": true], nil)
-        case "BLE_START": replyHandler(["state": hardware?.startBle(foreground: foreground) ?? "UNAVAILABLE"], nil)
+        case "BLE_START": replyHandler(["state": hardware?.startBle(foreground: foreground && !power.critical) ?? "UNAVAILABLE"], nil)
         case "BLE_STOP": hardware?.stop(); replyHandler(["accepted": true], nil)
-        case "NFC_READ": replyHandler(["state": hardware?.startNfc(foreground: foreground) ?? "UNAVAILABLE"], nil)
-        case "QR_SCAN": replyHandler(["state": hardware?.startQr(foreground: foreground, presenter: web?.window?.rootViewController) ?? "UNAVAILABLE"], nil)
+        case "NFC_READ": replyHandler(["state": hardware?.startNfc(foreground: foreground && !power.critical) ?? "UNAVAILABLE"], nil)
+        case "QR_SCAN": replyHandler(["state": hardware?.startQr(foreground: foreground && !power.critical, presenter: web?.window?.rootViewController) ?? "UNAVAILABLE"], nil)
         case "CLEAR_PRIVATE_DATA":
             stopLocation(); stopSensors(); hardware?.stop()
             for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear(); privateStore?.clear()
@@ -182,7 +189,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     }
     func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) { event(["type": "provider-health", "family":"GEOFENCE", "state":"UNAVAILABLE"]) }
     private func startSensors() -> Bool {
-        guard foreground else { return false }
+        guard foreground, !power.constrained else { return false }
         stopSensors()
         if CLLocationManager.headingAvailable() { location.headingFilter=10; location.startUpdatingHeading() }
         if motion.isAccelerometerAvailable { motion.accelerometerUpdateInterval=0.25; motion.startAccelerometerUpdates(to: .main) { [weak self] sample, _ in if let value=sample?.acceleration { self?.sensor("ACCELEROMETER", [value.x*9.80665,value.y*9.80665,value.z*9.80665], accuracy: 1) } } }
@@ -192,6 +199,18 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     func locationManager(_ manager: CLLocationManager, didUpdateHeading heading: CLHeading) { if heading.headingAccuracy>=0 { sensor("HEADING", [heading.magneticHeading], accuracy: heading.headingAccuracy) } }
     private func sensor(_ kind: String, _ values: [Double], accuracy: Double) { guard foreground else { return }; event(["type": "sensor", "frame": ["id": UUID().uuidString, "observedAt": Int(Date().timeIntervalSince1970*1000), "kind": kind, "values": values, "accuracy": accuracy]]) }
     private func stopLocation() { acquiring=false; location.stopUpdatingLocation() }
+    private func configureLocationPower() {
+        locationIntervalMs = power.interval(requestedIntervalMs)
+        location.desiredAccuracy = requestedPrecise && !power.constrained && location.accuracyAuthorization == .fullAccuracy ? kCLLocationAccuracyBest : kCLLocationAccuracyHundredMeters
+        location.distanceFilter = locationIntervalMs >= 15000 ? 10 : kCLDistanceFilterNone
+    }
+    private func powerChanged() {
+        guard foreground else { return }
+        if power.constrained { stopSensors() }
+        if power.critical { hardware?.stop(); if acquiring { stopLocation(); event(["type":"error"]) } }
+        else if acquiring { configureLocationPower() }
+        event(["type":"power", "power":power.snapshot()])
+    }
     private func stopSensors() { location.stopUpdatingHeading(); motion.stopAccelerometerUpdates(); motion.stopDeviceMotionUpdates(); altimeter.stopRelativeAltitudeUpdates() }
     private func pause() { event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); stopSensors(); hardware?.stop() }
     private func event(_ payload: [String: Any]) {

@@ -50,6 +50,22 @@ and [the WebKit service-worker support record](https://bugs.webkit.org/show_bug.
 Source configuration does not establish App Store signing, entitlements on physical
 hardware, deployment or successful offline presentation on iOS; those need receipts.
 
+## Power and optional sensors
+
+Native power snapshots report bounded current OS categories. Android observes
+PowerManager saver/thermal changes and current low battery; iOS observes ProcessInfo
+power/thermal changes and low battery. Constrained acquisition requests at least
+15-second location cadence, optional sensors pause, and critical thermal state
+stops location and intensive scanning. Recovery does not restart stopped optional
+providers. Player clears revoked sensor hints while preserving current position
+guidance. Region downloads pause under native power constraints or unavailable
+power status. Shared policy remains the presentation and test interpretation seam.
+
+The policy follows [Android PowerManager](https://developer.android.com/reference/android/os/PowerManager)
+and [Apple power notification guidance](https://developer.apple.com/documentation/xcode/responding-to-power-notifications).
+An emulator's controlled battery/saver state proves adaptation; it does not prove
+physical battery endurance, heat or vendor suspension behavior.
+
 ## Offline bytes and restart leases
 
 The public service worker caches only the public offline shell and bounded
