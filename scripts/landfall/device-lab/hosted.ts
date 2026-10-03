@@ -6,11 +6,15 @@ import { labTool } from "./host";
 
 const execute = promisify(execFile);
 /** Ephemeral CI transport only. It never mutates the checkout, default branch, or protected testing authority. */
-export async function dispatchLandfallHostedLab(candidate: string, root = process.cwd()) {
+export async function dispatchLandfallHostedLab(candidate: string, root = process.cwd(), target = "all") {
   if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error("LANDFALL_HOSTED_CANDIDATE_INVALID");
+  if (!["all", "provider", "android", "ios"].includes(target)) throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   await labTool("git", ["cat-file", "-e", `${candidate}^{commit}`]);
   const template = await readFile(path.join(root, ".agents", "landfall-device-lab-hosted.yml"), "utf8");
-  const workflow = template.replaceAll("__CANDIDATE_SHA__", candidate);
+  const workflow = template.replaceAll("__CANDIDATE_SHA__", candidate)
+    .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
+    .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
+    .replaceAll("__RUN_ANDROID__", String(target === "all" || target === "android"));
   const runId = `${candidate.slice(0, 12)}-${Date.now()}`;
   const destination = path.join(root, "artifacts", "landfall-device-lab", `hosted-${runId}`);
   await mkdir(destination, { recursive: true });
@@ -31,6 +35,7 @@ export async function dispatchLandfallHostedLab(candidate: string, root = proces
     const receipt = {
       version: 1,
       candidateSha: candidate,
+      target,
       transportSha: commit,
       transportTree: tree,
       branch,
@@ -47,7 +52,7 @@ export async function dispatchLandfallHostedLab(candidate: string, root = proces
 
 if (process.argv[1]?.endsWith("hosted.ts")) {
   const candidate = process.argv[2] ?? "";
-  dispatchLandfallHostedLab(candidate)
+  dispatchLandfallHostedLab(candidate, process.cwd(), process.argv[3] ?? "all")
     .then((receipt) => process.stdout.write(`${JSON.stringify(receipt, null, 2)}\n`))
     .catch(() => {
       process.stderr.write("LANDFALL_HOSTED_DISPATCH_FAILED\n");

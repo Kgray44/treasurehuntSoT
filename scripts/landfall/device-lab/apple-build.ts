@@ -14,10 +14,13 @@ async function main() {
     .sort((a, b) => b.id.localeCompare(a.id, undefined, { numeric: true }))[0];
   if (!runtime) throw new Error("LANDFALL_APPLE_RUNTIME_UNAVAILABLE");
   const types = JSON.parse(await labTool("xcrun", ["simctl", "list", "devicetypes", "--json"]));
+  const compatibleNames = new Set(host.apple.devices
+    .filter((item) => item.available && item.runtime === runtime.id && item.name.includes("iPhone"))
+    .map((item) => item.name));
   const deviceType = types.devicetypes
     .filter(
       (item: { identifier: string; name: string }) =>
-        item.identifier?.includes("iPhone") && item.name?.includes("iPhone"),
+        item.identifier?.includes("iPhone") && compatibleNames.has(item.name),
     )
     .at(-1);
   if (!deviceType) throw new Error("LANDFALL_APPLE_DEVICE_TYPE_UNAVAILABLE");
@@ -93,6 +96,14 @@ async function main() {
   if (!clean) throw new Error("LANDFALL_APPLE_CLEANUP_FAILED");
 }
 main().catch((error) => {
+  // These are fixed tooling commands running synthetic fixtures, never production data.
+  // Preserve bounded compiler/tool diagnostics so a failed hosted build is actionable.
+  if (error && typeof error === "object") {
+    const diagnostic = error as { message?: unknown; stdout?: unknown; stderr?: unknown };
+    for (const value of [diagnostic.message, diagnostic.stdout, diagnostic.stderr]) {
+      if (typeof value === "string") process.stderr.write(`${value.slice(-16000)}\n`);
+    }
+  }
   process.stderr.write(
     `${error instanceof Error && /^[A-Z_]+$/.test(error.message) ? error.message : "LANDFALL_APPLE_BUILD_FAILED"}\n`,
   );

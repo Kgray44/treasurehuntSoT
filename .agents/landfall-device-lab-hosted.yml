@@ -11,6 +11,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   providers:
+    if: __RUN_PROVIDERS__
     name: Providers / ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -37,6 +38,7 @@ jobs:
           path: artifacts/landfall-device-lab
           retention-days: 14
   apple:
+    if: __RUN_APPLE__
     name: Native / iOS Simulator
     runs-on: macos-latest
     timeout-minutes: 35
@@ -60,6 +62,7 @@ jobs:
           path: artifacts/landfall-device-lab
           retention-days: 14
   android:
+    if: __RUN_ANDROID__
     name: Native / Android Emulator
     runs-on: ubuntu-latest
     timeout-minutes: 35
