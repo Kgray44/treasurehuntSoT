@@ -214,6 +214,15 @@ kinds. A referenced PASS remains EXTERNAL_VALIDATION_REQUIRED; it is not promote
 to a Chronicle-specific launch acceptance or physical proof. Drydock references
 the evidence and does not duplicate execution.
 
+Hosted Android profiles use both the AVD RAM setting and the emulator's explicit
+memory override. A previous low-resource run was correctly rejected when the
+emulator silently increased 1536 MB to 2560 MB; actual guest memory must still
+meet the <=2 GiB rule. Configuration measurements are retained even when profile
+validation fails. The override follows the
+[Android emulator command-line interface](https://developer.android.com/studio/run/emulator-commandline).
+Apple test builds archive structured xcresult summaries on success and failure,
+including cases where quiet build output contains no test summary text.
+
 The corpus also covers Virtual Worldspace manual navigation and encrypted offline
 reconciliation. Its native WebView executor selects the virtual definition without
 requesting location permission or starting native acquisition. The owned canonical

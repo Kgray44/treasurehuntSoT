@@ -18,12 +18,14 @@ export async function dispatchLandfallHostedLab(
   if (!["all", "provider", "android", "ios"].includes(target)) throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   if (!["development", "candidate", "closure"].includes(tier)) throw new Error("LANDFALL_HOSTED_TIER_INVALID");
   const androidProfiles = [
-    { profile: "primary-phone", api: 36, device: "pixel_7", ram: "3072M" },
-    ...(tier !== "development" ? [{ profile: "compatibility-phone", api: 35, device: "pixel_6", ram: "3072M" }] : []),
+    { profile: "primary-phone", api: 36, device: "pixel_7", ram: "3072M", memory: 3072 },
+    ...(tier !== "development"
+      ? [{ profile: "compatibility-phone", api: 35, device: "pixel_6", ram: "3072M", memory: 3072 }]
+      : []),
     ...(tier === "closure"
       ? [
-          { profile: "low-resource", api: 36, device: "pixel_2", ram: "1536M" },
-          { profile: "tablet", api: 36, device: "pixel_tablet", ram: "3072M" },
+          { profile: "low-resource", api: 36, device: "pixel_2", ram: "1536M", memory: 1536 },
+          { profile: "tablet", api: 36, device: "pixel_tablet", ram: "3072M", memory: 3072 },
         ]
       : []),
   ];

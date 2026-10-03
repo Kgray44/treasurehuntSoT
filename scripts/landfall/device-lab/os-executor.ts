@@ -14,6 +14,7 @@ import {
 import { landfallId } from "../../../src/landfall/schema";
 import { type DeviceLabScenario, type DeviceLabStepResult } from "../../../src/landfall/device-lab/scenario";
 import {
+  deviceLabConfigurationSchema,
   validateDeviceLabProfile,
   type DeviceLabConfiguration,
   type DeviceLabProfile,
@@ -297,7 +298,7 @@ export async function executeLandfallOsScenario(
         ...(await adb(["shell", "wm", "density"])).matchAll(/(?:Override|Physical) density:\s*([0-9]+)/g),
       ];
       const measuredSize = sizes.at(-1);
-      deviceConfiguration = validateDeviceLabProfile(profile, {
+      deviceConfiguration = deviceLabConfigurationSchema.parse({
         platform: "ANDROID",
         virtual: true,
         api,
@@ -308,6 +309,7 @@ export async function executeLandfallOsScenario(
         densityDpi: Number(densities.at(-1)?.[1]),
       });
       runtimeVersion = `Android API ${api}; ${host.android.emulatorVersion}`;
+      validateDeviceLabProfile(profile, deviceConfiguration);
       await adb([
         "install",
         "-r",
@@ -336,12 +338,13 @@ export async function executeLandfallOsScenario(
       osVersion = app.runtime;
       runtimeVersion = host.apple.xcodeVersion ?? "UNAVAILABLE";
       if (app.profile !== profile) throw new Error("LANDFALL_LAB_PROFILE_MISMATCH");
-      deviceConfiguration = validateDeviceLabProfile(profile, {
+      deviceConfiguration = deviceLabConfigurationSchema.parse({
         platform: "IOS",
         virtual: true,
         runtime: app.runtime,
         deviceType: app.deviceType,
       });
+      validateDeviceLabProfile(profile, deviceConfiguration);
       ownedDevice = (
         await labTool("xcrun", ["simctl", "create", `landfall-os-${process.pid}`, app.deviceType, app.runtime])
       ).trim();

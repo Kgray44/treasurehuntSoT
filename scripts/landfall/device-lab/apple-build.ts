@@ -92,6 +92,20 @@ async function main() {
         .filter((line) => /Test Suite|Executed|TEST SUCCEEDED|BUILD SUCCEEDED/.test(line))
         .join("\n"),
     );
+    // Quiet xcodebuild may emit no success text; archive the structured result
+    // on successful runs as well as failures instead of relying on that output.
+    executionStage = "ARCHIVE_XCTEST_SUMMARY";
+    await writeFile(
+      path.join(destination, "test-summary.json"),
+      await labTool("xcrun", [
+        "xcresulttool",
+        "get",
+        "test-results",
+        "summary",
+        "--path",
+        path.join(destination, "NativeTests.xcresult"),
+      ]),
+    );
     await writeFile(
       path.join(root, "artifacts", "landfall-device-lab", "apple-app.json"),
       JSON.stringify({

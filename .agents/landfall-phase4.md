@@ -251,6 +251,15 @@ Android 37156247496 partial artifacts show compatibility success, primary 9/10
 and whole-run harvest remain pending. Preserve these failures and diagnose the
 provisioned memory from terminal logs; never loosen the low-resource receipt claim.
 
+The low-resource job log proves Emulator 37.2.12 raised its AVD request from
+1536 MB to 2560 MB ("Increasing RAM size to 2560MB"). Hosted provisioning now
+passes the documented explicit -memory override as well as ram-size. This repair
+still requires measured hosted verification; the <=2 GiB profile rule is unchanged.
+Failed profile checks retain measured configuration in their receipts. Apple
+builds now archive xcresulttool's structured test summary on successful runs too,
+because quiet xcodebuild produced an empty textual summary despite a successful
+test invocation and retained result bundle.
+
 Remaining: native lifecycle/power orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;
 deployed provider preflight and health integration; full security/privacy/performance
