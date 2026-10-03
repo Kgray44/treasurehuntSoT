@@ -1,4 +1,4 @@
-import { physicalCoordinate } from "@/landfall/fixtures";
+import { physicalCoordinate, virtualCoordinate } from "@/landfall/fixtures";
 import { deviceLabScenarioSchema, type DeviceLabAction, type DeviceLabScenario } from "@/landfall/device-lab/scenario";
 
 const location = (overrides: Partial<Extract<DeviceLabAction, { type: "LOCATION" }>> = {}): DeviceLabAction => ({
@@ -39,6 +39,7 @@ function scenario(
   actions: DeviceLabAction[],
   physicalRequired: DeviceLabScenario["physicalRequired"] = [],
   canonicalAuthority: DeviceLabScenario["canonicalAuthority"] = "NONE",
+  worldspace: DeviceLabScenario["worldspace"] = "PHYSICAL",
 ) {
   cases.push(
     deviceLabScenarioSchema.parse({
@@ -46,7 +47,7 @@ function scenario(
       version: 1,
       seed: 1729,
       description: `Reproduce ${id.replaceAll("-", " ")} through canonical Landfall adapters.`,
-      worldspace: "PHYSICAL",
+      worldspace,
       publishedFixture: "landfall-device-lab-v1",
       canonicalAuthority,
       targets: ["provider-simulation", "android-emulator", "ios-simulator", "real-android", "real-ios"],
@@ -406,6 +407,76 @@ scenario(
   ["FIELD_ENVIRONMENT"],
   "ONE_VOYAGE",
 );
+
+scenario(
+  "virtual-player-navigation",
+  ["VIRTUAL_REGION"],
+  [
+    location({ coordinate: virtualCoordinate(0.1, 0.1), accuracy: 0.001, provider: "BROWSER" }),
+    assertion("completionRequests", 0),
+    location({ coordinate: virtualCoordinate(0.5, 0.5), accuracy: 0.001, provider: "BROWSER" }),
+    assertion("completionRequests", 1),
+    assertion("physicalAcquisitionStarts", 0),
+    assertion("serverConfirmed", false),
+  ],
+  [],
+  "NONE",
+  "VIRTUAL",
+);
+
+scenario(
+  "virtual-offline-canonical-reconcile",
+  ["VIRTUAL_REGION", "OFFLINE_PACKAGE"],
+  [
+    network("OFFLINE"),
+    location({ coordinate: virtualCoordinate(0.5, 0.5), accuracy: 0.001, provider: "BROWSER" }),
+    assertion("completionRequests", 1),
+    assertion("canonicalProgressionEvents", 0),
+    assertion("physicalAcquisitionStarts", 0),
+    network("ONLINE"),
+    { type: "RECONCILE", outcome: "ACCEPT" },
+    assertion("canonicalProgressionEvents", 1),
+    assertion("clientConfirmed", true),
+    assertion("physicalAcquisitionStarts", 0),
+  ],
+  [],
+  "ONE_VOYAGE",
+  "VIRTUAL",
+);
+
+for (const minutes of [5, 30]) {
+  const duration = minutes * 60_000;
+  const ticks = duration / 10_000;
+  const timeline: DeviceLabScenario["timeline"] = [];
+  for (let tick = 0; tick <= ticks; tick++) {
+    const distanceMeters = ((duration - tick * 10_000) / 1000) * 1.4;
+    timeline.push({
+      atMs: tick * 10_000,
+      action: location({ coordinate: physicalCoordinate(44 - distanceMeters / 111320, -72) }),
+    });
+    if (tick === 0) timeline.push({ atMs: 0, action: assertion("completionRequests", 0) });
+  }
+  timeline.push(
+    { atMs: duration + 1000, action: location() },
+    { atMs: duration + 1001, action: assertion("confidence", "CONFIRMED") },
+    { atMs: duration + 1002, action: assertion("completionRequests", 1) },
+    { atMs: duration + 1003, action: assertion("serverConfirmed", false) },
+  );
+  scenario(
+    `gps-${minutes}-minute-walk`,
+    ["LOCATION", "ROUTING"],
+    timeline.map((step) => step.action),
+    ["BATTERY", "FIELD_ENVIRONMENT"],
+  );
+  const generated = cases.pop()!;
+  cases.push(
+    deviceLabScenarioSchema.parse({
+      ...generated,
+      description: `Synthetic ${minutes}-minute 1.4 m/s walk; logical provider time or real OS time. It does not measure physical battery endurance.`,
+      timeline,
+    }),
+  );
+}
 
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);

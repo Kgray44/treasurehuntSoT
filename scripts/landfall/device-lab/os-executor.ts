@@ -33,7 +33,7 @@ export async function executeLandfallOsScenario(
     target: "es2020",
     logLevel: "silent",
   });
-  const authority = await startDeviceLabAuthority(path.join(destination, "authority"));
+  const authority = await startDeviceLabAuthority(path.join(destination, "authority"), scenario.worldspace);
   let network = "ONLINE";
   let canonicalProgressionEvents: number | null = null;
   let ready = false;
@@ -75,6 +75,11 @@ export async function executeLandfallOsScenario(
     if (request.method === "GET" && route === "/lab/connectivity") {
       response.setHeader("Content-Type", "application/json");
       response.end(JSON.stringify({ state: network }));
+      return;
+    }
+    if (request.method === "GET" && route === "/lab/scenario") {
+      response.setHeader("Content-Type", "application/json");
+      response.end(JSON.stringify({ worldspace: scenario.worldspace }));
       return;
     }
     if (
@@ -175,7 +180,10 @@ export async function executeLandfallOsScenario(
           osResults.set(value.index, { index: value.index, action: "LIFECYCLE", state: value.state });
         if (osCurrent?.index === value.index) osCurrent = null;
       } else if (route === "/lab/ready") {
-        ready = ["GRANTED", "APPROXIMATE"].includes(value.permission) && value.publicShellControlled === true;
+        ready =
+          (["GRANTED", "APPROXIMATE"].includes(value.permission) ||
+            (scenario.worldspace === "VIRTUAL" && value.permission === "NOT_REQUIRED")) &&
+          value.publicShellControlled === true;
         startups.push({
           restarted: value.restarted === true,
           leaseRestored: value.leaseRestored === true,
@@ -488,9 +496,9 @@ export async function executeLandfallOsScenario(
           if (!["0", "1"].includes(androidPowerMode)) throw new Error("ANDROID_POWER_BASELINE_UNAVAILABLE");
         }
         await adb(["shell", "cmd", "power", "set-mode", "0"]);
-        await adb(["shell", "dumpsys", "battery", "set", "ac", action.charging ? "1" : "0"]);
-        await adb(["shell", "dumpsys", "battery", "set", "usb", "0"]);
-        await adb(["shell", "dumpsys", "battery", "set", "level", String(action.batteryPercent)]);
+        await adb(["shell", "dumpsys", "battery", "set", "-f", "ac", action.charging ? "1" : "0"]);
+        await adb(["shell", "dumpsys", "battery", "set", "-f", "usb", "0"]);
+        await adb(["shell", "dumpsys", "battery", "set", "-f", "level", String(action.batteryPercent)]);
         await adb(["shell", "cmd", "power", "set-mode", action.saver ? "1" : "0"]);
       }
       if (
@@ -642,7 +650,7 @@ export async function executeLandfallOsScenario(
     if (androidSerial) await adb(["reverse", "--remove", `tcp:${port}`]).catch(() => undefined);
     if (androidSerial) {
       if (androidPowerMode !== null) {
-        await adb(["shell", "dumpsys", "battery", "reset"]).catch(() =>
+        await adb(["shell", "dumpsys", "battery", "reset", "-f"]).catch(() =>
           remainingResources.push("android-battery-fixture"),
         );
         await adb(["shell", "cmd", "power", "set-mode", androidPowerMode]).catch(() =>
@@ -710,7 +718,7 @@ export async function executeLandfallOsScenario(
   for (const result of steps) {
     const action = scenario.timeline[result.index]?.action;
     result.translation =
-      action?.type === "LOCATION"
+      action?.type === "LOCATION" && action.coordinate.type === "WGS84"
         ? {
             method: "OS_LOCATION_INJECTION",
             limitation: "Virtual coordinate delivery does not prove field GPS accuracy, multipath or sensor physics.",

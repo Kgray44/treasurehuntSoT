@@ -5,7 +5,7 @@ import type { PlayerLandfallEvidence } from "../../../src/landfall/player-eviden
 import type { LandfallReconciliationTransport } from "../../../src/landfall/offline-reconcile";
 
 /** Server imports and Prisma globals live exclusively in a dedicated owned child process. */
-export async function startDeviceLabAuthority(destination: string) {
+export async function startDeviceLabAuthority(destination: string, worldspace: "PHYSICAL" | "VIRTUAL" = "PHYSICAL") {
   const child = spawn(
     process.execPath,
     [
@@ -14,6 +14,7 @@ export async function startDeviceLabAuthority(destination: string) {
       path.join(process.cwd(), "scripts", "landfall", "device-lab", "one-voyage.ts"),
       "--worker",
       destination,
+      worldspace,
     ],
     {
       cwd: process.cwd(),

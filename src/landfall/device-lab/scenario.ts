@@ -149,6 +149,7 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
       "sensorState",
       "nearbyState",
       "tokenState",
+      "physicalAcquisitionStarts",
       "reconciliationState",
     ]),
     value: z.union([z.string().max(128), z.number().int().nonnegative(), z.boolean(), z.null()]),

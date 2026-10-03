@@ -61,6 +61,7 @@ export class LandfallProviderScenarioExecutor {
   private lowPower = false;
   private thermal = false;
   private nativeStopped = true;
+  private physicalAcquisitionStarts = 0;
   private outcome: LandfallOutcome = { confidence: "UNAVAILABLE", sync: null, retryable: true };
   private readonly requests = new Set<string>();
   private samples: LandfallObservation[] = [];
@@ -235,6 +236,7 @@ export class LandfallProviderScenarioExecutor {
       platform: "ANDROID",
       permission: async () => this.permission,
       start: async () => {
+        this.physicalAcquisitionStarts++;
         this.nativeStopped = false;
       },
       stop: async () => {
@@ -633,6 +635,7 @@ export class LandfallProviderScenarioExecutor {
           thermalPressure: this.thermal,
           precisionRequested: true,
         }).profile,
+        physicalAcquisitionStarts: this.physicalAcquisitionStarts,
         providerState: this.health
           .snapshot()
           .find((status) => status.id === `synthetic-${this.scenario.providers[0].toLowerCase().replaceAll("_", "-")}`)
@@ -657,8 +660,9 @@ export class LandfallProviderScenarioExecutor {
           evidenceId: request.evidenceId,
           expectedSequence: 0,
           idempotencyKey: request.idempotencyKey,
-          method: "FOREGROUND_LOCATION" as const,
-          observations: structuredClone(this.samples),
+          method:
+            this.scenario.worldspace === "VIRTUAL" ? ("PLAYER_FALLBACK" as const) : ("FOREGROUND_LOCATION" as const),
+          ...(this.scenario.worldspace === "PHYSICAL" ? { observations: structuredClone(this.samples) } : {}),
         };
         this.queued = new LandfallOfflineRepository(this.deliveryStorage, () => this.now).enqueue(
           this.deliveryBinding,

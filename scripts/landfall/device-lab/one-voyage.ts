@@ -5,7 +5,8 @@ import path from "node:path";
 import assert from "node:assert/strict";
 
 /** A disposable real SQLite authority. Import server code only after binding the owned database. */
-export async function createDeviceLabVoyage(destination: string) {
+export async function createDeviceLabVoyage(destination: string, worldspace: "PHYSICAL" | "VIRTUAL" = "PHYSICAL") {
+  if (!["PHYSICAL", "VIRTUAL"].includes(worldspace)) throw new Error("LANDFALL_LAB_WORLDSPACE_INVALID");
   if ((globalThis as { prisma?: unknown }).prisma) throw new Error("LANDFALL_LAB_DATABASE_ALREADY_BOUND");
   const root = process.cwd();
   const parent = path.join(root, "artifacts", "landfall-device-lab");
@@ -64,6 +65,17 @@ export async function createDeviceLabVoyage(destination: string) {
     definition.worldspaces[0].observationPolicy.allowedSources.push("NATIVE_LOCATION");
     definition.waypoints[0].evidenceProfile.acceptedSources.push("NATIVE_LOCATION");
     definition.routes[0].semantics = "ILLUSTRATIVE";
+    if (worldspace === "VIRTUAL") {
+      const world = definition.worldspaces.find((item) => item.kind === "VIRTUAL")!;
+      definition.worldspaces = [world];
+      definition.maps = definition.maps.filter((item) => item.worldspaceId === world.id);
+      definition.waypoints = definition.waypoints.filter((item) => item.worldspaceId === world.id);
+      definition.routes = definition.routes.filter((item) => item.worldspaceId === world.id);
+      definition.transitions = [];
+      definition.waypoints[0].visibility.hiddenUntilRevealed = false;
+    }
+    const targetWorld = definition.worldspaces[0].id;
+    const targetWaypoint = definition.waypoints[0].id;
     const snapshot = {
       schemaVersion: 1,
       tale: {
@@ -83,7 +95,7 @@ export async function createDeviceLabVoyage(destination: string) {
               chapterId: "chapter",
               title: "Arrival",
               blockType: "waypointJourney",
-              configuration: { worldspaceId: "town", waypointId: "town-arrival" },
+              configuration: { worldspaceId: targetWorld, waypointId: targetWaypoint },
               completion: {},
               presentation: {},
               orderIndex: 0,
@@ -156,20 +168,23 @@ export async function createDeviceLabVoyage(destination: string) {
         schemaVersion: 1,
         sessionId: "session-1",
         publishedVersionId: "version-1",
-        worldspaceId: "town",
-        waypointId: "town-arrival",
+        worldspaceId: targetWorld,
+        waypointId: targetWaypoint,
         evidenceId: id,
         expectedSequence: 0,
         idempotencyKey: `synthetic-${id}`,
-        method: "FOREGROUND_LOCATION",
-        observations: [0, 1].map((index) => ({
-          ...physicalObservation(
-            index === 1 ? id : `first-${id}`,
-            new Date(Date.now() - (2 - index) * 1000).toISOString(),
-          ),
-          providerId: "android-location",
-          source: "NATIVE_LOCATION",
-        })),
+        method: worldspace === "VIRTUAL" ? "PLAYER_FALLBACK" : "FOREGROUND_LOCATION",
+        observations:
+          worldspace === "VIRTUAL"
+            ? undefined
+            : [0, 1].map((index) => ({
+                ...physicalObservation(
+                  index === 1 ? id : `first-${id}`,
+                  new Date(Date.now() - (2 - index) * 1000).toISOString(),
+                ),
+                providerId: "android-location",
+                source: "NATIVE_LOCATION",
+              })),
       }),
       submit: async (request: unknown, actor = "synthetic-player") => {
         if (!(await playerCanAccessPlaythrough("session-1", actor)))
@@ -236,7 +251,7 @@ async function main() {
     "landfall-device-lab",
     `authority-${Date.now()}-${process.pid}`,
   );
-  const voyage = await createDeviceLabVoyage(directory);
+  const voyage = await createDeviceLabVoyage(directory, process.argv[2] === "--virtual" ? "VIRTUAL" : "PHYSICAL");
   const assertions: string[] = [];
   let cleaned = false;
   try {
@@ -247,6 +262,11 @@ async function main() {
     assertions.push("wrong-pin-rejected");
     await assert.rejects(voyage.submit({ ...request, expectedSequence: 9 }), /Voyage changed/);
     assertions.push("stale-sequence-rejected");
+    await assert.rejects(
+      voyage.submit({ ...request, worldspaceId: request.worldspaceId === "town" ? "isles" : "town" }),
+      /WRONG_WORLDSPACE/,
+    );
+    assertions.push("cross-worldspace-evidence-rejected");
     const result = await voyage.submit(request);
     assert.equal(result.advanced, true);
     assert.equal(result.duplicate, false);
@@ -293,7 +313,10 @@ async function main() {
   process.stdout.write(`${JSON.stringify({ result: "PASS", assertions, directory })}\n`);
 }
 async function worker() {
-  const voyage = await createDeviceLabVoyage(process.argv[3]);
+  const voyage = await createDeviceLabVoyage(
+    process.argv[3],
+    (process.argv[4] ?? "PHYSICAL") as "PHYSICAL" | "VIRTUAL",
+  );
   process.send?.({ ready: true, fixtureHash: voyage.fixtureHash });
   process.on("message", async (message: unknown) => {
     const input = message as { id?: unknown; operation?: unknown; value?: unknown };

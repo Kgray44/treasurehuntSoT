@@ -24,6 +24,9 @@ describe("canonical Device Lab scenarios", () => {
   });
   for (const id of [
     "gps-perfect-walk",
+    "gps-5-minute-walk",
+    "gps-30-minute-walk",
+    "virtual-player-navigation",
     "gps-noisy-walk",
     "gps-stale",
     "gps-impossible-jump",

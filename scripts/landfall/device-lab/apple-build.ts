@@ -1,8 +1,11 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, writeFile, stat } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { discoverDeviceLabHost, labTool } from "./host";
 import { deviceLabProfileSchema, selectAppleLabDevice } from "../../../src/landfall/device-lab/device-profile";
 
+let executionStage = "DISCOVERY";
+let failureStage: string | null = null;
 async function main() {
   if (process.platform !== "darwin") throw new Error("LANDFALL_APPLE_REQUIRES_MACOS");
   const root = process.cwd();
@@ -11,6 +14,7 @@ async function main() {
   await mkdir(destination, { recursive: true });
   let host = await discoverDeviceLabHost();
   if (!host.apple.configured) {
+    executionStage = "PROVISION_RUNTIME";
     // Ephemeral Apple hosts provision the official runtime when none is usable.
     // A failed provisioning command remains a failure, never simulated proof.
     await labTool("xcodebuild", ["-downloadPlatform", "iOS"], 900000);
@@ -21,6 +25,7 @@ async function main() {
     .filter((item) => item.available && item.id.includes("iOS"))
     .sort((a, b) => b.id.localeCompare(a.id, undefined, { numeric: true }))[0];
   if (!runtime) throw new Error("LANDFALL_APPLE_RUNTIME_UNAVAILABLE");
+  executionStage = "DEVICE_TYPE_INVENTORY";
   const types = JSON.parse(await labTool("xcrun", ["simctl", "list", "devicetypes", "--json"]));
   const compatibleNames = new Set(
     host.apple.devices.filter((item) => item.available && item.runtime === runtime.id).map((item) => item.name),
@@ -33,13 +38,17 @@ async function main() {
     ),
   );
   const name = `landfall-owned-${process.pid}`;
+  executionStage = "CREATE_SIMULATOR";
   const id = (await labTool("xcrun", ["simctl", "create", name, deviceType.identifier, runtime.id])).trim();
   if (!/^[A-Fa-f0-9-]{36}$/.test(id)) throw new Error("LANDFALL_APPLE_DEVICE_ID_INVALID");
   let clean = false;
   try {
+    executionStage = "BOOT_SIMULATOR";
     await labTool("xcrun", ["simctl", "boot", id]);
-    await labTool("xcrun", ["simctl", "bootstatus", id, "-b"], 180000);
-    await labTool("xcodegen", ["generate", "--spec", path.join(root, "native", "ios", "project.yml")]);
+    await labTool("xcrun", ["simctl", "bootstatus", id, "-b"], 420000);
+    executionStage = "GENERATE_XCODE_PROJECT";
+    await labTool("xcodegen", ["generate", "--spec", path.join(root, "native", "ios", "project.yml")], 180000);
+    executionStage = "CONFIGURE_OWNED_LAB_PLIST";
     // Generated, ignored lab plist only. Release source accepts HTTPS origins exclusively.
     await labTool("plutil", [
       "-insert",
@@ -55,6 +64,7 @@ async function main() {
       '["127.0.0.1"]',
       path.join(root, "native", "ios", "LandfallCompanion", "Info.plist"),
     ]);
+    executionStage = "NATIVE_BUILD_AND_XCTEST";
     const output = await labTool(
       "xcodebuild",
       [
@@ -99,18 +109,22 @@ async function main() {
       }),
     );
   } catch (error) {
-    const summary = await labTool("xcrun", [
-      "xcresulttool",
-      "get",
-      "test-results",
-      "summary",
-      "--path",
-      path.join(destination, "NativeTests.xcresult"),
-    ]).catch(() => "XCRESULT_SUMMARY_UNAVAILABLE");
+    failureStage = executionStage;
+    const resultPath = path.join(destination, "NativeTests.xcresult");
+    const hasResult = await stat(resultPath).then(
+      () => true,
+      () => false,
+    );
+    const summary = hasResult
+      ? await labTool("xcrun", ["xcresulttool", "get", "test-results", "summary", "--path", resultPath]).catch(
+          () => "XCRESULT_SUMMARY_UNAVAILABLE",
+        )
+      : "XCRESULT_NOT_CREATED";
     await writeFile(path.join(destination, "test-summary.json"), summary);
     process.stderr.write(`${summary.slice(-16000)}\n`);
     throw error;
   } finally {
+    executionStage = "CLEANUP_OWNED_SIMULATOR";
     await labTool("xcrun", ["simctl", "shutdown", id]).catch(() => undefined);
     await labTool("xcrun", ["simctl", "delete", id]);
     const devices = JSON.parse(await labTool("xcrun", ["simctl", "list", "devices", "--json"]));
@@ -124,7 +138,34 @@ async function main() {
   }
   if (!clean) throw new Error("LANDFALL_APPLE_CLEANUP_FAILED");
 }
-main().catch((error) => {
+main().catch(async (error) => {
+  const diagnostic =
+    error && typeof error === "object"
+      ? (error as { code?: unknown; killed?: unknown; signal?: unknown; stdout?: unknown; stderr?: unknown })
+      : {};
+  const destination = path.join(process.cwd(), "artifacts", "landfall-device-lab", "apple-build");
+  await mkdir(destination, { recursive: true });
+  await writeFile(
+    path.join(destination, "execution-error.json"),
+    JSON.stringify(
+      {
+        stage: failureStage ?? executionStage,
+        code: typeof diagnostic.code === "number" ? diagnostic.code : null,
+        killed: diagnostic.killed === true,
+        signal:
+          typeof diagnostic.signal === "string" && /^[A-Z0-9]+$/.test(diagnostic.signal) ? diagnostic.signal : null,
+        diagnosticHash: createHash("sha256")
+          .update(
+            [diagnostic.stdout, diagnostic.stderr]
+              .filter((value): value is string => typeof value === "string")
+              .join("\n"),
+          )
+          .digest("hex"),
+      },
+      null,
+      2,
+    ),
+  );
   // These are fixed tooling commands running synthetic fixtures, never production data.
   // Preserve bounded compiler/tool diagnostics so a failed hosted build is actionable.
   if (error && typeof error === "object") {

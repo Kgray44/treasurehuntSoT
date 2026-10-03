@@ -107,7 +107,10 @@ These failed development runs are evidence, not acceptance. Use focused hosted j
 do not use ordinary Sounding Line as a debug loop.
 
 Cold-start/relaunch repair is committed as cd66c4c5; hosted iOS run 37155251734
-tests that immutable source and remains pending. Device profile work adds checked
+failed before compilation when XcodeGen exceeded its default 30-second tool budget.
+Artifacts were harvested and transport branch deletion verified. Apple setup now
+uses explicit cold-tool budgets and records stage, code, signal and killed state.
+Device profile work at 7b1a4a81 adds checked
 Android API/memory/screen configurations and bound Apple device/runtime selection,
 plus development/candidate/closure hosted tiers. The closure template parses with
 four Android and three Apple jobs. Primary Android GPS and encrypted restart pass
@@ -115,6 +118,22 @@ in the profile development run, with cleanup passing; 22 Device Lab tests and
 TypeScript pass. Expanded hosted profile execution remains required. The real
 SQLite authority's eight assertions pass after moving import initialization into
 its owned database cleanup boundary.
+
+Hosted Android closure run 37155662868 at 7b1a4a81 built all four profiles and passed
+the three private-store tests in each, but all stopped at the same immediate
+low-battery instrumentation assertion. Artifacts were harvested and transport branch
+deletion verified. The test now forces the OS battery broadcast and observes its
+delivery within 15 seconds; the app also watches battery-level broadcasts. Updated
+native instrumentation passes four local tests; hosted retry remains required.
+
+Virtual Worldspace development: local Android GPS plus virtual navigation and
+canonical offline reconciliation passed 3/3 with cleanup. The virtual scenario
+wrote one canonical event and asserted zero physical acquisition starts. Its
+source fingerprint is 32bfb4796344857a8feb7fe15f7bf1e4e5afc081d88124ac74c8b091addc1542,
+marked dirty before commit. Both physical and virtual real-writer CLI fixtures now
+pass nine assertions including cross-worldspace rejection. The corpus passes all
+106 scenarios, including logical 5/30-minute walks; 39 files / 289 tests passed
+before adding those two walk checks. The focused lab suite now passes 25 tests.
 
 Remaining: native lifecycle/power/sensor orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;

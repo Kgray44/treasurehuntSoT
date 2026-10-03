@@ -20,9 +20,16 @@ public final class PowerTests {
     Assume.assumeTrue(Build.HARDWARE.equals("ranchu") || Build.HARDWARE.equals("goldfish"));
     try(ActivityScenario<LandfallActivity> scenario=ActivityScenario.launch(LandfallActivity.class)) {
       try {
-        shell("dumpsys battery set ac 0");shell("dumpsys battery set usb 0");shell("dumpsys battery set level 10");
-        scenario.onActivity(activity->{LandfallPower power=new LandfallPower(activity,()->{});assertTrue(power.lowPower());assertTrue(power.constrained());assertEquals(15000,power.interval(1000));try{assertEquals("READY",power.snapshot().getString("state"));}catch(Exception error){throw new AssertionError(error);}});
-      } finally {shell("dumpsys battery reset");}
+        shell("dumpsys battery set -f ac 0");shell("dumpsys battery set -f usb 0");shell("dumpsys battery set -f level 10");
+        java.util.concurrent.atomic.AtomicBoolean observed=new java.util.concurrent.atomic.AtomicBoolean(false);
+        long deadline=android.os.SystemClock.elapsedRealtime()+15000;
+        do {
+          scenario.onActivity(activity->observed.set(new LandfallPower(activity,()->{}).lowPower()));
+          if(!observed.get()) Thread.sleep(100);
+        } while(!observed.get() && android.os.SystemClock.elapsedRealtime()<deadline);
+        assertTrue("OS low-battery state must be observed within the explicit delivery budget",observed.get());
+        scenario.onActivity(activity->{LandfallPower power=new LandfallPower(activity,()->{});assertTrue(power.constrained());assertEquals(15000,power.interval(1000));try{assertEquals("READY",power.snapshot().getString("state"));}catch(Exception error){throw new AssertionError(error);}});
+      } finally {shell("dumpsys battery reset -f");}
     }
   }
 }

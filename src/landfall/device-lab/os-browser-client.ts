@@ -56,17 +56,21 @@ async function main() {
       changed();
     });
   const definition = structuredClone(landfallFixture);
-  const world = definition.worldspaces.find((world) => world.kind === "PHYSICAL")!;
+  const scenario = await (await fetch("/lab/scenario", { cache: "no-store" })).json();
+  if (!["PHYSICAL", "VIRTUAL"].includes(scenario.worldspace)) throw new Error("NATIVE_WORLDSPACE_UNAVAILABLE");
+  const world = definition.worldspaces.find((world) => world.kind === scenario.worldspace)!;
   definition.worldspaces = [world];
   definition.waypoints = definition.waypoints.filter((waypoint) => waypoint.worldspaceId === world.id);
   definition.maps = definition.maps.filter((map) => map.worldspaceId === world.id);
   definition.routes = definition.routes.filter((route) => route.worldspaceId === world.id);
   definition.transitions = [];
-  world.observationPolicy.allowedSources.push("NATIVE_LOCATION");
-  definition.waypoints.forEach((waypoint) => waypoint.evidenceProfile.acceptedSources.push("NATIVE_LOCATION"));
+  if (world.kind === "PHYSICAL") {
+    world.observationPolicy.allowedSources.push("NATIVE_LOCATION");
+    definition.waypoints.forEach((waypoint) => waypoint.evidenceProfile.acceptedSources.push("NATIVE_LOCATION"));
+  } else definition.waypoints[0].visibility.hiddenUntilRevealed = false;
   const driver = createLandfallNativeDriver();
   if (!driver) throw new Error("NATIVE_BRIDGE_UNAVAILABLE");
-  let foregroundPermission = await driver.permission();
+  let foregroundPermission = world.kind === "PHYSICAL" ? await driver.permission() : ("GRANTED" as const);
   const registry = new LandfallProviderRegistry();
   registry.register({
     id: driver.platform === "IOS" ? "ios-core-location" : "android-location",
@@ -74,11 +78,18 @@ async function main() {
     state: "AVAILABLE",
     worldspaceKinds: ["PHYSICAL"],
   });
+  registry.register({
+    id: "manual-virtual",
+    source: "PLAYER_CONFIRMATION",
+    state: "AVAILABLE",
+    worldspaceKinds: ["VIRTUAL"],
+  });
   const runtime = new LandfallRuntime(definition, identity, registry);
   runtime.setActiveWaypoint(definition.waypoints[0].id);
   runtime.setPermission(["GRANTED", "APPROXIMATE", "LIMITED"].includes(foregroundPermission) ? "GRANTED" : "DENIED");
   runtime.resume();
-  const provider = new NativeLocationProvider(driver, world);
+  const provider = world.kind === "PHYSICAL" ? new NativeLocationProvider(driver, world) : null;
+  let physicalAcquisitionStarts = 0;
   let outcome: LandfallOutcome = { confidence: "UNAVAILABLE", sync: null, retryable: true };
   let latest: LandfallObservation | null = null;
   let count = 0;
@@ -91,40 +102,40 @@ async function main() {
   let serverConfirmed = false;
   let powerProfile = "SUSPENDED";
   let waiting: ((observation: LandfallObservation) => void) | null = null;
-  const start = () =>
-    provider.start(
-      identity,
-      { userAction: true, intervalMs: 1000, precise: true },
-      (observation) => {
-        latest = observation;
-        count++;
-        outcome = runtime.ingest(observation, Date.now());
-        if (!outcome.rejection) samples = [...samples, observation].slice(-20);
-        if (outcome.confidence === "CONFIRMED" && !outcome.rejection && requests === 0) {
-          try {
-            const request = runtime.completionRequest(observation.id, 0, "os-lab-request", Date.now());
-            requests = 1;
-            if (network === "OFFLINE")
-              queued = queueLandfallEvidence(identity.sessionId, identity.publishedVersionId, csrf, {
-                schemaVersion: 1,
-                ...identity,
-                worldspaceId: request.worldspaceId,
-                waypointId: request.waypointId,
-                evidenceId: request.evidenceId,
-                expectedSequence: request.expectedSequence,
-                idempotencyKey: request.idempotencyKey,
-                method: "FOREGROUND_LOCATION",
-                observations: [...samples],
-              } as PlayerLandfallEvidence);
-          } catch {}
-        }
-        waiting?.(observation);
-      },
-      (state) => {
-        foregroundPermission = state;
-        runtime.setPermission(["GRANTED", "APPROXIMATE", "LIMITED"].includes(state) ? "GRANTED" : "DENIED");
-      },
-    );
+  const ingest = (observation: LandfallObservation) => {
+    latest = observation;
+    count++;
+    outcome = runtime.ingest(observation, Date.now());
+    if (!outcome.rejection) samples = [...samples, observation].slice(-20);
+    if (outcome.confidence === "CONFIRMED" && !outcome.rejection && requests === 0) {
+      try {
+        const request = runtime.completionRequest(observation.id, 0, "os-lab-request", Date.now());
+        requests = 1;
+        if (network === "OFFLINE")
+          queued = queueLandfallEvidence(identity.sessionId, identity.publishedVersionId, csrf, {
+            schemaVersion: 1,
+            ...identity,
+            worldspaceId: request.worldspaceId,
+            waypointId: request.waypointId,
+            evidenceId: request.evidenceId,
+            expectedSequence: request.expectedSequence,
+            idempotencyKey: request.idempotencyKey,
+            method: world.kind === "PHYSICAL" ? "FOREGROUND_LOCATION" : "PLAYER_FALLBACK",
+            ...(world.kind === "PHYSICAL" ? { observations: [...samples] } : {}),
+          } as PlayerLandfallEvidence);
+      } catch {}
+    }
+    waiting?.(observation);
+  };
+  const start = async () => {
+    if (!provider) return;
+    const active = provider.active;
+    await provider.start(identity, { userAction: true, intervalMs: 1000, precise: true }, ingest, (state) => {
+      foregroundPermission = state;
+      runtime.setPermission(["GRANTED", "APPROXIMATE", "LIMITED"].includes(state) ? "GRANTED" : "DENIED");
+    });
+    if (!active && provider.active) physicalAcquisitionStarts++;
+  };
   const projectPower = (power: NativeLandfallPower | null) =>
     landfallPowerPolicy({
       lifecycle: "FOREGROUND",
@@ -143,14 +154,14 @@ async function main() {
       runtime.pause();
       samples = [];
       latest = null;
-      void provider.stop();
+      void provider?.stop();
     }
   });
   await fetch("/lab/ready", {
     method: "POST",
     body: JSON.stringify({
       platform: driver.platform,
-      permission: foregroundPermission,
+      permission: world.kind === "PHYSICAL" ? foregroundPermission : "NOT_REQUIRED",
       restarted,
       leaseRestored: lease !== null,
       publicShellControlled: navigator.serviceWorker.controller !== null,
@@ -164,7 +175,7 @@ async function main() {
     }
     const step = await response.json();
     if (step.stop) {
-      await provider.stop();
+      await provider?.stop();
       unsubscribeLifecycle();
       break;
     }
@@ -173,7 +184,22 @@ async function main() {
     let reason: string | undefined;
     try {
       if (action.type === "LOCATION") {
-        if (
+        if (world.kind === "VIRTUAL" && action.coordinate.type !== "WGS84") {
+          ingest({
+            schemaVersion: 1,
+            id: crypto.randomUUID(),
+            ...identity,
+            worldspaceId: world.id,
+            providerId: "manual-virtual",
+            source: "PLAYER_CONFIRMATION",
+            kind: "VIRTUAL_POSITION",
+            observedAt: new Date(Date.now() - action.ageMs).toISOString(),
+            coordinate: action.coordinate,
+            uncertaintyUnits: action.accuracy,
+            confidence: 0.9,
+          });
+        } else if (
+          world.kind !== "PHYSICAL" ||
           action.coordinate.type !== "WGS84" ||
           action.ageMs !== 0 ||
           action.duplicate ||
@@ -225,6 +251,7 @@ async function main() {
           serverConfirmed,
           clientConfirmed: serverConfirmed,
           canonicalProgressionEvents: canonicalCount,
+          physicalAcquisitionStarts,
           powerProfile,
         };
         if (!(action.field in observed)) {
@@ -300,7 +327,7 @@ async function main() {
           runtime.resume();
         } else {
           runtime.pause();
-          await provider.stop();
+          await provider?.stop();
         }
       } else {
         state = "UNSUPPORTED";

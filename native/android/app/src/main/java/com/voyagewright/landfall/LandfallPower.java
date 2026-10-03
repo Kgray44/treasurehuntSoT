@@ -28,6 +28,7 @@ final class LandfallPower {
   void watch(){
     if(registered || power==null)return;
     IntentFilter filter=new IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED);
+    filter.addAction(Intent.ACTION_BATTERY_CHANGED);
     filter.addAction(Intent.ACTION_BATTERY_LOW);filter.addAction(Intent.ACTION_BATTERY_OKAY);
     if(Build.VERSION.SDK_INT>=33)activity.registerReceiver(receiver,filter,Context.RECEIVER_NOT_EXPORTED);else activity.registerReceiver(receiver,filter);
     registered=true;

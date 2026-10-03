@@ -38,7 +38,7 @@ async function exists(file: string) {
 export async function labTool(
   command: string,
   args: string[],
-  timeoutMs = 30000,
+  timeoutMs = process.platform === "darwin" && process.env.GITHUB_ACTIONS === "true" ? 120000 : 30000,
   signal?: AbortSignal,
 ): Promise<string> {
   const result = await execute(command, args, {

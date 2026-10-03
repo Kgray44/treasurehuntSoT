@@ -133,12 +133,24 @@ through the restricted WebView bridge, preserve their actual timestamps and insp
 actual canonical events. Receipts bind source, fixture, platform, artifacts and
 cleanup. Step translations distinguish OS controls from controlled service faults.
 
+The corpus also covers Virtual Worldspace manual navigation and encrypted offline
+reconciliation. Its native WebView executor selects the virtual definition without
+requesting location permission or starting native acquisition. The owned canonical
+fixture publishes that virtual objective and uses the same One Voyage writer.
+Local Android development execution wrote one canonical event after reconciliation,
+with zero acquisition starts and successful cleanup. These synthetic controls prove
+shared software behavior, not full rendered Player interaction or physical travel.
+
+Five-minute and thirty-minute synthetic walks preserve a 1.4 m/s route under logical
+provider time. Native executors use wall-clock time for the same definitions.
+Logical execution does not measure physical battery endurance or OS suspension.
+
 The local Android restart development case force-stopped and relaunched the app,
 restored the encrypted native lease, used the production public worker with a
 synthetic public shell, reopened its encrypted outbox and wrote exactly one
 canonical event. This proves the shared restart path on that emulator; it does not
 prove the full rendered Player Journal, physical storage persistence or iOS restart.
 Hosted Apple native tests previously passed while end-to-end cases failed; updated
-hosted evidence is pending. Device profiles, power orchestration, optional hardware
+hosted evidence is pending. Successful profile matrices, power orchestration, optional hardware
 handoffs, provider deployment preflight, full product UX, security/performance
 acceptance and final protected qualification remain required work.

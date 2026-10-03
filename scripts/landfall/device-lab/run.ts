@@ -93,7 +93,7 @@ async function main() {
     const startedAt = new Date().toISOString();
     const authority =
       target === "provider-simulation" && scenario.canonicalAuthority === "ONE_VOYAGE"
-        ? await startDeviceLabAuthority(path.join(destination, scenario.id, "authority"))
+        ? await startDeviceLabAuthority(path.join(destination, scenario.id, "authority"), scenario.worldspace)
         : null;
     const executor = new LandfallProviderScenarioExecutor(scenario, authority ?? undefined);
     const supported =
