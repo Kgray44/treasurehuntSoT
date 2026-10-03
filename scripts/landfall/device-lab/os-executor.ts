@@ -6,6 +6,7 @@ import { build } from "esbuild";
 import { discoverDeviceLabHost, labTool } from "./host";
 import { startDeviceLabAuthority } from "./authority-client";
 import { playerLandfallEvidenceSchema } from "../../../src/landfall/player-evidence-contract";
+import { landfallId } from "../../../src/landfall/schema";
 import { type DeviceLabScenario, type DeviceLabStepResult } from "../../../src/landfall/device-lab/scenario";
 
 export async function executeLandfallOsScenario(
@@ -76,7 +77,19 @@ export async function executeLandfallOsScenario(
     }
     if (request.method === "GET" && route === "/lab/authority") {
       response.setHeader("Content-Type", "application/json");
-      response.end(JSON.stringify(network === "OFFLINE" ? { state: "UNAVAILABLE" } : await authority.authorize()));
+      const receiptId = new URL(request.url!, "http://127.0.0.1").searchParams.get("receiptEvidenceId");
+      if (receiptId !== null && !landfallId.safeParse(receiptId).success) {
+        response.statusCode = 400;
+        response.end();
+        return;
+      }
+      response.end(
+        JSON.stringify(
+          network === "OFFLINE"
+            ? { state: "UNAVAILABLE" }
+            : await authority.authorize(receiptId ? { evidenceId: receiptId } : undefined),
+        ),
+      );
       return;
     }
     if (request.method === "GET" && route === "/lab/counts") {
@@ -180,6 +193,7 @@ export async function executeLandfallOsScenario(
     }
   };
   const steps: DeviceLabStepResult[] = [];
+  let executionStage = "SETUP";
   try {
     if (target === "android-emulator") {
       if (!host.android.adb) throw new Error("LANDFALL_ANDROID_NOT_CONFIGURED");
@@ -271,6 +285,7 @@ export async function executeLandfallOsScenario(
     await wait(() => ready, 60000);
     const timelineStartedAt = Date.now();
     for (const [index, step] of scenario.timeline.entries()) {
+      executionStage = `STEP_${index}_${step.action.type}`;
       const remaining = timelineStartedAt + step.atMs - Date.now();
       if (remaining > 0) await new Promise((resolve) => setTimeout(resolve, remaining));
       if (
@@ -418,6 +433,7 @@ export async function executeLandfallOsScenario(
       steps.push(results.get(index)!);
     }
     const screenshot = path.join(destination, "native-final.png");
+    executionStage = "SCREENSHOT";
     if (target === "android-emulator") {
       const deviceFile = `/data/local/tmp/landfall-lab-${process.pid}.png`;
       try {
@@ -435,6 +451,40 @@ export async function executeLandfallOsScenario(
       kind: "SCREENSHOT",
     });
   } catch (error) {
+    const tool =
+      error && typeof error === "object"
+        ? (error as { code?: unknown; killed?: unknown; signal?: unknown; stderr?: unknown; stdout?: unknown })
+        : {};
+    const diagnostic = path.join(destination, "execution-error.json");
+    const output = [tool.stderr, tool.stdout].filter((value): value is string => typeof value === "string").join("\n");
+    await writeFile(
+      diagnostic,
+      JSON.stringify(
+        {
+          stage: executionStage,
+          code: typeof tool.code === "number" ? tool.code : null,
+          killed: tool.killed === true,
+          signal: typeof tool.signal === "string" && /^[A-Z0-9]+$/.test(tool.signal) ? tool.signal : null,
+          category: /device offline/.test(output)
+            ? "DEVICE_OFFLINE"
+            : /no devices|device .* not found/.test(output)
+              ? "DEVICE_UNAVAILABLE"
+              : /Permission denied/.test(output)
+                ? "TOOL_PERMISSION"
+                : "TOOL_OR_CLIENT_FAILURE",
+          diagnosticHash: createHash("sha256").update(output).digest("hex"),
+        },
+        null,
+        2,
+      ),
+    );
+    artifacts.push({
+      path: diagnostic,
+      sha256: createHash("sha256")
+        .update(await readFile(diagnostic))
+        .digest("hex"),
+      kind: "TEST_RESULT",
+    });
     steps.push({
       index: steps.length,
       action: scenario.timeline[Math.min(steps.length, scenario.timeline.length - 1)].action.type,

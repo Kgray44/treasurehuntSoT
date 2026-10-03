@@ -125,7 +125,7 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
   }),
   z.strictObject({
     type: z.literal("RECONCILE"),
-    outcome: z.enum(["ACCEPT", "CONFLICT", "REVOKED", "UNAVAILABLE", "DUPLICATE"]),
+    outcome: z.enum(["ACCEPT", "CONFLICT", "REVOKED", "UNAVAILABLE", "DUPLICATE", "LOST_RESPONSE"]),
   }),
   z.strictObject({
     type: z.literal("ASSERT"),
@@ -134,6 +134,7 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
       "rejection",
       "completionRequests",
       "serverConfirmed",
+      "clientConfirmed",
       "backgroundResult",
       "notificationState",
       "packageState",

@@ -49,6 +49,7 @@ export async function createDeviceLabVoyage(destination: string) {
   const { landfallFixture, physicalObservation } = await import("../../../src/landfall/fixtures");
   const { submitPlayerLandfallEvidence } = await import("../../../src/chronicle/progression");
   const { playerCanAccessPlaythrough } = await import("../../../src/platform/auth");
+  const { projectRecordedLandfallEvidence } = await import("../../../src/landfall/recorded-evidence");
   try {
     const definition = structuredClone(landfallFixture);
     definition.worldspaces[0].observationPolicy.allowedSources.push("NATIVE_LOCATION");
@@ -168,15 +169,29 @@ export async function createDeviceLabVoyage(destination: string) {
       },
       revoke: () =>
         db.playthroughMembership.updateMany({ where: { playthroughId: "session-1" }, data: { status: "REMOVED" } }),
-      authorize: async () => {
+      authorize: async (evidence?: { evidenceId: string }) => {
         if (!(await playerCanAccessPlaythrough("session-1", "synthetic-player"))) return { state: "REVOKED" as const };
         const session = await db.taleSession.findUniqueOrThrow({ where: { id: "session-1" } });
+        const recordedEvidence = evidence
+          ? projectRecordedLandfallEvidence(
+              await db.taleSessionEvent.findUnique({
+                where: { idempotencyKey: `landfall:session-1:${evidence.evidenceId}` },
+              }),
+              {
+                sessionId: "session-1",
+                publishedVersionId: session.publishedVersionId!,
+                playerProfileId: "synthetic-player",
+                evidenceId: evidence.evidenceId,
+              },
+            )
+          : null;
         return {
           state: "AUTHORIZED" as const,
           sessionId: session.id,
           publishedVersionId: session.publishedVersionId!,
           currentSequence: session.currentSequence,
           replayOnly: session.status !== "ACTIVE",
+          recordedEvidence,
         };
       },
       counts: async () => ({
@@ -232,6 +247,17 @@ async function main() {
     const retries = await Promise.all([voyage.submit(request), voyage.submit(request)]);
     assert.ok(retries.every((receipt) => receipt.duplicate));
     assertions.push("concurrent-retries-idempotent");
+    const acknowledgement = await voyage.authorize({ evidenceId: request.evidenceId });
+    assert.equal(acknowledgement.state, "AUTHORIZED");
+    if (acknowledgement.state === "AUTHORIZED") {
+      assert.deepEqual(acknowledgement.recordedEvidence, {
+        evidenceId: request.evidenceId,
+        worldspaceId: request.worldspaceId,
+        waypointId: request.waypointId,
+      });
+      assert.ok(acknowledgement.currentSequence > request.expectedSequence);
+    }
+    assertions.push("lost-response-actor-bound-acknowledgement");
     const counts = await voyage.counts();
     assert.equal(counts.canonicalProgressionEvents, 1);
     assert.equal(counts.blockCompletions, 1);
@@ -269,7 +295,8 @@ async function worker() {
       let value: unknown;
       if (input.operation === "submit") value = await voyage.submit(input.value);
       else if (input.operation === "counts") value = await voyage.counts();
-      else if (input.operation === "authorize") value = await voyage.authorize();
+      else if (input.operation === "authorize")
+        value = await voyage.authorize(input.value as { evidenceId: string } | undefined);
       else if (input.operation === "cleanup") value = await voyage.cleanup();
       else throw new Error("LANDFALL_LAB_AUTHORITY_OPERATION_INVALID");
       process.send?.({ id: input.id, value }, () => {

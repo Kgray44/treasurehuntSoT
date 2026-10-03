@@ -7,11 +7,12 @@ const mocks = vi.hoisted(() => ({
   state: vi.fn(),
   pinned: vi.fn(),
   events: vi.fn(),
+  receipt: vi.fn(),
 }));
 vi.mock("@/platform/auth", () => ({ requirePlayerIdentity: mocks.identity, playerCanAccessPlaythrough: mocks.member }));
 vi.mock("@/chronicle/progression", () => ({ getTaleSessionState: mocks.state }));
 vi.mock("@/landfall/published", () => ({ loadPinnedLandfallDefinition: mocks.pinned }));
-vi.mock("@/lib/db", () => ({ db: { taleSessionEvent: { findMany: mocks.events } } }));
+vi.mock("@/lib/db", () => ({ db: { taleSessionEvent: { findMany: mocks.events, findUnique: mocks.receipt } } }));
 
 import { GET } from "./route";
 
@@ -36,6 +37,7 @@ describe("Player Landfall bootstrap route", () => {
       definition: landfallFixture,
     });
     mocks.events.mockResolvedValue([]);
+    mocks.receipt.mockResolvedValue(null);
   });
 
   it("blocks missing identity and membership before reading published geometry", async () => {
@@ -82,5 +84,30 @@ describe("Player Landfall bootstrap route", () => {
     expect(response.status).toBe(503);
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(await response.text()).not.toContain("private snapshot details");
+  });
+  it("returns only the current member's actor-bound recorded evidence and withholds another actor or pin", async () => {
+    const payload = {
+      actorProfileId: "player-1",
+      publishedVersionId: "version-1",
+      evidenceId: "fix",
+      worldspaceId: "town",
+      waypointId: "town-arrival",
+    };
+    const event = { sessionId: "session-1", eventType: "landfallWaypointConfirmed", payload: JSON.stringify(payload) };
+    const request = () => new Request("https://example.test?receiptEvidenceId=fix");
+    mocks.receipt.mockResolvedValueOnce(event);
+    expect((await (await GET(request(), context)).json()).recordedEvidence).toEqual({
+      evidenceId: "fix",
+      worldspaceId: "town",
+      waypointId: "town-arrival",
+    });
+    for (const change of [{ actorProfileId: "other" }, { publishedVersionId: "other" }]) {
+      mocks.receipt.mockResolvedValueOnce({ ...event, payload: JSON.stringify({ ...payload, ...change }) });
+      expect((await (await GET(request(), context)).json()).recordedEvidence).toBeNull();
+    }
+    mocks.member.mockResolvedValueOnce(false);
+    const before = mocks.receipt.mock.calls.length;
+    expect((await GET(request(), context)).status).toBe(404);
+    expect(mocks.receipt).toHaveBeenCalledTimes(before);
   });
 });

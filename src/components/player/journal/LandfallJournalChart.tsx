@@ -26,6 +26,7 @@ import type { LandfallObservation } from "@/landfall/observation";
 import type { PlayerLandfallEvidence } from "@/landfall/server-evidence";
 import type { PlayerJournalBlock } from "@/chronicle/journal-contract";
 import { clearLandfallOfflineData, type OfflineAvailability } from "@/landfall/offline-store";
+import { createPlayerLandfallReconciler } from "@/landfall/offline-reconcile-web";
 import {
   clearLandfallEvidence,
   pendingLandfallEvidence,
@@ -350,56 +351,29 @@ function useLandfallController({
       pendingEvidence.current ? "Reconciling queued evidence with the Voyage…" : "Checking arrival with the Voyage…",
     );
     try {
-      if (pendingEvidence.current) {
-        const current = await fetch(`/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall`, {
-          cache: "no-store",
-        });
-        if (!current.ok) {
-          if ([401, 403, 404].includes(current.status)) {
-            pendingEvidence.current = null;
-            await clearLandfallOfflineData();
-            setMessage("Voyage access expired or was revoked. Sign in and verify access before continuing.");
-            return;
-          }
-          throw new Error("LANDFALL_REAUTHENTICATION_REQUIRED");
-        }
-        const value = await current.json();
-        const queued = await pendingLandfallEvidence(sessionId, publishedVersionId, csrfToken);
-        if (
-          !queued ||
-          !value.available ||
-          value.bootstrap.publishedVersionId !== evidence.publishedVersionId ||
-          value.bootstrap.currentSequence !== evidence.expectedSequence ||
-          value.bootstrap.replayOnly
-        ) {
-          pendingEvidence.current = null;
-          await clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
-          setMessage(
-            "Queued evidence expired or the Voyage changed. No new visit was confirmed. Refresh the Chart and use a fresh reading.",
-          );
-          onProgress();
-          return;
-        }
-      }
-      const response = await fetch(`/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken },
-        body: JSON.stringify(evidence),
+      const queued = pendingEvidence.current !== null;
+      const reconciler = createPlayerLandfallReconciler(sessionId, csrfToken, {
+        pending: () =>
+          queued ? pendingLandfallEvidence(sessionId, publishedVersionId, csrfToken) : Promise.resolve(evidence),
+        clearEvidence: () => clearLandfallEvidence(sessionId, publishedVersionId, csrfToken),
+        revoke: () => clearLandfallOfflineData(),
       });
-      if (!response.ok) {
-        if (response.status >= 500 || response.status === 429) throw new Error("LANDFALL_RETRY_REQUIRED");
+      const result = await reconciler.reconcile();
+      if (result === "RETRY") throw new Error("LANDFALL_RETRY_REQUIRED");
+      if (result === "REVOKED") {
         pendingEvidence.current = null;
-        if ([401, 403, 404].includes(response.status)) {
-          await clearLandfallOfflineData();
-          setMessage("Voyage access expired or was revoked. Sign in and verify access before continuing.");
-          return;
-        }
-        await clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
+        setMessage("Voyage access expired or was revoked. Sign in and verify access before continuing.");
+        return;
+      }
+      if (result === "EMPTY" || result === "CONFLICT") {
+        pendingEvidence.current = null;
+        setAvailability((value) => (value ? { ...value, pendingEvidence: 0 } : value));
         setMessage(
-          response.status === 409
-            ? "Queued evidence could not be reconciled because the Voyage changed. Reopen the chart for the current objective."
-            : "Evidence was rejected. No visit was recorded; use a fresh reading or configured fallback.",
+          result === "EMPTY"
+            ? "Queued evidence expired. Use a fresh reading; no new visit was confirmed."
+            : "Evidence could not be reconciled because the Voyage changed or rejected it. Refresh the Chart and use a fresh reading or configured fallback.",
         );
+        onProgress();
         return;
       }
       pendingEvidence.current = null;
@@ -416,9 +390,11 @@ function useLandfallController({
       setTracking(false);
       setPosition(null);
       setMessage(
-        evidence.method === "PLAYER_FALLBACK"
-          ? "Your confirmation was recorded without a location claim."
-          : "Arrival recorded in the Voyage.",
+        result === "DUPLICATE"
+          ? "The Voyage confirms this arrival was already recorded. The Chart has been refreshed."
+          : evidence.method === "PLAYER_FALLBACK"
+            ? "Your confirmation was recorded without a location claim."
+            : "Arrival recorded in the Voyage.",
       );
       onProgress();
     } catch {

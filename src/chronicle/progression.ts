@@ -1206,6 +1206,8 @@ export async function submitPlayerLandfallEvidence(unchecked: unknown, playerPro
         prior?.worldspaceId !== request.worldspaceId
       )
         throw new Error("LANDFALL_EVIDENCE_IDENTITY_MISMATCH");
+      if (playerProfileId && prior?.actorProfileId !== playerProfileId)
+        throw new Error("LANDFALL_EVIDENCE_ACTOR_MISMATCH");
       const pinned = await tx.taleSession.findUniqueOrThrow({
         where: { id: request.sessionId },
         select: { publishedVersionId: true },
@@ -1276,7 +1278,10 @@ export async function submitPlayerLandfallEvidence(unchecked: unknown, playerPro
       sourceType: "landfall",
       blockId: session.currentBlockId,
       idempotencyKey: canonicalKey,
-      payload: qualified,
+      payload: {
+        ...qualified,
+        ...(playerProfileId ? { actorProfileId: playerProfileId, publishedVersionId: request.publishedVersionId } : {}),
+      },
       correlationId: request.idempotencyKey,
     });
     const waypointJourneyComplete = Boolean(

@@ -159,6 +159,7 @@ async function main() {
           rejection: outcome.rejection ?? null,
           completionRequests: requests,
           serverConfirmed,
+          clientConfirmed: serverConfirmed,
           canonicalProgressionEvents: canonicalCount,
         };
         if (!(action.field in observed)) {
@@ -174,7 +175,7 @@ async function main() {
           runtime.setOffline(network === "ONLINE" ? "ONLINE" : "OFFLINE_READY");
         }
       } else if (action.type === "RECONCILE") {
-        if (action.outcome !== "ACCEPT") {
+        if (!["ACCEPT", "DUPLICATE", "LOST_RESPONSE"].includes(action.outcome)) {
           state = "UNSUPPORTED";
           reason = "NATIVE_AUTHORITY_FAULT_UNSUPPORTED";
         } else {
@@ -186,21 +187,27 @@ async function main() {
               revoke: () => clearLandfallEvidence(identity.sessionId, identity.publishedVersionId, csrf),
             },
             {
-              authorize: async () =>
-                (await (await fetch("/lab/authority", { cache: "no-store" })).json()) as Awaited<
-                  ReturnType<LandfallReconciliationTransport["authorize"]>
-                >,
+              authorize: async (evidence) =>
+                (await (
+                  await fetch(`/lab/authority?receiptEvidenceId=${encodeURIComponent(evidence.evidenceId)}`, {
+                    cache: "no-store",
+                  })
+                ).json()) as Awaited<ReturnType<LandfallReconciliationTransport["authorize"]>>,
               submit: async (evidence) => {
                 const response = await fetch("/lab/commit", { method: "POST", body: JSON.stringify(evidence) });
                 if (!response.ok) return response.status >= 500 ? "UNAVAILABLE" : "CONFLICT";
                 const result = await response.json();
+                if (action.outcome === "LOST_RESPONSE") return "UNAVAILABLE";
                 serverConfirmed = true;
                 return result.duplicate ? "DUPLICATE" : "ACCEPTED";
               },
             },
           );
           const [first, second] = await Promise.all([reconciler.reconcile(), reconciler.reconcile()]);
-          if (first !== "ACCEPTED" || second !== "ACCEPTED") throw new Error("NATIVE_RECONCILIATION_FAILED");
+          const expected =
+            action.outcome === "LOST_RESPONSE" ? "RETRY" : action.outcome === "DUPLICATE" ? "DUPLICATE" : "ACCEPTED";
+          if (first !== expected || second !== expected) throw new Error("NATIVE_RECONCILIATION_FAILED");
+          if (first === "ACCEPTED" || first === "DUPLICATE") serverConfirmed = true;
           canonicalCount = (await (await fetch("/lab/counts", { cache: "no-store" })).json())
             .canonicalProgressionEvents;
         }

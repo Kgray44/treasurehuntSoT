@@ -366,6 +366,25 @@ scenario(
 );
 
 /** One semantic corpus; backends translate these actions rather than maintaining independent test stories. */
+scenario(
+  "offline-lost-response-canonical-reconcile",
+  ["LOCATION", "OFFLINE_PACKAGE"],
+  [
+    network("OFFLINE"),
+    location(),
+    location(),
+    network("ONLINE"),
+    { type: "RECONCILE", outcome: "LOST_RESPONSE" },
+    assertion("canonicalProgressionEvents", 1),
+    assertion("clientConfirmed", false),
+    { type: "RECONCILE", outcome: "DUPLICATE" },
+    assertion("canonicalProgressionEvents", 1),
+    assertion("clientConfirmed", true),
+  ],
+  ["FIELD_ENVIRONMENT"],
+  "ONE_VOYAGE",
+);
+
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);
 }

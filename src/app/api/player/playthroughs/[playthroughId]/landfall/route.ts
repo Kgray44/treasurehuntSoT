@@ -6,6 +6,8 @@ import { projectPlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import { requirePlayerIdentity, playerCanAccessPlaythrough, verifyPlayerCsrf } from "@/platform/auth";
 import { db } from "@/lib/db";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
+import { landfallId } from "@/landfall/schema";
+import { projectRecordedLandfallEvidence } from "@/landfall/recorded-evidence";
 
 const privateHeaders = { "Cache-Control": "private, no-store, max-age=0" };
 export const dynamic = "force-dynamic";
@@ -18,6 +20,9 @@ export async function GET(request: Request, context: { params: Promise<{ playthr
     const { playthroughId } = await context.params;
     if (!(await playerCanAccessPlaythrough(playthroughId, identity.playerProfileId)))
       return NextResponse.json({ error: "Voyage not found." }, { status: 404, headers: privateHeaders });
+    const receiptId = new URL(request.url).searchParams.get("receiptEvidenceId");
+    if (receiptId !== null && !landfallId.safeParse(receiptId).success)
+      return NextResponse.json({ error: "Invalid evidence reference." }, { status: 400, headers: privateHeaders });
     const state = await getTaleSessionState(playthroughId, undefined, false, true);
     if (!["ACTIVE", "COMPLETED"].includes(state.session.status))
       return NextResponse.json({ available: false }, { headers: privateHeaders });
@@ -49,9 +54,25 @@ export async function GET(request: Request, context: { params: Promise<{ playthr
       take: 2048,
       select: { id: true, sequence: true, eventType: true, payload: true, createdAt: true },
     });
+    const recordedEvidence =
+      receiptId === null
+        ? null
+        : projectRecordedLandfallEvidence(
+            await db.taleSessionEvent.findUnique({
+              where: { idempotencyKey: `landfall:${playthroughId}:${receiptId}` },
+              select: { sessionId: true, eventType: true, payload: true },
+            }),
+            {
+              sessionId: playthroughId,
+              publishedVersionId: pinned.publishedVersionId,
+              playerProfileId: identity.playerProfileId,
+              evidenceId: receiptId,
+            },
+          );
     return NextResponse.json(
       {
         available: true,
+        ...(receiptId === null ? {} : { recordedEvidence }),
         bootstrap: projectPlayerLandfallBootstrap(
           { ...pinned, currentSequence: asOfSequence },
           {

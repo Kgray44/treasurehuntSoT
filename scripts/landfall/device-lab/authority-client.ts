@@ -2,6 +2,7 @@ import { spawn } from "node:child_process";
 import path from "node:path";
 import { stat } from "node:fs/promises";
 import type { PlayerLandfallEvidence } from "../../../src/landfall/player-evidence-contract";
+import type { LandfallReconciliationTransport } from "../../../src/landfall/offline-reconcile";
 
 /** Server imports and Prisma globals live exclusively in a dedicated owned child process. */
 export async function startDeviceLabAuthority(destination: string) {
@@ -83,7 +84,8 @@ export async function startDeviceLabAuthority(destination: string) {
   return {
     fixtureHash,
     submit: (evidence: PlayerLandfallEvidence) => call("submit", evidence),
-    authorize: () => call("authorize"),
+    authorize: (evidence?: Pick<PlayerLandfallEvidence, "evidenceId">) =>
+      call("authorize", evidence) as ReturnType<LandfallReconciliationTransport["authorize"]>,
     counts: () =>
       call("counts") as Promise<{
         canonicalProgressionEvents: number;

@@ -11,7 +11,7 @@ import {
 } from "@/landfall/offline-package";
 import { projectPlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import { LandfallOfflineRepository, type LandfallOfflineStorage } from "@/landfall/offline-store";
-import { LandfallOutboxReconciler } from "@/landfall/offline-reconcile";
+import { LandfallOutboxReconciler, type LandfallReconciliationTransport } from "@/landfall/offline-reconcile";
 import type { LandfallObservation } from "@/landfall/observation";
 import type { PlayerLandfallEvidence } from "@/landfall/player-evidence-contract";
 import {
@@ -125,11 +125,13 @@ export class LandfallProviderScenarioExecutor {
   };
   private readonly definition = structuredClone(landfallFixture);
   private canonicalCount: number | null = null;
+  private clientConfirmed = false;
   constructor(
     private readonly scenario: DeviceLabScenario,
     private readonly authority?: {
       submit(evidence: PlayerLandfallEvidence): Promise<unknown>;
       counts(): Promise<{ canonicalProgressionEvents: number }>;
+      authorize: LandfallReconciliationTransport["authorize"];
     },
   ) {
     deviceLabScenarioSchema.parse(scenario);
@@ -314,17 +316,19 @@ export class LandfallProviderScenarioExecutor {
           revoke: () => repository.clear(),
         },
         {
-          authorize: async () =>
+          authorize: async (evidence) =>
             action.outcome === "REVOKED"
               ? { state: "REVOKED" }
               : action.outcome === "UNAVAILABLE"
                 ? { state: "UNAVAILABLE" }
-                : {
-                    state: "AUTHORIZED",
-                    ...fixtureIdentity,
-                    currentSequence: action.outcome === "CONFLICT" ? 1 : 0,
-                    replayOnly: false,
-                  },
+                : this.authority
+                  ? this.authority.authorize(evidence)
+                  : {
+                      state: "AUTHORIZED",
+                      ...fixtureIdentity,
+                      currentSequence: action.outcome === "CONFLICT" ? 1 : 0,
+                      replayOnly: false,
+                    },
           submit: async (evidence) => {
             submissions++;
             if (this.scenario.canonicalAuthority === "ONE_VOYAGE") {
@@ -343,7 +347,11 @@ export class LandfallProviderScenarioExecutor {
               await this.authority.submit(replay);
               this.canonicalCount = (await this.authority.counts()).canonicalProgressionEvents;
             }
-            return action.outcome === "DUPLICATE" ? "DUPLICATE" : "ACCEPTED";
+            return action.outcome === "LOST_RESPONSE"
+              ? "UNAVAILABLE"
+              : action.outcome === "DUPLICATE"
+                ? "DUPLICATE"
+                : "ACCEPTED";
           },
         },
       );
@@ -354,16 +362,26 @@ export class LandfallProviderScenarioExecutor {
         CONFLICT: "CONFLICT",
         REVOKED: "REVOKED",
         UNAVAILABLE: "RETRY",
+        LOST_RESPONSE: "RETRY",
       }[action.outcome];
       if (
         first !== expected ||
         second !== expected ||
-        submissions !== (["ACCEPT", "DUPLICATE"].includes(action.outcome) ? 1 : 0)
+        submissions !==
+          (action.outcome === "DUPLICATE" && this.authority
+            ? 0
+            : ["ACCEPT", "DUPLICATE", "LOST_RESPONSE"].includes(action.outcome)
+              ? 1
+              : 0)
       )
         throw new Error("ASSERT_FAILED:RECONCILIATION");
-      if (Boolean(await repository.pending(this.deliveryBinding)) !== (action.outcome === "UNAVAILABLE"))
+      if (
+        Boolean(await repository.pending(this.deliveryBinding)) !==
+        ["UNAVAILABLE", "LOST_RESPONSE"].includes(action.outcome)
+      )
         throw new Error("ASSERT_FAILED:OUTBOX_RETENTION");
       this.reconciliationState = first;
+      if (first === "ACCEPTED" || first === "DUPLICATE") this.clientConfirmed = true;
       return true;
     }
     if (action.type === "PERMISSION") {
@@ -587,6 +605,7 @@ export class LandfallProviderScenarioExecutor {
         rejection: this.outcome.rejection ?? null,
         completionRequests: this.requests.size,
         serverConfirmed: (this.canonicalCount ?? 0) > 0,
+        clientConfirmed: this.clientConfirmed,
         backgroundResult: this.backgroundResult,
         notificationState: this.notificationState,
         canonicalProgressionEvents: this.canonicalCount,

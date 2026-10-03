@@ -1,4 +1,5 @@
 import type { PlayerLandfallEvidence } from "@/landfall/player-evidence-contract";
+import type { RecordedLandfallEvidence } from "@/landfall/recorded-evidence";
 
 export type LandfallReconciliationResult = "EMPTY" | "ACCEPTED" | "DUPLICATE" | "CONFLICT" | "REVOKED" | "RETRY";
 export type LandfallOutbox = {
@@ -7,13 +8,14 @@ export type LandfallOutbox = {
   revoke(): Promise<void>;
 };
 export type LandfallReconciliationTransport = {
-  authorize(): Promise<
+  authorize(evidence: PlayerLandfallEvidence): Promise<
     | {
         state: "AUTHORIZED";
         sessionId: string;
         publishedVersionId: string;
         currentSequence: number;
         replayOnly: boolean;
+        recordedEvidence?: RecordedLandfallEvidence | null;
       }
     | { state: "REVOKED" }
     | { state: "UNAVAILABLE" }
@@ -39,7 +41,7 @@ export class LandfallOutboxReconciler {
     try {
       const evidence = await this.outbox.pending();
       if (!evidence) return "EMPTY";
-      const authority = await this.transport.authorize();
+      const authority = await this.transport.authorize(evidence);
       if (authority.state === "UNAVAILABLE") return "RETRY";
       if (authority.state === "REVOKED") {
         await this.outbox.revoke();
@@ -47,12 +49,20 @@ export class LandfallOutboxReconciler {
       }
       // Do not submit a queued observation against a different objective. Server-side
       // One Voyage still decides duplicates and qualifications atomically.
+      if (authority.sessionId !== evidence.sessionId || authority.publishedVersionId !== evidence.publishedVersionId) {
+        await this.outbox.clearEvidence();
+        return "CONFLICT";
+      }
+      const recorded = authority.recordedEvidence;
       if (
-        authority.sessionId !== evidence.sessionId ||
-        authority.publishedVersionId !== evidence.publishedVersionId ||
-        authority.currentSequence !== evidence.expectedSequence ||
-        authority.replayOnly
+        recorded?.evidenceId === evidence.evidenceId &&
+        recorded.worldspaceId === evidence.worldspaceId &&
+        recorded.waypointId === evidence.waypointId
       ) {
+        await this.outbox.clearEvidence();
+        return "DUPLICATE";
+      }
+      if (authority.currentSequence !== evidence.expectedSequence || authority.replayOnly) {
         await this.outbox.clearEvidence();
         return "CONFLICT";
       }
