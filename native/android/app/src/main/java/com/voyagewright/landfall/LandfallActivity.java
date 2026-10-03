@@ -14,6 +14,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
+import android.widget.FrameLayout;
 import androidx.webkit.JavaScriptReplyProxy;
 import androidx.webkit.WebViewCompat;
 import androidx.webkit.WebViewFeature;
@@ -57,6 +58,9 @@ public final class LandfallActivity extends Activity implements LocationListener
     power = new LandfallPower(this, this::powerChanged);
     power.watch();
     web = new WebView(this);
+    // The owned emulator harness attaches only to debug builds. Release WebViews
+    // must not expose authenticated Player state through a debugging socket.
+    WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
     web.getSettings().setJavaScriptEnabled(true);
     web.getSettings().setDomStorageEnabled(true);
     web.getSettings().setAllowFileAccess(false);
@@ -80,7 +84,35 @@ public final class LandfallActivity extends Activity implements LocationListener
     });
     if (WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT))
       WebViewCompat.addDocumentStartJavaScript(web, bridgeScript(), Collections.singleton(origin));
-    setContentView(web);
+    FrameLayout content = new FrameLayout(this);
+    content.setBackgroundColor(0xff0a1212);
+    if (android.os.Build.VERSION.SDK_INT >= 30) {
+      android.view.WindowInsetsController controller = getWindow().getInsetsController();
+      if (controller != null) controller.setSystemBarsAppearance(0,
+        android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS | android.view.WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS);
+    } else {
+      getWindow().getDecorView().setSystemUiVisibility(0);
+      getWindow().setStatusBarColor(0xff0a1212);
+      getWindow().setNavigationBarColor(0xff0a1212);
+    }
+    content.addView(web, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+    content.setOnApplyWindowInsetsListener((view, insets) -> {
+      int left, top, right, bottom;
+      if (android.os.Build.VERSION.SDK_INT >= 30) {
+        android.graphics.Insets bars = insets.getInsets(android.view.WindowInsets.Type.systemBars() | android.view.WindowInsets.Type.displayCutout());
+        left=bars.left;top=bars.top;right=bars.right;bottom=bars.bottom;
+      } else {
+        left=insets.getSystemWindowInsetLeft();top=insets.getSystemWindowInsetTop();right=insets.getSystemWindowInsetRight();bottom=insets.getSystemWindowInsetBottom();
+        android.view.DisplayCutout cutout=insets.getDisplayCutout();
+        if(cutout!=null){left=Math.max(left,cutout.getSafeInsetLeft());top=Math.max(top,cutout.getSafeInsetTop());right=Math.max(right,cutout.getSafeInsetRight());bottom=Math.max(bottom,cutout.getSafeInsetBottom());}
+      }
+      // Lay out the WebView inside the safe bounds, so fixed Journal controls
+      // and its CSS viewport cannot cover system bars or display cutouts.
+      view.setPadding(left,top,right,bottom);
+      return insets;
+    });
+    setContentView(content);
+    content.requestApplyInsets();
     openReturn(getIntent());
   }
   private boolean isAllowed(Uri url) {

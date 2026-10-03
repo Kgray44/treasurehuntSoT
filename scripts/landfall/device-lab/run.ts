@@ -1,5 +1,4 @@
-import { createHash } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { landfallDeviceScenario, landfallDeviceScenarios } from "../../../src/landfall/device-lab/scenarios";
 import { LandfallProviderScenarioExecutor } from "../../../src/landfall/device-lab/provider-executor";
@@ -8,7 +7,8 @@ import {
   type DeviceLabReceipt,
   type DeviceLabTarget,
 } from "../../../src/landfall/device-lab/scenario";
-import { discoverDeviceLabHost, labTool } from "./host";
+import { discoverDeviceLabHost } from "./host";
+import { deviceLabSourceIdentity } from "./source";
 import { executeLandfallOsScenario } from "./os-executor";
 import { startDeviceLabAuthority } from "./authority-client";
 import { deviceLabProfileSchema, deviceLabConfigurationSchema } from "../../../src/landfall/device-lab/device-profile";
@@ -56,38 +56,7 @@ async function main() {
     options.scenario && options.scenario !== "all"
       ? options.scenario.split(",").map((id) => landfallDeviceScenario(id))
       : landfallDeviceScenarios();
-  const sourceSha = (await labTool("git", ["rev-parse", "HEAD"])).trim();
-  const sourceTree = (await labTool("git", ["rev-parse", "HEAD^{tree}"])).trim();
-  const dirty = Boolean((await labTool("git", ["status", "--porcelain"])).trim());
-  const sourceFiles = (
-    await labTool("git", [
-      "ls-files",
-      "--cached",
-      "--others",
-      "--exclude-standard",
-      "src",
-      "scripts/landfall/device-lab",
-      "native",
-      "package-lock.json",
-      "package.json",
-      "prisma/schema.sqlite.prisma",
-      "prisma/migrations",
-      "public/landfall-offline-sw.js",
-      ".agents/landfall-device-lab-hosted.yml",
-    ])
-  )
-    .trim()
-    .split(/\r?\n/)
-    .filter(Boolean)
-    .sort();
-  const fingerprint = createHash("sha256");
-  for (const file of sourceFiles) {
-    fingerprint.update(file);
-    fingerprint.update("\0");
-    fingerprint.update(await readFile(path.join(root, file)));
-    fingerprint.update("\0");
-  }
-  const sourceFingerprint = fingerprint.digest("hex");
+  const { sourceSha, sourceTree, dirty, sourceFingerprint } = await deviceLabSourceIdentity();
   const receipts: DeviceLabReceipt[] = [];
   for (const scenario of scenarios) {
     const startedAt = new Date().toISOString();

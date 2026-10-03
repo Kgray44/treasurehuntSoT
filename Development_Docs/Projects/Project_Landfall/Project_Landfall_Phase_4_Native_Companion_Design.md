@@ -274,3 +274,36 @@ now use binary exec-out directly, validate the PNG signature and create no devic
 temporary file, following the [ADB screenshot interface](https://developer.android.com/tools/adb#screencap).
 The subsequent background run passes with a reviewed home-screen capture, zero
 canonical progression events and cleanup PASS; this remains emulator evidence.
+
+The opt-in native Journal suite now installs the exact debug APK, attaches to an
+explicitly owned emulator through a separate ADB server and opens the actual
+optimized production Player Journal. PHYSICAL and VIRTUAL journeys pass together:
+two Android location fixes cause one One Voyage arrival; the virtual chart renders
+and searches authored geometry with zero location fixes or progression. The
+receipt records actual and requested worldspace, source fingerprint, installed
+APK checksum, measured foreground state and cleanup. System-bar/cutout insets keep
+fixed Journal controls inside the native viewport. Debug WebView inspection is
+enabled only for debug builds; authenticated protocol traces are not retained.
+These journeys do not establish full Journal offline/restart behavior or physical
+field accuracy. Earlier fixture failures remain recorded, including an incorrectly
+labelled failed virtual fixture; that receipt is excluded from virtual proof.
+
+Hosted Android run 37161305817 passes GPS/background/activity recreation on its
+primary and compatibility phones. Low-resource GPS and recreation pass with
+1503184 KiB measured guest RAM, satisfying the unchanged <=2 GiB rule. Its
+background failure prompted a bounded check of the actual OS transition. The
+Pixel Tablet SDK hardware profile omits GPS; the next tablet profile uses the
+GPS-capable generic medium tablet and retains measured device configuration.
+Software evidence from it makes no claim about physical Pixel Tablet GPS hardware.
+Hosted impact selection is bounded by the governed tier and canonical profiles.
+
+Hosted Apple run 37160106099 passes 21 of 24 cases (7/8 per profile), including
+GPS and permission changes everywhere. Offline canonical and lost-response
+reconciliation pass everywhere with one canonical event per successful scenario.
+Compatibility/tablet restart and primary virtual-offline cases have recorded
+failures; the run is not closure proof. All scenario cleanup and owned transport
+branch cleanup pass. Structured build summaries report seven native tests passed,
+one skipped and zero failed per profile. Lifecycle launch now belongs solely to
+XCTest, avoiding competing app launches. A separate bounded 120-second deadline
+allows xcodebuild to finalize results after assertions finish; categorical counts
+and tool-exit state remain distinct. Fresh hosted verification remains required.

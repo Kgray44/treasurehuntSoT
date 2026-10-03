@@ -1,4 +1,26 @@
 import { landfallDeviceScenario } from "@/landfall/device-lab/scenarios";
+import { deviceLabProfileSchema, type DeviceLabProfile } from "./device-profile";
+
+/** Impact selection stays inside the governed tier and never invents a profile. */
+export function hostedDeviceLabProfiles(
+  platform: "android" | "ios",
+  tier: "development" | "candidate" | "closure",
+  selection?: string,
+): DeviceLabProfile[] {
+  const available: DeviceLabProfile[] = ["primary-phone"];
+  if (tier === "closure" || (platform === "android" && tier === "candidate")) available.push("compatibility-phone");
+  if (tier === "closure") {
+    if (platform === "android") available.push("low-resource");
+    available.push("tablet");
+  }
+  if (selection === undefined) return available;
+  if (selection.length > 128 || !/^[a-z-]+(?:,[a-z-]+)*$/.test(selection))
+    throw new Error("LANDFALL_HOSTED_PROFILES_INVALID");
+  const requested = selection.split(",").map((value) => deviceLabProfileSchema.parse(value));
+  if (new Set(requested).size !== requested.length || requested.some((value) => !available.includes(value)))
+    throw new Error("LANDFALL_HOSTED_PROFILES_INVALID");
+  return available.filter((value) => requested.includes(value));
+}
 
 const common = [
   "gps-perfect-walk",

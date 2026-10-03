@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { hostedDeviceLabScenarios } from "@/landfall/device-lab/hosted-selection";
+import { hostedDeviceLabProfiles, hostedDeviceLabScenarios } from "@/landfall/device-lab/hosted-selection";
 
 describe("hosted Device Lab impact selection", () => {
+  it("selects only affected profiles inside their governed tier", () => {
+    expect(hostedDeviceLabProfiles("android", "closure", "tablet,low-resource")).toEqual(["low-resource", "tablet"]);
+    expect(hostedDeviceLabProfiles("ios", "closure")).toEqual(["primary-phone", "compatibility-phone", "tablet"]);
+    expect(hostedDeviceLabProfiles("android", "candidate")).toEqual(["primary-phone", "compatibility-phone"]);
+    for (const selection of ["", "tablet,tablet", "tablet;echo", "unknown", "x".repeat(129)])
+      expect(() => hostedDeviceLabProfiles("android", "closure", selection)).toThrow();
+    expect(() => hostedDeviceLabProfiles("android", "development", "tablet")).toThrow();
+    expect(() => hostedDeviceLabProfiles("ios", "closure", "low-resource")).toThrow();
+  });
   it("retains the wider platform defaults and supports a focused canonical subset", () => {
     expect(hostedDeviceLabScenarios("android")).toContain("heading-turn");
     expect(hostedDeviceLabScenarios("ios")).toContain("offline-restart-canonical-reconcile");

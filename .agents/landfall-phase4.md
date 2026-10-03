@@ -270,7 +270,8 @@ no success is claimed before a fresh hosted measurement. Location fixture setup
 now verifies the master location switch and restores its baseline, without granting
 permission. Bounded categorical native-fix counters distinguish delivery, freshness,
 bounds and accuracy rejection without retaining raw fixes or identities.
-Apple eight-case, three-profile run 37160106099 at 749d8957 remains in progress.
+Apple eight-case, three-profile run 37160106099 at 749d8957 was then in progress;
+the terminal result and corrective work are recorded below.
 
 Production Player search captures now scroll to the actual unobscured chart,
 then the selected location list. Four optimized PHYSICAL/VIRTUAL phone/desktop
@@ -300,6 +301,67 @@ This checkpoint's focused provider/renderer/consumer tests pass 44 files/265 tes
 Uncached full TypeScript, changed-code ESLint, document indexing/validation and
 diff whitespace checks pass. These development checks do not constitute ordinary
 Sounding Line acceptance.
+
+Native production Journal checkpoint (debug Android WebView, opt-in owned ADB
+5038/emulator-5580): PHYSICAL and VIRTUAL pass together in 51.4 seconds using
+the existing optimized, isolated production runtime. Dirty e7328578 source
+fingerprint 4810896f69801f52e483977fcd48bab4e605a499cc5d6ab5e1734e326170e4df,
+installed APK SHA-256 8d75b0c3a0240a562438ab64c75f43420659915c30ec5dcab9ebcbda51961341.
+Receipts/captures are retained at native-journal-two-case-pass-with-insets.
+Physical delivers two native OS fixes and one real One Voyage event; virtual
+renders its authored map with zero fixes/events and no location button. Both
+verify actual foreground state and cleanup. Source/installed APK are bound;
+cookie protocol traces are disabled and no raw coordinates enter receipts.
+Native insets place the WebView inside system bars/cutouts. The subsequent bar
+contrast correction passes its focused virtual Journal check (22.3 seconds), with
+reviewed legible native system bars, zero fixes/events and cleanup PASS. Dirty
+source fingerprint 2b16105bf912bcb20321694d01b01529e63380ce794f619790626d7ad0f787e6,
+APK bcc89f6b9c4d365dbde5a17ce5ffbbb31829eaa54753e52d2b4efe6153c0b01c.
+This is full Journal GPS/rendering proof, not full native offline/restart proof.
+Earlier failed native harness attempts remain archived. In particular,
+native-journal-virtual-fixture-failure incorrectly labelled its failed receipt
+VIRTUAL while its overridden fixture actually rendered PHYSICAL. Current receipts
+record both requested and actual worldspace and assert the rendered map identity;
+the older failed receipt is not virtual evidence.
+
+Android 37161305817 at clean e7328578 was harvested (100 artifacts), and unchanged
+transport branch deletion verified. Primary/compatibility pass 3/3 GPS/background/
+activity-recreation cases; low-resource passes GPS/recreation but fails the immediate
+background snapshot. Its measured 1503184 KiB now meets the <=2 GiB gate using
+-lowram. Tablet fails all three because its location callbacks never arrive.
+Installed SDK pixel_tablet profile has no GPS sensor; medium_tablet lists GPS.
+The next large-screen job uses that generic GPS-capable tablet and records actual
+configuration. This is a simulated generic tablet, not physical Pixel Tablet GPS
+proof. Bounded profile impact selection permits only profiles in the selected tier.
+The Android background transition now polls actual resumed activity for at most
+10 seconds. Local run 20261003T234107869Z-66764 passes with cleanup PASS,
+dirty e7328578 fingerprint 0797eea002d7a27e929a4f02ef5ac5383a0a3decf87c06d6a86bc30899eb150b.
+
+Apple 37160106099 at clean 749d8957 was harvested (10994 artifacts), with unchanged
+transport branch deletion verified. All profiles pass 7/8 (21/24 total), clean
+fingerprint f6070aa693f594c8ed2cf557cfb5711842fc8bfd68a599b3e77d060733a9001f.
+GPS/denied/revoked permissions and ordinary/lost-response offline reconciliation
+pass everywhere. Compatibility offline restart fails at client startup and UI
+driver; tablet restart writes one canonical event but fails final UI driver;
+primary virtual offline fails an authority timeout. Other successful offline cases
+write exactly one event. Every scenario cleanup passes. Structured build XCTest
+summary: seven pass, one explicitly skipped, zero fail per profile; no skipped
+test is counted as proof. The tablet scenario diagnostic actually reports its
+lifecycle XCTest passed while xcodebuild finalization exceeds the old deadline.
+Lifecycle scenarios now give XCTest sole app-launch ownership (avoid a previous
+simctl launch reporting ready for a WebView XCTest then replaces), record bounded
+categorical UI-driver test counts, and give tool result finalization 120 seconds.
+This does not change scenario observation tolerances or retry lifecycle commands.
+Hosted verification of these repairs remains required.
+
+The current six-file Device Lab regression passes 41 tests, including all 124
+canonical provider scenarios. Documentation indexing/validation passes. The idle
+owned emulator had grown to 14989885440 host working-set bytes; its exact SDK
+command, PID 41300/child 12312, AVD and listening ports were verified before
+shutdown. App was inactive. owned-emulator-idle-shutdown-20261003.json verifies
+both processes and emulator ports 5580/5581 absent. The separate owned ADB 5038
+server remains available; shared ADB 5037 is untouched. This resource measurement
+does not establish a cause for previous test timeouts or physical battery use.
 
 Remaining: native lifecycle/power orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;

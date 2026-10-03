@@ -3,7 +3,7 @@ import { promisify } from "node:util";
 import { mkdir, writeFile, rm } from "node:fs/promises";
 import path from "node:path";
 import { labTool } from "./host";
-import { hostedDeviceLabScenarios } from "../../../src/landfall/device-lab/hosted-selection";
+import { hostedDeviceLabProfiles, hostedDeviceLabScenarios } from "../../../src/landfall/device-lab/hosted-selection";
 
 const execute = promisify(execFile);
 /** Ephemeral CI transport only. It never mutates the checkout, default branch, or protected testing authority. */
@@ -13,10 +13,20 @@ export async function dispatchLandfallHostedLab(
   target = "all",
   tier = "development",
   selectedScenarios?: string,
+  selectedProfiles?: string,
 ) {
   if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error("LANDFALL_HOSTED_CANDIDATE_INVALID");
   if (!["all", "provider", "android", "ios"].includes(target)) throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   if (!["development", "candidate", "closure"].includes(tier)) throw new Error("LANDFALL_HOSTED_TIER_INVALID");
+  if (selectedProfiles !== undefined && target !== "android" && target !== "ios")
+    throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
+  const typedTier = tier as "development" | "candidate" | "closure";
+  const selectedAndroid = hostedDeviceLabProfiles(
+    "android",
+    typedTier,
+    target === "android" ? selectedProfiles : undefined,
+  );
+  const selectedApple = hostedDeviceLabProfiles("ios", typedTier, target === "ios" ? selectedProfiles : undefined);
   const androidProfiles = [
     { profile: "primary-phone", api: 36, device: "pixel_7", ram: "3072M", memory: 3072, lowRam: "" },
     ...(tier !== "development"
@@ -25,11 +35,15 @@ export async function dispatchLandfallHostedLab(
     ...(tier === "closure"
       ? [
           { profile: "low-resource", api: 36, device: "pixel_2", ram: "1536M", memory: 1536, lowRam: "-lowram" },
-          { profile: "tablet", api: 36, device: "pixel_tablet", ram: "3072M", memory: 3072, lowRam: "" },
+          // A GPS-capable generic tablet exercises large-screen native location.
+          // Pixel Tablet's SDK hardware profile intentionally has no GPS sensor.
+          { profile: "tablet", api: 36, device: "medium_tablet", ram: "3072M", memory: 3072, lowRam: "" },
         ]
       : []),
-  ];
-  const appleProfiles = tier === "closure" ? ["primary-phone", "compatibility-phone", "tablet"] : ["primary-phone"];
+  ].filter((profile) =>
+    selectedAndroid.includes(profile.profile as "primary-phone" | "compatibility-phone" | "low-resource" | "tablet"),
+  );
+  const appleProfiles = selectedApple;
   await labTool("git", ["cat-file", "-e", `${candidate}^{commit}`]);
   const template = await labTool("git", ["show", `${candidate}:.agents/landfall-device-lab-hosted.yml`]);
   const workflow = template
@@ -100,6 +114,7 @@ if (process.argv[1]?.endsWith("hosted.ts")) {
     process.argv[3] ?? "all",
     process.argv[4] ?? "development",
     process.argv[5],
+    process.argv[6],
   )
     .then((receipt) => process.stdout.write(`${JSON.stringify(receipt, null, 2)}\n`))
     .catch(() => {

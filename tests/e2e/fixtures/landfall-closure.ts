@@ -339,8 +339,9 @@ export async function closureVoyage(
 export async function authenticateClosure(context: BrowserContext, account: ClosureAccount, baseURL: string) {
   await context.addCookies([{ name: "wayfarer_account", value: account.token, url: baseURL, sameSite: "Lax" }]);
 }
-export async function openClosureJournal(page: Page, id: string) {
-  await page.goto(`/player/playthroughs/${id}/journal`);
+export async function openClosureJournal(page: Page, id: string, origin?: string) {
+  const journalPath = `/player/playthroughs/${id}/journal`;
+  await page.goto(origin ? new URL(journalPath, origin).href : journalPath);
   const opening = page.getByRole("dialog", { name: "Open the voyage journal" });
   await expect
     .poll(

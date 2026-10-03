@@ -385,18 +385,9 @@ export async function executeLandfallOsScenario(
         60000,
       );
       executionStage = "APPLE_LAUNCH";
-      await labTool(
-        "xcrun",
-        [
-          "simctl",
-          "launch",
-          ownedDevice,
-          "com.voyagewright.landfall",
-          `--landfall-lab-origin=http://127.0.0.1:${port}`,
-        ],
-        60000,
-      );
       if (scenario.timeline.some((step) => step.action.type === "LIFECYCLE")) {
+        // XCTest owns this launch. A preceding simctl launch could report a
+        // ready WebView which XCTest immediately terminates and replaces.
         uiRunner = labTool(
           "xcodebuild",
           [
@@ -425,6 +416,18 @@ export async function executeLandfallOsScenario(
             uiFailed = true;
           });
         await wait(() => osReady, 120000);
+      } else {
+        await labTool(
+          "xcrun",
+          [
+            "simctl",
+            "launch",
+            ownedDevice,
+            "com.voyagewright.landfall",
+            `--landfall-lab-origin=http://127.0.0.1:${port}`,
+          ],
+          60000,
+        );
       }
     }
     await wait(() => ready, 60000);
@@ -512,12 +515,20 @@ export async function executeLandfallOsScenario(
           }
         } else if (action.state === "BACKGROUND") {
           await adb(["shell", "input", "keyevent", "3"]);
-          const activity = await adb(["shell", "dumpsys", "activity", "activities"]);
-          const resumed = activity
-            .split(/\r?\n/)
-            .filter((line) => /(?:mResumedActivity|topResumedActivity)/.test(line));
-          if (!resumed.length || resumed.some((line) => line.includes("com.voyagewright.landfall")))
-            throw new Error("ANDROID_BACKGROUND_NOT_OBSERVED");
+          // HOME returns before the asynchronous task switch completes, especially
+          // on a measured low-resource profile. Require actual OS state within a
+          // bounded transition tolerance; never assume the command itself proves it.
+          const deadline = Date.now() + 10000;
+          let background = false;
+          while (!background && Date.now() < deadline) {
+            const activity = await adb(["shell", "dumpsys", "activity", "activities"]);
+            const resumed = activity
+              .split(/\r?\n/)
+              .filter((line) => /(?:mResumedActivity|topResumedActivity)/.test(line));
+            background = resumed.length > 0 && !resumed.some((line) => line.includes("com.voyagewright.landfall"));
+            if (!background) await new Promise((resolve) => setTimeout(resolve, 100));
+          }
+          if (!background) throw new Error("ANDROID_BACKGROUND_NOT_OBSERVED");
         } else if (action.state === "SCREEN_LOCKED") {
           await adb(["shell", "input", "keyevent", "223"]);
           let asleep = false;
@@ -814,11 +825,15 @@ export async function executeLandfallOsScenario(
     });
     stop = true;
     if (uiRunner) {
+      const finalizationStartedAt = Date.now();
       let timer: ReturnType<typeof setTimeout> | undefined;
       const done = await Promise.race([
         uiRunner.then(() => true),
         new Promise<boolean>((resolve) => {
-          timer = setTimeout(() => resolve(false), 30000);
+          // XCTest can finish its assertions before xcodebuild packages its
+          // result bundle. This deadline bounds tool finalization, not a
+          // scenario observation or a retry of the lifecycle operation.
+          timer = setTimeout(() => resolve(false), 120000);
         }),
       ]);
       clearTimeout(timer);
@@ -833,6 +848,59 @@ export async function executeLandfallOsScenario(
           state: "FAIL",
           reason: "NATIVE_UI_DRIVER_FAILED",
         });
+      const file = path.join(destination, "native-ui-driver.json");
+      let testCounts: { result: string; passed: number; failed: number; skipped: number } | null = null;
+      try {
+        const summary = JSON.parse(
+          await labTool(
+            "xcrun",
+            [
+              "xcresulttool",
+              "get",
+              "test-results",
+              "summary",
+              "--path",
+              path.join(destination, "NativeLifecycle.xcresult"),
+            ],
+            30000,
+          ),
+        );
+        if (
+          [summary.passedTests, summary.failedTests, summary.skippedTests].every(
+            (count) => Number.isInteger(count) && count >= 0,
+          )
+        )
+          testCounts = {
+            result: summary.result === "Passed" ? "PASS" : "FAIL",
+            passed: summary.passedTests,
+            failed: summary.failedTests,
+            skipped: summary.skippedTests,
+          };
+      } catch {
+        /* Absence stays explicit; never infer test counts from exit status. */
+      }
+      await writeFile(
+        file,
+        JSON.stringify(
+          {
+            version: 1,
+            toolExit: done && !uiFailed ? "PASS" : "FAIL",
+            finalizationDeadlineMs: 120000,
+            finalizationTimedOut: !done,
+            finalizationElapsedMs: Date.now() - finalizationStartedAt,
+            testCounts,
+          },
+          null,
+          2,
+        ),
+      );
+      artifacts.push({
+        path: file,
+        sha256: createHash("sha256")
+          .update(await readFile(file))
+          .digest("hex"),
+        kind: "TEST_RESULT",
+      });
     }
     if (androidSerial)
       await adb(["wait-for-device"], 30000).catch(() => remainingResources.push("android-adb-transport"));
