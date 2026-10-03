@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { build } from "esbuild";
-import { discoverDeviceLabHost, labTool } from "./host";
+import { discoverDeviceLabHost, labBinaryTool, labTool } from "./host";
 import { startDeviceLabAuthority } from "./authority-client";
 import { playerLandfallEvidenceSchema } from "../../../src/landfall/player-evidence-contract";
 import {
@@ -12,6 +12,7 @@ import {
   type AndroidControlledSensor,
 } from "../../../src/landfall/device-lab/android-sensors";
 import { landfallId } from "../../../src/landfall/schema";
+import { deviceLabLocationDiagnosticSchema } from "../../../src/landfall/device-lab/location-diagnostics";
 import { type DeviceLabScenario, type DeviceLabStepResult } from "../../../src/landfall/device-lab/scenario";
 import {
   deviceLabConfigurationSchema,
@@ -45,6 +46,10 @@ export async function executeLandfallOsScenario(
   let ready = false;
   let maximumCompletionRequests = 0;
   const startups: { restarted: boolean; leaseRestored: boolean; publicShellControlled: boolean }[] = [];
+  const locationDiagnostics: {
+    index: number;
+    diagnostic: ReturnType<typeof deviceLabLocationDiagnosticSchema.parse>;
+  }[] = [];
   let clientError = false;
   let clientErrorReason = "LANDFALL_NATIVE_CLIENT_FAILED";
   let current: { index: number; action: unknown } | null = null;
@@ -223,6 +228,11 @@ export async function executeLandfallOsScenario(
           return;
         }
         maximumCompletionRequests = Math.max(maximumCompletionRequests, value.completionRequests);
+        if (scenario.timeline[value.index].action.type === "LOCATION" && value.locationDiagnostic !== undefined) {
+          const diagnostic = deviceLabLocationDiagnosticSchema.parse(value.locationDiagnostic);
+          if (!locationDiagnostics.some((entry) => entry.index === value.index))
+            locationDiagnostics.push({ index: value.index, diagnostic });
+        }
         if (!results.has(value.index))
           results.set(value.index, {
             index: value.index,
@@ -251,6 +261,8 @@ export async function executeLandfallOsScenario(
   let ownedDevice: string | null = null;
   let androidSerial: string | null = null;
   let androidPowerMode: string | null = null;
+  let androidLocationBaseline: string | null = null;
+  let androidRotationBaseline: { automatic: string; rotation: string } | null = null;
   const androidSensorBaselines = new Map<AndroidControlledSensor, readonly number[]>();
   let foreground = true;
   let uiRunner: Promise<void> | null = null;
@@ -261,9 +273,13 @@ export async function executeLandfallOsScenario(
   let deviceConfiguration: DeviceLabConfiguration | undefined;
   const remainingResources: string[] = [];
   const artifacts: { path: string; sha256: string; kind: "SCREENSHOT" | "TEST_RESULT" }[] = [];
-  const adb = async (args: string[]) => {
+  const adb = async (args: string[], timeout = 30000) => {
     if (!host.android.adb || !androidSerial) throw new Error("LANDFALL_ANDROID_NOT_CONFIGURED");
-    return labTool(host.android.adb, ["-P", process.env.LANDFALL_LAB_ADB_PORT ?? "5037", "-s", androidSerial, ...args]);
+    return labTool(
+      host.android.adb,
+      ["-P", process.env.LANDFALL_LAB_ADB_PORT ?? "5037", "-s", androidSerial, ...args],
+      timeout,
+    );
   };
   const wait = async (predicate: () => boolean, budget: number) => {
     const deadline = Date.now() + budget;
@@ -310,6 +326,14 @@ export async function executeLandfallOsScenario(
       });
       runtimeVersion = `Android API ${api}; ${host.android.emulatorVersion}`;
       validateDeviceLabProfile(profile, deviceConfiguration);
+      if (scenario.worldspace === "PHYSICAL" && scenario.timeline.some((step) => step.action.type === "LOCATION")) {
+        androidLocationBaseline = (await adb(["shell", "cmd", "location", "is-location-enabled"])).trim();
+        if (!["true", "false"].includes(androidLocationBaseline))
+          throw new Error("ANDROID_LOCATION_BASELINE_UNAVAILABLE");
+        await adb(["shell", "cmd", "location", "set-location-enabled", "true"]);
+        if ((await adb(["shell", "cmd", "location", "is-location-enabled"])).trim() !== "true")
+          throw new Error("ANDROID_LOCATION_SETTING_NOT_OBSERVED");
+      }
       await adb([
         "install",
         "-r",
@@ -447,29 +471,45 @@ export async function executeLandfallOsScenario(
             continue;
           }
         } else if (action.state === "FOREGROUND" || action.state === "RELAUNCH") {
-          if (action.operation === "REBOOT" || action.operation === "ACTIVITY_RECREATE") {
+          if (action.operation === "REBOOT") {
             steps.push({ index, action: "LIFECYCLE", state: "UNSUPPORTED", reason: "ANDROID_RECREATE_NOT_CONFIGURED" });
             continue;
           }
-          if (action.state === "RELAUNCH") {
+          if (action.operation === "ACTIVITY_RECREATE") {
+            const before = startups.length;
+            const pid = (await adb(["shell", "pidof", "com.voyagewright.landfall"])).trim();
+            if (!/^[0-9]+$/.test(pid)) throw new Error("ANDROID_OWNED_APP_PID_INVALID");
+            const automatic = (await adb(["shell", "settings", "get", "system", "accelerometer_rotation"])).trim();
+            const rotation = (await adb(["shell", "settings", "get", "system", "user_rotation"])).trim();
+            if (!["0", "1"].includes(automatic) || !["0", "1", "2", "3"].includes(rotation))
+              throw new Error("ANDROID_ROTATION_BASELINE_UNAVAILABLE");
+            androidRotationBaseline ??= { automatic, rotation };
+            await adb(["shell", "settings", "put", "system", "accelerometer_rotation", "0"]);
+            await adb(["shell", "settings", "put", "system", "user_rotation", String((Number(rotation) + 1) % 4)]);
+            await wait(() => ready && startups.length > before, 60000);
+            if ((await adb(["shell", "pidof", "com.voyagewright.landfall"])).trim() !== pid)
+              throw new Error("ANDROID_RECREATION_CHANGED_PROCESS");
+          } else if (action.state === "RELAUNCH") {
             await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
             const pid = await adb(["shell", "pidof", "com.voyagewright.landfall"]).catch((error: { code?: number }) =>
               error.code === 1 ? "" : "UNVERIFIED",
             );
             if (pid.trim()) throw new Error("ANDROID_TERMINATION_NOT_OBSERVED");
           }
-          await adb(["shell", "input", "keyevent", "224"]);
-          await adb(["shell", "input", "keyevent", "82"]);
-          await adb([
-            "shell",
-            "am",
-            "start",
-            "-n",
-            "com.voyagewright.landfall/.LandfallActivity",
-            "--es",
-            "labOrigin",
-            `http://127.0.0.1:${port}`,
-          ]);
+          if (action.operation !== "ACTIVITY_RECREATE") {
+            await adb(["shell", "input", "keyevent", "224"]);
+            await adb(["shell", "input", "keyevent", "82"]);
+            await adb([
+              "shell",
+              "am",
+              "start",
+              "-n",
+              "com.voyagewright.landfall/.LandfallActivity",
+              "--es",
+              "labOrigin",
+              `http://127.0.0.1:${port}`,
+            ]);
+          }
         } else if (action.state === "BACKGROUND") {
           await adb(["shell", "input", "keyevent", "3"]);
           const activity = await adb(["shell", "dumpsys", "activity", "activities"]);
@@ -687,13 +727,22 @@ export async function executeLandfallOsScenario(
     const screenshot = path.join(destination, "native-final.png");
     executionStage = "SCREENSHOT";
     if (target === "android-emulator") {
-      const deviceFile = `/data/local/tmp/landfall-lab-${process.pid}.png`;
-      try {
-        await adb(["shell", "screencap", "-p", deviceFile]);
-        await adb(["pull", deviceFile, screenshot]);
-      } finally {
-        await adb(["shell", "rm", "-f", deviceFile]);
-      }
+      // A transient ADB reconnect after an OS task switch must finish before
+      // capture; waiting is transport recovery, never a substitute for assertions.
+      await adb(["wait-for-device"], 30000);
+      executionStage = "ANDROID_SCREEN_CAPTURE";
+      const png = await labBinaryTool(host.android.adb!, [
+        "-P",
+        process.env.LANDFALL_LAB_ADB_PORT ?? "5037",
+        "-s",
+        androidSerial!,
+        "exec-out",
+        "screencap",
+        "-p",
+      ]);
+      if (png.length < 24 || !png.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])))
+        throw new Error("ANDROID_SCREEN_CAPTURE_INVALID_PNG");
+      await writeFile(screenshot, png);
     } else await labTool("xcrun", ["simctl", "io", ownedDevice!, "screenshot", screenshot]);
     artifacts.push({
       path: screenshot,
@@ -745,6 +794,15 @@ export async function executeLandfallOsScenario(
         error instanceof Error && /^[A-Z_]{1,128}$/.test(error.message) ? error.message : "NATIVE_OS_EXECUTION_FAILED",
     });
   } finally {
+    const locationFile = path.join(destination, "native-location-diagnostics.json");
+    await writeFile(locationFile, JSON.stringify(locationDiagnostics, null, 2));
+    artifacts.push({
+      path: locationFile,
+      sha256: createHash("sha256")
+        .update(await readFile(locationFile))
+        .digest("hex"),
+      kind: "TEST_RESULT",
+    });
     const startupFile = path.join(destination, "native-startups.json");
     await writeFile(startupFile, JSON.stringify(startups, null, 2));
     artifacts.push({
@@ -776,9 +834,33 @@ export async function executeLandfallOsScenario(
           reason: "NATIVE_UI_DRIVER_FAILED",
         });
     }
+    if (androidSerial)
+      await adb(["wait-for-device"], 30000).catch(() => remainingResources.push("android-adb-transport"));
     if (androidSerial) await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]).catch(() => undefined);
     if (androidSerial) await adb(["reverse", "--remove", `tcp:${port}`]).catch(() => undefined);
     if (androidSerial) {
+      if (androidRotationBaseline !== null) {
+        for (const [key, value] of [
+          ["accelerometer_rotation", androidRotationBaseline.automatic],
+          ["user_rotation", androidRotationBaseline.rotation],
+        ]) {
+          await adb(["shell", "settings", "put", "system", key, value]).catch(() =>
+            remainingResources.push(`android-rotation-${key}`),
+          );
+          if ((await adb(["shell", "settings", "get", "system", key]).catch(() => "UNVERIFIED")).trim() !== value)
+            remainingResources.push(`android-rotation-baseline-${key}`);
+        }
+      }
+      if (androidLocationBaseline !== null) {
+        await adb(["shell", "cmd", "location", "set-location-enabled", androidLocationBaseline]).catch(() =>
+          remainingResources.push("android-location-fixture"),
+        );
+        if (
+          (await adb(["shell", "cmd", "location", "is-location-enabled"]).catch(() => "UNVERIFIED")).trim() !==
+          androidLocationBaseline
+        )
+          remainingResources.push("android-location-baseline");
+      }
       for (const [sensor, values] of androidSensorBaselines) {
         try {
           await adb(["emu", "sensor", "set", sensor, values.join(":")]);

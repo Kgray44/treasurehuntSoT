@@ -4,6 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef, useState } from "react";
 import { mapLibreFeatures, type LandfallCurrentPosition, type LandfallMapScene } from "@/landfall/map-projection";
 import { validateLandfallMapStyle } from "@/landfall/map-style";
+import { StaticPhysicalChart } from "@/landfall/static-physical-chart";
 
 /** A map-data provider is trusted application code, not Creator-supplied style JSON or URL. */
 export type LandfallMapDataProvider = Readonly<{
@@ -103,6 +104,7 @@ function PhysicalMap({
   const sceneRef = useRef(scene);
   const interactionRef = useRef(interaction);
   const [failure, setFailure] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const overlaySignature = JSON.stringify(scene.overlays);
   useEffect(() => {
     positionRef.current = position;
@@ -133,6 +135,8 @@ function PhysicalMap({
   }, [scene.camera.center, scene.camera.zoom, scene.camera.bearing]);
   useEffect(() => {
     if (!element.current) return;
+    setLoaded(false);
+    setFailure(false);
     let disposed = false;
     let map: import("maplibre-gl").Map | null = null;
     const start = async () => {
@@ -190,8 +194,11 @@ function PhysicalMap({
         map.on("load", () => {
           const source = map?.getSource("landfall") as import("maplibre-gl").GeoJSONSource | undefined;
           source?.setData(mapLibreFeatures(sceneRef.current, positionRef.current));
+          if (!disposed) setLoaded(true);
         });
-        map.on("error", () => setFailure(true));
+        map.on("error", () => {
+          if (!disposed) setFailure(true);
+        });
         let dragging: string | null = null;
         map.on("mousedown", "landfall-points", (event) => {
           const id = event.features?.[0]?.properties?.id;
@@ -240,11 +247,24 @@ function PhysicalMap({
   }, [scene.mapId, scene.worldspaceId, provider, overlaySignature]);
   return (
     <div>
-      <div ref={element} style={{ width: "100%", height: 320 }} aria-label="Physical Landfall map" />
+      <div style={{ width: "100%", height: 320, position: "relative" }} aria-label="Physical Landfall map">
+        {(!loaded || failure) && <StaticPhysicalChart scene={scene} />}
+        <div
+          ref={element}
+          aria-hidden={!loaded || failure}
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: loaded && !failure ? 1 : 0,
+            pointerEvents: loaded && !failure ? "auto" : "none",
+          }}
+        />
+      </div>
       {position && (
         <p role="status">
-          Current position shown. Location signal: {position.confidence.toLowerCase().replaceAll("_", " ")}. Estimated
-          accuracy: {Math.round(position.accuracyMeters)} meters.
+          {loaded && !failure ? "Current position shown. " : ""}Location signal:{" "}
+          {position.confidence.toLowerCase().replaceAll("_", " ")}. Estimated accuracy:{" "}
+          {Math.round(position.accuracyMeters)} meters.
         </p>
       )}
       {failure && <p role="status">Map data is unavailable. Use the location list and route summary.</p>}

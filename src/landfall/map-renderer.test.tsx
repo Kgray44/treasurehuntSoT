@@ -92,6 +92,11 @@ describe("Landfall internal map presentation proof", () => {
     );
     await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Map data is unavailable"));
     expect(screen.getByRole("list", { name: "Visible map locations" })).toHaveTextContent("Town arrival");
+    expect(
+      screen
+        .getByRole("img", { name: "Released physical chart" })
+        .querySelector('[data-landfall-feature="town-arrival"]'),
+    ).not.toBeNull();
     expect(mapConstructed).not.toHaveBeenCalled();
   });
   it("preserves a deliberate selection when MapLibre finishes loading after a search", async () => {

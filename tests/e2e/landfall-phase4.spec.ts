@@ -45,6 +45,7 @@ for (const virtual of [false, true])
         const chart = page.locator("[data-landfall-player-chart]:visible");
         const search = chart.getByRole("searchbox", { name: "Find a place on your released maps" });
         await expect(search).toBeVisible();
+        expect((await search.boundingBox())?.height).toBeGreaterThanOrEqual(48);
         const baseline = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
         const eventCount = await db.taleSessionEvent.count({ where: { sessionId: voyage.id } });
         const requestsBefore = mutations.length;
@@ -68,6 +69,26 @@ for (const virtual of [false, true])
         const shot = testInfo.outputPath("released-place-selected.png");
         await page.screenshot({ path: shot, fullPage: false });
         await testInfo.attach("released-place-selected", { path: shot, contentType: "image/png" });
+        const preview = chart.locator('[aria-label="Landfall map preview"]');
+        const renderedMap = preview.locator(
+          virtual ? '[aria-label="Virtual Landfall chart"]' : '[aria-label="Physical Landfall map"]',
+        );
+        await renderedMap.scrollIntoViewIfNeeded();
+        await expect(renderedMap).toBeVisible();
+        expect(
+          await renderedMap.evaluate((element) => {
+            const box = element.getBoundingClientRect();
+            const hit = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+            return hit === element || (hit !== null && element.contains(hit));
+          }),
+        ).toBe(true);
+        const mapShot = testInfo.outputPath("released-place-map.png");
+        await page.screenshot({ path: mapShot, fullPage: false });
+        await testInfo.attach("released-place-map", { path: mapShot, contentType: "image/png" });
+        const selectedPlace = preview.locator('[aria-label="Visible map locations"] [data-selected="true"]');
+        await selectedPlace.scrollIntoViewIfNeeded();
+        await expect(selectedPlace).toContainText(virtual ? "Secret Isle" : "Town arrival");
+        await expect(selectedPlace).toContainText("selected for viewing");
         await chart.getByRole("button", { name: "Clear place search" }).click();
         await expect(search).toHaveValue("");
         await expect(chart).not.toContainText("selected for viewing");

@@ -246,10 +246,10 @@ This subset proves native GPS delivery/confidence and no unsolicited canonical
 progression, not the broad Apple closure matrix. The focused local consumer and
 product regression run passes 92 files/541 tests; full TypeScript, documentation
 validation and 57 ordinary Sounding Line authority tests also pass.
-Android 37156247496 partial artifacts show compatibility success, primary 9/10
-(first GPS times out) and low-resource 0/10 (measured profile mismatch). Tablet
-and whole-run harvest remain pending. Preserve these failures and diagnose the
-provisioned memory from terminal logs; never loosen the low-resource receipt claim.
+Android 37156247496 has been harvested (216 artifacts), with unchanged transport
+branch deletion verified: compatibility 10/10, primary 9/10 (first GPS times out),
+tablet 6/10 (GPS and three physical offline cases fail) and low-resource 0/10
+(measured profile mismatch). These failures are not closure proof.
 
 The low-resource job log proves Emulator 37.2.12 raised its AVD request from
 1536 MB to 2560 MB ("Increasing RAM size to 2560MB"). Hosted provisioning now
@@ -259,6 +259,47 @@ Failed profile checks retain measured configuration in their receipts. Apple
 builds now archive xcresulttool's structured test summary on successful runs too,
 because quiet xcodebuild produced an empty textual summary despite a successful
 test invocation and retained result bundle.
+
+Hosted Android focused GPS run 37160106080 at clean 749d8957 was harvested
+(40 artifacts), including verified transport-branch deletion. Compatibility passes;
+primary/tablet time out on both location steps, and low-resource fails its measured
+memory profile. Four native instrumentation tests pass on every profile. Explicit
+-memory 1536 still gets raised to 2560 MB by Emulator 37.2.12. The next provisioning
+repair uses its documented -lowram switch, preserving the <=2 GiB measured gate;
+no success is claimed before a fresh hosted measurement. Location fixture setup
+now verifies the master location switch and restores its baseline, without granting
+permission. Bounded categorical native-fix counters distinguish delivery, freshness,
+bounds and accuracy rejection without retaining raw fixes or identities.
+Apple eight-case, three-profile run 37160106099 at 749d8957 remains in progress.
+
+Production Player search captures now scroll to the actual unobscured chart,
+then the selected location list. Four optimized PHYSICAL/VIRTUAL phone/desktop
+journeys pass. The physical degraded renderer draws only the already released
+geometry in a read-only SVG until MapLibre loads; selection is visible without
+recovering hidden centers, starting acquisition or changing progression. Search
+inputs have scoped responsive styling and a 48 px minimum height.
+
+Android activity recreation uses a measured rotation change, waits for a fresh
+WebView startup in the same process and restores/read-backs rotation settings.
+20261003T230602147Z-48148 passes recreation and process-kill, fingerprint
+f62129bbf3e017de2431a4fae4f7c8716ab45ab2ad16bd70255e91d4b3018057
+(dirty at 749d8957). Background assertions repeatedly passed but screenshot
+capture/pull failed; removing a duplicate owned ADB connection did not fix it.
+The latest failed pull is 20261003T231132843Z-63448. Its post-run path probe is
+explicitly named post-run-pull-probe.png and is not a scenario receipt artifact.
+Prior failed receipts omitted temporary screenshot-file cleanup. Exact owned
+paths for process IDs 60732/48148/65588/60604/57460/63448 were subsequently removed
+and absence verified in android-screenshot-cleanup-recovery.json; this is later
+recovery, not retroactive successful cleanup. Direct binary exec-out capture now
+avoids device files and text decoding. Background passes all three steps with a
+real reviewed home-screen PNG, zero canonical events and cleanup PASS:
+20261003T231512588Z-45000, fingerprint
+1b39644eabb773e9d196507057760c178bd73d5b541380dc0ea9582b7b0acd08
+(dirty at 749d8957). Physical OEM suspension remains an external gate.
+This checkpoint's focused provider/renderer/consumer tests pass 44 files/265 tests.
+Uncached full TypeScript, changed-code ESLint, document indexing/validation and
+diff whitespace checks pass. These development checks do not constitute ordinary
+Sounding Line acceptance.
 
 Remaining: native lifecycle/power orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;

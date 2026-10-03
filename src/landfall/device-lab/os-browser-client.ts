@@ -1,5 +1,6 @@
 import { NativeLocationProvider } from "@/landfall/native-location";
 import { NativeContextProvider } from "@/landfall/native-context";
+import { DeviceLabLocationDiagnostics } from "@/landfall/device-lab/location-diagnostics";
 import {
   androidSensorControl,
   matchesAndroidSensorContext,
@@ -209,6 +210,8 @@ async function main() {
     const action = deviceLabActionSchema.parse(step.action);
     let state: "PASS" | "FAIL" | "UNSUPPORTED" = "PASS";
     let reason: string | undefined;
+    let locationDiagnostic: ReturnType<DeviceLabLocationDiagnostics["snapshot"]> | undefined;
+    let stopDiagnostic = () => {};
     try {
       if (action.type === "LOCATION") {
         if (world.kind === "VIRTUAL" && action.coordinate.type !== "WGS84") {
@@ -255,6 +258,17 @@ async function main() {
             // by inventing a fix after the OS grant has disappeared.
             reason = "OS_PERMISSION_PREVENTED_ACQUISITION";
           } else {
+            const diagnostics = new DeviceLabLocationDiagnostics(action);
+            const observationsBefore = count;
+            stopDiagnostic = driver.subscribe((event) => {
+              if (event.type === "fix") diagnostics.observe(event.fix);
+            });
+            // Keep the snapshot categorical even when acquisition times out.
+            const capture = stopDiagnostic;
+            stopDiagnostic = () => {
+              capture();
+              locationDiagnostic = diagnostics.snapshot(count - observationsBefore);
+            };
             await start();
             const before = count;
             await new Promise<void>((resolve, reject) => {
@@ -466,12 +480,21 @@ async function main() {
       state = "FAIL";
       reason =
         error instanceof Error && /^[A-Z_:a-z]{1,128}$/.test(error.message) ? error.message : "OS_SCENARIO_FAILED";
+    } finally {
+      stopDiagnostic();
     }
     // Only categorical counters/outcomes leave the virtual device. No raw fix or coordinate trace.
     await queued;
     await fetch("/lab/result", {
       method: "POST",
-      body: JSON.stringify({ index: step.index, action: action.type, state, reason, completionRequests: requests }),
+      body: JSON.stringify({
+        index: step.index,
+        action: action.type,
+        state,
+        reason,
+        completionRequests: requests,
+        locationDiagnostic,
+      }),
     });
   }
 }

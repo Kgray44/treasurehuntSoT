@@ -215,11 +215,15 @@ to a Chronicle-specific launch acceptance or physical proof. Drydock references
 the evidence and does not duplicate execution.
 
 Hosted Android profiles use both the AVD RAM setting and the emulator's explicit
-memory override. A previous low-resource run was correctly rejected when the
-emulator silently increased 1536 MB to 2560 MB; actual guest memory must still
-meet the <=2 GiB rule. Configuration measurements are retained even when profile
-validation fails. The override follows the
+memory override. Runs 37156247496 and 37160106080 correctly reject the low-resource
+profile: Emulator 37.2.12 still increases 1536 MB to 2560 MB with that override.
+Low-resource provisioning now also uses the tool's -lowram option, which removes
+its minimum-memory policy. This awaits measured hosted verification; actual guest
+memory must still meet the <=2 GiB rule. Configuration measurements are retained
+even when profile validation fails. The memory override follows the
 [Android emulator command-line interface](https://developer.android.com/studio/run/emulator-commandline).
+The low-RAM option is confirmed by the installed tool's help and
+[the emulator's memory policy source](https://android.googlesource.com/platform/external/qemu/+/emu-master-dev/android/android-emu/android/main-common.c).
 Apple test builds archive structured xcresult summaries on success and failure,
 including cases where quiet build output contains no test summary text.
 
@@ -249,3 +253,24 @@ native test record. This focused subset does not establish the broader Apple
 offline/lifecycle matrix. Successful profile matrices, power orchestration, optional hardware
 handoffs, provider deployment preflight, full product UX, security/performance
 acceptance and final protected qualification remain required work.
+
+The optimized Player search journeys exercise phone/desktop physical and virtual
+projections, keyboard selection, scoped accessibility, unchanged progression and
+zero acquisition. The physical degraded chart now renders only released geometry
+as a read-only SVG until the interactive renderer is ready. Withheld centers are
+excluded; route and location lists remain the accessible alternative.
+
+Native location diagnostics retain categorical counters only: delivered, invalid,
+stale, future, outside bounds, insufficient accuracy and canonical observations.
+The Android fixture verifies/restores the master location switch without granting
+permission. Activity recreation changes measured rotation, requires a fresh WebView
+startup within the same process and restores the original settings. Its local
+development case passes; emulator proof does not establish OEM suspension fidelity.
+
+Earlier background scenario assertions passed but screenshot transfer failed,
+including temporary-file cleanup omissions. Later bounded recovery verifies those
+exact files absent and preserves the original failures. Native Android screenshots
+now use binary exec-out directly, validate the PNG signature and create no device
+temporary file, following the [ADB screenshot interface](https://developer.android.com/tools/adb#screencap).
+The subsequent background run passes with a reviewed home-screen capture, zero
+canonical progression events and cleanup PASS; this remains emulator evidence.

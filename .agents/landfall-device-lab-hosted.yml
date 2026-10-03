@@ -111,7 +111,7 @@ jobs:
           arch: x86_64
           profile: ${{ matrix.device }}
           ram-size: ${{ matrix.ram }}
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory ${{ matrix.memory }}
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory ${{ matrix.memory }} ${{ matrix.lowRam }}
           emulator-boot-timeout: 300
           disable-linux-hw-accel: false
           disable-animations: true

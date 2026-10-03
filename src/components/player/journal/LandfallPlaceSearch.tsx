@@ -18,7 +18,7 @@ export function LandfallPlaceSearch({
   const provider = useMemo(() => new ReleasedChartLookupProvider(bootstrap), [bootstrap]);
   const places = provider.forward(query);
   return (
-    <section aria-label="Search released places">
+    <section className="landfall-place-search" aria-label="Search released places">
       <label htmlFor={fieldId}>Find a place on your released maps</label>
       <input
         id={fieldId}

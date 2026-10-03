@@ -49,6 +49,16 @@ export async function labTool(
   });
   return result.stdout;
 }
+/** Binary ADB output must never pass through text decoding or a shell redirect. */
+export async function labBinaryTool(command: string, args: string[], timeoutMs = 30000): Promise<Buffer> {
+  const result = await execute(command, args, {
+    timeout: timeoutMs,
+    encoding: "buffer",
+    maxBuffer: 16 * 1024 * 1024,
+    windowsHide: true,
+  });
+  return result.stdout;
+}
 export async function discoverDeviceLabHost(): Promise<DeviceLabHostCapabilities> {
   const sdk =
     process.env.ANDROID_SDK_ROOT ||
