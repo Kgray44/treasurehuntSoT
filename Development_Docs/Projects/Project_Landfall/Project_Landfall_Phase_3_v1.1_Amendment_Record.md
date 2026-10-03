@@ -57,7 +57,7 @@ The initial new browser attempt failed before acceptance because an inspector ap
 
 Owned raw logs and downloaded decisions remain under `tmp/landfall-phase3-audit`; source/canonical identities and durable conclusions are in this record and PR #675. Browser screenshots for the ordinary private flow, virtual policy availability and canonical arrival were reviewed; synthetic map fixtures do not prove external map/provider or physical field quality.
 
-Final protected-main closure publication preserves `src`, tests, dependencies and schema from product merge `64c780a0`. Its immutable evidence-PR merge identity is recorded by the publication link added to this ledger, avoiding a self-referential commit SHA. The evidence candidate receives its own exact-head ordinary qualification and final landed docs/catalog/smoke verification. Phase 4 is not started.
+Final protected-main closure publication preserves `src`, tests, dependencies and schema from product merge `64c780a0`. The evidence publication is [PR #676](https://github.com/Kgray44/treasurehuntSoT/pull/676); its immutable `merge_commit_sha` resolves final protected-main closure identity without a self-referential commit SHA. Its final head/tree and exact hosted run/job/obligation decision are recorded in that PR receipt and downloaded decision artifact. The evidence candidate receives its own exact-head ordinary qualification and final landed docs/catalog/smoke verification. Phase 4 is not started.
 
 ## Acceptance contracts
 
