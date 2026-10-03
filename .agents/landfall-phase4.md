@@ -363,6 +363,40 @@ both processes and emulator ports 5580/5581 absent. The separate owned ADB 5038
 server remains available; shared ADB 5037 is untouched. This resource measurement
 does not establish a cause for previous test timeouts or physical battery use.
 
+Checkpoint 8821f56004bc9f814857ef2639ecebc0497836d7 (tree
+faca89a486d32404c9ffe3796b55da04beb2ef15) is pushed. Impact-selected Android
+run 37162816491 retries GPS/background/recreation on low-resource and generic
+medium_tablet; transport 241da4862135b3684b3d8aa561e146a4f542814d, branch
+codex/landfall-lab-8821f56004bc-1791071166873. Apple 37162819902 retries offline
+restart and virtual offline on all three profiles; transport
+d6534daa1c50f5269ed2cadcd0d4b90567d0b8e1, branch
+codex/landfall-lab-8821f56004bc-1791071170353. Both dispatches remain pending
+terminal harvest/cleanup; low-resource job is green but its receipt is not yet
+harvested. Each workflow checks out the committed candidate, not dirty map work.
+
+Public map-data deployment metadata and renderer consent now replace automatic
+hardcoded OSM requests for built-in physical maps. Missing/invalid settings stay
+NOT_CONFIGURED. Tile templates and attribution are bounded, credential/query/local
+endpoints rejected; operator values are explicitly public. A deliberate online
+background-map choice discloses the service hostname and displayed-area sharing.
+Stopping removes the source; renderer identity changes reset consent. Released
+geometry/list fallback does not acquire location or write progression. No tile
+packaging/prefetch or availability claim is added. The metadata endpoint does not
+probe providers or echo invalid input. Trusted injected provider-style privacy
+gating and deployed geocoder/router/elevation are still open.
+Six focused files pass 20 tests (map config/rendering/projection/privacy/endpoint).
+Full uncached TypeScript and changed-code ESLint pass; fresh optimized production
+build passes with its existing 13 Edge/NFT warnings. Five Phase 4 browser journeys
+pass in 13 seconds with runtime cleanup PASS. Phone sharing-choice capture reviewed
+and copied to map-data-production-capture; source identity retained separately in
+map-data-production-source.json. Dirty 8821f560 fingerprint
+490ae11069b2acad4533be2506c377878ca1504ceaf585fee3b509d9126d2632
+includes the browser test and fixture. Configured external endpoints in the browser
+case are synthetic and intercepted; no real public service is contacted. The first
+attempt used a nonconforming isolated DB filename and was refused before build;
+the successful wrapper uses the existing strict owned isolation filename contract.
+Documentation indexing/validation passes. These remain focused development checks.
+
 Remaining: native lifecycle/power orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;
 deployed provider preflight and health integration; full security/privacy/performance

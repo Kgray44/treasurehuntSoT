@@ -1,4 +1,4 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { landfallFixture } from "@/landfall/fixtures";
 import { projectLandfallMap } from "@/landfall/map-projection";
@@ -34,6 +34,60 @@ describe("Landfall internal map presentation proof", () => {
     mapState.load = undefined;
   });
   afterEach(() => cleanup());
+  it("never requests raster tiles before deliberate consent and stops them when consent is revoked", async () => {
+    const request = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        state: "CONFIGURED",
+        id: "deployment-raster",
+        tileTemplate: "https://maps.example.org/{z}/{x}/{y}.png",
+        attributionLabel: "Synthetic map license",
+        attributionUrl: "https://maps.example.org/license",
+        maxZoom: 18,
+        offlineRights: "PROHIBITED",
+      }),
+    });
+    vi.stubGlobal("fetch", request);
+    try {
+      const scene = {
+        ...projectLandfallMap(landfallFixture, {
+          activeWorldspaceId: "town",
+          availableLocations: [{ id: "town-arrival" }],
+          activeRouteId: null,
+        }),
+        baseProviderId: "osm-standard",
+      };
+      const view = render(<LandfallMapRenderer scene={scene} />);
+      await screen.findByRole("button", { name: "Load online background maps" });
+      await waitFor(() => expect(mapConstructed).toHaveBeenCalled());
+      expect(request).toHaveBeenCalledTimes(1);
+      expect(request.mock.calls[0][0]).toBe("/api/landfall/map-data");
+      for (const [options] of mapConstructed.mock.calls)
+        expect(JSON.stringify(options.style.sources)).not.toContain("maps.example.org");
+      fireEvent.click(screen.getByRole("button", { name: "Load online background maps" }));
+      await waitFor(() =>
+        expect(mapConstructed.mock.calls.at(-1)?.[0].style.sources["deployment-raster"].tiles).toEqual([
+          "https://maps.example.org/{z}/{x}/{y}.png",
+        ]),
+      );
+      fireEvent.click(screen.getByRole("button", { name: "Stop loading online background maps" }));
+      await waitFor(() =>
+        expect(mapConstructed.mock.calls.at(-1)?.[0].style.sources["deployment-raster"]).toBeUndefined(),
+      );
+      fireEvent.click(screen.getByRole("button", { name: "Load online background maps" }));
+      await waitFor(() =>
+        expect(mapConstructed.mock.calls.at(-1)?.[0].style.sources["deployment-raster"]).toBeDefined(),
+      );
+      const previousConstructions = mapConstructed.mock.calls.length;
+      view.rerender(<LandfallMapRenderer scene={{ ...scene, mapId: "another-released-map" }} />);
+      await waitFor(() => expect(mapConstructed.mock.calls.length).toBeGreaterThan(previousConstructions));
+      for (const [options] of mapConstructed.mock.calls.slice(previousConstructions))
+        expect(options.style.sources["deployment-raster"]).toBeUndefined();
+      expect(screen.getByRole("list", { name: "Visible map locations" })).toHaveTextContent("Town arrival");
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
   it("renders an image-backed virtual map with only revealed locations and an accessible list", () => {
     const hidden = projectLandfallMap(landfallFixture, {
       activeWorldspaceId: "isles",

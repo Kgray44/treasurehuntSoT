@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { mapLibreFeatures, type LandfallCurrentPosition, type LandfallMapScene } from "@/landfall/map-projection";
 import { validateLandfallMapStyle } from "@/landfall/map-style";
 import { StaticPhysicalChart } from "@/landfall/static-physical-chart";
+import { mapDataConfigurationSchema, type RasterMapConfiguration } from "@/landfall/map-data-configuration";
 
 /** A map-data provider is trusted application code, not Creator-supplied style JSON or URL. */
 export type LandfallMapDataProvider = Readonly<{
@@ -70,20 +71,24 @@ const blankStyle = (scene: LandfallMapScene): import("maplibre-gl").StyleSpecifi
   ],
 });
 
-/** Trusted, interactive web tiles only. Browser HTTP caching follows the provider headers; no prefetch. */
-const osmStyle = (scene: LandfallMapScene): import("maplibre-gl").StyleSpecification => ({
+/** Explicitly enabled interactive tiles only; no offline download or prefetch. */
+const rasterStyle = (
+  scene: LandfallMapScene,
+  configuration: RasterMapConfiguration,
+): import("maplibre-gl").StyleSpecification => ({
   version: 8,
   sources: {
-    "osm-standard": {
+    "deployment-raster": {
       type: "raster",
-      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      tiles: [configuration.tileTemplate],
       tileSize: 256,
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+      attribution: configuration.attributionLabel,
+      maxzoom: configuration.maxZoom,
     },
   },
   layers: [
-    { id: "osm-background", type: "background", paint: { "background-color": scene.background } },
-    { id: "osm-tiles", type: "raster", source: "osm-standard" },
+    { id: "provider-background", type: "background", paint: { "background-color": scene.background } },
+    { id: "provider-tiles", type: "raster", source: "deployment-raster" },
   ],
 });
 
@@ -105,7 +110,34 @@ function PhysicalMap({
   const interactionRef = useRef(interaction);
   const [failure, setFailure] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [raster, setRaster] = useState<RasterMapConfiguration | null>(null);
+  const [rasterConsent, setRasterConsent] = useState<string | null>(null);
+  const mapKey = `${scene.worldspaceId}:${scene.mapId}:${scene.baseProviderId ?? "authored"}`;
+  const rasterEnabled = rasterConsent === mapKey;
+  const [rasterChecked, setRasterChecked] = useState(false);
   const overlaySignature = JSON.stringify(scene.overlays);
+  useEffect(() => {
+    if (provider || scene.baseProviderId !== "osm-standard") return;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6000);
+    let disposed = false;
+    void fetch("/api/landfall/map-data", { signal: controller.signal, cache: "no-store" })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("MAP_CONFIGURATION_UNAVAILABLE");
+        const result = mapDataConfigurationSchema.parse(await response.json());
+        if (!disposed) setRaster(result.state === "CONFIGURED" ? result : null);
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        clearTimeout(timer);
+        if (!disposed) setRasterChecked(true);
+      });
+    return () => {
+      disposed = true;
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [scene.mapId, scene.worldspaceId, scene.baseProviderId, provider]);
   useEffect(() => {
     positionRef.current = position;
   }, [position]);
@@ -142,11 +174,11 @@ function PhysicalMap({
     const start = async () => {
       try {
         const maplibre = await import("maplibre-gl");
-        const suppliedBase = Boolean(provider) || scene.baseProviderId === "osm-standard";
+        const suppliedBase = Boolean(provider) || Boolean(rasterEnabled && raster);
         const base = provider
           ? validateLandfallMapStyle(await provider.style())
-          : scene.baseProviderId === "osm-standard"
-            ? osmStyle(scene)
+          : rasterEnabled && raster
+            ? rasterStyle(scene, raster)
             : blankStyle(scene);
         if (disposed || !element.current) return;
         const availableOverlays = scene.overlays.filter((overlay) => Boolean(overlay.imageUrl));
@@ -244,9 +276,28 @@ function PhysicalMap({
     // The mounted Player scene is immutable by map/worldspace identity; only its
     // ephemeral position changes. Position updates use GeoJSON setData above.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scene.mapId, scene.worldspaceId, provider, overlaySignature]);
+  }, [scene.mapId, scene.worldspaceId, provider, overlaySignature, raster, rasterEnabled]);
   return (
     <div>
+      {!provider &&
+        scene.baseProviderId === "osm-standard" &&
+        (raster ? (
+          <div>
+            <p>Online background maps share the displayed map area with {new URL(raster.tileTemplate).hostname}.</p>
+            <button type="button" onClick={() => setRasterConsent(rasterEnabled ? null : mapKey)}>
+              {rasterEnabled ? "Stop loading online background maps" : "Load online background maps"}
+            </button>
+            {rasterEnabled && (
+              <p>
+                <a href={raster.attributionUrl} rel="noreferrer">
+                  {raster.attributionLabel}
+                </a>
+              </p>
+            )}
+          </div>
+        ) : (
+          rasterChecked && <p>Online background maps are not configured. Your released chart remains available.</p>
+        ))}
       <div style={{ width: "100%", height: 320, position: "relative" }} aria-label="Physical Landfall map">
         {(!loaded || failure) && <StaticPhysicalChart scene={scene} />}
         <div
@@ -417,7 +468,13 @@ export function LandfallMapRenderer({
   return (
     <section aria-label="Landfall map preview">
       {scene.worldspaceKind === "PHYSICAL" ? (
-        <PhysicalMap scene={scene} provider={provider} position={scene.currentPosition} interaction={interaction} />
+        <PhysicalMap
+          key={`${scene.worldspaceId}:${scene.mapId}:${scene.baseProviderId ?? "authored"}:${provider?.id ?? "default"}`}
+          scene={scene}
+          provider={provider}
+          position={scene.currentPosition}
+          interaction={interaction}
+        />
       ) : (
         <VirtualMap scene={scene} interaction={interaction} />
       )}

@@ -307,3 +307,31 @@ one skipped and zero failed per profile. Lifecycle launch now belongs solely to
 XCTest, avoiding competing app launches. A separate bounded 120-second deadline
 allows xcodebuild to finalize results after assertions finish; categorical counts
 and tool-exit state remain distinct. Fresh hosted verification remains required.
+
+The deployment raster configuration replaces the hardcoded automatic public tile
+request. A built-in physical map renders released geometry first. Its public,
+first-party metadata endpoint supplies only a validated HTTPS tile template,
+attribution and zoom limit; absent/unsafe settings are NOT_CONFIGURED. No provider
+request or reachability claim occurs during configuration lookup. Credentials in
+URL authority/query, local endpoints, malformed templates and executable attribution
+are rejected. Deployment values must be public and must never contain secret path
+components. `.env.example` documents these settings without a real endpoint.
+
+Player/Creator choose whether to load online background maps after seeing the
+service hostname and map-area sharing disclosure. Stopping removes the raster
+source; switching maps destroys that renderer and resets consent. Authored/released
+features and semantic lists remain usable. No location acquisition or progression
+request accompanies this choice. Browser HTTP cache rules apply; these tiles are
+not package inputs or an offline download source. Deployed service license and
+availability remain operator responsibilities. The
+[OSMF tile policy](https://operations.osmfoundation.org/policies/tiles/) requires
+visible attribution and forbids bulk/offline downloads of its standard service;
+that public service is no longer an implicit production dependency. Six focused
+test files pass 20 tests across configuration, renderer, projection/privacy and
+the public endpoint. Uncached full TypeScript and changed-code ESLint pass.
+The optimized production build and all five Phase 4 Player browser journeys pass,
+including the phone sharing choice with synthetic intercepted endpoints, zero
+acquisition and unchanged canonical progression. Its capture was reviewed.
+This development proof does not establish deployed provider licensing/availability
+or ordinary final acceptance. Trusted injected style-provider privacy gating and
+remote geocoding/routing/elevation integration remain open work.

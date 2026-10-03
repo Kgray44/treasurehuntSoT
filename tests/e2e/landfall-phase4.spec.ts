@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { db } from "../../src/lib/db";
+import { landfallFixture } from "../../src/landfall/fixtures";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import {
   authenticateClosure,
@@ -22,6 +23,60 @@ test.beforeAll(async () => {
   player = await closureAccount("Phase4 synthetic Player");
 });
 test.afterAll(async () => db.$disconnect());
+
+test("online background maps require a deliberate sharing choice and never write progression", async ({
+  browser,
+  baseURL,
+}, testInfo) => {
+  const definition = structuredClone(landfallFixture);
+  definition.maps[0].source = { type: "BUILTIN_RASTER", providerId: "osm-standard", styleId: "standard" };
+  const voyage = await closureVoyage(owner, player, "livingChart", { authoredDefinition: definition });
+  const context = await browser.newContext({ viewport: { width: 375, height: 900 }, reducedMotion: "reduce" });
+  const external: string[] = [];
+  try {
+    await authenticateClosure(context, player, baseURL!);
+    await auditNativeGeolocation(context);
+    await context.route("**/api/landfall/map-data", (route) =>
+      route.fulfill({
+        json: {
+          state: "CONFIGURED",
+          id: "deployment-raster",
+          tileTemplate: "https://maps.example.org/{z}/{x}/{y}.png",
+          attributionLabel: "Synthetic map license",
+          attributionUrl: "https://maps.example.org/license",
+          maxZoom: 18,
+          offlineRights: "PROHIBITED",
+        },
+      }),
+    );
+    // Actual external services are never contacted by this hosted/browser fixture.
+    await context.route("https://maps.example.org/**", (route) => {
+      external.push("TILE_REQUEST");
+      return route.abort();
+    });
+    const page = await context.newPage();
+    await openClosureJournal(page, voyage.id);
+    await openClosureMap(page);
+    const chart = page.locator(".journal-objects-drawer [data-landfall-player-chart]");
+    const load = chart.getByRole("button", { name: "Load online background maps", exact: true });
+    await expect(load).toBeVisible();
+    await expect(chart).toContainText("share the displayed map area with maps.example.org");
+    expect(external).toEqual([]);
+    const events = await db.taleSessionEvent.count({ where: { sessionId: voyage.id } });
+    await load.click();
+    await expect(chart.getByRole("link", { name: "Synthetic map license", exact: true })).toBeVisible();
+    await chart.getByRole("button", { name: "Stop loading online background maps", exact: true }).click();
+    await expect(load).toBeVisible();
+    expect((await geoAudit(page)).calls).toBe(0);
+    expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(events);
+    const screenshot = testInfo.outputPath("online-map-sharing-choice.png");
+    await load.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: screenshot });
+    await testInfo.attach("online-map-sharing-choice", { path: screenshot, contentType: "image/png" });
+  } finally {
+    await context.close();
+  }
+});
 
 for (const virtual of [false, true])
   for (const width of [375, 1280]) {
