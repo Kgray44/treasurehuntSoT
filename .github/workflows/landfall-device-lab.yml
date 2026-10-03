@@ -1,0 +1,111 @@
+# Active automation template. The Device Lab publishes this only on an owned
+# temporary validation branch; every job checks out the bound product candidate.
+name: Landfall Device Lab 8b18aeea9139c4ee81513fdc8cb3ed723d39f41c
+on:
+  push:
+    branches: ["codex/landfall-lab-*"]
+permissions:
+  contents: read
+concurrency:
+  group: landfall-device-lab-8b18aeea9139c4ee81513fdc8cb3ed723d39f41c
+  cancel-in-progress: false
+jobs:
+  providers:
+    if: false
+    name: Providers / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 8b18aeea9139c4ee81513fdc8cb3ed723d39f41c
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - run: npx --no-install tsx scripts/landfall/device-lab/one-voyage.ts
+      - run: npm run landfall:device-lab -- --platform provider
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-${{ matrix.os }}-8b18aeea9139c4ee81513fdc8cb3ed723d39f41c
+          path: artifacts/landfall-device-lab
+          retention-days: 14
+  apple:
+    if: true
+    name: Native / iOS Simulator
+    runs-on: macos-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 8b18aeea9139c4ee81513fdc8cb3ed723d39f41c
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: brew install xcodegen
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts
+      - run: npm run landfall:device-lab -- --platform ios --scenario gps-perfect-walk,offline-native-canonical-reconcile
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-ios-8b18aeea9139c4ee81513fdc8cb3ed723d39f41c
+          path: artifacts/landfall-device-lab
+          retention-days: 14
+  android:
+    if: false
+    name: Native / Android Emulator
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 8b18aeea9139c4ee81513fdc8cb3ed723d39f41c
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - run: npm ci --ignore-scripts
+      - run: gradle -p native/android --console plain assembleDebug
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - name: Enable ephemeral runner KVM access
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          profile: pixel_7
+          ram-size: 3072M
+          emulator-boot-timeout: 300
+          disable-linux-hw-accel: false
+          disable-animations: true
+          script: npm run landfall:device-lab -- --platform android --scenario gps-perfect-walk,offline-native-canonical-reconcile
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-android-8b18aeea9139c4ee81513fdc8cb3ed723d39f41c
+          path: artifacts/landfall-device-lab
+          retention-days: 14
