@@ -286,17 +286,25 @@ export async function executeLandfallOsScenario(
       executionStage = "APPLE_BOOT";
       await labTool("xcrun", ["simctl", "bootstatus", ownedDevice, "-b"], 420000);
       executionStage = "APPLE_INSTALL";
-      await labTool("xcrun", ["simctl", "install", ownedDevice, app.app]);
+      await labTool("xcrun", ["simctl", "install", ownedDevice, app.app], 120000);
       executionStage = "APPLE_PERMISSION";
-      await labTool("xcrun", ["simctl", "privacy", ownedDevice, "grant", "location", "com.voyagewright.landfall"]);
+      await labTool(
+        "xcrun",
+        ["simctl", "privacy", ownedDevice, "grant", "location", "com.voyagewright.landfall"],
+        60000,
+      );
       executionStage = "APPLE_LAUNCH";
-      await labTool("xcrun", [
-        "simctl",
-        "launch",
-        ownedDevice,
-        "com.voyagewright.landfall",
-        `--landfall-lab-origin=http://127.0.0.1:${port}`,
-      ]);
+      await labTool(
+        "xcrun",
+        [
+          "simctl",
+          "launch",
+          ownedDevice,
+          "com.voyagewright.landfall",
+          `--landfall-lab-origin=http://127.0.0.1:${port}`,
+        ],
+        60000,
+      );
       if (scenario.timeline.some((step) => step.action.type === "LIFECYCLE")) {
         uiRunner = labTool(
           "xcodebuild",
@@ -373,6 +381,13 @@ export async function executeLandfallOsScenario(
           if (action.operation === "REBOOT" || action.operation === "ACTIVITY_RECREATE") {
             steps.push({ index, action: "LIFECYCLE", state: "UNSUPPORTED", reason: "ANDROID_RECREATE_NOT_CONFIGURED" });
             continue;
+          }
+          if (action.state === "RELAUNCH") {
+            await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
+            const pid = await adb(["shell", "pidof", "com.voyagewright.landfall"]).catch((error: { code?: number }) =>
+              error.code === 1 ? "" : "UNVERIFIED",
+            );
+            if (pid.trim()) throw new Error("ANDROID_TERMINATION_NOT_OBSERVED");
           }
           await adb(["shell", "input", "keyevent", "224"]);
           await adb(["shell", "input", "keyevent", "82"]);
@@ -485,20 +500,18 @@ export async function executeLandfallOsScenario(
         if (target === "android-emulator")
           await adb(["emu", "geo", "fix", String(coordinate.longitude), String(coordinate.latitude)]);
         else {
-          const deadline = Date.now() + 50000;
+          const deadline = Date.now() + 150000;
           while (!results.has(index) && Date.now() < deadline) {
-            await labTool("xcrun", [
-              "simctl",
-              "location",
-              ownedDevice!,
-              "set",
-              `${coordinate.latitude},${coordinate.longitude}`,
-            ]);
+            await labTool(
+              "xcrun",
+              ["simctl", "location", ownedDevice!, "set", `${coordinate.latitude},${coordinate.longitude}`],
+              60000,
+            );
             if (!results.has(index)) await new Promise((resolve) => setTimeout(resolve, 1000));
           }
         }
       }
-      await wait(() => results.has(index), 30000);
+      await wait(() => results.has(index), step.action.type === "LOCATION" ? 130000 : 30000);
       steps.push(results.get(index)!);
     }
     const screenshot = path.join(destination, "native-final.png");

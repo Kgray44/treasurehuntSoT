@@ -66,6 +66,7 @@ async function main() {
   definition.waypoints.forEach((waypoint) => waypoint.evidenceProfile.acceptedSources.push("NATIVE_LOCATION"));
   const driver = createLandfallNativeDriver();
   if (!driver) throw new Error("NATIVE_BRIDGE_UNAVAILABLE");
+  let foregroundPermission = await driver.permission();
   const registry = new LandfallProviderRegistry();
   registry.register({
     id: driver.platform === "IOS" ? "ios-core-location" : "android-location",
@@ -75,7 +76,7 @@ async function main() {
   });
   const runtime = new LandfallRuntime(definition, identity, registry);
   runtime.setActiveWaypoint(definition.waypoints[0].id);
-  runtime.setPermission("GRANTED");
+  runtime.setPermission(["GRANTED", "APPROXIMATE", "LIMITED"].includes(foregroundPermission) ? "GRANTED" : "DENIED");
   runtime.resume();
   const provider = new NativeLocationProvider(driver, world);
   let outcome: LandfallOutcome = { confidence: "UNAVAILABLE", sync: null, retryable: true };
@@ -120,17 +121,17 @@ async function main() {
         waiting?.(observation);
       },
       (state) => {
+        foregroundPermission = state;
         runtime.setPermission(["GRANTED", "APPROXIMATE", "LIMITED"].includes(state) ? "GRANTED" : "DENIED");
       },
     );
-  await start();
   const projectPower = (power: NativeLandfallPower | null) =>
     landfallPowerPolicy({
       lifecycle: "FOREGROUND",
       connectivity: network,
       foregroundConsent: true,
       backgroundConsent: false,
-      foregroundPermission: provider.permissionState,
+      foregroundPermission,
       backgroundPermission: "DENIED",
       lowPower: power?.state !== "READY" || power.lowPower,
       thermalPressure: power?.thermalPressure ?? false,
@@ -149,7 +150,7 @@ async function main() {
     method: "POST",
     body: JSON.stringify({
       platform: driver.platform,
-      permission: provider.permissionState,
+      permission: foregroundPermission,
       restarted,
       leaseRestored: lease !== null,
       publicShellControlled: navigator.serviceWorker.controller !== null,
@@ -188,7 +189,7 @@ async function main() {
             const timer = setTimeout(() => {
               waiting = null;
               reject(new Error("OS_LOCATION_TIMEOUT"));
-            }, 45000);
+            }, 120000);
             const accept = (sample: LandfallObservation) => {
               if (
                 sample.kind === "PHYSICAL_POSITION" &&
@@ -297,7 +298,6 @@ async function main() {
       } else if (action.type === "LIFECYCLE") {
         if (action.state === "FOREGROUND" || action.state === "RELAUNCH") {
           runtime.resume();
-          await start();
         } else {
           runtime.pause();
           await provider.stop();

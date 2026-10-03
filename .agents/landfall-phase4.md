@@ -82,14 +82,25 @@ Android canonical lost-response recovery and native encrypted-store instrumentat
 passed. Local Android force-stop/relaunch restored its encrypted native lease,
 production public service worker and encrypted outbox, then wrote one real canonical
 event; its synthetic lab shell does not establish full Player UI proof. Hosted iOS
-run 37153478036 is testing 76456767. Updated Apple end-to-end proof remains open.
+run 37153478036 at 76456767 passed native build/XCTest, but all three end-to-end
+cases failed: two hit the 30-second install budget and one hit the 30-second OS
+location-control budget. Its artifacts were harvested and owned transport branch
+deletion verified. Updated Apple end-to-end proof remains open.
 
 Clean checkpoint c9abab21 passes four Android native cases: GPS, offline canonical
 delivery, lost-response acknowledgment and encrypted restart/relaunch. Native
 Android instrumentation now passes four tests including actual virtual low-battery
 rate adaptation. The four power cases initially passed three; saver lost a command
 after WebView recreation. Acknowledgment-based redelivery fixes the isolated saver
-rerun. Combined frozen-source rerun remains required. 38 focused files / 285 tests
+rerun. Frozen 74e65f8e Android suite passed 13 of 14 cases; relaunch waited for a
+new startup acknowledgment while merely foregrounding the existing activity.
+Cleanup passed in all 14 cases. The repair actually force-stops before relaunch,
+starts acquisition only at an explicit LOCATION step, and gives Apple cold
+installation/location commands bounded budgets consistent with client waiting.
+The focused repair development rerun passed all six Android cases (GPS, three
+canonical offline cases, relaunch and saver), with cleanup passing. Its source
+fingerprint is 331a60811a2d146b8280eabfb18e16746fd981e209d85995605ab67bc4022599;
+it ran before the repair commit and is marked dirty. 38 focused files / 285 tests
 and TypeScript pass during power development; the new Swift power source still
 needs hosted compilation and native execution.
 These failed development runs are evidence, not acceptance. Use focused hosted jobs;
