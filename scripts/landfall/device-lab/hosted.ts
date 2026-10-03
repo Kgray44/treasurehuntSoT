@@ -3,6 +3,7 @@ import { promisify } from "node:util";
 import { mkdir, writeFile, rm } from "node:fs/promises";
 import path from "node:path";
 import { labTool } from "./host";
+import { hostedDeviceLabScenarios } from "../../../src/landfall/device-lab/hosted-selection";
 
 const execute = promisify(execFile);
 /** Ephemeral CI transport only. It never mutates the checkout, default branch, or protected testing authority. */
@@ -11,6 +12,7 @@ export async function dispatchLandfallHostedLab(
   root = process.cwd(),
   target = "all",
   tier = "development",
+  selectedScenarios?: string,
 ) {
   if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error("LANDFALL_HOSTED_CANDIDATE_INVALID");
   if (!["all", "provider", "android", "ios"].includes(target)) throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
@@ -35,11 +37,26 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__RUN_ANDROID__", String(target === "all" || target === "android"))
     .replaceAll("__ANDROID_PROFILES__", JSON.stringify(androidProfiles))
     .replaceAll("__APPLE_PROFILES__", JSON.stringify(appleProfiles));
+  const scenarios = {
+    ios: hostedDeviceLabScenarios("ios", target === "ios" || target === "all" ? selectedScenarios : undefined),
+    android: hostedDeviceLabScenarios(
+      "android",
+      target === "android" || target === "all" ? selectedScenarios : undefined,
+    ),
+    provider: hostedDeviceLabScenarios(
+      "provider",
+      target === "provider" || target === "all" ? selectedScenarios : undefined,
+    ),
+  };
+  const selectedWorkflow = workflow
+    .replaceAll("__APPLE_SCENARIOS__", scenarios.ios)
+    .replaceAll("__ANDROID_SCENARIOS__", scenarios.android)
+    .replaceAll("__PROVIDER_SCENARIOS__", scenarios.provider);
   const runId = `${candidate.slice(0, 12)}-${Date.now()}`;
   const destination = path.join(root, "artifacts", "landfall-device-lab", `hosted-${runId}`);
   await mkdir(destination, { recursive: true });
   const workflowFile = path.join(destination, "workflow.yml");
-  await writeFile(workflowFile, workflow);
+  await writeFile(workflowFile, selectedWorkflow);
   const index = path.join(destination, "owned-index");
   const env = { ...process.env, GIT_INDEX_FILE: index };
   const git = async (args: string[]) =>
@@ -58,6 +75,7 @@ export async function dispatchLandfallHostedLab(
       target,
       tier,
       profiles: { android: androidProfiles, apple: appleProfiles },
+      scenarios,
       transportSha: commit,
       transportTree: tree,
       branch,
@@ -74,7 +92,13 @@ export async function dispatchLandfallHostedLab(
 
 if (process.argv[1]?.endsWith("hosted.ts")) {
   const candidate = process.argv[2] ?? "";
-  dispatchLandfallHostedLab(candidate, process.cwd(), process.argv[3] ?? "all", process.argv[4] ?? "development")
+  dispatchLandfallHostedLab(
+    candidate,
+    process.cwd(),
+    process.argv[3] ?? "all",
+    process.argv[4] ?? "development",
+    process.argv[5],
+  )
     .then((receipt) => process.stdout.write(`${JSON.stringify(receipt, null, 2)}\n`))
     .catch(() => {
       process.stderr.write("LANDFALL_HOSTED_DISPATCH_FAILED\n");

@@ -185,6 +185,34 @@ magnetic drift or floor accuracy is claimed. All 124 provider cases, 43 focused 
 311 tests, TypeScript and documentation validation pass. Hosted Apple/Android runs
 37156238449/37156247496 remain in progress/pending at this checkpoint.
 
+Production browser development: four released-map search journeys pass on the
+optimized build with task-owned HTTP/proxy, nonce-bound SQLite and isolated media.
+Phone/desktop PHYSICAL/VIRTUAL cases verify keyboard selection, scoped axe checks,
+zero location watches, no Landfall mutation requests and unchanged canonical events
+and sequence. Captures were reviewed; the chart itself is below the initial search
+viewport, so later visual proof must scroll the actual drawer to show its highlight.
+The new journey is registered in browser.landfall. An uncached full typecheck exposed
+two readonly-inference errors in the existing Rive test mock; explicitly typing its
+mutable input fixtures fixes them without changing the production animation runtime.
+
+Hosted iOS 37156238449 at 3897b1fd was harvested with transport branch deletion
+verified. Native build/XCTest and both virtual navigation/reconciliation cases pass;
+virtual reconciliation observes exactly one canonical event, with cleanup passing.
+Four physical cases receive the first fix but time out on a second identical fix.
+The canonical version-2 cases now request two distinct nearby points rather than
+inventing timestamps/callbacks. Local Android retest passes all four with cleanup:
+20261003T223356967Z-60828, fingerprint
+cc9b60b60c86a4caa170b6634d4a0bd43cc47332e236d2f59b33cc57476160a4
+(dirty at a2163541). All 124 provider cases pass at that fingerprint. Apple physical
+retry remains required. Android hosted closure run 37156247496 remains in progress;
+the compatibility-phone job has finished successfully, but whole-run artifact
+inspection is still pending.
+
+Hosted impact dispatch accepts an optional scenario-list argument containing a comma
+list of canonical scenario IDs after candidate/platform/tier. Use it for the fresh
+Apple GPS regression before broad matrix repetition; defaults retain native
+permission/sensor/power/offline/virtual cases. Never treat a subset as closure proof.
+
 Remaining: native lifecycle/power orchestration and supported device profiles;
 optional hardware/token production handoffs; native restart-safe offline presentation;
 deployed provider preflight and health integration; full security/privacy/performance

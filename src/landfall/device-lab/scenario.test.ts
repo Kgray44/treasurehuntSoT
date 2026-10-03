@@ -22,6 +22,21 @@ describe("canonical Device Lab scenarios", () => {
     expect(deviceLabScenarioSchema.safeParse(reversed).success).toBe(false);
     expect(landfallDeviceScenario("compound-chaos").physicalRequired).toContain("SUSPENSION");
   });
+  it("uses two distinct nearby physical route points for fresh native fixes in versioned arrival scenarios", () => {
+    for (const id of [
+      "gps-perfect-walk",
+      "offline-native-canonical-reconcile",
+      "offline-lost-response-canonical-reconcile",
+      "offline-restart-canonical-reconcile",
+    ]) {
+      const scenario = landfallDeviceScenario(id);
+      const locations = scenario.timeline.map((step) => step.action).filter((action) => action.type === "LOCATION");
+      expect(scenario.version).toBe(2);
+      expect(locations).toHaveLength(2);
+      expect(locations[0].coordinate).not.toEqual(locations[1].coordinate);
+      expect(locations[0].coordinate.worldspaceId).toBe(locations[1].coordinate.worldspaceId);
+    }
+  });
   for (const id of [
     "gps-perfect-walk",
     "gps-5-minute-walk",

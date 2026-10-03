@@ -2769,7 +2769,8 @@
         "tests/e2e/landfall-phase2.spec.ts",
         "tests/e2e/landfall-closure.spec.ts",
         "tests/e2e/landfall-phase3.spec.ts",
-        "tests/e2e/landfall-phase3-creator.spec.ts"
+        "tests/e2e/landfall-phase3-creator.spec.ts",
+        "tests/e2e/landfall-phase4.spec.ts"
       ],
       "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",

@@ -31,7 +31,7 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
       - run: npx --no-install tsx scripts/landfall/device-lab/one-voyage.ts
-      - run: npm run landfall:device-lab -- --platform provider
+      - run: npm run landfall:device-lab -- --platform provider --scenario __PROVIDER_SCENARIOS__
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -62,7 +62,7 @@ jobs:
       - run: brew install xcodegen
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
       - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts
-      - run: npm run landfall:device-lab -- --platform ios --scenario gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile
+      - run: npm run landfall:device-lab -- --platform ios --scenario __APPLE_SCENARIOS__
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -116,7 +116,7 @@ jobs:
           disable-animations: true
           script: |
             npx --no-install tsx scripts/landfall/device-lab/android-test.ts
-            npm run landfall:device-lab -- --platform android --scenario gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change,virtual-player-navigation,virtual-offline-canonical-reconcile
+            npm run landfall:device-lab -- --platform android --scenario __ANDROID_SCENARIOS__
       - uses: actions/upload-artifact@v4
         if: always()
         with:

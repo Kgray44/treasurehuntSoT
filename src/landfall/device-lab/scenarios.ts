@@ -65,7 +65,7 @@ scenario(
   ["LOCATION"],
   [
     location(),
-    location(),
+    location({ coordinate: physicalCoordinate(44.00002, -72) }),
     assertion("confidence", "CONFIRMED"),
     assertion("completionRequests", 1),
     assertion("serverConfirmed", false),
@@ -385,7 +385,7 @@ scenario(
   [
     network("OFFLINE"),
     location(),
-    location(),
+    location({ coordinate: physicalCoordinate(44.00002, -72) }),
     assertion("serverConfirmed", false),
     network("ONLINE"),
     { type: "RECONCILE", outcome: "ACCEPT" },
@@ -403,7 +403,7 @@ scenario(
   [
     network("OFFLINE"),
     location(),
-    location(),
+    location({ coordinate: physicalCoordinate(44.00002, -72) }),
     network("ONLINE"),
     { type: "RECONCILE", outcome: "LOST_RESPONSE" },
     assertion("canonicalProgressionEvents", 1),
@@ -422,7 +422,7 @@ scenario(
   [
     network("OFFLINE"),
     location(),
-    location(),
+    location({ coordinate: physicalCoordinate(44.00002, -72) }),
     assertion("completionRequests", 1),
     assertion("canonicalProgressionEvents", 0),
     lifecycle("TERMINATED", "FORCE_STOP"),
@@ -542,6 +542,17 @@ for (const worldspace of ["PHYSICAL", "VIRTUAL"] as const) {
       }),
     );
   }
+}
+
+// A fresh OS fix is requested at each distinct route point; repeated simctl set
+// commands at an unchanged coordinate need not cause another Core Location event.
+for (const id of [
+  "gps-perfect-walk",
+  "offline-native-canonical-reconcile",
+  "offline-lost-response-canonical-reconcile",
+  "offline-restart-canonical-reconcile",
+]) {
+  cases.find((item) => item.id === id)!.version = 2;
 }
 
 export function landfallDeviceScenarios(): DeviceLabScenario[] {

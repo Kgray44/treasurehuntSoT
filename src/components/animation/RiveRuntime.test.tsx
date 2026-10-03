@@ -20,7 +20,7 @@ const runtime = vi.hoisted(() => {
     ["isListening", { value: false }],
     ["reducedMotion", { value: false }],
   ]);
-  const inputs = [
+  const inputs: { name: string; type: number; value?: number | boolean; fire?: () => void }[] = [
     { name: "amount", type: 56, value: 2 },
     { name: "submit", type: 58, fire: trigger },
     { name: "enabled", type: 59, value: true },

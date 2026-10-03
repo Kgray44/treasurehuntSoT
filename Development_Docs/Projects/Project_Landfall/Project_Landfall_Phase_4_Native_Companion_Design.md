@@ -139,6 +139,12 @@ floor or submit progression. Search text and selection stay in component memory.
 The coordinate lookup separately excludes approximate centers and honors public
 labels. An unknown address still needs a configured external geocoder.
 
+The focused production browser journey exercises both Worldspaces at phone and
+desktop widths with synthetic accounts and a nonce-bound database. It verifies
+keyboard selection, scoped accessibility, no location acquisition, no Landfall
+mutation requests and unchanged canonical events/sequence. Capture review remains
+separate from those assertions; it is not native WebView or physical-device proof.
+
 Creator and the existing Drydock authoring findings use capability-scoped local
 preflight for implemented authored search, routes, floor labels, virtual regions
 and semantic maps. Data in one Worldspace cannot satisfy a requirement in another.
@@ -175,6 +181,14 @@ database containing the real One Voyage writer. Native scenarios acquire OS fixe
 through the restricted WebView bridge, preserve their actual timestamps and inspect
 actual canonical events. Receipts bind source, fixture, platform, artifacts and
 cleanup. Step translations distinguish OS controls from controlled service faults.
+
+Version 2 native arrival scenarios request two distinct nearby route points. The
+host does not fabricate another observation when repeated Simulator commands at
+an unchanged point do not emit another Core Location callback. Actual OS timestamps
+and accuracy continue through the production provider. Hosted impact selection
+accepts only bounded, unique canonical scenario IDs compatible with the selected
+platform; full matrix defaults remain available. The transport receipt records the
+selected corpus and profiles.
 
 The corpus also covers Virtual Worldspace manual navigation and encrypted offline
 reconciliation. Its native WebView executor selects the virtual definition without
