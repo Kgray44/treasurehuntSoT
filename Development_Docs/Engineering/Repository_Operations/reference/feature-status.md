@@ -8,7 +8,7 @@ last_reviewed: 2026-10-03
 
 # Feature status
 
-The [Landfall Phase 3 v1.1 follow-up](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) is proceeding through protected PR #675 after audit corrections to default contextual privacy, operational multi-source server qualification and completion-time expiry. Its exact current qualification and landed status are recorded separately from the historical baseline below; Watchglass remains not configured.
+The [Landfall Phase 3 v1.1 follow-up](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) is available on protected main through PR #675, merge `64c780a0`: default private contextual authoring, authored-unit virtual context, operational independent-source canonical bundles and completion-time expiry. Full-unit, 39-case production acceptance, exact-head hosted PASS and landed smoke are recorded separately from the historical baseline below. Watchglass remains NOT_CONFIGURED; this protected evidence/catalog publication completes the permanent closure record.
 
 Phase 3 Read the Ground is available on protected main through PR #673: contextual regions/floors, compact corridor continuity, optional foreground hints, region-gated authored-view comparison and independent exact-object observation. Its [accepted capsule](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_Accepted_Capsule.md) binds exact local/hosted qualification and landed proof. Physical field quality and Watchglass general object recognition remain separate.
 

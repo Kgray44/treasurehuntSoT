@@ -1,7 +1,7 @@
 ---
-title: Project Landfall Phase 3 v1.1 amendment implementation and local qualification
+title: Project Landfall Phase 3 physical and virtual v1.1 audit closure
 audience: product-engineering
-status: draft
+status: current
 canonical_for: project-landfall-phase-3-v11-amendment-record
 last_reviewed: 2026-10-03
 ---
@@ -32,7 +32,32 @@ Alignment scope is explicit: the current floor/site overlay editor authors **nor
 
 No schema, migration or dependency change is required. Physical and authored-unit virtual references, uncertainty, routes/gates and coarse semantic context remain one Landfall domain. Phase 4, Watchglass implementation, Storytide and Figurehead are not started.
 
-Final acceptance identities and measured full-suite/browser/protected/landed results will be reconciled here after qualification; the prior local ledger cannot substitute for them.
+### Final acceptance ledger
+
+The completed product classification is **PROJECT LANDFALL PHASE 3 — READ THE GROUND — PHYSICAL + VIRTUAL v1.1: FULLY CLOSED ON PROTECTED MAIN — POST-MERGE AUDIT CORRECTIONS COMPLETE**. The permanent capsule/catalog publication becomes authoritative through the protected evidence follow-up described below. The original PR #675 remains the product closure vehicle; it cannot accept additional source commits after merge. A bounded evidence-only protected follow-up records actual post-merge measurements without changing the product tree.
+
+| Identity / gate                  | Verified result                                                                                                                                                                                                                                                                                                                |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Starting protected main          | `d38cb756afe61f7b13251cf980d0deb8dbfc38f1`; current-main delta at restart empty; unrelated primary work preserved                                                                                                                                                                                                              |
+| Original branch / audited draft  | `codex/landfall-phase3-v11`; `60faf44d8e6027d7b10288d314357673c44f82ad` / tree `dbba815e7e46567c921314b065d2f427d265a869`                                                                                                                                                                                                      |
+| Final product candidate / tree   | `d609c30473d818e4c3cb8513c0cc48f8930c2f19` / `11ac3173934cf6c8b7881a6ee7cd8e71b0468b78`                                                                                                                                                                                                                                        |
+| Full unit freeze                 | **410 files / 2,364 tests PASS**, once on the exact product candidate, 413.35 seconds                                                                                                                                                                                                                                          |
+| Full production corpus           | **39/39 PASS**, 117.555 seconds; 34 retained physical/baseline scenarios, three v1.1 virtual Creator/Player scenarios and two new audit regressions; no duplication of those totals                                                                                                                                            |
+| Development checks               | Six retained files / 59 tests; privacy/bundle/offline three files / 51 tests; subsystem 26 files / 211 tests; final physical bundle matrix 37 tests PASS. These overlap the full suite and are not additive totals                                                                                                             |
+| Local ordinary                   | **PASS, 9/9 obligations**, empty remainder/errors; 197 selected files / 1,331 tests and 15 selected production cases PASS. Migration sentinel required/passed; no migration scripts or schema change                                                                                                                           |
+| Required hosted ordinary         | [Run 37134281447](https://github.com/Kgray44/treasurehuntSoT/actions/runs/37134281447), [job 111235498558](https://github.com/Kgray44/treasurehuntSoT/actions/runs/37134281447/job/111235498558), **PASS, 9/9 obligations**, empty remainder/errors. Downloaded decision independently matched exact candidate/base/tree above |
+| Protected product merge / main   | [PR #675](https://github.com/Kgray44/treasurehuntSoT/pull/675), `64c780a0c926ac8f78535fc43e9afc48f3b4880c`, October 3 at 15:51:18 UTC. Main remained protected; landed tree exactly equals the qualified tree                                                                                                                  |
+| Landed unit smoke                | **29 files / 220 tests PASS** on product merge/main, 23.94 seconds; Landfall domain, Creator/Player/context projections, canonical commands, edition/snapshot and Player API boundaries                                                                                                                                        |
+| Landed production smoke          | **5/5 PASS**, 22.753 seconds; standard physical Creator default, two-source One Voyage, phone/desktop virtual fallback and the complete museum exact-target journey                                                                                                                                                            |
+| Static / privacy / documentation | TypeScript, affected lint/format, production build, repository/staged/build privacy, SQLite schema and One Voyage architecture PASS; docs index/validation and catalog sync/validation PASS                                                                                                                                    |
+
+The unit/server matrix covers one-source fresh/stale/conflict, independent two-source success, repeated sources, shared/correlated/circular provenance, story-source rejection, expiry, trusted negative/conflicting evidence, source/scope mismatch and unavailable providers. Three/four-source policies are validated honestly against configured capabilities and fallback; synthetic fixtures do not create a shipped provider. Expiry-at-delivery is proved without any intervening observation.
+
+The initial new browser attempt failed before acceptance because an inspector apostrophe had Windows encoding; UTF-8 was restored. The first runnable browser attempt exposed an immediate pre-autosave null read and an incorrect evidence endpoint in the harness. Null-safe polling and the actual canonical endpoint repaired the harness; the intended persisted/default/context and sanitized-event assertions were retained. A physical unit fixture's simulation provider identity was also corrected to the actual browser provider. Failed logs/traces remain retained separately; they are not passing qualification.
+
+Owned raw logs and downloaded decisions remain under `tmp/landfall-phase3-audit`; source/canonical identities and durable conclusions are in this record and PR #675. Browser screenshots for the ordinary private flow, virtual policy availability and canonical arrival were reviewed; synthetic map fixtures do not prove external map/provider or physical field quality.
+
+Final protected-main closure publication preserves `src`, tests, dependencies and schema from product merge `64c780a0`. Its immutable evidence-PR merge identity is recorded by the publication link added to this ledger, avoiding a self-referential commit SHA. The evidence candidate receives its own exact-head ordinary qualification and final landed docs/catalog/smoke verification. Phase 4 is not started.
 
 ## Acceptance contracts
 
@@ -46,7 +71,7 @@ Final acceptance identities and measured full-suite/browser/protected/landed res
 | Exact-target and canonical authority | Story semantics establish coarse named context without invented coordinates or completion. Evidence qualification proposes completion through the existing authenticated, edition/sequence-bound, idempotent One Voyage transaction. A regional prior is not another independent verifier; a lone visual receipt cannot bypass a stronger source policy. Deliberate manual fallback stays separately attributed. Existing two-stage exact-target observation remains intact.                                                                    |
 | Privacy, offline and replay          | Frames, signatures and provenance are transient. Watchglass receipts are rejected before outbox writes. Provenance and optional physical hints strip from retained short-lived position input without mutating the caller. Canonical summaries hold safe IDs/categories, not coordinates, frames, certification or opaque receipts. Historical projections do not reacquire providers.                                                                                                                                                          |
 
-## Local qualification ledger
+## Historical October 1 local qualification ledger
 
 - Focused follow-up: five files / 67 tests PASS, 4.46 seconds, covering the amendment and retained contextual/domain, encrypted offline and Creator controls. The prior 43-test run was reused during review.
 - The original saved TypeScript fixture was corrected and a fresh typecheck passed. Added coverage exposed missing synthetic landmark privacy fields and union-geometry typing; both were repaired. A post-conflict rejection expectation was corrected to honest unavailable. Failed runs remain in `tmp/landfall-v11` and are not passing proof.
@@ -57,10 +82,10 @@ Final acceptance identities and measured full-suite/browser/protected/landed res
 - TypeScript, affected lint/format, production build, repository/build/staged privacy checks and required migration sentinels pass within ordinary qualification. Documentation index/validation and catalog sync/validation pass separately. No database schema or dependency changes.
 - Machine decision and retained local logs: `artifacts/sounding-line/ordinary-decision.json`, `tmp/landfall-v11/ordinary-final.log` and the preserved failed/focused logs. Subsequent evidence-document edits preserve the qualified application and test source. Hosted qualification must bind the exact published draft head; the existing workflow's owner dispatch supports this while automatic draft checks are skipped. A future PR check or protected merge must not be inferred from this local result.
 
-## Boundaries and publication
+## Historical October 1 boundaries and publication
 
 Legacy definitions omit the optional fields; no database migration is needed. Existing virtual navigation, released-image maps, Captain commands, edition pinning, encryption, privacy filtering and One Voyage are reused. The accepted full baseline suite is not repeated as a debugging audit.
 
 Production Watchglass operations, optional game telemetry, native/background providers, real physical/game recognition quality, live assistive technology, MySQL, deployment, owner acceptance and launch readiness require separate evidence. Stronger source policies require actual independent qualifying sources; contextual priors cannot satisfy them. Unavailability follows the authored alternate path required by section 17.
 
-Feature Catalog decision: FT-044 was reviewed; sync/validation pass. Its accepted mainline entry is preserved without promoting this unintegrated follow-up. Draft publication is approved; protected integration remains a separate action.
+Historical Feature Catalog decision: FT-044 was reviewed; sync/validation pass. Its accepted mainline entry is preserved without promoting this unintegrated follow-up. Draft publication is approved; protected integration remains a separate action.

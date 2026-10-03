@@ -3,7 +3,7 @@ title: Project Landfall engineering home
 audience: product-engineering
 status: current
 canonical_for: project-landfall-engineering-home
-last_reviewed: 2026-10-01
+last_reviewed: 2026-10-03
 ---
 
 # Project Landfall
@@ -47,4 +47,4 @@ The [final closure correction record](Project_Landfall_Phase_2_Final_Closure_Rec
 
 - [Accepted Phase 3 capsule](Project_Landfall_Phase_3_Accepted_Capsule.md): authoritative Project Trim starting context for Phase 4; no Phase 4 implementation.
 
-- [Phase 3 v1.1 amendment follow-up](Project_Landfall_Phase_3_v1.1_Amendment_Record.md): physical/virtual context, independent evidence policies and conditional certified Watchglass handoff. Local qualification and publication status are separate from the accepted PR #673/#674 baseline.
+- [Phase 3 v1.1 amendment follow-up](Project_Landfall_Phase_3_v1.1_Amendment_Record.md): protected PR #675 audit closure for physical/virtual context, intentional contextual privacy, canonical independent evidence policies and expiry-at-delivery. Exact-head hosted qualification, full units/39 production scenarios and landed smoke pass; Watchglass remains NOT_CONFIGURED. This permanent evidence publication is additive to the historical PR #673/#674 baseline.

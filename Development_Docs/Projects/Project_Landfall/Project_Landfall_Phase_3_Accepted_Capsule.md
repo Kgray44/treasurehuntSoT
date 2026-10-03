@@ -3,14 +3,24 @@ title: Project Landfall Phase 3 accepted capsule
 audience: product-engineering
 status: current
 canonical_for: project-landfall-phase-3-accepted-capsule
-last_reviewed: 2026-10-01
+last_reviewed: 2026-10-03
 ---
 
 # Read the Ground — accepted Phase 3 capsule
 
 This is the Project Trim starting context for Phase 4. Product acceptance is established by the protected merge and landed proof below. The capsule and catalog become authoritative together through the protected evidence publication. Earlier phase records remain historical evidence.
 
-## Accepted identity
+## October 3 physical and virtual v1.1 closure capsule
+
+The [amendment audit closure](Project_Landfall_Phase_3_v1.1_Amendment_Record.md) is the additive Project Trim starting context for Phase 4. Product PR #675 is protected merged as `64c780a0c926ac8f78535fc43e9afc48f3b4880c`; exact candidate `d609c30473d818e4c3cb8513c0cc48f8930c2f19`, tree `11ac3173934cf6c8b7881a6ee7cd8e71b0468b78`, base `d38cb756afe61f7b13251cf980d0deb8dbfc38f1`. Local and required hosted run `37134281447` / job `111235498558` pass all nine obligations with no remainder/errors; landed tree equals candidate.
+
+Full frozen acceptance passed 410 unit files / 2,364 tests and 39 production scenarios. Landed smoke passed 29 files / 220 tests and five production scenarios. The record preserves exact timing, identities, failed attempts, unchanged schema/dependencies and the protected evidence/catalog publication identity. This capsule and catalog become authoritative together through that publication.
+
+The accepted addition extends one Landfall domain to physical and authored-unit virtual context, routes/gates and bounded independent-source canonical qualification. Standard private physical rooms survive actual Creator save/reload and published Player inference. Broad approximate regions use intentionally generalized evaluation; fine approximate claims block publication. Each bounded bundle source independently qualifies before server fusion and One Voyage progression; conflict, shared/correlated/circular roots, story priors and expiry cannot manufacture verification. Pending claims revalidate at completion delivery without new input. Three/four-source availability findings reflect real capabilities and accessible fallbacks.
+
+Watchglass and game/native providers remain NOT_CONFIGURED; certified test adapters prove only the scoped handoff contract. Virtual Player charts remain free of physical GPS/camera/device hints. Alignment controls expose north-up rectangular bounds, not arbitrary affine authoring. No raw durable streams/receipts, new database schema, Watchglass implementation, Storytide, Figurehead, deployment or Phase 4 are included. All historical Phase 1/2/3 evidence below remains accepted for its original identity.
+
+## Historical accepted identity
 
 This capsule binds the accepted PR #673/#674 baseline. It does not certify the later physical/virtual v1.1 expansion; the [amendment follow-up record](Project_Landfall_Phase_3_v1.1_Amendment_Record.md) tracks that local implementation and its separate qualification/publication status.
 

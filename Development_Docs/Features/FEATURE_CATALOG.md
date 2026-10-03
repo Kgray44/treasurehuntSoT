@@ -1331,7 +1331,7 @@ Project Drydock Phase 4 gives Creators source-bound launch readiness, compatibil
 **Status:** MAINLINE
 **Program or subsystem:** Project Landfall Phases 1, 2 and 3
 
-Creators author versioned physical and virtual Living Charts, aligned floor/site regions and natural landmarks. Players receive honest contextual corridor guidance, region-gated authored-view comparison and separate exact-target observations through canonical One Voyage progression, with sanitized Captain/replay state and bounded encrypted web offline reconciliation.
+Creators author versioned physical and virtual Living Charts, protected floor/site regions and natural landmarks. Authored-unit virtual context and independently server-qualified source bundles retain honest uncertainty and canonical One Voyage authority, with private Player projections, accessible provider fallback, sanitized Captain/replay state and bounded encrypted web offline reconciliation.
 
 ### Important subfeatures
 
@@ -1357,6 +1357,9 @@ Creators author versioned physical and virtual Living Charts, aligned floor/site
 - Independent exact-object observations unlock after contextual arrival; publication enforces an effective verifier and readable mandatory fallback
 - Sanitized contextual Captain/history/field receipts, transient camera and hints, and floor imagery within the existing encrypted offline bounds
 - Synthetic museum and compact outdoor acceptance retains Phase 1/2 journeys, four viewports, 200 percent text, keyboard/focus, forced colors and reduced motion
+- Authored-unit physical and virtual contextual region/route/gate evaluation, with coarse semantic context and rejection of physical hints in virtual Worldspaces
+- Bounded canonical independent-source bundles qualify fresh available checks separately before fusion, reject repeated/shared/correlated/circular provenance and conflict, and revalidate pending completion at delivery
+- Ordinary physical contextual defaults retain private authorized Player inference; broad approximate evaluation is generalized and incompatible fine privacy blocks publication; provider capability findings expose unavailable stronger policies
 
 ### Primary surfaces
 
@@ -1369,6 +1372,9 @@ Creators author versioned physical and virtual Living Charts, aligned floor/site
 - Live hardware and outdoor GPS quality, physical assistive technology, production map tiles, production MySQL, deployment and owner acceptance require separate evidence.
 - Fine indoor/exact-object GPS is capped at likely context. Browser elevation has no authored absolute-height calibration and cannot confirm a floor. Optional hints degrade to readable fallback when unavailable.
 - Natural-landmark verification is conservative authored-view comparison, not general object recognition or camera attestation. Changed angle/light/occlusion/crowds may require fallback; fresh online regional qualification is required. Process-local signed receipts expire after 30 seconds and restart requires re-verification.
+- Watchglass, game and native evidence providers remain NOT_CONFIGURED. Trusted synthetic adapter tests prove only the scoped certification/handoff contract; three/four-source policies cannot invent provider availability and require an effective fallback when unavailable.
+- Approximate physical context supports broad WGS84 site/compact-outdoor regions only, using a rounded center and radius of at least 500 meters. Fine rooms/floors/corridors require private or intentionally public-exact geometry. Current floor/site alignment controls are north-up geographic rectangles; arbitrary rotated/affine authoring is unavailable.
+- Multi-source bundles and opaque provider receipts require fresh online verification and are never retained in the durable outbox. Physical indoor accuracy and real game/camera recognition quality remain external evidence.
 
 ### Evidence
 
@@ -1391,6 +1397,10 @@ Creators author versioned physical and virtual Living Charts, aligned floor/site
 - test: `tests/e2e/landfall-phase3-creator.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_Accepted_Capsule.md`
 - commit: `660461e11c8d8462169b17f762a7d398a4d01465`
+- test: `src/landfall/v11.test.ts`
+- test: `src/landfall/context-projection.test.ts`
+- completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md`
+- commit: `64c780a0c926ac8f78535fc43e9afc48f3b4880c`
 
 ---
 
