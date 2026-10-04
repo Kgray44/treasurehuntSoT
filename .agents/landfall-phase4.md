@@ -660,3 +660,26 @@ CDP and device.close primitives lack inherited Page action timeouts. Add
 any unverified connection remains a cleanup FAIL. The resource owner still
 terminates and verifies only its private SDK processes/ports/AVDs. Do not claim
 the unresolved run's cleanup before harvesting its receipts.
+
+Run 37171625521 at 0e7b0ef4 harvested 20 artifacts, transport cleanup PASS.
+Source builds PASS; five prior browser cases PASS. Both online cases reach
+their configured synthetic search then fail because Axe cannot parse Playwright
+CSS :visible. Nearby fails OPEN_CURRENT_JOURNAL. Correct Axe include to standard
+drawer CSS, split nearby opening stages/device index, and explicitly write its
+stage JSON (inline attachments live in HTML report, not uploaded test-results).
+Only pre-pairing fake-account failure screenshots are allowed; no code exists
+at those opening stages. Post-pairing failures remain categorical.
+
+Native run 37170724150 fails the 900-second global test timeout and produces no
+native/owner receipt. Five browser cases PASS. 69 artifacts harvested; transport
+cleanup PASS only, native cleanup UNVERIFIED. Unfiltered upload retained AVD disk
+images: artifact 11291896489, 2,958,272,025 compressed bytes, digest
+sha256:7a5941ae11e8dfd00dcbbd15b761e98188df67252e29f8e0653679a0f87b66fc.
+The bounded driver correction is committed as 6f55d41691b4d54b1cde53f7af5f0c7935261dc6.
+Current template restricts Journal Device Lab uploads to explicit native/owner
+receipts, runtime/profile JSON and test-results; excludes AVDs. Local pruning of
+the downloaded disposable AVD directory was rejected by automatic approval as
+blocked by policy. Do not retry via another tool. Retain local/remote payload and
+artifact-curation.json; no pruning/native cleanup PASS. Eventual final report
+must disclose this automatic rejection separately, alongside the earlier retained
+disconnect DB exception. Continue meaningful implementation/validation work.

@@ -205,7 +205,9 @@ jobs:
         if: always()
         with:
           name: landfall-android-radio-${{ matrix.profile }}-__CANDIDATE_SHA__
-          path: artifacts/landfall-device-lab
+          path: |
+            artifacts/landfall-device-lab
+            !artifacts/landfall-device-lab/**/avd/**
           retention-days: 14
   android-journal:
     if: __RUN_ANDROID_JOURNAL__
@@ -260,7 +262,8 @@ jobs:
         with:
           name: landfall-android-journal-${{ matrix.profile }}-__CANDIDATE_SHA__
           path: |
-            artifacts/landfall-device-lab
+            artifacts/landfall-device-lab/**/radio-owner-receipt.json
+            artifacts/landfall-device-lab/**/native-journal-pair-receipt.json
             artifacts/sounding-line/browser-runtime.json
             artifacts/sounding-line/browser-suite-profile.json
             test-results

@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type BrowserContext } from "@playwright/test";
 import { db } from "../../src/lib/db";
+import { writeFile } from "node:fs/promises";
 import { landfallFixture } from "../../src/landfall/fixtures";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import {
@@ -106,7 +107,7 @@ for (const width of [375, 1280]) {
       expect(
         (
           await new AxeBuilder({ page })
-            .include(".landfall-online-data-panel:visible")
+            .include(".journal-objects-drawer .landfall-online-data-panel")
             .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
             .analyze()
         ).violations,
@@ -233,7 +234,9 @@ test.describe("private companion exchange", () => {
         }),
       ),
     );
-    let stage = "OPEN_CURRENT_JOURNAL";
+    let stage = "OPEN_CURRENT_JOURNAL",
+      deviceIndex = 0;
+    const pages = await Promise.all(contexts.map((context) => context.newPage()));
     try {
       await Promise.all(
         contexts.map(async (context, index) => {
@@ -242,11 +245,16 @@ test.describe("private companion exchange", () => {
           await syntheticCompanion(context, index === 0 ? "AQI=" : "AwQ=");
         }),
       );
-      const pages = await Promise.all(contexts.map((context) => context.newPage()));
       for (const page of pages) {
+        deviceIndex = pages.indexOf(page);
+        stage = "OPEN_CURRENT_JOURNAL";
         await openClosureJournal(page, voyage.id);
+        stage = "OPEN_CURRENT_MAP";
         await openClosureMap(page);
-        await page.locator(".landfall-nearby-panel:visible summary").click();
+        stage = "EXPAND_NEARBY_CONTROLS";
+        const panel = page.locator(".journal-objects-drawer .landfall-nearby-panel");
+        await panel.locator("summary").click();
+        await expect(panel).toHaveAttribute("open", "");
       }
       const panels = pages.map((page) => page.locator(".landfall-nearby-panel:visible"));
       const baseline = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
@@ -330,7 +338,7 @@ test.describe("private companion exchange", () => {
       expect(
         (
           await new AxeBuilder({ page: pages[0] })
-            .include(".landfall-nearby-panel:visible")
+            .include(".journal-objects-drawer .landfall-nearby-panel")
             .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
             .analyze()
         ).violations,
@@ -356,14 +364,19 @@ test.describe("private companion exchange", () => {
         contentType: "application/json",
       });
     } catch {
+      if (["OPEN_CURRENT_JOURNAL", "OPEN_CURRENT_MAP", "EXPAND_NEARBY_CONTROLS"].includes(stage)) {
+        // No pairing request has occurred in these stages, so this fake-account
+        // fixture image cannot contain a pairing code or key.
+        const shot = testInfo.outputPath("nearby-before-pairing-failure.png");
+        await pages[deviceIndex].screenshot({ path: shot, timeout: 10000 }).catch(() => undefined);
+      }
       // Playwright action errors can include the argument passed to fill().
       // Preserve categorical failure without retaining the private pairing code.
       throw new Error(`LANDFALL_COMPANION_BROWSER_CONTRACT_FAILED:${stage}`);
     } finally {
-      await testInfo.attach("nearby-browser-stage", {
-        body: JSON.stringify({ stage }),
-        contentType: "application/json",
-      });
+      const receipt = testInfo.outputPath("nearby-browser-stage.json");
+      await writeFile(receipt, JSON.stringify({ stage, deviceIndex }));
+      await testInfo.attach("nearby-browser-stage", { path: receipt, contentType: "application/json" });
       await Promise.all(contexts.map((context) => context.close().catch(() => undefined)));
     }
   });
