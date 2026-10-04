@@ -33,7 +33,7 @@ export async function setOwnedAppleLabPosition(
       if (
         !tool ||
         tool.name === "AbortError" ||
-        tool.code === "ABORT_ERR" ||
+        tool.code != null ||
         tool.killed !== true ||
         tool.signal !== "SIGTERM"
       )

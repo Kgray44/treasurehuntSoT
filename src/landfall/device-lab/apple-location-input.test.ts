@@ -36,6 +36,8 @@ describe("bounded owned Simulator position input", () => {
   });
   it.each([
     { code: 1 },
+    { ...timeout, code: 1 },
+    { ...timeout, code: "ERR_CHILD_PROCESS_STDIO_MAXBUFFER" },
     { ...timeout, name: "AbortError" },
     { ...timeout, code: "ABORT_ERR" },
     { killed: false, signal: "SIGTERM" },
