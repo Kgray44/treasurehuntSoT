@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-03",
+  "generated_at": "2026-10-04",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -928,6 +928,12 @@
     },
     {
       "path": "Development_Docs/Governing/Voyagewright_Language_Design_Foundation.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -3484,6 +3490,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.3_Root_Maintenance_Lane_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Spatial_Experience/README.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
