@@ -74,112 +74,112 @@ No task prompt may quietly move spatial truth into Landfall because a clue is lo
 
 # Contents
 
-1. Executive Summary  
-2. Project Identity and Product Vision  
-3. Current Repository Context and Migration Boundary  
-4. Why Parallax Is a First-Class Project  
-5. Non-Negotiable Design Principles  
-6. Scope and Explicit Non-Goals  
-7. Canonical Ownership and Cross-Project Boundaries  
-8. Product Surface Architecture  
-9. Canonical Runtime Architecture  
-10. Spatial Entity Domain  
-11. Spatial Definition, Version, Instance, and Attachment Model  
-12. Coordinate Spaces and Reference Frames  
-13. Spatial Poses, Transforms, Scale, and Units  
-14. Scene Tracking and Tracking Quality  
-15. Scene Understanding and Surface Semantics  
-16. Planes, Meshes, Depth, Occlusion, and Physics  
-17. Raycasts, Hit Tests, Selection, and Placement  
-18. Anchor Taxonomy  
-19. Fixed Anchors  
-20. Calibrated Anchors  
-21. Adaptive Semantic Anchors  
-22. Adaptive Spatial Staging  
-23. Placement Policies and Sharing Scope  
-24. Deterministic Variation and Reproduction  
-25. Shared Spatial Reality  
-26. SharedSpatialScene and Anchor Authority  
-27. Late Join, Reconnect, Relocalization, and Re-Anchoring  
-28. Cross-Platform Shared Anchors and Persistence  
-29. Remote Spatial Authoring  
-30. Field Calibration and Progressive Anchor Maturity  
-31. Privacy-Safe Calibration Evidence  
-32. Chronicle Lens Product Experience  
-33. Chronicle Lens Tracking Guidance and Recovery  
-34. Physical-Digital Artifact Model  
-35. Pick Up, Carry, Place, Pin, Inspect, and Hand Off  
-36. Canonical Desk-Map Experience  
-37. Spatial Interaction Vocabulary  
-38. Trails, Writing, Reveal Layers, Portals, and Apparitions  
-39. Spatial Audio, Haptics, Lighting, Materials, and Effects  
-40. Spatial Characters and Figurehead Presence  
-41. Spatial Memory and AR Photography  
-42. Discovery Assistance Contract  
-43. Search-Time Semantics and Frustration Detection  
-44. Spatial Library  
-45. Spatial Library Item Taxonomy  
-46. Immutable Library Versioning and Chronicle Attachments  
-47. Vision Waypoint Library Relationship  
-48. Parallax Spatial Studio  
-49. Spatial Studio Information Architecture  
-50. Spatial Canvas and Direct Manipulation  
-51. Scene Graph and Layer Model  
-52. Behavior Timeline and Interaction Flow  
-53. Guided, Detailed, and Engineering Authoring  
-54. AI-Assisted Spatial Authoring  
-55. AI Critique, Safety, and Deterministic Materialization  
-56. Simulation Environments and Multi-Environment Testing  
-57. Preview Modes  
-58. Chronicle Creator Integration and Lightweight Spatial Blocks  
-59. Spatial Moment Presets and Reuse  
-60. Assets, Materials, 3D Content, and Content Pipeline  
-61. Native iOS Spatial Runtime  
-62. Native Android Spatial Runtime  
-63. Web Spatial Runtime and Graceful Capability Limits  
-64. Project Sextant Integration  
-65. Project Landfall Integration  
-66. Project Watchglass Integration  
-67. Project Crossdeck Integration  
-68. Project Storytide Integration  
-69. Project Figurehead Integration  
-70. Project One Voyage Integration  
-71. Project Wakebook Integration  
-72. Project Drydock Integration  
-73. Project Harborlight Integration  
-74. Project Sealed Hold Integration  
-75. Project Wayfarer, Helm, Lanternwake, and Homeport Integration  
-76. Permissions, Privacy, and Data Minimization  
-77. Security and Threat Model  
-78. Physical Safety and Environmental Safety  
-79. Accessibility and Inclusive Spatial Design  
-80. Offline, Weak Network, and Reconciliation  
-81. Performance, Battery, Thermal, and Quality Scaling  
-82. Telemetry, Diagnostics, and Operations  
-83. Data Model and Service Contracts  
-84. Event, Receipt, and Evidence Vocabulary  
-85. Creator Publishing and Compatibility Contracts  
-86. Device Lab Integration  
-87. Testing and Acceptance Matrix  
-88. Implementation Phases  
-89. Final Acceptance Criteria  
-90. Recommended Technical Baseline  
+1. Executive Summary
+2. Project Identity and Product Vision
+3. Current Repository Context and Migration Boundary
+4. Why Parallax Is a First-Class Project
+5. Non-Negotiable Design Principles
+6. Scope and Explicit Non-Goals
+7. Canonical Ownership and Cross-Project Boundaries
+8. Product Surface Architecture
+9. Canonical Runtime Architecture
+10. Spatial Entity Domain
+11. Spatial Definition, Version, Instance, and Attachment Model
+12. Coordinate Spaces and Reference Frames
+13. Spatial Poses, Transforms, Scale, and Units
+14. Scene Tracking and Tracking Quality
+15. Scene Understanding and Surface Semantics
+16. Planes, Meshes, Depth, Occlusion, and Physics
+17. Raycasts, Hit Tests, Selection, and Placement
+18. Anchor Taxonomy
+19. Fixed Anchors
+20. Calibrated Anchors
+21. Adaptive Semantic Anchors
+22. Adaptive Spatial Staging
+23. Placement Policies and Sharing Scope
+24. Deterministic Variation and Reproduction
+25. Shared Spatial Reality
+26. SharedSpatialScene and Anchor Authority
+27. Late Join, Reconnect, Relocalization, and Re-Anchoring
+28. Cross-Platform Shared Anchors and Persistence
+29. Remote Spatial Authoring
+30. Field Calibration and Progressive Anchor Maturity
+31. Privacy-Safe Calibration Evidence
+32. Chronicle Lens Product Experience
+33. Chronicle Lens Tracking Guidance and Recovery
+34. Physical-Digital Artifact Model
+35. Pick Up, Carry, Place, Pin, Inspect, and Hand Off
+36. Canonical Desk-Map Experience
+37. Spatial Interaction Vocabulary
+38. Trails, Writing, Reveal Layers, Portals, and Apparitions
+39. Spatial Audio, Haptics, Lighting, Materials, and Effects
+40. Spatial Characters and Figurehead Presence
+41. Spatial Memory and AR Photography
+42. Discovery Assistance Contract
+43. Search-Time Semantics and Frustration Detection
+44. Spatial Library
+45. Spatial Library Item Taxonomy
+46. Immutable Library Versioning and Chronicle Attachments
+47. Vision Waypoint Library Relationship
+48. Parallax Spatial Studio
+49. Spatial Studio Information Architecture
+50. Spatial Canvas and Direct Manipulation
+51. Scene Graph and Layer Model
+52. Behavior Timeline and Interaction Flow
+53. Guided, Detailed, and Engineering Authoring
+54. AI-Assisted Spatial Authoring
+55. AI Critique, Safety, and Deterministic Materialization
+56. Simulation Environments and Multi-Environment Testing
+57. Preview Modes
+58. Chronicle Creator Integration and Lightweight Spatial Blocks
+59. Spatial Moment Presets and Reuse
+60. Assets, Materials, 3D Content, and Content Pipeline
+61. Native iOS Spatial Runtime
+62. Native Android Spatial Runtime
+63. Web Spatial Runtime and Graceful Capability Limits
+64. Project Sextant Integration
+65. Project Landfall Integration
+66. Project Watchglass Integration
+67. Project Crossdeck Integration
+68. Project Storytide Integration
+69. Project Figurehead Integration
+70. Project One Voyage Integration
+71. Project Wakebook Integration
+72. Project Drydock Integration
+73. Project Harborlight Integration
+74. Project Sealed Hold Integration
+75. Project Wayfarer, Helm, Lanternwake, and Homeport Integration
+76. Permissions, Privacy, and Data Minimization
+77. Security and Threat Model
+78. Physical Safety and Environmental Safety
+79. Accessibility and Inclusive Spatial Design
+80. Offline, Weak Network, and Reconciliation
+81. Performance, Battery, Thermal, and Quality Scaling
+82. Telemetry, Diagnostics, and Operations
+83. Data Model and Service Contracts
+84. Event, Receipt, and Evidence Vocabulary
+85. Creator Publishing and Compatibility Contracts
+86. Device Lab Integration
+87. Testing and Acceptance Matrix
+88. Implementation Phases
+89. Final Acceptance Criteria
+90. Recommended Technical Baseline
 91. Governance and Change Control  
-Appendix A. Spatial Entity Schema  
-Appendix B. Anchor and Placement Policy Catalog  
-Appendix C. Spatial Moment Catalog  
-Appendix D. Spatial Library Taxonomy  
-Appendix E. Discovery Assistance Profiles  
-Appendix F. Shared Spatial Reality Invariants  
-Appendix G. Creator Studio / Spatial Studio UX Requirements  
-Appendix H. Device Lab Scenario Catalog  
-Appendix I. Threat and Privacy Checklist  
-Appendix J. Accessibility Checklist  
-Appendix K. Canonical Scenario Narratives  
-Appendix L. Cross-Project Ownership Matrix  
-Appendix M. Glossary  
-References  
-Final Governing Rule
+    Appendix A. Spatial Entity Schema  
+    Appendix B. Anchor and Placement Policy Catalog  
+    Appendix C. Spatial Moment Catalog  
+    Appendix D. Spatial Library Taxonomy  
+    Appendix E. Discovery Assistance Profiles  
+    Appendix F. Shared Spatial Reality Invariants  
+    Appendix G. Creator Studio / Spatial Studio UX Requirements  
+    Appendix H. Device Lab Scenario Catalog  
+    Appendix I. Threat and Privacy Checklist  
+    Appendix J. Accessibility Checklist  
+    Appendix K. Canonical Scenario Narratives  
+    Appendix L. Cross-Project Ownership Matrix  
+    Appendix M. Glossary  
+    References  
+    Final Governing Rule
 
 \newpage
 
@@ -1246,7 +1246,7 @@ Manual 3D placement must have alternatives such as:
 
 - semantic auto-place;
 - list of candidate surfaces;
-- “place on nearest table”; 
+- “place on nearest table”;
 - guided 2D selection;
 - Captain/Creator configured fallback.
 
@@ -1375,7 +1375,7 @@ Changes to a published anchor recipe create a new spatial definition version unl
 
 Adaptive semantic anchors are one of Parallax's defining capabilities.
 
-They allow a Creator to author *where something belongs conceptually* rather than where it exists numerically.
+They allow a Creator to author _where something belongs conceptually_ rather than where it exists numerically.
 
 ## 21.1 Canonical intent fields
 
@@ -3009,7 +3009,7 @@ Parallax needs a visual way to understand spatial behavior without pretending to
 
 ## 52.1 Timeline purpose
 
-The Parallax timeline describes *spatial state changes and interactions*.
+The Parallax timeline describes _spatial state changes and interactions_.
 
 Example:
 
@@ -4698,6 +4698,7 @@ Real walkthroughs with:
 Project Parallax is a six-phase program. Each phase must be independently acceptable into protected `main` and must leave a coherent product plateau if the next phase never occurs.
 
 ## Phase 1 - **Establish the Frame**
+
 ### Spatial Domain, Runtime Foundation, Chronicle Lens Core, Fixed Anchors, and Local Placement
 
 Build:
@@ -4720,6 +4721,7 @@ Build:
 **Mainline gate:** a published synthetic Chronicle can invoke a version-pinned Spatial Moment, resolve a local/fixed anchor on supported runtime or truthful fallback, interact, and produce a typed nonauthoritative receipt without creating competing progression truth.
 
 ## Phase 2 - **Open the Spatial Studio**
+
 ### Full Spatial Authoring Workspace, Spatial Library, Progressive Disclosure, AI-Assisted Authoring, and Chronicle Integration
 
 Build:
@@ -4746,6 +4748,7 @@ Build:
 **Mainline gate:** an ordinary Creator can build, preview, validate, save to library, version, attach, publish, and reopen a useful spatial experience without using engineering controls or stuffing configuration into the Chronicle block sidebar.
 
 ## Phase 3 - **Let the World Adapt**
+
 ### Semantic Anchors, Adaptive Spatial Staging, Remote Authoring, Field Calibration, and Discovery Assistance
 
 Build:
@@ -4769,6 +4772,7 @@ Build:
 **Mainline gate:** a Creator who has never visited a target environment can publish an adaptive spatial experience that successfully stages in multiple real/simulated environments, remains replay-variable by policy, cannot strand a Player indefinitely, and can optionally be improved through consented person-free field calibration.
 
 ## Phase 4 - **Share the Reality**
+
 ### Crew-Shared Spatial Scenes, Crossdeck Integration, Persistent/Shared Anchors, Late Join, Reconnect, and Cross-Platform Resolution
 
 Prerequisite: sufficient Crossdeck governance/implementation exists for required multi-surface/participant semantics.
@@ -4793,6 +4797,7 @@ Build:
 **Mainline gate:** multiple Players in one Voyage can independently point their devices at the same environment and see the same logical object in the same authoritative place, including late join and recovery, without per-device reroll.
 
 ## Phase 5 - **Make the World Respond**
+
 ### Physical-Digital Artifacts, Rich Spatial Effects, Figurehead/Watchglass Integration, Spatial Memories, and High-Fidelity Presentation
 
 Build:
@@ -4818,6 +4823,7 @@ Build:
 **Mainline gate:** Parallax can deliver the flagship physical-digital artifact and real/virtual blended experiences - including the desk-map reference scenario - with truthful fallback, archive capture, and no ownership duplication.
 
 ## Phase 6 - **Prove the Illusion**
+
 ### Privacy, Security, Accessibility, Performance, Device Lab, Field Qualification, Operations, and Program Closure
 
 Complete:
