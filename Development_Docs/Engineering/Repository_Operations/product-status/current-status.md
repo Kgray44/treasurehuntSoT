@@ -21,19 +21,17 @@ Journal pairing each pass actual reports on both devices, native stop and cleanu
 An actual signed first-party notice tap reauthorizes and returns to the current
 Journal. First-party native pairing passes with reports on both devices, verified
 stop and zero progression writes.
-Cold authenticated
-revoked-membership notice return still requires acceptance. Broad regression passes
+Actual cold revoked-membership notice return now passes on both corrected phone
+profiles, with signed-in Library landing, native clear, zero progression writes
+and cleanup. Broad regression passes
 2,687 unit tests in474files on clean fb92d113 with fresh isolated SQLite,159 provider
 scenarios on each of Windows and Linux,53 retained
 Phase1–4 browser journeys and80 Android cases across four profiles. Apple primary
 and compatibility profiles each pass all eight scenarios; tablet restart passes
 separately with restored leases and one canonical event. The final three-profile
-source-bound matrix and cold return remain pending. Latest full background execution
-now proves real notices, active Journal returns and boot registration on both
-corrected phone profiles. The corrected server now classifies both actual revoked
-notice returns as unavailable access. The full test failed because it expected
-the intermediate Player landing URL instead of the existing signed-in Library
-redirect; the corrected complete flow is being rechecked. Actual iOS Simulator
+source-bound matrix remains pending. Full background run37214774366 onfb92d113
+proves real notices, active Journal returns, same-guest reboot, boot registration
+and freshly denied Voyage access on both corrected phone profiles. Actual iOS Simulator
 region monitoring is also being exercised with OS location inputs and real
 background/foreground transitions; its capability and wake result remain pending.
 Separate direct

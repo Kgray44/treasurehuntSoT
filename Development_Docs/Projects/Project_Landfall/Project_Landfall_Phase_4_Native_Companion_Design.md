@@ -15,14 +15,22 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Acquisition and authority
 
-Android signed-notice run37213441278 on ff297bda observes `RETURNED` then
-`UNAVAILABLE` on both correctly provisioned primary and low-resource profiles,
-after actual active notice, same-guest reboot, BootReceiver registration and
-a second actual notice after membership removal. Cleanup passes. The full
-scenario still fails because it expects final `/player` navigation, while
-the existing signed-in Player landing redirects to `/player/library`.
-The final-destination assertion is corrected; complete notice-flow recheck
-remains pending. This does not turn the retained failed receipt into a pass.
+Android signed-notice run37214774366 on fb92d113 passes the complete flow on both
+correctly provisioned primary and low-resource profiles: actual active notice
+and current Journal return, same-guest reboot with preserved AVD/changed boot
+identity, BootReceiver GRANTED, second actual notice after membership removal,
+fresh server `UNAVAILABLE`, signed-in Library landing, native clear, canonical0
+and cleanupPASS. Both source bindings remain unchanged. The preceding ff297bda
+run37213441278 already corrected authorization but failed a mistaken intermediate
+`/player` URL assertion; it remains a failed historical receipt.
+
+Measured active returns are45.877s primary/18.264s low-resource; revoked returns
+are15.761s/10.893s. PSS maxima are107,234/124,389KiB. The preliminary60s-return,
+512MiB-PSS and50-percent-native-parent-CPU bounds pass. Native parent CPU ranges
+0.917–12.851percent across15s intervals. Whole-guest active CPU is also reported
+(9.718–86.011percent) and includes other guest work; WebView renderer CPU is not
+separately attributed. These are bounded virtual-guest measurements, not physical
+battery, thermal, field latency or complete application-CPU qualification.
 
 Focused cold-session diagnostic37214139225 on7cf6ea34 retains the correct
 existing cookie and eligible canonical account but fails on a closed WebView
