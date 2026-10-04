@@ -18,8 +18,11 @@ distribution, production origin and physical qualification remain external.
 Its complete hosted run37219804462 passes browser, both provider hosts, both
 native Journal pairs, both signed notice/reboot jobs and Android primary,
 low-resource and tablet jobs. Compatibility fails after a measured successful
-guest reboot; primary radio fails UWB capability preparation. Focused diagnostic
-rechecks remain required. Three iOS profile jobs are still running. All original
+guest reboot; primary radio fails UWB capability preparation. Full sequence
+rechecks on01bab29b pass20/20compatibility cases and4/4radio cases on both profiles,
+with successful harvest and cleanup. Original failures remain retained;
+diagnostic-only revisions do not establish a deterministic root cause.
+Three iOS profile jobs are still running. All original
 source bindings and failed receipts are retained; no protected qualification,
 merge or catalog promotion has occurred.
 

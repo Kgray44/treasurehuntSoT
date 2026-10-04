@@ -24,10 +24,16 @@ inspection. Full hosted37219804462 passes browser, Windows/Linux providers,
 both native Journal pairs, both signed notice/reboot jobs and Android primary,
 low-resource and tablet scenarios. Compatibility fails after its successful
 20,828ms reboot; primary UWB fails capability preparation on the second guest.
-Focused rechecks now expose finite post-reboot stages and distinct missing
+Diagnostic-only revisions expose finite post-reboot stages and distinct missing
 capability/config/channel/preamble/rate categories without exporting raw output.
-Three iOS profile matrices remain running. Historical results below are retained
-under their original source; they do not override the frozen failures.
+Full sequence rechecks on clean01bab29b pass20/20compatibility cases plus12native
+instrumentation tests (run37221706364, harvest249), and4/4radio cases on each
+primary/low-resource profile (run37221708792, harvest42). Both transports clean
+up successfully. UWB observes actual untrusted ranges, native stop, canonical0
+and cleanupPASS. Thus80Android profile scenarios and eight radio profile cases
+have passing retained evidence. The original frozen run's two failed cases remain
+failed; no deterministic root cause or behavioral correction is claimed from
+diagnostic-only rechecks. Three iOS profile matrices remain running.
 
 The diagnostic revision changes no application, unit, dependency, schema or native
 iOS input tree. The shared executor delta affects only Android reboot stage

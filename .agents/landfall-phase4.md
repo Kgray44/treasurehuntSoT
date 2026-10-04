@@ -7,6 +7,17 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Source-bound starting context
 
+Full diagnostic sequence rechecks PASS on clean01bab29b: compatibility
+37221706364 passes20/20scenarios and12native instrumentation tests, harvest249;
+radio37221708792 passes4/4cases on each primary/low profile, harvest42. Both
+transports cleanupPASS. Original frozen two failures remain historical failures,
+without invented deterministic root cause. Only full iOS3profile matrices remain
+an open native acceptance gate. OriginalC8 completed-job interim transfer verifies
+159provider cases per host, both actual Journal pairs (allHTTP200/reports/stop/
+canonical0), both registered signed-notice flows with fresh denial after revoked
+membership, source unchanged and cleanupPASS. Exact artifacts remain ignored and
+owned; final ordinary qualification, protected merge and closure are still open.
+
 Focused diagnostic rechecks37221136835 (primary UWB onbf45d720) and37221237872
 (compatibility reboot on4daeeef8) PASS, harvested12/19artifacts with transport
 cleanupPASS. Both UWB guests expose actual CAPABILITIES_READY, untrusted ranges,
