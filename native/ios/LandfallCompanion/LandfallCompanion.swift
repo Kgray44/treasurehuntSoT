@@ -16,7 +16,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private var foreground = true
     private var acquiring = false
     private var locationIntervalMs = 5000
-    private var lastLocationAt = 0.0
+    private lazy var locationThrottle = LandfallLocationThrottle(
+        intervalMs: { [weak self] in Double(self?.locationIntervalMs ?? 5000) },
+        deliver: { [weak self] sample in self?.forwardLocation(sample) })
     private var locationCallbacks = 0
     private var forwardedFixes = 0
     private var systemLocationPaused = false
@@ -118,7 +120,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             let interval = payload["intervalMs"] as? Int ?? 5000
             guard foreground, !power.critical, payload["background"] as? Bool != true, (1000...60000).contains(interval), ["GRANTED", "APPROXIMATE"].contains(permission()) else { replyHandler(["accepted": false], nil); return }
             requestedIntervalMs = interval; requestedPrecise = payload["precise"] as? Bool == true
-            configureLocationPower(); lastLocationAt = 0; systemLocationPaused = false; locationFailure = "NONE"
+            stopLocation(); configureLocationPower(); locationThrottle.start(); systemLocationPaused = false; locationFailure = "NONE"
             location.allowsBackgroundLocationUpdates = false
             location.pausesLocationUpdatesAutomatically = true
             acquiring = true; location.startUpdatingLocation(); replyHandler(["accepted": true], nil)
@@ -170,18 +172,17 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         locationCallbacks = min(100000,locationCallbacks + locations.count)
         guard foreground, acquiring, ["GRANTED", "APPROXIMATE"].contains(permission()) else { return }
-        for sample in locations.suffix(4) where sample.horizontalAccuracy > 0 {
-            let timestamp = sample.timestamp.timeIntervalSince1970 * 1000
-            guard timestamp > lastLocationAt, timestamp - lastLocationAt >= Double(locationIntervalMs) else { continue }
-            lastLocationAt = timestamp
-            systemLocationPaused=false; locationFailure="NONE"
-            var fix: [String: Any] = ["id": UUID().uuidString, "timestamp": Int(sample.timestamp.timeIntervalSince1970 * 1000), "latitude": sample.coordinate.latitude, "longitude": sample.coordinate.longitude, "accuracyMeters": sample.horizontalAccuracy]
-            if sample.course >= 0 { fix["headingDegrees"] = sample.course }
-            if sample.speed >= 0 { fix["speedMetersPerSecond"] = sample.speed }
-            if sample.verticalAccuracy > 0 { fix["altitudeMeters"] = sample.altitude; fix["altitudeAccuracyMeters"] = sample.verticalAccuracy }
-            forwardedFixes = min(100000,forwardedFixes + 1)
-            event(["type": "fix", "fix": fix])
-        }
+        for sample in locations.suffix(4) { locationThrottle.receive(sample) }
+    }
+    private func forwardLocation(_ sample: CLLocation) {
+        guard foreground, acquiring, ["GRANTED", "APPROXIMATE"].contains(permission()) else { return }
+        systemLocationPaused=false; locationFailure="NONE"
+        var fix: [String: Any] = ["id": UUID().uuidString, "timestamp": Int(sample.timestamp.timeIntervalSince1970 * 1000), "latitude": sample.coordinate.latitude, "longitude": sample.coordinate.longitude, "accuracyMeters": sample.horizontalAccuracy]
+        if sample.course >= 0 { fix["headingDegrees"] = sample.course }
+        if sample.speed >= 0 { fix["speedMetersPerSecond"] = sample.speed }
+        if sample.verticalAccuracy > 0 { fix["altitudeMeters"] = sample.altitude; fix["altitudeAccuracyMeters"] = sample.verticalAccuracy }
+        forwardedFixes = min(100000,forwardedFixes + 1)
+        event(["type": "fix", "fix": fix])
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if let value = error as? CLError, value.code == .locationUnknown { locationFailure="LOCATION_UNKNOWN";return }
@@ -259,7 +260,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     }
     func locationManager(_ manager: CLLocationManager, didUpdateHeading heading: CLHeading) { if heading.headingAccuracy>=0 { sensor("HEADING", [heading.magneticHeading], accuracy: heading.headingAccuracy) } }
     private func sensor(_ kind: String, _ values: [Double], accuracy: Double) { guard foreground else { return }; event(["type": "sensor", "frame": ["id": UUID().uuidString, "observedAt": Int(Date().timeIntervalSince1970*1000), "kind": kind, "values": values, "accuracy": accuracy]]) }
-    private func stopLocation() { acquiring=false; location.stopUpdatingLocation() }
+    private func stopLocation() { acquiring=false; locationThrottle.stop(); location.stopUpdatingLocation() }
     private func configureLocationPower() {
         locationIntervalMs = power.interval(requestedIntervalMs)
         location.desiredAccuracy = requestedPrecise && !power.constrained && location.accuracyAuthorization == .fullAccuracy ? kCLLocationAccuracyBest : kCLLocationAccuracyHundredMeters

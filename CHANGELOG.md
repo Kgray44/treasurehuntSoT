@@ -14,6 +14,11 @@ last_reviewed: 2026-10-04
 
 ### Added
 
+- Native iOS location throttling retains one latest transient fix for delivery
+  at the requested interval, preserving its observation time. Stop, suspension,
+  revocation and restart clear pending work; stale, future and invalid fixes
+  cannot replace a current observation.
+
 - Restored Journal drawer Escape handling when authenticated reading-state
   restoration finishes after session loading. Closing the drawer returns focus
   to its opening control; the delayed-restore regression test now covers that race.

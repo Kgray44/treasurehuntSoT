@@ -632,13 +632,15 @@ export async function executeLandfallOsScenario(
             while (Date.now() - startedAt < budgetMs) {
               if (target === "android-emulator")
                 await adb(["emu", "geo", "fix", "-72", phase === "OUTSIDE_BASELINE" ? "44.02" : "44"]);
-              else
+              // simctl set holds its documented OS location until replaced.
+              // Repeating the same fixed input adds tool processes, not fixes.
+              else if (injections === 0)
                 await labTool(
                   "xcrun",
                   ["simctl", "location", ownedDevice!, "set", `${phase === "OUTSIDE_BASELINE" ? "44.02" : "44"},-72`],
                   60000,
                 );
-              injections++;
+              if (target === "android-emulator" || injections === 0) injections++;
               await new Promise((resolve) => setTimeout(resolve, 5000));
             }
             geofenceControls.push({ index, phase, injections, elapsedMs: Date.now() - startedAt, budgetMs });

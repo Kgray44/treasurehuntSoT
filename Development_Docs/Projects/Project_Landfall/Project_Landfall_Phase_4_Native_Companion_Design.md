@@ -15,6 +15,26 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Acquisition and authority
 
+Frozen37219804462 Apple primary passes8/9cases and compatibility7/9cases.
+Primary region testing fails actual background observation; compatibility region
+input encounters a killed simctl call, and offline restart fails its second fix.
+That fix's native diagnostics show two callbacks but one forwarded fix: the old
+source-timestamp throttle discarded the final callback within its interval, while
+76identical OS inputs produced no additional delivery. Native iOS now retains one
+latest transient fix, schedules by monotonic delivery time and preserves the real
+observation timestamp. Stop/restart, revocation and suspension invalidate queued
+work; the shared30-second freshness/one-second future bounds also apply at delivery.
+Four XCTest regressions cover final delivery without another callback, replacement,
+stop/restart, stale/future/invalid/out-of-order samples and power-interval changes.
+Native compile/test and actual focused OS rechecks remain required.
+
+The UI driver observes either actual background state in one15-second predicate
+window instead of sequential three-second waits for two mutually changing states.
+It presses Home once and cannot synthesize a lifecycle event. Region input sets
+each persistent documented Simulator location once, retains both180-second waits
+and requires actual encrypted delegate-delivered hints on foreground return.
+Android FLP delivery and the390-second overall action bound are preserved.
+
 Focused iOS37218201954 on clean d2add7a1 passes all ten region-wake steps:
 delegate-confirmed Core Location monitoring, actual background/foreground,
 documented outside/inside OS inputs, encrypted delivered hints, removal,

@@ -7,6 +7,18 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Source-bound starting context
 
+Apple frozen37219804462 primary8/9 and compatibility7/9: primary background
+observation FAIL, compatibility simctl killed during region input, and offline
+restart's second fix times out. Actual compatibility diagnostics show native
+callbacks2/forwarded1 while76identical OS inputs produce no new fix. Correct the
+native drop-only throttle with one latest transient coalesced fix and four XCTest
+regressions; preserve timestamp, freshness, consent and generation cancellation.
+UI driver now observes either actual background state in one15-second predicate,
+and Simulator region input sets each held location once while retaining both180s
+waits and mandatory encrypted wake-hint assertions. Current TS/lint pass; actual
+native compile/tests and focused rechecks required. Original tablet still runs.
+No protected qualification or closure. All earlier original-source failures stay.
+
 Full diagnostic sequence rechecks PASS on clean01bab29b: compatibility
 37221706364 passes20/20scenarios and12native instrumentation tests, harvest249;
 radio37221708792 passes4/4cases on each primary/low profile, harvest42. Both

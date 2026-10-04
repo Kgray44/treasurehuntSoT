@@ -2,13 +2,17 @@ import XCTest
 import Foundation
 
 final class NativeLifecycleTests: XCTestCase {
+    @MainActor private func observedBackground(_ app: XCUIApplication) -> Bool {
+        let eitherState=NSPredicate { _, _ in app.state == .runningBackground || app.state == .runningBackgroundSuspended }
+        return XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:eitherState,object:app)],timeout:15) == .completed
+    }
     @MainActor func testUnconfiguredShellReturnsFromHome() throws {
         let app = XCUIApplication()
         app.launch()
         let shell = app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "Landfall companion is not configured")).firstMatch
         XCTAssertTrue(shell.waitForExistence(timeout: 10), "LANDFALL_INITIAL_SHELL_UNAVAILABLE")
         XCUIDevice.shared.press(.home)
-        XCTAssertTrue(app.wait(for: .runningBackground, timeout: 3) || app.wait(for: .runningBackgroundSuspended, timeout: 3), "LANDFALL_HOME_BACKGROUND_UNOBSERVED")
+        XCTAssertTrue(observedBackground(app), "LANDFALL_HOME_BACKGROUND_UNOBSERVED")
         app.activate()
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10), "LANDFALL_FOREGROUND_RETURN_UNOBSERVED")
         XCTAssertTrue(shell.waitForExistence(timeout: 10), "LANDFALL_RETURNED_SHELL_UNAVAILABLE")
@@ -37,7 +41,7 @@ final class NativeLifecycleTests: XCTestCase {
                   action["type"] as? String == "LIFECYCLE", let state = action["state"] as? String else { throw NSError(domain: "LandfallLab", code: 1) }
             var result = "PASS"
             if state == "FOREGROUND" { app.activate(); if !app.wait(for: .runningForeground, timeout: 10) { result="FAIL" } }
-            else if state == "BACKGROUND" { XCUIDevice.shared.press(.home); if !app.wait(for: .runningBackground, timeout: 3) && !app.wait(for: .runningBackgroundSuspended, timeout: 3) { result="FAIL" } }
+            else if state == "BACKGROUND" { XCUIDevice.shared.press(.home); if !observedBackground(app) { result="FAIL" } }
             else if state == "TERMINATED" { app.terminate(); if !app.wait(for: .notRunning, timeout: 10) { result="FAIL" } }
             else if state == "RELAUNCH" { app.terminate(); app.launch(); if !app.wait(for: .runningForeground, timeout: 10) { result="FAIL" } }
             else { result="UNSUPPORTED" }
