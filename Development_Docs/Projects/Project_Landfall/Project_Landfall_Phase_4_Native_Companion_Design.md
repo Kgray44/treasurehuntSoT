@@ -15,6 +15,20 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Acquisition and authority
 
+Android signed-notice run37213441278 on ff297bda observes `RETURNED` then
+`UNAVAILABLE` on both correctly provisioned primary and low-resource profiles,
+after actual active notice, same-guest reboot, BootReceiver registration and
+a second actual notice after membership removal. Cleanup passes. The full
+scenario still fails because it expects final `/player` navigation, while
+the existing signed-in Player landing redirects to `/player/library`.
+The final-destination assertion is corrected; complete notice-flow recheck
+remains pending. This does not turn the retained failed receipt into a pass.
+
+Focused cold-session diagnostic37214139225 on7cf6ea34 retains the correct
+existing cookie and eligible canonical account but fails on a closed WebView
+at `DIAGNOSTIC_COLD_ATTACH` before any authorization request. It is diagnostic
+only and supplies no notice or wake qualification.
+
 iOS region registration waits for Core Location's `didStartMonitoringFor`
 confirmation. A failed or ten-second-unconfirmed request removes its consent
 and returns `UNAVAILABLE`; clear and permission revocation resolve pending

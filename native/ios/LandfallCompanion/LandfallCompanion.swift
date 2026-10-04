@@ -161,6 +161,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         if manager.authorizationStatus != .notDetermined { permissionReply?(["state": permission()], nil); permissionReply = nil }
         if !["GRANTED", "APPROXIMATE"].contains(permission()) { stopLocation(); clearGeofences() }
+        else if manager.authorizationStatus != .authorizedAlways { clearGeofences() }
         event(["type": "permission", "state": permission()])
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

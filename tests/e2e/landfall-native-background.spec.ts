@@ -840,7 +840,9 @@ test(backgroundCaseName, async ({ baseURL }) => {
         }
         expect(coldOutcomes).toContain("UNAVAILABLE");
         await returned.waitForFunction(() => Boolean(window.LandfallNative), undefined, { timeout: 15000 });
-        await expect.poll(() => new URL(returned.url()).pathname, { timeout: 45000 }).toBe("/player");
+        // The return route selects /player; its canonical signed-in landing
+        // immediately redirects to /player/library. Observe the final page.
+        await expect.poll(() => new URL(returned.url()).pathname, { timeout: 45000 }).toBe("/player/library");
         revokedReturn = true;
         measurements.push({
           stage: "REVOKED_NOTICE_RETURN_AFTER_REBOOT",
