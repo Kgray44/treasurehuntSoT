@@ -86,8 +86,11 @@ Primary batch90ef2d75, run37232748824, finishesFAIL atpresentationbuild:
 neitherrestart nornoticeexecutes. Actualhierarchy/video/eventrecords show both
 taps attextcenter162.17/422.17 andSettingsstillAccessibility. Current control
 tapsactualuniqueMOTION_TITLErow trailinggap outside nestedtextbutton.
-Rechecka37ff45d, run37233941482, dispatchhosted-a37ff45d8d4f-1791147300296,
-combines presentationbuild+restart/notice. No duplicate noticejob. Stillmandatory
+Rechecka37ff45d, run37233941482, finishesFAIL18/1/1,4510hashes/cleanupPASS;
+actualtouch320.3/328.83 landscorrectrowgap butAccessibilityremains.
+Currente97c3713 run37234626584, dispatchhosted-e97c3713b0f9-1791147896514,
+addsnativeSettingssearchforuniqueReduceMotionresult ifobservedrowdoesnotnavigate.
+It combines presentationbuild+restart/notice. No duplicate noticejob. Stillmandatory
 Motionpage/settingreadback/restore andactualnativeforeground/client/canonical.
 Exact90trackedarchiveprivacy0/6, SHA256
 af945a740bed7a4027927c2ed1d98d08150445805664ede1d24bbe0d4dca7662.

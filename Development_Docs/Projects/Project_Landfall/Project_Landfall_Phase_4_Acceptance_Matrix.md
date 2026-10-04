@@ -28,7 +28,7 @@ one `MOTION_TITLE` cell with a nested text button; both real taps target the tex
 center and leave Accessibility open. Current control taps the unique actual row's
 trailing gap and still requires the observed Motion page plus setting readback and
 restoration. This remains an unaccepted control hypothesis until actual execution.
-Focused primary recheck **37233941482 on `a37ff45d`** is active with the same
+Focused primary recheck **37233941482 on `a37ff45d`** retains the same
 mandatory build and two scenarios. Exact `90ef2d75` tracked-source privacy scan
 passes zero violations across six classifications; the archive hash is
 `af945a740bed7a4027927c2ed1d98d08150445805664ede1d24bbe0d4dca7662`.
@@ -39,6 +39,8 @@ yet Accessibility remained open. Current bounded UI additionally returns to
 Settings and uses its own unique Reduce Motion search result. It must still
 observe the Motion page and enable/read back/restore the actual switch; neither
 search-result presence nor a synthesized tap is acceptance.
+The current focused batch **37234626584 on `e97c3713`** executes this alternative
+native search route with all presentation, restart and notice gates intact.
 
 Current clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
 owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting
