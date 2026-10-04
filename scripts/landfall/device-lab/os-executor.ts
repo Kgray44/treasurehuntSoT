@@ -359,6 +359,7 @@ export async function executeLandfallOsScenario(
             "buttonTitleCount",
             "openButtonCount",
             "tapAttempts",
+            "holdAttempts",
             "combinedCardCount",
             "staticTitleCount",
             "noticeContentButtonCount",

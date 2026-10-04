@@ -161,23 +161,28 @@ final class NativeLifecycleTests: XCTestCase {
                     else if cards.firstMatch.waitForExistence(timeout:5),cards.count == 1 {notice=cards.firstMatch;initialTarget="COMBINED_CARD"}
                     keepNoticeUi(springboard,"Owned notice before tap")
                     var tapped=false,foregroundObserved=false
-                    var tapAttempts=0
+                    var tapAttempts=0,holdAttempts=0
                     if let notice=notice,notice.isHittable {
                         notice.tap();tapped=true;tapAttempts=1
-                        // A collapsed notification can consume the first tap to
-                        // expand. A second real tap is allowed only while the
-                        // same unique public notice is still visible/hittable.
+                        // The retained screen shows the first tap expanding the
+                        // list. Use Apple's public touch-and-hold preview route
+                        // on the same uniquely identified owned notification.
                         if !app.wait(for:.runningForeground,timeout:5) {
                             keepNoticeUi(springboard,"Owned notice after first tap")
-                            if contentButtons.count == 1,contentButtons.firstMatch.isHittable {contentButtons.firstMatch.tap();tapAttempts=2}
-                            else if text.count == 1,text.firstMatch.isHittable {text.firstMatch.tap();tapAttempts=2}
-                            else if openButtons.count == 1,openButtons.firstMatch.isHittable {openButtons.firstMatch.tap();tapAttempts=2}
+                            if contentButtons.count == 1,contentButtons.firstMatch.isHittable {
+                                contentButtons.firstMatch.press(forDuration:1.2);holdAttempts=1
+                                keepNoticeUi(springboard,"Owned notice after public touch and hold")
+                                // Requery the actual public preview, rather than
+                                // retaining the now-moved short-look hit target.
+                                if text.firstMatch.waitForExistence(timeout:5),text.count == 1,text.firstMatch.isHittable {text.firstMatch.tap();tapAttempts=2}
+                                else if contentButtons.count == 1,contentButtons.firstMatch.isHittable {contentButtons.firstMatch.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.7)).tap();tapAttempts=2}
+                            }
                         }
                         foregroundObserved=app.wait(for:.runningForeground,timeout:15)
                         if foregroundObserved {result="PASS"}
                     }
                     keepNoticeUi(springboard,"Owned notice after bounded taps")
-                    noticeDiagnostic=["initialTarget":initialTarget,"noticeContentButtonCount":min(contentButtons.count,64),"buttonTitleCount":min(buttons.count,64),"openButtonCount":min(openButtons.count,64),"tapAttempts":tapAttempts,"combinedCardCount":min(cards.count,64),"staticTitleCount":min(text.count,64),"tapped":tapped,"foregroundObserved":foregroundObserved]
+                    noticeDiagnostic=["initialTarget":initialTarget,"noticeContentButtonCount":min(contentButtons.count,64),"buttonTitleCount":min(buttons.count,64),"openButtonCount":min(openButtons.count,64),"tapAttempts":tapAttempts,"holdAttempts":holdAttempts,"combinedCardCount":min(cards.count,64),"staticTitleCount":min(text.count,64),"tapped":tapped,"foregroundObserved":foregroundObserved]
                 }
                 try await post(origin,"/lab/os/result",["index":index,"state":result,"noticeUi":noticeDiagnostic])
                 continue
