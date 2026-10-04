@@ -13,7 +13,7 @@ import { labBinaryTool, labTool } from "../../scripts/landfall/device-lab/host";
 import { runLandfallAndroidRadioLab } from "../../scripts/landfall/device-lab/android-radio-run";
 import { deviceLabSourceIdentity } from "../../scripts/landfall/device-lab/source";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
-import { closureAccount, closureVoyage, openClosureJournal, openClosureMap } from "./fixtures/landfall-closure";
+import { closureAccount, closureVoyage, openClosureMap } from "./fixtures/landfall-closure";
 
 test.describe.configure({ timeout: 900_000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
@@ -85,10 +85,32 @@ test("real native Journal pairing returns untrusted hints and background clears 
       let reports: number[] = [];
       let nativeStopObserved = false;
       let stage = "DEVICE_PREFLIGHT";
+      let deviceIndex: number | null = null;
+      let journalResponseStatus: number | null = null;
+      let failureKind: string | null = null;
+      const nativePageErrors = new Set<string>();
+      let failedFirstPartyRequests = 0;
+      let failedPageState: {
+        closed: boolean;
+        journalPath: boolean;
+        loginPath: boolean;
+        readyState?: string;
+        nativeBridgeAvailable?: boolean;
+        toolsVisible?: boolean;
+        openingVisible?: boolean;
+      } | null = null;
+      const journalStates: {
+        deviceIndex: number;
+        status: number | null;
+        shellVisible: boolean;
+        nativeBridgeAvailable: boolean;
+        authRedirect: boolean;
+      }[] = [];
       const adb = (serial: string, args: string[]) =>
         labTool(resources.adbPath, ["-P", String(resources.adbPort), "-s", serial, ...args], 15000);
       try {
         for (const serial of resources.serials) {
+          deviceIndex = resources.serials.indexOf(serial);
           if (resources.signal.aborted) throw new Error("LANDFALL_NATIVE_NEARBY_CANCELLED");
           const sizes = [
             ...(await adb(serial, ["shell", "wm", "size"])).matchAll(/(?:Physical|Override) size:\s*(\d+)x(\d+)/g),
@@ -143,6 +165,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
         );
         stage = "OPEN_AUTHORIZED_JOURNALS";
         for (const serial of resources.serials) {
+          deviceIndex = resources.serials.indexOf(serial);
           const device = devices.find((item) => item.serial() === serial);
           if (!device) throw new Error("LANDFALL_NATIVE_NEARBY_DEVICE_MISSING");
           stage = "CONNECT_NATIVE_WEBVIEW";
@@ -150,6 +173,14 @@ test("real native Journal pairing returns untrusted hints and background clears 
           stage = "CONNECT_NATIVE_PAGE";
           const page = await boundedDriver(view.page(), resources.signal);
           pages.push(page);
+          page.on("pageerror", (error) =>
+            nativePageErrors.add(
+              ["TypeError", "ReferenceError", "SyntaxError", "RangeError"].includes(error.name) ? error.name : "OTHER",
+            ),
+          );
+          page.on("requestfailed", (request) => {
+            if (new URL(request.url()).origin === origin.origin) failedFirstPartyRequests++;
+          });
           page.setDefaultTimeout(10000);
           page.setDefaultNavigationTimeout(45000);
           stage = "CREATE_NATIVE_CDP_SESSION";
@@ -169,8 +200,28 @@ test("real native Journal pairing returns untrusted hints and background clears 
           expect(cookie.success).toBe(true);
           stage = "DETACH_NATIVE_CDP_SESSION";
           await boundedDriver(cdp.detach(), resources.signal);
-          stage = "OPEN_NATIVE_JOURNAL";
-          await openClosureJournal(page, voyage.id, origin.origin);
+          stage = "NAVIGATE_NATIVE_JOURNAL";
+          const response = await page.goto(new URL(`/player/playthroughs/${voyage.id}/journal`, origin).href, {
+            waitUntil: "domcontentloaded",
+            timeout: 30000,
+          });
+          journalResponseStatus = response?.status() ?? null;
+          stage = "NATIVE_JOURNAL_SHELL";
+          const opening = page.getByRole("dialog", { name: "Open the voyage journal" });
+          const tools = page.getByRole("navigation", { name: "Journal tools" });
+          await expect
+            .poll(async () => (await opening.isVisible()) || (await tools.isVisible()), { timeout: 30000 })
+            .toBe(true);
+          journalStates.push({
+            deviceIndex,
+            status: journalResponseStatus,
+            shellVisible: true,
+            nativeBridgeAvailable: await page.evaluate(() => window.LandfallNative?.platform === "ANDROID"),
+            authRedirect: !page.url().includes(`/playthroughs/${voyage.id}/journal`),
+          });
+          stage = "OPEN_NATIVE_JOURNAL_DIALOG";
+          if (await opening.isVisible()) await opening.getByRole("button", { name: /Open the journal/u }).click();
+          await expect(tools).toBeVisible();
           stage = "OPEN_NATIVE_MAP";
           await openClosureMap(page);
           expect(await page.evaluate(() => window.LandfallNative?.platform)).toBe("ANDROID");
@@ -265,6 +316,43 @@ test("real native Journal pairing returns untrusted hints and background clears 
         await writeFile(shot, png);
         await testInfo.attach("native-nearby-stopped", { path: shot, contentType: "image/png" });
         passed = true;
+      } catch (error) {
+        failureKind =
+          error instanceof Error && /timeout|timed out/i.test(error.message)
+            ? "TIMEOUT"
+            : error instanceof Error && /cancelled/i.test(error.message)
+              ? "OWNER_CANCELLED"
+              : error instanceof Error && /expect|assert/i.test(error.message)
+                ? "ASSERTION"
+                : "NATIVE_OPERATION_FAILED";
+        const page = pages.at(-1);
+        if (page) {
+          failedPageState = {
+            closed: page.isClosed(),
+            journalPath: page.url().includes(`/playthroughs/${voyage.id}/journal`),
+            loginPath: /\/login(?:\?|$|\/)/.test(page.url()),
+          };
+          if (!page.isClosed()) {
+            const state = await boundedDriver(
+              page.evaluate(() => ({
+                readyState: document.readyState,
+                nativeBridgeAvailable: Boolean(window.LandfallNative),
+              })),
+              undefined,
+              3000,
+            ).catch(() => null);
+            if (state) Object.assign(failedPageState, state);
+            failedPageState.toolsVisible = await page
+              .getByRole("navigation", { name: "Journal tools" })
+              .isVisible()
+              .catch(() => false);
+            failedPageState.openingVisible = await page
+              .getByRole("dialog", { name: "Open the voyage journal" })
+              .isVisible()
+              .catch(() => false);
+          }
+        }
+        throw error;
       } finally {
         await Promise.all(
           devices.map((device) =>
@@ -308,6 +396,13 @@ test("real native Journal pairing returns untrusted hints and background clears 
               ? "PASS"
               : "FAIL",
           failedStage: passed ? null : stage,
+          failedDeviceIndex: passed ? null : deviceIndex,
+          journalResponseStatus,
+          failureKind,
+          nativePageErrors: [...nativePageErrors],
+          failedFirstPartyRequests,
+          failedPageState,
+          journalStates,
           externalRequirements: ["REAL_DEVICE_REQUIRED:RF"],
           cleanup: { result: remaining.length ? "FAIL" : "PASS", remainingResources: remaining },
         };
@@ -315,7 +410,8 @@ test("real native Journal pairing returns untrusted hints and background clears 
           path.join(resources.artifactDirectory, "native-journal-pair-receipt.json"),
           JSON.stringify(receipt, null, 2),
         );
-        expect(receipt.result).toBe("PASS");
+        // Preserve the original protocol/navigation assertion when one failed.
+        if (!failureKind) expect(receipt.result).toBe("PASS");
       }
     },
   });

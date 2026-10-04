@@ -31,6 +31,51 @@ test.beforeAll(async () => {
 test.afterAll(async () => db.$disconnect());
 
 for (const width of [375, 1280]) {
+  test(`optional Bluetooth absence keeps readable fallback at ${width}px`, async ({ browser, baseURL }, testInfo) => {
+    const voyage = await closureVoyage(owner, player, "livingChart");
+    const before = await db.taleSessionEvent.count({ where: { sessionId: voyage.id } });
+    const context = await browser.newContext({ viewport: { width, height: 1000 }, reducedMotion: "reduce" });
+    try {
+      await authenticateClosure(context, player, baseURL!);
+      await auditNativeGeolocation(context);
+      const page = await context.newPage();
+      await openClosureJournal(page, voyage.id);
+      await openClosureMap(page);
+      const panel = page.locator(".journal-objects-drawer.open .landfall-ble-panel");
+      await panel.locator("summary").click();
+      await expect(panel.getByRole("button", { name: "Scan optional Bluetooth" })).toBeDisabled();
+      await expect(panel.getByRole("status")).toContainText("scanning is off");
+      await expect(panel).toContainText("cannot identify a waypoint, measure distance or record a visit");
+      expect((await geoAudit(page)).calls).toBe(0);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include(".journal-objects-drawer.open .landfall-ble-panel")
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      const shot = testInfo.outputPath("bluetooth-absent-readable-fallback.png");
+      await page.screenshot({ path: shot, fullPage: true });
+      await testInfo.attach("bluetooth-absent-readable-fallback", { path: shot, contentType: "image/png" });
+      expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(before);
+      await writeFile(
+        testInfo.outputPath("bluetooth-evidence-class.json"),
+        JSON.stringify({
+          evidenceClass: "SHARED_WEB_CONTRACT",
+          nativeRadio: "NOT_EXERCISED",
+          hardwareAbsentFallback: "REAL_OPTIMIZED_APPLICATION",
+          canonicalProgressionEvents: 0,
+        }),
+      );
+    } finally {
+      await context.close();
+    }
+  });
+}
+
+for (const width of [375, 1280]) {
   test(`optional signed installation identity and accessible fallback at ${width}px`, async ({
     browser,
     baseURL,

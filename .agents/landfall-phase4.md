@@ -756,3 +756,39 @@ Fresh hosted Apple includes real framework camera/NFC capability attachment and
 inactive/malformed scan guards, with no acquisition or token observation claim.
 Camera absence is checked before permission on Apple; Android may use a front
 camera when no back camera exists. Refresh native builds for this frozen source.
+
+893b61f6 provider37181572965 HARVESTED326 artifacts:154/154 both Windows/Linux,
+clean treea771f7d1112487a02c42a932400da3c626e79241, matching fingerprint
+d34846b2236a9c7cd559cd516db5a95a4f2143aabc653eae70b287035aae13fb.
+Browser37181560804 HARVESTED34 artifacts:10/10 PASS including two signed-text
+widths and nearby two-device shared-web contract. Screenshots inspected; no token
+text, controls wrap, drawer scrolls. AndroidJournal37181585197 HARVESTED36
+sanitized artifacts:10 browser PASS;native FAIL OPEN_NATIVE_JOURNAL, later than
+attachment/authentication. Zero canonical events, fixture/owner cleanup PASS,
+no memory violation; private2API36 low-resource profile verified. Add bounded
+DOM-content navigation/shell/dialog stages and response status/device index/
+categorical failure; no cookie or account data enters diagnostics. Apple
+37181600745 is still running for893b61f6. No qualification yet.
+
+BLE production integration WIP: deliberate native30sec discovery, scan UUID,
+per-scan salted peer handle, <=32 transient peers/5sec freshness, coarse RSSI
+bands always UNTRUSTED with unknown identity/distance and no completion. Strict
+bridge drops raw identity/extra fields; native recognizes only generic, bounded
+iBeacon layout or Eddystone UID frame, without forwarding advertisement bytes.
+No scan on mount/browser/paused/replay; stop on scope, privacy, closed details,
+background/hidden, constrained power and deadline; no automatic resume after
+permission. BLE_STOP carries original scan UUID and releases only BLE, protecting
+a newer scan and optional QR/NFC acquisition. Local focused6 + Journal7 PASS,
+lint and uncached TS PASS before final protocol fields; Android build PASS before
+final test/protocol additions, refresh before freeze. Native/virtual discovery
+acceptance still pending; no RF accuracy, authenticated beacon or field claim.
+
+BLE freeze: local6 focused + Journal7 PASS; full uncached TS PASS, lint PASS,
+docs PASS, Playwright list PASS12 Chromium cases. New375/1280 actual-browser
+absence controls/Axe/screenshots are pending hosted execution. Android build
+debug+instrumentation PASS after HardwareTests/protocol changes; final permission
+polish still needs fresh exact-source build. Android <=30 has legacy Bluetooth
+permissions and deliberate OS location permission for discovery only (no GPS).
+Android31+ permanent Bluetooth denial never loops a prompt. Native diagnostics
+now preserve the original failure instead of replacing it with final receipt
+assertion; add bounded categorical DOM/error counts, no authored/private data.

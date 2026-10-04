@@ -1,6 +1,7 @@
 import XCTest
 import CoreNFC
 import AVFoundation
+import CoreBluetooth
 import UIKit
 @testable import LandfallCompanion
 
@@ -11,6 +12,8 @@ final class InstallationInteractionTests: XCTestCase {
         let hardware = LandfallHardware { events.append($0) }
         let scanId = UUID().uuidString
         XCTAssertEqual(hardware.startNfc(foreground: false, scanId: scanId), "UNAVAILABLE")
+        XCTAssertEqual(hardware.startBle(foreground: false, scanId: scanId), "UNAVAILABLE")
+        XCTAssertEqual(hardware.startBle(foreground: true, scanId: "invalid"), "UNAVAILABLE")
         XCTAssertEqual(hardware.startQr(foreground: false, scanId: scanId, presenter: nil), "UNAVAILABLE")
         XCTAssertEqual(hardware.startNfc(foreground: true, scanId: "invalid"), "UNAVAILABLE")
         XCTAssertEqual(hardware.startQr(foreground: true, scanId: "invalid", presenter: UIViewController()), "UNAVAILABLE")
@@ -23,6 +26,7 @@ final class InstallationInteractionTests: XCTestCase {
         let receipt = try JSONSerialization.data(withJSONObject: [
             "nfcReadingAvailable": nfcAvailable, "cameraAvailable": cameraAvailable,
             "cameraAuthorization": AVCaptureDevice.authorizationStatus(for: .video).rawValue,
+            "bluetoothAuthorization": CBCentralManager.authorization.rawValue,
             "acquisitionStarted": false, "observedTokens": 0, "physicalPresence": "NOT_PROVEN", "canComplete": false
         ])
         let attachment = XCTAttachment(data: receipt, uniformTypeIdentifier: "public.json")

@@ -180,8 +180,8 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
       case "POWER_STATE": reply(proxy,id,power.snapshot());break;
       case "SENSORS_START": reply(proxy, id, new JSONObject().put("accepted", sensors.start(foreground && !power.constrained()))); break;
       case "SENSORS_STOP": sensors.stop(); reply(proxy, id, new JSONObject().put("accepted", true)); break;
-      case "BLE_START": reply(proxy, id, state(hardware.startBle(foreground && !power.critical()))); break;
-      case "BLE_STOP": hardware.stop(); reply(proxy, id, new JSONObject().put("accepted", true)); break;
+      case "BLE_START": reply(proxy, id, state(hardware.startBle(foreground && !power.constrained(),payload.optString("scanId")))); break;
+      case "BLE_STOP": hardware.stopBle(payload.optString("scanId")); reply(proxy, id, new JSONObject().put("accepted", true)); break;
       case "UWB_STATE": reply(proxy,id,uwb.state());break;
       case "UWB_PREPARE": uwb.prepare(payload,foreground && !power.critical(),value -> { try {reply(proxy,id,value);}catch(Exception ignored){} });break;
       case "UWB_START": reply(proxy,id,uwb.start(payload,foreground && !power.critical()));break;
@@ -224,7 +224,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
   private void powerChanged(){
     if(!foreground || power==null)return;
     if(power.constrained() && sensors!=null)sensors.stop();
-    if(power.constrained() && hardware!=null)hardware.stopInteractions();
+    if(power.constrained() && hardware!=null){hardware.stopInteractions();hardware.stopBle();}
     if(power.critical() && hardware!=null)hardware.stop();
     if(power.critical() && uwb!=null)uwb.stop();
     if(acquiring && !startLocation())try{event(new JSONObject().put("type","error"));}catch(Exception ignored){}

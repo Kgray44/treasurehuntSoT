@@ -12,25 +12,36 @@ final class LandfallHardware: NSObject, CBCentralManagerDelegate, NFCNDEFReaderS
     private var nfc: NFCNDEFReaderSession?
     private var scanning=false
     private var lastBle=Date.distantPast
-    private let salt=UUID().uuidString
+    private var salt=UUID().uuidString
     private var qr: LandfallQRViewController?
     private var qrScanId: String?
     private var nfcScanId: String?
     private var interactionExpiry: DispatchWorkItem?
+    private var bleExpiry: DispatchWorkItem?
+    private var bleScanId: String?
     init(emit: @escaping ([String: Any]) -> Void) { self.emit=emit; super.init() }
-    func startBle(foreground: Bool) -> String {
-        guard foreground else { return "UNAVAILABLE" }
+    func startBle(foreground: Bool, scanId: String) -> String {
+        guard foreground, UUID(uuidString: scanId) != nil, !scanning else { return "UNAVAILABLE" }
         guard CBCentralManager.authorization != .denied && CBCentralManager.authorization != .restricted else { return "DENIED" }
-        scanning=true
-        if bluetooth==nil { bluetooth=CBCentralManager(delegate: self, queue: .main) }
-        if bluetooth?.state == .poweredOn { bluetooth?.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true]); return "GRANTED" }
-        return bluetooth?.state == .unsupported ? "UNSUPPORTED" : "PROMPTABLE"
+        if CBCentralManager.authorization == .notDetermined { bluetooth=CBCentralManager(delegate: self, queue: .main); return "PROMPTABLE" }
+        stopBle();bleScanId=scanId;scanning=true;lastBle=Date.distantPast;salt=UUID().uuidString
+        bluetooth=CBCentralManager(delegate: self, queue: .main)
+        let expiry=DispatchWorkItem { [weak self] in guard let self=self, self.bleScanId==scanId else { return };self.stopBle();self.emit(["type":"ble-ended", "scanId":scanId]) }
+        bleExpiry=expiry;DispatchQueue.main.asyncAfter(deadline: .now()+30,execute: expiry)
+        return "INITIALIZING"
     }
-    func centralManagerDidUpdateState(_ central: CBCentralManager) { if scanning && central.state == .poweredOn { central.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true]) } }
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        guard central === bluetooth, scanning, let scanId=bleScanId else { return }
+        if central.state == .poweredOn { central.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true]) }
+        else if central.state != .unknown && central.state != .resetting { stopBle();emit(["type":"ble-ended", "scanId":scanId]) }
+    }
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi: NSNumber) {
-        guard scanning, Date().timeIntervalSince(lastBle)>=1 else { return }; lastBle=Date()
+        guard central === bluetooth, scanning, let scanId=bleScanId, Date().timeIntervalSince(lastBle)>=1, (-150...0).contains(rssi.intValue) else { return }; lastBle=Date()
         let peer=SHA256.hash(data: Data((salt+peripheral.identifier.uuidString).utf8)).map { String(format: "%02x", $0) }.joined()
-        emit(["type": "nearby", "family": "BLE", "authenticated": false, "peerId": peer, "rssi": rssi, "observedAt": Int(Date().timeIntervalSince1970*1000)])
+        var protocolName="GENERIC"
+        if let data=advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data, data.count==25, Array(data.prefix(4))==[0x4c,0x00,0x02,0x15] { protocolName="IBEACON" }
+        else if let services=advertisementData[CBAdvertisementDataServiceDataKey] as? [CBUUID:Data], let uid=services[CBUUID(string:"FEAA")], uid.count==20, uid.first==0x00 { protocolName="EDDYSTONE_UID" }
+        emit(["type": "nearby", "family": "BLE", "protocol":protocolName, "scanId":scanId, "authenticated": false, "peerId": peer, "rssi": rssi, "observedAt": Int(Date().timeIntervalSince1970*1000)])
     }
     func startNfc(foreground: Bool, scanId: String) -> String {
         guard foreground, UUID(uuidString: scanId) != nil, nfc == nil, qr == nil else { return "UNAVAILABLE" }; guard NFCNDEFReaderSession.readingAvailable else { return "UNSUPPORTED" }
@@ -70,7 +81,9 @@ final class LandfallHardware: NSObject, CBCentralManagerDelegate, NFCNDEFReaderS
         qr=controller; presenter.present(controller, animated: true); return "GRANTED"
     }
     func stopInteractions() { interactionExpiry?.cancel();interactionExpiry=nil;nfcScanId=nil;qrScanId=nil;nfc?.invalidate();nfc=nil;qr?.dismiss(animated: false);qr=nil }
-    func stop() { scanning=false; bluetooth?.stopScan();stopInteractions() }
+    func stopBle() { scanning=false;bleScanId=nil;bleExpiry?.cancel();bleExpiry=nil;bluetooth?.stopScan();bluetooth=nil }
+    func stopBle(scanId: String) { if scanId==bleScanId { stopBle() } }
+    func stop() { stopBle();stopInteractions() }
 }
 
 final class LandfallQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {

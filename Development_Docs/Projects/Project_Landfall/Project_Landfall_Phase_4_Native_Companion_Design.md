@@ -843,3 +843,39 @@ Chromium WebCrypto and explicitly synthetic trusted-key transport. Actual
 unconfigured first-party API behavior is checked separately. Hosted results
 for this source remain pending. Apple XCTest records actual framework camera
 and NFC capability plus inactive guards without starting acquisition.
+
+Hosted source `893b61f65fbe38ea879ef6cae5b958bed91a628e` passed154/154 provider
+scenarios on both Windows and Linux (run37181572965), with matching clean-source
+fingerprint `d34846b2236a9c7cd559cd516db5a95a4f2143aabc653eae70b287035aae13fb`.
+The optimized browser run37181560804 passed10 cases, including375/1280 signed
+text, accessible alternatives, cleared screenshots and unchanged One Voyage
+progression. Native Journal run37181585197 reached attachment/authentication but
+failed opening the Journal; native fixture and owner cleanup passed. This is
+diagnostic progress, not native Journal pairing acceptance.
+
+### Deliberate Bluetooth discovery
+
+The current Player PHYSICAL objective has optional foreground discovery in the
+native companion. It scans for30seconds only after deliberate action; background,
+hidden document, closed controls, scope change, privacy clear and constrained
+power stop it. Native callbacks bind a scan UUID. Stop requests carry that UUID
+and release only the matching BLE scan. Permission response never automatically
+resumes discovery. Radio handles are salted separately for every scan. No names,
+addresses or advertisement bytes are shown, persisted or uploaded.
+
+Generic Bluetooth, bounded iBeacon advertisement layouts and Eddystone UID
+frames can be classified when the operating system exposes those fields.
+Classification is a spoofable protocol hint, never authenticated identity.
+The shared adapter retains at most32 handles for5seconds, rejects stale/replayed/
+cross-scan callbacks and reports only coarse signal bands. Walls, interference,
+multiple peers, loss and multipath prevent RSSI from proving distance or position.
+Every projection keeps physicalPresence NOT_PROVEN, peerVerified false and
+canComplete false. No Bluetooth observation enters the progression writer.
+The readable chart and existing fallback remain available without hardware.
+
+The scanner follows the [Android BLE scan ownership API](https://developer.android.com/develop/connectivity/bluetooth/ble/find-ble-devices)
+and [Apple Core Bluetooth manager state](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager).
+Apple discovery requires a powered-on manager; unsupported, denied and disabled
+states end acquisition. Local lifecycle/UI checks do not prove emulator radio
+discovery, physical beacon identity, RF fidelity or real-device background behavior.
+Those acceptance gates remain open until corresponding source-bound lab evidence.

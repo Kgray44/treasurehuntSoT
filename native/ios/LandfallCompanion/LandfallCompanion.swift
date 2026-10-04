@@ -122,8 +122,8 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "POWER_STATE": replyHandler(power.snapshot(), nil)
         case "SENSORS_START": replyHandler(["accepted": startSensors()], nil)
         case "SENSORS_STOP": stopSensors(); replyHandler(["accepted": true], nil)
-        case "BLE_START": replyHandler(["state": hardware?.startBle(foreground: foreground && !power.critical) ?? "UNAVAILABLE"], nil)
-        case "BLE_STOP": hardware?.stop(); replyHandler(["accepted": true], nil)
+        case "BLE_START": replyHandler(["state": hardware?.startBle(foreground: foreground && !power.constrained, scanId: payload["scanId"] as? String ?? "") ?? "UNAVAILABLE"], nil)
+        case "BLE_STOP": hardware?.stopBle(scanId: payload["scanId"] as? String ?? ""); replyHandler(["accepted": true], nil)
         case "NI_STATE": replyHandler(nearby?.state() ?? ["state": "UNAVAILABLE"], nil)
         case "NI_PREPARE": replyHandler(nearby?.prepare(foreground: foreground && !power.critical) ?? ["state": "UNAVAILABLE"], nil)
         case "NI_START": replyHandler(nearby?.start(payload, foreground: foreground && !power.critical) ?? ["state": "UNAVAILABLE"], nil)
@@ -215,7 +215,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private func powerChanged() {
         guard foreground else { return }
         if power.constrained { stopSensors() }
-        if power.constrained { hardware?.stopInteractions() }
+        if power.constrained { hardware?.stopInteractions();hardware?.stopBle() }
         if power.critical { hardware?.stop(); nearby?.stop(); if acquiring { stopLocation(); event(["type":"error"]) } }
         else if acquiring { configureLocationPower() }
         event(["type":"power", "power":power.snapshot()])

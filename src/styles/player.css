@@ -1,3 +1,6 @@
+.landfall-ble-panel { min-width: 0; margin-block: 0.75rem; overflow-wrap: anywhere; }
+.landfall-ble-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.landfall-ble-actions button { min-height: 48px; max-width: 100%; white-space: normal; }
 .landfall-installation-panel,
 .landfall-installation-panel :where(div, label) {
   min-width: 0;
