@@ -30,6 +30,13 @@ step. Recovery now has a separate ten-minute actual-foreground suspension bound
 followed by the existing15-second network deadline; four focused tests PASS.
 Actual hosted recheck remains required. No protected qualification or closure.
 
+Low-memory37217638812 fails before pairing: actual OS screenshot shows System UI
+ANR overlay, native shown/focusedfalse. New narrowly guarded observed Android Wait
+control recovery preserves all strict touch/focus checks; nine focused mapping
+tests, lint and TypeScript PASS. Recheck required. d2add7a1 archive privacy scan
+PASS zero violations/six classifications;237selected format files, docs/catalog
+checks PASS. Feature capability remains partial and unpromoted.
+
 Previous checkpoint: fb92d113 passes full root regression
 with2,687tests on fresh owned SQLite. Its optimized detached build is running.
 Low-resource two-device Journal37214134421 on7cf6ea34 passes actual reports on

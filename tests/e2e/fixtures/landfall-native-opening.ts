@@ -1,5 +1,6 @@
 import { expect, type Page } from "@playwright/test";
 import { z } from "zod";
+import { nativeSystemUiWaitTouch } from "../../../src/landfall/device-lab/native-system-ui-control";
 import {
   nativeJournalOpeningTouch,
   nativeJournalOpeningGeometryTouch,
@@ -30,6 +31,7 @@ export async function openNativeJournalEntry(
   adb: (args: string[]) => Promise<string>,
   observeStage: (stage: string) => void = () => {},
   observeGeometry: (value: OpeningGeometryDiagnostic) => void = () => {},
+  observeSystemUiWait: () => void = () => {},
 ) {
   // Sequential multi-device setup can leave the next owned guest asleep.
   // Establish the normal OS interaction precondition before inspecting bounds.
@@ -68,11 +70,23 @@ export async function openNativeJournalEntry(
       const control = await observed();
       if (!control?.visible || !control.enabled || !control.copyObserved)
         throw new Error("NATIVE_OPENING_DOM_GEOMETRY_UNOBSERVED");
-      const { box, viewport } = control;
       let target;
       try {
         await adb(["shell", "uiautomator", "dump", dump]);
-        target = nativeJournalOpeningTouch(await adb(["shell", "cat", dump]), { box, viewport });
+        let hierarchy = await adb(["shell", "cat", dump]);
+        const systemWait = nativeSystemUiWaitTouch(hierarchy);
+        if (systemWait) {
+          observeStage("NATIVE_SYSTEM_UI_WAIT");
+          await adb(["shell", "input", "tap", String(systemWait.x), String(systemWait.y)]);
+          observeSystemUiWait();
+          await adb(["shell", "uiautomator", "dump", dump]);
+          hierarchy = await adb(["shell", "cat", dump]);
+          if (nativeSystemUiWaitTouch(hierarchy)) throw new Error("NATIVE_OPENING_SYSTEM_UI_STILL_UNRESPONSIVE");
+        }
+        const fresh = await observed();
+        if (!fresh?.visible || !fresh.enabled || !fresh.copyObserved)
+          throw new Error("NATIVE_OPENING_DOM_GEOMETRY_UNOBSERVED");
+        target = nativeJournalOpeningTouch(hierarchy, fresh);
       } catch {
         observeStage("NATIVE_OPENING_GEOMETRY_WAIT");
         await expect

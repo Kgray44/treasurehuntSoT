@@ -117,6 +117,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
       const pairingDiagnostics: { deviceIndex: number; nativeState: string; uiState: string }[] = [];
       const nativePreparationDiagnostics: { deviceIndex: number; category: string }[] = [];
       let openingGeometryDiagnostic: OpeningGeometryDiagnostic | null = null;
+      let systemUiWaitInteractions = 0;
       const interactionForeground: {
         phase: string;
         deviceIndex: number;
@@ -341,6 +342,9 @@ test("real native Journal pairing returns untrusted hints and background clears 
             },
             (geometry) => {
               openingGeometryDiagnostic = geometry;
+            },
+            () => {
+              systemUiWaitInteractions++;
             },
           );
           stage = "OPEN_NATIVE_MAP";
@@ -679,6 +683,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           pairingDiagnostics,
           nativePreparationDiagnostics,
           openingGeometryDiagnostic,
+          systemUiWaitInteractions,
           interactionForeground,
           openingControl: "OBSERVED_DOM_AND_NATIVE_BOUNDS_OS_TOUCH",
           externalRequirements: ["REAL_DEVICE_REQUIRED:RF"],

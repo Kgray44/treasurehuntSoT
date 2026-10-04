@@ -15,6 +15,19 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Acquisition and authority
 
+Low-memory recheck37217638812 onfb6146ce fails before pairing. Its new diagnostic
+records attached native geometry with `shown:false` and `focused:false`; the
+owned OS screenshot proves Android's System UI ANR dialog overlays the public
+Journal. This is a real guest-system failure, not a passing application receipt.
+The fixture may select the observed Android `aerr_wait` control once only when
+the hierarchy identifies exactly that System UI dialog; it never dismisses an
+application ANR or arbitrary prompt. It then reobserves public DOM/native bounds
+and still requires the original strict focus, clipping and scale checks. Three
+regressions cover allowed control mapping and refusal of foreign/ambiguous/disabled
+or invalid controls; combined opening tests pass9. Actual recheck remains required.
+The Android [ANR dialog source](https://android.googlesource.com/platform/frameworks/base/%2B/a85a2c6%5E%21/)
+identifies the separate Wait and Close controls; recovery never kills System UI.
+
 Clean unchanged fb6146ce passes the full root475files/2,691tests and an owned
 detached optimized build/client privacy scan. Native UWB recheck37217634667 also
 succeeds on both corrected profiles after observing awake/unlocked preconditions;
