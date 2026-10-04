@@ -51,6 +51,12 @@ across Activity instances. Clearing removes the encrypted descriptor, wake hints
 and this companion's notifications before requesting OS removal. The UI reports
 OS removal failure honestly. Backgrounding, teardown and Disable cancel unfinished
 setup; an already enabled reminder survives ordinary Journal teardown as intended.
+Replacement registration confirms OS removal of all of this companion's previous
+regions before adding a new handle. Otherwise multiple expired or replaced handles
+could accumulate in Play services despite the single encrypted descriptor. Failed
+removal clears recovery consent and prevents another add; a controlled native test
+checks that failure path. This latest replacement change is compiled, with new
+hosted instrumentation still pending.
 Hosted Android run37184428733 executes nine native tests, including encrypted
 storage and deliberately delayed service callbacks, and five canonical location
 and permission scenarios. All pass with cleanup. An actual reboot/OS-region
@@ -66,6 +72,16 @@ The scenario separates fresh fixes with reboot and asserts no canonical progress
 the logical provider translation does not claim a kernel reboot. Local and physical
 devices cannot run this translation. Native execution remains pending and this
 scenario does not by itself prove geofence re-registration or delivered wake events.
+
+Android run37184872437 on source607450 reaches two measured API36 virtual devices
+and reports actual native advertiser `STARTED`; discovery still fails and no scanner
+state was retained by that source. Both fixture and process/ADB/port/AVD cleanup
+pass. Source changes now preserve the correct BLE terminal projection and execution
+stage on failure. Run37184876730 also passes both cleanup layers and reaches the
+authenticated optimized Journal with HTTP200. Its diagnostic screenshot shows the
+opening ceremony after the click-stage timeout. The lab now uses a normal click
+without an implicit navigation wait, followed by a separate bounded Journal-tools
+assertion. Actual native first-party pairing remains unaccepted until a fresh run.
 
 ## Origin and deployment configuration
 

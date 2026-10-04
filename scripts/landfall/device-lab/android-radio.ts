@@ -63,6 +63,7 @@ export async function executeLandfallAndroidRadioScenario(
   }[] = [];
   let advertiserState: string | null = null;
   let advertiserFailureCode: number | null = null;
+  let radioStage = "SETUP";
   const configurations: DeviceLabConfiguration[] = [];
   const acquired: string[] = [],
     pages: Page[] = [];
@@ -180,6 +181,7 @@ export async function executeLandfallAndroidRadioScenario(
         try {
           const action = step.action;
           if (bleScenario && action.type === "NEARBY" && action.state === "RECONNECT") {
+            radioStage = "BLE_ADVERTISER_LAUNCH";
             if (action.family !== "BLE" || !action.protocol || action.unverifiedPeer !== true)
               throw new Error("LANDFALL_BLE_SCENARIO_INVALID");
             const labSession = randomUUID();
@@ -199,6 +201,7 @@ export async function executeLandfallAndroidRadioScenario(
             ]);
             if (/Error:|Exception/.test(launched)) throw new Error("LANDFALL_BLE_ADVERTISER_LAUNCH_FAILED");
             const deadline = Date.now() + 8000;
+            radioStage = "BLE_ADVERTISER_READY";
             while (Date.now() < deadline) {
               const raw = await adb(serials[1]!, [
                 "shell",
@@ -236,8 +239,10 @@ export async function executeLandfallAndroidRadioScenario(
               await new Promise((resolve) => setTimeout(resolve, 250));
             }
             if (advertiserState !== "STARTED") throw new Error("LANDFALL_BLE_ADVERTISER_START_TIMEOUT");
+            radioStage = "BLE_SCANNER_START";
             const state = await pages[0].evaluate(() => window.__LandfallLabRadio!.ble.start());
             if (state !== "GRANTED") throw new Error("LANDFALL_BLE_SCAN_UNAVAILABLE");
+            radioStage = "BLE_NATIVE_DISCOVERY";
             await pages[0].waitForFunction(
               (protocol) => {
                 const value = window.__LandfallLabRadio!.ble.snapshot();
@@ -363,13 +368,20 @@ export async function executeLandfallAndroidRadioScenario(
             },
           });
         } catch (error) {
-          const projections = await Promise.allSettled(
-            pages.map((page) => boundedAndroidDriver(page.evaluate(() => window.__LandfallLabRadio!.snapshot()))),
-          );
-          diagnostics.push({
-            index,
-            devices: projections.flatMap((value) => (value.status === "fulfilled" ? [value.value] : [])),
-          });
+          if (bleScenario) {
+            const value = await boundedAndroidDriver(
+              pages[0].evaluate(() => window.__LandfallLabRadio!.ble.snapshot()),
+            ).catch(() => null);
+            if (value) bleDiagnostics.push({ index, device: value, advertiserState });
+          } else {
+            const projections = await Promise.allSettled(
+              pages.map((page) => boundedAndroidDriver(page.evaluate(() => window.__LandfallLabRadio!.snapshot()))),
+            );
+            diagnostics.push({
+              index,
+              devices: projections.flatMap((value) => (value.status === "fulfilled" ? [value.value] : [])),
+            });
+          }
           steps.push({
             index,
             action: step.action.type,
@@ -442,6 +454,7 @@ export async function executeLandfallAndroidRadioScenario(
           bleDiagnostics,
           advertiserState,
           advertiserFailureCode,
+          radioStage,
         },
         null,
         2,

@@ -81,6 +81,8 @@ test("real native Journal pairing returns untrusted hints and background clears 
         unstableTarget: boolean;
         invisibleTarget: boolean;
         targetClosed: boolean;
+        waitingForNavigation: boolean;
+        waitingForLocator: boolean;
       } | null = null;
       const nativePageErrors = new Set<string>();
       let failedFirstPartyRequests = 0;
@@ -219,9 +221,12 @@ test("real native Journal pairing returns untrusted hints and background clears 
             authRedirect: !page.url().includes(`/playthroughs/${voyage.id}/journal`),
           });
           stage = "CLICK_NATIVE_JOURNAL_OPEN";
-          if (await opening.isVisible()) await opening.getByRole("button", { name: /Open the journal/u }).click();
+          // Opening replaces its modal in place. Native CDP navigation signals may
+          // remain pending; assert the resulting tools separately after a normal tap.
+          if (await opening.isVisible())
+            await opening.getByRole("button", { name: /Open the journal/u }).click({ noWaitAfter: true });
           stage = "NATIVE_JOURNAL_TOOLS";
-          await expect(tools).toBeVisible();
+          await expect(tools).toBeVisible({ timeout: 30000 });
           stage = "OPEN_NATIVE_MAP";
           await openClosureMap(page);
           expect(await page.evaluate(() => window.LandfallNative?.platform)).toBe("ANDROID");
@@ -331,6 +336,8 @@ test("real native Journal pairing returns untrusted hints and background clears 
           unstableTarget: /not stable/i.test(message),
           invisibleTarget: /not visible/i.test(message),
           targetClosed: /closed|destroyed/i.test(message),
+          waitingForNavigation: /waiting for.*navigation|scheduled navigations|navigation.*finish/i.test(message),
+          waitingForLocator: /waiting for (?:locator|getByRole)|waiting for.*element/i.test(message),
         };
         failureKind =
           error instanceof Error && /timeout|timed out/i.test(error.message)

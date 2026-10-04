@@ -68,12 +68,22 @@ final class LandfallGeofences {
         .put("longitude", input.getDouble("longitude")).put("radiusMeters", input.getDouble("radiusMeters"))
         .put("expiresAt", input.getLong("expiresAt")).put("notifications", input.optBoolean("notifications", false));
     } catch (Exception ignored) { reply.accept("UNAVAILABLE"); return; }
-    long attempt = next();
+    final long attempt;
+    synchronized(LandfallGeofences.class){attempt=next();LandfallSecureHints.clear(context);}
     try {
-      backend.add(row).addOnCompleteListener(task -> {
-        boolean accepted = accept(context,attempt,row,stillConsented,task.isSuccessful());
-        if (!accepted) { try { backend.remove(row.optString("returnHandle")); } catch (Exception ignored) {} }
-        reply.accept(accepted ? "GRANTED" : "UNAVAILABLE");
+      // Different handles otherwise accumulate in Play services even though the
+      // encrypted journal holds only one region. Confirm removal before replacing.
+      backend.clear().addOnCompleteListener(cleared -> {
+        if(!cleared.isSuccessful() || !current(attempt) || !stillConsented.getAsBoolean() || !permitted(context) || !valid(row,System.currentTimeMillis())){
+          reply.accept("UNAVAILABLE");return;
+        }
+        try {
+          backend.add(row).addOnCompleteListener(task -> {
+            boolean accepted = accept(context,attempt,row,stillConsented,task.isSuccessful());
+            if (!accepted) { try { backend.remove(row.optString("returnHandle")); } catch (Exception ignored) {} }
+            reply.accept(accepted ? "GRANTED" : "UNAVAILABLE");
+          });
+        }catch(Exception ignored){reply.accept("UNAVAILABLE");}
       });
     } catch (Exception ignored) { reply.accept("UNAVAILABLE"); }
   }

@@ -50,19 +50,37 @@ public final class GeofenceTests {
   @Test public void cancelledLateServiceAddCannotRestoreConsent() throws Exception {
     LandfallSecureHints.clear(context);
     TaskCompletionSource<Void> delayed=new TaskCompletionSource<>();
-    CountDownLatch replied=new CountDownLatch(1),removed=new CountDownLatch(1);
+    CountDownLatch replied=new CountDownLatch(1),removed=new CountDownLatch(1),added=new CountDownLatch(1);
     AtomicReference<String> result=new AtomicReference<>();
     LandfallGeofences.Backend service=new LandfallGeofences.Backend(){
-      public Task<Void> add(JSONObject row){return delayed.getTask();}
+      public Task<Void> add(JSONObject row){added.countDown();return delayed.getTask();}
       public Task<Void> clear(){return Tasks.forResult(null);}
       public Task<Void> remove(String handle){removed.countDown();return Tasks.forResult(null);}
     };
     try {
       LandfallGeofences.register(context,registration(),()->true,state->{result.set(state);replied.countDown();},service);
+      assertTrue(added.await(10,TimeUnit.SECONDS));
       LandfallGeofences.clear(context,unused->{},service);
       delayed.setResult(null);
       assertTrue(replied.await(10,TimeUnit.SECONDS));assertTrue(removed.await(10,TimeUnit.SECONDS));
       assertEquals("UNAVAILABLE",result.get());assertNull(LandfallSecureHints.registration(context));
     }finally{LandfallGeofences.clear(context,unused->{},service);}
+  }
+  @Test public void failedRemovalCannotAccumulateAnotherRegion() throws Exception {
+    LandfallSecureHints.clear(context);
+    CountDownLatch replied=new CountDownLatch(1);
+    java.util.concurrent.atomic.AtomicInteger adds=new java.util.concurrent.atomic.AtomicInteger();
+    AtomicReference<String> result=new AtomicReference<>();
+    LandfallGeofences.Backend service=new LandfallGeofences.Backend(){
+      public Task<Void> add(JSONObject row){adds.incrementAndGet();return Tasks.forResult(null);}
+      public Task<Void> clear(){return Tasks.forException(new IllegalStateException("SYNTHETIC_REMOVAL_FAILURE"));}
+      public Task<Void> remove(String handle){return Tasks.forResult(null);}
+    };
+    try {
+      assertTrue(LandfallSecureHints.register(context,registration()));
+      LandfallGeofences.register(context,registration(),()->true,state->{result.set(state);replied.countDown();},service);
+      assertTrue(replied.await(10,TimeUnit.SECONDS));assertEquals("UNAVAILABLE",result.get());
+      assertEquals(0,adds.get());assertNull(LandfallSecureHints.registration(context));
+    }finally{LandfallSecureHints.clear(context);}
   }
 }

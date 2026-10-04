@@ -894,7 +894,13 @@ Focused4 tests/TS/lint PASS. Fresh radio/Journal proof still required.
 including both GeofenceTests, plus5 canonical location/permission scenarios PASS;
 all fixture/transport cleanup PASS. Provider37184715171 HARVESTED338: actual157/157
 Windows and157/157 Linux summaries PASS with exact clean source911ea/treee29610.
-607450 radio37184872437 and Journal37184876730 remain active; no claims yet.
+607450 radio37184872437 HARVESTED12: advertiser STARTED/failureCodenull, actual
+discovery FAIL; scanner snapshot incorrectly came from UWB failurecatch. New
+failurecatch preserves actualBLEprojection+stage. Fixture+ownercleanup PASS,
+port5038 gone. Journal37184876730 HARVESTED44: HTTP200/authenticated/nativereal,
+CLICK_NATIVE_JOURNAL_OPEN TIMEOUT. Diagnostic screenshot inspected: ceremony
+settling rendered (opening modalgone), no pageerrors. Fixture+ownercleanupPASS.
+Use normalclick noWaitAfter + separatetoolsassertion; neverforceclick/JS dispatch.
 
 Canonical device-reboot adds actual guest reboot translation only on explicitly
 enabled ephemeral hosted Linux/virtual Android, never a host or physical reboot.
@@ -902,3 +908,7 @@ Requires changed kernel boot identity + completedboot + sameAVD before restoring
 owned reverse and launching; requires newready acknowledgment. Export categorical
 identity checks only. Provider translation remainslogical; real OS proof pending.
 Corpus now158; zero OneVoyage writes expected for this no-reconcile scenario.
+Reboot/offline restart run37185206080 queued on exactec339c source; pending.
+Additional native correctness: confirm prior OSregion removal before replacement
+add, clear encryptedconsent first. Failedremoval preventsanotheradd; controlled
+native regression added, APKscompilePASS. Needs hostedinstrumentationfresh.
