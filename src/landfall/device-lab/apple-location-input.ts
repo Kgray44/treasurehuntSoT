@@ -30,13 +30,7 @@ export async function setOwnedAppleLabPosition(
       return;
     } catch (error) {
       const tool = error as { name?: unknown; code?: unknown; killed?: unknown; signal?: unknown } | null;
-      if (
-        !tool ||
-        tool.name === "AbortError" ||
-        tool.code != null ||
-        tool.killed !== true ||
-        tool.signal !== "SIGTERM"
-      )
+      if (!tool || tool.name === "AbortError" || tool.code != null || tool.killed !== true || tool.signal !== "SIGTERM")
         throw error;
       driver.observe(attempt, "TIMED_OUT");
       if (attempt === 2) throw error;
