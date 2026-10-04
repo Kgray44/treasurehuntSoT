@@ -43,6 +43,11 @@ consent, privacy and One Voyage behavior. Landfall continues to own Worldspaces,
 navigation confidence, geofencing meaning, offline content and completion policy.
 Generic acquisition relocation remains separately governed work.
 
+Project Parallax v1.0 was also added to protected main during this candidate.
+Landfall contributes place/navigation context through replaceable contracts;
+it introduces no AR anchors, spatial tracking, scene understanding or shared
+spatial-state owner. Those Parallax capabilities remain separately governed.
+
 Phase4 introduces no separate progression database, identity store, provider secret
 store or Chronicle content model. Existing immutable published snapshots and actor
 authorization remain the source of truth. The native private stores hold bounded
