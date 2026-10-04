@@ -33,6 +33,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm --ignore-unmatch .github/workflows/parallax-prettier-helper.yml
           git add Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md
-          git diff --cached --check
           git commit -m "docs(parallax): apply repository formatting"
           git push origin HEAD:docs/project-parallax-v1
