@@ -74,7 +74,18 @@ Current batch **37236170919 on `7f36d94e`** runs the independent jobs:
 companion111535599747 (restart, positive notice and actual refusal) and mandatory
 presentation111535599907. Root unit input trees match `0ba27caa` exactly.
 
-Current clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
+Its presentation job finishes FAIL18/1/1 on the actual preinstalled iOS26.2
+runtime; the recorded Settings search again reports no results for Reduce Motion.
+The companion job remains independent. Presentation-only recheck **37237380227
+on `7632768d`** retains required aggregate19passes/zero failures/at most one driver
+skip, with two actual result bundles: XXXL portrait/landscape and the other native
+tests (18passes), followed by normal LARGE text setting/readback and the actual
+Motion button/switch/readback/restoration test (one pass). Both component summaries
+and attachments are retained. This is a pending control variation, not acceptance
+or evidence that the system setting is unsupported. Root unit inputs still match
+`0ba27caa`; no companion scenarios are repeated by this presentation-only target.
+
+Historical clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
 owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting
 (244 files), lint (218 files, zero errors), TypeScript and exact tracked-source
 privacy scanning (zero violations, six classifications) pass. The schema and
