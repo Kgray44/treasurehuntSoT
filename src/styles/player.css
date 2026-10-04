@@ -1,3 +1,19 @@
+.landfall-installation-panel,
+.landfall-installation-panel :where(div, label) {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.landfall-installation-panel :where(label, div) {
+  display: grid;
+  gap: 0.5rem;
+}
+.landfall-installation-panel :where(button, select, textarea) {
+  min-width: 0;
+  max-width: 100%;
+  min-height: 48px;
+  box-sizing: border-box;
+}
 .voyage-shell {
   position: relative;
   min-height: 100svh;

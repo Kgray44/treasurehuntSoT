@@ -10,6 +10,7 @@ import { LandfallFieldTestPanel } from "@/components/studio/LandfallFieldTestPan
 import { LandfallContextEditor } from "@/components/studio/LandfallContextEditor";
 import { LandfallProviderPanel } from "@/components/studio/LandfallProviderPanel";
 import { LandfallOnlinePlacePanel } from "@/components/studio/LandfallOnlinePlacePanel";
+import { LandfallInstallationPanel } from "@/components/studio/LandfallInstallationPanel";
 import {
   addLandfallWorldspace,
   applyLandfallPreset,
@@ -1573,6 +1574,20 @@ export function LandfallWorkspace({
               {selectedWaypoint && (
                 <div className="landfall-inspector-fields">
                   <h4>Waypoint</h4>
+                  {worldspace.kind === "PHYSICAL" && (
+                    <LandfallInstallationPanel
+                      taleId={taleId}
+                      waypoint={selectedWaypoint}
+                      csrfToken={csrfToken}
+                      unsaved={unsaved}
+                      onChange={(installations) =>
+                        updateWaypoint((item) => ({
+                          ...item,
+                          installations: installations.length ? installations : undefined,
+                        }))
+                      }
+                    />
+                  )}
                   <label>
                     Name
                     <input

@@ -354,10 +354,12 @@ export async function openClosureJournal(page: Page, id: string, origin?: string
   await expect(page.getByRole("navigation", { name: "Journal tools" })).toBeVisible();
 }
 export async function openClosureMap(page: Page) {
-  await page
+  const button = page
     .getByRole("navigation", { name: "Journal tools" })
-    .getByRole("button", { name: "map", exact: true })
-    .click();
+    .getByRole("button", { name: "map", exact: true });
+  // The same Player's saved reading preferences may restore this drawer on a
+  // second device. Its overlay then correctly covers the already-open toolbar.
+  if ((await button.getAttribute("aria-expanded")) !== "true") await button.click();
   await expect(page.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible();
 }
 export async function auditNativeGeolocation(context: BrowserContext) {

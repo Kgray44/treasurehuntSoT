@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 /** Native acquisition only. One Voyage on the authenticated server owns all progression. */
-public final class LandfallActivity extends Activity implements LocationListener {
+public final class LandfallActivity extends androidx.activity.ComponentActivity implements LocationListener {
   private WebView web;
   private LocationManager locations;
   private String selectedLocationProvider = "NONE";
@@ -117,7 +117,10 @@ public final class LandfallActivity extends Activity implements LocationListener
     });
     setContentView(content);
     content.requestApplyInsets();
-    openReturn(getIntent());
+    // Owned debug fixtures attach and authenticate before loading the Journal.
+    // The blank page cannot use the origin-restricted native bridge.
+    if(BuildConfig.DEBUG && origin.matches("http://(10\\.0\\.2\\.2|127\\.0\\.0\\.1):[0-9]{2,5}") && getIntent().getBooleanExtra("labBootstrap",false))web.loadUrl("about:blank");
+    else openReturn(getIntent());
   }
   private boolean isAllowed(Uri url) {
     Uri allowed = Uri.parse(origin);
@@ -183,14 +186,10 @@ public final class LandfallActivity extends Activity implements LocationListener
       case "UWB_PREPARE": uwb.prepare(payload,foreground && !power.critical(),value -> { try {reply(proxy,id,value);}catch(Exception ignored){} });break;
       case "UWB_START": reply(proxy,id,uwb.start(payload,foreground && !power.critical()));break;
       case "UWB_STOP": uwb.stop();reply(proxy,id,new JSONObject().put("accepted",true));break;
-      case "NFC_READ": reply(proxy, id, state(hardware.startNfc(foreground && !power.critical()))); break;
+      case "NFC_READ": reply(proxy, id, state(hardware.startNfc(foreground && !power.constrained(),payload.optString("scanId")))); break;
       case "QR_SCAN":
-        if (!foreground || power.critical()) { reply(proxy,id,state("UNAVAILABLE")); break; }
-        com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions options = new com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions.Builder().setBarcodeFormats(com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE).build();
-        com.google.mlkit.vision.codescanner.GmsBarcodeScanning.getClient(this, options).startScan()
-          .addOnSuccessListener(barcode -> { String token=barcode.getRawValue(); if(token!=null && token.length()<=2048) try { event(new JSONObject().put("type","interaction").put("medium","QR").put("token",token)); } catch(Exception ignored){} })
-          .addOnFailureListener(error -> { try { event(new JSONObject().put("type","error")); }catch(Exception ignored){} });
-        reply(proxy,id,state("GRANTED")); break;
+        reply(proxy,id,state(hardware.startQr(foreground && !power.constrained(),payload.optString("scanId"),(android.view.ViewGroup)web.getParent())));break;
+      case "INTERACTION_STOP": hardware.stopInteractions();reply(proxy,id,new JSONObject().put("accepted",true));break;
       case "PRIVATE_STORE_PUT": reply(proxy,id,new JSONObject().put("accepted",foreground && privateStore.put(this,payload.optString("key"),payload.optString("value"),payload.optLong("expiresAt")))); break;
       case "PRIVATE_STORE_GET": reply(proxy,id,new JSONObject().put("value",foreground ? privateStore.get(this,payload.optString("key")) : JSONObject.NULL)); break;
       case "PRIVATE_STORE_LIST": reply(proxy,id,new JSONObject().put("keys",foreground ? privateStore.list(this) : new JSONArray())); break;
@@ -225,6 +224,7 @@ public final class LandfallActivity extends Activity implements LocationListener
   private void powerChanged(){
     if(!foreground || power==null)return;
     if(power.constrained() && sensors!=null)sensors.stop();
+    if(power.constrained() && hardware!=null)hardware.stopInteractions();
     if(power.critical() && hardware!=null)hardware.stop();
     if(power.critical() && uwb!=null)uwb.stop();
     if(acquiring && !startLocation())try{event(new JSONObject().put("type","error"));}catch(Exception ignored){}
@@ -232,7 +232,10 @@ public final class LandfallActivity extends Activity implements LocationListener
   }
   private void event(JSONObject value) {
     if (web == null || !foreground || !isAllowed(Uri.parse(web.getUrl()==null ? origin : web.getUrl()))) return;
-    runOnUiThread(() -> web.evaluateJavascript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:" + value.toString() + "}))", null));
+    runOnUiThread(() -> {
+      if(web==null || (!foreground && !value.optString("type").equals("lifecycle")) || !isAllowed(Uri.parse(web.getUrl()==null ? origin : web.getUrl())))return;
+      web.evaluateJavascript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:" + value.toString() + "}))", null);
+    });
   }
   @Override public void onLocationChanged(Location location) {
     if(locationCallbacks<100000)locationCallbacks++;

@@ -139,6 +139,22 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
     ]),
   }),
   z.strictObject({
+    type: z.literal("INSTALLATION_TOKEN"),
+    medium: z.enum(["QR", "NFC"]),
+    fixture: z.enum([
+      "VALID",
+      "DUPLICATE",
+      "EXPIRED",
+      "WRONG_CHRONICLE",
+      "WRONG_VERSION",
+      "WRONG_WAYPOINT",
+      "WRONG_MEDIUM",
+      "TAMPERED",
+      "MALFORMED",
+      "UNKNOWN_KEY",
+    ]),
+  }),
+  z.strictObject({
     type: z.literal("PACKAGE"),
     operation: z.enum(["DOWNLOAD", "INTERRUPT", "CORRUPT", "STORAGE_LOW", "STALE", "DELETE", "EXPIRE"]),
   }),

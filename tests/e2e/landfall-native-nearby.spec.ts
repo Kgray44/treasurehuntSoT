@@ -130,6 +130,9 @@ test("real native Journal pairing returns untrusted hints and background clears 
             "--es",
             "labOrigin",
             origin.origin,
+            "--ez",
+            "labBootstrap",
+            "true",
           ]);
           if (/Error:|Exception/.test(launch)) throw new Error("LANDFALL_NATIVE_NEARBY_LAUNCH_FAILED");
         }
@@ -149,8 +152,6 @@ test("real native Journal pairing returns untrusted hints and background clears 
           pages.push(page);
           page.setDefaultTimeout(10000);
           page.setDefaultNavigationTimeout(45000);
-          stage = "SET_NATIVE_REDUCED_MOTION";
-          await boundedDriver(page.emulateMedia({ reducedMotion: "reduce" }), resources.signal);
           stage = "CREATE_NATIVE_CDP_SESSION";
           const cdp = await boundedDriver(page.context().newCDPSession(page), resources.signal);
           stage = "SET_NATIVE_ACCOUNT_COOKIE";

@@ -771,3 +771,75 @@ made. Metadata does not make a request. Search, reverse lookup, route and terrai
 results remain untrusted; absent configuration, quota cooldown, malformed replies
 and late cancellation retain no completion authority. Local corpus consumption
 passes all 30 tests with source-bound receipts and isolated authority cleanup.
+
+Hosted provider run 37172717692 at 5d8c088ac1694006b9f01d17d49640cf078a65e7
+passes 134/134 on Windows and 134/134 on Linux, with matching clean source
+fingerprint a77eee2e1bdb292b3f59674633c480acb9d077f627460ee78b29802ba0ca76d6.
+All 286 downloaded artifacts and transport cleanup are retained. Browser run
+37172706992 passes seven cases but shows the second Player device restored the
+already-open map drawer from saved reading preferences; clicking its covered
+toolbar again times out. The opening helper must recognize this state. Native
+run 37172723041 fails CONNECT_NATIVE_WEBVIEW, retains zero canonical events and
+verified fixture/owner cleanup. Neither failed job is acceptance evidence.
+
+## Optional signed physical installations
+
+Physical waypoint definitions can carry up to eight optional QR/NFC installation
+identities, labels and accessible alternatives. Required objectives retain their
+existing Player, Captain or alternate fallback; VIRTUAL Worldspaces cannot claim
+physical installations. Creator edits use the existing draft save/publish flow.
+Token issuance uses only an owner/CSRF-authorized published snapshot, never an
+unpublished draft. It produces a QR PNG or UTF-8 NDEF text payload, without
+placing hardware or creating another progression writer.
+
+Operator deployment secrets `LANDFALL_INSTALLATION_KEY_ID` and
+`LANDFALL_INSTALLATION_SIGNING_KEY_PEM` must name a real Ed25519 PKCS8 key. Missing
+or malformed configuration is NOT_CONFIGURED; no random production signing
+fallback exists. The private key never enters responses, artifacts or logs.
+Issuance binds Chronicle, published version, Worldspace, waypoint, medium and
+installation identity, with a seven-day expiry. Rotation invalidates earlier
+installations; replace printed/written tokens and preserve readable fallback.
+Public identifiers are carried by a token deliberately installed by its Creator;
+coordinates, authored prose, actor credentials and session grants are absent.
+
+Player deliberately obtains trusted public verification material through the
+authorized current-objective API. A loaded foreground scope can verify the
+bounded signature locally, including offline signed-text access. Keys are not
+taken from tag content, permanently cached or automatically refreshed. Scope,
+background, hidden document, privacy reset, low power and thermal pressure clear
+scan state and require a fresh deliberate availability check. Copies authenticate
+installation identity only: physical presence is NOT_PROVEN and canComplete is
+always false. Readable/manual confirmation continues through the existing
+reauthorized One Voyage action; scanning never emits arrival or progression.
+
+Native QR/NFC requests carry one scan UUID and impose a 30-second limit, so stale
+callbacks cannot satisfy a later acquisition. QR is the only supported camera
+format. Android uses a same-Activity CameraX preview with the bundled ML Kit
+17.3.0 QR decoder and latest-frame backpressure; it closes every image and
+releases only its owned camera use cases/executor. This removes the separate
+Google scanner Activity that conflicts with Landfall's background stop rule.
+See [CameraX analysis ownership](https://developer.android.com/media/camera/camerax/analyze)
+and [bundled barcode decoding](https://developers.google.com/ml-kit/vision/barcode-scanning/android).
+iOS uses a bounded AVFoundation scanner and Core NFC text reading. Neither
+scanner records or uploads image frames, executes links/scripts or supplies
+location authority. Permission denial and unsupported hardware retain readable
+alternatives. Native camera/NFC hardware acceptance remains open.
+
+Current focused checks cover signature/scope/expiry/tampering/key rotation,
+bounded replay, native scan lifecycle/UUID filtering, owner/Player authorization,
+published-only issuance, late objective/access changes, deliberate UI controls
+and offline local verification. Android debug and instrumentation APK builds
+pass after exposing the already-resolved Guava dependency required by CameraX.
+Fresh exact-source native builds, optimized browser visuals and the remaining
+Phase 4 acceptance loop still precede qualification and closure.
+
+The canonical corpus now contains 154 scenarios. Twenty QR/NFC installation
+cases cover valid, replayed, expired, tampered, malformed, unknown-key and
+wrong-scope payloads through the production verifier. All 154 pass locally with
+30 scenario/provider regression tests. This is provider simulation evidence;
+it does not prove a native camera decode, NFC radio or physical presence.
+Two browser widths also exercise deliberate signed-text verification with real
+Chromium WebCrypto and explicitly synthetic trusted-key transport. Actual
+unconfigured first-party API behavior is checked separately. Hosted results
+for this source remain pending. Apple XCTest records actual framework camera
+and NFC capability plus inactive guards without starting acquisition.

@@ -2,6 +2,12 @@ import { createHash, createPrivateKey, createPublicKey, sign } from "node:crypto
 import { configuredRemoteServices, RemoteLandfallDataService } from "@/landfall/remote-data-server";
 import { RemoteDataFailure } from "@/landfall/remote-network-server";
 import type { RemoteDataRequest } from "@/landfall/remote-data";
+import {
+  installationSigningPayload,
+  verifyInstallationToken,
+  LandfallInstallationReplayGuard,
+  type LandfallInstallationClaim,
+} from "@/landfall/installation-token";
 import { NativeLandfallSensorFusion } from "@/landfall/native-sensors";
 import { LandfallNearbyProvider } from "@/landfall/nearby-provider";
 import {
@@ -123,6 +129,7 @@ export class LandfallProviderScenarioExecutor {
     UWB: new LandfallNearbyProvider("UWB", new Set(["lab-peer"])),
   };
   private readonly tokenReplay = new LandfallInteractionReplayGuard();
+  private readonly installationReplay = new LandfallInstallationReplayGuard();
   private packageState = "NOT_AVAILABLE";
   private packageCapacity = 16 * 1024 * 1024;
   private readonly packageRecords = new Map<string, EncryptedOfflinePackageRecord>();
@@ -211,6 +218,7 @@ export class LandfallProviderScenarioExecutor {
       this.nearby.BLE.reset();
       this.nearby.UWB.reset();
       this.tokenReplay.clear();
+      this.installationReplay.clear();
       this.remoteController?.abort();
       this.remoteController = null;
       this.remoteService = null;
@@ -688,6 +696,63 @@ export class LandfallProviderScenarioExecutor {
       );
       this.nearbyState = projection.state;
       if (projection.canComplete !== false) throw new Error("ASSERT_FAILED:NEARBY_AUTHORITY");
+      return true;
+    }
+    if (action.type === "INSTALLATION_TOKEN") {
+      const seed = createHash("sha256").update(`SYNTHETIC-INSTALLATION-LAB-ONLY:${this.scenario.seed}`).digest();
+      const key = createPrivateKey({
+        key: Buffer.concat([Buffer.from("302e020100300506032b657004220420", "hex"), seed]),
+        format: "der",
+        type: "pkcs8",
+      });
+      const publicKey = await crypto.subtle.importKey(
+        "jwk",
+        createPublicKey(key).export({ format: "jwk" }) as JsonWebKey,
+        "Ed25519",
+        false,
+        ["verify"],
+      );
+      const scope = {
+        taleId: this.definition.taleId,
+        publishedVersionId: this.scope.publishedVersionId,
+        worldspaceId: this.scope.worldspaceId,
+        waypointId: this.scope.waypointId,
+        id: "lab-installation",
+        medium: action.medium,
+      };
+      const claim: LandfallInstallationClaim = {
+        version: 1,
+        purpose: "LANDFALL_INSTALLATION",
+        keyId: "synthetic-lab-key",
+        ...scope,
+        issuedAt: this.now - 10000,
+        expiresAt: this.now + 10000,
+      };
+      if (action.fixture === "EXPIRED") claim.expiresAt = this.now - 1;
+      if (action.fixture === "WRONG_CHRONICLE") claim.taleId = "unrelated-tale";
+      if (action.fixture === "WRONG_VERSION") claim.publishedVersionId = "unrelated-version";
+      if (action.fixture === "WRONG_WAYPOINT") claim.waypointId = "unrelated-waypoint";
+      if (action.fixture === "WRONG_MEDIUM") claim.medium = action.medium === "QR" ? "NFC" : "QR";
+      const payload = installationSigningPayload(claim);
+      const signature = sign(null, Buffer.from(payload), key).toString("base64url");
+      const token =
+        action.fixture === "MALFORMED"
+          ? "javascript:untrusted-code"
+          : `${action.fixture === "TAMPERED" ? installationSigningPayload({ ...claim, id: "tampered" }) : payload}.${signature}`;
+      try {
+        const verified = await verifyInstallationToken(token, {
+          scope,
+          now: this.now,
+          keys: new Map(action.fixture === "UNKNOWN_KEY" ? [] : [["synthetic-lab-key", publicKey]]),
+        });
+        this.tokenState = this.installationReplay.accept(verified);
+        if (action.fixture === "DUPLICATE") this.tokenState = this.installationReplay.accept(verified);
+        if (!["VALID", "DUPLICATE"].includes(action.fixture)) throw new Error("ASSERT_FAILED:INSTALLATION_REJECT");
+      } catch (error) {
+        if (["VALID", "DUPLICATE"].includes(action.fixture)) throw error;
+        if (!(error instanceof Error) || !error.message.startsWith("LANDFALL_INSTALLATION_")) throw error;
+        this.tokenState = "REJECTED";
+      }
       return true;
     }
     if (action.type === "TOKEN") {

@@ -274,6 +274,17 @@ const waypointSchema = z.strictObject({
   landmarkId: landfallId.optional(),
   name: text,
   description: z.string().max(1000).optional(),
+  installations: z
+    .array(
+      z.strictObject({
+        id: landfallId,
+        medium: z.enum(["QR", "NFC"]),
+        label: z.string().min(1).max(120),
+        accessibilityAlternative: z.string().min(1).max(240),
+      }),
+    )
+    .max(8)
+    .optional(),
   icon: z.enum(["PIN", "FLAG", "STAR", "COMPASS", "DOOR", "CLUE"]).optional(),
   guidance: z
     .strictObject({
@@ -605,6 +616,14 @@ export const landfallDefinitionSchema = z
         issue(["waypoints", i, "geometry"], "Pass-through waypoint requires entrance gate geometry.");
       if (waypoint.type === "MOVING_TEMPORARY_WAYPOINT" && !waypoint.expiresAt)
         issue(["waypoints", i, "expiresAt"], "Moving temporary waypoint requires expiry.");
+      if (waypoint.installations?.length) {
+        if (worldspace?.kind !== "PHYSICAL")
+          issue(["waypoints", i, "installations"], "Physical installations require a PHYSICAL Worldspace.");
+        if (new Set(waypoint.installations.map((item) => item.id)).size !== waypoint.installations.length)
+          issue(["waypoints", i, "installations"], "Installation identities must be unique at this waypoint.");
+        if (!waypoint.sequence.optional && waypoint.fallback.mode === "NONE")
+          issue(["waypoints", i, "fallback"], "Mandatory installation objectives require an accessible fallback.");
+      }
       if (
         worldspace?.observationPolicy.requiredFallback &&
         !waypoint.sequence.optional &&

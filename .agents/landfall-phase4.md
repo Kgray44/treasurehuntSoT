@@ -710,3 +710,49 @@ AUTHENTICATE_NATIVE_WEBVIEW before pairing; bounded driver now allows native
 fixture/owner cleanup PASS with no memory violation and zero canonical events.
 Split reduced-motion, CDP creation, cookie setting and CDP detach stages to locate
 that protocol primitive. No successful native Journal report or acceptance yet.
+
+5d8c088a diagnostics harvested: provider 37172717692 PASS, Windows134/134 and
+Linux134/134, 286 artifacts, fingerprint
+a77eee2e1bdb292b3f59674633c480acb9d077f627460ee78b29802ba0ca76d6, transport cleanup PASS.
+Browser37172706992: seven PASS;28 artifacts; nearby fails OPEN_CURRENT_MAP index1.
+nearby-opening-error.json proves map button aria-expanded=true and restored open
+drawer intercepts that redundant click. Make openClosureMap idempotent based on
+aria-expanded, no force-click. Native37172723041:30 artifacts; FAIL
+CONNECT_NATIVE_WEBVIEW; source unchanged/zero canonical events/fixture+owner
+cleanup PASS. Attach first to a debug-only about:blank WebView (bridge inaccessible
+there), authenticate via CDP then load the actual Journal. Restrict bootstrap
+extra to DEBUG and existing loopback lab origin; omit nonessential emulateMedia.
+
+Signed installation source is in progress. New waypoint.installations metadata
+is optional and bounded8; PHYSICAL only, accessible text required, mandatory
+fallback retained. Creator draft handlers remain canonical; issue only from an
+owned/CSRF-authorized published snapshot. Operator Ed25519 env key/default
+NOT_CONFIGURED; public scope tokens expire7days, contain no actor grants or
+coordinates. Player current-objective STATUS obtains trusted keys, local/offline
+verification plus bounded replay never imply presence or request arrival. Native
+provider binds UUID/medium/current scope,30sec, stop on background/hidden/power/
+privacy/scope with no automatic resume. Installation panel has no auto request.
+Native INTERACTION_STOP is separate from nearby hints. Android old GMS scanner
+launches another Activity, conflicting with background stop; replaced by
+same-Activity CameraX+bundled MLKit17.3 QR-only scanner. Guava32.0.1-android was
+already resolved at runtime but must be explicit compile dependency because
+CameraX exposes ListenableFuture and runtime consistency selects its empty shim.
+Both native adapters reject stale UUID callbacks and impose native30sec limits;
+Android permanent camera denial stays explicit. Build debug+instrumentation PASS
+after dependency correction, refresh after final source edits. Focused token6,
+native-provider5, PlayerAPI5, CreatorAPI4, PlayerUI4, CreatorUI3 PASS; Journal7 PASS.
+Full final TS/lint/browser/Apple/native instrumentation evidence is pending.
+No completed feature fragment yet; no qualification, PR, merge or closure yet.
+
+Installation freeze checks: full uncached TypeScript PASS, changed-code lint PASS,
+docs:validate PASS, Journal7 PASS and focused installation27 PASS. Canonical
+provider/scenario regression30 PASS with all154 scenarios PASS; the20 added
+QR/NFC fixtures invoke the production Ed25519 verifier but remain explicitly
+provider-simulation-only (no native camera, NFC radio or physical presence).
+Two375/1280 browser installation cases exercise actual default NOT_CONFIGURED
+API plus explicit synthetic trust transport and real Chromium WebCrypto. Token
+text is cleared before screenshot; no progression events may be emitted.
+Fresh hosted Apple includes real framework camera/NFC capability attachment and
+inactive/malformed scan guards, with no acquisition or token observation claim.
+Camera absence is checked before permission on Apple; Android may use a front
+camera when no back camera exists. Refresh native builds for this frozen source.

@@ -128,8 +128,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "NI_PREPARE": replyHandler(nearby?.prepare(foreground: foreground && !power.critical) ?? ["state": "UNAVAILABLE"], nil)
         case "NI_START": replyHandler(nearby?.start(payload, foreground: foreground && !power.critical) ?? ["state": "UNAVAILABLE"], nil)
         case "NI_STOP": nearby?.stop(); replyHandler(["accepted": true], nil)
-        case "NFC_READ": replyHandler(["state": hardware?.startNfc(foreground: foreground && !power.critical) ?? "UNAVAILABLE"], nil)
-        case "QR_SCAN": replyHandler(["state": hardware?.startQr(foreground: foreground && !power.critical, presenter: web?.window?.rootViewController) ?? "UNAVAILABLE"], nil)
+        case "NFC_READ": replyHandler(["state": hardware?.startNfc(foreground: foreground && !power.constrained, scanId: payload["scanId"] as? String ?? "") ?? "UNAVAILABLE"], nil)
+        case "QR_SCAN": replyHandler(["state": hardware?.startQr(foreground: foreground && !power.constrained, scanId: payload["scanId"] as? String ?? "", presenter: web?.window?.rootViewController) ?? "UNAVAILABLE"], nil)
+        case "INTERACTION_STOP": hardware?.stopInteractions(); replyHandler(["accepted": true], nil)
         case "CLEAR_PRIVATE_DATA":
             stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop()
             for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear(); privateStore?.clear()
@@ -214,6 +215,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private func powerChanged() {
         guard foreground else { return }
         if power.constrained { stopSensors() }
+        if power.constrained { hardware?.stopInteractions() }
         if power.critical { hardware?.stop(); nearby?.stop(); if acquiring { stopLocation(); event(["type":"error"]) } }
         else if acquiring { configureLocationPower() }
         event(["type":"power", "power":power.snapshot()])
@@ -222,6 +224,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private func pause() { event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop() }
     private func event(_ payload: [String: Any]) {
         guard foreground, let web=web, accepts(web.url), JSONSerialization.isValidJSONObject(payload), let data=try? JSONSerialization.data(withJSONObject: payload, options: [.fragmentsAllowed]), let json=String(data: data, encoding: .utf8) else { return }
-        DispatchQueue.main.async { web.evaluateJavaScript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:\(json)}))", completionHandler: nil) }
+        DispatchQueue.main.async { [weak self] in
+            guard let self=self, self.accepts(web.url), self.foreground || payload["type"] as? String == "lifecycle" else { return }
+            web.evaluateJavaScript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:\(json)}))", completionHandler: nil)
+        }
     }
 }

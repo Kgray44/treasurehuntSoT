@@ -2,6 +2,8 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type BrowserContext } from "@playwright/test";
 import { db } from "../../src/lib/db";
 import { writeFile } from "node:fs/promises";
+import { generateKeyPairSync } from "node:crypto";
+import { LandfallInstallationSigner } from "../../src/landfall/installation-token-server";
 import { landfallFixture } from "../../src/landfall/fixtures";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import {
@@ -27,6 +29,107 @@ test.beforeAll(async () => {
   player = await closureAccount("Phase4 synthetic Player");
 });
 test.afterAll(async () => db.$disconnect());
+
+for (const width of [375, 1280]) {
+  test(`optional signed installation identity and accessible fallback at ${width}px`, async ({
+    browser,
+    baseURL,
+  }, testInfo) => {
+    const definition = structuredClone(landfallFixture);
+    definition.waypoints[0].installations = [
+      {
+        id: "synthetic-qr-installation",
+        medium: "QR",
+        label: "Synthetic optional tag",
+        accessibilityAlternative: "Use the separate readable confirmation or ask your Captain.",
+      },
+    ];
+    const voyage = await closureVoyage(owner, player, "livingChart", { authoredDefinition: definition });
+    const context = await browser.newContext({ viewport: { width, height: 1000 }, reducedMotion: "reduce" });
+    try {
+      await authenticateClosure(context, player, baseURL!);
+      await auditNativeGeolocation(context);
+      const page = await context.newPage();
+      await openClosureJournal(page, voyage.id);
+      await openClosureMap(page);
+      const panel = page.locator(".journal-objects-drawer.open .landfall-installation-panel");
+      await panel.locator("summary").click();
+      const before = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } }),
+        events = await db.taleSessionEvent.count({ where: { sessionId: voyage.id } });
+      // Actual default first-party API: no operator key and no invented trust.
+      await panel.getByRole("button", { name: "Check installation availability" }).click();
+      await expect(panel.getByRole("status")).toContainText("unavailable on this deployment");
+      await expect(panel.getByLabel("Signed text alternative")).toHaveCount(0);
+      // Configured browser verification is explicitly a synthetic trust transport.
+      const pair = generateKeyPairSync("ed25519");
+      const scope = {
+        taleId: voyage.taleId,
+        publishedVersionId: voyage.versionId,
+        worldspaceId: definition.worldspaces[0].id,
+        waypointId: definition.waypoints[0].id,
+      };
+      const signer = new LandfallInstallationSigner({
+        keyId: "synthetic-lab-key",
+        privateKey: pair.privateKey,
+        publicKey: pair.publicKey,
+      });
+      let metadataRequests = 0;
+      await context.route(`**/api/player/playthroughs/${voyage.id}/landfall/interaction`, async (route) => {
+        expect(route.request().postDataJSON()).toEqual({ operation: "STATUS" });
+        metadataRequests++;
+        await route.fulfill({
+          json: { ...signer.status(), scope, installations: definition.waypoints[0].installations },
+        });
+      });
+      await panel.getByRole("button", { name: "Check installation availability" }).click();
+      const text = panel.getByLabel("Signed text alternative");
+      await expect(text).toBeVisible();
+      await expect(panel.getByRole("button", { name: "Scan optional QR" })).toBeDisabled();
+      await text.fill(signer.issue({ ...scope, id: "synthetic-qr-installation", medium: "QR" }).token);
+      await panel.getByRole("button", { name: "Check signed text" }).click();
+      await expect(panel.getByRole("status")).toContainText("verified locally");
+      await expect(panel.getByRole("status")).toContainText("Copies do not prove presence");
+      await expect(text).toHaveValue("");
+      await text.fill("https://untrusted.example.test/do-not-open");
+      await panel.getByRole("button", { name: "Check signed text" }).click();
+      await expect(panel.getByRole("status")).toContainText("invalid");
+      expect(metadataRequests).toBe(1);
+      expect((await geoAudit(page)).calls).toBe(0);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include(".journal-objects-drawer.open .landfall-installation-panel")
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      const shot = testInfo.outputPath("signed-installation-cleared.png");
+      await page.screenshot({ path: shot, fullPage: true });
+      await testInfo.attach("signed-installation-cleared", { path: shot, contentType: "image/png" });
+      await panel.getByRole("button", { name: "Stop scan and clear token" }).click();
+      await expect(text).toHaveCount(0);
+      const after = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
+      expect(after.currentSequence).toBe(before.currentSequence);
+      expect(after.currentBlockId).toBe(before.currentBlockId);
+      expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(events);
+      await writeFile(
+        testInfo.outputPath("signed-installation-evidence-class.json"),
+        JSON.stringify({
+          evidenceClass: "SHARED_WEB_CONTRACT",
+          nativeCamera: "NOT_EXERCISED",
+          firstPartyAbsentConfiguration: "REAL_OPTIMIZED_APPLICATION",
+          configuredTrustTransport: "SYNTHETIC",
+          cryptoVerification: "REAL_CHROMIUM_WEB_CRYPTO",
+          physicalPresence: "NOT_PROVEN",
+          canonicalProgressionEvents: 0,
+        }),
+      );
+    } finally {
+      await context.close();
+    }
+  });
+}
 
 for (const width of [375, 1280]) {
   test(`optional online place consent and no progression at ${width}px`, async ({ browser, baseURL }, testInfo) => {

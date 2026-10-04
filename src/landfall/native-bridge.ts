@@ -88,6 +88,7 @@ export async function landfallNativeRequest(
     | "NI_STOP"
     | "NFC_READ"
     | "QR_SCAN"
+    | "INTERACTION_STOP"
     | "POWER_STATE"
     | "CLEAR_PRIVATE_DATA"
     | "PRIVATE_STORE_PUT"

@@ -620,6 +620,42 @@ for (const [operation, fixture, expected, requests] of [
   );
 }
 
+for (const medium of ["QR", "NFC"] as const) {
+  for (const fixture of [
+    "VALID",
+    "DUPLICATE",
+    "EXPIRED",
+    "WRONG_CHRONICLE",
+    "WRONG_VERSION",
+    "WRONG_WAYPOINT",
+    "WRONG_MEDIUM",
+    "TAMPERED",
+    "MALFORMED",
+    "UNKNOWN_KEY",
+  ] as const) {
+    scenario(
+      `installation-${medium.toLowerCase()}-${fixture.toLowerCase().replaceAll("_", "-")}`,
+      [medium],
+      [
+        { type: "INSTALLATION_TOKEN", medium, fixture },
+        assertion("tokenState", fixture === "VALID" ? "NEW" : fixture === "DUPLICATE" ? "DUPLICATE" : "REJECTED"),
+        assertion("physicalAcquisitionStarts", 0),
+        assertion("completionRequests", 0),
+        assertion("serverConfirmed", false),
+      ],
+    );
+    const generated = cases.pop()!;
+    cases.push(
+      deviceLabScenarioSchema.parse({
+        ...generated,
+        targets: ["provider-simulation"],
+        description:
+          "Production public installation verifier with deterministic synthetic signing keys. No camera, NFC radio, tag installation, presence or canonical progression is exercised.",
+      }),
+    );
+  }
+}
+
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);
 }
