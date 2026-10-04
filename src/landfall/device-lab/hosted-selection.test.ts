@@ -16,7 +16,16 @@ describe("hosted Device Lab impact selection", () => {
     expect(hostedDeviceLabScenarios("ios")).toContain("offline-restart-canonical-reconcile");
     expect(hostedDeviceLabScenarios("provider")).toBe("all");
     expect(hostedDeviceLabScenarios("ios", "gps-perfect-walk")).toBe("gps-perfect-walk");
-    expect(hostedDeviceLabScenarios("android-radio")).toBe("uwb-native-peer-session");
+    expect(hostedDeviceLabScenarios("android-radio").split(",")).toEqual([
+      "uwb-native-peer-session",
+      "ble-native-generic-discovery",
+      "ble-native-ibeacon-discovery",
+      "ble-native-eddystone-uid-discovery",
+    ]);
+    expect(hostedDeviceLabScenarios("android-radio", "ble-native-generic-discovery")).toBe(
+      "ble-native-generic-discovery",
+    );
+    expect(() => hostedDeviceLabScenarios("android", "ble-native-generic-discovery")).toThrow();
     expect(hostedDeviceLabScenarios("android-radio", "uwb-native-peer-session")).toBe("uwb-native-peer-session");
     expect(() => hostedDeviceLabScenarios("android", "uwb-native-peer-session")).toThrow();
     expect(() => hostedDeviceLabScenarios("android-radio", "gps-perfect-walk")).toThrow();

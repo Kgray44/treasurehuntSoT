@@ -2,7 +2,6 @@ package com.voyagewright.landfall;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -18,9 +17,6 @@ import android.widget.FrameLayout;
 import androidx.webkit.JavaScriptReplyProxy;
 import androidx.webkit.WebViewCompat;
 import androidx.webkit.WebViewFeature;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationServices;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.Collections;
@@ -176,7 +172,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
         else { requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS},43);reply(proxy,id,state("PROMPTABLE")); }
         break;
       case "GEOFENCE_REGISTER": registerGeofence(payload, proxy, id); break;
-      case "GEOFENCE_CLEAR": LocationServices.getGeofencingClient(this).removeGeofences(geofenceIntent()); LandfallSecureHints.clear(this); reply(proxy, id, new JSONObject().put("accepted", true)); break;
+      case "GEOFENCE_CLEAR": LandfallGeofences.clear(this, accepted -> {try{reply(proxy,id,new JSONObject().put("accepted",accepted));}catch(Exception ignored){}}); break;
       case "POWER_STATE": reply(proxy,id,power.snapshot());break;
       case "SENSORS_START": reply(proxy, id, new JSONObject().put("accepted", sensors.start(foreground && !power.constrained()))); break;
       case "SENSORS_STOP": sensors.stop(); reply(proxy, id, new JSONObject().put("accepted", true)); break;
@@ -194,24 +190,13 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
       case "PRIVATE_STORE_GET": reply(proxy,id,new JSONObject().put("value",foreground ? privateStore.get(this,payload.optString("key")) : JSONObject.NULL)); break;
       case "PRIVATE_STORE_LIST": reply(proxy,id,new JSONObject().put("keys",foreground ? privateStore.list(this) : new JSONArray())); break;
       case "PRIVATE_STORE_DELETE": if(foreground)privateStore.remove(this,payload.optString("key"));reply(proxy,id,new JSONObject().put("accepted",foreground));break;
-      case "CLEAR_PRIVATE_DATA": stopLocation(); sensors.stop(); hardware.stop(); uwb.stop(); LocationServices.getGeofencingClient(this).removeGeofences(geofenceIntent()); LandfallSecureHints.clear(this); privateStore.clear(this); web.clearCache(true); reply(proxy, id, new JSONObject().put("accepted", true)); break;
+      case "CLEAR_PRIVATE_DATA": stopLocation(); sensors.stop(); hardware.stop(); uwb.stop(); privateStore.clear(this); web.clearCache(true); LandfallGeofences.clear(this,accepted -> {try{reply(proxy,id,new JSONObject().put("accepted",accepted));}catch(Exception ignored){}}); break;
       default: reply(proxy, id, state("UNSUPPORTED"));
     }
   }
-  private PendingIntent geofenceIntent() {
-    return PendingIntent.getBroadcast(this, 0, new Intent(this, LandfallGeofenceReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
-  }
   private void registerGeofence(JSONObject payload, JavaScriptReplyProxy proxy, String id) throws Exception {
     if (!foreground || !permission().equals("GRANTED") || (android.os.Build.VERSION.SDK_INT >= 29 && checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED)) { reply(proxy, id, state("PERMISSION_REQUIRED")); return; }
-    String handle = payload.getString("returnHandle");
-    double latitude = payload.getDouble("latitude"), longitude = payload.getDouble("longitude");
-    float radius = (float)payload.getDouble("radiusMeters");
-    long expiry = payload.getLong("expiresAt");
-    if (!handle.matches("[A-Za-z0-9_-]{32,2048}") || !Double.isFinite(latitude) || Math.abs(latitude)>90 || !Double.isFinite(longitude) || Math.abs(longitude)>180 || radius<100 || radius>10000 || expiry<=System.currentTimeMillis() || expiry-System.currentTimeMillis()>86400000) { reply(proxy, id, state("UNAVAILABLE")); return; }
-    Geofence fence = new Geofence.Builder().setRequestId(handle).setCircularRegion(latitude, longitude, radius).setExpirationDuration(expiry-System.currentTimeMillis()).setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT).build();
-    LocationServices.getGeofencingClient(this).addGeofences(new GeofencingRequest.Builder().setInitialTrigger(0).addGeofence(fence).build(), geofenceIntent())
-      .addOnSuccessListener(unused -> { try { LandfallSecureHints.register(this,handle,expiry,payload.optBoolean("notifications",false));reply(proxy, id, state("GRANTED")); } catch(Exception ignored){} })
-      .addOnFailureListener(error -> { try { reply(proxy, id, state("UNAVAILABLE")); } catch(Exception ignored){} });
+    LandfallGeofences.register(this,payload,() -> foreground && !isDestroyed(),result -> {try{reply(proxy,id,state(result));}catch(Exception ignored){}});
   }
   private void stopLocation() { if (locations != null) locations.removeUpdates(this); acquiring = false; selectedLocationProvider = "NONE"; }
   private boolean startLocation(){

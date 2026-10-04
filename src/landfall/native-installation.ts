@@ -149,10 +149,13 @@ export class NativeLandfallInstallationProvider {
       const reply = replySchema.parse(
         await bounded(landfallNativeRequest(medium === "QR" ? "QR_SCAN" : "NFC_READ", { scanId })),
       );
+      // A one-shot result may precede the bridge start reply. Its terminal callback owns the UI.
+      if (completed) return "COMPLETED";
       if (attempt !== this.generation) return "UNAVAILABLE";
       if (reply.state !== "GRANTED") await this.stop();
       return reply.state;
     } catch {
+      if (completed) return "COMPLETED";
       await this.stop();
       return "UNAVAILABLE";
     }

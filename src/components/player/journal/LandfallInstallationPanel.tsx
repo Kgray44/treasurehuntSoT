@@ -186,6 +186,7 @@ function InstallationControls({ bootstrap, csrfToken }: Props) {
       if (attempt === generation.current) report(result);
     });
     if (attempt !== generation.current) return;
+    if (state === "COMPLETED") return;
     if (state !== "GRANTED") {
       setBusy(false);
       setMessage(

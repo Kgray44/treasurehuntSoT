@@ -46,6 +46,27 @@ afterEach(async () => {
 const token = () => signer.issue({ ...scope, id: "lab-installation", medium: "QR" }).token;
 const event = (scanId: unknown, value = token()) => ({ type: "interaction", medium: "QR", scanId, token: value });
 describe("deliberate native installation acquisition", () => {
+  it.each(["GRANTED", "REJECTED"])("retains a terminal result before a late %s start reply", async (reply) => {
+    let release!: () => void;
+    window.LandfallNative!.request = vi.fn(async (raw) => {
+      const value = JSON.parse(raw);
+      calls.push(value);
+      if (value.operation === "INTERACTION_STOP") return { accepted: true };
+      emit(event(value.payload.scanId));
+      await new Promise<void>((done) => {
+        release = done;
+      });
+      if (reply === "REJECTED") throw new Error("late bridge failure");
+      return { state: "GRANTED" };
+    });
+    const result = vi.fn(),
+      scanning = provider.scan("QR", result);
+    await vi.waitFor(() => expect(result).toHaveBeenCalledWith(expect.objectContaining({ state: "VERIFIED" })));
+    release();
+    expect(await scanning).toBe("COMPLETED");
+    expect(result).toHaveBeenCalledOnce();
+    expect(calls.filter((item) => item.operation === "INTERACTION_STOP")).toHaveLength(1);
+  });
   it("starts no camera or location on construction, and blocks unsupported media", async () => {
     expect(calls).toEqual([]);
     expect(await provider.scan("NFC", vi.fn())).toBe("UNAVAILABLE");

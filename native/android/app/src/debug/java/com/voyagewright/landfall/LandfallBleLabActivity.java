@@ -22,11 +22,12 @@ public final class LandfallBleLabActivity extends Activity {
   private BluetoothLeAdvertiser advertiser;
   private final Handler handler=new Handler(Looper.getMainLooper());
   private String sessionId;
+  private Integer failureCode;
   private boolean active;
   private TextView label;
   private final AdvertiseCallback callback=new AdvertiseCallback(){
     @Override public void onStartSuccess(AdvertiseSettings settings){if(active)record("STARTED");}
-    @Override public void onStartFailure(int code){if(active){stop();record("UNAVAILABLE");}}
+    @Override public void onStartFailure(int code){if(active){failureCode=code;stop();record(code==ADVERTISE_FAILED_FEATURE_UNSUPPORTED?"UNSUPPORTED":"UNAVAILABLE");}}
   };
   @Override public void onCreate(Bundle state){
     super.onCreate(state);label=new TextView(this);label.setText("Synthetic Device Lab peer. No navigation authority.");setContentView(label);
@@ -56,7 +57,7 @@ public final class LandfallBleLabActivity extends Activity {
   private void record(String state){
     if(sessionId==null)return;
     try{
-      JSONObject value=new JSONObject().put("sessionId",sessionId).put("state",state).put("synthetic",true).put("canComplete",false);
+      JSONObject value=new JSONObject().put("sessionId",sessionId).put("state",state).put("synthetic",true).put("canComplete",false).put("failureCode",failureCode==null?JSONObject.NULL:failureCode);
       try(java.io.FileOutputStream stream=openFileOutput("landfall-ble-lab-"+sessionId+".json",MODE_PRIVATE)){stream.write(value.toString().getBytes(StandardCharsets.UTF_8));}
       label.setText("Synthetic Device Lab peer: "+state+". No navigation authority.");
     }catch(Exception ignored){}

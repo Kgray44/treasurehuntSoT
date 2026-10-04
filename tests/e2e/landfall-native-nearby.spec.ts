@@ -69,6 +69,13 @@ test("real native Journal pairing returns untrusted hints and background clears 
       let deviceIndex: number | null = null;
       let journalResponseStatus: number | null = null;
       let failureKind: string | null = null;
+      let failureTool: {
+        code: number | null;
+        signal: string | null;
+        killed: boolean;
+        deviceOffline: boolean;
+        installRejected: boolean;
+      } | null = null;
       let failureChecks: {
         pointerIntercepted: boolean;
         unstableTarget: boolean;
@@ -123,12 +130,17 @@ test("real native Journal pairing returns untrusted hints and background clears 
           if ((await adb(serial, ["reverse", "--list"])).includes(binding))
             throw new Error("LANDFALL_NATIVE_NEARBY_BINDING_ALREADY_ACTIVE");
           acquired.push(serial);
+          stage = "ACQUIRE_NATIVE_REVERSE_BINDING";
           await adb(serial, ["reverse", binding, binding]);
+          stage = "INSTALL_NATIVE_APK";
           if (!(await adb(serial, ["install", "-r", resources.apkPath])).includes("Success"))
             throw new Error("LANDFALL_NATIVE_NEARBY_INSTALL_FAILED");
+          stage = "RESET_NATIVE_PRIVATE_DATA";
           if (!(await adb(serial, ["shell", "pm", "clear", pkg])).includes("Success"))
             throw new Error("LANDFALL_NATIVE_NEARBY_RESET_FAILED");
+          stage = "GRANT_NATIVE_RANGING";
           await adb(serial, ["shell", "pm", "grant", pkg, "android.permission.RANGING"]);
+          stage = "LAUNCH_NATIVE_BOOTSTRAP";
           const launch = await adb(serial, [
             "shell",
             "am",
@@ -306,6 +318,14 @@ test("real native Journal pairing returns untrusted hints and background clears 
         passed = true;
       } catch (error) {
         const message = error instanceof Error ? error.message : "";
+        const tool = error as { code?: unknown; signal?: unknown; killed?: unknown };
+        failureTool = {
+          code: typeof tool.code === "number" && Number.isInteger(tool.code) ? tool.code : null,
+          signal: ["SIGTERM", "SIGKILL"].includes(String(tool.signal)) ? String(tool.signal) : null,
+          killed: tool.killed === true,
+          deviceOffline: /device offline|device.*not found|no devices\/emulators/i.test(message),
+          installRejected: /INSTALL_FAILED_/u.test(message),
+        };
         failureChecks = {
           pointerIntercepted: /intercepts pointer|intercept.*event/i.test(message),
           unstableTarget: /not stable/i.test(message),
@@ -416,6 +436,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           failedDeviceIndex: passed ? null : deviceIndex,
           journalResponseStatus,
           failureKind,
+          failureTool,
           failureChecks,
           nativePageErrors: [...nativePageErrors],
           failedFirstPartyRequests,

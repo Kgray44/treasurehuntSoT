@@ -861,7 +861,16 @@ export function LandfallJournalChart({
         !bootstrap.replayOnly &&
         worldspace.kind === "PHYSICAL" &&
         worldspace.observationPolicy.allowedSources.includes("NATIVE_LOCATION") && (
-          <LandfallBackgroundPanel sessionId={bootstrap.sessionId} csrfToken={csrfToken} />
+          <LandfallBackgroundPanel
+            key={JSON.stringify([
+              bootstrap.sessionId,
+              bootstrap.publishedVersionId,
+              bootstrap.currentSequence,
+              bootstrap.activeWaypointId,
+            ])}
+            sessionId={bootstrap.sessionId}
+            csrfToken={csrfToken}
+          />
         )}
       {!readOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
         <LandfallNearbyPanel bootstrap={bootstrap} csrfToken={csrfToken} />

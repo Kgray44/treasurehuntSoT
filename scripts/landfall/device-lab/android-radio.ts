@@ -62,6 +62,7 @@ export async function executeLandfallAndroidRadioScenario(
     advertiserState: string | null;
   }[] = [];
   let advertiserState: string | null = null;
+  let advertiserFailureCode: number | null = null;
   const configurations: DeviceLabConfiguration[] = [];
   const acquired: string[] = [],
     pages: Page[] = [];
@@ -222,9 +223,11 @@ export async function executeLandfallAndroidRadioScenario(
                       ]),
                       synthetic: z.literal(true),
                       canComplete: z.literal(false),
+                      failureCode: z.number().int().min(1).max(5).nullable().optional(),
                     })
                     .parse(JSON.parse(raw));
                   advertiserState = value.state;
+                  advertiserFailureCode = value.failureCode ?? null;
                 } catch {}
               }
               if (advertiserState === "STARTED") break;
@@ -429,7 +432,20 @@ export async function executeLandfallAndroidRadioScenario(
     const file = path.join(destination, "native-radio-session.json");
     await writeFile(
       file,
-      JSON.stringify({ source, apkSha256, serials, configurations, diagnostics, bleDiagnostics }, null, 2),
+      JSON.stringify(
+        {
+          source,
+          apkSha256,
+          serials,
+          configurations,
+          diagnostics,
+          bleDiagnostics,
+          advertiserState,
+          advertiserFailureCode,
+        },
+        null,
+        2,
+      ),
     );
     artifacts.push({
       path: file,

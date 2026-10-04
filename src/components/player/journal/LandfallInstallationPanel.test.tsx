@@ -52,6 +52,42 @@ afterEach(() => {
   delete window.LandfallNative;
 });
 describe("optional Player installation choices", () => {
+  it("keeps the verified message when the native scan result precedes its start reply", async () => {
+    let release!: () => void;
+    window.LandfallNative = {
+      version: 1,
+      platform: "ANDROID",
+      request: vi.fn(async (raw) => {
+        const value = JSON.parse(raw);
+        if (value.operation === "INTERACTION_STOP") return { accepted: true };
+        window.dispatchEvent(
+          new CustomEvent("landfall-native-event", {
+            detail: {
+              type: "interaction",
+              medium: "QR",
+              scanId: value.payload.scanId,
+              token: token(),
+            },
+          }),
+        );
+        await new Promise<void>((done) => {
+          release = done;
+        });
+        return { state: "GRANTED" };
+      }),
+    };
+    mount();
+    fireEvent.click(screen.getByRole("button", { name: "Check installation availability" }));
+    await screen.findByLabelText("Signed text alternative");
+    fireEvent.click(screen.getByRole("button", { name: "Scan optional QR" }));
+    await waitFor(() =>
+      expect(screen.getByRole("status", { name: "Signed installation status" })).toHaveTextContent("verified locally"),
+    );
+    await act(async () => release());
+    expect(screen.getByRole("status", { name: "Signed installation status" })).toHaveTextContent("verified locally");
+    expect(screen.getByRole("button", { name: "Scan optional QR" })).toBeEnabled();
+    expect(fetcher).toHaveBeenCalledOnce();
+  });
   it("makes no automatic network, camera or location request and uses deliberate first-party availability", async () => {
     mount();
     expect(fetcher).not.toHaveBeenCalled();

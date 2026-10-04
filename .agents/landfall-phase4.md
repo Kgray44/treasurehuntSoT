@@ -843,3 +843,35 @@ exact SDK adb executable + explicit5038 argv/socket after vacant-port ownership
 was acquired; capture its /proc identity before bounded termination. Preserve
 other ADB servers and unknown listeners. Recheck release within3sec; failure
 remains failure. Actual next hosted ownership proof is required.
+
+2026-10-04 continuation: a5db hosted provider37183454130 HARVESTED338;
+Windows/Linux157/157 PASS, clean tree4177611d6c6261ec7b6df906e4a482abc3369c51,
+FP6f1766ecaccc7d06e994b8be8eb313d0099b89d77e5e3b51a61dc4d0d71a1132.
+Android37183506962 HARVESTED49: seven instrumentation tests PASS, five impact
+permission/location/virtual cases PASS, cleanup PASS. Apple37183310626 still active.
+BLE37183307279 HARVESTED12 FAIL: advertiser unavailable before discovery, fixture
+cleanup PASS but owner FAIL port5038. owned-adb.log actually reports a bind conflict;
+the first client could have raced the nodaemon server, not proved a late restart.
+New source waits for the owned listener before any client. It captures exact SDK
+ADB executable + /proc listening inode/fd on the previously-vacant reserved5038,
+then rechecks PID start identity before termination. No unknown/shared server kill.
+BLE native callback failure code and terminal advertiser state now survive failure.
+Journal37183450751 HARVESTED42 FAIL DEVICE_PREFLIGHT/index0 before Journal navigation;
+fixture FAIL private-data emulator5580, owner FAIL5038. No pairing proof. New source
+splits install/reset/grant/launch and records categorical tool exit/signal/killed
+diagnostics; the pre-pairing screenshot remains available for opening failures.
+
+WIP: scanner callback-before-start-reply race fixed with terminal result ownership;
+provider+UI13PASS. Android one encrypted current wake region supports boot recovery,
+bounded eight-second async receiver, consent/permission/expiry checks, shared native
+generation cancellation and removal-failure truth. Two native SDK/Keystore/callback
+tests compile, not yet emulator-executed; actual reboot/delivery still open.
+Background setup cancellation and private-socket parsing plus Journal/provider
+checks25PASS; latest TS/lint/docs/Android build freeze must be refreshed before push.
+No ordinary qualification/PR/merge/Phase4 acceptance yet. Continue full goal.
+
+Freeze: full Device Lab47tests PASS including157scenario production corpus;
+installation/background/Journal focused25tests PASS. Stale radio-default
+expectation updated to include the three canonical BLE cases, with focused BLE
+selection accepted and ordinary native lane rejecting radio cases. TS, changed
+ESLint, docs, whitespace checks PASS; Android debug/instrumentation builds PASS.

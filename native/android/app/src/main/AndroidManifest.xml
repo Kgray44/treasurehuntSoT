@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
   <uses-sdk android:minSdkVersion="28" tools:overrideLibrary="androidx.core.uwb,androidx.core.uwb.rxjava3" />
   <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
@@ -25,5 +26,8 @@
       <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
     </activity>
     <receiver android:name=".LandfallGeofenceReceiver" android:exported="false" />
+    <receiver android:name=".LandfallBootReceiver" android:exported="false">
+      <intent-filter><action android:name="android.intent.action.BOOT_COMPLETED" /></intent-filter>
+    </receiver>
   </application>
 </manifest>

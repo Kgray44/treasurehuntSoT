@@ -29,11 +29,31 @@ Returning to the foreground does not resume Player acquisition without deliberat
 action. Serialized driver operations prevent an obsolete asynchronous start or stop
 from disabling a newer user request.
 
-Geofences retain bounded encrypted opaque return handles and categorical wake hints.
-They do not retain location trails or complete a waypoint. Notifications use private
+Geofences retain one bounded encrypted released-objective region and categorical
+wake hints. They do not retain location trails or complete a waypoint. Notifications use private
 generic wording. Opening a return handle reaches the existing authenticated server
 route, which checks current membership, published pin and Journey state. Fresh
 foreground evidence remains necessary for location-based progression.
+
+One-shot installation acquisition also handles native callbacks that arrive before
+the bridge start reply. Its terminal result owns presentation; a late successful
+or failed start reply cannot replace a verified identity with a scanning or
+unavailable message. The matching scanner is stopped before verification. Thirteen
+focused provider and Player tests pass, including both late-reply outcomes.
+
+Android recovery now includes a non-exported boot receiver. It reads one encrypted
+consented region after credential storage is unlocked, rejects an expired region
+or downgraded permissions, and makes one bounded re-registration attempt. The
+descriptor holds the opaque return handle, area, expiry and notification choice;
+it never contains an account credential or a sampled position. A shared generation
+guard prevents a late service-add callback from restoring cleared consent, including
+across Activity instances. Clearing removes the encrypted descriptor, wake hints
+and this companion's notifications before requesting OS removal. The UI reports
+OS removal failure honestly. Backgrounding, teardown and Disable cancel unfinished
+setup; an already enabled reminder survives ordinary Journal teardown as intended.
+Native storage and delayed-service tests compile; hosted execution and an actual
+reboot/OS-region delivery receipt remain required. This recovery follows
+[Android's geofence re-registration guidance](https://developer.android.com/develop/sensors-and-location/location/geofencing?hl=en).
 
 ## Origin and deployment configuration
 
