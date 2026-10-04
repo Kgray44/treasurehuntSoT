@@ -31,13 +31,13 @@ Adjacent owners include Storytide, Watchglass, Figurehead, Wakebook, Drydock, On
 
 ## Current implementation status
 
-This record publishes architecture and ownership only. It does **not** claim that Project Sextant, Project Parallax, Project Crossdeck, or the newly governed AR/multi-surface capabilities are implemented.
+The master architecture and **Project Sextant v1.0 governing baseline** are now published. This does **not** claim that Sextant is implemented; its five implementation phases have not started. Project Parallax, Project Crossdeck, and the newly governed AR/multi-surface capabilities likewise remain unimplemented.
 
-Current protected main already contains the accepted Landfall v1.0/v1.1 architecture and Landfall Phases 1–3. The master spatial architecture is deliberately additive and requires the derived governing documents below before implementation begins in the new owner domains.
+Current protected main already contains the accepted Landfall v1.0/v1.1 architecture and Landfall Phases 1–3. Existing accepted Landfall browser/context seams remain compatibility truth until an explicit boundary migration changes them.
 
 ## Required derived governing work
 
-1. Project Sextant v1.0 governing document.
+1. **Project Sextant v1.0 governing document — COMPLETE (October 4, 2026).**
 2. Project Parallax v1.0 governing document.
 3. Project Crossdeck v1.0 governing document.
 4. Project Landfall boundary/integration amendment.
