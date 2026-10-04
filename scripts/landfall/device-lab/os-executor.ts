@@ -137,7 +137,7 @@ export async function executeLandfallOsScenario(
   }[] = [];
   const sensorReady = new Set<number>();
   const osResults = new Map<number, DeviceLabStepResult>();
-  let appleNoticeUiDiagnostic: Record<string, number | boolean> | undefined;
+  let appleNoticeUiDiagnostic: Record<string, number | boolean | string> | undefined;
   let osReady = false;
   let osCurrent: { index: number; action: unknown } | null = null;
   const server = createServer(async (request, response) => {
@@ -368,10 +368,13 @@ export async function executeLandfallOsScenario(
               (key) => Number.isInteger(diagnostic[key]) && diagnostic[key] >= 0 && diagnostic[key] <= 64,
             ) &&
             flagFields.every((key) => typeof diagnostic[key] === "boolean")
-          )
+          ) {
             appleNoticeUiDiagnostic = Object.fromEntries(
               [...countFields, ...flagFields].map((key) => [key, diagnostic[key]]),
             );
+            if (["NONE", "STATIC_TITLE", "OPEN_BUTTON", "COMBINED_CARD"].includes(diagnostic.initialTarget))
+              appleNoticeUiDiagnostic.initialTarget = diagnostic.initialTarget;
+          }
         }
         if (!osResults.has(value.index))
           osResults.set(value.index, {
@@ -1637,6 +1640,38 @@ export async function executeLandfallOsScenario(
           };
       } catch {
         /* Absence stays explicit; never infer test counts from exit status. */
+      }
+      if (appleNoticeScenario) {
+        try {
+          await labTool(
+            "xcrun",
+            [
+              "xcresulttool",
+              "export",
+              "attachments",
+              "--path",
+              path.join(destination, "NativeLifecycle.xcresult"),
+              "--output-path",
+              path.join(destination, "native-ui-attachments"),
+            ],
+            120000,
+          );
+          const manifest = path.join(destination, "native-ui-attachments", "manifest.json");
+          artifacts.push({
+            path: manifest,
+            sha256: createHash("sha256")
+              .update(await readFile(manifest))
+              .digest("hex"),
+            kind: "TEST_RESULT",
+          });
+        } catch {
+          steps.push({
+            index: scenario.timeline.length - 1,
+            action: "NOTIFICATION",
+            state: "FAIL",
+            reason: "NATIVE_NOTICE_UI_ARTIFACTS_UNAVAILABLE",
+          });
+        }
       }
       await writeFile(
         file,

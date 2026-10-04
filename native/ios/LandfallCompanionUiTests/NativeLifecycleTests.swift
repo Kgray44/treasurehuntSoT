@@ -3,6 +3,10 @@ import Foundation
 import UIKit
 
 final class NativeLifecycleTests: XCTestCase {
+    @MainActor private func keepNoticeUi(_ springboard:XCUIApplication,_ name:String) {
+        let screenshot=XCTAttachment(screenshot:springboard.screenshot());screenshot.name=name;screenshot.lifetime = .keepAlways;add(screenshot)
+        let hierarchy=XCTAttachment(string:springboard.debugDescription);hierarchy.name=name+" hierarchy";hierarchy.lifetime = .keepAlways;add(hierarchy)
+    }
     @MainActor private func observedBackground(_ app: XCUIApplication) -> Bool {
         let eitherState=NSPredicate { _, _ in app.state == .runningBackground || app.state == .runningBackgroundSuspended }
         return XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:eitherState,object:app)],timeout:15) == .completed
@@ -32,6 +36,17 @@ final class NativeLifecycleTests: XCTestCase {
             let geometry=NSPredicate {_,_ in let frame=app.windows.firstMatch.frame;return frame.width > 0 && (landscape ? frame.width > frame.height : frame.height > frame.width)}
             XCTAssertEqual(XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:geometry,object:app)],timeout:10),.completed,"LANDFALL_ORIENTATION_UNOBSERVED")
             XCTAssertTrue(shell.waitForExistence(timeout:10) && shell.isHittable,"LANDFALL_LARGE_TEXT_FALLBACK_UNREADABLE")
+            // Window geometry changes before the rotation animation and text
+            // layout settle. Require stable actual horizontal text bounds.
+            var previous=CGRect.zero,stableSince=Date(),settled=false
+            let settleDeadline=Date().addingTimeInterval(10)
+            while Date() < settleDeadline {
+                let frame=shell.frame,window=app.windows.firstMatch.frame
+                if frame != previous {previous=frame;stableSince=Date()}
+                if frame.width > 0,frame.minX >= window.minX-1,frame.maxX <= window.maxX+1,Date().timeIntervalSince(stableSince) >= 2 {settled=true;break}
+                RunLoop.current.run(until:Date().addingTimeInterval(0.1))
+            }
+            XCTAssertTrue(settled,"LANDFALL_ROTATED_TEXT_LAYOUT_UNSETTLED")
             let attachment=XCTAttachment(screenshot:app.screenshot());attachment.name=landscape ? "Owned large-text landscape fallback" : "Owned large-text portrait fallback";attachment.lifetime = .keepAlways;add(attachment)
         }
     }
@@ -134,9 +149,11 @@ final class NativeLifecycleTests: XCTestCase {
                     // SpringBoard can expose a notice as one combined accessible
                     // card/button rather than a separate title static text.
                     var notice:XCUIElement?
-                    if openButtons.firstMatch.waitForExistence(timeout:5),openButtons.count == 1 {notice=openButtons.firstMatch}
-                    else if cards.firstMatch.waitForExistence(timeout:5),cards.count == 1 {notice=cards.firstMatch}
-                    else if text.firstMatch.waitForExistence(timeout:5),text.count == 1 {notice=text.firstMatch}
+                    var initialTarget="NONE"
+                    if text.firstMatch.waitForExistence(timeout:5),text.count == 1,text.firstMatch.isHittable {notice=text.firstMatch;initialTarget="STATIC_TITLE"}
+                    else if openButtons.firstMatch.waitForExistence(timeout:5),openButtons.count == 1 {notice=openButtons.firstMatch;initialTarget="OPEN_BUTTON"}
+                    else if cards.firstMatch.waitForExistence(timeout:5),cards.count == 1 {notice=cards.firstMatch;initialTarget="COMBINED_CARD"}
+                    keepNoticeUi(springboard,"Owned notice before tap")
                     var tapped=false,foregroundObserved=false
                     var tapAttempts=0
                     if let notice=notice,notice.isHittable {
@@ -144,11 +161,16 @@ final class NativeLifecycleTests: XCTestCase {
                         // A collapsed notification can consume the first tap to
                         // expand. A second real tap is allowed only while the
                         // same unique public notice is still visible/hittable.
-                        if !app.wait(for:.runningForeground,timeout:5),openButtons.count == 1,openButtons.firstMatch.isHittable {openButtons.firstMatch.tap();tapAttempts=2}
+                        if !app.wait(for:.runningForeground,timeout:5) {
+                            keepNoticeUi(springboard,"Owned notice after first tap")
+                            if text.count == 1,text.firstMatch.isHittable {text.firstMatch.tap();tapAttempts=2}
+                            else if openButtons.count == 1,openButtons.firstMatch.isHittable {openButtons.firstMatch.tap();tapAttempts=2}
+                        }
                         foregroundObserved=app.wait(for:.runningForeground,timeout:15)
                         if foregroundObserved {result="PASS"}
                     }
-                    noticeDiagnostic=["buttonTitleCount":min(buttons.count,64),"openButtonCount":min(openButtons.count,64),"tapAttempts":tapAttempts,"combinedCardCount":min(cards.count,64),"staticTitleCount":min(text.count,64),"tapped":tapped,"foregroundObserved":foregroundObserved]
+                    keepNoticeUi(springboard,"Owned notice after bounded taps")
+                    noticeDiagnostic=["initialTarget":initialTarget,"buttonTitleCount":min(buttons.count,64),"openButtonCount":min(openButtons.count,64),"tapAttempts":tapAttempts,"combinedCardCount":min(cards.count,64),"staticTitleCount":min(text.count,64),"tapped":tapped,"foregroundObserved":foregroundObserved]
                 }
                 try await post(origin,"/lab/os/result",["index":index,"state":result,"noticeUi":noticeDiagnostic])
                 continue
