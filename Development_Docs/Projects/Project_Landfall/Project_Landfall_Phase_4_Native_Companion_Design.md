@@ -676,3 +676,83 @@ receipts are harvested and transport cleanup passes. Moving trace/video/automati
 screenshot settings to file scope corrects discovery; the local list command
 finds all seven cases across the two files. This is a corrected test configuration,
 not executed native pairing evidence. Redispatch is required.
+
+## Deliberate online data adapters and application integration
+
+The development candidate includes replaceable HTTPS adapters for Nominatim
+forward/reverse place lookup, OSRM route suggestions and Open-Elevation terrain.
+Their primary contracts are [Nominatim search](https://nominatim.org/release-docs/latest/api/Search/),
+[reverse](https://nominatim.org/release-docs/latest/api/Reverse/),
+[OSRM HTTP](https://project-osrm.org/docs/v26.4.0/http) and
+[Open-Elevation API](https://github.com/Jorl17/open-elevation/blob/master/docs/api.md).
+The public/demo endpoints are deliberately excluded, including trailing-dot and
+subdomain aliases. The [public Nominatim policy](https://operations.osmfoundation.org/policies/nominatim/)
+does not authorize a generic platform to silently select its public service.
+No real credentials or external-provider traffic were used for the unit fixtures.
+
+Operators explicitly opt into `LANDFALL_REMOTE_DATA_MODE=ephemeral-instance`
+and supply `LANDFALL_REMOTE_DATA_CONFIG`, a bounded JSON array with at most one
+NOMINATIM, OSRM and OPEN_ELEVATION configuration. This mode is supported only
+for one application instance; per-service quota/cooldown state is process-local.
+Distributed deployments must keep these adapters disabled until they provide an
+application-wide quota authority. Configuration requires HTTPS base URL, an
+identifying user agent, license, attribution label/URL, accepted usage agreement
+and NONE or BEARER authentication. BEARER names a `LANDFALL_*` server environment
+variable; the value is never returned to clients. OSRM declares its actual
+deployment's routing mode and profile. A profile string alone cannot certify
+the backend data mode, safety or accessibility. `authoringRights` defaults to
+PROHIBITED and may be ALLOWED only under the deployment's actual agreement.
+Online result caching and offline packaging remain prohibited for these adapters.
+
+The transport resolves IPv4 addresses for each request and pins an entirely
+public DNS answer into the normal certificate-validated TLS connection. Private,
+loopback, metadata, documentation, reserved and multicast destinations fail
+closed. It follows no redirects, sends no ambient cookies, requests identity
+encoding, accepts only bounded JSON, caps response bodies at 128 KiB and applies
+a five-second DNS/TLS/body deadline. There is one in-flight operation and at
+least one second between starts per configured service, with no queue or retry.
+Provider Retry-After cooldown is retained internally for up to seven days; the
+client's bounded check-back interval never shortens that internal cooldown.
+Requests, results, coordinates and credentials are not persisted or logged.
+
+The live PHYSICAL Journal offers a collapsed optional panel. It fetches nothing
+at mount or during typing. A deliberate metadata check identifies recipients,
+attribution and license before a separate sharing choice. Text search sends no
+location. Reverse, route and terrain actions require an already acquired valid
+location less than thirty seconds old, checked again at the action; they never
+start acquisition. Each query carries the recipient hostname the user reviewed.
+Private, approximate, fictional, paused, historical and virtual objectives are
+excluded by both presentation and current server authorization. The server
+reauthorizes after an external request and discards results when scope changes.
+Abort/generation guards discard late results on cancellation; background,
+hidden-document, power pressure, private reset, scope change, details close and
+unmount clear ephemeral state and consent. Returning does not resume requests.
+
+Returned places are external suggestions. Route geometry has a bounded schematic
+preview, duration/distance and unassessed safety/accessibility. It does not
+replace authored route progression. Terrain has UNKNOWN uncertainty and cannot
+identify a floor. Open-Elevation's zero value may mean absent coverage; this is
+explicit in the shared contract and readable output. None of these operations
+submit Landfall evidence or write One Voyage progression.
+
+Creator text lookup reuses the consent controls on a saved public physical draft.
+The owner/CSRF guard, saved autosave version and Worldspace are checked before
+work and again after an external request. It refuses reverse lookup, coordinate
+bias/bounds and client-selected destinations. Selection populates the existing
+manual placement fields only when authoring rights are ALLOWED; the Creator must
+review and deliberately place the waypoint under the applicable attribution.
+Unsaved/private/virtual contexts do not offer lookup.
+
+The ordinary server authoring/publish validation receives deployment-scoped
+metadata without sending authored coordinates or probing providers. CONFIGURED
+does not become READY until the actual adapter returns a valid result; successful
+health expires after five minutes. Declared OSRM mode, credential requirement and
+prohibited offline rights constrain candidates. Local authored readiness stays
+scoped to the individual requirement. Required unavailable capabilities retain
+the existing blocker or truthful accessible-fallback warning.
+
+Focused server, transport, consent and deployment-preflight tests pass against
+synthetic payloads. Optimized browser cases cover actual default deployment
+absence and explicitly synthetic configured responses at mobile/desktop sizes.
+Those browser executions, actual configured-service acceptance and remaining
+Phase 4 integration are pending. This is development source, not closure evidence.

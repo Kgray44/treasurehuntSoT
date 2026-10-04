@@ -205,8 +205,16 @@ export function landfallAuthoringFindings(
   definition: LandfallDefinition,
   taleVisibility: string,
   assets?: ReadonlyArray<{ id: string; mimeType: string; variants: ReadonlyArray<{ processingState: string }> }>,
+  providerContext?: {
+    providers: Parameters<typeof landfallProviderFindings>[1];
+    statuses: Parameters<typeof landfallProviderFindings>[2];
+  },
 ): LandfallAuthoringFinding[] {
-  const findings: LandfallAuthoringFinding[] = landfallProviderFindings(definition);
+  const findings: LandfallAuthoringFinding[] = landfallProviderFindings(
+    definition,
+    providerContext?.providers,
+    providerContext?.statuses,
+  );
   for (const waypoint of definition.waypoints) {
     const capability = landfallSourceCapabilities(definition, waypoint);
     if ((waypoint.evidenceProfile.fusionPolicy?.minimumIndependentSources ?? 1) > capability.count)

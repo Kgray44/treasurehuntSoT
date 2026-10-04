@@ -45,7 +45,9 @@ describe("capability-scoped authored preflight", () => {
       requirement({ family: "ROUTING", capability: "accessible", providerId: "authored-routes", fallback: "AUTHORED" }),
     ]) {
       expect(localLandfallProviderPreflight(landfallFixture, input)).toEqual([]);
-      expect(landfallProviderFindings(withRequirement(input))).toContainEqual(
+      const definition = structuredClone(landfallFixture);
+      definition.worldspaces[0].privacyPolicy.classification = "PUBLIC_REAL_WORLD";
+      expect(landfallProviderFindings(withRequirement(input, definition))).toContainEqual(
         expect.objectContaining({ code: "LANDFALL_PROVIDER_NOT_CONFIGURED", severity: "blocker" }),
       );
     }

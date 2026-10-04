@@ -619,3 +619,32 @@ Bound actions/navigation, retain secret-free stage attachment, tolerate already
 closed browser cleanup, subdivide native WebView/auth/Journal/map stages.
 Redispatch diagnostics, no pairing acceptance. Remote data API/UI remain separate
 untracked WIP; 18 server/security tests PASS, full typecheck currently running.
+
+Checkpoint 184770643fdd66eee194ccc457003b4a6171bccb diagnostic run
+37170724150, hosted-184770643fdd-1791080391366, transport
+490b552fe74910bc6efd53d2e4fd68b63ce57fe4, low-resource android-journal,
+is still active. Harvest on completion; do not confuse its clean source with
+the newer remote-data working tree.
+
+Remote-data working integration now includes pinned bounded HTTPS transport,
+Nominatim/OSRM/Open-Elevation adapters, explicit ephemeral-instance configuration,
+per-instance quota and Retry-After policy, recipient-bound consent, real Player
+and Creator API/controls, scope reauthorization, privacy/lifecycle cancellation,
+schematic route/unknown terrain output and explicit coordinate authoring rights.
+Server publish validation uses scope-aware deployment preflight without probing
+or sending geometry. CONFIGURED is not READY; no virtual/private promotion.
+No actual external service or credentials used. Focused synthetic tests pass;
+optimized mobile/desktop cases added but execution pending. Latest typecheck
+found a Creator test's inferred header-union type; corrected with explicit
+Record<string,string>[] cases. Run current full typecheck/lint/docs before
+committing this integration, then hosted browser/native validation. Product
+acceptance docs/catalog/ordinary qualification remain open, not checkpoint done.
+
+Remote integration checks: 63 focused tests PASS (11 files), full uncached
+TypeScript PASS after header-union correction. Changed code ESLint found React
+purity analysis following the event-only point helper; action clock read moved
+to an explicitly event-only utility (no render-time sampling), panel lint and
+10 affected UI tests PASS. Docs validation, diff check and nine-case browser
+discovery PASS. Add a source-bound browser-only hosted target so optimized web
+acceptance does not wait behind a native driver's long failure. It uses the
+same generic owned SQLite/runtime contract and never starts native devices.

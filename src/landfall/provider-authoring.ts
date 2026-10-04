@@ -1,6 +1,7 @@
 import type { LandfallDefinition } from "@/landfall/schema";
 import { landfallProviderCatalog } from "@/landfall/provider-catalog";
 import type { ProviderDescriptor, ProviderStatus } from "@/landfall/provider-policy";
+import type { LandfallProviderPlan } from "@/landfall/provider-policy";
 import { localLandfallProviderPreflight } from "@/landfall/local-provider-preflight";
 
 type Finding = { code: string; severity: "warning" | "blocker"; message: string; targetId?: string };
@@ -8,7 +9,9 @@ type Finding = { code: string; severity: "warning" | "blocker"; message: string;
 export function landfallProviderFindings(
   definition: LandfallDefinition,
   providers: readonly ProviderDescriptor[] = landfallProviderCatalog(),
-  statuses?: readonly ProviderStatus[],
+  statuses?:
+    | readonly ProviderStatus[]
+    | ((requirement: LandfallProviderPlan["requirements"][number]) => readonly ProviderStatus[]),
 ): Finding[] {
   const plan = definition.providerPlan;
   if (!plan) return [];
@@ -16,7 +19,10 @@ export function landfallProviderFindings(
   const push = (code: string, message: string, targetId?: string, severity: Finding["severity"] = "blocker") =>
     findings.push({ code, message, targetId, severity });
   for (const requirement of plan.requirements) {
-    const readiness = statuses ?? localLandfallProviderPreflight(definition, requirement);
+    const readiness =
+      typeof statuses === "function"
+        ? statuses(requirement)
+        : (statuses ?? localLandfallProviderPreflight(definition, requirement));
     const worldspace = definition.worldspaces.find((item) => item.id === requirement.worldspaceId);
     if (!worldspace) {
       push(
@@ -32,6 +38,8 @@ export function landfallProviderFindings(
         provider.capabilities.includes(requirement.capability) &&
         (!requirement.providerId || provider.id === requirement.providerId) &&
         !provider.simulation &&
+        (provider.privacy !== "THIRD_PARTY" ||
+          ["PUBLIC_REAL_WORLD", "GENERIC"].includes(worldspace.privacyPolicy.classification)) &&
         provider.worldspaceKinds.includes(worldspace.kind),
     );
     const waypoints = definition.waypoints.filter(

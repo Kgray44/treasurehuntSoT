@@ -8,6 +8,7 @@ import { publishedSourceIdentity, snapshotFromStudio } from "@/chronicle/snapsho
 import { landfallAuthoringFindings } from "@/landfall/authoring";
 import { validateLandfallBlockContracts } from "@/landfall/block-validation";
 import { validateLandfallReferenceAssets } from "@/landfall/context-assets";
+import { landfallDeploymentProviderPreflight } from "@/landfall/remote-data-deployment-server";
 
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
 
@@ -51,7 +52,12 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
         field: "landfall",
       });
     }
-    for (const finding of landfallAuthoringFindings(studio.draft.landfall, studio.tale.visibility)) {
+    for (const finding of landfallAuthoringFindings(
+      studio.draft.landfall,
+      studio.tale.visibility,
+      studio.assets,
+      landfallDeploymentProviderPreflight(studio.draft.landfall),
+    )) {
       const report = finding.severity === "blocker" ? error : warn;
       report({ code: finding.code, message: finding.message, field: "landfall" });
     }

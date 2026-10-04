@@ -20,6 +20,7 @@ import { NativeContextProvider } from "@/landfall/native-context";
 import { LandfallOfflineRegionPanel } from "@/components/player/journal/LandfallOfflineRegionPanel";
 import { LandfallBackgroundPanel } from "@/components/player/journal/LandfallBackgroundPanel";
 import { LandfallNearbyPanel } from "@/components/player/journal/LandfallNearbyPanel";
+import { LandfallOnlineDataPanel } from "@/components/player/journal/LandfallOnlineDataPanel";
 import { distance } from "@/landfall/geometry";
 import type { LandfallCurrentPosition } from "@/landfall/map-projection";
 import { LandfallProviderRegistry } from "@/landfall/observation";
@@ -862,6 +863,9 @@ export function LandfallJournalChart({
         )}
       {!readOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
         <LandfallNearbyPanel bootstrap={bootstrap} csrfToken={csrfToken} />
+      )}
+      {!readOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
+        <LandfallOnlineDataPanel bootstrap={bootstrap} csrfToken={csrfToken} position={position} />
       )}
       {activeRoute && (
         <section aria-label="Route progress">

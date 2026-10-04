@@ -27,6 +27,117 @@ test.beforeAll(async () => {
 });
 test.afterAll(async () => db.$disconnect());
 
+for (const width of [375, 1280]) {
+  test(`optional online place consent and no progression at ${width}px`, async ({ browser, baseURL }, testInfo) => {
+    const definition = structuredClone(landfallFixture);
+    definition.worldspaces[0].privacyPolicy.classification = "PUBLIC_REAL_WORLD";
+    const voyage = await closureVoyage(owner, player, "livingChart", { authoredDefinition: definition });
+    const context = await browser.newContext({ viewport: { width, height: 1000 }, reducedMotion: "reduce" });
+    const operations: { operation: string; consent?: boolean; query?: string; recipient?: string }[] = [];
+    try {
+      await authenticateClosure(context, player, baseURL!);
+      await auditNativeGeolocation(context);
+      const page = await context.newPage();
+      await openClosureJournal(page, voyage.id);
+      await openClosureMap(page);
+      const panel = page.locator(".landfall-online-data-panel:visible");
+      await panel.locator("summary").click();
+      await expect(panel).toHaveAttribute("open", "");
+      const baseline = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
+      const events = await db.taleSessionEvent.count({ where: { sessionId: voyage.id } });
+      // The deployment's actual first-party route must truthfully report absence.
+      await panel.getByRole("button", { name: "Check online data options" }).click();
+      await expect(panel.getByRole("status", { name: "Online data status" })).toContainText(
+        "No online data services are configured",
+      );
+      await expect(panel.getByRole("checkbox")).toHaveCount(0);
+      const service = {
+        id: "configured-geocoder",
+        family: "GEOCODING",
+        state: "CONFIGURED",
+        recipient: "geo.example.test",
+        attributionLabel: "Synthetic geography",
+        attributionUrl: "https://geo.example.test/license",
+        license: "Synthetic license",
+        cacheRights: "PROHIBITED",
+        offlineRights: "PROHIBITED",
+        authoringRights: "PROHIBITED",
+      };
+      await context.route(`**/api/player/playthroughs/${voyage.id}/landfall/data`, async (route) => {
+        const body = route.request().postDataJSON();
+        operations.push({ ...body, recipient: route.request().headers()["x-landfall-recipient"] });
+        await route.fulfill({
+          json:
+            body.operation === "STATUS"
+              ? { state: "STATUS", services: [service] }
+              : {
+                  state: "RESULT",
+                  service,
+                  canComplete: false,
+                  places: [
+                    {
+                      id: "synthetic-square",
+                      label: "Synthetic Square",
+                      point: { latitude: 40, longitude: -75 },
+                      source: "EXTERNAL",
+                      authoritative: false,
+                      accuracy: "UNKNOWN",
+                    },
+                  ],
+                },
+        });
+      });
+      await panel.getByRole("button", { name: "Check online data options" }).click();
+      await expect(panel.getByRole("checkbox")).toBeVisible();
+      expect(operations).toEqual([{ operation: "STATUS", recipient: undefined }]);
+      await expect(panel.getByRole("button", { name: "Search online places" })).toBeDisabled();
+      await panel.getByRole("checkbox").check();
+      await panel.getByRole("searchbox", { name: "Online place search" }).fill("Synthetic Square");
+      expect(operations).toHaveLength(1);
+      await panel.getByRole("button", { name: "Search online places" }).click();
+      await panel.getByRole("button", { name: "Synthetic Square", exact: true }).click();
+      expect(operations).toEqual([
+        { operation: "STATUS", recipient: undefined },
+        { operation: "SEARCH", consent: true, query: "Synthetic Square", limit: 5, recipient: "geo.example.test" },
+      ]);
+      expect((await geoAudit(page)).calls).toBe(0);
+      await expect(panel.getByRole("button", { name: "Look up my current location online" })).toBeDisabled();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include(".landfall-online-data-panel:visible")
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await panel.getByRole("button", { name: "Clear online suggestions" }).click();
+      await expect(panel.getByRole("checkbox")).toHaveCount(0);
+      await expect(panel.getByRole("button", { name: "Synthetic Square", exact: true })).toHaveCount(0);
+      expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(events);
+      const after = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
+      expect(after.currentSequence).toBe(baseline.currentSequence);
+      expect(after.currentBlockId).toBe(baseline.currentBlockId);
+      await panel.scrollIntoViewIfNeeded();
+      const shot = testInfo.outputPath("online-data-cleared.png");
+      await page.screenshot({ path: shot });
+      await testInfo.attach("online-data-cleared", { path: shot, contentType: "image/png" });
+      await testInfo.attach("online-data-evidence-class", {
+        contentType: "application/json",
+        body: JSON.stringify({
+          evidenceClass: "SHARED_WEB_CONTRACT",
+          defaultFirstPartyStatus: "REAL_OPTIMIZED_APPLICATION",
+          configuredProviderTransport: "SYNTHETIC",
+          canonicalProgressionEvents: 0,
+          actualExternalRequests: 0,
+        }),
+      });
+    } finally {
+      await context.close().catch(() => undefined);
+    }
+  });
+}
+
 /** Browser-contract substitute only: the hosted radio corpus owns native OS proof. */
 async function syntheticCompanion(context: BrowserContext, address: string) {
   await context.addInitScript(

@@ -16,7 +16,7 @@ export async function dispatchLandfallHostedLab(
   selectedProfiles?: string,
 ) {
   if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error("LANDFALL_HOSTED_CANDIDATE_INVALID");
-  if (!["all", "provider", "android", "android-radio", "android-journal", "ios"].includes(target))
+  if (!["all", "provider", "browser", "android", "android-radio", "android-journal", "ios"].includes(target))
     throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   if (!["development", "candidate", "closure"].includes(tier)) throw new Error("LANDFALL_HOSTED_TIER_INVALID");
   if (
@@ -63,6 +63,7 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__CANDIDATE_SHA12__", candidate.slice(0, 12))
     .replaceAll("__CANDIDATE_SHA__", candidate)
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
+    .replaceAll("__RUN_BROWSER__", String(target === "all" || target === "browser"))
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
     .replaceAll("__RUN_ANDROID__", String(target === "all" || target === "android"))
     .replaceAll("__RUN_ANDROID_RADIO__", String(target === "all" || target === "android-radio"))
@@ -71,6 +72,7 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__ANDROID_PROFILES__", JSON.stringify(androidProfiles))
     .replaceAll("__APPLE_PROFILES__", JSON.stringify(appleProfiles));
   const scenarios = {
+    browser: target === "browser" || target === "all" ? ["first-party-phase4-web"] : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     radio: hostedDeviceLabScenarios("android-radio", target === "android-radio" ? selectedScenarios : undefined),
     ios: hostedDeviceLabScenarios("ios", target === "ios" || target === "all" ? selectedScenarios : undefined),

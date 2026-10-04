@@ -10,6 +10,37 @@ concurrency:
   group: landfall-device-lab-${{ github.ref_name }}
   cancel-in-progress: false
 jobs:
+  browser:
+    if: __RUN_BROWSER__
+    name: Browser / optimized first-party Phase 4
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      LANDFALL_NEARBY_PAIRING_MODE: ephemeral-instance
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx --no-install playwright install --with-deps chromium
+      - name: Build and run isolated first-party browser contracts
+        run: |
+          browser_database="$GITHUB_WORKSPACE/artifacts/sounding-line/generic-__CANDIDATE_SHA12__/validation-isolated-$(date +%Y%m%d-%H%M%S%3N)-$(cat /proc/sys/kernel/random/uuid | tr -d '-').db"
+          node scripts/sounding-line/run-browser-suite.mjs --profile generic --candidate __CANDIDATE_SHA__ --database-url "file:$browser_database" -- tests/e2e/landfall-phase4.spec.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-browser-__CANDIDATE_SHA__
+          path: |
+            artifacts/sounding-line/browser-runtime.json
+            artifacts/sounding-line/browser-suite-profile.json
+            test-results
+          retention-days: 14
   providers:
     if: __RUN_PROVIDERS__
     name: Providers / ${{ matrix.os }}
