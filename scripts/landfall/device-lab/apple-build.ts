@@ -191,6 +191,17 @@ async function main() {
     ]);
     await writeFile(path.join(destination, "native-test-summary.json"), testSummary);
     const nativeTests = JSON.parse(testSummary);
+    // Export the first bundle before the independent Motion test so a later
+    // failure preserves actual XXXL screenshots as well as the raw xcresult.
+    await labTool("xcrun", [
+      "xcresulttool",
+      "export",
+      "attachments",
+      "--path",
+      resultPath,
+      "--output-path",
+      path.join(destination, "test-attachments"),
+    ]);
     if (presentationRequired) {
       // Settings navigation and the readable XXXL shell are separate checks.
       // Operate the real Reduce Motion switch at normal text size, retaining
@@ -280,15 +291,6 @@ async function main() {
       path.join(destination, "attachment-export-help.txt"),
       await labTool("xcrun", ["xcresulttool", "help", "export", "attachments"]),
     );
-    await labTool("xcrun", [
-      "xcresulttool",
-      "export",
-      "attachments",
-      "--path",
-      path.join(destination, "NativeTests.xcresult"),
-      "--output-path",
-      path.join(destination, "test-attachments"),
-    ]);
     if (presentationRequired)
       await labTool("xcrun", [
         "xcresulttool",

@@ -24,7 +24,7 @@ export async function setOwnedAppleLabPosition(
     try {
       await driver.run(
         ["simctl", "location", ownership.deviceId, "set", `${coordinate.latitude},${coordinate.longitude}`],
-        15000,
+        30000,
       );
       driver.observe(attempt, "ACKNOWLEDGED");
       return;

@@ -16,7 +16,7 @@ describe("bounded owned Simulator position input", () => {
     });
     await setOwnedAppleLabPosition(owned, coordinate, driver);
     expect(driver.run.mock.calls).toEqual(
-      Array(2).fill([["simctl", "location", owned.deviceId, "set", "44,-72"], 15000]),
+      Array(2).fill([["simctl", "location", owned.deviceId, "set", "44,-72"], 30000]),
     );
     expect(driver.delay).toHaveBeenCalledExactlyOnceWith(250);
     expect(driver.observe.mock.calls).toEqual([

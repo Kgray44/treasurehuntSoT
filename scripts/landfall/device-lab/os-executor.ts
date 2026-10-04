@@ -595,7 +595,7 @@ export async function executeLandfallOsScenario(
           120000,
         );
       executionStage = "APPLE_LAUNCH";
-      if (scenario.timeline.some((step) => step.action.type === "LIFECYCLE")) {
+      if (appleNoticeScenario || scenario.timeline.some((step) => step.action.type === "LIFECYCLE")) {
         // XCTest owns this launch. A preceding simctl launch could report a
         // ready WebView which XCTest immediately terminates and replaces.
         uiRunner = labTool(

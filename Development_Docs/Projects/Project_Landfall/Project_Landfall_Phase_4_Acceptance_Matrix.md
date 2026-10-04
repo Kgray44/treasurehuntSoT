@@ -85,6 +85,29 @@ and attachments are retained. This is a pending control variation, not acceptanc
 or evidence that the system setting is unsupported. Root unit inputs still match
 `0ba27caa`; no companion scenarios are repeated by this presentation-only target.
 
+Run37236170919 finishes FAIL1/3,9,572hashed artifacts/cleanupPASS. Primary
+restart itself passes all assertions: actual relaunch, restored lease and exactly
+one canonical progression event, with owned cleanup. Retained source-bound cases
+now cover iOS27/27 across the three profiles; this does not accept notification or
+presentation failures. Positive notice fails at the initial OS position input:
+both15-second command attempts time out, with no native fix or permission/tap proof.
+Refusal has no lifecycle action and therefore did not start the XCTest prompt
+driver; it times out at the first notification action with no permission proof.
+The executor now starts XCTest for notification-only cases as well. Position input
+retains at most two attempts, now30seconds each within the unchanged150-second
+action budget, and still requires actual native callbacks before acceptance.
+
+Presentation run37237380227 finishes FAIL,3,987hashed artifacts/cleanupPASS.
+Its first native bundle passes18/0/one driver skip at XXXL; normal-text Settings
+reaches Motion, but the actual recorded switch tap lands at the full row's center
+220/160.33, leaving its value0. The current driver targets the unique switch's
+trailing control and waits for real enabled/restored values. Both result bundles
+and screenshots are retained; the first bundle's attachments now export before
+the second test so failures cannot hide partial presentation evidence. Aggregate
+count formatting is corrected separately; original receipts are never rewritten.
+Focused notification and presentation rechecks remain required. Protected
+qualification and closure remain pending.
+
 Historical clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
 owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting
 (244 files), lint (218 files, zero errors), TypeScript and exact tracked-source

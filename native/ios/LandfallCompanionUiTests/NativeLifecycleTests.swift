@@ -80,15 +80,19 @@ final class NativeLifecycleTests: XCTestCase {
         }
         guard let toggle=selected else {XCTFail("LANDFALL_REDUCED_MOTION_UNAVAILABLE");return}
         let wasEnabled=toggle.value as? String == "1"
-        if !wasEnabled {toggle.tap()}
-        XCTAssertEqual(toggle.value as? String,"1","LANDFALL_REDUCED_MOTION_NOT_ENABLED")
+        // Settings exposes the entire labelled row as a Switch. The recorded
+        // center tap landed in its blank middle; target its trailing control.
+        if !wasEnabled {toggle.coordinate(withNormalizedOffset:CGVector(dx:0.9,dy:0.5)).tap()}
+        let enabled=NSPredicate {_,_ in toggle.value as? String == "1"}
+        guard XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:enabled,object:toggle)],timeout:10) == .completed else {XCTFail("LANDFALL_REDUCED_MOTION_NOT_ENABLED");return}
         let app=XCUIApplication();app.launch()
         let shell=app.staticTexts.containing(NSPredicate(format:"label CONTAINS %@","Landfall companion is not configured")).firstMatch
         XCTAssertTrue(shell.waitForExistence(timeout:10) && shell.isHittable,"LANDFALL_REDUCED_MOTION_FALLBACK_UNREADABLE")
         let attachment=XCTAttachment(screenshot:app.screenshot());attachment.name="Owned reduced-motion fallback";attachment.lifetime = .keepAlways;add(attachment);app.terminate()
         settings.activate()
-        if !wasEnabled && toggle.waitForExistence(timeout:10) && toggle.value as? String == "1" {toggle.tap()}
-        XCTAssertEqual(toggle.value as? String,wasEnabled ? "1" : "0","LANDFALL_REDUCED_MOTION_NOT_RESTORED")
+        if !wasEnabled && toggle.waitForExistence(timeout:10) && toggle.value as? String == "1" {toggle.coordinate(withNormalizedOffset:CGVector(dx:0.9,dy:0.5)).tap()}
+        let restored=NSPredicate {_,_ in toggle.value as? String == (wasEnabled ? "1" : "0")}
+        XCTAssertEqual(XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:restored,object:toggle)],timeout:10),.completed,"LANDFALL_REDUCED_MOTION_NOT_RESTORED")
     }
 
     /** Translates only canonical lifecycle actions from the owned loopback lab. */
