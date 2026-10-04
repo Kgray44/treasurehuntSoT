@@ -7,6 +7,7 @@ import { discoverDeviceLabHost, labBinaryTool, labTool } from "./host";
 import { startDeviceLabAuthority } from "./authority-client";
 import { deliverDeviceLabPosition } from "./location-control";
 import { rebootOwnedAndroidGuest } from "../../../src/landfall/device-lab/android-reboot";
+import { setOwnedAppleLabPosition } from "../../../src/landfall/device-lab/apple-location-input";
 import { deviceLabSourceIdentity } from "./source";
 import { inspectOwnedAndroidLocationAccuracy } from "./android-location-settings";
 import { startOwnedAndroidFusedInput } from "./android-fused-input";
@@ -101,6 +102,7 @@ export async function executeLandfallOsScenario(
     elapsedMs: number;
     budgetMs: number;
   }[] = [];
+  const appleInputDiagnostics: { index: number; phase: string; attempt: number; state: string }[] = [];
   let locationSettings: Awaited<ReturnType<typeof inspectOwnedAndroidLocationAccuracy>> | null = null;
   let fusedInput: Awaited<ReturnType<typeof startOwnedAndroidFusedInput>> | null = null;
   const fusedControls: { phase: string; delivered: number; mocking: boolean; state: string }[] = [];
@@ -635,10 +637,14 @@ export async function executeLandfallOsScenario(
               // simctl set holds its documented OS location until replaced.
               // Repeating the same fixed input adds tool processes, not fixes.
               else if (injections === 0)
-                await labTool(
-                  "xcrun",
-                  ["simctl", "location", ownedDevice!, "set", `${phase === "OUTSIDE_BASELINE" ? "44.02" : "44"},-72`],
-                  60000,
+                await setOwnedAppleLabPosition(
+                  { deviceId: ownedDevice!, createdForScenario: true },
+                  { latitude: phase === "OUTSIDE_BASELINE" ? 44.02 : 44, longitude: -72 },
+                  {
+                    run: (args, timeout) => labTool("xcrun", args, timeout),
+                    delay: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+                    observe: (attempt, state) => appleInputDiagnostics.push({ index, phase, attempt, state }),
+                  },
                 );
               if (target === "android-emulator" || injections === 0) injections++;
               await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -1040,11 +1046,12 @@ export async function executeLandfallOsScenario(
                   ? adb(["emu", "geo", "fix", String(coordinate.longitude), String(coordinate.latitude)]).then(
                       () => undefined,
                     )
-                  : labTool(
-                      "xcrun",
-                      ["simctl", "location", ownedDevice!, "set", `${coordinate.latitude},${coordinate.longitude}`],
-                      60000,
-                    ).then(() => undefined),
+                  : setOwnedAppleLabPosition({ deviceId: ownedDevice!, createdForScenario: true }, coordinate, {
+                      run: (args, timeout) => labTool("xcrun", args, timeout),
+                      delay: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+                      observe: (attempt, state) =>
+                        appleInputDiagnostics.push({ index, phase: "LOCATION", attempt, state }),
+                    }),
             })),
           });
         }
@@ -1341,6 +1348,15 @@ export async function executeLandfallOsScenario(
       kind: "TEST_RESULT",
     });
     const controlFile = path.join(destination, "native-location-controls.json");
+    const appleInputFile = path.join(destination, "native-apple-input-diagnostics.json");
+    await writeFile(appleInputFile, JSON.stringify(appleInputDiagnostics, null, 2));
+    artifacts.push({
+      path: appleInputFile,
+      sha256: createHash("sha256")
+        .update(await readFile(appleInputFile))
+        .digest("hex"),
+      kind: "TEST_RESULT",
+    });
     await writeFile(controlFile, JSON.stringify(locationControls, null, 2));
     artifacts.push({
       path: controlFile,

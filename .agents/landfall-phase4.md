@@ -7,6 +7,21 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Source-bound starting context
 
+FrozenC8 run37219804462 is fully harvested:19773hashed artifacts, conclusionFAIL,
+transport cleanupPASS. Apple totals primary8/9, compatibility7/9, tablet8/9.
+Tablet's offline-native input command is killed after61,377ms before an ack;
+primary background observation fails, compatibility region input is killed and
+offline restart drops the final native fix. Preserve these four failed scenarios.
+4341f2e5 focused runs37223287847(primary geofence) and37223293060(compat offline
+restart/geofence) pass their actual native build/test steps and still execute.
+2654d7b8 adds permission/precision and system-pause queue cancellation, and full
+three-profile iOS run37224038483 is active (dispatch2654d7b876c7-1791138007104).
+Native test4regressions require receipt verification; no final qualification yet.
+New lab-only owned Simulator input helper allows one15s+15s idempotent retry only
+after a terminated tool deadline, never generic error/cancellation. Ten tests,
+lint/TypeScript PASS. Native observation still determines scenario truth; input
+ack is not a fix or progression. Current helper source needs focused actual use.
+
 Apple frozen37219804462 primary8/9 and compatibility7/9: primary background
 observation FAIL, compatibility simctl killed during region input, and offline
 restart's second fix times out. Actual compatibility diagnostics show native

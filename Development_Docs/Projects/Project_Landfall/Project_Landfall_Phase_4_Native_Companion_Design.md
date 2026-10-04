@@ -38,6 +38,16 @@ each persistent documented Simulator location once, retains both180-second waits
 and requires actual encrypted delegate-delivered hints on foreground return.
 Android FLP delivery and the390-second overall action bound are preserved.
 
+The frozen tablet's offline input fails at61,377ms with a killed60-second simctl
+command and no acknowledged input; its other eight scenarios pass. A lab-only
+owned Simulator input adapter bounds an attempt to15seconds and retries that
+idempotent set once after deadline termination. Command errors and cancellation
+fail immediately; repeated timeouts remain failures. Ten regressions verify
+ownership, fixed argv, finite observations and these failure boundaries. Receipts
+retain attempt/ack/timeout categories without coordinates or exception text.
+An input acknowledgment does not satisfy location or canonical assertions; real
+Core Location delivery and shared authorization remain mandatory.
+
 Focused iOS37218201954 on clean d2add7a1 passes all ten region-wake steps:
 delegate-confirmed Core Location monitoring, actual background/foreground,
 documented outside/inside OS inputs, encrypted delivered hints, removal,
