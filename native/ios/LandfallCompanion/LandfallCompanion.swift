@@ -22,6 +22,8 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private var systemLocationPaused = false
     private var locationFailure = "NONE"
     private var permissionReply: ((Any?, String?) -> Void)?
+    private var geofenceReplies: [String: (Any?, String?) -> Void] = [:]
+    private var geofenceRequests: [String: UUID] = [:]
     private let hints = LandfallSecureHints()
     private var hardware: LandfallHardware?
     private var nearby: LandfallNearbyInteraction?
@@ -126,7 +128,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "NOTIFICATION_PERMISSION":
             guard foreground else {replyHandler(["state":"UNAVAILABLE"],nil);return}
             UNUserNotificationCenter.current().requestAuthorization(options:[.alert,.sound]){ granted,_ in replyHandler(["state":granted ? "GRANTED":"DENIED"],nil) }
-        case "GEOFENCE_CLEAR": for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear(); replyHandler(["accepted": true], nil)
+        case "GEOFENCE_CLEAR": clearGeofences(); replyHandler(["accepted": true], nil)
         case "POWER_STATE": replyHandler(power.snapshot(), nil)
         case "SENSORS_START": replyHandler(["accepted": startSensors()], nil)
         case "SENSORS_STOP": stopSensors(); replyHandler(["accepted": true], nil)
@@ -141,7 +143,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "INTERACTION_STOP": hardware?.stopInteractions(scanId: payload["scanId"] as? String ?? ""); replyHandler(["accepted": true], nil)
         case "CLEAR_PRIVATE_DATA":
             stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop()
-            for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear(); privateStore?.clear()
+            clearGeofences(); privateStore?.clear()
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             UNUserNotificationCenter.current().removeAllDeliveredNotifications()
             replyHandler(["accepted": true], nil)
@@ -158,7 +160,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     }
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         if manager.authorizationStatus != .notDetermined { permissionReply?(["state": permission()], nil); permissionReply = nil }
-        if !["GRANTED", "APPROXIMATE"].contains(permission()) { stopLocation(); for region in manager.monitoredRegions { manager.stopMonitoring(for: region) }; hints.clear() }
+        if !["GRANTED", "APPROXIMATE"].contains(permission()) { stopLocation(); clearGeofences() }
         event(["type": "permission", "state": permission()])
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -186,15 +188,41 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     func locationManagerDidPauseLocationUpdates(_ manager:CLLocationManager) { systemLocationPaused=true }
     func locationManagerDidResumeLocationUpdates(_ manager:CLLocationManager) { systemLocationPaused=false }
     private func registerGeofence(_ payload: [String: Any], reply: @escaping (Any?, String?) -> Void) {
+        guard CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) else { reply(["state": "UNSUPPORTED"], nil); return }
         guard foreground, location.authorizationStatus == .authorizedAlways, CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self), location.monitoredRegions.count < 20,
               let handle = payload["returnHandle"] as? String, (32...2048).contains(handle.count), handle.range(of: "^[A-Za-z0-9_-]+$", options: .regularExpression) != nil,
               let latitude = payload["latitude"] as? Double, let longitude = payload["longitude"] as? Double, let radius = payload["radiusMeters"] as? Double,
               let expires = payload["expiresAt"] as? Double, latitude.isFinite, longitude.isFinite, abs(latitude)<=90, abs(longitude)<=180, radius>=100, radius<=min(10000, location.maximumRegionMonitoringDistance),
               expires>Date().timeIntervalSince1970*1000, expires-Date().timeIntervalSince1970*1000<=86400000 else { reply(["state": "UNAVAILABLE"], nil); return }
         let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), radius: radius, identifier: handle)
+        guard geofenceReplies[handle] == nil, geofenceReplies.count + location.monitoredRegions.count < 20 else { reply(["state": "UNAVAILABLE"], nil); return }
         region.notifyOnEntry=true; region.notifyOnExit=true
         hints.register(handle:handle,expiresAt:expires,notifications:payload["notifications"] as? Bool==true)
-        location.startMonitoring(for: region); reply(["state": "GRANTED"], nil)
+        let request=UUID(); geofenceRequests[handle]=request
+        geofenceReplies[handle] = reply
+        location.startMonitoring(for: region)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
+            guard let self=self, self.geofenceRequests[handle] == request, let pending=self.geofenceReplies.removeValue(forKey:handle) else { return }
+            self.geofenceRequests.removeValue(forKey:handle)
+            self.location.stopMonitoring(for:region); self.hints.remove(handle:handle)
+            pending(["state":"UNAVAILABLE"],nil)
+        }
+    }
+    private func clearGeofences() {
+        let pending=geofenceReplies; geofenceReplies.removeAll(); geofenceRequests.removeAll()
+        for region in location.monitoredRegions { location.stopMonitoring(for:region) }
+        hints.clear()
+        for reply in pending.values { reply(["state":"UNAVAILABLE"],nil) }
+    }
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
+        geofenceRequests.removeValue(forKey:region.identifier)
+        guard let reply=geofenceReplies.removeValue(forKey:region.identifier) else {
+            if !hints.active(handle:region.identifier) { manager.stopMonitoring(for:region) }; return
+        }
+        guard hints.active(handle:region.identifier), manager.authorizationStatus == .authorizedAlways else {
+            manager.stopMonitoring(for:region); hints.remove(handle:region.identifier); reply(["state":"UNAVAILABLE"],nil); return
+        }
+        reply(["state":"GRANTED"],nil)
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         guard hints.active(handle:region.identifier) else {manager.stopMonitoring(for:region);return}
@@ -209,7 +237,14 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         }
         completionHandler()
     }
-    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) { event(["type": "provider-health", "family":"GEOFENCE", "state":"UNAVAILABLE"]) }
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
+        if let region=region {
+            geofenceRequests.removeValue(forKey:region.identifier)
+            manager.stopMonitoring(for:region); hints.remove(handle:region.identifier)
+            geofenceReplies.removeValue(forKey:region.identifier)?(["state":"UNAVAILABLE"],nil)
+        } else { clearGeofences() }
+        event(["type": "provider-health", "family":"GEOFENCE", "state":"UNAVAILABLE"])
+    }
     private func startSensors() -> Bool {
         guard foreground, !power.constrained else { return false }
         stopSensors()

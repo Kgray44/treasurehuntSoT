@@ -376,7 +376,7 @@ async function main() {
           reason = "OS_ASSERTION_NOT_IMPLEMENTED";
         } else if (observed[action.field] !== action.value) throw new Error(`ASSERT_FAILED:${action.field}`);
       } else if (action.type === "NATIVE_GEOFENCE") {
-        if (driver.platform !== "ANDROID" || world.kind !== "PHYSICAL" || action.operation === "ENTER") {
+        if (world.kind !== "PHYSICAL" || action.operation === "ENTER") {
           state = "UNSUPPORTED";
           reason = "NATIVE_GEOFENCE_OS_CONTROL_REQUIRED";
         } else if (action.operation === "REGISTER") {

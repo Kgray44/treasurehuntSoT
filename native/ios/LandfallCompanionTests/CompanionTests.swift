@@ -20,4 +20,15 @@ final class CompanionTests: XCTestCase {
         XCTAssertFalse(companion.accepts(URL(string:"https://example.com/player")))
         XCTAssertNotNil(CLLocationManager())
     }
+    func testFailedRegistrationCanRemoveOnlyItsOwnConsent() {
+        let hints=LandfallSecureHints(); hints.clear()
+        defer { hints.clear() }
+        let failed=String(repeating:"a",count:64), other=String(repeating:"b",count:64)
+        let expiry=Date().timeIntervalSince1970*1000+60000
+        hints.register(handle:failed,expiresAt:expiry,notifications:true)
+        hints.register(handle:other,expiresAt:expiry,notifications:false)
+        hints.remove(handle:failed)
+        XCTAssertFalse(hints.active(handle:failed)); XCTAssertFalse(hints.notices(handle:failed))
+        XCTAssertTrue(hints.active(handle:other)); XCTAssertFalse(hints.notices(handle:other))
+    }
 }

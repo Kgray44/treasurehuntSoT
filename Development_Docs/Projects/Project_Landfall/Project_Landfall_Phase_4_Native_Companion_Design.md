@@ -15,6 +15,22 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Acquisition and authority
 
+iOS region registration waits for Core Location's `didStartMonitoringFor`
+confirmation. A failed or ten-second-unconfirmed request removes its consent
+and returns `UNAVAILABLE`; clear and permission revocation resolve pending
+requests without granting them. A region-monitoring capability rejection is
+`UNSUPPORTED`. Timeout ownership is bound to the individual registration so
+an earlier timer cannot cancel a replacement request.
+
+The version-two native geofence scenario also targets iOS Simulator. It grants
+the owned guest's Always location permission, requests actual Core Location
+monitoring, backgrounds through XCTest, delivers documented `simctl location`
+outside and inside inputs, and requires encrypted delegate-delivered hints
+on foreground return. Actual framework capability is retained by XCTest.
+This new hosted attempt is pending; Simulator support is not assumed, and
+no injected delegate callback qualifies as OS delivery. Physical timing,
+notification interaction and region restoration remain separate evidence.
+
 The Android Activity and iOS WKWebView host the existing first-party Player.
 The restricted main-frame bridge supplies physical OS locations, optional ephemeral
 sensor hints and deliberate scanner operations. Released Worldspace policy still

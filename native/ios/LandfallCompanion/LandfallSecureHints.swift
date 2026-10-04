@@ -13,6 +13,11 @@ final class LandfallSecureHints {
         rows[handleHash(handle)] = ["expiresAt": expiresAt, "notifications": notifications] as [String: Any]
         UserDefaults.standard.set(rows, forKey: registrations)
     }
+    func remove(handle: String) {
+        var rows = UserDefaults.standard.dictionary(forKey: registrations) ?? [:]
+        rows.removeValue(forKey: handleHash(handle))
+        UserDefaults.standard.set(rows, forKey: registrations)
+    }
     func active(handle:String)->Bool{guard let rows=UserDefaults.standard.dictionary(forKey:registrations),let row=rows[handleHash(handle)] as? [String:Any],let expiry=row["expiresAt"] as? Double else{return false};return expiry>Date().timeIntervalSince1970*1000}
     func notices(handle:String)->Bool{guard active(handle:handle),let rows=UserDefaults.standard.dictionary(forKey:registrations),let row=rows[handleHash(handle)] as? [String:Any] else{return false};return row["notifications"] as? Bool==true}
     private var file: URL { FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("landfall-wake-hints.enc") }

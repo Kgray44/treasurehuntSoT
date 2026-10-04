@@ -524,6 +524,12 @@ export async function executeLandfallOsScenario(
         ["simctl", "privacy", ownedDevice, "grant", "location", "com.voyagewright.landfall"],
         120000,
       );
+      if (geofenceScenario)
+        await labTool(
+          "xcrun",
+          ["simctl", "privacy", ownedDevice, "grant", "location-always", "com.voyagewright.landfall"],
+          120000,
+        );
       executionStage = "APPLE_LAUNCH";
       if (scenario.timeline.some((step) => step.action.type === "LIFECYCLE")) {
         // XCTest owns this launch. A preceding simctl launch could report a
@@ -602,7 +608,7 @@ export async function executeLandfallOsScenario(
           continue;
         }
         if (step.action.type === "NATIVE_GEOFENCE" && step.action.operation === "ENTER") {
-          if (target !== "android-emulator" || foreground || !geofenceScenario) {
+          if (foreground || !geofenceScenario) {
             steps.push({
               index,
               action: "NATIVE_GEOFENCE",
@@ -616,24 +622,35 @@ export async function executeLandfallOsScenario(
           // Documented FLP mock inputs reach actual Play services geofencing;
           // the separate debug lab APK never invokes a Landfall receiver or callback.
           for (const phase of ["OUTSIDE_BASELINE", "INSIDE_TRANSITION"] as const) {
-            if (!fusedInput) throw new Error("FUSED_INPUT_REQUIRED");
-            await fusedInput.phase(phase);
+            if (target === "android-emulator") {
+              if (!fusedInput) throw new Error("FUSED_INPUT_REQUIRED");
+              await fusedInput.phase(phase);
+            }
             const startedAt = Date.now(),
               budgetMs = 180000;
             let injections = 0;
             while (Date.now() - startedAt < budgetMs) {
-              await adb(["emu", "geo", "fix", "-72", phase === "OUTSIDE_BASELINE" ? "44.02" : "44"]);
+              if (target === "android-emulator")
+                await adb(["emu", "geo", "fix", "-72", phase === "OUTSIDE_BASELINE" ? "44.02" : "44"]);
+              else
+                await labTool(
+                  "xcrun",
+                  ["simctl", "location", ownedDevice!, "set", `${phase === "OUTSIDE_BASELINE" ? "44.02" : "44"},-72`],
+                  60000,
+                );
               injections++;
               await new Promise((resolve) => setTimeout(resolve, 5000));
             }
             geofenceControls.push({ index, phase, injections, elapsedMs: Date.now() - startedAt, budgetMs });
-            const input = await fusedInput.read();
-            fusedControls.push({
-              phase: input.phase,
-              delivered: input.delivered,
-              mocking: input.mocking,
-              state: input.state,
-            });
+            if (fusedInput) {
+              const input = await fusedInput.read();
+              fusedControls.push({
+                phase: input.phase,
+                delivered: input.delivered,
+                mocking: input.mocking,
+                state: input.state,
+              });
+            }
           }
           // This step proves only input delivery. A separate foreground assertion
           // must observe the native encrypted hint before the scenario can pass.
@@ -1121,7 +1138,7 @@ export async function executeLandfallOsScenario(
         error instanceof Error && /^[A-Z_]{1,128}$/.test(error.message) ? error.message : "NATIVE_OS_EXECUTION_FAILED",
     });
   } finally {
-    if (geofenceScenario) {
+    if (geofenceScenario && target === "android-emulator") {
       let nativeDiagnostic: { stage: string; failure: string } | null = null;
       let receiverDiagnostic: Record<string, number> | null = null;
       try {
@@ -1551,7 +1568,9 @@ export async function executeLandfallOsScenario(
             ? {
                 method: action.operation === "ENTER" ? "OS_GEOFENCE_TRANSITION" : "OS_GEOFENCE_REGISTRATION",
                 limitation:
-                  "Documented FLP mock input from a separate debug lab APK exercises actual Play services registration and OS-delivered encrypted hints. No injected receiver/broadcast, physical timing or arrival claim.",
+                  target === "ios-simulator"
+                    ? "Documented simctl location inputs exercise actual Core Location registration and encrypted delegate-delivered hints. No injected delegate callback, physical timing or arrival claim."
+                    : "Documented FLP mock input from a separate debug lab APK exercises actual Play services registration and OS-delivered encrypted hints. No injected receiver/broadcast, physical timing or arrival claim.",
               }
             : action?.type === "PERMISSION" || result.reason === "OS_PERMISSION_PREVENTED_ACQUISITION"
               ? {

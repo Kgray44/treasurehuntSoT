@@ -42,7 +42,8 @@ describe("canonical Device Lab scenarios", () => {
   });
   it("keeps OS geofence delivery separate from provider callbacks and progression", async () => {
     const scenario = landfallDeviceScenario("geofence-native-background-wake");
-    expect(scenario.targets).toEqual(["android-emulator"]);
+    expect(scenario.targets).toEqual(["android-emulator", "ios-simulator"]);
+    expect(scenario.version).toBe(2);
     expect(scenario.canonicalAuthority).toBe("ONE_VOYAGE");
     expect(scenario.timing).toBe("WALL_CLOCK");
     expect(scenario.timeline.some((step) => step.action.type === "GEOFENCE")).toBe(false);

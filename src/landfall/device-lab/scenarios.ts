@@ -738,10 +738,11 @@ scenario(
   ["SUSPENSION", "OEM_PROCESS_POLICY", "FIELD_ENVIRONMENT"],
   "ONE_VOYAGE",
 );
-cases[cases.length - 1].targets = ["android-emulator"];
+cases[cases.length - 1].targets = ["android-emulator", "ios-simulator"];
+cases[cases.length - 1].version = 2;
 cases[cases.length - 1].timing = "WALL_CLOCK";
 cases[cases.length - 1].description =
-  "Actual Play services registration, emulator GPS outside-to-inside motion while the app is backgrounded, encrypted OS wake hints on foreground return and verified removal. No broadcast or callback injection, physical timing or canonical arrival claim.";
+  "Actual Play services or Core Location registration, controlled OS outside-to-inside location while the app is backgrounded, encrypted wake hints on foreground return and verified removal. No broadcast or delegate callback injection, physical timing or canonical arrival claim.";
 
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);

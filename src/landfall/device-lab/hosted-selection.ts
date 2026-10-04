@@ -37,7 +37,7 @@ const defaults = {
     "ble-native-ibeacon-discovery",
     "ble-native-eddystone-uid-discovery",
   ],
-  ios: ["permission-denied-native", "permission-revoked-mid-route", ...common],
+  ios: ["permission-denied-native", "permission-revoked-mid-route", ...common, "geofence-native-background-wake"],
   android: [
     "device-reboot",
     "qr-native-camera-valid",

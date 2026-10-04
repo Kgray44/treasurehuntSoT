@@ -3,6 +3,7 @@ import CoreNFC
 import AVFoundation
 import CoreBluetooth
 import UIKit
+import CoreLocation
 @testable import LandfallCompanion
 
 final class InstallationInteractionTests: XCTestCase {
@@ -27,6 +28,7 @@ final class InstallationInteractionTests: XCTestCase {
             "nfcReadingAvailable": nfcAvailable, "cameraAvailable": cameraAvailable,
             "cameraAuthorization": AVCaptureDevice.authorizationStatus(for: .video).rawValue,
             "bluetoothAuthorization": CBCentralManager.authorization.rawValue,
+            "circularRegionMonitoringAvailable": CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self),
             "acquisitionStarted": false, "observedTokens": 0, "physicalPresence": "NOT_PROVEN", "canComplete": false
         ])
         let attachment = XCTAttachment(data: receipt, uniformTypeIdentifier: "public.json")

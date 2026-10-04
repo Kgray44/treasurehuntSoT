@@ -14,6 +14,8 @@ describe("hosted Device Lab impact selection", () => {
   it("retains the wider platform defaults and supports a focused canonical subset", () => {
     expect(hostedDeviceLabScenarios("android")).toContain("heading-turn");
     expect(hostedDeviceLabScenarios("ios")).toContain("offline-restart-canonical-reconcile");
+    expect(hostedDeviceLabScenarios("ios")).toContain("geofence-native-background-wake");
+    expect(hostedDeviceLabScenarios("ios", "geofence-native-background-wake")).toBe("geofence-native-background-wake");
     expect(hostedDeviceLabScenarios("provider")).toBe("all");
     expect(hostedDeviceLabScenarios("ios", "gps-perfect-walk")).toBe("gps-perfect-walk");
     expect(hostedDeviceLabScenarios("android-radio").split(",")).toEqual([
