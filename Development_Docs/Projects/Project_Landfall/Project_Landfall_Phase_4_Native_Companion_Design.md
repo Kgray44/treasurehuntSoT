@@ -1216,3 +1216,12 @@ without coordinates, handles, numeric codes or exception text. A native privacy
 assertion checks that failed-removal diagnostics retain only their two categorical
 fields. Actual backend reason and wake acceptance remain pending. Draft PR#677
 publishes the reviewable candidate without implying qualification or closure.
+
+First-party native Journal run37189571337 on be36dbc9 fails the opening interaction;
+the inspected native screenshot shows the real ceremony already running, rather
+than the opening control. The harness now permits recovery from a click timeout
+only when the actual progress dialog or Journal tools are visible. If the ceremony
+is still visible, it uses the ordinary Skip ceremony button and records the affected
+device index. It still requires rendered tools/map/pairing and real native reports.
+This exercises the product's readable opening path; it does not qualify animated
+ceremony performance, synthesize an activation or force a ready state.

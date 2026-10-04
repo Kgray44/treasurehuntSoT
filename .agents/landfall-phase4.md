@@ -1040,3 +1040,13 @@ stillrejected, allunknownbandUNKNOWN, identity/presenceuntrusted/canCompletefals
 NativeAndroid/Apple normalizeunusablestrengthtonull; BLE/privacy6focusedPASS.
 8f4geo37189271605 HARVESTED18 FAILnativeUNAVAILABLE. Nextdebugstage/finiteGMS
 failurecategorieswith2-fieldnativeprivacyassertion. Actualreason/wakepending.
+
+9a355f07 frozen/pushed. Hostedbrowser37189971931 dispatch1791103543884;
+Androidcamera+geo37189975707 dispatch1791103548344;
+BLE3protocols37189979518 dispatch1791103552751;
+Applevirtual37189982843 dispatch1791103557292. Actualresults pending.
+be36Journal37189571337 HARVESTED45 FAIL atopening; screenshotVIEWED shows
+actualceremony alreadyrunning afterbuttontransition. Harness timeout may already
+haveactivatedcontrol. Continueonly ifactualprogressdialog/toolsvisible, thenuse
+normalvisibleSkipceremonywhenneeded,recorddeviceindices,requiretools/map/pairing
+andactualnative reports. No forcedclick/JSactivation/finalstatemanufacture.

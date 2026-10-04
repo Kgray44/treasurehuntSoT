@@ -103,6 +103,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
         authRedirect: boolean;
       }[] = [];
       const pairingDiagnostics: { deviceIndex: number; nativeState: string; uiState: string }[] = [];
+      const openingSkippedDevices: number[] = [];
       const adb = (serial: string, args: string[], timeout = 15000) =>
         labTool(resources.adbPath, ["-P", String(resources.adbPort), "-s", serial, ...args], timeout);
       try {
@@ -234,7 +235,19 @@ test("real native Journal pairing returns untrusted hints and background clears 
             const open = opening.locator("button.wax-open");
             await expect(open).toBeVisible();
             await expect(open).toContainText("Open the journal");
-            await open.click({ noWaitAfter: true });
+            try {
+              await open.click({ noWaitAfter: true, timeout: 5000 });
+            } catch (error) {
+              // A timed-out click may have already started the opening.
+              // Continue only if that real transition is visible.
+              const progress = page.getByRole("dialog", { name: "Journal opening in progress" });
+              if (!(await progress.isVisible()) && !(await tools.isVisible())) throw error;
+            }
+            const progress = page.getByRole("dialog", { name: "Journal opening in progress" });
+            if (await progress.isVisible()) {
+              await progress.getByRole("button", { name: "Skip ceremony", exact: true }).click({ noWaitAfter: true });
+              openingSkippedDevices.push(deviceIndex);
+            }
           }
           stage = "NATIVE_JOURNAL_TOOLS";
           await expect(tools).toBeVisible({ timeout: 30000 });
@@ -338,45 +351,58 @@ test("real native Journal pairing returns untrusted hints and background clears 
         passed = true;
       } catch (error) {
         for (const [index, nativePage] of pages.entries()) {
-          const projection = await boundedDriver(
-            nativePage.evaluate(async () => {
-              const response = (await window.LandfallNative!.request(
-                JSON.stringify({
-                  version: 1,
-                  id: crypto.randomUUID(),
-                  operation: "UWB_STATE",
-                  payload: {},
-                }),
-              )) as { state?: string };
-              const nativeState = [
-                "READY",
-                "UNAVAILABLE",
-                "UNSUPPORTED",
-                "INITIALIZING",
-                "DENIED",
-                "PROMPTABLE",
-                "EXPIRED",
-              ].includes(response?.state ?? "")
-                ? response.state!
-                : "UNKNOWN";
-              const text =
-                document.querySelector(".landfall-nearby-panel [aria-label='Nearby device hint status']")
-                  ?.textContent ?? "";
-              const uiState = text.includes("unsupported, disabled, or awaiting permission")
-                ? "DEVICE_UNAVAILABLE"
-                : text.includes("unavailable on this deployment")
-                  ? "NOT_CONFIGURED"
-                  : text.includes("expired or access changed")
-                    ? "PAIR_CHANGED"
-                    : document.querySelector(".landfall-nearby-panel output")
-                      ? "CODE_VISIBLE"
-                      : "OTHER";
-              return { nativeState, uiState };
-            }),
-            undefined,
-            3000,
-          ).catch(() => ({ nativeState: "UNOBSERVED", uiState: "UNOBSERVED" }));
-          pairingDiagnostics.push({ deviceIndex: index, ...projection });
+          const projections = await Promise.allSettled([
+            boundedDriver(
+              nativePage.evaluate(async () => {
+                const response = (await window.LandfallNative!.request(
+                  JSON.stringify({
+                    version: 1,
+                    id: crypto.randomUUID(),
+                    operation: "UWB_STATE",
+                    payload: {},
+                  }),
+                )) as { state?: string };
+                const nativeState = [
+                  "READY",
+                  "UNAVAILABLE",
+                  "UNSUPPORTED",
+                  "INITIALIZING",
+                  "DENIED",
+                  "PROMPTABLE",
+                  "EXPIRED",
+                ].includes(response?.state ?? "")
+                  ? response.state!
+                  : "UNKNOWN";
+                return nativeState;
+              }),
+              undefined,
+              3000,
+            ),
+            boundedDriver(
+              nativePage.evaluate(() => {
+                const text =
+                  document.querySelector(".landfall-nearby-panel [aria-label='Nearby device hint status']")
+                    ?.textContent ?? "";
+                const uiState = text.includes("unsupported, disabled, or awaiting permission")
+                  ? "DEVICE_UNAVAILABLE"
+                  : text.includes("unavailable on this deployment")
+                    ? "NOT_CONFIGURED"
+                    : text.includes("expired or access changed")
+                      ? "PAIR_CHANGED"
+                      : document.querySelector(".landfall-nearby-panel output")
+                        ? "CODE_VISIBLE"
+                        : "OTHER";
+                return uiState;
+              }),
+              undefined,
+              3000,
+            ),
+          ]);
+          pairingDiagnostics.push({
+            deviceIndex: index,
+            nativeState: projections[0].status === "fulfilled" ? projections[0].value : "UNOBSERVED",
+            uiState: projections[1].status === "fulfilled" ? projections[1].value : "UNOBSERVED",
+          });
         }
         const message = error instanceof Error ? error.message : "";
         const tool = error as { code?: unknown; signal?: unknown; killed?: unknown };
@@ -507,6 +533,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           failedPageState,
           journalStates,
           pairingDiagnostics,
+          openingSkippedDevices,
           externalRequirements: ["REAL_DEVICE_REQUIRED:RF"],
           cleanup: { result: remaining.length ? "FAIL" : "PASS", remainingResources: remaining },
         };
