@@ -1341,3 +1341,21 @@ Nowwaitsfortheactualshellwiththeexisting10secondbound; eachlifecycleassertionhas
 afinitefailurelabel. Initial10sec/background3+3sec/foreground10sec/termination10sec
 remainunchanged. Exactfailedassertion isnotyetidentified; no productcauseclaimed.
 Interimsourceboundartifactandstructuredsummaryretained; fullrunharvestpending.
+
+## 6268 browser and native-pair receipt reconciliation
+
+Browser37203050462/dispatch1791117766101 on6268b0d8 HARVESTED86SUCCESS/all53cases
+PASS3.6min. PublishedofflineReturnlink and normalopeningceremonyPASS. Nativepair
+37203045838/dispatch1791117761379 HARVESTED88FAILoverall: primaryPASS/allactual
+reportsboth/stopverified/fullAPI200/canonical0/cleanupPASS; low-resourcefailsbefore
+HTTP atNATIVE_OPENING_GEOMETRY, genuineopeningbuttonvisible/enabled/nativebridge/
+Journal200. Priorlow-resource2fea actualpairPASS remainsatitsownsourceidentity.
+No low-resourceproductpairfailure isclaimedfromthispre-exchangegeometryfailure.
+Sharedopeningfallbacknowwaitsbounded15sec forfreshDOM +strictactualnativegeometry
+before OSinput. Focus/attachment/unclippedview/scale/onepubliccontrolrulesunchanged;
+6negative/mappingtestsPASS, TS/ESLintPASS. Furtheractualmatrixrequired.
+
+cc1cf3bb/treee0be8cfcc02cae3b37e809b860b66fe23bc8ab5e pushed clean beforetheopening
+helperchange. Background37203623188/dispatch1791118352303 andApplecompatibility
+37203627397/1791118356858 active; earlierAppleprimary/tabletstillpending. No final
+qualification/merge/closureclaimed.

@@ -49,16 +49,34 @@ export async function openNativeJournalEntry(
         await adb(["shell", "uiautomator", "dump", dump]);
         target = nativeJournalOpeningTouch(await adb(["shell", "cat", dump]), { box, viewport });
       } catch {
-        const raw = await adb([
-          "shell",
-          "run-as",
-          "com.voyagewright.landfall",
-          "cat",
-          "files/landfall-opening-geometry.json",
-        ]);
-        if (raw.length > 1024) throw new Error("NATIVE_OPENING_GEOMETRY_TOO_LARGE");
-        target = nativeJournalOpeningGeometryTouch(JSON.parse(raw), { box, viewport });
+        observeStage("NATIVE_OPENING_GEOMETRY_WAIT");
+        await expect
+          .poll(
+            async () => {
+              const fresh = await observed();
+              if (!fresh?.visible || !fresh.enabled || !fresh.copyObserved) return false;
+              const raw = await adb([
+                "shell",
+                "run-as",
+                "com.voyagewright.landfall",
+                "cat",
+                "files/landfall-opening-geometry.json",
+              ]);
+              if (raw.length > 1024) throw new Error("NATIVE_OPENING_GEOMETRY_TOO_LARGE");
+              try {
+                // Accessibility inspection can precede native focus/layout settling.
+                // Reobserve both surfaces; never touch until the strict mapping passes.
+                target = nativeJournalOpeningGeometryTouch(JSON.parse(raw), fresh);
+                return true;
+              } catch {
+                return false;
+              }
+            },
+            { timeout: 15000 },
+          )
+          .toBe(true);
       }
+      if (!target) throw new Error("NATIVE_OPENING_GEOMETRY_UNOBSERVED");
       observeStage("NATIVE_OPENING_TOUCH");
       await adb(["shell", "input", "tap", String(target.x), String(target.y)]);
     } catch (error) {

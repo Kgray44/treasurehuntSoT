@@ -18,7 +18,7 @@ The two-profile UWB/generic BLE/iBeacon/Eddystone matrix passes all eight cases.
 An actual signed first-party notice tap reauthorizes and returns to the current
 Journal. First-party native pairing, cold authenticated
 revoked-membership notice return still require acceptance. Broad regression passes
-2,676 unit tests,159 provider scenarios on each of Windows and Linux,50 retained
+2,676 unit tests,159 provider scenarios on each of Windows and Linux,53 retained
 Phase1–4 browser journeys and80 Android cases across four profiles. Apple restart
 and virtual offline matrix repairs are under focused hosted validation. Final
 exact-source qualification, protected integration and phase closure
