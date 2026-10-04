@@ -1,5 +1,6 @@
 import XCTest
 import Foundation
+import UIKit
 
 final class NativeLifecycleTests: XCTestCase {
     @MainActor private func observedBackground(_ app: XCUIApplication) -> Bool {
@@ -18,6 +19,42 @@ final class NativeLifecycleTests: XCTestCase {
         XCTAssertTrue(shell.waitForExistence(timeout: 10), "LANDFALL_RETURNED_SHELL_UNAVAILABLE")
         app.terminate()
         XCTAssertTrue(app.wait(for: .notRunning, timeout: 10), "LANDFALL_TERMINATION_UNOBSERVED")
+    }
+
+    @MainActor func testOwnedSimulatorLargeTextAndOrientation() throws {
+        guard ProcessInfo.processInfo.environment["LANDFALL_LAB_PRESENTATION"] == "1" else {throw XCTSkip("Owned presentation environment is not configured.")}
+        let app=XCUIApplication();app.launch()
+        defer {XCUIDevice.shared.orientation = .portrait;app.terminate()}
+        let shell=app.staticTexts.containing(NSPredicate(format:"label CONTAINS %@","Landfall companion is not configured")).firstMatch
+        for orientation in [UIDeviceOrientation.portrait,.landscapeLeft] {
+            XCUIDevice.shared.orientation=orientation
+            let landscape=orientation == .landscapeLeft
+            let geometry=NSPredicate {_,_ in let frame=app.windows.firstMatch.frame;return frame.width > 0 && (landscape ? frame.width > frame.height : frame.height > frame.width)}
+            XCTAssertEqual(XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:geometry,object:app)],timeout:10),.completed,"LANDFALL_ORIENTATION_UNOBSERVED")
+            XCTAssertTrue(shell.waitForExistence(timeout:10) && shell.isHittable,"LANDFALL_LARGE_TEXT_FALLBACK_UNREADABLE")
+            let attachment=XCTAttachment(screenshot:app.screenshot());attachment.name=landscape ? "Owned large-text landscape fallback" : "Owned large-text portrait fallback";attachment.lifetime = .keepAlways;add(attachment)
+        }
+    }
+
+    @MainActor func testOwnedSimulatorReducedMotionSetting() throws {
+        guard ProcessInfo.processInfo.environment["LANDFALL_LAB_PRESENTATION"] == "1" else {throw XCTSkip("Owned presentation environment is not configured.")}
+        let settings=XCUIApplication(bundleIdentifier:"com.apple.Preferences");settings.launch()
+        defer {settings.terminate()}
+        let accessibility=settings.staticTexts["Accessibility"]
+        for _ in 0..<5 {if accessibility.exists && accessibility.isHittable {break};settings.swipeUp()}
+        XCTAssertTrue(accessibility.waitForExistence(timeout:10) && accessibility.isHittable,"LANDFALL_SETTINGS_ACCESSIBILITY_UNAVAILABLE");accessibility.tap()
+        let motion=settings.staticTexts["Motion"];XCTAssertTrue(motion.waitForExistence(timeout:10),"LANDFALL_SETTINGS_MOTION_UNAVAILABLE");motion.tap()
+        let toggle=settings.switches["Reduce Motion"];XCTAssertTrue(toggle.waitForExistence(timeout:10),"LANDFALL_REDUCED_MOTION_UNAVAILABLE")
+        let wasEnabled=toggle.value as? String == "1"
+        if !wasEnabled {toggle.tap()}
+        XCTAssertEqual(toggle.value as? String,"1","LANDFALL_REDUCED_MOTION_NOT_ENABLED")
+        let app=XCUIApplication();app.launch()
+        let shell=app.staticTexts.containing(NSPredicate(format:"label CONTAINS %@","Landfall companion is not configured")).firstMatch
+        XCTAssertTrue(shell.waitForExistence(timeout:10) && shell.isHittable,"LANDFALL_REDUCED_MOTION_FALLBACK_UNREADABLE")
+        let attachment=XCTAttachment(screenshot:app.screenshot());attachment.name="Owned reduced-motion fallback";attachment.lifetime = .keepAlways;add(attachment);app.terminate()
+        settings.activate()
+        if !wasEnabled && toggle.waitForExistence(timeout:10) && toggle.value as? String == "1" {toggle.tap()}
+        XCTAssertEqual(toggle.value as? String,wasEnabled ? "1" : "0","LANDFALL_REDUCED_MOTION_NOT_RESTORED")
     }
 
     /** Translates only canonical lifecycle actions from the owned loopback lab. */

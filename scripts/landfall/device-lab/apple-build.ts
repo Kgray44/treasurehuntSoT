@@ -46,6 +46,31 @@ async function main() {
     executionStage = "BOOT_SIMULATOR";
     await labTool("xcrun", ["simctl", "boot", id]);
     await labTool("xcrun", ["simctl", "bootstatus", id, "-b"], 420000);
+    executionStage = "CONFIGURE_OWNED_PRESENTATION";
+    await labTool("xcrun", ["simctl", "ui", id, "appearance", "dark"]);
+    await labTool("xcrun", ["simctl", "ui", id, "content_size", "accessibility-extra-extra-extra-large"]);
+    const appearance = (await labTool("xcrun", ["simctl", "ui", id, "appearance"])).trim().toLowerCase();
+    const contentSize = (await labTool("xcrun", ["simctl", "ui", id, "content_size"]))
+      .replace(/[^a-z]/gi, "")
+      .toLowerCase();
+    if (appearance !== "dark" || contentSize !== "accessibilityextraextraextralarge")
+      throw new Error("LANDFALL_APPLE_PRESENTATION_UNOBSERVED");
+    process.env.LANDFALL_LAB_PRESENTATION = "1";
+    await writeFile(
+      path.join(destination, "presentation-environment.json"),
+      JSON.stringify(
+        {
+          sourceClass: "ACTUAL_OWNED_SIMULATOR_SETTINGS",
+          appearance: "DARK",
+          contentSize: "ACCESSIBILITY_XXXL",
+          fixture: "UNCONFIGURED_READABLE_FALLBACK",
+          productionJournalRenderingProven: false,
+          physicalAssistiveTechnologyProven: false,
+        },
+        null,
+        2,
+      ),
+    );
     executionStage = "GENERATE_XCODE_PROJECT";
     await labTool("xcodegen", ["generate", "--spec", path.join(root, "native", "ios", "project.yml")], 180000);
     executionStage = "CONFIGURE_OWNED_LAB_PLIST";

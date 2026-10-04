@@ -77,6 +77,15 @@ SpringBoard tap and native same-origin return. Its synthetic nonce landing prove
 OS handoff only; production signed authorization has separate shared and Android
 first-party coverage. No notice return is yet claimed.
 
+Apple presentation automation now configures and reads back dark appearance
+and AccessibilityXXXL through public `simctl ui` on its owned build Simulator.
+Two bounded XCTest cases check the unconfigured readable fallback in portrait
+and landscape, and deliberately enable/restore Reduce Motion through Settings.
+Screenshots and exact native test results must be retained. This additional
+actual smoke remains pending; it does not prove production Journal rendering,
+physical VoiceOver or assistive-device usability. Browser enlarged-text/reduced-
+motion/accessible fallback coverage remains independently retained.
+
 Retained input comparisons show production web, dependency and schema trees
 unchanged from C8; native Android unchanged from01bab29b; and native iOS unchanged
 from2654d7b8. The shared executor's later bounded input wrapper receives separate

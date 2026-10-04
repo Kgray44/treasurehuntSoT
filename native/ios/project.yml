@@ -37,6 +37,7 @@ targets:
       testTargets: [LandfallCompanionTests, LandfallCompanionUiTests]
       environmentVariables:
         LANDFALL_LAB_ORIGIN: $(LANDFALL_LAB_ORIGIN)
+        LANDFALL_LAB_PRESENTATION: $(LANDFALL_LAB_PRESENTATION)
   LandfallCompanionTests:
     type: bundle.unit-test
     platform: iOS
