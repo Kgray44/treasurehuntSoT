@@ -339,3 +339,16 @@ The style function itself is not invoked before third-party consent. LOCAL style
 cannot contain network URLs; FIRST_PARTY URLs must match the page origin. Twelve
 focused style/renderer/configuration tests pass, including those mismatch checks
 and consent revocation. Remote geocoding/routing/elevation integration remains open.
+
+Hosted Android focus run 37162816491 at clean source `8821f56004bc` passes all
+three low-resource cases and two of three generic-tablet cases. Tablet background
+and recreation deliver actual OS fixes; its first GPS case receives no callbacks.
+Every scenario and transport-branch cleanup passes. Both native instrumentation
+receipts pass. The generic profile therefore supplies GPS, but cold delivery is
+not yet qualified. The next lab revision delivers repeated coordinates through
+the OS within the original 120-second observation budget rather than relying on
+one injection. It does not retry the scenario or invent success. Redacted control
+receipts record injection count and elapsed time; Android acquisition diagnostics
+record only selected provider, registration, enabled state and permission.
+Provider selection remains an observed category, not an inferred failure cause.
+Fresh hosted proof is required for this revision.

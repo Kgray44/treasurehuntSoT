@@ -3,6 +3,12 @@ import { nativeFixSchema } from "@/landfall/native-location";
 import type { DeviceLabAction } from "@/landfall/device-lab/scenario";
 
 const count = z.number().int().min(0).max(100000);
+export const deviceLabAcquisitionSchema = z.strictObject({
+  provider: z.enum(["NONE", "gps", "network"]),
+  registered: z.boolean(),
+  enabled: z.boolean(),
+  permission: z.enum(["GRANTED", "APPROXIMATE", "DENIED"]),
+});
 export const deviceLabLocationDiagnosticSchema = z.strictObject({
   received: count,
   invalid: count,
@@ -12,6 +18,7 @@ export const deviceLabLocationDiagnosticSchema = z.strictObject({
   insufficientAccuracy: count,
   withinRequestedBounds: count,
   canonicalObservations: count,
+  acquisition: deviceLabAcquisitionSchema.optional(),
 });
 
 /** Categorical test diagnostics only: never serialize a native fix or its timestamp. */
@@ -25,6 +32,11 @@ export class DeviceLabLocationDiagnostics {
     insufficientAccuracy: 0,
     withinRequestedBounds: 0,
   };
+  private acquisition: z.infer<typeof deviceLabAcquisitionSchema> | undefined;
+  observeAcquisition(input: unknown) {
+    const parsed = deviceLabAcquisitionSchema.safeParse(input);
+    if (parsed.success) this.acquisition = parsed.data;
+  }
   constructor(
     private readonly action: Extract<DeviceLabAction, { type: "LOCATION" }>,
     private readonly now = Date.now,
@@ -63,6 +75,10 @@ export class DeviceLabLocationDiagnostics {
     this.counts.withinRequestedBounds++;
   }
   snapshot(canonicalObservations: number) {
-    return deviceLabLocationDiagnosticSchema.parse({ ...this.counts, canonicalObservations });
+    return deviceLabLocationDiagnosticSchema.parse({
+      ...this.counts,
+      canonicalObservations,
+      ...(this.acquisition ? { acquisition: this.acquisition } : {}),
+    });
   }
 }

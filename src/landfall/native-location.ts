@@ -19,6 +19,8 @@ export type NativeLocationDriver = {
   permission(): Promise<PermissionState>;
   /** Passive inspection must not open an OS permission prompt. */
   readPermission?(): Promise<PermissionState>;
+  /** Categorical acquisition state, without location samples or timestamps. */
+  readAcquisition?(): Promise<unknown>;
   start(options: { background: boolean; intervalMs: number; precise: boolean }): Promise<void>;
   stop(): Promise<void>;
   subscribe(

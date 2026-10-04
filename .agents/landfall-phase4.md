@@ -58,6 +58,13 @@ Update this packet as shared contracts and accepted plateaus become concrete.
 
 ## Development plateau, 2026-10-03
 
+Latest Android focus run 37162816491 (clean 8821f56004bc) is harvested. Low-resource
+GPS/background/recreation: 3/3 pass. Generic GPS-capable tablet: 2/3 pass; cold
+GPS has zero callbacks, later background/recreation fixes arrive. All scenario,
+instrumentation and transport cleanup pass. Next revision uses bounded repeated
+OS position control within the unchanged observation budget and categorical
+native acquisition diagnostics. Do not claim this unverified repair as acceptance.
+
 Provider policy, native foreground shells, wake-only geofences, opaque notification
 return, optional native sensors/scanners, signed encrypted web regions and a shared
 Device Lab are in development. This is not a qualified Phase 4 plateau.

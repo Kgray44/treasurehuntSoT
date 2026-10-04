@@ -270,6 +270,7 @@ async function main() {
               locationDiagnostic = diagnostics.snapshot(count - observationsBefore);
             };
             await start();
+            if (driver.readAcquisition) diagnostics.observeAcquisition(await driver.readAcquisition());
             const before = count;
             await new Promise<void>((resolve, reject) => {
               const timer = setTimeout(() => {

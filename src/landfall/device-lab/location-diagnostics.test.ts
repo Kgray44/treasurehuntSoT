@@ -47,4 +47,24 @@ describe("redacted native location diagnostics", () => {
     expect(() => deviceLabLocationDiagnosticSchema.parse({ ...empty, received: -1 })).toThrow();
     expect(() => deviceLabLocationDiagnosticSchema.parse({ ...empty, received: 100001 })).toThrow();
   });
+  it("keeps only bounded native acquisition categories and ignores unsupported or raw replies", () => {
+    const action = landfallDeviceScenario("gps-perfect-walk").timeline[0].action as Extract<
+      DeviceLabAction,
+      { type: "LOCATION" }
+    >;
+    const diagnostics = new DeviceLabLocationDiagnostics(action);
+    diagnostics.observeAcquisition({ state: "UNSUPPORTED" });
+    expect(diagnostics.snapshot(0).acquisition).toBeUndefined();
+    diagnostics.observeAcquisition({
+      provider: "gps",
+      registered: true,
+      enabled: true,
+      permission: "GRANTED",
+      latitude: 44,
+    });
+    expect(diagnostics.snapshot(0).acquisition).toBeUndefined();
+    const acquisition = { provider: "network", registered: true, enabled: false, permission: "APPROXIMATE" };
+    diagnostics.observeAcquisition(acquisition);
+    expect(diagnostics.snapshot(0).acquisition).toEqual(acquisition);
+  });
 });

@@ -30,6 +30,7 @@ import java.util.UUID;
 public final class LandfallActivity extends Activity implements LocationListener {
   private WebView web;
   private LocationManager locations;
+  private String selectedLocationProvider = "NONE";
   private String origin;
   private boolean foreground;
   private boolean acquiring;
@@ -140,6 +141,9 @@ public final class LandfallActivity extends Activity implements LocationListener
     if (payload == null) payload = new JSONObject();
     switch (operation) {
       case "LOCATION_PERMISSION_STATE": reply(proxy, id, state(permission())); break;
+      case "LOCATION_STATE":
+        reply(proxy,id,new JSONObject().put("provider",selectedLocationProvider).put("registered",acquiring).put("enabled",!selectedLocationProvider.equals("NONE") && locations.isProviderEnabled(selectedLocationProvider)).put("permission",permission()));
+        break;
       case "LOCATION_PERMISSION":
         if (!foreground || permissionReply != null) { reply(proxy, id, state("UNAVAILABLE")); break; }
         if (!permission().equals("DENIED")) { reply(proxy, id, state(permission())); break; }
@@ -203,11 +207,12 @@ public final class LandfallActivity extends Activity implements LocationListener
       .addOnSuccessListener(unused -> { try { LandfallSecureHints.register(this,handle,expiry,payload.optBoolean("notifications",false));reply(proxy, id, state("GRANTED")); } catch(Exception ignored){} })
       .addOnFailureListener(error -> { try { reply(proxy, id, state("UNAVAILABLE")); } catch(Exception ignored){} });
   }
-  private void stopLocation() { if (locations != null) locations.removeUpdates(this); acquiring = false; }
+  private void stopLocation() { if (locations != null) locations.removeUpdates(this); acquiring = false; selectedLocationProvider = "NONE"; }
   private boolean startLocation(){
     stopLocation();if(!foreground || permission().equals("DENIED") || power.critical())return false;
     String provider=permission().equals("GRANTED") && requestedPrecise?LocationManager.GPS_PROVIDER:LocationManager.NETWORK_PROVIDER;
     if(!locations.isProviderEnabled(provider))provider=LocationManager.NETWORK_PROVIDER;
+    selectedLocationProvider=provider;
     try{locations.requestLocationUpdates(provider,power.interval(requestedInterval),0,this);acquiring=true;return true;}catch(SecurityException|IllegalArgumentException error){return false;}
   }
   private void powerChanged(){

@@ -67,6 +67,7 @@ export async function landfallNativeRequest(
   operation:
     | "LOCATION_PERMISSION"
     | "LOCATION_PERMISSION_STATE"
+    | "LOCATION_STATE"
     | "LOCATION_START"
     | "LOCATION_STOP"
     | "BACKGROUND_PERMISSION"
@@ -102,6 +103,7 @@ export function createLandfallNativeDriver(): NativeLocationDriver | null {
       replySchema.parse(await landfallNativeRequest("LOCATION_PERMISSION")).state ?? "UNAVAILABLE",
     readPermission: async () =>
       replySchema.parse(await landfallNativeRequest("LOCATION_PERMISSION_STATE")).state ?? "UNAVAILABLE",
+    readAcquisition: async () => landfallNativeRequest("LOCATION_STATE"),
     start: async (options) => {
       const reply = replySchema.parse(await landfallNativeRequest("LOCATION_START", options));
       if (!reply.accepted) throw new Error("LANDFALL_NATIVE_LOCATION_UNAVAILABLE");

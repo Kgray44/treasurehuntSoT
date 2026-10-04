@@ -5,6 +5,7 @@ import path from "node:path";
 import { build } from "esbuild";
 import { discoverDeviceLabHost, labBinaryTool, labTool } from "./host";
 import { startDeviceLabAuthority } from "./authority-client";
+import { deliverDeviceLabPosition } from "./location-control";
 import { playerLandfallEvidenceSchema } from "../../../src/landfall/player-evidence-contract";
 import {
   androidSensorControl,
@@ -56,6 +57,13 @@ export async function executeLandfallOsScenario(
   let stop = false;
   const results = new Map<number, DeviceLabStepResult>();
   const locationReady = new Set<number>();
+  const locationControls: {
+    index: number;
+    injections: number;
+    elapsedMs: number;
+    budgetMs: number;
+    completed: boolean;
+  }[] = [];
   const sensorReady = new Set<number>();
   const osResults = new Map<number, DeviceLabStepResult>();
   let osReady = false;
@@ -718,19 +726,22 @@ export async function executeLandfallOsScenario(
           steps.push(results.get(index)!);
           continue;
         }
-        if (target === "android-emulator")
-          await adb(["emu", "geo", "fix", String(coordinate.longitude), String(coordinate.latitude)]);
-        else {
-          const deadline = Date.now() + 150000;
-          while (!results.has(index) && Date.now() < deadline) {
-            await labTool(
-              "xcrun",
-              ["simctl", "location", ownedDevice!, "set", `${coordinate.latitude},${coordinate.longitude}`],
-              60000,
-            );
-            if (!results.has(index)) await new Promise((resolve) => setTimeout(resolve, 1000));
-          }
-        }
+        locationControls.push({
+          index,
+          ...(await deliverDeviceLabPosition({
+            completed: () => results.has(index),
+            inject: () =>
+              target === "android-emulator"
+                ? adb(["emu", "geo", "fix", String(coordinate.longitude), String(coordinate.latitude)]).then(
+                    () => undefined,
+                  )
+                : labTool(
+                    "xcrun",
+                    ["simctl", "location", ownedDevice!, "set", `${coordinate.latitude},${coordinate.longitude}`],
+                    60000,
+                  ).then(() => undefined),
+          })),
+        });
       }
       await wait(() => results.has(index), step.action.type === "LOCATION" ? 130000 : 30000);
       steps.push(results.get(index)!);
@@ -805,6 +816,15 @@ export async function executeLandfallOsScenario(
         error instanceof Error && /^[A-Z_]{1,128}$/.test(error.message) ? error.message : "NATIVE_OS_EXECUTION_FAILED",
     });
   } finally {
+    const controlFile = path.join(destination, "native-location-controls.json");
+    await writeFile(controlFile, JSON.stringify(locationControls, null, 2));
+    artifacts.push({
+      path: controlFile,
+      sha256: createHash("sha256")
+        .update(await readFile(controlFile))
+        .digest("hex"),
+      kind: "TEST_RESULT",
+    });
     const locationFile = path.join(destination, "native-location-diagnostics.json");
     await writeFile(locationFile, JSON.stringify(locationDiagnostics, null, 2));
     artifacts.push({
@@ -1024,7 +1044,7 @@ export async function executeLandfallOsScenario(
             ? {
                 method: "OS_LOCATION_INJECTION",
                 limitation:
-                  "Virtual coordinate delivery does not prove field GPS accuracy, multipath or sensor physics.",
+                  "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately.",
               }
             : action?.type === "LIFECYCLE"
               ? {
