@@ -875,3 +875,20 @@ installation/background/Journal focused25tests PASS. Stale radio-default
 expectation updated to include the three canonical BLE cases, with focused BLE
 selection accepted and ordinary native lane rejecting radio cases. TS, changed
 ESLint, docs, whitespace checks PASS; Android debug/instrumentation builds PASS.
+
+Apple37183310626 now HARVESTED2914 SUCCESS: clean a5db source,11 XCTest/1skip,
+all4canonical cases PASS/0OneVoyageevents, allcleanup PASS. SDK attachment
+B509D69D-6E6A-4A67-BC11-1919F7F998B8 camera/NFC unavailable, acquisitionfalse,
+tokens0, Bluetoothauthorization3; no actual scan/radio claim.
+911ea unsigned/unconfigured release build PASS and APKAnalyzer proves lab Activity
+and ADVERTISEpermission absent, cleartext/debug disabled, bootreceiver nonexported.
+APKaa105a419d854ce80a1616ead5030bcff9bc948e52955e50df079faec8e036dd; savedreceipt
+artifacts/landfall-device-lab/release-package-911ea0462eec/receipt.json.
+911ea radio37184421734 HARVESTED4 and Journal37184425550 HARVESTED41 failed before
+device execution, ownercleanup PASS. Actual owned-adb.log: listening on specified
+hostname currently unsupported. Correct server to supported -L tcp:5038. New
+readiness checks only listener inode held by the exact spawned PID, avoiding a
+bind probe and client startup race; signalCode catches SIGABRT as well as exitCode.
+Focused4 tests/TS/lint PASS. Fresh radio/Journal proof still required.
+911ea Android37184428733 just SUCCESS, harvest and inspect exact instrumentation
+and scenario/cleanup receipts before claims. Provider37184715171 remains active.

@@ -921,7 +921,12 @@ actual iPhone17e Simulator26.5 framework attachment reports camera unavailable,
 NFC reading unavailable, no acquisition and no observed token. Nearby
 Interaction precise ranging is also unsupported. These are real SDK capability
 results, with scanner/radio fidelity still requiring applicable hardware.
-The later BLE and scan cleanup changes require fresh Apple source-bound evidence.
+The later BLE and scan cleanup changes are covered by clean source
+`a5db24575ed19678ff3e421efe02e489e9f06404`, Apple run37183310626:11 XCTest passes,
+one skip, all four canonical cases passing and zero progression events. Build,
+scenario and transport cleanup passed. Its SDK attachment still reports no
+camera/NFC acquisition; Bluetooth authorization is an OS category, not a radio
+discovery receipt.
 
 The canonical corpus now contains157 scenarios, including three protocol-specific
 native BLE discovery cases. A debug-only20second advertiser Activity runs on the
@@ -933,3 +938,13 @@ scenario meaning in simulation and the OS lab. All157 provider cases pass
 locally; hosted radio discovery evidence remains pending. Private synthetic lab
 state, apps, bindings and device connections belong to the existing owned
 two-device backend and its verified cleanup.
+
+The unsigned, unconfigured Android release build at
+`911ea0462eec880b155661c4b3b13f64967206b8` succeeds. SDK APK Analyzer inspection
+of manifest and DEX confirms the lab advertiser Activity and advertising permission
+are absent, cleartext and debugging are disabled, and the boot receiver is not
+exported. APK SHA256 is
+`aa105a419d854ce80a1616ead5030bcff9bc948e52955e50df079faec8e036dd`;
+the receipt is under the owned Device Lab release-package artifact directory.
+This is package separation proof; deployed companion availability and signing
+remain operator gates.

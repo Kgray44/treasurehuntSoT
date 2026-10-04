@@ -40,6 +40,20 @@ async function availableMemory() {
   if (!value) throw new Error("LANDFALL_RADIO_MEMORY_UNKNOWN");
   return Number(value[1]) * 1024;
 }
+async function adbListenerInodes() {
+  return ownedAdbListeningInodes(
+    await Promise.all(["tcp", "tcp6"].map((table) => readFile(`/proc/net/${table}`, "utf8"))),
+    5038,
+  );
+}
+async function holdsListener(pid: number, listeners: Set<string>) {
+  for (const descriptor of await readdir(`/proc/${pid}/fd`).catch(() => [])) {
+    const target = await readlink(`/proc/${pid}/fd/${descriptor}`).catch(() => "");
+    const inode = /^socket:\[([0-9]+)\]$/.exec(target)?.[1];
+    if (inode && listeners.has(inode)) return true;
+  }
+  return false;
+}
 async function freePort(port: number) {
   const server = createServer();
   await new Promise<void>((resolve, reject) => {
@@ -129,23 +143,12 @@ export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
     // exact SDK executable and this run's previously-vacant private socket.
     if (adbOwned) {
       const adbExecutable = await realpath(host.android.adb!);
-      const listeners = ownedAdbListeningInodes(
-        await Promise.all(["tcp", "tcp6"].map((table) => readFile(`/proc/net/${table}`, "utf8"))),
-        5038,
-      );
+      const listeners = await adbListenerInodes();
       for (const line of (await labTool("ps", ["-eo", "pid=,args="])).split("\n")) {
         const pid = Number(/^\s*(\d+)\s/.exec(line)?.[1]);
         const value = pid ? await identity(pid) : null;
         if (!value || value.executable !== adbExecutable || owned.has(pid)) continue;
-        const descriptors = await readdir(`/proc/${pid}/fd`).catch(() => []);
-        for (const descriptor of descriptors) {
-          const target = await readlink(`/proc/${pid}/fd/${descriptor}`).catch(() => "");
-          const inode = /^socket:\[([0-9]+)\]$/.exec(target)?.[1];
-          if (inode && listeners.has(inode)) {
-            owned.set(pid, value);
-            break;
-          }
-        }
+        if (await holdsListener(pid, listeners)) owned.set(pid, value);
       }
     }
     for (const line of (await labTool("ps", ["-eo", "pid=,pgid="])).split("\n")) {
@@ -238,25 +241,20 @@ export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
         });
       });
     }
-    const adbServer = await start(
-      host.android.adb,
-      ["-L", "tcp:127.0.0.1:5038", "server", "nodaemon"],
-      "owned-adb.log",
-    );
+    const adbServer = await start(host.android.adb, ["-L", "tcp:5038", "server", "nodaemon"], "owned-adb.log");
     adbOwned = true;
     const adbDeadline = Date.now() + 15000;
     let adbReady = false;
     while (Date.now() < adbDeadline) {
-      if (adbServer.exitCode !== null) throw new Error("LANDFALL_OWNED_ADB_START_FAILED");
-      adbReady = !(await freePort(5038).then(
-        () => true,
-        () => false,
-      ));
+      if (adbServer.exitCode !== null || adbServer.signalCode !== null)
+        throw new Error("LANDFALL_OWNED_ADB_START_FAILED");
+      adbReady = await holdsListener(adbServer.pid!, await adbListenerInodes());
       if (adbReady) break;
       await delay(100);
     }
     // A client issued before nodaemon binds can fork a competing daemon. Wait without an ADB client.
-    if (!adbReady || adbServer.exitCode !== null) throw new Error("LANDFALL_OWNED_ADB_START_TIMEOUT");
+    if (!adbReady || adbServer.exitCode !== null || adbServer.signalCode !== null)
+      throw new Error("LANDFALL_OWNED_ADB_START_TIMEOUT");
     await remember();
     await adb(["devices"]);
     guard = setInterval(() => {
