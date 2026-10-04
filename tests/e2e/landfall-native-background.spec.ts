@@ -9,6 +9,7 @@ import { landfallFixture } from "../../src/landfall/fixtures";
 import { landfallDeviceScenario } from "../../src/landfall/device-lab/scenarios";
 import { rebootOwnedAndroidGuest } from "../../src/landfall/device-lab/android-reboot";
 import { nativeLandfallNoticeTouch } from "../../src/landfall/device-lab/native-notice-control";
+import { nativeCpuSnapshot, nativeCpuMeasurement } from "../../src/landfall/device-lab/native-cpu-measurement";
 import {
   deviceLabProfileSchema,
   deviceLabConfigurationSchema,
@@ -105,6 +106,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
       const remaining: string[] = [],
         measurements: { stage: string; elapsedMs?: number; pssKiB?: number }[] = [];
       const receiverRows: { stage: string; counters: Record<string, number> }[] = [];
+      const cpuMeasurements: ({ stage: string } & ReturnType<typeof nativeCpuMeasurement>)[] = [];
       let settings: Awaited<ReturnType<typeof inspectOwnedAndroidLocationAccuracy>> | null = null;
       let reboot: Awaited<ReturnType<typeof rebootOwnedAndroidGuest>> | null = null;
       let signedRegistration = false,
@@ -142,6 +144,21 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         for (const device of devices) await boundedAndroidDriver(device.close(), undefined, 15000);
         devices = [];
         page = undefined;
+      };
+      const measureCpu = async (label: string) => {
+        const pid = (await adb(["shell", "pidof", pkg])).trim();
+        if (!/^[1-9][0-9]{0,8}$/.test(pid)) throw new Error("NATIVE_CPU_PROCESS_UNOBSERVED");
+        const snapshot = async () =>
+          nativeCpuSnapshot(
+            await adb(["shell", "cat", "/proc/stat"]),
+            await adb(["shell", "run-as", pkg, "cat", `/proc/${pid}/stat`]),
+          );
+        const before = await snapshot(),
+          started = performance.now();
+        await delay(15000);
+        const after = await snapshot();
+        if ((await adb(["shell", "pidof", pkg])).trim() !== pid) throw new Error("NATIVE_CPU_PROCESS_CHANGED");
+        cpuMeasurements.push({ stage: label, ...nativeCpuMeasurement(before, after, performance.now() - started) });
       };
       const attach = async (requireNative = true) => {
         devices = await boundedAndroidDriver(
@@ -307,6 +324,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         const panel = journal.getByRole("region", { name: "Optional background reminders" });
         await expect(panel).toBeVisible();
         await measurePss("FOREGROUND_JOURNAL");
+        await measureCpu("FOREGROUND_JOURNAL");
         journal.on("response", (response) => {
           const url = new URL(response.url());
           if (url.origin !== origin.origin) return;
@@ -345,6 +363,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         activeReturn = true;
         measurements.push({ stage: "ACTIVE_NOTICE_RETURN", elapsedMs: performance.now() - firstReturnStarted });
         await measurePss("ACTIVE_NOTICE_RETURN");
+        await measureCpu("ACTIVE_NOTICE_RETURN");
         stage = "REGISTERED_REGION_ACTUAL_REBOOT";
         await background();
         await fused.phase("STOP");
@@ -493,6 +512,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           canonicalProgressionEvents: events,
           canComplete: false,
           measurements,
+          cpuMeasurements,
           preliminaryGrossBounds: { noticeReturnMs: 60000, fullJournalPssKiB: 512 * 1024, passed: elapsedBounds },
           physicalTimingProven: false,
           externalRequirements: [

@@ -1564,3 +1564,17 @@ before showing a code. The next run exports only a finite lease clock category
 from the actual response expiry and unmodified guest clock, without retaining
 either epoch, response payload, handle or session key. No lease or server expiry
 rule is relaxed. Both failed runs preserve canonical zero writes and cleanup PASS.
+
+Foreground native Journal performance now has a separate15second CPU counter
+interval before reminders and after the actual notice return. The app's parent
+process is read under its own debug UID; the owned guest's aggregate CPU is read
+separately. Both percentages normalize against all guest vCPU capacity. The
+guest measurement includes WebView renderer and OS work without claiming that
+all of it belongs to Journal. Raw process names/identifiers, counter values and
+process-start identity stay in memory. Counter resets, process restart, invalid
+values and an interval outside10–60seconds fail rather than produce a budget
+pass. Three boundary tests pass. This establishes a measurement method; actual
+hosted values and baseline assessment remain required. Physical battery/thermal
+and isolated renderer attribution are not proved by these measurements.
+The aggregate uses the first eight kernel counters, excluding idle/iowait/steal
+from active execution and avoiding duplicate guest columns ([kernel documentation](https://docs.kernel.org/filesystems/proc.html)).
