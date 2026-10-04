@@ -54,6 +54,21 @@ final class NativeLifecycleTests: XCTestCase {
         let motionRow=motionCells.firstMatch
         motionRow.coordinate(withNormalizedOffset:CGVector(dx:0.85,dy:0.5)).tap()
         let motionPage=settings.navigationBars["Motion"]
+        if !motionPage.waitForExistence(timeout:5) {
+            // A correctly targeted row tap was observed without navigation.
+            // Use Settings' own public search UI as a separate real route.
+            let back=settings.navigationBars["Accessibility"].buttons["Settings"]
+            guard back.exists && back.isHittable else {XCTFail("LANDFALL_SETTINGS_SEARCH_RETURN_UNAVAILABLE");return}
+            back.tap()
+            guard settings.navigationBars["Settings"].waitForExistence(timeout:10) else {XCTFail("LANDFALL_SETTINGS_HOME_UNOBSERVED");return}
+            let search=settings.searchFields.firstMatch
+            guard search.waitForExistence(timeout:10) && search.isHittable else {XCTFail("LANDFALL_SETTINGS_SEARCH_UNAVAILABLE");return}
+            search.tap();search.typeText("Reduce Motion")
+            let result=settings.staticTexts.matching(identifier:"Reduce Motion")
+            guard result.firstMatch.waitForExistence(timeout:15),result.count == 1,result.firstMatch.isHittable else {XCTFail("LANDFALL_REDUCED_MOTION_SEARCH_UNAVAILABLE");return}
+            let found=XCTAttachment(screenshot:settings.screenshot());found.name="Owned Settings Reduce Motion search result";found.lifetime = .keepAlways;add(found)
+            result.firstMatch.tap()
+        }
         guard motionPage.waitForExistence(timeout:10) else {XCTFail("LANDFALL_MOTION_PAGE_UNOBSERVED");return}
         let before=XCTAttachment(screenshot:settings.screenshot());before.name="Owned Motion settings before selection";before.lifetime = .keepAlways;add(before)
         let labelled=settings.switches.matching(NSPredicate(format:"label CONTAINS %@","Reduce Motion"))

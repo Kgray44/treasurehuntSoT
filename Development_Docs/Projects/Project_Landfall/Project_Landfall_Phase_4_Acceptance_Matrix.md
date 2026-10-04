@@ -32,6 +32,13 @@ Focused primary recheck **37233941482 on `a37ff45d`** is active with the same
 mandatory build and two scenarios. Exact `90ef2d75` tracked-source privacy scan
 passes zero violations across six classifications; the archive hash is
 `af945a740bed7a4027927c2ed1d98d08150445805664ede1d24bbe0d4dca7662`.
+That recheck also finishes FAIL18/1/1 at Motion page observation,4,510hashed
+artifacts/cleanupPASS, with neither scenario executed. Its hierarchy and actual
+touch event confirm the unique row's trailing gap was tapped at320.3/328.83,
+yet Accessibility remained open. Current bounded UI additionally returns to
+Settings and uses its own unique Reduce Motion search result. It must still
+observe the Motion page and enable/read back/restore the actual switch; neither
+search-result presence nor a synthesized tap is acceptance.
 
 Current clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
 owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting
