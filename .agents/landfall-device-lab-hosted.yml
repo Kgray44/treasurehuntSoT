@@ -176,3 +176,61 @@ jobs:
           name: landfall-android-radio-${{ matrix.profile }}-__CANDIDATE_SHA__
           path: artifacts/landfall-device-lab
           retention-days: 14
+  android-journal:
+    if: __RUN_ANDROID_JOURNAL__
+    name: Native / Android first-party Journal / ${{ matrix.profile }}
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: __ANDROID_RADIO_PROFILES__
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
+      LANDFALL_NATIVE_NEARBY: "1"
+      LANDFALL_NEARBY_PAIRING_MODE: ephemeral-instance
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - run: npm ci --ignore-scripts
+      - name: Build native companion before starting devices
+        run: gradle -p native/android --console plain assembleDebug
+      - name: Install public API-36 radio image
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libpulse0
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "emulator" "system-images;android-36;google_apis;x86_64"
+      - name: Enable ephemeral runner KVM access
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - run: npx --no-install playwright install --with-deps chromium
+      - name: Build optimized application before owning native devices
+        run: |
+          export ANDROID_SDK_ROOT="$ANDROID_HOME"
+          pairing_database="$GITHUB_WORKSPACE/artifacts/sounding-line/generic-__CANDIDATE_SHA12__/validation-isolated-$(date +%Y%m%d-%H%M%S%3N)-$(cat /proc/sys/kernel/random/uuid | tr -d '-').db"
+          node scripts/sounding-line/run-browser-suite.mjs --profile generic --candidate __CANDIDATE_SHA__ --database-url "file:$pairing_database" -- tests/e2e/landfall-phase4.spec.ts tests/e2e/landfall-native-nearby.spec.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-android-journal-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: |
+            artifacts/landfall-device-lab
+            artifacts/sounding-line/browser-runtime.json
+            artifacts/sounding-line/browser-suite-profile.json
+            test-results
+          retention-days: 14

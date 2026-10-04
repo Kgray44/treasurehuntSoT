@@ -16,16 +16,22 @@ export async function dispatchLandfallHostedLab(
   selectedProfiles?: string,
 ) {
   if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error("LANDFALL_HOSTED_CANDIDATE_INVALID");
-  if (!["all", "provider", "android", "android-radio", "ios"].includes(target))
+  if (!["all", "provider", "android", "android-radio", "android-journal", "ios"].includes(target))
     throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   if (!["development", "candidate", "closure"].includes(tier)) throw new Error("LANDFALL_HOSTED_TIER_INVALID");
-  if (selectedProfiles !== undefined && target !== "android" && target !== "android-radio" && target !== "ios")
+  if (
+    target === "android-journal" &&
+    selectedScenarios !== undefined &&
+    selectedScenarios !== "first-party-native-journal-pair"
+  )
+    throw new Error("LANDFALL_HOSTED_JOURNAL_SCENARIO_INVALID");
+  if (selectedProfiles !== undefined && !["android", "android-radio", "android-journal", "ios"].includes(target))
     throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
   const typedTier = tier as "development" | "candidate" | "closure";
   const selectedAndroid = hostedDeviceLabProfiles(
     "android",
     typedTier,
-    target === "android" || target === "android-radio" ? selectedProfiles : undefined,
+    ["android", "android-radio", "android-journal"].includes(target) ? selectedProfiles : undefined,
   );
   const selectedApple = hostedDeviceLabProfiles("ios", typedTier, target === "ios" ? selectedProfiles : undefined);
   const androidProfiles = [
@@ -47,22 +53,25 @@ export async function dispatchLandfallHostedLab(
   const appleProfiles = selectedApple;
   const radioProfiles = selectedAndroid.filter((profile) => ["primary-phone", "low-resource"].includes(profile));
   if (
-    target === "android-radio" &&
+    ["android-radio", "android-journal"].includes(target) &&
     (radioProfiles.length === 0 || (selectedProfiles !== undefined && radioProfiles.length !== selectedAndroid.length))
   )
     throw new Error("LANDFALL_HOSTED_RADIO_PROFILE_UNSUPPORTED");
   await labTool("git", ["cat-file", "-e", `${candidate}^{commit}`]);
   const template = await labTool("git", ["show", `${candidate}:.agents/landfall-device-lab-hosted.yml`]);
   const workflow = template
+    .replaceAll("__CANDIDATE_SHA12__", candidate.slice(0, 12))
     .replaceAll("__CANDIDATE_SHA__", candidate)
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
     .replaceAll("__RUN_ANDROID__", String(target === "all" || target === "android"))
     .replaceAll("__RUN_ANDROID_RADIO__", String(target === "all" || target === "android-radio"))
+    .replaceAll("__RUN_ANDROID_JOURNAL__", String(target === "all" || target === "android-journal"))
     .replaceAll("__ANDROID_RADIO_PROFILES__", JSON.stringify(radioProfiles))
     .replaceAll("__ANDROID_PROFILES__", JSON.stringify(androidProfiles))
     .replaceAll("__APPLE_PROFILES__", JSON.stringify(appleProfiles));
   const scenarios = {
+    journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     radio: hostedDeviceLabScenarios("android-radio", target === "android-radio" ? selectedScenarios : undefined),
     ios: hostedDeviceLabScenarios("ios", target === "ios" || target === "all" ? selectedScenarios : undefined),
     android: hostedDeviceLabScenarios(

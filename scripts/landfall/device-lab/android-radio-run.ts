@@ -8,6 +8,18 @@ import { discoverDeviceLabHost, labTool } from "./host";
 import { deviceLabSourceIdentity } from "./source";
 
 type OwnedProcess = { pid: number; started: string; executable: string };
+export type OwnedAndroidRadioPair = {
+  adbPath: string;
+  adbPort: number;
+  serials: readonly string[];
+  apkPath: string;
+  artifactDirectory: string;
+  signal: AbortSignal;
+};
+type JournalExecutor = {
+  kind: "PRODUCTION_JOURNAL_PAIR";
+  execute(resources: OwnedAndroidRadioPair): Promise<void>;
+};
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 /** Linux /proc identities prevent a recycled PID from authorizing process cleanup. */
@@ -47,7 +59,7 @@ async function radioProcesses(sdk: string) {
 }
 
 /** Builds must finish before this bounded, exclusively owned ephemeral-runner backend starts. */
-export async function runLandfallAndroidRadioLab() {
+export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
   if (process.platform !== "linux" || process.env.GITHUB_ACTIONS !== "true")
     throw new Error("LANDFALL_RADIO_EPHEMERAL_LINUX_REQUIRED");
   const host = await discoverDeviceLabHost();
@@ -99,6 +111,8 @@ export async function runLandfallAndroidRadioLab() {
   let failure: string | null = null;
   let adbOwned = false;
   let lab: ChildProcess | undefined;
+  const executorAbort = new AbortController();
+  let executorTimer: ReturnType<typeof setTimeout> | undefined;
   const adb = (args: string[]) => labTool(host.android.adb!, ["-P", "5038", ...args], 15000);
   const sample = async () => {
     const availableBytes = await availableMemory();
@@ -122,6 +136,12 @@ export async function runLandfallAndroidRadioLab() {
       } catch {
         /* disappearance is verified below */
       }
+  };
+  const interruptExecutor = async () => {
+    executorAbort.abort();
+    if (lab && lab.exitCode === null) lab.kill("SIGTERM");
+    for (const value of owned.values())
+      if (value.executable.startsWith(`${sdk}/emulator/`)) await terminate(value, "SIGTERM");
   };
   const start = async (command: string, args: string[], logName: string, processEnv = env) => {
     const child = spawn(command, args, {
@@ -212,13 +232,12 @@ export async function runLandfallAndroidRadioLab() {
           await remember();
           if (bytes < memoryBudget.stopBelowBytes) {
             memoryViolated = true;
-            if (lab && lab.exitCode === null) lab.kill("SIGTERM");
-            for (const value of owned.values())
-              if (value.executable.startsWith(`${sdk}/emulator/`)) await terminate(value, "SIGTERM");
+            await interruptExecutor();
           }
         })
-        .catch(() => {
+        .catch(async () => {
           memoryViolated = true;
+          await interruptExecutor();
         })
         .finally(() => {
           guardBusy = false;
@@ -266,31 +285,50 @@ export async function runLandfallAndroidRadioLab() {
         await adb(["-s", serials[index], "shell", "settings", "put", "global", namespace, "0"]);
     }
     await remember();
-    lab = await start(
-      process.execPath,
-      [
-        "--import",
-        "tsx",
-        "scripts/landfall/device-lab/run.ts",
-        "--platform",
-        "android",
-        "--scenario",
-        "uwb-native-peer-session",
-        "--profile",
-        profile,
-      ],
-      "canonical-radio.log",
-    );
-    const code = await new Promise<number | null>((resolve) => {
-      const timer = setTimeout(() => {
-        resolve(null);
+    if (journal) {
+      executorTimer = setTimeout(() => {
+        executorAbort.abort();
+        // Closing only these owned emulators breaks stalled WebView operations;
+        // the executor must finish its bounded cleanup before owner cleanup.
+        for (const value of owned.values())
+          if (value.executable.startsWith(`${sdk}/emulator/`)) void terminate(value, "SIGTERM");
       }, 180000);
-      lab!.once("close", (code) => {
-        clearTimeout(timer);
-        resolve(code);
+      await journal.execute({
+        adbPath: host.android.adb,
+        adbPort: 5038,
+        serials,
+        apkPath: apk,
+        artifactDirectory: destination,
+        signal: executorAbort.signal,
       });
-    });
-    if (code !== 0 || memoryViolated) throw new Error("LANDFALL_CANONICAL_RADIO_FAILED");
+      if (executorAbort.signal.aborted || memoryViolated) throw new Error("LANDFALL_JOURNAL_RADIO_INTERRUPTED");
+    } else {
+      lab = await start(
+        process.execPath,
+        [
+          "--import",
+          "tsx",
+          "scripts/landfall/device-lab/run.ts",
+          "--platform",
+          "android",
+          "--scenario",
+          "uwb-native-peer-session",
+          "--profile",
+          profile,
+        ],
+        "canonical-radio.log",
+      );
+      const code = await new Promise<number | null>((resolve) => {
+        const timer = setTimeout(() => {
+          resolve(null);
+        }, 180000);
+        lab!.once("close", (code) => {
+          clearTimeout(timer);
+          resolve(code);
+        });
+      });
+      if (code !== 0 || memoryViolated) throw new Error("LANDFALL_CANONICAL_RADIO_FAILED");
+    }
     result = "PASS";
   } catch (error) {
     failure =
@@ -298,6 +336,8 @@ export async function runLandfallAndroidRadioLab() {
         ? error.message
         : "LANDFALL_RADIO_OWNER_FAILED";
   } finally {
+    clearTimeout(executorTimer);
+    executorAbort.abort();
     clearInterval(guard);
     while (guardBusy) await delay(50);
     await remember();
@@ -354,6 +394,9 @@ export async function runLandfallAndroidRadioLab() {
     if (remainingResources.length) result = "FAIL";
     const receipt = {
       version: 1,
+      executor: journal?.kind ?? "CANONICAL_RADIO_SCENARIO",
+      host,
+      deviceProfile: profile,
       result,
       failure,
       source,

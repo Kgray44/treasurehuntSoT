@@ -575,3 +575,25 @@ New optimized-browser case uses the real API with two same-Player contexts and
 a synthetic native bridge, explicitly SHARED_WEB_CONTRACT. Disables trace/video/
 automatic screenshots so ephemeral pairing secrets cannot enter retained media.
 Execution pending; native first-party integration and Phase 4 closure remain open.
+
+Browser checkpoint 08885926574dafe534589eb501e84a076e80d2c9 pushed; uncached
+TypeScript, changed-code lint and docs checks passed before that checkpoint.
+Owned generic optimized run compiled, but TypeScript-stage host free RAM fell
+to 776,120 KiB. Identity-bound root 46976 and its six-process tree were terminated;
+matching process absence verified and free RAM recovered to 7,461,540 KiB.
+No browser test ran. Preserve resource-abort receipt under
+artifacts/landfall-device-lab/browser-resource-abort-08885926574d; no qualification.
+New android-journal hosted target builds before two private emulators. Reuses the
+radio owner with PRODUCTION_JOURNAL_PAIR callback, memory/watchdog cancellation,
+awaited fixture cleanup and host/profile receipt metadata. Test uses real Activity,
+native bridge, same-Player cookie, Journal controls and real API; requires both
+validated reports, OS background/key clearance, no fixes/progression and cleanup.
+Trace/video/automatic media stay disabled; categorical failure-stage receipts
+avoid retaining pairing codes in Playwright action errors. Source checks and
+hosted execution pending. Other Phase 4 work remains open; no ordinary qualification.
+
+Three hosted selection tests pass. TypeScript passes for the new owner callback,
+native Journal fixture and hosted target; later categorical-stage/host metadata
+and fail-closed resource-guard adjustments pass changed-code ESLint. Docs and
+diff checks pass. The upcoming optimized hosted build must check the frozen
+candidate, then run browser and actual native integration; no preclaimed PASS.

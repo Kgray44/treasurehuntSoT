@@ -121,6 +121,7 @@ test.describe("private companion exchange", () => {
         }),
       ),
     );
+    let stage = "OPEN_CURRENT_JOURNAL";
     try {
       await Promise.all(
         contexts.map(async (context, index) => {
@@ -143,6 +144,7 @@ test.describe("private companion exchange", () => {
           () => (window as unknown as { __nearbyContract: { operations: string[] } }).__nearbyContract.operations,
         );
       expect((await operations(0)).filter((value) => value.startsWith("UWB_"))).toEqual([]);
+      stage = "CREATE_SCOPED_EXCHANGE";
       await panels[0].getByRole("button", { name: "Create pairing code", exact: true }).click();
       if (process.env.LANDFALL_NEARBY_PAIRING_MODE !== "ephemeral-instance") {
         await expect(panels[0].getByRole("status", { name: "Nearby device hint status" })).toContainText(
@@ -150,6 +152,7 @@ test.describe("private companion exchange", () => {
         );
         expect((await operations(0)).filter((value) => value.startsWith("UWB_"))).toEqual([]);
       } else {
+        stage = "JOIN_SCOPED_EXCHANGE";
         const code = await panels[0].getByLabel("Pairing code", { exact: true }).textContent();
         expect(typeof code === "string" && /^[A-Za-z0-9_-]{43}$/.test(code)).toBe(true);
         await panels[1].getByLabel("Code from your other device").fill(code!);
@@ -157,6 +160,7 @@ test.describe("private companion exchange", () => {
         await expect(panels[1].getByRole("status", { name: "Nearby device hint status" })).toContainText(
           "cannot confirm arrival",
         );
+        stage = "START_AND_MATCH_CONFIGURATION";
         await panels[0].getByRole("button", { name: "Start hints", exact: true }).click();
         await expect(panels[0].getByRole("status", { name: "Nearby device hint status" })).toContainText(
           "cannot confirm arrival",
@@ -188,6 +192,7 @@ test.describe("private companion exchange", () => {
           await expect(panel.getByLabel("Pairing code", { exact: true })).toHaveCount(0);
           await expect(panel.getByLabel("Code from your other device")).toHaveValue("");
         }
+        stage = "BACKGROUND_AND_STOP";
         await pages[0].evaluate(() =>
           window.dispatchEvent(
             new CustomEvent("landfall-native-event", {
@@ -208,6 +213,7 @@ test.describe("private companion exchange", () => {
         await panels[1].getByRole("button", { name: "Stop nearby hints", exact: true }).click();
         await expect(panels[1].getByRole("status", { name: "Nearby device hint status" })).toContainText("stopped");
       }
+      stage = "MOBILE_ACCESSIBILITY";
       expect(await pages[0].evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
       expect(
         (
@@ -221,6 +227,7 @@ test.describe("private companion exchange", () => {
       const shot = testInfo.outputPath("nearby-companion-stopped.png");
       await pages[0].screenshot({ path: shot });
       await testInfo.attach("nearby-companion-stopped", { path: shot, contentType: "image/png" });
+      stage = "CANONICAL_PROGRESSION_UNCHANGED";
       for (const page of pages) expect((await geoAudit(page)).calls).toBe(0);
       expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(eventCount);
       const after = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
@@ -236,6 +243,10 @@ test.describe("private companion exchange", () => {
         }),
         contentType: "application/json",
       });
+    } catch {
+      // Playwright action errors can include the argument passed to fill().
+      // Preserve categorical failure without retaining the private pairing code.
+      throw new Error(`LANDFALL_COMPANION_BROWSER_CONTRACT_FAILED:${stage}`);
     } finally {
       await Promise.all(contexts.map((context) => context.close()));
     }

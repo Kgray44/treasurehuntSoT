@@ -644,3 +644,25 @@ ephemeral-instance opt-in exercises create/join/start/stop. Trace, video and
 automatic screenshots are disabled for this private exchange; only a stopped
 screen and categorical evidence are retained. Execution remains pending at this
 source checkpoint; this case cannot substitute for native or physical proof.
+
+Local optimized validation at `08885926574dafe534589eb501e84a076e80d2c9`
+compiled successfully, then was deliberately interrupted during TypeScript when
+available physical memory fell to 776,120 KiB. The exact owned process tree was
+terminated and its absence verified; available memory recovered to 7,461,540 KiB.
+No browser case executed, and this resource-interrupted build is not acceptance
+evidence. The categorical abort receipt remains under the owned Device Lab
+artifacts. Shared applications and services were preserved.
+
+The hosted `android-journal` target now builds the native companion and optimized
+application before provisioning any emulator. It reuses the bounded radio owner
+with an explicitly identified production-Journal executor, private AVDs and ADB,
+memory guard, three-minute executor watchdog, and awaited fixture cleanup. The
+real Activity and two WebViews sign into the same synthetic Player, open the
+current released objective, and use the real create/join/start API and controls.
+The check requires a production-validated untrusted report on both devices,
+actual OS background followed by native session/key clearance, no location
+acquisition, unchanged One Voyage progression, and verified app-data/reverse,
+connection, process, port and AVD cleanup. Actual API, model, memory and screen
+configuration are checked against the selected profile. Only sanitized receipts
+and a stopped screenshot are retained. Hosted execution is pending; neither
+native first-party pairing acceptance nor Phase 4 completion is claimed yet.
