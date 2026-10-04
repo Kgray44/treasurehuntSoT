@@ -7,11 +7,19 @@ export class DeviceLabLifecycleControlPoll {
     private readonly clock = () => Date.now(),
     private readonly delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms)),
   ) {}
+  private async awaitForeground() {
+    // A real geofence input step intentionally keeps the app backgrounded for
+    // six minutes. Its suspension window is distinct from network recovery.
+    const suspensionDeadline = this.clock() + 600000;
+    while (!this.foreground && this.clock() < suspensionDeadline) await this.delay(50);
+    if (!this.foreground) throw new Error("NATIVE_CONTROL_FOREGROUND_UNOBSERVED");
+  }
   lifecycle(state: "FOREGROUND" | "BACKGROUND") {
     this.foreground = state === "FOREGROUND";
     if (state === "BACKGROUND") this.backgroundEpoch++;
   }
   async next<T>(request: (signal: AbortSignal) => Promise<T>): Promise<T> {
+    await this.awaitForeground();
     let deadline: number | null = null;
     for (let attempt = 0; ; attempt++) {
       const controller = new AbortController();
@@ -40,10 +48,9 @@ export class DeviceLabLifecycleControlPoll {
           this.backgroundEpoch <= this.acknowledgedEpoch
         )
           throw error;
-        deadline ??= this.clock() + 15000;
         if (attempt >= 3) throw new Error("NATIVE_CONTROL_RESUME_RETRY_EXHAUSTED");
-        while (!this.foreground && this.clock() < deadline) await this.delay(50);
-        if (!this.foreground || this.clock() >= deadline) throw new Error("NATIVE_CONTROL_FOREGROUND_UNOBSERVED");
+        await this.awaitForeground();
+        deadline ??= this.clock() + 15000;
         await this.delay(250);
         if (this.clock() >= deadline) throw new Error("NATIVE_CONTROL_RESUME_TIMEOUT");
       } finally {

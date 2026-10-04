@@ -21,7 +21,14 @@ retains finite native preparation categories; pairing retains bounded public
 DOM/native geometry diagnostics without weakening touch mapping. Focused rechecks
 remain required. iOS37216787499 onb7f5eb7e is running after integer hint timestamp
 and bounded lab-only observed lifecycle control-poll recovery corrections.
-No full current qualification or accepted closure is claimed.
+Clean unchanged fb6146ce full root475files/2,691tests, detached optimized build
+and client privacy scan PASS. UWB37217634667 succeeds both corrected profiles,
+harvest pending. Browser bbda4541 harvest86/artifacts/cleanupPASS confirms53PASS.
+iOS b7f5eb7e fails NATIVE_CONTROL_FOREGROUND_UNOBSERVED because its15-second
+foreground-wait deadline ran during the intentional363-second background input
+step. Recovery now has a separate ten-minute actual-foreground suspension bound
+followed by the existing15-second network deadline; four focused tests PASS.
+Actual hosted recheck remains required. No protected qualification or closure.
 
 Previous checkpoint: fb92d113 passes full root regression
 with2,687tests on fresh owned SQLite. Its optimized detached build is running.

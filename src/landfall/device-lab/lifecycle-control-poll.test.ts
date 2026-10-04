@@ -39,7 +39,7 @@ describe("native lifecycle lab control polling", () => {
     await expect(poll.next(request)).rejects.toThrow("NATIVE_CONTROL_RESUME_RETRY_EXHAUSTED");
     expect(request).toHaveBeenCalledTimes(4);
   });
-  it("requires actual foreground observation inside the recovery deadline", async () => {
+  it("does not request control while actual foreground remains unobserved", async () => {
     let now = 0;
     const poll = new DeviceLabLifecycleControlPoll(
       () => now,
@@ -50,7 +50,27 @@ describe("native lifecycle lab control polling", () => {
     poll.lifecycle("BACKGROUND");
     const request = vi.fn().mockRejectedValue(new TypeError("network suspended"));
     await expect(poll.next(request)).rejects.toThrow("NATIVE_CONTROL_FOREGROUND_UNOBSERVED");
-    expect(request).toHaveBeenCalledTimes(1);
-    expect(now).toBe(15000);
+    expect(request).not.toHaveBeenCalled();
+    expect(now).toBe(600000);
+  });
+  it("waits through a six-minute native suspension before starting the bounded recovery window", async () => {
+    let now = 0;
+    const poll = new DeviceLabLifecycleControlPoll(
+      () => now,
+      async (ms) => {
+        now += ms;
+        if (now >= 360000) poll.lifecycle("FOREGROUND");
+      },
+    );
+    const request = vi
+      .fn()
+      .mockImplementationOnce(async () => {
+        poll.lifecycle("BACKGROUND");
+        throw new TypeError("network suspended");
+      })
+      .mockResolvedValue({ status: 204 });
+    expect(await poll.next(request)).toEqual({ status: 204 });
+    expect(request).toHaveBeenCalledTimes(2);
+    expect(now).toBe(360250);
   });
 });

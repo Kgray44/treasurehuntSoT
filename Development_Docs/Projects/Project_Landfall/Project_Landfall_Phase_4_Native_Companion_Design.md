@@ -15,6 +15,13 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Acquisition and authority
 
+Clean unchanged fb6146ce passes the full root475files/2,691tests and an owned
+detached optimized build/client privacy scan. Native UWB recheck37217634667 also
+succeeds on both corrected profiles after observing awake/unlocked preconditions;
+its finite native categories are being harvested. Primary Journal pairing remains
+accepted for its original c3ba3167 source; focused low-memory opening diagnostics
+are still running.
+
 Android run37216122961 on clean c3ba3167 passes20scenarios on each of four
 distinct profiles, plus all four native instrumentation receipts. Hosted provider
 run37216130695 passes159cases on both Windows and Linux. The original source
@@ -85,12 +92,20 @@ Its13native XCTest cases pass with one unsupported skip. The scenario fails
 on foreground return with `NATIVE_CLIENT_FAILED` before the wake assertion;
 it does not prove a delivered hint. Cleanup and canonical0 are verified.
 
-The lab's read-only control poll now allows at most three recovery retries
-only after an observed native background transition, with actual foreground
-observation and a15-second recovery deadline. Each request is abort-bounded.
+Recheck37216787499 onb7f5eb7e confirms the same registration and background/input
+steps but fails with `NATIVE_CONTROL_FOREGROUND_UNOBSERVED`. Its input action
+lasts363,383ms: the lab incorrectly starts a15-second foreground-wait deadline
+during this intentional six-minute background interval. The lab now waits for
+actual foreground within a separate ten-minute suspension bound before starting
+the15-second network-recovery window. It also stops requesting new control work
+while backgrounded. Four focused tests cover the long suspension and fail-closed
+boundaries; actual hosted recheck remains required.
+
+The lab's read-only control poll allows at most three recovery retries
+only after an observed native background transition and actual foreground.
+Each request is abort-bounded.
 Unobserved transitions, product exceptions and permanent outages still fail;
-no progression request is retried by this helper. Three focused tests cover
-those boundaries. Exported client errors distinguish finite exception classes
+no progression request is retried by this helper. Exported client errors distinguish finite exception classes
 without raw message text. This corrects an unhandled suspension transport seam;
 actual hosted recovery remains required.
 
