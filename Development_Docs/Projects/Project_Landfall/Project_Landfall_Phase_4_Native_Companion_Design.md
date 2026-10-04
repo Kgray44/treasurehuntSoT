@@ -1345,3 +1345,22 @@ absent. Its SHA256 is26c606c0a637b6d51b1eacb6acc1624360a2d831ee19910f5d421617f65
 The canonical optimized-browser lab now includes earlier Phase1/2/3/closure journeys
 alongside Phase4 so complete Landfall regression can run against the same isolated
 synthetic signing configuration. That expanded browser execution remains pending.
+
+Geofence run37192520974 on e981edec again registers successfully, delivers36 actual
+inside GPS controls over180.26seconds, resumes in1203.26ms and keeps canonical
+writes at zero, but fails the wake-hint assertion. The receiver diagnostic remains
+null: no receiver record is observed, rather than a fabricated zero callback count.
+The revised OS-only harness holds the outside position for180seconds after
+registration before the180second inside window. Initial-trigger suppression means
+the pre-registration fix alone may not establish Play services' transition baseline.
+The preliminary whole-action bound is390seconds; actual wake acceptance still needs
+a fresh receipt. No receiver or GeofencingEvent is injected.
+
+Journal run37192528610 on e981edec fails before pairing because Android accessibility
+does not expose the expected opening button node, even though the first-party DOM
+reports one enabled visible opening button. The next normal OS tap can map the
+observed DOM control rectangle into one observed native WebView rectangle. Foreign
+or ambiguous WebViews, clipped controls, zoom, nonfinite geometry or inconsistent
+viewport scaling reject before input. Five focused mapping tests and TypeScript/
+lint pass; no JavaScript activation, hardcoded screen coordinate or manufactured
+Journal state is used. Both failed runs retain their failure and passing cleanup.

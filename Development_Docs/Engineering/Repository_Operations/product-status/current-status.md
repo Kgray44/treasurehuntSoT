@@ -10,9 +10,13 @@ last_reviewed: 2026-10-04
 
 Landfall Phase 4 is actively implemented on the owned candidate branch, with
 provider, browser, Android and hosted Apple evidence. Android guest reboot and
-native offline restart reconciliation pass. Camera key import compatibility,
-BLE discovery, native Journal pairing and the virtual Apple offline scenario
-still require current acceptance. Protected qualification and phase closure
+native offline restart reconciliation pass. Actual QR camera decoding, three BLE
+protocols and Apple virtual offline reconciliation have passing hosted evidence.
+Geofence registration works after owned-emulator Location Accuracy is enabled;
+OS wake delivery and first-party native Journal pairing remain unresolved. The
+patched candidate passes2,648unit tests,159provider scenarios on each of Windows
+and Linux, and14optimized Phase4 browser cases. Full native/profile and retained
+Phase1–3 browser regression are running. Protected qualification and phase closure
 remain pending. Historical statements that Phase 4 is deferred describe the
 accepted Phase 3 baseline, not this unfinished candidate.
 

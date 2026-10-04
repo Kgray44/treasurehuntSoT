@@ -89,7 +89,13 @@ export async function executeLandfallOsScenario(
     avdIdentityPreserved: boolean;
     elapsedMs: number;
   }[] = [];
-  const geofenceControls: { index: number; injections: number; elapsedMs: number; budgetMs: number }[] = [];
+  const geofenceControls: {
+    index: number;
+    phase: "OUTSIDE_BASELINE" | "INSIDE_TRANSITION";
+    injections: number;
+    elapsedMs: number;
+    budgetMs: number;
+  }[] = [];
   let locationSettings: Awaited<ReturnType<typeof inspectOwnedAndroidLocationAccuracy>> | null = null;
   const readinessStartedAt = Date.now();
   const clientStages: { stage: DeviceLabStartupStage; elapsedMs: number }[] = [];
@@ -592,17 +598,20 @@ export async function executeLandfallOsScenario(
             });
             continue;
           }
-          // Play services uses its production two-minute responsiveness. Deliver
-          // GPS through the emulator only; never synthesize a GeofencingEvent.
-          const startedAt = Date.now(),
-            budgetMs = 180000;
-          let injections = 0;
-          while (Date.now() - startedAt < budgetMs) {
-            await adb(["emu", "geo", "fix", "-72", "44"]);
-            injections++;
-            await new Promise((resolve) => setTimeout(resolve, 5000));
+          // Initial triggers are deliberately disabled. Establish an outside
+          // baseline after registration before requesting an enter transition.
+          // Only actual emulator GPS reaches Play services; no callback injection.
+          for (const phase of ["OUTSIDE_BASELINE", "INSIDE_TRANSITION"] as const) {
+            const startedAt = Date.now(),
+              budgetMs = 180000;
+            let injections = 0;
+            while (Date.now() - startedAt < budgetMs) {
+              await adb(["emu", "geo", "fix", "-72", phase === "OUTSIDE_BASELINE" ? "44.02" : "44"]);
+              injections++;
+              await new Promise((resolve) => setTimeout(resolve, 5000));
+            }
+            geofenceControls.push({ index, phase, injections, elapsedMs: Date.now() - startedAt, budgetMs });
           }
-          geofenceControls.push({ index, injections, elapsedMs: Date.now() - startedAt, budgetMs });
           // This step proves only input delivery. A separate foreground assertion
           // must observe the native encrypted hint before the scenario can pass.
           steps.push({ index, action: "NATIVE_GEOFENCE", state: "PASS" });
@@ -995,7 +1004,7 @@ export async function executeLandfallOsScenario(
         const elapsedMs = performance.now() - performanceStarted;
         const preliminaryBudgetMs =
           step.action.type === "NATIVE_GEOFENCE"
-            ? 210000
+            ? 390000
             : step.action.type === "LOCATION"
               ? 150000
               : step.action.type === "LIFECYCLE" && step.action.operation === "REBOOT"

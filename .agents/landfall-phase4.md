@@ -1108,3 +1108,13 @@ cleartextfalse/nonexportedreceivers/diagnosticbodyempty. ExactsourceprivacyPASS0
 Geo37192520974 / Journal37192528610 / Appleclosure37192581595 /
 Androidclosure37192590886 remainactive. Canonical configuredbrowser selection now
 includes knownPhase1/2/3/closure specs for full regression; no productsourcechange.
+
+Geofence37192520974HARVESTED20FAIL/registered/no receiver record/resume1203ms/
+canonical0/cleanupPASS. Journal37192528610HARVESTED45FAIL beforepairing:
+NATIVE_OPENING_CONTROL_UNOBSERVED_OR_AMBIGUOUS despitevisibleDOMopening.
+Revisedharness actualoutsideGPS180secpostregistration theninside180sec;
+JournalobservedDOMrect mappedoneobservedOSWebview boundsnormalOSinput,
+5failclosedmappingtests/TS/lintPASS. Androidclosure37192590886all4jobsSUCCESS,
+harvestactive. Appleclosure37192581595 still8casesperprofileactive; broadbrowser
+2642run37192939572 active. Newintegrationmanifestengineering/current linked/indexed;
+currentstatusclearlyrecords actual passes andremaininglocalwork. No protectedqual.

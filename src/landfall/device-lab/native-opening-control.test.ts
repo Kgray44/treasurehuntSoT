@@ -23,4 +23,23 @@ describe("native public synthetic opening touch", () => {
     ])
       expect(() => nativeJournalOpeningTouch(xml)).toThrow();
   });
+  const webview =
+    '<node package="com.voyagewright.landfall" class="android.webkit.WebView" enabled="true" bounds="[0,100][1080,1900]" />';
+  const observedDom = {
+    box: { x: 100, y: 200, width: 160, height: 40 },
+    viewport: { width: 360, height: 600, scale: 1 },
+  };
+  it("maps an actually visible DOM control inside one observed native WebView", () =>
+    expect(nativeJournalOpeningTouch(webview, observedDom)).toEqual({ x: 540, y: 760 }));
+  it("rejects foreign or ambiguous WebViews and clipped, zoomed or mismatched viewport mappings", () => {
+    for (const xml of [webview.replace("com.voyagewright.landfall", "foreign.app"), webview + webview])
+      expect(() => nativeJournalOpeningTouch(xml, observedDom)).toThrow();
+    for (const dom of [
+      { ...observedDom, box: { ...observedDom.box, y: 590 } },
+      { ...observedDom, viewport: { ...observedDom.viewport, scale: 2 } },
+      { ...observedDom, viewport: { ...observedDom.viewport, height: 500 } },
+      { ...observedDom, box: { ...observedDom.box, x: NaN } },
+    ])
+      expect(() => nativeJournalOpeningTouch(webview, dom)).toThrow();
+  });
 });

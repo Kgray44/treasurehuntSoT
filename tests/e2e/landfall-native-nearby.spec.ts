@@ -242,7 +242,14 @@ test("real native Journal pairing returns untrusted hints and background clears 
               const dump = "/data/local/tmp/landfall-public-opening.xml";
               try {
                 await adb(serial, ["shell", "uiautomator", "dump", dump]);
-                const target = nativeJournalOpeningTouch(await adb(serial, ["shell", "cat", dump]));
+                const box = await open.boundingBox();
+                if (!box) throw new Error("NATIVE_OPENING_DOM_GEOMETRY_UNOBSERVED");
+                const viewport = await page.evaluate(() => ({
+                  width: innerWidth,
+                  height: innerHeight,
+                  scale: visualViewport?.scale ?? 1,
+                }));
+                const target = nativeJournalOpeningTouch(await adb(serial, ["shell", "cat", dump]), { box, viewport });
                 await adb(serial, ["shell", "input", "tap", String(target.x), String(target.y)]);
               } finally {
                 await adb(serial, ["shell", "rm", "-f", dump]);
