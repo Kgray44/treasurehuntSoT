@@ -7,6 +7,20 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Source-bound starting context
 
+Focused diagnostic rechecks37221136835 (primary UWB onbf45d720) and37221237872
+(compatibility reboot on4daeeef8) PASS, harvested12/19artifacts with transport
+cleanupPASS. Both UWB guests expose actual CAPABILITIES_READY, untrusted ranges,
+verified stop, canonical0 and cleanup. Compatibility observes same-guest changed
+boot identity in28,725ms and35,174ms complete lifecycle within180,000ms.
+The source changes are diagnostic only; no deterministic root cause was proved.
+Retain the intermittent frozen failures without relabeling them. Complete
+compatibility20case and both radio4case sequences are rechecking01bab29b via
+runs37221706364/37221708792. Original full iOS3profile run37219804462 continues.
+Current01bab29b lint214files/TypeScript, unsigned native debug/release builds,
+release exclusions and exact archive privacy zero/six PASS. Full root476/2695
+and optimized build/client scan retain original c8e8b1de source; actual application,
+unit, dependency, schema and native iOS trees are unchanged. No receipt rebinding.
+
 Frozen closure run37219804462 on c8e8b1de: local476files/2,695tests,
 optimized build/client scan, archive privacy scan and unsigned native package
 build PASS. Hosted browser, providers, both first-party Journal pairs, both
