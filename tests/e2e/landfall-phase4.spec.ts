@@ -19,7 +19,7 @@ test.describe.configure({ timeout: 180_000 });
 test.skip(({ browserName }) => browserName !== "chromium", "Owned mutable fixtures run once.");
 // Pairing payloads and short-lived codes must not enter traces or automatic media.
 // Playwright requires these worker-affecting settings at file scope.
-test.use({ trace: "off", video: "off", screenshot: "off" });
+test.use({ trace: "off", video: "off", screenshot: "off", actionTimeout: 15000, navigationTimeout: 45000 });
 test.beforeAll(async () => {
   ensureGenericSoundingLineIsolation();
   owner = await closureAccount("Phase4 synthetic Creator");
@@ -249,7 +249,11 @@ test.describe("private companion exchange", () => {
       // Preserve categorical failure without retaining the private pairing code.
       throw new Error(`LANDFALL_COMPANION_BROWSER_CONTRACT_FAILED:${stage}`);
     } finally {
-      await Promise.all(contexts.map((context) => context.close()));
+      await testInfo.attach("nearby-browser-stage", {
+        body: JSON.stringify({ stage }),
+        contentType: "application/json",
+      });
+      await Promise.all(contexts.map((context) => context.close().catch(() => undefined)));
     }
   });
 });

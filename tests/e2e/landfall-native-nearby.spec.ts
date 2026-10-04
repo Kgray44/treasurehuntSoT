@@ -118,10 +118,13 @@ test("real native Journal pairing returns untrusted hints and background clears 
         for (const serial of resources.serials) {
           const device = devices.find((item) => item.serial() === serial);
           if (!device) throw new Error("LANDFALL_NATIVE_NEARBY_DEVICE_MISSING");
+          stage = "CONNECT_NATIVE_WEBVIEW";
           const view = await device.webView({ pkg }, { timeout: 30000 });
           const page = await view.page();
           pages.push(page);
           page.setDefaultTimeout(10000);
+          page.setDefaultNavigationTimeout(45000);
+          stage = "AUTHENTICATE_NATIVE_WEBVIEW";
           await page.emulateMedia({ reducedMotion: "reduce" });
           const cdp = await page.context().newCDPSession(page);
           const cookie = await cdp.send("Network.setCookie", {
@@ -134,7 +137,9 @@ test("real native Journal pairing returns untrusted hints and background clears 
           });
           expect(cookie.success).toBe(true);
           await cdp.detach();
+          stage = "OPEN_NATIVE_JOURNAL";
           await openClosureJournal(page, voyage.id, origin.origin);
+          stage = "OPEN_NATIVE_MAP";
           await openClosureMap(page);
           expect(await page.evaluate(() => window.LandfallNative?.platform)).toBe("ANDROID");
           await page.evaluate(() => {
@@ -146,6 +151,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
               if (value?.type === "fix") counts.fixes++;
             });
           });
+          stage = "EXPAND_NATIVE_NEARBY_CONTROLS";
           await page.locator(".landfall-nearby-panel:visible summary").click();
         }
         const panels = pages.map((page) => page.locator(".landfall-nearby-panel:visible"));

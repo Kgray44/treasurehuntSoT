@@ -608,3 +608,14 @@ PASS. Media settings moved to file scope; local --list finds all seven cases.
 Redispatch required; no native pairing claim. Untracked remote-data core files
 are independent WIP, lint passes but no tests/API/UI/acceptance yet. Keep them out
 of this focused configuration-fix checkpoint; hosted checkout binds exact commit.
+
+Run 37169869000 on 54569fb6074fe1b8a9b1aa28be0253ff90b169c3/tree
+85289b303ee6beb7fffac45937637218e6e37f71 harvested 26 artifacts; transport
+cleanup PASS. Native/optimized builds PASS, five browser map/search cases PASS.
+Native Journal fails OPEN_AUTHORIZED_JOURNALS before pairing, canonical events
+0, fixture/owner process/port/private AVD cleanup PASS, no memory violation.
+Browser pairing hits 180-second timeout; close() masked its categorical stage.
+Bound actions/navigation, retain secret-free stage attachment, tolerate already
+closed browser cleanup, subdivide native WebView/auth/Journal/map stages.
+Redispatch diagnostics, no pairing acceptance. Remote data API/UI remain separate
+untracked WIP; 18 server/security tests PASS, full typecheck currently running.
