@@ -111,74 +111,27 @@ must not be relabeled as passing because fallback guidance is readable.
 
 ## Performance evidence and gaps
 
-Frozen37219804462 signed-notice receipts on clean c8e8b1de measure actual
-current-Journal returns45,387/50,691ms and revoked-membership returns13,061/14,029ms
-on primary/low-resource guests, all below60,000ms. Reboots33,406/32,499ms preserve
-guest identity and change boot identity; registered recovery reaches GRANTED.
-Full-Journal PSS peaks at108,001/122,264KiB below the preliminary512MiB bound.
-Native-parent CPU samples span0.849–1.333percent of all guest vCPU capacity;
-whole-guest activity spans8.722–92.936percent and includes renderer/OS activity
-without separate attribution. Both actual notices, authorized return, removed
-membership denial, native clearing, canonical0, source unchanged and cleanup PASS.
-These measurements establish bounded virtual execution; they do not establish
-whole-app CPU percentages, sustained thermal behavior, physical battery or field
-latency. The earlier observations below remain source-bound historical samples.
+Measurements are observed samples with preliminary regression ceilings, not
+percentiles, service-level guarantees or physical-device energy qualification.
+Each source-bound receipt retains its configuration and measurement scope.
 
-Optimized Chromium run37187344378 on57b1a77e1094 measures a375px Journal with256
-released waypoints: cold1506.99ms, warm660.78ms and offline346.02ms. The measured
-origin usage is7,489,755bytes; it includes the whole isolated origin and is not a
-region size, native RAM measure or phone battery result. These are single observed
-samples under a preliminary30-second full-Journal budget, not percentiles.
+| Workload / source                                              | Actual measured result                                                                                                                                                  | Scope and preliminary ceiling                                                                                                                                     |
+| -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C8 optimized Journal, 256 released waypoints,375px, one sample | Cold1,611.314ms; warm593.865ms; offline370.830ms; whole-origin usage8,125,207bytes.                                                                                     | Complete Journal readiness, including navigation/hydration; each below30,000ms. Storage is whole-origin usage, not region bytes or RAM.                           |
+| C8 signed region, three resources /5,576bytes                  | Prepare166.926ms, resume148.176ms, offline restore280.495ms, corrupt rejection260.786ms, fresh install153.939ms, removal82.176ms. Origin usage5,636,128→5,691,288bytes. | Each below15,000ms; verified resource bytes and whole-origin growth are separately measured. Actual browser decode/corruption/removal, no physical restart claim. |
+| C8 Android signed return, primary / low-resource               | Authorized45,387/50,691ms; revoked13,061/14,029ms; same-guest reboot33,406/32,499ms; registered recovery GRANTED.                                                       | Real native notice/return, all return actions below60,000ms; no physical field/OEM latency claim.                                                                 |
+| C8 full-Journal Android memory                                 | PSS peaks108,001/122,264KiB.                                                                                                                                            | Observed guest processes below preliminary512MiB; no physical memory/thermal guarantee.                                                                           |
+| C8 Android CPU                                                 | Native-parent0.849–1.333percent of all guest vCPU capacity; whole-guest8.722–92.936percent.                                                                             | Parent and guest counters are separate; guest includes OS/renderer without attribution. No whole-app CPU or energy claim.                                         |
+| Prior four-profile Android native sensors                      | Twelve two-second intervals: process CPU at most25ms; PSS25,117–53,329KiB; incremental PSS at most106KiB; stop verified.                                                | Native unconfigured-Activity process, not full-Journal or physical energy. Original run37192590886 remains historical source-bound proof.                         |
+| Apple primary focused wake,4341f2e5                            | Native first fix6,745ms; background observation2,715ms; held region input364,782ms; foreground return3,280ms; UI finalization50,627ms.                                  | OS action wall clock; region input below390,000ms and finalization below240,000ms. Intentional two180-second waits are included, not inferred field wake latency. |
+| Apple compatibility focused restart,4341f2e5                   | First qualified fix10,402ms; second947ms; native callbacks2/forwarded2; exactly one canonical event.                                                                    | Actual Core Location observations and One Voyage reconciliation; no simulated delegate or physical GPS claim.                                                     |
+| Prior Apple encrypted-lease batches                            | Four observed batches49.26–75.43ms; eight4KiB records occupy33,704–33,712bytes; xcresult preserves CPU/memory metrics.                                                  | Native encrypted metadata storage only; original run37190937839. No full-Journal physical RAM/energy claim.                                                       |
 
-Apple run37187691206 on9dfdfd93 measures real isolated authority count424ms first,
-5–9ms subsequent, authorize44ms and submit142ms. Earlier transient failures remain
-in the evidence set. Android prior reboot observations were30,992ms and25,598ms;
-those cases did not register a geofence and cannot prove region reboot recovery.
-
-Configured region browser run37191302966 on04311162 measures preparation225.20ms,
-resume163.11ms, offline restoration274.81ms, corrupt rejection228.79ms, verified
-installation148.92ms and removal179.57ms under preliminary15-second operation
-bounds. All14 optimized cases pass with zero canonical writes. Verified resources
-total5,576bytes; whole-origin usage grows from3,830,710to5,865,625bytes.
-
-Android run37190933685 on2685ee0f passes11 instrumentation tests. Three real sensor
-intervals report159/9/6process CPU milliseconds,59,826/54,597/54,391KiB PSS and
-20/23/24callbacks, with stop verified. This unconfigured-Activity process measurement
-does not establish full-Journal RAM or physical energy. Apple run37190937839 passes
-12 XCTest tests and one unsupported-hardware skip. Four observed encrypted-lease
-batches (warmup plus three configured iterations) take49.26–75.43ms and store
-33,704–33,712bytes for eight4KiB records. Actual CPU/memory metrics remain in xcresult.
-
-These are observed samples rather than percentiles. Final profile/action budgets,
-first native fix, suspend/resume and notification return still need measurement.
-Physical battery drain, thermal and OEM scheduling remain device/field gates.
-No performance closure is claimed.
-
-The newer Android four-profile run37192590886 records44first-qualified-fix samples
-of24.8–6224.5ms and passing preliminary action bounds. Twelve two-second native
-sensor intervals measure process CPU at most25ms, PSS25,117–53,329KiB and incremental
-PSS at most106KiB; stop is verified throughout. These are bounded observed samples,
-not full-Journal RAM or physical energy. The newer optimized browser run37192540400
-passes14Phase4cases, with cold1669.44ms/warm651.51ms/offline430.71ms at375px and256
-waypoints. Expanded50case regression run37192939572 finds four failures (46pass),
-now addressed by live static-map position, hidden-map focus and legacy Worldspace
-source-policy fixes; a fresh complete browser receipt remains required.
-
-That expanded browser repair is now verified: run37194193502 on c2ff9517 passes
-all50Phase1–4optimized scenarios. Frozen989e684e broad regression passes469root
-unit files /2,662tests using fresh SQLite. The b813ccec exact tracked-source scan
-finds zero private-content violations and six classifications. Bridgewatch's
-independent24-file /80-test suite passes with one worker on b813ccec; a preceding
-two-worker run hit the existing five-second data-fabric test timeout, while that
-test also passes alone. No test timeout or protected testing authority is changed.
-
-Signed native run37198352248 measures initial Journal process PSS96,282KiB and
-103,292KiB after actual notice return. Its first notice follows inside input in
-6171.96ms; actual reauthorized return takes45,116.43ms, within the preliminary
-60second bound. The later registered-reboot failure still prevents acceptance of
-the complete journey. New15second foreground intervals measure parent-process
-and whole-guest CPU separately; primary run37200023666 measures parent1.216%/8.875% and guest75.263%/21.5%. These counters do not
-attribute isolated renderer CPU or qualify physical battery/thermal behavior.
+The complete new iOS profile matrix remains an acceptance gate. Physical battery
+drain, thermal behavior, renderer CPU attribution and field/OEM scheduling remain
+explicit device/field gates. Source observability exposes bounded coordinate-free
+outcomes; process-local demand history does not claim fleet uptime. Earlier failed
+timings and diagnostic attempts remain in the design record with original identity.
 
 ## External-gate ledger
 
@@ -191,8 +144,7 @@ attribute isolated renderer CPU or qualify physical battery/thermal behavior.
 | Native signing/distribution and production deployment | Candidate builds and unsigned manifest analysis; no deployed native availability claim.       | Release owner qualifies signing, package identity, store/distribution, origin and update/rollback. Unsigned lab builds are not a public release.                                                                                            |
 | Live Watchglass                                       | Intentional `NOT_CONFIGURED` boundary and contextual interface only.                          | A separately governed recognition integration would require its own authority and evidence. Phase4 does not introduce a recognition engine or Phase5.                                                                                       |
 
-Cold authenticated revoked-membership OS notification return,
-final matrix/performance/security checks,
+The remaining complete Apple matrix, final exact-source qualification,
 documentation integration and protected closure are **local work**. They are not
 external gates. Completion requires finishing that work, ordinary exact-candidate
 qualification, protected merge, landed verification and the final accepted capsule
@@ -237,48 +189,9 @@ blocks production use or claims of the corresponding capability as follows:
   and context/expiry/privacy constraints. It blocks recognition availability,
   and does not block Phase4 production guidance or authorize new phase work.
 
-## October 4 clock, cold-return and Apple follow-up
+## Historical diagnostic evidence
 
-Run37200528339 on2a1b93df opens both real native Journals/Maps and returns
-STATUS/CREATE/STOP200. CREATE reports BEYOND_CLIENT_45S and the client rejects
-PAIR_CHANGED. The broker now returns bounded server remaining time while retaining
-absolute server expiry and authorization. Client timers subtract the full measured
-request duration, use a monotonic deadline, reject changed expiry/clock rollback,
-and never extend a previous deadline. Only remaining native-session time is
-translated to the device clock; actual native acceptance remains pending.
-
-Primary signed run37200023666 onb813ccec proves first actual notice/HTTP307/current
-Journal return, a changed boot ID after34,857ms, actual BootReceiver GRANTED
-observed36,209ms after guest readiness, and a second actual notice after1091.55ms.
-The revoked-membership return fails: the existing platform operation reports DENIED,
-not the required UNAVAILABLE. Session persistence is being corrected; this failure
-remains retained, with zero canonical writes and cleanup PASS. Parent CPU is
-1.216%/8.875% over actual15second foreground intervals; whole-guest active CPU is
-75.263%/21.5%, including OS and renderer without separate attribution. PSS is
-89,809/104,048KiB; first notice5194.4ms and return23,902.96ms. New preliminary
-parent ceiling50% of all guest vCPU capacity is a gross emulator regression bound,
-not a physical energy or renderer budget.
-
-The Android activity now requests one off-thread CookieManager flush at pause and
-destruction. It never reads, logs or extends credentials; storage failure does not
-grant authorization. Android documents flush as persistent-storage blocking I/O
-([CookieManager](<https://developer.android.com/reference/android/webkit/CookieManager#flush()>)).
-The actual harness checks persistent HttpOnly session configuration in memory,
-retaining only a boolean. A source-bound observer projects existing platform return
-logs to finite outcome/duration categories, with no raw logs, claims, URLs, epochs
-or credentials. Actual notice UI observations are bounded and ambiguity fails closed.
-
-Apple compatibility run37199621143 passes all10 lost-response steps with exactly
-one canonical event and cleanup PASS. Restart gets two actual CoreLocation fixes,
-then a readonly counts IPC request times out after23,299ms under XCTest load; the
-following cleanup counts call takes87ms. This does not establish SQL duration.
-The completionRequests assertion now uses the actual native-page counter without
-an unrelated discarded DB read. Canonical/server-confirmed assertions continue
-fresh real DB reads; only readonly counts IPC has a30second deadline. Writes,
-authorization and cleanup retain their15second bounds. Fresh hosted restart proof
-remains required.
-
-The corrected TypeScript source passes473 root unit files /2,676tests on fresh
-SQLite (unit-regression-c25ca0140b8849978176f74dafd191d5). This precedes the Android
-cookie persistence and additional e2e diagnostics; no full native acceptance,
-protected qualification, mainline availability or phase closure is claimed.
+Original failed clock, notification, reboot, Apple input and restart receipts remain
+in the [design record](Project_Landfall_Phase_4_Native_Companion_Design.md). Passing
+rechecks do not erase their failures or rebind them to current source. Current
+accepted results and still-open gates appear above.
