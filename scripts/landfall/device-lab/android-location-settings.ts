@@ -15,6 +15,7 @@ export async function inspectOwnedAndroidLocationAccuracy(adb: (args: string[], 
     accuracySwitchBefore: "UNOBSERVED",
     accuracySwitchAfter: "UNOBSERVED",
     changed: false,
+    accuracyControlObserved: false,
   };
   const snapshot = async (): Promise<Node[]> => {
     await adb(["shell", "uiautomator", "dump", file], 15000);
@@ -50,6 +51,8 @@ export async function inspectOwnedAndroidLocationAccuracy(adb: (args: string[], 
     await new Promise((resolve) => setTimeout(resolve, 750));
   };
   try {
+    await adb(["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
+    await adb(["shell", "wm", "dismiss-keyguard"]);
     await adb(["shell", "am", "start", "-W", "-a", "android.settings.LOCATION_SOURCE_SETTINGS"]);
     await new Promise((resolve) => setTimeout(resolve, 750));
     let nodes = await snapshot();
@@ -65,16 +68,38 @@ export async function inspectOwnedAndroidLocationAccuracy(adb: (args: string[], 
       await tap(entry);
       nodes = await snapshot();
     }
-    const labels = nodes.some((node) => ["Improve Location Accuracy", "Improve location accuracy"].includes(node.text));
-    const switches = nodes.filter((node) => /Switch/.test(node.className) && ["true", "false"].includes(node.checked));
+    const control = (current: Node[]) => {
+      const labels = current.some((node) =>
+        ["Improve Location Accuracy", "Improve location accuracy"].includes(node.text),
+      );
+      const switches = current.filter(
+        (node) => /Switch/.test(node.className) && ["true", "false"].includes(node.checked),
+      );
+      return labels && switches.length === 1 ? switches : [];
+    };
+    // The Settings intent can complete before the Google screen's controls
+    // appear. Reobserve the public control instead of treating that gap as ready.
+    const deadline = Date.now() + 20000;
+    while (observed.accuracyEntryObserved && control(nodes).length === 0 && Date.now() < deadline) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      nodes = await snapshot();
+    }
+    const switches = control(nodes);
+    const labels = switches.length === 1;
     if (labels && switches.length === 1) {
+      observed.accuracyControlObserved = true;
       observed.accuracySwitchBefore = switches[0].checked === "true" ? "ENABLED" : "DISABLED";
       if (switches[0].checked === "false") {
         await tap(switches[0]);
         observed.changed = true;
         nodes = await snapshot();
       }
-      const after = nodes.filter((node) => /Switch/.test(node.className) && ["true", "false"].includes(node.checked));
+      const afterDeadline = Date.now() + 15000;
+      while (observed.changed && control(nodes)[0]?.checked !== "true" && Date.now() < afterDeadline) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        nodes = await snapshot();
+      }
+      const after = control(nodes);
       if (after.length === 1) observed.accuracySwitchAfter = after[0].checked === "true" ? "ENABLED" : "DISABLED";
     }
     return observed;

@@ -1883,3 +1883,14 @@ eligibility facts without recording credentials. Its receipt marks DIAGNOSTIC_ON
 and DIRECT_WEBVIEW_DIAGNOSTIC; no notice, wake, boot-region registration, revoked
 return or full-background acceptance is inferred. The strict full notice case
 remains required. Catalog meaning remains unchanged while Phase4 is incomplete.
+
+## 2026-10-04 public accuracy-control readiness
+
+The corrected primary background receipt observed the Google Location Accuracy
+entry but no settled switch; low resource observed and enabled the switch. The
+owned OS fixture now wakes/unlocks and reobserves the same public control for a
+bounded 20 seconds, then verifies a requested toggle for up to 15 seconds. It
+exports only finite readiness facts. No undocumented settings key, GMS override,
+callback injection, or weakened notice requirement is introduced. Actual hosted
+registration and notice execution remain required; this change is harness
+readiness, not evidence that the underlying availability issue is solved.
