@@ -14,12 +14,11 @@ bbda4541;159provider cases per Windows/Linux host and80Android cases across four
 distinct profiles on c3ba3167. Both corrected-profile UWB cases pass onfb6146ce,
 with untrusted hints, native stop, zero canonical writes and cleanup.
 
-Current primary Journal pairing passes, while the newest low-memory case fails
-before pairing because Android's System UI ANR overlays the public Journal and
-removes native window focus. A bounded observed Wait-control recovery is being
-rechecked. iOS confirms real region monitoring/registration and background OS
-location inputs, but its wake-hint assertion remains unproved. A lab suspension
-deadline correction is under actual recheck. Complete current native matrices,
+Primary and low-memory Journal pairing now pass; the low-memory recheck observes
+one actual guarded System UI Wait interaction, followed by reports on both
+devices, native stop, zero canonical writes and cleanup. iOS's complete actual
+Core Location region-wake/removal case now passes with encrypted hints, real
+background/foreground, zero canonical writes and cleanup. Complete frozen native matrices,
 ordinary protected qualification, merge, landed verification and closure remain
 open; no Phase4 catalog promotion has occurred.
 

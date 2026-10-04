@@ -7,6 +7,19 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Source-bound starting context
 
+Latest checkpoint (2026-10-04 17:14 UTC): all focused failures are resolved with
+actual OS proof. iOS37218201954 on clean d2add7a1 passes all10geofence steps,
+including actual encrypted wake hints, foreground return, removal, canonical0
+and cleanupPASS. Its364,621ms background input and3,698ms foreground action meet
+the retained bounds. Harvest4270/artifacts/transport cleanupPASS. Low-memory
+Journal37218710912 on340479dd passes actual System UI Wait interaction1, native
+CAPABILITIES_READY on both1536M guests, HTTP200 for all pairing operations,
+validated reports on both, native stop, canonical0/source unchanged/cleanupPASS.
+Harvest45/artifacts/transport cleanupPASS. Current selected lint214files PASS
+with one existing offline full-navigation warning; TypeScript PASS. Freeze code
+for complete closure-tier matrices and fresh full root acceptance. Preserve every
+original source identity; no protected qualification or closure yet.
+
 Current checkpoint (2026-10-04 16:40 UTC): current browser run37217125284 onbbda4541
 passes after the authenticated reading-state/Escape listener race correction;
 harvest is pending. Android37216122961 on c3ba3167 passes20scenarios on each of

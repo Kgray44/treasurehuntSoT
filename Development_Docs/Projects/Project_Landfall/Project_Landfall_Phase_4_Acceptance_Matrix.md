@@ -18,6 +18,15 @@ fresh qualification before protected integration.
 
 ## Implemented capability and evidence boundaries
 
+The previously open focused OS checks now pass. Low-memory Journal37218710912
+on340479dd observes one actual guarded System UI Wait interaction, reports on
+both correctly provisioned devices, native stop, all pairing HTTP200, canonical0
+and cleanupPASS. iOS37218201954 on d2add7a1 passes the complete ten-step actual
+Core Location region-wake/removal flow, with encrypted hints, real lifecycle,
+canonical0 and cleanupPASS. Every earlier failed receipt below remains historical
+proof of its own result. Code is being frozen for complete closure-tier matrices;
+protected qualification, integration and final closure remain open.
+
 The latest evidence retains its original source identities. Clean fb6146ce passes
 475unit files/2,691tests and an isolated optimized build/client privacy scan.
 Browser37217125284 onbbda4541 passes all53retained journeys after the authenticated

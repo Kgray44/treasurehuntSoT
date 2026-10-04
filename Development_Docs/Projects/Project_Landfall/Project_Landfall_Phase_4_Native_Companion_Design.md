@@ -15,6 +15,21 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Acquisition and authority
 
+Focused iOS37218201954 on clean d2add7a1 passes all ten region-wake steps:
+delegate-confirmed Core Location monitoring, actual background/foreground,
+documented outside/inside OS inputs, encrypted delivered hints, removal,
+canonical0 and cleanupPASS. The actual background input takes364,621ms and
+foreground recovery3,698ms within retained390s/120s action bounds. The lifecycle
+XCTest passes and completes finalization within51,976ms of its240s bound. This
+is actual Simulator proof, not a physical wake-latency or notification-tap claim.
+
+Low-memory Journal37218710912 on340479dd passes after one actual observed System
+UI Wait interaction. Both1536M guests report CAPABILITIES_READY; native reports
+are observed on both; STATUS/CREATE/JOIN/READ/STOP return200; native stop,
+canonical0, unchanged source and cleanupPASS are verified. The failed overlay
+receipt remains retained. Complete closure-tier matrices and exact protected
+qualification are still required before acceptance.
+
 Low-memory recheck37217638812 onfb6146ce fails before pairing. Its new diagnostic
 records attached native geometry with `shown:false` and `focused:false`; the
 owned OS screenshot proves Android's System UI ANR dialog overlays the public
