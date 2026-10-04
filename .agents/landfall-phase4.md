@@ -1100,3 +1100,11 @@ provider/opening testsPASS. Acceptance matrix refreshed with actual2685/0431/79e
 measurements and unresolved wake/Journal opening. Next freeze diagnostic candidate
 and rerun actual owned Android wake + first-party Journal OS touch. No qualification
 or catalog capability promotion yet.
+
+e981edec full frozen unit466files/2648testsPASS320.53sec/new isolatedDB;
+provider37192602595HARVESTED346SUCCESS159Windows+159Linux; browser37192540400
+HARVESTED45SUCCESS14/newsecuritydeps. ReleaseAPKhash26c606c0.../debuggablefalse/
+cleartextfalse/nonexportedreceivers/diagnosticbodyempty. ExactsourceprivacyPASS0.
+Geo37192520974 / Journal37192528610 / Appleclosure37192581595 /
+Androidclosure37192590886 remainactive. Canonical configuredbrowser selection now
+includes knownPhase1/2/3/closure specs for full regression; no productsourcechange.

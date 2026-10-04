@@ -1329,3 +1329,19 @@ whose URL authorization/path advisories remain an explicit Bridgewatch-owner rep
 requirement. Landfall does not use that server as its native/provider origin. Final
 optimized build/browser and exact-candidate regression still must pass after these
 updates; no production deployment or independent security certification is claimed.
+
+Frozen candidatee981edec passes466 unit files /2,648tests in320.53seconds against
+a newly created isolated migration-history database. Hosted run37192602595 passes
+159/159provider scenarios independently on Windows and Linux; their cleanup and
+receipt fidelity remain required. Optimized browser run37192540400 passes all14
+Phase4 cases on the patched dependencies. The375px/256waypoint Journal measures
+cold1669.44ms, warm651.51ms and offline430.71ms; signed-region preparation185.95ms,
+resume138.58ms, offline restore261.09ms, corruption rejection206.49ms, installation
+155.68ms and removal90.60ms remain within preliminary bounds. Source-archive privacy
+scan reports zero violations. Local unsigned release APK analysis reports
+debuggablefalse, cleartextfalse, nonexported geofence/boot receivers and an empty
+release geofence diagnostic body; debug lab activities/advertising permission are
+absent. Its SHA256 is26c606c0a637b6d51b1eacb6acc1624360a2d831ee19910f5d421617f65df1b0.
+The canonical optimized-browser lab now includes earlier Phase1/2/3/closure journeys
+alongside Phase4 so complete Landfall regression can run against the same isolated
+synthetic signing configuration. That expanded browser execution remains pending.
