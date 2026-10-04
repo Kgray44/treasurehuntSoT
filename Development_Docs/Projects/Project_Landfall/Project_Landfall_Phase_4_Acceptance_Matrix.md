@@ -123,6 +123,15 @@ and makes the unconfigured message scrollable. Generated-plist readback is
 separate from the mandatory actual geometry/readability/Motion assertions.
 Presentation-only requalification remains required; original failures are retained.
 
+Declared-orientation run37239355591 on4021b3fa finishes FAIL17/1/one driver skip,
+3,943hashed artifacts/cleanupPASS. Both the generated and built app plist contain
+the phone/tablet declarations, yet the recorded landscape remains portrait on
+iOS26.2. This refutes acceptance from configuration alone. The driver now selects
+the latest compatible preinstalled runtime again, where earlier actual orientation
+checks passed, and retains the normal-text Motion test plus required19total passes.
+No iOS26.2 presentation acceptance, OS defect diagnosis or unsupported relabelling
+is claimed. Its failed receipt remains permanent evidence.
+
 Historical clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
 owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting
 (244 files), lint (218 files, zero errors), TypeScript and exact tracked-source

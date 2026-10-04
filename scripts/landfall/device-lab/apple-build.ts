@@ -62,11 +62,7 @@ async function main() {
         host.apple.devices.some((device) => device.available && device.runtime === item.id)
       );
     })
-    .sort((a, b) =>
-      presentationRequired
-        ? a.id.localeCompare(b.id, undefined, { numeric: true })
-        : b.id.localeCompare(a.id, undefined, { numeric: true }),
-    )[0];
+    .sort((a, b) => b.id.localeCompare(a.id, undefined, { numeric: true }))[0];
   if (!runtime) throw new Error("LANDFALL_APPLE_RUNTIME_UNAVAILABLE");
   await writeFile(
     path.join(destination, "runtime-selection.json"),
@@ -74,7 +70,7 @@ async function main() {
       {
         runtime: runtime.id,
         minimumIOS,
-        policy: presentationRequired ? "PREINSTALLED_OLDEST_SUPPORTED_PRESENTATION" : "PREINSTALLED_LATEST_COMPANION",
+        policy: "PREINSTALLED_LATEST_SUPPORTED",
       },
       null,
       2,
