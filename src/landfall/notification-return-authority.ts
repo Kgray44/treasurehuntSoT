@@ -1,5 +1,6 @@
 import { requirePlayerIdentity, playerCanAccessPlaythrough } from "@/platform/auth";
 import { cookies } from "next/headers";
+import { currentAccount } from "@/wayfarer/accounts";
 import { db } from "@/lib/db";
 import { readLandfallReturnHandle } from "@/landfall/notification-return-server";
 import { resolveLandfallNotificationReturn } from "@/landfall/background-navigation";
@@ -13,12 +14,27 @@ export async function resolveAuthenticatedLandfallReturn(handle: string) {
   const start = performance.now();
   let outcome: LandfallOperationalOutcome = "FAILED";
   let authorizationCookie: "ABSENT" | "PRESENT" | undefined;
+  let authorizationSession: "EMPTY" | "INELIGIBLE" | "PROFILE_INACTIVE" | "ELIGIBLE_ON_RECHECK" | undefined;
   try {
     const result = await resolveReturn(handle);
     if (result.state === "SIGN_IN") {
       try {
-        // Presence only, from this actual request. Never inspect/export a token.
-        authorizationCookie = (await cookies()).has("wayfarer_account") ? "PRESENT" : "ABSENT";
+        const jar = await cookies();
+        authorizationCookie = jar.has("wayfarer_account") ? "PRESENT" : "ABSENT";
+        // Only the owned native lab asks the existing read-only canonical query
+        // to diagnose the actual request. No credential/hash/identity is exported,
+        // and the original authorization result remains authoritative.
+        if (process.env.LANDFALL_NATIVE_RETURN_OBSERVATION_PATH && process.env.NODE_ENV === "production") {
+          const token = jar.get("wayfarer_account")?.value;
+          const session = token ? await currentAccount(token) : null;
+          authorizationSession = !token
+            ? "EMPTY"
+            : !session
+              ? "INELIGIBLE"
+              : session.account.profile?.status !== "ACTIVE"
+                ? "PROFILE_INACTIVE"
+                : "ELIGIBLE_ON_RECHECK";
+        }
       } catch {
         // Diagnostic availability cannot alter the authorization result.
       }
@@ -39,6 +55,7 @@ export async function resolveAuthenticatedLandfallReturn(handle: string) {
       durationBand: landfallDurationBand(performance.now() - start),
       count: 1,
       ...(authorizationCookie === undefined ? {} : { authorizationCookie }),
+      ...(authorizationSession === undefined ? {} : { authorizationSession }),
     });
   }
 }

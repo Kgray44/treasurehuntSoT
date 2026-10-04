@@ -7,6 +7,7 @@ import path from "node:path";
 import { discoverDeviceLabHost, labTool } from "./host";
 import { deviceLabSourceIdentity } from "./source";
 import { hostedDeviceLabScenarios } from "../../../src/landfall/device-lab/hosted-selection";
+import { androidDeviceLabProvisioning, deviceLabProfileSchema } from "../../../src/landfall/device-lab/device-profile";
 import { ownedAdbListeningInodes } from "../../../src/landfall/device-lab/owned-adb-socket";
 
 type OwnedProcess = { pid: number; started: string; executable: string };
@@ -94,13 +95,14 @@ export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
   const apkSha256 = createHash("sha256")
     .update(await readFile(apk))
     .digest("hex");
-  const profile = process.env.LANDFALL_LAB_PROFILE ?? "low-resource";
+  const profile = deviceLabProfileSchema.parse(process.env.LANDFALL_LAB_PROFILE ?? "low-resource");
   if (!["low-resource", "primary-phone"].includes(profile)) throw new Error("LANDFALL_RADIO_PROFILE_UNSUPPORTED");
+  const provisioning = androidDeviceLabProvisioning(profile);
   const memoryBudget = {
     minimumTotalBytes: 12 * 1024 ** 3,
     minimumAvailableBytes: 7 * 1024 ** 3,
     stopBelowBytes: 1536 * 1024 ** 2,
-    emulatorMemoryMiB: 1536,
+    emulatorMemoryMiB: provisioning.memory,
   };
   const memorySamples: { at: string; availableBytes: number }[] = [];
   const owned = new Map<number, OwnedProcess>();
@@ -223,7 +225,7 @@ export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
             "--package",
             "system-images;android-36;google_apis;x86_64",
             "--device",
-            "pixel_2",
+            provisioning.device,
           ],
           { env, stdio: ["pipe", "ignore", "pipe"] },
         );
@@ -294,8 +296,8 @@ export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
           "-noaudio",
           "-no-boot-anim",
           "-memory",
-          "1536",
-          "-lowram",
+          String(provisioning.memory),
+          ...(provisioning.lowRam ? [provisioning.lowRam] : []),
           "-feature",
           "-Vulkan",
         ],

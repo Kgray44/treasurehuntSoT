@@ -4,8 +4,13 @@ const eventSchema = z
     outcome: z.enum(["RETURNED", "UNAVAILABLE", "DENIED", "EXPIRED", "FAILED"]),
     durationBand: z.enum(["LT_50_MS", "LT_250_MS", "LT_1_S", "LT_5_S", "LT_30_S", "GE_30_S", "UNKNOWN"]),
     authorizationCookie: z.enum(["ABSENT", "PRESENT"]).optional(),
+    authorizationSession: z.enum(["EMPTY", "INELIGIBLE", "PROFILE_INACTIVE", "ELIGIBLE_ON_RECHECK"]).optional(),
   })
-  .refine((event) => event.authorizationCookie === undefined || event.outcome === "DENIED");
+  .refine(
+    (event) =>
+      (event.authorizationCookie === undefined && event.authorizationSession === undefined) ||
+      event.outcome === "DENIED",
+  );
 export const nativeReturnObservationSchema = z.strictObject({
   version: z.literal(1),
   sourceSha: z.string().regex(/^[a-f0-9]{40}$/),
@@ -29,6 +34,7 @@ export function nativeReturnLogObservation(line: string) {
       outcome: value.outcome,
       durationBand: value.durationBand,
       ...(value.authorizationCookie === undefined ? {} : { authorizationCookie: value.authorizationCookie }),
+      ...(value.authorizationSession === undefined ? {} : { authorizationSession: value.authorizationSession }),
     });
     return result.success ? result.data : null;
   } catch {

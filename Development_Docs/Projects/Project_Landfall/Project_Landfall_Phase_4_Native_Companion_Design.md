@@ -1823,3 +1823,38 @@ reference must now name a profile supported by its scenario, in addition to the
 existing target/family/version/fidelity checks. A tablet reference for the native
 phone-only UWB scenario is rejected. Three focused helper tests pass. Evidence
 still requires Chronicle review and cannot satisfy physical or launch gates.
+
+Clean8076e523 full root regression passes473files/2679tests with fresh owned
+SQLite and unchanged source; separate Bridgewatch passes24files/80tests. The
+ordinary read-only plan remains ORDINARY_PRODUCT with no control-plane paths,
+423unit/five browser selections and required build/migration. No final protected
+qualification is dispatched. A local ignored Windows runner uses the existing
+supported execution hook and pinned package Node entries to avoid cmd argument
+limits. Only diagnostic plan mode has run; this cannot claim an official CLI or
+protected decision.
+
+Run37208651739 onead841ea reaches cold return on both declared profiles with
+working ADB/app transports, geofenceREGISTERED/NONE and passing cleanup. Active
+return, bootGRANTED and a second real notice precede coldDENIED. There is exactly
+one expected persistent cookie, the canonical account query remains eligible,
+and a read-only current-WebView recheck also returnsDENIED. Request-cookie
+presence is PRESENT. The next diagnostic compares the actual wire cookie only
+in memory and exports booleans; an owned-lab-only read of the existing canonical
+account query emits finite eligibility categories. No credential/hash/identity
+is exported or persisted, and the original authorization result is unchanged.
+
+Provisioning review also identifies that the radio/pair/background owner used
+the same Pixel2/1536MiB/-lowram settings for its declared primary and low-resource
+profiles. Older receipts preserve their actual configurations and software facts,
+but do not establish distinct primary provisioning. One shared provisioning
+contract now feeds both hosted transport and owned guests: primary Pixel7/
+3072MiB and low-resource Pixel2/1536MiB/-lowram. Measured primary memory must exceed
+2GiB; low-resource memory must not exceed2GiB. The separate80-case Android profile
+matrix already used distinct declared provisions. Corrected primary radio,
+pairing and background executions still need fresh acceptance.
+
+Focused provisioning/observation/authority validation passes5files/32tests,
+TypeScript and lint. Three authority tests retain the original denial when the
+lab-only canonical query finds an eligible account, throws, or is not enabled.
+Emitted categories contain no credential, profile identity or exception text.
+This readonly diagnostic cannot become an authorization path.

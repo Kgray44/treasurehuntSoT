@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { selectAppleLabDevice, validateDeviceLabProfile } from "@/landfall/device-lab/device-profile";
+import {
+  androidDeviceLabProvisioning,
+  selectAppleLabDevice,
+  validateDeviceLabProfile,
+} from "@/landfall/device-lab/device-profile";
 
 describe("measured Device Lab profiles", () => {
   const phone = {
@@ -20,6 +24,15 @@ describe("measured Device Lab profiles", () => {
     expect(validateDeviceLabProfile("low-resource", { ...phone, memoryKiB: 1536 * 1024 })).toMatchObject({
       memoryKiB: 1536 * 1024,
     });
+    expect(() => validateDeviceLabProfile("primary-phone", { ...phone, memoryKiB: 1536 * 1024 })).toThrow(
+      "PROFILE_MISMATCH",
+    );
+    const primary = androidDeviceLabProvisioning("primary-phone");
+    const lowResource = androidDeviceLabProvisioning("low-resource");
+    expect(primary.memory).toBeGreaterThan(lowResource.memory);
+    expect(primary.lowRam).toBe("");
+    expect(lowResource.lowRam).toBe("-lowram");
+    expect(validateDeviceLabProfile("primary-phone", { ...phone, memoryKiB: primary.memory * 1024 })).toEqual(phone);
   });
   it("checks tablet dimensions in density-independent units", () => {
     expect(() => validateDeviceLabProfile("tablet", phone)).toThrow("PROFILE_MISMATCH");

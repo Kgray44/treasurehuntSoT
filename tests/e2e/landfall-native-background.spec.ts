@@ -153,6 +153,12 @@ test("real signed notice returns reauthorize Player across actual registered-reg
       const serverReturnOutcomes: string[] = [];
       const deniedRequestCookies: ("ABSENT" | "PRESENT")[] = [];
       const coldRecheckOutcomes: string[] = [];
+      const deniedRequestSessions: string[] = [];
+      let coldRecheckWire: {
+        headerObserved: boolean;
+        singleAuthorizationCookie: boolean;
+        expectedCookie: boolean;
+      } | null = null;
       let settings: Awaited<ReturnType<typeof inspectOwnedAndroidLocationAccuracy>> | null = null;
       let reboot: Awaited<ReturnType<typeof rebootOwnedAndroidGuest>> | null = null;
       let signedRegistration = false,
@@ -559,6 +565,11 @@ test("real signed notice returns reauthorize Player across actual registered-reg
             event.authorizationCookie === undefined ? [] : [event.authorizationCookie],
           ),
         );
+        deniedRequestSessions.push(
+          ...coldEvents.flatMap((event) =>
+            event.authorizationSession === undefined ? [] : [event.authorizationSession],
+          ),
+        );
         serverReturnOutcomes.push(...coldOutcomes);
         const returned = await attach(false);
         const coldCdp = await returned.context().newCDPSession(returned);
@@ -599,6 +610,15 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           // initial notice return, nor supplies or changes any credential.
           stage = "COLD_DENIED_RECHECK";
           const recheckBaseline = (await readReturns()).length;
+          const recheckRequest = returned
+            .waitForRequest(
+              (request) => {
+                const url = new URL(request.url());
+                return url.origin === origin.origin && url.pathname === "/player/landfall-return";
+              },
+              { timeout: 15000 },
+            )
+            .catch(() => null);
           await returned.evaluate(async (handle) => {
             await fetch(`/player/landfall-return?handle=${encodeURIComponent(handle)}`, {
               credentials: "same-origin",
@@ -606,10 +626,28 @@ test("real signed notice returns reauthorize Player across actual registered-reg
               redirect: "manual",
             });
           }, registration.returnHandle);
+          const sentRequest = await recheckRequest;
+          if (!sentRequest) throw new Error("NATIVE_COLD_RECHECK_REQUEST_UNOBSERVED");
+          const headers = await sentRequest.allHeaders();
+          const authorizationCookies = (headers.cookie ?? "")
+            .split(";")
+            .map((item) => item.trim())
+            .filter((item) => item.startsWith("wayfarer_account="));
+          coldRecheckWire = {
+            headerObserved: headers.cookie !== undefined,
+            singleAuthorizationCookie: authorizationCookies.length === 1,
+            expectedCookie: authorizationCookies.includes(`wayfarer_account=${player.token}`),
+          };
           await expect
             .poll(async () => (await readReturns()).length, { timeout: 15000 })
             .toBeGreaterThan(recheckBaseline);
-          coldRecheckOutcomes.push(...(await readReturns()).slice(recheckBaseline).map((event) => event.outcome));
+          const recheckEvents = (await readReturns()).slice(recheckBaseline);
+          coldRecheckOutcomes.push(...recheckEvents.map((event) => event.outcome));
+          deniedRequestSessions.push(
+            ...recheckEvents.flatMap((event) =>
+              event.authorizationSession === undefined ? [] : [event.authorizationSession],
+            ),
+          );
           stage = "REVOKED_ACTUAL_RETURN_HOP";
         }
         expect(coldOutcomes).toContain("UNAVAILABLE");
@@ -776,6 +814,8 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           serverReturnOutcomes,
           deniedRequestCookies,
           coldRecheckOutcomes,
+          coldRecheckWire,
+          deniedRequestSessions,
           preliminaryGrossBounds: {
             noticeReturnMs: 60000,
             fullJournalPssKiB: 512 * 1024,

@@ -4,6 +4,7 @@ import { mkdir, writeFile, rm } from "node:fs/promises";
 import path from "node:path";
 import { labTool } from "./host";
 import { hostedDeviceLabProfiles, hostedDeviceLabScenarios } from "../../../src/landfall/device-lab/hosted-selection";
+import { androidDeviceLabProvisioning } from "../../../src/landfall/device-lab/device-profile";
 
 const execute = promisify(execFile);
 /** Ephemeral CI transport only. It never mutates the checkout, default branch, or protected testing authority. */
@@ -56,22 +57,7 @@ export async function dispatchLandfallHostedLab(
       : undefined,
   );
   const selectedApple = hostedDeviceLabProfiles("ios", typedTier, target === "ios" ? selectedProfiles : undefined);
-  const androidProfiles = [
-    { profile: "primary-phone", api: 36, device: "pixel_7", ram: "3072M", memory: 3072, lowRam: "" },
-    ...(tier !== "development"
-      ? [{ profile: "compatibility-phone", api: 35, device: "pixel_6", ram: "3072M", memory: 3072, lowRam: "" }]
-      : []),
-    ...(tier === "closure"
-      ? [
-          { profile: "low-resource", api: 36, device: "pixel_2", ram: "1536M", memory: 1536, lowRam: "-lowram" },
-          // A GPS-capable generic tablet exercises large-screen native location.
-          // Pixel Tablet's SDK hardware profile intentionally has no GPS sensor.
-          { profile: "tablet", api: 36, device: "medium_tablet", ram: "3072M", memory: 3072, lowRam: "" },
-        ]
-      : []),
-  ].filter((profile) =>
-    selectedAndroid.includes(profile.profile as "primary-phone" | "compatibility-phone" | "low-resource" | "tablet"),
-  );
+  const androidProfiles = selectedAndroid.map(androidDeviceLabProvisioning);
   const appleProfiles = selectedApple;
   const radioProfiles = selectedAndroid.filter((profile) => ["primary-phone", "low-resource"].includes(profile));
   if (

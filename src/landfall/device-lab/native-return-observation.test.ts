@@ -18,10 +18,21 @@ describe("owned native cold-return platform evidence", () => {
         durationBand: "LT_50_MS",
         authorizationCookie,
       });
+    for (const authorizationSession of ["EMPTY", "INELIGIBLE", "PROFILE_INACTIVE", "ELIGIBLE_ON_RECHECK"])
+      expect(nativeReturnLogObservation(JSON.stringify({ ...event, outcome: "DENIED", authorizationSession }))).toEqual(
+        {
+          outcome: "DENIED",
+          durationBand: "LT_50_MS",
+          authorizationSession,
+        },
+      );
     for (const value of [
       { ...event, authorizationCookie: "PRESENT" },
       { ...event, outcome: "DENIED", authorizationCookie: "private-token" },
       { ...event, outcome: "DENIED", authorizationCookie: { value: "private-token" } },
+      { ...event, outcome: "DENIED", authorizationSession: "private-token" },
+      { ...event, outcome: "DENIED", authorizationSession: { token: "private-token" } },
+      { ...event, authorizationSession: "INELIGIBLE" },
     ])
       expect(nativeReturnLogObservation(JSON.stringify(value))).toBeNull();
   });

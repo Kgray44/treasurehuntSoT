@@ -2,6 +2,17 @@ import { z } from "zod";
 
 export const deviceLabProfileSchema = z.enum(["primary-phone", "compatibility-phone", "low-resource", "tablet"]);
 export type DeviceLabProfile = z.infer<typeof deviceLabProfileSchema>;
+/** One provisioning contract is shared by hosted transport and owned guests. */
+export function androidDeviceLabProvisioning(profile: DeviceLabProfile) {
+  const configurations = {
+    "primary-phone": { api: 36, device: "pixel_7", ram: "3072M", memory: 3072, lowRam: "" },
+    "compatibility-phone": { api: 35, device: "pixel_6", ram: "3072M", memory: 3072, lowRam: "" },
+    "low-resource": { api: 36, device: "pixel_2", ram: "1536M", memory: 1536, lowRam: "-lowram" },
+    // GPS-capable generic tablet; the SDK Pixel Tablet profile lacks GPS.
+    tablet: { api: 36, device: "medium_tablet", ram: "3072M", memory: 3072, lowRam: "" },
+  };
+  return { profile, ...configurations[profile] };
+}
 export const deviceLabConfigurationSchema = z.discriminatedUnion("platform", [
   z.strictObject({
     platform: z.literal("ANDROID"),
@@ -38,7 +49,10 @@ export function validateDeviceLabProfile(profile: DeviceLabProfile, input: Devic
         : !tablet &&
           (profile === "compatibility-phone"
             ? configuration.api === 35
-            : configuration.api === 36 && (profile !== "low-resource" || configuration.memoryKiB <= 2 * 1024 * 1024));
+            : configuration.api === 36 &&
+              (profile === "low-resource"
+                ? configuration.memoryKiB <= 2 * 1024 * 1024
+                : configuration.memoryKiB > 2 * 1024 * 1024));
     if (!valid) throw new Error("LANDFALL_LAB_PROFILE_MISMATCH");
   } else {
     if (profile === "low-resource") throw new Error("LANDFALL_LAB_IOS_RESOURCE_CONTROL_UNSUPPORTED");

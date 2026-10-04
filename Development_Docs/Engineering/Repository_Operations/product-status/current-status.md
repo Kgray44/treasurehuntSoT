@@ -14,12 +14,14 @@ native offline restart reconciliation pass. Actual QR camera decoding, three BLE
 protocols and Apple virtual offline reconciliation have passing hosted evidence.
 Actual Play services geofence delivery, encrypted wake hint storage and a generic
 notice pass with documented hosted FLP mock input and zero progression writes.
-The two-profile UWB/generic BLE/iBeacon/Eddystone matrix passes all eight cases.
+The UWB/generic BLE/iBeacon/Eddystone matrix passes eight executions on low-memory
+phone provisioning. Corrected distinct primary-phone provisioning needs fresh proof.
 An actual signed first-party notice tap reauthorizes and returns to the current
-Journal. First-party native pairing now passes on both Android profiles, with
-reports on both devices, verified stop and zero progression writes. Cold authenticated
+Journal. First-party native pairing passes with reports on both devices, verified
+stop and zero progression writes; distinct primary-profile qualification is pending.
+Cold authenticated
 revoked-membership notice return still requires acceptance. Broad regression passes
-2,678 unit tests,159 provider scenarios on each of Windows and Linux,53 retained
+2,679 unit tests,159 provider scenarios on each of Windows and Linux,53 retained
 Phase1–4 browser journeys and80 Android cases across four profiles. Apple primary
 and compatibility profiles each pass all eight scenarios; tablet restart passes
 separately with restored leases and one canonical event. The final three-profile

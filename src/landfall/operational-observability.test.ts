@@ -8,14 +8,20 @@ describe("Landfall uses categorical platform operations logs", () => {
     const base = { operation: "NOTIFICATION_RETURN", outcome: "DENIED", durationBand: "LT_50_MS", count: 1 };
     for (const authorizationCookie of ["ABSENT", "PRESENT"])
       expect(recordLandfallOperation({ ...base, authorizationCookie }, (event) => events.push(event))).toBe(true);
+    for (const authorizationSession of ["EMPTY", "INELIGIBLE", "PROFILE_INACTIVE", "ELIGIBLE_ON_RECHECK"])
+      expect(recordLandfallOperation({ ...base, authorizationSession }, (event) => events.push(event))).toBe(true);
     for (const input of [
       { ...base, authorizationCookie: "private-token" },
       { ...base, authorizationCookie: { value: "private-token" } },
       { ...base, authorizationCookie: "PRESENT", operation: "EVIDENCE" },
       { ...base, authorizationCookie: "PRESENT", outcome: "RETURNED" },
+      { ...base, authorizationSession: "private-token" },
+      { ...base, authorizationSession: { token: "private-token" } },
+      { ...base, authorizationSession: "INELIGIBLE", operation: "EVIDENCE" },
+      { ...base, authorizationSession: "INELIGIBLE", outcome: "RETURNED" },
     ])
       expect(recordLandfallOperation(input, (event) => events.push(event))).toBe(false);
-    expect(events).toHaveLength(2);
+    expect(events).toHaveLength(6);
     expect(JSON.stringify(events)).not.toContain("private-token");
   });
   it.each(["actorId", "sessionId", "latitude", "coordinate", "title", "query", "token", "payload", "url", "error"])(

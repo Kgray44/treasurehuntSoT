@@ -31,10 +31,11 @@ const eventSchema = z
     durationBand: z.enum(["LT_50_MS", "LT_250_MS", "LT_1_S", "LT_5_S", "LT_30_S", "GE_30_S", "UNKNOWN"]),
     count: z.literal(1),
     authorizationCookie: z.enum(["ABSENT", "PRESENT"]).optional(),
+    authorizationSession: z.enum(["EMPTY", "INELIGIBLE", "PROFILE_INACTIVE", "ELIGIBLE_ON_RECHECK"]).optional(),
   })
   .refine(
     (event) =>
-      event.authorizationCookie === undefined ||
+      (event.authorizationCookie === undefined && event.authorizationSession === undefined) ||
       (event.operation === "NOTIFICATION_RETURN" && event.outcome === "DENIED"),
   );
 export type LandfallOperation = z.infer<typeof operationSchema>;

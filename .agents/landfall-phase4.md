@@ -1478,3 +1478,37 @@ scope. The guard now rejects unsupported device profiles; the phone-only native
 UWB/tablet negative case passes with the two existing helper tests (3total).
 No synthetic pass gains Chronicle/physical acceptance. Final root regression
 must include this new guard/test.
+
+Clean8076e523 full root passes473files/2679tests with fresh owned SQLite and
+unchanged source. Separate Bridgewatch passes24files/80tests (maxWorkers1).
+Read-only ordinary plan is ORDINARY_PRODUCT/controlPlanePaths[], selects423unit
+and5browser files, and requires build/migration. No final qualification is run.
+Ignored ordinary-windows-runner.mjs uses the supported runner hook with pinned
+local Node package entries to avoid cmd argument limits; only diagnostic plan
+mode has run. It cannot claim an official CLI or protected decision.
+
+Run37208651739 onead841ea is harvested FAIL at revoked cold return on both
+declared profiles. Actual active return, reboot/bootGRANTED, second notice,
+one expected persistent cookie, canonical session eligibility and cleanup pass.
+Both initial cold and current-WebView read-only recheck returnDENIED; request
+cookiePRESENT. ADB DEVICE/appRunningtrue/geofenceREGISTERED/NONE. Next diagnostic
+compares the actual recheck wire cookie in memory and exports only booleans;
+lab-only existing canonical account recheck emits finite eligibility categories.
+No credential/hash/identity is exported and no authorization outcome is replaced.
+
+Completion review finds a provisioning mismatch: android-radio-run used Pixel2,
+1536MiB/-lowram for both primary and low-resource despite distinct transport
+metadata. Those older executions retain actual configuration/software observations
+but do not prove distinct primary provisioning. Shared androidDeviceLabProvisioning
+now feeds hosted transport and owned guests; primary Pixel7/3072MiB, low Pixel2/
+1536MiB/-lowram. Measured primary memory must exceed2GiB and low must not exceed2GiB.
+The separate80-case Android profile matrix already used its declared provisions.
+Corrected pair/radio/background primary execution remains required.
+
+Focused provisioning/observation/authority tests pass5files/32tests; TypeScript
+and lint pass. Three authority tests prove the lab recheck cannot grant identity
+or change a denial when it finds an eligible session or fails. Credential values,
+profile identifiers and diagnostic errors are absent from emitted events.
+Catalog meaning remains unchanged: these are guards/diagnostics for unfinished
+Phase4, not a completed new major capability. Product status, matrix and changelog
+are reviewed; corrected provisioning and actual request facts await hosted runs.
