@@ -30,6 +30,16 @@ Protected qualification, merge, landed verification, evidence/catalog publicatio
 
 ## Chronological development evidence
 
+Current dependency audit on clean source `709fbee1` reports zero production
+findings. The full audit retains five high development-only findings in
+eslint-config-next's inherited glob/brace chain. Phase4 patches Next16.3.8,
+Sharp0.35.5, PostCSS8.5.28 and deepmerge-ts8.0.2 from the mainline baseline and
+adds @noble/curves2.4.0 for conservative public Ed25519 verification. These
+dependency inputs match retained frozen acceptance; schema and migrations have
+no mainline delta. The diagnostic ordinary plan classifies ORDINARY_PRODUCT,
+no control-plane paths,432selected unit files/five browser files, build and
+migration checks required. This is a read-only plan, not protected qualification.
+
 The following entries describe their original checkpoints. Current acceptance above governs remaining work.
 
 The previous primary Apple batch **37232748824 on `90ef2d75`** combines

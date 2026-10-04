@@ -31,6 +31,18 @@ retains exact development-run identities. Earlier Phase1–3 records remain hist
 
 ## Data and release boundaries
 
+### Spatial architecture compatibility boundary
+
+Protected main advanced during this task with Spatial Experience Architecture v1.0
+and Project Sextant v1.0. This owner-authorized Phase4 candidate retains its
+replaceable native provider and capability contracts as compatibility inputs.
+It does not implement Sextant, transfer generic device-context ownership to
+Landfall permanently, or adopt the future Landfall/Sextant boundary amendment.
+The Sextant inventory and approved migration must preserve accepted navigation,
+consent, privacy and One Voyage behavior. Landfall continues to own Worldspaces,
+navigation confidence, geofencing meaning, offline content and completion policy.
+Generic acquisition relocation remains separately governed work.
+
 Phase4 introduces no separate progression database, identity store, provider secret
 store or Chronicle content model. Existing immutable published snapshots and actor
 authorization remain the source of truth. The native private stores hold bounded
