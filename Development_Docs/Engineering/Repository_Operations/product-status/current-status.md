@@ -19,10 +19,11 @@ An actual signed first-party notice tap reauthorizes and returns to the current
 Journal. First-party native pairing now passes on both Android profiles, with
 reports on both devices, verified stop and zero progression writes. Cold authenticated
 revoked-membership notice return still requires acceptance. Broad regression passes
-2,676 unit tests,159 provider scenarios on each of Windows and Linux,53 retained
-Phase1–4 browser journeys and80 Android cases across four profiles. The Apple primary
-profile passes all eight scenarios, including restart and virtual offline reconciliation.
-Tablet relaunch acknowledgment and the compatibility matrix remain under validation. Final
+2,678 unit tests,159 provider scenarios on each of Windows and Linux,53 retained
+Phase1–4 browser journeys and80 Android cases across four profiles. Apple primary
+and compatibility profiles each pass all eight scenarios; tablet restart passes
+separately with restored leases and one canonical event. The final three-profile
+source-bound matrix and cold return remain pending. Final
 exact-source qualification, protected integration and phase closure
 remain pending. Historical statements that Phase 4 is deferred describe the
 accepted Phase 3 baseline, not this unfinished candidate.

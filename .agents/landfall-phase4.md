@@ -1415,3 +1415,26 @@ the category to denied notification returns and reject tokens/objects/unrelated
 labels. The harness also asks the existing canonical currentAccount query whether
 the in-memory fixture token remains eligible, retaining only a boolean.
 No authentication bypass, session reinjection or lease extension is introduced.
+
+Apple compatibility 37203627397 on cc1cf3bb is harvested SUCCESS: all eight cases
+pass, with 12 native XCTest passes/one unsupported skip. Tablet restart focus
+37205274450 on5c00ff1e is harvested SUCCESS: leaseRestored/publicShellControlled
+true after actual relaunch; exactly one canonical event; cleanup PASS. Actual
+relaunch is6712ms under the existing120-second action budget. It does not establish
+the cause of the earlier transient30-second acknowledgment failure.
+
+Windows provider run20261004T132853171Z-17920 on clean f0e46610 passes159 scenarios,
+source fingerprint ed59648650474006603a0adfbe3b7c3488890ab1ea593ccc30aeab0e7ef7da73.
+Full root regression on clean47480f3a/tree1d589d023721570a92f0f856b4c20907463cf292
+passes473files/2678tests with fresh owned SQLite; source remains unchanged until
+completion, then the E2E-only observation follow-up begins.
+
+Low-resource f0e46610 run37205672375 is harvested FAIL at FIRST_RETURN_HTTP:
+TIMEOUT, ownerCancelledfalse/pageClosedtrue, genuine platformRETURNED, cleanupPASS.
+The old Page is therefore unavailable for the response observation. The harness
+now waits for an actual response or observed old-driver closure; any observed
+HTTP status must still be307. If the driver closes first, it records
+DRIVER_CLOSED_BEFORE_RESPONSE and makes no HTTP-status claim. Actual serverRETURNED,
+reattached current Journal, normal opening, canonical0, cleanup and performance
+remain mandatory. No cookie is reinjected. Primary rejected-request diagnostic
+37206206407 on47480f3a remains active.

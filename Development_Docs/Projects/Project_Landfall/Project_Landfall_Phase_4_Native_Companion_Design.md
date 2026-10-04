@@ -1763,3 +1763,21 @@ request. It reads no token value and never alters authorization. Strict schemas
 accept this category only on denied notification returns. The lab separately
 checks the existing canonical account query and stores only eligibility as a
 boolean. Credential values, identities and raw errors remain excluded.
+
+Compatibility run37203627397 oncc1cf3bb passes all eight Apple scenarios, with
+12 native XCTest passes and one unsupported skip. Tablet restart focus37205274450
+on5c00ff1e passes actual relaunch, restored lease/public shell and exactly one
+canonical event; cleanup passes. Relaunch takes6712ms under the existing120-second
+action bound. The earlier transient acknowledgment cause remains unproved.
+These receipts retain their separate sources; final matrix reconciliation remains
+required. Clean47480f3a passes473 root files/2678tests with fresh owned SQLite.
+
+Low-resource return run37205672375 onf0e46610 records actual platformRETURNED but
+times out waiting for the old Page's response; the failure diagnostic confirms
+pageClosedtrue and ownerCancelledfalse, with cleanupPASS. The harness now treats
+observed driver closure as a reason to bind the actual current WebView. Observed
+HTTP status must remain307; when the driver closes before observing it, the receipt
+explicitly records DRIVER_CLOSED_BEFORE_RESPONSE and no numeric HTTP status is
+claimed. Genuine server reauthorization, actual current Journal/opening, zero
+canonical writes, cleanup and performance remain mandatory. This addresses a
+transport observation gap without relaxing notification-return authority.
