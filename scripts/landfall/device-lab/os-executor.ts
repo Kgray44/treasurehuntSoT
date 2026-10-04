@@ -9,6 +9,7 @@ import { deliverDeviceLabPosition } from "./location-control";
 import { rebootOwnedAndroidGuest } from "../../../src/landfall/device-lab/android-reboot";
 import { deviceLabSourceIdentity } from "./source";
 import { inspectOwnedAndroidLocationAccuracy } from "./android-location-settings";
+import { startOwnedAndroidFusedInput } from "./android-fused-input";
 import {
   deviceLabStartupStageSchema,
   type DeviceLabStartupStage,
@@ -97,6 +98,8 @@ export async function executeLandfallOsScenario(
     budgetMs: number;
   }[] = [];
   let locationSettings: Awaited<ReturnType<typeof inspectOwnedAndroidLocationAccuracy>> | null = null;
+  let fusedInput: Awaited<ReturnType<typeof startOwnedAndroidFusedInput>> | null = null;
+  const fusedControls: { phase: string; delivered: number; mocking: boolean; state: string }[] = [];
   const readinessStartedAt = Date.now();
   const clientStages: { stage: DeviceLabStartupStage; elapsedMs: number }[] = [];
   const startupRequests = { documents: 0, workers: 0, scripts: 0 };
@@ -461,6 +464,8 @@ export async function executeLandfallOsScenario(
       await adb(["shell", "pm", "grant", "com.voyagewright.landfall", "android.permission.ACCESS_FINE_LOCATION"]);
       if (geofenceScenario) {
         locationSettings = await inspectOwnedAndroidLocationAccuracy(adb);
+        fusedInput = await startOwnedAndroidFusedInput(adb, root);
+        await fusedInput.phase("OUTSIDE_BASELINE");
         await adb([
           "shell",
           "pm",
@@ -600,8 +605,11 @@ export async function executeLandfallOsScenario(
           }
           // Initial triggers are deliberately disabled. Establish an outside
           // baseline after registration before requesting an enter transition.
-          // Only actual emulator GPS reaches Play services; no callback injection.
+          // Documented FLP mock inputs reach actual Play services geofencing;
+          // the separate debug lab APK never invokes a Landfall receiver or callback.
           for (const phase of ["OUTSIDE_BASELINE", "INSIDE_TRANSITION"] as const) {
+            if (!fusedInput) throw new Error("FUSED_INPUT_REQUIRED");
+            await fusedInput.phase(phase);
             const startedAt = Date.now(),
               budgetMs = 180000;
             let injections = 0;
@@ -611,6 +619,13 @@ export async function executeLandfallOsScenario(
               await new Promise((resolve) => setTimeout(resolve, 5000));
             }
             geofenceControls.push({ index, phase, injections, elapsedMs: Date.now() - startedAt, budgetMs });
+            const input = await fusedInput.read();
+            fusedControls.push({
+              phase: input.phase,
+              delivered: input.delivered,
+              mocking: input.mocking,
+              state: input.state,
+            });
           }
           // This step proves only input delivery. A separate foreground assertion
           // must observe the native encrypted hint before the scenario can pass.
@@ -1168,6 +1183,7 @@ export async function executeLandfallOsScenario(
           {
             controls: geofenceControls,
             locationSettings,
+            fusedControls,
             nativeDiagnostic,
             receiverDiagnostic,
             physicalTimingProven: false,
@@ -1393,6 +1409,7 @@ export async function executeLandfallOsScenario(
     }
     if (androidSerial)
       await adb(["wait-for-device"], 30000).catch(() => remainingResources.push("android-adb-transport"));
+    if (fusedInput) await fusedInput.cleanup().catch(() => remainingResources.push("android-fused-mock-input"));
     if (androidSerial) await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]).catch(() => undefined);
     if (androidSerial) await adb(["reverse", "--remove", `tcp:${port}`]).catch(() => undefined);
     if (androidSerial) {
@@ -1522,7 +1539,7 @@ export async function executeLandfallOsScenario(
             ? {
                 method: action.operation === "ENTER" ? "OS_GEOFENCE_TRANSITION" : "OS_GEOFENCE_REGISTRATION",
                 limitation:
-                  "Actual Play services registration and emulator GPS controls require an OS-delivered encrypted hint. No injected broadcast, physical timing or arrival claim.",
+                  "Documented FLP mock input from a separate debug lab APK exercises actual Play services registration and OS-delivered encrypted hints. No injected receiver/broadcast, physical timing or arrival claim.",
               }
             : action?.type === "PERMISSION" || result.reason === "OS_PERMISSION_PREVENTED_ACQUISITION"
               ? {
@@ -1575,6 +1592,7 @@ export async function executeLandfallOsScenario(
             "native-app-process",
             "native-app-private-data",
             "owned-adb-reverse",
+            ...(fusedInput ? ["android-fused-mock-input", "native-location-lab-private-data"] : []),
             ...[...androidSensorBaselines.keys()].map((sensor) => `android-sensor-${sensor}`),
             ...(androidPowerMode !== null ? ["android-power-fixture", "android-battery-fixture"] : []),
           ]

@@ -87,6 +87,8 @@ test("real native Journal pairing returns untrusted hints and background clears 
       } | null = null;
       const nativePageErrors = new Set<string>();
       let failedFirstPartyRequests = 0;
+      const nearbyHttp: { deviceIndex: number; operation: string; status: number | null; failure: string | null }[] =
+        [];
       let failedPageState: {
         closed: boolean;
         journalPath: boolean;
@@ -188,6 +190,34 @@ test("real native Journal pairing returns untrusted hints and background clears 
           );
           page.on("requestfailed", (request) => {
             if (new URL(request.url()).origin === origin.origin) failedFirstPartyRequests++;
+          });
+          const httpDeviceIndex = deviceIndex;
+          const nearbyOperation = (request: { url(): string; postData(): string | null }) => {
+            const url = new URL(request.url());
+            if (url.origin !== origin.origin || !url.pathname.endsWith("/landfall/nearby")) return null;
+            const body = request.postData();
+            if (!body || body.length > 16384) return "UNKNOWN";
+            try {
+              const value = JSON.parse(body).operation;
+              return ["STATUS", "CREATE", "JOIN", "READ", "STOP"].includes(value) ? value : "UNKNOWN";
+            } catch {
+              return "UNKNOWN";
+            }
+          };
+          page.on("response", (response) => {
+            const operation = nearbyOperation(response.request());
+            if (operation && nearbyHttp.length < 32)
+              nearbyHttp.push({ deviceIndex: httpDeviceIndex, operation, status: response.status(), failure: null });
+          });
+          page.on("requestfailed", (request) => {
+            const operation = nearbyOperation(request);
+            if (operation && nearbyHttp.length < 32)
+              nearbyHttp.push({
+                deviceIndex: httpDeviceIndex,
+                operation,
+                status: null,
+                failure: request.failure()?.errorText.includes("ERR_ABORTED") ? "ABORTED" : "NETWORK_FAILED",
+              });
           });
           page.setDefaultTimeout(10000);
           page.setDefaultNavigationTimeout(45000);
@@ -560,6 +590,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           failureChecks,
           nativePageErrors: [...nativePageErrors],
           failedFirstPartyRequests,
+          nearbyHttp,
           failedPageState,
           journalStates,
           pairingDiagnostics,

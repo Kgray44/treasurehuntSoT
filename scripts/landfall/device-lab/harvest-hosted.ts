@@ -33,7 +33,9 @@ export async function harvestLandfallHostedLab(runId: string, dispatchFile: stri
   // Setup failures can finish before the first receipt exists. Retain their
   // source-bound CI log and truthful zero-artifact state, then clean transport.
   // A failed download with an existing artifact remains an error.
-  if (inventory.artifacts.length) await labTool("gh", ["run", "download", runId, "--dir", artifactDirectory], 180000);
+  // Complete multi-profile Apple xcresult bundles can exceed the smaller
+  // diagnostic artifact transfer window. Bound transport, not scenario behavior.
+  if (inventory.artifacts.length) await labTool("gh", ["run", "download", runId, "--dir", artifactDirectory], 600000);
   await writeFile(path.join(directory, "run.log"), await labTool("gh", ["run", "view", runId, "--log"], 120000));
   const artifacts: { path: string; sha256: string }[] = [];
   const collect = async (folder: string) => {

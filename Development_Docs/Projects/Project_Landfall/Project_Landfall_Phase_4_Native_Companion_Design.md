@@ -1399,3 +1399,31 @@ pass. Bridgewatch's24files/80tests pass with two workers after replacing a stale
 PLANNED expectation with current authoritative IN_DEVELOPMENT governing-document
 evidence. No shared Bridgewatch service or database was changed. Final exact-source
 regression and protected qualification remain required.
+
+Candidatec2ff9517 passes all50expanded optimized browser journeys in hosted
+run37194193502; all four prior failures are resolved. Its fresh isolated unit
+regression passes466files/2,652tests. Native Journal run37194205704 reaches both
+tools/maps but fails FIRST_PARTY_OWNER_CODE; UI reports pairing/access changed and
+no native pair begins. The next receipt projects only bounded nearby operation,
+HTTP status and failure category; no code, handle, key, URL or response body is saved.
+
+For geofence diagnosis, the Device Lab adds an independent debug-only location
+input APK under native/android/location-lab. It uses the documented
+[FusedLocationProviderClient mock mode/location API](https://developers.google.com/android/reference/com/google/android/gms/location/FusedLocationProviderClient)
+to feed fixed public synthetic outside/inside positions to actual Play services.
+Unlike the OS GPS-only attempt, this explicitly controls the provider used by
+geofencing. The companion's receiver, hint journal and notification are untouched;
+their callbacks cannot be invoked by the helper. The helper runs in a different
+package/process, so Landfall can remain backgrounded. It is restricted to owned
+ephemeral hosted emulators, checks native emulator hardware, accepts only a bounded
+UUID session and fixed phases, expires each input phase after200seconds and records
+only finite input counts/state. Cleanup requires actual successful mock-mode shutdown
+before clearing that helper. Four fail-closed host/hardware/receipt/cleanup tests pass.
+Actual helper build passes, with its FLP client included; companion release analysis
+confirms no mock-location permission or lab service. Its release variant is disabled.
+The actual hosted wake receipt remains required; simulated input is not field proof.
+
+Apple run37192581595 reports primary8/8PASS, compatibility5/8PASS and tablet job
+failure; complete multi-profile xcresult recovery is pending. The bounded artifact
+transfer window grows from180to600seconds for those large bundles, without changing
+scenario observation deadlines or relabeling failures. No closure is claimed.

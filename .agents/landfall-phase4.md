@@ -1132,3 +1132,14 @@ analysispending. Productionaudit0/all5high ESLintglobchain after @fastify/static
 10.1.5+deepmerge-ts8.0.2. Prisma generate/schema/TS PASS, Bridgewatch24files80tests
 PASSmaxWorkers2 afterstale lifecyclefixture correction. Format+changedlintPASS.
 Nextfreeze sourceand rerun fullbrowser+Journal; no phaseclosure orcatalogpromotion.
+
+c2ff fullbrowser37194193502HARVESTED86SUCCESS50/50. Root466files2652PASS isolated
+unit-regression-392f57f2fce44814a49dd257e11b0459. Journal37194205704HARVESTED43FAIL
+FIRST_PARTY_OWNER_CODE/PAIR_CHANGED, bothtools+mapsactualvisible, nativepairnotstarted,
+canonical0/cleanupPASS. NextboundednearbyHTTPoperation/status/failureonly diagnostics.
+Independentnative/android/location-lab debug-onlyAPK feeds documented GMSFLP mock
+outside/insidefromseparatepackage/process, actualgeoreceiverrequired, noeventinjection.
+GHephemeral+hardwareguards/200secphaseTTL/actualstopreceiptrequired. Fourfocused
+boundarytestsPASS, helperbuild+packagedFLPclientPASS, companionreleaseexclusionsPASS.
+Apple37192581595completedFAIL primary8/8PASScompat5/8PASS/tabletfailure; fullrecovery
+pending (180sec downloaddeadline exceeded), transferonlywindow600sec. No protectedqual.
