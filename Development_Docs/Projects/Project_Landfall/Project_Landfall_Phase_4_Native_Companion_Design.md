@@ -15,8 +15,13 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Current acceptance checkpoint
 
-Primary focused run37232748824 on `90ef2d75` is active. It combines actual native
-presentation gates with offline restart and Apple notification return. Prior full
+Primary focused run37232748824 on `90ef2d75` fails before scenario execution:
+18native passes/1Motion-page failure/1expected driver skip;4,298hashed artifacts
+and cleanupPASS. Actual Settings hierarchy/video/event records retain both text-
+center taps and Accessibility still open. Recheck37233941482 on `a37ff45d` taps
+the unique actual `MOTION_TITLE` row outside its nested text control. It combines
+actual presentation gates with offline restart and Apple notification return;
+actual Motion page/readback/restoration and native handoff remain required. Prior full
 affected-profile run37228402022 remains FAIL17/18: compatibility9/9, primary8/9.
 Compatibility restart actually restores its encrypted lease and writes exactly
 one One Voyage event; raw locations are not retained and cleanup passes. Primary

@@ -81,9 +81,16 @@ production Journal browser accessibility and physical assistive technology are
 separate. Full unit src/tests/lock/schema trees match8e6e3e19 exactly.
 
 DraftPR677 attached. No final ordinary product qualification dispatched.
-Current primary batch90ef2d75, run37232748824, combines mandatory presentation
-build gates and explicitoffline-restart/Apple-notification scenarios.
-Dispatchhosted-90ef2d75ad0f-1791146187956. No separate duplicate notice job.
+Primary batch90ef2d75, run37232748824, finishesFAIL atpresentationbuild:
+18PASS/1FAIL/1expectedskip,4298hashes/cleanupPASS. Motionpageunobserved;
+neitherrestart nornoticeexecutes. Actualhierarchy/video/eventrecords show both
+taps attextcenter162.17/422.17 andSettingsstillAccessibility. Current control
+tapsactualuniqueMOTION_TITLErow trailinggap outside nestedtextbutton.
+Rechecka37ff45d, run37233941482, dispatchhosted-a37ff45d8d4f-1791147300296,
+combines presentationbuild+restart/notice. No duplicate noticejob. Stillmandatory
+Motionpage/settingreadback/restore andactualnativeforeground/client/canonical.
+Exact90trackedarchiveprivacy0/6, SHA256
+af945a740bed7a4027927c2ed1d98d08150445805664ede1d24bbe0d4dca7662.
 Next: finish/harvest this native recheck, actual-step/canonical/cleanup inspection,
 final docs/performance/privacy/input comparisons, freeze, ordinary exact-candidate
 protected qualification, protected merge, landed smoke, separate protected

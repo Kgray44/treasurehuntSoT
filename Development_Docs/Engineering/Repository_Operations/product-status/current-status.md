@@ -31,7 +31,9 @@ one canonical event; primary's bounded OS launch times out. Focused tablet input
 passes, including an actual bounded retry. Actual Apple notification permission
 now passes, while tap/foreground return remains unaccepted. Dark/large-text and
 orientation fallback pass; Reduce Motion navigation remains unaccepted. One
-primary batch37232748824 on90ef2d75 rechecks those three remaining boundaries.
+primary batch37232748824 on90ef2d75 failed at Motion page navigation before
+either scenario ran. Recheck37233941482 on a37ff45d targets the observed native
+row and keeps all three acceptance boundaries mandatory.
 Protected qualification, merge, landed proof,
 catalog promotion and formal closure remain pending.
 

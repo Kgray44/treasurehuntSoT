@@ -18,7 +18,7 @@ fresh qualification before protected integration.
 
 ## Implemented capability and evidence boundaries
 
-The remaining primary Apple batch **37232748824 on `90ef2d75`** is active:
+The previous primary Apple batch **37232748824 on `90ef2d75`** combines
 mandatory native presentation gates, offline restart and actual notification
 return. No acceptance is inferred from elapsed time or successful tool execution.
 That batch finishes FAIL at the presentation build:18passes/1failure/1expected
@@ -28,6 +28,10 @@ one `MOTION_TITLE` cell with a nested text button; both real taps target the tex
 center and leave Accessibility open. Current control taps the unique actual row's
 trailing gap and still requires the observed Motion page plus setting readback and
 restoration. This remains an unaccepted control hypothesis until actual execution.
+Focused primary recheck **37233941482 on `a37ff45d`** is active with the same
+mandatory build and two scenarios. Exact `90ef2d75` tracked-source privacy scan
+passes zero violations across six classifications; the archive hash is
+`af945a740bed7a4027927c2ed1d98d08150445805664ede1d24bbe0d4dca7662`.
 
 Current clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
 owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting
