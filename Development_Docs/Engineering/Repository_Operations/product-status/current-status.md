@@ -22,7 +22,7 @@ Journal. First-party native pairing passes with reports on both devices, verifie
 stop and zero progression writes; distinct primary-profile qualification is pending.
 Cold authenticated
 revoked-membership notice return still requires acceptance. Broad regression passes
-2,682 unit tests on ccb35e4a,159 provider scenarios on each of Windows and Linux,53 retained
+2,687 unit tests on ff297bda,159 provider scenarios on each of Windows and Linux,53 retained
 Phase1–4 browser journeys and80 Android cases across four profiles. Apple primary
 and compatibility profiles each pass all eight scenarios; tablet restart passes
 separately with restored leases and one canonical event. The final three-profile

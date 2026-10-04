@@ -116,7 +116,13 @@ test("real native Journal pairing returns untrusted hints and background clears 
       }[] = [];
       const pairingDiagnostics: { deviceIndex: number; nativeState: string; uiState: string }[] = [];
       const nativePreparationDiagnostics: { deviceIndex: number; category: string }[] = [];
-      const interactionForeground: { phase: string; deviceIndex: number; observed: boolean }[] = [];
+      const interactionForeground: {
+        phase: string;
+        deviceIndex: number;
+        observed: boolean;
+        mapReopened: boolean;
+        controlsExpanded: boolean;
+      }[] = [];
       const adb = (serial: string, args: string[], timeout = 15000) =>
         labTool(resources.adbPath, ["-P", String(resources.adbPort), "-s", serial, ...args], timeout);
       const foregroundInteraction = async (index: number, phase: string) => {
@@ -130,10 +136,23 @@ test("real native Journal pairing returns untrusted hints and background clears 
               .some((line) => /(mResumedActivity|topResumedActivity)/.test(line) && line.includes(pkg)),
           );
         let observed = false;
+        let mapReopened = false,
+          controlsExpanded = false;
         try {
           await expect.poll(async () => (observed = await resumed()), { timeout: 5000 }).toBe(true);
+          const page = pages[index];
+          const panel = page.locator(".landfall-nearby-panel:visible");
+          if (!(await panel.isVisible())) {
+            await openClosureMap(page, { noWaitAfter: true });
+            mapReopened = true;
+          }
+          await expect(panel).toBeVisible();
+          if (!(await panel.evaluate((element) => (element as HTMLDetailsElement).open))) {
+            await panel.locator("summary").click({ noWaitAfter: true });
+            controlsExpanded = true;
+          }
         } finally {
-          interactionForeground.push({ phase, deviceIndex: index, observed });
+          interactionForeground.push({ phase, deviceIndex: index, observed, mapReopened, controlsExpanded });
         }
       };
       try {

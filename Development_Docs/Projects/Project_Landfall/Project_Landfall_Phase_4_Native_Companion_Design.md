@@ -1946,3 +1946,29 @@ Current product features/status/feature status and affected Player/operations
 guides are reviewed, guide/status/changelog/matrix are updated. This is an ordinary
 bug fix in unfinished Phase4; catalog meaning remains unchanged. Actual full
 notice recheck and final qualification are still required.
+
+## 2026-10-04 current regression and actual primary pairing
+
+Clean unchanged ff297bda passes full root474files/2,687tests on fresh owned SQLite.
+Its detached qualification checkout passes optimized build and client privacy
+scan. Exact tracked-source archive scan reports zero violations/six classifications
+and records the archive SHA256/tree. No protected decision is claimed.
+
+Run37212997052 at9709ccee proves primary two-device first-party pairing: both native
+CAPABILITIES_READY; actual OS foreground observed for CREATE/JOIN/START/STOP;
+STATUS/CREATE/JOIN/READ/STOP all200; reports on both devices, native stop, canonical0
+and cleanupPASS. Low resource fails before CREATE while locating the button,
+with no pairing API calls. The fixture now reobserves and normally reopens an
+absent map or collapsed optional controls after native resume. It never injects
+UI handlers, native availability or progression.
+
+Direct diagnostic37212993160 reproduces the pre-fix membership classification
+on low resource: expected outgoing cookie for both requests, RETURNED then DENIED
+and ELIGIBLE_ON_RECHECK. Primary encounters the SDK's memoized closed Page: repeated
+enumeration returns that stale handle. Source inspection confirms AndroidWebView
+memoizes page(). The owned fixture now deduplicates acquired drivers, retires only
+a driver whose Page is actually closed, and reacquires under a45-second bound with
+bounded backoff and finite reconnection count. Live unrelated connections remain
+owned until cleanup. The former rapid loop is retained as failed diagnostic
+history, not successful cold proof. Actual ff297bda full notice recheck is running;
+this fixture correction still needs actual execution.

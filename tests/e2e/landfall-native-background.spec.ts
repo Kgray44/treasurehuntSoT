@@ -127,6 +127,7 @@ test(backgroundCaseName, async ({ baseURL }) => {
       const cpuMeasurements: ({ stage: string } & ReturnType<typeof nativeCpuMeasurement>)[] = [];
       let persistentSessionConfigured = false;
       let coldLaunchReattachments = 0;
+      let webViewReattachments = 0;
       const coldDiagnosticWire: {
         phase: string;
         headerObserved: boolean;
@@ -224,21 +225,40 @@ test(backgroundCaseName, async ({ baseURL }) => {
         cpuMeasurements.push({ stage: label, ...measurement });
         expect(measurement.nativeParentCpuPercent).toBeLessThanOrEqual(50);
       };
-      const attach = async (requireNative = true) => {
-        const discovered = await boundedAndroidDriver(
-          _android.devices({ host: "127.0.0.1", port: resources.adbPort, omitDriverInstall: true }),
-          resources.signal,
-        );
-        // Keep every acquired connection owned through cleanup. A replacement
-        // WebView can be observed without closing an unrelated live driver.
-        devices.push(...discovered);
-        const device = discovered.find((item) => item.serial() === serial);
-        if (!device) throw new Error("NATIVE_RETURN_DEVICE_MISSING");
-        const view = await device.webView({ pkg }, { timeout: 30000 });
-        page = await boundedAndroidDriver(view.page(), resources.signal);
-        if (requireNative)
-          await page.waitForFunction(() => Boolean(window.LandfallNative), undefined, { timeout: 15000 });
-        return page;
+      const attach = async (requireNative = true, deadline = Date.now() + 45000): Promise<Page> => {
+        while (Date.now() < deadline) {
+          const discovered = await boundedAndroidDriver(
+            _android.devices({ host: "127.0.0.1", port: resources.adbPort, omitDriverInstall: true }),
+            resources.signal,
+            Math.max(1, Math.min(30000, deadline - Date.now())),
+          );
+          // Keep every acquired connection owned through cleanup. A replacement
+          // WebView can be observed without closing an unrelated live driver.
+          for (const acquired of discovered) if (!devices.includes(acquired)) devices.push(acquired);
+          const device = discovered.find((item) => item.serial() === serial);
+          if (!device) throw new Error("NATIVE_RETURN_DEVICE_MISSING");
+          const view = await device.webView({ pkg }, { timeout: Math.max(1, Math.min(30000, deadline - Date.now())) });
+          page = await boundedAndroidDriver(view.page(), resources.signal);
+          if (page.isClosed()) {
+            // AndroidWebView.page() memoizes its first Page. Re-enumeration alone
+            // returns that closed Page; retire only this observed closed driver.
+            webViewReattachments++;
+            if (webViewReattachments > 128) throw new Error("NATIVE_WEBVIEW_REATTACH_LIMIT");
+            await boundedAndroidDriver(
+              device.close(),
+              resources.signal,
+              Math.max(1, Math.min(15000, deadline - Date.now())),
+            );
+            devices = devices.filter((owned) => owned !== device);
+            page = undefined;
+            await delay(Math.max(1, Math.min(250, deadline - Date.now())));
+            continue;
+          }
+          if (requireNative)
+            await page.waitForFunction(() => Boolean(window.LandfallNative), undefined, { timeout: 15000 });
+          return page;
+        }
+        throw new Error("NATIVE_CURRENT_WEBVIEW_UNOBSERVED");
       };
       const background = async () => {
         await adb([
@@ -477,13 +497,14 @@ test(backgroundCaseName, async ({ baseURL }) => {
           stage = "DIAGNOSTIC_COLD_LAUNCH";
           await adb(["shell", "am", "start", "-W", "-n", `${pkg}/.LandfallActivity`]);
           stage = "DIAGNOSTIC_COLD_ATTACH";
-          let returned = await attach(false);
           const coldDeadline = Date.now() + 45000;
+          let returned = await attach(false, coldDeadline);
           let coldReady = false;
           while (Date.now() < coldDeadline) {
             if (returned.isClosed()) {
               coldLaunchReattachments++;
-              returned = await attach(false);
+              await delay(250);
+              returned = await attach(false, coldDeadline);
               continue;
             }
             try {
@@ -503,7 +524,8 @@ test(backgroundCaseName, async ({ baseURL }) => {
               )
                 throw error;
               coldLaunchReattachments++;
-              returned = await attach(false);
+              await delay(250);
+              returned = await attach(false, coldDeadline);
             }
           }
           if (!coldReady || returned.isClosed() || new URL(returned.url()).origin !== origin.origin)
@@ -981,6 +1003,7 @@ test(backgroundCaseName, async ({ baseURL }) => {
           cpuMeasurements,
           persistentSessionConfigured,
           coldLaunchReattachments,
+          webViewReattachments,
           coldDiagnosticWire,
           coldSession,
           noticeControls,
