@@ -1087,6 +1087,36 @@ export async function executeLandfallOsScenario(
   } finally {
     if (geofenceScenario) {
       let nativeDiagnostic: { stage: string; failure: string } | null = null;
+      let receiverDiagnostic: Record<string, number> | null = null;
+      try {
+        const raw = await adb([
+          "shell",
+          "run-as",
+          "com.voyagewright.landfall",
+          "cat",
+          "files/landfall-geofence-receiver-debug.json",
+        ]);
+        const keys = [
+          "received",
+          "permissionDenied",
+          "malformedOrError",
+          "unsupportedTransition",
+          "inactive",
+          "appendRejected",
+          "appended",
+          "notices",
+        ];
+        if (raw.length <= 1024) {
+          const value = JSON.parse(raw);
+          if (
+            Object.keys(value).length === keys.length &&
+            keys.every((key) => Number.isInteger(value[key]) && value[key] >= 0 && value[key] <= 100000)
+          )
+            receiverDiagnostic = Object.fromEntries(keys.map((key) => [key, value[key]]));
+        }
+      } catch {
+        /* Missing debug record is unobserved, not a fabricated zero stream. */
+      }
       try {
         const raw = await adb([
           "shell",
@@ -1126,7 +1156,13 @@ export async function executeLandfallOsScenario(
       await writeFile(
         file,
         JSON.stringify(
-          { controls: geofenceControls, locationSettings, nativeDiagnostic, physicalTimingProven: false },
+          {
+            controls: geofenceControls,
+            locationSettings,
+            nativeDiagnostic,
+            receiverDiagnostic,
+            physicalTimingProven: false,
+          },
           null,
           2,
         ),

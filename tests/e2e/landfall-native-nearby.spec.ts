@@ -12,6 +12,7 @@ import {
 import { labBinaryTool, labTool } from "../../scripts/landfall/device-lab/host";
 import { runLandfallAndroidRadioLab } from "../../scripts/landfall/device-lab/android-radio-run";
 import { deviceLabSourceIdentity } from "../../scripts/landfall/device-lab/source";
+import { nativeJournalOpeningTouch } from "../../src/landfall/device-lab/native-opening-control";
 import { boundedAndroidDriver as boundedDriver } from "../../scripts/landfall/device-lab/android-driver";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { closureAccount, closureVoyage, openClosureMap } from "./fixtures/landfall-closure";
@@ -236,7 +237,16 @@ test("real native Journal pairing returns untrusted hints and background clears 
             await expect(open).toBeVisible();
             await expect(open).toContainText("Open the journal");
             try {
-              await open.tap({ noWaitAfter: true, timeout: 10000 });
+              // Use a normal OS touch from the observed accessibility control.
+              // This is before any pairing code or native evidence acquisition.
+              const dump = "/data/local/tmp/landfall-public-opening.xml";
+              try {
+                await adb(serial, ["shell", "uiautomator", "dump", dump]);
+                const target = nativeJournalOpeningTouch(await adb(serial, ["shell", "cat", dump]));
+                await adb(serial, ["shell", "input", "tap", String(target.x), String(target.y)]);
+              } finally {
+                await adb(serial, ["shell", "rm", "-f", dump]);
+              }
             } catch (error) {
               // A timed-out click may have already started the opening.
               // Continue only if that real transition is visible.
@@ -422,13 +432,15 @@ test("real native Journal pairing returns untrusted hints and background clears 
           waitingForLocator: /waiting for (?:locator|getByRole)|waiting for.*element/i.test(message),
         };
         failureKind =
-          error instanceof Error && /timeout|timed out/i.test(error.message)
-            ? "TIMEOUT"
-            : error instanceof Error && /cancelled/i.test(error.message)
-              ? "OWNER_CANCELLED"
-              : error instanceof Error && /expect|assert/i.test(error.message)
-                ? "ASSERTION"
-                : "NATIVE_OPERATION_FAILED";
+          error instanceof Error && /^NATIVE_OPENING_[A-Z_]{1,100}$/.test(error.message)
+            ? error.message
+            : error instanceof Error && /timeout|timed out/i.test(error.message)
+              ? "TIMEOUT"
+              : error instanceof Error && /cancelled/i.test(error.message)
+                ? "OWNER_CANCELLED"
+                : error instanceof Error && /expect|assert/i.test(error.message)
+                  ? "ASSERTION"
+                  : "NATIVE_OPERATION_FAILED";
         const page = pages.at(-1);
         if (page) {
           failedPageState = {

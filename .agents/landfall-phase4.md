@@ -1079,3 +1079,24 @@ fresh region install/integrity/remove/cache growth browser measurements. No actu
 new measurements or performance acceptance claimed before hosted runs.
 79e48 geo37191099712 dispatch1791104805261 and Journal37191120451
 dispatch1791104829074 active; journal uses canonical selection closure/low-resource.
+
+All above runs harvested: Android37190933685 SUCCESS18/11native tests; Apple
+37190937839 SUCCESS2894/12pass1skip/perf49.26–75.43ms33,704–33,712bytes;
+browser37191302966 SUCCESS45/14cases/newoperation metrics. Geo37191099712 FAIL19:
+actualOSaccuracy DISABLED→ENABLED thenREGISTERED/NONE, no wake hint in180sec.
+Journal37191120451 FAIL45 firstopening, nextobservedOSaccessibility normaltouch.
+2643/2644 broad unitPASS; native-only scenario inclusion caused provider wrapper
+failure (159pass/0fail/1NOT_CONFIGURED). Default targetselection+explicitunsupported
+fix and openingbounds tests6focusedPASS. Next16.3.8/eslint matched upgrade installed;
+critical auditfinding removed, transitive/directremainingreview ongoing. No mainline
+qualification/closure/catalogpromotion. Keep source-bound final full matrix pending.
+
+Dependency remediation resolves Next16.3.8, Sharp0.35.5, Vitest4.1.11 and shared
+PostCSS8.5.28; npm ls verifies the actual patched tree. Audit0critical/9high;
+residual Bridgewatch runtime and trusted ESLint/Prisma tooling chains are recorded
+in design, without force downgrades or a zero-audit claim. Sharp named-type
+compatibility, TypeScript, changed-code lint, docs validation and9focused image/
+provider/opening testsPASS. Acceptance matrix refreshed with actual2685/0431/79e
+measurements and unresolved wake/Journal opening. Next freeze diagnostic candidate
+and rerun actual owned Android wake + first-party Journal OS touch. No qualification
+or catalog capability promotion yet.

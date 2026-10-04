@@ -27,10 +27,10 @@ fresh qualification before protected integration.
 | Released map/route/place guidance | First-party renderer and released views are preserved. Optimized browser run37187344378 passes13 cases including narrow/wide physical/virtual presentation and optional fallbacks. | Final candidate configured/unconfigured browser coverage and visual QA. |
 | Remote suggestions | Nominatim-compatible geocoding, OSRM routing and Open Elevation use server-only consented configuration, bounded requests, licensed summaries and authored fallback. Provider run37187347909 passes159 scenarios on each hosted Windows/Linux matrix. | Final source scenario matrix. Production service agreements, credentials, quota and endpoint operation are `NOT_CONFIGURED` unless actually supplied and verified. |
 | Signed offline regions | Server prepares only current authorized released chart/routes/first-party images. Ed25519, resource hashes, scoped AES-GCM storage and expiring leases gate use. Configured browser run37189971931 on9a355f07 passes preview, interrupted download, verified resume, signed-region offline image decode, corrupt-resource rejection after reload and local removal through real first-party API/UI. Its key exists only in the synthetic runner process. | Final source qualification. Deployment key/signing availability and physical restart remain separate. |
-| Background geofence wake | Native OS registration/removal and encrypted bounded hint journals; fresh foreground evidence still required. Replacement fails closed when old OS removal fails. Latest run37189975707 identifies ADD_FAILED / NOT_AVAILABLE. | Actual owned-emulator location-service configuration investigation and wake rerun remain local work. This is `EXECUTION_FAILED`, not completed wake. Registered-region reboot and notification tap proof remain open. |
+| Background geofence wake | Native OS registration/removal and encrypted bounded hint journals; fresh foreground evidence still required. Replacement fails closed when old OS removal fails. Run37191099712 on79e48cd4 observes disabled OS Location Accuracy, enables the actual owned-emulator toggle and obtains REGISTERED/NONE. | No hint arrives during the180second input window. Debug-only finite receiver counters now distinguish actual OS delivery from receiver rejection; their hosted rerun remains local work. Registered-region reboot and notification tap proof remain open. |
 | Notification return | Opaque authenticated encrypted actor/session/version/expiry claim; fresh sign-in, membership and current session status checked by server. Navigation only. | Actual OS notice/tap with real first-party return and revoked/expired access cases. Shared signing configuration is a documented coupling, not an independent kill switch. |
 | BLE / iBeacon / Eddystone UID | Deliberate bounded scan, native salted peer identifiers, strict fresh observations and no arrival authority. Native unusable RSSI is explicit null/UNKNOWN, not fabricated strength or distance. Run37189979518 on9a355f07 passes all three protocol scenarios through actual native callbacks, with zero canonical writes and cleanup PASS. | Final source/profile qualification. Physical beacons/RF and authenticated peer identity remain required separately. |
-| UWB / Nearby Interaction | Bounded native session negotiation and first-party same-account ephemeral pairing. Simulator radio run37168243966 reports actual untrusted UWB observations on both Android devices without canonical writes. | First-party native Journal run37188689765 opens/maps both devices but fails pairing. Native session integration remains local work, not a field gate. Real RF accuracy, pose and authenticated peer identity remain unproved. |
+| UWB / Nearby Interaction | Bounded native session negotiation and first-party same-account ephemeral pairing. Simulator radio run37168243966 reports actual untrusted UWB observations on both Android devices without canonical writes. | Latest first-party native Journal run37191120451 fails its first opening interaction before pairing begins. An observed OS-accessibility control and normal OS touch now replace that harness interaction; actual tools/map/pairing/native reports remain mandatory. Real RF accuracy, pose and authenticated peer identity remain unproved. |
 | QR / NFC installation identity | Signed scoped tokens are identity/context, not proof of physical arrival. CameraX/ML Kit and native NFC reader are deliberate bounded acquisition. QR case in run37189975707 on9a355f07 passes real imagefile-camera decoding and signature verification: one frame, one decode, no decoder errors. Physical presence remains NOT_PROVEN and canComplete false. | Final profile qualification. NFC radio and physical installation acquisition require hardware. No decoded JavaScript injection qualifies as camera proof. |
 | Motion / orientation / heading / barometer | Optional sensor hints with uncertainty and lifecycle/power checks; none independently confirms floor, coordinates or arrival. | Final actual Android sensor/profile matrix and measured overhead. Real indoor/multifloor calibration and battery/thermal behavior require devices/field evidence. |
 | Creator / Drydock / Captain / accessibility | Existing authored policies, canonical previews and readable guidance remain; unsupported optional capabilities degrade explicitly. Browser mobile cases have run. | Final source regression and rendered verification; physical assistive-technology and owner usability acceptance remain external. |
@@ -70,15 +70,24 @@ Apple run37187691206 on9dfdfd93 measures real isolated authority count424ms firs
 in the evidence set. Android prior reboot observations were30,992ms and25,598ms;
 those cases did not register a geofence and cannot prove region reboot recovery.
 
-Configured region browser run37189971931 measures preparation224.28ms, verified
-resume141.56ms and offline image restoration291.17ms under preliminary15-second
-per-operation bounds. All14 optimized browser cases pass; canonical writes remain
-zero. These are single samples. New native sensor CPU/PSS and Apple encrypted-lease
-clock/CPU/memory instrumentation are implemented but actual execution is pending. Final
-package preparation/install/integrity latency, first native fix, suspend/resume,
-notification return, sensor CPU/memory overhead, native storage/cache growth and
-larger-context budgets still need measurements. Physical battery drain, thermal
-and OEM scheduling remain device/field gates. No performance closure is claimed.
+Configured region browser run37191302966 on04311162 measures preparation225.20ms,
+resume163.11ms, offline restoration274.81ms, corrupt rejection228.79ms, verified
+installation148.92ms and removal179.57ms under preliminary15-second operation
+bounds. All14 optimized cases pass with zero canonical writes. Verified resources
+total5,576bytes; whole-origin usage grows from3,830,710to5,865,625bytes.
+
+Android run37190933685 on2685ee0f passes11 instrumentation tests. Three real sensor
+intervals report159/9/6process CPU milliseconds,59,826/54,597/54,391KiB PSS and
+20/23/24callbacks, with stop verified. This unconfigured-Activity process measurement
+does not establish full-Journal RAM or physical energy. Apple run37190937839 passes
+12 XCTest tests and one unsupported-hardware skip. Four observed encrypted-lease
+batches (warmup plus three configured iterations) take49.26–75.43ms and store
+33,704–33,712bytes for eight4KiB records. Actual CPU/memory metrics remain in xcresult.
+
+These are observed samples rather than percentiles. Final profile/action budgets,
+first native fix, suspend/resume and notification return still need measurement.
+Physical battery drain, thermal and OEM scheduling remain device/field gates.
+No performance closure is claimed.
 
 ## External-gate ledger
 
@@ -91,7 +100,7 @@ and OEM scheduling remain device/field gates. No performance closure is claimed.
 | Native signing/distribution and production deployment | Candidate builds and unsigned manifest analysis; no deployed native availability claim. | Release owner qualifies signing, package identity, store/distribution, origin and update/rollback. Unsigned lab builds are not a public release. |
 | Live Watchglass | Intentional `NOT_CONFIGURED` boundary and contextual interface only. | A separately governed recognition integration would require its own authority and evidence. Phase4 does not introduce a recognition engine or Phase5. |
 
-Unresolved first-party pairing, OS geofence registration,
+Unresolved first-party pairing, OS geofence wake delivery,
 final matrix/performance/security checks,
 documentation integration and protected closure are **local work**. They are not
 external gates. Completion requires finishing that work, ordinary exact-candidate

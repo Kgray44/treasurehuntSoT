@@ -1272,3 +1272,60 @@ operation bound. It records the declared verified bytes (maximum8MiB) and whole
 synthetic-origin storage growth (preliminary64MiB gross bound). Whole-origin quota
 estimates include browser bookkeeping and are not native RAM or exact encrypted
 region storage. Actual hosted execution of these additions remains pending.
+
+Run37190933685 on2685ee0f passes11 Android instrumentation tests and the GPS
+scenario. Three real sensor intervals report159/9/6process CPU milliseconds,
+PSS59,826/54,597/54,391KiB and20/23/24callbacks, with stop verified. Apple
+run37190937839 passes12 XCTest tests and one unsupported-hardware skip plus
+virtual offline reconciliation. The native lease attachment contains four
+observed batches (XCTest warmup plus three configured iterations),49.26–75.43ms
+and33,704–33,712encrypted bytes per eight-record batch. Native CPU/memory metrics
+are collected in the source-bound xcresult; physical energy remains unproved.
+
+Optimized browser run37191302966 on04311162 passes14cases. Preparation225.20ms,
+resume163.11ms, offline restore274.81ms, corrupt rejection228.79ms, fresh verified
+installation148.92ms and removal179.57ms all meet the15second bound. Verified
+resource bytes are5,576; whole-origin usage rises from3,830,710to5,865,625bytes.
+No GPS or canonical event is produced. The exact tracked-source git archive on
+04311162 passes the private-content scanner. The local checkout scan separately
+flags retained generated build artifacts, which are preserved rather than deleted
+or reclassified as source. Final clean hosted source qualification remains required.
+
+Geofence run37191099712 on79e48cd4 observes the owned emulator's Location Accuracy
+disabled, enables that actual toggle through OS UI and obtains REGISTERED/NONE.
+No wake hint arrives during the180second input window; backgroundResult assertion
+fails and cleanup passes. Next receiver diagnostics distinguish actual OS delivery,
+permission/error/inactive/rejected append, accepted hint and notice counts. They
+retain no coordinates, handles or native payloads and never create a callback.
+First-party Journal run37191120451 still fails at the opening interaction. The
+next harness uses one observed enabled source opening control from OS accessibility
+and a normal OS touch; real tools/map/pairing/reports and stop remain mandatory.
+
+The broad unit run on04311162 passes2,643of2,644tests: the provider-corpus wrapper
+incorrectly expects an Android-only geofence scenario to pass provider simulation.
+Default/all selection now follows declared target support; an explicit incompatible
+case remains UNSUPPORTED with null canonical events. The corrected provider wrapper
+and strict native-opening target tests pass6focused cases. Final frozen regression
+is still required.
+
+The dependency audit identifies critical advisories in inheritedNext16.2.10;
+the candidate upgradesNext and its ESLint config to16.3.8, retaining Node compatibility.
+The [Windows RCE advisory](https://github.com/vercel/next.js/security/advisories/GHSA-p293-qw3h-jr36)
+requires upgrading affected Windows deployments. Remaining dependency findings,
+locked transitive remediation and final build/browser proof are still under review.
+
+The compatible security update also pins Sharp0.35.5 and Vitest4.1.11 and overrides
+PostCSS8.5.28 across the workspace. Actual installed Next/Tailwind/Vite dependencies
+all resolve to that patched PostCSS; Sharp's named type exports replace its removed
+namespace types without changing bounded raster validation. The refreshed npm audit
+reports zero critical and nine high findings. This is not a clean dependency audit.
+Eight findings are inherited ESLint glob/brace and Prisma configuration dependency
+chains: deeply recursive trusted build patterns/configuration can exhaust the host
+stack. ESLint root patterns and Prisma configuration are repository-controlled,
+not Landfall request/provider inputs. npm's suggested force fixes downgrade Next's
+ESLint config or Prisma and are not accepted as safe remediation. The remaining
+finding is the separately governed Bridgewatch workspace's @fastify/static8.3.0,
+whose URL authorization/path advisories remain an explicit Bridgewatch-owner repair
+requirement. Landfall does not use that server as its native/provider origin. Final
+optimized build/browser and exact-candidate regression still must pass after these
+updates; no production deployment or independent security certification is claimed.

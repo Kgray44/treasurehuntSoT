@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import sharp from "sharp";
+import sharp, { type Metadata, type OutputInfo } from "sharp";
 import { protectedMediaFailure } from "./contracts";
 
 export const protectedMediaRasterPolicyV1 = "sealed-hold-public-image-v1" as const;
@@ -40,7 +40,7 @@ const checksum = (value: Buffer) => createHash("sha256").update(value).digest("h
 export async function buildSanitizedRasterDerivatives(input: { bytes: Buffer; declaredMediaType: string }) {
   if (!input.bytes.length || input.bytes.length > maximumBytes)
     throw protectedMediaFailure("PROTECTED_MEDIA_IMAGE_TOO_LARGE");
-  let metadata: sharp.Metadata;
+  let metadata: Metadata;
   try {
     metadata = await sharp(input.bytes, { limitInputPixels: maximumPixels, failOn: "warning" }).metadata();
   } catch {
@@ -63,7 +63,7 @@ export async function buildSanitizedRasterDerivatives(input: { bytes: Buffer; de
     limit: number,
     quality: number,
   ): Promise<SanitizedRasterDerivative> => {
-    let encoded: { data: Buffer; info: sharp.OutputInfo };
+    let encoded: { data: Buffer; info: OutputInfo };
     try {
       // Metadata is never reattached. rotate() materializes EXIF orientation before WebP encoding.
       encoded = await sharp(input.bytes, { limitInputPixels: maximumPixels, failOn: "warning" })

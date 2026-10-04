@@ -27,8 +27,13 @@ describe("Sounding Line consumes canonical Device Lab provider evidence", () => 
     expect(relative).not.toMatch(/^\.\./);
     expect(path.isAbsolute(relative)).toBe(false);
     expect(summary.failed).toBe(0);
-    expect(summary.passed).toBe(landfallDeviceScenarios().length);
-    for (const scenario of landfallDeviceScenarios()) {
+    const providerScenarios = landfallDeviceScenarios().filter((scenario) =>
+      scenario.targets.includes("provider-simulation"),
+    );
+    expect(summary.passed).toBe(providerScenarios.length);
+    expect(summary.total).toBe(providerScenarios.length);
+    expect(summary.notConfigured).toBe(0);
+    for (const scenario of providerScenarios) {
       const receipt: DeviceLabReceipt = JSON.parse(
         await readFile(path.join(summary.artifactDirectory, `${scenario.id}.json`), "utf8"),
       );
@@ -55,6 +60,48 @@ describe("Sounding Line consumes canonical Device Lab provider evidence", () => 
         expect(receipt.canonicalAuthority).toBe("ONE_VOYAGE_REAL_SQLITE");
     }
   }, 180_000);
+
+  it("reports an explicitly requested OS-only case as unsupported without promoting provider simulation", async () => {
+    const { stdout } = await promisify(execFile)(
+      process.execPath,
+      [
+        "--import",
+        "tsx",
+        "scripts/landfall/device-lab/run.ts",
+        "--platform",
+        "provider",
+        "--scenario",
+        "geofence-native-background-wake",
+      ],
+      {
+        cwd: process.cwd(),
+        windowsHide: true,
+        timeout: 30000,
+        env: { ...process.env, DATABASE_URL: "file:UNBOUND_DEVICE_LAB" },
+      },
+    ).catch((error) => {
+      if (error.code !== 2 || typeof error.stdout !== "string") throw error;
+      return { stdout: error.stdout };
+    });
+    const summary = JSON.parse(stdout);
+    expect(summary).toMatchObject({ total: 1, passed: 0, failed: 0, unsupported: 1, notConfigured: 0 });
+    const receipt: DeviceLabReceipt = JSON.parse(
+      await readFile(path.join(summary.artifactDirectory, "geofence-native-background-wake.json"), "utf8"),
+    );
+    validateDeviceLabFidelity(receipt);
+    expect(receipt).toMatchObject({
+      result: "UNSUPPORTED",
+      evidenceClass: "UNSUPPORTED_IN_CURRENT_LAB",
+      canonicalProgressionEvents: null,
+      cleanup: { result: "PASS", ownedResources: [], remainingResources: [] },
+    });
+    expect(
+      receipt.steps.every(
+        (step) => step.state === "UNSUPPORTED" && step.reason === "SCENARIO_TARGET_OR_PROFILE_UNSUPPORTED",
+      ),
+    ).toBe(true);
+    expect(receipt.externalRequirements).not.toContain("NATIVE_EXECUTION_BACKEND_REQUIRED");
+  }, 40000);
 
   it.each(process.platform === "win32" ? (["disconnect"] as const) : (["disconnect", "terminate"] as const))(
     "removes the owned authority database after caller %s without a cleanup request",

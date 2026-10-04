@@ -56,13 +56,15 @@ async function main() {
   const scenarios =
     options.scenario && options.scenario !== "all"
       ? options.scenario.split(",").map((id) => landfallDeviceScenario(id))
-      : landfallDeviceScenarios();
+      : landfallDeviceScenarios().filter((scenario) => scenario.targets.includes(target));
   const { sourceSha, sourceTree, dirty, sourceFingerprint } = await deviceLabSourceIdentity();
   const receipts: DeviceLabReceipt[] = [];
   for (const scenario of scenarios) {
     const startedAt = new Date().toISOString();
     const authority =
-      target === "provider-simulation" && scenario.canonicalAuthority === "ONE_VOYAGE"
+      target === "provider-simulation" &&
+      scenario.targets.includes(target) &&
+      scenario.canonicalAuthority === "ONE_VOYAGE"
         ? await startDeviceLabAuthority(path.join(destination, scenario.id, "authority"), scenario.worldspace)
         : null;
     const executor = new LandfallProviderScenarioExecutor(scenario, authority ?? undefined);
@@ -96,7 +98,9 @@ async function main() {
         : result.steps.some((step) => step.state === "UNSUPPORTED")
           ? "UNSUPPORTED"
           : "PASS"
-      : "NOT_CONFIGURED";
+      : supported
+        ? "NOT_CONFIGURED"
+        : "UNSUPPORTED";
     const receipt: DeviceLabReceipt = {
       version: 1,
       scenarioId: scenario.id,
@@ -150,7 +154,7 @@ async function main() {
           index,
           action: step.action.type,
           state: "UNSUPPORTED" as const,
-          reason: "NATIVE_BACKEND_NOT_CONFIGURED",
+          reason: supported ? "NATIVE_BACKEND_NOT_CONFIGURED" : "SCENARIO_TARGET_OR_PROFILE_UNSUPPORTED",
         })),
       canonicalProgressionEvents: result?.canonicalProgressionEvents ?? null,
       ...(result?.canonicalProgressionEvents !== null && result?.canonicalProgressionEvents !== undefined
