@@ -40,8 +40,12 @@ export async function executeLandfallOsScenario(
   const root = process.cwd();
   const cameraScenario = scenario.id === "qr-native-camera-valid";
   const appleNoticeScenario =
-    scenario.id === "apple-native-notification-background-return" && target === "ios-simulator";
-  const geofenceScenario = scenario.id === "geofence-native-background-wake" || appleNoticeScenario;
+    ["apple-native-notification-background-return", "apple-native-notification-permission-denied"].includes(
+      scenario.id,
+    ) && target === "ios-simulator";
+  const geofenceScenario =
+    scenario.id === "geofence-native-background-wake" ||
+    (appleNoticeScenario && scenario.id === "apple-native-notification-background-return");
   const appleNoticeNonce = appleNoticeScenario ? randomBytes(32).toString("base64url") : null;
   let appleNoticeReturnObserved = false;
   let appleNoticeOpenRequested = false;
@@ -1465,7 +1469,12 @@ export async function executeLandfallOsScenario(
           {
             version: 1,
             sourceClass: "ACTUAL_APPLE_NOTIFICATION_UI_AND_NATIVE_HANDOFF",
-            permissionUiObserved: osResults.get(1)?.state === "PASS",
+            permissionUiObserved:
+              osResults.get(
+                scenario.timeline.findIndex(
+                  (step) => step.action.type === "NOTIFICATION" && step.action.operation === "DELIVER",
+                ),
+              )?.state === "PASS",
             osActions: [...osResults.values()],
             noticeUiDiagnostic: appleNoticeUiDiagnostic,
             permissionDiagnostic,

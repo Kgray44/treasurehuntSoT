@@ -53,6 +53,21 @@ describe("canonical Device Lab scenarios", () => {
       expect(locations[0].coordinate.worldspaceId).toBe(locations[1].coordinate.worldspaceId);
     }
   });
+  it("cannot promote a simulated notification decision into actual Apple refusal evidence", async () => {
+    const scenario = landfallDeviceScenario("apple-native-notification-permission-denied");
+    expect(scenario.targets).toEqual(["ios-simulator"]);
+    expect(scenario.timeline[0].action).toEqual({
+      type: "NOTIFICATION",
+      operation: "DELIVER",
+      permissionDecision: "DENIED",
+    });
+    expect(scenario.timeline.some((step) => step.action.type === "LOCATION" || step.action.type === "RECONCILE")).toBe(
+      false,
+    );
+    const logical = await new LandfallProviderScenarioExecutor(scenario).run();
+    expect(logical.steps[0].state).toBe("UNSUPPORTED");
+    expect(logical.steps.some((step) => step.state === "FAIL")).toBe(true);
+  });
   it("keeps OS geofence delivery separate from provider callbacks and progression", async () => {
     const scenario = landfallDeviceScenario("geofence-native-background-wake");
     expect(scenario.targets).toEqual(["android-emulator", "ios-simulator"]);

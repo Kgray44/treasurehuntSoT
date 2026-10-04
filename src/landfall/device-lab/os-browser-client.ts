@@ -141,6 +141,7 @@ async function main() {
   let powerProfile = "SUSPENDED";
   let tokenState = "NONE";
   let backgroundResult = "NONE";
+  let notificationState = "NONE";
   let geofenceHandle: string | null = null;
   const receiveWake = (event: Event) => {
     const value = (event as CustomEvent).detail;
@@ -373,6 +374,7 @@ async function main() {
           sensorState,
           tokenState,
           backgroundResult,
+          notificationState,
         };
         if (!(action.field in observed)) {
           state = "UNSUPPORTED";
@@ -381,10 +383,14 @@ async function main() {
       } else if (
         action.type === "NOTIFICATION" &&
         action.operation === "DELIVER" &&
-        scenario.scenarioId === "apple-native-notification-background-return"
+        ["apple-native-notification-background-return", "apple-native-notification-permission-denied"].includes(
+          scenario.scenarioId,
+        )
       ) {
         const reply = (await landfallNativeRequest("NOTIFICATION_PERMISSION")) as { state?: string };
-        if (reply?.state !== "GRANTED") throw new Error("NATIVE_NOTIFICATION_PERMISSION_NOT_GRANTED");
+        const expected = action.permissionDecision ?? "GRANTED";
+        if (reply?.state !== expected) throw new Error("NATIVE_NOTIFICATION_PERMISSION_DECISION_MISMATCH");
+        notificationState = reply.state;
       } else if (action.type === "NATIVE_GEOFENCE") {
         if (world.kind !== "PHYSICAL" || action.operation === "ENTER") {
           state = "UNSUPPORTED";

@@ -120,7 +120,7 @@ jobs:
       - run: brew install xcodegen
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
       - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts
-      - run: npm run landfall:device-lab -- --platform ios --scenario apple-native-notification-background-return
+      - run: npm run landfall:device-lab -- --platform ios --scenario apple-native-notification-background-return,apple-native-notification-permission-denied
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -116,8 +116,9 @@ final class NativeLifecycleTests: XCTestCase {
                 var result="FAIL"
                 var noticeDiagnostic:[String:Any]=[:]
                 if action["operation"] as? String == "DELIVER" {
-                    let allow=springboard.alerts.buttons.matching(identifier:"Allow")
-                    if allow.firstMatch.waitForExistence(timeout:20), allow.count == 1 {allow.firstMatch.tap();result="PASS"}
+                    let denied=action["permissionDecision"] as? String == "DENIED"
+                    let decision=denied ? springboard.alerts.buttons.matching(NSPredicate(format:"label == %@ OR label == %@","Don't Allow","Don’t Allow")) : springboard.alerts.buttons.matching(identifier:"Allow")
+                    if decision.firstMatch.waitForExistence(timeout:20),decision.count == 1 {decision.firstMatch.tap();result="PASS"}
                 } else if action["operation"] as? String == "OPEN" {
                     // Open Notification Center and tap only the one observed generic
                     // Landfall notice. Never activate a PendingIntent/delegate directly.

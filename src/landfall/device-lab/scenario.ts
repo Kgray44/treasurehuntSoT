@@ -170,6 +170,7 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
   z.strictObject({
     type: z.literal("NOTIFICATION"),
     operation: z.enum(["DELIVER", "OPEN", "DUPLICATE", "EXPIRE", "REVOKE_SESSION", "COMPLETE_SESSION"]),
+    permissionDecision: z.enum(["GRANTED", "DENIED"]).optional(),
   }),
   z.strictObject({
     type: z.literal("RECONCILE"),

@@ -612,6 +612,9 @@ export class LandfallProviderScenarioExecutor {
       return true;
     }
     if (action.type === "NOTIFICATION") {
+      // A consent decision requires actual OS UI and the native callback;
+      // logical notification delivery cannot attest to permission refusal.
+      if (action.permissionDecision !== undefined) return false;
       const current = {
         signedIn: true,
         membershipActive: action.operation !== "REVOKE_SESSION",

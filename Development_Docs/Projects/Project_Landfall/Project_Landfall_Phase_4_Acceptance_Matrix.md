@@ -42,6 +42,17 @@ search-result presence nor a synthesized tap is acceptance.
 The current focused batch **37234626584 on `e97c3713`** executes this alternative
 native search route with all presentation, restart and notice gates intact.
 
+The additive Apple notification review also requires actual consent refusal.
+The new `apple-native-notification-permission-denied` case taps the real prompt's
+decline control and requires the production native callback to report `DENIED`.
+It asserts zero physical acquisition starts, completion requests and canonical
+events, then clears native state. A provider simulation explicitly reports this
+decision unsupported; UI acknowledgment cannot supply the native decision. The
+permanent primary-phone notification job includes positive handoff and refusal.
+Actual refusal execution remains pending. Its34local guard tests across two
+files, TypeScript and lint pass on fresh owned SQLite; full regression will be
+refreshed because the lab source/test trees changed.
+
 Current clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
 owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting
 (244 files), lint (218 files, zero errors), TypeScript and exact tracked-source

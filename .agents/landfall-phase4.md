@@ -94,6 +94,12 @@ It combines presentationbuild+restart/notice. No duplicate noticejob. Stillmanda
 Motionpage/settingreadback/restore andactualnativeforeground/client/canonical.
 Exact90trackedarchiveprivacy0/6, SHA256
 af945a740bed7a4027927c2ed1d98d08150445805664ede1d24bbe0d4dca7662.
+Apple notification addendum review adds actualpermissionrefusal case
+apple-native-notification-permission-denied. RealdeclineUI +productionDENIED
+callback mandatory; no physical acquisition/progression, nativeclear/cleanup.
+Provider simulation returnsUNSUPPORTED. Permanent primarynoticejob includes
+positive+refusal onceperclosure.34localguards/2files freshSQLite,types/lintPASS.
+Actualrefusal pending; labsource/testtreeschanged, freshfullunitreceiptneeded.
 Next: finish/harvest this native recheck, actual-step/canonical/cleanup inspection,
 final docs/performance/privacy/input comparisons, freeze, ordinary exact-candidate
 protected qualification, protected merge, landed smoke, separate protected

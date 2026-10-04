@@ -767,6 +767,26 @@ cases[cases.length - 1].timing = "WALL_CLOCK";
 cases[cases.length - 1].description =
   "Actual Apple notification permission UI, Core Location delegate-produced generic notice, SpringBoard notice tap and native same-origin return handoff. The synthetic nonce landing proves OS delivery/handoff only; production signed authorization is separately covered by shared and Android first-party tests. No callback injection, physical timing or canonical arrival claim.";
 
+scenario(
+  "apple-native-notification-permission-denied",
+  ["NOTIFICATION"],
+  [
+    { type: "NOTIFICATION", operation: "DELIVER", permissionDecision: "DENIED" },
+    assertion("notificationState", "DENIED"),
+    assertion("physicalAcquisitionStarts", 0),
+    assertion("completionRequests", 0),
+    assertion("canonicalProgressionEvents", 0),
+    { type: "NATIVE_GEOFENCE", operation: "CLEAR" },
+    assertion("backgroundResult", "NONE"),
+  ],
+  ["FIELD_ENVIRONMENT"],
+  "ONE_VOYAGE",
+);
+cases[cases.length - 1].targets = ["ios-simulator"];
+cases[cases.length - 1].timing = "WALL_CLOCK";
+cases[cases.length - 1].description =
+  "Actual Apple notification permission prompt refusal and production native DENIED callback, with no physical acquisition, progression or inferred permission from UI acknowledgment. Native clearing and owned cleanup remain required; no callback or permission-result injection.";
+
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);
 }

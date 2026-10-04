@@ -21,7 +21,20 @@ and cleanupPASS. Actual Settings hierarchy/video/event records retain both text-
 center taps and Accessibility still open. Recheck37233941482 on `a37ff45d` taps
 the unique actual `MOTION_TITLE` row outside its nested text control. It combines
 actual presentation gates with offline restart and Apple notification return;
-actual Motion page/readback/restoration and native handoff remain required. Prior full
+actual Motion page/readback/restoration and native handoff remain required.
+row recheck37233941482 remains FAIL18/1/1,4,510hashes/cleanupPASS: the actual
+trailing-gap tap lands correctly but Accessibility stays open. Current
+37234626584 on `e97c3713` tries Settings' own Reduce Motion search route while
+preserving the observed Motion page and switch readback/restoration gate.
+
+The new actual notification-refusal case complements positive consent/handoff.
+It requires both an actual decline tap and production native `DENIED` reply,
+zero acquisition/progression and native clear. Logical provider execution cannot
+certify the decision. The permanent closure notice job runs both cases once on
+the primary profile; actual refusal remains pending. Local34guards, types and
+lint pass; changed lab/test trees require a refreshed full-unit receipt.
+
+Prior full
 affected-profile run37228402022 remains FAIL17/18: compatibility9/9, primary8/9.
 Compatibility restart actually restores its encrypted lease and writes exactly
 one One Voyage event; raw locations are not retained and cleanup passes. Primary
