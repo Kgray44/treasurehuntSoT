@@ -8,76 +8,21 @@ last_reviewed: 2026-10-04
 
 # Current status
 
-Landfall Phase4 remains in development. Source0ba27caa passes478unit files /
-2,715tests on fresh owned SQLite, with unchanged input trees on7f36d94e.
-Selected formatting/lint, TypeScript and the earlier exact tracked-source privacy
-scanning pass. OriginalC8 optimized build/client privacy, browser53 and providers159
-per Windows/Linux host remain source-bound evidence with unchanged production
-web/dependency/schema inputs.
+Landfall Phase4 remains in development.
 
-Android acceptance includes80profile scenarios, eight radio cases, both native
-Journal pairs and both signed notice/reboot/revoked-membership flows. Original
-C8 failures remain failed; diagnostic rechecks do not establish a root cause.
-Unsigned package builds and release exclusion analysis pass. Physical hardware,
-RF, energy, signed distribution and production origin remain external.
+Accepted immutable profile receipts cover **Android80/80, radio8/8 and iOS27/27**. The missing primary Apple restart passes on source`7f36d94e`, run37236170919, with actual relaunch, restored encrypted lease, one canonical event and owned cleanup. Original failed whole-run conclusions remain unchanged.
 
-The original frozen Apple matrix remains23/27. A real final-fix throttle bug is corrected
-with bounded transient coalescing and consent/lifecycle cancellation. Focused
-primary wake and compatibility restart/wake runs pass; primary receipts confirm
-17XCTest passes/one unconfigured-driver skip, actual background/encrypted hints/foreground,
-canonical zero and cleanup. The subsequent full matrix finishes25/27, including
-tablet9/9. Affected-profile recheck on8e6e3e19 finishes17/18: compatibility9/9,
-primary8/9. Compatibility restart restores its encrypted lease and reconciles
-one canonical event; primary's bounded OS launch times out. Focused tablet input
-passes, including an actual bounded retry. Actual Apple notification permission
-now passes, while tap/foreground return remains unaccepted. Dark/large-text and
-orientation fallback pass; Reduce Motion navigation remains unaccepted. One
-primary batch37232748824 on90ef2d75 failed at Motion page navigation before
-either scenario ran. Recheck37233941482 on a37ff45d targets the observed native
-row and keeps all three acceptance boundaries mandatory. That search recheck
-also fails: actual Settings reports no Reduce Motion result. Current batch
-37236170919 on7f36d94e retains mandatory presentation in an independent job,
-using an older supported preinstalled runtime, while the latest-runtime companion
-job executes restart, notice return and actual notification refusal. Both jobs
-must pass for closure; companion success cannot substitute for presentation.
-Protected qualification, merge, landed proof,
-catalog promotion and formal closure remain pending.
+Actual Apple notification refusal passes all seven steps on source`b5050a4f`, run37238465789: the real decline control produces native DENIED, zero acquisition starts, zero completion requests, zero canonical events and native clear. Positive consent and actual region delivery also pass, but the notification tap fails to foreground the app; the observed title is unique while Open buttons are ambiguous. A bounded actual title-tap correction is pending in run37240931942 on`80a59acc`.
 
-Earlier original-source Landfall Phase 4 evidence remains retained, with
-provider, browser, Android and hosted Apple evidence. Android guest reboot and
-native offline restart reconciliation pass. Actual QR camera decoding, three BLE
-protocols and Apple virtual offline reconciliation have passing hosted evidence.
-Actual Play services geofence delivery, encrypted wake hint storage and a generic
-notice pass with documented hosted FLP mock input and zero progression writes.
-The UWB/generic BLE/iBeacon/Eddystone matrix passes eight executions on low-memory
-phone provisioning. Corrected primary-phone radio run37210642366 passes all four
-scenarios on measured 3GiB guests. Correctly provisioned primary and low-resource
-Journal pairing each pass actual reports on both devices, native stop and cleanup.
-An actual signed first-party notice tap reauthorizes and returns to the current
-Journal. First-party native pairing passes with reports on both devices, verified
-stop and zero progression writes.
-Actual cold revoked-membership notice return now passes on both corrected phone
-profiles, with signed-in Library landing, native clear, zero progression writes
-and cleanup. Broad regression passes
-2,687 unit tests in474files on clean fb92d113 with fresh isolated SQLite,159 provider
-scenarios on each of Windows and Linux,53 retained
-Phase1–4 browser journeys and80 Android cases across four profiles. Apple primary
-and compatibility profiles each pass all eight scenarios; tablet restart passes
-separately with restored leases and one canonical event. The final three-profile
-source-bound matrix remains pending. Full background run37214774366 onfb92d113
-proves real notices, active Journal returns, same-guest reboot, boot registration
-and freshly denied Voyage access on both corrected phone profiles. Actual iOS Simulator
-region monitoring is also being exercised with OS location inputs and real
-background/foreground transitions; its capability and wake result remain pending.
-Separate direct
-cold-session diagnostics cannot qualify notification wake or return. Final
-exact-source qualification, protected integration and phase closure
-remain pending. Historical statements that Phase 4 is deferred describe the
-accepted Phase 3 baseline, not this unfinished candidate.
+Presentation run37240039375 on`af327ad5` passes aggregate19/0/1 on actual iOS26.5/iPhone17e: native18/0/1 and actual Settings Reduce Motion enable/readback/restoration1/0/0, with2,962hashed artifacts and owned cleanup. Visual review finds the landscape screenshot captured during rotation before text layout settled. This is **not final landscape readability acceptance**. Run37240931942 independently requires stable actual text bounds before capture. Earlier iOS26.2 failures remain failed; deployment target16.0 does not qualify every OS version.
 
-**Landfall Phase 3 is available on protected main:** Read the Ground adds aligned floor/site hierarchy, continuity-aware corridor guidance, optional foreground hints, region-gated natural landmark authored-view comparison and independent exact-object observations. Protected PR #673 passed exact-head local/hosted Sounding Line and landed tree verification. The [accepted capsule](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_Accepted_Capsule.md) records full-unit, retained browser, landed and evidence/catalog closure proof. Physical field quality, deployment and owner acceptance remain separate; Phase 4 is deferred.
+Fresh root regression on`b5050a4f` passes **478files/2715tests in192.468seconds**, with fresh owned SQLite and clean/unchanged source. Its tracked archive privacy scan reports zero violations/six classes, SHA256`71daa761fd03e4b170a54c7d171b2e32307e553d051c6b591eafee03f52d60fd`. Later native UI/transport changes require explicit input comparison and final exact-source privacy scanning.
 
-The physical/virtual v1.1 audit corrections are complete on protected main through PR #675, merge `64c780a0`. Exact-head hosted ordinary passed all nine obligations; the frozen suite passed 410 files / 2,364 tests and 39 production scenarios; landed smoke passed 29 files / 220 tests and five production scenarios. The [amendment record](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) retains exact candidate and acceptance identities. No Watchglass package or Phase 4 implementation is enabled.
+Protected qualification, merge, landed verification, evidence/catalog publication and formal closure remain pending. Signed distribution, production HTTPS origin, licensed provider configuration, physical radio/field/energy quality and assistive-device acceptance remain external gates. Apple nonce notice handoff does not prove production signed authorization; shared and actual Android first-party authorization receipts retain their separate scopes.
+
+Browser53 and provider159 per Windows/Linux host, optimized build/client privacy, native Android packages, first-party Journal pairing and signed notice/reboot/revoked-membership flows retain their immutable source-bound acceptance. Production web, Android, dependency and schema input comparisons must support retention. One Voyage remains the sole progression writer; physical and virtual Worldspaces remain distinct. Production providers without credentials/licensed configuration report NOT_CONFIGURED.
+
+Landfall Phases1–3 and the physical/virtual v1.1 audit are available on protected main through their accepted capsules and PRs673/675/676. Phase4 source has not yet been integrated.
 
 **Muster Refit:** the owner accepted the current design on 2026-09-12. Captain-only, Captain + Player, and Player views share one experience with persistent authorized Crew Chat, published-edition parchment, fixed room artwork and smooth options. Final local role, interaction, responsive/accessibility, production-build and migration checks passed. The accepted experience is integrated on protected main; final qualification and landed-tree checks passed. Only the Muster Refit area is MERGED; Refit V1 remains open.
 

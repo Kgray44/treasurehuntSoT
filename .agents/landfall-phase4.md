@@ -7,141 +7,15 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Current acceptance and remaining work
 
-Presentation run37236170919 on7f36d94e selects the actual preinstalled iOS26.2
-runtime and still fails18/1/1 at `LANDFALL_REDUCED_MOTION_SEARCH_UNAVAILABLE`.
-Its companion job remains independent and running. Current presentation driver
-retains XXXL portrait/landscape proof in the first native bundle (18passes),
-then sets and reads back normal LARGE text before a separate actual Settings
-Motion-button/switch test (one required pass). Both immutable component
-summaries and attachments must support aggregate19/0/at most one driver skip.
-The `ios-presentation` closure target runs this gate alone; companion cases
-are not repeated or waived. No protected qualification or closure yet.
+Accepted immutable profile receipts cover **Android80/80, radio8/8 and iOS27/27**. The missing primary Apple restart passes on source`7f36d94e`, run37236170919, with actual relaunch, restored encrypted lease, one canonical event and owned cleanup. Original failed whole-run conclusions remain unchanged.
 
-Source-bound regression8e6e3e1900102494892135d8ff53796adb50f4b1 passes478unit
-files/2714tests in214.59seconds, clean/unchanged owned detached qualification
-worktree and fresh SQLite. Format244/lint218(zero errors), TypeScript, docs,
-features sync/validate pass. Exact tracked archive privacy:0violations/6classes,
-SHA256bac5bb78b63626859a63179c76624988a440cc9dd2a568cec4a97ba13db0c06c.
-Schema, lock and production web trees remain unchanged from retained proof.
+Actual Apple notification refusal passes all seven steps on source`b5050a4f`, run37238465789: the real decline control produces native DENIED, zero acquisition starts, zero completion requests, zero canonical events and native clear. Positive consent and actual region delivery also pass, but the notification tap fails to foreground the app; the observed title is unique while Open buttons are ambiguous. A bounded actual title-tap correction is pending in run37240931942 on`80a59acc`.
 
-FrozenC8 run37219804462 remains FAIL,19773hashed artifacts/cleanupPASS.
-Accepted Android rechecks on01bab29bc complete compatibility20/20 plus12native
-instrumentation(37221706364), and primary/lowradio4/4each(37221708792).
-Total Android80profilecases/eightradiocases PASS. Actual first-party Journal
-pairs, signed notice/registered reboot/fresh membership denial and native clear
-pass onC8, with canonical0 and cleanup. NativeAndroid source unchanged since01bab.
-Browser53 and providers159eachWindows/Linux PASS onC8. Original failures remain.
+Presentation run37240039375 on`af327ad5` passes aggregate19/0/1 on actual iOS26.5/iPhone17e: native18/0/1 and actual Settings Reduce Motion enable/readback/restoration1/0/0, with2,962hashed artifacts and owned cleanup. Visual review finds the landscape screenshot captured during rotation before text layout settled. This is **not final landscape readability acceptance**. Run37240931942 independently requires stable actual text bounds before capture. Earlier iOS26.2 failures remain failed; deployment target16.0 does not qualify every OS version.
 
-Full iOS2654 run37224038483 finishes25/27: tablet9/9, primary8/9, compatibility8/9;
-18328hashed artifacts/cleanupPASS. Both failures are offline restart. Primary
-counts IPC times out31,488ms, followed by112ms successful cleanup count.
-Compatibility gets both native fixes/restores lease but UIKit relaunch117,815ms
-outlasts the90-second outbox. Keep expiry and authorization/write bounds intact.
-Current lab uses documented OS launch plus actual XCTest foreground/client/lease
-assertions; at most one fresh readonly count redispatch while same owned child
-is live. Six meaningful count guards pass. Full affected-profile recheck
-37228402022 on8e6e3e19 finishesFAIL17/18,11442hashes/cleanupPASS:
-compatibility9/9, primary8/9. Compatibility restart restores lease, canonicalone,
-no raw locations and cleanup. Primary termination/counts pass, but singleOSlaunch
-is killed15,075ms. Current launch removes redundant termination and allows30s;
-outbox90s/fresh authorization/actualforeground/client/lease/canonical remain.
+Fresh root regression on`b5050a4f` passes **478files/2715tests in192.468seconds**, with fresh owned SQLite and clean/unchanged source. Its tracked archive privacy scan reports zero violations/six classes, SHA256`71daa761fd03e4b170a54c7d171b2e32307e553d051c6b591eafee03f52d60fd`. Later native UI/transport changes require explicit input comparison and final exact-source privacy scanning.
 
-Focused4341 primary wake37223287847 and compatibility restart/wake37223293060
-PASS. Real Core Location delegate/background/foreground/encrypted hints/removal,
-canonicalzero and cleanup. Restart yields exactlyone canonical event.
-Native XCTest17PASS/one unconfigured-lab-driver skip; actual UI driver1PASS.
-Tabletinput37224452331 on80b8dbe4 PASS,4204hashes/cleanup, including actual first
-input deadline followed by bounded retry ACK, actual fixes and canonicalone.
-The input wrapper's12 guard tests PASS; ACK never substitutes for native proof.
-
-New locally required Apple notice case37226211477 onf791 FAIL at permission:
-LOCATION0PASS, client timeout37,518ms, canonical0/cleanupPASS,4392hashes.
-Passing UI tool does not override failed scenario. Native permission now replies
-on WebKit main queue; finite DEBUG stages/grant/thread booleans and OS actions
-are collected. Recheck37227624737 on18c2f4a0 FAIL at actual tap, not permission:
-permission UI/native grant/main-queue reply PASS; screenshot shows notice,
-4401hashes/cleanupPASS. Unique accessible-button/card selection and finite
-counts on86d2fdcc(37229444663) finishFAIL,4288hashes/cleanupPASS:
-buttonTitleCount2/staticTitleCount1/actualtaptrue, foregroundfalse/returnfalse.
-Current unique notice selection excludes clear/dismiss, at mosttwo actualtaps.
-Native return navigation dispatchesmainqueue; DEBUG-only stage/validity/thread/
-web-view booleans do not substitute for actual server/clientreturn.
-076ec806 transport37229411009 cancelled for unstaged path-casing edit;0artifacts/
-cleanupPASS, no acceptance. Actual return remains required.
-Case requires real permission UI, delegate-produced background notice,
-SpringBoard tap and native same-origin return. Synthetic nonce landing is OS
-handoff proof only; production signed authorization is separately shared/Android
-first-party coverage. No notice/delegate/handler/canonical injection.
-Permanent once-per-closure Apple notice job is wired; six rendered selection
-cases verify YAML/scope. Actual acceptance remains required; CI-only wiring
-does not require rerunning every simulator.
-
-Apple presentation first7f36204a run37229804897 FAIL:18PASS/1FAIL/1canonical
-unconfigured-driver skip; dark/AccessibilityXXXL and portrait/landscape fallback
-PASS, Reduce Motion switch selection FAIL.4294hashes/cleanupPASS. Bounded
-semantic switch/row search and failure attachment export on d8dcaa8e
-(37230795587) finishFAIL18/1/1,4365hashes/cleanupPASS. Actualscreenshot remains
-Accessibility afterMotiontexttap; current UI requires actualMotionnavigationbar
-beforeReduceMotion enable/readback/restore. Build passes an explicit
-presentation flag and requires at least19passes/at mostone expected skip. Current
-integer-count guard additionally rejects missing/malformed summary fields; it
-changes no actual valid-result behavior. Production return callback changes are
-notification-only; CoreLocation/coalescer/lease logic unchanged. Presentation proves unconfigured fallback/OS settings only;
-production Journal browser accessibility and physical assistive technology are
-separate. Full unit src/tests/lock/schema trees match8e6e3e19 exactly.
-
-DraftPR677 attached. No final ordinary product qualification dispatched.
-Primary batch90ef2d75, run37232748824, finishesFAIL atpresentationbuild:
-18PASS/1FAIL/1expectedskip,4298hashes/cleanupPASS. Motionpageunobserved;
-neitherrestart nornoticeexecutes. Actualhierarchy/video/eventrecords show both
-taps attextcenter162.17/422.17 andSettingsstillAccessibility. Current control
-tapsactualuniqueMOTION_TITLErow trailinggap outside nestedtextbutton.
-Rechecka37ff45d, run37233941482, finishesFAIL18/1/1,4510hashes/cleanupPASS;
-actualtouch320.3/328.83 landscorrectrowgap butAccessibilityremains.
-Currente97c3713 run37234626584, dispatchhosted-e97c3713b0f9-1791147896514,
-addsnativeSettingssearchforuniqueReduceMotionresult ifobservedrowdoesnotnavigate.
-It combines presentationbuild+restart/notice. No duplicate noticejob. Stillmandatory
-Motionpage/settingreadback/restore andactualnativeforeground/client/canonical.
-Exact90trackedarchiveprivacy0/6, SHA256
-af945a740bed7a4027927c2ed1d98d08150445805664ede1d24bbe0d4dca7662.
-Apple notification addendum review adds actualpermissionrefusal case
-apple-native-notification-permission-denied. RealdeclineUI +productionDENIED
-callback mandatory; no physical acquisition/progression, nativeclear/cleanup.
-Provider simulation returnsUNSUPPORTED. Permanent primarynoticejob includes
-positive+refusal onceperclosure.34localguards/2files freshSQLite,types/lintPASS.
-Actualrefusal pending; labsource/testtreeschanged, freshfullunitreceiptneeded.
-Freshfullroot0ba27caa9201dbddb3b6447023a2f5983229f0b2 PASS478files/2715tests,
-217.531s, ownedSQLite/cleanunchanged, rootunit-regression-a8b556561b984a03b9cbd345e244296a.
-E97searchrun37234626584 FAIL18/1/1,4300hashes/cleanupPASS: actualNoResults
-forReduceMotion. No scenariosexecute. AvailablepreinstallediOS26.2/26.4/26.5.
-Current CI separates mandatoryprimarypresentation(19passes/0fail/≤1expectedskip)
-onoldestsupportedpreinstalledruntime fromcompanion-only(17passes/0fail/≤1skip)
-onlatest. Two presentationtests explicitlyexcludedonlyfromcompanionbuild, with
-separatereceiptrequired. Overallclosure stillFAILifpresentationfails. No waived
-tests/unsupported relabeling/SDKinstall/acceptanceinference.
-Currentindependentbatch7f36d94edf23b196f576bb1b00a438e9136e05a4,
-run37236170919, dispatchhosted-7f36d94edf23-1791149251861; transport
-0fcb6c263897a5f8b84a5539300eb1bf4065e58f. Nativejob111535599747:
-restart+positive notice+actualrefusal. Presentationjob111535599907:
-full19 onoldestsupportedpreinstalledruntime. Wholeclosureacceptance requiresboth.
-Rootunitinputtrees match0ba exactly; no protectedqualificationdispatched.
-Next: finish/harvest this native recheck, actual-step/canonical/cleanup inspection,
-final docs/performance/privacy/input comparisons, freeze, ordinary exact-candidate
-protected qualification, protected merge, landed smoke, separate protected
-completion/evidence/catalog publication, landed verification and formal closure.
-Do not mark goal complete at a checkpoint. FT044 remains acceptedPhases1–3;
-only after completePhase4 acceptance promote completed capability on publication.
-
-One Voyage remains sole progression engine; PHYSICAL/VIRTUAL Worldspaces.
-No Phase5, Watchglass/game engine, Storytide, Figurehead, second writer, private
-fixtures or shared runtime mutation. Remote production credentials/licensing,
-physical devices/RF/energy/field/signing/deployment/owner acceptance are explicit
-external gates, distinct from available hostedmacOS proof. No physical claims.
-Protected-base fetch before freeze. Preserve immutable receipt original sources;
-compare actual affected inputs, never rebind or relabel failures.
-
-Automatic review rejected old AVD and disconnect SQLite cleanup; retain both,
-never alternate-delete. Primary dirty and user-owned processes remain preserved.
+Protected qualification, merge, landed verification, evidence/catalog publication and formal closure remain pending. Signed distribution, production HTTPS origin, licensed provider configuration, physical radio/field/energy quality and assistive-device acceptance remain external gates. Apple nonce notice handoff does not prove production signed authorization; shared and actual Android first-party authorization receipts retain their separate scopes.
 
 ## Work and qualification sequence
 

@@ -16,7 +16,21 @@ contains containment and recovery. The [Device Lab addendum](Project_Landfall_Ph
 controls evidence classification. Every source-changing candidate still needs
 fresh qualification before protected integration.
 
-## Implemented capability and evidence boundaries
+## Current acceptance checkpoint
+
+Accepted immutable profile receipts cover **Android80/80, radio8/8 and iOS27/27**. The missing primary Apple restart passes on source`7f36d94e`, run37236170919, with actual relaunch, restored encrypted lease, one canonical event and owned cleanup. Original failed whole-run conclusions remain unchanged.
+
+Actual Apple notification refusal passes all seven steps on source`b5050a4f`, run37238465789: the real decline control produces native DENIED, zero acquisition starts, zero completion requests, zero canonical events and native clear. Positive consent and actual region delivery also pass, but the notification tap fails to foreground the app; the observed title is unique while Open buttons are ambiguous. A bounded actual title-tap correction is pending in run37240931942 on`80a59acc`.
+
+Presentation run37240039375 on`af327ad5` passes aggregate19/0/1 on actual iOS26.5/iPhone17e: native18/0/1 and actual Settings Reduce Motion enable/readback/restoration1/0/0, with2,962hashed artifacts and owned cleanup. Visual review finds the landscape screenshot captured during rotation before text layout settled. This is **not final landscape readability acceptance**. Run37240931942 independently requires stable actual text bounds before capture. Earlier iOS26.2 failures remain failed; deployment target16.0 does not qualify every OS version.
+
+Fresh root regression on`b5050a4f` passes **478files/2715tests in192.468seconds**, with fresh owned SQLite and clean/unchanged source. Its tracked archive privacy scan reports zero violations/six classes, SHA256`71daa761fd03e4b170a54c7d171b2e32307e553d051c6b591eafee03f52d60fd`. Later native UI/transport changes require explicit input comparison and final exact-source privacy scanning.
+
+Protected qualification, merge, landed verification, evidence/catalog publication and formal closure remain pending. Signed distribution, production HTTPS origin, licensed provider configuration, physical radio/field/energy quality and assistive-device acceptance remain external gates. Apple nonce notice handoff does not prove production signed authorization; shared and actual Android first-party authorization receipts retain their separate scopes.
+
+## Chronological development evidence
+
+The following entries describe their original checkpoints. Current acceptance above governs remaining work.
 
 The previous primary Apple batch **37232748824 on `90ef2d75`** combines
 mandatory native presentation gates, offline restart and actual notification

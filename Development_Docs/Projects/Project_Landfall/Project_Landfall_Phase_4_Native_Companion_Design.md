@@ -15,29 +15,17 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Current acceptance checkpoint
 
-The refreshed `b5050a4f` root regression passes478files/2715tests in192.468seconds
-with fresh owned SQLite and clean/unchanged source. Source archive privacy passes
-zero violations/six classifications, SHA256
-`71daa761fd03e4b170a54c7d171b2e32307e553d051c6b591eafee03f52d60fd`.
-Accepted profile receipts now cover Android80/80, radio8/8 and iOS27/27, including
-source7f36d94e primary restart with restored lease, canonicalone and cleanup.
-Run37238465789 still executes focused positive/refused notification cases.
-Its independent presentation job fails at actual landscape geometry before the
-Motion test. Built Info.plist has no supported-orientation keys; both recorded
-images remain portrait. Current app configuration declares phone/tablet rotation
-and makes the unconfigured message scrollable at XXXL. These are pending actual
-presentation validation, not an accepted geometry claim or a qualification waiver.
+Accepted immutable profile receipts cover **Android80/80, radio8/8 and iOS27/27**. The missing primary Apple restart passes on source`7f36d94e`, run37236170919, with actual relaunch, restored encrypted lease, one canonical event and owned cleanup. Original failed whole-run conclusions remain unchanged.
 
-Current batch37236170919 on `7f36d94e` separates the companion scenarios from
-mandatory presentation. Latest-runtime native job111535599747 executes restart,
-positive notice handoff and actual permission refusal; presentation111535599907
-requires19passes on the oldest compatible preinstalled runtime. Neither source-
-bound companion17passes nor an OS search failure supplies presentation acceptance.
-Search run37234626584 remains FAIL18/1/1,4,300hashes/cleanupPASS, with an actual
-No Results screen and no scenario execution. Available host runtimes26.2/26.4
-permit variation without installing another SDK or declaring the gate external.
-The refreshed source0ba27caa root regression passes478files/2715tests in217.531s,
-fresh SQLite/cleanunchanged; source/test/package/Prisma trees match7f36d94e.
+Actual Apple notification refusal passes all seven steps on source`b5050a4f`, run37238465789: the real decline control produces native DENIED, zero acquisition starts, zero completion requests, zero canonical events and native clear. Positive consent and actual region delivery also pass, but the notification tap fails to foreground the app; the observed title is unique while Open buttons are ambiguous. A bounded actual title-tap correction is pending in run37240931942 on`80a59acc`.
+
+Presentation run37240039375 on`af327ad5` passes aggregate19/0/1 on actual iOS26.5/iPhone17e: native18/0/1 and actual Settings Reduce Motion enable/readback/restoration1/0/0, with2,962hashed artifacts and owned cleanup. Visual review finds the landscape screenshot captured during rotation before text layout settled. This is **not final landscape readability acceptance**. Run37240931942 independently requires stable actual text bounds before capture. Earlier iOS26.2 failures remain failed; deployment target16.0 does not qualify every OS version.
+
+Fresh root regression on`b5050a4f` passes **478files/2715tests in192.468seconds**, with fresh owned SQLite and clean/unchanged source. Its tracked archive privacy scan reports zero violations/six classes, SHA256`71daa761fd03e4b170a54c7d171b2e32307e553d051c6b591eafee03f52d60fd`. Later native UI/transport changes require explicit input comparison and final exact-source privacy scanning.
+
+Protected qualification, merge, landed verification, evidence/catalog publication and formal closure remain pending. Signed distribution, production HTTPS origin, licensed provider configuration, physical radio/field/energy quality and assistive-device acceptance remain external gates. Apple nonce notice handoff does not prove production signed authorization; shared and actual Android first-party authorization receipts retain their separate scopes.
+
+## Chronological development evidence
 
 Earlier failed presentation attempts follow with their original source identities.
 
