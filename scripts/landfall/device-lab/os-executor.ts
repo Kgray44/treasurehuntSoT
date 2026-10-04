@@ -1367,6 +1367,40 @@ export async function executeLandfallOsScenario(
       });
     }
     if (appleNoticeScenario) {
+      let permissionDiagnostic: {
+        stage: string;
+        granted: boolean;
+        callbackOnMain: boolean;
+        replyOnMain: boolean;
+      } | null = null;
+      try {
+        const container = (
+          await labTool(
+            "xcrun",
+            ["simctl", "get_app_container", ownedDevice!, "com.voyagewright.landfall", "data"],
+            15000,
+          )
+        ).trim();
+        if (!path.isAbsolute(container) || container.includes("\n")) throw new Error("OWNED_APP_CONTAINER_REQUIRED");
+        const value = JSON.parse(
+          await readFile(
+            path.join(container, "Library", "Application Support", "landfall-notification-debug.json"),
+            "utf8",
+          ),
+        );
+        if (
+          ["REQUESTED", "REPLIED"].includes(value.stage) &&
+          [value.granted, value.callbackOnMain, value.replyOnMain].every((field) => typeof field === "boolean")
+        )
+          permissionDiagnostic = {
+            stage: value.stage,
+            granted: value.granted,
+            callbackOnMain: value.callbackOnMain,
+            replyOnMain: value.replyOnMain,
+          };
+      } catch {
+        /* Missing debug evidence remains unknown. */
+      }
       const file = path.join(destination, "native-apple-notice-observation.json");
       await writeFile(
         file,
@@ -1374,9 +1408,9 @@ export async function executeLandfallOsScenario(
           {
             version: 1,
             sourceClass: "ACTUAL_APPLE_NOTIFICATION_UI_AND_NATIVE_HANDOFF",
-            permissionUiObserved: steps.some(
-              (step) => step.action === "NOTIFICATION" && step.index === 1 && step.state === "PASS",
-            ),
+            permissionUiObserved: osResults.get(1)?.state === "PASS",
+            osActions: [...osResults.values()],
+            permissionDiagnostic,
             noticeTapObserved: steps.some(
               (step) => step.action === "NOTIFICATION" && step.index === 5 && step.state === "PASS",
             ),

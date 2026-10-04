@@ -25,6 +25,18 @@ path is awaiting actual execution. Its synthetic nonce landing proves Apple OS
 delivery/handoff only, not production signed-return authorization; shared tests
 and the actual Android first-party return/revocation journeys cover that boundary.
 
+First focused notice run37226211477 onf7911082 fails at the permission operation:
+the real first location passes, then the client result times out after37,518ms.
+The native UI driver finishes with one passing tool test, but that does not
+override the failed scenario. Canonical writes remain zero; scenario and transport
+cleanup pass;4,392hashed artifacts retain the original failure. No notice tap or
+return is claimed. The permission callback now replies on WebKit's main queue.
+DEBUG-only native diagnostics record only request/reply stage, grant and thread
+booleans; the owned Simulator collector preserves those and OS acknowledgments.
+Fresh actual execution is required; the callback-thread hypothesis is not yet a
+proved cause. The full2654 matrix's primary/compatibility jobs also fail and their
+actual scenario receipts are being retrieved; tablet remains active.
+
 ## Acquisition and authority
 
 Frozen37219804462 Apple primary passes8/9cases and compatibility7/9cases.

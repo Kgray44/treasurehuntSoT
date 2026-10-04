@@ -132,7 +132,14 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "GEOFENCE_REGISTER": registerGeofence(payload, reply: replyHandler)
         case "NOTIFICATION_PERMISSION":
             guard foreground else {replyHandler(["state":"UNAVAILABLE"],nil);return}
-            UNUserNotificationCenter.current().requestAuthorization(options:[.alert,.sound]){ granted,_ in replyHandler(["state":granted ? "GRANTED":"DENIED"],nil) }
+            notificationPermissionDiagnostic(stage:"REQUESTED",granted:false,callbackOnMain:false)
+            UNUserNotificationCenter.current().requestAuthorization(options:[.alert,.sound]){ [weak self] granted,_ in
+                let callbackOnMain=Thread.isMainThread
+                DispatchQueue.main.async {
+                    self?.notificationPermissionDiagnostic(stage:"REPLIED",granted:granted,callbackOnMain:callbackOnMain)
+                    replyHandler(["state":granted ? "GRANTED":"DENIED"],nil)
+                }
+            }
         case "GEOFENCE_CLEAR": clearGeofences(); replyHandler(["accepted": true], nil)
         case "POWER_STATE": replyHandler(power.snapshot(), nil)
         case "SENSORS_START": replyHandler(["accepted": startSensors()], nil)
@@ -242,6 +249,17 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         if hints.notices(handle:region.identifier){let content=UNMutableNotificationContent();content.title="Your journey may be nearby";content.body="Open your current Chart for a fresh check. No visit has been confirmed.";content.userInfo=["returnHandle":region.identifier];UNUserNotificationCenter.current().add(UNNotificationRequest(identifier:region.identifier,content:content,trigger:nil))}
     }
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {if hints.active(handle:region.identifier){hints.append(handle:region.identifier,event:"EXIT")}else{manager.stopMonitoring(for:region)} }
+    private func notificationPermissionDiagnostic(stage:String,granted:Bool,callbackOnMain:Bool) {
+        #if DEBUG
+        guard ["REQUESTED","REPLIED"].contains(stage) else {return}
+        let file=FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("landfall-notification-debug.json")
+        let value:[String:Any]=["stage":stage,"granted":granted,"callbackOnMain":callbackOnMain,"replyOnMain":Thread.isMainThread]
+        if let data=try? JSONSerialization.data(withJSONObject:value) {
+            try? FileManager.default.createDirectory(at:file.deletingLastPathComponent(),withIntermediateDirectories:true)
+            try? data.write(to:file,options:[.atomic,.completeFileProtectionUntilFirstUserAuthentication])
+        }
+        #endif
+    }
     func userNotificationCenter(_ center:UNUserNotificationCenter,didReceive response:UNNotificationResponse,withCompletionHandler completionHandler:@escaping()->Void){
         if let handle=response.notification.request.content.userInfo["returnHandle"] as? String,(32...2048).contains(handle.count),handle.range(of:"^[A-Za-z0-9_-]+$",options:.regularExpression) != nil{
             pendingReturn=handle

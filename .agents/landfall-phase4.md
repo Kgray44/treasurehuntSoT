@@ -7,6 +7,18 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Source-bound starting context
 
+Apple notice run37226211477 onf7911082 FAIL, harvest4392/cleanupPASS:
+LOCATION0PASS; NOTIFICATION1 times out after37,518ms; canonical0/cleanupPASS.
+The native UI tool itself finishes1PASS; no notice tap/return is claimed.
+Native permission replies now return on the WebKit main queue and DEBUG-only
+producer snapshots expose REQUESTED/REPLIED, granted and callback/reply-thread
+booleans. Owned Simulator receipt collection adds OS action acknowledgments.
+No raw handle, coordinate, identity or error string is exported. TS/lint pass;
+actual focused Apple recheck required, without an asserted root cause yet.
+Full2654 iOS primary and compatibility jobs FAIL; tablet still runs. Completed
+profile artifacts are downloading to the owned ios-2654-completed-interim root.
+Do not dispatch final protected qualification until all attainable gates close.
+
 Final Apple coverage review adds `apple-native-notification-background-return`:
 real notification permission UI, delegate-produced Core Location notice,
 SpringBoard tap and same-origin synthetic nonce handoff, canonical zero and clear.
