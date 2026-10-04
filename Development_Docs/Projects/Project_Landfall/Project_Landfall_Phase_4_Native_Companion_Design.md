@@ -35,6 +35,10 @@ and returns `UNAVAILABLE`; clear and permission revocation resolve pending
 requests without granting them. A region-monitoring capability rejection is
 `UNSUPPORTED`. Timeout ownership is bound to the individual registration so
 an earlier timer cannot cancel a replacement request.
+Cold region-driven launches initialize foreground acquisition gates from the
+actual UIApplication state; a background launch does not authorize foreground
+bridge acquisition. Downgrading Always location permission also clears regions
+and resolves pending registration requests.
 
 The version-two native geofence scenario also targets iOS Simulator. It grants
 the owned guest's Always location permission, requests actual Core Location

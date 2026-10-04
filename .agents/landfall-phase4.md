@@ -7,6 +7,29 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Source-bound starting context
 
+Current checkpoint (2026-10-04 16:00 UTC): fb92d113 passes full root regression
+with2,687tests on fresh owned SQLite. Its optimized detached build is running.
+Low-resource two-device Journal37214134421 on7cf6ea34 passes actual reports on
+both devices, native stop, canonical0 and cleanupPASS; primary37212997052 on9709ccee
+already passes with the distinct3072M configuration. Signed notice37213441278
+onff297bda observes RETURNED then UNAVAILABLE on both corrected profiles after
+actual notice/reboot/BootReceiver/second notice, but fails the mistaken final
+`/player` assertion. Canonical signed-in landing is `/player/library`; corrected
+full recheck37214774366 onfb92d113 is running. Direct cold diagnostic37214139225
+fails closed-Page attach before authorization; it is not acceptance evidence.
+
+iOS registration now waits for `didStartMonitoringFor`, resolves failed/timed-out
+requests without grant and removes only their consent. Clear, Always-permission
+downgrade and revocation cancel pending registrations. A region-driven cold
+launch initializes foreground gates from actual UIApplication background state.
+Version-two native geofence scenario also exercises real Core Location using
+documented Simulator location inputs and XCTest background/foreground, requiring
+actual encrypted wake hints. Framework monitoring capability is retained by
+XCTest. Focused hosted37214637581 on2446a7f1 is pending; do not assume unsupported
+or successful Simulator monitoring. No injected delegate callback is OS proof.
+Final complete matrices, catalog capability promotion, ordinary protected
+qualification, merge, landed verification and closure remain open.
+
 Accepted Phase 3 capsule and v1.1 amendment record are the current plateau.
 Landfall v1.0 section 23.4 and final acceptance section 24, additive v1.1
 Worldspaces amendment, owner-supplied complete Phase 4 instructions govern.

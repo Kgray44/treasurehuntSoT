@@ -51,6 +51,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         }
         origin = configured
         super.init()
+        // A region event can cold-launch the process directly in background.
+        // Do not treat that initial state as permission for foreground bridges.
+        foreground = UIApplication.shared.applicationState != .background
         if let origin = origin { privateStore = LandfallPrivateStore(origin: origin.absoluteString) }
         location.delegate = self
         UNUserNotificationCenter.current().delegate=self
