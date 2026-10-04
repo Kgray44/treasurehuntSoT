@@ -2,6 +2,7 @@ import { generateKeyPairSync, sign, createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import QRCode from "qrcode";
+import sharp from "sharp";
 import { installationSigningPayload } from "../../../src/landfall/installation-token";
 import { deviceLabSourceIdentity } from "./source";
 
@@ -28,9 +29,14 @@ async function main() {
     expiresAt: now + 3_600_000,
   });
   const token = `${payload}.${sign(null, Buffer.from(payload), privateKey).toString("base64url")}`;
-  // Keep the full code inside a wide camera's center crop. The image remains the
-  // sole acquisition input; no decoded fixture is passed through the bridge.
-  const png = await QRCode.toBuffer(token, { type: "png", width: 1024, margin: 128, errorCorrectionLevel: "M" });
+  // Delivered-frame previews show the emulator imagefile camera's visible
+  // portrait region covers the left portion of this square input. Position the
+  // public synthetic code inside that observed region, without token injection.
+  const code = await QRCode.toBuffer(token, { type: "png", width: 320, margin: 4, errorCorrectionLevel: "M" });
+  const png = await sharp({ create: { width: 1024, height: 1024, channels: 3, background: "#ffffff" } })
+    .composite([{ input: code, left: 80, top: 352 }])
+    .png()
+    .toBuffer();
   await writeFile(path.join(root, "camera-qr.png"), png);
   await writeFile(
     path.join(root, "camera-fixture.json"),

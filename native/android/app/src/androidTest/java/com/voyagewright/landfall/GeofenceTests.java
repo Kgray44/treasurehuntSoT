@@ -81,6 +81,10 @@ public final class GeofenceTests {
       LandfallGeofences.register(context,registration(),()->true,state->{result.set(state);replied.countDown();},service);
       assertTrue(replied.await(10,TimeUnit.SECONDS));assertEquals("UNAVAILABLE",result.get());
       assertEquals(0,adds.get());assertNull(LandfallSecureHints.registration(context));
+      String diagnostic=new String(java.nio.file.Files.readAllBytes(new java.io.File(context.getFilesDir(),"landfall-geofence-debug.json").toPath()),java.nio.charset.StandardCharsets.UTF_8);
+      JSONObject projected=new JSONObject(diagnostic);
+      assertEquals(2,projected.length());assertEquals("REMOVE_FAILED",projected.getString("stage"));assertEquals("OTHER",projected.getString("failure"));
+      assertFalse(diagnostic.contains("SYNTHETIC_REMOVAL_FAILURE"));assertFalse(diagnostic.contains("returnHandle"));assertFalse(diagnostic.contains("latitude"));
     }finally{LandfallSecureHints.clear(context);}
   }
 }

@@ -1041,8 +1041,47 @@ export async function executeLandfallOsScenario(
     });
   } finally {
     if (geofenceScenario) {
+      let nativeDiagnostic: { stage: string; failure: string } | null = null;
+      try {
+        const raw = await adb([
+          "shell",
+          "run-as",
+          "com.voyagewright.landfall",
+          "cat",
+          "files/landfall-geofence-debug.json",
+        ]);
+        if (raw.length <= 512) {
+          const value = JSON.parse(raw);
+          if (
+            [
+              "PRECONDITION_FAILED",
+              "CONSENT_OR_GENERATION_CHANGED",
+              "REMOVE_FAILED",
+              "ADD_FAILED",
+              "REGISTERED",
+              "ADD_THROWN",
+              "REMOVE_THROWN",
+            ].includes(value.stage) &&
+            [
+              "NONE",
+              "OTHER",
+              "NOT_AVAILABLE",
+              "TOO_MANY_REGIONS",
+              "TOO_MANY_INTENTS",
+              "INSUFFICIENT_LOCATION_PERMISSION",
+              "OTHER_API_FAILURE",
+            ].includes(value.failure)
+          )
+            nativeDiagnostic = { stage: value.stage, failure: value.failure };
+        }
+      } catch {
+        /* Unobserved diagnostics are not inferred successful. */
+      }
       const file = path.join(destination, "native-geofence-controls.json");
-      await writeFile(file, JSON.stringify({ controls: geofenceControls, physicalTimingProven: false }, null, 2));
+      await writeFile(
+        file,
+        JSON.stringify({ controls: geofenceControls, nativeDiagnostic, physicalTimingProven: false }, null, 2),
+      );
       artifacts.push({
         path: file,
         sha256: createHash("sha256")

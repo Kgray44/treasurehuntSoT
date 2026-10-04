@@ -15,7 +15,7 @@ export const nativeBleObservationSchema = z.strictObject({
   scanId: z.string().uuid(),
   peerId: z.string().regex(/^[a-f0-9]{64}$/),
   observedAt: z.number().int().nonnegative(),
-  rssi: z.number().int().min(-150).max(0),
+  rssi: z.number().int().min(-150).max(0).nullable(),
 });
 const observation = nativeBleObservationSchema;
 const nativeState = z.object({
@@ -57,7 +57,10 @@ export class NativeLandfallBleProvider {
   private scanId: string | null = null;
   private teardown: (() => void) | null = null;
   private stopTail: Promise<unknown> = Promise.resolve();
-  private peers = new Map<string, { at: number; rssi: number; protocol: z.infer<typeof observation>["protocol"] }>();
+  private peers = new Map<
+    string,
+    { at: number; rssi: number | null; protocol: z.infer<typeof observation>["protocol"] }
+  >();
   private value: BleProjection = this.project("OFF");
   constructor(
     world: LandfallWorldspace,
@@ -94,7 +97,11 @@ export class NativeLandfallBleProvider {
       if (state === "UNTRUSTED") {
         this.value.unverifiedPeers = this.peers.size;
         this.value.protocols = [...new Set([...this.peers.values()].map((peer) => peer.protocol))].sort();
-        const strongest = Math.max(...[...this.peers.values()].map((peer) => peer.rssi));
+        // Discovery can be genuine while the OS supplies no usable signal
+        // strength. Preserve UNKNOWN; never turn an invalid value into distance.
+        const strongest = Math.max(
+          ...[...this.peers.values()].flatMap((peer) => (peer.rssi === null ? [] : [peer.rssi])),
+        );
         this.value.band = strongest >= -60 ? "STRONG_SIGNAL" : strongest >= -90 ? "WEAK_SIGNAL" : "UNKNOWN";
       }
       listener(this.snapshot());

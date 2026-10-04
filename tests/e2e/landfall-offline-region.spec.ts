@@ -40,6 +40,7 @@ test("previews, interrupts, verifies, restores and removes a real signed release
     });
     await openClosureJournal(page, voyage.id);
     await openClosureMap(page);
+    await expect(page.locator("[data-landfall-player-chart]:visible")).toContainText("Offline chart: saved");
     const panel = page.getByRole("region", { name: "Offline region" });
     const progress = panel.getByRole("progressbar", { name: "Verified offline download" });
     let startedAt = performance.now();
@@ -76,6 +77,17 @@ test("previews, interrupts, verifies, restores and removes a real signed release
     expect(await progress.getAttribute("value")).toBe(await progress.getAttribute("max"));
     await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
 
+    // This exclusively owned synthetic context also has the ordinary chart
+    // cache. Remove it so the real offline shell must restore the signed region.
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve, reject) => {
+          const request = indexedDB.deleteDatabase("landfall-offline-v2");
+          request.onsuccess = () => resolve();
+          request.onerror = request.onblocked = () => reject(new Error("SYNTHETIC_CHART_CACHE_REMOVAL_FAILED"));
+        }),
+    );
+
     await context.setOffline(true);
     startedAt = performance.now();
     await page.reload();
@@ -94,7 +106,9 @@ test("previews, interrupts, verifies, restores and removes a real signed release
     ).toEqual([400, 300]);
     measurements.offlineRestoreMs = performance.now() - startedAt;
     await context.setOffline(false);
-    await page.reload();
+    // The service worker navigated to the offline shell. Reopen the online
+    // Journal explicitly rather than reloading that shell with a connection.
+    await openClosureJournal(page, voyage.id);
     await openClosureMap(page);
     const restored = page.getByRole("region", { name: "Offline region" });
     await expect(restored.getByRole("status")).toContainText("Offline region: ready");

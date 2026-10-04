@@ -1025,3 +1025,18 @@ Current operations and acceptance-matrix engineering records consolidate inciden
 handling, implemented/coupled controls, security/privacy/performance evidence,
 external gates and unresolved local work. They do not claim completion. Indexes
 regenerated; docs validation and TypeScript PASS.
+
+DraftPR677 created/attached atbe36dbc9; refreshedorigin/mainunchangedc8ea6964.
+Journalbe36 run37189571337 active; dispatch1791103099153.
+8f4 browser37189259116 HARVESTED42 FAIL(newcase timeout,ordinary13PASS).
+SnapshotafterreconnectstillOfflineVoyageJournal: online navigation mustexplicitly
+reopenJournal. Removeonly owned synthetic ordinarychartIDBbeforeofflinetest to
+require signedregion restoration, notfallbackcache. No real/shared storage touched.
+8f4camera37189263416 HARVESTED19 FAIL17frames/0decoded;previewVIEWED showsQR
+stillright-displaced. Next image composites320pxQRleft80/top352 on1024square.
+8f4BLE37189267440 HARVESTED12 FAIL:12 outofrangeRSSI/0valid/0sentinel127.
+ExplicitnullableRSSI nowpreservesunknownstrength protocolhint; invalidnumeric
+stillrejected, allunknownbandUNKNOWN, identity/presenceuntrusted/canCompletefalse.
+NativeAndroid/Apple normalizeunusablestrengthtonull; BLE/privacy6focusedPASS.
+8f4geo37189271605 HARVESTED18 FAILnativeUNAVAILABLE. Nextdebugstage/finiteGMS
+failurecategorieswith2-fieldnativeprivacyassertion. Actualreason/wakepending.

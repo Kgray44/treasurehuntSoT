@@ -1187,3 +1187,32 @@ delivered-frame preview shows the code cropped at the right edge. The synthetic
 image quiet margin increases to128 modules; only camera image acquisition can
 satisfy the verification assertion. Fifteen focused package, panel and BLE checks
 pass. These candidate changes are not qualification or closure evidence.
+
+Run37189267440 on8f4f98af receives117 native BLE callbacks and emits12 observations;
+all12 have out-of-range RSSI, with zero valid or127-unavailable RSSI categories.
+Native adapters now represent unusable signal strength as explicit null. The web
+schema accepts that unknown state, still rejects invalid numeric RSSI, and projects
+an UNKNOWN band when no usable samples exist. Protocol discovery remains untrusted
+with unverified peer identity, physical presence NOT_PROVEN and canComplete false.
+Six focused BLE/privacy checks pass, including unknown-strength discovery and
+continued rejection of positive/out-of-range numeric observations. No synthetic
+RSSI or distance is substituted.
+
+Camera run37189263416 receives17 frames without decoding. Its delivered-frame
+preview shows the smaller code still displaced outside the portrait view. The lab
+now composites its320px public synthetic QR within the empirically visible left
+portion of a1024px square image. Actual camera input remains the only acquisition
+path. Browser run37189259116 passes13 ordinary Phase4 cases but the new region
+case times out after offline shell navigation. The test reopens the online Journal
+explicitly after reconnection, rather than reloading the offline shell. It removes
+only the ordinary chart database inside its exclusively owned synthetic browser
+context before offline reload, forcing restoration of the independently signed
+region instead of allowing the older chart cache to satisfy image assertions.
+
+Geofence run37189271605 reports actual native registration UNAVAILABLE. New
+debug-only diagnostics retain registration stage and a finite failure category,
+mapped from [Google Play services geofence status codes](https://developers.google.com/android/reference/com/google/android/gms/location/GeofenceStatusCodes),
+without coordinates, handles, numeric codes or exception text. A native privacy
+assertion checks that failed-removal diagnostics retain only their two categorical
+fields. Actual backend reason and wake acceptance remain pending. Draft PR#677
+publishes the reviewable candidate without implying qualification or closure.

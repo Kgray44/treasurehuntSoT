@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.GeofenceStatusCodes;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import org.json.JSONObject;
 import java.util.Collections;
@@ -22,6 +24,25 @@ final class LandfallGeofences {
     Task<Void> clear();
   }
   private static long generation;
+  private static void diagnostic(Context context,String stage,Exception error){
+    if(!BuildConfig.DEBUG)return;
+    String category=error==null?"NONE":"OTHER";
+    if(error instanceof ApiException){
+      switch(((ApiException)error).getStatusCode()){
+        case GeofenceStatusCodes.GEOFENCE_NOT_AVAILABLE: category="NOT_AVAILABLE";break;
+        case GeofenceStatusCodes.GEOFENCE_TOO_MANY_GEOFENCES: category="TOO_MANY_REGIONS";break;
+        case GeofenceStatusCodes.GEOFENCE_TOO_MANY_PENDING_INTENTS: category="TOO_MANY_INTENTS";break;
+        case GeofenceStatusCodes.GEOFENCE_INSUFFICIENT_LOCATION_PERMISSION: category="INSUFFICIENT_LOCATION_PERMISSION";break;
+        default: category="OTHER_API_FAILURE";
+      }
+    }
+    try{
+      JSONObject value=new JSONObject().put("stage",stage).put("failure",category);
+      try(java.io.FileOutputStream output=context.openFileOutput("landfall-geofence-debug.json",Context.MODE_PRIVATE)){
+        output.write(value.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+      }
+    }catch(Exception ignored){}
+  }
   private static synchronized long next() { return ++generation; }
   private static synchronized boolean current(long attempt) { return generation == attempt; }
   private static synchronized boolean accept(Context context,long attempt,JSONObject row,BooleanSupplier consented,boolean successful) {
@@ -61,7 +82,7 @@ final class LandfallGeofences {
     register(context, input, stillConsented, reply, backend(context));
   }
   static void register(Context context, JSONObject input, BooleanSupplier stillConsented, Consumer<String> reply, Backend backend) {
-    if (!valid(input, System.currentTimeMillis()) || !permitted(context) || !stillConsented.getAsBoolean()) { reply.accept("PERMISSION_REQUIRED"); return; }
+    if (!valid(input, System.currentTimeMillis()) || !permitted(context) || !stillConsented.getAsBoolean()) { diagnostic(context,"PRECONDITION_FAILED",null);reply.accept("PERMISSION_REQUIRED"); return; }
     final JSONObject row;
     try {
       row = new JSONObject().put("returnHandle", input.getString("returnHandle")).put("latitude", input.getDouble("latitude"))
@@ -75,17 +96,19 @@ final class LandfallGeofences {
       // encrypted journal holds only one region. Confirm removal before replacing.
       backend.clear().addOnCompleteListener(cleared -> {
         if(!cleared.isSuccessful() || !current(attempt) || !stillConsented.getAsBoolean() || !permitted(context) || !valid(row,System.currentTimeMillis())){
+          diagnostic(context,cleared.isSuccessful()?"CONSENT_OR_GENERATION_CHANGED":"REMOVE_FAILED",cleared.getException());
           reply.accept("UNAVAILABLE");return;
         }
         try {
           backend.add(row).addOnCompleteListener(task -> {
             boolean accepted = accept(context,attempt,row,stillConsented,task.isSuccessful());
+            diagnostic(context,accepted?"REGISTERED":task.isSuccessful()?"CONSENT_OR_GENERATION_CHANGED":"ADD_FAILED",task.getException());
             if (!accepted) { try { backend.remove(row.optString("returnHandle")); } catch (Exception ignored) {} }
             reply.accept(accepted ? "GRANTED" : "UNAVAILABLE");
           });
-        }catch(Exception ignored){reply.accept("UNAVAILABLE");}
+        }catch(Exception error){diagnostic(context,"ADD_THROWN",error);reply.accept("UNAVAILABLE");}
       });
-    } catch (Exception ignored) { reply.accept("UNAVAILABLE"); }
+    } catch (Exception error) { diagnostic(context,"REMOVE_THROWN",error);reply.accept("UNAVAILABLE"); }
   }
   static void clear(Context context, Consumer<Boolean> reply) { clear(context, reply, backend(context)); }
   static void clear(Context context, Consumer<Boolean> reply, Backend backend) {

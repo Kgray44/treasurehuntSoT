@@ -63,7 +63,7 @@ final class LandfallHardware {
         if(rssi==127)bleRssiUnavailable=Math.min(100000,bleRssiUnavailable+1);
         else if(rssi>=-150 && rssi<=0)bleRssiValid=Math.min(100000,bleRssiValid+1);
         else bleRssiOutOfRange=Math.min(100000,bleRssiOutOfRange+1);
-        emit.accept(new JSONObject().put("type","nearby").put("family","BLE").put("protocol",protocol).put("scanId",scanId).put("authenticated",false).put("peerId",peer.toString()).put("rssi",rssi).put("observedAt",now));
+        emit.accept(new JSONObject().put("type","nearby").put("family","BLE").put("protocol",protocol).put("scanId",scanId).put("authenticated",false).put("peerId",peer.toString()).put("rssi",rssi>=-150 && rssi<=0 ? rssi : JSONObject.NULL).put("observedAt",now));
         bleEmitted=Math.min(100000,bleEmitted+1);bleDiagnostic(true);
       }catch(Exception ignored){bleErrors=Math.min(100000,bleErrors+1);bleDiagnostic(true);}
     }

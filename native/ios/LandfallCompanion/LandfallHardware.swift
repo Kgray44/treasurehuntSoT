@@ -36,12 +36,13 @@ final class LandfallHardware: NSObject, CBCentralManagerDelegate, NFCNDEFReaderS
         else if central.state != .unknown && central.state != .resetting { stopBle();emit(["type":"ble-ended", "scanId":scanId]) }
     }
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi: NSNumber) {
-        guard central === bluetooth, scanning, let scanId=bleScanId, Date().timeIntervalSince(lastBle)>=1, (-150...0).contains(rssi.intValue) else { return }; lastBle=Date()
+        guard central === bluetooth, scanning, let scanId=bleScanId, Date().timeIntervalSince(lastBle)>=1 else { return }; lastBle=Date()
         let peer=SHA256.hash(data: Data((salt+peripheral.identifier.uuidString).utf8)).map { String(format: "%02x", $0) }.joined()
         var protocolName="GENERIC"
         if let data=advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data, data.count==25, Array(data.prefix(4))==[0x4c,0x00,0x02,0x15] { protocolName="IBEACON" }
         else if let services=advertisementData[CBAdvertisementDataServiceDataKey] as? [CBUUID:Data], let uid=services[CBUUID(string:"FEAA")], uid.count==20, uid.first==0x00 { protocolName="EDDYSTONE_UID" }
-        emit(["type": "nearby", "family": "BLE", "protocol":protocolName, "scanId":scanId, "authenticated": false, "peerId": peer, "rssi": rssi, "observedAt": Int(Date().timeIntervalSince1970*1000)])
+        let signal: Any = (-150...0).contains(rssi.intValue) ? rssi : NSNull()
+        emit(["type": "nearby", "family": "BLE", "protocol":protocolName, "scanId":scanId, "authenticated": false, "peerId": peer, "rssi": signal, "observedAt": Int(Date().timeIntervalSince1970*1000)])
     }
     func startNfc(foreground: Bool, scanId: String) -> String {
         guard foreground, UUID(uuidString: scanId) != nil, nfc == nil, qr == nil else { return "UNAVAILABLE" }; guard NFCNDEFReaderSession.readingAvailable else { return "UNSUPPORTED" }

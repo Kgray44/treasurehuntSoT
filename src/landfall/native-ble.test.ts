@@ -89,6 +89,26 @@ describe("native bounded unverified Bluetooth discovery", () => {
     expect(provider.snapshot().unverifiedPeers).toBe(0);
     expect(calls.filter((value) => value.operation === "BLE_STOP")).toHaveLength(1);
   });
+  it("preserves untrusted protocol discovery with explicitly unknown RSSI without inventing a signal band", async () => {
+    const update = vi.fn();
+    await provider.start(true, update);
+    const scanId = calls.find((value) => value.operation === "BLE_START")!.payload.scanId;
+    emit(sample(scanId, { rssi: 20 }));
+    emit(sample(scanId, { rssi: -200 }));
+    expect(provider.snapshot().unverifiedPeers).toBe(0);
+    emit(sample(scanId, { rssi: null, protocol: "IBEACON" }));
+    expect(provider.snapshot()).toMatchObject({
+      state: "UNTRUSTED",
+      unverifiedPeers: 1,
+      band: "UNKNOWN",
+      protocols: ["IBEACON"],
+      peerVerified: false,
+      physicalPresence: "NOT_PROVEN",
+      canComplete: false,
+    });
+    emit(sample(scanId, { peerId: "b".repeat(64), rssi: -75 }));
+    expect(provider.snapshot().band).toBe("WEAK_SIGNAL");
+  });
   it("stops for background and power without adopting late start replies or automatically resuming", async () => {
     let resolve: (value: unknown) => void = () => undefined;
     window.LandfallNative!.request = vi.fn(async (raw) => {
