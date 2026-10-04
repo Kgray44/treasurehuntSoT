@@ -133,6 +133,7 @@ export async function executeLandfallOsScenario(
   }[] = [];
   const sensorReady = new Set<number>();
   const osResults = new Map<number, DeviceLabStepResult>();
+  let appleNoticeUiDiagnostic: Record<string, number | boolean> | undefined;
   let osReady = false;
   let osCurrent: { index: number; action: unknown } | null = null;
   const server = createServer(async (request, response) => {
@@ -348,6 +349,20 @@ export async function executeLandfallOsScenario(
           (appleNoticeScenario && scenario.timeline[value.index]?.action.type === "NOTIFICATION")) &&
         ["PASS", "FAIL", "UNSUPPORTED"].includes(value.state)
       ) {
+        if (appleNoticeScenario && value.index === 5 && value.noticeUi) {
+          const diagnostic = value.noticeUi;
+          const countFields = ["buttonTitleCount", "combinedCardCount", "staticTitleCount"];
+          const flagFields = ["tapped", "foregroundObserved"];
+          if (
+            countFields.every(
+              (key) => Number.isInteger(diagnostic[key]) && diagnostic[key] >= 0 && diagnostic[key] <= 64,
+            ) &&
+            flagFields.every((key) => typeof diagnostic[key] === "boolean")
+          )
+            appleNoticeUiDiagnostic = Object.fromEntries(
+              [...countFields, ...flagFields].map((key) => [key, diagnostic[key]]),
+            );
+        }
         if (!osResults.has(value.index))
           osResults.set(value.index, {
             index: value.index,
@@ -1427,6 +1442,7 @@ export async function executeLandfallOsScenario(
             sourceClass: "ACTUAL_APPLE_NOTIFICATION_UI_AND_NATIVE_HANDOFF",
             permissionUiObserved: osResults.get(1)?.state === "PASS",
             osActions: [...osResults.values()],
+            noticeUiDiagnostic: appleNoticeUiDiagnostic,
             permissionDiagnostic,
             noticeTapObserved: steps.some(
               (step) => step.action === "NOTIFICATION" && step.index === 5 && step.state === "PASS",

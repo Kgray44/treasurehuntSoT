@@ -33,8 +33,18 @@ cleanup pass;4,392hashed artifacts retain the original failure. No notice tap or
 return is claimed. The permission callback now replies on WebKit's main queue.
 DEBUG-only native diagnostics record only request/reply stage, grant and thread
 booleans; the owned Simulator collector preserves those and OS acknowledgments.
-Fresh actual execution is required; the callback-thread hypothesis is not yet a
-proved cause. Focused actual recheck37227624737 on18c2f4a0 is active. The permanent
+Recheck37227624737 on18c2f4a0 finishes FAIL,4,401hashed artifacts/cleanupPASS.
+Actual permission UI and native reply pass in2,283ms: grantedtrue,
+callbackOnMainfalse/replyOnMaintrue. Registration, background and365,017ms
+Core Location transition pass; the notice tap/foreground step fails. The retained
+final screenshot visibly contains the generic Landfall notice in Notification
+Center. The driver previously selected only an exact title static-text element;
+the current driver also accepts one uniquely matching accessible button or
+combined card, retains actual tap/foreground/server-handoff requirements,
+and exports only bounded selector counts and tap/foreground booleans. This is
+a selector hypothesis requiring focused actual verification, not an inferred tap.
+No production native change follows18c2; existing restart proofs are separate.
+The permanent
 closure transport includes one separate primary-phone notification job, avoiding
 duplication across every profile. Six local render cases verify the closure gate,
 focused exclusions and YAML job shape; TypeScript/lint/docs pass.

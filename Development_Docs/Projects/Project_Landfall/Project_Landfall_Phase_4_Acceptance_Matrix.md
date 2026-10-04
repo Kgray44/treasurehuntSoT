@@ -68,7 +68,10 @@ The wrapper's12 guard tests and the count reader'ssix guard tests pass.
 
 Actual Apple notification/deep-link case37226211477 fails at notification
 permission; canonical zero and cleanup pass. Main-queue reply correction and
-finite DEBUG diagnostics are under actual recheck37227624737 on `18c2f4a0`.
+finite DEBUG diagnostics pass permission in recheck37227624737 on `18c2f4a0`,
+but the actual tap step fails. Its final screenshot shows the notice in
+Notification Center. A focused accessible-card selector recheck is required;
+no return is inferred from the screenshot.
 This additional acceptance gate requires real permission UI, background notice,
 SpringBoard tap and native same-origin return. Its synthetic nonce landing proves
 OS handoff only; production signed authorization has separate shared and Android
