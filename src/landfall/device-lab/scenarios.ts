@@ -715,6 +715,29 @@ for (const medium of ["QR", "NFC"] as const) {
   }
 }
 
+scenario(
+  "geofence-native-background-wake",
+  ["GEOFENCE", "LOCATION", "NOTIFICATION"],
+  [
+    location({ coordinate: physicalCoordinate(44.02, -72) }),
+    { type: "NATIVE_GEOFENCE", operation: "REGISTER" },
+    lifecycle("BACKGROUND"),
+    { type: "NATIVE_GEOFENCE", operation: "ENTER" },
+    lifecycle("FOREGROUND"),
+    assertion("backgroundResult", "NEARBY_HINT"),
+    assertion("completionRequests", 0),
+    assertion("canonicalProgressionEvents", 0),
+    { type: "NATIVE_GEOFENCE", operation: "CLEAR" },
+    assertion("backgroundResult", "NONE"),
+  ],
+  ["SUSPENSION", "OEM_PROCESS_POLICY", "FIELD_ENVIRONMENT"],
+  "ONE_VOYAGE",
+);
+cases[cases.length - 1].targets = ["android-emulator"];
+cases[cases.length - 1].timing = "WALL_CLOCK";
+cases[cases.length - 1].description =
+  "Actual Play services registration, emulator GPS outside-to-inside motion while the app is backgrounded, encrypted OS wake hints on foreground return and verified removal. No broadcast or callback injection, physical timing or canonical arrival claim.";
+
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);
 }

@@ -1123,3 +1123,20 @@ counters now distinguish binding, delivered frames, decode failures and terminal
 outcomes without retaining token text or image frames. The owned imagefile-camera
 scenario captures its public synthetic QR preview for inspection. Production
 camera frame privacy and identity-only verification remain unchanged.
+
+The native-only geofence-native-background-wake scenario registers a real Play
+services region, supplies an outside native fix, backgrounds the owned app,
+delivers inside emulator GPS for180seconds and requires an encrypted ENTER hint
+on return. It then clears the OS registration and asserts zero One Voyage writes.
+No receiver broadcast, synthesized GeofencingEvent or native callback is injected.
+The production two-minute responsiveness is preserved; [Android background
+geofencing guidance](https://developer.android.com/develop/sensors-and-location/location/battery)
+explains the bounded three-minute observation window. Actual execution remains
+pending. Physical suspension, OEM scheduling and field timing remain external.
+Ordinary Android task return now reuses the singleTop Activity and existing Chart;
+only a valid opaque notification handle navigates to server reauthorization.
+
+Radio run37187682729 on9dfdfd93 receives119 native callbacks, emits12 events and
+records zero native errors, while its web provider accepts zero observations.
+This narrows the retained failure to bridge delivery or event validation rather
+than unsupported native scanning. Fixture and transport cleanup pass.

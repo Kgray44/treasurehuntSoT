@@ -972,3 +972,12 @@ camera bound/frame/decoder/error/outcome counters identify the remaining stage.
 Actualpreview capture is restricted to the public synthetic imagefilecamera case.
 No decoded token or frames go through lab JavaScript. NativeAPKs/TS/lint/docsPASS.
 9dfradio37187682729,Journal37187687095,Applevirtual37187691206 active; harvestnext.
+
+9dfradio37187682729 HARVESTED12 FAIL/cleanupPASS. ActualnativeBLE119callbacks,
+12emitted,0errors; webaccepted0. Acquisitionworks; inspectnative→webcontract next.
+d823camera37188026917 active, dispatchhosted-d823454977bf-1791101387589.
+Newnative-onlygeofence-native-background-wake uses actualPlayservices registration,
+outsideGPS→background→insideGPS180secdelivery→foregroundencryptedhint assertion
+andverifiedclear, realOneVoyagezeroevents. No injectedreceiver/callback. Pending
+actualhosted. AndroidsingleTop/ordinaryonNewIntentresumesexistingChart; onlyvalid
+notificationhandleopensreauthorizedreturn. Scenario/selection32checksPASS.

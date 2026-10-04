@@ -104,6 +104,10 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
     ageMs: z.number().int().min(0).max(3600000),
     duplicate: z.boolean(),
   }),
+  z.strictObject({
+    type: z.literal("NATIVE_GEOFENCE"),
+    operation: z.enum(["REGISTER", "ENTER", "CLEAR"]),
+  }),
   z
     .strictObject({
       type: z.literal("NEARBY"),
@@ -267,6 +271,8 @@ export type DeviceLabStepResult = {
       | "OS_SENSOR_CONTROL"
       | "OS_NEARBY_SESSION"
       | "OS_CAMERA_ACQUISITION"
+      | "OS_GEOFENCE_REGISTRATION"
+      | "OS_GEOFENCE_TRANSITION"
       | "LOGICAL_PROVIDER"
       | "OS_LOCATION_INJECTION"
       | "OS_LIFECYCLE"

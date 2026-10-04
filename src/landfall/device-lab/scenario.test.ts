@@ -37,6 +37,25 @@ describe("canonical Device Lab scenarios", () => {
       expect(locations[0].coordinate.worldspaceId).toBe(locations[1].coordinate.worldspaceId);
     }
   });
+  it("keeps OS geofence delivery separate from provider callbacks and progression", async () => {
+    const scenario = landfallDeviceScenario("geofence-native-background-wake");
+    expect(scenario.targets).toEqual(["android-emulator"]);
+    expect(scenario.canonicalAuthority).toBe("ONE_VOYAGE");
+    expect(scenario.timing).toBe("WALL_CLOCK");
+    expect(scenario.timeline.some((step) => step.action.type === "GEOFENCE")).toBe(false);
+    expect(
+      scenario.timeline.filter((step) => step.action.type === "NATIVE_GEOFENCE").map((step) => step.action),
+    ).toEqual([
+      { type: "NATIVE_GEOFENCE", operation: "REGISTER" },
+      { type: "NATIVE_GEOFENCE", operation: "ENTER" },
+      { type: "NATIVE_GEOFENCE", operation: "CLEAR" },
+    ]);
+    // A logical executor cannot manufacture success for an OS-only command.
+    const simulated = await new LandfallProviderScenarioExecutor(scenario).run();
+    expect(simulated.steps.some((step) => step.action === "NATIVE_GEOFENCE" && step.state === "UNSUPPORTED")).toBe(
+      true,
+    );
+  });
   for (const id of [
     "gps-perfect-walk",
     "gps-5-minute-walk",

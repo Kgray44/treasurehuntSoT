@@ -36,6 +36,7 @@ export async function executeLandfallOsScenario(
 ) {
   const root = process.cwd();
   const cameraScenario = scenario.id === "qr-native-camera-valid";
+  const geofenceScenario = scenario.id === "geofence-native-background-wake";
   let cameraDiagnostic: Record<string, string | boolean> | null = null;
   let cameraStarted = false;
   let cameraFixture: {
@@ -87,6 +88,7 @@ export async function executeLandfallOsScenario(
     avdIdentityPreserved: boolean;
     elapsedMs: number;
   }[] = [];
+  const geofenceControls: { index: number; injections: number; elapsedMs: number; budgetMs: number }[] = [];
   const readinessStartedAt = Date.now();
   const clientStages: { stage: DeviceLabStartupStage; elapsedMs: number }[] = [];
   const startupRequests = { documents: 0, workers: 0, scripts: 0 };
@@ -442,6 +444,16 @@ export async function executeLandfallOsScenario(
       ]);
       await adb(["shell", "pm", "grant", "com.voyagewright.landfall", "android.permission.ACCESS_COARSE_LOCATION"]);
       await adb(["shell", "pm", "grant", "com.voyagewright.landfall", "android.permission.ACCESS_FINE_LOCATION"]);
+      if (geofenceScenario) {
+        await adb([
+          "shell",
+          "pm",
+          "grant",
+          "com.voyagewright.landfall",
+          "android.permission.ACCESS_BACKGROUND_LOCATION",
+        ]);
+        await adb(["shell", "pm", "grant", "com.voyagewright.landfall", "android.permission.POST_NOTIFICATIONS"]);
+      }
       if (cameraScenario && cameraFixture)
         await adb(["shell", "pm", "grant", "com.voyagewright.landfall", "android.permission.CAMERA"]);
       await adb(["shell", "input", "keyevent", "82"]);
@@ -556,6 +568,32 @@ export async function executeLandfallOsScenario(
           state: actual === step.action.value ? "PASS" : "FAIL",
           ...(actual === step.action.value ? {} : { reason: "NATIVE_CANONICAL_COUNT_MISMATCH" }),
         });
+        continue;
+      }
+      if (step.action.type === "NATIVE_GEOFENCE" && step.action.operation === "ENTER") {
+        if (target !== "android-emulator" || foreground || !geofenceScenario) {
+          steps.push({
+            index,
+            action: "NATIVE_GEOFENCE",
+            state: "UNSUPPORTED",
+            reason: "BACKGROUND_OS_GEOFENCE_REQUIRED",
+          });
+          continue;
+        }
+        // Play services uses its production two-minute responsiveness. Deliver
+        // GPS through the emulator only; never synthesize a GeofencingEvent.
+        const startedAt = Date.now(),
+          budgetMs = 180000;
+        let injections = 0;
+        while (Date.now() - startedAt < budgetMs) {
+          await adb(["emu", "geo", "fix", "-72", "44"]);
+          injections++;
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+        }
+        geofenceControls.push({ index, injections, elapsedMs: Date.now() - startedAt, budgetMs });
+        // This step proves only input delivery. A separate foreground assertion
+        // must observe the native encrypted hint before the scenario can pass.
+        steps.push({ index, action: "NATIVE_GEOFENCE", state: "PASS" });
         continue;
       }
       if (step.action.type === "LIFECYCLE") {
@@ -851,9 +889,16 @@ export async function executeLandfallOsScenario(
         continue;
       }
       if (
-        !["LOCATION", "ASSERT", "NETWORK", "RECONCILE", "POWER", "PERMISSION", "INSTALLATION_TOKEN"].includes(
-          step.action.type,
-        )
+        ![
+          "LOCATION",
+          "ASSERT",
+          "NETWORK",
+          "RECONCILE",
+          "POWER",
+          "PERMISSION",
+          "INSTALLATION_TOKEN",
+          "NATIVE_GEOFENCE",
+        ].includes(step.action.type)
       ) {
         steps.push({
           index,
@@ -983,6 +1028,17 @@ export async function executeLandfallOsScenario(
         error instanceof Error && /^[A-Z_]{1,128}$/.test(error.message) ? error.message : "NATIVE_OS_EXECUTION_FAILED",
     });
   } finally {
+    if (geofenceScenario) {
+      const file = path.join(destination, "native-geofence-controls.json");
+      await writeFile(file, JSON.stringify({ controls: geofenceControls, physicalTimingProven: false }, null, 2));
+      artifacts.push({
+        path: file,
+        sha256: createHash("sha256")
+          .update(await readFile(file))
+          .digest("hex"),
+        kind: "TEST_RESULT",
+      });
+    }
     if (cameraFixture) {
       let nativeDiagnostic: Record<string, number | string | boolean> | null = null;
       try {
@@ -1296,46 +1352,52 @@ export async function executeLandfallOsScenario(
               limitation:
                 "Synthetic signed QR pixels traverse the emulated camera, CameraX and bundled ML Kit. No physical camera, tag presence or progression claim.",
             }
-          : action?.type === "PERMISSION" || result.reason === "OS_PERMISSION_PREVENTED_ACQUISITION"
+          : action?.type === "NATIVE_GEOFENCE"
             ? {
-                method: "OS_PERMISSION_CONTROL",
+                method: action.operation === "ENTER" ? "OS_GEOFENCE_TRANSITION" : "OS_GEOFENCE_REGISTRATION",
                 limitation:
-                  "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external.",
+                  "Actual Play services registration and emulator GPS controls require an OS-delivered encrypted hint. No injected broadcast, physical timing or arrival claim.",
               }
-            : action?.type === "LOCATION" && action.coordinate.type === "WGS84"
+            : action?.type === "PERMISSION" || result.reason === "OS_PERMISSION_PREVENTED_ACQUISITION"
               ? {
-                  method: "OS_LOCATION_INJECTION",
+                  method: "OS_PERMISSION_CONTROL",
                   limitation:
-                    "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately.",
+                    "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external.",
                 }
-              : action?.type === "LIFECYCLE"
+              : action?.type === "LOCATION" && action.coordinate.type === "WGS84"
                 ? {
-                    method: "OS_LIFECYCLE",
-                    limitation: "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
+                    method: "OS_LOCATION_INJECTION",
+                    limitation:
+                      "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately.",
                   }
-                : action?.type === "POWER"
+                : action?.type === "LIFECYCLE"
                   ? {
-                      method: "OS_POWER_CONTROL",
-                      limitation:
-                        "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy.",
+                      method: "OS_LIFECYCLE",
+                      limitation: "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
                     }
-                  : action?.type === "NETWORK"
-                    ? target === "android-emulator"
-                      ? {
-                          method: "OS_NETWORK_AND_SERVICE_FAULT",
-                          limitation:
-                            "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
-                        }
-                      : {
-                          method: "CONTROLLED_SERVICE_FAULT",
-                          limitation:
-                            "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
-                        }
-                    : action?.type === "RECONCILE" ||
-                        (action?.type === "ASSERT" &&
-                          ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
-                      ? { method: "REAL_CANONICAL_AUTHORITY" }
-                      : { method: "SHARED_WEB_CONTRACT" };
+                  : action?.type === "POWER"
+                    ? {
+                        method: "OS_POWER_CONTROL",
+                        limitation:
+                          "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy.",
+                      }
+                    : action?.type === "NETWORK"
+                      ? target === "android-emulator"
+                        ? {
+                            method: "OS_NETWORK_AND_SERVICE_FAULT",
+                            limitation:
+                              "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
+                          }
+                        : {
+                            method: "CONTROLLED_SERVICE_FAULT",
+                            limitation:
+                              "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
+                          }
+                      : action?.type === "RECONCILE" ||
+                          (action?.type === "ASSERT" &&
+                            ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
+                        ? { method: "REAL_CANONICAL_AUTHORITY" }
+                        : { method: "SHARED_WEB_CONTRACT" };
   }
   const cleanup = {
     result: remainingResources.length ? ("FAIL" as const) : ("PASS" as const),

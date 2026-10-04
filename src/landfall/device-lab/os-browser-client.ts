@@ -12,6 +12,7 @@ import {
   createLandfallNativeDriver,
   subscribeLandfallNativeLifecycle,
   readNativeLandfallPower,
+  landfallNativeRequest,
   type NativeLandfallPower,
 } from "@/landfall/native-bridge";
 import { landfallPowerPolicy } from "@/landfall/device-policy";
@@ -138,6 +139,35 @@ async function main() {
   let serverConfirmed = false;
   let powerProfile = "SUSPENDED";
   let tokenState = "NONE";
+  let backgroundResult = "NONE";
+  let geofenceHandle: string | null = null;
+  const receiveWake = (event: Event) => {
+    const value = (event as CustomEvent).detail;
+    if (
+      value?.type !== "lifecycle" ||
+      value.state !== "FOREGROUND" ||
+      !geofenceHandle ||
+      !Array.isArray(value.pendingHints) ||
+      value.pendingHints.length > 32
+    )
+      return;
+    const now = Date.now();
+    if (
+      value.pendingHints.some(
+        (hint: Record<string, unknown>) =>
+          hint.returnHandle === geofenceHandle &&
+          hint.event === "ENTER" &&
+          typeof hint.id === "string" &&
+          /^[a-f0-9-]{36}$/i.test(hint.id) &&
+          typeof hint.receivedAt === "number" &&
+          Number.isInteger(hint.receivedAt) &&
+          hint.receivedAt <= now &&
+          now - hint.receivedAt < 300000,
+      )
+    )
+      backgroundResult = "NEARBY_HINT";
+  };
+  window.addEventListener("landfall-native-event", receiveWake);
   let waiting: ((observation: LandfallObservation) => void) | null = null;
   const ingest = (observation: LandfallObservation) => {
     latest = observation;
@@ -216,6 +246,8 @@ async function main() {
     }
     const step = await response.json();
     if (step.stop) {
+      if (geofenceHandle) await landfallNativeRequest("GEOFENCE_CLEAR");
+      window.removeEventListener("landfall-native-event", receiveWake);
       await provider?.stop();
       nativeContext?.stop();
       window.removeEventListener("landfall-native-event", receiveSensor);
@@ -337,11 +369,34 @@ async function main() {
           powerProfile,
           sensorState,
           tokenState,
+          backgroundResult,
         };
         if (!(action.field in observed)) {
           state = "UNSUPPORTED";
           reason = "OS_ASSERTION_NOT_IMPLEMENTED";
         } else if (observed[action.field] !== action.value) throw new Error(`ASSERT_FAILED:${action.field}`);
+      } else if (action.type === "NATIVE_GEOFENCE") {
+        if (driver.platform !== "ANDROID" || world.kind !== "PHYSICAL" || action.operation === "ENTER") {
+          state = "UNSUPPORTED";
+          reason = "NATIVE_GEOFENCE_OS_CONTROL_REQUIRED";
+        } else if (action.operation === "REGISTER") {
+          geofenceHandle = crypto.randomUUID().replaceAll("-", "");
+          const reply = (await landfallNativeRequest("GEOFENCE_REGISTER", {
+            returnHandle: geofenceHandle,
+            latitude: 44,
+            longitude: -72,
+            radiusMeters: 500,
+            expiresAt: Date.now() + 3600000,
+            notifications: true,
+          })) as { state?: string };
+          if (reply?.state !== "GRANTED") throw new Error("NATIVE_GEOFENCE_REGISTRATION_FAILED");
+          backgroundResult = "REGISTERED";
+        } else {
+          const reply = (await landfallNativeRequest("GEOFENCE_CLEAR")) as { accepted?: boolean };
+          if (reply?.accepted !== true) throw new Error("NATIVE_GEOFENCE_CLEAR_FAILED");
+          geofenceHandle = null;
+          backgroundResult = "NONE";
+        }
       } else if (action.type === "INSTALLATION_TOKEN") {
         if (action.medium !== "QR" || action.fixture !== "VALID" || driver.platform !== "ANDROID") {
           state = "UNSUPPORTED";
