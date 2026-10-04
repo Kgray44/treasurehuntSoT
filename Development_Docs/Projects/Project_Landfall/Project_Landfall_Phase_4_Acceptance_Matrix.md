@@ -86,6 +86,15 @@ actual smoke remains pending; it does not prove production Journal rendering,
 physical VoiceOver or assistive-device usability. Browser enlarged-text/reduced-
 motion/accessible fallback coverage remains independently retained.
 
+First presentation run37229804897 on7f36204a fails at Reduce Motion switch
+selection:18native tests pass, one fails, one canonical-driver skip. Actual dark/
+large-text configuration and the portrait/landscape fallback test pass. Harvest
+retains4,294hashes/cleanupPASS. Settings selection now scrolls within a bounded
+search and accepts one semantic switch/row; failed xcresult attachments are
+exported too. Native build acceptance requires at least19passes and at most the
+one canonical-driver skip, so presentation skips cannot silently pass. Actual
+focused recheck is required.
+
 Retained input comparisons show production web, dependency and schema trees
 unchanged from C8; native Android unchanged from01bab29b; and native iOS unchanged
 from2654d7b8. The shared executor's later bounded input wrapper receives separate

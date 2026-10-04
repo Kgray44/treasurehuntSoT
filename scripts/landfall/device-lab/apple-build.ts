@@ -106,6 +106,7 @@ async function main() {
         path.join(destination, "NativeTests.xcresult"),
         "CODE_SIGNING_ALLOWED=YES",
         "CODE_SIGN_IDENTITY=-",
+        "LANDFALL_LAB_PRESENTATION=1",
         "test",
       ],
       1200000,
@@ -122,17 +123,20 @@ async function main() {
     // Quiet xcodebuild may emit no success text; archive the structured result
     // on successful runs as well as failures instead of relying on that output.
     executionStage = "ARCHIVE_XCTEST_SUMMARY";
-    await writeFile(
-      path.join(destination, "test-summary.json"),
-      await labTool("xcrun", [
-        "xcresulttool",
-        "get",
-        "test-results",
-        "summary",
-        "--path",
-        path.join(destination, "NativeTests.xcresult"),
-      ]),
-    );
+    const testSummary = await labTool("xcrun", [
+      "xcresulttool",
+      "get",
+      "test-results",
+      "summary",
+      "--path",
+      path.join(destination, "NativeTests.xcresult"),
+    ]);
+    await writeFile(path.join(destination, "test-summary.json"), testSummary);
+    const nativeTests = JSON.parse(testSummary);
+    // The only expected package-build skip is the canonical scenario driver,
+    // which requires its separately started endpoint. Presentation must execute.
+    if (nativeTests.failedTests !== 0 || nativeTests.passedTests < 19 || nativeTests.skippedTests > 1)
+      throw new Error("LANDFALL_APPLE_PRESENTATION_TESTS_REQUIRED");
     executionStage = "EXPORT_XCTEST_ATTACHMENTS";
     // Keep native capability values inspectable on the harvesting host. The
     // passing assertion alone cannot establish the Simulator's NI capability.
@@ -177,6 +181,28 @@ async function main() {
           () => "XCRESULT_SUMMARY_UNAVAILABLE",
         )
       : "XCRESULT_NOT_CREATED";
+    if (hasResult) {
+      // Failed UI runs need their actual settings/screenshots too. Preserve
+      // raw xcresult and the original failure if export itself is unavailable.
+      await labTool(
+        "xcrun",
+        [
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          resultPath,
+          "--output-path",
+          path.join(destination, "test-attachments"),
+        ],
+        120000,
+      ).catch(async () => {
+        await writeFile(
+          path.join(destination, "attachment-export-state.json"),
+          JSON.stringify({ state: "UNAVAILABLE" }),
+        );
+      });
+    }
     await writeFile(path.join(destination, "test-summary.json"), summary);
     process.stderr.write(`${summary.slice(-16000)}\n`);
     throw error;

@@ -44,7 +44,16 @@ final class NativeLifecycleTests: XCTestCase {
         for _ in 0..<5 {if accessibility.exists && accessibility.isHittable {break};settings.swipeUp()}
         XCTAssertTrue(accessibility.waitForExistence(timeout:10) && accessibility.isHittable,"LANDFALL_SETTINGS_ACCESSIBILITY_UNAVAILABLE");accessibility.tap()
         let motion=settings.staticTexts["Motion"];XCTAssertTrue(motion.waitForExistence(timeout:10),"LANDFALL_SETTINGS_MOTION_UNAVAILABLE");motion.tap()
-        let toggle=settings.switches["Reduce Motion"];XCTAssertTrue(toggle.waitForExistence(timeout:10),"LANDFALL_REDUCED_MOTION_UNAVAILABLE")
+        let before=XCTAttachment(screenshot:settings.screenshot());before.name="Owned Motion settings before selection";before.lifetime = .keepAlways;add(before)
+        let labelled=settings.switches.matching(NSPredicate(format:"label CONTAINS %@","Reduce Motion"))
+        let row=settings.cells.containing(.staticText,identifier:"Reduce Motion").firstMatch
+        var selected:XCUIElement?
+        for _ in 0..<5 {
+            if labelled.count == 1 && labelled.firstMatch.isHittable {selected=labelled.firstMatch;break}
+            if row.exists && row.switches.count == 1 && row.switches.firstMatch.isHittable {selected=row.switches.firstMatch;break}
+            settings.swipeUp()
+        }
+        guard let toggle=selected else {XCTFail("LANDFALL_REDUCED_MOTION_UNAVAILABLE");return}
         let wasEnabled=toggle.value as? String == "1"
         if !wasEnabled {toggle.tap()}
         XCTAssertEqual(toggle.value as? String,"1","LANDFALL_REDUCED_MOTION_NOT_ENABLED")
