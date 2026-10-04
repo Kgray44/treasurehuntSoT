@@ -21,6 +21,13 @@ fresh qualification before protected integration.
 The remaining primary Apple batch **37232748824 on `90ef2d75`** is active:
 mandatory native presentation gates, offline restart and actual notification
 return. No acceptance is inferred from elapsed time or successful tool execution.
+That batch finishes FAIL at the presentation build:18passes/1failure/1expected
+driver skip,4,298hashed artifacts/cleanupPASS. `LANDFALL_MOTION_PAGE_UNOBSERVED`
+prevents both scenarios from running. The retained Settings hierarchy identifies
+one `MOTION_TITLE` cell with a nested text button; both real taps target the text
+center and leave Accessibility open. Current control taps the unique actual row's
+trailing gap and still requires the observed Motion page plus setting readback and
+restoration. This remains an unaccepted control hypothesis until actual execution.
 
 Current clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
 owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting

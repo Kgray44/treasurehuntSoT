@@ -46,13 +46,14 @@ final class NativeLifecycleTests: XCTestCase {
         let motion=settings.staticTexts["Motion"]
         for _ in 0..<5 {if motion.exists && motion.isHittable {break};settings.swipeUp()}
         guard motion.waitForExistence(timeout:10) && motion.isHittable else {XCTFail("LANDFALL_SETTINGS_MOTION_UNAVAILABLE");return}
-        let motionButtons=settings.buttons.containing(.staticText,identifier:"Motion")
-        let motionCells=settings.cells.containing(.staticText,identifier:"Motion")
-        if motionButtons.count == 1 && motionButtons.firstMatch.isHittable {motionButtons.firstMatch.tap()}
-        else if motionCells.count == 1 && motionCells.firstMatch.isHittable {motionCells.firstMatch.tap()}
-        else {motion.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.5)).tap()}
+        // The observed Settings hierarchy exposes MOTION_TITLE as a cell with
+        // a nested text button. Text-centered taps left Accessibility open.
+        // Tap the actual unique row's trailing gap, outside that nested button.
+        let motionCells=settings.cells.matching(identifier:"MOTION_TITLE")
+        guard motionCells.count == 1,motionCells.firstMatch.isHittable else {XCTFail("LANDFALL_MOTION_ROW_UNAVAILABLE");return}
+        let motionRow=motionCells.firstMatch
+        motionRow.coordinate(withNormalizedOffset:CGVector(dx:0.85,dy:0.5)).tap()
         let motionPage=settings.navigationBars["Motion"]
-        if !motionPage.waitForExistence(timeout:5),motion.exists && motion.isHittable {motion.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.5)).tap()}
         guard motionPage.waitForExistence(timeout:10) else {XCTFail("LANDFALL_MOTION_PAGE_UNOBSERVED");return}
         let before=XCTAttachment(screenshot:settings.screenshot());before.name="Owned Motion settings before selection";before.lifetime = .keepAlways;add(before)
         let labelled=settings.switches.matching(NSPredicate(format:"label CONTAINS %@","Reduce Motion"))
