@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+  <uses-sdk android:minSdkVersion="28" tools:overrideLibrary="androidx.core.uwb,androidx.core.uwb.rxjava3" />
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -7,11 +8,13 @@
   <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
   <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  <uses-permission android:name="android.permission.UWB_RANGING" />
   <uses-permission android:name="android.permission.NFC" />
   <uses-permission android:name="android.permission.CAMERA" />
   <uses-feature android:name="android.hardware.location.gps" android:required="false" />
   <uses-feature android:name="android.hardware.nfc" android:required="false" />
   <uses-feature android:name="android.hardware.bluetooth_le" android:required="false" />
+  <uses-feature android:name="android.hardware.uwb" android:required="false" />
   <application android:label="VoyageWright Landfall" android:allowBackup="false" android:usesCleartextTraffic="false" android:theme="@android:style/Theme.Material.Light.NoActionBar" android:supportsRtl="true">
     <activity android:name=".LandfallActivity" android:exported="true">
       <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>

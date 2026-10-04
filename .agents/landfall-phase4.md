@@ -65,6 +65,16 @@ instrumentation and transport cleanup pass. Next revision uses bounded repeated
 OS position control within the unchanged observation budget and categorical
 native acquisition diagnostics. Do not claim this unverified repair as acceptance.
 
+Android GPS-only retry 37163762628 is harvested at clean 16dc7ff237dd. Tablet
+registers enabled GPS with GRANTED permission; 120 injections per step yield zero
+callbacks. Cleanup passes. Do not dispatch another blind timing retry.
+Apple focus 37162819902 is harvested: 5/6 selected cases pass; primary physical
+restart times out at initial web ready handshake (zero startup acknowledgments).
+All three XCTest drivers pass; all cleanup passes. Client startup diagnostics
+remain required. Native UWB driver development compiles and passes five web
+adapter plus five emulator instrumentation tests; actual peer sessions, trusted
+pairing and API-28 startup guard proof remain open.
+
 Provider policy, native foreground shells, wake-only geofences, opaque notification
 return, optional native sensors/scanners, signed encrypted web regions and a shared
 Device Lab are in development. This is not a qualified Phase 4 plateau.

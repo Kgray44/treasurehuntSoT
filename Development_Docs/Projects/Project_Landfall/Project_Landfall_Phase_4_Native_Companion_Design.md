@@ -352,3 +352,42 @@ receipts record injection count and elapsed time; Android acquisition diagnostic
 record only selected provider, registration, enabled state and permission.
 Provider selection remains an observed category, not an inferred failure cause.
 Fresh hosted proof is required for this revision.
+
+Hosted Apple focus run 37162819902 at clean `8821f56004bc` passes both selected
+cases on compatibility phone and tablet, and virtual offline reconciliation on
+primary phone: five of six cases pass, each successful case observing exactly
+one canonical event. The primary physical restart case times out before its web
+client ready handshake and records zero startup acknowledgments. All three
+XCTest lifecycle drivers pass their one test and finalize inside the new tool
+deadline. All six scenario cleanup and transport-branch cleanup pass. This
+narrows the remaining failure to initial client readiness; it is not final proof.
+
+Android tablet GPS focus 37163762628 at clean `16dc7ff237dd` still fails. Both
+steps record GPS selected, registered, enabled and permission granted, with 120
+OS injections and zero received callbacks within each 120-second budget. No
+canonical event is written; cleanup passes. Neither one-shot control nor provider
+fallback explains this observed run. Further native/OS delivery diagnostics are
+needed before changing timing or declaring a platform gate.
+
+Android UWB now has an optional stable AndroidX 1.0.0/RxJava3 foreground driver.
+It capability-checks provisioned STS (Android 14+), prompts contextually, validates
+short-lived session parameters, bounds preparation to 60 seconds and ranging to
+five minutes, cancels on background/critical power/privacy clear, and clears key
+bytes. Distance reports have UNKNOWN uncertainty and unverified peer identity;
+they never become precise position or completion authority. The typed web adapter
+keeps these reports untrusted, redacts its projection, rejects wrong-peer/stale
+reports and stops on background. Five focused adapter tests pass. Both native
+APKs build. Five native instrumentation tests pass on the current Android 16
+emulator, including foreground preparation gating; this is not ranging proof.
+That emulator exposes BLE, UWB and camera features. Its native receipt binds the
+dirty source and exact APK checksums; field RF accuracy remains external.
+
+Optional AndroidX packages declare minSdk 31. The manifest merge override preserves
+the companion's API-28 baseline only because an isolated API-34 factory keeps UWB
+classes out of older/unsupported initialization paths. API-28 startup still needs
+runtime verification before acceptance. Secure first-party peer pairing, actual
+multi-device ranging, supported BLE session scenarios and Player controls remain
+open. No hardware feature is required for ordinary location/offline navigation.
+API decisions were checked against the [Android UWB guide](https://developer.android.com/develop/connectivity/uwb),
+[stable release](https://developer.android.com/jetpack/androidx/releases/core-uwb)
+and published 1.0.0 source archives.

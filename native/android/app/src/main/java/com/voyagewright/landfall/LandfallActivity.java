@@ -38,6 +38,7 @@ public final class LandfallActivity extends Activity implements LocationListener
   private String permissionRequestId;
   private LandfallSensors sensors;
   private LandfallHardware hardware;
+  private LandfallUwbDriver uwb;
   private LandfallPrivateStore privateStore;
   private LandfallPower power;
   private long requestedInterval=5000;
@@ -56,6 +57,7 @@ public final class LandfallActivity extends Activity implements LocationListener
     locations = (LocationManager)getSystemService(LOCATION_SERVICE);
     sensors = new LandfallSensors(this, this::event);
     hardware = new LandfallHardware(this, this::event);
+    uwb = LandfallUwbDriver.create(this, this::event);
     power = new LandfallPower(this, this::powerChanged);
     power.watch();
     web = new WebView(this);
@@ -176,6 +178,10 @@ public final class LandfallActivity extends Activity implements LocationListener
       case "SENSORS_STOP": sensors.stop(); reply(proxy, id, new JSONObject().put("accepted", true)); break;
       case "BLE_START": reply(proxy, id, state(hardware.startBle(foreground && !power.critical()))); break;
       case "BLE_STOP": hardware.stop(); reply(proxy, id, new JSONObject().put("accepted", true)); break;
+      case "UWB_STATE": reply(proxy,id,uwb.state());break;
+      case "UWB_PREPARE": uwb.prepare(payload,foreground && !power.critical(),value -> { try {reply(proxy,id,value);}catch(Exception ignored){} });break;
+      case "UWB_START": reply(proxy,id,uwb.start(payload,foreground && !power.critical()));break;
+      case "UWB_STOP": uwb.stop();reply(proxy,id,new JSONObject().put("accepted",true));break;
       case "NFC_READ": reply(proxy, id, state(hardware.startNfc(foreground && !power.critical()))); break;
       case "QR_SCAN":
         if (!foreground || power.critical()) { reply(proxy,id,state("UNAVAILABLE")); break; }
@@ -188,7 +194,7 @@ public final class LandfallActivity extends Activity implements LocationListener
       case "PRIVATE_STORE_GET": reply(proxy,id,new JSONObject().put("value",foreground ? privateStore.get(this,payload.optString("key")) : JSONObject.NULL)); break;
       case "PRIVATE_STORE_LIST": reply(proxy,id,new JSONObject().put("keys",foreground ? privateStore.list(this) : new JSONArray())); break;
       case "PRIVATE_STORE_DELETE": if(foreground)privateStore.remove(this,payload.optString("key"));reply(proxy,id,new JSONObject().put("accepted",foreground));break;
-      case "CLEAR_PRIVATE_DATA": stopLocation(); sensors.stop(); hardware.stop(); LocationServices.getGeofencingClient(this).removeGeofences(geofenceIntent()); LandfallSecureHints.clear(this); privateStore.clear(this); web.clearCache(true); reply(proxy, id, new JSONObject().put("accepted", true)); break;
+      case "CLEAR_PRIVATE_DATA": stopLocation(); sensors.stop(); hardware.stop(); uwb.stop(); LocationServices.getGeofencingClient(this).removeGeofences(geofenceIntent()); LandfallSecureHints.clear(this); privateStore.clear(this); web.clearCache(true); reply(proxy, id, new JSONObject().put("accepted", true)); break;
       default: reply(proxy, id, state("UNSUPPORTED"));
     }
   }
@@ -219,6 +225,7 @@ public final class LandfallActivity extends Activity implements LocationListener
     if(!foreground || power==null)return;
     if(power.constrained() && sensors!=null)sensors.stop();
     if(power.critical() && hardware!=null)hardware.stop();
+    if(power.critical() && uwb!=null)uwb.stop();
     if(acquiring && !startLocation())try{event(new JSONObject().put("type","error"));}catch(Exception ignored){}
     try{event(new JSONObject().put("type","power").put("power",power.snapshot()));}catch(Exception ignored){}
   }
@@ -244,6 +251,6 @@ public final class LandfallActivity extends Activity implements LocationListener
   @Override public void onResume() { super.onResume(); foreground=true; if (web!=null) { web.onResume(); try { event(new JSONObject().put("type", "lifecycle").put("state", "FOREGROUND").put("pendingHints", LandfallSecureHints.read(this))); } catch(Exception ignored){} } }
   private void openReturn(Intent intent){String handle=intent.getStringExtra("returnHandle");String saved=privateStore.lastJourney(this);web.loadUrl(origin+(handle!=null&&handle.matches("[A-Za-z0-9_-]{32,2048}")?"/player/landfall-return?handle="+Uri.encode(handle):saved!=null?"/player/playthroughs/"+Uri.encode(saved)+"/journal":"/player"));}
   @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);if(web!=null)openReturn(intent);}
-  @Override public void onPause() { try { event(new JSONObject().put("type", "lifecycle").put("state", "BACKGROUND")); } catch(Exception ignored){} foreground=false; stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(web!=null)web.onPause(); super.onPause(); }
-  @Override public void onDestroy() { stopLocation(); if(power!=null)power.close(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(web!=null){web.destroy();web=null;} super.onDestroy(); }
+  @Override public void onPause() { try { event(new JSONObject().put("type", "lifecycle").put("state", "BACKGROUND")); } catch(Exception ignored){} foreground=false; stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null)web.onPause(); super.onPause(); }
+  @Override public void onDestroy() { stopLocation(); if(power!=null)power.close(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null){web.destroy();web=null;} super.onDestroy(); }
 }
