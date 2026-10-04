@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { observeLandfallOperation } from "@/landfall/operational-observability";
 import { GET as authorizedChart } from "../route";
 import { requirePlayerIdentity, verifyPlayerCsrf } from "@/platform/auth";
 import { consumeRateLimit } from "@/lib/rate-limit";
@@ -47,6 +48,9 @@ async function readBoundedBody(request: Request) {
 
 /** Every exchange reauthorizes the current released physical objective. */
 export async function POST(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
+  return observeLandfallOperation("NEARBY_PAIRING", () => performPost(request, context));
+}
+async function performPost(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
   try {
     const identity = await requirePlayerIdentity();
     if (!identity) return NextResponse.json({ error: "Player sign-in required." }, { status: 401, headers });

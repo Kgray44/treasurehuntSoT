@@ -64,6 +64,8 @@ export async function executeLandfallAndroidRadioScenario(
   let advertiserState: string | null = null;
   let advertiserFailureCode: number | null = null;
   let radioStage = "SETUP";
+  const blePrerequisites: { preciseLocationGranted: boolean; locationSettingEnabled: boolean; screenAwake: boolean }[] =
+    [];
   const configurations: DeviceLabConfiguration[] = [];
   const acquired: string[] = [],
     pages: Page[] = [];
@@ -152,6 +154,21 @@ export async function executeLandfallAndroidRadioScenario(
           for (const permission of ["BLUETOOTH_SCAN", "BLUETOOTH_CONNECT", "BLUETOOTH_ADVERTISE"])
             await adb(serial, ["shell", "pm", "grant", pkg, `android.permission.${permission}`]);
           await adb(serial, ["shell", "svc", "bluetooth", "enable"]);
+          for (const permission of ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"])
+            await adb(serial, ["shell", "pm", "grant", pkg, `android.permission.${permission}`]);
+          await adb(serial, ["shell", "cmd", "location", "set-location-enabled", "true"]);
+          await adb(serial, ["shell", "input", "keyevent", "224"]);
+          await adb(serial, ["shell", "input", "keyevent", "82"]);
+          const permissions = await adb(serial, ["shell", "dumpsys", "package", pkg]);
+          const power = await adb(serial, ["shell", "dumpsys", "power"]);
+          const setting = (await adb(serial, ["shell", "cmd", "location", "is-location-enabled"])).trim();
+          const prerequisite = {
+            preciseLocationGranted: /android\.permission\.ACCESS_FINE_LOCATION: granted=true/.test(permissions),
+            locationSettingEnabled: setting === "true",
+            screenAwake: /mWakefulness=Awake/.test(power),
+          };
+          blePrerequisites.push(prerequisite);
+          if (!Object.values(prerequisite).every(Boolean)) throw new Error("LANDFALL_BLE_SCAN_PREREQUISITE_FAILED");
         }
         const launch = await adb(serial, [
           "shell",
@@ -455,6 +472,7 @@ export async function executeLandfallAndroidRadioScenario(
           advertiserState,
           advertiserFailureCode,
           radioStage,
+          blePrerequisites,
         },
         null,
         2,

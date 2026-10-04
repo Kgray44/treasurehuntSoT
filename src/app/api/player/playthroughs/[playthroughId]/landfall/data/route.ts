@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { observeLandfallOperation } from "@/landfall/operational-observability";
 import { GET as authorizedChart } from "../route";
 import { requirePlayerIdentity, verifyPlayerCsrf } from "@/platform/auth";
 import { consumeRateLimit } from "@/lib/rate-limit";
@@ -13,6 +14,9 @@ const headers = { "Cache-Control": "private, no-store, max-age=0", "X-Content-Ty
 
 /** Deliberate optional data only: no coordinates, queries or results enter progression or telemetry. */
 export async function POST(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
+  return observeLandfallOperation("ONLINE_DATA", () => performPost(request, context));
+}
+async function performPost(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
   try {
     const identity = await requirePlayerIdentity();
     if (!identity) return NextResponse.json({ error: "Player sign-in required." }, { status: 401, headers });

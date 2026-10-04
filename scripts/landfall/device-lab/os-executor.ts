@@ -36,6 +36,7 @@ export async function executeLandfallOsScenario(
 ) {
   const root = process.cwd();
   const cameraScenario = scenario.id === "qr-native-camera-valid";
+  let cameraDiagnostic: Record<string, string | boolean> | null = null;
   let cameraFixture: {
     keyId: string;
     publicKey: JsonWebKey;
@@ -230,6 +231,31 @@ export async function executeLandfallOsScenario(
     }
     try {
       const value = JSON.parse(body);
+      if (
+        route === "/lab/camera-diagnostic" &&
+        cameraScenario &&
+        ["NOT_STARTED", "PUBLIC_KEY_IMPORT", "SCANNER_START", "NATIVE_RESULT", "VERIFIED"].includes(value.stage) &&
+        [
+          "NotSupportedError",
+          "SecurityError",
+          "DataError",
+          "OperationError",
+          "AbortError",
+          "TypeError",
+          "OTHER",
+        ].includes(value.failure) &&
+        typeof value.cryptoAvailable === "boolean" &&
+        typeof value.nativeBridgeAvailable === "boolean"
+      ) {
+        cameraDiagnostic = {
+          stage: value.stage,
+          failure: value.failure,
+          cryptoAvailable: value.cryptoAvailable,
+          nativeBridgeAvailable: value.nativeBridgeAvailable,
+        };
+        response.end("{}");
+        return;
+      }
       if (route === "/lab/commit") {
         if (network === "OFFLINE") {
           response.statusCode = 503;
@@ -934,6 +960,7 @@ export async function executeLandfallOsScenario(
         JSON.stringify(
           {
             acquisition: "EMULATOR_IMAGE_FILE_CAMERA",
+            diagnostic: cameraDiagnostic,
             imageSha256: cameraFixture.imageSha256,
             tokenSha256: cameraFixture.tokenSha256,
             physicalPresence: "NOT_PROVEN",

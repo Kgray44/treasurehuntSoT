@@ -228,7 +228,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           stage = "NATIVE_JOURNAL_TOOLS";
           await expect(tools).toBeVisible({ timeout: 30000 });
           stage = "OPEN_NATIVE_MAP";
-          await openClosureMap(page);
+          await openClosureMap(page, { noWaitAfter: true });
           expect(await page.evaluate(() => window.LandfallNative?.platform)).toBe("ANDROID");
           await page.evaluate(() => {
             const counts = { nearby: 0, fixes: 0 };
@@ -240,15 +240,15 @@ test("real native Journal pairing returns untrusted hints and background clears 
             });
           });
           stage = "EXPAND_NATIVE_NEARBY_CONTROLS";
-          await page.locator(".landfall-nearby-panel:visible summary").click();
+          await page.locator(".landfall-nearby-panel:visible summary").click({ noWaitAfter: true });
         }
         const panels = pages.map((page) => page.locator(".landfall-nearby-panel:visible"));
         stage = "FIRST_PARTY_CREATE_JOIN";
-        await panels[0].getByRole("button", { name: "Create pairing code", exact: true }).click();
+        await panels[0].getByRole("button", { name: "Create pairing code", exact: true }).click({ noWaitAfter: true });
         const code = await panels[0].getByLabel("Pairing code", { exact: true }).textContent();
         expect(typeof code === "string" && /^[A-Za-z0-9_-]{43}$/.test(code)).toBe(true);
         await panels[1].getByLabel("Code from your other device").fill(code!);
-        await panels[1].getByRole("button", { name: "Join my other device", exact: true }).click();
+        await panels[1].getByRole("button", { name: "Join my other device", exact: true }).click({ noWaitAfter: true });
         await expect
           .poll(
             () =>
@@ -266,7 +266,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
             { timeout: 10000 },
           )
           .toBe(true);
-        await panels[0].getByRole("button", { name: "Start hints", exact: true }).click();
+        await panels[0].getByRole("button", { name: "Start hints", exact: true }).click({ noWaitAfter: true });
         stage = "NATIVE_REPORTS_BOTH_DEVICES";
         for (const panel of panels)
           await expect(panel.getByRole("status", { name: "Nearby device hint status" })).toContainText(
@@ -294,7 +294,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
         ]);
         await expect(panels[0].getByRole("status", { name: "Nearby device hint status" })).toContainText("paused");
         await expect.poll(() => nativeStopped(pages[0]), { timeout: 10000 }).toBe(true);
-        await panels[1].getByRole("button", { name: "Stop nearby hints", exact: true }).click();
+        await panels[1].getByRole("button", { name: "Stop nearby hints", exact: true }).click({ noWaitAfter: true });
         await expect.poll(() => nativeStopped(pages[1]), { timeout: 10000 }).toBe(true);
         nativeStopObserved = true;
         stage = "CANONICAL_AND_RENDERED_RESULT";

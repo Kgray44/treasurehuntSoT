@@ -994,3 +994,58 @@ exported. APK SHA256 is
 the receipt is under the owned Device Lab release-package artifact directory.
 This is package separation proof; deployed companion availability and signing
 remain operator gates.
+
+
+## Current native recovery and operational evidence
+
+Actual hosted Android source `ec339c24a4a8beaedb101c14d5bd2c3fc09dfb32`
+run37185206080 verifies an owned emulator guest reboot: changed kernel boot
+identity, same AVD, completed boot and a fresh companion startup acknowledgment.
+The reboot scenario retains zero One Voyage events; a separate offline restart
+restores the native protected lease and reconciles exactly one canonical event.
+Cleanup passes. No region was registered in that reboot case, so it does not
+prove BOOT_COMPLETED delivery or geofence restoration.
+
+Source `ba1a77eb597a72266a1b9445c6300d47092832c7`, run37185542857,
+passes ten native instrumentation tests and both reboot/offline restart cases
+with cleanup. Native replacement waits for confirmed removal of prior OS
+regions; failed removal prevents another add and leaves no encrypted recovery
+descriptor. This instrumentation proves ordering and protected storage behavior,
+not real geofence delivery.
+
+At that source, radio run37185534986 starts an actual owned advertiser and
+production scanner, but finds zero peers. Discovery remains unaccepted.
+Journal run37185539114 passes the real opening ceremony and Journal tools,
+then times out waiting for map-click navigation. Both runs prove fixture,
+process, ADB listener, AVD and transport cleanup. The next diagnostic checks
+categorical scan prerequisites and uses normal pointer clicks with separate
+rendered-state assertions.
+
+Source `5aa8e6fa41d6fdac0089783f3091ad4ca32b130c`, camera run37185834136,
+builds and passes native instrumentation, accepts the emulator image-file camera
+backend, but fails the canonical camera action. It retains zero GPS acquisitions,
+completion requests and canonical events; cleanup passes. Camera acquisition and
+verification are not accepted. The source-bound synthetic image contains a
+public Ed25519 claim; no signing key, plaintext claim or frame is exported in
+diagnostic JSON. The next run records only the finite failing stage and error
+category to distinguish public-key import from native acquisition.
+
+The production server now sends finite Landfall operation, outcome and coarse
+duration categories through the existing platform Pino logger. Seven existing
+Player API operations, remote data demand and notification returns are covered.
+There is no new telemetry database, progression writer, client upload, request
+body inspection or coordinate/identity label. Strict event parsing rejects
+unknown fields; logger failure cannot alter a response or authority result.
+Passive remote configuration status produces no availability-success metric.
+HTTP success describes transport only; it does not establish provider health,
+installation verification or arrival. Remote demand separately reports its
+actual bounded service result. These logs support categorical aggregation in
+the deployment's existing log sink; log level and retention remain existing
+platform configuration.
+
+Focused tests verify response identity/body preservation, rejected private
+labels, finite timing bands and diagnostic failure isolation. Native permission
+distributions, RF accuracy, battery use and physical performance have not been
+measured by these server logs. Device Lab timing remains execution evidence,
+not a claimed production service-level objective. Phase acceptance and ordinary
+Sounding Line qualification remain pending.

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { observeLandfallOperation } from "@/landfall/operational-observability";
 import { getTaleSessionState, submitPlayerLandfallEvidence } from "@/chronicle/progression";
 import { apiError } from "@/chronicle/api";
 import { loadPinnedLandfallDefinition } from "@/landfall/published";
@@ -98,6 +99,9 @@ export async function GET(request: Request, context: { params: Promise<{ playthr
 }
 
 export async function POST(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
+  return observeLandfallOperation("EVIDENCE", () => performPost(request, context));
+}
+async function performPost(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
   const identity = await requirePlayerIdentity();
   if (!identity)
     return NextResponse.json({ error: "Player sign-in required." }, { status: 401, headers: privateHeaders });

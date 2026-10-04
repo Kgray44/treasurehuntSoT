@@ -2,8 +2,36 @@ import { requirePlayerIdentity, playerCanAccessPlaythrough } from "@/platform/au
 import { db } from "@/lib/db";
 import { readLandfallReturnHandle } from "@/landfall/notification-return-server";
 import { resolveLandfallNotificationReturn } from "@/landfall/background-navigation";
+import {
+  recordLandfallOperation,
+  landfallDurationBand,
+  type LandfallOperationalOutcome,
+} from "./operational-observability";
 
 export async function resolveAuthenticatedLandfallReturn(handle: string) {
+  const start = performance.now();
+  let outcome: LandfallOperationalOutcome = "FAILED";
+  try {
+    const result = await resolveReturn(handle);
+    outcome =
+      result.state === "SIGN_IN"
+        ? "DENIED"
+        : result.state === "UNAVAILABLE"
+          ? "UNAVAILABLE"
+          : result.state === "EXPIRED"
+            ? "EXPIRED"
+            : "RETURNED";
+    return result;
+  } finally {
+    recordLandfallOperation({
+      operation: "NOTIFICATION_RETURN",
+      outcome,
+      durationBand: landfallDurationBand(performance.now() - start),
+      count: 1,
+    });
+  }
+}
+async function resolveReturn(handle: string) {
   const identity = await requirePlayerIdentity();
   if (!identity) return { destination: "/player/sign-in", state: "SIGN_IN" as const };
   try {

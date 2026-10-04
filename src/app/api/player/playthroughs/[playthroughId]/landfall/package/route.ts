@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { observeLandfallOperation } from "@/landfall/operational-observability";
 import { GET as authorizedChart } from "../route";
 import { requirePlayerIdentity } from "@/platform/auth";
 import { loadPinnedLandfallDefinition } from "@/landfall/published";
@@ -10,6 +11,9 @@ import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "private, no-store, max-age=0", "X-Content-Type-Options": "nosniff" };
 export async function GET(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
+  return observeLandfallOperation("OFFLINE_PACKAGE", () => performGet(request, context));
+}
+async function performGet(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
   try {
     const identity = await requirePlayerIdentity();
     if (!identity) return NextResponse.json({ error: "Player sign-in required." }, { status: 401, headers });

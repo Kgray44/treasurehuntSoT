@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { observeLandfallOperation } from "@/landfall/operational-observability";
 import { db } from "@/lib/db";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { requirePlayerIdentity, playerCanAccessPlaythrough, verifyPlayerCsrf } from "@/platform/auth";
@@ -10,6 +11,9 @@ import { verifyPlayerLandmark } from "@/landfall/landmark-verification";
 export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "private, no-store, max-age=0" };
 export async function POST(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
+  return observeLandfallOperation("LANDMARK", () => performPost(request, context));
+}
+async function performPost(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
   const identity = await requirePlayerIdentity();
   if (!identity) return NextResponse.json({ error: "Player sign-in required." }, { status: 401, headers });
   const { playthroughId } = await context.params;

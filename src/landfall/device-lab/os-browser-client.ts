@@ -227,6 +227,8 @@ async function main() {
     let reason: string | undefined;
     let locationDiagnostic: ReturnType<DeviceLabLocationDiagnostics["snapshot"]> | undefined;
     let stopDiagnostic: () => Promise<void> = async () => {};
+    let cameraStage: "NOT_STARTED" | "PUBLIC_KEY_IMPORT" | "SCANNER_START" | "NATIVE_RESULT" | "VERIFIED" =
+      "NOT_STARTED";
     try {
       if (action.type === "LOCATION") {
         if (world.kind === "VIRTUAL" && action.coordinate.type !== "WGS84") {
@@ -350,6 +352,7 @@ async function main() {
             publicKey: JsonWebKey;
             scope: LandfallInstallationScope;
           };
+          cameraStage = "PUBLIC_KEY_IMPORT";
           const key = await crypto.subtle.importKey("jwk", fixture.publicKey, "Ed25519", false, ["verify"]);
           const scanner = new NativeLandfallInstallationProvider({
             scope: fixture.scope,
@@ -358,15 +361,18 @@ async function main() {
           });
           let timer: ReturnType<typeof setTimeout> | undefined;
           try {
+            cameraStage = "SCANNER_START";
             const result = await new Promise<InstallationResult>((resolve, reject) => {
               timer = setTimeout(() => reject(new Error("NATIVE_CAMERA_ACQUISITION_TIMEOUT")), 35000);
               void scanner.scan("QR", resolve).then((reply) => {
                 if (reply !== "GRANTED" && reply !== "COMPLETED") reject(new Error("NATIVE_CAMERA_START_FAILED"));
               }, reject);
             });
+            cameraStage = "NATIVE_RESULT";
             if (result.state !== "VERIFIED" || result.canComplete || result.physicalPresence !== "NOT_PROVEN")
               throw new Error("NATIVE_CAMERA_IDENTITY_NOT_VERIFIED");
             tokenState = "NEW";
+            cameraStage = "VERIFIED";
           } finally {
             clearTimeout(timer);
             await scanner.clear();
@@ -530,6 +536,24 @@ async function main() {
       }
     } catch (error) {
       state = "FAIL";
+      if (action.type === "INSTALLATION_TOKEN") {
+        const failure =
+          error instanceof Error &&
+          ["NotSupportedError", "SecurityError", "DataError", "OperationError", "AbortError", "TypeError"].includes(
+            error.name,
+          )
+            ? error.name
+            : "OTHER";
+        await fetch("/lab/camera-diagnostic", {
+          method: "POST",
+          body: JSON.stringify({
+            stage: cameraStage,
+            failure,
+            cryptoAvailable: !!globalThis.crypto?.subtle,
+            nativeBridgeAvailable: !!window.LandfallNative,
+          }),
+        });
+      }
       reason =
         error instanceof Error && /^[A-Z_:a-z]{1,128}$/.test(error.message) ? error.message : "OS_SCENARIO_FAILED";
     } finally {

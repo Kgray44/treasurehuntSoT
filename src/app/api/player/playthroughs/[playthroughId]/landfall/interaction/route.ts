@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { observeLandfallOperation } from "@/landfall/operational-observability";
 import { z } from "zod";
 import { GET as authorizedChart } from "../route";
 import { requirePlayerIdentity, verifyPlayerCsrf } from "@/platform/auth";
@@ -33,6 +34,9 @@ function objective(value: PlayerLandfallBootstrap | undefined) {
 }
 /** Authentication of an optional installation only. No scan writes progression, location or raw telemetry. */
 export async function POST(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
+  return observeLandfallOperation("INSTALLATION", () => performPost(request, context));
+}
+async function performPost(request: Request, context: { params: Promise<{ playthroughId: string }> }) {
   try {
     const identity = await requirePlayerIdentity();
     if (!identity) return NextResponse.json({ state: "UNAVAILABLE", canComplete: false }, { status: 401, headers });
