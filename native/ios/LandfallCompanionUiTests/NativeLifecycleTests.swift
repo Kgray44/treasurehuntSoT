@@ -43,7 +43,17 @@ final class NativeLifecycleTests: XCTestCase {
         let accessibility=settings.staticTexts["Accessibility"]
         for _ in 0..<5 {if accessibility.exists && accessibility.isHittable {break};settings.swipeUp()}
         XCTAssertTrue(accessibility.waitForExistence(timeout:10) && accessibility.isHittable,"LANDFALL_SETTINGS_ACCESSIBILITY_UNAVAILABLE");accessibility.tap()
-        let motion=settings.staticTexts["Motion"];XCTAssertTrue(motion.waitForExistence(timeout:10),"LANDFALL_SETTINGS_MOTION_UNAVAILABLE");motion.tap()
+        let motion=settings.staticTexts["Motion"]
+        for _ in 0..<5 {if motion.exists && motion.isHittable {break};settings.swipeUp()}
+        guard motion.waitForExistence(timeout:10) && motion.isHittable else {XCTFail("LANDFALL_SETTINGS_MOTION_UNAVAILABLE");return}
+        let motionButtons=settings.buttons.containing(.staticText,identifier:"Motion")
+        let motionCells=settings.cells.containing(.staticText,identifier:"Motion")
+        if motionButtons.count == 1 && motionButtons.firstMatch.isHittable {motionButtons.firstMatch.tap()}
+        else if motionCells.count == 1 && motionCells.firstMatch.isHittable {motionCells.firstMatch.tap()}
+        else {motion.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.5)).tap()}
+        let motionPage=settings.navigationBars["Motion"]
+        if !motionPage.waitForExistence(timeout:5),motion.exists && motion.isHittable {motion.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.5)).tap()}
+        guard motionPage.waitForExistence(timeout:10) else {XCTFail("LANDFALL_MOTION_PAGE_UNOBSERVED");return}
         let before=XCTAttachment(screenshot:settings.screenshot());before.name="Owned Motion settings before selection";before.lifetime = .keepAlways;add(before)
         let labelled=settings.switches.matching(NSPredicate(format:"label CONTAINS %@","Reduce Motion"))
         let row=settings.cells.containing(.staticText,identifier:"Reduce Motion").firstMatch
@@ -98,21 +108,27 @@ final class NativeLifecycleTests: XCTestCase {
                     springboard.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.005)).press(forDuration:0.1,thenDragTo:springboard.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.8)))
                     let title="Your journey may be nearby"
                     let buttons=springboard.buttons.matching(NSPredicate(format:"label CONTAINS %@",title))
+                    let openButtons=springboard.buttons.matching(NSPredicate(format:"label CONTAINS %@ AND NOT (label CONTAINS[c] %@) AND NOT (label CONTAINS[c] %@)",title,"Clear","Dismiss"))
                     let cards=springboard.otherElements.matching(NSPredicate(format:"label CONTAINS %@ AND label CONTAINS %@",title,"No visit has been confirmed."))
                     let text=springboard.staticTexts.matching(NSPredicate(format:"label == %@",title))
                     // SpringBoard can expose a notice as one combined accessible
                     // card/button rather than a separate title static text.
                     var notice:XCUIElement?
-                    if buttons.firstMatch.waitForExistence(timeout:5),buttons.count == 1 {notice=buttons.firstMatch}
+                    if openButtons.firstMatch.waitForExistence(timeout:5),openButtons.count == 1 {notice=openButtons.firstMatch}
                     else if cards.firstMatch.waitForExistence(timeout:5),cards.count == 1 {notice=cards.firstMatch}
                     else if text.firstMatch.waitForExistence(timeout:5),text.count == 1 {notice=text.firstMatch}
                     var tapped=false,foregroundObserved=false
+                    var tapAttempts=0
                     if let notice=notice,notice.isHittable {
-                        notice.tap();tapped=true
+                        notice.tap();tapped=true;tapAttempts=1
+                        // A collapsed notification can consume the first tap to
+                        // expand. A second real tap is allowed only while the
+                        // same unique public notice is still visible/hittable.
+                        if !app.wait(for:.runningForeground,timeout:5),openButtons.count == 1,openButtons.firstMatch.isHittable {openButtons.firstMatch.tap();tapAttempts=2}
                         foregroundObserved=app.wait(for:.runningForeground,timeout:15)
                         if foregroundObserved {result="PASS"}
                     }
-                    noticeDiagnostic=["buttonTitleCount":min(buttons.count,64),"combinedCardCount":min(cards.count,64),"staticTitleCount":min(text.count,64),"tapped":tapped,"foregroundObserved":foregroundObserved]
+                    noticeDiagnostic=["buttonTitleCount":min(buttons.count,64),"openButtonCount":min(openButtons.count,64),"tapAttempts":tapAttempts,"combinedCardCount":min(cards.count,64),"staticTitleCount":min(text.count,64),"tapped":tapped,"foregroundObserved":foregroundObserved]
                 }
                 try await post(origin,"/lab/os/result",["index":index,"state":result,"noticeUi":noticeDiagnostic])
                 continue

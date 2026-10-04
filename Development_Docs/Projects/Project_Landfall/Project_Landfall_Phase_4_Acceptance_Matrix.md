@@ -59,7 +59,13 @@ outlasts the unchanged90-second outbox. Current lab handling uses documented
 OS launch followed by actual foreground/client/lease assertions, plus at most
 one fresh read-only count redispatch while the same owned child remains live.
 No evidence lifetime or authority/write deadline is extended. Full primary and
-compatibility rechecks37228402022 on `8e6e3e19` remain active.
+compatibility rechecks37228402022 on `8e6e3e19` finish17/18: compatibility9/9,
+primary8/9. Harvest11,442hashes/cleanupPASS. Primary restart passes termination
+and fresh counts, but the OS launch is killed at its15-second transport deadline.
+Current launch omits redundant terminate-running-process after verified termination
+and allows one30-second command; outbox90seconds and actual foreground/restored-
+client/lease/canonical assertions remain unchanged. A focused primary recheck is
+required; the other accepted profile cases retain their original bindings.
 
 Focused tablet input run37224452331 on `80b8dbe4` passes, including one actual
 input deadline followed by acknowledgment, native qualified fixes and exactly
@@ -75,7 +81,14 @@ no return is inferred from the screenshot.
 This additional acceptance gate requires real permission UI, background notice,
 SpringBoard tap and native same-origin return. Its synthetic nonce landing proves
 OS handoff only; production signed authorization has separate shared and Android
-first-party coverage. No notice return is yet claimed.
+first-party coverage. Run37229444663 on86d2fdcc also fails,4,288hashes/cleanupPASS:
+two title-bearing buttons, one title text and an actual text tap are observed,
+but foreground/return are absent. Current selection excludes clear/dismiss controls,
+allows at most two actual taps on the same unique visible notice, and retains
+all foreground/server/client assertions. Native return navigation now dispatches
+to the main queue; DEBUG snapshots contain only stage, valid-handle and thread/
+web-view booleans. This does not establish a cause for the earlier text-tap failure.
+No notice return is yet claimed.
 
 Apple presentation automation now configures and reads back dark appearance
 and AccessibilityXXXL through public `simctl ui` on its owned build Simulator.
@@ -93,7 +106,11 @@ retains4,294hashes/cleanupPASS. Settings selection now scrolls within a bounded
 search and accepts one semantic switch/row; failed xcresult attachments are
 exported too. Native build acceptance requires at least19passes and at most the
 one canonical-driver skip, so presentation skips cannot silently pass. Actual
-focused recheck is required.
+focused recheck is required. Recheck37230795587 on d8dcaa8e retains18PASS/1FAIL/
+one canonical-driver skip and4,365hashes/cleanupPASS. Its exported screenshot
+shows the Accessibility page still open after the Motion text tap. Current
+automation selects a hittable actionable row/button and requires actual Motion
+navigation before searching for its switch. Both earlier failures remain failures.
 
 Retained input comparisons show production web, dependency and schema trees
 unchanged from C8; native Android unchanged from01bab29b; and native iOS unchanged

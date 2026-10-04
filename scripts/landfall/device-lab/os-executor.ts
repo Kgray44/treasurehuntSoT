@@ -351,7 +351,13 @@ export async function executeLandfallOsScenario(
       ) {
         if (appleNoticeScenario && value.index === 5 && value.noticeUi) {
           const diagnostic = value.noticeUi;
-          const countFields = ["buttonTitleCount", "combinedCardCount", "staticTitleCount"];
+          const countFields = [
+            "buttonTitleCount",
+            "openButtonCount",
+            "tapAttempts",
+            "combinedCardCount",
+            "staticTitleCount",
+          ];
           const flagFields = ["tapped", "foregroundObserved"];
           if (
             countFields.every(
@@ -671,7 +677,7 @@ export async function executeLandfallOsScenario(
           }
           osCurrent = { index, action: step.action };
           if (step.action.operation === "DELIVER") current = { index, action: step.action };
-          await wait(() => osResults.has(index), 45000);
+          await wait(() => osResults.has(index), 60000);
           const result = osResults.get(index)!;
           if (result.state !== "PASS") {
             appleNoticeOpenRequested = false;
@@ -770,12 +776,11 @@ export async function executeLandfallOsScenario(
                 [
                   "simctl",
                   "launch",
-                  "--terminate-running-process",
                   ownedDevice!,
                   "com.voyagewright.landfall",
                   `--landfall-lab-origin=http://127.0.0.1:${port}`,
                 ],
-                15000,
+                30000,
               );
             }
             osCurrent = { index, action };
@@ -1399,6 +1404,7 @@ export async function executeLandfallOsScenario(
       });
     }
     if (appleNoticeScenario) {
+      let notificationReturnDiagnostic: Record<string, string | boolean> | undefined;
       let permissionDiagnostic: {
         stage: string;
         granted: boolean;
@@ -1430,6 +1436,25 @@ export async function executeLandfallOsScenario(
             callbackOnMain: value.callbackOnMain,
             replyOnMain: value.replyOnMain,
           };
+        try {
+          const returned = JSON.parse(
+            await readFile(
+              path.join(container, "Library", "Application Support", "landfall-notification-return-debug.json"),
+              "utf8",
+            ),
+          );
+          const flags = ["validHandle", "callbackOnMain", "navigationOnMain", "webViewAvailable"];
+          if (
+            ["INVALID_HANDLE", "NAVIGATION_REQUESTED", "PENDING_WEB_VIEW"].includes(returned.stage) &&
+            flags.every((key) => typeof returned[key] === "boolean")
+          )
+            notificationReturnDiagnostic = {
+              stage: returned.stage,
+              ...Object.fromEntries(flags.map((key) => [key, returned[key]])),
+            };
+        } catch {
+          /* No native return callback remains unknown, never inferred. */
+        }
       } catch {
         /* Missing debug evidence remains unknown. */
       }
@@ -1444,6 +1469,7 @@ export async function executeLandfallOsScenario(
             osActions: [...osResults.values()],
             noticeUiDiagnostic: appleNoticeUiDiagnostic,
             permissionDiagnostic,
+            notificationReturnDiagnostic,
             noticeTapObserved: steps.some(
               (step) => step.action === "NOTIFICATION" && step.index === 5 && step.state === "PASS",
             ),

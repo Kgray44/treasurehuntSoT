@@ -261,11 +261,26 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         #endif
     }
     func userNotificationCenter(_ center:UNUserNotificationCenter,didReceive response:UNNotificationResponse,withCompletionHandler completionHandler:@escaping()->Void){
-        if let handle=response.notification.request.content.userInfo["returnHandle"] as? String,(32...2048).contains(handle.count),handle.range(of:"^[A-Za-z0-9_-]+$",options:.regularExpression) != nil{
-            pendingReturn=handle
-            if let origin=origin,let url=URL(string:"/player/landfall-return?handle=\(handle)",relativeTo:origin),let web=web{web.load(URLRequest(url:url));pendingReturn=nil}
+        let callbackOnMain=Thread.isMainThread
+        let handle=response.notification.request.content.userInfo["returnHandle"] as? String
+        let valid=handle.map{(32...2048).contains($0.count) && $0.range(of:"^[A-Za-z0-9_-]+$",options:.regularExpression) != nil} ?? false
+        DispatchQueue.main.async { [weak self] in
+            defer {completionHandler()}
+            guard let self=self else {return}
+            guard valid,let handle=handle else {self.notificationReturnDiagnostic(stage:"INVALID_HANDLE",valid:false,callbackOnMain:callbackOnMain);return}
+            self.pendingReturn=handle
+            if let origin=self.origin,let url=URL(string:"/player/landfall-return?handle=\(handle)",relativeTo:origin),let web=self.web {
+                web.load(URLRequest(url:url));self.pendingReturn=nil
+                self.notificationReturnDiagnostic(stage:"NAVIGATION_REQUESTED",valid:true,callbackOnMain:callbackOnMain)
+            } else {self.notificationReturnDiagnostic(stage:"PENDING_WEB_VIEW",valid:true,callbackOnMain:callbackOnMain)}
         }
-        completionHandler()
+    }
+    private func notificationReturnDiagnostic(stage:String,valid:Bool,callbackOnMain:Bool) {
+        #if DEBUG
+        let file=FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("landfall-notification-return-debug.json")
+        let value:[String:Any]=["stage":stage,"validHandle":valid,"callbackOnMain":callbackOnMain,"navigationOnMain":Thread.isMainThread,"webViewAvailable":web != nil]
+        if let data=try? JSONSerialization.data(withJSONObject:value) {try? FileManager.default.createDirectory(at:file.deletingLastPathComponent(),withIntermediateDirectories:true);try? data.write(to:file,options:[.atomic,.completeFileProtectionUntilFirstUserAuthentication])}
+        #endif
     }
     func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
         if let region=region {
