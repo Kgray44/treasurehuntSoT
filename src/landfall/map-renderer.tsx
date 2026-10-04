@@ -314,10 +314,11 @@ function PhysicalMap({
           rasterChecked && <p>Online background maps are not configured. Your released chart remains available.</p>
         ))}
       <div style={{ width: "100%", height: 320, position: "relative" }} aria-label="Physical Landfall map">
-        {(!loaded || failure) && <StaticPhysicalChart scene={scene} />}
+        {(!loaded || failure) && <StaticPhysicalChart scene={scene} position={position} />}
         <div
           ref={element}
           aria-hidden={!loaded || failure}
+          inert={!loaded || failure}
           style={{
             position: "absolute",
             inset: 0,
@@ -328,9 +329,8 @@ function PhysicalMap({
       </div>
       {position && (
         <p role="status">
-          {loaded && !failure ? "Current position shown. " : ""}Location signal:{" "}
-          {position.confidence.toLowerCase().replaceAll("_", " ")}. Estimated accuracy:{" "}
-          {Math.round(position.accuracyMeters)} meters.
+          Current position shown. Location signal: {position.confidence.toLowerCase().replaceAll("_", " ")}. Estimated
+          accuracy: {Math.round(position.accuracyMeters)} meters.
         </p>
       )}
       {failure && <p role="status">Map data is unavailable. Use the location list and route summary.</p>}

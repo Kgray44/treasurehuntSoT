@@ -262,8 +262,15 @@ test("real native Journal pairing returns untrusted hints and background clears 
             }
             const progress = page.getByRole("dialog", { name: "Journal opening in progress" });
             if (await progress.isVisible()) {
-              await progress.getByRole("button", { name: "Skip ceremony", exact: true }).click({ noWaitAfter: true });
-              openingSkippedDevices.push(deviceIndex);
+              stage = "SKIP_NATIVE_JOURNAL_CEREMONY";
+              try {
+                await progress.getByRole("button", { name: "Skip ceremony", exact: true }).click({ noWaitAfter: true });
+                openingSkippedDevices.push(deviceIndex);
+              } catch (error) {
+                // The actual ceremony can finish while the native click waits.
+                // Only the resulting visible tools establish that transition.
+                if (!(await tools.isVisible())) throw error;
+              }
             }
           }
           stage = "NATIVE_JOURNAL_TOOLS";

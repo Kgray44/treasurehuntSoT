@@ -495,7 +495,7 @@ all cleanup PASS including verified transport branch deletion. Clean source FP
 c4b9f3d23143c99077d68eb26d34c4d91ce984dd8975f68b67e88495ac2c2aee.
 Do not infer an actual framework capability value from the passing test until its
 XCTest attachment is extracted. No Apple ranging session/RF proof exists.
-Repository TypeScript now excludes artifacts/** to avoid traversing retained SDK
+Repository TypeScript now excludes artifacts/\*\* to avoid traversing retained SDK
 and hosted archives. Fresh uncached compile passes; four focused files pass fifteen
 tests. Compiler input inventory retains 1684 source/test/generated route files,
 includes the native web adapter/instrumentation helper, and contains zero archive
@@ -819,10 +819,10 @@ No scanner/radio acceptance claim. Later BLE/scan-stop/camera-release source
 still needs fresh Apple qualification.
 
 99d8b7af nativeJournal37182322072 HARVESTED42 sanitized artifacts:12 browser
-PASS;nativeFAIL OPEN_NATIVE_JOURNAL_DIALOG index0. HTTP200/readyState complete/
+PASS;nativeFAIL OPEN*NATIVE_JOURNAL_DIALOG index0. HTTP200/readyState complete/
 native bridge present/no auth redirect/no page errors/opening dialog visible/
 Journal tools notvisible;2failed first-party requests. Zero canonical events,
-fixture cleanup PASS; owner cleanup FAIL with remaining port:5038. Separate CLICK_NATIVE_JOURNAL_OPEN vs NATIVE_JOURNAL_
+fixture cleanup PASS; owner cleanup FAIL with remaining port:5038. Separate CLICK_NATIVE_JOURNAL_OPEN vs NATIVE_JOURNAL*
 TOOLS and retain categorical pointer/stability failure plus bounded synthetic
 pre-pairing screenshot. Do not assume a cookie or pairing fault.
 
@@ -1118,3 +1118,17 @@ JournalobservedDOMrect mappedoneobservedOSWebview boundsnormalOSinput,
 harvestactive. Appleclosure37192581595 still8casesperprofileactive; broadbrowser
 2642run37192939572 active. Newintegrationmanifestengineering/current linked/indexed;
 currentstatusclearlyrecords actual passes andremaininglocalwork. No protectedqual.
+
+10b geo37193255780HARVESTED20FAIL ADD_FAILED/NOT_AVAILABLE, no observed accuracy
+toggle, outside36/180202ms+inside36/180188ms, receivernull/canonical0/cleanupPASS.
+10b Journal37193269602HARVESTED45FAIL Skipceremony race after actualOSopening;
+toolsvisibletrue, nopairingyet. Recovery requires actualtoolsvisible.
+2642 broadbrowser37192939572HARVESTED97 FAIL46/50; productfixes explicitfallback
+liveposition/inertMapLibre/legacyallowedsourceintersection, focused16PASS.
+e981 Android37192590886HARVESTED996 SUCCESS80/80fourprofiles, 44nativefirstfix
+24.8–6224.5ms, 12sensorintervals CPUmax25ms/PSS25117–53329KiB/incrementmax106KiB/
+stopverified. Apple3profile stillactive. Radio10b37193317555HARVESTED33FAIL,
+analysispending. Productionaudit0/all5high ESLintglobchain after @fastify/static
+10.1.5+deepmerge-ts8.0.2. Prisma generate/schema/TS PASS, Bridgewatch24files80tests
+PASSmaxWorkers2 afterstale lifecyclefixture correction. Format+changedlintPASS.
+Nextfreeze sourceand rerun fullbrowser+Journal; no phaseclosure orcatalogpromotion.

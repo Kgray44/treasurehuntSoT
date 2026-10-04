@@ -526,7 +526,7 @@ documented elapsed-realtime clock. Reports retain UNKNOWN uncertainty and no
 verified peer or completion claim. Both backends reject additional payload fields
 and numeric string/boolean/fractional/overflow coercion. Both APKs build.
 Implementation was checked against the [public Ranging guide](https://developer.android.com/develop/connectivity/ranging)
-and installed API-36 signatures; [measurement timestamps](https://developer.android.com/reference/android/ranging/RangingData#getTimestampMillis())
+and installed API-36 signatures; [measurement timestamps](<https://developer.android.com/reference/android/ranging/RangingData#getTimestampMillis()>)
 are not wall-clock timestamps.
 
 The owned two-emulator source probe first found AndroidX preparation unavailable
@@ -758,15 +758,15 @@ No real credentials or external-provider traffic were used for the unit fixtures
 
 Operators explicitly opt into `LANDFALL_REMOTE_DATA_MODE=ephemeral-instance`
 and supply `LANDFALL_REMOTE_DATA_CONFIG`, a bounded JSON array with at most one
-NOMINATIM, OSRM and OPEN_ELEVATION configuration. This mode is supported only
+NOMINATIM, OSRM and OPEN*ELEVATION configuration. This mode is supported only
 for one application instance; per-service quota/cooldown state is process-local.
 Distributed deployments must keep these adapters disabled until they provide an
 application-wide quota authority. Configuration requires HTTPS base URL, an
 identifying user agent, license, attribution label/URL, accepted usage agreement
-and NONE or BEARER authentication. BEARER names a `LANDFALL_*` server environment
+and NONE or BEARER authentication. BEARER names a `LANDFALL*\*`server environment
 variable; the value is never returned to clients. OSRM declares its actual
 deployment's routing mode and profile. A profile string alone cannot certify
-the backend data mode, safety or accessibility. `authoringRights` defaults to
+the backend data mode, safety or accessibility.`authoringRights` defaults to
 PROHIBITED and may be ALLOWED only under the deployment's actual agreement.
 Online result caching and offline packaging remain prohibited for these adapters.
 
@@ -994,7 +994,6 @@ exported. APK SHA256 is
 the receipt is under the owned Device Lab release-package artifact directory.
 This is package separation proof; deployed companion availability and signing
 remain operator gates.
-
 
 ## Current native recovery and operational evidence
 
@@ -1364,3 +1363,39 @@ or ambiguous WebViews, clipped controls, zoom, nonfinite geometry or inconsisten
 viewport scaling reject before input. Five focused mapping tests and TypeScript/
 lint pass; no JavaScript activation, hardcoded screen coordinate or manufactured
 Journal state is used. Both failed runs retain their failure and passing cleanup.
+
+The expanded browser run37192939572 on2642daaddaa9 passes46of50cases and exposes
+three product regressions: the static physical fallback omitted the explicit live
+foreground position; the hidden MapLibre canvas retained keyboard focus; and newly
+authored waypoints imposed NATIVE_LOCATION on legacy Worldspaces that did not
+permit that source. The fixes render an explicit live marker without mutating the
+released projection, make the hidden map inert, and intersect default evidence
+sources with the Worldspace policy. Three focused files /16tests pass. The complete
+browser regression must run again; failed receipts remain failures.
+
+Android run37192590886 on e981edec passes80native cases across primary,
+compatibility, low-resource and tablet profiles. All44first-qualified-fix samples
+fall between24.8and6224.5ms. Twelve real two-second sensor intervals report at most
+25ms process CPU,25,117–53,329KiB PSS and at most106KiB incremental PSS; all verify
+stop. Actual reboot/offline reconciliation and power controls pass. These samples
+do not establish full-Journal RAM, physical energy, OEM behavior or field accuracy.
+
+Journal run37193269602 on10b2924fb360 demonstrates that the observed normal OS tap
+opens the first-party Journal and exposes its tools. It fails when an ordinary
+Skip ceremony click races natural ceremony completion. Recovery now requires the
+actual visible tools; it does not claim a skipped ceremony when the click failed.
+Pairing still requires a fresh full receipt. Geofence run37193255780 fails earlier
+at registration (ADD_FAILED/NOT_AVAILABLE): its fresh emulator exposes no Location
+Accuracy toggle. The outside/inside180second windows produce no receiver record;
+canonical writes remain zero and cleanup passes. Earlier actual registration
+success is retained but does not prove wake delivery.
+
+The dependency update pins Bridgewatch @fastify/static10.1.5 and overrides
+deepmerge-ts8.0.2 for Prisma's configuration dependency. Production npm audit now
+reports zero findings; the full audit retains five high findings in the inherited
+ESLint recursive glob/brace chain. Repository-controlled patterns are not Landfall
+request inputs. Prisma client generation, isolated schema validation and TypeScript
+pass. Bridgewatch's24files/80tests pass with two workers after replacing a stale
+PLANNED expectation with current authoritative IN_DEVELOPMENT governing-document
+evidence. No shared Bridgewatch service or database was changed. Final exact-source
+regression and protected qualification remain required.

@@ -143,6 +143,9 @@ describe("Landfall internal map presentation proof", () => {
       "town-route",
     ]);
     expect(screen.getByLabelText("Physical Landfall map")).toBeInTheDocument();
+    expect(screen.getByLabelText("Physical Landfall map").querySelector('[aria-hidden="true"]')).toHaveAttribute(
+      "inert",
+    );
   });
   it("falls back to a location list when a trusted provider returns unsafe configuration", async () => {
     const scene = projectLandfallMap(landfallFixture, {

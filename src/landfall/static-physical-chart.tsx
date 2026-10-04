@@ -1,7 +1,13 @@
-import type { LandfallMapScene } from "@/landfall/map-projection";
+import type { LandfallMapScene, LandfallCurrentPosition } from "@/landfall/map-projection";
 
 /** Read-only rendering of the already released projection; no provider, acquisition or progression. */
-export function StaticPhysicalChart({ scene }: { scene: LandfallMapScene }) {
+export function StaticPhysicalChart({
+  scene,
+  position,
+}: {
+  scene: LandfallMapScene;
+  position?: LandfallCurrentPosition | null;
+}) {
   const visible = scene.features.filter((feature) => !feature.hiddenCenter);
   const anchor = scene.camera.center[0];
   const project = ([longitude, latitude]: readonly [number, number]) => {
@@ -12,6 +18,17 @@ export function StaticPhysicalChart({ scene }: { scene: LandfallMapScene }) {
   const points = visible.flatMap((feature) =>
     [...feature.coordinates, ...(feature.polygons?.flat(2) ?? [])].map(project),
   );
+  const livePosition =
+    scene.worldspaceKind === "PHYSICAL" &&
+    position &&
+    position.coordinates.every(Number.isFinite) &&
+    Math.abs(position.coordinates[0]) <= 180 &&
+    Math.abs(position.coordinates[1]) <= 90 &&
+    Number.isFinite(position.accuracyMeters) &&
+    position.accuracyMeters > 0
+      ? position
+      : null;
+  if (livePosition) points.push(project(livePosition.coordinates));
   if (!points.length) return <p>No released geometry is available. Use the location list and route summary.</p>;
   const { minX, maxX, minY, maxY } = points.reduce(
     (bounds, [x, y]) => ({
@@ -98,6 +115,18 @@ export function StaticPhysicalChart({ scene }: { scene: LandfallMapScene }) {
           </polyline>
         );
       })}
+      {livePosition &&
+        (() => {
+          const [x, y] = draw(livePosition.coordinates);
+          return (
+            <g data-landfall-current-position="true">
+              <title>
+                Current foreground position · estimated accuracy {Math.round(livePosition.accuracyMeters)} meters
+              </title>
+              <circle cx={x} cy={y} r={24} fill="#1878a8" stroke="#ffffff" strokeWidth={6} />
+            </g>
+          );
+        })()}
     </svg>
   );
 }

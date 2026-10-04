@@ -351,7 +351,7 @@ describe("Bridgewatch read-only API", () => {
     }
   });
 
-  it("reconciles local repository evidence so the active Bridgewatch v1.2 branch is self-discovered", async () => {
+  it("reconciles current governing-document and branch evidence for Bridgewatch v1.2", async () => {
     process.env.BRIDGEWATCH_REPOSITORY = "owner/repository";
     process.env.BRIDGEWATCH_DB_PATH = join(mkdtempSync(join(tmpdir(), "bridgewatch-test-")), "cache.sqlite");
     const { buildServer } = await import("../lib/server.js");
@@ -366,7 +366,15 @@ describe("Bridgewatch read-only API", () => {
       expect(response.json().versions).toContainEqual(
         expect.objectContaining({
           identity: "v1.2",
-          lifecycle: "PLANNED",
+          lifecycle: "IN_DEVELOPMENT",
+          confidence: "AUTHORITATIVE",
+          evidence: expect.arrayContaining([
+            expect.objectContaining({
+              kind: "GOVERNING_DOCUMENT",
+              reference:
+                "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_v1.2_Data_Fidelity_and_Capability_Audit.md",
+            }),
+          ]),
         }),
       );
     } finally {

@@ -12,6 +12,23 @@ const scene = () =>
     activeRouteId: "town-route",
   });
 describe("static released physical chart", () => {
+  it("shows an explicitly supplied foreground position and removes it on stop without copying it into released geometry", () => {
+    const value = scene();
+    const position = {
+      coordinates: [-72, 44] as const,
+      accuracyMeters: 8,
+      confidence: "LIKELY_INSIDE" as const,
+      observedAt: Date.now(),
+    };
+    const view = render(<StaticPhysicalChart scene={value} position={position} />);
+    expect(screen.getByRole("img").querySelector('[data-landfall-current-position="true"]')).not.toBeNull();
+    expect(screen.getByRole("img")).toHaveTextContent("estimated accuracy 8 meters");
+    expect(value.features.some((feature) => feature.id === "current-position")).toBe(false);
+    view.rerender(<StaticPhysicalChart scene={value} position={null} />);
+    expect(screen.getByRole("img").querySelector('[data-landfall-current-position="true"]')).toBeNull();
+    view.rerender(<StaticPhysicalChart scene={{ ...value, worldspaceKind: "VIRTUAL" }} position={position} />);
+    expect(screen.getByRole("img").querySelector('[data-landfall-current-position="true"]')).toBeNull();
+  });
   it("renders selected released geometry while keeping withheld centers and current positions absent", () => {
     const value = scene();
     render(

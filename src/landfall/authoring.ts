@@ -180,7 +180,9 @@ export function createLandfallWaypoint(
     evidenceProfile: {
       precisionProfile: physical ? "BROAD_ARRIVAL" : "VIRTUAL_CONTEXT",
       acceptedSources: physical
-        ? ["BROWSER_GEOLOCATION", "NATIVE_LOCATION", "PLAYER_CONFIRMATION"]
+        ? (["BROWSER_GEOLOCATION", "NATIVE_LOCATION", "PLAYER_CONFIRMATION"] as const).filter((source) =>
+            worldspace.observationPolicy.allowedSources.includes(source),
+          )
         : ["PLAYER_CONFIRMATION"],
       ...(physical ? { requiredAccuracyMeters: 50, maximumSpeedMetersPerSecond: 45 } : {}),
       requiredSamples: physical ? 2 : 1,
