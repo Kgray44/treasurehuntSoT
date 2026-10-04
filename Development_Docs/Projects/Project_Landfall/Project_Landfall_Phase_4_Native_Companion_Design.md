@@ -1789,3 +1789,28 @@ and acquires a new current WebView only after observed old-page closure. Every
 acquired device connection remains owned for later cleanup; none is closed before
 replacement observation. This remains harness work, with no authentication
 change or reinjection. Rejected-request cookie presence is still unobserved.
+
+Run37207517721 onb8554469 fails before cold return on both profiles. Primary
+observes actual RETURNED/307 while the Page is open, then the Page closes during
+Journal waiting (FIRST_RETURN_JOURNAL/TRANSPORT_CLOSED). Inner device cleanup is
+unavailable; outer owned cleanup passes. Low-resource obtains the signed200
+registration response but does not observe the native success status before its
+timeout; cleanup passes. Neither host memory guard is violated. These receipts
+do not establish a cold-cookie cause. The next harness observes closure during
+the entire Journal wait and exports finite actual ADB transport, app-process
+presence and existing geofence diagnostic categories on failure. The background
+case owns one phone instead of an unused second guest; pairing/radio retain two.
+This narrows runtime ownership, without claiming it explains either failure.
+Actual reauthorization, current Journal, canonical zero, cleanup and existing
+performance bounds remain required. No credential is reinjected.
+
+Older low-resource run37207250267 on3dcf9647 reaches the actual cold request:
+active RETURNED/307 and bootGRANTED precede coldDENIED. The denied server request
+has authorizationCookie PRESENT; the expected persistent HttpOnly cookie is
+future on the guest, database session/profile are active, and the existing
+canonical account query still finds an eligible session. Cleanup passes. Simple
+cookie loss is not supported. The next harness retains strict initial return
+acceptance, counts only whether the authorization cookie is singular, and can
+observe a read-only second authorization from the actual current WebView after
+DENIED. This diagnostic uses its existing cookie, changes no credential and
+cannot turn the failed initial notice return into a pass.

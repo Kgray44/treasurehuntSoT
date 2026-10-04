@@ -110,8 +110,10 @@ export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
   const logs: string[] = [];
   const remainingResources: string[] = [];
   const ports = [5038, 5580, 5581, 5582, 5583];
-  const serials = ["emulator-5580", "emulator-5582"];
-  const names = [0, 1].map((index) => `landfall_radio_${runId.replaceAll("-", "")}_${index}`);
+  // Background return owns one phone; peer negotiation owns two.
+  const deviceCount = journal?.kind === "PRODUCTION_BACKGROUND_RETURN" ? 1 : 2;
+  const serials = Array.from({ length: deviceCount }, (_, index) => `emulator-${5580 + index * 2}`);
+  const names = serials.map((_, index) => `landfall_radio_${runId.replaceAll("-", "")}_${index}`);
   const env = {
     ...process.env,
     ANDROID_AVD_HOME: avdHome,

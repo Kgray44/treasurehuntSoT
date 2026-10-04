@@ -133,6 +133,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         canonicalSessionEligible: boolean;
         playerProfileActive: boolean;
         signInDestination: boolean;
+        singleAuthorizationCookie: boolean;
       } | null = null;
       const noticeControls: { phase: string; hierarchyAttempts: number; controlObserved: boolean }[] = [];
       let failureKind: string | null = null;
@@ -143,9 +144,15 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         processKilled: boolean;
       } | null = null;
       let firstReturnPageClosed: boolean | null = null;
+      let failureDevice: {
+        transport: "DEVICE" | "OFFLINE" | "UNREACHABLE";
+        appRunning: boolean | null;
+        geofence: { stage: string; failure: string } | null;
+      } | null = null;
       let returnHopObservation: "UNOBSERVED" | "HTTP_307_OBSERVED" | "DRIVER_CLOSED_BEFORE_RESPONSE" = "UNOBSERVED";
       const serverReturnOutcomes: string[] = [];
       const deniedRequestCookies: ("ABSENT" | "PRESENT")[] = [];
+      const coldRecheckOutcomes: string[] = [];
       let settings: Awaited<ReturnType<typeof inspectOwnedAndroidLocationAccuracy>> | null = null;
       let reboot: Awaited<ReturnType<typeof rebootOwnedAndroidGuest>> | null = null;
       let signedRegistration = false,
@@ -455,10 +462,22 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         stage = "FIRST_RETURN_REATTACH";
         // Preserve a live current page. If the old page closed, connect to the
         // actual replacement without closing the device before observing it.
-        const activeJournal = firstReturnPageClosed ? await attach(false) : journal;
+        let activeJournal = firstReturnPageClosed ? await attach(false) : journal;
         stage = "FIRST_RETURN_JOURNAL";
         await expect
-          .poll(() => new URL(activeJournal.url()).pathname, { timeout: 45000 })
+          .poll(
+            async () => {
+              // Closure can happen after the redirect response was observed.
+              // Observe the real replacement instead of retaining a stale page.
+              if (activeJournal.isClosed()) {
+                stage = "FIRST_RETURN_REATTACH";
+                activeJournal = await attach(false);
+                stage = "FIRST_RETURN_JOURNAL";
+              }
+              return new URL(activeJournal.url()).pathname;
+            },
+            { timeout: 45000 },
+          )
           .toBe(`/player/playthroughs/${voyage.id}/journal`);
         await openNativeJournalEntry(activeJournal, adb, (next) => {
           stage = `FIRST_RETURN_${next}`;
@@ -569,9 +588,29 @@ test("real signed notice returns reauthorize Player across actual registered-reg
             canonicalSessionEligible: Boolean(await currentAccount(player.token)),
             playerProfileActive: session?.account.profile?.status === "ACTIVE",
             signInDestination: new URL(returned.url()).pathname === "/player/sign-in",
+            singleAuthorizationCookie: jar.cookies.filter((item) => item.name === "wayfarer_account").length === 1,
           };
         } finally {
           await coldCdp.detach();
+        }
+        if (coldOutcomes.includes("DENIED")) {
+          // Diagnose with the actual current WebView and its existing cookie.
+          // This read-only second authorization never qualifies the failed
+          // initial notice return, nor supplies or changes any credential.
+          stage = "COLD_DENIED_RECHECK";
+          const recheckBaseline = (await readReturns()).length;
+          await returned.evaluate(async (handle) => {
+            await fetch(`/player/landfall-return?handle=${encodeURIComponent(handle)}`, {
+              credentials: "same-origin",
+              cache: "no-store",
+              redirect: "manual",
+            });
+          }, registration.returnHandle);
+          await expect
+            .poll(async () => (await readReturns()).length, { timeout: 15000 })
+            .toBeGreaterThan(recheckBaseline);
+          coldRecheckOutcomes.push(...(await readReturns()).slice(recheckBaseline).map((event) => event.outcome));
+          stage = "REVOKED_ACTUAL_RETURN_HOP";
         }
         expect(coldOutcomes).toContain("UNAVAILABLE");
         await returned.waitForFunction(() => Boolean(window.LandfallNative), undefined, { timeout: 15000 });
@@ -596,6 +635,43 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(before);
         passed = true;
       } catch (error) {
+        const transport = await adb(["get-state"], 5000).catch(() => "");
+        const appPid = await adb(["shell", "pidof", pkg], 5000).catch(() => null);
+        let geofence: { stage: string; failure: string } | null = null;
+        try {
+          const raw = await adb(["shell", "run-as", pkg, "cat", "files/landfall-geofence-debug.json"], 5000);
+          if (raw.length > 256) throw new Error("NATIVE_GEOFENCE_DIAGNOSTIC_TOO_LARGE");
+          geofence = z
+            .strictObject({
+              stage: z.enum([
+                "PRECONDITION_FAILED",
+                "CONSENT_OR_GENERATION_CHANGED",
+                "REMOVE_FAILED",
+                "REGISTERED",
+                "ADD_FAILED",
+                "ADD_THROWN",
+                "REMOVE_THROWN",
+              ]),
+              failure: z.enum([
+                "NONE",
+                "OTHER",
+                "NOT_AVAILABLE",
+                "TOO_MANY_REGIONS",
+                "TOO_MANY_INTENTS",
+                "INSUFFICIENT_LOCATION_PERMISSION",
+                "OTHER_API_FAILURE",
+              ]),
+            })
+            .parse(JSON.parse(raw));
+        } catch {
+          /* Only finite observations are exported. */
+        }
+        failureDevice = {
+          transport:
+            transport.trim() === "device" ? "DEVICE" : transport.trim() === "offline" ? "OFFLINE" : "UNREACHABLE",
+          appRunning: appPid === null ? null : /^[1-9][0-9]*(?:\s+[1-9][0-9]*)*$/.test(appPid.trim()),
+          geofence,
+        };
         const message = error instanceof Error ? error.message : "";
         const details = error && typeof error === "object" ? (error as Record<string, unknown>) : {};
         const code = typeof details.code === "string" ? details.code : null;
@@ -670,6 +746,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           failedStage: passed ? null : stage,
           failureKind,
           failureTransport,
+          failureDevice,
           firstReturnPageClosed,
           returnHopObservation,
           deviceProfile: profile,
@@ -698,6 +775,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           noticeControls,
           serverReturnOutcomes,
           deniedRequestCookies,
+          coldRecheckOutcomes,
           preliminaryGrossBounds: {
             noticeReturnMs: 60000,
             fullJournalPssKiB: 512 * 1024,

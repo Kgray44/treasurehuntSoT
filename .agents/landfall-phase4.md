@@ -1447,3 +1447,24 @@ replacement only after observed closure, and retain all discovered connections
 for later owned cleanup. No device connection is closed before observing the
 replacement. The requested denied-request cookie fact remains unobserved and
 still needs fresh primary execution.
+
+Run37207517721 onb8554469 is harvested FAIL on both profiles before cold return.
+Primary observes RETURNED/307 while the Page is open, then fails
+FIRST_RETURN_JOURNAL/TRANSPORT_CLOSED with pageClosedtrue. Inner cleanup cannot
+reach the device; outer owned cleanup passes. Low-resource receives the genuine
+signed registration response200 but the success status times out; inner/outer
+cleanup pass. Neither host memory guard is violated. No cold-cookie diagnosis is
+supported by this run. The harness now observes closure throughout Journal
+waiting, exports only actual finite ADB/app/geofence failure facts, and owns one
+emulator for the single-phone background case. Pair/radio cases retain two.
+These changes require fresh actual execution; no performance or authority check
+is relaxed and no credential is reinjected.
+
+Older low-resource run37207250267 on3dcf9647 is harvested FAIL at revoked return:
+actual active RETURNED/307, bootGRANTED, then coldDENIED with actual request
+authorizationCookie PRESENT. Its expected persistent HttpOnly cookie remains
+future on the guest; database session/profile and canonical session eligibility
+are true. Cleanup passes. This rejects simple cookie loss as a diagnosis. The
+harness retains strict initial UNAVAILABLE acceptance and, only after DENIED,
+can observe one read-only reauthorization from the actual current WebView with
+its existing cookie. That diagnostic cannot qualify the failed first return.
