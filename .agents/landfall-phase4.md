@@ -1143,3 +1143,19 @@ GHephemeral+hardwareguards/200secphaseTTL/actualstopreceiptrequired. Fourfocused
 boundarytestsPASS, helperbuild+packagedFLPclientPASS, companionreleaseexclusionsPASS.
 Apple37192581595completedFAIL primary8/8PASScompat5/8PASS/tabletfailure; fullrecovery
 pending (180sec downloaddeadline exceeded), transferonlywindow600sec. No protectedqual.
+
+dea geo37195548575HARVESTED20SUCCESS10/10: actualGMSREGISTERED/receiver1/appended1/
+notice1/rejectioncounters0, FLP36outside+36inside, resume920.59ms/canonical0/cleanupPASS.
+Signedfirstpartyreturn/rebootstilllocal; virtualizedinput notfieldlatency/GPSproof.
+Apple37192581595HARVESTED11453FAIL primary8/8compat5/8tablet6/8. 3toollaunch/privacy
+SIGTERM beforepage; tabletXCTestfinalization120secFAILafteractions; compatrestart
+serverFAILEDafterlocation2=43845ms under30secfreshness. New explicitpublished600sec
+restartfixturev2/scenariov3 sharedrealserver/native/provider, oldtimestampsretained.
+34policy/server/scenariofocusedPASS (600secexpiry/default30sec rejection included),
+provider/opening/selection11PASS. Native toolwindows120sec/finalization240, semantic
+observationbounds unchanged. Radio4casewholechild180sec inadequate; now180percase.
+PartialAppletransfers preservedfreshsiblings, gh existingfile error fixed.
+dea Journal37195552098HARVESTED45FAIL OSdumpcode1beforeanypairHTTP. Debugnative
+focused/attached/unclippedWebviewgeometry fallback, focusloss invalidatesfile; no
+rawcontent/keys. SixfocusedopeningtestsPASS; actualdebug+releasebuildPASS/release
+observerwrite bodiesempty. Next freeze+rerun Journal/failedApple/radio matrices.

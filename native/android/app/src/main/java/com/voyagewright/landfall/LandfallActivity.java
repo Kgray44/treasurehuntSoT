@@ -25,6 +25,10 @@ import java.util.UUID;
 /** Native acquisition only. One Voyage on the authenticated server owns all progression. */
 public final class LandfallActivity extends androidx.activity.ComponentActivity implements LocationListener {
   private WebView web;
+  @Override public void onWindowFocusChanged(boolean focused){
+    super.onWindowFocusChanged(focused);
+    if(web!=null)LandfallOpeningGeometry.record(web);
+  }
   private LocationManager locations;
   private String selectedLocationProvider = "NONE";
   private int locationCallbacks;
@@ -71,6 +75,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
         return !isAllowed(request.getUrl());
       }
       @Override public void onPageFinished(WebView view, String url) {
+        LandfallOpeningGeometry.record(view);
         if (isAllowed(Uri.parse(url))) view.evaluateJavascript(bridgeScript(), null);
       }
     });
@@ -112,6 +117,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
       return insets;
     });
     setContentView(content);
+    LandfallOpeningGeometry.observe(web);
     content.requestApplyInsets();
     // Owned debug fixtures attach and authenticate before loading the Journal.
     // The blank page cannot use the origin-restricted native bridge.

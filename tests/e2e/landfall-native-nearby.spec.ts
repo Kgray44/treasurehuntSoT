@@ -12,7 +12,10 @@ import {
 import { labBinaryTool, labTool } from "../../scripts/landfall/device-lab/host";
 import { runLandfallAndroidRadioLab } from "../../scripts/landfall/device-lab/android-radio-run";
 import { deviceLabSourceIdentity } from "../../scripts/landfall/device-lab/source";
-import { nativeJournalOpeningTouch } from "../../src/landfall/device-lab/native-opening-control";
+import {
+  nativeJournalOpeningTouch,
+  nativeJournalOpeningGeometryTouch,
+} from "../../src/landfall/device-lab/native-opening-control";
 import { boundedAndroidDriver as boundedDriver } from "../../scripts/landfall/device-lab/android-driver";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { closureAccount, closureVoyage, openClosureMap } from "./fixtures/landfall-closure";
@@ -271,7 +274,6 @@ test("real native Journal pairing returns untrusted hints and background clears 
               // This is before any pairing code or native evidence acquisition.
               const dump = "/data/local/tmp/landfall-public-opening.xml";
               try {
-                await adb(serial, ["shell", "uiautomator", "dump", dump]);
                 const box = await open.boundingBox();
                 if (!box) throw new Error("NATIVE_OPENING_DOM_GEOMETRY_UNOBSERVED");
                 const viewport = await page.evaluate(() => ({
@@ -279,7 +281,21 @@ test("real native Journal pairing returns untrusted hints and background clears 
                   height: innerHeight,
                   scale: visualViewport?.scale ?? 1,
                 }));
-                const target = nativeJournalOpeningTouch(await adb(serial, ["shell", "cat", dump]), { box, viewport });
+                let target;
+                try {
+                  await adb(serial, ["shell", "uiautomator", "dump", dump]);
+                  target = nativeJournalOpeningTouch(await adb(serial, ["shell", "cat", dump]), { box, viewport });
+                } catch {
+                  const raw = await adb(serial, [
+                    "shell",
+                    "run-as",
+                    pkg,
+                    "cat",
+                    "files/landfall-opening-geometry.json",
+                  ]);
+                  if (raw.length > 1024) throw new Error("NATIVE_OPENING_GEOMETRY_TOO_LARGE");
+                  target = nativeJournalOpeningGeometryTouch(JSON.parse(raw), { box, viewport });
+                }
                 await adb(serial, ["shell", "input", "tap", String(target.x), String(target.y)]);
               } finally {
                 await adb(serial, ["shell", "rm", "-f", dump]);

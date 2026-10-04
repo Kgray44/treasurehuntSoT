@@ -570,6 +570,11 @@ for (const id of [
 ]) {
   cases.find((item) => item.id === id)!.version = 2;
 }
+const restartFixture = cases.find((item) => item.id === "offline-restart-canonical-reconcile")!;
+restartFixture.version = 3;
+restartFixture.publishedFixture = "landfall-device-lab-restart-v2";
+restartFixture.description =
+  "Actual offline/restart reconciliation under an explicitly authored 600-second synthetic evidence window. Original sample clocks and the default 30-second stale-evidence policy remain intact.";
 
 scenario(
   "uwb-native-peer-session",

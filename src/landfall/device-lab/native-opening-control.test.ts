@@ -1,6 +1,31 @@
 import { describe, expect, it } from "vitest";
-import { nativeJournalOpeningTouch } from "./native-opening-control";
+import { nativeJournalOpeningTouch, nativeJournalOpeningGeometryTouch } from "./native-opening-control";
 describe("native public synthetic opening touch", () => {
+  it("requires actual focused, attached, unclipped native geometry before mapping a visible DOM control", () => {
+    const geometry = {
+      version: 1,
+      packageName: "com.voyagewright.landfall",
+      shown: true,
+      attached: true,
+      focused: true,
+      left: 0,
+      top: 100,
+      right: 1080,
+      bottom: 1720,
+    };
+    const dom = { box: { x: 100, y: 200, width: 100, height: 40 }, viewport: { width: 400, height: 600, scale: 1 } };
+    expect(nativeJournalOpeningGeometryTouch(geometry, dom)).toEqual({ x: 405, y: 694 });
+    for (const value of [
+      { ...geometry, focused: false },
+      { ...geometry, shown: false },
+      { ...geometry, attached: false },
+      { ...geometry, packageName: "foreign.app" },
+      { ...geometry, right: 0 },
+      { ...geometry, bottom: 5000 },
+      { ...geometry, secret: "forbidden" },
+    ])
+      expect(() => nativeJournalOpeningGeometryTouch(value, dom)).toThrow();
+  });
   const node =
     '<node package="com.voyagewright.landfall" class="android.widget.Button" clickable="true" enabled="true" text="Open the journal Begin Voyage" bounds="[100,200][300,400]" />';
   it("derives one normal OS touch from the observed enabled source control", () =>

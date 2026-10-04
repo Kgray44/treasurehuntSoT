@@ -1427,3 +1427,46 @@ Apple run37192581595 reports primary8/8PASS, compatibility5/8PASS and tablet job
 failure; complete multi-profile xcresult recovery is pending. The bounded artifact
 transfer window grows from180to600seconds for those large bundles, without changing
 scenario observation deadlines or relabeling failures. No closure is claimed.
+
+Geofence run37195548575 on dea776cb passes all10steps with actual Play services
+registration and one OS-delivered callback. The encrypted hint is appended once
+and one generic notice is posted; denied/malformed/unsupported/inactive/rejected
+receiver counts are zero. Separate FLP input reports36outside and36inside deliveries
+over the two180second windows. Native foreground return takes920.59ms; canonical
+events remain zero, registration clears and cleanup passes including mock-mode
+shutdown. The owned emulator's actual Location Accuracy toggle is enabled.
+This proves virtualized native wake delivery, not field timing/RF/physical GPS.
+The scenario's return handle is synthetic and does not claim first-party signed
+notification reauthorization. Registered-region reboot and actual notice tap remain
+local work.
+
+Recovered Apple run37192581595 has11,453artifact files: primary8/8PASS,
+compatibility5/8PASS, tablet6/8PASS. Three failures are native tool launch/permission
+timeouts before any page request. Tablet restart completes scenario actions but
+exceeds the120second XCTest tool-finalization window. Compatibility restart queues
+samples before a43.85second second location step and fails server submission under
+the original30second freshness policy. The restart-acceptance fixture now publishes
+an explicit600second authored window (scenario version3, restart fixturev2) shared
+by real authority, native client and provider runner. Original observations/clocks
+are preserved. Actual server qualification tests accept the original100second-old
+samples only for that fixture, reject601second-old samples and retain30second
+rejection/default fixture immutability. Source/authority regression passes34focused
+tests, and the provider/native-control regression passes11. Native permission/launch
+tool windows become120seconds and XCTest packaging240seconds; ready/lifecycle/action
+observations and required successful receipts remain unchanged.
+
+The four-case radio child previously expired at its inherited180second whole-run
+limit before the Eddystone case completed. That envelope now allocates180seconds
+per selected canonical case, retaining existing operation deadlines. Failed receipts
+and unobserved cases remain failures. Retried Apple artifact transfers use fresh
+owned sibling directories and preserve previous partial downloads, avoiding gh's
+existing-file error without deleting proof.
+
+Journal run37195552098 fails its OS UI dump at CLICK_NATIVE_JOURNAL_OPEN, before
+pairing HTTP begins. A debug-only native observer now measures the real attached,
+focused, fully visible WebView bounds. The fallback maps only an actually visible
+source opening control with finite, unclipped, unzoomed DOM geometry and matching
+viewport scale. Loss of native focus invalidates the record. No UI hierarchy, code,
+key or private content is written. Six opening-boundary tests pass; APK builds pass
+and actual release analysis confirms empty observer/write bodies. Fresh actual
+Journal and matrix execution remain required. No production claim is promoted.

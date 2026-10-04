@@ -35,7 +35,7 @@ import {
   LandfallInteractionReplayGuard,
   type LandfallInteractionClaim,
 } from "@/landfall/interaction-token";
-import { landfallFixture } from "@/landfall/fixtures";
+import { deviceLabFixtureForScenario } from "./native-fixture";
 import { LandfallRuntime, type LandfallOutcome } from "@/landfall/runtime";
 import { LandfallProviderRegistry } from "@/landfall/observation";
 import { NativeLocationProvider, type NativeLocationDriver } from "@/landfall/native-location";
@@ -146,7 +146,7 @@ export class LandfallProviderScenarioExecutor {
     waypointId: "town-arrival",
     expectedSequence: 0,
   };
-  private readonly definition = structuredClone(landfallFixture);
+  private readonly definition: ReturnType<typeof deviceLabFixtureForScenario>;
   private canonicalCount: number | null = null;
   private clientConfirmed = false;
   constructor(
@@ -158,6 +158,7 @@ export class LandfallProviderScenarioExecutor {
     },
   ) {
     deviceLabScenarioSchema.parse(scenario);
+    this.definition = deviceLabFixtureForScenario(scenario.id);
     const world = this.definition.worldspaces.find((item) => item.kind === scenario.worldspace)!;
     this.definition.worldspaces = [world];
     this.definition.waypoints = this.definition.waypoints.filter((item) => item.worldspaceId === world.id);

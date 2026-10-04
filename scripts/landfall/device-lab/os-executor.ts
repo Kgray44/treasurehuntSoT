@@ -78,7 +78,11 @@ export async function executeLandfallOsScenario(
     target: "es2020",
     logLevel: "silent",
   });
-  const authority = await startDeviceLabAuthority(path.join(destination, "authority"), scenario.worldspace);
+  const authority = await startDeviceLabAuthority(
+    path.join(destination, "authority"),
+    scenario.worldspace,
+    scenario.id,
+  );
   let network = "ONLINE";
   let canonicalProgressionEvents: number | null = null;
   let ready = false;
@@ -169,7 +173,7 @@ export async function executeLandfallOsScenario(
     }
     if (request.method === "GET" && route === "/lab/scenario") {
       response.setHeader("Content-Type", "application/json");
-      response.end(JSON.stringify({ worldspace: scenario.worldspace }));
+      response.end(JSON.stringify({ worldspace: scenario.worldspace, scenarioId: scenario.id }));
       return;
     }
     if (
@@ -518,7 +522,7 @@ export async function executeLandfallOsScenario(
       await labTool(
         "xcrun",
         ["simctl", "privacy", ownedDevice, "grant", "location", "com.voyagewright.landfall"],
-        60000,
+        120000,
       );
       executionStage = "APPLE_LAUNCH";
       if (scenario.timeline.some((step) => step.action.type === "LIFECYCLE")) {
@@ -562,7 +566,7 @@ export async function executeLandfallOsScenario(
             "com.voyagewright.landfall",
             `--landfall-lab-origin=http://127.0.0.1:${port}`,
           ],
-          60000,
+          120000,
         );
       }
     }
@@ -1338,7 +1342,7 @@ export async function executeLandfallOsScenario(
           // XCTest can finish its assertions before xcodebuild packages its
           // result bundle. This deadline bounds tool finalization, not a
           // scenario observation or a retry of the lifecycle operation.
-          timer = setTimeout(() => resolve(false), 120000);
+          timer = setTimeout(() => resolve(false), 240000);
         }),
       ]);
       clearTimeout(timer);
@@ -1390,7 +1394,7 @@ export async function executeLandfallOsScenario(
           {
             version: 1,
             toolExit: done && !uiFailed ? "PASS" : "FAIL",
-            finalizationDeadlineMs: 120000,
+            finalizationDeadlineMs: 240000,
             finalizationTimedOut: !done,
             finalizationElapsedMs: Date.now() - finalizationStartedAt,
             testCounts,

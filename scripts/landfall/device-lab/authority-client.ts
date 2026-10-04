@@ -5,7 +5,11 @@ import type { PlayerLandfallEvidence } from "../../../src/landfall/player-eviden
 import type { LandfallReconciliationTransport } from "../../../src/landfall/offline-reconcile";
 
 /** Server imports and Prisma globals live exclusively in a dedicated owned child process. */
-export async function startDeviceLabAuthority(destination: string, worldspace: "PHYSICAL" | "VIRTUAL" = "PHYSICAL") {
+export async function startDeviceLabAuthority(
+  destination: string,
+  worldspace: "PHYSICAL" | "VIRTUAL" = "PHYSICAL",
+  scenarioId = "",
+) {
   const child = spawn(
     process.execPath,
     [
@@ -15,6 +19,7 @@ export async function startDeviceLabAuthority(destination: string, worldspace: "
       "--worker",
       destination,
       worldspace,
+      scenarioId,
     ],
     {
       cwd: process.cwd(),
@@ -39,6 +44,7 @@ export async function startDeviceLabAuthority(destination: string, worldspace: "
     outcome: "SUCCEEDED" | "FAILED" | "TIMEOUT";
     elapsedMs: number;
     startedAfterMs: number | null;
+    failureCategory?: string | null;
   }[] = [];
   let sequence = 0;
   let readyResolve!: (value: string) => void;
@@ -77,6 +83,17 @@ export async function startDeviceLabAuthority(destination: string, worldspace: "
         outcome: value.error ? "FAILED" : "SUCCEEDED",
         elapsedMs: Date.now() - waiter.sentAt,
         startedAfterMs: waiter.startedAfterMs,
+        failureCategory: value.error
+          ? [
+              "LANDFALL_EVIDENCE_NOT_QUALIFIED",
+              "LANDFALL_EVIDENCE_STALE",
+              "LANDFALL_STALE_VERSION",
+              "LANDFALL_WRONG_WORLDSPACE",
+              "LANDFALL_LAB_MEMBERSHIP_UNAVAILABLE",
+            ].includes(value.error)
+            ? value.error
+            : "OTHER"
+          : null,
       });
     clearTimeout(waiter.timer);
     pending.delete(value.id!);

@@ -3,9 +3,14 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import assert from "node:assert/strict";
+import { deviceLabFixtureForScenario } from "../../../src/landfall/device-lab/native-fixture";
 
 /** A disposable real SQLite authority. Import server code only after binding the owned database. */
-export async function createDeviceLabVoyage(destination: string, worldspace: "PHYSICAL" | "VIRTUAL" = "PHYSICAL") {
+export async function createDeviceLabVoyage(
+  destination: string,
+  worldspace: "PHYSICAL" | "VIRTUAL" = "PHYSICAL",
+  scenarioId = "",
+) {
   if (!["PHYSICAL", "VIRTUAL"].includes(worldspace)) throw new Error("LANDFALL_LAB_WORLDSPACE_INVALID");
   if ((globalThis as { prisma?: unknown }).prisma) throw new Error("LANDFALL_LAB_DATABASE_ALREADY_BOUND");
   const root = process.cwd();
@@ -57,11 +62,11 @@ export async function createDeviceLabVoyage(destination: string, worldspace: "PH
     process.env.DATABASE_URL = `file:${file.replaceAll("\\", "/")}`;
     const { db } = await import("../../../src/lib/db");
     disconnect = () => db.$disconnect();
-    const { landfallFixture, physicalObservation } = await import("../../../src/landfall/fixtures");
+    const { physicalObservation } = await import("../../../src/landfall/fixtures");
     const { submitPlayerLandfallEvidence } = await import("../../../src/chronicle/progression");
     const { playerCanAccessPlaythrough } = await import("../../../src/platform/auth");
     const { projectRecordedLandfallEvidence } = await import("../../../src/landfall/recorded-evidence");
-    const definition = structuredClone(landfallFixture);
+    const definition = deviceLabFixtureForScenario(scenarioId);
     definition.worldspaces[0].observationPolicy.allowedSources.push("NATIVE_LOCATION");
     definition.waypoints[0].evidenceProfile.acceptedSources.push("NATIVE_LOCATION");
     definition.routes[0].semantics = "ILLUSTRATIVE";
@@ -316,6 +321,7 @@ async function worker() {
   const voyage = await createDeviceLabVoyage(
     process.argv[3],
     (process.argv[4] ?? "PHYSICAL") as "PHYSICAL" | "VIRTUAL",
+    process.argv[5] ?? "",
   );
   let closing: Promise<boolean> | null = null;
   const cleanup = () => (closing ??= voyage.cleanup());

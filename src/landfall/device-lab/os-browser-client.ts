@@ -16,7 +16,7 @@ import {
   type NativeLandfallPower,
 } from "@/landfall/native-bridge";
 import { landfallPowerPolicy } from "@/landfall/device-policy";
-import { landfallFixture } from "@/landfall/fixtures";
+import { deviceLabFixtureForScenario } from "./native-fixture";
 import { LandfallRuntime, type LandfallOutcome } from "@/landfall/runtime";
 import { LandfallProviderRegistry } from "@/landfall/observation";
 import { deviceLabActionSchema } from "@/landfall/device-lab/scenario";
@@ -74,8 +74,8 @@ async function main() {
       changed();
     });
   reportDeviceLabStartupStage("WORKER_CONTROLLED");
-  const definition = structuredClone(landfallFixture);
   const scenario = await (await fetch("/lab/scenario", { cache: "no-store" })).json();
+  const definition = deviceLabFixtureForScenario(scenario.scenarioId);
   reportDeviceLabStartupStage("SCENARIO_RECEIVED");
   if (!["PHYSICAL", "VIRTUAL"].includes(scenario.worldspace)) throw new Error("NATIVE_WORLDSPACE_UNAVAILABLE");
   const world = definition.worldspaces.find((world) => world.kind === scenario.worldspace)!;

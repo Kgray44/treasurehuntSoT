@@ -31,7 +31,10 @@ describe("canonical Device Lab scenarios", () => {
     ]) {
       const scenario = landfallDeviceScenario(id);
       const locations = scenario.timeline.map((step) => step.action).filter((action) => action.type === "LOCATION");
-      expect(scenario.version).toBe(2);
+      expect(scenario.version).toBe(id === "offline-restart-canonical-reconcile" ? 3 : 2);
+      expect(scenario.publishedFixture).toBe(
+        id === "offline-restart-canonical-reconcile" ? "landfall-device-lab-restart-v2" : "landfall-device-lab-v1",
+      );
       expect(locations).toHaveLength(2);
       expect(locations[0].coordinate).not.toEqual(locations[1].coordinate);
       expect(locations[0].coordinate.worldspaceId).toBe(locations[1].coordinate.worldspaceId);

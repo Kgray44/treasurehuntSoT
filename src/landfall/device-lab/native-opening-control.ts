@@ -1,11 +1,23 @@
+import { z } from "zod";
+
+type OpeningDom = {
+  box: { x: number; y: number; width: number; height: number };
+  viewport: { width: number; height: number; scale: number };
+};
+const geometrySchema = z.strictObject({
+  version: z.literal(1),
+  packageName: z.literal("com.voyagewright.landfall"),
+  shown: z.literal(true),
+  attached: z.literal(true),
+  focused: z.literal(true),
+  left: z.number().int().min(0).max(4096),
+  top: z.number().int().min(0).max(4096),
+  right: z.number().int().min(0).max(4096),
+  bottom: z.number().int().min(0).max(4096),
+});
+
 /** Only the public synthetic Journal entry control can become an OS touch target. */
-export function nativeJournalOpeningTouch(
-  xml: string,
-  observedDom?: {
-    box: { x: number; y: number; width: number; height: number };
-    viewport: { width: number; height: number; scale: number };
-  },
-) {
+export function nativeJournalOpeningTouch(xml: string, observedDom?: OpeningDom) {
   if (xml.length > 262144) throw new Error("NATIVE_OPENING_HIERARCHY_TOO_LARGE");
   const candidates = [...xml.matchAll(/<node\b([^>]+)>/g)].filter((match) => {
     const attr = (key: string) => new RegExp(`(?:^|\\s)${key}="([^"]*)"`).exec(match[1])?.[1] ?? "";
@@ -33,7 +45,27 @@ export function nativeJournalOpeningTouch(
   const [left, top, right, bottom] = bounds.slice(1).map(Number);
   if (right <= left || bottom <= top || right > 4096 || bottom > 4096) throw new Error("NATIVE_OPENING_BOUNDS_INVALID");
   if (candidates.length === 1) return { x: Math.floor((left + right) / 2), y: Math.floor((top + bottom) / 2) };
-  const { box, viewport } = observedDom!;
+  return nativeJournalOpeningGeometryTouch(
+    {
+      version: 1,
+      packageName: "com.voyagewright.landfall",
+      shown: true,
+      attached: true,
+      focused: true,
+      left,
+      top,
+      right,
+      bottom,
+    },
+    observedDom!,
+  );
+}
+
+/** Actual native attached WebView measurements; no synthetic accessibility XML. */
+export function nativeJournalOpeningGeometryTouch(nativeGeometry: unknown, observedDom: OpeningDom) {
+  const { left, top, right, bottom } = geometrySchema.parse(nativeGeometry);
+  if (right <= left || bottom <= top) throw new Error("NATIVE_OPENING_BOUNDS_INVALID");
+  const { box, viewport } = observedDom;
   if (
     ![box.x, box.y, box.width, box.height, viewport.width, viewport.height, viewport.scale].every(Number.isFinite) ||
     viewport.scale !== 1 ||

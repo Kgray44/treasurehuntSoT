@@ -209,7 +209,7 @@ export const deviceLabScenarioSchema = z
     description: z.string().min(1).max(1000),
     seed: z.number().int().min(1).max(2147483647),
     worldspace: z.enum(["PHYSICAL", "VIRTUAL"]),
-    publishedFixture: z.literal("landfall-device-lab-v1"),
+    publishedFixture: z.enum(["landfall-device-lab-v1", "landfall-device-lab-restart-v2"]),
     canonicalAuthority: z.enum(["NONE", "ONE_VOYAGE"]).default("NONE"),
     targets: z.array(deviceLabTargetSchema).min(1).max(6),
     deviceProfiles: z

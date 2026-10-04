@@ -1,5 +1,5 @@
-import { createHash } from "node:crypto";
-import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { createHash, randomUUID } from "node:crypto";
+import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { labTool } from "./host";
 
@@ -35,7 +35,18 @@ export async function harvestLandfallHostedLab(runId: string, dispatchFile: stri
   // A failed download with an existing artifact remains an error.
   // Complete multi-profile Apple xcresult bundles can exceed the smaller
   // diagnostic artifact transfer window. Bound transport, not scenario behavior.
-  if (inventory.artifacts.length) await labTool("gh", ["run", "download", runId, "--dir", artifactDirectory], 600000);
+  if (inventory.artifacts.length) {
+    // gh rejects existing extracted files. A retry downloads into a fresh owned
+    // sibling and preserves the prior partial transfer; it never deletes proof.
+    const transfer = path.join(directory, `artifact-transfer-${randomUUID()}`);
+    const prior = path.join(directory, `artifact-transfer-prior-${randomUUID()}`);
+    if ([transfer, prior, artifactDirectory].some((target) => path.dirname(target) !== directory))
+      throw new Error("LANDFALL_HOSTED_TRANSFER_PATH_INVALID");
+    await mkdir(transfer);
+    await labTool("gh", ["run", "download", runId, "--dir", transfer], 600000);
+    await rename(artifactDirectory, prior);
+    await rename(transfer, artifactDirectory);
+  }
   await writeFile(path.join(directory, "run.log"), await labTool("gh", ["run", "view", runId, "--log"], 120000));
   const artifacts: { path: string; sha256: string }[] = [];
   const collect = async (folder: string) => {

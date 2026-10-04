@@ -352,9 +352,15 @@ export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
         "canonical-radio.log",
       );
       const code = await new Promise<number | null>((resolve) => {
-        const timer = setTimeout(() => {
-          resolve(null);
-        }, 180000);
+        const timer = setTimeout(
+          () => {
+            resolve(null);
+            // The matrix now contains four independent native scenarios. Bound the
+            // complete child by the number selected; individual operations retain
+            // their existing timeouts and every scenario must produce its receipt.
+          },
+          radioScenarios.split(",").length * 180000,
+        );
         lab!.once("close", (code) => {
           clearTimeout(timer);
           resolve(code);
