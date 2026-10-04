@@ -13,12 +13,16 @@ Tablet's offline-native input command is killed after61,377ms before an ack;
 primary background observation fails, compatibility region input is killed and
 offline restart drops the final native fix. Preserve these four failed scenarios.
 4341f2e5 focused runs37223287847(primary geofence) and37223293060(compat offline
-restart/geofence) pass their actual native build/test steps and still execute.
+restart/geofence) have completed SUCCESS; primary harvest4404/cleanupPASS and
+compatibility harvest is active. Primary native XCTest17PASS/1hardware skip,
+UI1PASS, all10geo steps PASS/canonical0/cleanupPASS.
 2654d7b8 adds permission/precision and system-pause queue cancellation, and full
 three-profile iOS run37224038483 is active (dispatch2654d7b876c7-1791138007104).
-Native test4regressions require receipt verification; no final qualification yet.
+Native four throttle regressions are included in the observed17PASS suite.
+Current9514f185 full root477files/2707tests PASS (237.18s), format242/lint216/TS
+PASS, tracked-source privacy0violations/6classifications. No final qualification.
 New lab-only owned Simulator input helper allows one15s+15s idempotent retry only
-after a terminated tool deadline, never generic error/cancellation. Ten tests,
+after a terminated tool deadline, never generic error/cancellation. Twelve tests,
 lint/TypeScript PASS. Native observation still determines scenario truth; input
 ack is not a fix or progression. Current helper source needs focused actual use.
 

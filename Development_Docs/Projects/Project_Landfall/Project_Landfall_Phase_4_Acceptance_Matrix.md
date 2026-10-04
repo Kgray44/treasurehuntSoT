@@ -18,82 +18,67 @@ fresh qualification before protected integration.
 
 ## Implemented capability and evidence boundaries
 
-Current frozen source c8e8b1de passes476unit files/2,695tests, optimized build,
-client/static privacy scans and unsigned Android packaging/release exclusion
-inspection. Full hosted37219804462 passes browser, Windows/Linux providers,
-both native Journal pairs, both signed notice/reboot jobs and Android primary,
-low-resource and tablet scenarios. Compatibility fails after its successful
-20,828ms reboot; primary UWB fails capability preparation on the second guest.
-Diagnostic-only revisions expose finite post-reboot stages and distinct missing
-capability/config/channel/preamble/rate categories without exporting raw output.
-Full sequence rechecks on clean01bab29b pass20/20compatibility cases plus12native
-instrumentation tests (run37221706364, harvest249), and4/4radio cases on each
-primary/low-resource profile (run37221708792, harvest42). Both transports clean
-up successfully. UWB observes actual untrusted ranges, native stop, canonical0
-and cleanupPASS. Thus80Android profile scenarios and eight radio profile cases
-have passing retained evidence. The original frozen run's two failed cases remain
-failed; no deterministic root cause or behavioral correction is claimed from
-diagnostic-only rechecks. Three iOS profile matrices remain running.
+Current clean source `9514f185` passes **477 unit files / 2,707 tests** in an
+owned detached worktree with fresh SQLite (237.18 seconds). Selected formatting
+(242 files), lint (216 files, zero errors), TypeScript and exact tracked-source
+privacy scanning (zero violations, six classifications) pass. The schema and
+dependency inputs remain unchanged from the earlier validated candidate.
 
-The diagnostic revision changes no application, unit, dependency, schema or native
-iOS input tree. The shared executor delta affects only Android reboot stage
-labels and Android-specific error categories. Its exact diff and tree comparison
-are retained with the lab artifacts. No receipt is rebound to a later revision.
+Frozen source `c8e8b1de` passes the optimized build/client privacy scan. Its full
+hosted run **37219804462 remains FAILED**, with 19,773 hashed artifacts and
+successful transport cleanup. Browser (53 scenarios), Windows/Linux providers
+(159 cases each), both first-party Journal pairs, both signed notice/reboot
+flows and Android primary/low-resource/tablet (60 scenarios) pass. Compatibility
+reboot and primary UWB fail in that run. Full sequence rechecks on `01bab29b`
+pass compatibility 20/20 plus 12 instrumentation tests (37221706364), and radio
+4/4 on each primary/low-resource profile (37221708792). Android therefore has
+80 passing profile scenarios and eight passing radio cases, with original failed
+results retained. Diagnostic-only rechecks establish no deterministic root cause.
 
-### Earlier focused evidence
+The frozen Apple matrix passes 23/27: primary 8/9, compatibility 7/9, tablet 8/9.
+The four failures are primary background observation, compatibility region OS
+input termination, compatibility offline-restart final-fix loss, and tablet
+offline input termination. Diagnostics identify an actual native drop-only
+throttle bug. One latest transient fix is now coalesced with its original
+timestamp and consent/freshness/generation gates. Permission/precision changes,
+system pause, stop and restart cancel pending delivery.
 
-The previously open focused OS checks now pass. Low-memory Journal37218710912
-on340479dd observes one actual guarded System UI Wait interaction, reports on
-both correctly provisioned devices, native stop, all pairing HTTP200, canonical0
-and cleanupPASS. iOS37218201954 on d2add7a1 passes the complete ten-step actual
-Core Location region-wake/removal flow, with encrypted hints, real lifecycle,
-canonical0 and cleanupPASS. Every earlier failed receipt below remains historical
-proof of its own result. Code is being frozen for complete closure-tier matrices;
-protected qualification, integration and final closure remain open.
+Focused primary region wake **37223287847 on 4341f2e5 passes all ten steps**:
+actual background/foreground, encrypted delegate hints, removal, canonical zero
+and cleanup PASS. Xcode reports **17 passed / zero failed / one hardware-only
+skip**, including four throttle regressions; the lifecycle UI test passes.
+Compatibility offline-restart/region run37223293060 passes both scenarios:
+the second native callback is forwarded (2/2), qualifies in947ms, and restart
+reconciliation writes exactly one expected canonical event. Region wake writes
+zero. Both clean up; its harvest retains5,640hashed artifacts and successful
+transport cleanup. The native suite again reports17passes/one hardware skip.
+Full three-profile iOS
+run37224038483 on `2654d7b8` remains active. Focused tablet input run37224452331
+on `80b8dbe4` remains active. A lab-only bounded Simulator input wrapper passes
+12 unit cases; acknowledgment never substitutes for an actual native fix.
 
-The latest evidence retains its original source identities. Clean fb6146ce passes
-475unit files/2,691tests and an isolated optimized build/client privacy scan.
-Browser37217125284 onbbda4541 passes all53retained journeys after the authenticated
-reading-state Escape race correction; three current browser screenshots receive
-bounded visual review. Providers37216130695 on c3ba3167 pass159cases on each of
-Windows/Linux, and Android37216122961 passes20cases on each of four distinct
-profiles plus all native instrumentation receipts.
+Retained input comparisons show production web, dependency and schema trees
+unchanged from C8; native Android unchanged from01bab29b; and native iOS unchanged
+from2654d7b8. The shared executor's later bounded input wrapper receives separate
+focused actual execution. Every receipt retains its original source identity.
+No final protected qualification, merge or closure has occurred.
 
-Six BLE cases pass on c3ba3167. UWB37217634667 onfb6146ce passes both distinct
-profiles: actual CAPABILITIES_READY, untrusted hints on both devices, verified
-stop, canonical0 and cleanupPASS. Current primary Journal pairing passes on
-c3ba3167. Low-memory37217638812 onfb6146ce remains failed before pairing: the
-actual OS screenshot shows System UI's ANR overlay, and native geometry reports
-no window focus. A narrowly observed System UI Wait recovery is under actual
-recheck; application ANRs and arbitrary prompts are never dismissed.
+| Requirement                                     | Accepted source/evidence                                                                                                                                                                                | Remaining acceptance                                                                                     |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Sole progression / Worldspaces                  | One Voyage remains the sole writer; physical and virtual contexts retain shared canonical contracts. Full unit and retained browser suites pass.                                                        | Final ordinary qualification and landed verification.                                                    |
+| Android companion                               | 80 profile scenarios, 12 native instrumentation tests per profile; unsigned debug/release builds and release exclusion inspection.                                                                      | Final qualification; signed distribution and physical acceptance.                                        |
+| Apple companion                                 | Origin-bound WKWebView/Core Location; 17 XCTest passes and one unsupported hardware skip; focused actual wake passes.                                                                                   | Complete new three-profile native matrix, final qualification; signed distribution and devices.          |
+| Renderer / Creator / Player / Drydock / Captain | Canonical released chart, authored routes, semantic navigation and current surfaces; 53 optimized browser scenarios with bounded visual review.                                                         | Final qualification; physical assistive technology and owner acceptance.                                 |
+| Remote suggestions                              | Concrete Nominatim-compatible forward/reverse geocoding, OSRM routing and Open-Elevation; 159 provider scenarios on each Windows/Linux host.                                                            | Production licensed endpoints, credentials and quotas are NOT_CONFIGURED.                                |
+| Signed offline regions                          | Ed25519/hash/AES-GCM scoped packages, current released authorization, interrupted resume, image decode, corruption rejection and removal; native reconciliation goes through One Voyage.                | New complete Apple offline/restart matrix and final qualification; deployment keys and physical restart. |
+| Background wake / signed notice return          | Both Android signed first-party flows pass actual notice tap, registered same-guest reboot, fresh membership denial, native clear, canonical zero and cleanup. Focused Apple real delegate wake passes. | New complete Apple matrix; field latency, OEM scheduling and physical energy.                            |
+| BLE / iBeacon / Eddystone / UWB                 | Eight radio profile cases pass actual callbacks/ranges, bounded stop, canonical zero and cleanup. Both Journal pairs pass real ceremony/report/stop with all HTTP200.                                   | Physical RF, authenticated peer identity and accuracy.                                                   |
+| QR / NFC identity                               | Real imagefile-camera decode and signed identity/context verification; acquisition remains deliberate. Identity never proves arrival.                                                                   | Physical camera conditions and NFC radio.                                                                |
+| Motion / heading / barometer / fusion           | Bounded optional native hints and measured Android stop intervals; freshness, uncertainty and correlated-root rules preserve confidence truth.                                                          | Physical calibration, indoor/floor, energy and thermal measurements.                                     |
 
-iOS region monitoring is available and actual registration/background/location
-inputs pass. The two focused failures occur before the wake-hint assertion.
-Run37216787499 identifies the lab's foreground-wait deadline expiring during its
-intentional363-second background step; the separate suspension/recovery bounds
-now pass four regressions, and actual recheck37218201954 is running. No delivered
-iOS region hint is claimed yet. Exact d2add7a1 tracked-source privacy scan reports
-zero violations/six classifications. Schema/migration source is unchanged from
-the protected base; the current lockfile retains its zero-production-findings
-audit. Final native matrices, exact-source protected qualification and closure
-remain open.
-
-| Requirement                                 | Candidate source / available evidence                                                                                                                                                                                                                                                                                                                                                                                                                    | Remaining acceptance                                                                                                                                                                           |
-| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sole progression authority                  | Shared authorized evidence/reconciliation calls One Voyage. Native providers, package installation and return navigation are not writers. Actual offline/restart reconciliation has written one expected canonical event through real isolated SQLite.                                                                                                                                                                                                   | Final candidate regression, exact-head ordinary Sounding Line and landed verification.                                                                                                         |
-| PHYSICAL and VIRTUAL Worldspaces            | Existing Player rendering/context contracts remain canonical. Virtual offline reconciliation on Apple run37187691206 passes with zero physical acquisition.                                                                                                                                                                                                                                                                                              | Final complete Android/Apple profile matrices and regression of accepted Phases1–3.                                                                                                            |
-| Android companion                           | First-party WebView, contextual permissions, encrypted private leases, power/lifecycle, foreground native location and optional native operations. Run37192590886 on e981edec passes80cases across primary, compatibility, low-resource and tablet profiles, including actual reboot/offline canonical reconciliation.                                                                                                                                   | Final exact-source qualification and signed distribution/physical hardware acceptance.                                                                                                         |
-| Apple companion                             | First-party WKWebView, Core Location and optional capabilities/private storage. Actual hosted macOS/Xcode/iOS Simulator execution is available; run37187691206 passes11 XCTest cases with one unsupported hardware skip and real virtual offline reconciliation.                                                                                                                                                                                         | Final three-profile hosted matrix; signed distribution and real iPhone suspension/power/radio/field acceptance. Hosted Apple availability is not an external blocker.                          |
-| Released map/route/place guidance           | First-party renderer and released views are preserved. Optimized browser run37187344378 passes13 cases including narrow/wide physical/virtual presentation and optional fallbacks.                                                                                                                                                                                                                                                                       | Final candidate configured/unconfigured browser coverage and visual QA.                                                                                                                        |
-| Remote suggestions                          | Nominatim-compatible geocoding, OSRM routing and Open Elevation use server-only consented configuration, bounded requests, licensed summaries and authored fallback. Provider run37187347909 passes159 scenarios on each hosted Windows/Linux matrix.                                                                                                                                                                                                    | Final source scenario matrix. Production service agreements, credentials, quota and endpoint operation are `NOT_CONFIGURED` unless actually supplied and verified.                             |
-| Signed offline regions                      | Server prepares only current authorized released chart/routes/first-party images. Ed25519, resource hashes, scoped AES-GCM storage and expiring leases gate use. Configured browser run37189971931 on9a355f07 passes preview, interrupted download, verified resume, signed-region offline image decode, corrupt-resource rejection after reload and local removal through real first-party API/UI. Its key exists only in the synthetic runner process. | Final source qualification. Deployment key/signing availability and physical restart remain separate.                                                                                          |
-| Background geofence wake                    | Signed first-party run37214774366 onfb92d113 passes both correctly provisioned profiles: actual notice/307/current Journal, actual same-guest reboot/BootReceiver GRANTED, second actual notice after membership removal, fresh UNAVAILABLE/Library landing, native clear, canonical0/source unchanged/cleanupPASS. Actual GMS transitions remain separate from provider simulation.                                                                     | Actual iOS Core Location scenario37214637581 is pending. Final source-bound qualification; physical accuracy, OEM scheduling, field wake latency and battery/thermal behavior remain unproved. |
-| Notification return                         | Opaque authenticated encrypted actor/session/version/expiry claim; fresh sign-in, membership and current session status checked by server. Navigation only.                                                                                                                                                                                                                                                                                              | Actual OS notice/tap with real first-party return and revoked/expired access cases. Shared signing configuration is a documented coupling, not an independent kill switch.                     |
-| BLE / iBeacon / Eddystone UID               | Deliberate bounded scan, native salted peer identifiers, strict fresh observations and no arrival authority. Radio run37197120565 on c546143c passes all three BLE protocols on declared primary/low profiles using the same low-memory provisioning through actual native callbacks, with null/UNKNOWN when RSSI is unusable, zero canonical writes and cleanup PASS.                                                                                   | Final exact-source qualification. Physical beacons/RF and authenticated peer identity remain required separately.                                                                              |
-| UWB / Nearby Interaction                    | Bounded native negotiation and ephemeral first-party pairing. Corrected primary radio37210642366 passes actual native UWB and three BLE protocols. Distinct primary Journal37212997052 on9709ccee and low-resource Journal37214134421 on7cf6ea34 pass validated reports on both devices, verified native stop, canonical0 and cleanupPASS. Earlier declared-profile receipts retain their actual low-memory configuration.                               | Final source-bound matrices and exact-source qualification. Real RF accuracy, pose and authenticated peer identity remain unproved.                                                            |
-| QR / NFC installation identity              | Signed scoped tokens are identity/context, not proof of physical arrival. CameraX/ML Kit and native NFC reader are deliberate bounded acquisition. QR case in run37189975707 on9a355f07 passes real imagefile-camera decoding and signature verification: one frame, one decode, no decoder errors. Physical presence remains NOT_PROVEN and canComplete false.                                                                                          | Final profile qualification. NFC radio and physical installation acquisition require hardware. No decoded JavaScript injection qualifies as camera proof.                                      |
-| Motion / orientation / heading / barometer  | Optional sensor hints with uncertainty and lifecycle/power checks; none independently confirms floor, coordinates or arrival. Four-profile Android run37192590886 passes actual sensor cases and12measured intervals with stop verified.                                                                                                                                                                                                                 | Final exact-source qualification. Real indoor/multifloor calibration and battery/thermal behavior require devices/field evidence.                                                              |
-| Creator / Drydock / Captain / accessibility | Existing authored policies, canonical previews and readable guidance remain; unsupported optional capabilities degrade explicitly. Browser mobile cases have run.                                                                                                                                                                                                                                                                                        | Final source regression and rendered verification; physical assistive-technology and owner usability acceptance remain external.                                                               |
+Earlier chronological development receipts and failed attempts remain in the
+[design record](Project_Landfall_Phase_4_Native_Companion_Design.md). They are not
+reclassified as current passing acceptance.
 
 ## Security and privacy review
 

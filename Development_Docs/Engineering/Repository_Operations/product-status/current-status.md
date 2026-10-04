@@ -8,31 +8,25 @@ last_reviewed: 2026-10-04
 
 # Current status
 
-The frozen Landfall Phase4 snapshot c8e8b1de passes476unit files/2,695tests,
-an isolated optimized build/client privacy scan, tracked-source privacy scan
-and unsigned Android debug/release package build. Release inspection confirms
-debug acquisition diagnostics and advertiser exclusions, private boot receiver,
-disabled cleartext and disabled WebView debugging. This is source/package proof;
-distribution, production origin and physical qualification remain external.
+Landfall Phase4 remains in development. Current9514f185 passes477unit files /
+2,707tests, selected formatting/lint, TypeScript and exact tracked-source privacy
+scanning. OriginalC8 optimized build/client privacy, browser53 and providers159
+per Windows/Linux host remain source-bound evidence with unchanged production
+web/dependency/schema inputs.
 
-Its complete hosted run37219804462 passes browser, both provider hosts, both
-native Journal pairs, both signed notice/reboot jobs and Android primary,
-low-resource and tablet jobs. Compatibility fails after a measured successful
-guest reboot; primary radio fails UWB capability preparation. Full sequence
-rechecks on01bab29b pass20/20compatibility cases and4/4radio cases on both profiles,
-with successful harvest and cleanup. Original failures remain retained;
-diagnostic-only revisions do not establish a deterministic root cause.
-Three iOS profile jobs are still running. All original
-source bindings and failed receipts are retained; no protected qualification,
-merge or catalog promotion has occurred.
+Android acceptance includes80profile scenarios, eight radio cases, both native
+Journal pairs and both signed notice/reboot/revoked-membership flows. Original
+C8 failures remain failed; diagnostic rechecks do not establish a root cause.
+Unsigned package builds and release exclusion analysis pass. Physical hardware,
+RF, energy, signed distribution and production origin remain external.
 
-Primary and low-memory Journal pairing now pass; the low-memory recheck observes
-one actual guarded System UI Wait interaction, followed by reports on both
-devices, native stop, zero canonical writes and cleanup. iOS's complete actual
-Core Location region-wake/removal case now passes with encrypted hints, real
-background/foreground, zero canonical writes and cleanup. Complete frozen native matrices,
-ordinary protected qualification, merge, landed verification and closure remain
-open; no Phase4 catalog promotion has occurred.
+The frozen Apple matrix remains23/27. A real final-fix throttle bug is corrected
+with bounded transient coalescing and consent/lifecycle cancellation. Focused
+primary wake and compatibility restart/wake runs pass; primary receipts confirm
+17XCTest passes/one hardware skip, actual background/encrypted hints/foreground,
+canonical zero and cleanup. The complete new three-profile iOS matrix and focused
+tablet input check remain running. Protected qualification, merge, landed proof,
+catalog promotion and formal closure remain pending.
 
 Earlier original-source Landfall Phase 4 evidence remains retained, with
 provider, browser, Android and hosted Apple evidence. Android guest reboot and
