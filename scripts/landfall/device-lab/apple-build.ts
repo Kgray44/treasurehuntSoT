@@ -248,6 +248,14 @@ async function main() {
       nativeTests.passedTests += motionTests.passedTests;
       nativeTests.failedTests += motionTests.failedTests;
       nativeTests.skippedTests += motionTests.skippedTests;
+      nativeTests.totalTestCount += motionTests.totalTestCount;
+      nativeTests.finishTime = motionTests.finishTime;
+      // Per-device and per-plan breakdowns belong to their original bundle;
+      // retaining the first breakdown here would misstate aggregate counts.
+      delete nativeTests.devicesAndConfigurations;
+      delete nativeTests.testResults;
+      delete nativeTests.statistics;
+      delete nativeTests.topInsights;
       nativeTests.componentSummaries = ["native-test-summary.json", "reduced-motion-test-summary.json"];
     }
     await writeFile(path.join(destination, "test-summary.json"), JSON.stringify(nativeTests, null, 2));
