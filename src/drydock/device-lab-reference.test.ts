@@ -39,4 +39,17 @@ describe("Drydock Device Lab references", () => {
     ])
       expect(() => drydockDeviceLabReference({ ...reference, ...changes })).toThrow();
   });
+  it("refuses a tablet reference for a native peer scenario that only supports phone profiles", () => {
+    expect(() =>
+      drydockDeviceLabReference({
+        ...reference,
+        scenarioId: "uwb-native-peer-session",
+        scenarioVersion: 1,
+        target: "android-emulator",
+        deviceProfile: "tablet",
+        providerFamily: "UWB",
+        evidenceClass: "EMULATOR_PROVEN",
+      }),
+    ).toThrow("DRYDOCK_DEVICE_LAB_SCOPE_MISMATCH");
+  });
 });

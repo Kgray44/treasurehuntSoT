@@ -1814,3 +1814,12 @@ acceptance, counts only whether the authorization cookie is singular, and can
 observe a read-only second authorization from the actual current WebView after
 DENIED. This diagnostic uses its existing cookie, changes no credential and
 cannot turn the failed initial notice return into a pass.
+
+Clean ead841ea Windows provider run20261004T141737767Z-14852 passes159/159 with
+fingerprint6afc956d8ad4b6ba66fdc602b9fe7d398c383e4bb4b6a8df0c6a9812ebee9471.
+Exact tracked archive privacy scan reports zero violations/six classifications.
+Completion review identifies and closes a Drydock reference scope gap: the
+reference must now name a profile supported by its scenario, in addition to the
+existing target/family/version/fidelity checks. A tablet reference for the native
+phone-only UWB scenario is rejected. Three focused helper tests pass. Evidence
+still requires Chronicle review and cannot satisfy physical or launch gates.

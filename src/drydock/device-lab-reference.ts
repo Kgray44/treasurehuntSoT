@@ -32,7 +32,11 @@ export function drydockDeviceLabReference(input: unknown) {
   const reference = drydockDeviceLabReferenceSchema.parse(input);
   const scenario = landfallDeviceScenario(reference.scenarioId);
   if (scenario.version !== reference.scenarioVersion) throw new Error("DRYDOCK_DEVICE_LAB_SCENARIO_STALE");
-  if (!scenario.targets.includes(reference.target) || !scenario.providers.includes(reference.providerFamily))
+  if (
+    !scenario.targets.includes(reference.target) ||
+    !scenario.providers.includes(reference.providerFamily) ||
+    !scenario.deviceProfiles.includes(reference.deviceProfile)
+  )
     throw new Error("DRYDOCK_DEVICE_LAB_SCOPE_MISMATCH");
   const provenClass = {
     "provider-simulation": "PROVIDER_SIMULATION_PROVEN",

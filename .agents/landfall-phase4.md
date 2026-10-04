@@ -1468,3 +1468,13 @@ are true. Cleanup passes. This rejects simple cookie loss as a diagnosis. The
 harness retains strict initial UNAVAILABLE acceptance and, only after DENIED,
 can observe one read-only reauthorization from the actual current WebView with
 its existing cookie. That diagnostic cannot qualify the failed first return.
+
+Clean ead841ea Windows provider run20261004T141737767Z-14852 passes159/159,
+fingerprint6afc956d8ad4b6ba66fdc602b9fe7d398c383e4bb4b6a8df0c6a9812ebee9471.
+Its exact Git archive privacy scan finds zero violations/six classifications.
+Background37208651739 remains pending. Completion review also finds that Drydock
+reference ingestion validates target/family but omits scenario-specific profile
+scope. The guard now rejects unsupported device profiles; the phone-only native
+UWB/tablet negative case passes with the two existing helper tests (3total).
+No synthetic pass gains Chronicle/physical acceptance. Final root regression
+must include this new guard/test.
