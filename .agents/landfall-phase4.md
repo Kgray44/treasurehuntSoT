@@ -526,3 +526,12 @@ uncommitted while this isolated provisioning correction is checked and rerun.
 Apple attachment-export checkpoint 0879c887c29fb06879d68b3e1855393f3fe1db7c/tree
 b86e32104148011a627e0e5409ca9d1f18fc195a pushed. Apple focused run 37167222880 and
 full Windows/Linux 125-scenario provider run 37167228785 are pending harvest.
+
+Provider 37167228785 harvested SUCCESS (268 artifacts): Windows125/125,
+Linux125/125, clean0879c887, matchingFP7b21a0f6ab506ec6d177e7819d95e3b47cde3ccb262a3576e402fd89ef4ae42b,
+new radio logical case canonical0/cleanupPASS. Transport branch deleted verified.
+Second radio 37167569946 at2addbb2edaf8518bac1127c903b305d26fc40b53
+fails SDK discovery before boot after image installation; exact absent/failed tool
+not retained. Zero artifacts, CI log retained, transport cleanupPASS. Template
+now installs platform-tools explicitly and retains adb/emulator version probes.
+Do not infer missing-library or image cause. Apple37167222880 remains active.

@@ -156,14 +156,18 @@ jobs:
         run: gradle -p native/android --console plain assembleDebug
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
       - name: Install public API-36 radio image
-        run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "emulator" "system-images;android-36;google_apis;x86_64"'
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "emulator" "system-images;android-36;google_apis;x86_64"
+          mkdir -p artifacts/landfall-device-lab/radio-sdk
+          "$ANDROID_HOME/platform-tools/adb" version > artifacts/landfall-device-lab/radio-sdk/adb-version.txt 2>&1
+          "$ANDROID_HOME/emulator/emulator" -version > artifacts/landfall-device-lab/radio-sdk/emulator-version.txt 2>&1
       - name: Enable ephemeral runner KVM access
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Run source-bound two-device radio lab
-        run: npx --no-install tsx scripts/landfall/device-lab/android-radio-run.ts
+        run: ANDROID_SDK_ROOT="$ANDROID_HOME" npx --no-install tsx scripts/landfall/device-lab/android-radio-run.ts
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -543,3 +543,20 @@ were produced. Harvest retains the exact-source CI log and NOT_PRODUCED artifact
 state, with zero harvested artifacts and verified transport-branch cleanup.
 The template now uses the SDK manager's explicit installed path. This correction
 still requires a new hosted native run; the failed run is not qualification.
+
+The second radio dispatch at `2addbb2e`, run 37167569946, passes explicit SDK
+manager/image installation but fails SDK discovery before boot. That run did not
+retain which tool was absent or failed its version probe; its categorical failure
+does not establish a library or image defect. The template now explicitly installs
+platform-tools as the [primary emulator runner does](https://github.com/ReactiveCircus/android-emulator-runner/blob/v2/src/sdk-installer.ts)
+and retains both fixed-tool version probe outputs before attempting devices.
+The second failure has zero scenario artifacts, retained source-bound CI logs and
+verified transport cleanup. Native canonical radio qualification remains open.
+
+Hosted provider run 37167228785 at clean `0879c887` passes all 125 canonical
+scenarios on Windows and all 125 on Linux, with no unsupported or unconfigured
+cases. Both source fingerprints are
+`7b21a0f6ab506ec6d177e7819d95e3b47cde3ccb262a3576e402fd89ef4ae42b`.
+The new UWB case records zero real canonical events and cleanup PASS in each
+logical-provider run. All 268 artifacts are harvested and transport cleanup is
+verified. These results do not qualify native radio or physical hardware.
