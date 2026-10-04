@@ -43,6 +43,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Project Drydock](Projects/Project%20Drydock/README.md)
 - [Project Landfall](Projects/Project_Landfall/README.md)
 - [Project Sextant](Projects/Project_Sextant/README.md)
+- [Project Parallax](Projects/Project_Parallax/README.md)
 
 ## Historical and additive governing records
 
