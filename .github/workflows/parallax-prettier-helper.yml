@@ -1,0 +1,38 @@
+name: Temporary Parallax Prettier Helper
+
+on:
+  push:
+    branches:
+      - docs/project-parallax-v1
+    paths:
+      - .github/workflows/parallax-prettier-helper.yml
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    if: github.event.head_commit.message == 'chore(parallax): temporary prettier helper'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: docs/project-parallax-v1
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Apply repository Prettier
+        run: npx --no-install prettier --write Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md
+      - name: Remove helper and publish formatted source
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm --ignore-unmatch .github/workflows/parallax-prettier-helper.yml
+          git add Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md
+          git diff --cached --check
+          git commit -m "docs(parallax): apply repository formatting"
+          git push origin HEAD:docs/project-parallax-v1
