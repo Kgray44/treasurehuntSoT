@@ -339,7 +339,9 @@ test("real native Journal pairing returns untrusted hints and background clears 
                     payload: {},
                   }),
                 )) as { state: string; sessionProtected: boolean };
-                return value.state === "INITIALIZING" && value.sessionProtected === true;
+                // onStarted can reach READY before the first poll. A prepared,
+                // unstarted device remains unprotected and cannot satisfy this.
+                return ["INITIALIZING", "READY"].includes(value.state) && value.sessionProtected === true;
               }),
             { timeout: 10000 },
           )

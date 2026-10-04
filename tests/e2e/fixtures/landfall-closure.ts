@@ -356,6 +356,9 @@ export async function authenticateClosure(context: BrowserContext, account: Clos
 export async function openClosureJournal(page: Page, id: string, origin?: string) {
   const journalPath = `/player/playthroughs/${id}/journal`;
   await page.goto(origin ? new URL(journalPath, origin).href : journalPath);
+  await enterClosureJournal(page);
+}
+export async function enterClosureJournal(page: Page) {
   const opening = page.getByRole("dialog", { name: "Open the voyage journal" });
   await expect
     .poll(

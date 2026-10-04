@@ -9,6 +9,7 @@ import {
   closureVoyage,
   geoAudit,
   openClosureJournal,
+  enterClosureJournal,
   openClosureMap,
 } from "./fixtures/landfall-closure";
 
@@ -115,9 +116,11 @@ test("previews, interrupts, verifies, restores and removes a real signed release
     ).toEqual([400, 300]);
     measurements.offlineRestoreMs = performance.now() - startedAt;
     await context.setOffline(false);
-    // The service worker navigated to the offline shell. Reopen the online
-    // Journal explicitly rather than reloading that shell with a connection.
-    await openClosureJournal(page, voyage.id);
+    // Wait for actual browser connectivity, then use the published return link.
+    // Immediate automation navigation can race the online event/worker message.
+    await expect.poll(() => page.evaluate(() => navigator.onLine)).toBe(true);
+    await page.getByRole("link", { name: "Return to the online Journal", exact: true }).click();
+    await enterClosureJournal(page);
     await openClosureMap(page);
     const restored = page.getByRole("region", { name: "Offline region" });
     await expect(restored.getByRole("status")).toContainText("Offline region: ready");
