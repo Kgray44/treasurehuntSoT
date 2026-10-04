@@ -1781,3 +1781,11 @@ explicitly records DRIVER_CLOSED_BEFORE_RESPONSE and no numeric HTTP status is
 claimed. Genuine server reauthorization, actual current Journal/opening, zero
 canonical writes, cleanup and performance remain mandatory. This addresses a
 transport observation gap without relaxing notification-return authority.
+
+Run37206206407 then demonstrates that unconditional replacement is inappropriate
+for a live Page: actual RETURNED/307 precedes FIRST_RETURN_REATTACH/TIMEOUT,
+firstReturnPageClosedfalse and cleanupPASS. The follow-up preserves live pages
+and acquires a new current WebView only after observed old-page closure. Every
+acquired device connection remains owned for later cleanup; none is closed before
+replacement observation. This remains harness work, with no authentication
+change or reinjection. Rejected-request cookie presence is still unobserved.

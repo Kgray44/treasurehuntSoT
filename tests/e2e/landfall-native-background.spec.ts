@@ -202,11 +202,14 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         expect(measurement.nativeParentCpuPercent).toBeLessThanOrEqual(50);
       };
       const attach = async (requireNative = true) => {
-        devices = await boundedAndroidDriver(
+        const discovered = await boundedAndroidDriver(
           _android.devices({ host: "127.0.0.1", port: resources.adbPort, omitDriverInstall: true }),
           resources.signal,
         );
-        const device = devices.find((item) => item.serial() === serial);
+        // Keep every acquired connection owned through cleanup. A replacement
+        // WebView can be observed without closing an unrelated live driver.
+        devices.push(...discovered);
+        const device = discovered.find((item) => item.serial() === serial);
         if (!device) throw new Error("NATIVE_RETURN_DEVICE_MISSING");
         const view = await device.webView({ pkg }, { timeout: 30000 });
         page = await boundedAndroidDriver(view.page(), resources.signal);
@@ -450,10 +453,9 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           returnHopObservation = "DRIVER_CLOSED_BEFORE_RESPONSE";
         }
         stage = "FIRST_RETURN_REATTACH";
-        // An OS return may recreate a WebView. Observe the current owned page;
-        // never reuse a stale driver or inject another session after the tap.
-        await closeDrivers();
-        const activeJournal = await attach(false);
+        // Preserve a live current page. If the old page closed, connect to the
+        // actual replacement without closing the device before observing it.
+        const activeJournal = firstReturnPageClosed ? await attach(false) : journal;
         stage = "FIRST_RETURN_JOURNAL";
         await expect
           .poll(() => new URL(activeJournal.url()).pathname, { timeout: 45000 })

@@ -1438,3 +1438,12 @@ DRIVER_CLOSED_BEFORE_RESPONSE and makes no HTTP-status claim. Actual serverRETUR
 reattached current Journal, normal opening, canonical0, cleanup and performance
 remain mandatory. No cookie is reinjected. Primary rejected-request diagnostic
 37206206407 on47480f3a remains active.
+
+Run37206206407 is now harvested FAIL before cold observation:
+FIRST_RETURN_REATTACH/TIMEOUT, firstReturnPageClosedfalse, actual RETURNED and307,
+ownerCancelledfalse and cleanupPASS. Unconditional replacement of a still-live
+driver introduced this new observation failure. Keep the live page; acquire a
+replacement only after observed closure, and retain all discovered connections
+for later owned cleanup. No device connection is closed before observing the
+replacement. The requested denied-request cookie fact remains unobserved and
+still needs fresh primary execution.
