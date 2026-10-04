@@ -81,7 +81,10 @@ export async function dispatchLandfallHostedLab(
       "__COLD_SESSION_DIAGNOSTIC__",
       String(target === "android-background" && selectedScenarios === "first-party-native-cold-session-diagnostic"),
     )
-    .replaceAll("__ANDROID_RADIO_PROFILES__", JSON.stringify(radioProfiles))
+    // GitHub validates even disabled job matrices; an empty matrix aborts the
+    // entire workflow before any selected scenario executes. The placeholder
+    // remains disabled for ordinary Android compatibility/tablet-only runs.
+    .replaceAll("__ANDROID_RADIO_PROFILES__", JSON.stringify(radioProfiles.length ? radioProfiles : ["primary-phone"]))
     .replaceAll("__ANDROID_PROFILES__", JSON.stringify(androidProfiles))
     .replaceAll("__APPLE_PROFILES__", JSON.stringify(appleProfiles));
   const scenarios = {
