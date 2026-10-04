@@ -18,6 +18,24 @@ fresh qualification before protected integration.
 
 ## Implemented capability and evidence boundaries
 
+Current frozen source c8e8b1de passes476unit files/2,695tests, optimized build,
+client/static privacy scans and unsigned Android packaging/release exclusion
+inspection. Full hosted37219804462 passes browser, Windows/Linux providers,
+both native Journal pairs, both signed notice/reboot jobs and Android primary,
+low-resource and tablet scenarios. Compatibility fails after its successful
+20,828ms reboot; primary UWB fails capability preparation on the second guest.
+Focused rechecks now expose finite post-reboot stages and distinct missing
+capability/config/channel/preamble/rate categories without exporting raw output.
+Three iOS profile matrices remain running. Historical results below are retained
+under their original source; they do not override the frozen failures.
+
+The diagnostic revision changes no application, unit, dependency, schema or native
+iOS input tree. The shared executor delta affects only Android reboot stage
+labels and Android-specific error categories. Its exact diff and tree comparison
+are retained with the lab artifacts. No receipt is rebound to a later revision.
+
+### Earlier focused evidence
+
 The previously open focused OS checks now pass. Low-memory Journal37218710912
 on340479dd observes one actual guarded System UI Wait interaction, reports on
 both correctly provisioned devices, native stop, all pairing HTTP200, canonical0

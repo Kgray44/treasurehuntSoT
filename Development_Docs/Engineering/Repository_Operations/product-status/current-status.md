@@ -8,11 +8,20 @@ last_reviewed: 2026-10-04
 
 # Current status
 
-The latest Landfall Phase4 snapshot passes475unit files/2,691tests and isolated
-optimized build/client privacy scan onfb6146ce;53retained browser journeys on
-bbda4541;159provider cases per Windows/Linux host and80Android cases across four
-distinct profiles on c3ba3167. Both corrected-profile UWB cases pass onfb6146ce,
-with untrusted hints, native stop, zero canonical writes and cleanup.
+The frozen Landfall Phase4 snapshot c8e8b1de passes476unit files/2,695tests,
+an isolated optimized build/client privacy scan, tracked-source privacy scan
+and unsigned Android debug/release package build. Release inspection confirms
+debug acquisition diagnostics and advertiser exclusions, private boot receiver,
+disabled cleartext and disabled WebView debugging. This is source/package proof;
+distribution, production origin and physical qualification remain external.
+
+Its complete hosted run37219804462 passes browser, both provider hosts, both
+native Journal pairs, both signed notice/reboot jobs and Android primary,
+low-resource and tablet jobs. Compatibility fails after a measured successful
+guest reboot; primary radio fails UWB capability preparation. Focused diagnostic
+rechecks remain required. Three iOS profile jobs are still running. All original
+source bindings and failed receipts are retained; no protected qualification,
+merge or catalog promotion has occurred.
 
 Primary and low-memory Journal pairing now pass; the low-memory recheck observes
 one actual guarded System UI Wait interaction, followed by reports on both
