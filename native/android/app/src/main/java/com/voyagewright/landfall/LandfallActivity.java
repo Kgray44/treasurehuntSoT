@@ -31,6 +31,7 @@ public final class LandfallActivity extends Activity implements LocationListener
   private WebView web;
   private LocationManager locations;
   private String selectedLocationProvider = "NONE";
+  private int locationCallbacks;
   private String origin;
   private boolean foreground;
   private boolean acquiring;
@@ -144,7 +145,7 @@ public final class LandfallActivity extends Activity implements LocationListener
     switch (operation) {
       case "LOCATION_PERMISSION_STATE": reply(proxy, id, state(permission())); break;
       case "LOCATION_STATE":
-        reply(proxy,id,new JSONObject().put("provider",selectedLocationProvider).put("registered",acquiring).put("enabled",!selectedLocationProvider.equals("NONE") && locations.isProviderEnabled(selectedLocationProvider)).put("permission",permission()));
+        reply(proxy,id,new JSONObject().put("provider",selectedLocationProvider).put("registered",acquiring).put("enabled",!selectedLocationProvider.equals("NONE") && locations.isProviderEnabled(selectedLocationProvider)).put("permission",permission()).put("nativeCallbacks",locationCallbacks));
         break;
       case "LOCATION_PERMISSION":
         if (!foreground || permissionReply != null) { reply(proxy, id, state("UNAVAILABLE")); break; }
@@ -234,6 +235,7 @@ public final class LandfallActivity extends Activity implements LocationListener
     runOnUiThread(() -> web.evaluateJavascript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:" + value.toString() + "}))", null));
   }
   @Override public void onLocationChanged(Location location) {
+    if(locationCallbacks<100000)locationCallbacks++;
     if (!acquiring || !foreground || permission().equals("DENIED")) { stopLocation(); return; }
     try {
       JSONObject fix = new JSONObject().put("id", UUID.randomUUID().toString()).put("timestamp", location.getTime()).put("latitude", location.getLatitude()).put("longitude", location.getLongitude()).put("accuracyMeters", location.getAccuracy());

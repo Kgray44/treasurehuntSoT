@@ -433,3 +433,10 @@ deployed provider preflight and health integration; full security/privacy/perfor
 and product UX regressions; permanent implementation/validation/gate records; final
 catalog review, exact-candidate ordinary qualification, protected merge and landed
 smoke. All locally attainable work and successful hosted Apple evidence remain required.
+
+Startup and native-location diagnostics now retain strict categorical stages,
+bounded request/acknowledgment counts and a final acquisition snapshot including
+native callback count. Focused tests (three files/seven tests), uncached full
+TypeScript, changed-code ESLint and both native Android APK builds pass. Next
+impact-selected runs target primary Apple offline restart and Android tablet GPS;
+the known failures are not waived or classified as physical-only gates.

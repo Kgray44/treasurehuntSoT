@@ -8,6 +8,7 @@ export const deviceLabAcquisitionSchema = z.strictObject({
   registered: z.boolean(),
   enabled: z.boolean(),
   permission: z.enum(["GRANTED", "APPROXIMATE", "DENIED"]),
+  nativeCallbacks: count.optional(),
 });
 export const deviceLabLocationDiagnosticSchema = z.strictObject({
   received: count,

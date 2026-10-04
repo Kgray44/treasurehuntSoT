@@ -63,7 +63,13 @@ describe("redacted native location diagnostics", () => {
       latitude: 44,
     });
     expect(diagnostics.snapshot(0).acquisition).toBeUndefined();
-    const acquisition = { provider: "network", registered: true, enabled: false, permission: "APPROXIMATE" };
+    const acquisition = {
+      provider: "network",
+      registered: true,
+      enabled: false,
+      permission: "APPROXIMATE",
+      nativeCallbacks: 2,
+    };
     diagnostics.observeAcquisition(acquisition);
     expect(diagnostics.snapshot(0).acquisition).toEqual(acquisition);
   });

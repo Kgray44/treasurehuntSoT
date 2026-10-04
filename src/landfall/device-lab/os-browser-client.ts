@@ -1,6 +1,7 @@
 import { NativeLocationProvider } from "@/landfall/native-location";
 import { NativeContextProvider } from "@/landfall/native-context";
 import { DeviceLabLocationDiagnostics } from "@/landfall/device-lab/location-diagnostics";
+import { reportDeviceLabStartupStage } from "@/landfall/device-lab/startup-diagnostics";
 import {
   androidSensorControl,
   matchesAndroidSensorContext,
@@ -26,15 +27,20 @@ import { restoreNativeLandfallLeases } from "@/landfall/native-private-store";
 
 /** Test-only local origin entrypoint, bundled by the Device Lab, never shipped in the release app. */
 async function main() {
+  reportDeviceLabStartupStage("ENTRY");
   const identity = { sessionId: "session-1", publishedVersionId: "version-1" };
+  reportDeviceLabStartupStage("RESTORE_LEASE");
   await restoreNativeLandfallLeases();
+  reportDeviceLabStartupStage("LEASE_RESTORED");
   const restarted = !["/player", "/player/"].includes(location.pathname);
   const lease = restarted ? offlineLease(identity.sessionId) : null;
   if (restarted && (!lease || lease.versionId !== identity.publishedVersionId))
     throw new Error("NATIVE_RESTART_LEASE_UNAVAILABLE");
   const csrf = lease?.csrfToken ?? "synthetic-native-lab-csrf";
   if (!navigator.serviceWorker) throw new Error("NATIVE_OFFLINE_SHELL_UNSUPPORTED");
+  reportDeviceLabStartupStage("REGISTER_WORKER");
   await navigator.serviceWorker.register("/landfall-offline-sw.js", { scope: "/player/" });
+  reportDeviceLabStartupStage("WAITING_WORKER");
   let shellTimer: ReturnType<typeof setTimeout> | undefined;
   try {
     await Promise.race([
@@ -46,6 +52,7 @@ async function main() {
   } finally {
     clearTimeout(shellTimer);
   }
+  reportDeviceLabStartupStage("WAITING_CONTROL");
   if (!navigator.serviceWorker.controller)
     await new Promise<void>((resolve, reject) => {
       const timer = setTimeout(() => {
@@ -62,8 +69,10 @@ async function main() {
       navigator.serviceWorker.addEventListener("controllerchange", changed);
       changed();
     });
+  reportDeviceLabStartupStage("WORKER_CONTROLLED");
   const definition = structuredClone(landfallFixture);
   const scenario = await (await fetch("/lab/scenario", { cache: "no-store" })).json();
+  reportDeviceLabStartupStage("SCENARIO_RECEIVED");
   if (!["PHYSICAL", "VIRTUAL"].includes(scenario.worldspace)) throw new Error("NATIVE_WORLDSPACE_UNAVAILABLE");
   const world = definition.worldspaces.find((world) => world.kind === scenario.worldspace)!;
   definition.worldspaces = [world];
@@ -78,7 +87,9 @@ async function main() {
   const driver = createLandfallNativeDriver();
   if (!driver) throw new Error("NATIVE_BRIDGE_UNAVAILABLE");
   if (!driver.readPermission) throw new Error("NATIVE_PASSIVE_PERMISSION_UNSUPPORTED");
+  reportDeviceLabStartupStage("PASSIVE_PERMISSION");
   let foregroundPermission = world.kind === "PHYSICAL" ? await driver.readPermission() : ("GRANTED" as const);
+  reportDeviceLabStartupStage("PERMISSION_READ");
   const registry = new LandfallProviderRegistry();
   registry.register({
     id: driver.platform === "IOS" ? "ios-core-location" : "android-location",
@@ -182,6 +193,7 @@ async function main() {
       sensorState = "UNAVAILABLE";
     }
   });
+  reportDeviceLabStartupStage("READY_POST");
   await fetch("/lab/ready", {
     method: "POST",
     body: JSON.stringify({
@@ -211,7 +223,7 @@ async function main() {
     let state: "PASS" | "FAIL" | "UNSUPPORTED" = "PASS";
     let reason: string | undefined;
     let locationDiagnostic: ReturnType<DeviceLabLocationDiagnostics["snapshot"]> | undefined;
-    let stopDiagnostic = () => {};
+    let stopDiagnostic: () => Promise<void> = async () => {};
     try {
       if (action.type === "LOCATION") {
         if (world.kind === "VIRTUAL" && action.coordinate.type !== "WGS84") {
@@ -260,13 +272,14 @@ async function main() {
           } else {
             const diagnostics = new DeviceLabLocationDiagnostics(action);
             const observationsBefore = count;
-            stopDiagnostic = driver.subscribe((event) => {
+            const unsubscribeDiagnostic = driver.subscribe((event) => {
               if (event.type === "fix") diagnostics.observe(event.fix);
             });
             // Keep the snapshot categorical even when acquisition times out.
-            const capture = stopDiagnostic;
-            stopDiagnostic = () => {
-              capture();
+            stopDiagnostic = async () => {
+              unsubscribeDiagnostic();
+              if (driver.readAcquisition)
+                diagnostics.observeAcquisition(await driver.readAcquisition().catch(() => null));
               locationDiagnostic = diagnostics.snapshot(count - observationsBefore);
             };
             await start();
@@ -482,7 +495,7 @@ async function main() {
       reason =
         error instanceof Error && /^[A-Z_:a-z]{1,128}$/.test(error.message) ? error.message : "OS_SCENARIO_FAILED";
     } finally {
-      stopDiagnostic();
+      await stopDiagnostic();
     }
     // Only categorical counters/outcomes leave the virtual device. No raw fix or coordinate trace.
     await queued;

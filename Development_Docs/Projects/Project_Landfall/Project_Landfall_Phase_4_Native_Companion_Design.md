@@ -391,3 +391,14 @@ open. No hardware feature is required for ordinary location/offline navigation.
 API decisions were checked against the [Android UWB guide](https://developer.android.com/develop/connectivity/uwb),
 [stable release](https://developer.android.com/jetpack/androidx/releases/core-uwb)
 and published 1.0.0 source archives.
+
+The next focused diagnostics distinguish native callback delivery from WebView
+bridge delivery with a bounded native callback count. Acquisition state is read
+again when a location step ends, including timeout. Test-only startup telemetry
+accepts a strict categorical stage enum, limits retained acknowledgments to 128,
+and records document/worker/script request counts. Diagnostic posts expire after
+three seconds and cannot change readiness. No coordinates, native payloads,
+session tokens or arbitrary logs enter the readiness artifact. Three focused
+files pass seven tests; full TypeScript, changed-code ESLint and both Android
+APKs pass. Hosted verification remains required; these diagnostics do not repair
+or qualify the observed Apple startup or tablet GPS failures.

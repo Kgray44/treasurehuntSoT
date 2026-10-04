@@ -6,6 +6,10 @@ import { build } from "esbuild";
 import { discoverDeviceLabHost, labBinaryTool, labTool } from "./host";
 import { startDeviceLabAuthority } from "./authority-client";
 import { deliverDeviceLabPosition } from "./location-control";
+import {
+  deviceLabStartupStageSchema,
+  type DeviceLabStartupStage,
+} from "../../../src/landfall/device-lab/startup-diagnostics";
 import { playerLandfallEvidenceSchema } from "../../../src/landfall/player-evidence-contract";
 import {
   androidSensorControl,
@@ -47,6 +51,9 @@ export async function executeLandfallOsScenario(
   let ready = false;
   let maximumCompletionRequests = 0;
   const startups: { restarted: boolean; leaseRestored: boolean; publicShellControlled: boolean }[] = [];
+  const readinessStartedAt = Date.now();
+  const clientStages: { stage: DeviceLabStartupStage; elapsedMs: number }[] = [];
+  const startupRequests = { documents: 0, workers: 0, scripts: 0 };
   const locationDiagnostics: {
     index: number;
     diagnostic: ReturnType<typeof deviceLabLocationDiagnosticSchema.parse>;
@@ -88,6 +95,7 @@ export async function executeLandfallOsScenario(
       return;
     }
     if (request.method === "GET" && route === "/landfall-offline-sw.js") {
+      startupRequests.workers++;
       response.setHeader("Content-Type", "text/javascript");
       response.setHeader("Service-Worker-Allowed", "/player/");
       response.end(publicWorker);
@@ -109,6 +117,7 @@ export async function executeLandfallOsScenario(
         route === "/player/offline-landfall" ||
         route === "/player/playthroughs/session-1/journal")
     ) {
+      startupRequests.documents++;
       // The owned control plane stays reachable, but an offline Journal navigation
       // must use the actual production public service worker and cached shell.
       if (network === "OFFLINE" && route !== "/player/") {
@@ -122,6 +131,7 @@ export async function executeLandfallOsScenario(
       return;
     }
     if (request.method === "GET" && route === "/_next/static/chunks/landfall-lab.js") {
+      startupRequests.scripts++;
       response.setHeader("Content-Type", "text/javascript");
       response.end(bundle.outputFiles[0].contents);
       return;
@@ -196,7 +206,10 @@ export async function executeLandfallOsScenario(
         scenario.timeline[value.index]?.action.type === "SENSOR"
       )
         sensorReady.add(value.index);
-      else if (route === "/lab/os/ready") osReady = true;
+      else if (route === "/lab/client-stage") {
+        const stage = deviceLabStartupStageSchema.parse(value).stage;
+        if (clientStages.length < 128) clientStages.push({ stage, elapsedMs: Date.now() - readinessStartedAt });
+      } else if (route === "/lab/os/ready") osReady = true;
       else if (
         route === "/lab/os/result" &&
         Number.isInteger(value.index) &&
@@ -816,6 +829,22 @@ export async function executeLandfallOsScenario(
         error instanceof Error && /^[A-Z_]{1,128}$/.test(error.message) ? error.message : "NATIVE_OS_EXECUTION_FAILED",
     });
   } finally {
+    const readinessFile = path.join(destination, "native-client-readiness.json");
+    await writeFile(
+      readinessFile,
+      JSON.stringify(
+        { requests: startupRequests, stages: clientStages, readyAcknowledgments: startups.length },
+        null,
+        2,
+      ),
+    );
+    artifacts.push({
+      path: readinessFile,
+      sha256: createHash("sha256")
+        .update(await readFile(readinessFile))
+        .digest("hex"),
+      kind: "TEST_RESULT",
+    });
     const controlFile = path.join(destination, "native-location-controls.json");
     await writeFile(controlFile, JSON.stringify(locationControls, null, 2));
     artifacts.push({
