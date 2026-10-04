@@ -4,11 +4,16 @@ import type { DeviceLabAction } from "@/landfall/device-lab/scenario";
 
 const count = z.number().int().min(0).max(100000);
 export const deviceLabAcquisitionSchema = z.strictObject({
-  provider: z.enum(["NONE", "gps", "network"]),
+  provider: z.enum(["NONE", "gps", "network", "core-location"]),
   registered: z.boolean(),
   enabled: z.boolean(),
-  permission: z.enum(["GRANTED", "APPROXIMATE", "DENIED"]),
+  permission: z.enum(["GRANTED", "APPROXIMATE", "DENIED", "UNAVAILABLE"]),
   nativeCallbacks: count.optional(),
+  forwardedCallbacks: count.optional(),
+  foreground: z.boolean().optional(),
+  paused: z.boolean().optional(),
+  intervalMs: z.number().int().min(1000).max(60000).optional(),
+  failure: z.enum(["NONE", "LOCATION_UNKNOWN", "HEADING_FAILURE", "DENIED", "OTHER"]).optional(),
 });
 export const deviceLabLocationDiagnosticSchema = z.strictObject({
   received: count,

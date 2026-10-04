@@ -1178,3 +1178,35 @@ notice-return60sec preliminarygrossbounds; nativeCPU/battery acceptance still
 pending. Ninefocusednotice/openingtestsPASS; TS/lint/Androiddebug+test+releasebuild
 PASS. Rawclaim/cookie/key/UI hierarchy neverretained. Noactualnewreturn/rebootPASS
 orfinalprotectedqualification/catalogpromotion yet.
+
+989e684e pushed / treef5fb1eb7f447d8a448a12ccd9a5e626f482fe0ac; freshrootunit
+469files2662PASS / unit-regression-591b9e0d1dfd43e0a587368e0f29a643/vitest.json.
+Exactarchive sourceprivacy0violations6classifications / source-scan-989e684e-
+8a721004536f4d879fd419d4cc13911d-receipt.json. Currentbasec8ea unchanged. Ordinary
+readonlyplan419selectedunitpaths/5browserpaths/ORDINARY_PRODUCT/noControlPaths;
+no qualificationreceipt. SeparateBridgewatch rootexclude stillneedsown80test
+proof onfinalsource. Background37198352248 dispatch1791112771623 active;
+Journal37198356643 dispatch1791112776130 completedFAIL recoveryactive;
+geo37198361558 dispatch1791112780964 active.
+
+c546 Apple37197123884HARVESTED8554FAIL tablet3/3PASS/compatvirtualPASS; comp
+lostresponse firstfix2310ms then71inputs secondlocation received0/120secFAIL;
+comp restart osReady false120sec/doc0 butXCTesteventuallytoolPASS1test/finalization
+24072ms. NewCoreLocationLOCATION_STATE categoricalcallback/forwarded/acquiring/
+foreground/paused/effectiveinterval/failure diagnostics; no rawsampletimestamp or
+weakenedfixqualification. XCTesttoollaunchstartup240sec distinctpageReady60sec.
+TwofocusedcompatcasesandactualSwiftcompilepending; nofailedcasepromoted.
+
+989geo37198361558HARVESTED20SUCCESS:12actualinstrumentationtests including
+installedGMSBuilder2048charclaim/activeSHA256mapping; realGMSregistration/
+receiver1/hint1/notice1,10stepsPASS/canonical0/cleanupPASS. Background37198352248
+HARVESTED4FAIL atREGISTERED_REGION_ACTUAL_REBOOT: actualsignedUIregistration200,
+actualOSnotice/307currentJournalreturnPASS; firstnotice6171.96ms/return45116.43ms,
+nativeJournalPSS96282/103292KiB. ActualsameAVDreboot30393ms/changedbootID, but no
+BootReceiverdiagnosticwithin20sec; nosecondnotice/revocationPASSclaimed. New
+bootobservation180sec (separateactualOScompletion), finiteunlocked/stopped/queued
+OSstate only; no syntheticbroadcast/foregroundlaunch totriggerreceiver.
+Journal37198356643HARVESTED43FAILFIRST_PARTY_OWNER_CODE:bothactualJournal200/
+tools/maps/nativebridge, realSTATUS/CREATE/STOP200, clientPAIR_CHANGED beforecode;
+canonical0/cleanupPASS. NewCREATE/JOIN/READleaseclockbandprobeexportsfinitecategory
+only; realclientclock/claimstayunmodified/inmemory. NinefocuseddiagtestsPASS.

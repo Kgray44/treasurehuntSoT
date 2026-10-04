@@ -1507,3 +1507,60 @@ The1200second executor envelope covers real baseline/transition intervals and
 reboot;60second return and512MiB PSS limits are preliminary gross regression
 bounds, not field/battery acceptance. New notice-target boundary tests and
 TypeScript/lint pass; no actual notification/reboot result is yet claimed.
+
+## Source-bound broad regression and remaining Apple diagnostics
+
+Frozen989e684e passes469root unit files /2,662tests on the fresh isolated SQLite
+fixture unit-regression-591b9e0d1dfd43e0a587368e0f29a643. Its exact git archive
+source scan reports0violations /6classifications. Refreshed origin/main remains
+c8ea6964; the read-only ordinary plan classifies989e as ORDINARY_PRODUCT with
+419selected unit paths, five browser paths and no protected control-plane paths.
+This is admission planning and broad regression, not a qualification receipt.
+
+Focused Apple run37197123884 on c546143c is fully harvested (8,554files). Tablet
+passes all three repair cases with one canonical write each and cleanup PASS.
+Compatibility passes virtual offline reconciliation, but lost-response physical
+reconciliation times out at its second location step: the first fix is qualified
+at2310ms, then71actual OS input commands produce zero forwarded native fixes
+within120seconds. The native source already uses kCLDistanceFilterNone under
+normal power. A new categorical LOCATION_STATE reports actual Core Location
+callback/forwarded counts, foreground/acquiring/paused state, effective interval
+and fixed failure category, without coordinates, fix timestamps or error text.
+No observation is fabricated and no location qualification bound is weakened.
+
+Compatibility restart receives no app document or os-driver acknowledgment by
+the120second XCTest startup window, while finalization24,072ms later records a
+successful XCTest tool and one passing test. The lab now separates a240second
+XCTest cold-runner startup allowance from unchanged60second page readiness and
+native action observation bounds. This does not turn either failed case into a
+pass. A fresh hosted compile and the two actual compatibility cases remain required.
+
+## Actual signed notice return and remaining boot observation
+
+Frozen989e684e geofence run37198361558 passes12actual native instrumentation
+tests, including the installed GMS Builder with a2048character claim and active
+encrypted registration lookup by its64character digest. All ten OS wake steps
+pass: actual Play services registration, one receiver delivery, one encrypted
+hint and one notice; canonical writes remain zero and cleanup passes.
+
+Signed background run37198352248 fails at registered-region reboot, while its
+earlier real Player UI registration returns200, actual System UI notice tap
+returns307 and current authorized Journal opens successfully. The first notice
+arrives6171.96ms after inside input; actual return takes45116.43ms. Native Journal
+process PSS is96282KiB initially and103292KiB after return. These pass preliminary
+gross bounds; they do not measure WebView renderer CPU or physical battery use.
+The real guest reboots in30393ms with changed boot identity and preserved AVD,
+but no boot receiver diagnostic appears in20seconds. A new separate180second
+boot-delivery observation records only finite unlocked/stopped/queued state.
+There is no synthetic boot broadcast or foreground launch to force delivery.
+Android documents that restricted background apps can receive boot broadcasts
+only when started for another reason ([background optimization](https://developer.android.com/topic/performance/background-optimization)).
+That is a possible boundary to diagnose, not an established cause for this failure.
+Second post-reboot notice and revoked-membership return remain required.
+
+Journal pair run37198356643 now opens both actual native Journals and Maps;
+STATUS, CREATE and STOP all return200. The first client reports PAIR_CHANGED
+before showing a code. The next run exports only a finite lease clock category
+from the actual response expiry and unmodified guest clock, without retaining
+either epoch, response payload, handle or session key. No lease or server expiry
+rule is relaxed. Both failed runs preserve canonical zero writes and cleanup PASS.

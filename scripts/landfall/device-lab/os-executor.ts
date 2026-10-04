@@ -555,7 +555,9 @@ export async function executeLandfallOsScenario(
           .catch(() => {
             uiFailed = true;
           });
-        await wait(() => osReady, 120000);
+        // Bounds XCTest's cold runner/install/launch startup. It is independent
+        // of the unchanged WebView-ready and native action observation bounds.
+        await wait(() => osReady, 240000);
       } else {
         await labTool(
           "xcrun",

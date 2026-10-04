@@ -7,6 +7,37 @@ import { landfallDeviceScenario } from "@/landfall/device-lab/scenarios";
 import type { DeviceLabAction } from "@/landfall/device-lab/scenario";
 
 describe("redacted native location diagnostics", () => {
+  it("retains bounded Core Location pause and delivery categories without raw fix data", () => {
+    const action = landfallDeviceScenario("gps-perfect-walk").timeline[0].action as Extract<
+      DeviceLabAction,
+      { type: "LOCATION" }
+    >;
+    const diagnostics = new DeviceLabLocationDiagnostics(action);
+    const acquisition = {
+      provider: "core-location",
+      registered: true,
+      enabled: true,
+      permission: "GRANTED",
+      nativeCallbacks: 12,
+      forwardedCallbacks: 1,
+      foreground: true,
+      paused: true,
+      intervalMs: 15000,
+      failure: "NONE",
+    };
+    diagnostics.observeAcquisition(acquisition);
+    expect(diagnostics.snapshot(0).acquisition).toEqual(acquisition);
+    const empty = new DeviceLabLocationDiagnostics(action);
+    for (const unsafe of [
+      { ...acquisition, latitude: 44 },
+      { ...acquisition, intervalMs: 0 },
+      { ...acquisition, forwardedCallbacks: -1 },
+      { ...acquisition, failure: "private error body" },
+    ])
+      empty.observeAcquisition(unsafe);
+    expect(empty.snapshot(0).acquisition).toBeUndefined();
+    expect(JSON.stringify(diagnostics.snapshot(0))).not.toMatch(/latitude|longitude|timestamp|private/);
+  });
   it("distinguishes delivery, malformed fixes, stale clocks, wrong bounds and accuracy without retaining locations", () => {
     const action = landfallDeviceScenario("gps-perfect-walk").timeline[0].action as Extract<
       DeviceLabAction,

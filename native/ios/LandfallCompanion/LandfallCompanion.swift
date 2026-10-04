@@ -17,6 +17,10 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private var acquiring = false
     private var locationIntervalMs = 5000
     private var lastLocationAt = 0.0
+    private var locationCallbacks = 0
+    private var forwardedFixes = 0
+    private var systemLocationPaused = false
+    private var locationFailure = "NONE"
     private var permissionReply: ((Any?, String?) -> Void)?
     private let hints = LandfallSecureHints()
     private var hardware: LandfallHardware?
@@ -97,6 +101,10 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "PRIVATE_STORE_LIST": replyHandler(["keys": foreground ? privateStore?.list() ?? [] : []], nil)
         case "PRIVATE_STORE_DELETE": if foreground { privateStore?.remove(payload["key"] as? String ?? "") }; replyHandler(["accepted": foreground], nil)
         case "LOCATION_PERMISSION_STATE": replyHandler(["state": permission()], nil)
+        case "LOCATION_STATE":
+            replyHandler(["provider":"core-location","registered":acquiring,"enabled":CLLocationManager.locationServicesEnabled(),
+              "permission":permission(),"nativeCallbacks":locationCallbacks,"forwardedCallbacks":forwardedFixes,
+              "foreground":foreground,"paused":systemLocationPaused,"intervalMs":locationIntervalMs,"failure":locationFailure],nil)
         case "LOCATION_PERMISSION":
             guard foreground, permissionReply == nil else { replyHandler(["state": "UNAVAILABLE"], nil); return }
             if location.authorizationStatus == .notDetermined { permissionReply = replyHandler; location.requestWhenInUseAuthorization() }
@@ -105,7 +113,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             let interval = payload["intervalMs"] as? Int ?? 5000
             guard foreground, !power.critical, payload["background"] as? Bool != true, (1000...60000).contains(interval), ["GRANTED", "APPROXIMATE"].contains(permission()) else { replyHandler(["accepted": false], nil); return }
             requestedIntervalMs = interval; requestedPrecise = payload["precise"] as? Bool == true
-            configureLocationPower(); lastLocationAt = 0
+            configureLocationPower(); lastLocationAt = 0; systemLocationPaused = false; locationFailure = "NONE"
             location.allowsBackgroundLocationUpdates = false
             location.pausesLocationUpdatesAutomatically = true
             acquiring = true; location.startUpdatingLocation(); replyHandler(["accepted": true], nil)
@@ -154,23 +162,29 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         event(["type": "permission", "state": permission()])
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        locationCallbacks = min(100000,locationCallbacks + locations.count)
         guard foreground, acquiring, ["GRANTED", "APPROXIMATE"].contains(permission()) else { return }
         for sample in locations.suffix(4) where sample.horizontalAccuracy > 0 {
             let timestamp = sample.timestamp.timeIntervalSince1970 * 1000
             guard timestamp > lastLocationAt, timestamp - lastLocationAt >= Double(locationIntervalMs) else { continue }
             lastLocationAt = timestamp
+            systemLocationPaused=false; locationFailure="NONE"
             var fix: [String: Any] = ["id": UUID().uuidString, "timestamp": Int(sample.timestamp.timeIntervalSince1970 * 1000), "latitude": sample.coordinate.latitude, "longitude": sample.coordinate.longitude, "accuracyMeters": sample.horizontalAccuracy]
             if sample.course >= 0 { fix["headingDegrees"] = sample.course }
             if sample.speed >= 0 { fix["speedMetersPerSecond"] = sample.speed }
             if sample.verticalAccuracy > 0 { fix["altitudeMeters"] = sample.altitude; fix["altitudeAccuracyMeters"] = sample.verticalAccuracy }
+            forwardedFixes = min(100000,forwardedFixes + 1)
             event(["type": "fix", "fix": fix])
         }
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        if let value = error as? CLError, value.code == .locationUnknown { return }
-        if let value = error as? CLError, value.code == .headingFailure { manager.stopUpdatingHeading(); event(["type":"provider-health","family":"HEADING","state":"UNAVAILABLE"]); return }
+        if let value = error as? CLError, value.code == .locationUnknown { locationFailure="LOCATION_UNKNOWN";return }
+        if let value = error as? CLError, value.code == .headingFailure { locationFailure="HEADING_FAILURE";manager.stopUpdatingHeading(); event(["type":"provider-health","family":"HEADING","state":"UNAVAILABLE"]); return }
+        locationFailure=(error as? CLError)?.code == .denied ? "DENIED":"OTHER"
         event(["type": "error"])
     }
+    func locationManagerDidPauseLocationUpdates(_ manager:CLLocationManager) { systemLocationPaused=true }
+    func locationManagerDidResumeLocationUpdates(_ manager:CLLocationManager) { systemLocationPaused=false }
     private func registerGeofence(_ payload: [String: Any], reply: @escaping (Any?, String?) -> Void) {
         guard foreground, location.authorizationStatus == .authorizedAlways, CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self), location.monitoredRegions.count < 20,
               let handle = payload["returnHandle"] as? String, (32...2048).contains(handle.count), handle.range(of: "^[A-Za-z0-9_-]+$", options: .regularExpression) != nil,

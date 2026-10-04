@@ -12,6 +12,7 @@ import {
 import { labBinaryTool, labTool } from "../../scripts/landfall/device-lab/host";
 import { runLandfallAndroidRadioLab } from "../../scripts/landfall/device-lab/android-radio-run";
 import { deviceLabSourceIdentity } from "../../scripts/landfall/device-lab/source";
+import { nativePairingLeaseClockBand } from "../../src/landfall/device-lab/native-pairing-diagnostics";
 import {
   nativeJournalOpeningTouch,
   nativeJournalOpeningGeometryTouch,
@@ -90,8 +91,14 @@ test("real native Journal pairing returns untrusted hints and background clears 
       } | null = null;
       const nativePageErrors = new Set<string>();
       let failedFirstPartyRequests = 0;
-      const nearbyHttp: { deviceIndex: number; operation: string; status: number | null; failure: string | null }[] =
-        [];
+      const nearbyHttp: {
+        deviceIndex: number;
+        operation: string;
+        status: number | null;
+        failure: string | null;
+        leaseClockBand?: ReturnType<typeof nativePairingLeaseClockBand>;
+      }[] = [];
+      const responseDiagnostics: Promise<void>[] = [];
       let failedPageState: {
         closed: boolean;
         journalPath: boolean;
@@ -209,8 +216,36 @@ test("real native Journal pairing returns untrusted hints and background clears 
           };
           page.on("response", (response) => {
             const operation = nearbyOperation(response.request());
-            if (operation && nearbyHttp.length < 32)
-              nearbyHttp.push({ deviceIndex: httpDeviceIndex, operation, status: response.status(), failure: null });
+            if (operation && nearbyHttp.length < 32) {
+              const row: (typeof nearbyHttp)[number] = {
+                deviceIndex: httpDeviceIndex,
+                operation,
+                status: response.status(),
+                failure: null,
+              };
+              nearbyHttp.push(row);
+              if (["CREATE", "JOIN", "READ"].includes(operation)) {
+                row.leaseClockBand = "UNOBSERVED";
+                responseDiagnostics.push(
+                  (async () => {
+                    try {
+                      const body: unknown = await boundedDriver(response.json(), resources.signal, 5000);
+                      const clientNow = await boundedDriver(
+                        page.evaluate(() => Date.now()),
+                        resources.signal,
+                        5000,
+                      );
+                      row.leaseClockBand = nativePairingLeaseClockBand(
+                        typeof body === "object" && body !== null && "expiresAt" in body ? body.expiresAt : undefined,
+                        clientNow,
+                      );
+                    } catch {
+                      /* Only finite unobserved evidence leaves this boundary. */
+                    }
+                  })(),
+                );
+              }
+            }
           });
           page.on("requestfailed", (request) => {
             const operation = nearbyOperation(request);
@@ -556,6 +591,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
         }
         throw error;
       } finally {
+        await Promise.allSettled(responseDiagnostics);
         await Promise.all(
           devices.map((device) =>
             boundedDriver(device.close(), undefined, 15000).catch(() => remaining.push("webview-connection")),

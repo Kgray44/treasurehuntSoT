@@ -114,6 +114,12 @@ test("real signed notice returns reauthorize Player across actual registered-reg
       let backgroundStatus: number | null = null,
         returnHopStatus: number | null = null;
       let bootState: string | null = null;
+      let bootDiagnostics: {
+        userUnlocked: boolean;
+        packageStopped: boolean | null;
+        bootBroadcastQueuedForPackage: boolean;
+        elapsedMs: number;
+      } | null = null;
       let configuration: DeviceLabConfiguration | null = null;
       const profile = deviceLabProfileSchema.parse(process.env.LANDFALL_LAB_PROFILE);
       let osVersion: string | null = null,
@@ -349,7 +355,8 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         );
         await adb(["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
         await adb(["shell", "wm", "dismiss-keyguard"]);
-        const bootDeadline = Date.now() + 20000;
+        const bootObservationStarted = Date.now();
+        const bootDeadline = bootObservationStarted + 180000;
         while (Date.now() < bootDeadline) {
           try {
             const raw = await adb(["shell", "run-as", pkg, "cat", "files/landfall-boot-region-debug.json"]);
@@ -373,6 +380,18 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           }
           await delay(500);
         }
+        const userState = await adb(["shell", "dumpsys", "user"]);
+        const packageState = await adb(["shell", "dumpsys", "package", pkg]);
+        const broadcasts = await adb(["shell", "dumpsys", "activity", "broadcasts"]);
+        const stopped = /User 0:[^\r\n]*\bstopped=(true|false)\b/.exec(packageState);
+        bootDiagnostics = {
+          userUnlocked: /(?:UserInfo\{0:|User #0:)[\s\S]{0,256}RUNNING_UNLOCKED/.test(userState),
+          packageStopped: stopped ? stopped[1] === "true" : null,
+          bootBroadcastQueuedForPackage: broadcasts
+            .split(/\r?\n/)
+            .some((line) => line.includes(pkg) && line.includes("BOOT_COMPLETED")),
+          elapsedMs: Date.now() - bootObservationStarted,
+        };
         expect(bootState).toBe("GRANTED");
         bootRegistration = true;
         fused = await startOwnedAndroidFusedInput(adb, process.cwd());
@@ -466,6 +485,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           receiverRows,
           reboot,
           bootState,
+          bootDiagnostics,
           bootRegistration,
           activeReturn,
           revokedReturn,
