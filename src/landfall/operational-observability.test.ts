@@ -3,6 +3,21 @@ import { recordLandfallOperation, observeLandfallOperation, landfallDurationBand
 // @sounding-line-registration owner=project-landfall suite=unit.landfall contracts=landfall.player-live-position
 
 describe("Landfall uses categorical platform operations logs", () => {
+  it("allows only credential-free cookie presence on denied notification returns", () => {
+    const events: unknown[] = [];
+    const base = { operation: "NOTIFICATION_RETURN", outcome: "DENIED", durationBand: "LT_50_MS", count: 1 };
+    for (const authorizationCookie of ["ABSENT", "PRESENT"])
+      expect(recordLandfallOperation({ ...base, authorizationCookie }, (event) => events.push(event))).toBe(true);
+    for (const input of [
+      { ...base, authorizationCookie: "private-token" },
+      { ...base, authorizationCookie: { value: "private-token" } },
+      { ...base, authorizationCookie: "PRESENT", operation: "EVIDENCE" },
+      { ...base, authorizationCookie: "PRESENT", outcome: "RETURNED" },
+    ])
+      expect(recordLandfallOperation(input, (event) => events.push(event))).toBe(false);
+    expect(events).toHaveLength(2);
+    expect(JSON.stringify(events)).not.toContain("private-token");
+  });
   it.each(["actorId", "sessionId", "latitude", "coordinate", "title", "query", "token", "payload", "url", "error"])(
     "rejects extra %s rather than trusting generic redaction",
     (field) => {

@@ -11,6 +11,20 @@ const event = {
   durationBand: "LT_50_MS",
 };
 describe("owned native cold-return platform evidence", () => {
+  it("projects actual denied-request cookie presence without allowing credential values", () => {
+    for (const authorizationCookie of ["ABSENT", "PRESENT"])
+      expect(nativeReturnLogObservation(JSON.stringify({ ...event, outcome: "DENIED", authorizationCookie }))).toEqual({
+        outcome: "DENIED",
+        durationBand: "LT_50_MS",
+        authorizationCookie,
+      });
+    for (const value of [
+      { ...event, authorizationCookie: "PRESENT" },
+      { ...event, outcome: "DENIED", authorizationCookie: "private-token" },
+      { ...event, outcome: "DENIED", authorizationCookie: { value: "private-token" } },
+    ])
+      expect(nativeReturnLogObservation(JSON.stringify(value))).toBeNull();
+  });
   it("exports finite server outcomes without log metadata, claims or private identifiers", () => {
     expect(
       nativeReturnLogObservation(

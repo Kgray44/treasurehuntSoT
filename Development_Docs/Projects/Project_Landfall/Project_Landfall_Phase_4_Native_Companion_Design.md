@@ -1752,3 +1752,14 @@ return handle. No session is reinjected after either notice. This supports
 permitted OS WebView recreation; it does not establish that recreation caused the
 earlier failures. All return, progression, cleanup and performance assertions
 remain enforced, and actual execution is still required.
+
+Primary background run 37204577156 reaches reboot recovery and the second actual
+notice, but the revoked return remains DENIED. Its cold cookie is present,
+expected, persistent, HttpOnly and unexpired on the guest; the database session
+and Player profile remain active. Cookie loss is not established. The authority
+maps DENIED from missing qualified identity, so the next operational diagnostic
+records only ABSENT/PRESENT for the canonical cookie on that actual denied
+request. It reads no token value and never alters authorization. Strict schemas
+accept this category only on denied notification returns. The lab separately
+checks the existing canonical account query and stores only eligibility as a
+boolean. Credential values, identities and raw errors remain excluded.

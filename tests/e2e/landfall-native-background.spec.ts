@@ -5,6 +5,7 @@ import { writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
 import { db } from "../../src/lib/db";
+import { currentAccount } from "../../src/wayfarer/accounts";
 import { landfallFixture } from "../../src/landfall/fixtures";
 import { landfallDeviceScenario } from "../../src/landfall/device-lab/scenarios";
 import { rebootOwnedAndroidGuest } from "../../src/landfall/device-lab/android-reboot";
@@ -129,6 +130,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         httpOnly: boolean;
         cookieFutureOnGuest: boolean;
         databaseSessionActive: boolean;
+        canonicalSessionEligible: boolean;
         playerProfileActive: boolean;
         signInDestination: boolean;
       } | null = null;
@@ -142,6 +144,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
       } | null = null;
       let firstReturnPageClosed: boolean | null = null;
       const serverReturnOutcomes: string[] = [];
+      const deniedRequestCookies: ("ABSENT" | "PRESENT")[] = [];
       let settings: Awaited<ReturnType<typeof inspectOwnedAndroidLocationAccuracy>> | null = null;
       let reboot: Awaited<ReturnType<typeof rebootOwnedAndroidGuest>> | null = null;
       let signedRegistration = false,
@@ -518,7 +521,13 @@ test("real signed notice returns reauthorize Player across actual registered-reg
             timeout: 45000,
           })
           .toBeGreaterThan(revokedReturnBaseline);
-        const coldOutcomes = (await readReturns()).slice(revokedReturnBaseline).map((event) => event.outcome);
+        const coldEvents = (await readReturns()).slice(revokedReturnBaseline);
+        const coldOutcomes = coldEvents.map((event) => event.outcome);
+        deniedRequestCookies.push(
+          ...coldEvents.flatMap((event) =>
+            event.authorizationCookie === undefined ? [] : [event.authorizationCookie],
+          ),
+        );
         serverReturnOutcomes.push(...coldOutcomes);
         const returned = await attach(false);
         const coldCdp = await returned.context().newCDPSession(returned);
@@ -545,6 +554,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
             databaseSessionActive: Boolean(
               session && session.revokedAt === null && session.expiresAt.getTime() > Date.now(),
             ),
+            canonicalSessionEligible: Boolean(await currentAccount(player.token)),
             playerProfileActive: session?.account.profile?.status === "ACTIVE",
             signInDestination: new URL(returned.url()).pathname === "/player/sign-in",
           };
@@ -674,6 +684,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           coldSession,
           noticeControls,
           serverReturnOutcomes,
+          deniedRequestCookies,
           preliminaryGrossBounds: {
             noticeReturnMs: 60000,
             fullJournalPssKiB: 512 * 1024,

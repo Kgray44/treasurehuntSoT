@@ -1,4 +1,5 @@
 import { requirePlayerIdentity, playerCanAccessPlaythrough } from "@/platform/auth";
+import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 import { readLandfallReturnHandle } from "@/landfall/notification-return-server";
 import { resolveLandfallNotificationReturn } from "@/landfall/background-navigation";
@@ -11,8 +12,17 @@ import {
 export async function resolveAuthenticatedLandfallReturn(handle: string) {
   const start = performance.now();
   let outcome: LandfallOperationalOutcome = "FAILED";
+  let authorizationCookie: "ABSENT" | "PRESENT" | undefined;
   try {
     const result = await resolveReturn(handle);
+    if (result.state === "SIGN_IN") {
+      try {
+        // Presence only, from this actual request. Never inspect/export a token.
+        authorizationCookie = (await cookies()).has("wayfarer_account") ? "PRESENT" : "ABSENT";
+      } catch {
+        // Diagnostic availability cannot alter the authorization result.
+      }
+    }
     outcome =
       result.state === "SIGN_IN"
         ? "DENIED"
@@ -28,6 +38,7 @@ export async function resolveAuthenticatedLandfallReturn(handle: string) {
       outcome,
       durationBand: landfallDurationBand(performance.now() - start),
       count: 1,
+      ...(authorizationCookie === undefined ? {} : { authorizationCookie }),
     });
   }
 }

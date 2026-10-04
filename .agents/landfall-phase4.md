@@ -1400,3 +1400,18 @@ to the current owned WebView before checking the returned Journal and opening it
 No credentials are reinjected and return, canonical and performance assertions
 remain strict. This handles permitted OS WebView recreation, without claiming
 that recreation caused the previous failure. Fresh actual execution is required.
+
+Primary 37204577156 on374016faff77 reaches the real post-reboot revoked return.
+Actual cookie facts are all true: present, expected, persistent, HttpOnly and
+future on guest. Database session remains active and Player profile ACTIVE;
+BootReceiver GRANTED, active return and gross performance bounds pass. The cold
+return still records DENIED. Cookie loss is not supported by this receipt.
+Authority source maps DENIED only from SIGN_IN/absent qualified identity.
+
+The next diagnostic records only ABSENT/PRESENT for the canonical cookie on
+that actual denied server request. It never reads a cookie value and cannot
+change the authorization result. Strict operational/observer schemas restrict
+the category to denied notification returns and reject tokens/objects/unrelated
+labels. The harness also asks the existing canonical currentAccount query whether
+the in-memory fixture token remains eligible, retaining only a boolean.
+No authentication bypass, session reinjection or lease extension is introduced.
