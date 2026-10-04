@@ -7,6 +7,16 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Current acceptance and remaining work
 
+Presentation run37236170919 on7f36d94e selects the actual preinstalled iOS26.2
+runtime and still fails18/1/1 at `LANDFALL_REDUCED_MOTION_SEARCH_UNAVAILABLE`.
+Its companion job remains independent and running. Current presentation driver
+retains XXXL portrait/landscape proof in the first native bundle (18passes),
+then sets and reads back normal LARGE text before a separate actual Settings
+Motion-button/switch test (one required pass). Both immutable component
+summaries and attachments must support aggregate19/0/at most one driver skip.
+The `ios-presentation` closure target runs this gate alone; companion cases
+are not repeated or waived. No protected qualification or closure yet.
+
 Source-bound regression8e6e3e1900102494892135d8ff53796adb50f4b1 passes478unit
 files/2714tests in214.59seconds, clean/unchanged owned detached qualification
 worktree and fresh SQLite. Format244/lint218(zero errors), TypeScript, docs,

@@ -27,6 +27,7 @@ export async function dispatchLandfallHostedLab(
       "android-journal",
       "android-background",
       "ios",
+      "ios-presentation",
     ].includes(target)
   )
     throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
@@ -45,7 +46,7 @@ export async function dispatchLandfallHostedLab(
     throw new Error("LANDFALL_HOSTED_BACKGROUND_SCENARIO_INVALID");
   if (
     selectedProfiles !== undefined &&
-    !["android", "android-radio", "android-journal", "android-background", "ios"].includes(target)
+    !["android", "android-radio", "android-journal", "android-background", "ios", "ios-presentation"].includes(target)
   )
     throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
   const typedTier = tier as "development" | "candidate" | "closure";
@@ -56,7 +57,18 @@ export async function dispatchLandfallHostedLab(
       ? selectedProfiles
       : undefined,
   );
-  const selectedApple = hostedDeviceLabProfiles("ios", typedTier, target === "ios" ? selectedProfiles : undefined);
+  if (
+    target === "ios-presentation" &&
+    (tier !== "closure" ||
+      selectedScenarios !== undefined ||
+      (selectedProfiles !== undefined && selectedProfiles !== "primary-phone"))
+  )
+    throw new Error("LANDFALL_HOSTED_PRESENTATION_SCOPE_INVALID");
+  const selectedApple = hostedDeviceLabProfiles(
+    "ios",
+    typedTier,
+    target === "ios-presentation" ? "primary-phone" : target === "ios" ? selectedProfiles : undefined,
+  );
   const androidProfiles = selectedAndroid.map(androidDeviceLabProvisioning);
   const appleProfiles = selectedApple;
   const radioProfiles = selectedAndroid.filter((profile) => ["primary-phone", "low-resource"].includes(profile));
@@ -75,7 +87,11 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
     .replaceAll(
       "__RUN_APPLE_PRESENTATION__",
-      String(tier === "closure" && (target === "all" || target === "ios") && appleProfiles.includes("primary-phone")),
+      String(
+        tier === "closure" &&
+          ["all", "ios", "ios-presentation"].includes(target) &&
+          appleProfiles.includes("primary-phone"),
+      ),
     )
     // A separate primary-only OS notice job keeps closure coverage explicit
     // without repeating its permission/wake/tap sequence on every profile.

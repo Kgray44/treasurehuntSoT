@@ -46,16 +46,15 @@ final class NativeLifecycleTests: XCTestCase {
         let motion=settings.staticTexts["Motion"]
         for _ in 0..<5 {if motion.exists && motion.isHittable {break};settings.swipeUp()}
         guard motion.waitForExistence(timeout:10) && motion.isHittable else {XCTFail("LANDFALL_SETTINGS_MOTION_UNAVAILABLE");return}
-        // The observed Settings hierarchy exposes MOTION_TITLE as a cell with
-        // a nested text button. Text-centered taps left Accessibility open.
-        // Tap the actual unique row's trailing gap, outside that nested button.
-        let motionCells=settings.cells.matching(identifier:"MOTION_TITLE")
-        guard motionCells.count == 1,motionCells.firstMatch.isHittable else {XCTFail("LANDFALL_MOTION_ROW_UNAVAILABLE");return}
-        let motionRow=motionCells.firstMatch
-        motionRow.coordinate(withNormalizedOffset:CGVector(dx:0.85,dy:0.5)).tap()
+        // The recorded Settings hierarchy exposes an actual MOTION_TITLE
+        // button nested in its row. This check runs at normal Settings text
+        // size; the separate XXXL test retains its own portrait/landscape proof.
+        let motionButtons=settings.buttons.matching(identifier:"MOTION_TITLE")
+        guard motionButtons.count == 1,motionButtons.firstMatch.isHittable else {XCTFail("LANDFALL_MOTION_BUTTON_UNAVAILABLE");return}
+        motionButtons.firstMatch.tap()
         let motionPage=settings.navigationBars["Motion"]
         if !motionPage.waitForExistence(timeout:5) {
-            // A correctly targeted row tap was observed without navigation.
+            // If the observed public button did not open its destination,
             // Use Settings' own public search UI as a separate real route.
             let back=settings.navigationBars["Accessibility"].buttons["Settings"]
             guard back.exists && back.isHittable else {XCTFail("LANDFALL_SETTINGS_SEARCH_RETURN_UNAVAILABLE");return}
