@@ -23,7 +23,6 @@ last_reviewed: 2026-09-21
 
 Use [document-index.json](document-index.json) for complete path-level classification.
 
-
 ## Cross-project architectures
 
 - [Voyagewright Spatial Experience Architecture v1.0](Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md) — master ownership and integration baseline for device context, multi-surface Voyages, spatial computing, AR, adaptive staging, and the platform-wide Device Lab.
@@ -43,6 +42,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Project Drydock](Projects/Project%20Drydock/README.md)
 - [Project Landfall](Projects/Project_Landfall/README.md)
 - [Project Sextant](Projects/Project_Sextant/README.md)
+- [Project Parallax](Projects/Project_Parallax/README.md)
 
 ## Historical and additive governing records
 
