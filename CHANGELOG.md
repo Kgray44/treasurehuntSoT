@@ -14,6 +14,10 @@ last_reviewed: 2026-10-04
 
 ### Added
 
+- Native iOS notification consent replies and notice-return navigation now run
+  on the UI thread. Actual permission acceptance passes; native notice handoff
+  and final Phase 4 acceptance remain under Device Lab validation.
+
 - Native iOS location throttling retains one latest transient fix for delivery
   at the requested interval, preserving its observation time. Stop, suspension,
   revocation and restart clear pending work; stale, future and invalid fixes
