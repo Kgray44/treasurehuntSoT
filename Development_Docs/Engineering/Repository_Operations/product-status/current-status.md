@@ -15,17 +15,21 @@ protocols and Apple virtual offline reconciliation have passing hosted evidence.
 Actual Play services geofence delivery, encrypted wake hint storage and a generic
 notice pass with documented hosted FLP mock input and zero progression writes.
 The UWB/generic BLE/iBeacon/Eddystone matrix passes eight executions on low-memory
-phone provisioning. Corrected distinct primary-phone provisioning needs fresh proof.
+phone provisioning. Corrected primary-phone radio run37210642366 passes all four
+scenarios on measured 3GiB guests; distinct primary Journal pairing is being rechecked.
 An actual signed first-party notice tap reauthorizes and returns to the current
 Journal. First-party native pairing passes with reports on both devices, verified
 stop and zero progression writes; distinct primary-profile qualification is pending.
 Cold authenticated
 revoked-membership notice return still requires acceptance. Broad regression passes
-2,679 unit tests,159 provider scenarios on each of Windows and Linux,53 retained
+2,682 unit tests on ccb35e4a,159 provider scenarios on each of Windows and Linux,53 retained
 Phase1–4 browser journeys and80 Android cases across four profiles. Apple primary
 and compatibility profiles each pass all eight scenarios; tablet restart passes
 separately with restored leases and one canonical event. The final three-profile
-source-bound matrix and cold return remain pending. Final
+source-bound matrix and cold return remain pending. Latest full background execution
+fails before cold return: primary reports native geofence unavailability and low
+resource produces no required real notice. A separately labeled cold-session
+diagnostic is running; it cannot qualify notification wake or return. Final
 exact-source qualification, protected integration and phase closure
 remain pending. Historical statements that Phase 4 is deferred describe the
 accepted Phase 3 baseline, not this unfinished candidate.

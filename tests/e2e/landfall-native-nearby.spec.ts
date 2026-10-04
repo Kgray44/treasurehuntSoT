@@ -115,8 +115,27 @@ test("real native Journal pairing returns untrusted hints and background clears 
         authRedirect: boolean;
       }[] = [];
       const pairingDiagnostics: { deviceIndex: number; nativeState: string; uiState: string }[] = [];
+      const nativePreparationDiagnostics: { deviceIndex: number; category: string }[] = [];
+      const interactionForeground: { phase: string; deviceIndex: number; observed: boolean }[] = [];
       const adb = (serial: string, args: string[], timeout = 15000) =>
         labTool(resources.adbPath, ["-P", String(resources.adbPort), "-s", serial, ...args], timeout);
+      const foregroundInteraction = async (index: number, phase: string) => {
+        const serial = resources.serials[index];
+        await adb(serial, ["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
+        await adb(serial, ["shell", "wm", "dismiss-keyguard"]);
+        const resumed = () =>
+          adb(serial, ["shell", "dumpsys", "activity", "activities"]).then((state) =>
+            state
+              .split(/\r?\n/)
+              .some((line) => /(mResumedActivity|topResumedActivity)/.test(line) && line.includes(pkg)),
+          );
+        let observed = false;
+        try {
+          await expect.poll(async () => (observed = await resumed()), { timeout: 5000 }).toBe(true);
+        } finally {
+          interactionForeground.push({ phase, deviceIndex: index, observed });
+        }
+      };
       try {
         for (const serial of resources.serials) {
           deviceIndex = resources.serials.indexOf(serial);
@@ -317,11 +336,15 @@ test("real native Journal pairing returns untrusted hints and background clears 
           await page.locator(".landfall-nearby-panel:visible summary").click({ noWaitAfter: true });
         }
         const panels = pages.map((page) => page.locator(".landfall-nearby-panel:visible"));
+        stage = "OWNER_FOREGROUND_INTERACTION";
+        await foregroundInteraction(0, "CREATE");
         stage = "FIRST_PARTY_CREATE_OWNER";
         await panels[0].getByRole("button", { name: "Create pairing code", exact: true }).click({ noWaitAfter: true });
         stage = "FIRST_PARTY_OWNER_CODE";
         const code = await panels[0].getByLabel("Pairing code", { exact: true }).textContent();
         expect(typeof code === "string" && /^[A-Za-z0-9_-]{43}$/.test(code)).toBe(true);
+        stage = "JOIN_FOREGROUND_INTERACTION";
+        await foregroundInteraction(1, "JOIN");
         stage = "FIRST_PARTY_JOIN_CODE_INPUT";
         await panels[1].getByLabel("Code from your other device").fill(code!);
         stage = "FIRST_PARTY_JOIN_DEVICE";
@@ -346,6 +369,8 @@ test("real native Journal pairing returns untrusted hints and background clears 
             { timeout: 10000 },
           )
           .toBe(true);
+        stage = "OWNER_START_FOREGROUND_INTERACTION";
+        await foregroundInteraction(0, "START");
         await panels[0].getByRole("button", { name: "Start hints", exact: true }).click({ noWaitAfter: true });
         stage = "NATIVE_REPORTS_BOTH_DEVICES";
         for (const panel of panels)
@@ -374,6 +399,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
         ]);
         await expect(panels[0].getByRole("status", { name: "Nearby device hint status" })).toContainText("paused");
         await expect.poll(() => nativeStopped(pages[0]), { timeout: 10000 }).toBe(true);
+        await foregroundInteraction(1, "STOP");
         await panels[1].getByRole("button", { name: "Stop nearby hints", exact: true }).click({ noWaitAfter: true });
         await expect.poll(() => nativeStopped(pages[1]), { timeout: 10000 }).toBe(true);
         nativeStopObserved = true;
@@ -536,8 +562,38 @@ test("real native Journal pairing returns untrusted hints and background clears 
             await testInfo.attach("native-journal-opening-diagnostic", { path: shot, contentType: "image/png" });
           }
         }
-        throw error;
+        // Playwright assertion text can contain a live pairing code or opaque
+        // claim. Retain the finite failure projections in the receipt instead.
+        throw new Error(`LANDFALL_NATIVE_NEARBY_FAILED:${stage}`);
       } finally {
+        for (const serial of acquired) {
+          try {
+            const raw = await adb(serial, ["shell", "run-as", pkg, "cat", "files/landfall-ranging-prepare-debug.json"]);
+            if (raw.length > 256) continue;
+            const value = JSON.parse(raw);
+            if (
+              [
+                "NOT_FOREGROUND",
+                "UNSUPPORTED",
+                "INVALID_ROLE",
+                "PROMPTABLE",
+                "CAPABILITIES_PENDING",
+                "CAPABILITIES_TIMEOUT",
+                "CONFIG_UNSUPPORTED",
+                "TECHNOLOGY_DISABLED",
+                "CAPABILITIES_READY",
+                "RESULT_FAILED",
+                "CAPABILITIES_THROWN",
+              ].includes(value.category)
+            )
+              nativePreparationDiagnostics.push({
+                deviceIndex: resources.serials.indexOf(serial),
+                category: value.category,
+              });
+          } catch {
+            /* Missing native facts remain unobserved. */
+          }
+        }
         await Promise.allSettled(responseDiagnostics);
         await Promise.all(
           devices.map((device) =>
@@ -593,6 +649,8 @@ test("real native Journal pairing returns untrusted hints and background clears 
           failedPageState,
           journalStates,
           pairingDiagnostics,
+          nativePreparationDiagnostics,
+          interactionForeground,
           openingControl: "OBSERVED_DOM_AND_NATIVE_BOUNDS_OS_TOUCH",
           externalRequirements: ["REAL_DEVICE_REQUIRED:RF"],
           cleanup: { result: remaining.length ? "FAIL" : "PASS", remainingResources: remaining },

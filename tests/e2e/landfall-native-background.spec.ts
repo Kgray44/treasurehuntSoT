@@ -123,8 +123,16 @@ test(backgroundCaseName, async ({ baseURL }) => {
       const remaining: string[] = [],
         measurements: { stage: string; elapsedMs?: number; pssKiB?: number }[] = [];
       const receiverRows: { stage: string; counters: Record<string, number> }[] = [];
+      const fusedRows: { phase: string; state: string; delivered: number; mocking: boolean }[] = [];
       const cpuMeasurements: ({ stage: string } & ReturnType<typeof nativeCpuMeasurement>)[] = [];
       let persistentSessionConfigured = false;
+      let coldLaunchReattachments = 0;
+      const coldDiagnosticWire: {
+        phase: string;
+        headerObserved: boolean;
+        singleAuthorizationCookie: boolean;
+        expectedCookie: boolean;
+      }[] = [];
       let coldSession: {
         cookiePresent: boolean;
         expectedCookie: boolean;
@@ -255,6 +263,12 @@ test(backgroundCaseName, async ({ baseURL }) => {
         const started = performance.now();
         await delay(180000);
         const outside = await fused.read();
+        fusedRows.push({
+          phase: outside.phase,
+          state: outside.state,
+          delivered: outside.delivered,
+          mocking: outside.mocking,
+        });
         expect(outside.state).toBe("DELIVERED");
         expect(outside.delivered).toBeGreaterThan(0);
         measurements.push({ stage: "OUTSIDE_BASELINE", elapsedMs: performance.now() - started });
@@ -274,6 +288,14 @@ test(backgroundCaseName, async ({ baseURL }) => {
           }
           await delay(1000);
         }
+        const inside = await fused.read().catch(() => null);
+        if (inside)
+          fusedRows.push({
+            phase: inside.phase,
+            state: inside.state,
+            delivered: inside.delivered,
+            mocking: inside.mocking,
+          });
         if (!observed) throw new Error("NATIVE_RETURN_REAL_NOTICE_UNOBSERVED");
         receiverRows.push({ stage, counters: observed });
         for (const name of [
@@ -454,8 +476,38 @@ test(backgroundCaseName, async ({ baseURL }) => {
           await adb(["shell", "wm", "dismiss-keyguard"]);
           stage = "DIAGNOSTIC_COLD_LAUNCH";
           await adb(["shell", "am", "start", "-W", "-n", `${pkg}/.LandfallActivity`]);
-          const returned = await attach(false);
-          await returned.waitForLoadState("domcontentloaded");
+          stage = "DIAGNOSTIC_COLD_ATTACH";
+          let returned = await attach(false);
+          const coldDeadline = Date.now() + 45000;
+          let coldReady = false;
+          while (Date.now() < coldDeadline) {
+            if (returned.isClosed()) {
+              coldLaunchReattachments++;
+              returned = await attach(false);
+              continue;
+            }
+            try {
+              await returned.waitForFunction(
+                (expected) => location.origin === expected && document.readyState !== "loading",
+                origin.origin,
+                { timeout: Math.min(15000, coldDeadline - Date.now()) },
+              );
+              coldReady = true;
+              break;
+            } catch (error) {
+              // Only an observed replacement/transition permits reacquisition.
+              // Other native failures remain failures with the original bound.
+              if (
+                !returned.isClosed() &&
+                !(error instanceof Error && /execution context was destroyed/i.test(error.message))
+              )
+                throw error;
+              coldLaunchReattachments++;
+              returned = await attach(false);
+            }
+          }
+          if (!coldReady || returned.isClosed() || new URL(returned.url()).origin !== origin.origin)
+            throw new Error("NATIVE_COLD_PAGE_UNOBSERVED");
           const coldCdp = await returned.context().newCDPSession(returned);
           try {
             const jar = await coldCdp.send("Network.getCookies", { urls: [origin.origin] });
@@ -486,52 +538,62 @@ test(backgroundCaseName, async ({ baseURL }) => {
           } finally {
             await coldCdp.detach();
           }
-          stage = "DIAGNOSTIC_COLD_AUTHORIZATION";
-          const returnBaseline = (await readReturns()).length;
-          const sent = returned
-            .waitForRequest(
-              (request) => {
-                const url = new URL(request.url());
-                return url.origin === origin.origin && url.pathname === "/player/landfall-return";
-              },
-              { timeout: 15000 },
-            )
-            .catch(() => null);
-          await returned.evaluate(async (handle) => {
-            await fetch(`/player/landfall-return?handle=${encodeURIComponent(handle)}`, {
-              credentials: "same-origin",
-              cache: "no-store",
-              redirect: "manual",
-            });
-          }, registration.returnHandle);
-          const request = await sent;
-          if (!request) throw new Error("NATIVE_COLD_DIAGNOSTIC_REQUEST_UNOBSERVED");
-          const headers = await request.allHeaders();
-          const cookies = (headers.cookie ?? "")
-            .split(";")
-            .map((item) => item.trim())
-            .filter((item) => item.startsWith("wayfarer_account="));
-          coldRecheckWire = {
-            headerObserved: headers.cookie !== undefined,
-            singleAuthorizationCookie: cookies.length === 1,
-            expectedCookie: cookies.includes(`wayfarer_account=${player.token}`),
-          };
-          await expect
-            .poll(async () => (await readReturns()).length, { timeout: 15000 })
-            .toBeGreaterThan(returnBaseline);
-          const observed = (await readReturns()).slice(returnBaseline);
-          serverReturnOutcomes.push(...observed.map((event) => event.outcome));
-          deniedRequestCookies.push(
-            ...observed.flatMap((event) =>
-              event.authorizationCookie === undefined ? [] : [event.authorizationCookie],
-            ),
-          );
-          deniedRequestSessions.push(
-            ...observed.flatMap((event) =>
-              event.authorizationSession === undefined ? [] : [event.authorizationSession],
-            ),
-          );
-          expect(serverReturnOutcomes).toContain("RETURNED");
+          for (const phase of ["ACTIVE", "REVOKED"] as const) {
+            if (phase === "REVOKED")
+              await db.playthroughMembership.update({
+                where: {
+                  playthroughId_playerProfileId: { playthroughId: voyage.id, playerProfileId: player.profileId },
+                },
+                data: { status: "REMOVED", removedAt: new Date() },
+              });
+            stage = `DIAGNOSTIC_COLD_${phase}_AUTHORIZATION`;
+            const returnBaseline = (await readReturns()).length;
+            const sent = returned
+              .waitForRequest(
+                (request) => {
+                  const url = new URL(request.url());
+                  return url.origin === origin.origin && url.pathname === "/player/landfall-return";
+                },
+                { timeout: 15000 },
+              )
+              .catch(() => null);
+            await returned.evaluate(async (handle) => {
+              await fetch(`/player/landfall-return?handle=${encodeURIComponent(handle)}`, {
+                credentials: "same-origin",
+                cache: "no-store",
+                redirect: "manual",
+              });
+            }, registration.returnHandle);
+            const request = await sent;
+            if (!request) throw new Error("NATIVE_COLD_DIAGNOSTIC_REQUEST_UNOBSERVED");
+            const headers = await request.allHeaders();
+            const cookies = (headers.cookie ?? "")
+              .split(";")
+              .map((item) => item.trim())
+              .filter((item) => item.startsWith("wayfarer_account="));
+            coldRecheckWire = {
+              headerObserved: headers.cookie !== undefined,
+              singleAuthorizationCookie: cookies.length === 1,
+              expectedCookie: cookies.includes(`wayfarer_account=${player.token}`),
+            };
+            coldDiagnosticWire.push({ phase, ...coldRecheckWire });
+            await expect
+              .poll(async () => (await readReturns()).length, { timeout: 15000 })
+              .toBeGreaterThan(returnBaseline);
+            const observed = (await readReturns()).slice(returnBaseline);
+            serverReturnOutcomes.push(...observed.map((event) => event.outcome));
+            deniedRequestCookies.push(
+              ...observed.flatMap((event) =>
+                event.authorizationCookie === undefined ? [] : [event.authorizationCookie],
+              ),
+            );
+            deniedRequestSessions.push(
+              ...observed.flatMap((event) =>
+                event.authorizationSession === undefined ? [] : [event.authorizationSession],
+              ),
+            );
+            expect(observed.map((event) => event.outcome)).toContain(phase === "ACTIVE" ? "RETURNED" : "UNAVAILABLE");
+          }
           const after = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
           expect(after.currentSequence).toBe(baseline.currentSequence);
           expect(after.currentBlockId).toBe(baseline.currentBlockId);
@@ -905,6 +967,7 @@ test(backgroundCaseName, async ({ baseURL }) => {
           returnHopStatus,
           settings,
           receiverRows,
+          fusedRows,
           reboot,
           bootState,
           bootDiagnostics,
@@ -917,6 +980,8 @@ test(backgroundCaseName, async ({ baseURL }) => {
           measurements,
           cpuMeasurements,
           persistentSessionConfigured,
+          coldLaunchReattachments,
+          coldDiagnosticWire,
           coldSession,
           noticeControls,
           serverReturnOutcomes,

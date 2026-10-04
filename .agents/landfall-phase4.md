@@ -1548,3 +1548,32 @@ exports only finite readiness facts. No undocumented settings key, GMS override,
 callback injection, or weakened notice requirement is introduced. Actual hosted
 registration and notice execution remain required; this change is harness
 readiness, not evidence that the underlying availability issue is solved.
+
+## 2026-10-04 direct cold authorization and primary pairing isolation
+
+Diagnostic run37211879270 on4dfd03b2 passes low resource: actual same-guest reboot
+33,076ms, persistent expected HttpOnly cookie, future guest expiry, eligible
+canonical session, actual outgoing single expected authorization cookie and server
+RETURNED. Canonical writes are zero and cleanup/source stability pass. Primary
+fails DIAGNOSTIC_COLD_LAUNCH before collecting cookie/server facts after actual
+32,401ms reboot; its observed page is closed. This proves a bounded direct cold
+request on low resource only, not full notification-return acceptance.
+
+The diagnostic now reacquires only an observed closed/replaced WebView within the
+existing 45-second bound. It separately exercises active and subsequently removed
+real membership with direct requests, expecting RETURNED then UNAVAILABLE. It
+never injects identity after reboot, extends credentials or claims OS notice proof.
+
+Pair run37211883202 on4dfd03b2 now opens both primary Journals, but joining native
+preparation returns unavailable before any JOIN API. Both STATUS and owner CREATE
+are200; canonical0 and cleanupPASS. Normal wake/unlock plus actual resumed-activity
+inspection precedes each owned pairing interaction. Debug-only native preparation
+categories distinguish foreground, capability, permission and timeout failures;
+no addresses, keys, identifiers or raw exception text are written. The fixture
+projects only allowlisted categories. Pair failure logs now contain finite stage
+errors rather than Playwright assertion text which could disclose a live code.
+Full background receipts additionally project FLP phase/state/count/mock booleans
+without synthetic session identifiers; actual notice requirements are unchanged.
+
+Product status is refreshed to2,682root tests and corrected primary radio4/4.
+No completed feature-catalog capability is added while Phase4 remains unfinished.

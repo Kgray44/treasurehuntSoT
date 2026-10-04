@@ -41,16 +41,23 @@ final class LandfallRangingUwb implements LandfallUwbDriver {
   private JSONObject reply(String state){try{return new JSONObject().put("state",state);}catch(Exception ignored){return new JSONObject();}}
   public JSONObject state(){try{return reply(status).put("supported",supported()).put("sessionProtected",key!=null).put("peerVerified",false);}catch(Exception ignored){return reply("UNAVAILABLE");}}
   private void stateEvent(String state){status=state;try{emit.accept(new JSONObject().put("type","nearby-state").put("family","UWB").put("state",state));}catch(Exception ignored){}}
+  private void diagnostic(String category){
+    if(!BuildConfig.DEBUG)return;
+    try(java.io.FileOutputStream output=activity.openFileOutput("landfall-ranging-prepare-debug.json",android.content.Context.MODE_PRIVATE)){
+      output.write(new JSONObject().put("category",category).toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    }catch(Exception ignored){}
+  }
   public void prepare(JSONObject payload,boolean foreground,Consumer<JSONObject> done){
-    if(!foreground){done.accept(reply("UNAVAILABLE"));return;}
-    if(!supported()){done.accept(reply("UNSUPPORTED"));return;}
+    if(!foreground){diagnostic("NOT_FOREGROUND");done.accept(reply("UNAVAILABLE"));return;}
+    if(!supported()){diagnostic("UNSUPPORTED");done.accept(reply("UNSUPPORTED"));return;}
     String role=payload.optString("role");
-    if(!role.equals("CONTROLLER")&&!role.equals("CONTROLEE")){done.accept(reply("UNAVAILABLE"));return;}
-    if(activity.checkSelfPermission("android.permission.RANGING")!=PackageManager.PERMISSION_GRANTED){activity.requestPermissions(new String[]{"android.permission.RANGING"},45);done.accept(reply("PROMPTABLE"));return;}
+    if(!role.equals("CONTROLLER")&&!role.equals("CONTROLEE")){diagnostic("INVALID_ROLE");done.accept(reply("UNAVAILABLE"));return;}
+    if(activity.checkSelfPermission("android.permission.RANGING")!=PackageManager.PERMISSION_GRANTED){diagnostic("PROMPTABLE");activity.requestPermissions(new String[]{"android.permission.RANGING"},45);done.accept(reply("PROMPTABLE"));return;}
     stop();controller=role.equals("CONTROLLER");status="INITIALIZING";
     final int attempt=generation;
     final boolean[] answered={false};
-    Runnable timeout=()->{if(attempt==generation&&!answered[0]){answered[0]=true;stop();done.accept(reply("UNAVAILABLE"));}};
+    diagnostic("CAPABILITIES_PENDING");
+    Runnable timeout=()->{if(attempt==generation&&!answered[0]){diagnostic("CAPABILITIES_TIMEOUT");answered[0]=true;stop();done.accept(reply("UNAVAILABLE"));}};
     capabilitiesCallback=value->{
       if(attempt!=generation)return;
       if(answered[0]){
@@ -60,22 +67,22 @@ final class LandfallRangingUwb implements LandfallUwbDriver {
       answered[0]=true;handler.removeCallbacks(timeout);
       UwbRangingCapabilities uwb=value.getUwbCapabilities();
       if(uwb==null || !uwb.isDistanceMeasurementSupported() || !uwb.getSupportedConfigIds().contains(UwbRangingParams.CONFIG_PROVISIONED_UNICAST_DS_TWR)){
-        stop();status="UNSUPPORTED";done.accept(reply(status));return;
+        diagnostic("CONFIG_UNSUPPORTED");stop();status="UNSUPPORTED";done.accept(reply(status));return;
       }
-      if(value.getTechnologyAvailability().getOrDefault(RangingManager.UWB,RangingCapabilities.NOT_SUPPORTED)!=RangingCapabilities.ENABLED){stop();done.accept(reply("UNAVAILABLE"));return;}
+      if(value.getTechnologyAvailability().getOrDefault(RangingManager.UWB,RangingCapabilities.NOT_SUPPORTED)!=RangingCapabilities.ENABLED){diagnostic("TECHNOLOGY_DISABLED");stop();done.accept(reply("UNAVAILABLE"));return;}
       capabilities=uwb;
       channel=uwb.getSupportedChannels().contains(9)?9:uwb.getSupportedChannels().contains(5)?5:0;
       preamble=uwb.getSupportedPreambleIndexes().stream().filter(index->index>=9&&index<=12).findFirst().orElse(0);
-      if(channel==0||preamble==0||!uwb.getSupportedRangingUpdateRates().contains(RawRangingDevice.UPDATE_RATE_INFREQUENT)){stop();status="UNSUPPORTED";done.accept(reply(status));return;}
+      if(channel==0||preamble==0||!uwb.getSupportedRangingUpdateRates().contains(RawRangingDevice.UPDATE_RATE_INFREQUENT)){diagnostic("CONFIG_UNSUPPORTED");stop();status="UNSUPPORTED";done.accept(reply(status));return;}
       localAddress=UwbAddress.createRandomShortAddress();status="READY";expiresAt=System.currentTimeMillis()+60000;handler.postDelayed(expire,60000);
       try{
         JSONObject result=reply("READY").put("role",role).put("address",Base64.encodeToString(localAddress.getAddressBytes(),Base64.NO_WRAP)).put("security","PROVISIONED_STS");
         if(controller)result.put("channel",channel).put("preamble",preamble);
-        done.accept(result);
-      }catch(Exception ignored){stop();done.accept(reply("UNAVAILABLE"));}
+        diagnostic("CAPABILITIES_READY");done.accept(result);
+      }catch(Exception ignored){diagnostic("RESULT_FAILED");stop();done.accept(reply("UNAVAILABLE"));}
     };
     handler.postDelayed(timeout,10000);
-    try{manager.registerCapabilitiesCallback(activity.getMainExecutor(),capabilitiesCallback);}catch(Exception ignored){handler.removeCallbacks(timeout);stop();done.accept(reply("UNAVAILABLE"));}
+    try{manager.registerCapabilitiesCallback(activity.getMainExecutor(),capabilitiesCallback);}catch(Exception ignored){diagnostic("CAPABILITIES_THROWN");handler.removeCallbacks(timeout);stop();done.accept(reply("UNAVAILABLE"));}
   }
   public JSONObject start(JSONObject payload,boolean foreground){
     if(!foreground||!status.equals("READY")||capabilities==null||localAddress==null||System.currentTimeMillis()>=expiresAt)return reply("UNAVAILABLE");
