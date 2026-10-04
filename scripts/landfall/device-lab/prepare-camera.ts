@@ -30,7 +30,7 @@ async function main() {
   const token = `${payload}.${sign(null, Buffer.from(payload), privateKey).toString("base64url")}`;
   // Keep the full code inside a wide camera's center crop. The image remains the
   // sole acquisition input; no decoded fixture is passed through the bridge.
-  const png = await QRCode.toBuffer(token, { type: "png", width: 1024, margin: 32, errorCorrectionLevel: "M" });
+  const png = await QRCode.toBuffer(token, { type: "png", width: 1024, margin: 128, errorCorrectionLevel: "M" });
   await writeFile(path.join(root, "camera-qr.png"), png);
   await writeFile(
     path.join(root, "camera-fixture.json"),

@@ -31,13 +31,14 @@ final class LandfallHardware {
   private ScanCallback callback;
   private volatile String bleScanId;
   private Runnable bleExpiry;
-  private int bleCallbacks,bleEmitted,bleErrors;
+  private int bleCallbacks,bleEmitted,bleErrors,bleRssiValid,bleRssiUnavailable,bleRssiOutOfRange;
   private long bleDiagnosticAt;
   private void bleDiagnostic(boolean force){
     if(!BuildConfig.DEBUG)return;
     long now=android.os.SystemClock.elapsedRealtime();if(!force && now-bleDiagnosticAt<1000)return;bleDiagnosticAt=now;
     try{
-      JSONObject value=new JSONObject().put("callbacks",bleCallbacks).put("emitted",bleEmitted).put("errors",bleErrors).put("active",bleActive);
+      JSONObject value=new JSONObject().put("callbacks",bleCallbacks).put("emitted",bleEmitted).put("errors",bleErrors).put("active",bleActive)
+        .put("rssiValid",bleRssiValid).put("rssiUnavailable",bleRssiUnavailable).put("rssiOutOfRange",bleRssiOutOfRange);
       try(java.io.FileOutputStream output=activity.openFileOutput("landfall-ble-debug.json",android.content.Context.MODE_PRIVATE)){
         output.write(value.toString().getBytes(StandardCharsets.UTF_8));
       }
@@ -58,7 +59,11 @@ final class LandfallHardware {
         }
         byte[] digest=MessageDigest.getInstance("SHA-256").digest((salt+result.getDevice().getAddress()).getBytes(StandardCharsets.UTF_8));
         StringBuilder peer=new StringBuilder();for(byte value:digest)peer.append(String.format("%02x",value));
-        emit.accept(new JSONObject().put("type","nearby").put("family","BLE").put("protocol",protocol).put("scanId",scanId).put("authenticated",false).put("peerId",peer.toString()).put("rssi",result.getRssi()).put("observedAt",now));
+        int rssi=result.getRssi();
+        if(rssi==127)bleRssiUnavailable=Math.min(100000,bleRssiUnavailable+1);
+        else if(rssi>=-150 && rssi<=0)bleRssiValid=Math.min(100000,bleRssiValid+1);
+        else bleRssiOutOfRange=Math.min(100000,bleRssiOutOfRange+1);
+        emit.accept(new JSONObject().put("type","nearby").put("family","BLE").put("protocol",protocol).put("scanId",scanId).put("authenticated",false).put("peerId",peer.toString()).put("rssi",rssi).put("observedAt",now));
         bleEmitted=Math.min(100000,bleEmitted+1);bleDiagnostic(true);
       }catch(Exception ignored){bleErrors=Math.min(100000,bleErrors+1);bleDiagnostic(true);}
     }
@@ -80,7 +85,7 @@ final class LandfallHardware {
     try {
       if(!manager.getAdapter().isEnabled())return "UNAVAILABLE";
       scanner=manager.getAdapter().getBluetoothLeScanner();if(scanner==null)return "UNSUPPORTED";
-      bleScanId=scanId;lastBle=0;bleCallbacks=0;bleEmitted=0;bleErrors=0;callback=bleCallback(scanId);bleActive=true;bleDiagnosticAt=0;bleDiagnostic(true);scanner.startScan(callback);
+      bleScanId=scanId;lastBle=0;bleCallbacks=0;bleEmitted=0;bleErrors=0;bleRssiValid=0;bleRssiUnavailable=0;bleRssiOutOfRange=0;callback=bleCallback(scanId);bleActive=true;bleDiagnosticAt=0;bleDiagnostic(true);scanner.startScan(callback);
       bleExpiry=()->endBle(scanId);handler.postDelayed(bleExpiry,30000);return "GRANTED";
     }catch(SecurityException error){stopBle();return "DENIED";}catch(RuntimeException error){stopBle();return "UNAVAILABLE";}
   }

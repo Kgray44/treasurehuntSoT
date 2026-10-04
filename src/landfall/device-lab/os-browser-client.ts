@@ -389,7 +389,14 @@ async function main() {
             expiresAt: Date.now() + 3600000,
             notifications: true,
           })) as { state?: string };
-          if (reply?.state !== "GRANTED") throw new Error("NATIVE_GEOFENCE_REGISTRATION_FAILED");
+          if (reply?.state !== "GRANTED") {
+            const category = ["UNAVAILABLE", "PERMISSION_REQUIRED", "DENIED", "UNSUPPORTED"].includes(
+              reply?.state ?? "",
+            )
+              ? reply.state
+              : "UNKNOWN";
+            throw new Error(`NATIVE_GEOFENCE_REGISTRATION_${category}`);
+          }
           backgroundResult = "REGISTERED";
         } else {
           const reply = (await landfallNativeRequest("GEOFENCE_CLEAR")) as { accepted?: boolean };

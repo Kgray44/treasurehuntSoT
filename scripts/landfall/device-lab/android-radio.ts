@@ -68,7 +68,15 @@ export async function executeLandfallAndroidRadioScenario(
   }[] = [];
   let advertiserState: string | null = null;
   let advertiserFailureCode: number | null = null;
-  let nativeBleDiagnostic: { callbacks: number; emitted: number; errors: number; active: boolean } | null = null;
+  let nativeBleDiagnostic: {
+    callbacks: number;
+    emitted: number;
+    errors: number;
+    active: boolean;
+    rssiValid: number;
+    rssiUnavailable: number;
+    rssiOutOfRange: number;
+  } | null = null;
   let radioStage = "SETUP";
   const blePrerequisites: { preciseLocationGranted: boolean; locationSettingEnabled: boolean; screenAwake: boolean }[] =
     [];
@@ -401,6 +409,9 @@ export async function executeLandfallAndroidRadioScenario(
                     emitted: z.number().int().min(0).max(100000),
                     errors: z.number().int().min(0).max(100000),
                     active: z.boolean(),
+                    rssiValid: z.number().int().min(0).max(100000),
+                    rssiUnavailable: z.number().int().min(0).max(100000),
+                    rssiOutOfRange: z.number().int().min(0).max(100000),
                   })
                   .parse(JSON.parse(raw));
             } catch {

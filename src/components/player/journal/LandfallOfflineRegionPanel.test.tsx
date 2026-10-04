@@ -30,6 +30,8 @@ const prepared = {
         id: "synthetic-region",
         scope: { publishedVersionId: props.publishedVersionId },
         totalBytes: 4096,
+        issuedAt: Date.now() - 600000,
+        revealedSequence: props.sequence,
         expiresAt: Date.now() + 60000,
         resources: [{ kind: "CHART" }, { kind: "ASSET" }],
       },
@@ -77,5 +79,24 @@ it("a late preparation from a replaced Voyage cannot enable download or display 
   await waitFor(() => expect(screen.getByRole("button", { name: "Prepare offline region" })).toBeEnabled());
   expect(screen.queryByRole("button", { name: "Download offline region" })).toBeNull();
   expect(screen.queryByText(/Download size:/)).toBeNull();
+  expect(downloadLandfallRegion).not.toHaveBeenCalled();
+});
+it("reauthorizes an unexpired partial package at its original issue time across server time buckets", async () => {
+  vi.mocked(restoreLandfallRegion).mockResolvedValue(prepared);
+  prepared.repository.status = vi.fn(async () => ({
+    state: "PARTIAL" as const,
+    totalBytes: 4096,
+    downloadedBytes: 2048,
+    expiresAt: prepared.descriptor.envelope.manifest.expiresAt,
+  }));
+  render(<LandfallOfflineRegionPanel {...props} />);
+  await screen.findByRole("button", { name: "Refresh or resume offline region" });
+  fireEvent.click(screen.getByRole("button", { name: "Refresh or resume offline region" }));
+  await screen.findByRole("button", { name: "Download offline region" });
+  expect(prepareLandfallRegion).toHaveBeenCalledWith(
+    props.sessionId,
+    props.csrfToken,
+    prepared.descriptor.envelope.manifest.issuedAt,
+  );
   expect(downloadLandfallRegion).not.toHaveBeenCalled();
 });

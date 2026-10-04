@@ -996,3 +996,20 @@ button selector+visiblecopy assertion+ordinarytap now used; noforce/JSdispatch.
 d823camera37188026917 HARVESTED19 FAIL: boundtrue/10frames/0decoded/0errors,
 EXPIRED. Earlypreviewblack beforefirstframe. Newpreviewwaitsforactualframe and
 syntheticQRquietmargin32 protectswidecamera crop. Pendingactualproof.
+
+Configured browser wrapper now holds a fresh synthetic signing key only in process
+environment and refuses existing deployment signing configuration, dirty source
+or a non-owned isolation DB. Actual first-party region test covers preview,
+interrupted download, verified resume, offline blob image decode, changed-resource
+hash rejection after reload and local removal. Pending hosted execution. Resume
+reauthorizes original issuedAt for an unchanged, unexpired revealed sequence.
+Fifteen focused package/panel/BLE checks PASS; no receipt promotion.
+
+2dab BLE37188385826 HARVESTED12 FAIL:12 received/12 invalid/field rssi only;
+native119 callbacks/12 emitted/0 errors, cleanupPASS. Next native debug projection
+counts valid/127-unavailable/other invalid RSSI only, no raw measurements.
+e2dbc geofence37188297805 HARVESTED18 FAIL at registration; actualGPSdelivery
+does not prove wake. Next client reason retains only finite native reply category.
+ebbead camera37188685533 HARVESTED19 FAIL:12 frames/0 decoded/0 errors;
+delivered-frame preview VIEWED shows right-edge QR crop. Synthetic quiet margin
+128 next; no bridge/token injection. Journal37188689765 remains active.

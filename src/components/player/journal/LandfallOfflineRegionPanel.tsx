@@ -111,7 +111,13 @@ function OfflineRegionPanel({
     setPrepared(false);
     setStatus("Checking released chart availability and download size…");
     try {
-      const prepared = await prepareLandfallRegion(sessionId, csrfToken);
+      const existing = client.current?.descriptor.envelope.manifest;
+      const resume = existing && existing.revealedSequence === sequence && existing.expiresAt > Date.now();
+      // Reauthorize the same signed package across time buckets so verified
+      // chunks can resume. Changed or expired Voyages prepare a fresh manifest.
+      const prepared = resume
+        ? await prepareLandfallRegion(sessionId, csrfToken, existing.issuedAt)
+        : await prepareLandfallRegion(sessionId, csrfToken);
       if (owned !== generation.current) return;
       if (prepared.descriptor.envelope.manifest.scope.publishedVersionId !== publishedVersionId)
         throw new Error("VERSION_CHANGED");

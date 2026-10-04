@@ -1164,3 +1164,26 @@ source-owned button, asserts its visible copy and performs an ordinary tap;
 rendered tools/map/ranging assertions remain required. No success is inferred
 from a screenshot or selector change. Failed Journal receipts now classify
 EXECUTION_FAILED rather than EMULATOR_PROVEN.
+
+The next configured browser run uses a fresh synthetic Ed25519 signing key held
+only in the wrapper and child process environments. The wrapper requires a clean
+exact candidate and an owned Sounding Line isolation database; it refuses existing
+deployment signing configuration. Its first-party test prepares a released region
+without fetching resources, interrupts the route download, resumes verified chunks,
+decodes the restored image from a local blob while offline, rejects a changed signed
+resource hash after reload, and removes local region data. Actual hosted proof is
+pending. Refresh now reauthorizes the original unexpired issued-at value when the
+revealed sequence is unchanged, preserving verified chunks across time buckets.
+
+BLE run37188385826 on2dab39db rejects all12 delivered observations specifically
+on RSSI validation. Fresh native diagnostics count valid,127-unavailable and other
+out-of-range RSSI categories without retaining measurement values or identities.
+The strict production observation schema remains unchanged. Geofence
+run37188297805 on e2dbc2e fails actual registration before background observation;
+GPS delivery alone is not wake proof. The next run retains only the finite native
+registration reply category. Camera run37188685533 on ebbead90 binds and receives
+12 frames with zero decoder errors, but expires without a decoded token. Its
+delivered-frame preview shows the code cropped at the right edge. The synthetic
+image quiet margin increases to128 modules; only camera image acquisition can
+satisfy the verification assertion. Fifteen focused package, panel and BLE checks
+pass. These candidate changes are not qualification or closure evidence.

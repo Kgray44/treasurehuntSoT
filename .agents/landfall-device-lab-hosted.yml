@@ -31,7 +31,7 @@ jobs:
       - name: Build and run isolated first-party browser contracts
         run: |
           browser_database="$GITHUB_WORKSPACE/artifacts/sounding-line/generic-__CANDIDATE_SHA12__/validation-isolated-$(date +%Y%m%d-%H%M%S%3N)-$(cat /proc/sys/kernel/random/uuid | tr -d '-').db"
-          node scripts/sounding-line/run-browser-suite.mjs --profile generic --candidate __CANDIDATE_SHA__ --database-url "file:$browser_database" -- tests/e2e/landfall-phase4.spec.ts
+          npx --no-install tsx scripts/landfall/device-lab/configured-browser.ts __CANDIDATE_SHA__ "file:$browser_database"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

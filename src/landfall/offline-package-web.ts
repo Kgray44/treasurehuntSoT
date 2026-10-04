@@ -104,9 +104,15 @@ async function open(descriptor: Descriptor, csrfToken: string): Promise<Landfall
   };
 }
 /** Trust anchor is obtained only from the currently authenticated same-origin server, never package contents. */
-export async function prepareLandfallRegion(sessionId: string, csrfToken: string) {
+export async function prepareLandfallRegion(sessionId: string, csrfToken: string, resumeIssuedAt?: number) {
   const startedGeneration = generation;
-  const response = await fetch(`/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall/package`, {
+  if (
+    resumeIssuedAt !== undefined &&
+    (!Number.isSafeInteger(resumeIssuedAt) || resumeIssuedAt < 0 || resumeIssuedAt > Date.now())
+  )
+    throw new Error("LANDFALL_REGION_RESUME_TIME_INVALID");
+  const query = resumeIssuedAt === undefined ? "" : `?issuedAt=${resumeIssuedAt}`;
+  const response = await fetch(`/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall/package${query}`, {
     cache: "no-store",
     redirect: "error",
     signal: AbortSignal.timeout(15_000),

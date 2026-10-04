@@ -56,6 +56,7 @@ export async function closureVoyage(
     contextual?: boolean;
     authoredDefinition?: LandfallDefinition;
     fusion?: boolean;
+    offlineRegion?: boolean;
   } = {},
 ) {
   const suffix = randomUUID();
@@ -187,6 +188,19 @@ export async function closureVoyage(
     definition.waypoints.find((item) => item.id === waypointId)!.evidenceProfile.fusionPolicy = {
       version: 1,
       minimumIndependentSources: 2,
+    };
+  if (options.offlineRegion)
+    definition.providerPlan = {
+      version: 1,
+      requirements: [],
+      offline: {
+        requested: true,
+        maxBytes: 8 * 1024 * 1024,
+        retentionHours: 1,
+        mapIds: definition.maps.map((map) => map.id),
+        routeIds: definition.routes.map((route) => route.id),
+        assetIds: assets.map((asset) => asset.id),
+      },
     };
   const chapterId = `chapter-${suffix}`;
   const activeId = `active-${suffix}`;
