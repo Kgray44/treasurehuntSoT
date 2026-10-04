@@ -7,7 +7,23 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Source-bound starting context
 
-Current checkpoint (2026-10-04 16:00 UTC): fb92d113 passes full root regression
+Current checkpoint (2026-10-04 16:40 UTC): current browser run37217125284 onbbda4541
+passes after the authenticated reading-state/Escape listener race correction;
+harvest is pending. Android37216122961 on c3ba3167 passes20scenarios on each of
+four distinct profiles and all native instrumentation receipts; harvested996
+artifacts, clean source bindings and transport cleanupPASS. Providers37216130695
+pass159on both Windows/Linux with the same original source fingerprint.
+Current radio37216156113 passes all six BLE cases but both UWB cases fail native
+preparation. Primary first-party pairing37216159946 passes, while low-resource
+fails before pairing at strict opening geometry. Preserve these failed receipts.
+The radio fixture now establishes actual awake/unlocked guests before UWB and
+retains finite native preparation categories; pairing retains bounded public
+DOM/native geometry diagnostics without weakening touch mapping. Focused rechecks
+remain required. iOS37216787499 onb7f5eb7e is running after integer hint timestamp
+and bounded lab-only observed lifecycle control-poll recovery corrections.
+No full current qualification or accepted closure is claimed.
+
+Previous checkpoint: fb92d113 passes full root regression
 with2,687tests on fresh owned SQLite. Its optimized detached build is running.
 Low-resource two-device Journal37214134421 on7cf6ea34 passes actual reports on
 both devices, native stop, canonical0 and cleanupPASS; primary37212997052 on9709ccee
@@ -15,7 +31,7 @@ already passes with the distinct3072M configuration. Signed notice37213441278
 onff297bda observes RETURNED then UNAVAILABLE on both corrected profiles after
 actual notice/reboot/BootReceiver/second notice, but fails the mistaken final
 `/player` assertion. Canonical signed-in landing is `/player/library`; corrected
-full recheck37214774366 onfb92d113 is running. Direct cold diagnostic37214139225
+full recheck37214774366 onfb92d113 passes both corrected profiles. Direct cold diagnostic37214139225
 fails closed-Page attach before authorization; it is not acceptance evidence.
 
 iOS registration now waits for `didStartMonitoringFor`, resolves failed/timed-out
@@ -25,7 +41,8 @@ launch initializes foreground gates from actual UIApplication background state.
 Version-two native geofence scenario also exercises real Core Location using
 documented Simulator location inputs and XCTest background/foreground, requiring
 actual encrypted wake hints. Framework monitoring capability is retained by
-XCTest. Focused hosted37214637581 on2446a7f1 is pending; do not assume unsupported
+XCTest. Focused hosted37214637581 on2446a7f1 failed at foreground control recovery;
+actual registration and location delivery passed. Do not assume unsupported
 or successful Simulator monitoring. No injected delegate callback is OS proof.
 Final complete matrices, catalog capability promotion, ordinary protected
 qualification, merge, landed verification and closure remain open.

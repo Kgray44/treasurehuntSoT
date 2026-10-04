@@ -61,6 +61,7 @@ export async function executeLandfallAndroidRadioScenario(
     ownedResources: string[] = [];
   const artifacts: { path: string; sha256: string; kind: "TEST_RESULT" }[] = [];
   const diagnostics: { index: number; devices: (NativeUwbProjection & { validatedRanges: number })[] }[] = [];
+  const nativePreparationDiagnostics: { deviceIndex: number; category: string }[] = [];
   const bleDiagnostics: {
     index: number;
     device: BleProjection & { validatedSignals: number; bridgeDiagnostic: DeviceLabBleDiagnostic };
@@ -303,6 +304,14 @@ export async function executeLandfallAndroidRadioScenario(
             )
               throw new Error("LANDFALL_BLE_PROJECTION_FAILED");
           } else if (action.type === "NEARBY" && action.state === "RECONNECT") {
+            radioStage = "UWB_FOREGROUND_PRECONDITION";
+            for (const serial of serials as string[]) {
+              await adb(serial, ["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
+              await adb(serial, ["shell", "wm", "dismiss-keyguard"]);
+              if (!/mWakefulness=Awake/.test(await adb(serial, ["shell", "dumpsys", "power"])))
+                throw new Error("LANDFALL_UWB_SCREEN_NOT_AWAKE");
+            }
+            radioStage = "UWB_PREPARATION";
             const prepared = await Promise.all(
               pages.map((page, index) =>
                 page.evaluate(
@@ -446,6 +455,33 @@ export async function executeLandfallAndroidRadioScenario(
   } catch {
     steps.push({ index: steps.length, action: "NEARBY", state: "FAIL", reason: "LANDFALL_NATIVE_RADIO_SETUP_FAILED" });
   } finally {
+    if (!bleScenario)
+      for (const serial of acquired) {
+        try {
+          const raw = await adb(serial, ["shell", "run-as", pkg, "cat", "files/landfall-ranging-prepare-debug.json"]);
+          if (raw.length > 256) continue;
+          const value = z
+            .strictObject({
+              category: z.enum([
+                "NOT_FOREGROUND",
+                "UNSUPPORTED",
+                "INVALID_ROLE",
+                "PROMPTABLE",
+                "CAPABILITIES_PENDING",
+                "CAPABILITIES_TIMEOUT",
+                "CONFIG_UNSUPPORTED",
+                "TECHNOLOGY_DISABLED",
+                "CAPABILITIES_READY",
+                "RESULT_FAILED",
+                "CAPABILITIES_THROWN",
+              ]),
+            })
+            .parse(JSON.parse(raw));
+          nativePreparationDiagnostics.push({ deviceIndex: serials.indexOf(serial), category: value.category });
+        } catch {
+          /* Missing native facts remain unobserved. */
+        }
+      }
     for (const page of bleScenario ? pages.slice(0, 1) : pages)
       await boundedAndroidDriver(
         page.evaluate(async () => {
@@ -499,6 +535,7 @@ export async function executeLandfallAndroidRadioScenario(
           serials,
           configurations,
           diagnostics,
+          nativePreparationDiagnostics,
           bleDiagnostics,
           advertiserState,
           advertiserFailureCode,

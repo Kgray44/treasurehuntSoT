@@ -16,7 +16,7 @@ import { nativePairingLeaseClockBand } from "../../src/landfall/device-lab/nativ
 import { boundedAndroidDriver as boundedDriver } from "../../scripts/landfall/device-lab/android-driver";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { closureAccount, closureVoyage, openClosureMap } from "./fixtures/landfall-closure";
-import { openNativeJournalEntry } from "./fixtures/landfall-native-opening";
+import { openNativeJournalEntry, type OpeningGeometryDiagnostic } from "./fixtures/landfall-native-opening";
 
 const sourceInputs = ["tests/e2e/landfall-native-nearby.spec.ts", "tests/e2e/fixtures/landfall-native-opening.ts"];
 
@@ -116,6 +116,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
       }[] = [];
       const pairingDiagnostics: { deviceIndex: number; nativeState: string; uiState: string }[] = [];
       const nativePreparationDiagnostics: { deviceIndex: number; category: string }[] = [];
+      let openingGeometryDiagnostic: OpeningGeometryDiagnostic | null = null;
       const interactionForeground: {
         phase: string;
         deviceIndex: number;
@@ -337,6 +338,9 @@ test("real native Journal pairing returns untrusted hints and background clears 
             (args) => adb(serial, args),
             (observedStage) => {
               stage = observedStage;
+            },
+            (geometry) => {
+              openingGeometryDiagnostic = geometry;
             },
           );
           stage = "OPEN_NATIVE_MAP";
@@ -562,7 +566,12 @@ test("real native Journal pairing returns untrusted hints and background clears 
         // This stage contains only the newly-created public synthetic Journal,
         // before pairing codes or any native location/ranging acquisition.
         if (
-          ["CLICK_NATIVE_JOURNAL_OPEN", "NATIVE_JOURNAL_TOOLS"].includes(stage) &&
+          [
+            "CLICK_NATIVE_JOURNAL_OPEN",
+            "NATIVE_JOURNAL_TOOLS",
+            "NATIVE_OPENING_GEOMETRY",
+            "NATIVE_OPENING_GEOMETRY_WAIT",
+          ].includes(stage) &&
           deviceIndex !== null &&
           !resources.signal.aborted
         ) {
@@ -669,6 +678,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           journalStates,
           pairingDiagnostics,
           nativePreparationDiagnostics,
+          openingGeometryDiagnostic,
           interactionForeground,
           openingControl: "OBSERVED_DOM_AND_NATIVE_BOUNDS_OS_TOUCH",
           externalRequirements: ["REAL_DEVICE_REQUIRED:RF"],

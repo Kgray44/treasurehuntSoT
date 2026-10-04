@@ -15,6 +15,23 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Acquisition and authority
 
+Android run37216122961 on clean c3ba3167 passes20scenarios on each of four
+distinct profiles, plus all four native instrumentation receipts. Hosted provider
+run37216130695 passes159cases on both Windows and Linux. The original source
+bindings and failed historical receipts remain intact.
+
+Radio run37216156113 passes all six BLE cases but both UWB preparations fail.
+First-party pairing37216159946 passes primary, while low resource fails before
+pairing at strict Journal opening geometry. The lab now observes awake/unlocked
+UWB preconditions and retains only finite native preparation categories. Opening
+diagnostics retain bounded public synthetic DOM/native geometry and permit an
+owned OS screenshot only before any pairing or acquisition. The strict mapping
+guards remain unchanged. Focused actual rechecks are required; older successful
+receipts do not erase these failures.
+
+Full browser recheck37217125284 onbbda4541 succeeds after the following correction;
+its original source-bound artifacts are being harvested.
+
 Current browser run37216127022 on c3ba3167 passes52of53 retained journeys,
 failing narrow-viewport Escape/focus restoration. A targeted authenticated
 reading-state delay reproduces the failure: session data arrives while the

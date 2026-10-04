@@ -1,14 +1,35 @@
 import { expect, type Page } from "@playwright/test";
+import { z } from "zod";
 import {
   nativeJournalOpeningTouch,
   nativeJournalOpeningGeometryTouch,
 } from "../../../src/landfall/device-lab/native-opening-control";
+
+const diagnosticGeometry = z.strictObject({
+  version: z.literal(1),
+  packageName: z.literal("com.voyagewright.landfall"),
+  shown: z.boolean(),
+  attached: z.boolean(),
+  focused: z.boolean(),
+  left: z.number().int().min(0).max(4096),
+  top: z.number().int().min(0).max(4096),
+  right: z.number().int().min(0).max(4096),
+  bottom: z.number().int().min(0).max(4096),
+});
+export type OpeningGeometryDiagnostic = {
+  native: z.infer<typeof diagnosticGeometry> | null;
+  dom: {
+    box: { x: number; y: number; width: number; height: number };
+    viewport: { width: number; height: number; scale: number };
+  };
+};
 
 /** Real public Journal UI: normal OS input from observed DOM and native bounds. */
 export async function openNativeJournalEntry(
   page: Page,
   adb: (args: string[]) => Promise<string>,
   observeStage: (stage: string) => void = () => {},
+  observeGeometry: (value: OpeningGeometryDiagnostic) => void = () => {},
 ) {
   // Sequential multi-device setup can leave the next owned guest asleep.
   // Establish the normal OS interaction precondition before inspecting bounds.
@@ -68,9 +89,15 @@ export async function openNativeJournalEntry(
               ]);
               if (raw.length > 1024) throw new Error("NATIVE_OPENING_GEOMETRY_TOO_LARGE");
               try {
+                const decoded = JSON.parse(raw);
+                const projection = diagnosticGeometry.safeParse(decoded);
+                observeGeometry({
+                  native: projection.success ? projection.data : null,
+                  dom: { box: fresh.box, viewport: fresh.viewport },
+                });
                 // Accessibility inspection can precede native focus/layout settling.
                 // Reobserve both surfaces; never touch until the strict mapping passes.
-                target = nativeJournalOpeningGeometryTouch(JSON.parse(raw), fresh);
+                target = nativeJournalOpeningGeometryTouch(decoded, fresh);
                 return true;
               } catch {
                 return false;
