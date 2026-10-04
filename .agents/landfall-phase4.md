@@ -44,8 +44,12 @@ New locally required Apple notice case37226211477 onf791 FAIL at permission:
 LOCATION0PASS, client timeout37,518ms, canonical0/cleanupPASS,4392hashes.
 Passing UI tool does not override failed scenario. Native permission now replies
 on WebKit main queue; finite DEBUG stages/grant/thread booleans and OS actions
-are collected. Actual recheck37227624737 on18c2f4a0 is active, dispatch
-hosted-18c2f4a04d4e-1791141368486. No proved callback-thread cause yet.
+are collected. Recheck37227624737 on18c2f4a0 FAIL at actual tap, not permission:
+permission UI/native grant/main-queue reply PASS; screenshot shows notice,
+4401hashes/cleanupPASS. Unique accessible-button/card selection and finite
+counts run on86d2fdcc(37229444663), dispatchhosted-86d2fdccd8f5-1791143085502.
+076ec806 transport37229411009 cancelled for unstaged path-casing edit;0artifacts/
+cleanupPASS, no acceptance. Actual return remains required.
 Case requires real permission UI, delegate-produced background notice,
 SpringBoard tap and native same-origin return. Synthetic nonce landing is OS
 handoff proof only; production signed authorization is separately shared/Android
@@ -53,6 +57,18 @@ first-party coverage. No notice/delegate/handler/canonical injection.
 Permanent once-per-closure Apple notice job is wired; six rendered selection
 cases verify YAML/scope. Actual acceptance remains required; CI-only wiring
 does not require rerunning every simulator.
+
+Apple presentation first7f36204a run37229804897 FAIL:18PASS/1FAIL/1canonical
+unconfigured-driver skip; dark/AccessibilityXXXL and portrait/landscape fallback
+PASS, Reduce Motion switch selection FAIL.4294hashes/cleanupPASS. Bounded
+semantic switch/row search and failure attachment export run on d8dcaa8e
+(37230795587), dispatchhosted-d8dcaa8edcab-1791144350800. Build passes an explicit
+presentation flag and requires at least19passes/at mostone expected skip. Current
+integer-count guard additionally rejects missing/malformed summary fields; it
+changes no actual valid-result behavior. Production native sources unchanged
+since8e6e3e19. Presentation proves unconfigured fallback/OS settings only;
+production Journal browser accessibility and physical assistive technology are
+separate. Full unit src/tests/lock/schema trees match8e6e3e19 exactly.
 
 DraftPR677 attached. No final ordinary product qualification dispatched.
 Next: finish/harvest both native rechecks, actual-step/canonical/cleanup inspection,

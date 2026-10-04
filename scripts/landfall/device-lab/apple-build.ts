@@ -135,7 +135,13 @@ async function main() {
     const nativeTests = JSON.parse(testSummary);
     // The only expected package-build skip is the canonical scenario driver,
     // which requires its separately started endpoint. Presentation must execute.
-    if (nativeTests.failedTests !== 0 || nativeTests.passedTests < 19 || nativeTests.skippedTests > 1)
+    if (
+      ![nativeTests.failedTests, nativeTests.passedTests, nativeTests.skippedTests].every(Number.isInteger) ||
+      nativeTests.failedTests !== 0 ||
+      nativeTests.passedTests < 19 ||
+      nativeTests.skippedTests < 0 ||
+      nativeTests.skippedTests > 1
+    )
       throw new Error("LANDFALL_APPLE_PRESENTATION_TESTS_REQUIRED");
     executionStage = "EXPORT_XCTEST_ATTACHMENTS";
     // Keep native capability values inspectable on the harvesting host. The
