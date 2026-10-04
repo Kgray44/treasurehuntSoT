@@ -7,6 +7,16 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Source-bound starting context
 
+Final Apple coverage review adds `apple-native-notification-background-return`:
+real notification permission UI, delegate-produced Core Location notice,
+SpringBoard tap and same-origin synthetic nonce handoff, canonical zero and clear.
+This is OS delivery/handoff proof, not production signed-return authorization;
+shared and Android first-party cases own that separate boundary. The focused
+actual Apple run is still required. Two local files/33tests, TypeScript, affected
+lint and docs validation pass. Product native code is unchanged; existing Apple
+matrix branches remain semantically unchanged. Tablet input37224452331 succeeds,
+harvest4204/cleanupPASS; inspect its actual native/canonical receipts before use.
+
 FrozenC8 run37219804462 is fully harvested:19773hashed artifacts, conclusionFAIL,
 transport cleanupPASS. Apple totals primary8/9, compatibility7/9, tablet8/9.
 Tablet's offline-native input command is killed after61,377ms before an ack;

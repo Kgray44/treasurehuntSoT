@@ -38,7 +38,27 @@ final class NativeLifecycleTests: XCTestCase {
             let message = try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
             if message["stop"] as? Bool == true { app.terminate(); return }
             guard let index = message["index"] as? Int, let action = message["action"] as? [String: Any],
-                  action["type"] as? String == "LIFECYCLE", let state = action["state"] as? String else { throw NSError(domain: "LandfallLab", code: 1) }
+                  let type=action["type"] as? String, ["LIFECYCLE","NOTIFICATION"].contains(type) else { throw NSError(domain: "LandfallLab", code: 1) }
+            if type == "NOTIFICATION" {
+                let springboard=XCUIApplication(bundleIdentifier:"com.apple.springboard")
+                var result="FAIL"
+                if action["operation"] as? String == "DELIVER" {
+                    let allow=springboard.alerts.buttons.matching(identifier:"Allow")
+                    if allow.firstMatch.waitForExistence(timeout:20), allow.count == 1 {allow.firstMatch.tap();result="PASS"}
+                } else if action["operation"] as? String == "OPEN" {
+                    // Open Notification Center and tap only the one observed generic
+                    // Landfall notice. Never activate a PendingIntent/delegate directly.
+                    springboard.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.005)).press(forDuration:0.1,thenDragTo:springboard.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.8)))
+                    let notice=springboard.staticTexts.matching(NSPredicate(format:"label == %@","Your journey may be nearby"))
+                    if notice.firstMatch.waitForExistence(timeout:15), notice.count == 1 {
+                        notice.firstMatch.tap()
+                        if app.wait(for:.runningForeground,timeout:15) {result="PASS"}
+                    }
+                }
+                try await post(origin,"/lab/os/result",["index":index,"state":result])
+                continue
+            }
+            guard let state=action["state"] as? String else {throw NSError(domain:"LandfallLab",code:3)}
             var result = "PASS"
             if state == "FOREGROUND" { app.activate(); if !app.wait(for: .runningForeground, timeout: 10) { result="FAIL" } }
             else if state == "BACKGROUND" { XCUIDevice.shared.press(.home); if !observedBackground(app) { result="FAIL" } }

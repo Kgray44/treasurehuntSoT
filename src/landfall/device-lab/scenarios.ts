@@ -744,6 +744,29 @@ cases[cases.length - 1].timing = "WALL_CLOCK";
 cases[cases.length - 1].description =
   "Actual Play services or Core Location registration, controlled OS outside-to-inside location while the app is backgrounded, encrypted wake hints on foreground return and verified removal. No broadcast or delegate callback injection, physical timing or canonical arrival claim.";
 
+scenario(
+  "apple-native-notification-background-return",
+  ["GEOFENCE", "LOCATION", "NOTIFICATION"],
+  [
+    location({ coordinate: physicalCoordinate(44.02, -72) }),
+    { type: "NOTIFICATION", operation: "DELIVER" },
+    { type: "NATIVE_GEOFENCE", operation: "REGISTER" },
+    lifecycle("BACKGROUND"),
+    { type: "NATIVE_GEOFENCE", operation: "ENTER" },
+    { type: "NOTIFICATION", operation: "OPEN" },
+    assertion("completionRequests", 0),
+    assertion("canonicalProgressionEvents", 0),
+    { type: "NATIVE_GEOFENCE", operation: "CLEAR" },
+    assertion("backgroundResult", "NONE"),
+  ],
+  ["SUSPENSION", "OEM_PROCESS_POLICY", "FIELD_ENVIRONMENT"],
+  "ONE_VOYAGE",
+);
+cases[cases.length - 1].targets = ["ios-simulator"];
+cases[cases.length - 1].timing = "WALL_CLOCK";
+cases[cases.length - 1].description =
+  "Actual Apple notification permission UI, Core Location delegate-produced generic notice, SpringBoard notice tap and native same-origin return handoff. The synthetic nonce landing proves OS delivery/handoff only; production signed authorization is separately covered by shared and Android first-party tests. No callback injection, physical timing or canonical arrival claim.";
+
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);
 }

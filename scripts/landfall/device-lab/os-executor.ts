@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { createHash } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { build } from "esbuild";
@@ -39,7 +39,12 @@ export async function executeLandfallOsScenario(
 ) {
   const root = process.cwd();
   const cameraScenario = scenario.id === "qr-native-camera-valid";
-  const geofenceScenario = scenario.id === "geofence-native-background-wake";
+  const appleNoticeScenario =
+    scenario.id === "apple-native-notification-background-return" && target === "ios-simulator";
+  const geofenceScenario = scenario.id === "geofence-native-background-wake" || appleNoticeScenario;
+  const appleNoticeNonce = appleNoticeScenario ? randomBytes(32).toString("base64url") : null;
+  let appleNoticeReturnObserved = false;
+  let appleNoticeOpenRequested = false;
   let cameraDiagnostic: Record<string, string | boolean> | null = null;
   let cameraStarted = false;
   let cameraFixture: {
@@ -133,6 +138,33 @@ export async function executeLandfallOsScenario(
   const server = createServer(async (request, response) => {
     const route = request.url?.split("?")[0];
     response.setHeader("Cache-Control", "no-store");
+    if (request.method === "GET" && route === "/lab/notice-context" && appleNoticeScenario) {
+      response.setHeader("Content-Type", "application/json");
+      response.end(JSON.stringify({ returnHandle: appleNoticeNonce }));
+      return;
+    }
+    if (request.method === "GET" && route === "/player/landfall-return" && appleNoticeScenario) {
+      const params = new URL(request.url!, "http://127.0.0.1").searchParams;
+      const expectedOpen = scenario.timeline.findIndex(
+        (step) => step.action.type === "NOTIFICATION" && step.action.operation === "OPEN",
+      );
+      if (
+        !appleNoticeOpenRequested ||
+        expectedOpen < 0 ||
+        appleNoticeReturnObserved ||
+        params.size !== 1 ||
+        params.get("handle") !== appleNoticeNonce
+      ) {
+        response.statusCode = 400;
+        response.end();
+        return;
+      }
+      appleNoticeReturnObserved = true;
+      response.statusCode = 302;
+      response.setHeader("Location", "/player/");
+      response.end();
+      return;
+    }
     if (request.method === "GET" && route === "/lab/camera-installation") {
       response.setHeader("Content-Type", "application/json");
       response.statusCode = cameraFixture ? 200 : 503;
@@ -312,11 +344,16 @@ export async function executeLandfallOsScenario(
       else if (
         route === "/lab/os/result" &&
         Number.isInteger(value.index) &&
-        scenario.timeline[value.index]?.action.type === "LIFECYCLE" &&
+        (scenario.timeline[value.index]?.action.type === "LIFECYCLE" ||
+          (appleNoticeScenario && scenario.timeline[value.index]?.action.type === "NOTIFICATION")) &&
         ["PASS", "FAIL", "UNSUPPORTED"].includes(value.state)
       ) {
         if (!osResults.has(value.index))
-          osResults.set(value.index, { index: value.index, action: "LIFECYCLE", state: value.state });
+          osResults.set(value.index, {
+            index: value.index,
+            action: scenario.timeline[value.index].action.type,
+            state: value.state,
+          });
         if (osCurrent?.index === value.index) osCurrent = null;
       } else if (route === "/lab/ready") {
         ready =
@@ -607,6 +644,34 @@ export async function executeLandfallOsScenario(
             state: actual === step.action.value ? "PASS" : "FAIL",
             ...(actual === step.action.value ? {} : { reason: "NATIVE_CANONICAL_COUNT_MISMATCH" }),
           });
+          continue;
+        }
+        if (appleNoticeScenario && step.action.type === "NOTIFICATION") {
+          if (!["DELIVER", "OPEN"].includes(step.action.operation))
+            throw new Error("NATIVE_NOTICE_OPERATION_UNSUPPORTED");
+          const startupsBeforeNotice = startups.length;
+          if (step.action.operation === "OPEN") {
+            ready = false;
+            appleNoticeOpenRequested = true;
+          }
+          osCurrent = { index, action: step.action };
+          if (step.action.operation === "DELIVER") current = { index, action: step.action };
+          await wait(() => osResults.has(index), 45000);
+          const result = osResults.get(index)!;
+          if (result.state !== "PASS") {
+            appleNoticeOpenRequested = false;
+            steps.push(result);
+            continue;
+          }
+          if (step.action.operation === "DELIVER") {
+            await wait(() => results.has(index), 30000);
+            steps.push(results.get(index)!);
+          } else {
+            await wait(() => appleNoticeReturnObserved && ready && startups.length > startupsBeforeNotice, 45000);
+            appleNoticeOpenRequested = false;
+            foreground = true;
+            steps.push(result);
+          }
           continue;
         }
         if (step.action.type === "NATIVE_GEOFENCE" && step.action.operation === "ENTER") {
@@ -1301,6 +1366,38 @@ export async function executeLandfallOsScenario(
         kind: "TEST_RESULT",
       });
     }
+    if (appleNoticeScenario) {
+      const file = path.join(destination, "native-apple-notice-observation.json");
+      await writeFile(
+        file,
+        JSON.stringify(
+          {
+            version: 1,
+            sourceClass: "ACTUAL_APPLE_NOTIFICATION_UI_AND_NATIVE_HANDOFF",
+            permissionUiObserved: steps.some(
+              (step) => step.action === "NOTIFICATION" && step.index === 1 && step.state === "PASS",
+            ),
+            noticeTapObserved: steps.some(
+              (step) => step.action === "NOTIFICATION" && step.index === 5 && step.state === "PASS",
+            ),
+            sameOriginReturnObserved: appleNoticeReturnObserved,
+            syntheticNonce: true,
+            productionSignedAuthorizationProven: false,
+            canonicalProgressionEvents: (await authority.counts()).canonicalProgressionEvents,
+            physicalDeliveryLatencyProven: false,
+          },
+          null,
+          2,
+        ),
+      );
+      artifacts.push({
+        path: file,
+        sha256: createHash("sha256")
+          .update(await readFile(file))
+          .digest("hex"),
+        kind: "TEST_RESULT",
+      });
+    }
     const performanceFile = path.join(destination, "native-action-performance.json");
     await writeFile(
       performanceFile,
@@ -1590,54 +1687,61 @@ export async function executeLandfallOsScenario(
               limitation:
                 "Synthetic signed QR pixels traverse the emulated camera, CameraX and bundled ML Kit. No physical camera, tag presence or progression claim.",
             }
-          : action?.type === "NATIVE_GEOFENCE"
+          : action?.type === "NOTIFICATION" && appleNoticeScenario
             ? {
-                method: action.operation === "ENTER" ? "OS_GEOFENCE_TRANSITION" : "OS_GEOFENCE_REGISTRATION",
+                method: "OS_NOTIFICATION_UI",
                 limitation:
-                  target === "ios-simulator"
-                    ? "Documented simctl location inputs exercise actual Core Location registration and encrypted delegate-delivered hints. No injected delegate callback, physical timing or arrival claim."
-                    : "Documented FLP mock input from a separate debug lab APK exercises actual Play services registration and OS-delivered encrypted hints. No injected receiver/broadcast, physical timing or arrival claim.",
+                  "Actual Apple permission prompt and SpringBoard notice tap produce a native same-origin synthetic nonce handoff. No injected notification/delegate callback or production signed-authority claim; shared and Android first-party tests cover that separate boundary.",
               }
-            : action?.type === "PERMISSION" || result.reason === "OS_PERMISSION_PREVENTED_ACQUISITION"
+            : action?.type === "NATIVE_GEOFENCE"
               ? {
-                  method: "OS_PERMISSION_CONTROL",
+                  method: action.operation === "ENTER" ? "OS_GEOFENCE_TRANSITION" : "OS_GEOFENCE_REGISTRATION",
                   limitation:
-                    "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external.",
+                    target === "ios-simulator"
+                      ? "Documented simctl location inputs exercise actual Core Location registration and encrypted delegate-delivered hints. No injected delegate callback, physical timing or arrival claim."
+                      : "Documented FLP mock input from a separate debug lab APK exercises actual Play services registration and OS-delivered encrypted hints. No injected receiver/broadcast, physical timing or arrival claim.",
                 }
-              : action?.type === "LOCATION" && action.coordinate.type === "WGS84"
+              : action?.type === "PERMISSION" || result.reason === "OS_PERMISSION_PREVENTED_ACQUISITION"
                 ? {
-                    method: "OS_LOCATION_INJECTION",
+                    method: "OS_PERMISSION_CONTROL",
                     limitation:
-                      "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately.",
+                      "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external.",
                   }
-                : action?.type === "LIFECYCLE"
+                : action?.type === "LOCATION" && action.coordinate.type === "WGS84"
                   ? {
-                      method: "OS_LIFECYCLE",
-                      limitation: "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
+                      method: "OS_LOCATION_INJECTION",
+                      limitation:
+                        "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately.",
                     }
-                  : action?.type === "POWER"
+                  : action?.type === "LIFECYCLE"
                     ? {
-                        method: "OS_POWER_CONTROL",
+                        method: "OS_LIFECYCLE",
                         limitation:
-                          "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy.",
+                          "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
                       }
-                    : action?.type === "NETWORK"
-                      ? target === "android-emulator"
-                        ? {
-                            method: "OS_NETWORK_AND_SERVICE_FAULT",
-                            limitation:
-                              "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
-                          }
-                        : {
-                            method: "CONTROLLED_SERVICE_FAULT",
-                            limitation:
-                              "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
-                          }
-                      : action?.type === "RECONCILE" ||
-                          (action?.type === "ASSERT" &&
-                            ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
-                        ? { method: "REAL_CANONICAL_AUTHORITY" }
-                        : { method: "SHARED_WEB_CONTRACT" };
+                    : action?.type === "POWER"
+                      ? {
+                          method: "OS_POWER_CONTROL",
+                          limitation:
+                            "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy.",
+                        }
+                      : action?.type === "NETWORK"
+                        ? target === "android-emulator"
+                          ? {
+                              method: "OS_NETWORK_AND_SERVICE_FAULT",
+                              limitation:
+                                "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
+                            }
+                          : {
+                              method: "CONTROLLED_SERVICE_FAULT",
+                              limitation:
+                                "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
+                            }
+                        : action?.type === "RECONCILE" ||
+                            (action?.type === "ASSERT" &&
+                              ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
+                          ? { method: "REAL_CANONICAL_AUTHORITY" }
+                          : { method: "SHARED_WEB_CONTRACT" };
   }
   const cleanup = {
     result: remainingResources.length ? ("FAIL" as const) : ("PASS" as const),

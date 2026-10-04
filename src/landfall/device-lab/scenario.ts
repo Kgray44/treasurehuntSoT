@@ -273,6 +273,7 @@ export type DeviceLabStepResult = {
       | "OS_CAMERA_ACQUISITION"
       | "OS_GEOFENCE_REGISTRATION"
       | "OS_GEOFENCE_TRANSITION"
+      | "OS_NOTIFICATION_UI"
       | "LOGICAL_PROVIDER"
       | "OS_LOCATION_INJECTION"
       | "OS_LIFECYCLE"

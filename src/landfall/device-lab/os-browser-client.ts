@@ -378,12 +378,22 @@ async function main() {
           state = "UNSUPPORTED";
           reason = "OS_ASSERTION_NOT_IMPLEMENTED";
         } else if (observed[action.field] !== action.value) throw new Error(`ASSERT_FAILED:${action.field}`);
+      } else if (
+        action.type === "NOTIFICATION" &&
+        action.operation === "DELIVER" &&
+        scenario.scenarioId === "apple-native-notification-background-return"
+      ) {
+        const reply = (await landfallNativeRequest("NOTIFICATION_PERMISSION")) as { state?: string };
+        if (reply?.state !== "GRANTED") throw new Error("NATIVE_NOTIFICATION_PERMISSION_NOT_GRANTED");
       } else if (action.type === "NATIVE_GEOFENCE") {
         if (world.kind !== "PHYSICAL" || action.operation === "ENTER") {
           state = "UNSUPPORTED";
           reason = "NATIVE_GEOFENCE_OS_CONTROL_REQUIRED";
         } else if (action.operation === "REGISTER") {
-          geofenceHandle = crypto.randomUUID().replaceAll("-", "");
+          geofenceHandle =
+            scenario.scenarioId === "apple-native-notification-background-return"
+              ? (await (await fetch("/lab/notice-context", { cache: "no-store" })).json()).returnHandle
+              : crypto.randomUUID().replaceAll("-", "");
           const reply = (await landfallNativeRequest("GEOFENCE_REGISTER", {
             returnHandle: geofenceHandle,
             latitude: 44,

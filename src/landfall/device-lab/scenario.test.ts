@@ -22,6 +22,19 @@ describe("canonical Device Lab scenarios", () => {
     expect(deviceLabScenarioSchema.safeParse(reversed).success).toBe(false);
     expect(landfallDeviceScenario("compound-chaos").physicalRequired).toContain("SUSPENSION");
   });
+  it("keeps actual Apple notice UI and same-origin handoff separate from production authorization", async () => {
+    const scenario = landfallDeviceScenario("apple-native-notification-background-return");
+    expect(scenario.targets).toEqual(["ios-simulator"]);
+    expect(scenario.timing).toBe("WALL_CLOCK");
+    expect(scenario.canonicalAuthority).toBe("ONE_VOYAGE");
+    expect(scenario.timeline.filter((step) => step.action.type === "NOTIFICATION").map((step) => step.action)).toEqual([
+      { type: "NOTIFICATION", operation: "DELIVER" },
+      { type: "NOTIFICATION", operation: "OPEN" },
+    ]);
+    expect(scenario.description).toContain("production signed authorization is separately covered");
+    const logical = await new LandfallProviderScenarioExecutor(scenario).run();
+    expect(logical.steps.some((step) => step.state === "UNSUPPORTED")).toBe(true);
+  });
   it("uses two distinct nearby physical route points for fresh native fixes in versioned arrival scenarios", () => {
     for (const id of [
       "gps-perfect-walk",

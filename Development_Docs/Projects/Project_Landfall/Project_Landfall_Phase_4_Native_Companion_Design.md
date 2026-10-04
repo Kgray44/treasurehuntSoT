@@ -13,6 +13,18 @@ protected integration, deployed companion availability, physical-device qualific
 and Project Landfall closure remain open. The [Device Lab addendum](Project_Landfall_Phase_4_Device_Lab_Addendum.md)
 governs evidence fidelity. Active execution instructions remain under `.agents`.
 
+The final Apple coverage review adds a focused actual notification/deep-link
+scenario. It requests notification consent through the production native bridge,
+observes the real permission prompt, registers Core Location, backgrounds the app,
+uses the documented outside/inside OS inputs, and taps only the one observed
+generic Landfall notice in SpringBoard. The actual native return callback must
+request the owned same-origin nonce landing and reload the controlled client;
+fresh One Voyage counts must remain zero and native clearing must pass. No notice,
+delegate callback, handler, deep link or canonical write is injected. This focused
+path is awaiting actual execution. Its synthetic nonce landing proves Apple OS
+delivery/handoff only, not production signed-return authorization; shared tests
+and the actual Android first-party return/revocation journeys cover that boundary.
+
 ## Acquisition and authority
 
 Frozen37219804462 Apple primary passes8/9cases and compatibility7/9cases.
