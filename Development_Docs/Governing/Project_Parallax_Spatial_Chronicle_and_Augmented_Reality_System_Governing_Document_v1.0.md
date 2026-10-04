@@ -997,6 +997,7 @@ A locally tracked room/site frame valid for one AR session or locally persisted 
 A crew-coordinated local frame associated with a shared anchor identity.
 
 ### Physical Worldspace Space
+
 Spatial content related to Landfall's physical-world semantics, potentially including geospatial anchor providers.
 
 ### Virtual Worldspace Space
@@ -1996,6 +1997,7 @@ The runtime should distinguish:
 - content is occluded by a runtime defect.
 
 ## 33.3 Relocalization UI
+
 During shared/persistent relocalization, the Lens should keep the scene's identity clear:
 
 > “Finding the Captain's Map again…”
@@ -2995,7 +2997,8 @@ Large scenes need search by:
 - tag;
 - anchor;
 - interaction;
-- issue;- visibility;
+- issue;
+- visibility;
 - capability dependency.
 
 \newpage
@@ -3995,6 +3998,7 @@ Wayfarer provides canonical person identity and preferences relevant to:
 Parallax does not create spatial-user accounts.
 
 ## 75.2 Helm
+
 Captain tools may show:
 
 - crew spatial readiness;
@@ -4993,6 +4997,7 @@ ARKit/ARCore/WebXR API details may change. The Parallax domain should remain sta
 ## 91.2 Changes requiring governing amendment
 
 Examples:
+
 - redefining Parallax ownership boundaries;
 - making AI runtime inference authoritative;
 - adding persistent public world-scale AR content;
