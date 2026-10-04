@@ -617,3 +617,30 @@ an accessible name and the focused panel rerun passes all eight tests. Optimized
 browser/native first-party pairing integration remains pending. This source
 checkpoint does not qualify secure physical peer identity, RF accuracy, BLE
 beacons, inter-platform pairing or Project Landfall closure.
+
+Hosted two-device run [37168243966](https://github.com/Kgray44/treasurehuntSoT/actions/runs/37168243966)
+passes at clean candidate `98bfeeff57d918dba09ad131e43af3a2d9dbfc60`, tree
+`def8fc8433fb4a03c1b881a990cdd9e87553f2e6`, source fingerprint
+`b2ff2e0931d16bbd66c44a2c1bd0dc947899034a1a71aafe3da3ab1af7dc6c3d`.
+Both Android 16 / API 36 low-resource emulators report 1,503,184 KiB guest memory
+and each delivers a validated native UWB report through its origin-bound WebView.
+Both project UNTRUSTED / UNKNOWN uncertainty / peerVerified false / canComplete
+false, then UNAVAILABLE after disconnect. Real isolated One Voyage retains zero
+progression events. Scenario, authority, app-data/reverse, owner-process/port/AVD,
+and transport-branch cleanup receipts all pass. The lowest sampled host available
+memory remains 10,498,740,224 bytes, above the stop threshold. Twelve sanitized
+artifacts are harvested and hashed; APK SHA-256 is
+`9a6f7fa96f25d0e11c5a30a8541e8a790c31ab24db5f71fab2617353c8d688ad`.
+This is simulated-radio native OS evidence, with no pose-control or RF accuracy
+claim. The lab supplies synthetic pairing parameters; the new first-party
+exchange API and Journal controls still require integration verification.
+
+An optimized-browser contract case now opens two same-Player Journal sessions
+against the real first-party API. A deliberately synthetic native bridge isolates
+web consent, matching server-issued configuration, lifecycle cancellation,
+mobile accessibility and unchanged canonical progression. Default deployments
+exercise truthful NOT_CONFIGURED before native preparation; the task-owned
+ephemeral-instance opt-in exercises create/join/start/stop. Trace, video and
+automatic screenshots are disabled for this private exchange; only a stopped
+screen and categorical evidence are retained. Execution remains pending at this
+source checkpoint; this case cannot substitute for native or physical proof.

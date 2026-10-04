@@ -561,3 +561,17 @@ Optimized/native API integration remains pending; do not mark Phase4 accepted.
 Fourth radio dispatch98bfeeff57d918dba09ad131e43af3a2d9dbfc60/tree
 def8fc8433fb4a03c1b881a990cdd9e87553f2e6, hosted-98bfeeff57d9-1791077449405,
 run37168243966 remains active. SDK stage now installs diagnosed libpulse0.
+
+Run 37168243966 is now harvested SUCCESS, 12 artifacts. Both API 36 low-resource
+emulators receive a validated native report, keep UNTRUSTED/UNKNOWN uncertainty,
+peerVerified=false/canComplete=false, and reach UNAVAILABLE after Stop. Actual
+One Voyage events remain zero. Scenario, authority, owner and transport cleanup
+all PASS with no remaining resources. Lowest sampled available host memory
+10,498,740,224 bytes. Clean source 98bfeeff/tree def8fc84, fingerprint
+b2ff2e0931d16bbd66c44a2c1bd0dc947899034a1a71aafe3da3ab1af7dc6c3d;
+APK 9a6f7fa96f25d0e11c5a30a8541e8a790c31ab24db5f71fab2617353c8d688ad.
+Synthetic lab pairing does not prove the first-party broker/Journal integration.
+New optimized-browser case uses the real API with two same-Player contexts and
+a synthetic native bridge, explicitly SHARED_WEB_CONTRACT. Disables trace/video/
+automatic screenshots so ephemeral pairing secrets cannot enter retained media.
+Execution pending; native first-party integration and Phase 4 closure remain open.

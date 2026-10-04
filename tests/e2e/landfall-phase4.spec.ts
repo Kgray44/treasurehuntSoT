@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
+import { expect, test, type BrowserContext } from "@playwright/test";
 import { db } from "../../src/lib/db";
 import { landfallFixture } from "../../src/landfall/fixtures";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
@@ -23,6 +23,224 @@ test.beforeAll(async () => {
   player = await closureAccount("Phase4 synthetic Player");
 });
 test.afterAll(async () => db.$disconnect());
+
+/** Browser-contract substitute only: the hosted radio corpus owns native OS proof. */
+async function syntheticCompanion(context: BrowserContext, address: string) {
+  await context.addInitScript(
+    ({ address }) => {
+      const operations: string[] = [];
+      let configuration: { peerId: string; sessionKey: string; sessionId: number; peerAddress: string } | null = null;
+      Object.assign(window, {
+        __nearbyContract: {
+          operations,
+          signature: async () =>
+            configuration && {
+              sessionId: configuration.sessionId,
+              peerAddress: configuration.peerAddress,
+              keyHash: Array.from(
+                new Uint8Array(
+                  await crypto.subtle.digest("SHA-256", new TextEncoder().encode(configuration.sessionKey)),
+                ),
+              )
+                .map((byte) => byte.toString(16).padStart(2, "0"))
+                .join(""),
+            },
+        },
+        LandfallNative: {
+          version: 1,
+          platform: "ANDROID",
+          request: async (message: string) => {
+            const { operation, payload } = JSON.parse(message);
+            operations.push(operation);
+            if (operation === "UWB_PREPARE")
+              return {
+                state: "READY",
+                role: payload.role,
+                address,
+                security: "PROVISIONED_STS",
+                ...(payload.role === "CONTROLLER" ? { channel: 9, preamble: 9 } : {}),
+              };
+            if (operation === "UWB_START") {
+              configuration = payload;
+              const peerId = payload.peerId;
+              setTimeout(
+                () =>
+                  window.dispatchEvent(
+                    new CustomEvent("landfall-native-event", {
+                      detail: {
+                        type: "nearby",
+                        family: "UWB",
+                        id: crypto.randomUUID(),
+                        peerId,
+                        observedAt: Date.now(),
+                        distanceMeters: 1,
+                        uncertaintyMeters: null,
+                        authenticated: false,
+                        sessionProtected: true,
+                      },
+                    }),
+                  ),
+                50,
+              );
+              return { state: "INITIALIZING" };
+            }
+            if (operation === "UWB_STOP") {
+              configuration = null;
+              return { state: "UNAVAILABLE" };
+            }
+            if (operation === "POWER_STATE")
+              return {
+                state: "READY",
+                lowPower: false,
+                thermalPressure: false,
+                critical: false,
+                observedAt: Date.now(),
+              };
+            return { state: "UNAVAILABLE", accepted: false };
+          },
+        },
+      });
+    },
+    { address },
+  );
+}
+
+test.describe("private companion exchange", () => {
+  // Native payloads and the visible short-lived code must not enter traces or automatic media.
+  test.use({ trace: "off", video: "off", screenshot: "off" });
+  test("first-party companion pairing preserves the current objective and cancels on background", async ({
+    browser,
+    baseURL,
+  }, testInfo) => {
+    const voyage = await closureVoyage(owner, player, "livingChart");
+    const contexts = await Promise.all(
+      [0, 1].map(() =>
+        browser.newContext({
+          viewport: { width: 375, height: 900 },
+          reducedMotion: "reduce",
+        }),
+      ),
+    );
+    try {
+      await Promise.all(
+        contexts.map(async (context, index) => {
+          await authenticateClosure(context, player, baseURL!);
+          await auditNativeGeolocation(context);
+          await syntheticCompanion(context, index === 0 ? "AQI=" : "AwQ=");
+        }),
+      );
+      const pages = await Promise.all(contexts.map((context) => context.newPage()));
+      for (const page of pages) {
+        await openClosureJournal(page, voyage.id);
+        await openClosureMap(page);
+        await page.locator(".landfall-nearby-panel:visible summary").click();
+      }
+      const panels = pages.map((page) => page.locator(".landfall-nearby-panel:visible"));
+      const baseline = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
+      const eventCount = await db.taleSessionEvent.count({ where: { sessionId: voyage.id } });
+      const operations = (index: number) =>
+        pages[index].evaluate(
+          () => (window as unknown as { __nearbyContract: { operations: string[] } }).__nearbyContract.operations,
+        );
+      expect((await operations(0)).filter((value) => value.startsWith("UWB_"))).toEqual([]);
+      await panels[0].getByRole("button", { name: "Create pairing code", exact: true }).click();
+      if (process.env.LANDFALL_NEARBY_PAIRING_MODE !== "ephemeral-instance") {
+        await expect(panels[0].getByRole("status", { name: "Nearby device hint status" })).toContainText(
+          "unavailable on this deployment",
+        );
+        expect((await operations(0)).filter((value) => value.startsWith("UWB_"))).toEqual([]);
+      } else {
+        const code = await panels[0].getByLabel("Pairing code", { exact: true }).textContent();
+        expect(typeof code === "string" && /^[A-Za-z0-9_-]{43}$/.test(code)).toBe(true);
+        await panels[1].getByLabel("Code from your other device").fill(code!);
+        await panels[1].getByRole("button", { name: "Join my other device", exact: true }).click();
+        await expect(panels[1].getByRole("status", { name: "Nearby device hint status" })).toContainText(
+          "cannot confirm arrival",
+        );
+        await panels[0].getByRole("button", { name: "Start hints", exact: true }).click();
+        await expect(panels[0].getByRole("status", { name: "Nearby device hint status" })).toContainText(
+          "cannot confirm arrival",
+        );
+        const signatures = await Promise.all(
+          pages.map((page) =>
+            page.evaluate(() =>
+              (
+                window as unknown as {
+                  __nearbyContract: {
+                    signature(): Promise<{
+                      sessionId: number;
+                      peerAddress: string;
+                      keyHash: string;
+                    } | null>;
+                  };
+                }
+              ).__nearbyContract.signature(),
+            ),
+          ),
+        );
+        expect(signatures[0]?.sessionId).toBe(signatures[1]?.sessionId);
+        expect(signatures[0]?.keyHash).toBe(signatures[1]?.keyHash);
+        expect(signatures[0]?.peerAddress).toBe("AwQ=");
+        expect(signatures[1]?.peerAddress).toBe("AQI=");
+        // The test never serializes codes, handles, keys, or native payloads into artifacts.
+        signatures.fill(null);
+        for (const panel of panels) {
+          await expect(panel.getByLabel("Pairing code", { exact: true })).toHaveCount(0);
+          await expect(panel.getByLabel("Code from your other device")).toHaveValue("");
+        }
+        await pages[0].evaluate(() =>
+          window.dispatchEvent(
+            new CustomEvent("landfall-native-event", {
+              detail: { type: "lifecycle", state: "BACKGROUND" },
+            }),
+          ),
+        );
+        await expect(panels[0].getByRole("status", { name: "Nearby device hint status" })).toContainText("paused");
+        const starts = (await operations(0)).filter((value) => value === "UWB_START").length;
+        await pages[0].evaluate(() =>
+          window.dispatchEvent(
+            new CustomEvent("landfall-native-event", {
+              detail: { type: "lifecycle", state: "FOREGROUND" },
+            }),
+          ),
+        );
+        expect((await operations(0)).filter((value) => value === "UWB_START")).toHaveLength(starts);
+        await panels[1].getByRole("button", { name: "Stop nearby hints", exact: true }).click();
+        await expect(panels[1].getByRole("status", { name: "Nearby device hint status" })).toContainText("stopped");
+      }
+      expect(await pages[0].evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      expect(
+        (
+          await new AxeBuilder({ page: pages[0] })
+            .include(".landfall-nearby-panel:visible")
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await panels[0].scrollIntoViewIfNeeded();
+      const shot = testInfo.outputPath("nearby-companion-stopped.png");
+      await pages[0].screenshot({ path: shot });
+      await testInfo.attach("nearby-companion-stopped", { path: shot, contentType: "image/png" });
+      for (const page of pages) expect((await geoAudit(page)).calls).toBe(0);
+      expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(eventCount);
+      const after = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
+      expect(after.currentBlockId).toBe(baseline.currentBlockId);
+      expect(after.currentSequence).toBe(baseline.currentSequence);
+      await testInfo.attach("nearby-browser-evidence-class", {
+        body: JSON.stringify({
+          evidenceClass: "SHARED_WEB_CONTRACT",
+          nativeBridge: "SYNTHETIC",
+          firstPartyApi: "REAL_OPTIMIZED_APPLICATION",
+          canonicalProgressionEvents: 0,
+          pairingConfigured: process.env.LANDFALL_NEARBY_PAIRING_MODE === "ephemeral-instance",
+        }),
+        contentType: "application/json",
+      });
+    } finally {
+      await Promise.all(contexts.map((context) => context.close()));
+    }
+  });
+});
 
 test("online background maps require a deliberate sharing choice and never write progression", async ({
   browser,
