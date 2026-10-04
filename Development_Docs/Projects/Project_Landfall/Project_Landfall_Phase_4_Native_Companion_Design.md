@@ -402,3 +402,41 @@ session tokens or arbitrary logs enter the readiness artifact. Three focused
 files pass seven tests; full TypeScript, changed-code ESLint and both Android
 APKs pass. Hosted verification remains required; these diagnostics do not repair
 or qualify the observed Apple startup or tablet GPS failures.
+
+Hosted tablet GPS focus 37164959426 at clean `adf2ed1bfa5d` passes. Two native
+callbacks deliver two distinct bridge fixes and two canonical observations, each
+within the unchanged requested bounds and accuracy. The scenario writes zero
+canonical progression events and verifies cleanup; native instrumentation also
+passes. The readiness artifact records a complete initial startup sequence.
+Earlier cold-delivery failures remain; the diagnostic change alone does not prove
+a root cause or final matrix reliability. Apple focus 37164957171 remains pending.
+
+Apple Nearby Interaction now has a foreground-only optional native driver using
+`NISession` and secure-coded `NIDiscoveryToken` archives. Preparation expires in
+60 seconds; pair parameters expire within five minutes. Wrong/oversized/noncanonical
+archives, arbitrary identity claims and replay windows are rejected. Invalidation,
+suspension, peer removal, background, critical power and private clear end the
+session. The native and web projections do not claim that a discovery token
+verifies Player identity or supplies known measurement uncertainty. Native ranges
+remain untrusted hints with no completion authority. The web adapter rejects
+forged/stale/wrong-peer reports and does not expose tokens, peer IDs or raw ranges
+in its presentation projection. Android preparation now also expires truthfully
+and clears on background before ranging starts.
+
+Eleven focused web tests pass across both platform adapters, including an old
+expiry/new-preparation race. Apple XCTest covers hostile pairing input, unsupported
+capability, inactive lifecycle and an actual framework capability attachment.
+The Swift path has not yet been built on hosted macOS; no native/ranging proof is
+claimed for this checkpoint. Secure first-party pairing and Player controls remain
+open. Apple's [Nearby Interaction session guidance](https://developer.apple.com/documentation/nearbyinteraction/initiating-and-maintaining-a-session)
+defines discovery-token exchange and capability checks; its
+[peer configuration](https://developer.apple.com/documentation/nearbyinteraction/ninearbypeerconfiguration)
+does not replace application-level authorization.
+
+Installed Netsim 1.0.23 answers bounded Wi-Fi/cell gRPC probes, while
+FrontendService GetVersion/ListDevice return UNIMPLEMENTED even on an owned
+standalone daemon with the CLI enabled by omission of the disabling flag.
+The newer primary source branch reports version 1.0.24 and implements those
+methods. This is a runtime control limitation for the installed binary, not
+evidence that every BLE/UWB multi-device software path is unavailable. Probe
+processes/ports are absent after cleanup; no range/RF claim follows from the probe.

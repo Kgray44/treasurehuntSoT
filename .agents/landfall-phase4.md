@@ -440,3 +440,20 @@ native callback count. Focused tests (three files/seven tests), uncached full
 TypeScript, changed-code ESLint and both native Android APK builds pass. Next
 impact-selected runs target primary Apple offline restart and Android tablet GPS;
 the known failures are not waived or classified as physical-only gates.
+
+Diagnostic checkpoint adf2ed1bfa5d6cdc081c2de89a6cb33d403f427c/tree
+b92c68b864706f8e01b355dfd429af2b95e48fb5 was pushed. Android tablet focus
+37164959426 passed/harvested (13 artifacts), transport branch deleted/verified.
+Two native callbacks reach bridge/qualifier; no progression written, cleanup PASS.
+Apple primary restart 37164957171 remains pending terminal harvest, dispatch
+hosted-adf2ed1bfa5d-1791073590612. The known previous GPS failures remain recorded.
+
+Optional Apple Nearby Interaction source and web contracts added. Web tests across
+Android/Apple pass eleven cases; Swift build/XCTest remain pending. Secure peer
+pairing, native ranging and Player controls are not yet qualified. Installed SDK
+Netsim 1.0.23 FrontendService GetVersion/ListDevice return UNIMPLEMENTED; bounded
+Wi-Fi/cell probes succeed. Do not reuse 1.0.24 source availability as installed
+runtime proof. Exact owned probe PIDs 52136/40104 and ports 5590/5592 were stopped
+and verified absent. radio-emulator-shutdown.json's null arrays were corrected to
+empty arrays after a fresh absent-process/port check; retained prior evidence is
+not silently rewritten as different native test results.

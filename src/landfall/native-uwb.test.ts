@@ -46,6 +46,15 @@ afterEach(async () => {
   vi.unstubAllGlobals();
 });
 describe("native UWB software path", () => {
+  it("expires preparation and clears it on background before a range session", async () => {
+    await provider!.prepare("CONTROLLER", true);
+    now += 60000;
+    expect(provider!.snapshot().state).toBe("EXPIRED");
+    await expect(provider!.start(config(), vi.fn())).rejects.toThrow("NOT_PREPARED");
+    await provider!.prepare("CONTROLLER", true);
+    send({ type: "lifecycle", state: "BACKGROUND" });
+    await expect(provider!.start(config(), vi.fn())).rejects.toThrow("NOT_PREPARED");
+  });
   it("does not touch a radio for a virtual world or without a deliberate action", async () => {
     expect(() => new NativeLandfallUwbProvider(landfallFixture.worldspaces[1])).toThrow("PHYSICAL_WORLDSPACE");
     await expect(provider!.prepare("CONTROLLER", false)).rejects.toThrow("CONSENT_REQUIRED");

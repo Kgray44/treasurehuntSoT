@@ -20,6 +20,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private var permissionReply: ((Any?, String?) -> Void)?
     private let hints = LandfallSecureHints()
     private var hardware: LandfallHardware?
+    private var nearby: LandfallNearbyInteraction?
     private var observers: [NSObjectProtocol] = []
     private var pendingReturn:String?
     private var privateStore: LandfallPrivateStore?
@@ -54,6 +55,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             self?.event(["type": "lifecycle", "state": "FOREGROUND", "pendingHints": self?.hints.read() ?? []])
         })
         hardware = LandfallHardware { [weak self] event in self?.event(event) }
+        nearby = LandfallNearbyInteraction { [weak self] event in self?.event(event) }
         UIDevice.current.isBatteryMonitoringEnabled = true
         _ = ProcessInfo.processInfo.thermalState
         for name in [Notification.Name.NSProcessInfoPowerStateDidChange, ProcessInfo.thermalStateDidChangeNotification, UIDevice.batteryLevelDidChangeNotification] {
@@ -122,10 +124,14 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "SENSORS_STOP": stopSensors(); replyHandler(["accepted": true], nil)
         case "BLE_START": replyHandler(["state": hardware?.startBle(foreground: foreground && !power.critical) ?? "UNAVAILABLE"], nil)
         case "BLE_STOP": hardware?.stop(); replyHandler(["accepted": true], nil)
+        case "NI_STATE": replyHandler(nearby?.state() ?? ["state": "UNAVAILABLE"], nil)
+        case "NI_PREPARE": replyHandler(nearby?.prepare(foreground: foreground && !power.critical) ?? ["state": "UNAVAILABLE"], nil)
+        case "NI_START": replyHandler(nearby?.start(payload, foreground: foreground && !power.critical) ?? ["state": "UNAVAILABLE"], nil)
+        case "NI_STOP": nearby?.stop(); replyHandler(["accepted": true], nil)
         case "NFC_READ": replyHandler(["state": hardware?.startNfc(foreground: foreground && !power.critical) ?? "UNAVAILABLE"], nil)
         case "QR_SCAN": replyHandler(["state": hardware?.startQr(foreground: foreground && !power.critical, presenter: web?.window?.rootViewController) ?? "UNAVAILABLE"], nil)
         case "CLEAR_PRIVATE_DATA":
-            stopLocation(); stopSensors(); hardware?.stop()
+            stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop()
             for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear(); privateStore?.clear()
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             UNUserNotificationCenter.current().removeAllDeliveredNotifications()
@@ -208,12 +214,12 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private func powerChanged() {
         guard foreground else { return }
         if power.constrained { stopSensors() }
-        if power.critical { hardware?.stop(); if acquiring { stopLocation(); event(["type":"error"]) } }
+        if power.critical { hardware?.stop(); nearby?.stop(); if acquiring { stopLocation(); event(["type":"error"]) } }
         else if acquiring { configureLocationPower() }
         event(["type":"power", "power":power.snapshot()])
     }
     private func stopSensors() { location.stopUpdatingHeading(); motion.stopAccelerometerUpdates(); motion.stopDeviceMotionUpdates(); altimeter.stopRelativeAltitudeUpdates() }
-    private func pause() { event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); stopSensors(); hardware?.stop() }
+    private func pause() { event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop() }
     private func event(_ payload: [String: Any]) {
         guard foreground, let web=web, accepts(web.url), JSONSerialization.isValidJSONObject(payload), let data=try? JSONSerialization.data(withJSONObject: payload, options: [.fragmentsAllowed]), let json=String(data: data, encoding: .utf8) else { return }
         DispatchQueue.main.async { web.evaluateJavaScript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:\(json)}))", completionHandler: nil) }

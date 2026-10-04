@@ -53,6 +53,7 @@ export type NativeUwbProjection = {
 export class NativeLandfallUwbProvider {
   private generation = 0;
   private peer: string | null = null;
+  private preparedUntil = 0;
   private expiresAt = 0;
   private lastAt = -1;
   private timeout: ReturnType<typeof setTimeout> | undefined;
@@ -62,8 +63,8 @@ export class NativeLandfallUwbProvider {
   private readonly receive = (event: Event) => {
     const value = (event as CustomEvent).detail;
     if (!this.peer || this.now() >= this.expiresAt) return;
-    if (value?.type === "nearby-state" && value.family === "UWB" && value.state === "UNAVAILABLE") {
-      void this.stop();
+    if (value?.type === "nearby-state" && value.family === "UWB" && ["UNAVAILABLE", "EXPIRED"].includes(value.state)) {
+      void this.finish(value.state);
       return;
     }
     const parsed = rangeSchema.safeParse(value);
@@ -92,6 +93,7 @@ export class NativeLandfallUwbProvider {
     this.listener?.({ ...value });
   }
   snapshot(): NativeUwbProjection {
+    if (this.projection.state === "READY" && this.now() >= this.preparedUntil) return this.empty("EXPIRED");
     return this.projection.rangeAvailable && this.now() - this.lastAt > 10000
       ? this.empty("UNAVAILABLE")
       : { ...this.projection };
@@ -100,8 +102,8 @@ export class NativeLandfallUwbProvider {
     if (!userAction) throw new Error("LANDFALL_UWB_CONSENT_REQUIRED");
     await this.stop();
     const attempt = this.generation;
-    if (!landfallNativeHost()) {
-      this.update(this.empty("UNCONFIGURED"));
+    if (landfallNativeHost()?.platform !== "ANDROID") {
+      this.update(this.empty("UNSUPPORTED"));
       return null;
     }
     this.update(this.empty("INITIALIZING"));
@@ -114,7 +116,11 @@ export class NativeLandfallUwbProvider {
         ready.data.role === role &&
         (role !== "CONTROLLER" || (ready.data.channel !== undefined && ready.data.preamble !== undefined))
       ) {
+        this.preparedUntil = this.now() + 60000;
         this.update(this.empty("READY"));
+        this.stopLifecycle = subscribeLandfallNativeLifecycle((state) => {
+          if (state === "BACKGROUND") void this.stop();
+        });
         return ready.data;
       }
       const parsed = z.object({ state: z.enum(["UNSUPPORTED", "UNAVAILABLE", "PROMPTABLE"]) }).safeParse(reply);
@@ -132,16 +138,14 @@ export class NativeLandfallUwbProvider {
       configuration.expiresAt - this.now() > 300000
     )
       throw new Error("LANDFALL_UWB_PAIRING_EXPIRED");
-    if (this.projection.state !== "READY" || this.peer) throw new Error("LANDFALL_UWB_NOT_PREPARED");
+    if (this.projection.state !== "READY" || this.now() >= this.preparedUntil || this.peer)
+      throw new Error("LANDFALL_UWB_NOT_PREPARED");
     this.peer = configuration.peerId;
     this.expiresAt = configuration.expiresAt;
     this.listener = listener;
     window.addEventListener("landfall-native-event", this.receive);
-    this.stopLifecycle = subscribeLandfallNativeLifecycle((state) => {
-      if (state === "BACKGROUND") void this.stop();
-    });
     this.timeout = setTimeout(() => {
-      void this.stop().then(() => this.update(this.empty("EXPIRED")));
+      void this.finish("EXPIRED");
     }, configuration.expiresAt - this.now());
     const attempt = this.generation;
     this.update(this.empty("INITIALIZING"));
@@ -151,12 +155,17 @@ export class NativeLandfallUwbProvider {
         .parse(await landfallNativeRequest("UWB_START", configuration));
       if (attempt !== this.generation) return;
       if (reply.state !== "INITIALIZING") {
-        await this.stop();
-        this.update(this.empty(reply.state));
+        await this.finish(reply.state);
       }
     } catch {
       if (attempt === this.generation) await this.stop();
     }
+  }
+  private async finish(state: NativeUwbProjection["state"]) {
+    const stopping = this.stop();
+    const attempt = this.generation;
+    await stopping;
+    if (attempt === this.generation) this.update(this.empty(state));
   }
   async stop() {
     this.generation++;
@@ -166,10 +175,11 @@ export class NativeLandfallUwbProvider {
     this.stopLifecycle = null;
     if (typeof window !== "undefined") window.removeEventListener("landfall-native-event", this.receive);
     this.peer = null;
+    this.preparedUntil = 0;
     this.expiresAt = 0;
     this.lastAt = -1;
     this.update(this.empty("UNAVAILABLE"));
     this.listener = null;
-    if (landfallNativeHost()) await landfallNativeRequest("UWB_STOP").catch(() => undefined);
+    if (landfallNativeHost()?.platform === "ANDROID") await landfallNativeRequest("UWB_STOP").catch(() => undefined);
   }
 }

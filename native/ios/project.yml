@@ -25,6 +25,7 @@ targets:
         NSLocationAlwaysAndWhenInUseUsageDescription: Optional broad arrival reminders can wake this journey. A fresh foreground reading is still required to confirm arrival.
         NSMotionUsageDescription: Optional movement hints help interpret uncertain navigation while this journey is open.
         NSBluetoothAlwaysUsageDescription: Optional configured nearby providers can supply proximity hints. Bluetooth never completes a waypoint by itself.
+        NSNearbyInteractionUsageDescription: Optional paired devices can share short-lived distance hints while this journey is open. A range cannot confirm a visit by itself.
         NFCReaderUsageDescription: Read an optional signed journey token. Unsigned tags and links cannot change Voyage progress.
         NSCameraUsageDescription: Read an optional signed QR journey token. Images are not stored or uploaded by this scanner.
     settings:
