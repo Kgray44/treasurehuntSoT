@@ -666,3 +666,13 @@ connection, process, port and AVD cleanup. Actual API, model, memory and screen
 configuration are checked against the selected profile. Only sanitized receipts
 and a stopped screenshot are retained. Hosted execution is pending; neither
 native first-party pairing acceptance nor Phase 4 completion is claimed yet.
+
+The first hosted Journal run [37169429928](https://github.com/Kgray44/treasurehuntSoT/actions/runs/37169429928)
+at `0bbabbbdf0460bee410bd51206b0eca5f59e2b6d` passes native compilation,
+optimized application compilation, full TypeScript and static-page generation.
+Playwright then rejects worker-affecting media settings inside a nested describe
+group before any browser or emulator fixture runs. The failed runtime/profile
+receipts are harvested and transport cleanup passes. Moving trace/video/automatic
+screenshot settings to file scope corrects discovery; the local list command
+finds all seven cases across the two files. This is a corrected test configuration,
+not executed native pairing evidence. Redispatch is required.

@@ -597,3 +597,14 @@ native Journal fixture and hosted target; later categorical-stage/host metadata
 and fail-closed resource-guard adjustments pass changed-code ESLint. Docs and
 diff checks pass. The upcoming optimized hosted build must check the frozen
 candidate, then run browser and actual native integration; no preclaimed PASS.
+
+Checkpoint 0bbabbbdf0460bee410bd51206b0eca5f59e2b6d/tree
+730b8e3cde67e31f9e0d9d2594dc59238767eabe dispatched android-journal closure,
+low-resource: run 37169429928, hosted-0bbabbbdf046-1791078879526. Native build,
+optimized compile (22.5s), TypeScript (42s), static pages PASS. Playwright fails
+discovery before any test/device due to trace/video/screenshot use() in nested
+describe. Two failed runtime/profile receipts harvested, transport branch cleanup
+PASS. Media settings moved to file scope; local --list finds all seven cases.
+Redispatch required; no native pairing claim. Untracked remote-data core files
+are independent WIP, lint passes but no tests/API/UI/acceptance yet. Keep them out
+of this focused configuration-fix checkpoint; hosted checkout binds exact commit.

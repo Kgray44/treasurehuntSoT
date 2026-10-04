@@ -17,6 +17,9 @@ import {
 let owner: ClosureAccount, player: ClosureAccount;
 test.describe.configure({ timeout: 180_000 });
 test.skip(({ browserName }) => browserName !== "chromium", "Owned mutable fixtures run once.");
+// Pairing payloads and short-lived codes must not enter traces or automatic media.
+// Playwright requires these worker-affecting settings at file scope.
+test.use({ trace: "off", video: "off", screenshot: "off" });
 test.beforeAll(async () => {
   ensureGenericSoundingLineIsolation();
   owner = await closureAccount("Phase4 synthetic Creator");
@@ -106,8 +109,6 @@ async function syntheticCompanion(context: BrowserContext, address: string) {
 }
 
 test.describe("private companion exchange", () => {
-  // Native payloads and the visible short-lived code must not enter traces or automatic media.
-  test.use({ trace: "off", video: "off", screenshot: "off" });
   test("first-party companion pairing preserves the current objective and cancels on background", async ({
     browser,
     baseURL,
