@@ -1390,3 +1390,13 @@ owners prove cleanup PASS with no remaining processes. No cold cookie facts
 were produced. Current shared opening wait is being exercised on background
 run 37204577156, dispatch hosted-374016faff77-1791119327103.
 No final source matrix, ordinary qualification, protected merge or closure yet.
+
+Current background 37204577156 low-resource also fails before cold observation,
+with RETURNED/307 and FIRST_ACTUAL_RETURN_HOP/NATIVE_OPERATION_FAILED. Its receipt
+does not distinguish the leaf operation; no root cause is inferred. The harness
+now records finite opening stages, whitelisted transport codes and owner/page
+booleans without raw exception text. After the actual observed 307, it reattaches
+to the current owned WebView before checking the returned Journal and opening it.
+No credentials are reinjected and return, canonical and performance assertions
+remain strict. This handles permitted OS WebView recreation, without claiming
+that recreation caused the previous failure. Fresh actual execution is required.

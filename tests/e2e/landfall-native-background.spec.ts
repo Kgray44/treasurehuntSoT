@@ -134,6 +134,13 @@ test("real signed notice returns reauthorize Player across actual registered-reg
       } | null = null;
       const noticeControls: { phase: string; hierarchyAttempts: number; controlObserved: boolean }[] = [];
       let failureKind: string | null = null;
+      let failureTransport: {
+        ownerCancelled: boolean;
+        pageClosed: boolean | null;
+        code: string | null;
+        processKilled: boolean;
+      } | null = null;
+      let firstReturnPageClosed: boolean | null = null;
       const serverReturnOutcomes: string[] = [];
       let settings: Awaited<ReturnType<typeof inspectOwnedAndroidLocationAccuracy>> | null = null;
       let reboot: Awaited<ReturnType<typeof rebootOwnedAndroidGuest>> | null = null;
@@ -380,7 +387,9 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         await cdp.detach();
         await journal.goto(`${origin.origin}/player/playthroughs/${voyage.id}/journal`);
         await journal.waitForFunction(() => Boolean(window.LandfallNative), undefined, { timeout: 15000 });
-        await openNativeJournalEntry(journal, adb);
+        await openNativeJournalEntry(journal, adb, (next) => {
+          stage = `INITIAL_${next}`;
+        });
         await openClosureMap(journal, { noWaitAfter: true });
         const panel = journal.getByRole("region", { name: "Optional background reminders" });
         await expect(panel).toBeVisible();
@@ -423,11 +432,21 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           })
           .toContain("RETURNED");
         serverReturnOutcomes.push("RETURNED");
+        stage = "FIRST_RETURN_HTTP";
         await expect.poll(() => returnHopStatus, { timeout: 45000 }).toBe(307);
+        firstReturnPageClosed = journal.isClosed();
+        stage = "FIRST_RETURN_REATTACH";
+        // An OS return may recreate a WebView. Observe the current owned page;
+        // never reuse a stale driver or inject another session after the tap.
+        await closeDrivers();
+        const activeJournal = await attach(false);
+        stage = "FIRST_RETURN_JOURNAL";
         await expect
-          .poll(() => new URL(journal.url()).pathname, { timeout: 45000 })
+          .poll(() => new URL(activeJournal.url()).pathname, { timeout: 45000 })
           .toBe(`/player/playthroughs/${voyage.id}/journal`);
-        await openNativeJournalEntry(journal, adb);
+        await openNativeJournalEntry(activeJournal, adb, (next) => {
+          stage = `FIRST_RETURN_${next}`;
+        });
         expect(returnHopStatus).toBe(307);
         activeReturn = true;
         measurements.push({ stage: "ACTIVE_NOTICE_RETURN", elapsedMs: performance.now() - firstReturnStarted });
@@ -556,13 +575,30 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         passed = true;
       } catch (error) {
         const message = error instanceof Error ? error.message : "";
-        failureKind = /^NATIVE_[A-Z_]{1,100}$/.test(message)
+        const details = error && typeof error === "object" ? (error as Record<string, unknown>) : {};
+        const code = typeof details.code === "string" ? details.code : null;
+        failureTransport = {
+          ownerCancelled: resources.signal.aborted,
+          pageClosed: page?.isClosed() ?? null,
+          code:
+            code && ["ABORT_ERR", "ECONNRESET", "ECONNREFUSED", "ETIMEDOUT", "ENOENT", "EPIPE"].includes(code)
+              ? code
+              : null,
+          processKilled: details.killed === true,
+        };
+        failureKind = /^(?:NATIVE_|LANDFALL_)[A-Z0-9_]{1,100}$/.test(message)
           ? message
-          : /timeout|timed out/i.test(message)
-            ? "TIMEOUT"
-            : /expect|assert/i.test(message)
-              ? "ASSERTION"
-              : "NATIVE_OPERATION_FAILED";
+          : error instanceof Error && error.name === "AbortError"
+            ? "OWNER_CANCELLED"
+            : /device offline|device.*not found|no devices\/emulators/i.test(message)
+              ? "ANDROID_DEVICE_UNAVAILABLE"
+              : /target.*closed|page.*closed|browser.*closed|socket hang up|ECONNRESET/i.test(message)
+                ? "TRANSPORT_CLOSED"
+                : /timeout|timed out/i.test(message)
+                  ? "TIMEOUT"
+                  : /expect|assert/i.test(message)
+                    ? "ASSERTION"
+                    : "NATIVE_OPERATION_FAILED";
         // Error text, protocol URLs and Playwright snapshots can contain an opaque
         // claim or account cookie. Export the finite stage and explicit observations.
         throw new Error(`LANDFALL_NATIVE_BACKGROUND_FAILED:${stage}`);
@@ -611,6 +647,8 @@ test("real signed notice returns reauthorize Player across actual registered-reg
               : "FAIL",
           failedStage: passed ? null : stage,
           failureKind,
+          failureTransport,
+          firstReturnPageClosed,
           deviceProfile: profile,
           evidenceClass: passed ? "EMULATOR_PROVEN" : "EXECUTION_FAILED",
           nativeBridge: "REAL_ANDROID_OS",

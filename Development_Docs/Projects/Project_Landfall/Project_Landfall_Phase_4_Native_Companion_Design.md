@@ -1743,3 +1743,12 @@ Both outer owners prove process cleanup PASS. No persisted-cookie conclusion is
 supported by this run. The current shared opening wait is under actual background
 execution on 37204577156. Complete cold revoked-membership return and final exact
 source matrices remain local acceptance work.
+
+The next background harness binds the current owned WebView after the genuine
+observed 307 rather than relying on the pre-background driver for the returned
+Journal. It records whether the previous page closed, finite opening stages and
+whitelisted transport/owner facts. It exports no raw exception text, cookie or
+return handle. No session is reinjected after either notice. This supports
+permitted OS WebView recreation; it does not establish that recreation caused the
+earlier failures. All return, progression, cleanup and performance assertions
+remain enforced, and actual execution is still required.
