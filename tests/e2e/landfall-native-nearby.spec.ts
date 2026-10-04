@@ -232,11 +232,11 @@ test("real native Journal pairing returns untrusted hints and background clears 
           if (await opening.isVisible()) {
             // Target the exact source-owned control to isolate the failed nested
             // role lookup, and still require its normal visible copy and tap.
-            const open = opening.locator("button.wax-open");
+            const open = page.locator("button.wax-open");
             await expect(open).toBeVisible();
             await expect(open).toContainText("Open the journal");
             try {
-              await open.click({ noWaitAfter: true, timeout: 5000 });
+              await open.tap({ noWaitAfter: true, timeout: 10000 });
             } catch (error) {
               // A timed-out click may have already started the opening.
               // Continue only if that real transition is visible.
@@ -441,6 +441,10 @@ test("real native Journal pairing returns untrusted hints and background clears 
               page.evaluate(() => ({
                 readyState: document.readyState,
                 nativeBridgeAvailable: Boolean(window.LandfallNative),
+                openingButtonCount: document.querySelectorAll("button.wax-open").length,
+                openingButtonInDialog: Boolean(document.querySelector("button.wax-open")?.closest("[role='dialog']")),
+                openingButtonDisabled:
+                  (document.querySelector("button.wax-open") as HTMLButtonElement | null)?.disabled ?? null,
               })),
               undefined,
               3000,

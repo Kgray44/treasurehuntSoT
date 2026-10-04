@@ -1063,3 +1063,12 @@ strictnumericartifactexportbeforeownedcleanup, no configuredorigin. Apple3config
 XCTestleasebatchclock/CPU/memorymetrics+numericattachment,8x4KiB encryptedrecords.
 Actualexecutionpending. LocalAndroidtestAPK/TS/lintbuildPASS afterDebug.getPss
 longtypefix. Finalcurrentmatrixupdated, no qualification/closure/catalogpromotion.
+
+2685ee0f pushed. Native performance hosted Android37190933685/Apple37190937839
+running, dispatch1791104625562/1791104630164 respectively. a808Journal37190171035
+HARVESTED45 FAIL at first opening control, not pairing. Viewed screenshot shows
+entry control; finite native UNAVAILABLE is idle state before prepare, not proof
+of UWB failure. Next normal global wax-open touch plus finite DOM diagnostics.
+Owned hosted emulator OS Location settings inspection added for geo: normal
+observed service/accuracy entry navigation and observed single accuracy toggle,
+no undocumented setting keys or raw hierarchy artifacts. Actual outcome pending.

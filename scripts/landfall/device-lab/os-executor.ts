@@ -8,6 +8,7 @@ import { startDeviceLabAuthority } from "./authority-client";
 import { deliverDeviceLabPosition } from "./location-control";
 import { rebootOwnedAndroidGuest } from "../../../src/landfall/device-lab/android-reboot";
 import { deviceLabSourceIdentity } from "./source";
+import { inspectOwnedAndroidLocationAccuracy } from "./android-location-settings";
 import {
   deviceLabStartupStageSchema,
   type DeviceLabStartupStage,
@@ -89,6 +90,7 @@ export async function executeLandfallOsScenario(
     elapsedMs: number;
   }[] = [];
   const geofenceControls: { index: number; injections: number; elapsedMs: number; budgetMs: number }[] = [];
+  let locationSettings: Awaited<ReturnType<typeof inspectOwnedAndroidLocationAccuracy>> | null = null;
   const readinessStartedAt = Date.now();
   const clientStages: { stage: DeviceLabStartupStage; elapsedMs: number }[] = [];
   const startupRequests = { documents: 0, workers: 0, scripts: 0 };
@@ -445,6 +447,7 @@ export async function executeLandfallOsScenario(
       await adb(["shell", "pm", "grant", "com.voyagewright.landfall", "android.permission.ACCESS_COARSE_LOCATION"]);
       await adb(["shell", "pm", "grant", "com.voyagewright.landfall", "android.permission.ACCESS_FINE_LOCATION"]);
       if (geofenceScenario) {
+        locationSettings = await inspectOwnedAndroidLocationAccuracy(adb);
         await adb([
           "shell",
           "pm",
@@ -1080,7 +1083,11 @@ export async function executeLandfallOsScenario(
       const file = path.join(destination, "native-geofence-controls.json");
       await writeFile(
         file,
-        JSON.stringify({ controls: geofenceControls, nativeDiagnostic, physicalTimingProven: false }, null, 2),
+        JSON.stringify(
+          { controls: geofenceControls, locationSettings, nativeDiagnostic, physicalTimingProven: false },
+          null,
+          2,
+        ),
       );
       artifacts.push({
         path: file,
