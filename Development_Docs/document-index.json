@@ -843,6 +843,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Phase_2_Mainline_Convergence_Record.md",
       "record_type": "governing-record",
       "status": "preserved",
@@ -7228,6 +7234,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Simulation_Metrics.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/README.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
