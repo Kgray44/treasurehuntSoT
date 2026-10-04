@@ -110,4 +110,4 @@ The governing evidence tiers remain D0 deterministic simulation through D5 real 
 - Storytide, Figurehead, Wakebook, Landfall, Drydock, Harborlight, Sealed Hold, and Sounding Line integrations must preserve their owner-domain authority.
 - The six implementation phases must follow ordinary Voyagewright phase-level development, focused verification, Sounding Line final acceptance, and protected-main integration.
 
-Publishing this governing baseline does not automatically authorize Parallax Phase 1 or any later Spatial Experience project.
+Publishing this governed baseline does not automatically authorize Parallax Phase 1 or any later Spatial Experience project.
