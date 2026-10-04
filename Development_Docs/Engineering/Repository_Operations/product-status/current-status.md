@@ -8,8 +8,9 @@ last_reviewed: 2026-10-04
 
 # Current status
 
-Landfall Phase4 remains in development. Current8e6e3e19 passes478unit files /
-2,714tests, selected formatting/lint, TypeScript and exact tracked-source privacy
+Landfall Phase4 remains in development. Source0ba27caa passes478unit files /
+2,715tests on fresh owned SQLite, with unchanged input trees on7f36d94e.
+Selected formatting/lint, TypeScript and the earlier exact tracked-source privacy
 scanning. OriginalC8 optimized build/client privacy, browser53 and providers159
 per Windows/Linux host remain source-bound evidence with unchanged production
 web/dependency/schema inputs.
@@ -33,7 +34,12 @@ now passes, while tap/foreground return remains unaccepted. Dark/large-text and
 orientation fallback pass; Reduce Motion navigation remains unaccepted. One
 primary batch37232748824 on90ef2d75 failed at Motion page navigation before
 either scenario ran. Recheck37233941482 on a37ff45d targets the observed native
-row and keeps all three acceptance boundaries mandatory.
+row and keeps all three acceptance boundaries mandatory. That search recheck
+also fails: actual Settings reports no Reduce Motion result. Current batch
+37236170919 on7f36d94e retains mandatory presentation in an independent job,
+using an older supported preinstalled runtime, while the latest-runtime companion
+job executes restart, notice return and actual notification refusal. Both jobs
+must pass for closure; companion success cannot substitute for presentation.
 Protected qualification, merge, landed proof,
 catalog promotion and formal closure remain pending.
 

@@ -108,7 +108,13 @@ Current CI separates mandatoryprimarypresentation(19passes/0fail/≤1expectedski
 onoldestsupportedpreinstalledruntime fromcompanion-only(17passes/0fail/≤1skip)
 onlatest. Two presentationtests explicitlyexcludedonlyfromcompanionbuild, with
 separatereceiptrequired. Overallclosure stillFAILifpresentationfails. No waived
-tests/unsupported relabeling/SDKinstall/acceptanceinference. Newbatchnotdispatched.
+tests/unsupported relabeling/SDKinstall/acceptanceinference.
+Currentindependentbatch7f36d94edf23b196f576bb1b00a438e9136e05a4,
+run37236170919, dispatchhosted-7f36d94edf23-1791149251861; transport
+0fcb6c263897a5f8b84a5539300eb1bf4065e58f. Nativejob111535599747:
+restart+positive notice+actualrefusal. Presentationjob111535599907:
+full19 onoldestsupportedpreinstalledruntime. Wholeclosureacceptance requiresboth.
+Rootunitinputtrees match0ba exactly; no protectedqualificationdispatched.
 Next: finish/harvest this native recheck, actual-step/canonical/cleanup inspection,
 final docs/performance/privacy/input comparisons, freeze, ordinary exact-candidate
 protected qualification, protected merge, landed smoke, separate protected

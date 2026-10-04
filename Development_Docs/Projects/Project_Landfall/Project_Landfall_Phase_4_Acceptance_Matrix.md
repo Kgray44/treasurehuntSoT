@@ -70,6 +70,9 @@ presentation receipt; companion success cannot satisfy accessibility acceptance.
 This permits independent scenario evidence while any presentation failure still
 fails the overall closure run. Actual runtime selection and full source identities
 remain retained; no failure becomes unsupported or accepted through this split.
+Current batch **37236170919 on `7f36d94e`** runs the independent jobs:
+companion111535599747 (restart, positive notice and actual refusal) and mandatory
+presentation111535599907. Root unit input trees match `0ba27caa` exactly.
 
 Current clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
 owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting

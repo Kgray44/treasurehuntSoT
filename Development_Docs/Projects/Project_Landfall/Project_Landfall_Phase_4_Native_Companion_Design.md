@@ -15,6 +15,19 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Current acceptance checkpoint
 
+Current batch37236170919 on `7f36d94e` separates the companion scenarios from
+mandatory presentation. Latest-runtime native job111535599747 executes restart,
+positive notice handoff and actual permission refusal; presentation111535599907
+requires19passes on the oldest compatible preinstalled runtime. Neither source-
+bound companion17passes nor an OS search failure supplies presentation acceptance.
+Search run37234626584 remains FAIL18/1/1,4,300hashes/cleanupPASS, with an actual
+No Results screen and no scenario execution. Available host runtimes26.2/26.4
+permit variation without installing another SDK or declaring the gate external.
+The refreshed source0ba27caa root regression passes478files/2715tests in217.531s,
+fresh SQLite/cleanunchanged; source/test/package/Prisma trees match7f36d94e.
+
+Earlier failed presentation attempts follow with their original source identities.
+
 Primary focused run37232748824 on `90ef2d75` fails before scenario execution:
 18native passes/1Motion-page failure/1expected driver skip;4,298hashed artifacts
 and cleanupPASS. Actual Settings hierarchy/video/event records retain both text-
