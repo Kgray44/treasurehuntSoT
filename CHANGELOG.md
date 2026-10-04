@@ -14,6 +14,10 @@ last_reviewed: 2026-10-04
 
 ### Added
 
+- Restored Journal drawer Escape handling when authenticated reading-state
+  restoration finishes after session loading. Closing the drawer returns focus
+  to its opening control; the delayed-restore regression test now covers that race.
+
 - Corrected the Phase 4 notification-return adapter so removed membership or an
   unavailable pinned Voyage sends an authenticated Player to Player home instead
   of treating their account as signed out. Current membership and pinned-session

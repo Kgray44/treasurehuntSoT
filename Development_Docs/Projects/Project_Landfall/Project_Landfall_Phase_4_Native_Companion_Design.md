@@ -15,6 +15,15 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Acquisition and authority
 
+Current browser run37216127022 on c3ba3167 passes52of53 retained journeys,
+failing narrow-viewport Escape/focus restoration. A targeted authenticated
+reading-state delay reproduces the failure: session data arrives while the
+Journal root is still absent, and the Escape effect does not rerun when reading
+restoration mounts that root. The effect now depends on reading readiness;
+the regression changes from fail to pass, and all27Journal component tests,
+TypeScript and lint pass. The existing keyboard/browser assertion remains
+unchanged and still requires actual drawer close and focus restoration.
+
 Android signed-notice run37214774366 on fb92d113 passes the complete flow on both
 correctly provisioned primary and low-resource profiles: actual active notice
 and current Journal return, same-guest reboot with preserved AVD/changed boot
