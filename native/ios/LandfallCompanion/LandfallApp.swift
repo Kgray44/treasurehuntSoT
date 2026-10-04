@@ -14,7 +14,11 @@ struct LandfallApp: App {
             if delegate.companion.origin != nil {
                 LandfallWebView(companion: delegate.companion).ignoresSafeArea(.container, edges: .bottom)
             } else {
-                Text("Landfall companion is not configured. Build with your VoyageWright HTTPS origin.").padding()
+                ScrollView {
+                    Text("Landfall companion is not configured. Build with your VoyageWright HTTPS origin.")
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
         }
     }

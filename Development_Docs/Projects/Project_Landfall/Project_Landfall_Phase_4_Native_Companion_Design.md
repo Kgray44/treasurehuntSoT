@@ -15,6 +15,19 @@ governs evidence fidelity. Active execution instructions remain under `.agents`.
 
 ## Current acceptance checkpoint
 
+The refreshed `b5050a4f` root regression passes478files/2715tests in192.468seconds
+with fresh owned SQLite and clean/unchanged source. Source archive privacy passes
+zero violations/six classifications, SHA256
+`71daa761fd03e4b170a54c7d171b2e32307e553d051c6b591eafee03f52d60fd`.
+Accepted profile receipts now cover Android80/80, radio8/8 and iOS27/27, including
+source7f36d94e primary restart with restored lease, canonicalone and cleanup.
+Run37238465789 still executes focused positive/refused notification cases.
+Its independent presentation job fails at actual landscape geometry before the
+Motion test. Built Info.plist has no supported-orientation keys; both recorded
+images remain portrait. Current app configuration declares phone/tablet rotation
+and makes the unconfigured message scrollable at XXXL. These are pending actual
+presentation validation, not an accepted geometry claim or a qualification waiver.
+
 Current batch37236170919 on `7f36d94e` separates the companion scenarios from
 mandatory presentation. Latest-runtime native job111535599747 executes restart,
 positive notice handoff and actual permission refusal; presentation111535599907

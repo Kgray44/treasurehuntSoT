@@ -128,6 +128,45 @@ async function main() {
     );
     executionStage = "GENERATE_XCODE_PROJECT";
     await labTool("xcodegen", ["generate", "--spec", path.join(root, "native", "ios", "project.yml")], 180000);
+    const orientationPlist = path.join(root, "native", "ios", "LandfallCompanion", "Info.plist");
+    const phoneOrientations = JSON.parse(
+      await labTool("plutil", ["-extract", "UISupportedInterfaceOrientations", "json", "-o", "-", orientationPlist]),
+    );
+    const tabletOrientations = JSON.parse(
+      await labTool("plutil", [
+        "-extract",
+        "UISupportedInterfaceOrientations~ipad",
+        "json",
+        "-o",
+        "-",
+        orientationPlist,
+      ]),
+    );
+    const requiredOrientations = [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight",
+    ];
+    if (
+      ![phoneOrientations, tabletOrientations].every(
+        (values) => Array.isArray(values) && requiredOrientations.every((value) => values.includes(value)),
+      ) ||
+      !tabletOrientations.includes("UIInterfaceOrientationPortraitUpsideDown")
+    )
+      throw new Error("LANDFALL_APPLE_SUPPORTED_ORIENTATIONS_REQUIRED");
+    await writeFile(
+      path.join(destination, "orientation-configuration.json"),
+      JSON.stringify(
+        {
+          sourceClass: "ACTUAL_GENERATED_APP_PLIST",
+          phoneOrientations,
+          tabletOrientations,
+          actualRotationAcceptance: false,
+        },
+        null,
+        2,
+      ),
+    );
     executionStage = "CONFIGURE_OWNED_LAB_PLIST";
     // Generated, ignored lab plist only. Release source accepts HTTPS origins exclusively.
     await labTool("plutil", [

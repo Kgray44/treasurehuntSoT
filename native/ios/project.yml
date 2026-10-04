@@ -20,6 +20,15 @@ targets:
         LandfallOrigin: $(LANDFALL_ORIGIN)
         WKAppBoundDomains: [$(LANDFALL_HOST)]
         UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        UISupportedInterfaceOrientations~ipad:
+          [
+            UIInterfaceOrientationPortrait,
+            UIInterfaceOrientationPortraitUpsideDown,
+            UIInterfaceOrientationLandscapeLeft,
+            UIInterfaceOrientationLandscapeRight,
+          ]
         UIBackgroundModes: [location]
         NSLocationWhenInUseUsageDescription: Your position helps check arrival at a released physical waypoint. The chart and readable fallback remain available without location.
         NSLocationAlwaysAndWhenInUseUsageDescription: Optional broad arrival reminders can wake this journey. A fresh foreground reading is still required to confirm arrival.

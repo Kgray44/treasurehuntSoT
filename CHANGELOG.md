@@ -14,6 +14,10 @@ last_reviewed: 2026-10-04
 
 ### Added
 
+- Apple companion configuration now declares portrait and landscape support
+  for phones and tablets. Its unconfigured message scrolls at large text sizes;
+  actual Simulator rotation and reduced-motion acceptance remain under validation.
+
 - Native iOS notification consent replies and notice-return navigation now run
   on the UI thread. Actual permission acceptance passes; native notice handoff
   and final Phase 4 acceptance remain under Device Lab validation.
