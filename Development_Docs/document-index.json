@@ -849,6 +849,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Sounding_Line_Governing_Amendment_v1.4_Run_the_Mainline_Train_Prompt0_Integrated_Edition.pdf",
       "record_type": "governing-record",
       "status": "preserved",
@@ -7222,6 +7228,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Unattended_Autonomy_Hardening_Simulation_Metrics.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Sextant/README.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

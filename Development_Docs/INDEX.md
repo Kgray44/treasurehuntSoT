@@ -42,6 +42,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Project Shipwright](Projects/Project%20Shipwright/README.md)
 - [Project Drydock](Projects/Project%20Drydock/README.md)
 - [Project Landfall](Projects/Project_Landfall/README.md)
+- [Project Sextant](Projects/Project_Sextant/README.md)
 
 ## Historical and additive governing records
 
