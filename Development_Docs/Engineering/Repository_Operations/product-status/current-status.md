@@ -11,7 +11,7 @@ last_reviewed: 2026-10-04
 Landfall Phase4 remains in development. Source0ba27caa passes478unit files /
 2,715tests on fresh owned SQLite, with unchanged input trees on7f36d94e.
 Selected formatting/lint, TypeScript and the earlier exact tracked-source privacy
-scanning. OriginalC8 optimized build/client privacy, browser53 and providers159
+scanning pass. OriginalC8 optimized build/client privacy, browser53 and providers159
 per Windows/Linux host remain source-bound evidence with unchanged production
 web/dependency/schema inputs.
 
