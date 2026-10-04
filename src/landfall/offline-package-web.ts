@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { importLandfallEd25519PublicKey } from "./ed25519-public-verifier";
 import type { PlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import { rememberOfflineLease, type OfflineAvailability } from "@/landfall/offline-store";
 import {
@@ -84,9 +85,7 @@ async function open(descriptor: Descriptor, csrfToken: string): Promise<Landfall
     new TextEncoder().encode(JSON.stringify([scope, csrfToken])),
   );
   const encryptionKey = await crypto.subtle.importKey("raw", keyMaterial, "AES-GCM", false, ["encrypt", "decrypt"]);
-  const verificationKey = await crypto.subtle.importKey("jwk", descriptor.verificationKey.jwk, "Ed25519", false, [
-    "verify",
-  ]);
+  const verificationKey = await importLandfallEd25519PublicKey(descriptor.verificationKey.jwk);
   if (generationAtStart !== generation) throw new Error("LANDFALL_REGION_REVOKED");
   const clientKey = `${descriptor.verificationKey.id}:${descriptor.verificationKey.jwk.x}`;
   let repository = clients.get(clientKey);
@@ -150,41 +149,49 @@ export async function restoreLandfallRegion(sessionId: string, publishedVersionI
     return null;
   }
 }
-export async function downloadLandfallRegion(client: LandfallWebPackage) {
+export async function downloadLandfallRegion(
+  client: LandfallWebPackage,
+  onProgress?: (value: { downloadedBytes: number; totalBytes: number }) => void,
+) {
   if (landfallNativeHost()) {
     const power = await readNativeLandfallPower();
     if (!power || power.state !== "READY" || power.lowPower || power.thermalPressure)
       throw new Error("LANDFALL_DOWNLOAD_POWER_PAUSED");
   }
-  return client.repository.install(client.descriptor.envelope, client.binding, async (resource) => {
-    const manifest = client.descriptor.envelope.manifest;
-    const query = new URLSearchParams({
-      package: manifest.id,
-      issuedAt: String(manifest.issuedAt),
-      resource: resource.id,
-    });
-    const response = await fetch(
-      `/api/player/playthroughs/${encodeURIComponent(manifest.scope.sessionId)}/landfall/package?${query}`,
-      { cache: "no-store", redirect: "error", signal: AbortSignal.timeout(15_000) },
-    );
-    if (!response.ok || !response.body || Number(response.headers.get("content-length")) > resource.bytes)
-      throw new Error("LANDFALL_REGION_RESOURCE_UNAVAILABLE");
-    const reader = response.body.getReader();
-    const output = new Uint8Array(resource.bytes);
-    let offset = 0;
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      if (offset + value.length > output.length) {
-        await reader.cancel();
-        throw new Error("LANDFALL_REGION_RESOURCE_TOO_LARGE");
+  return client.repository.install(
+    client.descriptor.envelope,
+    client.binding,
+    async (resource) => {
+      const manifest = client.descriptor.envelope.manifest;
+      const query = new URLSearchParams({
+        package: manifest.id,
+        issuedAt: String(manifest.issuedAt),
+        resource: resource.id,
+      });
+      const response = await fetch(
+        `/api/player/playthroughs/${encodeURIComponent(manifest.scope.sessionId)}/landfall/package?${query}`,
+        { cache: "no-store", redirect: "error", signal: AbortSignal.timeout(15_000) },
+      );
+      if (!response.ok || !response.body || Number(response.headers.get("content-length")) > resource.bytes)
+        throw new Error("LANDFALL_REGION_RESOURCE_UNAVAILABLE");
+      const reader = response.body.getReader();
+      const output = new Uint8Array(resource.bytes);
+      let offset = 0;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (offset + value.length > output.length) {
+          await reader.cancel();
+          throw new Error("LANDFALL_REGION_RESOURCE_TOO_LARGE");
+        }
+        output.set(value, offset);
+        offset += value.length;
       }
-      output.set(value, offset);
-      offset += value.length;
-    }
-    if (offset !== output.length) throw new Error("LANDFALL_REGION_RESOURCE_INCOMPLETE");
-    return output;
-  });
+      if (offset !== output.length) throw new Error("LANDFALL_REGION_RESOURCE_INCOMPLETE");
+      return output;
+    },
+    onProgress,
+  );
 }
 /** Lease and signature are checked before released map resources are materialized into ephemeral object URLs. */
 export async function restoreLandfallRegionChart(sessionId: string, publishedVersionId: string, csrfToken: string) {

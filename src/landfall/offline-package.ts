@@ -1,5 +1,10 @@
 import { z } from "zod";
 import { landfallId } from "@/landfall/schema";
+import {
+  isLandfallEd25519PublicKey,
+  verifyLandfallEd25519,
+  type LandfallEd25519PublicKey,
+} from "./ed25519-public-verifier";
 
 export const offlinePackageScopeSchema = z.strictObject({
   playerProfileId: landfallId,
@@ -119,13 +124,14 @@ export class LandfallOfflinePackageRepository {
   private work: Promise<unknown> = Promise.resolve();
   constructor(
     private readonly storage: LandfallPackageStorage,
-    private readonly trustedKeys: ReadonlyMap<string, CryptoKey>,
+    private readonly trustedKeys: ReadonlyMap<string, LandfallEd25519PublicKey>,
     private readonly now = Date.now,
   ) {}
   install(
     input: unknown,
     binding: OfflinePackageBinding,
     fetchResource: (resource: OfflinePackageResource) => Promise<Uint8Array>,
+    onProgress?: (value: { downloadedBytes: number; totalBytes: number }) => void,
   ): Promise<OfflinePackageState> {
     return this.serial(async () => {
       const envelope = await this.verify(input, binding);
@@ -191,6 +197,14 @@ export class LandfallOfflinePackageRepository {
         ];
         stored.state = "PARTIAL";
         await this.write(key, stored, binding, generation);
+        try {
+          onProgress?.({
+            downloadedBytes: stored.resources.reduce((total, value) => total + value.bytes, 0),
+            totalBytes: envelope.manifest.totalBytes,
+          });
+        } catch {
+          /* A presentation callback cannot change package verification or installation. */
+        }
       }
       stored.state = "READY";
       await this.write(key, stored, binding, generation);
@@ -270,12 +284,11 @@ export class LandfallOfflinePackageRepository {
     if (manifest.issuedAt > this.now() + 1000 || manifest.expiresAt <= this.now())
       throw new Error("LANDFALL_PACKAGE_EXPIRED");
     const key = this.trustedKeys.get(manifest.keyId);
-    if (!key || key.type !== "public" || key.algorithm.name !== "Ed25519")
-      throw new Error("LANDFALL_PACKAGE_SIGNER_UNAVAILABLE");
+    if (!key || !isLandfallEd25519PublicKey(key)) throw new Error("LANDFALL_PACKAGE_SIGNER_UNAVAILABLE");
     const signature = Uint8Array.from(atob(envelope.signature.replaceAll("-", "+").replaceAll("_", "/")), (char) =>
       char.charCodeAt(0),
     );
-    if (!(await crypto.subtle.verify("Ed25519", key, signature, offlineManifestPayload(manifest) as BufferSource)))
+    if (!(await verifyLandfallEd25519(key, signature, offlineManifestPayload(manifest))))
       throw new Error("LANDFALL_PACKAGE_SIGNATURE_INVALID");
     return envelope;
   }

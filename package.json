@@ -280,6 +280,7 @@
     "@dnd-kit/sortable": "10.0.0",
     "@dnd-kit/utilities": "3.2.2",
     "@gsap/react": "2.1.2",
+    "@noble/curves": "2.4.0",
     "@prisma/client": "6.19.3",
     "@rive-app/react-webgl2": "4.29.5",
     "@rive-app/webgl2": "2.38.5",

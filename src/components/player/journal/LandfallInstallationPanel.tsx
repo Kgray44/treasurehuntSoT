@@ -1,4 +1,5 @@
 "use client";
+import { importLandfallEd25519PublicKey } from "@/landfall/ed25519-public-verifier";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { z } from "zod";
 import type { PlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
@@ -143,7 +144,7 @@ function InstallationControls({ bootstrap, csrfToken }: Props) {
         JSON.stringify(status.installations) !== JSON.stringify(waypoint!.installations)
       )
         throw new Error();
-      const key = await crypto.subtle.importKey("jwk", status.publicKey, { name: "Ed25519" }, false, ["verify"]);
+      const key = await importLandfallEd25519PublicKey(status.publicKey);
       if (attempt !== generation.current) return;
       provider.current = new NativeLandfallInstallationProvider({
         scope: status.scope,

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { landfallId } from "@/landfall/schema";
+import { verifyLandfallEd25519, type LandfallEd25519PublicKey } from "./ed25519-public-verifier";
 
 /** Public installation identity, not a bearer grant, location observation or arrival claim. */
 export const installationClaimSchema = z.strictObject({
@@ -80,16 +81,11 @@ export function validateInstallationScope(
 /** Trusted first-party key only; tag content cannot supply keys, URLs or executable data. */
 export async function verifyInstallationToken(
   token: string,
-  input: { scope: LandfallInstallationScope; now: number; keys: ReadonlyMap<string, CryptoKey> },
+  input: { scope: LandfallInstallationScope; now: number; keys: ReadonlyMap<string, LandfallEd25519PublicKey> },
 ) {
   const envelope = readInstallationEnvelope(token);
   const key = input.keys.get(envelope.claim.keyId);
-  if (
-    !key ||
-    key.type !== "public" ||
-    key.algorithm.name !== "Ed25519" ||
-    !(await crypto.subtle.verify("Ed25519", key, envelope.signature as BufferSource, encoder.encode(envelope.payload)))
-  )
+  if (!key || !(await verifyLandfallEd25519(key, envelope.signature, encoder.encode(envelope.payload))))
     throw new Error("LANDFALL_INSTALLATION_SIGNATURE_INVALID");
   validateInstallationScope(envelope.claim, input.scope, input.now);
   return envelope.claim;

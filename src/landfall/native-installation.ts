@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { LandfallEd25519PublicKey } from "./ed25519-public-verifier";
 import {
   landfallNativeHost,
   landfallNativeRequest,
@@ -57,7 +58,7 @@ export class NativeLandfallInstallationProvider {
     private readonly input: {
       scope: Omit<LandfallInstallationScope, "medium" | "id">;
       installations: readonly Pick<LandfallInstallationClaim, "id" | "medium">[];
-      keys: ReadonlyMap<string, CryptoKey>;
+      keys: ReadonlyMap<string, LandfallEd25519PublicKey>;
       now?: () => number;
     },
   ) {}

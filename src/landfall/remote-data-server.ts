@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { LandfallProviderHealthRegistry } from "./provider-policy";
+import { landfallProviderCatalog } from "./provider-catalog";
 import {
   RemoteDataFailure,
   isRemoteServiceUrl,
@@ -192,6 +194,9 @@ function elevation(raw: unknown, point: RemoteGeoPoint) {
 /** Bounded optional online data only. Authored routes and One Voyage remain unchanged. */
 export class RemoteLandfallDataService {
   private readonly services: Service[];
+  private readonly health = new LandfallProviderHealthRegistry(
+    landfallProviderCatalog().filter((provider) => Object.values(ids).some((id) => id === provider.id)),
+  );
   private lastClock = -1;
   constructor(
     inputs: ReturnType<typeof configuredRemoteServices>,
@@ -205,6 +210,22 @@ export class RemoteLandfallDataService {
       retryUntil: 0,
       inFlight: false,
       readyUntil: 0,
+    }));
+    for (const input of inputs)
+      this.health.configure(ids[input.configuration.kind], {
+        enabled: true,
+        credentialAvailable: input.configuration.authentication === "NONE" || Boolean(input.bearerToken),
+      });
+  }
+  /** Process-local history of actual demand only; reading never probes or exposes requests/credentials. */
+  operationalStatus() {
+    const current = this.status();
+    return this.health.snapshot().map((value) => ({
+      ...value,
+      health:
+        current.state === "STATUS"
+          ? (current.services.find((service) => service.id === value.id)?.state ?? "NOT_CONFIGURED")
+          : "UNAVAILABLE",
     }));
   }
   status(): RemoteDataResponse {
@@ -315,6 +336,7 @@ export class RemoteLandfallDataService {
       service.state = "READY";
       service.readyUntil = this.now() + 300000;
       service.retryUntil = 0;
+      this.health.record(ids[config.kind], "READY", this.now(), Math.min(300000, Math.max(0, this.now() - now)));
       return remoteDataResponseSchema.parse({
         state: "RESULT",
         service: summary(service, this.now()),
@@ -327,6 +349,13 @@ export class RemoteLandfallDataService {
       service.state = state;
       service.readyUntil = 0;
       service.retryUntil = this.now() + retryAfterSeconds * 1000;
+      this.health.record(
+        ids[config.kind],
+        state,
+        this.now(),
+        Math.min(300000, Math.max(0, this.now() - now)),
+        service.retryUntil,
+      );
       return { state, canComplete: false, retryAfterSeconds: Math.max(1, Math.min(60, retryAfterSeconds)) };
     } finally {
       service.inFlight = false;

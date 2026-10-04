@@ -936,3 +936,15 @@ Apple37185838103 remainsactive3offlinescenarios. CurrentfiniteoperationalPino
 logs cover7existingPlayerhandlers, remoteactualdemand andreauthorizedreturns;
 strictlabels/noPII/noextraauthority/passiveSTATUSnothealth. Focused28testsPASS;
 refreshTS/lint/docsbeforefreeze. No acceptance/ordinaryqualification/merge yet.
+
+ea7camera37186583511 HARVESTED17: PUBLIC_KEY_IMPORT/NotSupportedError, crypto/bridge
+available; scannernotstarted. DirtysharedpublicverifierusesWebCrypto+unsupported
+algorithm-only noble/curves2.4.0 strictRFC8032. Invalid/privateJWKfails; no signing.
+Scanner/package/panel29testsPASS. Dirtyofflinepreview/progress/historysafeUI and
+Admiraltypassiverecentdemandprojection reuseboundedhealthregistry. Browser256
+waypointcold/warm/offlinetimingcaseadded, actualhostedpending.
+ea7radio37186592561 HARVESTED12 FAIL: precise/location/awakealltrue, advertiser
+STARTED/scannerSCANNING0peers. eo7Journal37186596891 HARVESTED42 FAIL beforepage,
+secondbootstrapamstart-W15sectimeout. Apple37185838103 HARVESTED2940 FAIL:11XCTest
+PASS/1skip,2physicaloffline/restartPASS,virtualcountsAUTHORITY_TIMEOUT; cleanupall
+PASS. No currentactivehostedruns. Continue repairs+sourcefreeze+impactselection.

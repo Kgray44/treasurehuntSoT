@@ -1,4 +1,5 @@
 import { NativeLocationProvider } from "@/landfall/native-location";
+import { importLandfallEd25519PublicKey } from "../ed25519-public-verifier";
 import { NativeContextProvider } from "@/landfall/native-context";
 import { DeviceLabLocationDiagnostics } from "@/landfall/device-lab/location-diagnostics";
 import { reportDeviceLabStartupStage } from "@/landfall/device-lab/startup-diagnostics";
@@ -353,7 +354,7 @@ async function main() {
             scope: LandfallInstallationScope;
           };
           cameraStage = "PUBLIC_KEY_IMPORT";
-          const key = await crypto.subtle.importKey("jwk", fixture.publicKey, "Ed25519", false, ["verify"]);
+          const key = await importLandfallEd25519PublicKey(fixture.publicKey);
           const scanner = new NativeLandfallInstallationProvider({
             scope: fixture.scope,
             installations: [{ id: fixture.scope.id, medium: "QR" }],

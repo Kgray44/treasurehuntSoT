@@ -1049,3 +1049,53 @@ distributions, RF accuracy, battery use and physical performance have not been
 measured by these server logs. Device Lab timing remains execution evidence,
 not a claimed production service-level objective. Phase acceptance and ordinary
 Sounding Line qualification remain pending.
+
+### Native trust compatibility and region preparation
+
+Camera diagnostic run37186583511 on `ea7ce5b21472785840e095010dd51d32b49234a8`
+fails at PUBLIC_KEY_IMPORT with NotSupportedError, available crypto and a real
+native bridge. The camera had not started. Production signed installations and
+offline region trust now share a public Ed25519 verifier: WebCrypto is preferred;
+only unsupported algorithm import selects the pinned `@noble/curves@2.4.0`
+implementation with strict RFC8032 verification. DataError and other import
+failures remain failures. Private JWK material, remote key URLs and noncanonical
+key encodings are rejected. Compatibility keys are opaque process-local handles.
+Signature, scope, lifetime and replay checks still precede acceptance. No signing
+or private key is introduced into a client. The dependency's [verification policy](https://github.com/paulmillr/noble-curves)
+and [current hardening history](https://github.com/paulmillr/noble-curves/blob/main/CHANGELOG.md)
+informed the exact version and strict mode. Focused29 scanner/installation/package
+and panel checks pass, including mutated signatures, malformed keys, small-order
+forgery and rejected signature scalar tests. Fresh camera acceptance is required.
+
+Offline region preparation now previews the signed manifest's size, included
+released chart/routes/images and expiry before a separate deliberate download.
+Progress counts only verified encrypted chunks; presentation callback errors
+cannot alter installation. Partial and stale state, refresh, external exclusions
+and Chronicle-history-preserving local removal are explained. Scope changes
+remount the panel and invalidate late preparation/download presentation.
+
+The existing bounded LandfallProviderHealthRegistry records actual online demand
+in each RemoteLandfallDataService. Admiralty consumes these three finite provider
+projections under its existing authorization and read audit. Reading makes no
+Landfall network request. Success ages after five minutes; last successful and
+failed demand, latency and rate recovery remain process-local metadata. Quota,
+credential expiry and cross-instance aggregation are not inferred. No queries,
+coordinates, credentials, endpoint URLs or private Worldspace IDs enter the
+projection. Authored guidance and Player/Captain fallback remain separate.
+
+A new optimized-browser measurement case exercises256 released physical
+waypoints on a375px viewport, measuring cold, warm and offline whole-Journal/map
+readiness against preliminary30second execution budgets, plus origin storage.
+It asserts zero GPS requests and zero canonical writes. It does not infer
+renderer-only latency, physical CPU, energy or sensor overhead. Hosted measured
+results remain pending; budgets will be assessed against the recorded samples.
+
+Apple run37185838103 on `5aa8e6fa41d6fdac0089783f3091ad4ca32b130c` passes
+11 native XCTest cases (one skipped), physical offline canonical reconciliation
+and physical offline restart canonical reconciliation. Virtual offline counts
+time out; all three fixtures and transport clean up. Phase acceptance requires
+repair and current evidence for that remaining case. Radio run37186592561 on
+`ea7ce5b21472785840e095010dd51d32b49234a8` confirms granted precise permission,
+enabled location and awake screens on both devices; discovery still returns no
+peers. Journal run37186596891 fails before page interaction at the second native
+bootstrap launch's15second ADB wait; cleanup passes. These failures are retained.

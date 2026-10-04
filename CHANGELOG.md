@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-01
+last_reviewed: 2026-10-04
 ---
 
 # Changelog
@@ -13,6 +13,12 @@ last_reviewed: 2026-10-01
 ## Unreleased
 
 ### Added
+
+- Landfall Phase 4 candidate: native companions and an owned cross-platform Device
+  Lab, bounded region preview/download progress, and coordinate-free operational
+  logs with provider-demand history in Admiralty. Current native validation and
+  protected qualification are ongoing; this entry does not claim phase closure
+  or deployed companion availability.
 
 - Closed the Landfall physical/virtual v1.1 audit corrections through protected PR #675: ordinary physical regions preserve authorized private Player context, strict bounded source bundles independently qualify real checks through One Voyage, pending completion rechecks expiry at delivery, and Creator findings reflect actual provider availability. Watchglass remains not configured; exact-head hosted qualification, 2,364 full-unit tests, 39 production scenarios and landed smoke pass. The amendment record preserves historical failures and permanent closure evidence.
 

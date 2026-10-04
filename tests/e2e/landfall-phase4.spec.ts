@@ -30,6 +30,98 @@ test.beforeAll(async () => {
 });
 test.afterAll(async () => db.$disconnect());
 
+test("measures cold, warm and offline chart readiness with a large released waypoint set", async ({
+  browser,
+  baseURL,
+}, testInfo) => {
+  const definition = structuredClone(landfallFixture);
+  const first = definition.waypoints[0];
+  definition.waypoints = [
+    ...definition.waypoints,
+    ...Array.from({ length: 255 }, (_, index) => ({
+      ...structuredClone(first),
+      id: `synthetic-scale-${index}`,
+      name: `Synthetic visible location ${index}`,
+      visibility: { hiddenUntilRevealed: false },
+      sequence: { afterWaypointIds: [], optional: false },
+    })),
+  ];
+  const voyage = await closureVoyage(owner, player, "livingChart", { authoredDefinition: definition });
+  const before = await db.taleSessionEvent.count({ where: { sessionId: voyage.id } });
+  const context = await browser.newContext({ viewport: { width: 375, height: 900 }, reducedMotion: "reduce" });
+  const measures: Record<string, number> = {};
+  try {
+    await authenticateClosure(context, player, baseURL!);
+    await auditNativeGeolocation(context);
+    const page = await context.newPage();
+    const chart = page.locator("[data-landfall-player-chart]:visible");
+    let startedAt = performance.now();
+    await openClosureJournal(page, voyage.id);
+    await openClosureMap(page);
+    await expect(chart.getByRole("list", { name: "Visible map locations" })).toContainText(
+      "Synthetic visible location 254",
+    );
+    measures.coldJournalAndMapMs = performance.now() - startedAt;
+    await expect(chart).toContainText("Offline chart: saved", { timeout: 30000 });
+    await expect
+      .poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller)), { timeout: 30000 })
+      .toBe(true);
+    startedAt = performance.now();
+    await page.reload();
+    await openClosureMap(page);
+    await expect(chart.getByRole("list", { name: "Visible map locations" })).toContainText(
+      "Synthetic visible location 254",
+    );
+    measures.warmJournalAndMapMs = performance.now() - startedAt;
+    await context.setOffline(true);
+    startedAt = performance.now();
+    await page.reload();
+    await expect(page.getByRole("heading", { name: "Offline Voyage Journal" })).toBeVisible();
+    await expect(chart).toContainText("Offline chart restored");
+    await expect(chart.getByRole("list", { name: "Visible map locations" })).toContainText(
+      "Synthetic visible location 254",
+    );
+    measures.offlineJournalAndMapMs = performance.now() - startedAt;
+    expect((await geoAudit(page)).calls).toBe(0);
+    expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(before);
+    for (const value of Object.values(measures)) {
+      expect(Number.isFinite(value)).toBe(true);
+      expect(value).toBeLessThan(30000);
+    }
+    const storage = await page.evaluate(async () => {
+      const estimate = await navigator.storage.estimate();
+      return { usageBytes: estimate.usage ?? null, quotaBytes: estimate.quota ?? null };
+    });
+    await writeFile(
+      testInfo.outputPath("landfall-chart-performance.json"),
+      JSON.stringify(
+        {
+          version: 1,
+          evidenceClass: "SHARED_WEB_CONTRACT",
+          environment: "OPTIMIZED_ISOLATED_CHROMIUM",
+          sampleCount: 1,
+          releasedWaypoints: 256,
+          viewportWidth: 375,
+          reducedMotion: true,
+          budgets: { coldJournalAndMapMs: 30000, warmJournalAndMapMs: 30000, offlineJournalAndMapMs: 30000 },
+          measurements: measures,
+          storage,
+          canonicalProgressionEvents: 0,
+          limits: [
+            "Whole Journal readiness includes navigation and hydration; not renderer-only timing.",
+            "Origin storage estimate includes the fixture shell and encrypted records; not process memory.",
+            "No physical CPU, battery, location or sensor performance is inferred.",
+          ],
+        },
+        null,
+        2,
+      ),
+    );
+  } finally {
+    await context.close();
+  }
+});
+
 for (const width of [375, 1280]) {
   test(`optional Bluetooth absence keeps readable fallback at ${width}px`, async ({ browser, baseURL }, testInfo) => {
     const voyage = await closureVoyage(owner, player, "livingChart");

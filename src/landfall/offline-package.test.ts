@@ -101,6 +101,36 @@ async function fixture() {
   };
 }
 describe("authorized offline region lifecycle", () => {
+  it("reports verified bytes only and presentation errors cannot prevent installation", async () => {
+    const f = await fixture();
+    const progress: { downloadedBytes: number; totalBytes: number }[] = [];
+    expect(
+      await f.repository.install(
+        f.envelope,
+        f.binding,
+        async (resource) => f.chunks[Number(resource.id.at(-1))],
+        (value) => {
+          progress.push(value);
+          throw new Error("SYNTHETIC_PRESENTATION_FAILURE");
+        },
+      ),
+    ).toBe("READY");
+    expect(progress).toEqual([
+      { downloadedBytes: f.chunks[0].length, totalBytes: f.envelope.manifest.totalBytes },
+      { downloadedBytes: f.envelope.manifest.totalBytes, totalBytes: f.envelope.manifest.totalBytes },
+    ]);
+    const invalid = await fixture();
+    const reported = vi.fn();
+    expect(
+      await invalid.repository.install(
+        invalid.envelope,
+        invalid.binding,
+        async () => new Uint8Array([1, 2, 3]),
+        reported,
+      ),
+    ).toBe("CORRUPT");
+    expect(reported).not.toHaveBeenCalled();
+  });
   it("downloads deterministically, survives repository restart and detects ciphertext tamper", async () => {
     const f = await fixture();
     expect(

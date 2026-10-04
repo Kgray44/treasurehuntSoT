@@ -3,10 +3,18 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-03
+last_reviewed: 2026-10-04
 ---
 
 # Current status
+
+Landfall Phase 4 is actively implemented on the owned candidate branch, with
+provider, browser, Android and hosted Apple evidence. Android guest reboot and
+native offline restart reconciliation pass. Camera key import compatibility,
+BLE discovery, native Journal pairing and the virtual Apple offline scenario
+still require current acceptance. Protected qualification and phase closure
+remain pending. Historical statements that Phase 4 is deferred describe the
+accepted Phase 3 baseline, not this unfinished candidate.
 
 **Landfall Phase 3 is available on protected main:** Read the Ground adds aligned floor/site hierarchy, continuity-aware corridor guidance, optional foreground hints, region-gated natural landmark authored-view comparison and independent exact-object observations. Protected PR #673 passed exact-head local/hosted Sounding Line and landed tree verification. The [accepted capsule](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_Accepted_Capsule.md) records full-unit, retained browser, landed and evidence/catalog closure proof. Physical field quality, deployment and owner acceptance remain separate; Phase 4 is deferred.
 
