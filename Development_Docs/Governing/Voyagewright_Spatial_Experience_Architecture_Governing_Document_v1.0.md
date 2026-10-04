@@ -997,3 +997,1866 @@ SpatialEntity
 ```
 
 ## 15.1 Data-model rule
+Do not collapse the entire model into an untyped `type + JSON` landfill. Extensible payloads may exist behind versioned typed schemas, but stable semantic fields and lifecycle relationships must remain explicit.
+
+## 15.2 Spatial identity versus rendering instance
+
+One logical Spatial Entity may have multiple per-device render instances. Those instances are projections of the same scene truth, not independent authoritative objects.
+
+# 16. Coordinate Spaces and Anchor Families
+
+Parallax must explicitly distinguish at least:
+
+## 16.1 Earth / physical Worldspace
+
+A place associated with real geography or a site-local coordinate frame.
+
+## 16.2 Local environment space
+
+A room/site-local frame discovered through AR tracking, such as desk, wall, floor, doorway, or room geometry.
+
+## 16.3 Device space
+
+An object intentionally attached to the device/handheld viewer, such as a handheld map or compass.
+
+## 16.4 Virtual Worldspace
+
+An authored or game-derived coordinate system such as a Sea of Thieves world/map.
+
+## 16.5 Shared spatial session space
+
+A crew-shared anchor frame in which multiple devices resolve the same logical spatial scene.
+
+## 16.6 Coordinate-space transitions
+
+A single artifact may change coordinate spaces without becoming a different story object.
+
+Example:
+
+```text
+AR map discovered on floor
+        ↓ PICK UP
+Device-space handheld map
+        ↓ PLACE
+Local desk-space anchored map
+        ↓ PICK UP
+Device-space handheld map
+```
+
+The artifact identity persists while its spatial relationship changes.
+
+# 17. Fixed Spatial Anchors
+
+Fixed anchors are appropriate when the authored experience belongs to a specific real or virtual place.
+
+Examples:
+
+- writing on a particular memorial wall;
+- an apparition beside a specific statue;
+- a clue at one museum exhibit;
+- an AR object aligned to a particular game-world landmark;
+- a historical overlay attached to one building facade.
+
+## 17.1 Fixed does not mean brittle
+
+A fixed anchor still requires:
+
+- relocalization tolerance;
+- device capability fallback;
+- confidence state;
+- content-safe recovery if the environment changes;
+- Creator maintenance when the physical site changes materially.
+
+## 17.2 Direct on-site authoring
+
+Creators MAY place or calibrate fixed content while physically present. This is one authoring path, not a requirement for all spatial content.
+
+# 18. Adaptive Semantic Anchors
+
+## 18.1 Adaptive is a first-class final state
+
+An adaptive anchor may remain adaptive permanently.
+
+It is not necessarily “untrained fixed placement.”
+
+## 18.2 Example intent
+
+> Place an old parchment map somewhere believable on the floor, preferably near furniture and not in the middle of the room.
+
+Parallax can compile this to a structured intent:
+
+```text
+SpatialAnchorIntent
+  preferredSurfaceClasses: [FLOOR]
+  nearContext: [FURNITURE]
+  avoidRegions: [DOORWAY, WALK_PATH]
+  concealment: LOW_TO_MEDIUM
+  visibilityRequirement: PARTIAL
+  variationAllowed: HIGH
+  fallback: GUIDED_2D_PLACEMENT
+```
+
+## 18.3 Best believable match
+
+For remote adaptive authoring, success means the best believable match, not an impossible perfect recreation of the Creator's imagined room.
+
+## 18.4 Portable spatial Chronicles
+
+Adaptive anchors enable a Chronicle to require concepts rather than geometry:
+
+- a room;
+- a floor;
+- a desk/table-like surface;
+- a doorway;
+- a wall.
+
+The same authored Chronicle can then stage itself in many homes, hotel rooms, classrooms, or private spaces.
+
+# 19. Adaptive Spatial Staging
+
+Adaptive Spatial Staging arranges multiple entities together rather than solving every placement independently.
+
+Example authored scene:
+
+```text
+map      → floor near furniture
+journal  → table-like surface
+ghost    → doorway
+message  → wall
+compass  → portable handheld
+```
+
+The staging system should consider:
+
+- inter-object collisions;
+- narrative order;
+- sightlines;
+- safe walking space;
+- discovery difficulty;
+- object concealment;
+- surface availability;
+- visual plausibility;
+- accessibility;
+- shared-anchor feasibility;
+- performance budget.
+
+The goal is not merely to find five surfaces. The goal is to produce a coherent authored scene in an unknown environment.
+
+## 19.1 Story stability
+
+Spatial staging variation must not silently change core narrative truth. If a note must be found before a key, the staging system may not accidentally reveal the key first merely because one shelf scored higher.
+
+# 20. Placement Policies, Variation, and Deterministic Reproduction
+
+Creators need simple placement consistency controls backed by precise runtime policies.
+
+## 20.1 Canonical policies
+
+### FIXED
+Same physical/virtual location across runs where the site remains resolvable.
+
+### CALIBRATED
+Fixed or semi-fixed placement refined from Creator or field evidence.
+
+### ADAPTIVE_STICKY
+Resolve once for a Voyage or configured lifecycle and preserve that placement.
+
+### ADAPTIVE_PER_CREW
+Each crew may receive a different valid placement. Every Player in the crew shares it.
+
+### ADAPTIVE_PER_RUN
+Each new run may receive a different valid placement. Every Player in that run shares it.
+
+### ADAPTIVE_VARIANT
+Deliberately select among several plausible spatial solutions.
+
+### PERSONAL
+Only for explicitly individual effects such as personal accessibility cues or Player-specific secrets. It must never be used accidentally for a shared object.
+
+## 20.2 Creator-friendly control
+
+Creator Studio might expose:
+
+- Exact
+- Consistent
+- Variable
+- Playful
+
+with advanced controls underneath.
+
+## 20.3 Deterministic seed
+
+Variable placement must be reproducible for debugging and Drydock simulation.
+
+Conceptually:
+
+```text
+placement = f(environment, authoredIntent, runSeed, policy)
+```
+
+A run can record a placement seed and resolution receipt so support can reproduce the same decision where environment evidence permits.
+
+## 20.4 Run stability
+
+After placement resolution, the anchor is frozen for the run. Re-evaluation occurs only at authorized lifecycle boundaries.
+
+# 21. Shared Spatial Reality
+
+## 21.1 Hard invariant
+
+> **For any Spatial Moment designated as shared, all Players participating in the same co-located Voyage run MUST resolve the same logical spatial entity to the same authoritative shared anchor.**
+
+Adaptive placement may vary across crews, runs, environments, or explicit story transitions. It MUST NOT vary independently by Player within one shared scene.
+
+## 21.2 SharedSpatialScene
+
+Conceptual model:
+
+```text
+SharedSpatialScene
+├─ voyageId
+├─ chronicleVersionId
+├─ spatialMomentId
+├─ runId
+├─ anchorResolutionId
+├─ placementPolicy
+├─ resolvedAnchor
+├─ anchorVersion
+├─ environmentSignature
+├─ participatingSurfaceIds[]
+├─ trackingConfidence
+└─ lifecycleState
+```
+
+## 21.3 Resolution ownership
+
+A device may propose a candidate placement, but no individual phone unilaterally owns shared spatial truth.
+
+The runtime must converge on an authoritative anchor identity for the scene.
+
+## 21.4 Placement versus discovery state
+
+The anchor may be shared while discovery/interactions remain configurable:
+
+- shared placement + shared discovery;
+- shared placement + per-Player observation;
+- shared placement + shared interaction state;
+- shared placement + per-Player private notes.
+
+This flexibility must be explicit, not inferred ad hoc.
+
+# 22. Late Join, Relocalization, and Recovery
+
+## 22.1 Late join
+
+A late-joining Player or newly paired surface must inherit the existing anchor identity. It must not rerun adaptive placement from scratch.
+
+Its job is:
+
+> locate the already-existing shared anchor in my local coordinate frame.
+
+## 22.2 Tracking loss
+
+Tracking loss must attempt relocalization to the same anchor.
+
+```text
+tracking lost
+    ↓
+reacquire environment / shared scene context
+    ↓
+resolve existing anchor version
+    ↓
+resume same spatial reality
+```
+
+## 22.3 Split-brain protection
+
+Anchor versions must be reconcilable. A temporarily disconnected device may render bounded cached state, but must reconcile to the authoritative shared scene before committing new shared interactions.
+
+## 22.4 Re-anchor
+
+Re-anchoring a shared object is an explicit governed operation. It requires a reason such as:
+
+- story-authored movement;
+- unrecoverable environment change;
+- authorized Captain/Creator recovery;
+- anchor invalidation;
+- accessibility fallback.
+
+The system records why the anchor moved.
+
+# 23. Remote Spatial Authoring
+
+## 23.1 Three authoring paths
+
+Parallax MUST support these conceptual paths:
+
+1. **On-Site Placement** - Creator directly places an object while physically present.
+2. **Remote Semantic Placement** - Creator describes the intended placement without visiting.
+3. **Evidence-Calibrated Placement** - field evidence lets the Creator remotely refine a previously resolved placement.
+
+All three create the same canonical spatial intent/entity model.
+
+## 23.2 Natural-language authoring
+
+Creators should be able to describe spatial intent in ordinary language, then see the interpreted structured form.
+
+Examples:
+
+- “On a horizontal desk or table near the far-left corner.”
+- “On an old brick or stone wall around eye level.”
+- “Partly hidden behind a large object near the entrance.”
+- “On the ground beside the first large tree.”
+- “Somewhere that feels like a believable place to hide a pirate bottle.”
+
+The system should make ambiguity visible and allow correction without demanding spatial-computing expertise.
+
+## 23.3 Remote authoring cannot require travel
+
+A Creator MUST be able to produce useful spatial experiences for a place they have never visited, provided the Chronicle's intended confidence/fallback level permits adaptive or evidence-calibrated placement.
+
+# 24. Field Calibration and Creator Review
+
+## 24.1 Progressive spatial refinement
+
+An anchor may mature through stages such as:
+
+```text
+SEMANTIC
+Creator intent only
+   ↓
+OBSERVED
+real-world placement resolved
+   ↓
+CREATOR_REVIEWED
+Creator accepted field result
+   ↓
+CALIBRATED
+Creator adjusted placement against evidence
+   ↓
+VERIFIED
+multiple successful later resolutions
+```
+
+These stages are quality metadata, not a mandatory path for every adaptive anchor.
+
+## 24.2 Creator review experience
+
+Creator Studio should be able to show a privacy-safe contextual reference with the current resolved object overlay and controls such as:
+
+- Keep Placement
+- Adjust Placement
+- Change semantic intent
+- Disable field calibration
+- Require another observation
+
+## 24.3 Adjustment is spatial, not just 2D pixels
+
+A Creator clicking a different point in evidence should modify a visual-spatial anchor recipe using available surface/depth/pose context rather than storing a fragile raw image pixel coordinate as the entire anchor definition.
+
+## 24.4 Field performance feedback
+
+The system may summarize discovery performance:
+
+- mean discovery time;
+- hint-stage usage;
+- `Show Me` usage;
+- tracking failures;
+- anchor-confidence distribution;
+- common wrong search sectors.
+
+This feedback must be privacy-safe and should help Creators improve difficult placements.
+
+# 25. Privacy-Safe Calibration Evidence
+
+## 25.1 Hard person-free rule
+
+Automatic calibration evidence may not upload a frame containing a detected person or face.
+
+Preferred pipeline:
+
+```text
+candidate frame
+    ↓
+on-device person detection
+    ↓
+person suspected? → discard
+    ↓
+on-device face detection
+    ↓
+face suspected? → discard
+    ↓
+privacy crop/minimization
+    ↓
+explicit Player consent
+    ↓
+upload bounded calibration evidence
+```
+
+No “upload first and blur later” shortcut is acceptable for automatic calibration evidence.
+
+## 25.2 Smallest useful crop
+
+Whenever possible, calibration evidence should contain only the immediate spatial context necessary to understand the anchor rather than a wide room panorama.
+
+## 25.3 Player disclosure
+
+The Player must understand:
+
+- what is being saved;
+- why;
+- who can see it;
+- how long it is retained;
+- whether it is optional;
+- what happens if they decline.
+
+Declining calibration evidence MUST NOT block ordinary Chronicle completion.
+
+## 25.4 Separate Memory privacy domain
+
+A Player intentionally taking a private Chronicle Memory photo is different from automatic calibration evidence. It may contain people if the Player intentionally captures them, subject to ordinary private media and sharing/consent rules.
+
+# 26. Discovery Assistance Contract
+
+## 26.1 Mandatory for required hidden spatial content
+
+Every mandatory hidden Spatial Moment must define:
+
+```text
+DiscoveryAssistance
+├─ meaningfulSearchWindow
+├─ hintStages[]
+├─ maximumUnguidedDuration
+├─ exactRevealAvailable
+├─ accessibilityModes
+└─ alternateCompletion
+```
+
+## 26.2 Meaningful search time
+
+The timer counts active search time only while the Player is reasonably able to search.
+
+Pause or discount when:
+
+- app is backgrounded;
+- screen is locked;
+- tracking is unavailable;
+- Player leaves the relevant area;
+- permissions disappear;
+- Lens is not active;
+- another Storytide moment legitimately owns attention.
+
+## 26.3 Progressive help
+
+A default escalation may include:
+
+1. natural authored mystery;
+2. gentle narrative nudge;
+3. directional/context clue;
+4. narrowed search region;
+5. strong visual/haptic/audio cue;
+6. explicit `Show Me` reveal.
+
+Creators control the **style** of assistance. They do not get to remove the final recovery path from mandatory progression.
+
+## 26.4 System-blame awareness
+
+If anchor confidence is poor or repeated field evidence suggests the placement itself is failing, the system should relax/re-anchor or promote fallback instead of merely escalating hints as though the Player is incompetent.
+
+## 26.5 Optional secrets
+
+Optional Easter eggs may intentionally omit strong hints if the Creator clearly marks them non-required and Drydock verifies no mandatory completion depends on them.
+
+# 27. Physical-Digital Artifacts
+
+## 27.1 Artifact lifecycle
+
+A spatial artifact may be:
+
+- discovered;
+- approached;
+- inspected;
+- picked up;
+- carried;
+- rotated;
+- placed;
+- pinned;
+- manipulated;
+- handed off to a different surface;
+- archived as a Memory.
+
+## 27.2 The desk-map canonical interaction
+
+A representative Parallax experience:
+
+1. A virtual map appears in the Player's room.
+2. The Player finds it through the Chronicle Lens.
+3. The Player “takes” it.
+4. It transitions to a handheld device-space artifact.
+5. The Player walks to a real desk.
+6. Parallax resolves a horizontal placement surface.
+7. The Player places the map.
+8. The map becomes world-stable relative to the desk.
+9. Rotating/moving the phone changes the viewing perspective; the map itself does not rotate with the phone.
+10. Moving the phone closer provides natural physical inspection/zoom.
+11. Pinch/drag gestures may additionally alter digital scale or viewport.
+12. Crossdeck may synchronize selection/context back to the desktop Chronicle.
+
+## 27.3 Artifact identity survives spatial transitions
+
+Pick-up and placement alter relationship to space, not story identity.
+
+# 28. Multi-Surface Desktop + Mobile Experiences
+
+## 28.1 Canonical split
+
+A common virtual Chronicle composition may be:
+
+```text
+Desktop surface
+- main Storytide presentation
+- Journal / large chart
+- game companion context
+- cinematic moments
+
+Phone surface
+- Chronicle Lens
+- Parallax AR
+- Sextant sensors
+- compass / haptics
+- handheld artifact
+- quick spatial notes
+```
+
+## 28.2 Surface-specialized presentation
+
+Storytide may request:
+
+- “present cinematic on primary large surface”;
+- “present compass on handheld orientation-capable surface”;
+- “open Spatial Moment on Chronicle Lens”;
+- “mirror crew status to shared display.”
+
+Crossdeck selects appropriate active surfaces.
+
+## 28.3 Surface handoff
+
+An object may transition from desktop presentation to phone presentation without duplicating authoritative state.
+
+Example:
+
+> Desktop Journal reveals a mysterious sealed chart -> phone vibrates -> Chronicle Lens receives the artifact -> Player places it on desk -> desktop Journal reacts to the discovered island.
+
+## 28.4 Disconnect
+
+Losing the companion phone must not corrupt the Voyage. Crossdeck exposes loss of capability, Storytide chooses a fallback, and One Voyage remains authoritative.
+
+# 29. Virtual Chronicle Use Cases
+
+## 29.1 Sea of Thieves companion map
+
+The Player discovers a map in their room through AR and places it beside the computer while playing Sea of Thieves.
+
+The map may show:
+
+- relevant virtual Worldspace region;
+- discovered clues;
+- Chronicle annotations;
+- current narrative objective;
+- authored virtual route or chart state.
+
+Landfall owns the virtual Worldspace/navigation semantics. Parallax owns the room placement. Crossdeck synchronizes desktop and phone. Watchglass may observe game-screen evidence. Storytide decides why it matters.
+
+## 29.2 Physical compass for a virtual world
+
+The phone may behave like a Chronicle compass whose content relates to a virtual Worldspace. Physical phone rotation drives the instrument presentation, while the target/bearing may come from authored or observed virtual-world context.
+
+## 29.3 Game + real room mixed reality
+
+A Chronicle may intentionally blend the game and room:
+
+- virtual clue discovered in game;
+- physical AR artifact appears in room;
+- Player manipulates it;
+- result changes desktop story guidance;
+- Player returns to game.
+
+This is mixed-reality storytelling, but progression still flows through canonical One Voyage transitions.
+
+# 30. Real-World Chronicle Use Cases
+
+## 30.1 Town-wide expedition
+
+The phone is the primary experience surface. Landfall guides the Player through the real world, while Parallax may reveal spatial clues such as footprints, writing, or artifacts.
+
+## 30.2 Museum or historical site
+
+Landfall establishes broad place/region context. Parallax attaches spatial content. Watchglass may verify the exhibit/landmark. Storytide reveals historical or fictional narrative layers.
+
+## 30.3 Home/private-room Chronicle
+
+Adaptive Spatial Staging makes the room itself a reusable stage:
+
+- map on floor;
+- letter under/near desk;
+- apparition at doorway;
+- message on wall;
+- hidden magnetic prop in a chest.
+
+Each crew may receive different staging while sharing one reality within that run.
+
+## 30.4 Outdoor trail
+
+Parallax may project footsteps or symbolic trail marks, but safety rules must prevent dangerous “eyes glued to phone” guidance. Landfall remains the safer navigation authority, with AR used as a narrative layer rather than a replacement for situational awareness.
+
+# 31. Chronicle Memories and AR Photography
+
+## 31.1 Clean capture
+
+When a Player chooses `Remember this`, the saved image should combine:
+
+```text
+camera frame
++ intended AR entities/effects
+- buttons
+- crosshairs
+- tracking diagnostics
+- debug overlays
+= Chronicle Memory image
+```
+
+The result should look like the impossible object was genuinely present.
+
+## 31.2 Memory types
+
+Possible categories:
+
+- Private Note Photo
+- Chronicle Memory
+- Keepsake Candidate
+- Crew Memory
+- Creator Calibration Evidence (separate privacy domain)
+
+## 31.3 Private by default
+
+Player-authored Memories are private unless the Player explicitly shares them through existing governed sharing/consent systems.
+
+## 31.4 Metadata
+
+A Memory may retain bounded metadata such as:
+
+- Chronicle version;
+- Voyage/session identity;
+- Spatial Moment identity;
+- artifact identity;
+- capture time;
+- optional coarse location label where allowed;
+- presentation state.
+
+It should not automatically retain unnecessary raw room geometry or continuous sensor history.
+
+## 31.5 Revisit Moment
+
+Future Wakebook presentation MAY use retained semantic metadata to reconstruct a non-authoritative interactive artifact view. Historical archival pixels remain stable even if live spatial runtimes evolve.
+
+# 32. Storytide Integration
+
+Storytide owns the narrative meaning of spatial behavior.
+
+It should define concepts such as:
+
+- Spatial Moment story role;
+- when the Chronicle Lens is invited;
+- hint tone and escalation style;
+- whether discovery is shared or personal;
+- whether an artifact may be carried/placed;
+- which surface gets the primary presentation;
+- narrative fallback if spatial capability is unavailable;
+- what transitions occur before/after completion.
+
+Storytide must not own raw anchors, device APIs, or progression authority.
+
+A future Storytide spatial/multi-surface amendment is required before implementation consumes these capabilities deeply.
+
+# 33. Watchglass Integration
+
+Watchglass owns visual understanding and verification.
+
+Potential Parallax/Watchglass interactions include:
+
+- classify candidate surfaces/objects for semantic placement;
+- visually relocalize a previously calibrated fixed anchor;
+- verify that the Player is looking at the intended landmark;
+- reject out-of-distribution visual evidence;
+- detect person/face presence for privacy screening;
+- assist with object/scene recognition while abstaining safely when uncertain.
+
+Parallax must not assume that Watchglass always exists or returns a positive result.
+
+Watchglass evidence can strengthen spatial confidence but does not automatically become progression authority.
+
+# 34. Figurehead Integration
+
+Figurehead owns the persistent visual identity and character representation of people/characters.
+
+Parallax may eventually render a Figurehead representation into spatial scenes.
+
+Examples:
+
+- a fictional sailor sitting on a real bench;
+- a character appearing beside a doorway;
+- a crew member's representation occupying a shared spatial scene;
+- a historical appearance presented as a spatial apparition.
+
+Figurehead owns appearance, pose, expression, character identity, and historical visual state. Parallax owns world placement, anchoring, and spatial rendering context.
+
+# 35. One Voyage Integration and Progression Authority
+
+## 35.1 Canonical rule
+
+Spatial systems produce proposals/evidence. One Voyage commits authoritative progression.
+
+## 35.2 Example event path
+
+```text
+SpatialEntity discovered
+    ↓
+Parallax interaction receipt
+    ↓
+Storytide completion provider
+    ↓
+One Voyage validates actor/session/version/sequence/idempotency
+    ↓
+TaleSessionEvent / canonical transition
+    ↓
+Crossdeck synchronizes new presentation
+```
+
+## 35.3 Replay
+
+Presentation replay must not mutate progression. Replaying an AR reveal or revisiting a Memory is a presentation/archive action unless a specific governed mechanic says otherwise.
+
+## 35.4 Captain intervention
+
+Helm/Captain controls may help recover a broken spatial moment, but must use canonical One Voyage commands and leave audit evidence.
+
+# 36. Wakebook Integration
+
+Wakebook owns the personal archive experience.
+
+Parallax supplies bounded capture/render metadata. Wakebook decides how it becomes:
+
+- Chronicle Memory;
+- private note attachment;
+- Voyage archive media;
+- Keepsake material;
+- grouped shared-discovery photography.
+
+Same shared discovery, different Player viewpoints is a desirable feature. Each Player may save their own photograph of the same shared object from their own camera angle.
+
+Wakebook must not depend on the live AR runtime remaining available forever in order to display the historical record.
+
+# 37. Drydock Integration
+
+Drydock validates authored spatial experiences before publication.
+
+It should eventually be able to detect defects such as:
+
+- mandatory AR moment without fallback;
+- magnetic interaction required but no alternate path;
+- hidden object without Discovery Assistance Contract;
+- shared object incorrectly marked `PERSONAL`;
+- per-run adaptive placement with no deterministic simulation seed;
+- unsupported surface requirement for intended audience;
+- privacy calibration enabled without person-free screening/consent contract;
+- remote semantic anchor with impossible surface requirements;
+- late-join shared scene without anchor inheritance behavior;
+- spatial object whose progression side effect bypasses One Voyage;
+- scene requiring Watchglass without an abstention path;
+- unsafe outdoor interaction encouraging prolonged screen fixation.
+
+Drydock simulates provider outcomes and scene logic. It does not implement production AR or device providers.
+
+# 38. Harborlight, Sealed Hold, Wayfarer, Helm, and Other Adjacent Systems
+
+## 38.1 Harborlight
+
+Harborlight may eventually distribute:
+
+- Spatial Moment presets;
+- AR prop packs;
+- adaptive room Chronicle templates;
+- semantic anchor recipes;
+- spatial effects packs;
+- approved Creator templates;
+- spatial Chronicle guides.
+
+Published content must retain immutable versioning, licensing, moderation, and safe dependency rules.
+
+## 38.2 Sealed Hold
+
+Private spatial media, calibration reference assets, unpublished AR imagery, and protected Chronicle content remain subject to Sealed Hold storage/package rules. Spatial features do not create a new security loophole for private room imagery.
+
+## 38.3 Wayfarer
+
+Wayfarer remains canonical for the human identity behind multiple paired surfaces. Device association, consent preferences, account privacy, and guest claiming must integrate rather than create a second identity model.
+
+## 38.4 Helm
+
+Helm may expose Captain recovery and participant controls for spatial/multi-surface problems, such as re-issuing a Lens invitation or authorizing a governed fallback. Helm does not own anchors or device providers.
+
+## 38.5 Lanternwake
+
+Lanternwake remains motion/presentation authority for ordinary Voyagewright UI transitions and reduced-motion semantics. Spatial rendering has its own runtime requirements, but transitions between standard UI and Chronicle Lens/Spatial Moments should still honor the platform's motion/accessibility policy.
+
+# 39. Creator Studio Authoring Experience
+
+## 39.1 Three disclosure modes
+
+### Guided
+
+Creator selects an experience preset and supplies semantic intent.
+
+Example:
+
+> **Folded Note**  
+> Place: “on a desk, partly hidden”  
+> Variation: Variable  
+> Required? Yes  
+> Hint style: Compass pull
+
+### Detailed
+
+Expose:
+
+- surface classes;
+- relative placement;
+- scale;
+- concealment;
+- visibility distance;
+- interaction radius;
+- placement consistency;
+- hint stages;
+- fallback chain;
+- shared/personal discovery semantics;
+- Memory eligibility.
+
+### Engineering
+
+Expose governed low-level behavior such as:
+
+- anchor family;
+- coordinate space;
+- confidence thresholds;
+- relocalization policy;
+- occlusion policy;
+- surface normal tolerance;
+- sharing scope;
+- provider constraints;
+- spatial evidence requirements;
+- fallback provider order.
+
+## 39.2 Presets
+
+High-value presets may include:
+
+- Ghost Footprint Trail
+- Hidden Wall Message
+- Desk Map
+- Buried Artifact
+- Floating Compass
+- Peeking Letter
+- Doorway Apparition
+- Magnetic Hunt
+- Shared Treasure Chest
+- Historical Reveal Layer
+
+Presets must compile to the same canonical typed contracts used by advanced authoring.
+
+## 39.3 Creator simulation
+
+Creator Studio should eventually offer a synthetic room/environment preview so Creators can test spatial moments without repeatedly walking around a real room.
+
+# 40. Player Experience and Graceful Degradation
+
+## 40.1 Player does not manage providers
+
+The Player should not need to know whether a capability came from a browser API, native sensor, visual inference, or fallback.
+
+## 40.2 Capability ladder
+
+A required moment may declare:
+
+```text
+Preferred: world-tracked shared AR
+Fallback 1: simplified camera overlay
+Fallback 2: 2D guided scene
+Fallback 3: semantic clue/puzzle
+Fallback 4: Captain confirmation / governed skip
+```
+
+## 40.3 Degradation preserves story language
+
+Fallback should remain Chronicle-native.
+
+Instead of:
+
+> “ARCore unavailable.”
+
+prefer:
+
+> “The Chronicle cannot hold this object in place on this device. Open it in Guided View instead.”
+
+## 40.4 No premium-device dead ends
+
+Creators may intentionally target specialized hardware, but publication must clearly declare that audience. Ordinary general-purpose Chronicles must remain completable on their declared baseline capability tier.
+
+# 41. Accessibility and Inclusive Spatial Design
+
+Spatial experiences must support:
+
+- reduced motion;
+- non-camera alternatives where possible;
+- text equivalents for haptic/audio cues;
+- high-contrast spatial indicators;
+- readable directional descriptions;
+- one-handed use where practical;
+- seated/reduced-mobility alternatives;
+- no mandatory spinning or rapid rotation without an alternative;
+- configurable motion/gesture tolerance;
+- screen-reader descriptions for Spatial Moments;
+- keyboard/standard UI alternative when a desktop surface participates;
+- safe timeouts that do not punish slower physical interaction;
+- color-independent guidance.
+
+The Chronicle should not require somebody to physically spin three times merely because the Creator thought it was funny. The Creator may make that the preferred theatrical interaction; Drydock must require an accessible equivalent.
+
+# 42. Privacy, Security, Safety, and Threat Model
+
+## 42.1 Sensitive data classes
+
+Spatial features may touch:
+
+- precise location;
+- device pose;
+- room imagery;
+- camera frames;
+- inferred room/surface geometry;
+- nearby-device signals;
+- magnetic/environmental readings;
+- shared crew presence;
+- private Chronicle assets;
+- personal Memories.
+
+These data types require purpose limitation and minimization.
+
+## 42.2 On-device-first processing
+
+When feasible, surface detection, person screening, raw sensor fusion, and temporary scene understanding should remain on-device. Server state should prefer derived semantic facts.
+
+## 42.3 Crossdeck pairing security
+
+Secondary surfaces must use short-lived scoped credentials bound to:
+
+- canonical person/guest identity;
+- exact Voyage/session;
+- exact surface capability;
+- expiry;
+- revocation;
+- anti-replay nonce/challenge.
+
+A QR code must not become a permanent bearer token for the Player's account.
+
+## 42.4 Spatial spoofing
+
+The platform must consider:
+
+- replayed sensor evidence;
+- manipulated location;
+- spoofed camera/Watchglass receipts;
+- stale anchor evidence;
+- duplicate interaction receipts;
+- synthetic magnetic signals;
+- shared-anchor impersonation;
+- unauthorized remote surface pairing.
+
+Automatic progression requires owner-domain validation and appropriate anti-replay/freshness semantics.
+
+## 42.5 Public/private place safety
+
+Community-published spatial content must respect Harborlight location-safety rules. Creators must not accidentally publish precise private-home evidence, calibration photos, or reusable room signatures.
+
+## 42.6 Physical safety
+
+The experience must not encourage:
+
+- staring at the phone while crossing roads;
+- climbing unsafe structures for a clue;
+- use of strong magnets against devices;
+- dangerous rapid spinning;
+- trespass;
+- placement of AR objectives where the Player must enter hazardous zones;
+- prolonged camera scanning in sensitive/private contexts.
+Landfall/Storytide safety boundaries apply even when Parallax can technically render something there.
+
+# 43. Offline, Reconnect, and Failure Recovery
+
+## 43.1 Offline-capable local presentation
+
+Where a spatial scene has already been safely prepared, Parallax may continue bounded local rendering during network interruption.
+
+## 43.2 Authority during offline use
+
+Local interaction may be recorded as pending evidence. It must reconcile with One Voyage before becoming authoritative progression if server confirmation is required.
+
+## 43.3 Crossdeck disconnect
+
+A companion device may disconnect without collapsing the primary surface. Storytide selects a fallback or pauses the specific spatial moment.
+
+## 43.4 Shared-scene reconnect
+
+Returning devices rejoin the existing shared scene and anchor version rather than creating new placement.
+
+## 43.5 Failure UX
+
+Failure states must distinguish:
+
+- device capability unavailable;
+- permission denied;
+- tracking poor;
+- anchor not found;
+- network unavailable;
+- paired surface lost;
+- Watchglass abstained;
+- server validation failed;
+- scene changed physically.
+
+The Player gets an actionable recovery path rather than a generic “Something went wrong.”
+
+# 44. Performance, Battery, Thermal, and Quality Scaling
+
+Spatial features can be expensive. The system must treat resource use as a governed part of experience quality.
+
+## 44.1 Quality modes
+
+Parallax/Sextant may expose internal quality profiles driven by:
+
+- device thermal state;
+- battery level;
+- frame time;
+- camera resolution;
+- scene complexity;
+- available GPU/AR support;
+- network state.
+
+## 44.2 Adaptive quality may reduce
+
+- particle count;
+- shadow complexity;
+- post-processing;
+- mesh detail;
+- visual-effect density;
+- update frequency for noncritical sensor streams;
+- background analysis rate.
+
+It may not silently weaken progression evidence below the configured confidence contract.
+
+## 44.3 Background behavior
+
+Sensor and camera use must stop or reduce appropriately when the Lens is no longer active, subject to explicit background-capability features governed by the relevant project.
+
+## 44.4 Desktop/game coexistence
+
+For virtual Chronicles running beside games such as Sea of Thieves, Watchglass/Parallax/Crossdeck must consider game performance impact. Companion features should not steal absurd GPU/CPU resources from the activity they are supposed to enhance.
+
+# 45. Canonical Event and Evidence Vocabulary
+
+The spatial family needs a normalized vocabulary. Candidate events include:
+
+```text
+DEVICE_CAPABILITY_CHANGED
+DEVICE_PERMISSION_CHANGED
+DEVICE_ORIENTATION_ALIGNED
+DEVICE_GESTURE_COMPLETED
+MAGNETIC_ANOMALY_OBSERVED
+RELATIVE_ELEVATION_CHANGED
+SURFACE_PAIRED
+SURFACE_JOINED
+SURFACE_LEFT
+SURFACE_HANDOFF_COMPLETED
+SPATIAL_SCENE_INITIALIZED
+SPATIAL_ANCHOR_RESOLVED
+SPATIAL_ANCHOR_RELOCALIZED
+SPATIAL_ANCHOR_REANCHORED
+SPATIAL_ENTITY_DISCOVERED
+SPATIAL_ENTITY_PICKED_UP
+SPATIAL_ENTITY_PLACED
+SPATIAL_ENTITY_INSPECTED
+SHARED_SCENE_SYNCHRONIZED
+DISCOVERY_HINT_ESCALATED
+DISCOVERY_EXACT_REVEAL_USED
+CALIBRATION_EVIDENCE_OFFERED
+CALIBRATION_EVIDENCE_APPROVED
+CALIBRATION_EVIDENCE_REJECTED_PRIVACY
+SPATIAL_MEMORY_CAPTURED
+```
+
+Every event/receipt must declare:
+
+- owner;
+- producer;
+- consumer;
+- whether it is evidence or authority;
+- privacy class;
+- replay semantics;
+- idempotency/freshness requirements;
+- retention expectation.
+
+Only owner-approved authoritative transitions may mutate canonical Voyage truth.
+
+# 46. Data and Service Contracts
+
+This master document does not freeze final database schema, but future project documents must converge on narrow typed contracts.
+
+Representative interfaces include:
+
+```text
+SextantCapabilitySnapshot
+SextantObservationReceipt
+LandfallWorldContext
+SpatialEntityDefinition
+SpatialAnchorIntent
+SpatialAnchorResolution
+SharedSpatialScene
+SpatialInteractionReceipt
+CrossdeckSurfaceSession
+CrossdeckSurfaceCapability
+DiscoveryAssistancePolicy
+SpatialMemoryCapture
+CalibrationEvidencePackage
+```
+
+## 46.1 Privacy-oriented storage rule
+
+Durable records should generally contain semantic state and identity, not unrestricted raw streams.
+
+## 46.2 Immutable Chronicle binding
+
+Authored spatial definitions must bind to exact published Chronicle versions. Runtime scene instances bind to the exact session/version so future edits cannot silently move historical objects mid-Voyage.
+
+## 46.3 Corrections and migrations
+
+Spatial schema evolution must be versioned and Drydock-readable. Published historical versions must remain interpretable or explicitly unsupported with honest compatibility state.
+
+# 47. Voyagewright Device Lab
+
+## 47.1 Formal identity
+
+**Voyagewright Device Lab** is a shared platform verification facility governed by Project Sounding Line.
+
+It is not owned by Landfall.
+
+It is not limited to geolocation.
+
+It exists to let any Voyagewright project test device, sensor, lifecycle, spatial, network, surface, camera, and environmental behavior through governed reusable scenario infrastructure.
+
+## 47.2 Ownership rule
+
+Projects register scenarios and assertions. Device Lab provides execution and evidence. Sounding Line decides test policy and release authority.
+
+Drydock may invoke simulated provider scenarios to validate Chronicle content, but it does not own the Device Lab.
+
+## 47.3 Common capabilities
+
+Device Lab should support scenario families for:
+
+- device lifecycle;
+- permissions;
+- network transitions;
+- battery/power;
+- orientation/motion;
+- magnetometer;
+- pressure/elevation;
+- GPS/location;
+- camera capability;
+- AR tracking;
+- shared anchors;
+- Bluetooth/UWB/NFC where simulatable;
+- app background/foreground;
+- lock/sleep/termination;
+- multi-surface pairing/reconnect;
+- performance/thermal conditions;
+- accessibility settings.
+
+## 47.4 One shared facility
+
+No project should create a private device/emulator lab when the scenario can be represented through the shared Device Lab.
+
+# 48. Device Lab Scenario Packs and Test Tiers
+
+## 48.1 Scenario pack structure
+
+Conceptually:
+
+```text
+DeviceLab
+├─ core/
+│  ├─ lifecycle
+│  ├─ permissions
+│  ├─ network
+│  ├─ power
+│  └─ device identity
+├─ sextant/
+│  ├─ heading
+│  ├─ gyroscope
+│  ├─ accelerometer
+│  ├─ magnetometer
+│  └─ barometer
+├─ landfall/
+│  ├─ GPS
+│  ├─ routes
+│  ├─ geofences
+│  └─ offline
+├─ parallax/
+│  ├─ world tracking
+│  ├─ anchors
+│  ├─ relocalization
+│  ├─ adaptive staging
+│  └─ shared AR
+├─ crossdeck/
+│  ├─ pairing
+│  ├─ disconnect
+│  ├─ reconnect
+│  ├─ handoff
+│  └─ multi-surface concurrency
+└─ watchglass/
+   ├─ camera
+   ├─ visual evidence
+   └─ environment conditions
+```
+
+## 48.2 Test tiers
+
+### Tier D0 - deterministic provider simulation
+
+Fast, CI-friendly, no real OS sensor required.
+
+### Tier D1 - browser/device API emulation
+
+Permission and browser event behavior where supported.
+
+### Tier D2 - Android Emulator
+
+Location, pose/sensors where supported, lifecycle, Doze/background behavior, network, multi-device scenarios.
+
+### Tier D3 - iOS Simulator / hosted macOS runner
+
+Core Location/lifecycle/UI/native integration paths supported by the simulator and current platform toolchain.
+
+### Tier D4 - controlled real hardware
+
+Real iPhone/Android sensors, camera behavior, AR tracking, battery/thermal, Bluetooth/NFC/UWB where available.
+
+### Tier D5 - real field qualification
+
+Actual outdoor/indoor/shared Player scenarios in representative locations.
+
+## 48.3 Evidence honesty
+
+Simulator evidence cannot be relabeled as real-hardware proof. A test receipt must state its tier and limitations.
+
+## 48.4 Example scenario names
+
+```text
+magnetic-hidden-object
+shared-ar-late-join
+adaptive-floor-map-per-run
+remote-anchor-first-player-calibration
+person-in-frame-calibration-rejection
+crossdeck-phone-disconnect
+parallax-anchor-relocalization
+landfall-relative-elevation-stairs
+watchglass-landfall-bearing-fusion
+low-battery-spatial-quality-degrade
+reduced-motion-spatial-reveal
+```
+
+# 49. Governance Registries and Machine-Readable Ownership
+
+The architecture should be made difficult to misinterpret months later.
+
+Future implementation MUST create machine-readable registries equivalent to:
+
+```text
+Development_Docs/Spatial_Experience/
+  spatial-capability-ownership.json
+  spatial-event-registry.json
+  surface-capability-registry.json
+  device-capability-registry.json
+  spatial-provider-registry.json
+  device-lab-scenario-registry.json
+```
+
+These registries should answer questions such as:
+
+```text
+device.magnetic-field
+owner: SEXTANT
+consumers: [PARALLAX, LANDFALL, STORYTIDE]
+```
+
+```text
+spatial.shared-anchor
+owner: PARALLAX
+transport: CROSSDECK
+consumers: [STORYTIDE, WATCHGLASS]
+authority: NON_PROGRESSION_SPATIAL_TRUTH
+```
+
+```text
+progression.spatial-object-discovered
+producer: PARALLAX
+validator: STORYTIDE_COMPLETION_PROVIDER
+canonical_authority: ONE_VOYAGE
+```
+
+The registry does not replace project governance. It prevents ownership drift and gives Project Trim, Drydock, Sounding Line, Deepwater, and future tooling a compact machine-readable map.
+
+# 50. Canonical Scenario Narratives
+
+The following scenarios are normative product-intent examples. Future project docs may refine implementation, but should preserve the experience and ownership boundaries unless explicitly amended.
+
+## Scenario A - Adaptive bedroom map
+
+Creator authors:
+
+> “Place a pirate map somewhere believable on the floor, preferably near furniture.”
+
+Runtime:
+
+1. Player opens Chronicle Lens.
+2. Sextant/Parallax establish eligible device/spatial capability.
+3. Parallax scans the room locally.
+4. Candidate floor placements are ranked against semantic intent and safety.
+5. One placement is selected for the shared run.
+6. Every Player in the crew resolves the same anchor.
+7. Player finds and picks up the map.
+8. Map becomes handheld.
+9. Player places it on a desk.
+10. Map remains stable while phone perspective changes.
+11. Player captures a clean Chronicle Memory.
+12. Wakebook stores the private Memory.
+
+A different crew or later run may receive another valid hiding place if policy permits.
+
+## Scenario B - Remote museum clue
+
+Creator has never visited the museum.
+
+Creator authors:
+
+> “Hide a folded parchment around eye level on a stone wall near the entrance.”
+
+First Player:
+
+1. Landfall establishes correct site/region.
+2. Parallax identifies candidate surfaces.
+3. Best believable placement is chosen.
+4. Player completes the clue.
+5. Player is optionally asked to help improve placement.
+6. Device screens candidate calibration frames locally.
+7. Any frame with a person/face is discarded.
+8. Consenting Player uploads a minimized person-free reference.
+9. Creator reviews the real placement remotely.
+10. Creator adjusts the spatial target in context.
+11. Future Players use the calibrated recipe.
+
+## Scenario C - Shared crew AR artifact
+
+Three Players share a room.
+
+1. Parallax resolves one SharedSpatialScene anchor.
+2. Player A sees the chest.
+3. Player B sees the same chest at the same physical position.
+4. Player C joins late and resolves the existing anchor.
+5. Discovery may be configured as shared or per-Player.
+6. Tracking loss on Player B's phone relocalizes the same anchor instead of moving the chest.
+
+## Scenario D - Magnetic treasure object
+
+1. Creator places a safe known magnetic prop among decoys.
+2. Sextant establishes baseline and detects anomaly trend.
+3. Storytide presents a compass needle that grows more agitated.
+4. Player moves closer to correct object.
+5. Semantic anomaly evidence crosses configured threshold/dwell.
+6. One Voyage receives a typed completion proposal.
+7. If magnetometer unavailable, Storytide follows declared fallback.
+
+## Scenario E - Sea of Thieves desktop + phone
+
+1. Desktop runs main Storytide experience beside the game.
+2. Phone pairs through Crossdeck as Chronicle Lens.
+3. Story reveals that a chart was left “closer to home.”
+4. Player searches real room through Parallax.
+5. Map is discovered and placed on real desk.
+6. Landfall supplies virtual Worldspace chart context.
+7. Player inspects map physically and digitally.
+8. Watchglass may verify game-screen state.
+9. Desktop Journal reacts to phone interaction.
+10. Player returns to game with phone still acting as a physical Chronicle instrument.
+
+## Scenario F - Portable community room Chronicle
+
+Creator authors requirements:
+
+- one room;
+- one floor;
+- one table-like surface;
+- one doorway;
+- one wall.
+
+Parallax adapts the scene:
+
+- map on floor;
+- journal on table;
+- ghost at doorway;
+- hidden writing on wall.
+
+Different environments receive different staging. Same crew receives one shared reality.
+
+# 51. Implementation and Documentation Sequence
+
+This document is the first step. It freezes intent and ownership before code.
+
+## 51.1 Program-level sequence
+
+```text
+MASTER SPATIAL ARCHITECTURE  ← this document
+        ↓
+DEVICE LAB shared foundation / annex
+        ↓
+PROJECT SEXTANT governing + implementation
+        ↓
+PROJECT CROSSDECK governing + implementation
+        ↓
+PROJECT PARALLAX governing + foundation
+        ↓
+PARALLAX adaptive/shared spatial behavior
+        ↓
+Creator spatial authoring + calibration
+        ↓
+Landfall / Watchglass integration
+        ↓
+Storytide integration
+        ↓
+Wakebook spatial memories
+        ↓
+Figurehead spatial people
+        ↓
+full field qualification
+```
+
+This is a dependency guide, not permission to run every stage automatically.
+
+## 51.2 Why Sextant before Parallax
+
+Parallax should consume a stable capability/device-context contract rather than implement device APIs itself.
+
+## 51.3 Why Crossdeck before advanced shared AR
+
+Shared AR and desktop+phone experiences need a real multi-surface identity/session model before Parallax is asked to synchronize spatial scenes across devices.
+
+## 51.4 Why Parallax before deep Storytide integration
+
+Storytide should consume a governed spatial experience substrate rather than invent anchors and AR state inside story components.
+
+## 51.5 Mainline-safe phases
+
+Each derived project must preserve the existing phase-level integration doctrine:
+
+> Finish a coherent phase -> focused validation -> ordinary Sounding Line final check -> protected integration -> next phase starts from new main.
+
+No project may leave main in a state that assumes its next phase exists.
+
+# 52. Derived Governing Documents Required
+
+Before the corresponding implementation begins, create these documents or approved equivalent amendments.
+
+## 52.1 Project Sextant v1.0
+
+**The Device Context and Hardware Capability System**
+
+Must define:
+
+- provider architecture;
+- semantic observations;
+- permission model;
+- capability tiers;
+- sensor fusion;
+- device lifecycle;
+- privacy;
+- performance;
+- Device Lab scenario obligations;
+- implementation phases and acceptance gates.
+
+## 52.2 Project Parallax v1.0
+
+**The Spatial Chronicle and Augmented Reality System**
+
+Must be the largest derived document and define:
+
+- SpatialEntity;
+- Chronicle Lens;
+- anchor families;
+- adaptive staging;
+- shared spatial reality;
+- remote authoring;
+- field calibration;
+- discovery assistance;
+- AR capture;
+- rendering adapters;
+- Creator UX;
+- privacy/security;
+- implementation phases.
+
+## 52.3 Project Crossdeck v1.0
+
+**The Multi-Surface Chronicle Experience System**
+
+Must define:
+
+- surface pairing;
+- same-person/multi-device semantics;
+- surface roles;
+- synchronization;
+- handoff;
+- disconnect/reconnect;
+- security;
+- surface capability negotiation;
+- implementation phases.
+
+## 52.4 Project Landfall boundary amendment
+
+Must move generic hardware capability ownership to Sextant, clarify Parallax spatial integration, preserve Worldspace/navigation authority, and reconcile any original Phase 4 native-sensor language before further implementation.
+
+## 52.5 Storytide spatial/multi-surface amendment
+
+Must define Spatial Moments, surface presentation selection, narrative hint language, and spatial fallback orchestration.
+
+## 52.6 Watchglass spatial-perception amendment
+
+Must define visual relocalization, surface/context classification, privacy screening, and evidence handoff to Parallax without stealing AR ownership.
+
+## 52.7 Figurehead spatial-presence amendment
+
+Must define how Figurehead characters can inhabit Parallax scenes while keeping character identity/render assets under Figurehead ownership.
+
+## 52.8 Wakebook spatial-memory amendment
+
+Must define clean AR Memory capture, archive metadata, crew sharing consent, and historical stability.
+
+## 52.9 Sounding Line Device Lab annex
+
+Must formally make Device Lab a repository-wide shared verification facility and define test tiers, scenario registration, evidence classification, real-device proof, and CI/runtime resource policy.
+
+## 52.10 Drydock spatial/provider amendment or integration record
+
+Must add validation semantics for capability/fallback/spatial scenes without creating a parallel runtime.
+
+## 52.11 Harborlight spatial-content amendment
+
+Required before public distribution of spatial presets, AR packs, or portable room Chronicles.
+
+## 52.12 Sealed Hold spatial-media integration record
+
+Required before persistent private calibration/media assets are stored or packaged through new spatial workflows.
+
+# 53. Program Acceptance Criteria
+
+This master architecture is considered successfully realized only when all applicable criteria are satisfied through the derived projects.
+
+## Architecture and ownership
+
+- Sextant, Landfall, Parallax, and Crossdeck have non-overlapping canonical ownership.
+- No project has recreated another project's provider/runtime/state model.
+- One Voyage remains authoritative progression truth.
+- Machine-readable capability/event ownership exists and passes validation.
+
+## Creator experience
+
+- An ordinary Creator can author useful spatial content without understanding transforms, quaternions, or platform APIs.
+- Guided, Detailed, and Engineering modes converge on one canonical contract.
+- Remote semantic placement is genuinely usable without Creator travel.
+- Adaptive placement variation is controllable and reproducible.
+- Mandatory hidden content always has Discovery Assistance.
+
+## Player experience
+
+- Chronicle Lens is coherent and understandable.
+- Required experiences degrade gracefully on unsupported devices.
+- Shared crews see one shared spatial reality.
+- Late join/reconnect preserves that reality.
+- Multi-surface pairing feels like one Player using several surfaces, not several accounts.
+- AR artifacts can move between handheld and placed states without identity loss.
+
+## Privacy and safety
+
+- automatic calibration uploads never contain detected people/faces;
+- raw sensor/camera/location data is minimized;
+- secondary surfaces use scoped revocable credentials;
+- public/community content cannot leak private-room evidence;
+- accessibility alternatives exist for mandatory interactions;
+- physical-safety rules are enforced in authoring and validation.
+
+## Memories
+
+- clean AR Memory captures can be saved privately;
+- archive display remains useful even if live AR technology evolves;
+- shared discoveries can produce different personal viewpoint photos without duplicating scene truth.
+
+## Verification
+
+- Device Lab is platform-wide and Sounding Line-governed;
+- deterministic simulation, emulator/simulator, real-device, and field evidence remain distinctly labeled;
+- Drydock can identify impossible/unsafe spatial Chronicle configurations;
+- release decisions remain Sounding Line authority.
+
+## Product acceptance
+
+Automated proof is not sufficient for final experiential acceptance. Major Parallax/Crossdeck/Chronicle Lens milestones require owner walkthroughs on representative real devices and actual shared spatial scenarios before being described as product-accepted.
+
+# Appendix A. Ownership Matrix
+
+**Ownership summary by capability**
+
+- **Raw device sensor providers:** Sextant owns; Landfall, Parallax, and Watchglass consume; Sounding Line verifies.
+- **Normalized heading and motion:** Sextant owns; Landfall, Parallax, Watchglass, and Storytide consume.
+- **Worldspace/place context:** Landfall owns; Sextant contributes device context; Parallax, Watchglass, and Storytide consume.
+- **Routes, waypoints, and journey state:** Landfall owns; Storytide, One Voyage, and Wakebook consume appropriate projections.
+- **Spatial entity definition and AR rendering:** Parallax owns; Storytide and Crossdeck consume/transport; Sounding Line verifies.
+- **Visual recognition:** Watchglass owns; Landfall and Parallax consume verified evidence.
+- **Surface pairing:** Crossdeck owns; Storytide/Parallax consume paired-surface availability.
+- **Shared spatial anchors:** Parallax owns spatial truth; Crossdeck transports/synchronizes it; Watchglass/Landfall may contribute context.
+- **Story meaning:** Storytide owns; all experiential systems contribute context.
+- **Progression mutation:** One Voyage alone owns authoritative transition.
+- **Spatial Memory archive:** Wakebook owns archive truth; Parallax supplies capture; Storytide/One Voyage provide context.
+- **Device/software qualification:** Sounding Line owns verification; each project supplies scenarios and assertions.
+
+
+# Appendix B. Spatial Placement Policy Catalog
+
+- **FIXED:** resolves during authoring/calibration and remains stable for all applicable runs; use for a specific landmark or site.
+- **CALIBRATED:** resolves through field/Creator review and remains stable until recalibrated; use for remote sites refined from evidence.
+- **ADAPTIVE_STICKY:** resolves at first eligible encounter and remains stable for the configured Voyage/crew lifecycle; use for reusable room staging that should not move every run.
+- **ADAPTIVE_PER_CREW:** resolves when the crew begins the scene and remains stable for that crew; use when different crews may receive different staging.
+- **ADAPTIVE_PER_RUN:** resolves each run and remains stable for that run; use for replay variation.
+- **ADAPTIVE_VARIANT:** resolves at a configured variation boundary and intentionally selects among several plausible solutions.
+- **PERSONAL:** resolves per person and remains personal; use only for accessibility/private effects, never accidentally for shared objects.
+
+## Safety constraints common to adaptive policies
+
+- do not place in detected hazards or blocked walk paths;
+- do not require unreachable surfaces;
+- do not place mandatory content outside declared search region;
+- do not vary independently across Players in a shared scene;
+- freeze after resolution for the applicable scope;
+- record enough decision identity to reproduce/debug.
+
+# Appendix C. Discovery Assistance Profiles
+
+## Gentle Mystery
+
+- Stage 0: no extra cue
+- Stage 1: narrative hint
+- Stage 2: contextual direction
+- Stage 3: broad region shimmer
+- Stage 4: object-specific signal
+- Stage 5: exact reveal
+
+## Compass Pull
+
+- weak needle motion
+- stronger directional pull
+- haptic pulse near target
+- broad target arc
+- exact compass lock/reveal
+
+## Whisper / Atmospheric
+
+- spatial audio increases
+- visual environment subtly reacts
+- nearby surfaces respond
+- exact apparition cue
+
+## Accessible Direct
+
+- optional immediate directional text
+- high-contrast arrow/region
+- haptic equivalent
+- `Show Me` always available
+
+Creators can style these profiles but mandatory content retains a bounded final recovery.
+
+# Appendix D. Device Capability Catalog
+
+Representative capability families include:
+
+- position observation;
+- heading estimate;
+- full orientation/attitude;
+- accelerometer;
+- gyroscope;
+- rotation vector / fused pose;
+- magnetic field;
+- relative pressure/elevation;
+- proximity/light/environment where appropriate;
+- haptics;
+- camera;
+- microphone only when separately governed by an authored experience;
+- Bluetooth/BLE;
+- UWB;
+- NFC;
+- notification capability;
+- background execution capability;
+- thermal/power state;
+- secure local storage;
+- AR world tracking;
+- plane/surface understanding;
+- depth/occlusion where available.
+
+Each capability definition should eventually specify:
+
+- semantic name;
+- provider classes;
+- permission requirements;
+- confidence/quality metadata;
+- privacy class;
+- background policy;
+- simulation support;
+- real-device qualification requirement;
+- default fallback expectations.
+
+# Appendix E. Device Lab Scenario Catalog
+
+Initial high-value scenarios include:
+
+1. physical route with degraded GPS then recovery;
+2. virtual Worldspace observation handoff;
+3. heading alignment with calibration drift;
+4. three-spin gesture with false partial rotations;
+5. barometer relative-elevation climb;
+6. magnetic target with noisy baseline;
+7. magnetometer unavailable fallback;
+8. adaptive desk-map placement;
+9. adaptive per-run variation with deterministic seed;
+10. shared anchor across two devices;
+11. late third device join;
+12. tracking loss and relocalization;
+13. conflicting device observations;
+14. Crossdeck phone disconnect while desktop continues;
+15. permission denial mid-Spatial Moment;
+16. low battery / thermal quality degradation;
+17. person entering calibration frame -> discard;
+18. calibration consent declined -> Chronicle continues;
+19. hidden object timeout -> hint escalation;
+20. exact `Show Me` final recovery;
+21. reduced-motion spatial reveal;
+22. one-handed accessibility alternative;
+23. offline interaction pending reconciliation;
+24. shared discovery + separate personal Memory captures;
+25. Watchglass abstention with spatial fallback.
+
+# Appendix F. Threat and Privacy Checklist
+
+Before any spatial feature is accepted, verify:
+
+- [ ] raw camera frames are not durably retained by default;
+- [ ] calibration frames are screened before upload;
+- [ ] automatic calibration rejects people/faces;
+- [ ] location precision is no broader than required;
+- [ ] pairing tokens are scoped, short-lived, and revocable;
+- [ ] shared scene identities cannot be guessed/replayed across Voyages;
+- [ ] spatial interaction receipts are fresh/idempotent;
+- [ ] unsupported sensors fail safely;
+- [ ] spoofed/mocked providers cannot accidentally appear production-certified;
+- [ ] private room imagery cannot enter Harborlight public projections;
+- [ ] screenshots/Memories have explicit sharing rules;
+- [ ] logs avoid raw sensor streams and room imagery;
+- [ ] accessibility fallbacks do not leak hidden/spoiler content prematurely;
+- [ ] Creator previews cannot access unrelated Player calibration evidence;
+- [ ] field-calibration retention is bounded;
+- [ ] Player can decline calibration without losing Chronicle progress;
+- [ ] dangerous physical-placement patterns are rejected;
+- [ ] AR guidance does not override Landfall safety navigation;
+- [ ] Device Lab evidence clearly states simulation tier.
+
+# Appendix G. Glossary
+
+**Adaptive Anchor** - Semantic spatial placement resolved against the current environment.
+
+**Adaptive Spatial Staging** - Coordinated placement of multiple entities within an unknown or variable environment.
+
+**Calibration Evidence** - Optional privacy-safe field evidence used to improve placement quality.
+
+**Chronicle Lens** - Unified Player-facing spatial/perceptual interface.
+
+**Crossdeck Surface** - One device/display participating in a person's active Voyage experience.
+
+**Device Context** - Normalized capability and observation state produced by Sextant.
+
+**Device Lab** - Sounding Line-governed shared facility for device/sensor/spatial lifecycle verification.
+
+**Discovery Assistance Contract** - Required bounded hint/recovery policy for mandatory hidden spatial content.
+
+**Fixed Anchor** - Placement intended to resolve to one specific real/virtual location.
+
+**Parallax** - Project owning spatial entities, AR, anchors, adaptive staging, and Chronicle Lens spatial behavior.
+
+**Placement Scope** - Lifecycle boundary at which adaptive placement may change.
+
+**Sextant** - Project owning device capabilities and normalized hardware context.
+
+**Shared Spatial Reality** - One authoritative spatial placement for all Players in the same configured shared scene.
+
+**Spatial Entity** - Canonical Chronicle object with spatial identity, placement, interaction, visibility, and fallback contracts.
+
+**Spatial Memory** - Private archival image/record of a spatial Chronicle moment.
+
+**Spatial Moment** - Storytide-authored narrative moment that uses spatial interaction/presentation.
+
+**Worldspace** - Landfall coordinate universe for physical or virtual place/navigation.
+
+# References and Governing Sources
+
+This document was derived from and must remain compatible with the following accepted/current Voyagewright authorities and design sources:
+
+1. **Voyagewright Global Product Governance Standard v1.0** - product coherence, route reachability, visual quality, journey acceptance, owner walkthrough requirements.
+2. **Project Landfall Governing Document v1.0** - physical navigation, confidence, privacy, safety, zero-infrastructure principle, progression boundaries.
+3. **Project Landfall Governing Amendment v1.1: Worldspaces and Virtual Navigation** - physical and virtual Worldspaces and virtual journey semantics.
+4. **Current accepted Project Landfall Phase 1-3 records and v1.1 follow-up** - current implementation truth and integration seams at repository baseline.
+5. **Project Drydock Governing Architecture** - typed authoring, simulation, provider validation, publishing gates, cross-project adapters.
+6. **Project One Voyage** - canonical progression/session authority and one authoritative runtime path.
+7. **Project Watchglass governing architecture** - visual evidence, safe abstention, capture-source boundaries, runtime verification and certification.
+8. **Project Sounding Line effective authority and machine-readable authority index** - repository-wide software verification and protected-main authority.
+9. **Project Wayfarer** - one canonical person/account/profile and persistent personal history.
+10. **Project Harborlight** - community distribution, immutable releases, privacy-safe public projection, location safety.
+11. **Project Sealed Hold** - protected private Chronicle content and media boundaries.
+12. **Project Wakebook** - private human archive and Chronicle Passport experience.
+13. **Project Helm** - Captain/Voyage operational controls and participant lifecycle boundaries.
+14. **Project Figurehead design records** - persistent character representation planned but not yet implemented.
+15. **Project Storytide concept records** - Living Chronicle experience, narrative continuity, and future integration ownership.
+16. The October 4, 2026 spatial-experience design conversation that introduced and reconciled device context, magnetic interactions, multi-surface Voyages, Chronicle Lens, AR artifacts, adaptive anchors, remote calibration, shared spatial reality, Discovery Assistance, AR Memories, and platform-wide Device Lab ownership.
+
+Platform-specific API support changes over time. Project Sextant, Parallax, Crossdeck, Watchglass, and Device Lab implementation documents MUST verify current browser/native platform capabilities at implementation time rather than treating historical API availability as permanent governance.
+
+# Final Governing Rule
+
+> **Voyagewright may make a Chronicle feel as though it inhabits the Player's world, but the illusion must be built on disciplined truth.**
+>
+> Device observations remain evidence. Landfall remains world and journey truth. Parallax remains spatial truth. Crossdeck remains surface truth. Watchglass remains perception. Storytide remains meaning. Figurehead remains identity and presence. Wakebook remains memory. One Voyage remains authoritative progression. Drydock proves the authored experience. Sounding Line and Device Lab prove the software and hardware behavior.
+>
+> **Creators author intent. Players experience magic. The architecture absorbs the machinery.**
+
+---
+
+**End of Voyagewright Spatial Experience Architecture v1.0**
