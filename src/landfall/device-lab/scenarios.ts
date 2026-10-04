@@ -555,6 +555,30 @@ for (const id of [
   cases.find((item) => item.id === id)!.version = 2;
 }
 
+scenario(
+  "uwb-native-peer-session",
+  ["UWB"],
+  [
+    { type: "NEARBY", family: "UWB", state: "RECONNECT" },
+    assertion("serverConfirmed", false),
+    { type: "NEARBY", family: "UWB", state: "DISCONNECT" },
+    assertion("nearbyState", "UNAVAILABLE"),
+    assertion("canonicalProgressionEvents", 0),
+  ],
+  ["RF"],
+  "ONE_VOYAGE",
+);
+const radioScenario = cases.pop()!;
+cases.push(
+  deviceLabScenarioSchema.parse({
+    ...radioScenario,
+    targets: ["provider-simulation", "android-emulator", "real-android"],
+    deviceProfiles: ["primary-phone", "low-resource"],
+    description:
+      "Pair two configured peers, observe an actual native UWB report where supported, stop both sessions and retain zero canonical progression. No distance accuracy or peer-identity claim.",
+  }),
+);
+
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);
 }

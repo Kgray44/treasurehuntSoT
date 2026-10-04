@@ -10,6 +10,7 @@ import {
 import { discoverDeviceLabHost } from "./host";
 import { deviceLabSourceIdentity } from "./source";
 import { executeLandfallOsScenario } from "./os-executor";
+import { executeLandfallAndroidRadioScenario } from "./android-radio";
 import { startDeviceLabAuthority } from "./authority-client";
 import { deviceLabProfileSchema, deviceLabConfigurationSchema } from "../../../src/landfall/device-lab/device-profile";
 
@@ -79,7 +80,9 @@ async function main() {
       : target === "provider-simulation"
         ? await executor.run()
         : (target === "android-emulator" || target === "ios-simulator") && nativeConfigured
-          ? await executeLandfallOsScenario(scenario, target, path.join(destination, scenario.id), profile)
+          ? target === "android-emulator" && scenario.id === "uwb-native-peer-session"
+            ? await executeLandfallAndroidRadioScenario(scenario, path.join(destination, scenario.id), profile)
+            : await executeLandfallOsScenario(scenario, target, path.join(destination, scenario.id), profile)
           : null;
     const authorityClean = authority ? await authority.cleanup() : true;
     if (result && !authorityClean) {

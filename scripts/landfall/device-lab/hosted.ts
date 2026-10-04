@@ -16,15 +16,16 @@ export async function dispatchLandfallHostedLab(
   selectedProfiles?: string,
 ) {
   if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error("LANDFALL_HOSTED_CANDIDATE_INVALID");
-  if (!["all", "provider", "android", "ios"].includes(target)) throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
+  if (!["all", "provider", "android", "android-radio", "ios"].includes(target))
+    throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   if (!["development", "candidate", "closure"].includes(tier)) throw new Error("LANDFALL_HOSTED_TIER_INVALID");
-  if (selectedProfiles !== undefined && target !== "android" && target !== "ios")
+  if (selectedProfiles !== undefined && target !== "android" && target !== "android-radio" && target !== "ios")
     throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
   const typedTier = tier as "development" | "candidate" | "closure";
   const selectedAndroid = hostedDeviceLabProfiles(
     "android",
     typedTier,
-    target === "android" ? selectedProfiles : undefined,
+    target === "android" || target === "android-radio" ? selectedProfiles : undefined,
   );
   const selectedApple = hostedDeviceLabProfiles("ios", typedTier, target === "ios" ? selectedProfiles : undefined);
   const androidProfiles = [
@@ -44,6 +45,12 @@ export async function dispatchLandfallHostedLab(
     selectedAndroid.includes(profile.profile as "primary-phone" | "compatibility-phone" | "low-resource" | "tablet"),
   );
   const appleProfiles = selectedApple;
+  const radioProfiles = selectedAndroid.filter((profile) => ["primary-phone", "low-resource"].includes(profile));
+  if (
+    target === "android-radio" &&
+    (radioProfiles.length === 0 || (selectedProfiles !== undefined && radioProfiles.length !== selectedAndroid.length))
+  )
+    throw new Error("LANDFALL_HOSTED_RADIO_PROFILE_UNSUPPORTED");
   await labTool("git", ["cat-file", "-e", `${candidate}^{commit}`]);
   const template = await labTool("git", ["show", `${candidate}:.agents/landfall-device-lab-hosted.yml`]);
   const workflow = template
@@ -51,9 +58,12 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
     .replaceAll("__RUN_ANDROID__", String(target === "all" || target === "android"))
+    .replaceAll("__RUN_ANDROID_RADIO__", String(target === "all" || target === "android-radio"))
+    .replaceAll("__ANDROID_RADIO_PROFILES__", JSON.stringify(radioProfiles))
     .replaceAll("__ANDROID_PROFILES__", JSON.stringify(androidProfiles))
     .replaceAll("__APPLE_PROFILES__", JSON.stringify(appleProfiles));
   const scenarios = {
+    radio: hostedDeviceLabScenarios("android-radio", target === "android-radio" ? selectedScenarios : undefined),
     ios: hostedDeviceLabScenarios("ios", target === "ios" || target === "all" ? selectedScenarios : undefined),
     android: hostedDeviceLabScenarios(
       "android",

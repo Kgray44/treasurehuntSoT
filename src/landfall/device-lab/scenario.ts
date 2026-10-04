@@ -237,6 +237,7 @@ export type DeviceLabStepResult = {
       | "OS_POWER_CONTROL"
       | "OS_PERMISSION_CONTROL"
       | "OS_SENSOR_CONTROL"
+      | "OS_NEARBY_SESSION"
       | "LOGICAL_PROVIDER"
       | "OS_LOCATION_INJECTION"
       | "OS_LIFECYCLE"

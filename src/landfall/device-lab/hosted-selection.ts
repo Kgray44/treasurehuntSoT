@@ -31,6 +31,7 @@ const common = [
   "virtual-offline-canonical-reconcile",
 ];
 const defaults = {
+  "android-radio": ["uwb-native-peer-session"],
   ios: ["permission-denied-native", "permission-revoked-mid-route", ...common],
   android: [
     "permission-denied-native",
@@ -50,16 +51,28 @@ const defaults = {
 };
 
 /** Only canonical IDs reach a hosted command; arbitrary command text is refused. */
-export function hostedDeviceLabScenarios(platform: "ios" | "android" | "provider", selection?: string): string {
+export function hostedDeviceLabScenarios(
+  platform: "ios" | "android" | "android-radio" | "provider",
+  selection?: string,
+): string {
   if (selection === undefined) return platform === "provider" ? "all" : defaults[platform].join(",");
   if (selection.length > 4096 || !/^[a-z0-9-]+(?:,[a-z0-9-]+)*$/.test(selection))
     throw new Error("LANDFALL_HOSTED_SCENARIOS_INVALID");
   const ids = selection.split(",");
   if (ids.length > 128 || new Set(ids).size !== ids.length) throw new Error("LANDFALL_HOSTED_SCENARIOS_INVALID");
   const target =
-    platform === "ios" ? "ios-simulator" : platform === "android" ? "android-emulator" : "provider-simulation";
+    platform === "ios"
+      ? "ios-simulator"
+      : platform === "android" || platform === "android-radio"
+        ? "android-emulator"
+        : "provider-simulation";
   for (const id of ids)
-    if (!landfallDeviceScenario(id).targets.includes(target))
+    if (
+      !landfallDeviceScenario(id).targets.includes(target) ||
+      (platform === "android-radio"
+        ? !defaults["android-radio"].includes(id)
+        : platform === "android" && defaults["android-radio"].includes(id))
+    )
       throw new Error("LANDFALL_HOSTED_SCENARIO_TARGET_UNSUPPORTED");
   return ids.join(",");
 }

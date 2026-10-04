@@ -124,3 +124,49 @@ jobs:
           name: landfall-android-${{ matrix.profile }}-__CANDIDATE_SHA__
           path: artifacts/landfall-device-lab
           retention-days: 14
+  android-radio:
+    if: __RUN_ANDROID_RADIO__
+    name: Native / Android radio peers / ${{ matrix.profile }}
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: __ANDROID_RADIO_PROFILES__
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - run: npm ci --ignore-scripts
+      - name: Build before starting radio devices
+        run: gradle -p native/android --console plain assembleDebug
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - name: Install public API-36 radio image
+        run: sdkmanager "emulator" "system-images;android-36;google_apis;x86_64"
+      - name: Enable ephemeral runner KVM access
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run source-bound two-device radio lab
+        run: npx --no-install tsx scripts/landfall/device-lab/android-radio-run.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-android-radio-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: artifacts/landfall-device-lab
+          retention-days: 14

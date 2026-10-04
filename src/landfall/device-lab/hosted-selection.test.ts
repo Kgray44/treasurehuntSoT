@@ -16,6 +16,10 @@ describe("hosted Device Lab impact selection", () => {
     expect(hostedDeviceLabScenarios("ios")).toContain("offline-restart-canonical-reconcile");
     expect(hostedDeviceLabScenarios("provider")).toBe("all");
     expect(hostedDeviceLabScenarios("ios", "gps-perfect-walk")).toBe("gps-perfect-walk");
+    expect(hostedDeviceLabScenarios("android-radio")).toBe("uwb-native-peer-session");
+    expect(hostedDeviceLabScenarios("android-radio", "uwb-native-peer-session")).toBe("uwb-native-peer-session");
+    expect(() => hostedDeviceLabScenarios("android", "uwb-native-peer-session")).toThrow();
+    expect(() => hostedDeviceLabScenarios("android-radio", "gps-perfect-walk")).toThrow();
   });
   it("rejects shell text, unknown IDs, duplicates, oversized input and unsupported targets", () => {
     for (const value of [

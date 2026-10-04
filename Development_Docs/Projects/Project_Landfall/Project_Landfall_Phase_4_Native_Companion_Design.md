@@ -511,3 +511,21 @@ unextracted capability value is inferred from a passing assertion.
 Generated `artifacts/**` are excluded from TypeScript's repository-wide file glob.
 Retained SDKs and hosted result archives are evidence inputs, not application
 compiler inputs. Source and test paths retain their existing compilation scope.
+
+The canonical corpus now contains `uwb-native-peer-session`, bringing its total
+to 125 scenarios. Its provider run passes with zero real One Voyage events. The
+Android executor pairs two explicitly owned API-36 emulators through the
+production web/native provider, requires validated native reports on both peers,
+checks native sessions are stopped, and measures the real authority's zero
+progression. Reports remain untrusted, with UNKNOWN uncertainty and no verified
+identity; no RF accuracy or pose-control claim follows. This separately bundled
+lab client is not part of the product's Player interface.
+
+The dedicated hosted `android-radio` transport builds before boot, creates two
+private Pixel-2 AVDs, binds the emulator and clients to an owned ADB server, checks
+the actual device profiles, and enforces host-memory preflight and a running
+floor. Process cleanup uses executable/start-time identities, including owned
+child process groups, and verifies emulator/daemon processes and ports are gone
+before deleting its private synthetic AVDs. Hosted source-bound native execution
+and cleanup remain pending. This automation does not claim first-party pairing,
+Player controls, radio peer loss, physical RF behavior or Phase 4 completion.

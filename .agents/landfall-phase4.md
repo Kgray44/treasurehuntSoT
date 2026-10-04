@@ -500,3 +500,17 @@ and hosted archives. Fresh uncached compile passes; four focused files pass fift
 tests. Compiler input inventory retains 1684 source/test/generated route files,
 includes the native web adapter/instrumentation helper, and contains zero archive
 inputs. Documentation/changed-code ESLint pass. No open hosted workflows remain.
+
+Next canonical radio checkpoint adds uwb-native-peer-session (125-case corpus)
+with a real isolated authority and two explicitly owned API-36 emulators. Provider
+focus passes; 34 scenario/profile/hosted-selection tests pass; full TypeScript,
+ESLint and docs checks pass before the final native-state verification change.
+Dedicated android-radio hosted target creates two private low-memory Pixel-2 AVDs
+after building, binds ADB server 5038 in emulator and client environments, enforces
+available-memory preflight/floor, records Linux process start identities and
+verifies process/port absence before removing its own synthetic AVD folder.
+Do not run this provisioner on the user's Windows desktop. Native canonical run
+and owner receipt remain pending; no first-party identity, Player controls, RF
+accuracy, pose control or peer-loss proof is claimed. Original cleanup failure
+and recovery receipts remain unchanged. Keep the goal active through the remaining
+Phase 4 integration/qualification/merge/landed closure requirements.
