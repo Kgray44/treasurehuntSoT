@@ -361,6 +361,7 @@ export async function executeLandfallOsScenario(
             "tapAttempts",
             "combinedCardCount",
             "staticTitleCount",
+            "noticeContentButtonCount",
           ];
           const flagFields = ["tapped", "foregroundObserved"];
           if (
@@ -372,7 +373,11 @@ export async function executeLandfallOsScenario(
             appleNoticeUiDiagnostic = Object.fromEntries(
               [...countFields, ...flagFields].map((key) => [key, diagnostic[key]]),
             );
-            if (["NONE", "STATIC_TITLE", "OPEN_BUTTON", "COMBINED_CARD"].includes(diagnostic.initialTarget))
+            if (
+              ["NONE", "STATIC_TITLE", "OPEN_BUTTON", "COMBINED_CARD", "NOTICE_CONTENT_BUTTON"].includes(
+                diagnostic.initialTarget,
+              )
+            )
               appleNoticeUiDiagnostic.initialTarget = diagnostic.initialTarget;
           }
         }

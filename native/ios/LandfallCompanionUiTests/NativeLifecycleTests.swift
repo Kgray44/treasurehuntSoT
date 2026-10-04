@@ -150,11 +150,13 @@ final class NativeLifecycleTests: XCTestCase {
                     let openButtons=springboard.buttons.matching(NSPredicate(format:"label CONTAINS %@ AND NOT (label CONTAINS[c] %@) AND NOT (label CONTAINS[c] %@)",title,"Clear","Dismiss"))
                     let cards=springboard.otherElements.matching(NSPredicate(format:"label CONTAINS %@ AND label CONTAINS %@",title,"No visit has been confirmed."))
                     let text=springboard.staticTexts.matching(NSPredicate(format:"label == %@",title))
+                    let contentButtons=springboard.buttons.matching(identifier:"ShortLook.Platter.Content.Seamless").matching(NSPredicate(format:"label CONTAINS %@ AND label CONTAINS %@",title,"No visit has been confirmed."))
                     // SpringBoard can expose a notice as one combined accessible
                     // card/button rather than a separate title static text.
                     var notice:XCUIElement?
                     var initialTarget="NONE"
-                    if text.firstMatch.waitForExistence(timeout:5),text.count == 1,text.firstMatch.isHittable {notice=text.firstMatch;initialTarget="STATIC_TITLE"}
+                    if contentButtons.firstMatch.waitForExistence(timeout:5),contentButtons.count == 1,contentButtons.firstMatch.isHittable {notice=contentButtons.firstMatch;initialTarget="NOTICE_CONTENT_BUTTON"}
+                    else if text.firstMatch.waitForExistence(timeout:5),text.count == 1,text.firstMatch.isHittable {notice=text.firstMatch;initialTarget="STATIC_TITLE"}
                     else if openButtons.firstMatch.waitForExistence(timeout:5),openButtons.count == 1 {notice=openButtons.firstMatch;initialTarget="OPEN_BUTTON"}
                     else if cards.firstMatch.waitForExistence(timeout:5),cards.count == 1 {notice=cards.firstMatch;initialTarget="COMBINED_CARD"}
                     keepNoticeUi(springboard,"Owned notice before tap")
@@ -167,14 +169,15 @@ final class NativeLifecycleTests: XCTestCase {
                         // same unique public notice is still visible/hittable.
                         if !app.wait(for:.runningForeground,timeout:5) {
                             keepNoticeUi(springboard,"Owned notice after first tap")
-                            if text.count == 1,text.firstMatch.isHittable {text.firstMatch.tap();tapAttempts=2}
+                            if contentButtons.count == 1,contentButtons.firstMatch.isHittable {contentButtons.firstMatch.tap();tapAttempts=2}
+                            else if text.count == 1,text.firstMatch.isHittable {text.firstMatch.tap();tapAttempts=2}
                             else if openButtons.count == 1,openButtons.firstMatch.isHittable {openButtons.firstMatch.tap();tapAttempts=2}
                         }
                         foregroundObserved=app.wait(for:.runningForeground,timeout:15)
                         if foregroundObserved {result="PASS"}
                     }
                     keepNoticeUi(springboard,"Owned notice after bounded taps")
-                    noticeDiagnostic=["initialTarget":initialTarget,"buttonTitleCount":min(buttons.count,64),"openButtonCount":min(openButtons.count,64),"tapAttempts":tapAttempts,"combinedCardCount":min(cards.count,64),"staticTitleCount":min(text.count,64),"tapped":tapped,"foregroundObserved":foregroundObserved]
+                    noticeDiagnostic=["initialTarget":initialTarget,"noticeContentButtonCount":min(contentButtons.count,64),"buttonTitleCount":min(buttons.count,64),"openButtonCount":min(openButtons.count,64),"tapAttempts":tapAttempts,"combinedCardCount":min(cards.count,64),"staticTitleCount":min(text.count,64),"tapped":tapped,"foregroundObserved":foregroundObserved]
                 }
                 try await post(origin,"/lab/os/result",["index":index,"state":result,"noticeUi":noticeDiagnostic])
                 continue
