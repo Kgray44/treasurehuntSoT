@@ -106,6 +106,22 @@ async function main() {
         path.join(destination, "NativeTests.xcresult"),
       ]),
     );
+    executionStage = "EXPORT_XCTEST_ATTACHMENTS";
+    // Keep native capability values inspectable on the harvesting host. The
+    // passing assertion alone cannot establish the Simulator's NI capability.
+    await writeFile(
+      path.join(destination, "attachment-export-help.txt"),
+      await labTool("xcrun", ["xcresulttool", "help", "export", "attachments"]),
+    );
+    await labTool("xcrun", [
+      "xcresulttool",
+      "export",
+      "attachments",
+      "--path",
+      path.join(destination, "NativeTests.xcresult"),
+      "--output-path",
+      path.join(destination, "test-attachments"),
+    ]);
     await writeFile(
       path.join(root, "artifacts", "landfall-device-lab", "apple-app.json"),
       JSON.stringify({

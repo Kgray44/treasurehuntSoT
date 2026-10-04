@@ -529,3 +529,9 @@ child process groups, and verifies emulator/daemon processes and ports are gone
 before deleting its private synthetic AVDs. Hosted source-bound native execution
 and cleanup remain pending. This automation does not claim first-party pairing,
 Player controls, radio peer loss, physical RF behavior or Phase 4 completion.
+
+Apple build automation now exports native XCTest attachments with the installed
+`xcresulttool` after recording its command help. This follows the attachment
+export command introduced in [Xcode 16](https://developer.apple.com/documentation/xcode-release-notes/xcode-16_3-release-notes).
+The next hosted run must verify this export and retain the actual NI capability
+JSON; no capability value or successful Apple ranging session is assumed yet.
