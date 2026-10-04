@@ -48,6 +48,10 @@ final class NativeLifecycleTests: XCTestCase {
             }
             XCTAssertTrue(settled,"LANDFALL_ROTATED_TEXT_LAYOUT_UNSETTLED")
             let attachment=XCTAttachment(screenshot:app.screenshot());attachment.name=landscape ? "Owned large-text landscape fallback" : "Owned large-text portrait fallback";attachment.lifetime = .keepAlways;add(attachment)
+            let screen=XCUIDevice.shared.screenshot()
+            let full=XCTAttachment(screenshot:screen);full.name=landscape ? "Owned device landscape screen" : "Owned device portrait screen";full.lifetime = .keepAlways;add(full)
+            let bounds:[String:Any]=["landscape":landscape,"orientation":XCUIDevice.shared.orientation.rawValue,"window":["x":app.windows.firstMatch.frame.minX,"y":app.windows.firstMatch.frame.minY,"width":app.windows.firstMatch.frame.width,"height":app.windows.firstMatch.frame.height],"text":["x":shell.frame.minX,"y":shell.frame.minY,"width":shell.frame.width,"height":shell.frame.height],"deviceImage":["width":screen.image.size.width,"height":screen.image.size.height,"orientation":screen.image.imageOrientation.rawValue]]
+            let geometryAttachment=XCTAttachment(data:try JSONSerialization.data(withJSONObject:bounds),uniformTypeIdentifier:"public.json");geometryAttachment.name=landscape ? "Owned landscape actual bounds" : "Owned portrait actual bounds";geometryAttachment.lifetime = .keepAlways;add(geometryAttachment)
         }
     }
 
