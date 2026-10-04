@@ -157,6 +157,8 @@ jobs:
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
       - name: Install public API-36 radio image
         run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libpulse0
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "emulator" "system-images;android-36;google_apis;x86_64"
           mkdir -p artifacts/landfall-device-lab/radio-sdk
           "$ANDROID_HOME/platform-tools/adb" version > artifacts/landfall-device-lab/radio-sdk/adb-version.txt 2>&1

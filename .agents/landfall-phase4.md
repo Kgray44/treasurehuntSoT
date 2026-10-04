@@ -535,3 +535,12 @@ fails SDK discovery before boot after image installation; exact absent/failed to
 not retained. Zero artifacts, CI log retained, transport cleanupPASS. Template
 now installs platform-tools explicitly and retains adb/emulator version probes.
 Do not infer missing-library or image cause. Apple37167222880 remains active.
+
+Third radio37167860956 atbf201ef1fecb732cba8b215b5e0a642358fd2844
+fails emulator -version preflight with exact missing libpulse.so.0; ADB succeeds.
+Two SDK artifacts harvested, failure/log preserved, branch deletion verified.
+Template adds ephemeral libpulse0 install; no device has booted on these three
+canonical dispatches. Apple37167222880 harvestedSUCCESS2875: native10PASS/1skip,
+virtual6PASS/canonical0/cleanupPASS, manifest-bound NI capability supportsPreciseDistanceMeasurementfalse,
+no session/no reports/canCompletefalse, iPhone17e iOSSimulator26.5. This is actual
+Simulator unsupported capability; do not infer physical Apple support or a range.

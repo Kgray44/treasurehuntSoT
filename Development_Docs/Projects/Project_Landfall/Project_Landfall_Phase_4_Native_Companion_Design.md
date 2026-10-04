@@ -560,3 +560,21 @@ cases. Both source fingerprints are
 The new UWB case records zero real canonical events and cleanup PASS in each
 logical-provider run. All 268 artifacts are harvested and transport cleanup is
 verified. These results do not qualify native radio or physical hardware.
+
+The third hosted radio setup at `bf201ef1`, run 37167860956, retains two SDK
+probe artifacts: ADB version succeeds, while the emulator binary fails loading
+`libpulse.so.0` before any device boots. This establishes the missing runtime
+library for that runner. Provisioning now installs `libpulse0` on the ephemeral
+Linux host. The failed run remains failed, with both artifacts and CI logs
+harvested and its transport branch deleted/verified.
+
+Apple export run 37167222880 at clean `0879c887` passes native build, ten enabled
+XCTest cases, six virtual navigation steps, zero canonical events, and cleanup.
+One unrelated test is explicitly skipped. Its manifest binds the capability
+attachment to `NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle()`
+on iPhone 17e / iOS Simulator 26.5. The exported JSON reports precise distance
+measurement unsupported, rangeSessionStarted false, observedRanges zero and
+canComplete false. All 2875 artifacts are harvested with verified transport
+cleanup. Simulator NI ranging is an explicit unsupported capability, while the
+compiled adapter and native guards are verified; physical Apple ranging remains
+a separate device gate.
