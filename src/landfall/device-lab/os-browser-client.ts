@@ -24,6 +24,8 @@ import { LandfallOutboxReconciler, type LandfallReconciliationTransport } from "
 import type { PlayerLandfallEvidence } from "@/landfall/player-evidence-contract";
 import { offlineLease, rememberOfflineLease } from "@/landfall/offline-store";
 import { restoreNativeLandfallLeases } from "@/landfall/native-private-store";
+import { NativeLandfallInstallationProvider, type InstallationResult } from "@/landfall/native-installation";
+import type { LandfallInstallationScope } from "@/landfall/installation-token";
 
 /** Test-only local origin entrypoint, bundled by the Device Lab, never shipped in the release app. */
 async function main() {
@@ -134,6 +136,7 @@ async function main() {
   let canonicalCount = 0;
   let serverConfirmed = false;
   let powerProfile = "SUSPENDED";
+  let tokenState = "NONE";
   let waiting: ((observation: LandfallObservation) => void) | null = null;
   const ingest = (observation: LandfallObservation) => {
     latest = observation;
@@ -329,11 +332,46 @@ async function main() {
           physicalAcquisitionStarts,
           powerProfile,
           sensorState,
+          tokenState,
         };
         if (!(action.field in observed)) {
           state = "UNSUPPORTED";
           reason = "OS_ASSERTION_NOT_IMPLEMENTED";
         } else if (observed[action.field] !== action.value) throw new Error(`ASSERT_FAILED:${action.field}`);
+      } else if (action.type === "INSTALLATION_TOKEN") {
+        if (action.medium !== "QR" || action.fixture !== "VALID" || driver.platform !== "ANDROID") {
+          state = "UNSUPPORTED";
+          reason = "NATIVE_CAMERA_FIXTURE_REQUIRED";
+        } else {
+          const response = await fetch("/lab/camera-installation", { cache: "no-store" });
+          if (!response.ok) throw new Error("NATIVE_CAMERA_FIXTURE_UNAVAILABLE");
+          const fixture = (await response.json()) as {
+            keyId: string;
+            publicKey: JsonWebKey;
+            scope: LandfallInstallationScope;
+          };
+          const key = await crypto.subtle.importKey("jwk", fixture.publicKey, "Ed25519", false, ["verify"]);
+          const scanner = new NativeLandfallInstallationProvider({
+            scope: fixture.scope,
+            installations: [{ id: fixture.scope.id, medium: "QR" }],
+            keys: new Map([[fixture.keyId, key]]),
+          });
+          let timer: ReturnType<typeof setTimeout> | undefined;
+          try {
+            const result = await new Promise<InstallationResult>((resolve, reject) => {
+              timer = setTimeout(() => reject(new Error("NATIVE_CAMERA_ACQUISITION_TIMEOUT")), 35000);
+              void scanner.scan("QR", resolve).then((reply) => {
+                if (reply !== "GRANTED" && reply !== "COMPLETED") reject(new Error("NATIVE_CAMERA_START_FAILED"));
+              }, reject);
+            });
+            if (result.state !== "VERIFIED" || result.canComplete || result.physicalPresence !== "NOT_PROVEN")
+              throw new Error("NATIVE_CAMERA_IDENTITY_NOT_VERIFIED");
+            tokenState = "NEW";
+          } finally {
+            clearTimeout(timer);
+            await scanner.clear();
+          }
+        }
       } else if (action.type === "SENSOR") {
         expectedSensor = androidSensorControl(action);
         if (driver.platform !== "ANDROID" || !nativeContext || !expectedSensor) {

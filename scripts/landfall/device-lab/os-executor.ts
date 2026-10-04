@@ -7,6 +7,7 @@ import { discoverDeviceLabHost, labBinaryTool, labTool } from "./host";
 import { startDeviceLabAuthority } from "./authority-client";
 import { deliverDeviceLabPosition } from "./location-control";
 import { rebootOwnedAndroidGuest } from "../../../src/landfall/device-lab/android-reboot";
+import { deviceLabSourceIdentity } from "./source";
 import {
   deviceLabStartupStageSchema,
   type DeviceLabStartupStage,
@@ -34,6 +35,32 @@ export async function executeLandfallOsScenario(
   profile: DeviceLabProfile = "primary-phone",
 ) {
   const root = process.cwd();
+  const cameraScenario = scenario.id === "qr-native-camera-valid";
+  let cameraFixture: {
+    keyId: string;
+    publicKey: JsonWebKey;
+    scope: Record<string, string>;
+    imageSha256: string;
+    tokenSha256: string;
+  } | null = null;
+  if (cameraScenario && process.env.LANDFALL_LAB_CAMERA_BACKEND === "imagefile") {
+    const fixture = JSON.parse(
+      await readFile(path.join(root, "artifacts/landfall-device-lab/camera-fixture.json"), "utf8"),
+    );
+    const source = await deviceLabSourceIdentity();
+    const imageHash = createHash("sha256")
+      .update(await readFile(path.join(root, "artifacts/landfall-device-lab/camera-qr.png")))
+      .digest("hex");
+    if (
+      fixture.synthetic !== true ||
+      fixture.source?.sourceSha !== source.sourceSha ||
+      fixture.source?.sourceFingerprint !== source.sourceFingerprint ||
+      fixture.imageSha256 !== imageHash ||
+      fixture.canComplete !== false
+    )
+      throw new Error("LANDFALL_CAMERA_FIXTURE_SOURCE_CHANGED");
+    cameraFixture = fixture;
+  }
   const publicWorker = await readFile(path.join(root, "public", "landfall-offline-sw.js"));
   await mkdir(destination, { recursive: true });
   const host = await discoverDeviceLabHost();
@@ -85,6 +112,18 @@ export async function executeLandfallOsScenario(
   const server = createServer(async (request, response) => {
     const route = request.url?.split("?")[0];
     response.setHeader("Cache-Control", "no-store");
+    if (request.method === "GET" && route === "/lab/camera-installation") {
+      response.setHeader("Content-Type", "application/json");
+      response.statusCode = cameraFixture ? 200 : 503;
+      response.end(
+        JSON.stringify(
+          cameraFixture
+            ? { keyId: cameraFixture.keyId, publicKey: cameraFixture.publicKey, scope: cameraFixture.scope }
+            : { state: "NOT_CONFIGURED" },
+        ),
+      );
+      return;
+    }
     if (request.method === "GET" && route === "/player") {
       response.statusCode = 302;
       response.setHeader("Location", "/player/");
@@ -369,6 +408,8 @@ export async function executeLandfallOsScenario(
       ]);
       await adb(["shell", "pm", "grant", "com.voyagewright.landfall", "android.permission.ACCESS_COARSE_LOCATION"]);
       await adb(["shell", "pm", "grant", "com.voyagewright.landfall", "android.permission.ACCESS_FINE_LOCATION"]);
+      if (cameraScenario && cameraFixture)
+        await adb(["shell", "pm", "grant", "com.voyagewright.landfall", "android.permission.CAMERA"]);
       await adb(["shell", "input", "keyevent", "82"]);
       await adb(["reverse", `tcp:${port}`, `tcp:${port}`]);
       await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
@@ -768,7 +809,18 @@ export async function executeLandfallOsScenario(
         // fault is controlled here; iOS radio fidelity remains explicitly external.
         network = step.action.state;
       }
-      if (!["LOCATION", "ASSERT", "NETWORK", "RECONCILE", "POWER", "PERMISSION"].includes(step.action.type)) {
+      if (
+        step.action.type === "INSTALLATION_TOKEN" &&
+        (!cameraScenario || !cameraFixture || target !== "android-emulator")
+      ) {
+        steps.push({ index, action: step.action.type, state: "UNSUPPORTED", reason: "NATIVE_CAMERA_FIXTURE_REQUIRED" });
+        continue;
+      }
+      if (
+        !["LOCATION", "ASSERT", "NETWORK", "RECONCILE", "POWER", "PERMISSION", "INSTALLATION_TOKEN"].includes(
+          step.action.type,
+        )
+      ) {
         steps.push({
           index,
           action: step.action.type,
@@ -802,7 +854,7 @@ export async function executeLandfallOsScenario(
           })),
         });
       }
-      await wait(() => results.has(index), step.action.type === "LOCATION" ? 130000 : 30000);
+      await wait(() => results.has(index), step.action.type === "LOCATION" ? 130000 : cameraScenario ? 45000 : 30000);
       steps.push(results.get(index)!);
     }
     const screenshot = path.join(destination, "native-final.png");
@@ -875,6 +927,30 @@ export async function executeLandfallOsScenario(
         error instanceof Error && /^[A-Z_]{1,128}$/.test(error.message) ? error.message : "NATIVE_OS_EXECUTION_FAILED",
     });
   } finally {
+    if (cameraFixture) {
+      const file = path.join(destination, "native-camera-fixture.json");
+      await writeFile(
+        file,
+        JSON.stringify(
+          {
+            acquisition: "EMULATOR_IMAGE_FILE_CAMERA",
+            imageSha256: cameraFixture.imageSha256,
+            tokenSha256: cameraFixture.tokenSha256,
+            physicalPresence: "NOT_PROVEN",
+            canComplete: false,
+          },
+          null,
+          2,
+        ),
+      );
+      artifacts.push({
+        path: file,
+        sha256: createHash("sha256")
+          .update(await readFile(file))
+          .digest("hex"),
+        kind: "TEST_RESULT",
+      });
+    }
     const rebootFile = path.join(destination, "native-guest-reboots.json");
     await writeFile(rebootFile, JSON.stringify(guestReboots, null, 2));
     artifacts.push({
@@ -1118,46 +1194,52 @@ export async function executeLandfallOsScenario(
             limitation:
               "Controlled virtual sensor vectors traverse SensorManager, the native bridge and production context adapter. Physical drift and environmental fidelity remain external.",
           }
-        : action?.type === "PERMISSION" || result.reason === "OS_PERMISSION_PREVENTED_ACQUISITION"
+        : action?.type === "INSTALLATION_TOKEN" && cameraScenario
           ? {
-              method: "OS_PERMISSION_CONTROL",
+              method: "OS_CAMERA_ACQUISITION",
               limitation:
-                "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external.",
+                "Synthetic signed QR pixels traverse the emulated camera, CameraX and bundled ML Kit. No physical camera, tag presence or progression claim.",
             }
-          : action?.type === "LOCATION" && action.coordinate.type === "WGS84"
+          : action?.type === "PERMISSION" || result.reason === "OS_PERMISSION_PREVENTED_ACQUISITION"
             ? {
-                method: "OS_LOCATION_INJECTION",
+                method: "OS_PERMISSION_CONTROL",
                 limitation:
-                  "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately.",
+                  "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external.",
               }
-            : action?.type === "LIFECYCLE"
+            : action?.type === "LOCATION" && action.coordinate.type === "WGS84"
               ? {
-                  method: "OS_LIFECYCLE",
-                  limitation: "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
+                  method: "OS_LOCATION_INJECTION",
+                  limitation:
+                    "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately.",
                 }
-              : action?.type === "POWER"
+              : action?.type === "LIFECYCLE"
                 ? {
-                    method: "OS_POWER_CONTROL",
-                    limitation:
-                      "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy.",
+                    method: "OS_LIFECYCLE",
+                    limitation: "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
                   }
-                : action?.type === "NETWORK"
-                  ? target === "android-emulator"
-                    ? {
-                        method: "OS_NETWORK_AND_SERVICE_FAULT",
-                        limitation:
-                          "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
-                      }
-                    : {
-                        method: "CONTROLLED_SERVICE_FAULT",
-                        limitation:
-                          "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
-                      }
-                  : action?.type === "RECONCILE" ||
-                      (action?.type === "ASSERT" &&
-                        ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
-                    ? { method: "REAL_CANONICAL_AUTHORITY" }
-                    : { method: "SHARED_WEB_CONTRACT" };
+                : action?.type === "POWER"
+                  ? {
+                      method: "OS_POWER_CONTROL",
+                      limitation:
+                        "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy.",
+                    }
+                  : action?.type === "NETWORK"
+                    ? target === "android-emulator"
+                      ? {
+                          method: "OS_NETWORK_AND_SERVICE_FAULT",
+                          limitation:
+                            "Virtual radios are controlled; owned loopback transport remains available to the test control plane.",
+                        }
+                      : {
+                          method: "CONTROLLED_SERVICE_FAULT",
+                          limitation:
+                            "The owned first-party service is faulted. The simulator does not disable the host network or prove iOS radio behavior.",
+                        }
+                    : action?.type === "RECONCILE" ||
+                        (action?.type === "ASSERT" &&
+                          ["serverConfirmed", "canonicalProgressionEvents"].includes(action.field))
+                      ? { method: "REAL_CANONICAL_AUTHORITY" }
+                      : { method: "SHARED_WEB_CONTRACT" };
   }
   const cleanup = {
     result: remainingResources.length ? ("FAIL" as const) : ("PASS" as const),

@@ -908,7 +908,17 @@ Requires changed kernel boot identity + completedboot + sameAVD before restoring
 owned reverse and launching; requires newready acknowledgment. Export categorical
 identity checks only. Provider translation remainslogical; real OS proof pending.
 Corpus now158; zero OneVoyage writes expected for this no-reconcile scenario.
-Reboot/offline restart run37185206080 queued on exactec339c source; pending.
+Reboot/offline restart run37185206080 HARVESTED24 on exactec339c/tree2ba9ef:
+actualchangedbootidentity/sameAVD30992ms, freshstartups, rebootcanon0 PASS;
+offline restart nativeleaseRestoredtrue/canon1 PASS; allcleanupPASS. This is not
+deliveredBOOT_COMPLETED/geofencereregistrationproof (no regionregistered).
 Additional native correctness: confirm prior OSregion removal before replacement
 add, clear encryptedconsent first. Failedremoval preventsanotheradd; controlled
 native regression added, APKscompilePASS. Needs hostedinstrumentationfresh.
+ba1a77 radio37185534986, Journal37185539114 andAndroid37185542857 active.
+New canonicalqr-native-camera-valid adds realimagefilecamera path (installedSDK
+37.2.12 -help-all explicitlysupportsimagefile), sourcebound1024px syntheticpublic
+signedQRfixturepreparedbeforeownedemulatorboot. Privatekeyneverexported, public
+key/scopeonlycontrolendpoint, tokenmustarrivefromcamera/CameraX/MLKit/nativebridge
+productionverifier. NoJSfixturetokeninjection. Verifyidentity/noGPS/noarrival;
+corpus159. Nativeexecutionpending; actualphysicalcamera/tag remainsgate.

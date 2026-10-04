@@ -40,6 +40,7 @@ const defaults = {
   ios: ["permission-denied-native", "permission-revoked-mid-route", ...common],
   android: [
     "device-reboot",
+    "qr-native-camera-valid",
     "permission-denied-native",
     "permission-approximate-native",
     "permission-revoked-mid-route",

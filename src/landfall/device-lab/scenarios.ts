@@ -622,6 +622,22 @@ for (const protocol of ["GENERIC", "IBEACON", "EDDYSTONE_UID"] as const) {
   );
 }
 
+scenario(
+  "qr-native-camera-valid",
+  ["QR"],
+  [
+    { type: "INSTALLATION_TOKEN", medium: "QR", fixture: "VALID" },
+    assertion("tokenState", "NEW"),
+    assertion("physicalAcquisitionStarts", 0),
+    assertion("completionRequests", 0),
+    assertion("serverConfirmed", false),
+    assertion("canonicalProgressionEvents", 0),
+  ],
+  ["CAMERA"],
+  "ONE_VOYAGE",
+);
+cases[cases.length - 1].targets = ["provider-simulation", "android-emulator"];
+
 for (const [operation, fixture, expected, requests] of [
   ["STATUS", "VALID", "STATUS", 0],
   ["SEARCH", "VALID", "RESULT", 1],

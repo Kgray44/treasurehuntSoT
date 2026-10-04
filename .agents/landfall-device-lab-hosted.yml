@@ -112,6 +112,7 @@ jobs:
     env:
       LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
       LANDFALL_LAB_GUEST_REBOOT: "true"
+      LANDFALL_LAB_CAMERA_BACKEND: "imagefile"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -136,6 +137,8 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+      - name: Prepare synthetic signed QR camera image
+        run: npx --no-install tsx scripts/landfall/device-lab/prepare-camera.ts
       - uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api }}
@@ -143,7 +146,7 @@ jobs:
           arch: x86_64
           profile: ${{ matrix.device }}
           ram-size: ${{ matrix.ram }}
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory ${{ matrix.memory }} ${{ matrix.lowRam }}
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory ${{ matrix.memory }} ${{ matrix.lowRam }} -camera-back imagefile:${{ github.workspace }}/artifacts/landfall-device-lab/camera-qr.png -camera-front none
           emulator-boot-timeout: 300
           disable-linux-hw-accel: false
           disable-animations: true

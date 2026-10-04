@@ -265,6 +265,7 @@ export type DeviceLabStepResult = {
       | "OS_PERMISSION_CONTROL"
       | "OS_SENSOR_CONTROL"
       | "OS_NEARBY_SESSION"
+      | "OS_CAMERA_ACQUISITION"
       | "LOGICAL_PROVIDER"
       | "OS_LOCATION_INJECTION"
       | "OS_LIFECYCLE"

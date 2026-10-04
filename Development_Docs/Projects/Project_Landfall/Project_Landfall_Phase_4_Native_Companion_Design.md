@@ -70,8 +70,26 @@ of only its owned reverse binding, and a new companion readiness acknowledgement
 Exported receipts contain categorical identity checks, never raw guest identifiers.
 The scenario separates fresh fixes with reboot and asserts no canonical progression;
 the logical provider translation does not claim a kernel reboot. Local and physical
-devices cannot run this translation. Native execution remains pending and this
-scenario does not by itself prove geofence re-registration or delivered wake events.
+devices cannot run this translation. Hosted Android run37185206080 on clean
+sourceec339c/tree2ba9ef records a changed boot identity with the same AVD in30992ms,
+fresh startup acknowledgements and zero canonical progression. Its separate offline
+restart scenario restores the native lease and reconciles exactly one canonical
+event. Both pass fixture and transport cleanup. This reboot scenario does not by
+itself prove geofence re-registration or delivered wake events.
+
+The installed emulator37.2.12 camera help advertises `imagefile:<filename>`.
+The canonical `qr-native-camera-valid` scenario uses a1024px synthetic signed QR
+image prepared before the owned emulator boots. The ephemeral signing key remains
+in the preparation process; only a public verification key and fixed synthetic
+scope reach the WebView. The decoded token is never supplied through JavaScript
+or the control endpoint. It must traverse the emulated camera, CameraX, bundled
+ML Kit, the production native callback and installation verifier. The scenario
+asserts verified identity, no location acquisition, no completion request and zero
+One Voyage progression. Image/token hashes and categorical outcomes bind receipts;
+no native frame is retained. Provider simulation remains logical; hosted camera
+execution is pending. Physical camera fidelity and tag presence remain external.
+[Android's camera documentation](https://developer.android.com/studio/run/emulator-use-camera?hl=en)
+also describes synthetic QR images for camera-based applications.
 
 Android run37184872437 on source607450 reaches two measured API36 virtual devices
 and reports actual native advertiser `STARTED`; discovery still fails and no scanner
