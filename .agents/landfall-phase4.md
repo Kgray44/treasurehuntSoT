@@ -648,3 +648,15 @@ to an explicitly event-only utility (no render-time sampling), panel lint and
 discovery PASS. Add a source-bound browser-only hosted target so optimized web
 acceptance does not wait behind a native driver's long failure. It uses the
 same generic owned SQLite/runtime contract and never starts native devices.
+
+Remote integration checkpoint 0e7b0ef4007bdb4f74506eef29ef770b6b1f362c/tree
+100f7b83b2f7aa0e76e219ec3d8379fa4ca295ed pushed. Browser-only candidate run
+37171625521 dispatched, hosted-0e7b0ef4007b-1791081445688, transport
+4dca519acbe2e1ddff4640b9594eaa51a1a392f0; still active. No browser acceptance
+yet. Native diagnostic 37170724150 is unusually long after its three-minute
+executor watchdog. Installed Playwright Android source confirms connection,
+CDP and device.close primitives lack inherited Page action timeouts. Add
+20-second/cancellation races for those primitives and 15-second bounded close;
+any unverified connection remains a cleanup FAIL. The resource owner still
+terminates and verifies only its private SDK processes/ports/AVDs. Do not claim
+the unresolved run's cleanup before harvesting its receipts.

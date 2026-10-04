@@ -21,6 +21,26 @@ test.skip(process.env.LANDFALL_NATIVE_NEARBY !== "1", "Requires an exclusively o
 test.skip(({ browserName }) => browserName !== "chromium", "Run native ownership once.");
 test.afterAll(async () => db.$disconnect());
 
+/** Driver connection primitives do not inherit Page action timeouts. */
+async function boundedDriver<T>(operation: Promise<T>, signal?: AbortSignal, timeout = 20000): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  let onAbort: (() => void) | undefined;
+  try {
+    return await Promise.race([
+      operation,
+      new Promise<never>((_resolve, reject) => {
+        onAbort = () => reject(new Error("LANDFALL_NATIVE_NEARBY_CANCELLED"));
+        if (signal?.aborted) onAbort();
+        else signal?.addEventListener("abort", onAbort, { once: true });
+        timer = setTimeout(() => reject(new Error("LANDFALL_NATIVE_NEARBY_DRIVER_TIMEOUT")), timeout);
+      }),
+    ]);
+  } finally {
+    clearTimeout(timer);
+    if (onAbort) signal?.removeEventListener("abort", onAbort);
+  }
+}
+
 async function nativeStopped(page: Page) {
   return page.evaluate(async () => {
     const value = (await window.LandfallNative!.request(
@@ -113,30 +133,38 @@ test("real native Journal pairing returns untrusted hints and background clears 
           ]);
           if (/Error:|Exception/.test(launch)) throw new Error("LANDFALL_NATIVE_NEARBY_LAUNCH_FAILED");
         }
-        devices = await _android.devices({ host: "127.0.0.1", port: resources.adbPort, omitDriverInstall: true });
+        stage = "ENUMERATE_NATIVE_DRIVERS";
+        devices = await boundedDriver(
+          _android.devices({ host: "127.0.0.1", port: resources.adbPort, omitDriverInstall: true }),
+          resources.signal,
+        );
         stage = "OPEN_AUTHORIZED_JOURNALS";
         for (const serial of resources.serials) {
           const device = devices.find((item) => item.serial() === serial);
           if (!device) throw new Error("LANDFALL_NATIVE_NEARBY_DEVICE_MISSING");
           stage = "CONNECT_NATIVE_WEBVIEW";
           const view = await device.webView({ pkg }, { timeout: 30000 });
-          const page = await view.page();
+          stage = "CONNECT_NATIVE_PAGE";
+          const page = await boundedDriver(view.page(), resources.signal);
           pages.push(page);
           page.setDefaultTimeout(10000);
           page.setDefaultNavigationTimeout(45000);
           stage = "AUTHENTICATE_NATIVE_WEBVIEW";
-          await page.emulateMedia({ reducedMotion: "reduce" });
-          const cdp = await page.context().newCDPSession(page);
-          const cookie = await cdp.send("Network.setCookie", {
-            name: "wayfarer_account",
-            value: player.token,
-            url: origin.origin,
-            httpOnly: true,
-            secure: false,
-            sameSite: "Lax",
-          });
+          await boundedDriver(page.emulateMedia({ reducedMotion: "reduce" }), resources.signal);
+          const cdp = await boundedDriver(page.context().newCDPSession(page), resources.signal);
+          const cookie = await boundedDriver(
+            cdp.send("Network.setCookie", {
+              name: "wayfarer_account",
+              value: player.token,
+              url: origin.origin,
+              httpOnly: true,
+              secure: false,
+              sameSite: "Lax",
+            }),
+            resources.signal,
+          );
           expect(cookie.success).toBe(true);
-          await cdp.detach();
+          await boundedDriver(cdp.detach(), resources.signal);
           stage = "OPEN_NATIVE_JOURNAL";
           await openClosureJournal(page, voyage.id, origin.origin);
           stage = "OPEN_NATIVE_MAP";
@@ -234,7 +262,11 @@ test("real native Journal pairing returns untrusted hints and background clears 
         await testInfo.attach("native-nearby-stopped", { path: shot, contentType: "image/png" });
         passed = true;
       } finally {
-        await Promise.all(devices.map((device) => device.close().catch(() => remaining.push("webview-connection"))));
+        await Promise.all(
+          devices.map((device) =>
+            boundedDriver(device.close(), undefined, 15000).catch(() => remaining.push("webview-connection")),
+          ),
+        );
         for (const serial of acquired) {
           await adb(serial, ["shell", "am", "force-stop", pkg]).catch(() => remaining.push(`app-stop:${serial}`));
           if (!(await adb(serial, ["shell", "pm", "clear", pkg]).catch(() => "")).includes("Success"))
