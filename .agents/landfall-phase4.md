@@ -1050,3 +1050,16 @@ actualceremony alreadyrunning afterbuttontransition. Harness timeout may already
 haveactivatedcontrol. Continueonly ifactualprogressdialog/toolsvisible, thenuse
 normalvisibleSkipceremonywhenneeded,recorddeviceindices,requiretools/map/pairing
 andactualnative reports. No forcedclick/JSactivation/finalstatemanufacture.
+
+9a browser37189971931 HARVESTED45 SUCCESS14cases. Actualsignedregion prep224.28ms,
+resume141.56ms/offline291.17ms/blobdecode/corruptreject/localremove/zeroevents.
+BLE37189979518 HARVESTED18 SUCCESS3protocols actualcallbacks/UNKNOWNRSSI/
+zeroevents/cleanupPASS. Android37189975707 HARVESTED31 FAILoverall:QRcasePASS
+one frame/one decode/signature verified; geo ADD_FAILED/NOT_AVAILABLE. CleanupPASS.
+Apple37189982843 HARVESTED2889 SUCCESS;newnullableRSSIsourceactuallycompiled.
+a808Journal37190171035 active dispatch1791103774793; noinputneeded.
+Nativeperformance addsAndroidrealSensorManager3intervalCPU/PSS/stopassertions,
+strictnumericartifactexportbeforeownedcleanup, no configuredorigin. Apple3configured
+XCTestleasebatchclock/CPU/memorymetrics+numericattachment,8x4KiB encryptedrecords.
+Actualexecutionpending. LocalAndroidtestAPK/TS/lintbuildPASS afterDebug.getPss
+longtypefix. Finalcurrentmatrixupdated, no qualification/closure/catalogpromotion.

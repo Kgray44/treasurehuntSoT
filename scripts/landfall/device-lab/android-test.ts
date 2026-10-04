@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import path from "node:path";
+import { z } from "zod";
 import { discoverDeviceLabHost, labTool } from "./host";
 import { deviceLabSourceIdentity } from "./source";
 
@@ -46,6 +47,7 @@ async function main() {
     .digest("hex");
   let sourceUnchanged = false;
   let failure: string | null = null;
+  let sensorPerformanceSha256: string | null = null;
   const active = await adb(["shell", "ps", "-A", "-o", "NAME"]);
   if (active.split(/\r?\n/).some((name) => /^(com\.voyagewright\.landfall)(?:\.test)?(?::.*)?$/.test(name.trim())))
     throw new Error("LANDFALL_NATIVE_TEST_APP_ALREADY_ACTIVE");
@@ -65,7 +67,54 @@ async function main() {
     );
     await writeFile(path.join(destination, "instrumentation.txt"), result);
     passed = /OK \([0-9]+ tests?\)/.test(result) && !/FAILURES|INSTRUMENTATION_FAILED|Process crashed/.test(result);
+    if (passed) {
+      const raw = await adb([
+        "shell",
+        "run-as",
+        "com.voyagewright.landfall",
+        "cat",
+        "files/landfall-sensor-performance.json",
+      ]);
+      if (raw.length > 8192) throw new Error("NATIVE_SENSOR_PERFORMANCE_RECORD_TOO_LARGE");
+      const bounded = z.number().int().nonnegative().max(1_000_000);
+      const sample = z.strictObject({
+        baselineElapsedMs: bounded,
+        baselineCpuMs: bounded,
+        baselinePssKiB: bounded,
+        activeElapsedMs: bounded,
+        activeCpuMs: bounded,
+        activePssKiB: bounded,
+        pssDeltaKiB: z.number().int().min(-262144).max(32768),
+        callbacks: bounded,
+        stopVerified: z.literal(true),
+      });
+      const projection = z
+        .strictObject({
+          version: z.literal(1),
+          measurementClass: z.literal("NATIVE_SENSOR_ADAPTER_INSTRUMENTATION"),
+          api: z.number().int().min(28).max(100),
+          sampleCount: z.literal(3),
+          physicalEnergyProven: z.literal(false),
+          budgets: z.strictObject({
+            activeCpuMsPerTwoSecondInterval: z.literal(1000),
+            processPssKiB: z.literal(262144),
+            incrementalPssKiB: z.literal(32768),
+          }),
+          samples: z.array(sample).length(3),
+        })
+        .parse(JSON.parse(raw));
+      if (
+        projection.samples.some(
+          (value) => value.activeCpuMs > 1000 || value.activePssKiB > 262144 || value.activeElapsedMs < 2000,
+        )
+      )
+        throw new Error("NATIVE_SENSOR_PERFORMANCE_BUDGET_FAILED");
+      const serialized = JSON.stringify(projection, null, 2);
+      await writeFile(path.join(destination, "native-sensor-performance.json"), serialized);
+      sensorPerformanceSha256 = createHash("sha256").update(serialized).digest("hex");
+    }
   } catch {
+    passed = false;
     failure = "NATIVE_INSTRUMENTATION_TOOL_FAILED";
   } finally {
     for (const packageId of ["com.voyagewright.landfall.test", "com.voyagewright.landfall"]) {
@@ -95,7 +144,7 @@ async function main() {
           ...source,
           sourceUnchanged,
           sourceBinding: "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
-          evidenceClass: "EMULATOR_PROVEN",
+          evidenceClass: passed && cleanup && sourceUnchanged ? "EMULATOR_PROVEN" : "EXECUTION_FAILED",
           result: passed && cleanup && sourceUnchanged ? "PASS" : "FAIL",
           failure: !sourceUnchanged ? "NATIVE_TEST_INPUT_CHANGED" : failure,
           canonicalProgressionEvents: null,
@@ -105,6 +154,7 @@ async function main() {
           ),
           appSha256,
           testApkSha256,
+          sensorPerformanceSha256,
           cleanup: { result: cleanup ? "PASS" : "FAIL" },
         },
         null,

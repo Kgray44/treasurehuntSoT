@@ -45,4 +45,42 @@ final class PrivateStoreTests: XCTestCase {
         XCTAssertEqual(store.lastJourney(), "synthetic-session")
         store.remove(name + ":chunk:0"); XCTAssertNil(store.lastJourney())
     }
+    func testBoundedNativeLeaseEncryptionAndRestorePerformance() throws {
+        let origin = "https://synthetic-performance.example.test"
+        let store = LandfallPrivateStore(origin: origin); store.clear(); defer { store.clear() }
+        let value = String(repeating: "x", count: 4096)
+        let names = (0..<8).map { "landfall-region-lease-v1:performance-\($0)" }
+        let folder = "landfall-private-leases-v1-" + SHA256.hash(data: Data(origin.utf8)).map { String(format: "%02x", $0) }.joined()
+        let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent(folder)
+        XCTAssertTrue(store.put(names[0], value: value, expiresAt: Date().timeIntervalSince1970 * 1000 + 60000))
+        store.remove(names[0])
+        let options = XCTMeasureOptions(); options.iterationCount = 3
+        var samples: [[String: Any]] = []
+        measure(metrics: [XCTClockMetric(), XCTCPUMetric(), XCTMemoryMetric()], options: options) {
+            let started = ProcessInfo.processInfo.systemUptime
+            let expiry = Date().timeIntervalSince1970 * 1000 + 60000
+            for name in names { XCTAssertTrue(store.put(name, value: value, expiresAt: expiry)) }
+            let restored = LandfallPrivateStore(origin: origin)
+            for name in names { XCTAssertEqual(restored.get(name), value) }
+            let files = (try? FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: [.fileSizeKey])) ?? []
+            let bytes = files.reduce(0) { total, file in total + ((try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0) }
+            XCTAssertEqual(files.count, 8)
+            XCTAssertLessThanOrEqual(bytes, 65536, "Preliminary encrypted native lease storage budget")
+            for name in names { restored.remove(name) }
+            XCTAssertTrue(restored.list().isEmpty)
+            let elapsedMs = (ProcessInfo.processInfo.systemUptime - started) * 1000
+            XCTAssertTrue(elapsedMs.isFinite && elapsedMs >= 0)
+            XCTAssertLessThan(elapsedMs, 5000, "Preliminary native encryption/restore batch budget")
+            samples.append(["elapsedMs": elapsedMs, "storedBytes": bytes, "records": files.count,
+                            "withinPreliminaryBudget": elapsedMs < 5000 && bytes <= 65536 && files.count == 8])
+            // Public synthetic measurements only. XCTest also records native CPU
+            // and memory metrics in its source-bound result bundle.
+            print("LANDFALL_NATIVE_LEASE_PERFORMANCE elapsedMs=\(elapsedMs) storedBytes=\(bytes) records=8 physicalEnergyProven=false")
+        }
+        let data = try JSONSerialization.data(withJSONObject: ["version": 1, "measurementClass": "NATIVE_ENCRYPTED_LEASE_BATCH",
+            "configuredIterations": 3, "observedBatches": samples.count, "physicalEnergyProven": false,
+            "elapsedBudgetMs": 5000, "storageBudgetBytes": 65536, "samples": samples], options: [.sortedKeys])
+        let attachment = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+        attachment.name = "native-lease-performance.json"; attachment.lifetime = .keepAlways; add(attachment)
+    }
 }

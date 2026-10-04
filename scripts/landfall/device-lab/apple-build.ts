@@ -89,7 +89,9 @@ async function main() {
       path.join(destination, "build-summary.txt"),
       output
         .split(/\r?\n/)
-        .filter((line) => /Test Suite|Executed|TEST SUCCEEDED|BUILD SUCCEEDED/.test(line))
+        .filter((line) =>
+          /Test Suite|Executed|TEST SUCCEEDED|BUILD SUCCEEDED|LANDFALL_NATIVE_LEASE_PERFORMANCE|measured \[/.test(line),
+        )
         .join("\n"),
     );
     // Quiet xcodebuild may emit no success text; archive the structured result

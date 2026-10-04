@@ -1225,3 +1225,33 @@ is still visible, it uses the ordinary Skip ceremony button and records the affe
 device index. It still requires rendered tools/map/pairing and real native reports.
 This exercises the product's readable opening path; it does not qualify animated
 ceremony performance, synthesize an activation or force a ready state.
+
+Run37189971931 on9a355f07 passes all14 optimized browser cases. Its configured
+signed-region flow measures preparation224.28ms, verified resume141.56ms and
+offline image restoration291.17ms, verifies the real offline blob image after
+removing the separate synthetic chart cache, rejects a changed resource after
+reload and removes local data. Canonical writes remain zero. Radio run37189979518
+passes generic BLE, iBeacon and Eddystone UID through actual native callbacks,
+retaining UNKNOWN signal strength and zero progression writes. QR in Android
+run37189975707 passes actual camera decoding/signature verification on one frame;
+the same run fails geofence addition with finite ADD_FAILED / NOT_AVAILABLE.
+All owned cleanup passes. Apple run37189982843 succeeds with the native BLE change
+and virtual offline reconciliation; final profile qualification remains open.
+
+Android instrumentation now measures three native sensor adapter intervals with
+real SensorManager registration, whole-process CPU milliseconds and PSS, signed
+incremental PSS, callback counts and verified stop. It refuses a configured origin
+and uses the unconfigured Activity, so no private Journal or remote service opens.
+Preliminary per-interval budgets are1000 CPU ms in a two-second active interval,
+256MiB instrumentation-process PSS and32MiB incremental PSS. Only a passing exact
+APK/source-bound run can export the strictly projected numeric artifact before
+owned app data cleanup; failed native-test receipts classify EXECUTION_FAILED.
+Actual execution remains pending and no physical energy or full-Journal inference
+is permitted.
+
+Apple XCTest adds three configured measurement iterations for an eight-record
+encrypted native restart-lease write/restore/remove batch. Clock/CPU/memory metrics
+remain in the actual result bundle; a numeric attachment reports measured batch
+time and encrypted storage growth. Preliminary budgets are five seconds and64KiB
+for eight4KiB values. The test origin and content are public synthetic and cleanup
+is scoped to that store. Actual hosted execution remains pending.
