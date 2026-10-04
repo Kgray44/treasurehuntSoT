@@ -286,6 +286,7 @@ jobs:
     env:
       LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
       LANDFALL_NATIVE_BACKGROUND: "1"
+      LANDFALL_NATIVE_COLD_DIAGNOSTIC: "__COLD_SESSION_DIAGNOSTIC__"
     steps:
       - uses: actions/checkout@v4
         with:

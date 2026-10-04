@@ -51,6 +51,7 @@ const countersSchema = z.strictObject(
   ),
 );
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+const coldDiagnostic = process.env.LANDFALL_NATIVE_COLD_DIAGNOSTIC === "true";
 const sourceInputs = [
   "tests/e2e/landfall-native-background.spec.ts",
   "tests/e2e/fixtures/landfall-native-opening.ts",
@@ -58,9 +59,11 @@ const sourceInputs = [
   "tests/e2e/fixtures/sounding-line-isolation.ts",
 ];
 
-test("real signed notice returns reauthorize Player across actual registered-region guest reboot", async ({
-  baseURL,
-}) => {
+const backgroundCaseName = coldDiagnostic
+  ? "diagnostic only: existing native cookie authorizes a direct request after actual guest reboot"
+  : "real signed notice returns reauthorize Player across actual registered-region guest reboot";
+
+test(backgroundCaseName, async ({ baseURL }) => {
   ensureGenericSoundingLineIsolation();
   const startedAt = new Date().toISOString();
   const origin = new URL(baseURL!);
@@ -72,12 +75,11 @@ test("real signed notice returns reauthorize Player across actual registered-reg
     process.env.LANDFALL_PACKAGE_KEY_ID !== "landfall-native-return-lab"
   )
     throw new Error("LANDFALL_NATIVE_RETURN_OWNERSHIP_REQUIRED");
-  const scenarios = [
-    "geofence-native-background-wake",
-    "device-reboot",
-    "notification-return",
-    "notification-revoked",
-  ].map((id) => {
+  const scenarios = (
+    coldDiagnostic
+      ? ["device-reboot"]
+      : ["geofence-native-background-wake", "device-reboot", "notification-return", "notification-revoked"]
+  ).map((id) => {
     const scenario = landfallDeviceScenario(id);
     return { id, version: scenario.version };
   });
@@ -356,9 +358,11 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         ])
           await adb(["shell", "pm", "grant", pkg, `android.permission.${permission}`]);
         stage = "OBSERVE_OS_ACCURACY";
-        settings = await inspectOwnedAndroidLocationAccuracy(adb);
-        fused = await startOwnedAndroidFusedInput(adb, process.cwd());
-        await fused.phase("OUTSIDE_BASELINE");
+        if (!coldDiagnostic) {
+          settings = await inspectOwnedAndroidLocationAccuracy(adb);
+          fused = await startOwnedAndroidFusedInput(adb, process.cwd());
+          await fused.phase("OUTSIDE_BASELINE");
+        }
         stage = "OPEN_REAL_NATIVE_JOURNAL";
         const launched = await adb([
           "shell",
@@ -436,6 +440,105 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           typeof registration.returnHandle === "string" &&
           registration.returnHandle.length > 100;
         expect(signedRegistration).toBe(true);
+        if (coldDiagnostic) {
+          // This direct request diagnoses identity storage and wire eligibility.
+          // It is never evidence of a notice, geofence wake, or revoked return.
+          stage = "DIAGNOSTIC_ACTUAL_REBOOT";
+          await background();
+          await closeDrivers();
+          reboot = await rebootOwnedAndroidGuest(
+            { ephemeralHostedLinux: true, enabled: true, virtual: true, serial, port: 4487 },
+            { adb, now: Date.now, delay },
+          );
+          await adb(["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
+          await adb(["shell", "wm", "dismiss-keyguard"]);
+          stage = "DIAGNOSTIC_COLD_LAUNCH";
+          await adb(["shell", "am", "start", "-W", "-n", `${pkg}/.LandfallActivity`]);
+          const returned = await attach(false);
+          await returned.waitForLoadState("domcontentloaded");
+          const coldCdp = await returned.context().newCDPSession(returned);
+          try {
+            const jar = await coldCdp.send("Network.getCookies", { urls: [origin.origin] });
+            const saved = jar.cookies.find((item) => item.name === "wayfarer_account");
+            const guestNow = await returned.evaluate(() => Date.now());
+            const session = await db.accountSession.findFirst({
+              where: { accountId: player.id },
+              select: {
+                expiresAt: true,
+                revokedAt: true,
+                account: { select: { profile: { select: { status: true } } } },
+              },
+            });
+            coldSession = {
+              cookiePresent: Boolean(saved),
+              expectedCookie: saved?.value === player.token,
+              persistent: Boolean(saved && !saved.session),
+              httpOnly: saved?.httpOnly === true,
+              cookieFutureOnGuest: Boolean(saved && saved.expires * 1000 > guestNow),
+              databaseSessionActive: Boolean(
+                session && session.revokedAt === null && session.expiresAt.getTime() > Date.now(),
+              ),
+              canonicalSessionEligible: Boolean(await currentAccount(player.token)),
+              playerProfileActive: session?.account.profile?.status === "ACTIVE",
+              signInDestination: new URL(returned.url()).pathname === "/player/sign-in",
+              singleAuthorizationCookie: jar.cookies.filter((item) => item.name === "wayfarer_account").length === 1,
+            };
+          } finally {
+            await coldCdp.detach();
+          }
+          stage = "DIAGNOSTIC_COLD_AUTHORIZATION";
+          const returnBaseline = (await readReturns()).length;
+          const sent = returned
+            .waitForRequest(
+              (request) => {
+                const url = new URL(request.url());
+                return url.origin === origin.origin && url.pathname === "/player/landfall-return";
+              },
+              { timeout: 15000 },
+            )
+            .catch(() => null);
+          await returned.evaluate(async (handle) => {
+            await fetch(`/player/landfall-return?handle=${encodeURIComponent(handle)}`, {
+              credentials: "same-origin",
+              cache: "no-store",
+              redirect: "manual",
+            });
+          }, registration.returnHandle);
+          const request = await sent;
+          if (!request) throw new Error("NATIVE_COLD_DIAGNOSTIC_REQUEST_UNOBSERVED");
+          const headers = await request.allHeaders();
+          const cookies = (headers.cookie ?? "")
+            .split(";")
+            .map((item) => item.trim())
+            .filter((item) => item.startsWith("wayfarer_account="));
+          coldRecheckWire = {
+            headerObserved: headers.cookie !== undefined,
+            singleAuthorizationCookie: cookies.length === 1,
+            expectedCookie: cookies.includes(`wayfarer_account=${player.token}`),
+          };
+          await expect
+            .poll(async () => (await readReturns()).length, { timeout: 15000 })
+            .toBeGreaterThan(returnBaseline);
+          const observed = (await readReturns()).slice(returnBaseline);
+          serverReturnOutcomes.push(...observed.map((event) => event.outcome));
+          deniedRequestCookies.push(
+            ...observed.flatMap((event) =>
+              event.authorizationCookie === undefined ? [] : [event.authorizationCookie],
+            ),
+          );
+          deniedRequestSessions.push(
+            ...observed.flatMap((event) =>
+              event.authorizationSession === undefined ? [] : [event.authorizationSession],
+            ),
+          );
+          expect(serverReturnOutcomes).toContain("RETURNED");
+          const after = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
+          expect(after.currentSequence).toBe(baseline.currentSequence);
+          expect(after.currentBlockId).toBe(baseline.currentBlockId);
+          expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(before);
+          passed = true;
+          return;
+        }
         await expect(panel.getByRole("status")).toContainText("Broad reminder enabled", { timeout: 15000 });
         stage = "FIRST_ACTUAL_BACKGROUND_NOTICE";
         await background();
@@ -494,6 +597,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         await measureCpu("ACTIVE_NOTICE_RETURN");
         stage = "REGISTERED_REGION_ACTUAL_REBOOT";
         await background();
+        if (!fused) throw new Error("NATIVE_RETURN_FUSED_INPUT_REQUIRED");
         await fused.phase("STOP");
         await closeDrivers();
         reboot = await rebootOwnedAndroidGuest(
@@ -756,7 +860,11 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           .every((row) => row.elapsedMs! <= 60000);
         const receipt = {
           version: 1,
-          scenarioId: "first-party-native-background-return",
+          scenarioId: coldDiagnostic
+            ? "first-party-native-cold-session-diagnostic"
+            : "first-party-native-background-return",
+          scope: coldDiagnostic ? "DIAGNOSTIC_ONLY" : "FULL_NOTICE_RETURN",
+          entryMode: coldDiagnostic ? "DIRECT_WEBVIEW_DIAGNOSTIC" : "ACTUAL_OS_NOTICE",
           scenarioVersion: 1,
           hostPlatform: "LINUX",
           environment: "ANDROID_EMULATOR",
@@ -791,7 +899,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           evidenceClass: passed ? "EMULATOR_PROVEN" : "EXECUTION_FAILED",
           nativeBridge: "REAL_ANDROID_OS",
           firstPartyApi: "REAL_OPTIMIZED_APPLICATION",
-          geofenceInput: "DOCUMENTED_FLP_MOCK_LOCATION",
+          geofenceInput: coldDiagnostic ? "NONE" : "DOCUMENTED_FLP_MOCK_LOCATION",
           signedRegistration,
           backgroundStatus,
           returnHopStatus,

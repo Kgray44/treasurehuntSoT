@@ -1858,3 +1858,28 @@ TypeScript and lint. Three authority tests retain the original denial when the
 lab-only canonical query finds an eligible account, throws, or is not enabled.
 Emitted categories contain no credential, profile identity or exception text.
 This readonly diagnostic cannot become an authorization path.
+
+## 2026-10-04 current-source regression and cold-session diagnostic
+
+Current ccb35e4a root regression passes 474 files / 2,682 tests against fresh
+owned SQLite with clean unchanged source. The detached qualification checkout
+passes optimized build and client privacy scan; exact tracked-source archive
+scan reports zero violations / six classifications. Production audit has zero
+vulnerabilities. These are diagnostic checks, not protected qualification.
+
+Corrected primary radio run 37210642366 passes all four actual two-device
+scenarios. Pairing run 37210164397 fails the second device's strict opening
+geometry wait despite both authenticated Journals and native bridges. The normal
+owned-device wake/unlock precondition is now established before public opening
+inspection; bounds checks remain unchanged. Background run 37210160109 fails
+before cold authorization: primary reports GEOFENCE_NOT_AVAILABLE; low resource
+registers but does not deliver the required real notice. Neither establishes new
+cold-cookie or server-eligibility facts.
+
+An explicitly selected first-party-native-cold-session-diagnostic uses actual
+guest reboot, the existing persistent cookie, a genuine signed first-party claim,
+and direct WebView request. It compares finite outgoing-cookie and server
+eligibility facts without recording credentials. Its receipt marks DIAGNOSTIC_ONLY
+and DIRECT_WEBVIEW_DIAGNOSTIC; no notice, wake, boot-region registration, revoked
+return or full-background acceptance is inferred. The strict full notice case
+remains required. Catalog meaning remains unchanged while Phase4 is incomplete.

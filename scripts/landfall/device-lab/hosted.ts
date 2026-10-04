@@ -40,7 +40,7 @@ export async function dispatchLandfallHostedLab(
   if (
     target === "android-background" &&
     selectedScenarios !== undefined &&
-    selectedScenarios !== "first-party-native-background-return"
+    !["first-party-native-background-return", "first-party-native-cold-session-diagnostic"].includes(selectedScenarios)
   )
     throw new Error("LANDFALL_HOSTED_BACKGROUND_SCENARIO_INVALID");
   if (
@@ -77,13 +77,24 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__RUN_ANDROID_RADIO__", String(target === "all" || target === "android-radio"))
     .replaceAll("__RUN_ANDROID_JOURNAL__", String(target === "all" || target === "android-journal"))
     .replaceAll("__RUN_ANDROID_BACKGROUND__", String(target === "all" || target === "android-background"))
+    .replaceAll(
+      "__COLD_SESSION_DIAGNOSTIC__",
+      String(target === "android-background" && selectedScenarios === "first-party-native-cold-session-diagnostic"),
+    )
     .replaceAll("__ANDROID_RADIO_PROFILES__", JSON.stringify(radioProfiles))
     .replaceAll("__ANDROID_PROFILES__", JSON.stringify(androidProfiles))
     .replaceAll("__APPLE_PROFILES__", JSON.stringify(appleProfiles));
   const scenarios = {
     browser: target === "browser" || target === "all" ? ["first-party-phase4-web"] : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
-    background: target === "android-background" || target === "all" ? ["first-party-native-background-return"] : [],
+    background:
+      target === "android-background" || target === "all"
+        ? [
+            target === "android-background"
+              ? (selectedScenarios ?? "first-party-native-background-return")
+              : "first-party-native-background-return",
+          ]
+        : [],
     radio: hostedDeviceLabScenarios("android-radio", target === "android-radio" ? selectedScenarios : undefined),
     ios: hostedDeviceLabScenarios("ios", target === "ios" || target === "all" ? selectedScenarios : undefined),
     android: hostedDeviceLabScenarios(

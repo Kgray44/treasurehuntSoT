@@ -10,6 +10,10 @@ export async function openNativeJournalEntry(
   adb: (args: string[]) => Promise<string>,
   observeStage: (stage: string) => void = () => {},
 ) {
+  // Sequential multi-device setup can leave the next owned guest asleep.
+  // Establish the normal OS interaction precondition before inspecting bounds.
+  await adb(["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
+  await adb(["shell", "wm", "dismiss-keyguard"]);
   const opening = page.getByRole("dialog", { name: "Open the voyage journal" });
   const tools = page.getByRole("navigation", { name: "Journal tools" });
   await expect
