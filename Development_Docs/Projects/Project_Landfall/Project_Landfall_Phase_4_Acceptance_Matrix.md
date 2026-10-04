@@ -18,9 +18,9 @@ fresh qualification before protected integration.
 
 ## Implemented capability and evidence boundaries
 
-Current clean source `9514f185` passes **477 unit files / 2,707 tests** in an
-owned detached worktree with fresh SQLite (237.18 seconds). Selected formatting
-(242 files), lint (216 files, zero errors), TypeScript and exact tracked-source
+Current clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
+owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting
+(244 files), lint (218 files, zero errors), TypeScript and exact tracked-source
 privacy scanning (zero violations, six classifications) pass. The schema and
 dependency inputs remain unchanged from the earlier validated candidate.
 
@@ -52,10 +52,27 @@ the second native callback is forwarded (2/2), qualifies in947ms, and restart
 reconciliation writes exactly one expected canonical event. Region wake writes
 zero. Both clean up; its harvest retains5,640hashed artifacts and successful
 transport cleanup. The native suite again reports17passes/one unconfigured-driver skip.
-Full three-profile iOS
-run37224038483 on `2654d7b8` remains active. Focused tablet input run37224452331
-on `80b8dbe4` remains active. A lab-only bounded Simulator input wrapper passes
-12 unit cases; acknowledgment never substitutes for an actual native fix.
+Full three-profile iOS run37224038483 on `2654d7b8` finishes **25/27**:
+tablet9/9, primary8/9 and compatibility8/9. Both failures are offline restart.
+Primary's read-only count IPC times out; compatibility's117,815ms UIKit relaunch
+outlasts the unchanged90-second outbox. Current lab handling uses documented
+OS launch followed by actual foreground/client/lease assertions, plus at most
+one fresh read-only count redispatch while the same owned child remains live.
+No evidence lifetime or authority/write deadline is extended. Full primary and
+compatibility rechecks37228402022 on `8e6e3e19` remain active.
+
+Focused tablet input run37224452331 on `80b8dbe4` passes, including one actual
+input deadline followed by acknowledgment, native qualified fixes and exactly
+one canonical event. Acknowledgment never substitutes for an actual native fix.
+The wrapper's12 guard tests and the count reader'ssix guard tests pass.
+
+Actual Apple notification/deep-link case37226211477 fails at notification
+permission; canonical zero and cleanup pass. Main-queue reply correction and
+finite DEBUG diagnostics are under actual recheck37227624737 on `18c2f4a0`.
+This additional acceptance gate requires real permission UI, background notice,
+SpringBoard tap and native same-origin return. Its synthetic nonce landing proves
+OS handoff only; production signed authorization has separate shared and Android
+first-party coverage. No notice return is yet claimed.
 
 Retained input comparisons show production web, dependency and schema trees
 unchanged from C8; native Android unchanged from01bab29b; and native iOS unchanged

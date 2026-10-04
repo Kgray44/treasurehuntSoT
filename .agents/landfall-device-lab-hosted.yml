@@ -100,6 +100,34 @@ jobs:
           name: landfall-ios-${{ matrix.profile }}-__CANDIDATE_SHA__
           path: artifacts/landfall-device-lab
           retention-days: 14
+  apple-notice:
+    if: __RUN_APPLE_NOTICE__
+    name: Native / iOS notification UI / primary-phone
+    runs-on: macos-latest
+    timeout-minutes: 30
+    env:
+      LANDFALL_LAB_PROFILE: primary-phone
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: brew install xcodegen
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts
+      - run: npm run landfall:device-lab -- --platform ios --scenario apple-native-notification-background-return
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-ios-notice-primary-phone-__CANDIDATE_SHA__
+          path: artifacts/landfall-device-lab
+          retention-days: 14
+
   android:
     if: __RUN_ANDROID__
     name: Native / Android / ${{ matrix.profile }}

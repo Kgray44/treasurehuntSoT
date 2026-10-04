@@ -1,195 +1,77 @@
 # Hold the Bearing active context packet
 
-Execution profile: UNATTENDED_CONTINUATION. Owner: current Phase 4 goal; branch
+Execution profile: UNATTENDED_CONTINUATION. Owner: current Phase4 goal; branch
 `codex/landfall-phase4`, owned worktree `landfall-phase4/Codex_TreasureHunt`.
 Protected starting main: `c8ea696404ef4cc79fc009457589b1d66f4caa57` (explicit fetch).
 Primary checkout is dirty and excluded from implementation/validation.
 
-## Source-bound starting context
+## Current acceptance and remaining work
 
-Full2654 run37224038483 finishes FAIL at25/27: tablet9/9, primary8/9,
-compatibility8/9. Full harvest18328/transport cleanupPASS; interim root is retained.
-Primary restart fails readonly counts IPC at31,488ms, then cleanup count112ms.
-Compatibility restart gets both native fixes and restores its lease, but UIKit
-relaunch takes117,815ms; the90-second outbox has expired before reconciliation,
-which performs no authorization/submission. Retain these failures; no stale claim
-or token lifetime is extended. Lab restart now uses documented simctl launch,
-then mandatory XCTest foreground and actual restarted-client readiness. Counts
-allows only one fresh readonly redispatch after deadline while the same owned
-child remains live; per-read30s, writes/authorization15s and assertion budgets
-remain unchanged. Six guard tests plus scenario/selection give3files/39tests
-PASS; TypeScript/lint PASS. Two full affected-profile rechecks are required.
-Apple notice main-queue diagnostic recheck37227624737 on18c2f4a0 is active
-(hosted-18c2f4a04d4e-1791141368486), separate from restart handling.
+Current clean source8e6e3e1900102494892135d8ff53796adb50f4b1 passes478unit
+files/2714tests in214.59seconds, clean/unchanged owned detached qualification
+worktree and fresh SQLite. Format244/lint218(zero errors), TypeScript, docs,
+features sync/validate pass. Exact tracked archive privacy:0violations/6classes,
+SHA256bac5bb78b63626859a63179c76624988a440cc9dd2a568cec4a97ba13db0c06c.
+Schema, lock and production web trees remain unchanged from retained proof.
 
-Apple notice run37226211477 onf7911082 FAIL, harvest4392/cleanupPASS:
-LOCATION0PASS; NOTIFICATION1 times out after37,518ms; canonical0/cleanupPASS.
-The native UI tool itself finishes1PASS; no notice tap/return is claimed.
-Native permission replies now return on the WebKit main queue and DEBUG-only
-producer snapshots expose REQUESTED/REPLIED, granted and callback/reply-thread
-booleans. Owned Simulator receipt collection adds OS action acknowledgments.
-No raw handle, coordinate, identity or error string is exported. TS/lint pass;
-actual focused Apple recheck required, without an asserted root cause yet.
-Full2654 iOS primary and compatibility jobs FAIL; tablet still runs. Completed
-profile artifacts are downloading to the owned ios-2654-completed-interim root.
-Do not dispatch final protected qualification until all attainable gates close.
+FrozenC8 run37219804462 remains FAIL,19773hashed artifacts/cleanupPASS.
+Accepted Android rechecks on01bab29bc complete compatibility20/20 plus12native
+instrumentation(37221706364), and primary/lowradio4/4each(37221708792).
+Total Android80profilecases/eightradiocases PASS. Actual first-party Journal
+pairs, signed notice/registered reboot/fresh membership denial and native clear
+pass onC8, with canonical0 and cleanup. NativeAndroid source unchanged since01bab.
+Browser53 and providers159eachWindows/Linux PASS onC8. Original failures remain.
 
-Final Apple coverage review adds `apple-native-notification-background-return`:
-real notification permission UI, delegate-produced Core Location notice,
-SpringBoard tap and same-origin synthetic nonce handoff, canonical zero and clear.
-This is OS delivery/handoff proof, not production signed-return authorization;
-shared and Android first-party cases own that separate boundary. The focused
-actual Apple run is still required. Two local files/33tests, TypeScript, affected
-lint and docs validation pass. Product native code is unchanged; existing Apple
-matrix branches remain semantically unchanged. Tablet input37224452331 succeeds,
-harvest4204/cleanupPASS; inspect its actual native/canonical receipts before use.
+Full iOS2654 run37224038483 finishes25/27: tablet9/9, primary8/9, compatibility8/9;
+18328hashed artifacts/cleanupPASS. Both failures are offline restart. Primary
+counts IPC times out31,488ms, followed by112ms successful cleanup count.
+Compatibility gets both native fixes/restores lease but UIKit relaunch117,815ms
+outlasts the90-second outbox. Keep expiry and authorization/write bounds intact.
+Current lab uses documented OS launch plus actual XCTest foreground/client/lease
+assertions; at most one fresh readonly count redispatch while same owned child
+is live. Six meaningful count guards pass. Full affected-profile recheck
+37228402022 on8e6e3e19 is active, dispatchhosted-8e6e3e190010-1791142107094.
 
-FrozenC8 run37219804462 is fully harvested:19773hashed artifacts, conclusionFAIL,
-transport cleanupPASS. Apple totals primary8/9, compatibility7/9, tablet8/9.
-Tablet's offline-native input command is killed after61,377ms before an ack;
-primary background observation fails, compatibility region input is killed and
-offline restart drops the final native fix. Preserve these four failed scenarios.
-4341f2e5 focused runs37223287847(primary geofence) and37223293060(compat offline
-restart/geofence) have completed SUCCESS; primary harvest4404/cleanupPASS and
-compatibility harvest is active. Primary native XCTest17PASS/1unconfigured-driver skip,
-UI1PASS, all10geo steps PASS/canonical0/cleanupPASS.
-2654d7b8 adds permission/precision and system-pause queue cancellation, and full
-three-profile iOS run37224038483 is active (dispatch2654d7b876c7-1791138007104).
-Native four throttle regressions are included in the observed17PASS suite.
-Current9514f185 full root477files/2707tests PASS (237.18s), format242/lint216/TS
-PASS, tracked-source privacy0violations/6classifications. No final qualification.
-New lab-only owned Simulator input helper allows one15s+15s idempotent retry only
-after a terminated tool deadline, never generic error/cancellation. Twelve tests,
-lint/TypeScript PASS. Native observation still determines scenario truth; input
-ack is not a fix or progression. Current helper source needs focused actual use.
+Focused4341 primary wake37223287847 and compatibility restart/wake37223293060
+PASS. Real Core Location delegate/background/foreground/encrypted hints/removal,
+canonicalzero and cleanup. Restart yields exactlyone canonical event.
+Native XCTest17PASS/one unconfigured-lab-driver skip; actual UI driver1PASS.
+Tabletinput37224452331 on80b8dbe4 PASS,4204hashes/cleanup, including actual first
+input deadline followed by bounded retry ACK, actual fixes and canonicalone.
+The input wrapper's12 guard tests PASS; ACK never substitutes for native proof.
 
-Apple frozen37219804462 primary8/9 and compatibility7/9: primary background
-observation FAIL, compatibility simctl killed during region input, and offline
-restart's second fix times out. Actual compatibility diagnostics show native
-callbacks2/forwarded1 while76identical OS inputs produce no new fix. Correct the
-native drop-only throttle with one latest transient coalesced fix and four XCTest
-regressions; preserve timestamp, freshness, consent and generation cancellation.
-UI driver now observes either actual background state in one15-second predicate,
-and Simulator region input sets each held location once while retaining both180s
-waits and mandatory encrypted wake-hint assertions. Current TS/lint pass; actual
-native compile/tests and focused rechecks required. Original tablet still runs.
-No protected qualification or closure. All earlier original-source failures stay.
+New locally required Apple notice case37226211477 onf791 FAIL at permission:
+LOCATION0PASS, client timeout37,518ms, canonical0/cleanupPASS,4392hashes.
+Passing UI tool does not override failed scenario. Native permission now replies
+on WebKit main queue; finite DEBUG stages/grant/thread booleans and OS actions
+are collected. Actual recheck37227624737 on18c2f4a0 is active, dispatch
+hosted-18c2f4a04d4e-1791141368486. No proved callback-thread cause yet.
+Case requires real permission UI, delegate-produced background notice,
+SpringBoard tap and native same-origin return. Synthetic nonce landing is OS
+handoff proof only; production signed authorization is separately shared/Android
+first-party coverage. No notice/delegate/handler/canonical injection.
+Permanent once-per-closure Apple notice job is wired; six rendered selection
+cases verify YAML/scope. Actual acceptance remains required; CI-only wiring
+does not require rerunning every simulator.
 
-Full diagnostic sequence rechecks PASS on clean01bab29b: compatibility
-37221706364 passes20/20scenarios and12native instrumentation tests, harvest249;
-radio37221708792 passes4/4cases on each primary/low profile, harvest42. Both
-transports cleanupPASS. Original frozen two failures remain historical failures,
-without invented deterministic root cause. Only full iOS3profile matrices remain
-an open native acceptance gate. OriginalC8 completed-job interim transfer verifies
-159provider cases per host, both actual Journal pairs (allHTTP200/reports/stop/
-canonical0), both registered signed-notice flows with fresh denial after revoked
-membership, source unchanged and cleanupPASS. Exact artifacts remain ignored and
-owned; final ordinary qualification, protected merge and closure are still open.
+DraftPR677 attached. No final ordinary product qualification dispatched.
+Next: finish/harvest both native rechecks, actual-step/canonical/cleanup inspection,
+final docs/performance/privacy/input comparisons, freeze, ordinary exact-candidate
+protected qualification, protected merge, landed smoke, separate protected
+completion/evidence/catalog publication, landed verification and formal closure.
+Do not mark goal complete at a checkpoint. FT044 remains acceptedPhases1–3;
+only after completePhase4 acceptance promote completed capability on publication.
 
-Focused diagnostic rechecks37221136835 (primary UWB onbf45d720) and37221237872
-(compatibility reboot on4daeeef8) PASS, harvested12/19artifacts with transport
-cleanupPASS. Both UWB guests expose actual CAPABILITIES_READY, untrusted ranges,
-verified stop, canonical0 and cleanup. Compatibility observes same-guest changed
-boot identity in28,725ms and35,174ms complete lifecycle within180,000ms.
-The source changes are diagnostic only; no deterministic root cause was proved.
-Retain the intermittent frozen failures without relabeling them. Complete
-compatibility20case and both radio4case sequences are rechecking01bab29b via
-runs37221706364/37221708792. Original full iOS3profile run37219804462 continues.
-Current01bab29b lint214files/TypeScript, unsigned native debug/release builds,
-release exclusions and exact archive privacy zero/six PASS. Full root476/2695
-and optimized build/client scan retain original c8e8b1de source; actual application,
-unit, dependency, schema and native iOS trees are unchanged. No receipt rebinding.
+One Voyage remains sole progression engine; PHYSICAL/VIRTUAL Worldspaces.
+No Phase5, Watchglass/game engine, Storytide, Figurehead, second writer, private
+fixtures or shared runtime mutation. Remote production credentials/licensing,
+physical devices/RF/energy/field/signing/deployment/owner acceptance are explicit
+external gates, distinct from available hostedmacOS proof. No physical claims.
+Protected-base fetch before freeze. Preserve immutable receipt original sources;
+compare actual affected inputs, never rebind or relabel failures.
 
-Frozen closure run37219804462 on c8e8b1de: local476files/2,695tests,
-optimized build/client scan, archive privacy scan and unsigned native package
-build PASS. Hosted browser, providers, both first-party Journal pairs, both
-signed notice/reboot jobs and Android primary/low/tablet PASS. Android
-compatibility fails after its measured successful20,828ms guest reboot;
-primary radio fails UWB preparation with CONFIG_UNSUPPORTED on the second guest.
-Original failed receipts are retained. Add finite wake/unlock/start/client-ready
-stages and individual capability absence/distance/config/channel/preamble/rate
-categories before focused rechecks; no unsupported capability is inferred ready.
-Three full iOS profile jobs remain running. No protected qualification yet.
-
-Latest checkpoint (2026-10-04 17:14 UTC): all focused failures are resolved with
-actual OS proof. iOS37218201954 on clean d2add7a1 passes all10geofence steps,
-including actual encrypted wake hints, foreground return, removal, canonical0
-and cleanupPASS. Its364,621ms background input and3,698ms foreground action meet
-the retained bounds. Harvest4270/artifacts/transport cleanupPASS. Low-memory
-Journal37218710912 on340479dd passes actual System UI Wait interaction1, native
-CAPABILITIES_READY on both1536M guests, HTTP200 for all pairing operations,
-validated reports on both, native stop, canonical0/source unchanged/cleanupPASS.
-Harvest45/artifacts/transport cleanupPASS. Current selected lint214files PASS
-with one existing offline full-navigation warning; TypeScript PASS. Freeze code
-for complete closure-tier matrices and fresh full root acceptance. Preserve every
-original source identity; no protected qualification or closure yet.
-
-Current checkpoint (2026-10-04 16:40 UTC): current browser run37217125284 onbbda4541
-passes after the authenticated reading-state/Escape listener race correction;
-harvest is pending. Android37216122961 on c3ba3167 passes20scenarios on each of
-four distinct profiles and all native instrumentation receipts; harvested996
-artifacts, clean source bindings and transport cleanupPASS. Providers37216130695
-pass159on both Windows/Linux with the same original source fingerprint.
-Current radio37216156113 passes all six BLE cases but both UWB cases fail native
-preparation. Primary first-party pairing37216159946 passes, while low-resource
-fails before pairing at strict opening geometry. Preserve these failed receipts.
-The radio fixture now establishes actual awake/unlocked guests before UWB and
-retains finite native preparation categories; pairing retains bounded public
-DOM/native geometry diagnostics without weakening touch mapping. Focused rechecks
-remain required. iOS37216787499 onb7f5eb7e is running after integer hint timestamp
-and bounded lab-only observed lifecycle control-poll recovery corrections.
-Clean unchanged fb6146ce full root475files/2,691tests, detached optimized build
-and client privacy scan PASS. UWB37217634667 succeeds both corrected profiles,
-harvest pending. Browser bbda4541 harvest86/artifacts/cleanupPASS confirms53PASS.
-iOS b7f5eb7e fails NATIVE_CONTROL_FOREGROUND_UNOBSERVED because its15-second
-foreground-wait deadline ran during the intentional363-second background input
-step. Recovery now has a separate ten-minute actual-foreground suspension bound
-followed by the existing15-second network deadline; four focused tests PASS.
-Actual hosted recheck remains required. No protected qualification or closure.
-
-Low-memory37217638812 fails before pairing: actual OS screenshot shows System UI
-ANR overlay, native shown/focusedfalse. New narrowly guarded observed Android Wait
-control recovery preserves all strict touch/focus checks; nine focused mapping
-tests, lint and TypeScript PASS. Recheck required. d2add7a1 archive privacy scan
-PASS zero violations/six classifications;237selected format files, docs/catalog
-checks PASS. Feature capability remains partial and unpromoted.
-
-Previous checkpoint: fb92d113 passes full root regression
-with2,687tests on fresh owned SQLite. Its optimized detached build is running.
-Low-resource two-device Journal37214134421 on7cf6ea34 passes actual reports on
-both devices, native stop, canonical0 and cleanupPASS; primary37212997052 on9709ccee
-already passes with the distinct3072M configuration. Signed notice37213441278
-onff297bda observes RETURNED then UNAVAILABLE on both corrected profiles after
-actual notice/reboot/BootReceiver/second notice, but fails the mistaken final
-`/player` assertion. Canonical signed-in landing is `/player/library`; corrected
-full recheck37214774366 onfb92d113 passes both corrected profiles. Direct cold diagnostic37214139225
-fails closed-Page attach before authorization; it is not acceptance evidence.
-
-iOS registration now waits for `didStartMonitoringFor`, resolves failed/timed-out
-requests without grant and removes only their consent. Clear, Always-permission
-downgrade and revocation cancel pending registrations. A region-driven cold
-launch initializes foreground gates from actual UIApplication background state.
-Version-two native geofence scenario also exercises real Core Location using
-documented Simulator location inputs and XCTest background/foreground, requiring
-actual encrypted wake hints. Framework monitoring capability is retained by
-XCTest. Focused hosted37214637581 on2446a7f1 failed at foreground control recovery;
-actual registration and location delivery passed. Do not assume unsupported
-or successful Simulator monitoring. No injected delegate callback is OS proof.
-Final complete matrices, catalog capability promotion, ordinary protected
-qualification, merge, landed verification and closure remain open.
-
-Accepted Phase 3 capsule and v1.1 amendment record are the current plateau.
-Landfall v1.0 section 23.4 and final acceptance section 24, additive v1.1
-Worldspaces amendment, owner-supplied complete Phase 4 instructions govern.
-Trim v1.0-R1 Appendix B requires autonomous local completion. Tracked baseline
-has no context generator or `.agents/context-workflow.md`; use this compact
-packet as the previous accepted phases did. Expand only for concrete questions.
-
-One Voyage remains the sole canonical progression writer. Native providers
-emit bounded observations to existing Landfall qualification. Physical native
-adapters never supply virtual positions. Geofence wake is never progression.
-Watchglass/game are NOT_CONFIGURED unless a real adapter exists. No Watchglass,
-Storytide, Figurehead, second engine, private fixture data, or Phase 5.
+Automatic review rejected old AVD and disconnect SQLite cleanup; retain both,
+never alternate-delete. Primary dirty and user-owned processes remain preserved.
 
 ## Work and qualification sequence
 
@@ -227,7 +109,9 @@ exact-candidate acceptance, protected merge and landed verification are complete
 
 Update this packet as shared contracts and accepted plateaus become concrete.
 
-## Development plateau, 2026-10-03
+## Historical development evidence, 2026-10-03
+
+The following chronological notes retain their original context. Current acceptance is above; earlier active/pending statements are historical.
 
 Latest Android focus run 37162816491 (clean 8821f56004bc) is harvested. Low-resource
 GPS/background/recreation: 3/3 pass. Generic GPS-capable tablet: 2/3 pass; cold

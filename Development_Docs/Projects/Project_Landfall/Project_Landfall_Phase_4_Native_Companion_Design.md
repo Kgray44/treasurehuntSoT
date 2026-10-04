@@ -34,8 +34,10 @@ return is claimed. The permission callback now replies on WebKit's main queue.
 DEBUG-only native diagnostics record only request/reply stage, grant and thread
 booleans; the owned Simulator collector preserves those and OS acknowledgments.
 Fresh actual execution is required; the callback-thread hypothesis is not yet a
-proved cause. The full2654 matrix's primary/compatibility jobs also fail and their
-actual scenario receipts are being retrieved; tablet remains active.
+proved cause. Focused actual recheck37227624737 on18c2f4a0 is active. The permanent
+closure transport includes one separate primary-phone notification job, avoiding
+duplication across every profile. Six local render cases verify the closure gate,
+focused exclusions and YAML job shape; TypeScript/lint/docs pass.
 
 Full2654 run37224038483 finishes25/27, with18,328hashed artifacts and transport
 cleanup PASS. Tablet passes9/9; primary and compatibility pass8/9 each. Both
