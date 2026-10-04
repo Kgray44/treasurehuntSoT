@@ -52,5 +52,5 @@
     ".next-brightwork-wave5/types/**/*.ts",
     ".next-brightwork-wave5/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".sealed-build*/**"]
+  "exclude": ["node_modules", ".sealed-build*/**", "artifacts/**"]
 }

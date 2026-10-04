@@ -457,3 +457,46 @@ runtime proof. Exact owned probe PIDs 52136/40104 and ports 5590/5592 were stopp
 and verified absent. radio-emulator-shutdown.json's null arrays were corrected to
 empty arrays after a fresh absent-process/port check; retained prior evidence is
 not silently rewritten as different native test results.
+
+Apple adf2 focus 37164957171 harvested SUCCESS (2868 artifacts). Exactly one
+canonical event, two startup acknowledgments, seven build native tests passed/one
+skipped/no failure. Scenario and transport cleanup PASS; branch deleted verified.
+New NI checkpoint 1923e15c9d1eb39147a9621d1ee2e0b69fb14462/tree
+fc5f404b200264e8c997755fb1ad3f82340a30cf pushed. Apple native NI source build/XCTest
+and virtual journey dispatch hosted-1923e15c9d1e-1791074160660/run 37165444615
+remain pending terminal harvest (build step passed; journey still running).
+
+Public Android API-36 RangingManager UWB backend compiles; actual owned two-peer
+research native-peer-probe-1791074428817 records protected session preparations and
+three/one range callbacks. It does NOT prove peer loss or RF accuracy. Resource
+shutdown interrupted peer cleanup (receipt cleanup FAIL), retained explicitly.
+Peer restarted once with Vulkan disabled, synthetic app pm-clear succeeded and
+reverse bindings were empty. Original failure is not rewritten. Six native tests
+pass in android-native-tests-1791074700651 before final channel guards; final APK
+build succeeds. Final native receipt source/APK stability verification is pending.
+Never run a Gradle build alongside two local emulators again at this host load.
+Do not blame any prior hosted timeout on the local memory measurement.
+
+Final instrumentation android-native-tests-1791074842353 passes all six tests,
+sourceUnchanged true, source FP a5a3fe801b12831986918973abfd937a2f1eaac969097613c59fd851a4dcd49e,
+app APK 1c6254800047a57c9c91c50dba011300259227046b2f4b28fb2e368c3aed9087,
+test APK 7076bbb2e99b0075ee3bdafe736b3d211e6d965c33063e438ceec8a4708458d8.
+Recovery receipt radio-resource-recovery-20261004.json PASS independently verifies
+cleared synthetic state/no app processes/no reverse bindings/no owned remaining
+emulator/daemon PIDs/no listening emulator ports. The original probe remains
+cleanup FAIL. Only owned ADB 5038 remains. Canonical multi-device orchestration,
+secure peer authorization, older API-28 factory runtime proof and Player controls
+remain open; next work must turn the range probe into canonical reproducible lab
+execution with bounded ownership/resource cleanup rather than claiming completion.
+
+Apple NI/virtual focus 37165444615 harvested SUCCESS (2872 artifacts): ten native
+tests passed/one skipped/no failures, virtual navigation 6/6, canonical events 0,
+all cleanup PASS including verified transport branch deletion. Clean source FP
+c4b9f3d23143c99077d68eb26d34c4d91ce984dd8975f68b67e88495ac2c2aee.
+Do not infer an actual framework capability value from the passing test until its
+XCTest attachment is extracted. No Apple ranging session/RF proof exists.
+Repository TypeScript now excludes artifacts/** to avoid traversing retained SDK
+and hosted archives. Fresh uncached compile passes; four focused files pass fifteen
+tests. Compiler input inventory retains 1684 source/test/generated route files,
+includes the native web adapter/instrumentation helper, and contains zero archive
+inputs. Documentation/changed-code ESLint pass. No open hosted workflows remain.

@@ -10,6 +10,17 @@ import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public final class UwbTests {
+  @Test public void pairingRejectsCoercionAndAdditionalIdentityClaims() throws Exception {
+    JSONObject payload=new JSONObject().put("peerId","peer-1").put("sessionId",1).put("security","PROVISIONED_STS").put("sessionKey","AAAAAAAAAAAAAAAAAAAAAA==").put("peerAddress","AQI=").put("channel",9).put("preamble",10).put("expiresAt",System.currentTimeMillis()+30000);
+    LandfallUwbParameters.shape(payload);
+    assertEquals(1,LandfallUwbParameters.integer(payload,"sessionId",1,Integer.MAX_VALUE));
+    for(Object bad:new Object[]{"1",true,0,-1,1.5,2147483648L,JSONObject.NULL}){
+      payload.put("sessionId",bad);
+      try{LandfallUwbParameters.integer(payload,"sessionId",1,Integer.MAX_VALUE);fail("Hostile numeric coercion accepted");}catch(IllegalArgumentException expected){}
+    }
+    payload.put("sessionId",1).put("authenticated",true);
+    try{LandfallUwbParameters.shape(payload);fail("Identity claim accepted");}catch(IllegalArgumentException expected){}
+  }
   @Test public void optionalRadioHasNoSessionWithoutForegroundPreparation() {
     try(ActivityScenario<LandfallActivity> scenario=ActivityScenario.launch(LandfallActivity.class)) {
       scenario.onActivity(activity -> {

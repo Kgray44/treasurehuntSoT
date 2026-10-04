@@ -440,3 +440,74 @@ The newer primary source branch reports version 1.0.24 and implements those
 methods. This is a runtime control limitation for the installed binary, not
 evidence that every BLE/UWB multi-device software path is unavailable. Probe
 processes/ports are absent after cleanup; no range/RF claim follows from the probe.
+
+Apple primary offline restart focus 37164957171 at clean `adf2ed1bfa5d` passes:
+two startup acknowledgments span termination/relaunch, the encrypted lease and
+public offline shell are restored, and exactly one canonical progression event is
+observed. Scenario and transport cleanup pass; 2868 artifacts are harvested.
+Native build XCTest reports seven passed, one explicitly skipped and no failures.
+The shared source fingerprint is
+`fe4265b812e668eea2a9827752bc3e32152355a6d9e1980bb56a39598a32d07f`.
+Earlier failures are retained; this focused success is not closure qualification.
+
+The Android 16 public `RangingManager` backend supplies a second replaceable UWB
+implementation without Play services. An API-36 factory isolates its classes from
+older OS startup. Contextual RANGING permission, actual technology availability,
+distance/provisioned-STS capability, channel/preamble/update-rate checks precede
+preparation. Raw one-peer sessions retain five-minute expiry, background/critical
+power/private-clear cancellation and key clearing. Timestamp freshness uses the
+documented elapsed-realtime clock. Reports retain UNKNOWN uncertainty and no
+verified peer or completion claim. Both backends reject additional payload fields
+and numeric string/boolean/fractional/overflow coercion. Both APKs build.
+Implementation was checked against the [public Ranging guide](https://developer.android.com/develop/connectivity/ranging)
+and installed API-36 signatures; [measurement timestamps](https://developer.android.com/reference/android/ranging/RangingData#getTimestampMillis())
+are not wall-clock timestamps.
+
+The owned two-emulator source probe first found AndroidX preparation unavailable
+on both Android 16 devices. The public backend then prepared both and delivered
+three native ranges on one device and one on its peer. It did not establish peer
+loss, trustworthy uncertainty or physical RF accuracy. A host-memory floor below
+500 MiB prompted owned emulator shutdown during cleanup; the original receipt's
+range probe result and failed cleanup are retained together and are not qualified.
+The subsequent native instrumentation command failed because the devices had been
+shut down; no test pass is inferred for that command. A bounded single-peer restart
+with Vulkan disabled cleared the retained synthetic app state and showed no reverse
+bindings. Six native instrumentation tests then passed, including hostile pairing
+coercion and no unsolicited radio preparation, with cleanup PASS. A final source
+and APK snapshot check is pending; real RF and canonical multi-device scenario
+integration remain open.
+
+Native instrumentation receipts now snapshot source fingerprint and exact APK
+hashes before installation and reject source/APK changes during the run. Active
+companion processes are refused before mutation. Tool failures retain categorical
+failure and nullable unavailable OS metadata. The snapshot binds the tested binary
+and checkout; it does not independently prove how an externally supplied APK was
+built. Hosted clean-checkout build provenance remains separate evidence.
+
+The final six-test Android instrumentation run passes with source unchanged and
+fingerprint `a5a3fe801b12831986918973abfd937a2f1eaac969097613c59fd851a4dcd49e`.
+The app APK hash is
+`1c6254800047a57c9c91c50dba011300259227046b2f4b28fb2e368c3aed9087`;
+the test APK hash is
+`7076bbb2e99b0075ee3bdafe736b3d211e6d965c33063e438ceec8a4708458d8`.
+`radio-resource-recovery-20261004.json` records recovery separately: app processes
+and reverse bindings absent, native cleanup PASS, owned emulator/daemon processes
+and ports absent after shutdown. Original two-peer cleanup failure remains FAIL.
+This final run validates the native guards; it does not rerun the paired range
+probe or prove first-party peer authorization.
+
+Hosted NI checkpoint `1923e15c9d1e`, run 37165444615, passes native build/XCTest
+and all six virtual-navigation steps. Ten enabled native tests pass, including
+three Nearby Interaction tests; one unrelated lifecycle test is explicitly
+skipped and no test fails. Virtual navigation records zero canonical progression
+events and cleanup PASS. All 2872 artifacts are harvested and the owned transport
+branch is deleted/verified. Clean source fingerprint is
+`c4b9f3d23143c99077d68eb26d34c4d91ce984dd8975f68b67e88495ac2c2aee`.
+This verifies compilation and native software guards; it does not establish an
+Apple peer ranging session, physical UWB support or distance accuracy. The
+framework capability XCTest attachment remains in its result bundle; no
+unextracted capability value is inferred from a passing assertion.
+
+Generated `artifacts/**` are excluded from TypeScript's repository-wide file glob.
+Retained SDKs and hosted result archives are evidence inputs, not application
+compiler inputs. Source and test paths retain their existing compilation scope.

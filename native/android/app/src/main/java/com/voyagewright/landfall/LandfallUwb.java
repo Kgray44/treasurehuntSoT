@@ -83,13 +83,15 @@ final class LandfallUwb implements LandfallUwbDriver {
     if(!foreground || scope==null || !status.equals("READY"))return reply("UNAVAILABLE");
     byte[] sessionKey=null;
     try {
+      LandfallUwbParameters.shape(payload);
       String peerId=payload.getString("peerId");
-      if(!peerId.matches("[A-Za-z0-9_-]{1,128}"))throw new IllegalArgumentException();
-      int sessionId=payload.getInt("sessionId");long expiresAt=payload.getLong("expiresAt");long remaining=expiresAt-System.currentTimeMillis();
+      if(!peerId.matches("[A-Za-z0-9][A-Za-z0-9._:-]{0,127}"))throw new IllegalArgumentException();
+      int sessionId=(int)LandfallUwbParameters.integer(payload,"sessionId",1,Integer.MAX_VALUE);long expiresAt=LandfallUwbParameters.integer(payload,"expiresAt",1,9007199254740991L);long remaining=expiresAt-System.currentTimeMillis();
       if(sessionId<=0 || remaining<=0 || remaining>300000 || !payload.getString("security").equals("PROVISIONED_STS"))throw new IllegalArgumentException();
       sessionKey=decode(payload.getString("sessionKey"),16);
       byte[] peerAddress=decode(payload.getString("peerAddress"),2);
-      UwbComplexChannel channel=new UwbComplexChannel(payload.getInt("channel"),payload.getInt("preamble"));
+      UwbComplexChannel channel=new UwbComplexChannel((int)LandfallUwbParameters.integer(payload,"channel",5,9),(int)LandfallUwbParameters.integer(payload,"preamble",9,12));
+      if(channel.getChannel()!=5&&channel.getChannel()!=9)throw new IllegalArgumentException();
       if(!scope.getRangingCapabilities().getSupportedChannels().contains(channel.getChannel()))throw new IllegalArgumentException();
       if(controller){UwbComplexChannel allocated=((UwbControllerSessionScope)scope).getUwbComplexChannel();if(channel.getChannel()!=allocated.getChannel() || channel.getPreambleIndex()!=allocated.getPreambleIndex())throw new IllegalArgumentException();}
       RangingParameters parameters=new RangingParameters(RangingParameters.CONFIG_PROVISIONED_UNICAST_DS_TWR,sessionId,0,sessionKey,null,channel,Collections.singletonList(UwbDevice.createForAddress(peerAddress)),RangingParameters.RANGING_UPDATE_RATE_AUTOMATIC);

@@ -2,6 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { discoverDeviceLabHost, labTool } from "./host";
+import { deviceLabSourceIdentity } from "./source";
 
 /** Instrument only an explicitly owned emulator, never the user's default ADB device. */
 async function main() {
@@ -36,6 +37,18 @@ async function main() {
     "debug",
     "app-debug-androidTest.apk",
   );
+  const source = await deviceLabSourceIdentity();
+  const appSha256 = createHash("sha256")
+    .update(await readFile(apk))
+    .digest("hex");
+  const testApkSha256 = createHash("sha256")
+    .update(await readFile(testApk))
+    .digest("hex");
+  let sourceUnchanged = false;
+  let failure: string | null = null;
+  const active = await adb(["shell", "ps", "-A", "-o", "NAME"]);
+  if (active.split(/\r?\n/).some((name) => /^(com\.voyagewright\.landfall)(?:\.test)?(?::.*)?$/.test(name.trim())))
+    throw new Error("LANDFALL_NATIVE_TEST_APP_ALREADY_ACTIVE");
   try {
     await adb(["install", "-r", apk]);
     await adb(["install", "-r", testApk]);
@@ -52,6 +65,8 @@ async function main() {
     );
     await writeFile(path.join(destination, "instrumentation.txt"), result);
     passed = /OK \([0-9]+ tests?\)/.test(result) && !/FAILURES|INSTRUMENTATION_FAILED|Process crashed/.test(result);
+  } catch {
+    failure = "NATIVE_INSTRUMENTATION_TOOL_FAILED";
   } finally {
     for (const packageId of ["com.voyagewright.landfall.test", "com.voyagewright.landfall"]) {
       await adb(["shell", "am", "force-stop", packageId]).catch(() => {
@@ -62,24 +77,34 @@ async function main() {
     }
     const removed = await adb(["uninstall", "com.voyagewright.landfall.test"]).catch(() => "FAIL");
     if (!removed.includes("Success")) cleanup = false;
+    const after = await deviceLabSourceIdentity();
+    sourceUnchanged =
+      after.sourceSha === source.sourceSha &&
+      after.sourceFingerprint === source.sourceFingerprint &&
+      createHash("sha256")
+        .update(await readFile(apk))
+        .digest("hex") === appSha256 &&
+      createHash("sha256")
+        .update(await readFile(testApk))
+        .digest("hex") === testApkSha256;
     await writeFile(
       path.join(destination, "receipt.json"),
       JSON.stringify(
         {
           version: 1,
-          sourceSha: (await labTool("git", ["rev-parse", "HEAD"])).trim(),
-          sourceTree: (await labTool("git", ["rev-parse", "HEAD^{tree}"])).trim(),
-          dirty: Boolean((await labTool("git", ["status", "--porcelain"])).trim()),
+          ...source,
+          sourceUnchanged,
+          sourceBinding: "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
           evidenceClass: "EMULATOR_PROVEN",
-          result: passed && cleanup ? "PASS" : "FAIL",
+          result: passed && cleanup && sourceUnchanged ? "PASS" : "FAIL",
+          failure: !sourceUnchanged ? "NATIVE_TEST_INPUT_CHANGED" : failure,
           canonicalProgressionEvents: null,
-          androidVersion: (await adb(["shell", "getprop", "ro.build.version.release"])).trim(),
-          appSha256: createHash("sha256")
-            .update(await readFile(apk))
-            .digest("hex"),
-          testApkSha256: createHash("sha256")
-            .update(await readFile(testApk))
-            .digest("hex"),
+          androidVersion: await adb(["shell", "getprop", "ro.build.version.release"]).then(
+            (value) => value.trim(),
+            () => null,
+          ),
+          appSha256,
+          testApkSha256,
           cleanup: { result: cleanup ? "PASS" : "FAIL" },
         },
         null,
@@ -87,8 +112,10 @@ async function main() {
       ),
     );
   }
-  process.stdout.write(`${JSON.stringify({ result: passed && cleanup ? "PASS" : "FAIL", directory: destination })}\n`);
-  if (!passed || !cleanup) process.exitCode = 1;
+  process.stdout.write(
+    `${JSON.stringify({ result: passed && cleanup && sourceUnchanged ? "PASS" : "FAIL", directory: destination })}\n`,
+  );
+  if (!passed || !cleanup || !sourceUnchanged) process.exitCode = 1;
 }
 main().catch((error) => {
   process.stderr.write(
