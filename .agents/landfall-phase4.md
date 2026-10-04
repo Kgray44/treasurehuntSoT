@@ -514,3 +514,15 @@ and owner receipt remain pending; no first-party identity, Player controls, RF
 accuracy, pose control or peer-loss proof is claimed. Original cleanup failure
 and recovery receipts remain unchanged. Keep the goal active through the remaining
 Phase 4 integration/qualification/merge/landed closure requirements.
+
+f26a5a6135f5ab5c33601210e7b32a4b9c807de9/tree ea44e354a735c84979a57f6fc916f5fdaee8b853
+pushed after full TypeScript/34 focused tests/ESLint/docs checks. Canonical radio
+run 37167100015 fails before boot: sdkmanager absent from PATH. APK build passes,
+no scenario/owner receipt/artifacts are produced. Updated harvest retains CI log,
+artifactState NOT_PRODUCED and zero artifacts; transport branch cleanup PASS.
+SDK template correction uses ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager.
+No native radio qualification follows from that run. New broker/API WIP remains
+uncommitted while this isolated provisioning correction is checked and rerun.
+Apple attachment-export checkpoint 0879c887c29fb06879d68b3e1855393f3fe1db7c/tree
+b86e32104148011a627e0e5409ca9d1f18fc195a pushed. Apple focused run 37167222880 and
+full Windows/Linux 125-scenario provider run 37167228785 are pending harvest.

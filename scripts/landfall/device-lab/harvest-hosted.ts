@@ -26,7 +26,14 @@ export async function harvestLandfallHostedLab(runId: string, dispatchFile: stri
   const directory = path.join(path.dirname(file), `run-${runId}`);
   await mkdir(directory, { recursive: true });
   const artifactDirectory = path.join(directory, "artifacts");
-  await labTool("gh", ["run", "download", runId, "--dir", artifactDirectory], 180000);
+  await mkdir(artifactDirectory, { recursive: true });
+  const inventory = JSON.parse(await labTool("gh", ["api", `repos/{owner}/{repo}/actions/runs/${runId}/artifacts`]));
+  if (!Array.isArray(inventory.artifacts)) throw new Error("LANDFALL_HOSTED_ARTIFACT_INVENTORY_INVALID");
+  const artifactState = inventory.artifacts.length ? "AVAILABLE" : "NOT_PRODUCED";
+  // Setup failures can finish before the first receipt exists. Retain their
+  // source-bound CI log and truthful zero-artifact state, then clean transport.
+  // A failed download with an existing artifact remains an error.
+  if (inventory.artifacts.length) await labTool("gh", ["run", "download", runId, "--dir", artifactDirectory], 180000);
   await writeFile(path.join(directory, "run.log"), await labTool("gh", ["run", "view", runId, "--log"], 120000));
   const artifacts: { path: string; sha256: string }[] = [];
   const collect = async (folder: string) => {
@@ -56,6 +63,7 @@ export async function harvestLandfallHostedLab(runId: string, dispatchFile: stri
     url: run.url,
     conclusion: run.conclusion,
     artifacts,
+    artifactState,
     cleanup: { result: "PASS", ownedResources: [ref], remainingResources: [] },
   };
   await writeFile(path.join(directory, "hosted-receipt.json"), JSON.stringify(receipt, null, 2));

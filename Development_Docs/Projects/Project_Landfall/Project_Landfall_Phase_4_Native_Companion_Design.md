@@ -535,3 +535,11 @@ Apple build automation now exports native XCTest attachments with the installed
 export command introduced in [Xcode 16](https://developer.apple.com/documentation/xcode-release-notes/xcode-16_3-release-notes).
 The next hosted run must verify this export and retain the actual NI capability
 JSON; no capability value or successful Apple ranging session is assumed yet.
+
+The first canonical radio dispatch at `f26a5a61`, hosted run 37167100015,
+compiled the Android APK but failed SDK-image setup because `sdkmanager` was not
+on the runner PATH. No emulator or native scenario started, and no test artifacts
+were produced. Harvest retains the exact-source CI log and NOT_PRODUCED artifact
+state, with zero harvested artifacts and verified transport-branch cleanup.
+The template now uses the SDK manager's explicit installed path. This correction
+still requires a new hosted native run; the failed run is not qualification.

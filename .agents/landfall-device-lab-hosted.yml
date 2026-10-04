@@ -156,7 +156,7 @@ jobs:
         run: gradle -p native/android --console plain assembleDebug
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
       - name: Install public API-36 radio image
-        run: sdkmanager "emulator" "system-images;android-36;google_apis;x86_64"
+        run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "emulator" "system-images;android-36;google_apis;x86_64"'
       - name: Enable ephemeral runner KVM access
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
