@@ -12,6 +12,7 @@ import {
 import { labBinaryTool, labTool } from "../../scripts/landfall/device-lab/host";
 import { runLandfallAndroidRadioLab } from "../../scripts/landfall/device-lab/android-radio-run";
 import { deviceLabSourceIdentity } from "../../scripts/landfall/device-lab/source";
+import { boundedAndroidDriver as boundedDriver } from "../../scripts/landfall/device-lab/android-driver";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { closureAccount, closureVoyage, openClosureMap } from "./fixtures/landfall-closure";
 
@@ -20,26 +21,6 @@ test.use({ trace: "off", video: "off", screenshot: "off" });
 test.skip(process.env.LANDFALL_NATIVE_NEARBY !== "1", "Requires an exclusively owned ephemeral Linux radio runner.");
 test.skip(({ browserName }) => browserName !== "chromium", "Run native ownership once.");
 test.afterAll(async () => db.$disconnect());
-
-/** Driver connection primitives do not inherit Page action timeouts. */
-async function boundedDriver<T>(operation: Promise<T>, signal?: AbortSignal, timeout = 20000): Promise<T> {
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  let onAbort: (() => void) | undefined;
-  try {
-    return await Promise.race([
-      operation,
-      new Promise<never>((_resolve, reject) => {
-        onAbort = () => reject(new Error("LANDFALL_NATIVE_NEARBY_CANCELLED"));
-        if (signal?.aborted) onAbort();
-        else signal?.addEventListener("abort", onAbort, { once: true });
-        timer = setTimeout(() => reject(new Error("LANDFALL_NATIVE_NEARBY_DRIVER_TIMEOUT")), timeout);
-      }),
-    ]);
-  } finally {
-    clearTimeout(timer);
-    if (onAbort) signal?.removeEventListener("abort", onAbort);
-  }
-}
 
 async function nativeStopped(page: Page) {
   return page.evaluate(async () => {
@@ -88,6 +69,12 @@ test("real native Journal pairing returns untrusted hints and background clears 
       let deviceIndex: number | null = null;
       let journalResponseStatus: number | null = null;
       let failureKind: string | null = null;
+      let failureChecks: {
+        pointerIntercepted: boolean;
+        unstableTarget: boolean;
+        invisibleTarget: boolean;
+        targetClosed: boolean;
+      } | null = null;
       const nativePageErrors = new Set<string>();
       let failedFirstPartyRequests = 0;
       let failedPageState: {
@@ -219,8 +206,9 @@ test("real native Journal pairing returns untrusted hints and background clears 
             nativeBridgeAvailable: await page.evaluate(() => window.LandfallNative?.platform === "ANDROID"),
             authRedirect: !page.url().includes(`/playthroughs/${voyage.id}/journal`),
           });
-          stage = "OPEN_NATIVE_JOURNAL_DIALOG";
+          stage = "CLICK_NATIVE_JOURNAL_OPEN";
           if (await opening.isVisible()) await opening.getByRole("button", { name: /Open the journal/u }).click();
+          stage = "NATIVE_JOURNAL_TOOLS";
           await expect(tools).toBeVisible();
           stage = "OPEN_NATIVE_MAP";
           await openClosureMap(page);
@@ -317,6 +305,13 @@ test("real native Journal pairing returns untrusted hints and background clears 
         await testInfo.attach("native-nearby-stopped", { path: shot, contentType: "image/png" });
         passed = true;
       } catch (error) {
+        const message = error instanceof Error ? error.message : "";
+        failureChecks = {
+          pointerIntercepted: /intercepts pointer|intercept.*event/i.test(message),
+          unstableTarget: /not stable/i.test(message),
+          invisibleTarget: /not visible/i.test(message),
+          targetClosed: /closed|destroyed/i.test(message),
+        };
         failureKind =
           error instanceof Error && /timeout|timed out/i.test(error.message)
             ? "TIMEOUT"
@@ -350,6 +345,28 @@ test("real native Journal pairing returns untrusted hints and background clears 
               .getByRole("dialog", { name: "Open the voyage journal" })
               .isVisible()
               .catch(() => false);
+          }
+        }
+        // This stage contains only the newly-created public synthetic Journal,
+        // before pairing codes or any native location/ranging acquisition.
+        if (
+          ["CLICK_NATIVE_JOURNAL_OPEN", "NATIVE_JOURNAL_TOOLS"].includes(stage) &&
+          deviceIndex !== null &&
+          !resources.signal.aborted
+        ) {
+          const png = await labBinaryTool(resources.adbPath, [
+            "-P",
+            String(resources.adbPort),
+            "-s",
+            resources.serials[deviceIndex],
+            "exec-out",
+            "screencap",
+            "-p",
+          ]).catch(() => null);
+          if (png) {
+            const shot = testInfo.outputPath("native-journal-opening-diagnostic.png");
+            await writeFile(shot, png);
+            await testInfo.attach("native-journal-opening-diagnostic", { path: shot, contentType: "image/png" });
           }
         }
         throw error;
@@ -399,6 +416,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           failedDeviceIndex: passed ? null : deviceIndex,
           journalResponseStatus,
           failureKind,
+          failureChecks,
           nativePageErrors: [...nativePageErrors],
           failedFirstPartyRequests,
           failedPageState,

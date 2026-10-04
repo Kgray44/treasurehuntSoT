@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { createHash, randomBytes } from "node:crypto";
+import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { build } from "esbuild";
@@ -15,8 +15,12 @@ import {
 } from "../../../src/landfall/device-lab/device-profile";
 import type { DeviceLabScenario, DeviceLabStepResult } from "../../../src/landfall/device-lab/scenario";
 import type { NativeUwbConfiguration, NativeUwbProjection } from "../../../src/landfall/native-uwb";
+import type { BleProjection } from "../../../src/landfall/native-ble";
+import { z } from "zod";
+import { boundedAndroidDriver } from "./android-driver";
 
 type RadioClient = {
+  ble: { start(): Promise<string>; stop(): Promise<void>; snapshot(): BleProjection & { validatedSignals: number } };
   prepare(
     role: "CONTROLLER" | "CONTROLEE",
   ): Promise<{ state: "READY"; address: string; channel?: number; preamble?: number } | null>;
@@ -37,7 +41,8 @@ export async function executeLandfallAndroidRadioScenario(
   destination: string,
   profile: DeviceLabProfile,
 ) {
-  if (scenario.id !== "uwb-native-peer-session" || scenario.worldspace !== "PHYSICAL")
+  const bleScenario = scenario.id.startsWith("ble-native-");
+  if ((!bleScenario && scenario.id !== "uwb-native-peer-session") || scenario.worldspace !== "PHYSICAL")
     throw new Error("LANDFALL_RADIO_SCENARIO_INVALID");
   await mkdir(destination, { recursive: true });
   const host = await discoverDeviceLabHost();
@@ -51,6 +56,12 @@ export async function executeLandfallAndroidRadioScenario(
     ownedResources: string[] = [];
   const artifacts: { path: string; sha256: string; kind: "TEST_RESULT" }[] = [];
   const diagnostics: { index: number; devices: (NativeUwbProjection & { validatedRanges: number })[] }[] = [];
+  const bleDiagnostics: {
+    index: number;
+    device: BleProjection & { validatedSignals: number };
+    advertiserState: string | null;
+  }[] = [];
+  let advertiserState: string | null = null;
   const configurations: DeviceLabConfiguration[] = [];
   const acquired: string[] = [],
     pages: Page[] = [];
@@ -135,6 +146,11 @@ export async function executeLandfallAndroidRadioScenario(
         if (!(await adb(serial, ["shell", "pm", "clear", pkg])).includes("Success"))
           throw new Error("LANDFALL_RADIO_CLEAR_FAILED");
         await adb(serial, ["shell", "pm", "grant", pkg, "android.permission.RANGING"]);
+        if (bleScenario) {
+          for (const permission of ["BLUETOOTH_SCAN", "BLUETOOTH_CONNECT", "BLUETOOTH_ADVERTISE"])
+            await adb(serial, ["shell", "pm", "grant", pkg, `android.permission.${permission}`]);
+          await adb(serial, ["shell", "svc", "bluetooth", "enable"]);
+        }
         const launch = await adb(serial, [
           "shell",
           "am",
@@ -148,19 +164,106 @@ export async function executeLandfallAndroidRadioScenario(
         ]);
         if (/Error:|Exception/.test(launch)) throw new Error("LANDFALL_RADIO_LAUNCH_FAILED");
       }
-      devices = await _android.devices({ host: "127.0.0.1", port: Number(port), omitDriverInstall: true });
+      devices = await boundedAndroidDriver(
+        _android.devices({ host: "127.0.0.1", port: Number(port), omitDriverInstall: true }),
+      );
       for (const serial of serials as string[]) {
         const device = devices.find((device) => device.serial() === serial);
         if (!device) throw new Error("LANDFALL_RADIO_DEVICE_MISSING");
         const view = await device.webView({ pkg }, { timeout: 30000 });
-        const page = await view.page();
+        const page = await boundedAndroidDriver(view.page());
         await page.waitForFunction(() => !!window.__LandfallLabRadio, undefined, { timeout: 30000 });
         pages.push(page);
       }
       for (const [index, step] of scenario.timeline.entries()) {
         try {
           const action = step.action;
-          if (action.type === "NEARBY" && action.state === "RECONNECT") {
+          if (bleScenario && action.type === "NEARBY" && action.state === "RECONNECT") {
+            if (action.family !== "BLE" || !action.protocol || action.unverifiedPeer !== true)
+              throw new Error("LANDFALL_BLE_SCENARIO_INVALID");
+            const labSession = randomUUID();
+            const launched = await adb(serials[1]!, [
+              "shell",
+              "am",
+              "start",
+              "-W",
+              "-n",
+              `${pkg}/.LandfallBleLabActivity`,
+              "--es",
+              "labSession",
+              labSession,
+              "--es",
+              "labProtocol",
+              action.protocol,
+            ]);
+            if (/Error:|Exception/.test(launched)) throw new Error("LANDFALL_BLE_ADVERTISER_LAUNCH_FAILED");
+            const deadline = Date.now() + 8000;
+            while (Date.now() < deadline) {
+              const raw = await adb(serials[1]!, [
+                "shell",
+                "run-as",
+                pkg,
+                "cat",
+                `files/landfall-ble-lab-${labSession}.json`,
+              ]).catch(() => "");
+              if (raw.length <= 2048) {
+                try {
+                  const value = z
+                    .strictObject({
+                      sessionId: z.literal(labSession),
+                      state: z.enum([
+                        "INITIALIZING",
+                        "STARTED",
+                        "DENIED",
+                        "UNSUPPORTED",
+                        "UNAVAILABLE",
+                        "STOPPED",
+                        "INVALID",
+                      ]),
+                      synthetic: z.literal(true),
+                      canComplete: z.literal(false),
+                    })
+                    .parse(JSON.parse(raw));
+                  advertiserState = value.state;
+                } catch {}
+              }
+              if (advertiserState === "STARTED") break;
+              if (advertiserState && advertiserState !== "INITIALIZING")
+                throw new Error("LANDFALL_BLE_ADVERTISER_UNAVAILABLE");
+              await new Promise((resolve) => setTimeout(resolve, 250));
+            }
+            if (advertiserState !== "STARTED") throw new Error("LANDFALL_BLE_ADVERTISER_START_TIMEOUT");
+            const state = await pages[0].evaluate(() => window.__LandfallLabRadio!.ble.start());
+            if (state !== "GRANTED") throw new Error("LANDFALL_BLE_SCAN_UNAVAILABLE");
+            await pages[0].waitForFunction(
+              (protocol) => {
+                const value = window.__LandfallLabRadio!.ble.snapshot();
+                return (
+                  value.validatedSignals > 0 &&
+                  value.state === "UNTRUSTED" &&
+                  value.protocols.includes(protocol) &&
+                  !value.peerVerified &&
+                  !value.canComplete
+                );
+              },
+              action.protocol,
+              { timeout: 12000 },
+            );
+          } else if (bleScenario && action.type === "NEARBY" && action.state === "DISCONNECT") {
+            await pages[0].evaluate(() => window.__LandfallLabRadio!.ble.stop());
+            await adb(serials[1]!, ["shell", "am", "force-stop", pkg]);
+            advertiserState = "STOPPED_BY_OWNED_APP_TERMINATION";
+          } else if (bleScenario && action.type === "ASSERT" && action.field === "nearbyState") {
+            const value = await pages[0].evaluate(() => window.__LandfallLabRadio!.ble.snapshot());
+            const expected = action.value === "UNAVAILABLE" ? "OFF" : action.value;
+            if (
+              value.state !== expected ||
+              value.canComplete ||
+              value.peerVerified ||
+              (expected === "OFF" && value.unverifiedPeers !== 0)
+            )
+              throw new Error("LANDFALL_BLE_PROJECTION_FAILED");
+          } else if (action.type === "NEARBY" && action.state === "RECONNECT") {
             const prepared = await Promise.all(
               pages.map((page, index) =>
                 page.evaluate(
@@ -230,10 +333,19 @@ export async function executeLandfallAndroidRadioScenario(
             )
               throw new Error("LANDFALL_RADIO_CANONICAL_CHANGED");
           } else throw new Error("LANDFALL_RADIO_ACTION_UNSUPPORTED");
-          diagnostics.push({
-            index,
-            devices: await Promise.all(pages.map((page) => page.evaluate(() => window.__LandfallLabRadio!.snapshot()))),
-          });
+          if (bleScenario)
+            bleDiagnostics.push({
+              index,
+              device: await pages[0].evaluate(() => window.__LandfallLabRadio!.ble.snapshot()),
+              advertiserState,
+            });
+          else
+            diagnostics.push({
+              index,
+              devices: await Promise.all(
+                pages.map((page) => page.evaluate(() => window.__LandfallLabRadio!.snapshot())),
+              ),
+            });
           steps.push({
             index,
             action: action.type,
@@ -249,7 +361,7 @@ export async function executeLandfallAndroidRadioScenario(
           });
         } catch (error) {
           const projections = await Promise.allSettled(
-            pages.map((page) => page.evaluate(() => window.__LandfallLabRadio!.snapshot())),
+            pages.map((page) => boundedAndroidDriver(page.evaluate(() => window.__LandfallLabRadio!.snapshot()))),
           );
           diagnostics.push({
             index,
@@ -271,8 +383,15 @@ export async function executeLandfallAndroidRadioScenario(
   } catch {
     steps.push({ index: steps.length, action: "NEARBY", state: "FAIL", reason: "LANDFALL_NATIVE_RADIO_SETUP_FAILED" });
   } finally {
-    for (const page of pages)
-      await page.evaluate(() => window.__LandfallLabRadio!.stop()).catch(() => remainingResources.push("radio-stop"));
+    for (const page of bleScenario ? pages.slice(0, 1) : pages)
+      await boundedAndroidDriver(
+        page.evaluate(async () => {
+          await window.__LandfallLabRadio!.stop();
+          await window.__LandfallLabRadio!.ble.stop();
+        }),
+        undefined,
+        10000,
+      ).catch(() => remainingResources.push("radio-stop"));
     for (const serial of acquired) {
       await adb(serial, ["shell", "am", "force-stop", pkg]).catch(() => remainingResources.push(`app:${serial}`));
       if (!(await adb(serial, ["shell", "pm", "clear", pkg]).catch(() => "FAIL")).includes("Success"))
@@ -285,7 +404,10 @@ export async function executeLandfallAndroidRadioScenario(
       if (binding && (await adb(serial, ["reverse", "--list"]).catch(() => binding!)).includes(binding))
         remainingResources.push(`binding:${serial}`);
     }
-    for (const device of devices) await device.close().catch(() => remainingResources.push("device-connection"));
+    for (const device of devices)
+      await boundedAndroidDriver(device.close(), undefined, 15000).catch(() =>
+        remainingResources.push("device-connection"),
+      );
     if (server) await new Promise<void>((resolve) => server!.close(() => resolve()));
     if (authority) {
       canonicalProgressionEvents = await authority.counts().then(
@@ -305,7 +427,10 @@ export async function executeLandfallAndroidRadioScenario(
     )
       steps.push({ index: steps.length, action: "NEARBY", state: "FAIL", reason: "LANDFALL_RADIO_INPUT_CHANGED" });
     const file = path.join(destination, "native-radio-session.json");
-    await writeFile(file, JSON.stringify({ source, apkSha256, serials, configurations, diagnostics }, null, 2));
+    await writeFile(
+      file,
+      JSON.stringify({ source, apkSha256, serials, configurations, diagnostics, bleDiagnostics }, null, 2),
+    );
     artifacts.push({
       path: file,
       sha256: createHash("sha256")

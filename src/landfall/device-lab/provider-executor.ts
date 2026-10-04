@@ -673,7 +673,7 @@ export class LandfallProviderScenarioExecutor {
               peerId: "lab-peer",
               observedAt: this.now,
               rssi: action.state === "WEAK" ? -85 : -50,
-              authenticated: true,
+              authenticated: action.unverifiedPeer !== true,
             }
           : {
               family: "UWB",
@@ -682,7 +682,7 @@ export class LandfallProviderScenarioExecutor {
               observedAt: this.now,
               distanceMeters: action.state === "RETREAT" ? 20 : (action.distance ?? 2),
               uncertaintyMeters: action.uncertainty || 1,
-              authenticated: true,
+              authenticated: action.unverifiedPeer !== true,
             };
       const projection = this.nearby[action.family].ingest(
         signal,

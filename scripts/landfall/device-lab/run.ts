@@ -80,7 +80,8 @@ async function main() {
       : target === "provider-simulation"
         ? await executor.run()
         : (target === "android-emulator" || target === "ios-simulator") && nativeConfigured
-          ? target === "android-emulator" && scenario.id === "uwb-native-peer-session"
+          ? target === "android-emulator" &&
+            (scenario.id === "uwb-native-peer-session" || scenario.id.startsWith("ble-native-"))
             ? await executeLandfallAndroidRadioScenario(scenario, path.join(destination, scenario.id), profile)
             : await executeLandfallOsScenario(scenario, target, path.join(destination, scenario.id), profile)
           : null;

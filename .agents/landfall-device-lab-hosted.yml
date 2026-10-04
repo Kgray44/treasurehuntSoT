@@ -166,6 +166,7 @@ jobs:
     timeout-minutes: 30
     env:
       LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
+      LANDFALL_LAB_RADIO_SCENARIOS: __RADIO_SCENARIOS__
     steps:
       - uses: actions/checkout@v4
         with:

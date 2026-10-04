@@ -6,6 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { discoverDeviceLabHost, labTool } from "./host";
 import { deviceLabSourceIdentity } from "./source";
+import { hostedDeviceLabScenarios } from "../../../src/landfall/device-lab/hosted-selection";
 
 type OwnedProcess = { pid: number; started: string; executable: string };
 export type OwnedAndroidRadioPair = {
@@ -60,6 +61,7 @@ async function radioProcesses(sdk: string) {
 
 /** Builds must finish before this bounded, exclusively owned ephemeral-runner backend starts. */
 export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
+  const radioScenarios = hostedDeviceLabScenarios("android-radio", process.env.LANDFALL_LAB_RADIO_SCENARIOS);
   if (process.platform !== "linux" || process.env.GITHUB_ACTIONS !== "true")
     throw new Error("LANDFALL_RADIO_EPHEMERAL_LINUX_REQUIRED");
   const host = await discoverDeviceLabHost();
@@ -121,6 +123,18 @@ export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
   };
   const remember = async () => {
     for (const process of await radioProcesses(sdk)) if (!owned.has(process.pid)) owned.set(process.pid, process);
+    // A late owned client can restart the private ADB server after its original
+    // launcher exits. Its daemon leaves that process group. Require both the
+    // exact SDK executable and this run's previously-vacant private socket.
+    if (adbOwned) {
+      const adbExecutable = await realpath(host.android.adb!);
+      for (const line of (await labTool("ps", ["-eo", "pid=,args="])).split("\n")) {
+        if (!/(?:^|\s)(?:-P\s+5038|-L\s+tcp:(?:127\.0\.0\.1|localhost):5038)(?=\s|$)/.test(line)) continue;
+        const pid = Number(/^\s*(\d+)\s/.exec(line)?.[1]);
+        const value = pid ? await identity(pid) : null;
+        if (value && value.executable === adbExecutable && !owned.has(pid)) owned.set(pid, value);
+      }
+    }
     for (const line of (await labTool("ps", ["-eo", "pid=,pgid="])).split("\n")) {
       const match = /^\s*(\d+)\s+(\d+)\s*$/.exec(line);
       if (!match || !processGroups.has(Number(match[2]))) continue;
@@ -312,7 +326,7 @@ export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
           "--platform",
           "android",
           "--scenario",
-          "uwb-native-peer-session",
+          radioScenarios,
           "--profile",
           profile,
         ],
@@ -355,6 +369,20 @@ export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
     await remember();
     for (const value of owned.values()) await terminate(value, "SIGKILL");
     await delay(500);
+    const adbDeadline = Date.now() + 3000;
+    while (
+      adbOwned &&
+      Date.now() < adbDeadline &&
+      !(await freePort(5038).then(
+        () => true,
+        () => false,
+      ))
+    ) {
+      await remember();
+      for (const value of owned.values())
+        if (value.executable === (await realpath(host.android.adb!))) await terminate(value, "SIGKILL");
+      await delay(250);
+    }
     for (const value of owned.values()) {
       const current = await identity(value.pid);
       if (current && current.started === value.started) remainingResources.push(`pid:${value.pid}`);

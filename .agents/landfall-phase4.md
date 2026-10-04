@@ -807,3 +807,39 @@ existing Player checks10 PASS; lint/uncached TS/Android builds PASS. Apple camer
 stop now captures the actual session strongly in its serial queue and executes
 explicitly on owned teardown, rather than letting controller disposal skip a
 weakly captured stop. Fresh Apple proof is needed for this corrective source.
+
+893b61f6 Apple37181600745 HARVESTED2913 artifacts; XCTest11 PASS/1skip/0fail,
+four canonical Simulator scenarios PASS/zero canonical events/cleanup PASS,
+matching source fingerprintd34846b2236a9c7cd559cd516db5a95a4f2143aabc653eae70b287035aae13fb.
+iPhone17e/Simulator26.5/macOS26.6.2. Actual installation attachmentCDDA460D-
+A773-4E0E-B34C-05E6390DE303.json: cameraAvailable=false,nfcReadingAvailable=false,
+acquisitionStarted=false,observedTokens=0,canComplete=false. NI attachment
+8A101D27-8803-4BAA-9C35-6AABC382797B.json: precise ranging unsupported,0ranges.
+No scanner/radio acceptance claim. Later BLE/scan-stop/camera-release source
+still needs fresh Apple qualification.
+
+99d8b7af nativeJournal37182322072 HARVESTED42 sanitized artifacts:12 browser
+PASS;nativeFAIL OPEN_NATIVE_JOURNAL_DIALOG index0. HTTP200/readyState complete/
+native bridge present/no auth redirect/no page errors/opening dialog visible/
+Journal tools notvisible;2failed first-party requests. Zero canonical events,
+fixture cleanup PASS; owner cleanup FAIL with remaining port:5038. Separate CLICK_NATIVE_JOURNAL_OPEN vs NATIVE_JOURNAL_
+TOOLS and retain categorical pointer/stability failure plus bounded synthetic
+pre-pairing screenshot. Do not assume a cookie or pairing fault.
+
+Native BLE lab WIP: debug-only,20sec synthetic advertiser Activity with no bridge,
+accounts, location or progression. Native advertising callback produces bounded
+UUID-bound private lab receipt; only synthetic state is read, then owned app data
+is cleared. Generic/iBeacon/EddystoneUID canonical scenarios now extend corpus157.
+Native executor uses two owned API36 devices and actual production BLE verifier/
+projection; radio transport permits strict impact-selected canonical scenarios.
+Unit/provider regression30 PASS/full157 PASS; TS/lint/Android builds PASS before
+last shared driver/screenshot refactor, refresh freeze. Driver connection/cleanup
+bounds are shared with the Journal harness. Native virtual discovery still open.
+
+Corrected99d8 native owner cleanup after reading its separate receipt. Its known
+PIDs disappeared, but private port5038 remained. Possible late client restart of
+an ADB daemon outside the captured process group is an inference. Discover only
+exact SDK adb executable + explicit5038 argv/socket after vacant-port ownership
+was acquired; capture its /proc identity before bounded termination. Preserve
+other ADB servers and unknown listeners. Recheck release within3sec; failure
+remains failure. Actual next hosted ownership proof is required.

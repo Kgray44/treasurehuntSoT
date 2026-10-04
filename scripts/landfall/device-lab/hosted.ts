@@ -88,7 +88,8 @@ export async function dispatchLandfallHostedLab(
   const selectedWorkflow = workflow
     .replaceAll("__APPLE_SCENARIOS__", scenarios.ios)
     .replaceAll("__ANDROID_SCENARIOS__", scenarios.android)
-    .replaceAll("__PROVIDER_SCENARIOS__", scenarios.provider);
+    .replaceAll("__PROVIDER_SCENARIOS__", scenarios.provider)
+    .replaceAll("__RADIO_SCENARIOS__", scenarios.radio);
   const runId = `${candidate.slice(0, 12)}-${Date.now()}`;
   const destination = path.join(root, "artifacts", "landfall-device-lab", `hosted-${runId}`);
   await mkdir(destination, { recursive: true });

@@ -31,7 +31,12 @@ const common = [
   "virtual-offline-canonical-reconcile",
 ];
 const defaults = {
-  "android-radio": ["uwb-native-peer-session"],
+  "android-radio": [
+    "uwb-native-peer-session",
+    "ble-native-generic-discovery",
+    "ble-native-ibeacon-discovery",
+    "ble-native-eddystone-uid-discovery",
+  ],
   ios: ["permission-denied-native", "permission-revoked-mid-route", ...common],
   android: [
     "permission-denied-native",

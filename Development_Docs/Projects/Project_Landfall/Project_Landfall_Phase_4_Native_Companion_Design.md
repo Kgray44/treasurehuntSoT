@@ -3,7 +3,7 @@ title: Project Landfall Phase 4 native companion and restart design
 audience: product-engineering
 status: current
 canonical_for: project-landfall-phase-4-native-companion-design
-last_reviewed: 2026-10-03
+last_reviewed: 2026-10-04
 ---
 
 # Hold the Bearing native companion design
@@ -797,8 +797,12 @@ Operator deployment secrets `LANDFALL_INSTALLATION_KEY_ID` and
 or malformed configuration is NOT_CONFIGURED; no random production signing
 fallback exists. The private key never enters responses, artifacts or logs.
 Issuance binds Chronicle, published version, Worldspace, waypoint, medium and
-installation identity, with a seven-day expiry. Rotation invalidates earlier
-installations; replace printed/written tokens and preserve readable fallback.
+installation identity, with a seven-day expiry. Online verification rejects
+earlier keys after rotation; replace printed/written tokens and preserve readable
+fallback. A previously loaded foreground key can still verify an unexpired token
+offline. That signature cannot establish current revocation, availability or
+access; the separate canonical confirmation reauthorizes against current server
+state. Closing, backgrounding or changing scope clears loaded verification keys.
 Public identifiers are carried by a token deliberately installed by its Creator;
 coordinates, authored prose, actor credentials and session grants are absent.
 
@@ -889,3 +893,23 @@ original scan UUID, preventing an older scope's delayed teardown from stopping
 a later acquisition. Apple camera teardown retains the owned capture session
 until its queued stop executes. These corrective paths still require current
 native Apple acceptance before phase closure.
+
+At source `893b61f65fbe38ea879ef6cae5b958bed91a628e`, hosted Apple run37181600745
+passed11 XCTest cases (one skipped) and all four selected canonical Simulator
+scenarios. Cleanup passed and all four retained zero progression events. The
+actual iPhone17e Simulator26.5 framework attachment reports camera unavailable,
+NFC reading unavailable, no acquisition and no observed token. Nearby
+Interaction precise ranging is also unsupported. These are real SDK capability
+results, with scanner/radio fidelity still requiring applicable hardware.
+The later BLE and scan cleanup changes require fresh Apple source-bound evidence.
+
+The canonical corpus now contains157 scenarios, including three protocol-specific
+native BLE discovery cases. A debug-only20second advertiser Activity runs on the
+owned second emulator; it has no WebView bridge, accounts, GPS or progression.
+Its actual advertising callback produces only a bounded synthetic state receipt.
+The first emulator exercises the production native scanner and shared unverified
+projection. Generic Bluetooth, iBeacon layout and Eddystone UID use the same
+scenario meaning in simulation and the OS lab. All157 provider cases pass
+locally; hosted radio discovery evidence remains pending. Private synthetic lab
+state, apps, bindings and device connections belong to the existing owned
+two-device backend and its verified cleanup.

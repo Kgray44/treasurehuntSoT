@@ -579,6 +579,33 @@ cases.push(
   }),
 );
 
+for (const protocol of ["GENERIC", "IBEACON", "EDDYSTONE_UID"] as const) {
+  scenario(
+    `ble-native-${protocol.toLowerCase().replaceAll("_", "-")}-discovery`,
+    ["BLE"],
+    [
+      { type: "NEARBY", family: "BLE", state: "RECONNECT", protocol, unverifiedPeer: true },
+      assertion("nearbyState", "UNTRUSTED"),
+      assertion("serverConfirmed", false),
+      { type: "NEARBY", family: "BLE", state: "DISCONNECT", protocol, unverifiedPeer: true },
+      assertion("nearbyState", "UNAVAILABLE"),
+      assertion("canonicalProgressionEvents", 0),
+    ],
+    ["RF"],
+    "ONE_VOYAGE",
+  );
+  const generated = cases.pop()!;
+  cases.push(
+    deviceLabScenarioSchema.parse({
+      ...generated,
+      targets: ["provider-simulation", "android-emulator", "real-android"],
+      deviceProfiles: ["primary-phone", "low-resource"],
+      description:
+        "An owned synthetic advertiser is discovered through the native BLE bridge with protocol classification, unverified signal hints, bounded stop and zero canonical progression. No authenticated beacon, range accuracy or physical RF claim.",
+    }),
+  );
+}
+
 for (const [operation, fixture, expected, requests] of [
   ["STATUS", "VALID", "STATUS", 0],
   ["SEARCH", "VALID", "RESULT", 1],
