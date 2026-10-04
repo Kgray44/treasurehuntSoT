@@ -1359,3 +1359,34 @@ cc1cf3bb/treee0be8cfcc02cae3b37e809b860b66fe23bc8ab5e pushed clean beforetheopen
 helperchange. Background37203623188/dispatch1791118352303 andApplecompatibility
 37203627397/1791118356858 active; earlierAppleprimary/tabletstillpending. No final
 qualification/merge/closureclaimed.
+
+## Current native pairing and Apple primary acceptance
+
+Android pairing run 37204106963 on clean 374016faff77 is harvested SUCCESS:
+both primary-phone and low-resource pass, with validated reports on both Journals,
+native stop observed, zero canonical writes and inner/owner cleanup PASS.
+
+Apple primary run 37201983382 on clean 2fea1464 is harvested SUCCESS: all eight
+scenarios pass at SIMULATOR_PROVEN fidelity. Each of the four physical/virtual
+offline reconciliation scenarios records exactly one real canonical event;
+the other scenarios record zero. All scenario cleanup passes. Native build
+XCTest records 12 passes and one unsupported skip.
+
+Apple tablet run 37202023033 passes seven of eight scenarios. Restart fails at
+step 6 RELAUNCH after 30,099ms waiting for the XCTest OS acknowledgment, before
+the separate client-ready check. Its XCTest driver ultimately passes with
+59,938ms of finalization after the host failure; this does not prove the exact
+late acknowledgment time or successful lease restoration. The host wait now
+uses the existing 120-second lifecycle action budget. Client-ready bounds,
+canonical assertions and measured total action budget remain enforced.
+Compatibility on that run fails its unconfigured lifecycle XCTest before cases;
+the labeled, bounded shell observation follow-up remains active on 37203627397.
+
+Background diagnostic run 37203623188 on cc1cf3bb is harvested FAIL on both
+profiles during FIRST_ACTUAL_RETURN_HOP, before reboot/cold-session observation.
+Both record RETURNED/307; primary reports TIMEOUT and inner cleanup PASS;
+low-resource reports NATIVE_OPERATION_FAILED and inner cleanup FAIL. Both outer
+owners prove cleanup PASS with no remaining processes. No cold cookie facts
+were produced. Current shared opening wait is being exercised on background
+run 37204577156, dispatch hosted-374016faff77-1791119327103.
+No final source matrix, ordinary qualification, protected merge or closure yet.

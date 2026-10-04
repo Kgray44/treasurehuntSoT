@@ -16,11 +16,13 @@ Actual Play services geofence delivery, encrypted wake hint storage and a generi
 notice pass with documented hosted FLP mock input and zero progression writes.
 The two-profile UWB/generic BLE/iBeacon/Eddystone matrix passes all eight cases.
 An actual signed first-party notice tap reauthorizes and returns to the current
-Journal. First-party native pairing, cold authenticated
-revoked-membership notice return still require acceptance. Broad regression passes
+Journal. First-party native pairing now passes on both Android profiles, with
+reports on both devices, verified stop and zero progression writes. Cold authenticated
+revoked-membership notice return still requires acceptance. Broad regression passes
 2,676 unit tests,159 provider scenarios on each of Windows and Linux,53 retained
-Phase1–4 browser journeys and80 Android cases across four profiles. Apple restart
-and virtual offline matrix repairs are under focused hosted validation. Final
+Phase1–4 browser journeys and80 Android cases across four profiles. The Apple primary
+profile passes all eight scenarios, including restart and virtual offline reconciliation.
+Tablet relaunch acknowledgment and the compatibility matrix remain under validation. Final
 exact-source qualification, protected integration and phase closure
 remain pending. Historical statements that Phase 4 is deferred describe the
 accepted Phase 3 baseline, not this unfinished candidate.

@@ -657,7 +657,11 @@ export async function executeLandfallOsScenario(
               continue;
             }
             osCurrent = { index, action };
-            await wait(() => osResults.has(index), 30000);
+            // XCTest launch can outlast the earlier transport-only 30s wait.
+            // Keep the acknowledgment inside the existing 120s lifecycle action
+            // budget; subsequent client readiness and total action timing still
+            // have their independent checks.
+            await wait(() => osResults.has(index), 120000);
             const result = osResults.get(index)!;
             if (result.state !== "PASS") {
               steps.push(result);

@@ -1710,3 +1710,36 @@ cc1cf3bb/treee0be8cfcc02cae3b37e809b860b66fe23bc8ab5e pushed clean beforetheopen
 helperchange. Background37203623188/dispatch1791118352303 andApplecompatibility
 37203627397/1791118356858 active; earlierAppleprimary/tabletstillpending. No final
 qualification/merge/closureclaimed.
+
+## Current native pairing and Apple profile evidence
+
+[Pairing run 37204106963](https://github.com/Kgray44/treasurehuntSoT/actions/runs/37204106963)
+on clean 374016faff77 passes both Android profiles. Each receipt observes validated
+reports on both native Journals, native session stop, zero canonical progression
+events and passing inner/owner cleanup. The conservative server/device lease
+translation and strictly observed opening input now have actual two-profile proof.
+
+[Apple primary run 37201983382](https://github.com/Kgray44/treasurehuntSoT/actions/runs/37201983382)
+on clean 2fea1464 passes all eight scenarios at SIMULATOR_PROVEN fidelity, including
+lost-response, restart and virtual offline reconciliation. Each of the four offline
+reconciliation cases records exactly one real canonical event; the other cases
+record zero. All cleanup passes. Native XCTest reports 12 passes and one
+unsupported skip.
+
+Tablet run 37202023033 passes seven of eight. Its restart failure is step 6
+RELAUNCH: the host's 30-second XCTest acknowledgment wait expires at 30,099ms,
+before the separate client-ready check. XCTest itself ultimately passes, with
+59,938ms finalization after host failure. This does not establish exact late
+acknowledgment time or lease restoration. The acknowledgment wait now fits the
+existing 120-second lifecycle action budget; subsequent client-ready checks,
+canonical assertions and measured total action limit remain enforced. Fresh
+tablet execution is required. Compatibility fails before scenarios at the
+unconfigured shell XCTest; its separately labeled follow-up remains active.
+
+Background run 37203623188 fails before its cold-session probe on both profiles.
+Both record the genuine authenticated RETURNED/307 hop; primary reports TIMEOUT
+and inner cleanup PASS, low-resource NATIVE_OPERATION_FAILED and inner cleanup FAIL.
+Both outer owners prove process cleanup PASS. No persisted-cookie conclusion is
+supported by this run. The current shared opening wait is under actual background
+execution on 37204577156. Complete cold revoked-membership return and final exact
+source matrices remain local acceptance work.
