@@ -396,6 +396,13 @@ export async function executeLandfallOsScenario(
     }
   };
   const steps: DeviceLabStepResult[] = [];
+  const actionPerformance: {
+    index: number;
+    action: string;
+    elapsedMs: number;
+    preliminaryBudgetMs: number;
+    state: string;
+  }[] = [];
   let executionStage = "SETUP";
   try {
     if (target === "android-emulator") {
@@ -554,137 +561,282 @@ export async function executeLandfallOsScenario(
       executionStage = `STEP_${index}_${step.action.type}`;
       const remaining = timelineStartedAt + step.atMs - Date.now();
       if (remaining > 0) await new Promise((resolve) => setTimeout(resolve, remaining));
-      if (
-        step.action.type === "ASSERT" &&
-        ["serverConfirmed", "canonicalProgressionEvents", "completionRequests"].includes(step.action.field)
-      ) {
-        const counts = await authority.counts();
-        const actual =
-          step.action.field === "completionRequests"
-            ? maximumCompletionRequests
-            : step.action.field === "serverConfirmed"
-              ? counts.canonicalProgressionEvents > 0
-              : counts.canonicalProgressionEvents;
-        steps.push({
-          index,
-          action: "ASSERT",
-          state: actual === step.action.value ? "PASS" : "FAIL",
-          ...(actual === step.action.value ? {} : { reason: "NATIVE_CANONICAL_COUNT_MISMATCH" }),
-        });
-        continue;
-      }
-      if (step.action.type === "NATIVE_GEOFENCE" && step.action.operation === "ENTER") {
-        if (target !== "android-emulator" || foreground || !geofenceScenario) {
+      const performanceStarted = performance.now();
+      try {
+        if (
+          step.action.type === "ASSERT" &&
+          ["serverConfirmed", "canonicalProgressionEvents", "completionRequests"].includes(step.action.field)
+        ) {
+          const counts = await authority.counts();
+          const actual =
+            step.action.field === "completionRequests"
+              ? maximumCompletionRequests
+              : step.action.field === "serverConfirmed"
+                ? counts.canonicalProgressionEvents > 0
+                : counts.canonicalProgressionEvents;
           steps.push({
             index,
-            action: "NATIVE_GEOFENCE",
-            state: "UNSUPPORTED",
-            reason: "BACKGROUND_OS_GEOFENCE_REQUIRED",
+            action: "ASSERT",
+            state: actual === step.action.value ? "PASS" : "FAIL",
+            ...(actual === step.action.value ? {} : { reason: "NATIVE_CANONICAL_COUNT_MISMATCH" }),
           });
           continue;
         }
-        // Play services uses its production two-minute responsiveness. Deliver
-        // GPS through the emulator only; never synthesize a GeofencingEvent.
-        const startedAt = Date.now(),
-          budgetMs = 180000;
-        let injections = 0;
-        while (Date.now() - startedAt < budgetMs) {
-          await adb(["emu", "geo", "fix", "-72", "44"]);
-          injections++;
-          await new Promise((resolve) => setTimeout(resolve, 5000));
+        if (step.action.type === "NATIVE_GEOFENCE" && step.action.operation === "ENTER") {
+          if (target !== "android-emulator" || foreground || !geofenceScenario) {
+            steps.push({
+              index,
+              action: "NATIVE_GEOFENCE",
+              state: "UNSUPPORTED",
+              reason: "BACKGROUND_OS_GEOFENCE_REQUIRED",
+            });
+            continue;
+          }
+          // Play services uses its production two-minute responsiveness. Deliver
+          // GPS through the emulator only; never synthesize a GeofencingEvent.
+          const startedAt = Date.now(),
+            budgetMs = 180000;
+          let injections = 0;
+          while (Date.now() - startedAt < budgetMs) {
+            await adb(["emu", "geo", "fix", "-72", "44"]);
+            injections++;
+            await new Promise((resolve) => setTimeout(resolve, 5000));
+          }
+          geofenceControls.push({ index, injections, elapsedMs: Date.now() - startedAt, budgetMs });
+          // This step proves only input delivery. A separate foreground assertion
+          // must observe the native encrypted hint before the scenario can pass.
+          steps.push({ index, action: "NATIVE_GEOFENCE", state: "PASS" });
+          continue;
         }
-        geofenceControls.push({ index, injections, elapsedMs: Date.now() - startedAt, budgetMs });
-        // This step proves only input delivery. A separate foreground assertion
-        // must observe the native encrypted hint before the scenario can pass.
-        steps.push({ index, action: "NATIVE_GEOFENCE", state: "PASS" });
-        continue;
-      }
-      if (step.action.type === "LIFECYCLE") {
-        const action = step.action;
-        if (action.state === "RELAUNCH") ready = false;
-        if (target === "ios-simulator") {
-          if (
-            !["DEFAULT", "FORCE_STOP", undefined].includes(action.operation) ||
-            !["FOREGROUND", "BACKGROUND", "TERMINATED", "RELAUNCH"].includes(action.state)
-          ) {
-            steps.push({ index, action: "LIFECYCLE", state: "UNSUPPORTED", reason: "SIMULATOR_LIFECYCLE_UNSUPPORTED" });
-            continue;
-          }
-          osCurrent = { index, action };
-          await wait(() => osResults.has(index), 30000);
-          const result = osResults.get(index)!;
-          if (result.state !== "PASS") {
-            steps.push(result);
-            continue;
-          }
-        } else if (action.state === "FOREGROUND" || action.state === "RELAUNCH") {
-          if (action.operation === "REBOOT") {
-            const enabled =
-              process.platform === "linux" &&
-              process.env.GITHUB_ACTIONS === "true" &&
-              process.env.RUNNER_ENVIRONMENT === "github-hosted" &&
-              process.env.LANDFALL_LAB_GUEST_REBOOT === "true";
-            if (!enabled) {
+        if (step.action.type === "LIFECYCLE") {
+          const action = step.action;
+          if (action.state === "RELAUNCH") ready = false;
+          if (target === "ios-simulator") {
+            if (
+              !["DEFAULT", "FORCE_STOP", undefined].includes(action.operation) ||
+              !["FOREGROUND", "BACKGROUND", "TERMINATED", "RELAUNCH"].includes(action.state)
+            ) {
               steps.push({
                 index,
                 action: "LIFECYCLE",
                 state: "UNSUPPORTED",
-                reason: "EPHEMERAL_GUEST_REBOOT_REQUIRED",
+                reason: "SIMULATOR_LIFECYCLE_UNSUPPORTED",
               });
               continue;
             }
-            const before = startups.length;
-            guestReboots.push({
-              index,
-              ...(await rebootOwnedAndroidGuest(
-                {
-                  ephemeralHostedLinux: enabled,
-                  enabled,
-                  virtual: deviceConfiguration?.virtual === true,
-                  serial: androidSerial!,
-                  port,
-                },
-                { adb, now: () => Date.now(), delay: (ms) => new Promise((resolve) => setTimeout(resolve, ms)) },
-              )),
-            });
-            await adb(["shell", "input", "keyevent", "224"]);
-            await adb(["shell", "input", "keyevent", "82"]);
-            await adb([
-              "shell",
-              "am",
-              "start",
-              "-n",
-              "com.voyagewright.landfall/.LandfallActivity",
-              "--es",
-              "labOrigin",
-              `http://127.0.0.1:${port}`,
-            ]);
-            await wait(() => ready && startups.length > before, 60000);
-          }
-          if (action.operation === "ACTIVITY_RECREATE") {
-            const before = startups.length;
-            const pid = (await adb(["shell", "pidof", "com.voyagewright.landfall"])).trim();
-            if (!/^[0-9]+$/.test(pid)) throw new Error("ANDROID_OWNED_APP_PID_INVALID");
-            const automatic = (await adb(["shell", "settings", "get", "system", "accelerometer_rotation"])).trim();
-            const rotation = (await adb(["shell", "settings", "get", "system", "user_rotation"])).trim();
-            if (!["0", "1"].includes(automatic) || !["0", "1", "2", "3"].includes(rotation))
-              throw new Error("ANDROID_ROTATION_BASELINE_UNAVAILABLE");
-            androidRotationBaseline ??= { automatic, rotation };
-            await adb(["shell", "settings", "put", "system", "accelerometer_rotation", "0"]);
-            await adb(["shell", "settings", "put", "system", "user_rotation", String((Number(rotation) + 1) % 4)]);
-            await wait(() => ready && startups.length > before, 60000);
-            if ((await adb(["shell", "pidof", "com.voyagewright.landfall"])).trim() !== pid)
-              throw new Error("ANDROID_RECREATION_CHANGED_PROCESS");
-          } else if (action.state === "RELAUNCH" && action.operation !== "REBOOT") {
-            await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
+            osCurrent = { index, action };
+            await wait(() => osResults.has(index), 30000);
+            const result = osResults.get(index)!;
+            if (result.state !== "PASS") {
+              steps.push(result);
+              continue;
+            }
+          } else if (action.state === "FOREGROUND" || action.state === "RELAUNCH") {
+            if (action.operation === "REBOOT") {
+              const enabled =
+                process.platform === "linux" &&
+                process.env.GITHUB_ACTIONS === "true" &&
+                process.env.RUNNER_ENVIRONMENT === "github-hosted" &&
+                process.env.LANDFALL_LAB_GUEST_REBOOT === "true";
+              if (!enabled) {
+                steps.push({
+                  index,
+                  action: "LIFECYCLE",
+                  state: "UNSUPPORTED",
+                  reason: "EPHEMERAL_GUEST_REBOOT_REQUIRED",
+                });
+                continue;
+              }
+              const before = startups.length;
+              guestReboots.push({
+                index,
+                ...(await rebootOwnedAndroidGuest(
+                  {
+                    ephemeralHostedLinux: enabled,
+                    enabled,
+                    virtual: deviceConfiguration?.virtual === true,
+                    serial: androidSerial!,
+                    port,
+                  },
+                  { adb, now: () => Date.now(), delay: (ms) => new Promise((resolve) => setTimeout(resolve, ms)) },
+                )),
+              });
+              await adb(["shell", "input", "keyevent", "224"]);
+              await adb(["shell", "input", "keyevent", "82"]);
+              await adb([
+                "shell",
+                "am",
+                "start",
+                "-n",
+                "com.voyagewright.landfall/.LandfallActivity",
+                "--es",
+                "labOrigin",
+                `http://127.0.0.1:${port}`,
+              ]);
+              await wait(() => ready && startups.length > before, 60000);
+            }
+            if (action.operation === "ACTIVITY_RECREATE") {
+              const before = startups.length;
+              const pid = (await adb(["shell", "pidof", "com.voyagewright.landfall"])).trim();
+              if (!/^[0-9]+$/.test(pid)) throw new Error("ANDROID_OWNED_APP_PID_INVALID");
+              const automatic = (await adb(["shell", "settings", "get", "system", "accelerometer_rotation"])).trim();
+              const rotation = (await adb(["shell", "settings", "get", "system", "user_rotation"])).trim();
+              if (!["0", "1"].includes(automatic) || !["0", "1", "2", "3"].includes(rotation))
+                throw new Error("ANDROID_ROTATION_BASELINE_UNAVAILABLE");
+              androidRotationBaseline ??= { automatic, rotation };
+              await adb(["shell", "settings", "put", "system", "accelerometer_rotation", "0"]);
+              await adb(["shell", "settings", "put", "system", "user_rotation", String((Number(rotation) + 1) % 4)]);
+              await wait(() => ready && startups.length > before, 60000);
+              if ((await adb(["shell", "pidof", "com.voyagewright.landfall"])).trim() !== pid)
+                throw new Error("ANDROID_RECREATION_CHANGED_PROCESS");
+            } else if (action.state === "RELAUNCH" && action.operation !== "REBOOT") {
+              await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
+              const pid = await adb(["shell", "pidof", "com.voyagewright.landfall"]).catch(
+                (error: { code?: number }) => (error.code === 1 ? "" : "UNVERIFIED"),
+              );
+              if (pid.trim()) throw new Error("ANDROID_TERMINATION_NOT_OBSERVED");
+            }
+            if (action.operation !== "ACTIVITY_RECREATE" && action.operation !== "REBOOT") {
+              await adb(["shell", "input", "keyevent", "224"]);
+              await adb(["shell", "input", "keyevent", "82"]);
+              await adb([
+                "shell",
+                "am",
+                "start",
+                "-n",
+                "com.voyagewright.landfall/.LandfallActivity",
+                "--es",
+                "labOrigin",
+                `http://127.0.0.1:${port}`,
+              ]);
+            }
+          } else if (action.state === "BACKGROUND") {
+            await adb(["shell", "input", "keyevent", "3"]);
+            // HOME returns before the asynchronous task switch completes, especially
+            // on a measured low-resource profile. Require actual OS state within a
+            // bounded transition tolerance; never assume the command itself proves it.
+            const deadline = Date.now() + 10000;
+            let background = false;
+            while (!background && Date.now() < deadline) {
+              const activity = await adb(["shell", "dumpsys", "activity", "activities"]);
+              const resumed = activity
+                .split(/\r?\n/)
+                .filter((line) => /(?:mResumedActivity|topResumedActivity)/.test(line));
+              background = resumed.length > 0 && !resumed.some((line) => line.includes("com.voyagewright.landfall"));
+              if (!background) await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+            if (!background) throw new Error("ANDROID_BACKGROUND_NOT_OBSERVED");
+          } else if (action.state === "SCREEN_LOCKED") {
+            await adb(["shell", "input", "keyevent", "223"]);
+            let asleep = false;
+            for (let attempt = 0; attempt < 30 && !asleep; attempt++) {
+              const power = await adb(["shell", "dumpsys", "power"]);
+              asleep = /mWakefulness=Asleep|state=OFF/.test(power);
+              if (!asleep) await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+            if (!asleep) throw new Error("ANDROID_SCREEN_OFF_NOT_OBSERVED");
+          } else if (action.state === "TERMINATED") {
+            if (action.operation === "PROCESS_KILL") {
+              const pid = (await adb(["shell", "pidof", "com.voyagewright.landfall"])).trim();
+              if (!/^[0-9]+$/.test(pid)) throw new Error("ANDROID_OWNED_APP_PID_INVALID");
+              await adb(["shell", "run-as", "com.voyagewright.landfall", "kill", "-9", pid]);
+            } else await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
             const pid = await adb(["shell", "pidof", "com.voyagewright.landfall"]).catch((error: { code?: number }) =>
               error.code === 1 ? "" : "UNVERIFIED",
             );
             if (pid.trim()) throw new Error("ANDROID_TERMINATION_NOT_OBSERVED");
+          } else {
+            steps.push({ index, action: "LIFECYCLE", state: "UNSUPPORTED", reason: "NATIVE_SUSPENSION_UNSUPPORTED" });
+            continue;
           }
-          if (action.operation !== "ACTIVITY_RECREATE" && action.operation !== "REBOOT") {
-            await adb(["shell", "input", "keyevent", "224"]);
-            await adb(["shell", "input", "keyevent", "82"]);
+          foreground = ["FOREGROUND", "RELAUNCH"].includes(action.state);
+          if (foreground) {
+            await wait(() => ready, 60000);
+            current = { index, action };
+            await wait(() => results.has(index), 30000);
+            steps.push(results.get(index)!);
+          } else steps.push({ index, action: "LIFECYCLE", state: "PASS" });
+          continue;
+        }
+        if (!foreground) {
+          steps.push({ index, action: step.action.type, state: "UNSUPPORTED", reason: "FRESH_FOREGROUND_REQUIRED" });
+          continue;
+        }
+        if (step.action.type === "SENSOR") {
+          const control = androidSensorControl(step.action);
+          const status = target === "android-emulator" && control ? await adb(["emu", "sensor", "status"]) : "";
+          if (target !== "android-emulator" || !control || !status.includes(`${control.sensor}: enabled.`)) {
+            steps.push({ index, action: "SENSOR", state: "UNSUPPORTED", reason: "OS_SENSOR_CONTROL_UNAVAILABLE" });
+            continue;
+          }
+          const controls = [{ sensor: control.sensor, values: control.values }, ...(control.drivingInputs ?? [])];
+          if (controls.some((input) => !status.includes(`${input.sensor}: enabled.`))) {
+            steps.push({ index, action: "SENSOR", state: "UNSUPPORTED", reason: "OS_SENSOR_CONTROL_UNAVAILABLE" });
+            continue;
+          }
+          for (const input of controls)
+            if (!androidSensorBaselines.has(input.sensor))
+              androidSensorBaselines.set(
+                input.sensor,
+                readAndroidSensorValues(input.sensor, await adb(["emu", "sensor", "get", input.sensor])),
+              );
+          current = { index, action: step.action };
+          await wait(() => sensorReady.has(index) || results.has(index), 30000);
+          for (const input of controls) {
+            await adb(["emu", "sensor", "set", input.sensor, input.values.join(":")]);
+            const measured = readAndroidSensorValues(input.sensor, await adb(["emu", "sensor", "get", input.sensor]));
+            if (measured.some((value, i) => Math.abs(value - input.values[i]) > 0.02))
+              throw new Error("ANDROID_SENSOR_CONTROL_NOT_OBSERVED");
+          }
+          await wait(() => results.has(index), 30000);
+          steps.push(results.get(index)!);
+          continue;
+        }
+        if (step.action.type === "PERMISSION") {
+          const action = step.action;
+          if (
+            scenario.worldspace !== "PHYSICAL" ||
+            action.permission !== "FOREGROUND_LOCATION" ||
+            !["GRANTED", "APPROXIMATE", "DENIED", "REVOKED"].includes(action.state) ||
+            (target === "ios-simulator" && action.state === "APPROXIMATE")
+          ) {
+            steps.push({
+              index,
+              action: "PERMISSION",
+              state: "UNSUPPORTED",
+              reason: "OS_PERMISSION_CONTROL_UNSUPPORTED",
+            });
+            continue;
+          }
+          if (target === "android-emulator") {
+            // Android may terminate the app when a runtime grant is revoked. The
+            // owned launcher restores the lab origin, never assumes the old page survived.
+            ready = false;
+            const granted = action.state === "GRANTED";
+            const coarse = granted || action.state === "APPROXIMATE";
+            await adb([
+              "shell",
+              "pm",
+              granted ? "grant" : "revoke",
+              "com.voyagewright.landfall",
+              "android.permission.ACCESS_FINE_LOCATION",
+            ]);
+            await adb([
+              "shell",
+              "pm",
+              coarse ? "grant" : "revoke",
+              "com.voyagewright.landfall",
+              "android.permission.ACCESS_COARSE_LOCATION",
+            ]);
+            const packageState = await adb(["shell", "dumpsys", "package", "com.voyagewright.landfall"]);
+            for (const [permission, expected] of [
+              ["ACCESS_FINE_LOCATION", granted],
+              ["ACCESS_COARSE_LOCATION", coarse],
+            ] as const) {
+              if (!packageState.includes(`android.permission.${permission}: granted=${expected}`))
+                throw new Error("ANDROID_PERMISSION_CONTROL_NOT_OBSERVED");
+            }
+            await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
             await adb([
               "shell",
               "am",
@@ -695,283 +847,173 @@ export async function executeLandfallOsScenario(
               "labOrigin",
               `http://127.0.0.1:${port}`,
             ]);
-          }
-        } else if (action.state === "BACKGROUND") {
-          await adb(["shell", "input", "keyevent", "3"]);
-          // HOME returns before the asynchronous task switch completes, especially
-          // on a measured low-resource profile. Require actual OS state within a
-          // bounded transition tolerance; never assume the command itself proves it.
-          const deadline = Date.now() + 10000;
-          let background = false;
-          while (!background && Date.now() < deadline) {
-            const activity = await adb(["shell", "dumpsys", "activity", "activities"]);
-            const resumed = activity
-              .split(/\r?\n/)
-              .filter((line) => /(?:mResumedActivity|topResumedActivity)/.test(line));
-            background = resumed.length > 0 && !resumed.some((line) => line.includes("com.voyagewright.landfall"));
-            if (!background) await new Promise((resolve) => setTimeout(resolve, 100));
-          }
-          if (!background) throw new Error("ANDROID_BACKGROUND_NOT_OBSERVED");
-        } else if (action.state === "SCREEN_LOCKED") {
-          await adb(["shell", "input", "keyevent", "223"]);
-          let asleep = false;
-          for (let attempt = 0; attempt < 30 && !asleep; attempt++) {
-            const power = await adb(["shell", "dumpsys", "power"]);
-            asleep = /mWakefulness=Asleep|state=OFF/.test(power);
-            if (!asleep) await new Promise((resolve) => setTimeout(resolve, 100));
-          }
-          if (!asleep) throw new Error("ANDROID_SCREEN_OFF_NOT_OBSERVED");
-        } else if (action.state === "TERMINATED") {
-          if (action.operation === "PROCESS_KILL") {
-            const pid = (await adb(["shell", "pidof", "com.voyagewright.landfall"])).trim();
-            if (!/^[0-9]+$/.test(pid)) throw new Error("ANDROID_OWNED_APP_PID_INVALID");
-            await adb(["shell", "run-as", "com.voyagewright.landfall", "kill", "-9", pid]);
-          } else await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
-          const pid = await adb(["shell", "pidof", "com.voyagewright.landfall"]).catch((error: { code?: number }) =>
-            error.code === 1 ? "" : "UNVERIFIED",
-          );
-          if (pid.trim()) throw new Error("ANDROID_TERMINATION_NOT_OBSERVED");
-        } else {
-          steps.push({ index, action: "LIFECYCLE", state: "UNSUPPORTED", reason: "NATIVE_SUSPENSION_UNSUPPORTED" });
-          continue;
-        }
-        foreground = ["FOREGROUND", "RELAUNCH"].includes(action.state);
-        if (foreground) {
-          await wait(() => ready, 60000);
-          current = { index, action };
-          await wait(() => results.has(index), 30000);
-          steps.push(results.get(index)!);
-        } else steps.push({ index, action: "LIFECYCLE", state: "PASS" });
-        continue;
-      }
-      if (!foreground) {
-        steps.push({ index, action: step.action.type, state: "UNSUPPORTED", reason: "FRESH_FOREGROUND_REQUIRED" });
-        continue;
-      }
-      if (step.action.type === "SENSOR") {
-        const control = androidSensorControl(step.action);
-        const status = target === "android-emulator" && control ? await adb(["emu", "sensor", "status"]) : "";
-        if (target !== "android-emulator" || !control || !status.includes(`${control.sensor}: enabled.`)) {
-          steps.push({ index, action: "SENSOR", state: "UNSUPPORTED", reason: "OS_SENSOR_CONTROL_UNAVAILABLE" });
-          continue;
-        }
-        const controls = [{ sensor: control.sensor, values: control.values }, ...(control.drivingInputs ?? [])];
-        if (controls.some((input) => !status.includes(`${input.sensor}: enabled.`))) {
-          steps.push({ index, action: "SENSOR", state: "UNSUPPORTED", reason: "OS_SENSOR_CONTROL_UNAVAILABLE" });
-          continue;
-        }
-        for (const input of controls)
-          if (!androidSensorBaselines.has(input.sensor))
-            androidSensorBaselines.set(
-              input.sensor,
-              readAndroidSensorValues(input.sensor, await adb(["emu", "sensor", "get", input.sensor])),
+            await wait(() => ready, 60000);
+          } else {
+            await labTool(
+              "xcrun",
+              [
+                "simctl",
+                "privacy",
+                ownedDevice!,
+                action.state === "GRANTED" ? "grant" : "revoke",
+                "location",
+                "com.voyagewright.landfall",
+              ],
+              60000,
             );
-        current = { index, action: step.action };
-        await wait(() => sensorReady.has(index) || results.has(index), 30000);
-        for (const input of controls) {
-          await adb(["emu", "sensor", "set", input.sensor, input.values.join(":")]);
-          const measured = readAndroidSensorValues(input.sensor, await adb(["emu", "sensor", "get", input.sensor]));
-          if (measured.some((value, i) => Math.abs(value - input.values[i]) > 0.02))
-            throw new Error("ANDROID_SENSOR_CONTROL_NOT_OBSERVED");
+          }
         }
-        await wait(() => results.has(index), 30000);
-        steps.push(results.get(index)!);
-        continue;
-      }
-      if (step.action.type === "PERMISSION") {
-        const action = step.action;
+        if (step.action.type === "POWER") {
+          const action = step.action;
+          if (target !== "android-emulator" || action.thermal || action.doze) {
+            steps.push({ index, action: "POWER", state: "UNSUPPORTED", reason: "NATIVE_POWER_INJECTION_UNSUPPORTED" });
+            continue;
+          }
+          if (androidPowerMode === null) {
+            androidPowerMode = (await adb(["shell", "settings", "get", "global", "low_power"])).trim();
+            if (!["0", "1"].includes(androidPowerMode)) throw new Error("ANDROID_POWER_BASELINE_UNAVAILABLE");
+          }
+          await adb(["shell", "cmd", "power", "set-mode", "0"]);
+          await adb(["shell", "dumpsys", "battery", "set", "-f", "ac", action.charging ? "1" : "0"]);
+          await adb(["shell", "dumpsys", "battery", "set", "-f", "usb", "0"]);
+          await adb(["shell", "dumpsys", "battery", "set", "-f", "level", String(action.batteryPercent)]);
+          await adb(["shell", "cmd", "power", "set-mode", action.saver ? "1" : "0"]);
+        }
         if (
-          scenario.worldspace !== "PHYSICAL" ||
-          action.permission !== "FOREGROUND_LOCATION" ||
-          !["GRANTED", "APPROXIMATE", "DENIED", "REVOKED"].includes(action.state) ||
-          (target === "ios-simulator" && action.state === "APPROXIMATE")
+          step.action.type === "NETWORK" &&
+          target === "android-emulator" &&
+          step.action.latencyMs === 0 &&
+          ["OFFLINE", "ONLINE"].includes(step.action.state)
+        ) {
+          network = step.action.state;
+          await adb(["shell", "svc", "wifi", network === "ONLINE" ? "enable" : "disable"]);
+          await adb(["shell", "svc", "data", network === "ONLINE" ? "enable" : "disable"]);
+        } else if (
+          step.action.type === "NETWORK" &&
+          target === "ios-simulator" &&
+          step.action.latencyMs === 0 &&
+          ["OFFLINE", "ONLINE"].includes(step.action.state)
+        ) {
+          // Simulator cannot disable the host network safely. The first-party service
+          // fault is controlled here; iOS radio fidelity remains explicitly external.
+          network = step.action.state;
+        }
+        if (
+          step.action.type === "INSTALLATION_TOKEN" &&
+          (!cameraScenario || !cameraFixture || target !== "android-emulator")
         ) {
           steps.push({
             index,
-            action: "PERMISSION",
+            action: step.action.type,
             state: "UNSUPPORTED",
-            reason: "OS_PERMISSION_CONTROL_UNSUPPORTED",
+            reason: "NATIVE_CAMERA_FIXTURE_REQUIRED",
           });
           continue;
         }
-        if (target === "android-emulator") {
-          // Android may terminate the app when a runtime grant is revoked. The
-          // owned launcher restores the lab origin, never assumes the old page survived.
-          ready = false;
-          const granted = action.state === "GRANTED";
-          const coarse = granted || action.state === "APPROXIMATE";
-          await adb([
-            "shell",
-            "pm",
-            granted ? "grant" : "revoke",
-            "com.voyagewright.landfall",
-            "android.permission.ACCESS_FINE_LOCATION",
-          ]);
-          await adb([
-            "shell",
-            "pm",
-            coarse ? "grant" : "revoke",
-            "com.voyagewright.landfall",
-            "android.permission.ACCESS_COARSE_LOCATION",
-          ]);
-          const packageState = await adb(["shell", "dumpsys", "package", "com.voyagewright.landfall"]);
-          for (const [permission, expected] of [
-            ["ACCESS_FINE_LOCATION", granted],
-            ["ACCESS_COARSE_LOCATION", coarse],
-          ] as const) {
-            if (!packageState.includes(`android.permission.${permission}: granted=${expected}`))
-              throw new Error("ANDROID_PERMISSION_CONTROL_NOT_OBSERVED");
-          }
-          await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
-          await adb([
-            "shell",
-            "am",
-            "start",
-            "-n",
-            "com.voyagewright.landfall/.LandfallActivity",
-            "--es",
-            "labOrigin",
-            `http://127.0.0.1:${port}`,
-          ]);
-          await wait(() => ready, 60000);
-        } else {
-          await labTool(
-            "xcrun",
-            [
-              "simctl",
-              "privacy",
-              ownedDevice!,
-              action.state === "GRANTED" ? "grant" : "revoke",
-              "location",
-              "com.voyagewright.landfall",
-            ],
-            60000,
-          );
-        }
-      }
-      if (step.action.type === "POWER") {
-        const action = step.action;
-        if (target !== "android-emulator" || action.thermal || action.doze) {
-          steps.push({ index, action: "POWER", state: "UNSUPPORTED", reason: "NATIVE_POWER_INJECTION_UNSUPPORTED" });
+        if (
+          ![
+            "LOCATION",
+            "ASSERT",
+            "NETWORK",
+            "RECONCILE",
+            "POWER",
+            "PERMISSION",
+            "INSTALLATION_TOKEN",
+            "NATIVE_GEOFENCE",
+          ].includes(step.action.type)
+        ) {
+          steps.push({
+            index,
+            action: step.action.type,
+            state: "UNSUPPORTED",
+            reason: "NATIVE_OS_TRANSLATION_UNAVAILABLE",
+          });
           continue;
         }
-        if (androidPowerMode === null) {
-          androidPowerMode = (await adb(["shell", "settings", "get", "global", "low_power"])).trim();
-          if (!["0", "1"].includes(androidPowerMode)) throw new Error("ANDROID_POWER_BASELINE_UNAVAILABLE");
+        current = { index, action: step.action };
+        if (cameraScenario && step.action.type === "INSTALLATION_TOKEN") {
+          await wait(() => cameraStarted || results.has(index), 15000);
+          if (cameraStarted && !results.has(index)) {
+            // Only this public synthetic QR fixture can appear here. Capture the
+            // actual preview; no decoded token or frame is passed to JavaScript.
+            const deadline = Date.now() + 15000;
+            while (!results.has(index) && Date.now() < deadline) {
+              const raw = await adb(
+                ["shell", "run-as", "com.voyagewright.landfall", "cat", "files/landfall-camera-debug.json"],
+                5000,
+              ).catch(() => "");
+              try {
+                if (raw.length <= 1024 && JSON.parse(raw).frames > 0) break;
+              } catch {
+                /* Initialization diagnostics can be absent briefly. */
+              }
+              await new Promise((resolve) => setTimeout(resolve, 250));
+            }
+            const file = path.join(destination, "native-camera-preview.png");
+            const png = await labBinaryTool(host.android.adb!, [
+              "-P",
+              process.env.LANDFALL_LAB_ADB_PORT ?? "5037",
+              "-s",
+              androidSerial!,
+              "exec-out",
+              "screencap",
+              "-p",
+            ]);
+            if (png.length < 24 || !png.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])))
+              throw new Error("ANDROID_SCREEN_CAPTURE_INVALID_PNG");
+            await writeFile(file, png);
+            artifacts.push({ path: file, sha256: createHash("sha256").update(png).digest("hex"), kind: "SCREENSHOT" });
+          }
         }
-        await adb(["shell", "cmd", "power", "set-mode", "0"]);
-        await adb(["shell", "dumpsys", "battery", "set", "-f", "ac", action.charging ? "1" : "0"]);
-        await adb(["shell", "dumpsys", "battery", "set", "-f", "usb", "0"]);
-        await adb(["shell", "dumpsys", "battery", "set", "-f", "level", String(action.batteryPercent)]);
-        await adb(["shell", "cmd", "power", "set-mode", action.saver ? "1" : "0"]);
-      }
-      if (
-        step.action.type === "NETWORK" &&
-        target === "android-emulator" &&
-        step.action.latencyMs === 0 &&
-        ["OFFLINE", "ONLINE"].includes(step.action.state)
-      ) {
-        network = step.action.state;
-        await adb(["shell", "svc", "wifi", network === "ONLINE" ? "enable" : "disable"]);
-        await adb(["shell", "svc", "data", network === "ONLINE" ? "enable" : "disable"]);
-      } else if (
-        step.action.type === "NETWORK" &&
-        target === "ios-simulator" &&
-        step.action.latencyMs === 0 &&
-        ["OFFLINE", "ONLINE"].includes(step.action.state)
-      ) {
-        // Simulator cannot disable the host network safely. The first-party service
-        // fault is controlled here; iOS radio fidelity remains explicitly external.
-        network = step.action.state;
-      }
-      if (
-        step.action.type === "INSTALLATION_TOKEN" &&
-        (!cameraScenario || !cameraFixture || target !== "android-emulator")
-      ) {
-        steps.push({ index, action: step.action.type, state: "UNSUPPORTED", reason: "NATIVE_CAMERA_FIXTURE_REQUIRED" });
-        continue;
-      }
-      if (
-        ![
-          "LOCATION",
-          "ASSERT",
-          "NETWORK",
-          "RECONCILE",
-          "POWER",
-          "PERMISSION",
-          "INSTALLATION_TOKEN",
-          "NATIVE_GEOFENCE",
-        ].includes(step.action.type)
-      ) {
-        steps.push({
+        if (step.action.type === "LOCATION" && step.action.coordinate.type === "WGS84") {
+          const coordinate = step.action.coordinate;
+          await wait(() => locationReady.has(index) || results.has(index), 30000);
+          if (results.has(index)) {
+            steps.push(results.get(index)!);
+            continue;
+          }
+          locationControls.push({
+            index,
+            ...(await deliverDeviceLabPosition({
+              completed: () => results.has(index),
+              inject: () =>
+                target === "android-emulator"
+                  ? adb(["emu", "geo", "fix", String(coordinate.longitude), String(coordinate.latitude)]).then(
+                      () => undefined,
+                    )
+                  : labTool(
+                      "xcrun",
+                      ["simctl", "location", ownedDevice!, "set", `${coordinate.latitude},${coordinate.longitude}`],
+                      60000,
+                    ).then(() => undefined),
+            })),
+          });
+        }
+        await wait(() => results.has(index), step.action.type === "LOCATION" ? 130000 : cameraScenario ? 45000 : 30000);
+        steps.push(results.get(index)!);
+      } finally {
+        const elapsedMs = performance.now() - performanceStarted;
+        const preliminaryBudgetMs =
+          step.action.type === "NATIVE_GEOFENCE"
+            ? 210000
+            : step.action.type === "LOCATION"
+              ? 150000
+              : step.action.type === "LIFECYCLE" && step.action.operation === "REBOOT"
+                ? 180000
+                : 120000;
+        const observed = steps.find((value) => value.index === index);
+        if (observed?.state === "PASS" && elapsedMs > preliminaryBudgetMs) {
+          observed.state = "FAIL";
+          observed.reason = "NATIVE_ACTION_PERFORMANCE_BUDGET_EXCEEDED";
+        }
+        actionPerformance.push({
           index,
           action: step.action.type,
-          state: "UNSUPPORTED",
-          reason: "NATIVE_OS_TRANSLATION_UNAVAILABLE",
-        });
-        continue;
-      }
-      current = { index, action: step.action };
-      if (cameraScenario && step.action.type === "INSTALLATION_TOKEN") {
-        await wait(() => cameraStarted || results.has(index), 15000);
-        if (cameraStarted && !results.has(index)) {
-          // Only this public synthetic QR fixture can appear here. Capture the
-          // actual preview; no decoded token or frame is passed to JavaScript.
-          const deadline = Date.now() + 15000;
-          while (!results.has(index) && Date.now() < deadline) {
-            const raw = await adb(
-              ["shell", "run-as", "com.voyagewright.landfall", "cat", "files/landfall-camera-debug.json"],
-              5000,
-            ).catch(() => "");
-            try {
-              if (raw.length <= 1024 && JSON.parse(raw).frames > 0) break;
-            } catch {
-              /* Initialization diagnostics can be absent briefly. */
-            }
-            await new Promise((resolve) => setTimeout(resolve, 250));
-          }
-          const file = path.join(destination, "native-camera-preview.png");
-          const png = await labBinaryTool(host.android.adb!, [
-            "-P",
-            process.env.LANDFALL_LAB_ADB_PORT ?? "5037",
-            "-s",
-            androidSerial!,
-            "exec-out",
-            "screencap",
-            "-p",
-          ]);
-          if (png.length < 24 || !png.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])))
-            throw new Error("ANDROID_SCREEN_CAPTURE_INVALID_PNG");
-          await writeFile(file, png);
-          artifacts.push({ path: file, sha256: createHash("sha256").update(png).digest("hex"), kind: "SCREENSHOT" });
-        }
-      }
-      if (step.action.type === "LOCATION" && step.action.coordinate.type === "WGS84") {
-        const coordinate = step.action.coordinate;
-        await wait(() => locationReady.has(index) || results.has(index), 30000);
-        if (results.has(index)) {
-          steps.push(results.get(index)!);
-          continue;
-        }
-        locationControls.push({
-          index,
-          ...(await deliverDeviceLabPosition({
-            completed: () => results.has(index),
-            inject: () =>
-              target === "android-emulator"
-                ? adb(["emu", "geo", "fix", String(coordinate.longitude), String(coordinate.latitude)]).then(
-                    () => undefined,
-                  )
-                : labTool(
-                    "xcrun",
-                    ["simctl", "location", ownedDevice!, "set", `${coordinate.latitude},${coordinate.longitude}`],
-                    60000,
-                  ).then(() => undefined),
-          })),
+          elapsedMs,
+          preliminaryBudgetMs,
+          state: observed?.state ?? "INCOMPLETE",
         });
       }
-      await wait(() => results.has(index), step.action.type === "LOCATION" ? 130000 : cameraScenario ? 45000 : 30000);
-      steps.push(results.get(index)!);
     }
     const screenshot = path.join(destination, "native-final.png");
     executionStage = "SCREENSHOT";
@@ -1152,6 +1194,27 @@ export async function executeLandfallOsScenario(
         kind: "TEST_RESULT",
       });
     }
+    const performanceFile = path.join(destination, "native-action-performance.json");
+    await writeFile(
+      performanceFile,
+      JSON.stringify(
+        {
+          version: 1,
+          measurementClass: "OS_SCENARIO_ACTION_WALL_CLOCK",
+          physicalTimingProven: false,
+          measurements: actionPerformance,
+        },
+        null,
+        2,
+      ),
+    );
+    artifacts.push({
+      path: performanceFile,
+      sha256: createHash("sha256")
+        .update(await readFile(performanceFile))
+        .digest("hex"),
+      kind: "TEST_RESULT",
+    });
     const rebootFile = path.join(destination, "native-guest-reboots.json");
     await writeFile(rebootFile, JSON.stringify(guestReboots, null, 2));
     artifacts.push({

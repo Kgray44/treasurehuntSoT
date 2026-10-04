@@ -19,6 +19,7 @@ export const deviceLabLocationDiagnosticSchema = z.strictObject({
   insufficientAccuracy: count,
   withinRequestedBounds: count,
   canonicalObservations: count,
+  firstQualifiedFixElapsedMs: z.number().finite().min(0).max(180000).nullable(),
   acquisition: deviceLabAcquisitionSchema.optional(),
 });
 
@@ -34,6 +35,8 @@ export class DeviceLabLocationDiagnostics {
     withinRequestedBounds: 0,
   };
   private acquisition: z.infer<typeof deviceLabAcquisitionSchema> | undefined;
+  private firstQualifiedFixElapsedMs: number | null = null;
+  private readonly startedElapsed: number;
   observeAcquisition(input: unknown) {
     const parsed = deviceLabAcquisitionSchema.safeParse(input);
     if (parsed.success) this.acquisition = parsed.data;
@@ -41,7 +44,10 @@ export class DeviceLabLocationDiagnostics {
   constructor(
     private readonly action: Extract<DeviceLabAction, { type: "LOCATION" }>,
     private readonly now = Date.now,
-  ) {}
+    private readonly elapsed = () => performance.now(),
+  ) {
+    this.startedElapsed = elapsed();
+  }
   observe(input: unknown) {
     if (this.counts.received >= 100000) return;
     this.counts.received++;
@@ -74,11 +80,14 @@ export class DeviceLabLocationDiagnostics {
       return;
     }
     this.counts.withinRequestedBounds++;
+    if (this.firstQualifiedFixElapsedMs === null)
+      this.firstQualifiedFixElapsedMs = this.elapsed() - this.startedElapsed;
   }
   snapshot(canonicalObservations: number) {
     return deviceLabLocationDiagnosticSchema.parse({
       ...this.counts,
       canonicalObservations,
+      firstQualifiedFixElapsedMs: this.firstQualifiedFixElapsedMs,
       ...(this.acquisition ? { acquisition: this.acquisition } : {}),
     });
   }

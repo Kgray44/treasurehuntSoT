@@ -1072,3 +1072,10 @@ of UWB failure. Next normal global wax-open touch plus finite DOM diagnostics.
 Owned hosted emulator OS Location settings inspection added for geo: normal
 observed service/accuracy entry navigation and observed single accuracy toggle,
 no undocumented setting keys or raw hierarchy artifacts. Actual outcome pending.
+
+Added first qualified native fix monotonic timing (three focused diagnostics tests
+PASS), whole native-action timings with explicit preliminary gross bounds, and
+fresh region install/integrity/remove/cache growth browser measurements. No actual
+new measurements or performance acceptance claimed before hosted runs.
+79e48 geo37191099712 dispatch1791104805261 and Journal37191120451
+dispatch1791104829074 active; journal uses canonical selection closure/low-resource.

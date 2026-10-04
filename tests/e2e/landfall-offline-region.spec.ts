@@ -29,6 +29,9 @@ test("previews, interrupts, verifies, restores and removes a real signed release
   const before = await db.taleSessionEvent.count({ where: { sessionId: voyage.id } });
   const context = await browser.newContext({ viewport: { width: 375, height: 1000 }, reducedMotion: "reduce" });
   const measurements: Record<string, number> = {};
+  let originUsageBefore = 0,
+    originUsageReady = 0,
+    verifiedResourceBytes = 0;
   let resources = 0;
   try {
     await authenticateClosure(context, player, baseURL!);
@@ -43,6 +46,7 @@ test("previews, interrupts, verifies, restores and removes a real signed release
     await expect(page.locator("[data-landfall-player-chart]:visible")).toContainText("Offline chart: saved");
     const panel = page.getByRole("region", { name: "Offline region" });
     const progress = panel.getByRole("progressbar", { name: "Verified offline download" });
+    originUsageBefore = await page.evaluate(async () => (await navigator.storage.estimate()).usage ?? 0);
     let startedAt = performance.now();
     await panel.getByRole("button", { name: "Prepare offline region" }).click();
     await expect(panel.getByRole("button", { name: "Download offline region" })).toBeVisible();
@@ -75,6 +79,11 @@ test("previews, interrupts, verifies, restores and removes a real signed release
     expect(resources - partialRequests).toBe(2); // route + image; the verified chart is reused.
     const resumedResourceRequests = resources - partialRequests;
     expect(await progress.getAttribute("value")).toBe(await progress.getAttribute("max"));
+    verifiedResourceBytes = Number(await progress.getAttribute("max"));
+    expect(verifiedResourceBytes).toBeGreaterThan(0);
+    expect(verifiedResourceBytes).toBeLessThanOrEqual(8 * 1024 * 1024);
+    originUsageReady = await page.evaluate(async () => (await navigator.storage.estimate()).usage ?? 0);
+    expect(originUsageReady - originUsageBefore).toBeLessThan(64 * 1024 * 1024);
     await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
 
     // This exclusively owned synthetic context also has the ordinary chart
@@ -126,8 +135,10 @@ test("previews, interrupts, verifies, restores and removes a real signed release
       } else await route.continue();
     });
     await restored.getByRole("button", { name: "Prepare offline region" }).click();
+    startedAt = performance.now();
     await restored.getByRole("button", { name: "Download offline region" }).click();
     await expect(restored.getByRole("status")).toContainText("Offline region: corrupt");
+    measurements.corruptResourceRejectionMs = performance.now() - startedAt;
     expect(corrupted).toBe(true);
     await page.unroute("**/landfall/package?**");
     await page.reload();
@@ -136,6 +147,18 @@ test("previews, interrupts, verifies, restores and removes a real signed release
     await expect(rejected.getByRole("status")).toContainText("Offline region: corrupt");
     await rejected.getByRole("button", { name: "Remove offline region" }).click();
     await expect(rejected.getByRole("status")).toContainText("removed from this device");
+    await rejected.getByRole("button", { name: "Prepare offline region" }).click();
+    await expect(rejected.getByRole("button", { name: "Download offline region" })).toBeVisible();
+    const beforeFresh = resources;
+    startedAt = performance.now();
+    await rejected.getByRole("button", { name: "Download offline region" }).click();
+    await expect(rejected.getByRole("status")).toContainText("Offline region: ready");
+    measurements.freshVerifiedInstallationMs = performance.now() - startedAt;
+    expect(resources - beforeFresh).toBe(3);
+    startedAt = performance.now();
+    await rejected.getByRole("button", { name: "Remove offline region" }).click();
+    await expect(rejected.getByRole("status")).toContainText("removed from this device");
+    measurements.removalMs = performance.now() - startedAt;
     expect((await geoAudit(page)).calls).toBe(0);
     expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(before);
     for (const value of Object.values(measurements)) expect(value).toBeLessThan(15000);
@@ -148,6 +171,11 @@ test("previews, interrupts, verifies, restores and removes a real signed release
           syntheticSigning: true,
           canonicalProgressionEvents: 0,
           measurements,
+          preliminaryLatencyBudgetMs: 15000,
+          originUsageBefore,
+          originUsageReady,
+          verifiedResourceBytes,
+          originGrowthBudgetBytes: 64 * 1024 * 1024,
           verifiedResources: 3,
           resumedResourceRequests,
           cachedImageDecoded: true,

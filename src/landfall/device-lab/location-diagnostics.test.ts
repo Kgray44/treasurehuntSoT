@@ -12,23 +12,33 @@ describe("redacted native location diagnostics", () => {
       DeviceLabAction,
       { type: "LOCATION" }
     >;
-    const diagnostics = new DeviceLabLocationDiagnostics(action, () => 100000);
+    let elapsed = 50;
+    const diagnostics = new DeviceLabLocationDiagnostics(
+      action,
+      () => 100000,
+      () => elapsed,
+    );
     const fix = { id: "private-id", timestamp: 100000, latitude: 44, longitude: -72, accuracyMeters: 8 };
     diagnostics.observe({ ...fix, latitude: NaN });
     diagnostics.observe({ ...fix, timestamp: 0 });
     diagnostics.observe({ ...fix, timestamp: 102000 });
     diagnostics.observe({ ...fix, latitude: 45 });
     diagnostics.observe({ ...fix, accuracyMeters: 9 });
+    expect(diagnostics.snapshot(0).firstQualifiedFixElapsedMs).toBeNull();
+    elapsed = 150;
+    diagnostics.observe(fix);
+    elapsed = 250;
     diagnostics.observe(fix);
     expect(diagnostics.snapshot(1)).toEqual({
-      received: 6,
+      received: 7,
       invalid: 1,
       stale: 1,
       future: 1,
       outOfBounds: 1,
       insufficientAccuracy: 1,
-      withinRequestedBounds: 1,
+      withinRequestedBounds: 2,
       canonicalObservations: 1,
+      firstQualifiedFixElapsedMs: 100,
     });
     expect(JSON.stringify(diagnostics.snapshot(1))).not.toMatch(/private-id|latitude|longitude|timestamp/);
   });
@@ -42,6 +52,7 @@ describe("redacted native location diagnostics", () => {
       insufficientAccuracy: 0,
       withinRequestedBounds: 0,
       canonicalObservations: 0,
+      firstQualifiedFixElapsedMs: null,
     };
     expect(() => deviceLabLocationDiagnosticSchema.parse({ ...empty, latitude: 44 })).toThrow();
     expect(() => deviceLabLocationDiagnosticSchema.parse({ ...empty, received: -1 })).toThrow();

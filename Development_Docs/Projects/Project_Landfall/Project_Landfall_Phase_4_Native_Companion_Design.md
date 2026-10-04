@@ -1255,3 +1255,20 @@ remain in the actual result bundle; a numeric attachment reports measured batch
 time and encrypted storage growth. Preliminary budgets are five seconds and64KiB
 for eight4KiB values. The test origin and content are public synthetic and cleanup
 is scoped to that store. Actual hosted execution remains pending.
+
+The lab now measures the first fresh native fix satisfying the requested synthetic
+bounds and accuracy with a monotonic elapsed clock. Invalid/stale/out-of-bounds
+samples retain no time or location; the first accepted duration is preserved across
+later callbacks. Native scenario actions also record monotonic elapsed time and
+preliminary gross regression bounds:120seconds normally,150seconds for controlled
+location acquisition,180seconds for reboot and210seconds for the three-minute
+geofence input window. Successful steps exceeding their bound fail qualification.
+These include host/transport/control cost and do not claim physical responsiveness
+or OS scheduling fidelity. Actual final matrix measurements remain pending.
+
+The configured browser test additionally measures fresh three-resource verified
+installation, corrupt-resource rejection and removal under the same15second
+operation bound. It records the declared verified bytes (maximum8MiB) and whole
+synthetic-origin storage growth (preliminary64MiB gross bound). Whole-origin quota
+estimates include browser bookkeeping and are not native RAM or exact encrypted
+region storage. Actual hosted execution of these additions remains pending.
