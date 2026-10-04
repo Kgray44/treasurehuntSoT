@@ -37,6 +37,26 @@ Fresh actual execution is required; the callback-thread hypothesis is not yet a
 proved cause. The full2654 matrix's primary/compatibility jobs also fail and their
 actual scenario receipts are being retrieved; tablet remains active.
 
+Full2654 run37224038483 finishes25/27, with18,328hashed artifacts and transport
+cleanup PASS. Tablet passes9/9; primary and compatibility pass8/9 each. Both
+failures are offline restart. Primary's actual read-only count IPC times out at
+31,488ms, while the following cleanup count succeeds in112ms. Compatibility
+gets both native fixes, terminates/restarts and restores its encrypted lease,
+but the117,815ms UIKit relaunch outlasts the unchanged90-second local outbox;
+reconciliation makes no authorization/submission call. The600-second authored
+synthetic evidence policy does not extend that local retention lifetime.
+
+The lab now relaunches through documented simctl, while XCTest must still observe
+actual foreground and the restarted native client must report real readiness and
+lease restoration. This separates OS launch from XCTest's UI-quiescence wait;
+no lifecycle callback, handler, credential or completion is injected. A read-only
+count timeout permits exactly one new request to the same still-owned live child,
+with fresh request ID; late old replies remain discarded. Database/domain errors,
+child exit and repeated deadlines fail. Per-read30s and write/authorization15s
+bounds remain unchanged. Six transport guard tests and scenario/selection tests
+pass3files/39tests, TypeScript and lint pass; actual full primary/compatibility
+rechecks remain required. The original failures and source identities stay intact.
+
 ## Acquisition and authority
 
 Frozen37219804462 Apple primary passes8/9cases and compatibility7/9cases.

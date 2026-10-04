@@ -3,6 +3,7 @@ import path from "node:path";
 import { stat } from "node:fs/promises";
 import type { PlayerLandfallEvidence } from "../../../src/landfall/player-evidence-contract";
 import type { LandfallReconciliationTransport } from "../../../src/landfall/offline-reconcile";
+import { readOwnedLandfallAuthorityCounts } from "../../../src/landfall/device-lab/authority-counts-read";
 
 /** Server imports and Prisma globals live exclusively in a dedicated owned child process. */
 export async function startDeviceLabAuthority(
@@ -151,7 +152,11 @@ export async function startDeviceLabAuthority(
     authorize: (evidence?: Pick<PlayerLandfallEvidence, "evidenceId">) =>
       call("authorize", evidence) as ReturnType<LandfallReconciliationTransport["authorize"]>,
     counts: () =>
-      call("counts") as Promise<{
+      readOwnedLandfallAuthorityCounts({
+        ownedChildAlive: () => child.exitCode === null && child.signalCode === null && child.connected && !child.killed,
+        request: () => call("counts"),
+        delay: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+      }) as Promise<{
         canonicalProgressionEvents: number;
         blockCompletions: number;
         currentBlock: string | null;

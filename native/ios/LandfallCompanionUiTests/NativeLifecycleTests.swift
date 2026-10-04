@@ -63,7 +63,7 @@ final class NativeLifecycleTests: XCTestCase {
             if state == "FOREGROUND" { app.activate(); if !app.wait(for: .runningForeground, timeout: 10) { result="FAIL" } }
             else if state == "BACKGROUND" { XCUIDevice.shared.press(.home); if !observedBackground(app) { result="FAIL" } }
             else if state == "TERMINATED" { app.terminate(); if !app.wait(for: .notRunning, timeout: 10) { result="FAIL" } }
-            else if state == "RELAUNCH" { app.terminate(); app.launch(); if !app.wait(for: .runningForeground, timeout: 10) { result="FAIL" } }
+            else if state == "RELAUNCH" { if !app.wait(for: .runningForeground, timeout: 10) { result="FAIL" } }
             else { result="UNSUPPORTED" }
             try await post(origin, "/lab/os/result", ["index":index, "state":result])
         }

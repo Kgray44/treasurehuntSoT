@@ -7,6 +7,21 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Source-bound starting context
 
+Full2654 run37224038483 finishes FAIL at25/27: tablet9/9, primary8/9,
+compatibility8/9. Full harvest18328/transport cleanupPASS; interim root is retained.
+Primary restart fails readonly counts IPC at31,488ms, then cleanup count112ms.
+Compatibility restart gets both native fixes and restores its lease, but UIKit
+relaunch takes117,815ms; the90-second outbox has expired before reconciliation,
+which performs no authorization/submission. Retain these failures; no stale claim
+or token lifetime is extended. Lab restart now uses documented simctl launch,
+then mandatory XCTest foreground and actual restarted-client readiness. Counts
+allows only one fresh readonly redispatch after deadline while the same owned
+child remains live; per-read30s, writes/authorization15s and assertion budgets
+remain unchanged. Six guard tests plus scenario/selection give3files/39tests
+PASS; TypeScript/lint PASS. Two full affected-profile rechecks are required.
+Apple notice main-queue diagnostic recheck37227624737 on18c2f4a0 is active
+(hosted-18c2f4a04d4e-1791141368486), separate from restart handling.
+
 Apple notice run37226211477 onf7911082 FAIL, harvest4392/cleanupPASS:
 LOCATION0PASS; NOTIFICATION1 times out after37,518ms; canonical0/cleanupPASS.
 The native UI tool itself finishes1PASS; no notice tap/return is claimed.

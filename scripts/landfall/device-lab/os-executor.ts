@@ -746,6 +746,23 @@ export async function executeLandfallOsScenario(
               });
               continue;
             }
+            if (action.state === "RELAUNCH") {
+              // XCTest's launch may wait for UI quiescence while this fixture
+              // deliberately polls. Launch through the documented OS primitive;
+              // XCTest and the restarted client still prove real foreground/state.
+              await labTool(
+                "xcrun",
+                [
+                  "simctl",
+                  "launch",
+                  "--terminate-running-process",
+                  ownedDevice!,
+                  "com.voyagewright.landfall",
+                  `--landfall-lab-origin=http://127.0.0.1:${port}`,
+                ],
+                15000,
+              );
+            }
             osCurrent = { index, action };
             // XCTest launch can outlast the earlier transport-only 30s wait.
             // Keep the acknowledgment inside the existing 120s lifecycle action
