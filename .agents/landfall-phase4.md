@@ -683,3 +683,30 @@ blocked by policy. Do not retry via another tool. Retain local/remote payload an
 artifact-curation.json; no pruning/native cleanup PASS. Eventual final report
 must disclose this automatic rejection separately, alongside the earlier retained
 disconnect DB exception. Continue meaningful implementation/validation work.
+
+Run 37172177354 at 04a6ccff harvested 27 artifacts and verified transport
+cleanup. Seven browser cases PASS, including default online-service absence,
+mobile/desktop synthetic configured consent/search/clear/accessibility and the
+sharing-choice map. Nearby fails OPEN_CURRENT_MAP on device index 1 before
+pairing. Its retained screenshot shows the rendered map drawer. Tighten the
+shared helper to the open drawer's visible chart and retain opening-stage-only
+error diagnostics. No pairing acceptance yet. Native Journal 37172182624 at the
+same source remains in progress; harvest it before any result or cleanup claim.
+
+The canonical corpus now has 134 scenarios. Nine new provider-simulation-only
+cases exercise actual online adapters with synthetic transport: metadata makes
+zero requests; all four data operations return untrusted results; absent config,
+malformed input, late cancellation and quota cooldown fail closed. Repeated quota
+attempt makes no second transport call. None starts location or asks for arrival.
+Local scenario/provider regression: 30 tests PASS, full 134-case corpus PASS,
+source-bound receipts and owned authority cleanup checked. Fix the consuming
+regression to expect zero canonical events for the existing UWB peer scenario.
+Fresh hosted provider evidence still required. QR/NFC production integration is
+the next implementation gap; signature validity must never imply presence.
+
+Run 37172182624 at 04a6ccff harvested 29 sanitized artifacts (no AVD data),
+transport cleanup PASS. Seven browser cases PASS. Native fails
+AUTHENTICATE_NATIVE_WEBVIEW before pairing; bounded driver now allows native
+fixture/owner cleanup PASS with no memory violation and zero canonical events.
+Split reduced-motion, CDP creation, cookie setting and CDP detach stages to locate
+that protocol primitive. No successful native Journal report or acceptance yet.

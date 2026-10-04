@@ -579,6 +579,47 @@ cases.push(
   }),
 );
 
+for (const [operation, fixture, expected, requests] of [
+  ["STATUS", "VALID", "STATUS", 0],
+  ["SEARCH", "VALID", "RESULT", 1],
+  ["REVERSE", "VALID", "RESULT", 1],
+  ["ROUTE", "VALID", "RESULT", 1],
+  ["ELEVATION", "VALID", "RESULT", 1],
+  ["SEARCH", "NOT_CONFIGURED", "NOT_CONFIGURED", 0],
+  ["SEARCH", "RATE_LIMITED", "RATE_LIMITED", 1],
+  ["SEARCH", "MALFORMED", "UNAVAILABLE", 1],
+  ["SEARCH", "ABORTED", "UNAVAILABLE", 1],
+] as const) {
+  scenario(
+    `remote-${operation.toLowerCase()}-${fixture.toLowerCase().replaceAll("_", "-")}`,
+    [operation === "ROUTE" ? "ROUTING" : operation === "ELEVATION" ? "ELEVATION" : "GEOCODING"],
+    [
+      { type: "REMOTE_DATA", operation, fixture },
+      assertion("remoteDataState", expected),
+      assertion("remoteDataRequests", requests),
+      ...(fixture === "RATE_LIMITED"
+        ? ([
+            { type: "REMOTE_DATA", operation, fixture },
+            assertion("remoteDataState", expected),
+            assertion("remoteDataRequests", 1),
+          ] satisfies DeviceLabAction[])
+        : []),
+      assertion("physicalAcquisitionStarts", 0),
+      assertion("completionRequests", 0),
+      assertion("serverConfirmed", false),
+    ],
+  );
+  const generated = cases.pop()!;
+  cases.push(
+    deviceLabScenarioSchema.parse({
+      ...generated,
+      targets: ["provider-simulation"],
+      description:
+        "Actual online adapters with synthetic transport and logical quota time. No external network, service credentials, OS behavior or physical arrival is exercised.",
+    }),
+  );
+}
+
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);
 }

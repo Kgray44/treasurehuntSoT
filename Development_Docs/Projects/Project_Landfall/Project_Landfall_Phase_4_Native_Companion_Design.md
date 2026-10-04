@@ -756,3 +756,18 @@ synthetic payloads. Optimized browser cases cover actual default deployment
 absence and explicitly synthetic configured responses at mobile/desktop sizes.
 Those browser executions, actual configured-service acceptance and remaining
 Phase 4 integration are pending. This is development source, not closure evidence.
+
+Hosted optimized browser run 37172177354 at source 04a6ccff verifies both
+online-data cases at mobile/desktop widths, default deployment absence and
+deliberate background-map sharing, with seven cases passing. The unrelated
+two-device pairing case fails while opening the second device's map; the job
+does not qualify overall acceptance. Its 27 artifacts and transport cleanup are
+retained. Real configured external services remain untested and disabled.
+
+The permanent Device Lab corpus adds nine provider-simulation-only online-data
+cases, bringing it to 134. Production protocol adapters run with synthetic
+transport and logical time; no external network, credentials or OS claim is
+made. Metadata does not make a request. Search, reverse lookup, route and terrain
+results remain untrusted; absent configuration, quota cooldown, malformed replies
+and late cancellation retain no completion authority. Local corpus consumption
+passes all 30 tests with source-bound receipts and isolated authority cleanup.

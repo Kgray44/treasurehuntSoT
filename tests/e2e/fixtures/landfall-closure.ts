@@ -358,7 +358,7 @@ export async function openClosureMap(page: Page) {
     .getByRole("navigation", { name: "Journal tools" })
     .getByRole("button", { name: "map", exact: true })
     .click();
-  await expect(page.locator(".journal-objects-drawer [data-landfall-player-chart]")).toBeVisible();
+  await expect(page.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible();
 }
 export async function auditNativeGeolocation(context: BrowserContext) {
   await context.addInitScript(() => {

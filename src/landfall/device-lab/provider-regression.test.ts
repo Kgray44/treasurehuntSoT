@@ -43,7 +43,9 @@ describe("Sounding Line consumes canonical Device Lab provider evidence", () => 
       expect(receipt.externalRequirements).toEqual(
         scenario.physicalRequired.map((requirement) => `REAL_DEVICE_REQUIRED:${requirement}`),
       );
-      expect(receipt.canonicalProgressionEvents).toBe(scenario.canonicalAuthority === "ONE_VOYAGE" ? 1 : null);
+      expect(receipt.canonicalProgressionEvents).toBe(
+        scenario.canonicalAuthority === "ONE_VOYAGE" ? (scenario.id === "uwb-native-peer-session" ? 0 : 1) : null,
+      );
       if (scenario.canonicalAuthority === "ONE_VOYAGE")
         expect(receipt.canonicalAuthority).toBe("ONE_VOYAGE_REAL_SQLITE");
     }

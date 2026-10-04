@@ -66,6 +66,11 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
   }),
   z.strictObject({ type: z.literal("PROVIDER"), family: providerFamilySchema, health: providerHealthSchema }),
   z.strictObject({
+    type: z.literal("REMOTE_DATA"),
+    operation: z.enum(["STATUS", "SEARCH", "REVERSE", "ROUTE", "ELEVATION"]),
+    fixture: z.enum(["VALID", "NOT_CONFIGURED", "RATE_LIMITED", "MALFORMED", "ABORTED"]),
+  }),
+  z.strictObject({
     type: z.literal("WATCHGLASS"),
     fixture: z.enum([
       "MATCH",
@@ -165,6 +170,8 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
       "physicalAcquisitionStarts",
       "watchglassState",
       "reconciliationState",
+      "remoteDataState",
+      "remoteDataRequests",
     ]),
     value: z.union([z.string().max(128), z.number().int().nonnegative(), z.boolean(), z.null()]),
   }),

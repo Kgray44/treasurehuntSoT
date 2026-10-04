@@ -149,9 +149,11 @@ test("real native Journal pairing returns untrusted hints and background clears 
           pages.push(page);
           page.setDefaultTimeout(10000);
           page.setDefaultNavigationTimeout(45000);
-          stage = "AUTHENTICATE_NATIVE_WEBVIEW";
+          stage = "SET_NATIVE_REDUCED_MOTION";
           await boundedDriver(page.emulateMedia({ reducedMotion: "reduce" }), resources.signal);
+          stage = "CREATE_NATIVE_CDP_SESSION";
           const cdp = await boundedDriver(page.context().newCDPSession(page), resources.signal);
+          stage = "SET_NATIVE_ACCOUNT_COOKIE";
           const cookie = await boundedDriver(
             cdp.send("Network.setCookie", {
               name: "wayfarer_account",
@@ -164,6 +166,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
             resources.signal,
           );
           expect(cookie.success).toBe(true);
+          stage = "DETACH_NATIVE_CDP_SESSION";
           await boundedDriver(cdp.detach(), resources.signal);
           stage = "OPEN_NATIVE_JOURNAL";
           await openClosureJournal(page, voyage.id, origin.origin);

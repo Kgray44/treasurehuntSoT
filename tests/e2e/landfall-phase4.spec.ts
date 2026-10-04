@@ -363,12 +363,21 @@ test.describe("private companion exchange", () => {
         }),
         contentType: "application/json",
       });
-    } catch {
+    } catch (error) {
       if (["OPEN_CURRENT_JOURNAL", "OPEN_CURRENT_MAP", "EXPAND_NEARBY_CONTROLS"].includes(stage)) {
         // No pairing request has occurred in these stages, so this fake-account
         // fixture image cannot contain a pairing code or key.
         const shot = testInfo.outputPath("nearby-before-pairing-failure.png");
         await pages[deviceIndex].screenshot({ path: shot, timeout: 10000 }).catch(() => undefined);
+        await writeFile(
+          testInfo.outputPath("nearby-opening-error.json"),
+          JSON.stringify({
+            stage,
+            deviceIndex,
+            // Only opening-stage synthetic fixture selectors; no exchange has started.
+            error: error instanceof Error ? error.message.slice(0, 4096) : "OPENING_FAILED",
+          }),
+        );
       }
       // Playwright action errors can include the argument passed to fill().
       // Preserve categorical failure without retaining the private pairing code.

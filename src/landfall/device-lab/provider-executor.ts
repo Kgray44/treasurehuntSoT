@@ -1,4 +1,7 @@
 import { createHash, createPrivateKey, createPublicKey, sign } from "node:crypto";
+import { configuredRemoteServices, RemoteLandfallDataService } from "@/landfall/remote-data-server";
+import { RemoteDataFailure } from "@/landfall/remote-network-server";
+import type { RemoteDataRequest } from "@/landfall/remote-data";
 import { NativeLandfallSensorFusion } from "@/landfall/native-sensors";
 import { LandfallNearbyProvider } from "@/landfall/nearby-provider";
 import {
@@ -108,6 +111,11 @@ export class LandfallProviderScenarioExecutor {
   private sensorState = "NONE";
   private nearbyState = "NONE";
   private tokenState = "NONE";
+  private remoteDataState = "NONE";
+  private remoteDataRequests = 0;
+  private remoteService: RemoteLandfallDataService | null = null;
+  private remoteFixture: Extract<DeviceLabAction, { type: "REMOTE_DATA" }>["fixture"] | null = null;
+  private remoteController: AbortController | null = null;
   private watchglassState = "NONE";
   private sensors!: NativeLandfallSensorFusion;
   private readonly nearby = {
@@ -203,6 +211,10 @@ export class LandfallProviderScenarioExecutor {
       this.nearby.BLE.reset();
       this.nearby.UWB.reset();
       this.tokenReplay.clear();
+      this.remoteController?.abort();
+      this.remoteController = null;
+      this.remoteService = null;
+      this.remoteFixture = null;
       if (this.packageFixture) await (await this.packageFixture).repository.revoke();
       await this.queued;
       this.deliveryRecords.clear();
@@ -260,6 +272,91 @@ export class LandfallProviderScenarioExecutor {
       this.native = new NativeLocationProvider(driver, this.definition.worldspaces[0], () => this.now);
   }
   private async action(action: DeviceLabAction): Promise<boolean> {
+    if (action.type === "REMOTE_DATA") {
+      if (this.remoteFixture !== action.fixture) {
+        this.remoteFixture = action.fixture;
+        const terms = {
+          userAgent: "Synthetic Device Lab fixture only",
+          license: "Synthetic test license",
+          attributionLabel: "Synthetic Device Lab provider",
+          attributionUrl: "https://license.example.test/terms",
+          usageAgreementAccepted: true,
+          authentication: "NONE",
+        };
+        const inputs = configuredRemoteServices(
+          action.fixture === "NOT_CONFIGURED"
+            ? {}
+            : {
+                LANDFALL_REMOTE_DATA_MODE: "ephemeral-instance",
+                LANDFALL_REMOTE_DATA_CONFIG: JSON.stringify([
+                  { ...terms, kind: "NOMINATIM", baseUrl: "https://geo.example.test/" },
+                  { ...terms, kind: "OSRM", baseUrl: "https://route.example.test/", mode: "WALKING", profile: "foot" },
+                  { ...terms, kind: "OPEN_ELEVATION", baseUrl: "https://height.example.test/" },
+                ]),
+              },
+        );
+        this.remoteService = new RemoteLandfallDataService(
+          inputs,
+          async (request) => {
+            this.remoteDataRequests++;
+            if (action.fixture === "RATE_LIMITED") throw new RemoteDataFailure("RATE_LIMITED", 120);
+            if (action.fixture === "MALFORMED") return { invalid: true };
+            if (action.fixture === "ABORTED") this.remoteController?.abort();
+            const place = { display_name: "Synthetic Lab Square", osm_type: "node", osm_id: 1, lat: "44", lon: "-72" };
+            if (request.url.pathname.endsWith("search")) return [place];
+            if (request.url.pathname.endsWith("reverse")) return place;
+            if (request.url.pathname.includes("route/v1"))
+              return {
+                code: "Ok",
+                routes: [
+                  {
+                    distance: 10,
+                    duration: 8,
+                    geometry: {
+                      type: "LineString",
+                      coordinates: [
+                        [-72, 44],
+                        [-72.001, 44.001],
+                      ],
+                    },
+                  },
+                ],
+              };
+            return { results: [{ latitude: 44, longitude: -72, elevation: 0 }] };
+          },
+          () => this.now,
+        );
+      }
+      const point = { latitude: 44, longitude: -72 };
+      const input: RemoteDataRequest =
+        action.operation === "STATUS"
+          ? { operation: "STATUS" }
+          : action.operation === "SEARCH"
+            ? { operation: "SEARCH", consent: true, query: "Synthetic Lab Square", limit: 5 }
+            : action.operation === "ROUTE"
+              ? {
+                  operation: "ROUTE",
+                  consent: true,
+                  mode: "WALKING",
+                  from: point,
+                  to: { latitude: 44.001, longitude: -72.001 },
+                }
+              : { operation: action.operation, consent: true, point };
+      this.remoteController = new AbortController();
+      const result = await this.remoteService!.execute(input, this.remoteController.signal);
+      this.remoteController = null;
+      this.remoteDataState = result.state;
+      if (result.state !== "STATUS" && result.canComplete !== false) throw new Error("ASSERT_FAILED:REMOTE_AUTHORITY");
+      if (result.state === "RESULT") {
+        if (result.route && (result.route.authoritative || result.route.safety !== "REVIEW_REQUIRED"))
+          throw new Error("ASSERT_FAILED:REMOTE_ROUTE");
+        if (result.elevation && (result.elevation.floorConfirmed || !result.elevation.missingCoveragePossible))
+          throw new Error("ASSERT_FAILED:REMOTE_TERRAIN");
+        if (result.places?.some((place) => place.authoritative || place.accuracy !== "UNKNOWN"))
+          throw new Error("ASSERT_FAILED:REMOTE_PLACE");
+      }
+      return true;
+    }
     if (action.type === "WATCHGLASS") {
       const target: WatchglassTarget = {
         ...this.scope,
@@ -692,6 +789,8 @@ export class LandfallProviderScenarioExecutor {
         sensorState: this.sensorState,
         nearbyState: this.nearbyState,
         tokenState: this.tokenState,
+        remoteDataState: this.remoteDataState,
+        remoteDataRequests: this.remoteDataRequests,
         packageState: this.packageState,
         reconciliationState: this.reconciliationState,
         powerProfile: landfallPowerPolicy({
