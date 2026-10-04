@@ -93,6 +93,7 @@ final class LandfallHardware {
     return "GRANTED";
   }
   void stopInteractions(){nfcScanId=null;if(nfcExpiry!=null)handler.removeCallbacks(nfcExpiry);nfcExpiry=null;qr.stop();NfcAdapter adapter=NfcAdapter.getDefaultAdapter(activity);if(adapter!=null)adapter.disableReaderMode(activity);}
+  void stopInteractions(String scanId){if(scanId.equals(nfcScanId))stopInteractions();else qr.stop(scanId);}
   private void endBle(String scanId){if(!scanId.equals(bleScanId))return;stopBle();try{emit.accept(new JSONObject().put("type","ble-ended").put("scanId",scanId));}catch(Exception ignored){}}
   void stopBle(){bleActive=false;bleScanId=null;if(bleExpiry!=null)handler.removeCallbacks(bleExpiry);bleExpiry=null;if(scanner!=null && callback!=null){try{scanner.stopScan(callback);}catch(RuntimeException ignored){}}scanner=null;callback=null;}
   void stopBle(String scanId){if(scanId.equals(bleScanId))stopBle();}

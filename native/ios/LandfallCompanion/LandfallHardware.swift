@@ -80,7 +80,8 @@ final class LandfallHardware: NSObject, CBCentralManagerDelegate, NFCNDEFReaderS
         interactionExpiry=expiry;DispatchQueue.main.asyncAfter(deadline: .now()+30,execute: expiry)
         qr=controller; presenter.present(controller, animated: true); return "GRANTED"
     }
-    func stopInteractions() { interactionExpiry?.cancel();interactionExpiry=nil;nfcScanId=nil;qrScanId=nil;nfc?.invalidate();nfc=nil;qr?.dismiss(animated: false);qr=nil }
+    func stopInteractions() { interactionExpiry?.cancel();interactionExpiry=nil;nfcScanId=nil;qrScanId=nil;nfc?.invalidate();nfc=nil;qr?.stopCamera();qr?.dismiss(animated: false);qr=nil }
+    func stopInteractions(scanId: String) { if scanId==nfcScanId || scanId==qrScanId { stopInteractions() } }
     func stopBle() { scanning=false;bleScanId=nil;bleExpiry?.cancel();bleExpiry=nil;bluetooth?.stopScan();bluetooth=nil }
     func stopBle(scanId: String) { if scanId==bleScanId { stopBle() } }
     func stop() { stopBle();stopInteractions() }
@@ -101,8 +102,9 @@ final class LandfallQRViewController: UIViewController, AVCaptureMetadataOutputO
         let preview=AVCaptureVideoPreviewLayer(session: session);preview.frame=view.bounds;preview.videoGravity = .resizeAspectFill;view.layer.addSublayer(preview);view.addSubview(close)
         sessionQueue.async { [weak self] in self?.session.startRunning() }
     }
-    override func viewDidDisappear(_ animated: Bool) { super.viewDidDisappear(animated);sessionQueue.async { [weak self] in self?.session.stopRunning() };if !completed {completed=true;done(nil)} }
+    func stopCamera() { sessionQueue.async { [session] in session.stopRunning() } }
+    override func viewDidDisappear(_ animated: Bool) { super.viewDidDisappear(animated);stopCamera();if !completed {completed=true;done(nil)} }
     @objc private func cancel() { finish(nil) }
-    private func finish(_ token: String?) { guard !completed else {return};completed=true;sessionQueue.async { [weak self] in self?.session.stopRunning() };done(token);dismiss(animated: true) }
+    private func finish(_ token: String?) { guard !completed else {return};completed=true;stopCamera();done(token);dismiss(animated: true) }
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput objects: [AVMetadataObject], from connection: AVCaptureConnection) { if let token=(objects.first as? AVMetadataMachineReadableCodeObject)?.stringValue {finish(token)} }
 }

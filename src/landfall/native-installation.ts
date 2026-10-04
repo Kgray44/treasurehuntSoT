@@ -49,6 +49,7 @@ async function bounded<T>(promise: Promise<T>, timeout = 5000): Promise<T> {
 /** Deliberate, one-shot foreground scan. Signature identity has no location/progression authority. */
 export class NativeLandfallInstallationProvider {
   private generation = 0;
+  private scanId: string | null = null;
   private teardown: (() => void) | null = null;
   private readonly replay = new LandfallInstallationReplayGuard();
   private stopTail: Promise<unknown> = Promise.resolve();
@@ -90,6 +91,7 @@ export class NativeLandfallInstallationProvider {
       return "UNAVAILABLE";
     const attempt = ++this.generation,
       scanId = crypto.randomUUID();
+    this.scanId = scanId;
     let completed = false;
     const finish = (result: InstallationResult) => {
       if (attempt !== this.generation || completed) return;
@@ -156,13 +158,16 @@ export class NativeLandfallInstallationProvider {
     }
   }
   async stop() {
+    const scanId = this.scanId;
+    this.scanId = null;
     this.generation++;
     this.teardown?.();
     this.teardown = null;
     this.stopTail = this.stopTail
       .catch(() => undefined)
       .then(async () => {
-        if (landfallNativeHost()) await bounded(landfallNativeRequest("INTERACTION_STOP")).catch(() => undefined);
+        if (scanId && landfallNativeHost())
+          await bounded(landfallNativeRequest("INTERACTION_STOP", { scanId })).catch(() => undefined);
       });
     await this.stopTail;
   }

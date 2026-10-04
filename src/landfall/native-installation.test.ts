@@ -49,7 +49,7 @@ describe("deliberate native installation acquisition", () => {
   it("starts no camera or location on construction, and blocks unsupported media", async () => {
     expect(calls).toEqual([]);
     expect(await provider.scan("NFC", vi.fn())).toBe("UNAVAILABLE");
-    expect(calls.map((item) => item.operation)).toEqual(["INTERACTION_STOP"]);
+    expect(calls).toEqual([]);
   });
   it("ignores unbound callbacks and stops before verifying a matching one without completion authority", async () => {
     const result = vi.fn();
@@ -69,6 +69,7 @@ describe("deliberate native installation acquisition", () => {
       }),
     );
     expect(calls.at(-1)?.operation).toBe("INTERACTION_STOP");
+    expect(calls.at(-1)?.payload).toEqual({ scanId });
     emit(event(scanId));
     await Promise.resolve();
     expect(result).toHaveBeenCalledOnce();
@@ -109,5 +110,47 @@ describe("deliberate native installation acquisition", () => {
     expect(await provider.verify(token(), "NFC")).toMatchObject({ state: "INVALID" });
     expect(await provider.verify("https://untrusted.example.test", "QR")).toMatchObject({ state: "INVALID" });
     expect(calls).toEqual([]);
+  });
+  it("carries the original stop identity across a replaced objective instead of cancelling its new scanner", async () => {
+    let activeId: unknown = null;
+    let release: (() => void) | undefined;
+    window.LandfallNative!.request = vi.fn(async (raw) => {
+      const value = JSON.parse(raw);
+      calls.push(value);
+      if (value.operation === "QR_SCAN") {
+        activeId = value.payload.scanId;
+        return { state: "GRANTED" };
+      }
+      await new Promise<void>((done) => {
+        release = done;
+      });
+      if (value.payload.scanId === activeId) activeId = null;
+      return { accepted: true };
+    });
+    await provider.scan("QR", vi.fn());
+    const oldId = activeId,
+      stopping = provider.stop();
+    await vi.waitFor(() => expect(release).toBeDefined());
+    const next = new NativeLandfallInstallationProvider({
+      scope,
+      installations: [{ id: "lab-installation", medium: "QR" }],
+      keys: new Map(),
+    });
+    await next.scan("QR", vi.fn());
+    const newId = activeId;
+    expect(newId).not.toBe(oldId);
+    release!();
+    await stopping;
+    expect(activeId).toBe(newId);
+    release = undefined;
+    const clearing = next.stop();
+    await vi.waitFor(() => {
+      expect(calls.at(-1)?.operation).toBe("INTERACTION_STOP");
+      expect(calls.at(-1)?.payload.scanId).toBe(newId);
+      expect(release).toBeDefined();
+    });
+    release!();
+    await clearing;
+    expect(activeId).toBeNull();
   });
 });

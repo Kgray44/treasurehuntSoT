@@ -792,3 +792,18 @@ permissions and deliberate OS location permission for discovery only (no GPS).
 Android31+ permanent Bluetooth denial never loops a prompt. Native diagnostics
 now preserve the original failure instead of replacing it with final receipt
 assertion; add bounded categorical DOM/error counts, no authored/private data.
+
+99d8b7af browser37182306044 HARVESTED40 artifacts:12/12 PASS, including the
+new375/1280 actual hardware-absent Bluetooth controls and Axe fallback checks.
+Exact-source uncached TS and Android debug+instrumentation builds PASS.
+99d8b7af nativeJournal37182322072 is running; old893b61f6 Apple37181600745 has
+completed native build/XCTest and is executing four canonical scenarios.
+
+Installation cleanup corrective review: old component teardown could issue an
+unscoped INTERACTION_STOP after a new scope starts. Carry original scan UUID in
+both native adapters; refuse nonmatching stop requests. No native stop request
+when this provider owns no acquisition. Cross-provider stop-race regression and
+existing Player checks10 PASS; lint/uncached TS/Android builds PASS. Apple camera
+stop now captures the actual session strongly in its serial queue and executes
+explicitly on owned teardown, rather than letting controller disposal skip a
+weakly captured stop. Fresh Apple proof is needed for this corrective source.

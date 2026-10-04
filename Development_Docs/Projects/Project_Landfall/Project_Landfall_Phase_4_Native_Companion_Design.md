@@ -879,3 +879,13 @@ Apple discovery requires a powered-on manager; unsupported, denied and disabled
 states end acquisition. Local lifecycle/UI checks do not prove emulator radio
 discovery, physical beacon identity, RF fidelity or real-device background behavior.
 Those acceptance gates remain open until corresponding source-bound lab evidence.
+
+Source `99d8b7af037e33af99edcfd93c7413d746bccabe` passed12 optimized browser
+cases in run37182306044, including both Bluetooth absence/fallback widths and
+accessibility checks. These checks exercise the real shared web interface;
+native radio discovery remains NOT_EXERCISED. Local TypeScript and Android APK
+builds pass for this source. Installation stop requests now also carry the
+original scan UUID, preventing an older scope's delayed teardown from stopping
+a later acquisition. Apple camera teardown retains the owned capture session
+until its queued stop executes. These corrective paths still require current
+native Apple acceptance before phase closure.

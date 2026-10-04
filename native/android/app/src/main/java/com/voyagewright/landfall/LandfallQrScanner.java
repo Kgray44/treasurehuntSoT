@@ -42,6 +42,7 @@ final class LandfallQrScanner {
   private BarcodeScanner scanner;
   private ExecutorService executor;
   private Runnable expiry;
+  private String activeScanId;
   LandfallQrScanner(ComponentActivity activity,Consumer<JSONObject> emit){this.activity=activity;this.emit=emit;}
   boolean active(){return overlay!=null;}
   String start(boolean foreground,String scanId,ViewGroup parent){
@@ -53,6 +54,7 @@ final class LandfallQrScanner {
       activity.requestPermissions(new String[]{Manifest.permission.CAMERA},44);return "PROMPTABLE";
     }
     final long attempt=++generation;
+    activeScanId=scanId;
     overlay=new FrameLayout(activity);overlay.setBackgroundColor(Color.BLACK);
     PreviewView view=new PreviewView(activity);view.setImplementationMode(PreviewView.ImplementationMode.COMPATIBLE);
     overlay.addView(view,new FrameLayout.LayoutParams(-1,-1));
@@ -91,6 +93,7 @@ final class LandfallQrScanner {
     try{JSONObject value=new JSONObject().put("type",token==null?"interaction-ended":"interaction").put("medium","QR").put("scanId",scanId);if(token!=null)value.put("token",token);emit.accept(value);}catch(Exception ignored){}
   }
   void stop(){
+    activeScanId=null;
     generation++;
     if(expiry!=null)handler.removeCallbacks(expiry);expiry=null;
     if(analysis!=null)analysis.clearAnalyzer();
@@ -101,4 +104,5 @@ final class LandfallQrScanner {
     if(executor!=null)executor.shutdown();executor=null;
     if(overlay!=null && overlay.getParent() instanceof ViewGroup)((ViewGroup)overlay.getParent()).removeView(overlay);overlay=null;
   }
+  void stop(String scanId){if(scanId.equals(activeScanId))stop();}
 }

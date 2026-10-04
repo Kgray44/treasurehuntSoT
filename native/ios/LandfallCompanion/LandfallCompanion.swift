@@ -130,7 +130,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "NI_STOP": nearby?.stop(); replyHandler(["accepted": true], nil)
         case "NFC_READ": replyHandler(["state": hardware?.startNfc(foreground: foreground && !power.constrained, scanId: payload["scanId"] as? String ?? "") ?? "UNAVAILABLE"], nil)
         case "QR_SCAN": replyHandler(["state": hardware?.startQr(foreground: foreground && !power.constrained, scanId: payload["scanId"] as? String ?? "", presenter: web?.window?.rootViewController) ?? "UNAVAILABLE"], nil)
-        case "INTERACTION_STOP": hardware?.stopInteractions(); replyHandler(["accepted": true], nil)
+        case "INTERACTION_STOP": hardware?.stopInteractions(scanId: payload["scanId"] as? String ?? ""); replyHandler(["accepted": true], nil)
         case "CLEAR_PRIVATE_DATA":
             stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop()
             for region in location.monitoredRegions { location.stopMonitoring(for: region) }; hints.clear(); privateStore?.clear()

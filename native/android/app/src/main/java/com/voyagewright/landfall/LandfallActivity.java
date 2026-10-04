@@ -189,7 +189,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
       case "NFC_READ": reply(proxy, id, state(hardware.startNfc(foreground && !power.constrained(),payload.optString("scanId")))); break;
       case "QR_SCAN":
         reply(proxy,id,state(hardware.startQr(foreground && !power.constrained(),payload.optString("scanId"),(android.view.ViewGroup)web.getParent())));break;
-      case "INTERACTION_STOP": hardware.stopInteractions();reply(proxy,id,new JSONObject().put("accepted",true));break;
+      case "INTERACTION_STOP": hardware.stopInteractions(payload.optString("scanId"));reply(proxy,id,new JSONObject().put("accepted",true));break;
       case "PRIVATE_STORE_PUT": reply(proxy,id,new JSONObject().put("accepted",foreground && privateStore.put(this,payload.optString("key"),payload.optString("value"),payload.optLong("expiresAt")))); break;
       case "PRIVATE_STORE_GET": reply(proxy,id,new JSONObject().put("value",foreground ? privateStore.get(this,payload.optString("key")) : JSONObject.NULL)); break;
       case "PRIVATE_STORE_LIST": reply(proxy,id,new JSONObject().put("keys",foreground ? privateStore.list(this) : new JSONArray())); break;
