@@ -27,9 +27,11 @@ Phase1–4 browser journeys and80 Android cases across four profiles. Apple prim
 and compatibility profiles each pass all eight scenarios; tablet restart passes
 separately with restored leases and one canonical event. The final three-profile
 source-bound matrix and cold return remain pending. Latest full background execution
-fails before cold return: primary reports native geofence unavailability and low
-resource produces no required real notice. A separately labeled cold-session
-diagnostic is running; it cannot qualify notification wake or return. Final
+now proves real notices, active Journal returns and boot registration on both
+corrected phone profiles. Both revoked-member returns are incorrectly classified
+as signed out despite valid cookies and eligible account sessions. The server
+adapter is corrected; its real notice recheck remains pending. Separate direct
+cold-session diagnostics cannot qualify notification wake or return. Final
 exact-source qualification, protected integration and phase closure
 remain pending. Historical statements that Phase 4 is deferred describe the
 accepted Phase 3 baseline, not this unfinished candidate.

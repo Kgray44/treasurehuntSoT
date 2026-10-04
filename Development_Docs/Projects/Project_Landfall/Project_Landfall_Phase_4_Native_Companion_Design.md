@@ -1923,3 +1923,26 @@ without synthetic session identifiers; actual notice requirements are unchanged.
 
 Product status is refreshed to2,682root tests and corrected primary radio4/4.
 No completed feature-catalog capability is added while Phase4 remains unfinished.
+
+## 2026-10-04 authenticated membership denial root cause
+
+Full background run37212002242 on808d021b now reaches real active signed notice
+return, current Journal, actual BootReceiver GRANTED and second real notice on
+both correctly provisioned profiles. Public Google accuracy controls are observed
+and enabled. Both revoked-member cold returns produce DENIED; actual WebView
+recheck sends exactly one expected account cookie and the server diagnostic finds
+ELIGIBLE_ON_RECHECK twice. Source inspection identifies the adapter defect:
+requirePlayerIdentity succeeds, but removed membership returns null to the shared
+resolver, whose null contract means signed out. This was authorization-state
+classification, not a lost or ineligible account cookie.
+
+The adapter now returns explicit signed-in, membership-inactive, unavailable
+pinned authority after removed access or missing/changed edition. It keeps all
+access checks and routes to Player home without exposing Voyage content. Anonymous
+identity still requires sign-in; active/completed authorized destinations remain.
+Five new regression cases plus the three diagnostic invariants pass; focused
+observation/authority validation is3files/31tests, TypeScript and lint pass.
+Current product features/status/feature status and affected Player/operations
+guides are reviewed, guide/status/changelog/matrix are updated. This is an ordinary
+bug fix in unfinished Phase4; catalog meaning remains unchanged. Actual full
+notice recheck and final qualification are still required.

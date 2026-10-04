@@ -14,6 +14,11 @@ last_reviewed: 2026-10-04
 
 ### Added
 
+- Corrected the Phase 4 notification-return adapter so removed membership or an
+  unavailable pinned Voyage sends an authenticated Player to Player home instead
+  of treating their account as signed out. Current membership and pinned-session
+  checks still refuse access; native return acceptance remains under validation.
+
 - Landfall Phase 4 candidate: native companions and an owned cross-platform Device
   Lab, bounded region preview/download progress, and coordinate-free operational
   logs with provider-demand history in Admiralty. Current native validation and

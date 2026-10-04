@@ -27,7 +27,10 @@ reboot recovery remain subject to device behavior and the pending native matrix.
 Optional nearby-device hints use a short exchange prepared on both devices. The
 exchange expires even if the devices' clocks differ; prepare it again after a
 pause or expiry. A peer hint does not confirm a visit. A notice return may require
-sign-in again, and a saved session never restores removed Voyage access.
+sign-in again when your account session is absent or expired. If you are still
+signed in but Voyage access was removed or its pinned session is unavailable,
+the return goes to your Player home. A saved session never restores removed
+Voyage access.
 
 After accepting an invitation, use the Player Library to find the Voyages available to you. A Voyage can show a waiting state until your Captain begins it. During play, use the story view and Chronicle Journal to follow events, revisit earlier pages, and return to your history when available.
 

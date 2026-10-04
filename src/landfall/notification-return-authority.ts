@@ -69,13 +69,22 @@ async function resolveReturn(handle: string) {
     return resolveLandfallNotificationReturn(
       { version: 1, id: "native-return", returnHandle: handle, issuedAt: claim.issuedAt, expiresAt: claim.expiresAt },
       async () => {
+        // Identity is already authenticated. Null means signed out to the
+        // shared resolver; denied Voyage access must preserve that distinction.
+        const unavailable = {
+          signedIn: true,
+          membershipActive: false,
+          sessionId: claim.scope.sessionId,
+          publishedVersionId: claim.scope.publishedVersionId,
+          status: "UNAVAILABLE" as const,
+        };
         const member = await playerCanAccessPlaythrough(claim.scope.sessionId, identity.playerProfileId);
-        if (!member) return null;
+        if (!member) return unavailable;
         const session = await db.taleSession.findUnique({
           where: { id: claim.scope.sessionId },
           select: { id: true, status: true, publishedVersionId: true },
         });
-        if (!session || session.publishedVersionId !== claim.scope.publishedVersionId) return null;
+        if (!session || session.publishedVersionId !== claim.scope.publishedVersionId) return unavailable;
         return {
           signedIn: true,
           membershipActive: true,

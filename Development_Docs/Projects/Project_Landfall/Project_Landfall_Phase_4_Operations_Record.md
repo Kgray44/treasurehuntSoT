@@ -16,6 +16,12 @@ and [Device Lab authority](Project_Landfall_Phase_4_Device_Lab_Addendum.md) gove
 scope and evidence. One Voyage remains the only progression writer. Provider
 restoration, a geofence wake or a notification must never confirm an arrival.
 
+Notification return separates account authentication from Voyage authorization.
+An absent or expired account requires sign-in. An authenticated account whose
+membership was removed or whose pinned session is unavailable returns to Player
+home without exposing that Voyage. The server rechecks current authority on each
+tap; a persisted native cookie or opaque claim cannot restore removed access.
+
 ## Detection and retained evidence
 
 The authorized Admiralty provider view exposes configured capabilities, bounded
