@@ -25,11 +25,14 @@ with bounded transient coalescing and consent/lifecycle cancellation. Focused
 primary wake and compatibility restart/wake runs pass; primary receipts confirm
 17XCTest passes/one unconfigured-driver skip, actual background/encrypted hints/foreground,
 canonical zero and cleanup. The subsequent full matrix finishes25/27, including
-tablet9/9. Primary/compatibility restart failures require full affected-profile
-rechecks of bounded OS launch and fresh read-only authority recovery; those run
-on8e6e3e19. Focused tablet input passes, including an actual bounded retry.
-An additional actual Apple notification/deep-link case failed at permission and
-is under main-queue reply/finite diagnostic recheck. Protected qualification, merge, landed proof,
+tablet9/9. Affected-profile recheck on8e6e3e19 finishes17/18: compatibility9/9,
+primary8/9. Compatibility restart restores its encrypted lease and reconciles
+one canonical event; primary's bounded OS launch times out. Focused tablet input
+passes, including an actual bounded retry. Actual Apple notification permission
+now passes, while tap/foreground return remains unaccepted. Dark/large-text and
+orientation fallback pass; Reduce Motion navigation remains unaccepted. One
+primary batch37232748824 on90ef2d75 rechecks those three remaining boundaries.
+Protected qualification, merge, landed proof,
 catalog promotion and formal closure remain pending.
 
 Earlier original-source Landfall Phase 4 evidence remains retained, with

@@ -7,7 +7,7 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Current acceptance and remaining work
 
-Current clean source8e6e3e1900102494892135d8ff53796adb50f4b1 passes478unit
+Source-bound regression8e6e3e1900102494892135d8ff53796adb50f4b1 passes478unit
 files/2714tests in214.59seconds, clean/unchanged owned detached qualification
 worktree and fresh SQLite. Format244/lint218(zero errors), TypeScript, docs,
 features sync/validate pass. Exact tracked archive privacy:0violations/6classes,
@@ -30,7 +30,11 @@ outlasts the90-second outbox. Keep expiry and authorization/write bounds intact.
 Current lab uses documented OS launch plus actual XCTest foreground/client/lease
 assertions; at most one fresh readonly count redispatch while same owned child
 is live. Six meaningful count guards pass. Full affected-profile recheck
-37228402022 on8e6e3e19 is active, dispatchhosted-8e6e3e190010-1791142107094.
+37228402022 on8e6e3e19 finishesFAIL17/18,11442hashes/cleanupPASS:
+compatibility9/9, primary8/9. Compatibility restart restores lease, canonicalone,
+no raw locations and cleanup. Primary termination/counts pass, but singleOSlaunch
+is killed15,075ms. Current launch removes redundant termination and allows30s;
+outbox90s/fresh authorization/actualforeground/client/lease/canonical remain.
 
 Focused4341 primary wake37223287847 and compatibility restart/wake37223293060
 PASS. Real Core Location delegate/background/foreground/encrypted hints/removal,
@@ -47,7 +51,11 @@ on WebKit main queue; finite DEBUG stages/grant/thread booleans and OS actions
 are collected. Recheck37227624737 on18c2f4a0 FAIL at actual tap, not permission:
 permission UI/native grant/main-queue reply PASS; screenshot shows notice,
 4401hashes/cleanupPASS. Unique accessible-button/card selection and finite
-counts run on86d2fdcc(37229444663), dispatchhosted-86d2fdccd8f5-1791143085502.
+counts on86d2fdcc(37229444663) finishFAIL,4288hashes/cleanupPASS:
+buttonTitleCount2/staticTitleCount1/actualtaptrue, foregroundfalse/returnfalse.
+Current unique notice selection excludes clear/dismiss, at mosttwo actualtaps.
+Native return navigation dispatchesmainqueue; DEBUG-only stage/validity/thread/
+web-view booleans do not substitute for actual server/clientreturn.
 076ec806 transport37229411009 cancelled for unstaged path-casing edit;0artifacts/
 cleanupPASS, no acceptance. Actual return remains required.
 Case requires real permission UI, delegate-produced background notice,
@@ -61,17 +69,22 @@ does not require rerunning every simulator.
 Apple presentation first7f36204a run37229804897 FAIL:18PASS/1FAIL/1canonical
 unconfigured-driver skip; dark/AccessibilityXXXL and portrait/landscape fallback
 PASS, Reduce Motion switch selection FAIL.4294hashes/cleanupPASS. Bounded
-semantic switch/row search and failure attachment export run on d8dcaa8e
-(37230795587), dispatchhosted-d8dcaa8edcab-1791144350800. Build passes an explicit
+semantic switch/row search and failure attachment export on d8dcaa8e
+(37230795587) finishFAIL18/1/1,4365hashes/cleanupPASS. Actualscreenshot remains
+Accessibility afterMotiontexttap; current UI requires actualMotionnavigationbar
+beforeReduceMotion enable/readback/restore. Build passes an explicit
 presentation flag and requires at least19passes/at mostone expected skip. Current
 integer-count guard additionally rejects missing/malformed summary fields; it
-changes no actual valid-result behavior. Production native sources unchanged
-since8e6e3e19. Presentation proves unconfigured fallback/OS settings only;
+changes no actual valid-result behavior. Production return callback changes are
+notification-only; CoreLocation/coalescer/lease logic unchanged. Presentation proves unconfigured fallback/OS settings only;
 production Journal browser accessibility and physical assistive technology are
 separate. Full unit src/tests/lock/schema trees match8e6e3e19 exactly.
 
 DraftPR677 attached. No final ordinary product qualification dispatched.
-Next: finish/harvest both native rechecks, actual-step/canonical/cleanup inspection,
+Current primary batch90ef2d75, run37232748824, combines mandatory presentation
+build gates and explicitoffline-restart/Apple-notification scenarios.
+Dispatchhosted-90ef2d75ad0f-1791146187956. No separate duplicate notice job.
+Next: finish/harvest this native recheck, actual-step/canonical/cleanup inspection,
 final docs/performance/privacy/input comparisons, freeze, ordinary exact-candidate
 protected qualification, protected merge, landed smoke, separate protected
 completion/evidence/catalog publication, landed verification and formal closure.

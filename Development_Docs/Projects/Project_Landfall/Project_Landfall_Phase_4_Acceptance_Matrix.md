@@ -18,6 +18,10 @@ fresh qualification before protected integration.
 
 ## Implemented capability and evidence boundaries
 
+The remaining primary Apple batch **37232748824 on `90ef2d75`** is active:
+mandatory native presentation gates, offline restart and actual notification
+return. No acceptance is inferred from elapsed time or successful tool execution.
+
 Current clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
 owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting
 (244 files), lint (218 files, zero errors), TypeScript and exact tracked-source
@@ -66,6 +70,10 @@ Current launch omits redundant terminate-running-process after verified terminat
 and allows one30-second command; outbox90seconds and actual foreground/restored-
 client/lease/canonical assertions remain unchanged. A focused primary recheck is
 required; the other accepted profile cases retain their original bindings.
+Compatibility's accepted restart explicitly restores its encrypted lease, writes
+exactly one One Voyage event, retains no raw locations and cleans up all owned
+scenario resources. Android native inputs match `01bab29b`; unit source/test,
+package/lock and Prisma objects match the retained `8e6e3e19` receipt exactly.
 
 Focused tablet input run37224452331 on `80b8dbe4` passes, including one actual
 input deadline followed by acknowledgment, native qualified fixes and exactly

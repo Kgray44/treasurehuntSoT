@@ -13,6 +13,39 @@ protected integration, deployed companion availability, physical-device qualific
 and Project Landfall closure remain open. The [Device Lab addendum](Project_Landfall_Phase_4_Device_Lab_Addendum.md)
 governs evidence fidelity. Active execution instructions remain under `.agents`.
 
+## Current acceptance checkpoint
+
+Primary focused run37232748824 on `90ef2d75` is active. It combines actual native
+presentation gates with offline restart and Apple notification return. Prior full
+affected-profile run37228402022 remains FAIL17/18: compatibility9/9, primary8/9.
+Compatibility restart actually restores its encrypted lease and writes exactly
+one One Voyage event; raw locations are not retained and cleanup passes. Primary
+termination and fresh authority counts pass, but its15-second OS launch is killed.
+The current single documented launch omits redundant termination and permits30
+seconds; the90-second outbox and actual foreground/client/lease assertions remain.
+
+Notice run37229444663 remains FAIL: an actual title tap is observed, with no
+foreground or return. Current UI selection excludes clear/dismiss controls and
+allows at most two real taps on the same unique visible notice. Production native
+return navigation now runs on the main queue; finite DEBUG-only diagnostics expose
+stage and validity/thread/web-view booleans. Navigation requested is not returned
+page proof: the owned server landing and fresh client remain mandatory.
+
+Presentation run37230795587 remains FAIL18passes/1failure/1expected lab-driver
+skip. Dark/AccessibilityXXXL and portrait/landscape fallback pass. Its retained
+screenshot shows Accessibility still open after the Motion text tap. Current UI
+must observe the actual Motion navigation bar before selecting Reduce Motion,
+then enable, read back and restore the setting. This proves owned OS settings and
+the unconfigured readable fallback only, not production Journal assistive use.
+
+The source-bound478-file/2714-test regression receipt remains on `8e6e3e19`;
+all `src`, `tests`, package/lock and Prisma objects match `90ef2d75` exactly.
+Android native sources also match accepted `01bab29b`. Native Apple callback/UI
+changes require the active actual recheck. Earlier candidate-specific checkpoints
+below preserve their original timing and must not be read as current acceptance.
+
+## Earlier candidate checkpoints
+
 The final Apple coverage review adds a focused actual notification/deep-link
 scenario. It requests notification consent through the production native bridge,
 observes the real permission prompt, registers Core Location, backgrounds the app,
