@@ -2,6 +2,7 @@ import { NativeLocationProvider } from "@/landfall/native-location";
 import { importLandfallEd25519PublicKey } from "../ed25519-public-verifier";
 import { NativeContextProvider } from "@/landfall/native-context";
 import { DeviceLabLocationDiagnostics } from "@/landfall/device-lab/location-diagnostics";
+import { DeviceLabLifecycleControlPoll } from "@/landfall/device-lab/lifecycle-control-poll";
 import { reportDeviceLabStartupStage } from "@/landfall/device-lab/startup-diagnostics";
 import {
   androidSensorControl,
@@ -216,7 +217,9 @@ async function main() {
       precisionRequested: true,
     }).profile;
   powerProfile = projectPower(await readNativeLandfallPower());
+  const controlPoll = new DeviceLabLifecycleControlPoll();
   const unsubscribeLifecycle = subscribeLandfallNativeLifecycle((state) => {
+    controlPoll.lifecycle(state);
     if (state === "BACKGROUND") {
       runtime.pause();
       samples = [];
@@ -239,7 +242,7 @@ async function main() {
     }),
   });
   while (true) {
-    const response = await fetch("/lab/next", { cache: "no-store" });
+    const response = await controlPoll.next((signal) => fetch("/lab/next", { cache: "no-store", signal }));
     if (response.status === 204) {
       await new Promise((resolve) => setTimeout(resolve, 100));
       continue;
@@ -643,6 +646,12 @@ async function main() {
 }
 main().catch((error: unknown) => {
   const reason =
-    error instanceof Error && /^[A-Z_]{1,128}$/.test(error.message) ? error.message : "NATIVE_CLIENT_FAILED";
+    error instanceof Error && /^[A-Z_]{1,128}$/.test(error.message)
+      ? error.message
+      : error instanceof TypeError
+        ? "NATIVE_CLIENT_TYPE_ERROR"
+        : error instanceof SyntaxError
+          ? "NATIVE_CLIENT_JSON_ERROR"
+          : "NATIVE_CLIENT_FAILED";
   void fetch("/lab/error", { method: "POST", body: JSON.stringify({ reason }) });
 });

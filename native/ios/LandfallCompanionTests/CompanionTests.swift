@@ -11,6 +11,10 @@ final class CompanionTests: XCTestCase {
         let hints=LandfallSecureHints();hints.clear()
         for _ in 0..<40 { hints.append(handle: String(repeating: "a", count: 64), event: "ENTER") }
         XCTAssertEqual(hints.read().count,32, hints.storageState)
+        XCTAssertTrue(hints.read().allSatisfy { row in
+            guard let timestamp=row["receivedAt"] as? Double else { return false }
+            return timestamp.isFinite && timestamp.rounded(.down) == timestamp
+        })
         XCTAssertFalse(hints.read().contains { $0["latitude"] != nil || $0["longitude"] != nil })
         hints.clear();XCTAssertTrue(hints.read().isEmpty)
     }

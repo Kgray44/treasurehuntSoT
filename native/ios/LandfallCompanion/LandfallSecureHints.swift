@@ -46,7 +46,7 @@ final class LandfallSecureHints {
     func append(handle: String, event: String) {
         guard (32...2048).contains(handle.count), ["ENTER", "EXIT"].contains(event) else { return }
         var rows=read(); guard rows.count < 32 else { return }
-        rows.append(["id": UUID().uuidString, "returnHandle": handle, "event": event, "receivedAt": Date().timeIntervalSince1970*1000])
+        rows.append(["id": UUID().uuidString, "returnHandle": handle, "event": event, "receivedAt": Int(Date().timeIntervalSince1970*1000)])
         do {
             let bytes=try JSONSerialization.data(withJSONObject: rows)
             let encrypted=try AES.GCM.seal(bytes, using: key(), authenticating: Data(alias.utf8))

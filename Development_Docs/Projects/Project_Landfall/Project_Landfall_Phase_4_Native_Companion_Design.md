@@ -53,8 +53,25 @@ the owned guest's Always location permission, requests actual Core Location
 monitoring, backgrounds through XCTest, delivers documented `simctl location`
 outside and inside inputs, and requires encrypted delegate-delivered hints
 on foreground return. Actual framework capability is retained by XCTest.
-This new hosted attempt is pending; Simulator support is not assumed, and
-no injected delegate callback qualifies as OS delivery. Physical timing,
+Run37214637581 on2446a7f1 proves actual framework monitoring availability,
+delegate-confirmed registration, OS location inputs and background transition.
+Its13native XCTest cases pass with one unsupported skip. The scenario fails
+on foreground return with `NATIVE_CLIENT_FAILED` before the wake assertion;
+it does not prove a delivered hint. Cleanup and canonical0 are verified.
+
+The lab's read-only control poll now allows at most three recovery retries
+only after an observed native background transition, with actual foreground
+observation and a15-second recovery deadline. Each request is abort-bounded.
+Unobserved transitions, product exceptions and permanent outages still fail;
+no progression request is retried by this helper. Three focused tests cover
+those boundaries. Exported client errors distinguish finite exception classes
+without raw message text. This corrects an unhandled suspension transport seam;
+actual hosted recovery remains required.
+
+Swift encrypted hints now write integer milliseconds, matching the shared
+reader's timestamp contract; XCTest checks that persisted timestamps are finite
+integers. The earlier fractional values could not qualify as fresh wake hints.
+No injected delegate callback qualifies as OS delivery. Physical timing,
 notification interaction and region restoration remain separate evidence.
 
 The Android Activity and iOS WKWebView host the existing first-party Player.
