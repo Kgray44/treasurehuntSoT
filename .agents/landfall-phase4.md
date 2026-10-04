@@ -544,3 +544,20 @@ canonical dispatches. Apple37167222880 harvestedSUCCESS2875: native10PASS/1skip,
 virtual6PASS/canonical0/cleanupPASS, manifest-bound NI capability supportsPreciseDistanceMeasurementfalse,
 no session/no reports/canCompletefalse, iPhone17e iOSSimulator26.5. This is actual
 Simulator unsupported capability; do not infer physical Apple support or a range.
+
+First-party nearby broker/API/Player panel source adds same-Player scoped exchange,
+45s independent expiry, one-use256bit code/hashhandles/key-buffer wiping/caps,
+strict actor/pin/session/world/waypoint/sequence authorization and body8KiB/3s.
+Deployment flagephemeral-instance defaultdisabled; one instance/sticky routing,
+restart/wronginstancefailclosed. No actual hardware identity/uncertainty/completion
+claim. User actions gated by STATUS before native prepare; owner/controlee offers
+use real returned parameters, no invented channel on join. Native reports remain
+untrusted; all HTTP stays in /landfall/nearby. Lifecycle/power/privateclear/scope/
+expiry cancels refs/HTTP/timers; stopTail prevents old stop racing new prepare.
+External-store host check/keyed scope reset satisfy React rules. Broker9/API7/
+panel8/Journal7 tests pass; TypeScript and changed-code ESLint pass. Initial panel
+race selector ambiguity corrected with accessible nearby status name; focused8PASS.
+Optimized/native API integration remains pending; do not mark Phase4 accepted.
+Fourth radio dispatch98bfeeff57d918dba09ad131e43af3a2d9dbfc60/tree
+def8fc8433fb4a03c1b881a990cdd9e87553f2e6, hosted-98bfeeff57d9-1791077449405,
+run37168243966 remains active. SDK stage now installs diagnosed libpulse0.

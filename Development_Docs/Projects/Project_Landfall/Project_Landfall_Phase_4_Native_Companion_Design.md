@@ -578,3 +578,42 @@ canComplete false. All 2875 artifacts are harvested with verified transport
 cleanup. Simulator NI ranging is an explicit unsupported capability, while the
 compiled adapter and native guards are verified; physical Apple ranging remains
 a separate device gate.
+
+Optional same-Player companion exchange now has a first-party broker, authorized
+API and a Journal control surface. Each operation reauthorizes the current
+released PHYSICAL waypoint, Player, session, pin and sequence. Codes and handles
+are random 256-bit values stored as hashes, the join code is consumed once, and
+Android peers receive one shared provisioned-STS key with complementary addresses.
+Apple peers exchange bounded opaque discovery-token archives. Cross-platform,
+reflected, stale, foreign-scope and coercive requests fail closed. These are
+authorized companion parameters, not hardware identity or verified distance.
+Every response and native projection keeps peerVerified and canComplete false.
+
+Exchange state is bounded to 128 instances, four per Player, and 45 seconds.
+Independent expiry drops token references and overwrites retained key buffers,
+including when no subsequent request arrives. Clock rollback clears exchanges.
+Nothing is persisted, and restarted or differently routed instances return an
+unavailable exchange. The explicit deployment opt-in is
+`LANDFALL_NEARBY_PAIRING_MODE=ephemeral-instance`; it requires one server instance
+or sticky routing for this brief optional exchange. Default absence is truthful
+NOT_CONFIGURED. Request bodies are limited to 8 KiB and three seconds, with CSRF,
+membership/current-Chart authorization and per-Player rate limits. No coordinate,
+raw range, discovery token, key or code is added to telemetry or progression.
+
+The collapsed Journal panel explains the sharing and limitation, checks service
+availability before a contextual native permission request, and requires separate
+create/join/start actions. It cancels HTTP requests, native sessions and timers on
+Stop, background, hidden document, low-power/thermal/unavailable power, private
+clear, scope change or expiry. Replacement preparation waits for the old native
+stop. Native host availability uses the external-store contract, and keyed scope
+changes reset controls without stale async replies. There is no automatic resume,
+location acquisition, exact distance display or progression callback.
+
+Nine broker security tests, seven authorization/body-boundary API tests, eight
+consent/lifecycle/race panel tests and seven existing Journal tests pass (31 total).
+Full TypeScript, changed-code ESLint and documentation checks pass. The initial
+race test found an ambiguous status selector; the readable nearby status now has
+an accessible name and the focused panel rerun passes all eight tests. Optimized
+browser/native first-party pairing integration remains pending. This source
+checkpoint does not qualify secure physical peer identity, RF accuracy, BLE
+beacons, inter-platform pairing or Project Landfall closure.
