@@ -16,21 +16,27 @@ Actual Play services geofence delivery, encrypted wake hint storage and a generi
 notice pass with documented hosted FLP mock input and zero progression writes.
 The UWB/generic BLE/iBeacon/Eddystone matrix passes eight executions on low-memory
 phone provisioning. Corrected primary-phone radio run37210642366 passes all four
-scenarios on measured 3GiB guests; distinct primary Journal pairing is being rechecked.
+scenarios on measured 3GiB guests. Correctly provisioned primary and low-resource
+Journal pairing each pass actual reports on both devices, native stop and cleanup.
 An actual signed first-party notice tap reauthorizes and returns to the current
 Journal. First-party native pairing passes with reports on both devices, verified
-stop and zero progression writes; distinct primary-profile qualification is pending.
+stop and zero progression writes.
 Cold authenticated
 revoked-membership notice return still requires acceptance. Broad regression passes
-2,687 unit tests on ff297bda,159 provider scenarios on each of Windows and Linux,53 retained
+2,687 unit tests in474files on clean fb92d113 with fresh isolated SQLite,159 provider
+scenarios on each of Windows and Linux,53 retained
 Phase1–4 browser journeys and80 Android cases across four profiles. Apple primary
 and compatibility profiles each pass all eight scenarios; tablet restart passes
 separately with restored leases and one canonical event. The final three-profile
 source-bound matrix and cold return remain pending. Latest full background execution
 now proves real notices, active Journal returns and boot registration on both
-corrected phone profiles. Both revoked-member returns are incorrectly classified
-as signed out despite valid cookies and eligible account sessions. The server
-adapter is corrected; its real notice recheck remains pending. Separate direct
+corrected phone profiles. The corrected server now classifies both actual revoked
+notice returns as unavailable access. The full test failed because it expected
+the intermediate Player landing URL instead of the existing signed-in Library
+redirect; the corrected complete flow is being rechecked. Actual iOS Simulator
+region monitoring is also being exercised with OS location inputs and real
+background/foreground transitions; its capability and wake result remain pending.
+Separate direct
 cold-session diagnostics cannot qualify notification wake or return. Final
 exact-source qualification, protected integration and phase closure
 remain pending. Historical statements that Phase 4 is deferred describe the
