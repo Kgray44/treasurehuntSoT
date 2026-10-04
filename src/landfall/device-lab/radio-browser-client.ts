@@ -3,12 +3,18 @@ import { NativeLandfallUwbProvider, type NativeUwbConfiguration } from "@/landfa
 import { landfallNativeRequest } from "@/landfall/native-bridge";
 import { z } from "zod";
 import { NativeLandfallBleProvider } from "@/landfall/native-ble";
+import { DeviceLabBleDiagnostics } from "./ble-diagnostics";
 
 /** Owned lab origin only; bundled separately and never imported by the application. */
 const provider = new NativeLandfallUwbProvider(landfallFixture.worldspaces[0]);
 const ble = new NativeLandfallBleProvider(landfallFixture.worldspaces[0]);
 let validatedSignals = 0;
 let validatedRanges = 0;
+const bleDiagnostics = new DeviceLabBleDiagnostics();
+window.addEventListener("landfall-native-event", (event) => {
+  const value = (event as CustomEvent).detail;
+  if (value?.type === "nearby" && value.family === "BLE") bleDiagnostics.observe(value, Date.now(), document.hidden);
+});
 Object.defineProperty(window, "__LandfallLabRadio", {
   value: Object.freeze({
     ble: Object.freeze({
@@ -17,7 +23,7 @@ Object.defineProperty(window, "__LandfallLabRadio", {
           if (value.state === "UNTRUSTED") validatedSignals++;
         }),
       stop: () => ble.stop(),
-      snapshot: () => ({ ...ble.snapshot(), validatedSignals }),
+      snapshot: () => ({ ...ble.snapshot(), validatedSignals, bridgeDiagnostic: bleDiagnostics.snapshot() }),
     }),
     prepare: (role: "CONTROLLER" | "CONTROLEE") => provider.prepare(role, true),
     start: (configuration: NativeUwbConfiguration) =>

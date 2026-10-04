@@ -7,7 +7,7 @@ import {
   subscribeNativeLandfallPower,
 } from "@/landfall/native-bridge";
 
-const observation = z.strictObject({
+export const nativeBleObservationSchema = z.strictObject({
   type: z.literal("nearby"),
   family: z.literal("BLE"),
   protocol: z.enum(["GENERIC", "IBEACON", "EDDYSTONE_UID"]),
@@ -17,6 +17,7 @@ const observation = z.strictObject({
   observedAt: z.number().int().nonnegative(),
   rssi: z.number().int().min(-150).max(0),
 });
+const observation = nativeBleObservationSchema;
 const nativeState = z.object({
   state: z.enum([
     "GRANTED",

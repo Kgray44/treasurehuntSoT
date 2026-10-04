@@ -981,3 +981,8 @@ outsideGPS→background→insideGPS180secdelivery→foregroundencryptedhint asse
 andverifiedclear, realOneVoyagezeroevents. No injectedreceiver/callback. Pending
 actualhosted. AndroidsingleTop/ordinaryonNewIntentresumesexistingChart; onlyvalid
 notificationhandleopensreauthorizedreturn. Scenario/selection32checksPASS.
+
+e2dbc2e geofence dispatchhosted-e2dbc2e107f7-1791101692457 active. Next BLE
+lab diagnostics reuse the production strict schema and retain bounded received/
+valid/invalid/stale/future/hidden counts plus finite invalid field names. No
+sample/identity/RSSI/address is retained. FocusedBLE/privacy5checksPASS.

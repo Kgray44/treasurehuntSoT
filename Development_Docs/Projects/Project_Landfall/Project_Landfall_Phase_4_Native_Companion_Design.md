@@ -1140,3 +1140,10 @@ Radio run37187682729 on9dfdfd93 receives119 native callbacks, emits12 events and
 records zero native errors, while its web provider accepts zero observations.
 This narrows the retained failure to bridge delivery or event validation rather
 than unsupported native scanning. Fixture and transport cleanup pass.
+
+BLE lab bridge diagnostics reuse the production observation schema and retain
+only bounded receive/valid/invalid/freshness/visibility counts and finite schema
+field categories. Unknown field names collapse to UNRECOGNIZED_FIELD. Peer IDs,
+scan IDs, RSSI values, timestamps and payloads are not retained. Production
+acceptance remains strict; the diagnostic cannot turn a rejected sample into a
+valid observation. Five focused BLE and diagnostic privacy tests pass.

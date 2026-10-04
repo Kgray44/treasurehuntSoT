@@ -16,11 +16,16 @@ import {
 import type { DeviceLabScenario, DeviceLabStepResult } from "../../../src/landfall/device-lab/scenario";
 import type { NativeUwbConfiguration, NativeUwbProjection } from "../../../src/landfall/native-uwb";
 import type { BleProjection } from "../../../src/landfall/native-ble";
+import type { DeviceLabBleDiagnostic } from "../../../src/landfall/device-lab/ble-diagnostics";
 import { z } from "zod";
 import { boundedAndroidDriver } from "./android-driver";
 
 type RadioClient = {
-  ble: { start(): Promise<string>; stop(): Promise<void>; snapshot(): BleProjection & { validatedSignals: number } };
+  ble: {
+    start(): Promise<string>;
+    stop(): Promise<void>;
+    snapshot(): BleProjection & { validatedSignals: number; bridgeDiagnostic: DeviceLabBleDiagnostic };
+  };
   prepare(
     role: "CONTROLLER" | "CONTROLEE",
   ): Promise<{ state: "READY"; address: string; channel?: number; preamble?: number } | null>;
@@ -58,7 +63,7 @@ export async function executeLandfallAndroidRadioScenario(
   const diagnostics: { index: number; devices: (NativeUwbProjection & { validatedRanges: number })[] }[] = [];
   const bleDiagnostics: {
     index: number;
-    device: BleProjection & { validatedSignals: number };
+    device: BleProjection & { validatedSignals: number; bridgeDiagnostic: DeviceLabBleDiagnostic };
     advertiserState: string | null;
   }[] = [];
   let advertiserState: string | null = null;
