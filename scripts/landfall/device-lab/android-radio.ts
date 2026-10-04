@@ -63,6 +63,7 @@ export async function executeLandfallAndroidRadioScenario(
   }[] = [];
   let advertiserState: string | null = null;
   let advertiserFailureCode: number | null = null;
+  let nativeBleDiagnostic: { callbacks: number; emitted: number; errors: number; active: boolean } | null = null;
   let radioStage = "SETUP";
   const blePrerequisites: { preciseLocationGranted: boolean; locationSettingEnabled: boolean; screenAwake: boolean }[] =
     [];
@@ -386,6 +387,20 @@ export async function executeLandfallAndroidRadioScenario(
           });
         } catch (error) {
           if (bleScenario) {
+            try {
+              const raw = await adb(serials[0]!, ["shell", "run-as", pkg, "cat", "files/landfall-ble-debug.json"]);
+              if (raw.length <= 1024)
+                nativeBleDiagnostic = z
+                  .strictObject({
+                    callbacks: z.number().int().min(0).max(100000),
+                    emitted: z.number().int().min(0).max(100000),
+                    errors: z.number().int().min(0).max(100000),
+                    active: z.boolean(),
+                  })
+                  .parse(JSON.parse(raw));
+            } catch {
+              /* Missing diagnostic is not inferred zero. */
+            }
             const value = await boundedAndroidDriver(
               pages[0].evaluate(() => window.__LandfallLabRadio!.ble.snapshot()),
             ).catch(() => null);
@@ -471,6 +486,7 @@ export async function executeLandfallAndroidRadioScenario(
           bleDiagnostics,
           advertiserState,
           advertiserFailureCode,
+          nativeBleDiagnostic,
           radioStage,
           blePrerequisites,
         },

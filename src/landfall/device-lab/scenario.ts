@@ -30,6 +30,7 @@ export const deviceLabEvidenceClassSchema = z.enum([
   "FIELD_REQUIRED",
   "UNSUPPORTED_IN_CURRENT_LAB",
   "NOT_CONFIGURED",
+  "EXECUTION_FAILED",
 ]);
 export const deviceLabActionSchema = z.discriminatedUnion("type", [
   z.strictObject({

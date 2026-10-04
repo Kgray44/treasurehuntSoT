@@ -102,6 +102,9 @@ describe("canonical Device Lab scenarios", () => {
       cleanup: { result: "PASS", ownedResources: [], remainingResources: [] },
     };
     expect(() => validateDeviceLabFidelity(receipt)).not.toThrow();
+    expect(() => validateDeviceLabFidelity({ ...receipt, evidenceClass: "EXECUTION_FAILED" })).toThrow(
+      "FIDELITY_INVALID",
+    );
     expect(() => validateDeviceLabFidelity({ ...receipt, evidenceClass: "REAL_DEVICE_PROVEN" })).toThrow(
       "FIDELITY_INVALID",
     );

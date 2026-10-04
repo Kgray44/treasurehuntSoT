@@ -948,3 +948,18 @@ STARTED/scannerSCANNING0peers. eo7Journal37186596891 HARVESTED42 FAIL beforepage
 secondbootstrapamstart-W15sectimeout. Apple37185838103 HARVESTED2940 FAIL:11XCTest
 PASS/1skip,2physicaloffline/restartPASS,virtualcountsAUTHORITY_TIMEOUT; cleanupall
 PASS. No currentactivehostedruns. Continue repairs+sourcefreeze+impactselection.
+
+57b1a77 committedsharedverifier/regionpreview/Admiraltyoperations. Activehosted:
+camera37187340476 dispatchhosted-57b1a77e1094-1791100618160;
+browser37187344378 dispatchhosted-57b1a77e1094-1791100622615;
+provider37187347909 dispatchhosted-57b1a77e1094-1791100627056 (nowSUCCESS/unharvested).
+Dirtynext: debugonlyBLEcallback/emission/errorcounters(noidentity/rawdata), Journal
+bootstrap45secbound, finiteauthorityIPCstart/outcometiming, EXECUTION_FAILEDreceipt
+class(cannotPASSfidelity), actualconfiguredroutingmodecaps. NativeAPKsbuildPASS;
+scenario28testsPASS. DirectvirtualOneVoyage9assertionsPASS+cleanup. Needfresh
+lint/docs/authorityIPCchecks thenfreeze+radio/Journal/Applevirtualimpact.
+
+57bprovider37187347909 HARVESTED346: actual159/159 PASS onWindows andLinux, clean
+source/tree d0dbafe70ea2ab4be2956081fff48765fa01bd7b, fingerprint22e7194dc129a7e73882622133e7c1b43fea2f7afe17c697231474654953d513.
+DirtyproviderIPCvirtual-offline-canonical-reconcile PASS1/1 +cleanup; no qualification
+claimfromdirtyrun. Browser37187344378nowSUCCESS/unharvested. Camera37187340476active.

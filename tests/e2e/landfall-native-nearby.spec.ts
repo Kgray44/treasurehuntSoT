@@ -102,8 +102,8 @@ test("real native Journal pairing returns untrusted hints and background clears 
         nativeBridgeAvailable: boolean;
         authRedirect: boolean;
       }[] = [];
-      const adb = (serial: string, args: string[]) =>
-        labTool(resources.adbPath, ["-P", String(resources.adbPort), "-s", serial, ...args], 15000);
+      const adb = (serial: string, args: string[], timeout = 15000) =>
+        labTool(resources.adbPath, ["-P", String(resources.adbPort), "-s", serial, ...args], timeout);
       try {
         for (const serial of resources.serials) {
           deviceIndex = resources.serials.indexOf(serial);
@@ -143,20 +143,24 @@ test("real native Journal pairing returns untrusted hints and background clears 
           stage = "GRANT_NATIVE_RANGING";
           await adb(serial, ["shell", "pm", "grant", pkg, "android.permission.RANGING"]);
           stage = "LAUNCH_NATIVE_BOOTSTRAP";
-          const launch = await adb(serial, [
-            "shell",
-            "am",
-            "start",
-            "-W",
-            "-n",
-            `${pkg}/.LandfallActivity`,
-            "--es",
-            "labOrigin",
-            origin.origin,
-            "--ez",
-            "labBootstrap",
-            "true",
-          ]);
+          const launch = await adb(
+            serial,
+            [
+              "shell",
+              "am",
+              "start",
+              "-W",
+              "-n",
+              `${pkg}/.LandfallActivity`,
+              "--es",
+              "labOrigin",
+              origin.origin,
+              "--ez",
+              "labBootstrap",
+              "true",
+            ],
+            45000,
+          );
           if (/Error:|Exception/.test(launch)) throw new Error("LANDFALL_NATIVE_NEARBY_LAUNCH_FAILED");
         }
         stage = "ENUMERATE_NATIVE_DRIVERS";

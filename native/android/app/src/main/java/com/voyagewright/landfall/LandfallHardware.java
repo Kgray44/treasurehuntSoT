@@ -31,8 +31,21 @@ final class LandfallHardware {
   private ScanCallback callback;
   private volatile String bleScanId;
   private Runnable bleExpiry;
+  private int bleCallbacks,bleEmitted,bleErrors;
+  private long bleDiagnosticAt;
+  private void bleDiagnostic(boolean force){
+    if(!BuildConfig.DEBUG)return;
+    long now=android.os.SystemClock.elapsedRealtime();if(!force && now-bleDiagnosticAt<1000)return;bleDiagnosticAt=now;
+    try{
+      JSONObject value=new JSONObject().put("callbacks",bleCallbacks).put("emitted",bleEmitted).put("errors",bleErrors).put("active",bleActive);
+      try(java.io.FileOutputStream output=activity.openFileOutput("landfall-ble-debug.json",android.content.Context.MODE_PRIVATE)){
+        output.write(value.toString().getBytes(StandardCharsets.UTF_8));
+      }
+    }catch(Exception ignored){}
+  }
   private ScanCallback bleCallback(String scanId){final String salt=UUID.randomUUID().toString();return new ScanCallback(){
     @Override public void onScanResult(int type,ScanResult result){
+      bleCallbacks=Math.min(100000,bleCallbacks+1);bleDiagnostic(false);
       long now=System.currentTimeMillis(); if(!bleActive || !scanId.equals(bleScanId) || now-lastBle<1000)return;lastBle=now;
       try {
         String protocol="GENERIC";
@@ -46,9 +59,10 @@ final class LandfallHardware {
         byte[] digest=MessageDigest.getInstance("SHA-256").digest((salt+result.getDevice().getAddress()).getBytes(StandardCharsets.UTF_8));
         StringBuilder peer=new StringBuilder();for(byte value:digest)peer.append(String.format("%02x",value));
         emit.accept(new JSONObject().put("type","nearby").put("family","BLE").put("protocol",protocol).put("scanId",scanId).put("authenticated",false).put("peerId",peer.toString()).put("rssi",result.getRssi()).put("observedAt",now));
-      }catch(Exception ignored){}
+        bleEmitted=Math.min(100000,bleEmitted+1);bleDiagnostic(true);
+      }catch(Exception ignored){bleErrors=Math.min(100000,bleErrors+1);bleDiagnostic(true);}
     }
-    @Override public void onScanFailed(int error){if(scanId.equals(bleScanId))endBle(scanId);}
+    @Override public void onScanFailed(int error){if(scanId.equals(bleScanId)){bleErrors=Math.min(100000,bleErrors+1);endBle(scanId);}}
   };}
   LandfallHardware(Activity activity,Consumer<JSONObject> emit){this.activity=activity;this.emit=emit;this.qr=new LandfallQrScanner((androidx.activity.ComponentActivity)activity,emit);}
   String startBle(boolean foreground,String scanId){
@@ -66,7 +80,7 @@ final class LandfallHardware {
     try {
       if(!manager.getAdapter().isEnabled())return "UNAVAILABLE";
       scanner=manager.getAdapter().getBluetoothLeScanner();if(scanner==null)return "UNSUPPORTED";
-      bleScanId=scanId;lastBle=0;callback=bleCallback(scanId);bleActive=true;scanner.startScan(callback);
+      bleScanId=scanId;lastBle=0;bleCallbacks=0;bleEmitted=0;bleErrors=0;callback=bleCallback(scanId);bleActive=true;bleDiagnosticAt=0;bleDiagnostic(true);scanner.startScan(callback);
       bleExpiry=()->endBle(scanId);handler.postDelayed(bleExpiry,30000);return "GRANTED";
     }catch(SecurityException error){stopBle();return "DENIED";}catch(RuntimeException error){stopBle();return "UNAVAILABLE";}
   }
@@ -95,7 +109,7 @@ final class LandfallHardware {
   void stopInteractions(){nfcScanId=null;if(nfcExpiry!=null)handler.removeCallbacks(nfcExpiry);nfcExpiry=null;qr.stop();NfcAdapter adapter=NfcAdapter.getDefaultAdapter(activity);if(adapter!=null)adapter.disableReaderMode(activity);}
   void stopInteractions(String scanId){if(scanId.equals(nfcScanId))stopInteractions();else qr.stop(scanId);}
   private void endBle(String scanId){if(!scanId.equals(bleScanId))return;stopBle();try{emit.accept(new JSONObject().put("type","ble-ended").put("scanId",scanId));}catch(Exception ignored){}}
-  void stopBle(){bleActive=false;bleScanId=null;if(bleExpiry!=null)handler.removeCallbacks(bleExpiry);bleExpiry=null;if(scanner!=null && callback!=null){try{scanner.stopScan(callback);}catch(RuntimeException ignored){}}scanner=null;callback=null;}
+  void stopBle(){bleActive=false;bleScanId=null;if(bleExpiry!=null)handler.removeCallbacks(bleExpiry);bleExpiry=null;if(scanner!=null && callback!=null){try{scanner.stopScan(callback);}catch(RuntimeException ignored){}}scanner=null;callback=null;bleDiagnostic(true);}
   void stopBle(String scanId){if(scanId.equals(bleScanId))stopBle();}
   void stop(){stopBle();stopInteractions();}
 }

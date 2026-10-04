@@ -25,8 +25,21 @@ export async function startDeviceLabAuthority(destination: string, worldspace: "
   );
   const pending = new Map<
     number,
-    { resolve: (value: unknown) => void; reject: (error: Error) => void; timer: ReturnType<typeof setTimeout> }
+    {
+      resolve: (value: unknown) => void;
+      reject: (error: Error) => void;
+      timer: ReturnType<typeof setTimeout>;
+      operation: string;
+      sentAt: number;
+      startedAfterMs: number | null;
+    }
   >();
+  const commandDiagnostics: {
+    operation: string;
+    outcome: "SUCCEEDED" | "FAILED" | "TIMEOUT";
+    elapsedMs: number;
+    startedAfterMs: number | null;
+  }[] = [];
   let sequence = 0;
   let readyResolve!: (value: string) => void;
   let readyReject!: (error: Error) => void;
@@ -39,7 +52,14 @@ export async function startDeviceLabAuthority(destination: string, worldspace: "
     child.kill();
   }, 30000);
   child.on("message", (message: unknown) => {
-    const value = message as { ready?: boolean; fixtureHash?: string; id?: number; value?: unknown; error?: string };
+    const value = message as {
+      ready?: boolean;
+      fixtureHash?: string;
+      id?: number;
+      value?: unknown;
+      error?: string;
+      commandStarted?: boolean;
+    };
     if (value.ready && /^[a-f0-9]{64}$/.test(value.fixtureHash ?? "")) {
       clearTimeout(readyTimer);
       readyResolve(value.fixtureHash!);
@@ -47,6 +67,17 @@ export async function startDeviceLabAuthority(destination: string, worldspace: "
     }
     const waiter = pending.get(value.id ?? -1);
     if (!waiter) return;
+    if (value.commandStarted === true) {
+      waiter.startedAfterMs = Date.now() - waiter.sentAt;
+      return;
+    }
+    if (commandDiagnostics.length < 512)
+      commandDiagnostics.push({
+        operation: waiter.operation,
+        outcome: value.error ? "FAILED" : "SUCCEEDED",
+        elapsedMs: Date.now() - waiter.sentAt,
+        startedAfterMs: waiter.startedAfterMs,
+      });
     clearTimeout(waiter.timer);
     pending.delete(value.id!);
     if (value.error) waiter.reject(new Error(value.error));
@@ -69,11 +100,20 @@ export async function startDeviceLabAuthority(destination: string, worldspace: "
   const call = (operation: "submit" | "counts" | "cleanup" | "authorize", value?: unknown): Promise<unknown> =>
     new Promise((resolve, reject) => {
       const id = ++sequence;
+      const sentAt = Date.now();
       const timer = setTimeout(() => {
+        const waiter = pending.get(id);
+        if (commandDiagnostics.length < 512)
+          commandDiagnostics.push({
+            operation,
+            outcome: "TIMEOUT",
+            elapsedMs: Date.now() - sentAt,
+            startedAfterMs: waiter?.startedAfterMs ?? null,
+          });
         pending.delete(id);
         reject(new Error("LANDFALL_LAB_AUTHORITY_TIMEOUT"));
       }, 15000);
-      pending.set(id, { resolve, reject, timer });
+      pending.set(id, { resolve, reject, timer, operation, sentAt, startedAfterMs: null });
       child.send({ id, operation, value }, (error) => {
         if (error) {
           clearTimeout(timer);
@@ -84,6 +124,7 @@ export async function startDeviceLabAuthority(destination: string, worldspace: "
     });
   return {
     fixtureHash,
+    commandDiagnostics: () => commandDiagnostics.map((value) => ({ ...value })),
     submit: (evidence: PlayerLandfallEvidence) => call("submit", evidence),
     authorize: (evidence?: Pick<PlayerLandfallEvidence, "evidenceId">) =>
       call("authorize", evidence) as ReturnType<LandfallReconciliationTransport["authorize"]>,

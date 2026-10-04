@@ -1210,6 +1210,15 @@ export async function executeLandfallOsScenario(
       remainingResources.push("unverified-one-voyage-counts");
     }
     if (!(await authority.cleanup())) remainingResources.push("one-voyage-authority");
+    const commandFile = path.join(destination, "authority-command-diagnostics.json");
+    await writeFile(commandFile, JSON.stringify(authority.commandDiagnostics(), null, 2));
+    artifacts.push({
+      path: commandFile,
+      sha256: createHash("sha256")
+        .update(await readFile(commandFile))
+        .digest("hex"),
+      kind: "TEST_RESULT",
+    });
   }
   await mkdir(destination, { recursive: true });
   for (const result of steps) {

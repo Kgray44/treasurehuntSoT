@@ -222,6 +222,10 @@ export class RemoteLandfallDataService {
     const current = this.status();
     return this.health.snapshot().map((value) => ({
       ...value,
+      capabilities:
+        current.state === "STATUS" && current.services.find((service) => service.id === value.id)?.mode
+          ? [current.services.find((service) => service.id === value.id)!.mode!.toLowerCase(), "suggestion"]
+          : this.health.catalog().find((provider) => provider.id === value.id)!.capabilities,
       health:
         current.state === "STATUS"
           ? (current.services.find((service) => service.id === value.id)?.state ?? "NOT_CONFIGURED")

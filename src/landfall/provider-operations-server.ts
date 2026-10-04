@@ -25,7 +25,7 @@ export function landfallOperationsProviders(
               ? ("UNAVAILABLE" as const)
               : ("UNKNOWN" as const),
       safeCode: status.health,
-      capabilities: provider.capabilities,
+      capabilities: status.capabilities,
       demand: {
         lastSuccessAt: status.lastSuccessAt ?? null,
         lastFailureAt: status.lastFailureAt ?? null,

@@ -345,6 +345,7 @@ async function worker() {
   process.on("message", async (message: unknown) => {
     const input = message as { id?: unknown; operation?: unknown; value?: unknown };
     if (!Number.isInteger(input?.id)) return;
+    if (process.connected) process.send?.({ id: input.id, commandStarted: true }, () => {});
     try {
       let value: unknown;
       if (input.operation === "submit") value = await voyage.submit(input.value);

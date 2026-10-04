@@ -140,7 +140,9 @@ async function main() {
               : "PROVIDER_SIMULATION_PROVEN"
           : state === "NOT_CONFIGURED"
             ? "NOT_CONFIGURED"
-            : "UNSUPPORTED_IN_CURRENT_LAB",
+            : state === "FAIL"
+              ? "EXECUTION_FAILED"
+              : "UNSUPPORTED_IN_CURRENT_LAB",
       result: state,
       steps:
         result?.steps ??

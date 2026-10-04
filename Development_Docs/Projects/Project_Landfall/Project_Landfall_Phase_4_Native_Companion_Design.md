@@ -1099,3 +1099,15 @@ repair and current evidence for that remaining case. Radio run37186592561 on
 enabled location and awake screens on both devices; discovery still returns no
 peers. Journal run37186596891 fails before page interaction at the second native
 bootstrap launch's15second ADB wait; cleanup passes. These failures are retained.
+
+Further diagnostic automation distinguishes execution failure from an unsupported
+lab: failed receipts now carry EXECUTION_FAILED and cannot be promoted to passing
+native fidelity. The addendum permits broader classifications. Historical failed
+receipts remain unchanged. Debug APK BLE diagnostics persist only bounded callback,
+emission and error counts with an active flag; no address, payload, scan identity
+or observation is retained. Release builds do not execute this diagnostic writer.
+Actual hosted radio evidence will distinguish missing native callback delivery from
+bridge filtering. The low-resource native bootstrap is bounded at45seconds;
+ordinary rendered-state assertions still govern Journal success. Authority IPC
+diagnostics record finite operation, outcome and elapsed/start-delay timings to
+distinguish dispatch delay from an in-worker timeout; no request data is recorded.
