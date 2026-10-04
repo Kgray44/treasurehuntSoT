@@ -122,6 +122,16 @@ test("real signed notice returns reauthorize Player across actual registered-reg
       const receiverRows: { stage: string; counters: Record<string, number> }[] = [];
       const cpuMeasurements: ({ stage: string } & ReturnType<typeof nativeCpuMeasurement>)[] = [];
       let persistentSessionConfigured = false;
+      let coldSession: {
+        cookiePresent: boolean;
+        expectedCookie: boolean;
+        persistent: boolean;
+        httpOnly: boolean;
+        cookieFutureOnGuest: boolean;
+        databaseSessionActive: boolean;
+        playerProfileActive: boolean;
+        signInDestination: boolean;
+      } | null = null;
       const noticeControls: { phase: string; hierarchyAttempts: number; controlObserved: boolean }[] = [];
       let failureKind: string | null = null;
       const serverReturnOutcomes: string[] = [];
@@ -485,12 +495,45 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         await tapActualNotice("REVOKED");
         stage = "REVOKED_ACTUAL_RETURN_HOP";
         await expect
-          .poll(async () => (await readReturns()).slice(revokedReturnBaseline).map((event) => event.outcome), {
+          .poll(async () => (await readReturns()).length, {
             timeout: 45000,
           })
-          .toContain("UNAVAILABLE");
-        serverReturnOutcomes.push("UNAVAILABLE");
-        const returned = await attach();
+          .toBeGreaterThan(revokedReturnBaseline);
+        const coldOutcomes = (await readReturns()).slice(revokedReturnBaseline).map((event) => event.outcome);
+        serverReturnOutcomes.push(...coldOutcomes);
+        const returned = await attach(false);
+        const coldCdp = await returned.context().newCDPSession(returned);
+        try {
+          const jar = await coldCdp.send("Network.getCookies", { urls: [origin.origin] });
+          const saved = jar.cookies.find((item) => item.name === "wayfarer_account");
+          const guestNow = await returned.evaluate(() => Date.now());
+          const session = await db.accountSession.findFirst({
+            where: { accountId: player.id },
+            select: {
+              expiresAt: true,
+              revokedAt: true,
+              account: { select: { profile: { select: { status: true } } } },
+            },
+          });
+          // Credential values and epochs are compared only in memory. Export
+          // finite storage/auth facts even when the genuine return is denied.
+          coldSession = {
+            cookiePresent: Boolean(saved),
+            expectedCookie: saved?.value === player.token,
+            persistent: Boolean(saved && !saved.session),
+            httpOnly: saved?.httpOnly === true,
+            cookieFutureOnGuest: Boolean(saved && saved.expires * 1000 > guestNow),
+            databaseSessionActive: Boolean(
+              session && session.revokedAt === null && session.expiresAt.getTime() > Date.now(),
+            ),
+            playerProfileActive: session?.account.profile?.status === "ACTIVE",
+            signInDestination: new URL(returned.url()).pathname === "/player/sign-in",
+          };
+        } finally {
+          await coldCdp.detach();
+        }
+        expect(coldOutcomes).toContain("UNAVAILABLE");
+        await returned.waitForFunction(() => Boolean(window.LandfallNative), undefined, { timeout: 15000 });
         await expect.poll(() => new URL(returned.url()).pathname, { timeout: 45000 }).toBe("/player");
         revokedReturn = true;
         measurements.push({
@@ -590,6 +633,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           measurements,
           cpuMeasurements,
           persistentSessionConfigured,
+          coldSession,
           noticeControls,
           serverReturnOutcomes,
           preliminaryGrossBounds: {

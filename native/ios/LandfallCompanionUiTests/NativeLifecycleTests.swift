@@ -5,14 +5,15 @@ final class NativeLifecycleTests: XCTestCase {
     @MainActor func testUnconfiguredShellReturnsFromHome() throws {
         let app = XCUIApplication()
         app.launch()
-        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "Landfall companion is not configured")).firstMatch.waitForExistence(timeout: 10))
+        let shell = app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "Landfall companion is not configured")).firstMatch
+        XCTAssertTrue(shell.waitForExistence(timeout: 10), "LANDFALL_INITIAL_SHELL_UNAVAILABLE")
         XCUIDevice.shared.press(.home)
-        XCTAssertTrue(app.wait(for: .runningBackground, timeout: 3) || app.wait(for: .runningBackgroundSuspended, timeout: 3))
+        XCTAssertTrue(app.wait(for: .runningBackground, timeout: 3) || app.wait(for: .runningBackgroundSuspended, timeout: 3), "LANDFALL_HOME_BACKGROUND_UNOBSERVED")
         app.activate()
-        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10))
-        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "Landfall companion is not configured")).firstMatch.exists)
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10), "LANDFALL_FOREGROUND_RETURN_UNOBSERVED")
+        XCTAssertTrue(shell.waitForExistence(timeout: 10), "LANDFALL_RETURNED_SHELL_UNAVAILABLE")
         app.terminate()
-        XCTAssertTrue(app.wait(for: .notRunning, timeout: 10))
+        XCTAssertTrue(app.wait(for: .notRunning, timeout: 10), "LANDFALL_TERMINATION_UNOBSERVED")
     }
 
     /** Translates only canonical lifecycle actions from the owned loopback lab. */

@@ -1316,3 +1316,28 @@ isnotclaimedPASS. TS/focusedESLintpass after synchronization changes.
 Active2fea Appleprimary37201983382/dispatch1791116656406, Applecompat+tablet
 37202023033/1791116699914, signedbackgroundbothprofiles37202018278/1791116695152.
 No fullacceptance/ordinaryqualification/merge/closure yet.
+
+## Two-profile signed reboot and cold-session diagnostic follow-up
+
+Run37202018278 on2fea1464 HARVESTED8FAIL onbothprofiles atREVOKED_ACTUAL_RETURN_HOP.
+BothhavepersistentHttpOnlysessionconfigurationtrue, actualBootReceiverGRANTED,
+registeredregionrecovery, bothactualnoticetaps observedonfirsthierarchy, first
+real307Journalreturn andsecondrealnotice. ExistingplatformlogsreportRETURNEDthen
+DENIED onboth; cookieflushdidnotclosecoldauthentication. Canonical0/cleanupPASS.
+ParentCPUprimary1.643%/13.968%,lowresource1.515%/13.848%; JournalPSSprimary92,598/
+106,626KiB,lowresource88,309/104,315KiB. Actualfirstreturn23,491.55/20,222.39ms;
+secondnotice1077.42/1065.49ms. PreliminarygrossboundsPASS, notfulljourneyPASS.
+
+NewfinitecoldSessiondiagnostic attachesonlyafteranactualplatformreturnevent and
+comparescookiepresence/match/persistence/HttpOnly/future-on-guest andrealDBsession/
+Playerprofileavailabilityinmemory. Onlybooleanfacts/destinationcategory are saved;
+actualDENIEDisretainedintheoutcomesarray. ExpectedUNAVAILABLEisnotrelaxed; no
+sessioncredentialisinjectedafterreboot andnoexpiryextended.
+
+Applecompatjob111435506607 onrun37202023033 failsnativebuildXCTeststage:11PASS/
+1FAIL/1SKIP. FailureisNativeLifecycleTests/testUnconfiguredShellReturnsFromHome;
+itsfinalshellassertionpreviouslyusedimmediate.exists afterforegroundOSstate.
+Nowwaitsfortheactualshellwiththeexisting10secondbound; eachlifecycleassertionhas
+afinitefailurelabel. Initial10sec/background3+3sec/foreground10sec/termination10sec
+remainunchanged. Exactfailedassertion isnotyetidentified; no productcauseclaimed.
+Interimsourceboundartifactandstructuredsummaryretained; fullrunharvestpending.
