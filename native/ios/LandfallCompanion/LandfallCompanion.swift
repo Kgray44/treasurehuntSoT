@@ -164,6 +164,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         }
     }
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        // A pending fix belongs to the previous precision/permission epoch.
+        // In particular, never deliver a precise fix after an approximate grant.
+        if acquiring { locationThrottle.start() }
         if manager.authorizationStatus != .notDetermined { permissionReply?(["state": permission()], nil); permissionReply = nil }
         if !["GRANTED", "APPROXIMATE"].contains(permission()) { stopLocation(); clearGeofences() }
         else if manager.authorizationStatus != .authorizedAlways { clearGeofences() }
@@ -187,11 +190,15 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if let value = error as? CLError, value.code == .locationUnknown { locationFailure="LOCATION_UNKNOWN";return }
         if let value = error as? CLError, value.code == .headingFailure { locationFailure="HEADING_FAILURE";manager.stopUpdatingHeading(); event(["type":"provider-health","family":"HEADING","state":"UNAVAILABLE"]); return }
+        if (error as? CLError)?.code == .denied { stopLocation() }
         locationFailure=(error as? CLError)?.code == .denied ? "DENIED":"OTHER"
         event(["type": "error"])
     }
-    func locationManagerDidPauseLocationUpdates(_ manager:CLLocationManager) { systemLocationPaused=true }
-    func locationManagerDidResumeLocationUpdates(_ manager:CLLocationManager) { systemLocationPaused=false }
+    func locationManagerDidPauseLocationUpdates(_ manager:CLLocationManager) { systemLocationPaused=true; locationThrottle.stop() }
+    func locationManagerDidResumeLocationUpdates(_ manager:CLLocationManager) {
+        systemLocationPaused=false
+        if foreground, acquiring, ["GRANTED","APPROXIMATE"].contains(permission()) {locationThrottle.start()}
+    }
     private func registerGeofence(_ payload: [String: Any], reply: @escaping (Any?, String?) -> Void) {
         guard CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) else { reply(["state": "UNSUPPORTED"], nil); return }
         guard foreground, location.authorizationStatus == .authorizedAlways, CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self), location.monitoredRegions.count < 20,

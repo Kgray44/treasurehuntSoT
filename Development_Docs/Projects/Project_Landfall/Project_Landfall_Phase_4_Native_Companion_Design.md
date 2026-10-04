@@ -24,6 +24,9 @@ source-timestamp throttle discarded the final callback within its interval, whil
 latest transient fix, schedules by monotonic delivery time and preserves the real
 observation timestamp. Stop/restart, revocation and suspension invalidate queued
 work; the shared30-second freshness/one-second future bounds also apply at delivery.
+Any authorization or precision change invalidates the previous pending fix before
+the new permission event. Denied errors stop acquisition; system pause clears the
+queue, and system resume can rearm it only while foreground consent remains valid.
 Four XCTest regressions cover final delivery without another callback, replacement,
 stop/restart, stale/future/invalid/out-of-order samples and power-interval changes.
 Native compile/test and actual focused OS rechecks remain required.
