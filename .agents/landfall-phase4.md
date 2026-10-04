@@ -986,3 +986,13 @@ e2dbc2e geofence dispatchhosted-e2dbc2e107f7-1791101692457 active. Next BLE
 lab diagnostics reuse the production strict schema and retain bounded received/
 valid/invalid/stale/future/hidden counts plus finite invalid field names. No
 sample/identity/RSSI/address is retained. FocusedBLE/privacy5checksPASS.
+
+9dfApple37187691206 HARVESTED2889 SUCCESS:11XCTestPASS/1skip, virtualoffline
+canonicalreconcilePASS; counts424msfirst/5-9mslater, authorize44ms, submit142ms,
+cleanupPASS. EarlierApplefailure remains retained. 9dfJournal37187687095
+HARVESTED45 FAIL atCLICK_NATIVE_JOURNAL_OPEN waitinglocator; screenshotviewed:
+visibleOpenjournalcontrol, noaccountprivatecontent, cleanupPASS. Exactsourceowned
+button selector+visiblecopy assertion+ordinarytap now used; noforce/JSdispatch.
+d823camera37188026917 HARVESTED19 FAIL: boundtrue/10frames/0decoded/0errors,
+EXPIRED. Earlypreviewblack beforefirstframe. Newpreviewwaitsforactualframe and
+syntheticQRquietmargin32 protectswidecamera crop. Pendingactualproof.

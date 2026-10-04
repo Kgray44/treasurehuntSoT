@@ -914,7 +914,19 @@ export async function executeLandfallOsScenario(
         if (cameraStarted && !results.has(index)) {
           // Only this public synthetic QR fixture can appear here. Capture the
           // actual preview; no decoded token or frame is passed to JavaScript.
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+          const deadline = Date.now() + 15000;
+          while (!results.has(index) && Date.now() < deadline) {
+            const raw = await adb(
+              ["shell", "run-as", "com.voyagewright.landfall", "cat", "files/landfall-camera-debug.json"],
+              5000,
+            ).catch(() => "");
+            try {
+              if (raw.length <= 1024 && JSON.parse(raw).frames > 0) break;
+            } catch {
+              /* Initialization diagnostics can be absent briefly. */
+            }
+            await new Promise((resolve) => setTimeout(resolve, 250));
+          }
           const file = path.join(destination, "native-camera-preview.png");
           const png = await labBinaryTool(host.android.adb!, [
             "-P",

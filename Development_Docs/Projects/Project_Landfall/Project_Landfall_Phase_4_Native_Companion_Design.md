@@ -1147,3 +1147,20 @@ field categories. Unknown field names collapse to UNRECOGNIZED_FIELD. Peer IDs,
 scan IDs, RSSI values, timestamps and payloads are not retained. Production
 acceptance remains strict; the diagnostic cannot turn a rejected sample into a
 valid observation. Five focused BLE and diagnostic privacy tests pass.
+
+Apple run37187691206 on9dfdfd93 passes11 XCTest cases with one unsupported hardware
+skip and virtual offline canonical reconciliation. Its real One Voyage submit
+takes142ms; first count takes424ms and later counts5-9ms. All cleanup passes.
+The earlier transient authority failure remains retained as failure evidence.
+
+Camera run37188026917 on d8234549 confirms binding, ten delivered frames, zero
+decode errors and zero decoded values before the web scanner's expiry. Its
+early preview is black before camera initialization finishes. The lab now waits
+for a delivered frame before capture and gives its1024px public synthetic QR a
+larger quiet margin to preserve the full code in a wide camera crop. This remains
+camera input only. Journal run37187687095 fails a nested role locator while its
+inspected screenshot shows the real opening button. The harness targets that
+source-owned button, asserts its visible copy and performs an ordinary tap;
+rendered tools/map/ranging assertions remain required. No success is inferred
+from a screenshot or selector change. Failed Journal receipts now classify
+EXECUTION_FAILED rather than EMULATOR_PROVEN.

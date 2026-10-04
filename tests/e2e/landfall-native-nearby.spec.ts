@@ -227,8 +227,14 @@ test("real native Journal pairing returns untrusted hints and background clears 
           stage = "CLICK_NATIVE_JOURNAL_OPEN";
           // Opening replaces its modal in place. Native CDP navigation signals may
           // remain pending; assert the resulting tools separately after a normal tap.
-          if (await opening.isVisible())
-            await opening.getByRole("button", { name: /Open the journal/u }).click({ noWaitAfter: true });
+          if (await opening.isVisible()) {
+            // Target the exact source-owned control to isolate the failed nested
+            // role lookup, and still require its normal visible copy and tap.
+            const open = opening.locator("button.wax-open");
+            await expect(open).toBeVisible();
+            await expect(open).toContainText("Open the journal");
+            await open.click({ noWaitAfter: true });
+          }
           stage = "NATIVE_JOURNAL_TOOLS";
           await expect(tools).toBeVisible({ timeout: 30000 });
           stage = "OPEN_NATIVE_MAP";
@@ -423,13 +429,17 @@ test("real native Journal pairing returns untrusted hints and background clears 
         }
         const after = await deviceLabSourceIdentity(["tests/e2e/landfall-native-nearby.spec.ts"]);
         const events = (await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })) - before;
+        const result =
+          passed && !remaining.length && events === 0 && source.sourceFingerprint === after.sourceFingerprint
+            ? "PASS"
+            : "FAIL";
         const receipt = {
           version: 1,
           deviceProfile: profile,
           configurations,
           source,
           sourceUnchanged: source.sourceFingerprint === after.sourceFingerprint,
-          evidenceClass: "EMULATOR_PROVEN",
+          evidenceClass: result === "PASS" ? "EMULATOR_PROVEN" : "EXECUTION_FAILED",
           nativeBridge: "REAL_ANDROID_OS",
           firstPartyApi: "REAL_OPTIMIZED_APPLICATION",
           validatedReportsObservedOnBoth: reports.length === 2 && reports.every((count) => count > 0),
@@ -439,10 +449,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           uncertainty: "UNKNOWN",
           canonicalAuthority: "ONE_VOYAGE_REAL_SQLITE",
           canonicalProgressionEvents: events,
-          result:
-            passed && !remaining.length && events === 0 && source.sourceFingerprint === after.sourceFingerprint
-              ? "PASS"
-              : "FAIL",
+          result,
           failedStage: passed ? null : stage,
           failedDeviceIndex: passed ? null : deviceIndex,
           journalResponseStatus,
