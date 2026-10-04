@@ -120,6 +120,19 @@ must not be relabeled as passing because fallback guidance is readable.
 
 ## Performance evidence and gaps
 
+Frozen37219804462 signed-notice receipts on clean c8e8b1de measure actual
+current-Journal returns45,387/50,691ms and revoked-membership returns13,061/14,029ms
+on primary/low-resource guests, all below60,000ms. Reboots33,406/32,499ms preserve
+guest identity and change boot identity; registered recovery reaches GRANTED.
+Full-Journal PSS peaks at108,001/122,264KiB below the preliminary512MiB bound.
+Native-parent CPU samples span0.849–1.333percent of all guest vCPU capacity;
+whole-guest activity spans8.722–92.936percent and includes renderer/OS activity
+without separate attribution. Both actual notices, authorized return, removed
+membership denial, native clearing, canonical0, source unchanged and cleanup PASS.
+These measurements establish bounded virtual execution; they do not establish
+whole-app CPU percentages, sustained thermal behavior, physical battery or field
+latency. The earlier observations below remain source-bound historical samples.
+
 Optimized Chromium run37187344378 on57b1a77e1094 measures a375px Journal with256
 released waypoints: cold1506.99ms, warm660.78ms and offline346.02ms. The measured
 origin usage is7,489,755bytes; it includes the whole isolated origin and is not a
