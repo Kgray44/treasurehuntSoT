@@ -963,3 +963,12 @@ lint/docs/authorityIPCchecks thenfreeze+radio/Journal/Applevirtualimpact.
 source/tree d0dbafe70ea2ab4be2956081fff48765fa01bd7b, fingerprint22e7194dc129a7e73882622133e7c1b43fea2f7afe17c697231474654953d513.
 DirtyproviderIPCvirtual-offline-canonical-reconcile PASS1/1 +cleanup; no qualification
 claimfromdirtyrun. Browser37187344378nowSUCCESS/unharvested. Camera37187340476active.
+
+57bbrowser37187344378 HARVESTED41 SUCCESS: 256-waypoint375px optimized Chromium
+cold1506.99ms/warm660.78ms/offline346.02ms, origin7489755bytes, zeroGPS/writes.
+Camera37187340476 HARVESTED17 FAIL atNATIVE_RESULT/OTHER afterpublickeyimport;
+nativeacquisitionresultpreviouslyunknown. New finite result state and debug-only
+camera bound/frame/decoder/error/outcome counters identify the remaining stage.
+Actualpreview capture is restricted to the public synthetic imagefilecamera case.
+No decoded token or frames go through lab JavaScript. NativeAPKs/TS/lint/docsPASS.
+9dfradio37187682729,Journal37187687095,Applevirtual37187691206 active; harvestnext.

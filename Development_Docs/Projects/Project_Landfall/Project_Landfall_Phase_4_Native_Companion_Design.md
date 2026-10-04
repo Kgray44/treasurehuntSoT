@@ -1111,3 +1111,15 @@ bridge filtering. The low-resource native bootstrap is bounded at45seconds;
 ordinary rendered-state assertions still govern Journal success. Authority IPC
 diagnostics record finite operation, outcome and elapsed/start-delay timings to
 distinguish dispatch delay from an in-worker timeout; no request data is recorded.
+
+Optimized Chromium run37187344378 on57b1a77 passes the browser suite and measures
+256-waypoint375px Journal/map readiness at1506.99ms cold,660.78ms warm and346.02ms
+offline, with7489755bytes whole-origin storage. No GPS request or canonical write
+occurs. These are single browser samples, not phone memory, CPU or energy evidence.
+Provider run37187347909 passes159 scenarios on each of Windows and Linux.
+Camera run37187340476 passes public-key import but fails the native result check.
+Its exact acquisition outcome was not previously retained. Diagnostic-only camera
+counters now distinguish binding, delivered frames, decode failures and terminal
+outcomes without retaining token text or image frames. The owned imagefile-camera
+scenario captures its public synthetic QR preview for inspection. Production
+camera frame privacy and identity-only verification remain unchanged.

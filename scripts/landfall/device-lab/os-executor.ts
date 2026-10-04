@@ -37,6 +37,7 @@ export async function executeLandfallOsScenario(
   const root = process.cwd();
   const cameraScenario = scenario.id === "qr-native-camera-valid";
   let cameraDiagnostic: Record<string, string | boolean> | null = null;
+  let cameraStarted = false;
   let cameraFixture: {
     keyId: string;
     publicKey: JsonWebKey;
@@ -231,10 +232,16 @@ export async function executeLandfallOsScenario(
     }
     try {
       const value = JSON.parse(body);
+      if (route === "/lab/camera-started" && cameraScenario && cameraFixture) {
+        cameraStarted = true;
+        response.end("{}");
+        return;
+      }
       if (
         route === "/lab/camera-diagnostic" &&
         cameraScenario &&
         ["NOT_STARTED", "PUBLIC_KEY_IMPORT", "SCANNER_START", "NATIVE_RESULT", "VERIFIED"].includes(value.stage) &&
+        ["NOT_RECEIVED", "VERIFIED", "DUPLICATE", "INVALID", "STOPPED", "EXPIRED"].includes(value.result) &&
         [
           "NotSupportedError",
           "SecurityError",
@@ -249,6 +256,7 @@ export async function executeLandfallOsScenario(
       ) {
         cameraDiagnostic = {
           stage: value.stage,
+          result: value.result,
           failure: value.failure,
           cryptoAvailable: value.cryptoAvailable,
           nativeBridgeAvailable: value.nativeBridgeAvailable,
@@ -856,6 +864,28 @@ export async function executeLandfallOsScenario(
         continue;
       }
       current = { index, action: step.action };
+      if (cameraScenario && step.action.type === "INSTALLATION_TOKEN") {
+        await wait(() => cameraStarted || results.has(index), 15000);
+        if (cameraStarted && !results.has(index)) {
+          // Only this public synthetic QR fixture can appear here. Capture the
+          // actual preview; no decoded token or frame is passed to JavaScript.
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          const file = path.join(destination, "native-camera-preview.png");
+          const png = await labBinaryTool(host.android.adb!, [
+            "-P",
+            process.env.LANDFALL_LAB_ADB_PORT ?? "5037",
+            "-s",
+            androidSerial!,
+            "exec-out",
+            "screencap",
+            "-p",
+          ]);
+          if (png.length < 24 || !png.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])))
+            throw new Error("ANDROID_SCREEN_CAPTURE_INVALID_PNG");
+          await writeFile(file, png);
+          artifacts.push({ path: file, sha256: createHash("sha256").update(png).digest("hex"), kind: "SCREENSHOT" });
+        }
+      }
       if (step.action.type === "LOCATION" && step.action.coordinate.type === "WGS84") {
         const coordinate = step.action.coordinate;
         await wait(() => locationReady.has(index) || results.has(index), 30000);
@@ -954,6 +984,35 @@ export async function executeLandfallOsScenario(
     });
   } finally {
     if (cameraFixture) {
+      let nativeDiagnostic: Record<string, number | string | boolean> | null = null;
+      try {
+        const raw = await adb([
+          "shell",
+          "run-as",
+          "com.voyagewright.landfall",
+          "cat",
+          "files/landfall-camera-debug.json",
+        ]);
+        if (raw.length <= 1024) {
+          const value = JSON.parse(raw);
+          if (
+            ["frames", "decoded", "errors"].every(
+              (key) => Number.isInteger(value[key]) && value[key] >= 0 && value[key] <= 100000,
+            ) &&
+            typeof value.bound === "boolean" &&
+            ["NOT_STARTED", "SCANNING", "EXPIRED", "DECODED", "BIND_FAILED", "STOPPED"].includes(value.outcome)
+          )
+            nativeDiagnostic = {
+              frames: value.frames,
+              decoded: value.decoded,
+              errors: value.errors,
+              bound: value.bound,
+              outcome: value.outcome,
+            };
+        }
+      } catch {
+        /* Missing native diagnostics remain unknown. */
+      }
       const file = path.join(destination, "native-camera-fixture.json");
       await writeFile(
         file,
@@ -961,6 +1020,7 @@ export async function executeLandfallOsScenario(
           {
             acquisition: "EMULATOR_IMAGE_FILE_CAMERA",
             diagnostic: cameraDiagnostic,
+            nativeDiagnostic,
             imageSha256: cameraFixture.imageSha256,
             tokenSha256: cameraFixture.tokenSha256,
             physicalPresence: "NOT_PROVEN",

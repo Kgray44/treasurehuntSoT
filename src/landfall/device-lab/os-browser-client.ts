@@ -230,6 +230,7 @@ async function main() {
     let stopDiagnostic: () => Promise<void> = async () => {};
     let cameraStage: "NOT_STARTED" | "PUBLIC_KEY_IMPORT" | "SCANNER_START" | "NATIVE_RESULT" | "VERIFIED" =
       "NOT_STARTED";
+    let cameraResult: InstallationResult["state"] | "NOT_RECEIVED" = "NOT_RECEIVED";
     try {
       if (action.type === "LOCATION") {
         if (world.kind === "VIRTUAL" && action.coordinate.type !== "WGS84") {
@@ -366,10 +367,12 @@ async function main() {
             const result = await new Promise<InstallationResult>((resolve, reject) => {
               timer = setTimeout(() => reject(new Error("NATIVE_CAMERA_ACQUISITION_TIMEOUT")), 35000);
               void scanner.scan("QR", resolve).then((reply) => {
+                if (reply === "GRANTED") void fetch("/lab/camera-started", { method: "POST", body: "{}" });
                 if (reply !== "GRANTED" && reply !== "COMPLETED") reject(new Error("NATIVE_CAMERA_START_FAILED"));
               }, reject);
             });
             cameraStage = "NATIVE_RESULT";
+            cameraResult = result.state;
             if (result.state !== "VERIFIED" || result.canComplete || result.physicalPresence !== "NOT_PROVEN")
               throw new Error("NATIVE_CAMERA_IDENTITY_NOT_VERIFIED");
             tokenState = "NEW";
@@ -549,6 +552,7 @@ async function main() {
           method: "POST",
           body: JSON.stringify({
             stage: cameraStage,
+            result: cameraResult,
             failure,
             cryptoAvailable: !!globalThis.crypto?.subtle,
             nativeBridgeAvailable: !!window.LandfallNative,
