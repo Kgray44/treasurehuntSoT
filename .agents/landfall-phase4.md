@@ -890,5 +890,15 @@ hostname currently unsupported. Correct server to supported -L tcp:5038. New
 readiness checks only listener inode held by the exact spawned PID, avoiding a
 bind probe and client startup race; signalCode catches SIGABRT as well as exitCode.
 Focused4 tests/TS/lint PASS. Fresh radio/Journal proof still required.
-911ea Android37184428733 just SUCCESS, harvest and inspect exact instrumentation
-and scenario/cleanup receipts before claims. Provider37184715171 remains active.
+911ea Android37184428733 HARVESTED49: actual9 native instrumentation tests PASS,
+including both GeofenceTests, plus5 canonical location/permission scenarios PASS;
+all fixture/transport cleanup PASS. Provider37184715171 HARVESTED338: actual157/157
+Windows and157/157 Linux summaries PASS with exact clean source911ea/treee29610.
+607450 radio37184872437 and Journal37184876730 remain active; no claims yet.
+
+Canonical device-reboot adds actual guest reboot translation only on explicitly
+enabled ephemeral hosted Linux/virtual Android, never a host or physical reboot.
+Requires changed kernel boot identity + completedboot + sameAVD before restoring
+owned reverse and launching; requires newready acknowledgment. Export categorical
+identity checks only. Provider translation remainslogical; real OS proof pending.
+Corpus now158; zero OneVoyage writes expected for this no-reconcile scenario.

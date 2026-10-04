@@ -111,6 +111,7 @@ jobs:
     timeout-minutes: 35
     env:
       LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
+      LANDFALL_LAB_GUEST_REBOOT: "true"
     steps:
       - uses: actions/checkout@v4
         with:

@@ -174,6 +174,22 @@ for (const [id, state, operation] of [
     ["SUSPENSION", "OEM_PROCESS_POLICY"],
   );
 scenario(
+  "device-reboot",
+  ["LOCATION", "OFFLINE_PACKAGE"],
+  [
+    location(),
+    lifecycle("RELAUNCH", "REBOOT"),
+    assertion("completionRequests", 0),
+    assertion("clientConfirmed", false),
+    location({ coordinate: physicalCoordinate(44.00002, -72) }),
+    assertion("serverConfirmed", false),
+    assertion("canonicalProgressionEvents", 0),
+  ],
+  ["OEM_PROCESS_POLICY", "FIELD_ENVIRONMENT"],
+  "ONE_VOYAGE",
+);
+cases[cases.length - 1].targets = ["provider-simulation", "android-emulator"];
+scenario(
   "background-geofence-arrival",
   ["GEOFENCE", "LOCATION"],
   [

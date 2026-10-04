@@ -6,6 +6,7 @@ import { build } from "esbuild";
 import { discoverDeviceLabHost, labBinaryTool, labTool } from "./host";
 import { startDeviceLabAuthority } from "./authority-client";
 import { deliverDeviceLabPosition } from "./location-control";
+import { rebootOwnedAndroidGuest } from "../../../src/landfall/device-lab/android-reboot";
 import {
   deviceLabStartupStageSchema,
   type DeviceLabStartupStage,
@@ -51,6 +52,12 @@ export async function executeLandfallOsScenario(
   let ready = false;
   let maximumCompletionRequests = 0;
   const startups: { restarted: boolean; leaseRestored: boolean; publicShellControlled: boolean }[] = [];
+  const guestReboots: {
+    index: number;
+    bootIdentityChanged: boolean;
+    avdIdentityPreserved: boolean;
+    elapsedMs: number;
+  }[] = [];
   const readinessStartedAt = Date.now();
   const clientStages: { stage: DeviceLabStartupStage; elapsedMs: number }[] = [];
   const startupRequests = { documents: 0, workers: 0, scripts: 0 };
@@ -496,8 +503,47 @@ export async function executeLandfallOsScenario(
           }
         } else if (action.state === "FOREGROUND" || action.state === "RELAUNCH") {
           if (action.operation === "REBOOT") {
-            steps.push({ index, action: "LIFECYCLE", state: "UNSUPPORTED", reason: "ANDROID_RECREATE_NOT_CONFIGURED" });
-            continue;
+            const enabled =
+              process.platform === "linux" &&
+              process.env.GITHUB_ACTIONS === "true" &&
+              process.env.RUNNER_ENVIRONMENT === "github-hosted" &&
+              process.env.LANDFALL_LAB_GUEST_REBOOT === "true";
+            if (!enabled) {
+              steps.push({
+                index,
+                action: "LIFECYCLE",
+                state: "UNSUPPORTED",
+                reason: "EPHEMERAL_GUEST_REBOOT_REQUIRED",
+              });
+              continue;
+            }
+            const before = startups.length;
+            guestReboots.push({
+              index,
+              ...(await rebootOwnedAndroidGuest(
+                {
+                  ephemeralHostedLinux: enabled,
+                  enabled,
+                  virtual: deviceConfiguration?.virtual === true,
+                  serial: androidSerial!,
+                  port,
+                },
+                { adb, now: () => Date.now(), delay: (ms) => new Promise((resolve) => setTimeout(resolve, ms)) },
+              )),
+            });
+            await adb(["shell", "input", "keyevent", "224"]);
+            await adb(["shell", "input", "keyevent", "82"]);
+            await adb([
+              "shell",
+              "am",
+              "start",
+              "-n",
+              "com.voyagewright.landfall/.LandfallActivity",
+              "--es",
+              "labOrigin",
+              `http://127.0.0.1:${port}`,
+            ]);
+            await wait(() => ready && startups.length > before, 60000);
           }
           if (action.operation === "ACTIVITY_RECREATE") {
             const before = startups.length;
@@ -513,14 +559,14 @@ export async function executeLandfallOsScenario(
             await wait(() => ready && startups.length > before, 60000);
             if ((await adb(["shell", "pidof", "com.voyagewright.landfall"])).trim() !== pid)
               throw new Error("ANDROID_RECREATION_CHANGED_PROCESS");
-          } else if (action.state === "RELAUNCH") {
+          } else if (action.state === "RELAUNCH" && action.operation !== "REBOOT") {
             await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
             const pid = await adb(["shell", "pidof", "com.voyagewright.landfall"]).catch((error: { code?: number }) =>
               error.code === 1 ? "" : "UNVERIFIED",
             );
             if (pid.trim()) throw new Error("ANDROID_TERMINATION_NOT_OBSERVED");
           }
-          if (action.operation !== "ACTIVITY_RECREATE") {
+          if (action.operation !== "ACTIVITY_RECREATE" && action.operation !== "REBOOT") {
             await adb(["shell", "input", "keyevent", "224"]);
             await adb(["shell", "input", "keyevent", "82"]);
             await adb([
@@ -829,6 +875,15 @@ export async function executeLandfallOsScenario(
         error instanceof Error && /^[A-Z_]{1,128}$/.test(error.message) ? error.message : "NATIVE_OS_EXECUTION_FAILED",
     });
   } finally {
+    const rebootFile = path.join(destination, "native-guest-reboots.json");
+    await writeFile(rebootFile, JSON.stringify(guestReboots, null, 2));
+    artifacts.push({
+      path: rebootFile,
+      sha256: createHash("sha256")
+        .update(await readFile(rebootFile))
+        .digest("hex"),
+      kind: "TEST_RESULT",
+    });
     const readinessFile = path.join(destination, "native-client-readiness.json");
     await writeFile(
       readinessFile,

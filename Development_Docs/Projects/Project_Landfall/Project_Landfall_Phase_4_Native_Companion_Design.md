@@ -51,9 +51,21 @@ across Activity instances. Clearing removes the encrypted descriptor, wake hints
 and this companion's notifications before requesting OS removal. The UI reports
 OS removal failure honestly. Backgrounding, teardown and Disable cancel unfinished
 setup; an already enabled reminder survives ordinary Journal teardown as intended.
-Native storage and delayed-service tests compile; hosted execution and an actual
-reboot/OS-region delivery receipt remain required. This recovery follows
+Hosted Android run37184428733 executes nine native tests, including encrypted
+storage and deliberately delayed service callbacks, and five canonical location
+and permission scenarios. All pass with cleanup. An actual reboot/OS-region
+delivery receipt remains required. This recovery follows
 [Android's geofence re-registration guidance](https://developer.android.com/develop/sensors-and-location/location/geofencing?hl=en).
+
+The canonical `device-reboot` scenario now requires an actual Android guest reboot
+on an explicitly enabled ephemeral hosted Linux runner. The executor requires a
+changed kernel boot identity, completed boot, the same AVD identity, restoration
+of only its owned reverse binding, and a new companion readiness acknowledgement.
+Exported receipts contain categorical identity checks, never raw guest identifiers.
+The scenario separates fresh fixes with reboot and asserts no canonical progression;
+the logical provider translation does not claim a kernel reboot. Local and physical
+devices cannot run this translation. Native execution remains pending and this
+scenario does not by itself prove geofence re-registration or delivered wake events.
 
 ## Origin and deployment configuration
 

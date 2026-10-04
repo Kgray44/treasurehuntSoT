@@ -39,6 +39,7 @@ const defaults = {
   ],
   ios: ["permission-denied-native", "permission-revoked-mid-route", ...common],
   android: [
+    "device-reboot",
     "permission-denied-native",
     "permission-approximate-native",
     "permission-revoked-mid-route",

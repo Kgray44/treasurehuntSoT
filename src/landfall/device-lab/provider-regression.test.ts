@@ -45,7 +45,7 @@ describe("Sounding Line consumes canonical Device Lab provider evidence", () => 
       );
       expect(receipt.canonicalProgressionEvents).toBe(
         scenario.canonicalAuthority === "ONE_VOYAGE"
-          ? scenario.id === "uwb-native-peer-session" || scenario.id.startsWith("ble-native-")
+          ? ["uwb-native-peer-session", "device-reboot"].includes(scenario.id) || scenario.id.startsWith("ble-native-")
             ? 0
             : 1
           : null,
