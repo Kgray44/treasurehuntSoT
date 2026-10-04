@@ -1,0 +1,62 @@
+import { expect, type Page } from "@playwright/test";
+import {
+  nativeJournalOpeningTouch,
+  nativeJournalOpeningGeometryTouch,
+} from "../../../src/landfall/device-lab/native-opening-control";
+
+/** Real public Journal UI: normal OS input from observed DOM and native bounds. */
+export async function openNativeJournalEntry(page: Page, adb: (args: string[]) => Promise<string>) {
+  const opening = page.getByRole("dialog", { name: "Open the voyage journal" });
+  const tools = page.getByRole("navigation", { name: "Journal tools" });
+  await expect
+    .poll(async () => (await opening.isVisible()) || (await tools.isVisible()), { timeout: 45000 })
+    .toBe(true);
+  if (await opening.isVisible()) {
+    const open = page.locator("button.wax-open");
+    await expect(open).toBeVisible();
+    await expect(open).toContainText("Open the journal");
+    const dump = "/data/local/tmp/landfall-public-opening.xml";
+    try {
+      const box = await open.boundingBox();
+      if (!box) throw new Error("NATIVE_OPENING_DOM_GEOMETRY_UNOBSERVED");
+      const viewport = await page.evaluate(() => ({
+        width: innerWidth,
+        height: innerHeight,
+        scale: visualViewport?.scale ?? 1,
+      }));
+      let target;
+      try {
+        await adb(["shell", "uiautomator", "dump", dump]);
+        target = nativeJournalOpeningTouch(await adb(["shell", "cat", dump]), { box, viewport });
+      } catch {
+        const raw = await adb([
+          "shell",
+          "run-as",
+          "com.voyagewright.landfall",
+          "cat",
+          "files/landfall-opening-geometry.json",
+        ]);
+        if (raw.length > 1024) throw new Error("NATIVE_OPENING_GEOMETRY_TOO_LARGE");
+        target = nativeJournalOpeningGeometryTouch(JSON.parse(raw), { box, viewport });
+      }
+      await adb(["shell", "input", "tap", String(target.x), String(target.y)]);
+    } catch (error) {
+      if (
+        !(await page.getByRole("dialog", { name: "Journal opening in progress" }).isVisible()) &&
+        !(await tools.isVisible())
+      )
+        throw error;
+    } finally {
+      await adb(["shell", "rm", "-f", dump]);
+    }
+    const progress = page.getByRole("dialog", { name: "Journal opening in progress" });
+    if (await progress.isVisible()) {
+      try {
+        await progress.getByRole("button", { name: "Skip ceremony", exact: true }).click({ noWaitAfter: true });
+      } catch (error) {
+        if (!(await tools.isVisible())) throw error;
+      }
+    }
+  }
+  await expect(tools).toBeVisible({ timeout: 30000 });
+}

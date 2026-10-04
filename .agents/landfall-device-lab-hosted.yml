@@ -273,3 +273,61 @@ jobs:
             artifacts/sounding-line/browser-suite-profile.json
             test-results
           retention-days: 14
+
+  android-background:
+    if: __RUN_ANDROID_BACKGROUND__
+    name: Native / Android signed notice and registered reboot / ${{ matrix.profile }}
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: __ANDROID_RADIO_PROFILES__
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
+      LANDFALL_NATIVE_BACKGROUND: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - run: npm ci --ignore-scripts
+      - name: Build debug loopback companion and independent documented FLP input
+        run: gradle -p native/android --console plain -PlandfallLabOrigin=http://127.0.0.1:4487 :app:assembleDebug :locationLab:assembleDebug
+      - name: Install public API-36 image
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libpulse0
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "emulator" "system-images;android-36;google_apis;x86_64"
+      - name: Enable ephemeral runner KVM access
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - run: npx --no-install playwright install --with-deps chromium
+      - name: Build optimized server with ephemeral memory-only signing and exercise real notices
+        run: |
+          export ANDROID_SDK_ROOT="$ANDROID_HOME"
+          npx --no-install tsx scripts/landfall/device-lab/native-background-run.ts __CANDIDATE_SHA__
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-android-background-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: |
+            artifacts/landfall-device-lab/**/radio-owner-receipt.json
+            artifacts/landfall-device-lab/**/native-background-return-receipt.json
+            artifacts/sounding-line/browser-runtime.json
+            artifacts/sounding-line/browser-suite-profile.json
+            test-results
+          retention-days: 14

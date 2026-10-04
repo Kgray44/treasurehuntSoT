@@ -19,7 +19,7 @@ export type OwnedAndroidRadioPair = {
   signal: AbortSignal;
 };
 type JournalExecutor = {
-  kind: "PRODUCTION_JOURNAL_PAIR";
+  kind: "PRODUCTION_JOURNAL_PAIR" | "PRODUCTION_BACKGROUND_RETURN";
   execute(resources: OwnedAndroidRadioPair): Promise<void>;
 };
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -319,13 +319,16 @@ export async function runLandfallAndroidRadioLab(journal?: JournalExecutor) {
     }
     await remember();
     if (journal) {
-      executorTimer = setTimeout(() => {
-        executorAbort.abort();
-        // Closing only these owned emulators breaks stalled WebView operations;
-        // the executor must finish its bounded cleanup before owner cleanup.
-        for (const value of owned.values())
-          if (value.executable.startsWith(`${sdk}/emulator/`)) void terminate(value, "SIGTERM");
-      }, 180000);
+      executorTimer = setTimeout(
+        () => {
+          executorAbort.abort();
+          // Closing only these owned emulators breaks stalled WebView operations;
+          // the executor must finish its bounded cleanup before owner cleanup.
+          for (const value of owned.values())
+            if (value.executable.startsWith(`${sdk}/emulator/`)) void terminate(value, "SIGTERM");
+        },
+        journal.kind === "PRODUCTION_BACKGROUND_RETURN" ? 1200000 : 600000,
+      );
       await journal.execute({
         adbPath: host.android.adb,
         adbPort: 5038,

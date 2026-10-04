@@ -12,11 +12,15 @@ Landfall Phase 4 is actively implemented on the owned candidate branch, with
 provider, browser, Android and hosted Apple evidence. Android guest reboot and
 native offline restart reconciliation pass. Actual QR camera decoding, three BLE
 protocols and Apple virtual offline reconciliation have passing hosted evidence.
-Geofence registration works after owned-emulator Location Accuracy is enabled;
-OS wake delivery and first-party native Journal pairing remain unresolved. The
-patched candidate passes2,648unit tests,159provider scenarios on each of Windows
-and Linux, and14optimized Phase4 browser cases. Full native/profile and retained
-Phase1–3 browser regression are running. Protected qualification and phase closure
+Actual Play services geofence delivery, encrypted wake hint storage and a generic
+notice pass with documented hosted FLP mock input and zero progression writes.
+The two-profile UWB/generic BLE/iBeacon/Eddystone matrix passes all eight cases.
+First-party native Journal pairing, signed notice return and registered-region
+reboot still require actual acceptance. The patched browser candidate passes
+2,652 unit tests,159 provider scenarios on each of Windows and Linux,50 retained
+Phase1–4 browser journeys and80 Android cases across four profiles. Apple restart
+and virtual offline matrix repairs are under focused hosted validation. Final
+exact-source qualification, protected integration and phase closure
 remain pending. Historical statements that Phase 4 is deferred describe the
 accepted Phase 3 baseline, not this unfinished candidate.
 

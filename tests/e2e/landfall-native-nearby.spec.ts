@@ -143,7 +143,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           stage = "ACQUIRE_NATIVE_REVERSE_BINDING";
           await adb(serial, ["reverse", binding, binding]);
           stage = "INSTALL_NATIVE_APK";
-          if (!(await adb(serial, ["install", "-r", resources.apkPath])).includes("Success"))
+          if (!(await adb(serial, ["install", "-r", resources.apkPath], 90000)).includes("Success"))
             throw new Error("LANDFALL_NATIVE_NEARBY_INSTALL_FAILED");
           stage = "RESET_NATIVE_PRIVATE_DATA";
           if (!(await adb(serial, ["shell", "pm", "clear", pkg])).includes("Success"))

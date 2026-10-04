@@ -16,7 +16,18 @@ export async function dispatchLandfallHostedLab(
   selectedProfiles?: string,
 ) {
   if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error("LANDFALL_HOSTED_CANDIDATE_INVALID");
-  if (!["all", "provider", "browser", "android", "android-radio", "android-journal", "ios"].includes(target))
+  if (
+    ![
+      "all",
+      "provider",
+      "browser",
+      "android",
+      "android-radio",
+      "android-journal",
+      "android-background",
+      "ios",
+    ].includes(target)
+  )
     throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   if (!["development", "candidate", "closure"].includes(tier)) throw new Error("LANDFALL_HOSTED_TIER_INVALID");
   if (
@@ -25,13 +36,24 @@ export async function dispatchLandfallHostedLab(
     selectedScenarios !== "first-party-native-journal-pair"
   )
     throw new Error("LANDFALL_HOSTED_JOURNAL_SCENARIO_INVALID");
-  if (selectedProfiles !== undefined && !["android", "android-radio", "android-journal", "ios"].includes(target))
+  if (
+    target === "android-background" &&
+    selectedScenarios !== undefined &&
+    selectedScenarios !== "first-party-native-background-return"
+  )
+    throw new Error("LANDFALL_HOSTED_BACKGROUND_SCENARIO_INVALID");
+  if (
+    selectedProfiles !== undefined &&
+    !["android", "android-radio", "android-journal", "android-background", "ios"].includes(target)
+  )
     throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
   const typedTier = tier as "development" | "candidate" | "closure";
   const selectedAndroid = hostedDeviceLabProfiles(
     "android",
     typedTier,
-    ["android", "android-radio", "android-journal"].includes(target) ? selectedProfiles : undefined,
+    ["android", "android-radio", "android-journal", "android-background"].includes(target)
+      ? selectedProfiles
+      : undefined,
   );
   const selectedApple = hostedDeviceLabProfiles("ios", typedTier, target === "ios" ? selectedProfiles : undefined);
   const androidProfiles = [
@@ -53,7 +75,7 @@ export async function dispatchLandfallHostedLab(
   const appleProfiles = selectedApple;
   const radioProfiles = selectedAndroid.filter((profile) => ["primary-phone", "low-resource"].includes(profile));
   if (
-    ["android-radio", "android-journal"].includes(target) &&
+    ["android-radio", "android-journal", "android-background"].includes(target) &&
     (radioProfiles.length === 0 || (selectedProfiles !== undefined && radioProfiles.length !== selectedAndroid.length))
   )
     throw new Error("LANDFALL_HOSTED_RADIO_PROFILE_UNSUPPORTED");
@@ -68,12 +90,14 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__RUN_ANDROID__", String(target === "all" || target === "android"))
     .replaceAll("__RUN_ANDROID_RADIO__", String(target === "all" || target === "android-radio"))
     .replaceAll("__RUN_ANDROID_JOURNAL__", String(target === "all" || target === "android-journal"))
+    .replaceAll("__RUN_ANDROID_BACKGROUND__", String(target === "all" || target === "android-background"))
     .replaceAll("__ANDROID_RADIO_PROFILES__", JSON.stringify(radioProfiles))
     .replaceAll("__ANDROID_PROFILES__", JSON.stringify(androidProfiles))
     .replaceAll("__APPLE_PROFILES__", JSON.stringify(appleProfiles));
   const scenarios = {
     browser: target === "browser" || target === "all" ? ["first-party-phase4-web"] : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
+    background: target === "android-background" || target === "all" ? ["first-party-native-background-return"] : [],
     radio: hostedDeviceLabScenarios("android-radio", target === "android-radio" ? selectedScenarios : undefined),
     ios: hostedDeviceLabScenarios("ios", target === "ios" || target === "all" ? selectedScenarios : undefined),
     android: hostedDeviceLabScenarios(

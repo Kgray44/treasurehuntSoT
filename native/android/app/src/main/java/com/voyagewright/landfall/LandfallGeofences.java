@@ -62,19 +62,33 @@ final class LandfallGeofences {
       Double.isFinite(longitude) && Math.abs(longitude) <= 180 && Double.isFinite(radius) && radius >= 100 && radius <= 10000 &&
       expiry > now && expiry-now <= 86400000;
   }
+  /** Play services limits request IDs to 100 characters. Keep the full
+   * authenticated claim only in encrypted app storage, never in the OS ID. */
+  static String requestId(String handle) {
+    if(handle==null || !handle.matches("[A-Za-z0-9_-]{32,2048}"))throw new IllegalArgumentException("Invalid region handle");
+    try {
+      byte[] digest=java.security.MessageDigest.getInstance("SHA-256").digest(handle.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+      StringBuilder value=new StringBuilder(64);
+      for(byte item:digest)value.append(String.format(java.util.Locale.ROOT,"%02x",item));
+      return value.toString();
+    }catch(java.security.NoSuchAlgorithmException error){throw new IllegalStateException("Region digest unavailable");}
+  }
+  static Geofence region(JSONObject row) {
+    return new Geofence.Builder().setRequestId(requestId(row.optString("returnHandle")))
+      .setCircularRegion(row.optDouble("latitude"),row.optDouble("longitude"),(float)row.optDouble("radiusMeters"))
+      .setExpirationDuration(row.optLong("expiresAt")-System.currentTimeMillis()).setNotificationResponsiveness(120000)
+      .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER|Geofence.GEOFENCE_TRANSITION_EXIT).build();
+  }
   static Backend backend(Context input) {
     Context context = input.getApplicationContext();
     PendingIntent intent = PendingIntent.getBroadcast(context, 0, new Intent(context, LandfallGeofenceReceiver.class),
       PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
     return new Backend() {
       public Task<Void> add(JSONObject row) {
-        Geofence fence = new Geofence.Builder().setRequestId(row.optString("returnHandle"))
-          .setCircularRegion(row.optDouble("latitude"), row.optDouble("longitude"), (float)row.optDouble("radiusMeters"))
-          .setExpirationDuration(row.optLong("expiresAt")-System.currentTimeMillis()).setNotificationResponsiveness(120000)
-          .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT).build();
+        Geofence fence = region(row);
         return LocationServices.getGeofencingClient(context).addGeofences(new GeofencingRequest.Builder().setInitialTrigger(0).addGeofence(fence).build(), intent);
       }
-      public Task<Void> remove(String handle) { return LocationServices.getGeofencingClient(context).removeGeofences(Collections.singletonList(handle)); }
+      public Task<Void> remove(String handle) { return LocationServices.getGeofencingClient(context).removeGeofences(Collections.singletonList(requestId(handle))); }
       public Task<Void> clear() { return LocationServices.getGeofencingClient(context).removeGeofences(intent); }
     };
   }

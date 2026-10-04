@@ -1159,3 +1159,22 @@ dea Journal37195552098HARVESTED45FAIL OSdumpcode1beforeanypairHTTP. Debugnative
 focused/attached/unclippedWebviewgeometry fallback, focusloss invalidatesfile; no
 rawcontent/keys. SixfocusedopeningtestsPASS; actualdebug+releasebuildPASS/release
 observerwrite bodiesempty. Next freeze+rerun Journal/failedApple/radio matrices.
+
+c546 radio37197120565HARVESTED42SUCCESS eightcases/twoprofiles: allUWB/genericBLE/
+iBeacon/Eddystone stepsPASS canonical0 cleanupPASS. c546 Journal37197116855
+HARVESTED43FAIL atINSTALL_NATIVE_APK actual15second SIGTERM beforeHTTP; next
+install90sec/pair600sec envelope. Apple37197123884 stillfocus3cases/twoprofiles.
+
+InstalledrealGMS21.3.0 Builder capsOSrequestID100chars; fullencryptedreturnclaim
+nowmapsSHA25664ID, receiverresolvesonlyactiveencryptedregistration/removaluses
+sameID. RealBuilder2048claiminstrumentationcase added/buildPASS, runtimepending.
+Newandroid-background hostedtarget/first-party-native-background-return job:
+memory-onlyephemeralEd25519 key→actualoptimizedserver; compiledebugloopback4487
+for actualnotifcoldstart; releaseHTTPSorigincontractunchanged. ActualPlayerUI
+registersclaim/GMSdelivers/normalobservedSystemUInoticetap/registeredguestreboot/
+actualBootReceiverGRANTED/secondnotice afterREMOVEDmembership→actualPlayerreturn.
+Canonical0/sourceunchanged/verifiedcleanupmandatory. FullJournalPSS512MiB and
+notice-return60sec preliminarygrossbounds; nativeCPU/battery acceptance still
+pending. Ninefocusednotice/openingtestsPASS; TS/lint/Androiddebug+test+releasebuild
+PASS. Rawclaim/cookie/key/UI hierarchy neverretained. Noactualnewreturn/rebootPASS
+orfinalprotectedqualification/catalogpromotion yet.

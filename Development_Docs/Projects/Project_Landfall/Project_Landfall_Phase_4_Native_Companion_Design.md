@@ -1470,3 +1470,40 @@ viewport scale. Loss of native focus invalidates the record. No UI hierarchy, co
 key or private content is written. Six opening-boundary tests pass; APK builds pass
 and actual release analysis confirms empty observer/write bodies. Fresh actual
 Journal and matrix execution remain required. No production claim is promoted.
+
+## Full claim boundary and real notification-return continuation
+
+Radio run37197120565 on c546143c passes all eight canonical cases across primary
+and low-resource profiles: UWB, generic BLE, iBeacon and Eddystone UID. Each
+receipt binds unchanged source, actual native callbacks, zero canonical events
+and successful cleanup. Optional native observations remain untrusted with
+nullable RSSI/UNKNOWN uncertainty; RF accuracy and peer identity are not proved.
+Journal run37197116855 fails at its first APK installation with a15second tool
+timeout, before Journal opening or any nearby HTTP request. Installation now has
+an explicit90second window and the two-device Journal executor a600second finite
+envelope; normal UI, actual response and native report assertions remain required.
+
+Inspection of installed Play services location21.3.0's actual Geofence Builder
+implementation confirms a100character request-ID limit. The32character synthetic
+wake handle did not exercise a complete encrypted first-party claim. Android now
+uses the SHA-256 digest as the64character OS request ID and resolves it against
+the currently active encrypted registration before reading the full claim.
+Removal uses the same ID; obsolete/foreign/cleared registrations fail closed.
+The added instrumentation case uses the real installed Builder with a2048character
+handle and checks replacement and removal boundaries, rather than accepting a
+fake backend as Builder proof. Compilation passes; actual execution is pending.
+
+The dedicated first-party background job uses a memory-only ephemeral signing
+key in the real optimized application process and an explicit compile-time debug
+loopback origin for notification cold start. Release origins retain their HTTPS
+configuration contract. The real Player UI prepares the claim and native region;
+documented FLP mock input must cause actual Play services receiver delivery.
+Normal OS touches target only the unique observed generic notification. The
+registered virtual guest then really reboots, the actual boot receiver must
+confirm registration, and a second delivered notice is tapped after membership
+revocation. Receipts export states/counts, source binding, cleanup and full
+Journal PSS/notice-return timings, never claims, cookies or raw UI hierarchy.
+The1200second executor envelope covers real baseline/transition intervals and
+reboot;60second return and512MiB PSS limits are preliminary gross regression
+bounds, not field/battery acceptance. New notice-target boundary tests and
+TypeScript/lint pass; no actual notification/reboot result is yet claimed.

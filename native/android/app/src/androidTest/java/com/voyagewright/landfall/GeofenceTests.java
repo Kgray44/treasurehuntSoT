@@ -27,6 +27,24 @@ public final class GeofenceTests {
     return new JSONObject().put("returnHandle","SYNTHETIC_LAB_HANDLE_ONLY_0000000001").put("latitude",44.125).put("longitude",-72.375)
       .put("radiusMeters",150).put("expiresAt",System.currentTimeMillis()+60000).put("notifications",true);
   }
+  @Test public void fullClaimsUseBoundedOsIdsAndResolveOnlyTheActiveEncryptedRegion() throws Exception {
+    LandfallSecureHints.clear(context);
+    try {
+      String handle="A".repeat(2048);
+      JSONObject row=registration().put("returnHandle",handle);
+      // Exercise the installed real Play services Builder, not a fake backend.
+      com.google.android.gms.location.Geofence region=LandfallGeofences.region(row);
+      assertEquals(64,region.getRequestId().length());assertFalse(region.getRequestId().contains(handle));
+      assertTrue(LandfallSecureHints.register(context,row));
+      assertEquals(handle,LandfallSecureHints.handleForRequest(context,region.getRequestId()));
+      assertNull(LandfallSecureHints.handleForRequest(context,handle));
+      assertNull(LandfallSecureHints.handleForRequest(context,LandfallGeofences.requestId("B".repeat(2048))));
+      assertTrue(LandfallSecureHints.register(context,registration()));
+      assertNull(LandfallSecureHints.handleForRequest(context,region.getRequestId()));
+      LandfallSecureHints.clear(context);
+      assertNull(LandfallSecureHints.handleForRequest(context,region.getRequestId()));
+    }finally{LandfallSecureHints.clear(context);}
+  }
   @Test public void restartRegionIsEncryptedSingleBoundedAndClearable() throws Exception {
     LandfallSecureHints.clear(context);
     try {

@@ -28,6 +28,13 @@ final class LandfallSecureHints {
     if(!LandfallGeofences.valid(row,System.currentTimeMillis()))throw new IllegalArgumentException();return row;
   }catch(Exception ignored){clear(context);return null;}}
   static synchronized boolean active(Context context,String handle){JSONObject row=registration(context);return row!=null && handle!=null && handle.equals(row.optString("returnHandle"));}
+  static synchronized String handleForRequest(Context context,String requestId){
+    if(requestId==null || !requestId.matches("[a-f0-9]{64}"))return null;
+    JSONObject row=registration(context);if(row==null)return null;
+    String handle=row.optString("returnHandle");
+    return java.security.MessageDigest.isEqual(requestId.getBytes(java.nio.charset.StandardCharsets.US_ASCII),
+      LandfallGeofences.requestId(handle).getBytes(java.nio.charset.StandardCharsets.US_ASCII))?handle:null;
+  }
   static synchronized boolean notices(Context context,String handle){JSONObject row=registration(context);return row!=null && handle!=null && handle.equals(row.optString("returnHandle")) && row.optBoolean("notifications",false);}
   private static SecretKey key() throws Exception {
     KeyStore store=KeyStore.getInstance("AndroidKeyStore");store.load(null);

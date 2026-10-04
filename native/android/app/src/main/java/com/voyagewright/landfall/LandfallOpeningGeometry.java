@@ -16,13 +16,13 @@ final class LandfallOpeningGeometry {
     if(!BuildConfig.DEBUG)return;
     try{
       Uri uri=Uri.parse(view.getUrl()==null?"":view.getUrl());
-      if(!"http".equals(uri.getScheme()) || !"127.0.0.1".equals(uri.getHost()) || uri.getPort()<=0)return;
+      if(!"http".equals(uri.getScheme()) || !"127.0.0.1".equals(uri.getHost()) || uri.getPort()<=0){view.getContext().deleteFile("landfall-opening-geometry.json");return;}
       android.graphics.Rect visible=new android.graphics.Rect();
       boolean shown=view.isShown() && view.isAttachedToWindow() && view.hasWindowFocus() && view.getWidth()>0 && view.getHeight()>0 &&
         view.getGlobalVisibleRect(visible) && visible.width()==view.getWidth() && visible.height()==view.getHeight();
       int[] origin=new int[2];view.getLocationOnScreen(origin);
       int right=origin[0]+view.getWidth(),bottom=origin[1]+view.getHeight();
-      if(origin[0]<0 || origin[1]<0 || right>4096 || bottom>4096)return;
+      if(origin[0]<0 || origin[1]<0 || right>4096 || bottom>4096){view.getContext().deleteFile("landfall-opening-geometry.json");return;}
       JSONObject value=new JSONObject().put("version",1).put("packageName",view.getContext().getPackageName())
         .put("shown",shown).put("attached",view.isAttachedToWindow()).put("focused",view.hasWindowFocus())
         .put("left",origin[0]).put("top",origin[1]).put("right",right).put("bottom",bottom);

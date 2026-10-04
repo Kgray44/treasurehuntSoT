@@ -14,7 +14,16 @@ android {
     testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
   }
   buildFeatures { buildConfig true }
-  buildTypes { release { minifyEnabled false } }
+  buildTypes {
+    debug {
+      // An explicit compile-time loopback origin lets an owned guest prove a
+      // notification cold start after reboot, without persisting runtime extras.
+      def labOrigin=providers.gradleProperty('landfallLabOrigin').getOrElse('')
+      if(labOrigin && !labOrigin.matches('http://127\\.0\\.0\\.1:[0-9]{2,5}'))throw new GradleException('landfallLabOrigin must be a debug loopback origin')
+      if(labOrigin)buildConfigField 'String','LANDFALL_ORIGIN','"'+labOrigin+'"'
+    }
+    release { minifyEnabled false }
+  }
   compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }
 dependencies {
