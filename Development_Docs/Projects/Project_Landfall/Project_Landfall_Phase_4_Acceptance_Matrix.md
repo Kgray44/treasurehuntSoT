@@ -18,6 +18,33 @@ fresh qualification before protected integration.
 
 ## Implemented capability and evidence boundaries
 
+The latest evidence retains its original source identities. Clean fb6146ce passes
+475unit files/2,691tests and an isolated optimized build/client privacy scan.
+Browser37217125284 onbbda4541 passes all53retained journeys after the authenticated
+reading-state Escape race correction; three current browser screenshots receive
+bounded visual review. Providers37216130695 on c3ba3167 pass159cases on each of
+Windows/Linux, and Android37216122961 passes20cases on each of four distinct
+profiles plus all native instrumentation receipts.
+
+Six BLE cases pass on c3ba3167. UWB37217634667 onfb6146ce passes both distinct
+profiles: actual CAPABILITIES_READY, untrusted hints on both devices, verified
+stop, canonical0 and cleanupPASS. Current primary Journal pairing passes on
+c3ba3167. Low-memory37217638812 onfb6146ce remains failed before pairing: the
+actual OS screenshot shows System UI's ANR overlay, and native geometry reports
+no window focus. A narrowly observed System UI Wait recovery is under actual
+recheck; application ANRs and arbitrary prompts are never dismissed.
+
+iOS region monitoring is available and actual registration/background/location
+inputs pass. The two focused failures occur before the wake-hint assertion.
+Run37216787499 identifies the lab's foreground-wait deadline expiring during its
+intentional363-second background step; the separate suspension/recovery bounds
+now pass four regressions, and actual recheck37218201954 is running. No delivered
+iOS region hint is claimed yet. Exact d2add7a1 tracked-source privacy scan reports
+zero violations/six classifications. Schema/migration source is unchanged from
+the protected base; the current lockfile retains its zero-production-findings
+audit. Final native matrices, exact-source protected qualification and closure
+remain open.
+
 | Requirement                                 | Candidate source / available evidence                                                                                                                                                                                                                                                                                                                                                                                                                    | Remaining acceptance                                                                                                                                                                           |
 | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Sole progression authority                  | Shared authorized evidence/reconciliation calls One Voyage. Native providers, package installation and return navigation are not writers. Actual offline/restart reconciliation has written one expected canonical event through real isolated SQLite.                                                                                                                                                                                                   | Final candidate regression, exact-head ordinary Sounding Line and landed verification.                                                                                                         |

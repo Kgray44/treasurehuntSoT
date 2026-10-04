@@ -8,7 +8,22 @@ last_reviewed: 2026-10-04
 
 # Current status
 
-Landfall Phase 4 is actively implemented on the owned candidate branch, with
+The latest Landfall Phase4 snapshot passes475unit files/2,691tests and isolated
+optimized build/client privacy scan onfb6146ce;53retained browser journeys on
+bbda4541;159provider cases per Windows/Linux host and80Android cases across four
+distinct profiles on c3ba3167. Both corrected-profile UWB cases pass onfb6146ce,
+with untrusted hints, native stop, zero canonical writes and cleanup.
+
+Current primary Journal pairing passes, while the newest low-memory case fails
+before pairing because Android's System UI ANR overlays the public Journal and
+removes native window focus. A bounded observed Wait-control recovery is being
+rechecked. iOS confirms real region monitoring/registration and background OS
+location inputs, but its wake-hint assertion remains unproved. A lab suspension
+deadline correction is under actual recheck. Complete current native matrices,
+ordinary protected qualification, merge, landed verification and closure remain
+open; no Phase4 catalog promotion has occurred.
+
+Earlier original-source Landfall Phase 4 evidence remains retained, with
 provider, browser, Android and hosted Apple evidence. Android guest reboot and
 native offline restart reconciliation pass. Actual QR camera decoding, three BLE
 protocols and Apple virtual offline reconciliation have passing hosted evidence.
