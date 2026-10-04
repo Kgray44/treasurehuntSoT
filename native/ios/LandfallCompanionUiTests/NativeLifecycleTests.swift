@@ -42,6 +42,7 @@ final class NativeLifecycleTests: XCTestCase {
             if type == "NOTIFICATION" {
                 let springboard=XCUIApplication(bundleIdentifier:"com.apple.springboard")
                 var result="FAIL"
+                var noticeDiagnostic:[String:Any]=[:]
                 if action["operation"] as? String == "DELIVER" {
                     let allow=springboard.alerts.buttons.matching(identifier:"Allow")
                     if allow.firstMatch.waitForExistence(timeout:20), allow.count == 1 {allow.firstMatch.tap();result="PASS"}
@@ -49,13 +50,25 @@ final class NativeLifecycleTests: XCTestCase {
                     // Open Notification Center and tap only the one observed generic
                     // Landfall notice. Never activate a PendingIntent/delegate directly.
                     springboard.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.005)).press(forDuration:0.1,thenDragTo:springboard.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.8)))
-                    let notice=springboard.staticTexts.matching(NSPredicate(format:"label == %@","Your journey may be nearby"))
-                    if notice.firstMatch.waitForExistence(timeout:15), notice.count == 1 {
-                        notice.firstMatch.tap()
-                        if app.wait(for:.runningForeground,timeout:15) {result="PASS"}
+                    let title="Your journey may be nearby"
+                    let buttons=springboard.buttons.matching(NSPredicate(format:"label CONTAINS %@",title))
+                    let cards=springboard.otherElements.matching(NSPredicate(format:"label CONTAINS %@ AND label CONTAINS %@",title,"No visit has been confirmed."))
+                    let text=springboard.staticTexts.matching(NSPredicate(format:"label == %@",title))
+                    // SpringBoard can expose a notice as one combined accessible
+                    // card/button rather than a separate title static text.
+                    var notice:XCUIElement?
+                    if buttons.firstMatch.waitForExistence(timeout:5),buttons.count == 1 {notice=buttons.firstMatch}
+                    else if cards.firstMatch.waitForExistence(timeout:5),cards.count == 1 {notice=cards.firstMatch}
+                    else if text.firstMatch.waitForExistence(timeout:5),text.count == 1 {notice=text.firstMatch}
+                    var tapped=false,foregroundObserved=false
+                    if let notice=notice,notice.isHittable {
+                        notice.tap();tapped=true
+                        foregroundObserved=app.wait(for:.runningForeground,timeout:15)
+                        if foregroundObserved {result="PASS"}
                     }
+                    noticeDiagnostic=["buttonTitleCount":min(buttons.count,64),"combinedCardCount":min(cards.count,64),"staticTitleCount":min(text.count,64),"tapped":tapped,"foregroundObserved":foregroundObserved]
                 }
-                try await post(origin,"/lab/os/result",["index":index,"state":result])
+                try await post(origin,"/lab/os/result",["index":index,"state":result,"noticeUi":noticeDiagnostic])
                 continue
             }
             guard let state=action["state"] as? String else {throw NSError(domain:"LandfallLab",code:3)}
