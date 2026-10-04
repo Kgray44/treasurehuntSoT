@@ -25,6 +25,11 @@ last_reviewed: 2026-10-04
   cancellation and receiver delivery still resolve only the active encrypted
   registration and cannot record an arrival.
 
+- Corrected candidate nearby-pairing timers for device clock skew while preserving
+  server expiry and the bounded exchange. The Android companion now persists its
+  existing cookie jar off the UI thread at lifecycle boundaries; cold notice
+  returns still require current server authentication and membership.
+
 - Closed the Landfall physical/virtual v1.1 audit corrections through protected PR #675: ordinary physical regions preserve authorized private Player context, strict bounded source bundles independently qualify real checks through One Voyage, pending completion rechecks expiry at delivery, and Creator findings reflect actual provider availability. Watchglass remains not configured; exact-head hosted qualification, 2,364 full-unit tests, 39 production scenarios and landed smoke pass. The amendment record preserves historical failures and permanent closure evidence.
 
 - Added Project Landfall Phase 3 contextual navigation: aligned floor/site maps and region hierarchies, corridor continuity and uncertainty, foreground motion/heading/elevation hints, region-gated landmark reference comparison, independent exact-target observation, accessible fallbacks and sanitized Creator/Captain/replay projections. Physical field quality remains separate evidence; native/background Phase 4 work is deferred.

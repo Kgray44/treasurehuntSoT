@@ -118,18 +118,23 @@ export async function startDeviceLabAuthority(
     new Promise((resolve, reject) => {
       const id = ++sequence;
       const sentAt = Date.now();
-      const timer = setTimeout(() => {
-        const waiter = pending.get(id);
-        if (commandDiagnostics.length < 512)
-          commandDiagnostics.push({
-            operation,
-            outcome: "TIMEOUT",
-            elapsedMs: Date.now() - sentAt,
-            startedAfterMs: waiter?.startedAfterMs ?? null,
-          });
-        pending.delete(id);
-        reject(new Error("LANDFALL_LAB_AUTHORITY_TIMEOUT"));
-      }, 15000);
+      // The hosted read request's 15-second IPC deadline fired after 23.3
+      // seconds under XCTest load. Submission/fix bounds remain separate.
+      const timer = setTimeout(
+        () => {
+          const waiter = pending.get(id);
+          if (commandDiagnostics.length < 512)
+            commandDiagnostics.push({
+              operation,
+              outcome: "TIMEOUT",
+              elapsedMs: Date.now() - sentAt,
+              startedAfterMs: waiter?.startedAfterMs ?? null,
+            });
+          pending.delete(id);
+          reject(new Error("LANDFALL_LAB_AUTHORITY_TIMEOUT"));
+        },
+        operation === "counts" ? 30000 : 15000,
+      );
       pending.set(id, { resolve, reject, timer, operation, sentAt, startedAfterMs: null });
       child.send({ id, operation, value }, (error) => {
         if (error) {

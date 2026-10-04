@@ -17,6 +17,7 @@ export function nativeLandfallNoticeTouch(xml: string) {
       throw new Error("NATIVE_NOTICE_BOUNDS_INVALID");
     return [{ x: Math.floor((left + right) / 2), y: Math.floor((top + bottom) / 2) }];
   });
-  if (rows.length !== 1) throw new Error("NATIVE_NOTICE_UNOBSERVED_OR_AMBIGUOUS");
+  if (rows.length === 0) throw new Error("NATIVE_NOTICE_UNOBSERVED");
+  if (rows.length !== 1) throw new Error("NATIVE_NOTICE_AMBIGUOUS");
   return rows[0];
 }

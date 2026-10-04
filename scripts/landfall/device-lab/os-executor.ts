@@ -584,13 +584,15 @@ export async function executeLandfallOsScenario(
           step.action.type === "ASSERT" &&
           ["serverConfirmed", "canonicalProgressionEvents", "completionRequests"].includes(step.action.field)
         ) {
-          const counts = await authority.counts();
+          // Client request count is observed from the actual native page. Only
+          // server confirmation/canonical events require a fresh database read.
+          const counts = step.action.field === "completionRequests" ? null : await authority.counts();
           const actual =
             step.action.field === "completionRequests"
               ? maximumCompletionRequests
               : step.action.field === "serverConfirmed"
-                ? counts.canonicalProgressionEvents > 0
-                : counts.canonicalProgressionEvents;
+                ? counts!.canonicalProgressionEvents > 0
+                : counts!.canonicalProgressionEvents;
           steps.push({
             index,
             action: "ASSERT",

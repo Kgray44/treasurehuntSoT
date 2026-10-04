@@ -253,6 +253,6 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
     String handle=intent.getStringExtra("returnHandle");
     if(web!=null && handle!=null && handle.matches("[A-Za-z0-9_-]{32,2048}"))openReturn(intent);
   }
-  @Override public void onPause() { try { event(new JSONObject().put("type", "lifecycle").put("state", "BACKGROUND")); } catch(Exception ignored){} foreground=false; stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null)web.onPause(); super.onPause(); }
-  @Override public void onDestroy() { stopLocation(); if(power!=null)power.close(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null){web.destroy();web=null;} super.onDestroy(); }
+  @Override public void onPause() { try { event(new JSONObject().put("type", "lifecycle").put("state", "BACKGROUND")); } catch(Exception ignored){} foreground=false; stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null){web.onPause();LandfallCookiePersistence.request();} super.onPause(); }
+  @Override public void onDestroy() { stopLocation(); if(power!=null)power.close(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null){LandfallCookiePersistence.request();web.destroy();web=null;} super.onDestroy(); }
 }

@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { z } from "zod";
 import type { PlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
+import { qualifyNearbyPairLease, type NearbyPairLease } from "@/landfall/nearby-pairing-lease";
 import {
   landfallNativeHost,
   subscribeLandfallNativeLifecycle,
@@ -17,6 +18,7 @@ const secret = z.string().regex(/^[A-Za-z0-9_-]{43}$/);
 const base = {
   available: z.literal(true),
   expiresAt: z.number().int().nonnegative(),
+  remainingMs: z.number().int().min(1).max(45000),
   peerVerified: z.literal(false),
   canComplete: z.literal(false),
 };
@@ -51,7 +53,9 @@ type Active = {
   abort: AbortController;
   timer?: ReturnType<typeof setTimeout>;
   attempt: number;
+  lease?: NearbyPairLease;
 };
+type Exchange = { body: unknown; requestedAt: number };
 
 /** Optional peer hints never enter the progression or location evidence writer. */
 export function LandfallNearbyPanel(props: { bootstrap: PlayerLandfallBootstrap; csrfToken: string }) {
@@ -93,6 +97,7 @@ function NearbyControls({ bootstrap, csrfToken }: { bootstrap: PlayerLandfallBoo
       if (signal?.aborted) abort.abort();
       else signal?.addEventListener("abort", onAbort, { once: true });
       const timer = setTimeout(() => abort.abort(), 8000);
+      const requestedAt = performance.now();
       try {
         const response = await fetch(endpoint, {
           method: "POST",
@@ -103,7 +108,7 @@ function NearbyControls({ bootstrap, csrfToken }: { bootstrap: PlayerLandfallBoo
           signal: abort.signal,
         });
         if (!response.ok) throw new Error(response.status === 503 ? "NOT_CONFIGURED" : "PAIR_CHANGED");
-        return await response.json();
+        return { body: (await response.json()) as unknown, requestedAt };
       } finally {
         clearTimeout(timer);
         signal?.removeEventListener("abort", onAbort);
@@ -168,9 +173,9 @@ function NearbyControls({ bootstrap, csrfToken }: { bootstrap: PlayerLandfallBoo
       void stop(false);
     };
   }, [stop]);
-  const arm = (current: Active, expiresAt: number) => {
-    const remaining = expiresAt - Date.now();
-    if (remaining <= 0 || remaining > 45000) throw new Error("PAIR_CHANGED");
+  const arm = (current: Active, response: { expiresAt: number; remainingMs: number }, requestedAt: number) => {
+    const lease = qualifyNearbyPairLease(response, requestedAt, performance.now(), Date.now(), current.lease);
+    current.lease = lease;
     clearTimeout(current.timer);
     current.timer = setTimeout(() => {
       if (active.current !== current) return;
@@ -179,14 +184,15 @@ function NearbyControls({ bootstrap, csrfToken }: { bootstrap: PlayerLandfallBoo
       setCode("");
       setBusy(false);
       void stop(false);
-    }, remaining);
+    }, lease.remainingMs);
+    return lease.nativeExpiresAt;
   };
-  const start = async (current: Active, raw: unknown) => {
-    const response = ready.parse(raw);
+  const start = async (current: Active, exchange: Exchange) => {
+    const response = ready.parse(exchange.body);
     if (response.expiresAt !== response.configuration.expiresAt) throw new Error("PAIR_CHANGED");
     if (response.platform !== current.device.platform || current.attempt !== generation.current)
       throw new Error("PAIR_CHANGED");
-    arm(current, response.expiresAt);
+    const nativeExpiresAt = arm(current, response, exchange.requestedAt);
     const receive = (projection: { rangeAvailable: boolean; state: string }) => {
       if (current.attempt !== generation.current) return;
       setMessage(
@@ -198,9 +204,9 @@ function NearbyControls({ bootstrap, csrfToken }: { bootstrap: PlayerLandfallBoo
       );
     };
     if (current.device.platform === "ANDROID" && response.platform === "ANDROID")
-      await current.device.provider.start(response.configuration, receive);
+      await current.device.provider.start({ ...response.configuration, expiresAt: nativeExpiresAt }, receive);
     else if (current.device.platform === "IOS" && response.platform === "IOS")
-      await current.device.provider.start(response.configuration, receive);
+      await current.device.provider.start({ ...response.configuration, expiresAt: nativeExpiresAt }, receive);
     else throw new Error("PAIR_CHANGED");
     if (!["INITIALIZING", "UNTRUSTED"].includes(current.device.provider.snapshot().state))
       throw new Error("PAIR_CHANGED");
@@ -233,7 +239,7 @@ function NearbyControls({ bootstrap, csrfToken }: { bootstrap: PlayerLandfallBoo
         state: z.literal("CONFIGURED"),
         peerVerified: z.literal(false),
         canComplete: z.literal(false),
-      }).parse(await call({ operation: "STATUS" }, abort.signal));
+      }).parse((await call({ operation: "STATUS" }, abort.signal)).body);
       if (attempt !== generation.current) return;
       const host = landfallNativeHost(),
         world = bootstrap.runtimeDefinition.worldspaces[0];
@@ -263,11 +269,11 @@ function NearbyControls({ bootstrap, csrfToken }: { bootstrap: PlayerLandfallBoo
         current.abort.signal,
       );
       if (attempt !== generation.current) return;
-      current.handle = secret.parse(response.handle);
+      current.handle = z.object({ handle: secret }).parse(response.body).handle;
       if (join) await start(current, response);
       else {
-        const result = waiting.parse(response);
-        arm(current, result.expiresAt);
+        const result = waiting.parse(response.body);
+        arm(current, result, response.requestedAt);
         setCode(secret.parse(result.code));
         setRole("OWNER");
         setMessage(
@@ -302,7 +308,9 @@ function NearbyControls({ bootstrap, csrfToken }: { bootstrap: PlayerLandfallBoo
     try {
       const response = await call({ operation: "READ", handle: current.handle }, current.abort.signal);
       if (current.attempt !== generation.current) return;
-      if (waiting.safeParse(response).success) {
+      const pending = waiting.safeParse(response.body);
+      if (pending.success) {
+        arm(current, pending.data, response.requestedAt);
         setMessage("Your other device has not joined yet. Keep this screen open and enter the code there.");
         return;
       }

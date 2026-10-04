@@ -56,23 +56,26 @@ const code = "a".repeat(43),
   handle = "b".repeat(43);
 const response = (body: unknown, status = 200) => ({ ok: status === 200, status, json: async () => body });
 const configured = { available: true, state: "CONFIGURED", peerVerified: false, canComplete: false };
+let serverExpiresAt = 0;
 const pending = () => ({
   available: true,
   state: "WAITING",
   code,
   handle,
-  expiresAt: Date.now() + 40000,
+  expiresAt: serverExpiresAt,
+  remainingMs: 40000,
   peerVerified: false,
   canComplete: false,
 });
 const connected = () => {
-  const expiresAt = Date.now() + 30000;
+  const expiresAt = serverExpiresAt;
   return {
     available: true,
     state: "READY",
     platform: "ANDROID",
     handle,
     expiresAt,
+    remainingMs: 30000,
     peerVerified: false,
     canComplete: false,
     configuration: {
@@ -88,6 +91,7 @@ const connected = () => {
   };
 };
 beforeEach(() => {
+  serverExpiresAt = Date.now() + 40000;
   vi.clearAllMocks();
   mocks.host.mockReturnValue({ platform: "ANDROID" });
   mocks.prepare.mockResolvedValue({ state: "READY", address: "AQI=", channel: 9, preamble: 9 });
@@ -150,6 +154,19 @@ describe("optional companion consent and lifecycle", () => {
     );
     expect(screen.queryByLabelText("Pairing code")).toBeNull();
     expect(mocks.fetch.mock.calls.every(([url]) => String(url).endsWith("/landfall/nearby"))).toBe(true);
+  });
+  it("shows the bounded code and starts a local native timer when the device clock trails the server", async () => {
+    serverExpiresAt = Date.now() + 3_600_000;
+    render(<LandfallNearbyPanel {...props} />);
+    fireEvent.click(screen.getByRole("button", { name: "Create pairing code" }));
+    await waitFor(() => expect(screen.getByLabelText("Pairing code")).toHaveTextContent(code));
+    const before = Date.now();
+    fireEvent.click(screen.getByRole("button", { name: "Start hints" }));
+    await waitFor(() => expect(mocks.start).toHaveBeenCalledOnce());
+    const nativeExpiry = mocks.start.mock.calls[0][0].expiresAt;
+    expect(nativeExpiry).toBeGreaterThan(before);
+    expect(nativeExpiry).toBeLessThanOrEqual(Date.now() + 30000);
+    expect(nativeExpiry).not.toBe(serverExpiresAt);
   });
   it("clears private pairing on background and does not resume radio acquisition automatically", async () => {
     render(<LandfallNearbyPanel {...props} />);

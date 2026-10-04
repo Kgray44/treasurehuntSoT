@@ -1238,3 +1238,51 @@ Finitecontrol/geometry/touch/ceremony/toolsstages; sharedhelpernowfingerprintbou
 Existingnativegeometrynegative/ambiguitytestsretained; actualnewrunrequired.
 Currentproductionauditb813 ZERO. Readonlyordinaryb813plan421units/5browsers includes
 bothnewdiagnosticunits; schema (freshownedURL) andOneVoyagearchitecturePASS.
+
+## October 4 clock, cold-return and Apple follow-up
+
+Run37200528339 on2a1b93df opens both real native Journals/Maps and returns
+STATUS/CREATE/STOP200. CREATE reports BEYOND_CLIENT_45S and the client rejects
+PAIR_CHANGED. The broker now returns bounded server remaining time while retaining
+absolute server expiry and authorization. Client timers subtract the full measured
+request duration, use a monotonic deadline, reject changed expiry/clock rollback,
+and never extend a previous deadline. Only remaining native-session time is
+translated to the device clock; actual native acceptance remains pending.
+
+Primary signed run37200023666 onb813ccec proves first actual notice/HTTP307/current
+Journal return, a changed boot ID after34,857ms, actual BootReceiver GRANTED
+observed36,209ms after guest readiness, and a second actual notice after1091.55ms.
+The revoked-membership return fails: the existing platform operation reports DENIED,
+not the required UNAVAILABLE. Session persistence is being corrected; this failure
+remains retained, with zero canonical writes and cleanup PASS. Parent CPU is
+1.216%/8.875% over actual15second foreground intervals; whole-guest active CPU is
+75.263%/21.5%, including OS and renderer without separate attribution. PSS is
+89,809/104,048KiB; first notice5194.4ms and return23,902.96ms. New preliminary
+parent ceiling50% of all guest vCPU capacity is a gross emulator regression bound,
+not a physical energy or renderer budget.
+
+The Android activity now requests one off-thread CookieManager flush at pause and
+destruction. It never reads, logs or extends credentials; storage failure does not
+grant authorization. Android documents flush as persistent-storage blocking I/O
+([CookieManager](<https://developer.android.com/reference/android/webkit/CookieManager#flush()>)).
+The actual harness checks persistent HttpOnly session configuration in memory,
+retaining only a boolean. A source-bound observer projects existing platform return
+logs to finite outcome/duration categories, with no raw logs, claims, URLs, epochs
+or credentials. Actual notice UI observations are bounded and ambiguity fails closed.
+
+Apple compatibility run37199621143 passes all10 lost-response steps with exactly
+one canonical event and cleanup PASS. Restart gets two actual CoreLocation fixes,
+then a readonly counts IPC request times out after23,299ms under XCTest load; the
+following cleanup counts call takes87ms. This does not establish SQL duration.
+The completionRequests assertion now uses the actual native-page counter without
+an unrelated discarded DB read. Canonical/server-confirmed assertions continue
+fresh real DB reads; only readonly counts IPC has a30second deadline. Writes,
+authorization and cleanup retain their15second bounds. Fresh hosted restart proof
+remains required.
+
+The corrected TypeScript source passes473 root unit files /2,676tests on fresh
+SQLite (unit-regression-c25ca0140b8849978176f74dafd191d5). This precedes the Android
+cookie persistence and additional e2e diagnostics; no full native acceptance,
+protected qualification, mainline availability or phase closure is claimed.
+
+Clock/cold-return candidate validation: TS/lintPASS;31focusedtests/6filesPASS; docs/featuresPASS. Androiddebug+unsignedreleaseBUILD SUCCESS; testDebugUnitTest NO-SOURCE is not a unit-test pass. UnsignedreleaseSHA256616429062016bee44b3e24c86d25236a7df577f8355ab0d2a574385d01df1c64. Productfeatures/featurestatus/Playerguide/changelog reviewed; catalogPhase4promotion remains premature.

@@ -18,6 +18,19 @@ const owner = { platform: "ANDROID" as const, address: "AQI=", channel: 9 as con
 const peer = { platform: "ANDROID" as const, address: "AwQ=" };
 
 describe("first-party companion pairing", () => {
+  it("reports remaining server duration without renewing the absolute exchange expiry", () => {
+    let now = 1000;
+    const broker = new LandfallNearbyPairBroker(() => now),
+      created = broker.create(scope, owner);
+    expect(created.remainingMs).toBe(45000);
+    now = 6000;
+    expect(broker.read(scope, created.handle)).toMatchObject({ expiresAt: 46000, remainingMs: 40000 });
+    now = 16000;
+    expect(broker.join(scope, created.code, peer)).toMatchObject({ expiresAt: 46000, remainingMs: 30000 });
+    expect(broker.read(scope, created.handle)).toMatchObject({ expiresAt: 46000, remainingMs: 30000 });
+    now = 46000;
+    expect(() => broker.read(scope, created.handle)).toThrow("UNAVAILABLE");
+  });
   it("exchanges matching protected Android session parameters and remains incapable of completion", () => {
     const broker = new LandfallNearbyPairBroker(() => 1000);
     const created = broker.create(scope, owner);

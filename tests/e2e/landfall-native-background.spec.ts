@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { _android, type AndroidDevice, type Page } from "playwright";
 import { createHash } from "node:crypto";
-import { writeFile } from "node:fs/promises";
+import { writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
 import { db } from "../../src/lib/db";
@@ -10,6 +10,7 @@ import { landfallDeviceScenario } from "../../src/landfall/device-lab/scenarios"
 import { rebootOwnedAndroidGuest } from "../../src/landfall/device-lab/android-reboot";
 import { nativeLandfallNoticeTouch } from "../../src/landfall/device-lab/native-notice-control";
 import { nativeCpuSnapshot, nativeCpuMeasurement } from "../../src/landfall/device-lab/native-cpu-measurement";
+import { nativeReturnObservationSchema } from "../../src/landfall/device-lab/native-return-observation";
 import {
   deviceLabProfileSchema,
   deviceLabConfigurationSchema,
@@ -80,6 +81,19 @@ test("real signed notice returns reauthorize Player across actual registered-reg
     return { id, version: scenario.version };
   });
   const source = await deviceLabSourceIdentity(sourceInputs);
+  const observerPath = path.resolve(process.env.LANDFALL_NATIVE_RETURN_OBSERVATION_PATH ?? "");
+  if (
+    path.dirname(observerPath) !== path.resolve("artifacts/landfall-device-lab") ||
+    !/^native-return-observer-[a-f0-9-]{36}\.json$/.test(path.basename(observerPath))
+  )
+    throw new Error("NATIVE_RETURN_OBSERVER_OWNERSHIP_REQUIRED");
+  const readReturns = async () => {
+    const raw = await readFile(observerPath, "utf8");
+    if (raw.length > 16384) throw new Error("NATIVE_RETURN_OBSERVER_TOO_LARGE");
+    const observation = nativeReturnObservationSchema.parse(JSON.parse(raw));
+    if (observation.sourceSha !== source.sourceSha) throw new Error("NATIVE_RETURN_OBSERVER_SOURCE_MISMATCH");
+    return observation.events;
+  };
   const owner = await closureAccount("Native reminder synthetic Creator");
   const player = await closureAccount("Native reminder synthetic Player");
   const definition = structuredClone(landfallFixture);
@@ -107,6 +121,10 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         measurements: { stage: string; elapsedMs?: number; pssKiB?: number }[] = [];
       const receiverRows: { stage: string; counters: Record<string, number> }[] = [];
       const cpuMeasurements: ({ stage: string } & ReturnType<typeof nativeCpuMeasurement>)[] = [];
+      let persistentSessionConfigured = false;
+      const noticeControls: { phase: string; hierarchyAttempts: number; controlObserved: boolean }[] = [];
+      let failureKind: string | null = null;
+      const serverReturnOutcomes: string[] = [];
       let settings: Awaited<ReturnType<typeof inspectOwnedAndroidLocationAccuracy>> | null = null;
       let reboot: Awaited<ReturnType<typeof rebootOwnedAndroidGuest>> | null = null;
       let signedRegistration = false,
@@ -158,7 +176,9 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         await delay(15000);
         const after = await snapshot();
         if ((await adb(["shell", "pidof", pkg])).trim() !== pid) throw new Error("NATIVE_CPU_PROCESS_CHANGED");
-        cpuMeasurements.push({ stage: label, ...nativeCpuMeasurement(before, after, performance.now() - started) });
+        const measurement = nativeCpuMeasurement(before, after, performance.now() - started);
+        cpuMeasurements.push({ stage: label, ...measurement });
+        expect(measurement.nativeParentCpuPercent).toBeLessThanOrEqual(50);
       };
       const attach = async (requireNative = true) => {
         devices = await boundedAndroidDriver(
@@ -227,13 +247,33 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           expect(observed[name]).toBe(0);
         measurements.push({ stage: "INSIDE_REAL_NOTICE", elapsedMs: performance.now() - insideStarted });
       };
-      const tapActualNotice = async () => {
+      const tapActualNotice = async (phase: "FIRST" | "REVOKED") => {
         const file = "/data/local/tmp/landfall-public-notice.xml";
+        const control = { phase, hierarchyAttempts: 0, controlObserved: false };
+        noticeControls.push(control);
+        stage = `${phase}_NOTICE_SHADE`;
         await adb(["shell", "cmd", "statusbar", "expand-notifications"]);
         try {
-          await adb(["shell", "uiautomator", "dump", file]);
-          const target = nativeLandfallNoticeTouch(await adb(["shell", "cat", file]));
-          await adb(["shell", "input", "tap", String(target.x), String(target.y)]);
+          const deadline = Date.now() + 20000;
+          while (Date.now() < deadline) {
+            stage = `${phase}_NOTICE_HIERARCHY`;
+            control.hierarchyAttempts++;
+            await adb(["shell", "uiautomator", "dump", file], Math.min(15000, Math.max(1000, deadline - Date.now())));
+            stage = `${phase}_NOTICE_CONTROL`;
+            let target;
+            try {
+              target = nativeLandfallNoticeTouch(await adb(["shell", "cat", file]));
+            } catch (error) {
+              if (!(error instanceof Error) || error.message !== "NATIVE_NOTICE_UNOBSERVED") throw error;
+              await delay(500);
+              continue;
+            }
+            control.controlObserved = true;
+            stage = `${phase}_NOTICE_TOUCH`;
+            await adb(["shell", "input", "tap", String(target.x), String(target.y)]);
+            return;
+          }
+          throw new Error("NATIVE_NOTICE_UNOBSERVED");
         } finally {
           await adb(["shell", "rm", "-f", file]);
         }
@@ -316,6 +356,17 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           expires: Math.floor(accountSession.expiresAt.getTime() / 1000),
         });
         expect(cookie.success).toBe(true);
+        const stored = await cdp.send("Network.getCookies", { urls: [origin.origin] });
+        const sessionCookie = stored.cookies.find(
+          (item) => item.name === "wayfarer_account" && item.value === player.token,
+        );
+        persistentSessionConfigured = Boolean(
+          sessionCookie &&
+            !sessionCookie.session &&
+            sessionCookie.httpOnly &&
+            sessionCookie.expires === Math.floor(accountSession.expiresAt.getTime() / 1000),
+        );
+        expect(persistentSessionConfigured).toBe(true);
         await cdp.detach();
         await journal.goto(`${origin.origin}/player/playthroughs/${voyage.id}/journal`);
         await journal.waitForFunction(() => Boolean(window.LandfallNative), undefined, { timeout: 15000 });
@@ -352,8 +403,16 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         await realEntry(1);
         expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(before);
         stage = "FIRST_ACTUAL_NOTICE_TAP";
+        const firstReturnBaseline = (await readReturns()).length;
         const firstReturnStarted = performance.now();
-        await tapActualNotice();
+        await tapActualNotice("FIRST");
+        stage = "FIRST_ACTUAL_RETURN_HOP";
+        await expect
+          .poll(async () => (await readReturns()).slice(firstReturnBaseline).map((event) => event.outcome), {
+            timeout: 45000,
+          })
+          .toContain("RETURNED");
+        serverReturnOutcomes.push("RETURNED");
         await expect.poll(() => returnHopStatus, { timeout: 45000 }).toBe(307);
         await expect
           .poll(() => new URL(journal.url()).pathname, { timeout: 45000 })
@@ -421,8 +480,16 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           data: { status: "REMOVED", removedAt: new Date() },
         });
         stage = "REVOKED_ACTUAL_NOTICE_TAP";
+        const revokedReturnBaseline = (await readReturns()).length;
         const revokedStarted = performance.now();
-        await tapActualNotice();
+        await tapActualNotice("REVOKED");
+        stage = "REVOKED_ACTUAL_RETURN_HOP";
+        await expect
+          .poll(async () => (await readReturns()).slice(revokedReturnBaseline).map((event) => event.outcome), {
+            timeout: 45000,
+          })
+          .toContain("UNAVAILABLE");
+        serverReturnOutcomes.push("UNAVAILABLE");
         const returned = await attach();
         await expect.poll(() => new URL(returned.url()).pathname, { timeout: 45000 }).toBe("/player");
         revokedReturn = true;
@@ -444,7 +511,15 @@ test("real signed notice returns reauthorize Player across actual registered-reg
         expect(after.currentBlockId).toBe(baseline.currentBlockId);
         expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(before);
         passed = true;
-      } catch {
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "";
+        failureKind = /^NATIVE_[A-Z_]{1,100}$/.test(message)
+          ? message
+          : /timeout|timed out/i.test(message)
+            ? "TIMEOUT"
+            : /expect|assert/i.test(message)
+              ? "ASSERTION"
+              : "NATIVE_OPERATION_FAILED";
         // Error text, protocol URLs and Playwright snapshots can contain an opaque
         // claim or account cookie. Export the finite stage and explicit observations.
         throw new Error(`LANDFALL_NATIVE_BACKGROUND_FAILED:${stage}`);
@@ -492,6 +567,7 @@ test("real signed notice returns reauthorize Player across actual registered-reg
               ? "PASS"
               : "FAIL",
           failedStage: passed ? null : stage,
+          failureKind,
           deviceProfile: profile,
           evidenceClass: passed ? "EMULATOR_PROVEN" : "EXECUTION_FAILED",
           nativeBridge: "REAL_ANDROID_OS",
@@ -513,7 +589,19 @@ test("real signed notice returns reauthorize Player across actual registered-reg
           canComplete: false,
           measurements,
           cpuMeasurements,
-          preliminaryGrossBounds: { noticeReturnMs: 60000, fullJournalPssKiB: 512 * 1024, passed: elapsedBounds },
+          persistentSessionConfigured,
+          noticeControls,
+          serverReturnOutcomes,
+          preliminaryGrossBounds: {
+            noticeReturnMs: 60000,
+            fullJournalPssKiB: 512 * 1024,
+            nativeParentCpuPercent: 50,
+            cpuCapacity: "ALL_GUEST_VCPUS",
+            passed:
+              elapsedBounds &&
+              cpuMeasurements.length === 2 &&
+              cpuMeasurements.every((row) => row.nativeParentCpuPercent <= 50),
+          },
           physicalTimingProven: false,
           externalRequirements: [
             "REAL_DEVICE_REQUIRED:OEM_SUSPENSION",

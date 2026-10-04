@@ -117,6 +117,7 @@ export class LandfallNearbyPairBroker {
       code,
       handle,
       expiresAt: entry.expiresAt,
+      remainingMs: this.remaining(entry),
       peerVerified: false as const,
       canComplete: false as const,
     };
@@ -164,7 +165,12 @@ export class LandfallNearbyPairBroker {
     return { state: "STOPPED" as const, peerVerified: false as const, canComplete: false as const };
   }
   private project(entry: Entry, owner: boolean) {
-    const base = { expiresAt: entry.expiresAt, peerVerified: false as const, canComplete: false as const };
+    const base = {
+      expiresAt: entry.expiresAt,
+      remainingMs: this.remaining(entry),
+      peerVerified: false as const,
+      canComplete: false as const,
+    };
     if (!entry.peer) return { ...base, state: "WAITING" as const };
     const peer = owner ? entry.peer : entry.owner;
     const peerId = `companion:${entry.id}:${owner ? "peer" : "owner"}`;
@@ -196,5 +202,11 @@ export class LandfallNearbyPairBroker {
         expiresAt: entry.expiresAt,
       }),
     };
+  }
+  private remaining(entry: Entry) {
+    const remaining = entry.expiresAt - this.now();
+    if (!Number.isSafeInteger(remaining) || remaining <= 0 || remaining > 45000)
+      throw new Error("LANDFALL_PAIR_UNAVAILABLE");
+    return remaining;
   }
 }

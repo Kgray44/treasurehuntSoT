@@ -24,6 +24,11 @@ Chart and choose **Use my location** for a fresh foreground check. **Disable
 reminders** clears the device's registration and pending hints. Delivery and
 reboot recovery remain subject to device behavior and the pending native matrix.
 
+Optional nearby-device hints use a short exchange prepared on both devices. The
+exchange expires even if the devices' clocks differ; prepare it again after a
+pause or expiry. A peer hint does not confirm a visit. A notice return may require
+sign-in again, and a saved session never restores removed Voyage access.
+
 After accepting an invitation, use the Player Library to find the Voyages available to you. A Voyage can show a waiting state until your Captain begins it. During play, use the story view and Chronicle Journal to follow events, revisit earlier pages, and return to your history when available.
 
 If the published Voyage includes Landfall, open **map** in the Journal tools to see the released Voyage Chart. On a physical chart, select **Use my location** when you want a live position and its estimated accuracy. Select **Stop using my location** to stop; closing the map, leaving the Journal, pausing the Voyage, or putting the tab in the background also stops it. If permission is denied or the signal is weak, the chart stays available without a reliable position marker. A virtual chart does not ask for browser location. A location signal is not a recorded visit until the Voyage confirms it.
