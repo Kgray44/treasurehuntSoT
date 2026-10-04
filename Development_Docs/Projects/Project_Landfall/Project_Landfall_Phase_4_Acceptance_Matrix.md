@@ -45,13 +45,13 @@ system pause, stop and restart cancel pending delivery.
 
 Focused primary region wake **37223287847 on 4341f2e5 passes all ten steps**:
 actual background/foreground, encrypted delegate hints, removal, canonical zero
-and cleanup PASS. Xcode reports **17 passed / zero failed / one hardware-only
+and cleanup PASS. Xcode reports **17 passed / zero failed / one unconfigured-driver
 skip**, including four throttle regressions; the lifecycle UI test passes.
 Compatibility offline-restart/region run37223293060 passes both scenarios:
 the second native callback is forwarded (2/2), qualifies in947ms, and restart
 reconciliation writes exactly one expected canonical event. Region wake writes
 zero. Both clean up; its harvest retains5,640hashed artifacts and successful
-transport cleanup. The native suite again reports17passes/one hardware skip.
+transport cleanup. The native suite again reports17passes/one unconfigured-driver skip.
 Full three-profile iOS
 run37224038483 on `2654d7b8` remains active. Focused tablet input run37224452331
 on `80b8dbe4` remains active. A lab-only bounded Simulator input wrapper passes
@@ -67,7 +67,7 @@ No final protected qualification, merge or closure has occurred.
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | Sole progression / Worldspaces                  | One Voyage remains the sole writer; physical and virtual contexts retain shared canonical contracts. Full unit and retained browser suites pass.                                                        | Final ordinary qualification and landed verification.                                                    |
 | Android companion                               | 80 profile scenarios, 12 native instrumentation tests per profile; unsigned debug/release builds and release exclusion inspection.                                                                      | Final qualification; signed distribution and physical acceptance.                                        |
-| Apple companion                                 | Origin-bound WKWebView/Core Location; 17 XCTest passes and one unsupported hardware skip; focused actual wake passes.                                                                                   | Complete new three-profile native matrix, final qualification; signed distribution and devices.          |
+| Apple companion                                 | Origin-bound WKWebView/Core Location; 17 XCTest passes and one unconfigured-driver skip; focused actual wake passes.                                                                                    | Complete new three-profile native matrix, final qualification; signed distribution and devices.          |
 | Renderer / Creator / Player / Drydock / Captain | Canonical released chart, authored routes, semantic navigation and current surfaces; 53 optimized browser scenarios with bounded visual review.                                                         | Final qualification; physical assistive technology and owner acceptance.                                 |
 | Remote suggestions                              | Concrete Nominatim-compatible forward/reverse geocoding, OSRM routing and Open-Elevation; 159 provider scenarios on each Windows/Linux host.                                                            | Production licensed endpoints, credentials and quotas are NOT_CONFIGURED.                                |
 | Signed offline regions                          | Ed25519/hash/AES-GCM scoped packages, current released authorization, interrupted resume, image decode, corruption rejection and removal; native reconciliation goes through One Voyage.                | New complete Apple offline/restart matrix and final qualification; deployment keys and physical restart. |

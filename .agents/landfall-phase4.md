@@ -24,7 +24,7 @@ primary background observation fails, compatibility region input is killed and
 offline restart drops the final native fix. Preserve these four failed scenarios.
 4341f2e5 focused runs37223287847(primary geofence) and37223293060(compat offline
 restart/geofence) have completed SUCCESS; primary harvest4404/cleanupPASS and
-compatibility harvest is active. Primary native XCTest17PASS/1hardware skip,
+compatibility harvest is active. Primary native XCTest17PASS/1unconfigured-driver skip,
 UI1PASS, all10geo steps PASS/canonical0/cleanupPASS.
 2654d7b8 adds permission/precision and system-pause queue cancellation, and full
 three-profile iOS run37224038483 is active (dispatch2654d7b876c7-1791138007104).

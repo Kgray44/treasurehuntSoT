@@ -23,7 +23,7 @@ RF, energy, signed distribution and production origin remain external.
 The frozen Apple matrix remains23/27. A real final-fix throttle bug is corrected
 with bounded transient coalescing and consent/lifecycle cancellation. Focused
 primary wake and compatibility restart/wake runs pass; primary receipts confirm
-17XCTest passes/one hardware skip, actual background/encrypted hints/foreground,
+17XCTest passes/one unconfigured-driver skip, actual background/encrypted hints/foreground,
 canonical zero and cleanup. The complete new three-profile iOS matrix and focused
 tablet input check remain running. Protected qualification, merge, landed proof,
 catalog promotion and formal closure remain pending.
