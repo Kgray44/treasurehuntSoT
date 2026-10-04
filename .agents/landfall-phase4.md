@@ -1013,3 +1013,15 @@ does not prove wake. Next client reason retains only finite native reply categor
 ebbead camera37188685533 HARVESTED19 FAIL:12 frames/0 decoded/0 errors;
 delivered-frame preview VIEWED shows right-edge QR crop. Synthetic quiet margin
 128 next; no bridge/token injection. Journal37188689765 remains active.
+
+8f4f98af frozen/pushed. Actual hosted runs: browser37189259116,
+camera37189263416, BLE37189267440, geofence37189271605; dispatches under
+hosted-8f4f98af99a1-1791102748473/1791102753032/1791102757471/1791102762008.
+ebbead Journal37188689765 HARVESTED43 FAIL atFIRST_PARTY_CREATE_JOIN. Both
+actualnativeJournals opened/map/nearbycontrols passed; code exchange stage failed.
+Newharness splits create/code/input/join/native-session stages and retains only
+finite UI/native-state categories, never code/key/panel text. Next run pending.
+Current operations and acceptance-matrix engineering records consolidate incident
+handling, implemented/coupled controls, security/privacy/performance evidence,
+external gates and unresolved local work. They do not claim completion. Indexes
+regenerated; docs validation and TypeScript PASS.

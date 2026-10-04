@@ -1,0 +1,96 @@
+---
+title: Project Landfall Phase 4 acceptance matrix and external gates
+audience: product-engineering
+status: current
+canonical_for: project-landfall-phase-4-acceptance-matrix
+last_reviewed: 2026-10-04
+---
+
+# Hold the Bearing acceptance matrix
+
+Phase 4 remains in development. This current engineering record consolidates
+provider/native capability acceptance, privacy/security review, measured performance
+and external gates. It is not a completion receipt. The [design record](Project_Landfall_Phase_4_Native_Companion_Design.md)
+contains implementation detail and chronological evidence; the [operations record](Project_Landfall_Phase_4_Operations_Record.md)
+contains containment and recovery. The [Device Lab addendum](Project_Landfall_Phase_4_Device_Lab_Addendum.md)
+controls evidence classification. Every source-changing candidate still needs
+fresh qualification before protected integration.
+
+## Implemented capability and evidence boundaries
+
+| Requirement | Candidate source / available evidence | Remaining acceptance |
+| --- | --- | --- |
+| Sole progression authority | Shared authorized evidence/reconciliation calls One Voyage. Native providers, package installation and return navigation are not writers. Actual offline/restart reconciliation has written one expected canonical event through real isolated SQLite. | Final candidate regression, exact-head ordinary Sounding Line and landed verification. |
+| PHYSICAL and VIRTUAL Worldspaces | Existing Player rendering/context contracts remain canonical. Virtual offline reconciliation on Apple run37187691206 passes with zero physical acquisition. | Final complete Android/Apple profile matrices and regression of accepted Phases1–3. |
+| Android companion | First-party WebView, contextual permissions, encrypted private leases, power/lifecycle, foreground native location and optional native operations. Actual app/test APK builds and instrumentation have passed; native reboot/offline reconciliation have passed on earlier candidates. | Final source package refresh and hosted matrix. Real signed distribution and physical hardware acceptance remain separate. |
+| Apple companion | First-party WKWebView, Core Location and optional capabilities/private storage. Actual hosted macOS/Xcode/iOS Simulator execution is available; run37187691206 passes11 XCTest cases with one unsupported hardware skip and real virtual offline reconciliation. | Final three-profile hosted matrix; signed distribution and real iPhone suspension/power/radio/field acceptance. Hosted Apple availability is not an external blocker. |
+| Released map/route/place guidance | First-party renderer and released views are preserved. Optimized browser run37187344378 passes13 cases including narrow/wide physical/virtual presentation and optional fallbacks. | Final candidate configured/unconfigured browser coverage and visual QA. |
+| Remote suggestions | Nominatim-compatible geocoding, OSRM routing and Open Elevation use server-only consented configuration, bounded requests, licensed summaries and authored fallback. Provider run37187347909 passes159 scenarios on each hosted Windows/Linux matrix. | Final source scenario matrix. Production service agreements, credentials, quota and endpoint operation are `NOT_CONFIGURED` unless actually supplied and verified. |
+| Signed offline regions | Server prepares only current authorized released chart/routes/first-party images. Ed25519, resource hashes, scoped AES-GCM storage and expiring leases gate use. Unit coverage exercises integrity/resume/expiry. The configured browser test uses an ephemeral synthetic signing key and real first-party API/UI. | Actual configured browser preview/interruption/resume/blob-image/corruption/removal run pending on8f4f98af. Deployment key/signing availability and physical restart remain separate. |
+| Background geofence wake | Native OS registration/removal and encrypted bounded hint journals; fresh foreground evidence still required. Replacement fails closed when old OS removal fails. | Android actual registration failed on run37188297805; this is `EXECUTION_FAILED`, not unsupported hardware or completed wake. Finite registration diagnostics and actual OS rerun pending. Registered-region reboot and notification tap proof remain open. |
+| Notification return | Opaque authenticated encrypted actor/session/version/expiry claim; fresh sign-in, membership and current session status checked by server. Navigation only. | Actual OS notice/tap with real first-party return and revoked/expired access cases. Shared signing configuration is a documented coupling, not an independent kill switch. |
+| BLE / iBeacon / Eddystone UID | Deliberate bounded scan, native salted peer identifiers, strict fresh observations, untrusted signal band and no arrival authority. Run37188385826 receives12 events but rejects all on RSSI validation. | Determine native RSSI category and complete real emulator protocol runs. Do not invent RSSI or weaken physical presence. Physical beacons/RF remain required separately. |
+| UWB / Nearby Interaction | Bounded native session negotiation and first-party same-account ephemeral pairing. Simulator radio run37168243966 reports actual untrusted UWB observations on both Android devices without canonical writes. | First-party native Journal run37188689765 opens/maps both devices but fails pairing. Native session integration remains local work, not a field gate. Real RF accuracy, pose and authenticated peer identity remain unproved. |
+| QR / NFC installation identity | Signed scoped tokens are identity/context, not proof of physical arrival. CameraX/ML Kit and native NFC reader are deliberate bounded acquisition. | QR run37188685533 receives12 frames but decodes none; inspected preview shows crop. Actual resized imagefile-camera rerun pending. NFC radio and physical installation acquisition require hardware. No decoded JavaScript injection qualifies as camera proof. |
+| Motion / orientation / heading / barometer | Optional sensor hints with uncertainty and lifecycle/power checks; none independently confirms floor, coordinates or arrival. | Final actual Android sensor/profile matrix and measured overhead. Real indoor/multifloor calibration and battery/thermal behavior require devices/field evidence. |
+| Creator / Drydock / Captain / accessibility | Existing authored policies, canonical previews and readable guidance remain; unsupported optional capabilities degrade explicitly. Browser mobile cases have run. | Final source regression and rendered verification; physical assistive-technology and owner usability acceptance remain external. |
+
+## Security and privacy review
+
+Review scope includes both native hosts, bridge authorization, optional providers,
+signed/encrypted packages, notification returns, first-party pairing, remote network
+configuration and operational/lab artifacts. This is a source review of the candidate;
+no independent penetration test or production certification is claimed.
+
+| Threat | Candidate defense reviewed | Acceptance boundary |
+| --- | --- | --- |
+| Untrusted iframe/origin calls native operations | Android listener requires allowed origin, main frame and bounded message; production origin is configured HTTPS. Apple main-frame/origin restrictions and origin tests remain. Loopback HTTP lab overrides are debug-only. | Final native manifests/package analysis and hosted tests; deployment origin certificate/configuration needs release owner proof. |
+| Hidden/replayed/private content in offline data | Membership, pinned published version and revealed projection are checked server-side. Scope/expiry/signature/hash/AES-GCM protect package metadata and resources. Cached content is bounded historical authorization, not current online authorization. | Actual corruption/resume/revocation/restart test matrix; unknown future membership revocation cannot be discovered while wholly offline. |
+| Forged or ambiguous Ed25519 verification | Public-only canonical key validation, strict signatures and conservative WebCrypto fallback; shared verifier's29 focused tests include mutation, malformed/private keys and forgery cases. | Final dependency audit and qualification; no private key/client bundle or saved lab key. Existing unrelated dependency findings remain separately recorded. |
+| Geofence/notification/token promoted into arrival | Wake hints and return handles contain no arrival receipt. Return reauthorizes current identity/membership/version/status; signed installation identity still reports physical presence `NOT_PROVEN`. | Actual OS wake/tap and canonical zero-write assertions remain required. |
+| Radio tracking, pairing disclosure or peer trust escalation | BLE addresses salted per scan; bounded ephemeral discovery. Pairing code/key exchange is same-account/current membership and expires; session protection does not authenticate Chronicle peer identity. | No code/key/address/raw sample retained in screenshots or receipt. Actual first-party native pairing remains unresolved. |
+| Optional remote endpoint or credential injection | Server-only endpoint/profile/credential references, request bounds, explicit consent and configuration validation; client cannot supply URLs/headers as provider authority. | Live credential/network/SSRF deployment review remains necessary; only configured licensed demand may be enabled. |
+| Continuous coordinate/sensor logs or real content in validation | Finite operational categories exclude identities, precise coordinates, queries, keys and raw streams. Lab fixtures are public synthetic, owned and isolated; debug acquisition diagnostics retain bounded categories/counters. | Final artifact/static privacy scan and native release exclusion verification. Real private content is never a troubleshooting fixture. |
+
+An authorization failure must remove current authority even if a saved chart remains
+readable. Permission revocation, power constraint, lifecycle stop and logout/private
+data clearing are tested independently from provider success. A failed receipt
+must not be relabeled as passing because fallback guidance is readable.
+
+## Performance evidence and gaps
+
+Optimized Chromium run37187344378 on57b1a77e1094 measures a375px Journal with256
+released waypoints: cold1506.99ms, warm660.78ms and offline346.02ms. The measured
+origin usage is7,489,755bytes; it includes the whole isolated origin and is not a
+region size, native RAM measure or phone battery result. These are single observed
+samples under a preliminary30-second full-Journal budget, not percentiles.
+
+Apple run37187691206 on9dfdfd93 measures real isolated authority count424ms first,
+5–9ms subsequent, authorize44ms and submit142ms. Earlier transient failures remain
+in the evidence set. Android prior reboot observations were30,992ms and25,598ms;
+those cases did not register a geofence and cannot prove region reboot recovery.
+
+The configured region browser run will measure preparation, verified resume and
+offline image restoration under preliminary15-second per-operation bounds. Final
+package preparation/install/integrity latency, first native fix, suspend/resume,
+notification return, sensor CPU/memory overhead, native storage/cache growth and
+larger-context budgets still need measurements. Physical battery drain, thermal
+and OEM scheduling remain device/field gates. No performance closure is claimed.
+
+## External-gate ledger
+
+| Missing resource | Implemented path / automated evidence | Required owner action and honest fallback |
+| --- | --- | --- |
+| Real Android/iPhone and assistive-technology device | Native source, hosted APK/XCTest and selected emulator/simulator checks exist. | Qualify signed origin-bound releases on owned real devices; verify permissions, suspension, power, safe areas and assistive interaction. Continue through readable first-party web guidance when optional native functions are unavailable. |
+| BLE beacons, NFC installation and UWB/NI peers | Native adapters and strict context/identity tests; some actual virtualized radio acquisition. | Test actual hardware, protocol acquisition, radio accuracy/pose, authenticated identity limits and cancellation. Never label simulation as real RF or field proof. |
+| Indoor/multifloor and outdoor field route | Contextual confidence and optional sensor contracts. | Conduct consented real field runs for multipath, floors, battery, background/OEM timing and safety/accessibility. Authored guidance remains uncertified; automatic evidence must stay qualified. |
+| Production provider account/rights/credentials | Server-only optional provider configuration and simulation matrices. | Supply an approved licensed service configuration and verify demand/quota/recovery. Until then show `NOT_CONFIGURED` and keep authored guidance. |
+| Native signing/distribution and production deployment | Candidate builds and unsigned manifest analysis; no deployed native availability claim. | Release owner qualifies signing, package identity, store/distribution, origin and update/rollback. Unsigned lab builds are not a public release. |
+| Live Watchglass | Intentional `NOT_CONFIGURED` boundary and contextual interface only. | A separately governed recognition integration would require its own authority and evidence. Phase4 does not introduce a recognition engine or Phase5. |
+
+Unresolved first-party pairing, camera input/crop, OS geofence registration,
+configured offline browser execution, final matrix/performance/security checks,
+documentation integration and protected closure are **local work**. They are not
+external gates. Completion requires finishing that work, ordinary exact-candidate
+qualification, protected merge, landed verification and the final accepted capsule
+and completion receipt.

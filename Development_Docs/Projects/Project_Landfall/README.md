@@ -3,7 +3,7 @@ title: Project Landfall engineering home
 audience: product-engineering
 status: current
 canonical_for: project-landfall-engineering-home
-last_reviewed: 2026-10-03
+last_reviewed: 2026-10-04
 ---
 
 # Project Landfall
@@ -55,3 +55,5 @@ The [final closure correction record](Project_Landfall_Phase_2_Final_Closure_Rec
 Hold the Bearing is in development. The Device Lab addendum is governing scope; development checkpoints are not phase acceptance, protected integration, or Project Landfall closure. Native companion deployment and physical/field evidence remain separately classified.
 
 - [Native companion and restart design](Project_Landfall_Phase_4_Native_Companion_Design.md): origin-bound acquisition, encrypted restart leases, shared reconciliation, development proof and remaining acceptance work.
+- [Operations and incident response](Project_Landfall_Phase_4_Operations_Record.md): implemented provider/device controls, failure detection, safe degradation, recovery evidence and user communication; deployment and closure remain pending.
+- [Acceptance matrix and external gates](Project_Landfall_Phase_4_Acceptance_Matrix.md): consolidated capability, privacy/security and measured-performance evidence with unresolved local work and separately classified device/field/deployment gates.

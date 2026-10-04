@@ -102,6 +102,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
         nativeBridgeAvailable: boolean;
         authRedirect: boolean;
       }[] = [];
+      const pairingDiagnostics: { deviceIndex: number; nativeState: string; uiState: string }[] = [];
       const adb = (serial: string, args: string[], timeout = 15000) =>
         labTool(resources.adbPath, ["-P", String(resources.adbPort), "-s", serial, ...args], timeout);
       try {
@@ -253,12 +254,16 @@ test("real native Journal pairing returns untrusted hints and background clears 
           await page.locator(".landfall-nearby-panel:visible summary").click({ noWaitAfter: true });
         }
         const panels = pages.map((page) => page.locator(".landfall-nearby-panel:visible"));
-        stage = "FIRST_PARTY_CREATE_JOIN";
+        stage = "FIRST_PARTY_CREATE_OWNER";
         await panels[0].getByRole("button", { name: "Create pairing code", exact: true }).click({ noWaitAfter: true });
+        stage = "FIRST_PARTY_OWNER_CODE";
         const code = await panels[0].getByLabel("Pairing code", { exact: true }).textContent();
         expect(typeof code === "string" && /^[A-Za-z0-9_-]{43}$/.test(code)).toBe(true);
+        stage = "FIRST_PARTY_JOIN_CODE_INPUT";
         await panels[1].getByLabel("Code from your other device").fill(code!);
+        stage = "FIRST_PARTY_JOIN_DEVICE";
         await panels[1].getByRole("button", { name: "Join my other device", exact: true }).click({ noWaitAfter: true });
+        stage = "FIRST_PARTY_JOIN_NATIVE_SESSION";
         await expect
           .poll(
             () =>
@@ -332,6 +337,47 @@ test("real native Journal pairing returns untrusted hints and background clears 
         await testInfo.attach("native-nearby-stopped", { path: shot, contentType: "image/png" });
         passed = true;
       } catch (error) {
+        for (const [index, nativePage] of pages.entries()) {
+          const projection = await boundedDriver(
+            nativePage.evaluate(async () => {
+              const response = (await window.LandfallNative!.request(
+                JSON.stringify({
+                  version: 1,
+                  id: crypto.randomUUID(),
+                  operation: "UWB_STATE",
+                  payload: {},
+                }),
+              )) as { state?: string };
+              const nativeState = [
+                "READY",
+                "UNAVAILABLE",
+                "UNSUPPORTED",
+                "INITIALIZING",
+                "DENIED",
+                "PROMPTABLE",
+                "EXPIRED",
+              ].includes(response?.state ?? "")
+                ? response.state!
+                : "UNKNOWN";
+              const text =
+                document.querySelector(".landfall-nearby-panel [aria-label='Nearby device hint status']")
+                  ?.textContent ?? "";
+              const uiState = text.includes("unsupported, disabled, or awaiting permission")
+                ? "DEVICE_UNAVAILABLE"
+                : text.includes("unavailable on this deployment")
+                  ? "NOT_CONFIGURED"
+                  : text.includes("expired or access changed")
+                    ? "PAIR_CHANGED"
+                    : document.querySelector(".landfall-nearby-panel output")
+                      ? "CODE_VISIBLE"
+                      : "OTHER";
+              return { nativeState, uiState };
+            }),
+            undefined,
+            3000,
+          ).catch(() => ({ nativeState: "UNOBSERVED", uiState: "UNOBSERVED" }));
+          pairingDiagnostics.push({ deviceIndex: index, ...projection });
+        }
         const message = error instanceof Error ? error.message : "";
         const tool = error as { code?: unknown; signal?: unknown; killed?: unknown };
         failureTool = {
@@ -460,6 +506,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           failedFirstPartyRequests,
           failedPageState,
           journalStates,
+          pairingDiagnostics,
           externalRequirements: ["REAL_DEVICE_REQUIRED:RF"],
           cleanup: { result: remaining.length ? "FAIL" : "PASS", remainingResources: remaining },
         };
