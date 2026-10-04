@@ -7,6 +7,17 @@ Primary checkout is dirty and excluded from implementation/validation.
 
 ## Source-bound starting context
 
+Frozen closure run37219804462 on c8e8b1de: local476files/2,695tests,
+optimized build/client scan, archive privacy scan and unsigned native package
+build PASS. Hosted browser, providers, both first-party Journal pairs, both
+signed notice/reboot jobs and Android primary/low/tablet PASS. Android
+compatibility fails after its measured successful20,828ms guest reboot;
+primary radio fails UWB preparation with CONFIG_UNSUPPORTED on the second guest.
+Original failed receipts are retained. Add finite wake/unlock/start/client-ready
+stages and individual capability absence/distance/config/channel/preamble/rate
+categories before focused rechecks; no unsupported capability is inferred ready.
+Three full iOS profile jobs remain running. No protected qualification yet.
+
 Latest checkpoint (2026-10-04 17:14 UTC): all focused failures are resolved with
 actual OS proof. iOS37218201954 on clean d2add7a1 passes all10geofence steps,
 including actual encrypted wake hints, foreground return, removal, canonical0

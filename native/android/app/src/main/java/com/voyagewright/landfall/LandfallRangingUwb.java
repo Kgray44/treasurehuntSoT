@@ -67,13 +67,13 @@ final class LandfallRangingUwb implements LandfallUwbDriver {
       answered[0]=true;handler.removeCallbacks(timeout);
       UwbRangingCapabilities uwb=value.getUwbCapabilities();
       if(uwb==null || !uwb.isDistanceMeasurementSupported() || !uwb.getSupportedConfigIds().contains(UwbRangingParams.CONFIG_PROVISIONED_UNICAST_DS_TWR)){
-        diagnostic("CONFIG_UNSUPPORTED");stop();status="UNSUPPORTED";done.accept(reply(status));return;
+        diagnostic(uwb==null?"CAPABILITIES_ABSENT":!uwb.isDistanceMeasurementSupported()?"DISTANCE_UNSUPPORTED":"PROVISIONED_CONFIG_UNSUPPORTED");stop();status="UNSUPPORTED";done.accept(reply(status));return;
       }
       if(value.getTechnologyAvailability().getOrDefault(RangingManager.UWB,RangingCapabilities.NOT_SUPPORTED)!=RangingCapabilities.ENABLED){diagnostic("TECHNOLOGY_DISABLED");stop();done.accept(reply("UNAVAILABLE"));return;}
       capabilities=uwb;
       channel=uwb.getSupportedChannels().contains(9)?9:uwb.getSupportedChannels().contains(5)?5:0;
       preamble=uwb.getSupportedPreambleIndexes().stream().filter(index->index>=9&&index<=12).findFirst().orElse(0);
-      if(channel==0||preamble==0||!uwb.getSupportedRangingUpdateRates().contains(RawRangingDevice.UPDATE_RATE_INFREQUENT)){diagnostic("CONFIG_UNSUPPORTED");stop();status="UNSUPPORTED";done.accept(reply(status));return;}
+      if(channel==0||preamble==0||!uwb.getSupportedRangingUpdateRates().contains(RawRangingDevice.UPDATE_RATE_INFREQUENT)){diagnostic(channel==0?"CHANNEL_UNSUPPORTED":preamble==0?"PREAMBLE_UNSUPPORTED":"INFREQUENT_RATE_UNSUPPORTED");stop();status="UNSUPPORTED";done.accept(reply(status));return;}
       localAddress=UwbAddress.createRandomShortAddress();status="READY";expiresAt=System.currentTimeMillis()+60000;handler.postDelayed(expire,60000);
       try{
         JSONObject result=reply("READY").put("role",role).put("address",Base64.encodeToString(localAddress.getAddressBytes(),Base64.NO_WRAP)).put("security","PROVISIONED_STS");

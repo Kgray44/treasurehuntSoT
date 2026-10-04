@@ -714,8 +714,11 @@ export async function executeLandfallOsScenario(
                   { adb, now: () => Date.now(), delay: (ms) => new Promise((resolve) => setTimeout(resolve, ms)) },
                 )),
               });
+              executionStage = "ANDROID_REBOOT_WAKE";
               await adb(["shell", "input", "keyevent", "224"]);
+              executionStage = "ANDROID_REBOOT_UNLOCK";
               await adb(["shell", "input", "keyevent", "82"]);
+              executionStage = "ANDROID_REBOOT_ACTIVITY_START";
               await adb([
                 "shell",
                 "am",
@@ -726,6 +729,7 @@ export async function executeLandfallOsScenario(
                 "labOrigin",
                 `http://127.0.0.1:${port}`,
               ]);
+              executionStage = "ANDROID_REBOOT_CLIENT_READY";
               await wait(() => ready && startups.length > before, 60000);
             }
             if (action.operation === "ACTIVITY_RECREATE") {
@@ -1116,7 +1120,11 @@ export async function executeLandfallOsScenario(
               ? "DEVICE_UNAVAILABLE"
               : /Permission denied/.test(output)
                 ? "TOOL_PERMISSION"
-                : "TOOL_OR_CLIENT_FAILURE",
+                : /Can't find service: input|Service input not found/i.test(output)
+                  ? "ANDROID_INPUT_SERVICE_UNAVAILABLE"
+                  : /Can't find service: activity|Service activity not found/i.test(output)
+                    ? "ANDROID_ACTIVITY_SERVICE_UNAVAILABLE"
+                    : "TOOL_OR_CLIENT_FAILURE",
           diagnosticHash: createHash("sha256").update(output).digest("hex"),
         },
         null,
