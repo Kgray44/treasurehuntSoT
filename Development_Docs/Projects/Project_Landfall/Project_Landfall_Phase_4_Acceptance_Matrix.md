@@ -53,6 +53,24 @@ Actual refusal execution remains pending. Its34local guard tests across two
 files, TypeScript and lint pass on fresh owned SQLite; full regression will be
 refreshed because the lab source/test trees changed.
 
+The refreshed full-root regression on `0ba27caa` passes **478files/2715tests**
+in217.531seconds with fresh owned SQLite and clean/unchanged binding. Search
+run37234626584 on `e97c3713` remains FAIL18/1/1,4,300hashes/cleanupPASS: the
+actual Settings screen reports no results for Reduce Motion. No restart or
+notification scenario executed. The host inventory also contains available
+iOS26.2 and26.4; no additional runtime download is needed for variation.
+
+Presentation now has an independent mandatory primary-phone closure job requiring
+19passes/zero failures/at most one expected canonical-driver skip. It selects the
+oldest preinstalled runtime that meets the repository deployment target and has
+compatible devices. Companion scenario builds use the latest supported runtime
+and explicitly exclude only the two presentation tests, requiring17passes/zero
+failures/at most one expected driver skip. Their scope record requires a separate
+presentation receipt; companion success cannot satisfy accessibility acceptance.
+This permits independent scenario evidence while any presentation failure still
+fails the overall closure run. Actual runtime selection and full source identities
+remain retained; no failure becomes unsupported or accepted through this split.
+
 Current clean source `8e6e3e19` passes **478 unit files / 2,714 tests** in an
 owned detached worktree with fresh SQLite (214.59 seconds). Selected formatting
 (244 files), lint (218 files, zero errors), TypeScript and exact tracked-source

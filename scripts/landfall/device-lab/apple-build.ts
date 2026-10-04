@@ -1,4 +1,4 @@
-import { mkdir, writeFile, stat } from "node:fs/promises";
+import { mkdir, writeFile, stat, readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { discoverDeviceLabHost, labTool } from "./host";
@@ -9,9 +9,30 @@ let failureStage: string | null = null;
 async function main() {
   if (process.platform !== "darwin") throw new Error("LANDFALL_APPLE_REQUIRES_MACOS");
   const root = process.cwd();
+  const scope = process.argv[2] ?? "all";
+  if (!["all", "companion-only"].includes(scope)) throw new Error("LANDFALL_APPLE_BUILD_SCOPE_INVALID");
+  const presentationRequired = scope === "all";
   const profile = deviceLabProfileSchema.parse(process.env.LANDFALL_LAB_PROFILE ?? "primary-phone");
   const destination = path.join(root, "artifacts", "landfall-device-lab", "apple-build");
   await mkdir(destination, { recursive: true });
+  const presentationTests = [
+    "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation",
+    "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting",
+  ];
+  await writeFile(
+    path.join(destination, "build-scope.json"),
+    JSON.stringify(
+      {
+        scope: presentationRequired ? "COMPANION_AND_PRESENTATION" : "COMPANION_ONLY",
+        requiredPassingTests: presentationRequired ? 19 : 17,
+        excludedPresentationTests: presentationRequired ? [] : presentationTests,
+        independentPresentationReceiptRequired: !presentationRequired,
+        presentationAcceptance: false,
+      },
+      null,
+      2,
+    ),
+  );
   let host = await discoverDeviceLabHost();
   if (!host.apple.configured) {
     executionStage = "PROVISION_RUNTIME";
@@ -21,10 +42,43 @@ async function main() {
     host = await discoverDeviceLabHost();
   }
   await writeFile(path.join(destination, "capabilities.json"), JSON.stringify(host, null, 2));
+  const minimumIOS = (await readFile(path.join(root, "native", "ios", "project.yml"), "utf8")).match(
+    /^\s+iOS:\s*"([0-9.]+)"/m,
+  )?.[1];
+  if (!minimumIOS) throw new Error("LANDFALL_APPLE_DEPLOYMENT_TARGET_UNAVAILABLE");
+  const versionScore = (value: string) =>
+    value
+      .split(/[.-]/)
+      .map(Number)
+      .reduce((total, part, index) => total + part * (index === 0 ? 1000000 : index === 1 ? 1000 : 1), 0);
   const runtime = host.apple.runtimes
-    .filter((item) => item.available && item.id.includes("iOS"))
-    .sort((a, b) => b.id.localeCompare(a.id, undefined, { numeric: true }))[0];
+    .filter((item) => {
+      const version = item.id.match(/\.iOS-([0-9-]+)$/)?.[1];
+      return (
+        item.available &&
+        version !== undefined &&
+        versionScore(version) >= versionScore(minimumIOS) &&
+        host.apple.devices.some((device) => device.available && device.runtime === item.id)
+      );
+    })
+    .sort((a, b) =>
+      presentationRequired
+        ? a.id.localeCompare(b.id, undefined, { numeric: true })
+        : b.id.localeCompare(a.id, undefined, { numeric: true }),
+    )[0];
   if (!runtime) throw new Error("LANDFALL_APPLE_RUNTIME_UNAVAILABLE");
+  await writeFile(
+    path.join(destination, "runtime-selection.json"),
+    JSON.stringify(
+      {
+        runtime: runtime.id,
+        minimumIOS,
+        policy: presentationRequired ? "PREINSTALLED_OLDEST_SUPPORTED_PRESENTATION" : "PREINSTALLED_LATEST_COMPANION",
+      },
+      null,
+      2,
+    ),
+  );
   executionStage = "DEVICE_TYPE_INVENTORY";
   const types = JSON.parse(await labTool("xcrun", ["simctl", "list", "devicetypes", "--json"]));
   const compatibleNames = new Set(
@@ -107,6 +161,7 @@ async function main() {
         "CODE_SIGNING_ALLOWED=YES",
         "CODE_SIGN_IDENTITY=-",
         "LANDFALL_LAB_PRESENTATION=1",
+        ...(!presentationRequired ? presentationTests.map((test) => `-skip-testing:${test}`) : []),
         "test",
       ],
       1200000,
@@ -134,15 +189,19 @@ async function main() {
     await writeFile(path.join(destination, "test-summary.json"), testSummary);
     const nativeTests = JSON.parse(testSummary);
     // The only expected package-build skip is the canonical scenario driver,
-    // which requires its separately started endpoint. Presentation must execute.
+    // which requires its separately started endpoint. The companion-only job
+    // excludes exactly two presentation tests; their independent closure job
+    // still requires all19 passes and cannot be substituted by this receipt.
     if (
       ![nativeTests.failedTests, nativeTests.passedTests, nativeTests.skippedTests].every(Number.isInteger) ||
       nativeTests.failedTests !== 0 ||
-      nativeTests.passedTests < 19 ||
+      nativeTests.passedTests < (presentationRequired ? 19 : 17) ||
       nativeTests.skippedTests < 0 ||
       nativeTests.skippedTests > 1
     )
-      throw new Error("LANDFALL_APPLE_PRESENTATION_TESTS_REQUIRED");
+      throw new Error(
+        presentationRequired ? "LANDFALL_APPLE_PRESENTATION_TESTS_REQUIRED" : "LANDFALL_APPLE_COMPANION_TESTS_REQUIRED",
+      );
     executionStage = "EXPORT_XCTEST_ATTACHMENTS";
     // Keep native capability values inspectable on the harvesting host. The
     // passing assertion alone cannot establish the Simulator's NI capability.

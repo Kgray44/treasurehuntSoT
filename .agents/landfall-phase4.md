@@ -100,6 +100,15 @@ callback mandatory; no physical acquisition/progression, nativeclear/cleanup.
 Provider simulation returnsUNSUPPORTED. Permanent primarynoticejob includes
 positive+refusal onceperclosure.34localguards/2files freshSQLite,types/lintPASS.
 Actualrefusal pending; labsource/testtreeschanged, freshfullunitreceiptneeded.
+Freshfullroot0ba27caa9201dbddb3b6447023a2f5983229f0b2 PASS478files/2715tests,
+217.531s, ownedSQLite/cleanunchanged, rootunit-regression-a8b556561b984a03b9cbd345e244296a.
+E97searchrun37234626584 FAIL18/1/1,4300hashes/cleanupPASS: actualNoResults
+forReduceMotion. No scenariosexecute. AvailablepreinstallediOS26.2/26.4/26.5.
+Current CI separates mandatoryprimarypresentation(19passes/0fail/≤1expectedskip)
+onoldestsupportedpreinstalledruntime fromcompanion-only(17passes/0fail/≤1skip)
+onlatest. Two presentationtests explicitlyexcludedonlyfromcompanionbuild, with
+separatereceiptrequired. Overallclosure stillFAILifpresentationfails. No waived
+tests/unsupported relabeling/SDKinstall/acceptanceinference. Newbatchnotdispatched.
 Next: finish/harvest this native recheck, actual-step/canonical/cleanup inspection,
 final docs/performance/privacy/input comparisons, freeze, ordinary exact-candidate
 protected qualification, protected merge, landed smoke, separate protected

@@ -73,6 +73,10 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
     .replaceAll("__RUN_BROWSER__", String(target === "all" || target === "browser"))
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
+    .replaceAll(
+      "__RUN_APPLE_PRESENTATION__",
+      String(tier === "closure" && (target === "all" || target === "ios") && appleProfiles.includes("primary-phone")),
+    )
     // A separate primary-only OS notice job keeps closure coverage explicit
     // without repeating its permission/wake/tap sequence on every profile.
     .replaceAll(
