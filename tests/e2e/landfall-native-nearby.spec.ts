@@ -13,13 +13,12 @@ import { labBinaryTool, labTool } from "../../scripts/landfall/device-lab/host";
 import { runLandfallAndroidRadioLab } from "../../scripts/landfall/device-lab/android-radio-run";
 import { deviceLabSourceIdentity } from "../../scripts/landfall/device-lab/source";
 import { nativePairingLeaseClockBand } from "../../src/landfall/device-lab/native-pairing-diagnostics";
-import {
-  nativeJournalOpeningTouch,
-  nativeJournalOpeningGeometryTouch,
-} from "../../src/landfall/device-lab/native-opening-control";
 import { boundedAndroidDriver as boundedDriver } from "../../scripts/landfall/device-lab/android-driver";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { closureAccount, closureVoyage, openClosureMap } from "./fixtures/landfall-closure";
+import { openNativeJournalEntry } from "./fixtures/landfall-native-opening";
+
+const sourceInputs = ["tests/e2e/landfall-native-nearby.spec.ts", "tests/e2e/fixtures/landfall-native-opening.ts"];
 
 test.describe.configure({ timeout: 900_000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
@@ -50,7 +49,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
   const origin = new URL(baseURL!);
   if (origin.protocol !== "http:" || origin.hostname !== "127.0.0.1" || !origin.port)
     throw new Error("LANDFALL_NATIVE_NEARBY_OWNED_ORIGIN_REQUIRED");
-  const source = await deviceLabSourceIdentity(["tests/e2e/landfall-native-nearby.spec.ts"]);
+  const source = await deviceLabSourceIdentity(sourceInputs);
   const creator = await closureAccount("Native nearby synthetic Creator");
   const player = await closureAccount("Native nearby synthetic Player");
   const voyage = await closureVoyage(creator, player, "livingChart");
@@ -116,7 +115,6 @@ test("real native Journal pairing returns untrusted hints and background clears 
         authRedirect: boolean;
       }[] = [];
       const pairingDiagnostics: { deviceIndex: number; nativeState: string; uiState: string }[] = [];
-      const openingSkippedDevices: number[] = [];
       const adb = (serial: string, args: string[], timeout = 15000) =>
         labTool(resources.adbPath, ["-P", String(resources.adbPort), "-s", serial, ...args], timeout);
       try {
@@ -296,66 +294,13 @@ test("real native Journal pairing returns untrusted hints and background clears 
             authRedirect: !page.url().includes(`/playthroughs/${voyage.id}/journal`),
           });
           stage = "CLICK_NATIVE_JOURNAL_OPEN";
-          // Opening replaces its modal in place. Native CDP navigation signals may
-          // remain pending; assert the resulting tools separately after a normal tap.
-          if (await opening.isVisible()) {
-            // Target the exact source-owned control to isolate the failed nested
-            // role lookup, and still require its normal visible copy and tap.
-            const open = page.locator("button.wax-open");
-            await expect(open).toBeVisible();
-            await expect(open).toContainText("Open the journal");
-            try {
-              // Use a normal OS touch from the observed accessibility control.
-              // This is before any pairing code or native evidence acquisition.
-              const dump = "/data/local/tmp/landfall-public-opening.xml";
-              try {
-                const box = await open.boundingBox();
-                if (!box) throw new Error("NATIVE_OPENING_DOM_GEOMETRY_UNOBSERVED");
-                const viewport = await page.evaluate(() => ({
-                  width: innerWidth,
-                  height: innerHeight,
-                  scale: visualViewport?.scale ?? 1,
-                }));
-                let target;
-                try {
-                  await adb(serial, ["shell", "uiautomator", "dump", dump]);
-                  target = nativeJournalOpeningTouch(await adb(serial, ["shell", "cat", dump]), { box, viewport });
-                } catch {
-                  const raw = await adb(serial, [
-                    "shell",
-                    "run-as",
-                    pkg,
-                    "cat",
-                    "files/landfall-opening-geometry.json",
-                  ]);
-                  if (raw.length > 1024) throw new Error("NATIVE_OPENING_GEOMETRY_TOO_LARGE");
-                  target = nativeJournalOpeningGeometryTouch(JSON.parse(raw), { box, viewport });
-                }
-                await adb(serial, ["shell", "input", "tap", String(target.x), String(target.y)]);
-              } finally {
-                await adb(serial, ["shell", "rm", "-f", dump]);
-              }
-            } catch (error) {
-              // A timed-out click may have already started the opening.
-              // Continue only if that real transition is visible.
-              const progress = page.getByRole("dialog", { name: "Journal opening in progress" });
-              if (!(await progress.isVisible()) && !(await tools.isVisible())) throw error;
-            }
-            const progress = page.getByRole("dialog", { name: "Journal opening in progress" });
-            if (await progress.isVisible()) {
-              stage = "SKIP_NATIVE_JOURNAL_CEREMONY";
-              try {
-                await progress.getByRole("button", { name: "Skip ceremony", exact: true }).click({ noWaitAfter: true });
-                openingSkippedDevices.push(deviceIndex);
-              } catch (error) {
-                // The actual ceremony can finish while the native click waits.
-                // Only the resulting visible tools establish that transition.
-                if (!(await tools.isVisible())) throw error;
-              }
-            }
-          }
-          stage = "NATIVE_JOURNAL_TOOLS";
-          await expect(tools).toBeVisible({ timeout: 30000 });
+          await openNativeJournalEntry(
+            page,
+            (args) => adb(serial, args),
+            (observedStage) => {
+              stage = observedStage;
+            },
+          );
           stage = "OPEN_NATIVE_MAP";
           await openClosureMap(page, { noWaitAfter: true });
           expect(await page.evaluate(() => window.LandfallNative?.platform)).toBe("ANDROID");
@@ -611,7 +556,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           if ((await adb(serial, ["reverse", "--list"]).catch(() => binding)).includes(binding))
             remaining.push(`reverse-unverified:${serial}`);
         }
-        const after = await deviceLabSourceIdentity(["tests/e2e/landfall-native-nearby.spec.ts"]);
+        const after = await deviceLabSourceIdentity(sourceInputs);
         const events = (await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })) - before;
         const result =
           passed && !remaining.length && events === 0 && source.sourceFingerprint === after.sourceFingerprint
@@ -646,7 +591,7 @@ test("real native Journal pairing returns untrusted hints and background clears 
           failedPageState,
           journalStates,
           pairingDiagnostics,
-          openingSkippedDevices,
+          openingControl: "OBSERVED_DOM_AND_NATIVE_BOUNDS_OS_TOUCH",
           externalRequirements: ["REAL_DEVICE_REQUIRED:RF"],
           cleanup: { result: remaining.length ? "FAIL" : "PASS", remainingResources: remaining },
         };

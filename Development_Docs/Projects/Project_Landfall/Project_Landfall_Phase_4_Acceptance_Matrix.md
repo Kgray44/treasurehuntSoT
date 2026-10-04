@@ -106,6 +106,22 @@ waypoints. Expanded50case regression run37192939572 finds four failures (46pass)
 now addressed by live static-map position, hidden-map focus and legacy Worldspace
 source-policy fixes; a fresh complete browser receipt remains required.
 
+That expanded browser repair is now verified: run37194193502 on c2ff9517 passes
+all50Phase1–4optimized scenarios. Frozen989e684e broad regression passes469root
+unit files /2,662tests using fresh SQLite. The b813ccec exact tracked-source scan
+finds zero private-content violations and six classifications. Bridgewatch's
+independent24-file /80-test suite passes with one worker on b813ccec; a preceding
+two-worker run hit the existing five-second data-fabric test timeout, while that
+test also passes alone. No test timeout or protected testing authority is changed.
+
+Signed native run37198352248 measures initial Journal process PSS96,282KiB and
+103,292KiB after actual notice return. Its first notice follows inside input in
+6171.96ms; actual reauthorized return takes45,116.43ms, within the preliminary
+60second bound. The later registered-reboot failure still prevents acceptance of
+the complete journey. New15second foreground intervals measure parent-process
+and whole-guest CPU separately; actual values are pending. These counters do not
+attribute isolated renderer CPU or qualify physical battery/thermal behavior.
+
 ## External-gate ledger
 
 | Missing resource                                      | Implemented path / automated evidence                                                         | Required owner action and honest fallback                                                                                                                                                                                                   |
@@ -123,3 +139,42 @@ documentation integration and protected closure are **local work**. They are not
 external gates. Completion requires finishing that work, ordinary exact-candidate
 qualification, protected merge, landed verification and the final accepted capsule
 and completion receipt.
+
+Each resource row above is **nonblocking for local source closure** once its
+implemented path, actual attainable evidence and limitation are accepted. It
+blocks production use or claims of the corresponding capability as follows:
+
+- Real native devices and assistive technology: install the exact signed,
+  origin-bound candidate on an owned Android and iPhone; exercise precise,
+  approximate, denied and revoked permissions, foreground/background return,
+  actual registered reboot, offline restart and local clearing. Repeat the
+  Journal ceremony, chart, readable guidance and optional controls with TalkBack
+  and VoiceOver, enlarged text and reduced motion. Native production qualification
+  remains blocked until these device results are recorded.
+- Optional BLE/NFC/UWB/NI hardware: run the published acquisition/session cases
+  on actual peers and installations; record model/OS/provider versions, measured
+  range/pose uncertainty, stop and power/lifecycle cleanup. Verify that unsigned
+  or wrong installation identity and unverified peers cannot complete anything.
+  Only the corresponding physical hardware claims are blocked; authored fallback
+  remains available.
+- Real field route: obtain consent for one indoor/multifloor and one outdoor
+  authored route; record categorical permission/confidence outcomes, measured
+  first fix, wake/return latency, power and uncertainty, then compare foreground
+  server reconciliation with the authored objective. Check stairs/floors,
+  multipath, cancellation and safety/readable fallback. Field accuracy, energy
+  and OEM suspension claims remain blocked; no emulator result substitutes.
+- Production provider resources: configure an approved licensed account through
+  server-only references, exercise demand, attribution, quota/rate limiting,
+  outage, rotation and recovery using synthetic authorized requests, and verify
+  that private keys and raw locations never enter public projections. That
+  service remains NOT_CONFIGURED until qualified; it does not block other
+  configured providers or authored guidance.
+- Native distribution/deployment: bind the final source to signed Android and
+  Apple package identities, HTTPS origin and release hashes; verify install,
+  upgrade, rollback, private-data clearing and same-authority reconciliation on
+  the intended deployment. Native/public deployment is blocked until this
+  release evidence exists. Unsigned diagnostic packages are not distribution.
+- Watchglass: preserve the intentional NOT_CONFIGURED boundary. A future
+  separately authorized integration must qualify its own recognition interface
+  and context/expiry/privacy constraints. It blocks recognition availability,
+  and does not block Phase4 production guidance or authorize new phase work.

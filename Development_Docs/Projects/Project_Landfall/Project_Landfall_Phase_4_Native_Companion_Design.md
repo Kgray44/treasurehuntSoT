@@ -1578,3 +1578,16 @@ hosted values and baseline assessment remain required. Physical battery/thermal
 and isolated renderer attribution are not proved by these measurements.
 The aggregate uses the first eight kernel counters, excluding idle/iowait/steal
 from active execution and avoiding duplicate guest columns ([kernel documentation](https://docs.kernel.org/filesystems/proc.html)).
+
+Journal rerun37199604355 on65be773a fails earlier at opening, before any nearby
+HTTP or clock evidence. The actual screenshot shows the opening control; the
+current DOM reports one enabled button in its dialog, readyState complete and
+the native bridge available. The failure reports a locator wait. Canonical writes
+remain zero and cleanup passes. This does not establish the earlier exchange
+failure's cause. Both native journeys now share one opening helper: it reads
+the actual public button copy, visibility, enabled state and DOM rectangle
+directly, validates the observed native accessibility/WebView bounds, then sends
+ordinary OS input. Separate finite control/geometry/touch/ceremony/tools stages
+make further failures attributable. No DOM click, synthetic opening state or
+hardcoded screen coordinate is used. The Journal receipt binds that shared helper
+in its source fingerprint. Fresh actual execution remains required.

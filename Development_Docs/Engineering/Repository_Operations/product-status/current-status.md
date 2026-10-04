@@ -15,9 +15,10 @@ protocols and Apple virtual offline reconciliation have passing hosted evidence.
 Actual Play services geofence delivery, encrypted wake hint storage and a generic
 notice pass with documented hosted FLP mock input and zero progression writes.
 The two-profile UWB/generic BLE/iBeacon/Eddystone matrix passes all eight cases.
-First-party native Journal pairing, signed notice return and registered-region
-reboot still require actual acceptance. The patched browser candidate passes
-2,652 unit tests,159 provider scenarios on each of Windows and Linux,50 retained
+An actual signed first-party notice tap reauthorizes and returns to the current
+Journal. First-party native pairing, registered-region reboot recovery and
+revoked-membership notice return still require acceptance. Broad regression passes
+2,662 unit tests,159 provider scenarios on each of Windows and Linux,50 retained
 Phase1–4 browser journeys and80 Android cases across four profiles. Apple restart
 and virtual offline matrix repairs are under focused hosted validation. Final
 exact-source qualification, protected integration and phase closure
