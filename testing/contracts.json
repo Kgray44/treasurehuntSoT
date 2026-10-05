@@ -3349,6 +3349,13 @@
       "critical": true
     },
     {
+      "id": "landfall.device-lab-evidence",
+      "name": "Canonical Device Lab source binding, fidelity, progression authority and owned cleanup",
+      "authority": "project-landfall",
+      "owners": ["landfall", "sounding-line"],
+      "critical": true
+    },
+    {
       "id": "landfall.player-live-position",
       "name": "Authorized Player foreground live-position chart and geometry privacy",
       "authority": "project-landfall",

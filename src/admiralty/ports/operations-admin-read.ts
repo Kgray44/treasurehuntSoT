@@ -1,4 +1,5 @@
 import packageManifest from "../../../package.json";
+import { landfallOperationsProviders } from "@/landfall/provider-operations-server";
 import { communityOperationalSnapshot, collectCommunityProviderHealth } from "@/community/operations";
 import { readCommunityOutboxRuntimePolicy } from "@/community/operational-policy";
 import { db } from "@/lib/db";
@@ -20,6 +21,8 @@ type ProviderCard = {
   safeCode: string;
   observedAt: string;
   capabilities: readonly string[];
+  demand?: ReturnType<typeof landfallOperationsProviders>[number]["demand"];
+  safeAction?: string;
 };
 
 let providerCache: { expiresAt: number; value: AdmiraltyProjection<ProviderCard[]> } | null = null;
@@ -48,6 +51,7 @@ export async function getProviderOverview(operator: AdmiraltyCurrentOperator, fo
     sealedError = "Sealed Hold provider configuration or its bounded live probe is unavailable.";
   }
   const cards: ProviderCard[] = [
+    ...landfallOperationsProviders().map((provider) => ({ ...provider, observedAt: observedAt.toISOString() })),
     ...community.map((item) => ({
       domain: "Harborlight",
       kind: item.kind,
@@ -87,7 +91,7 @@ export async function getProviderOverview(operator: AdmiraltyCurrentOperator, fo
     },
   ];
   const value = cards.length
-    ? projection("Harborlight + SealedHold Admin Read Ports", cards, {
+    ? projection("Harborlight + SealedHold + Landfall Admin Read Ports", cards, {
         observedAt,
         state: cards.some((card) => card.health === "DEGRADED" || card.health === "UNKNOWN") ? "DEGRADED" : "HEALTHY",
       })

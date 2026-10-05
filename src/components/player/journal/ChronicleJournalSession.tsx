@@ -850,7 +850,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
 
   useEffect(() => {
     const journalRoot = root.current;
-    if (!journalRoot) return;
+    if (!readingReady || !journalRoot) return;
     const registry = teardownRegistry.current;
     const close = (event: KeyboardEvent) => {
       if (event.key === "Escape" && readingRef.current.openDrawer) saveReading({ openDrawer: null });
@@ -862,7 +862,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
       remove();
       release();
     };
-  }, [saveReading, state?.session.id]);
+  }, [readingReady, saveReading, state?.session.id]);
 
   useEffect(() => {
     const prior = previousDrawer.current;

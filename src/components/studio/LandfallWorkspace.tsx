@@ -8,6 +8,9 @@ import { ZodError } from "zod";
 import type { Asset, LibraryRecord } from "@/components/studio/studio-types";
 import { LandfallFieldTestPanel } from "@/components/studio/LandfallFieldTestPanel";
 import { LandfallContextEditor } from "@/components/studio/LandfallContextEditor";
+import { LandfallProviderPanel } from "@/components/studio/LandfallProviderPanel";
+import { LandfallOnlinePlacePanel } from "@/components/studio/LandfallOnlinePlacePanel";
+import { LandfallInstallationPanel } from "@/components/studio/LandfallInstallationPanel";
 import {
   addLandfallWorldspace,
   applyLandfallPreset,
@@ -646,6 +649,7 @@ export function LandfallWorkspace({
             </label>
           </div>
           <section className="landfall-worldspace-settings" aria-label="Worldspace settings">
+            <LandfallProviderPanel definition={definition} worldspace={worldspace} onChange={commit} />
             <h3>{worldspace.name} settings</h3>
             <label>
               Name
@@ -906,7 +910,7 @@ export function LandfallWorkspace({
                 {map.source.type === "BUILTIN_VECTOR"
                   ? "Map data provider unavailable. Place locations with coordinates or the canvas; live address and place lookup needs a configured server provider."
                   : map.source.type === "BUILTIN_RASTER"
-                    ? "Live OpenStreetMap tiles need a connection and are not packaged for offline use. Address and place lookup is unavailable; use coordinates or Chronicle locations."
+                    ? "Live OpenStreetMap tiles need a connection and are not packaged for offline use. Online place lookup needs a separately configured service; coordinates and Chronicle locations remain available."
                     : map.source.type === "ASSET_IMAGE" && !scene?.imageUrl
                       ? "Map image is unavailable. Check the selected Chronicle asset and its processed variant."
                       : "The chart uses this Chronicle’s authored map source."}
@@ -1003,6 +1007,21 @@ export function LandfallWorkspace({
                     ))}
                 </select>
               </label>
+              <LandfallOnlinePlacePanel
+                taleId={taleId}
+                sourceVersion={sourceVersion}
+                csrfToken={csrfToken}
+                worldspace={worldspace}
+                unsaved={unsaved}
+                onSelectPlace={(place) => {
+                  setManualX(place.point.longitude);
+                  setManualY(place.point.latitude);
+                  setPlaceName(place.label);
+                  setError(
+                    "Online coordinates selected. Review them, then choose Place at coordinates to add your waypoint.",
+                  );
+                }}
+              />
               {placeName && <p>Next waypoint name: {placeName}</p>}
             </div>
             <aside className="landfall-inspector">
@@ -1555,6 +1574,20 @@ export function LandfallWorkspace({
               {selectedWaypoint && (
                 <div className="landfall-inspector-fields">
                   <h4>Waypoint</h4>
+                  {worldspace.kind === "PHYSICAL" && (
+                    <LandfallInstallationPanel
+                      taleId={taleId}
+                      waypoint={selectedWaypoint}
+                      csrfToken={csrfToken}
+                      unsaved={unsaved}
+                      onChange={(installations) =>
+                        updateWaypoint((item) => ({
+                          ...item,
+                          installations: installations.length ? installations : undefined,
+                        }))
+                      }
+                    />
+                  )}
                   <label>
                     Name
                     <input

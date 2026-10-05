@@ -3,10 +3,17 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-03
+last_reviewed: 2026-10-04
 ---
 
 # Voyagewright features
+
+Landfall Phase 4 is an implementation candidate under native and hosted Device Lab
+validation. Its offline region preview separates preparation from download and
+shows verified progress, contents, expiry and local deletion boundaries. Admiralty
+can read bounded recent online-provider demand metadata without a Landfall probe.
+This candidate has not completed protected qualification, merge or phase closure;
+deployment, real hardware and owner acceptance remain separate.
 
 Voyagewright is a private, role-aware home for shared Chronicle experiences.
 

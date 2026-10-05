@@ -1,6 +1,6 @@
 import type { LandfallDefinition, LandfallWaypoint } from "@/landfall/schema";
-/** Deployable source paths, rather than merely declared source enums. Watchglass
- * and game/native integrations remain unavailable in the shipped application. */
+/** Deployable source paths, rather than merely declared source enums. Physical
+ * native and browser acquisitions share one location root. */
 export function landfallSourceCapabilities(definition: LandfallDefinition, waypoint: LandfallWaypoint) {
   const world = definition.worldspaces.find((item) => item.id === waypoint.worldspaceId)!;
   const allowed = (source: LandfallWaypoint["evidenceProfile"]["acceptedSources"][number]) =>
@@ -16,7 +16,7 @@ export function landfallSourceCapabilities(definition: LandfallDefinition, waypo
     allowed("PLAYER_CONFIRMATION") &&
     waypoint.fallback.mode === "PLAYER" &&
     waypoint.evidenceProfile.allowManualFallback;
-  const location = world.kind === "PHYSICAL" && !fine && allowed("BROWSER_GEOLOCATION");
+  const location = world.kind === "PHYSICAL" && !fine && (allowed("BROWSER_GEOLOCATION") || allowed("NATIVE_LOCATION"));
   const landmark =
     world.kind === "PHYSICAL" &&
     allowed("VISION_WAYPOINT") &&

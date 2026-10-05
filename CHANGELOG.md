@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-01
+last_reviewed: 2026-10-04
 ---
 
 # Changelog
@@ -13,6 +13,47 @@ last_reviewed: 2026-10-01
 ## Unreleased
 
 ### Added
+
+- Apple companion configuration now declares portrait and landscape support
+  for phones and tablets. Its unconfigured message scrolls at large text sizes;
+  actual iOS26.5 Simulator rotation and Reduce Motion readback/restoration pass, with reviewed full-device screenshots. Physical assistive usability remains external.
+
+- Native iOS notification consent replies and notice-return navigation now run
+  on the UI thread. Actual permission refusal and positive nonce handoff pass; production signed authorization retains separate scope. Final protected Phase 4 integration remains pending.
+
+- Native iOS location throttling retains one latest transient fix for delivery
+  at the requested interval, preserving its observation time. Stop, suspension,
+  revocation and restart clear pending work; stale, future and invalid fixes
+  cannot replace a current observation.
+
+- Restored Journal drawer Escape handling when authenticated reading-state
+  restoration finishes after session loading. Closing the drawer returns focus
+  to its opening control; the delayed-restore regression test now covers that race.
+
+- Corrected the Phase 4 notification-return adapter so removed membership or an
+  unavailable pinned Voyage sends an authenticated Player to Player home instead
+  of treating their account as signed out. Current membership and pinned-session
+  checks still refuse access; actual Android signed return and Apple nonce handoff are accepted at their recorded fidelity.
+
+- Landfall Phase 4 candidate: native companions and an owned cross-platform Device
+  Lab, bounded region preview/download progress, and coordinate-free operational
+  logs with provider-demand history in Admiralty. Current native validation and
+  protected qualification are ongoing; this entry does not claim phase closure
+  or deployed companion availability.
+
+- Corrected the Phase 4 Android wake-region adapter to support complete encrypted
+  notification-return claims within the OS region-ID limit. Consent replacement,
+  cancellation and receiver delivery still resolve only the active encrypted
+  registration and cannot record an arrival.
+
+- Corrected candidate nearby-pairing timers for device clock skew while preserving
+  server expiry and the bounded exchange. The Android companion now persists its
+  existing cookie jar off the UI thread at lifecycle boundaries; cold notice
+  returns still require current server authentication and membership.
+
+- Drydock now rejects a Device Lab reference when its device profile is outside
+  the scenario's supported scope. Referenced virtual evidence still requires
+  Chronicle review and cannot satisfy physical or launch acceptance.
 
 - Closed the Landfall physical/virtual v1.1 audit corrections through protected PR #675: ordinary physical regions preserve authorized private Player context, strict bounded source bundles independently qualify real checks through One Voyage, pending completion rechecks expiry at delivery, and Creator findings reflect actual provider availability. Watchglass remains not configured; exact-head hosted qualification, 2,364 full-unit tests, 39 production scenarios and landed smoke pass. The amendment record preserves historical failures and permanent closure evidence.
 

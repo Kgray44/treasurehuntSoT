@@ -51,9 +51,61 @@ export default async function ProvidersPage() {
                 </div>
                 <div>
                   <dt>Safe action</dt>
-                  <dd>Refresh this projection to run the owner’s bounded health check.</dd>
+                  <dd>{provider.safeAction ?? "Refresh this projection to run the owner’s bounded health check."}</dd>
                 </div>
               </dl>
+              {provider.demand && (
+                <dl className="chartroom-details">
+                  <div>
+                    <dt>Last successful demand</dt>
+                    <dd>
+                      {provider.demand.lastSuccessAt === null
+                        ? "Not observed"
+                        : new Date(provider.demand.lastSuccessAt).toLocaleString()}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Last failed demand</dt>
+                    <dd>
+                      {provider.demand.lastFailureAt === null
+                        ? "Not observed"
+                        : new Date(provider.demand.lastFailureAt).toLocaleString()}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Last request latency</dt>
+                    <dd>{provider.demand.latencyMs === null ? "Not measured" : `${provider.demand.latencyMs} ms`}</dd>
+                  </div>
+                  <div>
+                    <dt>Rate recovery</dt>
+                    <dd>
+                      {provider.demand.retryAfter === null
+                        ? "No recovery time reported; provider quota is unknown."
+                        : new Date(provider.demand.retryAfter).toLocaleString()}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Credential expiry</dt>
+                    <dd>Not reported by this provider contract.</dd>
+                  </div>
+                  <div>
+                    <dt>Affected scope</dt>
+                    <dd>{provider.demand.affectedScope}</dd>
+                  </div>
+                  <div>
+                    <dt>Fallback</dt>
+                    <dd>{provider.demand.fallback}</dd>
+                  </div>
+                  <div>
+                    <dt>Outage consequence</dt>
+                    <dd>{provider.demand.consequence}</dd>
+                  </div>
+                  <div>
+                    <dt>Observation boundary</dt>
+                    <dd>{provider.demand.historyScope}</dd>
+                  </div>
+                </dl>
+              )}
               <details>
                 <summary>Technical details</summary>
                 <dl className="chartroom-details">

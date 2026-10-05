@@ -5,10 +5,24 @@ import type { MotionMode } from "@/animation/core/animation-types";
 import { VoyageChart } from "@/components/player/workspace/VoyageChart";
 import { LandfallPresentation } from "@/components/player/journal/LandfallPresentation";
 import { LandfallContextGuidance } from "@/components/player/journal/LandfallContextGuidance";
+import { LandfallPlaceSearch } from "@/components/player/journal/LandfallPlaceSearch";
+import { selectReleasedChartPlace } from "@/landfall/chart-search";
 import { LandfallLandmarkPanel } from "@/components/player/journal/LandfallLandmarkPanel";
 import { BrowserContextProvider, type BrowserContextTarget } from "@/landfall/browser-context";
 import type { ContextualEvidence, ContextualSnapshot } from "@/landfall/contextual";
 import { BrowserGeolocationProvider } from "@/landfall/browser-geolocation";
+import {
+  createLandfallNativeDriver,
+  NativeForegroundLocationProvider,
+  subscribeLandfallNativeLifecycle,
+} from "@/landfall/native-bridge";
+import { NativeContextProvider } from "@/landfall/native-context";
+import { LandfallOfflineRegionPanel } from "@/components/player/journal/LandfallOfflineRegionPanel";
+import { LandfallBackgroundPanel } from "@/components/player/journal/LandfallBackgroundPanel";
+import { LandfallNearbyPanel } from "@/components/player/journal/LandfallNearbyPanel";
+import { LandfallBlePanel } from "@/components/player/journal/LandfallBlePanel";
+import { LandfallOnlineDataPanel } from "@/components/player/journal/LandfallOnlineDataPanel";
+import { LandfallInstallationPanel } from "@/components/player/journal/LandfallInstallationPanel";
 import { distance } from "@/landfall/geometry";
 import type { LandfallCurrentPosition } from "@/landfall/map-projection";
 import { LandfallProviderRegistry } from "@/landfall/observation";
@@ -18,6 +32,7 @@ import type { LandfallObservation } from "@/landfall/observation";
 import type { PlayerLandfallEvidence } from "@/landfall/server-evidence";
 import type { PlayerJournalBlock } from "@/chronicle/journal-contract";
 import { clearLandfallOfflineData, type OfflineAvailability } from "@/landfall/offline-store";
+import { createPlayerLandfallReconciler } from "@/landfall/offline-reconcile-web";
 import {
   clearLandfallEvidence,
   pendingLandfallEvidence,
@@ -89,8 +104,8 @@ function useLandfallController({
   const [contextMessage, setContextMessage] = useState("Optional motion and heading hints are off.");
   const [landmarkObservations, setLandmarkObservations] = useState<LandfallObservation[]>([]);
   const runtime = useRef<LandfallRuntime | null>(null);
-  const browser = useRef<BrowserGeolocationProvider | null>(null);
-  const contextBrowser = useRef<BrowserContextProvider | null>(null);
+  const browser = useRef<BrowserGeolocationProvider | NativeForegroundLocationProvider | null>(null);
+  const contextBrowser = useRef<BrowserContextProvider | NativeContextProvider | null>(null);
   const contextSamples = useRef<ContextualEvidence[]>([]);
   const samples = useRef<LandfallObservation[]>([]);
   const submitting = useRef(false);
@@ -191,15 +206,33 @@ function useLandfallController({
           worldspaceKinds: ["PHYSICAL"],
           state: "AVAILABLE",
         });
+        const nativeDriver = createLandfallNativeDriver();
+        if (nativeDriver)
+          registry.register({
+            id: nativeDriver.platform === "IOS" ? "ios-core-location" : "android-location",
+            source: "NATIVE_LOCATION",
+            worldspaceKinds: ["PHYSICAL"],
+            state: "AVAILABLE",
+          });
         const active = new LandfallRuntime(next.runtimeDefinition, next, registry);
         active.setActiveWaypoint(next.activeWaypointId);
         if (next.runtimeDefinition.routes[0]?.geometry) active.setActiveRoute(next.runtimeDefinition.routes[0].id);
         runtime.current = active;
         const worldspace = next.runtimeDefinition.worldspaces[0];
         if (!historical && !next.replayOnly && next.runtimeDefinition.context && worldspace.kind === "PHYSICAL")
-          contextBrowser.current = new BrowserContextProvider(window as unknown as BrowserContextTarget, worldspace.id);
+          contextBrowser.current = createLandfallNativeDriver()
+            ? new NativeContextProvider(worldspace.id)
+            : new BrowserContextProvider(window as unknown as BrowserContextTarget, worldspace.id);
         const waypoint = next.runtimeDefinition.waypoints.find((item) => item.id === next.activeWaypointId);
         if (
+          worldspace.kind === "PHYSICAL" &&
+          worldspace.coordinateReference.type === "WGS84" &&
+          nativeDriver &&
+          worldspace.observationPolicy.allowedSources.includes("NATIVE_LOCATION") &&
+          waypoint?.evidenceProfile.acceptedSources.includes("NATIVE_LOCATION")
+        )
+          browser.current = new NativeForegroundLocationProvider(nativeDriver, worldspace);
+        else if (
           worldspace.kind === "PHYSICAL" &&
           worldspace.coordinateReference.type === "WGS84" &&
           worldspace.observationPolicy.allowedSources.includes("BROWSER_GEOLOCATION") &&
@@ -257,8 +290,8 @@ function useLandfallController({
   }, [tracking, contextTracking]);
 
   useEffect(() => {
-    const stopInBackground = () => {
-      if (document.visibilityState === "visible") return;
+    const stopInBackground = (nativeBackground = false) => {
+      if (!nativeBackground && document.visibilityState === "visible") return;
       browser.current?.stop();
       contextBrowser.current?.stop();
       contextSamples.current = [];
@@ -271,8 +304,15 @@ function useLandfallController({
       setPosition(null);
       setMessage("Location is off while this tab is in the background. Use my location to resume.");
     };
-    document.addEventListener("visibilitychange", stopInBackground);
-    return () => document.removeEventListener("visibilitychange", stopInBackground);
+    const visibility = () => stopInBackground();
+    const unsubscribe = subscribeLandfallNativeLifecycle((state) => {
+      if (state === "BACKGROUND") stopInBackground(true);
+    });
+    document.addEventListener("visibilitychange", visibility);
+    return () => {
+      document.removeEventListener("visibilitychange", visibility);
+      unsubscribe();
+    };
   }, []);
 
   const stop = () => {
@@ -317,56 +357,29 @@ function useLandfallController({
       pendingEvidence.current ? "Reconciling queued evidence with the Voyage…" : "Checking arrival with the Voyage…",
     );
     try {
-      if (pendingEvidence.current) {
-        const current = await fetch(`/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall`, {
-          cache: "no-store",
-        });
-        if (!current.ok) {
-          if ([401, 403, 404].includes(current.status)) {
-            pendingEvidence.current = null;
-            await clearLandfallOfflineData();
-            setMessage("Voyage access expired or was revoked. Sign in and verify access before continuing.");
-            return;
-          }
-          throw new Error("LANDFALL_REAUTHENTICATION_REQUIRED");
-        }
-        const value = await current.json();
-        const queued = await pendingLandfallEvidence(sessionId, publishedVersionId, csrfToken);
-        if (
-          !queued ||
-          !value.available ||
-          value.bootstrap.publishedVersionId !== evidence.publishedVersionId ||
-          value.bootstrap.currentSequence !== evidence.expectedSequence ||
-          value.bootstrap.replayOnly
-        ) {
-          pendingEvidence.current = null;
-          await clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
-          setMessage(
-            "Queued evidence expired or the Voyage changed. No new visit was confirmed. Refresh the Chart and use a fresh reading.",
-          );
-          onProgress();
-          return;
-        }
-      }
-      const response = await fetch(`/api/player/playthroughs/${encodeURIComponent(sessionId)}/landfall`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken },
-        body: JSON.stringify(evidence),
+      const queued = pendingEvidence.current !== null;
+      const reconciler = createPlayerLandfallReconciler(sessionId, csrfToken, {
+        pending: () =>
+          queued ? pendingLandfallEvidence(sessionId, publishedVersionId, csrfToken) : Promise.resolve(evidence),
+        clearEvidence: () => clearLandfallEvidence(sessionId, publishedVersionId, csrfToken),
+        revoke: () => clearLandfallOfflineData(),
       });
-      if (!response.ok) {
-        if (response.status >= 500 || response.status === 429) throw new Error("LANDFALL_RETRY_REQUIRED");
+      const result = await reconciler.reconcile();
+      if (result === "RETRY") throw new Error("LANDFALL_RETRY_REQUIRED");
+      if (result === "REVOKED") {
         pendingEvidence.current = null;
-        if ([401, 403, 404].includes(response.status)) {
-          await clearLandfallOfflineData();
-          setMessage("Voyage access expired or was revoked. Sign in and verify access before continuing.");
-          return;
-        }
-        await clearLandfallEvidence(sessionId, publishedVersionId, csrfToken);
+        setMessage("Voyage access expired or was revoked. Sign in and verify access before continuing.");
+        return;
+      }
+      if (result === "EMPTY" || result === "CONFLICT") {
+        pendingEvidence.current = null;
+        setAvailability((value) => (value ? { ...value, pendingEvidence: 0 } : value));
         setMessage(
-          response.status === 409
-            ? "Queued evidence could not be reconciled because the Voyage changed. Reopen the chart for the current objective."
-            : "Evidence was rejected. No visit was recorded; use a fresh reading or configured fallback.",
+          result === "EMPTY"
+            ? "Queued evidence expired. Use a fresh reading; no new visit was confirmed."
+            : "Evidence could not be reconciled because the Voyage changed or rejected it. Refresh the Chart and use a fresh reading or configured fallback.",
         );
+        onProgress();
         return;
       }
       pendingEvidence.current = null;
@@ -383,9 +396,11 @@ function useLandfallController({
       setTracking(false);
       setPosition(null);
       setMessage(
-        evidence.method === "PLAYER_FALLBACK"
-          ? "Your confirmation was recorded without a location claim."
-          : "Arrival recorded in the Voyage.",
+        result === "DUPLICATE"
+          ? "The Voyage confirms this arrival was already recorded. The Chart has been refreshed."
+          : evidence.method === "PLAYER_FALLBACK"
+            ? "Your confirmation was recorded without a location claim."
+            : "Arrival recorded in the Voyage.",
       );
       onProgress();
     } catch {
@@ -558,7 +573,7 @@ function useLandfallController({
       contextSamples.current = [];
       setContextTracking(false);
       setContextMessage("Optional motion and heading hints are off.");
-      setContextSnapshot(runtime.current?.contextSnapshot(Date.now()) ?? null);
+      setContextSnapshot(runtime.current?.discardSensorHints(Date.now()) ?? null);
       return;
     }
     const provider = contextBrowser.current;
@@ -573,6 +588,10 @@ function useLandfallController({
       },
       (permission) => {
         setContextTracking(permission === "GRANTED");
+        if (permission !== "GRANTED") {
+          contextSamples.current = [];
+          setContextSnapshot(active.discardSensorHints(Date.now()));
+        }
         setContextMessage(
           permission === "GRANTED"
             ? "Optional motion and heading hints are on while this chart is open."
@@ -698,6 +717,7 @@ export function LandfallJournalChart({
   const controller = useContext(LandfallControllerContext);
   const [historicalChart, setHistoricalChart] = useState<PlayerLandfallBootstrap | null>(null);
   const [viewingMapId, setViewingMapId] = useState<string | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<{ mapId: string; featureId: string; scope: string } | null>(null);
   useEffect(() => {
     if (!readOnly || !blockId || !controller?.bootstrap) return;
     const abort = new AbortController();
@@ -764,6 +784,18 @@ export function LandfallJournalChart({
     bootstrap.availableMaps?.find((item) => item.id === viewingMapId) ??
     bootstrap.availableMaps?.find((item) => item.id === bootstrap.scene.mapId);
   const isHistorical = bootstrap.replayOnly || readOnly;
+  const searchScope = JSON.stringify([
+    bootstrap.sessionId,
+    bootstrap.publishedVersionId,
+    bootstrap.currentSequence,
+    blockId ?? null,
+    isHistorical,
+  ]);
+  const viewedScene = viewingMap?.scene ?? bootstrap.scene;
+  const searchedScene =
+    selectedPlace?.scope === searchScope && selectedPlace.mapId === viewedScene.mapId
+      ? selectReleasedChartPlace(viewedScene, selectedPlace.featureId)
+      : viewedScene;
   const contextual = isHistorical
     ? (replay?.contextualSummary ?? bootstrap.contextualSummary ?? null)
     : contextSnapshot;
@@ -817,6 +849,41 @@ export function LandfallJournalChart({
       {bootstrap.paused && (
         <p role="status">The Captain paused Landfall progression. Current chart details remain readable.</p>
       )}
+      {!readOnly && !bootstrap.replayOnly && (
+        <LandfallOfflineRegionPanel
+          sessionId={bootstrap.sessionId}
+          publishedVersionId={bootstrap.publishedVersionId}
+          sequence={bootstrap.currentSequence}
+          csrfToken={csrfToken}
+        />
+      )}
+      {!readOnly &&
+        !bootstrap.replayOnly &&
+        worldspace.kind === "PHYSICAL" &&
+        worldspace.observationPolicy.allowedSources.includes("NATIVE_LOCATION") && (
+          <LandfallBackgroundPanel
+            key={JSON.stringify([
+              bootstrap.sessionId,
+              bootstrap.publishedVersionId,
+              bootstrap.currentSequence,
+              bootstrap.activeWaypointId,
+            ])}
+            sessionId={bootstrap.sessionId}
+            csrfToken={csrfToken}
+          />
+        )}
+      {!readOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
+        <LandfallNearbyPanel bootstrap={bootstrap} csrfToken={csrfToken} />
+      )}
+      {!readOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
+        <LandfallBlePanel bootstrap={bootstrap} />
+      )}
+      {!readOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
+        <LandfallInstallationPanel bootstrap={bootstrap} csrfToken={csrfToken} />
+      )}
+      {!readOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
+        <LandfallOnlineDataPanel bootstrap={bootstrap} csrfToken={csrfToken} position={position} />
+      )}
       {activeRoute && (
         <section aria-label="Route progress">
           <strong>{activeRoute.name}</strong>
@@ -867,11 +934,23 @@ export function LandfallJournalChart({
         snapshot={contextual}
         historical={isHistorical}
         viewingMapId={viewingMap?.id ?? bootstrap.scene.mapId}
-        onViewingMapChange={setViewingMapId}
+        onViewingMapChange={(id) => {
+          setViewingMapId(id);
+          setSelectedPlace(null);
+        }}
+      />
+      <LandfallPlaceSearch
+        key={searchScope}
+        bootstrap={bootstrap}
+        onSelect={(place) => {
+          setViewingMapId(place.mapId);
+          setSelectedPlace({ mapId: place.mapId, featureId: place.id, scope: searchScope });
+        }}
+        onClear={() => setSelectedPlace(null)}
       />
       <VoyageChart
         mode={mode}
-        landfallScene={viewingMap?.scene ?? bootstrap.scene}
+        landfallScene={searchedScene}
         landfallPosition={!viewingMap || viewingMap.id === bootstrap.scene.mapId ? position : null}
       />
       {bootstrap.runtimeDefinition.context && worldspace.kind === "PHYSICAL" && !isHistorical && !bootstrap.paused && (

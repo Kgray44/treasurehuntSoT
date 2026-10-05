@@ -55,6 +55,7 @@ export class LandfallEvidenceFusion {
     if (items.some((item) => item.present) && items.some((item) => !item.present)) return "CONFLICT";
     const contextualRoots = new Set(items.flatMap((item) => item.observation.provenance?.contextEvidenceRefs ?? []));
     const roots = new Set<string>();
+    let physicalLocationCounted = false;
     let sources = 0;
     for (const item of items.filter((candidate) => candidate.present)) {
       const provenance = item.observation.provenance;
@@ -65,6 +66,12 @@ export class LandfallEvidenceFusion {
         item.observation.id;
       if (contextualRoots.has(root) || roots.has(root)) continue;
       roots.add(root);
+      // Browser and native acquisition may share the same device/OS estimate.
+      // They are interchangeable paths, never two independent checks.
+      if (["BROWSER_GEOLOCATION", "NATIVE_LOCATION"].includes(item.observation.source)) {
+        if (physicalLocationCounted) continue;
+        physicalLocationCounted = true;
+      }
       sources++;
     }
     return sources >= (profile.fusionPolicy?.minimumIndependentSources ?? 1) ? "SUPPORTED" : "INSUFFICIENT";

@@ -1,6 +1,7 @@
 import { approximateContextKinds, projectContextRegion } from "@/landfall/context-projection";
 import { landfallSourceCapabilities } from "@/landfall/source-capabilities";
 import { validateLandfallDefinition } from "@/landfall/definition";
+import { landfallProviderFindings } from "@/landfall/provider-authoring";
 import type {
   LandfallCoordinate,
   LandfallDefinition,
@@ -96,7 +97,7 @@ export function createLandfallWorldspace(input: {
     defaultMapDefinitionId: mapId,
     observationPolicy: {
       allowedSources: physical
-        ? ["BROWSER_GEOLOCATION", "PLAYER_CONFIRMATION", "CAPTAIN_CONFIRMATION"]
+        ? ["BROWSER_GEOLOCATION", "NATIVE_LOCATION", "PLAYER_CONFIRMATION", "CAPTAIN_CONFIRMATION"]
         : ["PLAYER_CONFIRMATION", "CAPTAIN_CONFIRMATION", "STORY_PROGRESSION"],
       requiredFallback: true,
     },
@@ -178,7 +179,11 @@ export function createLandfallWaypoint(
     geometry: { type: "POINT_RADIUS", center, radius: physical ? 100 : 30 },
     evidenceProfile: {
       precisionProfile: physical ? "BROAD_ARRIVAL" : "VIRTUAL_CONTEXT",
-      acceptedSources: physical ? ["BROWSER_GEOLOCATION", "PLAYER_CONFIRMATION"] : ["PLAYER_CONFIRMATION"],
+      acceptedSources: physical
+        ? (["BROWSER_GEOLOCATION", "NATIVE_LOCATION", "PLAYER_CONFIRMATION"] as const).filter((source) =>
+            worldspace.observationPolicy.allowedSources.includes(source),
+          )
+        : ["PLAYER_CONFIRMATION"],
       ...(physical ? { requiredAccuracyMeters: 50, maximumSpeedMetersPerSecond: 45 } : {}),
       requiredSamples: physical ? 2 : 1,
       dwellSeconds: 0,
@@ -202,8 +207,16 @@ export function landfallAuthoringFindings(
   definition: LandfallDefinition,
   taleVisibility: string,
   assets?: ReadonlyArray<{ id: string; mimeType: string; variants: ReadonlyArray<{ processingState: string }> }>,
+  providerContext?: {
+    providers: Parameters<typeof landfallProviderFindings>[1];
+    statuses: Parameters<typeof landfallProviderFindings>[2];
+  },
 ): LandfallAuthoringFinding[] {
-  const findings: LandfallAuthoringFinding[] = [];
+  const findings: LandfallAuthoringFinding[] = landfallProviderFindings(
+    definition,
+    providerContext?.providers,
+    providerContext?.statuses,
+  );
   for (const waypoint of definition.waypoints) {
     const capability = landfallSourceCapabilities(definition, waypoint);
     if ((waypoint.evidenceProfile.fusionPolicy?.minimumIndependentSources ?? 1) > capability.count)
@@ -217,7 +230,9 @@ export function landfallAuthoringFindings(
     if (
       worldspace.kind === "PHYSICAL" &&
       waypoint.evidenceProfile.precisionProfile === "EXACT_OBJECT" &&
-      waypoint.evidenceProfile.acceptedSources.every((source) => source === "BROWSER_GEOLOCATION")
+      waypoint.evidenceProfile.acceptedSources.every((source) =>
+        ["BROWSER_GEOLOCATION", "NATIVE_LOCATION"].includes(source),
+      )
     )
       findings.push({
         code: "LANDFALL_EXACT_TARGET_INDEPENDENT_EVIDENCE",

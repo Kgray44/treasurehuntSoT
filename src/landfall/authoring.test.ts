@@ -11,6 +11,33 @@ import { validateLandfallDefinition } from "@/landfall/definition";
 import type { LandfallDefinition } from "@/landfall/schema";
 
 describe("Landfall Studio authoring model", () => {
+  it("adds a waypoint to an existing physical Worldspace without enabling a prohibited native source", () => {
+    const definition = createLandfallWorldspace({
+      taleId: "synthetic-legacy",
+      name: "Legacy physical chart",
+      kind: "PHYSICAL",
+    });
+    const worldspace = {
+      ...definition.worldspaces[0],
+      observationPolicy: {
+        ...definition.worldspaces[0].observationPolicy,
+        allowedSources: definition.worldspaces[0].observationPolicy.allowedSources.filter(
+          (source) => source !== "NATIVE_LOCATION",
+        ),
+      },
+    };
+    const waypoint = createLandfallWaypoint(
+      worldspace,
+      definition.maps[0],
+      definition.maps[0].camera.center,
+      "New location",
+    );
+    expect(waypoint.evidenceProfile.acceptedSources).toEqual(["BROWSER_GEOLOCATION", "PLAYER_CONFIRMATION"]);
+    expect(() =>
+      validateLandfallDefinition({ ...definition, worldspaces: [worldspace], waypoints: [waypoint] }),
+    ).not.toThrow();
+    expect(worldspace.observationPolicy.allowedSources).not.toContain("NATIVE_LOCATION");
+  });
   it("makes private layouts and unusable landmark references visible before publication", () => {
     const base = createLandfallWorldspace({ taleId: "synthetic-tale", name: "Synthetic museum", kind: "PHYSICAL" });
     const waypoint = createLandfallWaypoint(

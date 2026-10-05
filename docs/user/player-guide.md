@@ -3,10 +3,34 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-01
+last_reviewed: 2026-10-04
 ---
 
 # Player guide
+
+The Phase 4 candidate adds an optional offline region panel in the Journal map.
+Select **Prepare offline region** to check availability, size, included released
+resources and authorization expiry; select **Download offline region** separately
+to download and verify them. Partial downloads can be resumed, and stale regions
+need a refresh. Removing a device's region preserves saved Chronicle history.
+External tiles and online suggestions require a connection. Availability depends
+on the deployment's signing configuration. Phase 4 acceptance is still pending.
+
+In a configured native companion, background reminders are optional. Enable them
+only when you want a broad reminder for the released objective, with separate
+background-location and notification permission. A generic notice opens a newly
+authorized Player destination; it does not confirm a visit. Return to the current
+Chart and choose **Use my location** for a fresh foreground check. **Disable
+reminders** clears the device's registration and pending hints. Delivery and
+reboot recovery remain subject to device behavior and signed-release qualification. Emulator/Simulator acceptance does not establish physical-device delivery or energy performance.
+
+Optional nearby-device hints use a short exchange prepared on both devices. The
+exchange expires even if the devices' clocks differ; prepare it again after a
+pause or expiry. A peer hint does not confirm a visit. A notice return may require
+sign-in again when your account session is absent or expired. If you are still
+signed in but Voyage access was removed or its pinned session is unavailable,
+the return goes to your Player home. A saved session never restores removed
+Voyage access.
 
 After accepting an invitation, use the Player Library to find the Voyages available to you. A Voyage can show a waiting state until your Captain begins it. During play, use the story view and Chronicle Journal to follow events, revisit earlier pages, and return to your history when available.
 

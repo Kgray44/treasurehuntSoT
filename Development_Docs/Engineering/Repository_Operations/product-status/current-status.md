@@ -3,14 +3,26 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-03
+last_reviewed: 2026-10-04
 ---
 
 # Current status
 
-**Landfall Phase 3 is available on protected main:** Read the Ground adds aligned floor/site hierarchy, continuity-aware corridor guidance, optional foreground hints, region-gated natural landmark authored-view comparison and independent exact-object observations. Protected PR #673 passed exact-head local/hosted Sounding Line and landed tree verification. The [accepted capsule](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_Accepted_Capsule.md) records full-unit, retained browser, landed and evidence/catalog closure proof. Physical field quality, deployment and owner acceptance remain separate; Phase 4 is deferred.
+Landfall Phase4 has completed attainable native acceptance and remains pending protected integration.
 
-The physical/virtual v1.1 audit corrections are complete on protected main through PR #675, merge `64c780a0`. Exact-head hosted ordinary passed all nine obligations; the frozen suite passed 410 files / 2,364 tests and 39 production scenarios; landed smoke passed 29 files / 220 tests and five production scenarios. The [amendment record](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) retains exact candidate and acceptance identities. No Watchglass package or Phase 4 implementation is enabled.
+Immutable scoped receipts accept **Android80/80, radio8/8 and iOS27/27**. Primary Apple restart on source`7f36d94e`, run37236170919, restores the encrypted lease after actual relaunch and reconciles exactly one canonical event. All original failed whole-run conclusions remain unchanged.
+
+Actual Apple refusal on source`b5050a4fc4566f7326be75f1ff255c0bc02ea8b0`, run37238465789, passes real decline/native DENIED, zero acquisition and progression, and native clear. Positive notification return on source`6162f12f31589329a6dd73993becbfb8cb77281c`, run37247651545, passes actual consent, Core Location registration and background region delivery, the uniquely observed public notification control, actual foreground/client same-origin nonce handoff, native clear and owned cleanup. Canonical progression remains zero. This synthetic nonce handoff does not prove production signed authorization; current authority, stale/revoked/completed handling and actual Android first-party signed return retain their separate shared/native scopes.
+
+Mandatory presentation on source`60b6d375fd7749b00ad1db9486160a855faa03cc`, run37242334053, passes19/0/1: native18/0/1 and actual Settings Reduce Motion enable/readback/restoration1/0/0. Reviewed full-screen portrait/landscape and Motion fallback screenshots, actual geometry, immutable component summaries and owned Simulator cleanup support acceptance on the recorded iOS runtime/profile. Unconfigured-shell readability is not production Journal or physical assistive-device usability. Earlier cropped attachments and iOS26.2 failures remain unaccepted; deployment target16.0 does not qualify all OS versions.
+
+Fresh root regression on`b5050a4f` passes **478files/2715tests in192.468seconds**, with fresh owned SQLite and clean/unchanged source. Final input comparisons must preserve every original receipt identity. Current production audit reports zero findings; five development-only ESLint dependency findings remain documented. Final exact-source privacy, static/docs/features checks and ordinary protected qualification remain required.
+
+Protected qualification, merge, landed verification, separate evidence/catalog publication and formal closure remain pending. Signed distribution, production HTTPS origin, licensed provider configuration, physical radio/field/energy quality and assistive-device acceptance remain external gates. One Voyage remains the sole progression writer; physical and virtual Worldspaces keep their acquisition boundaries. Generic device acquisition remains a compatibility input to the separately governed Sextant migration.
+
+Browser53 and provider159 per Windows/Linux host, optimized build/client privacy, native Android packages, first-party Journal pairing and signed notice/reboot/revoked-membership flows retain their immutable source-bound acceptance. Production web, Android, dependency and schema input comparisons must support retention. One Voyage remains the sole progression writer; physical and virtual Worldspaces remain distinct. Production providers without credentials/licensed configuration report NOT_CONFIGURED.
+
+Landfall Phases1–3 and the physical/virtual v1.1 audit are available on protected main through their accepted capsules and PRs673/675/676. Phase4 source has not yet been integrated.
 
 **Muster Refit:** the owner accepted the current design on 2026-09-12. Captain-only, Captain + Player, and Player views share one experience with persistent authorized Crew Chat, published-edition parchment, fixed room artwork and smooth options. Final local role, interaction, responsive/accessibility, production-build and migration checks passed. The accepted experience is integrated on protected main; final qualification and landed-tree checks passed. Only the Muster Refit area is MERGED; Refit V1 remains open.
 

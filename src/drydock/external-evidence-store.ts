@@ -37,8 +37,11 @@ export async function recordCurrentDrydockExternalEvidence(input: {
   safeSummary: string;
   sourceReference?: string;
   expiresAt?: Date;
+  expectedSourceChecksum?: string;
 }) {
   const checksum = publishedSourceChecksum(snapshotFromStudio(await getStudioTale(input.taleId)));
+  if (input.expectedSourceChecksum && input.expectedSourceChecksum !== checksum)
+    throw new Error("DRYDOCK_EXTERNAL_EVIDENCE_STALE_SOURCE");
   const draft = await db.taleDraft.findFirst({
     where: { taleId: input.taleId },
     orderBy: { revisionNumber: "desc" },

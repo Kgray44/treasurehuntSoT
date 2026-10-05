@@ -1,9 +1,10 @@
 import { webcrypto } from "node:crypto";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   LandfallOfflineRepository,
   landfallOfflineLimits,
   type LandfallOfflineStorage,
+  rememberOfflineLease,
 } from "@/landfall/offline-store";
 import { landfallFixture, physicalObservation } from "@/landfall/fixtures";
 import { projectPlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
@@ -42,6 +43,10 @@ const evidence = {
 };
 
 describe("durable session-bound Landfall offline store", () => {
+  afterEach(() => {
+    delete window.LandfallNative;
+    sessionStorage.clear();
+  });
   let storage: LandfallOfflineStorage;
   let clock: number;
   beforeEach(() => {
@@ -227,5 +232,37 @@ describe("durable session-bound Landfall offline store", () => {
     await store.clear();
     await rejection;
     expect(await storage.all()).toEqual([]);
+  });
+  it("cannot begin a second native lease write after revocation interrupts identity storage", async () => {
+    let release!: () => void;
+    let started!: () => void;
+    const entered = new Promise<void>((resolve) => {
+      started = resolve;
+    });
+    const writes: string[] = [];
+    window.LandfallNative = {
+      platform: "ANDROID",
+      version: 1,
+      request: async (text) => {
+        const value = JSON.parse(text);
+        if (value.operation === "PRIVATE_STORE_PUT") {
+          writes.push(value.payload.key);
+          started();
+          await new Promise<void>((resolve) => {
+            release = resolve;
+          });
+          return { accepted: true };
+        }
+        return { keys: [], accepted: true };
+      },
+    };
+    const remembering = rememberOfflineLease(binding);
+    await entered;
+    sessionStorage.clear();
+    window.dispatchEvent(new Event("landfall-offline-cleared"));
+    release();
+    expect(await remembering).toBe("UNAVAILABLE");
+    expect(writes).toEqual(["landfall-offline-identity-v2:chunk:0"]);
+    expect(sessionStorage.length).toBe(0);
   });
 });

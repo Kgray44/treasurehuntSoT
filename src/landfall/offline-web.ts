@@ -2,6 +2,7 @@ import type { PlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import type { PlayerLandfallEvidence } from "@/landfall/server-evidence";
 import type { PlayerJournalBlock } from "@/chronicle/journal-contract";
 import { LandfallOfflineRepository, rememberOfflineLease, type OfflineAvailability } from "@/landfall/offline-store";
+import { restoreLandfallRegionChart } from "@/landfall/offline-package-web";
 
 const repository = new LandfallOfflineRepository();
 const restoredUrls = new Set<string>();
@@ -97,6 +98,10 @@ export async function rememberRevealedChart(
     synchronizedAt: Date.now(),
   };
   if (generation !== cacheGeneration) throw new Error("LANDFALL_OFFLINE_ACCESS_CLEARED");
+  availability.restart = await rememberOfflineLease(
+    binding(bootstrap.sessionId, bootstrap.publishedVersionId, csrfToken),
+  );
+  if (generation !== cacheGeneration) throw new Error("LANDFALL_OFFLINE_ACCESS_CLEARED");
   await repository.remember(binding(bootstrap.sessionId, bootstrap.publishedVersionId, csrfToken), {
     bootstrap: {
       ...bootstrap,
@@ -114,13 +119,12 @@ export async function rememberRevealedChart(
     await repository.clear();
     throw new Error("LANDFALL_OFFLINE_ACCESS_CLEARED");
   }
-  rememberOfflineLease(binding(bootstrap.sessionId, bootstrap.publishedVersionId, csrfToken));
   return availability;
 }
 
 export async function restoreOfflineVoyage(sessionId: string, versionId: string, csrfToken: string) {
   const record = await repository.restore(binding(sessionId, versionId, csrfToken));
-  if (!record) return null;
+  if (!record) return restoreLandfallRegionChart(sessionId, versionId, csrfToken);
   const availability: OfflineAvailability = {
     ...record.availability,
     shell: navigator.serviceWorker?.controller ? "READY" : "ONLINE_REQUIRED",

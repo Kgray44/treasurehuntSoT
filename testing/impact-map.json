@@ -4760,6 +4760,21 @@
       "contractIds": ["community-public-projection", "community-moderation-integrity"]
     },
     {
+      "path": "src/landfall/device-lab/**",
+      "suiteIds": ["unit.landfall-device-lab", "unit.landfall"],
+      "contractIds": ["landfall.device-lab-evidence"]
+    },
+    {
+      "path": "scripts/landfall/device-lab/**",
+      "suiteIds": ["unit.landfall-device-lab", "unit.landfall", "static.core"],
+      "contractIds": ["landfall.device-lab-evidence"]
+    },
+    {
+      "path": "native/**",
+      "suiteIds": ["unit.landfall-device-lab", "static.core"],
+      "contractIds": ["landfall.device-lab-evidence"]
+    },
+    {
       "path": "src/landfall/**",
       "suiteIds": ["unit.landfall", "browser.landfall"],
       "contractIds": ["landfall.player-live-position"]
@@ -4786,6 +4801,10 @@
     }
   ],
   "contractMappings": [
+    {
+      "contractId": "landfall.device-lab-evidence",
+      "suiteIds": ["unit.landfall-device-lab"]
+    },
     {
       "contractId": "landfall.player-live-position",
       "suiteIds": ["unit.landfall", "browser.landfall"]

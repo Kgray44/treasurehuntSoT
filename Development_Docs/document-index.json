@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-04",
+  "generated_at": "2026-10-05",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -7198,6 +7198,36 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_4_Acceptance_Matrix.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_4_Device_Lab_Addendum.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_4_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_4_Native_Companion_Design.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_4_Operations_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

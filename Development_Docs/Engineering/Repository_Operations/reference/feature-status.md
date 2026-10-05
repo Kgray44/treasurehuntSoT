@@ -3,10 +3,14 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-03
+last_reviewed: 2026-10-04
 ---
 
 # Feature status
+
+Landfall Phase 4 is a candidate in active hosted/native validation. Its companion,
+offline regions and provider operations are not yet accepted on protected main.
+Current evidence and remaining gates are recorded in the [native companion design](../../../Projects/Project_Landfall/Project_Landfall_Phase_4_Native_Companion_Design.md).
 
 The [Landfall Phase 3 v1.1 follow-up](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) is available on protected main through PR #675, merge `64c780a0`: default private contextual authoring, authored-unit virtual context, operational independent-source canonical bundles and completion-time expiry. Full-unit, 39-case production acceptance, exact-head hosted PASS and landed smoke are recorded separately from the historical baseline below. Watchglass remains NOT_CONFIGURED; this protected evidence/catalog publication completes the permanent closure record.
 

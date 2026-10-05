@@ -676,6 +676,35 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     expect(document.activeElement).toBe(chapters);
   });
 
+  it("attaches Escape after delayed authenticated reading state mounts the Journal", async () => {
+    const saved = deferred<Response>();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input).endsWith("/journal-state") && init?.method !== "POST") return saved.promise;
+        return Promise.resolve(jsonResponse(sessionState("escape-delayed")));
+      }),
+    );
+    const view = render(createElement(ChronicleJournalSession, { sessionId: "escape-delayed", identitySession: true }));
+    await act(flushMicrotasks);
+    expect(view.container.querySelector("main[data-journal-phase]")).toBeNull();
+    await act(async () => {
+      saved.resolve(jsonResponse({ readingState: readingState(1) }));
+      await flushMicrotasks();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
+    await act(flushMicrotasks);
+    const chapters = screen.getByRole("button", { name: "chapters" });
+    fireEvent.click(chapters);
+    await act(flushMicrotasks);
+    const drawer = view.container.querySelector<HTMLElement>(".journal-chapters-drawer")!;
+    expect(drawer.hasAttribute("inert")).toBe(false);
+    fireEvent.keyDown(screen.getByRole("button", { name: "Close chapter drawer" }), { key: "Escape" });
+    await act(flushMicrotasks);
+    expect(drawer.hasAttribute("inert")).toBe(true);
+    expect(document.activeElement).toBe(chapters);
+  });
+
   it("settles a skipped opening without replacing an already-ready PageFlip runtime", async () => {
     const pendingOpening = deferred<JournalPhaseOutcome>();
     vi.stubGlobal(

@@ -116,6 +116,12 @@ export class ContextualLandfallEngine {
     this.verticalTransitionAt = 0;
     this.current = empty();
   }
+  /** Revoked optional sensor acquisition must not leave its old hints guiding new fixes. */
+  discardSensorHints(now: number): ContextualSnapshot {
+    for (const kind of ["HEADING", "MOTION", "ELEVATION"] as const) this.hints.delete(kind);
+    this.verticalTransitionAt = 0;
+    return this.snapshot(now);
+  }
   private reject(code: string, now: number): ContextualSnapshot {
     return { ...this.snapshot(now), rejection: code };
   }

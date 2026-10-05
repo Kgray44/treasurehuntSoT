@@ -702,6 +702,9 @@ export class LandfallRuntime {
     return { coordinate: { ...latest.coordinate }, accuracy: latest.accuracy, observedAt: latest.observedAt };
   }
   /** Local context guidance never creates canonical completion evidence. */
+  discardSensorHints(now: number): ContextualSnapshot {
+    return this.contextual.discardSensorHints(now);
+  }
   ingestContext(input: unknown, now: number): ContextualSnapshot {
     if (this.trackingState === "PAUSED") return { ...this.contextual.snapshot(now), rejection: "PAUSED" };
     const kind = (input as { kind?: unknown } | null)?.kind;

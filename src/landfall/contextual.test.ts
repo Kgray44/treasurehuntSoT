@@ -249,6 +249,18 @@ describe("Landfall contextual definition and qualification", () => {
       "gallery",
     );
   });
+  it("discards revoked sensor hints while preserving current position guidance", () => {
+    const engine = new ContextualLandfallEngine(fixture(), identity);
+    engine.ingestPosition(position("position", 1), now(1));
+    engine.ingestEvidence(evidence("HEADING", "heading", 2, { degrees: 90, accuracyDegrees: 5 }), now(2));
+    engine.ingestEvidence(evidence("MOTION", "motion", 2, { moving: true }), now(2));
+    const before = engine.snapshot(now(2));
+    expect(before.evidenceCategories).toEqual(expect.arrayContaining(["POSITION", "HEADING", "MOTION"]));
+    const after = engine.discardSensorHints(now(2));
+    expect(after.evidenceCategories).toContain("POSITION");
+    expect(after.evidenceCategories).not.toContain("HEADING");
+    expect(after.evidenceCategories).not.toContain("MOTION");
+  });
   it("normalizes optional GPS hints, ignores stationary course and keeps vertical movement uncertain", () => {
     const engine = new ContextualLandfallEngine(fixture(), identity);
     const first = {

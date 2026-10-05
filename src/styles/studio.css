@@ -3093,6 +3093,21 @@ html[data-voyage-theme="light"]
   border: 1px solid rgb(201 169 95 / 28%);
   border-radius: 8px;
 }
+.landfall-installation-authoring,
+.landfall-installation-authoring :where(div, label) {
+  min-width: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.landfall-installation-authoring :where(input, textarea, button) {
+  min-width: 0;
+  max-width: 100%;
+  min-height: 48px;
+  box-sizing: border-box;
+}
+.landfall-installation-authoring :where(p, button, legend) {
+  overflow-wrap: anywhere;
+}
 .landfall-context-editor,
 .landfall-context-editor fieldset {
   min-width: 0;

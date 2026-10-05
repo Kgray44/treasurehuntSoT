@@ -56,6 +56,7 @@ export async function closureVoyage(
     contextual?: boolean;
     authoredDefinition?: LandfallDefinition;
     fusion?: boolean;
+    offlineRegion?: boolean;
   } = {},
 ) {
   const suffix = randomUUID();
@@ -187,6 +188,19 @@ export async function closureVoyage(
     definition.waypoints.find((item) => item.id === waypointId)!.evidenceProfile.fusionPolicy = {
       version: 1,
       minimumIndependentSources: 2,
+    };
+  if (options.offlineRegion)
+    definition.providerPlan = {
+      version: 1,
+      requirements: [],
+      offline: {
+        requested: true,
+        maxBytes: 8 * 1024 * 1024,
+        retentionHours: 1,
+        mapIds: definition.maps.map((map) => map.id),
+        routeIds: definition.routes.map((route) => route.id),
+        assetIds: assets.map((asset) => asset.id),
+      },
     };
   const chapterId = `chapter-${suffix}`;
   const activeId = `active-${suffix}`;
@@ -339,8 +353,12 @@ export async function closureVoyage(
 export async function authenticateClosure(context: BrowserContext, account: ClosureAccount, baseURL: string) {
   await context.addCookies([{ name: "wayfarer_account", value: account.token, url: baseURL, sameSite: "Lax" }]);
 }
-export async function openClosureJournal(page: Page, id: string) {
-  await page.goto(`/player/playthroughs/${id}/journal`);
+export async function openClosureJournal(page: Page, id: string, origin?: string) {
+  const journalPath = `/player/playthroughs/${id}/journal`;
+  await page.goto(origin ? new URL(journalPath, origin).href : journalPath);
+  await enterClosureJournal(page);
+}
+export async function enterClosureJournal(page: Page) {
   const opening = page.getByRole("dialog", { name: "Open the voyage journal" });
   await expect
     .poll(
@@ -352,12 +370,14 @@ export async function openClosureJournal(page: Page, id: string) {
   if (await opening.isVisible()) await opening.getByRole("button", { name: /Open the journal/u }).click();
   await expect(page.getByRole("navigation", { name: "Journal tools" })).toBeVisible();
 }
-export async function openClosureMap(page: Page) {
-  await page
+export async function openClosureMap(page: Page, clickOptions: { noWaitAfter?: boolean } = {}) {
+  const button = page
     .getByRole("navigation", { name: "Journal tools" })
-    .getByRole("button", { name: "map", exact: true })
-    .click();
-  await expect(page.locator(".journal-objects-drawer [data-landfall-player-chart]")).toBeVisible();
+    .getByRole("button", { name: "map", exact: true });
+  // The same Player's saved reading preferences may restore this drawer on a
+  // second device. Its overlay then correctly covers the already-open toolbar.
+  if ((await button.getAttribute("aria-expanded")) !== "true") await button.click(clickOptions);
+  await expect(page.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible();
 }
 export async function auditNativeGeolocation(context: BrowserContext) {
   await context.addInitScript(() => {

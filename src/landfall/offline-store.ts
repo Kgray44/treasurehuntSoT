@@ -1,6 +1,8 @@
 import type { PlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import { playerLandfallEvidenceSchema, type PlayerLandfallEvidence } from "@/landfall/player-evidence-contract";
 import type { PlayerJournalBlock } from "@/chronicle/journal-contract";
+import { persistNativeLandfallLease, restoreNativeLandfallLeases } from "@/landfall/native-private-store";
+import { landfallNativeHost } from "@/landfall/native-bridge";
 
 export const landfallOfflineLimits = {
   schemaVersion: 2,
@@ -17,10 +19,16 @@ const databaseName = "landfall-offline-v2";
 const leasePrefix = "landfall-offline-lease-v2:";
 const identityKey = "landfall-offline-identity-v2";
 let storageGeneration = 0;
+let leaseGeneration = 0;
+if (typeof window !== "undefined")
+  window.addEventListener("landfall-offline-cleared", () => {
+    leaseGeneration++;
+  });
 
 type Binding = { sessionId: string; versionId: string; csrfToken: string };
 export type OfflineLease = Binding & { expiresAt: number };
 export type OfflineAvailability = {
+  restart?: "TAB_ONLY" | "NATIVE_PREPARED" | "UNAVAILABLE";
   shell: "READY" | "ONLINE_REQUIRED";
   chart: "READY" | "STALE";
   firstPartyAssets: "READY" | "PARTIAL";
@@ -245,11 +253,21 @@ export class LandfallOfflineRepository {
   }
 }
 
-export function rememberOfflineLease(binding: Binding) {
-  sessionStorage.setItem(
-    leasePrefix + binding.sessionId,
-    JSON.stringify({ ...binding, expiresAt: Date.now() + landfallOfflineLimits.chartTtlMs }),
-  );
+export async function rememberOfflineLease(
+  binding: Binding,
+  regionExpiresAt?: number,
+): Promise<NonNullable<OfflineAvailability["restart"]>> {
+  const startedGeneration = leaseGeneration;
+  const expiresAt = regionExpiresAt ?? Date.now() + landfallOfflineLimits.chartTtlMs;
+  if (!Number.isSafeInteger(expiresAt) || expiresAt <= Date.now() || expiresAt > Date.now() + 86400_000)
+    throw new Error("LANDFALL_OFFLINE_LEASE_INVALID");
+  const value = JSON.stringify({ ...binding, expiresAt });
+  sessionStorage.setItem(leasePrefix + binding.sessionId, value);
+  if (!landfallNativeHost()) return "TAB_ONLY";
+  const identity = await persistNativeLandfallLease(identityKey, binding.csrfToken, expiresAt);
+  if (startedGeneration !== leaseGeneration) return "UNAVAILABLE";
+  const lease = await persistNativeLandfallLease(leasePrefix + binding.sessionId, value, expiresAt);
+  return startedGeneration === leaseGeneration && identity && lease ? "NATIVE_PREPARED" : "UNAVAILABLE";
 }
 export function offlineLease(sessionId: string): OfflineLease | null {
   try {
@@ -277,6 +295,7 @@ export async function clearLandfallOfflineData() {
   if (typeof indexedDB !== "undefined") await new LandfallOfflineRepository().clear().catch(() => undefined);
 }
 export async function bindLandfallOfflineIdentity(csrfToken: string) {
+  await restoreNativeLandfallLeases();
   const previous = sessionStorage.getItem(identityKey);
   if (previous && previous !== csrfToken) await clearLandfallOfflineData();
   sessionStorage.setItem(identityKey, csrfToken);

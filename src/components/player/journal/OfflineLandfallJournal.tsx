@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { offlineLease, clearLandfallOfflineData, type OfflineLease } from "@/landfall/offline-store";
 import { restoreOfflineVoyage } from "@/landfall/offline-web";
+import { restoreNativeLandfallLeases } from "@/landfall/native-private-store";
 import { LandfallJournalChart, LandfallJournalProvider } from "@/components/player/journal/LandfallJournalChart";
 
 export function OfflineLandfallJournal() {
@@ -12,32 +13,8 @@ export function OfflineLandfallJournal() {
   useEffect(() => {
     let mounted = true;
     const sessionId = new URLSearchParams(location.search).get("session") ?? "";
-    const bound = offlineLease(sessionId);
-    if (!bound) {
-      queueMicrotask(
-        () =>
-          mounted &&
-          setMessage(
-            "No unexpired offline Voyage is available in this tab. Connect and open your Journal while signed in.",
-          ),
-      );
-      return () => {
-        mounted = false;
-      };
-    }
-    void restoreOfflineVoyage(bound.sessionId, bound.versionId, bound.csrfToken)
-      .then((restored) => {
-        if (!mounted) return;
-        if (!restored) {
-          setMessage("This offline Voyage expired or could not be restored. Reconnect to verify access.");
-          return;
-        }
-        setLease(bound);
-        setRecord(restored);
-      })
-      .catch(() => {
-        if (mounted) setMessage("Offline storage is unavailable. Reconnect to open the Journal.");
-      });
+    let expiry: number | undefined;
+    let bound: OfflineLease | null = null;
     const cleared = () => {
       mounted = false;
       setRecord(null);
@@ -45,9 +22,39 @@ export function OfflineLandfallJournal() {
       setMessage("Offline access was cleared. Reconnect and sign in to continue.");
     };
     window.addEventListener("landfall-offline-cleared", cleared);
-    const expiry = window.setInterval(() => {
-      if (Date.now() >= bound.expiresAt) void clearLandfallOfflineData();
-    }, 5_000);
+    void (async () => {
+      await restoreNativeLandfallLeases();
+      if (!mounted) return;
+      bound = offlineLease(sessionId);
+      if (!bound) {
+        queueMicrotask(
+          () =>
+            mounted &&
+            setMessage(
+              "No unexpired offline Voyage is available in this tab. Connect and open your Journal while signed in.",
+            ),
+        );
+        return;
+      }
+      await restoreOfflineVoyage(bound.sessionId, bound.versionId, bound.csrfToken)
+        .then((restored) => {
+          if (!mounted) return;
+          if (!restored) {
+            setMessage("This offline Voyage expired or could not be restored. Reconnect to verify access.");
+            return;
+          }
+          setLease(bound);
+          setRecord(restored);
+        })
+        .catch(() => {
+          if (mounted) setMessage("Offline storage is unavailable. Reconnect to open the Journal.");
+        });
+      expiry = window.setInterval(() => {
+        if (bound && Date.now() >= bound.expiresAt) void clearLandfallOfflineData();
+      }, 5_000);
+    })().catch(() => {
+      if (mounted) setMessage("Offline access could not be restored. Reconnect to verify access.");
+    });
     return () => {
       mounted = false;
       window.removeEventListener("landfall-offline-cleared", cleared);
@@ -58,7 +65,8 @@ export function OfflineLandfallJournal() {
     <main className="landfall-offline-journal">
       <h1>Offline Voyage Journal</h1>
       <p role="status">
-        Already-released content only. Progress requires server reconciliation. Offline access expires after 30 minutes.
+        Already-released content only. Progress requires server reconciliation. Offline access expires at the saved
+        authorization deadline.
       </p>
       {lease && record ? (
         <>

@@ -1,0 +1,388 @@
+# Active automation template. The Device Lab publishes this only on an owned
+# temporary validation branch; every job checks out the bound product candidate.
+name: Landfall Device Lab __CANDIDATE_SHA__
+on:
+  push:
+    branches: ["codex/landfall-lab-*"]
+permissions:
+  contents: read
+concurrency:
+  group: landfall-device-lab-${{ github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  browser:
+    if: __RUN_BROWSER__
+    name: Browser / optimized first-party Phase 4
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      LANDFALL_NEARBY_PAIRING_MODE: ephemeral-instance
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx --no-install playwright install --with-deps chromium
+      - name: Build and run isolated first-party browser contracts
+        run: |
+          browser_database="$GITHUB_WORKSPACE/artifacts/sounding-line/generic-__CANDIDATE_SHA12__/validation-isolated-$(date +%Y%m%d-%H%M%S%3N)-$(cat /proc/sys/kernel/random/uuid | tr -d '-').db"
+          npx --no-install tsx scripts/landfall/device-lab/configured-browser.ts __CANDIDATE_SHA__ "file:$browser_database"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-browser-__CANDIDATE_SHA__
+          path: |
+            artifacts/sounding-line/browser-runtime.json
+            artifacts/sounding-line/browser-suite-profile.json
+            test-results
+          retention-days: 14
+  providers:
+    if: __RUN_PROVIDERS__
+    name: Providers / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - run: npx --no-install tsx scripts/landfall/device-lab/one-voyage.ts
+      - run: npm run landfall:device-lab -- --platform provider --scenario __PROVIDER_SCENARIOS__
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-${{ matrix.os }}-__CANDIDATE_SHA__
+          path: artifacts/landfall-device-lab
+          retention-days: 14
+  apple:
+    if: __RUN_APPLE__
+    name: Native / iOS / ${{ matrix.profile }}
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: __APPLE_PROFILES__
+    runs-on: macos-latest
+    timeout-minutes: 60
+    env:
+      LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: brew install xcodegen
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only
+      - run: npm run landfall:device-lab -- --platform ios --scenario __APPLE_SCENARIOS__
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-ios-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: artifacts/landfall-device-lab
+          retention-days: 14
+  apple-notice:
+    if: __RUN_APPLE_NOTICE__
+    name: Native / iOS notification UI / primary-phone
+    runs-on: macos-latest
+    timeout-minutes: 30
+    env:
+      LANDFALL_LAB_PROFILE: primary-phone
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: brew install xcodegen
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only
+      - run: npm run landfall:device-lab -- --platform ios --scenario apple-native-notification-background-return,apple-native-notification-permission-denied
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-ios-notice-primary-phone-__CANDIDATE_SHA__
+          path: artifacts/landfall-device-lab
+          retention-days: 14
+
+  apple-presentation:
+    if: __RUN_APPLE_PRESENTATION__
+    name: Native / iOS presentation / primary-phone
+    runs-on: macos-latest
+    timeout-minutes: 30
+    env:
+      LANDFALL_LAB_PROFILE: primary-phone
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: brew install xcodegen
+      - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-ios-presentation-primary-phone-__CANDIDATE_SHA__
+          path: artifacts/landfall-device-lab
+          retention-days: 14
+
+  android:
+    if: __RUN_ANDROID__
+    name: Native / Android / ${{ matrix.profile }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: __ANDROID_PROFILES__
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
+      LANDFALL_LAB_GUEST_REBOOT: "true"
+      LANDFALL_LAB_CAMERA_BACKEND: "imagefile"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - run: npm ci --ignore-scripts
+      - run: gradle -p native/android --console plain assembleDebug assembleDebugAndroidTest
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - name: Enable ephemeral runner KVM access
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Prepare synthetic signed QR camera image
+        run: npx --no-install tsx scripts/landfall/device-lab/prepare-camera.ts
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api }}
+          target: google_apis
+          arch: x86_64
+          profile: ${{ matrix.device }}
+          ram-size: ${{ matrix.ram }}
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory ${{ matrix.memory }} ${{ matrix.lowRam }} -camera-back imagefile:${{ github.workspace }}/artifacts/landfall-device-lab/camera-qr.png -camera-front none
+          emulator-boot-timeout: 300
+          disable-linux-hw-accel: false
+          disable-animations: true
+          script: |
+            npx --no-install tsx scripts/landfall/device-lab/android-test.ts
+            npm run landfall:device-lab -- --platform android --scenario __ANDROID_SCENARIOS__
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-android-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: artifacts/landfall-device-lab
+          retention-days: 14
+  android-radio:
+    if: __RUN_ANDROID_RADIO__
+    name: Native / Android radio peers / ${{ matrix.profile }}
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: __ANDROID_RADIO_PROFILES__
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
+      LANDFALL_LAB_RADIO_SCENARIOS: __RADIO_SCENARIOS__
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - run: npm ci --ignore-scripts
+      - name: Build before starting radio devices
+        run: gradle -p native/android --console plain assembleDebug
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - name: Install public API-36 radio image
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libpulse0
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "emulator" "system-images;android-36;google_apis;x86_64"
+          mkdir -p artifacts/landfall-device-lab/radio-sdk
+          "$ANDROID_HOME/platform-tools/adb" version > artifacts/landfall-device-lab/radio-sdk/adb-version.txt 2>&1
+          "$ANDROID_HOME/emulator/emulator" -version > artifacts/landfall-device-lab/radio-sdk/emulator-version.txt 2>&1
+      - name: Enable ephemeral runner KVM access
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run source-bound two-device radio lab
+        run: ANDROID_SDK_ROOT="$ANDROID_HOME" npx --no-install tsx scripts/landfall/device-lab/android-radio-run.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-android-radio-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: |
+            artifacts/landfall-device-lab
+            !artifacts/landfall-device-lab/**/avd/**
+          retention-days: 14
+  android-journal:
+    if: __RUN_ANDROID_JOURNAL__
+    name: Native / Android first-party Journal / ${{ matrix.profile }}
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: __ANDROID_RADIO_PROFILES__
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
+      LANDFALL_NATIVE_NEARBY: "1"
+      LANDFALL_NEARBY_PAIRING_MODE: ephemeral-instance
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - run: npm ci --ignore-scripts
+      - name: Build native companion before starting devices
+        run: gradle -p native/android --console plain assembleDebug
+      - name: Install public API-36 radio image
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libpulse0
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "emulator" "system-images;android-36;google_apis;x86_64"
+      - name: Enable ephemeral runner KVM access
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - run: npx --no-install playwright install --with-deps chromium
+      - name: Build optimized application before owning native devices
+        run: |
+          export ANDROID_SDK_ROOT="$ANDROID_HOME"
+          pairing_database="$GITHUB_WORKSPACE/artifacts/sounding-line/generic-__CANDIDATE_SHA12__/validation-isolated-$(date +%Y%m%d-%H%M%S%3N)-$(cat /proc/sys/kernel/random/uuid | tr -d '-').db"
+          node scripts/sounding-line/run-browser-suite.mjs --profile generic --candidate __CANDIDATE_SHA__ --database-url "file:$pairing_database" -- tests/e2e/landfall-phase4.spec.ts tests/e2e/landfall-native-nearby.spec.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-android-journal-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: |
+            artifacts/landfall-device-lab/**/radio-owner-receipt.json
+            artifacts/landfall-device-lab/**/native-journal-pair-receipt.json
+            artifacts/sounding-line/browser-runtime.json
+            artifacts/sounding-line/browser-suite-profile.json
+            test-results
+          retention-days: 14
+
+  android-background:
+    if: __RUN_ANDROID_BACKGROUND__
+    name: Native / Android signed notice and registered reboot / ${{ matrix.profile }}
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: __ANDROID_RADIO_PROFILES__
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      LANDFALL_LAB_PROFILE: ${{ matrix.profile }}
+      LANDFALL_NATIVE_BACKGROUND: "1"
+      LANDFALL_NATIVE_COLD_DIAGNOSTIC: "__COLD_SESSION_DIAGNOSTIC__"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - run: npm ci --ignore-scripts
+      - name: Build debug loopback companion and independent documented FLP input
+        run: gradle -p native/android --console plain -PlandfallLabOrigin=http://127.0.0.1:4487 :app:assembleDebug :locationLab:assembleDebug
+      - name: Install public API-36 image
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libpulse0
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "emulator" "system-images;android-36;google_apis;x86_64"
+      - name: Enable ephemeral runner KVM access
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - run: npx --no-install playwright install --with-deps chromium
+      - name: Build optimized server with ephemeral memory-only signing and exercise real notices
+        run: |
+          export ANDROID_SDK_ROOT="$ANDROID_HOME"
+          npx --no-install tsx scripts/landfall/device-lab/native-background-run.ts __CANDIDATE_SHA__
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: landfall-android-background-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: |
+            artifacts/landfall-device-lab/**/radio-owner-receipt.json
+            artifacts/landfall-device-lab/**/native-background-return-receipt.json
+            artifacts/sounding-line/browser-runtime.json
+            artifacts/sounding-line/browser-suite-profile.json
+            test-results
+          retention-days: 14

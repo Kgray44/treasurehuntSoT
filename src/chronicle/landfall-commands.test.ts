@@ -554,6 +554,17 @@ describe("locationObservation canonical arrival and response transaction", () =>
     await expect(submitPlayerLandfallEvidence(evidence)).resolves.toMatchObject({ duplicate: true, advanced: false });
     expect(persistence.events).toHaveLength(1);
   });
+  it("records the actor and rejects another actor's duplicate acknowledgement without a second canonical event", async () => {
+    const evidence = playerEvidence();
+    await submitPlayerLandfallEvidence(evidence, "player-1");
+    expect(JSON.parse(persistence.events[0].payload)).toMatchObject({
+      actorProfileId: "player-1",
+      publishedVersionId: "version-1",
+    });
+    await expect(submitPlayerLandfallEvidence(evidence, "player-2")).rejects.toThrow("ACTOR_MISMATCH");
+    await expect(submitPlayerLandfallEvidence(evidence, "player-1")).resolves.toMatchObject({ duplicate: true });
+    expect(persistence.events).toHaveLength(1);
+  });
 });
 
 describe("reusable Landfall completion on ordinary Chronicle blocks", () => {

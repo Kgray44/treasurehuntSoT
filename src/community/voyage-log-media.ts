@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import sharp from "sharp";
+import sharp, { type Metadata, type OutputInfo } from "sharp";
 import { CommunityError } from "./domain";
 import type { CommunityBinaryScanReceipt } from "./scanner";
 import { db } from "@/lib/db";
@@ -46,7 +46,7 @@ export async function createSafePublicImageDerivative(input: {
   if (!input.bytes.byteLength || input.bytes.byteLength > maximumBytes)
     throw new CommunityError("COMMUNITY_MEDIA_TOO_LARGE", "Public media exceeds the permitted byte limit.");
   const source = Buffer.from(input.bytes);
-  let metadata: sharp.Metadata;
+  let metadata: Metadata;
   try {
     metadata = await sharp(source, { limitInputPixels: maximumPixels, failOn: "warning" }).metadata();
   } catch {
@@ -70,7 +70,7 @@ export async function createSafePublicImageDerivative(input: {
       "Public media dimensions exceed the permitted limit.",
     );
 
-  let encoded: { data: Buffer; info: sharp.OutputInfo };
+  let encoded: { data: Buffer; info: OutputInfo };
   try {
     encoded = await sharp(source, { limitInputPixels: maximumPixels, failOn: "warning" })
       .rotate()
