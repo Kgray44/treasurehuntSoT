@@ -819,6 +819,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Fairlead_GitHub_Interaction_and_Quota_Control_Plane_Governing_Document_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
@@ -4546,6 +4552,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Admiralty/walkthrough/phase2/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/README.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
