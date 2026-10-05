@@ -13,15 +13,15 @@ evidence remain in their governed documentation locations. Each context packet
 retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
-- [Landfall Phase 4 active context](landfall-phase4.md)
+- [Landfall Phase 4 closure context](landfall-phase4.md)
 - [Landfall hosted Device Lab transport template](landfall-device-lab-hosted.yml)
 - [Landfall Phase 3 context](landfall-phase3.md)
 - [Landfall Phase 3 amendment audit context](landfall-phase3-v11-audit.md)
 - [Refit Muster context](refit-muster.md)
 - [Confluence worker context](confluence-workers.md)
 
-The current Landfall goal continues through acceptance, ordinary protected
-qualification, merge, landed verification, evidence/catalog publication and
-formal closure. Preserve owned worktrees, isolated synthetic fixtures and every
-original receipt identity. External hardware and deployment gates remain
-explicitly classified.
+The Landfall Phase 4 closure context binds accepted source and immutable proof.
+Its protected evidence/catalog publication and final landed verification establish
+formal closure; the packet does not authorize restarting a phase or starting Phase 5.
+Preserve owned worktrees, isolated synthetic fixtures and original receipt identities.
+External hardware and deployment gates remain explicitly classified.

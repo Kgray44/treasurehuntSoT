@@ -8,22 +8,18 @@ last_reviewed: 2026-10-04
 
 # Hold the Bearing native companion design
 
-This engineering design describes the development candidate. Phase 4 acceptance,
-protected integration, deployed companion availability, physical-device qualification
-and Project Landfall closure remain open. The [Device Lab addendum](Project_Landfall_Phase_4_Device_Lab_Addendum.md)
+This engineering design describes the source accepted through protected PR #677.
+The completion receipt binds Project Landfall closure through the protected evidence
+publication; deployed companion availability and physical-device qualification remain external. The [Device Lab addendum](Project_Landfall_Phase_4_Device_Lab_Addendum.md)
 governs evidence fidelity. Active execution instructions remain under `.agents`.
 
-## Current acceptance checkpoint
+## Accepted source and closure
 
-Immutable scoped receipts accept **Android80/80, radio8/8 and iOS27/27**. Primary Apple restart on source`7f36d94e`, run37236170919, restores the encrypted lease after actual relaunch and reconciles exactly one canonical event. All original failed whole-run conclusions remain unchanged.
+Protected product PR #677 merged as `707b98ee97163df4e30fad388883db910e0c40ec`; exact local and required hosted qualification pass, landed tree equals the frozen candidate and isolated landed smoke passes. The [accepted capsule](Project_Landfall_Phase_4_Accepted_Capsule.md) and [qualification receipt](Project_Landfall_Phase_4_Qualification_Receipt.json) retain complete bindings, input comparisons, artifact hashes and scoped acceptance. Their protected evidence/catalog publication establishes formal closure.
 
-Actual Apple refusal on source`b5050a4fc4566f7326be75f1ff255c0bc02ea8b0`, run37238465789, passes real decline/native DENIED, zero acquisition and progression, and native clear. Positive notification return on source`6162f12f31589329a6dd73993becbfb8cb77281c`, run37247651545, passes actual consent, Core Location registration and background region delivery, the uniquely observed public notification control, actual foreground/client same-origin nonce handoff, native clear and owned cleanup. Canonical progression remains zero. This synthetic nonce handoff does not prove production signed authorization; current authority, stale/revoked/completed handling and actual Android first-party signed return retain their separate shared/native scopes.
+80 Android profile cases, eight Android radio cases and 27 iOS profile cases, actual Apple refusal/positive nonce handoff and mandatory presentation with 19 passed, zero failed and one expected skip are accepted through immutable original/focused receipts. Root units: 478 files / 2,715 tests, retained production browsers: 53 cases and Windows/Linux providers: 159 cases each pass in their recorded scopes. Original failed attempts below remain failures. Apple nonce return is OS handoff only; actual production signed authority has separate shared/Android evidence. Reviewed full-screen unconfigured readability and actual Motion readback/restoration do not qualify production native Journal or physical assistive technology.
 
-Mandatory presentation on source`60b6d375fd7749b00ad1db9486160a855faa03cc`, run37242334053, passes19/0/1: native18/0/1 and actual Settings Reduce Motion enable/readback/restoration1/0/0. Reviewed full-screen portrait/landscape and Motion fallback screenshots, actual geometry, immutable component summaries and owned Simulator cleanup support acceptance on the recorded iOS runtime/profile. Unconfigured-shell readability is not production Journal or physical assistive-device usability. Earlier cropped attachments and iOS26.2 failures remain unaccepted; deployment target16.0 does not qualify all OS versions.
-
-Fresh root regression on`b5050a4f` passes **478files/2715tests in192.468seconds**, with fresh owned SQLite and clean/unchanged source. Final input comparisons must preserve every original receipt identity. Current production audit reports zero findings; five development-only ESLint dependency findings remain documented. Final exact-source privacy, static/docs/features checks and ordinary protected qualification remain required.
-
-Protected qualification, merge, landed verification, separate evidence/catalog publication and formal closure remain pending. Signed distribution, production HTTPS origin, licensed provider configuration, physical radio/field/energy quality and assistive-device acceptance remain external gates. One Voyage remains the sole progression writer; physical and virtual Worldspaces keep their acquisition boundaries. Generic device acquisition remains a compatibility input to the separately governed Sextant migration.
+Production dependency audit reports zero findings on unchanged inputs; five development-only findings remain documented. Exact frozen-source privacy reports zero violations. Source operations and measured preliminary performance bounds are recorded below; production signing, configured licensed providers, real devices, RF/field/energy, assistive technology, deployment/MySQL and owner acceptance remain external gates. No Phase 5 is started.
 
 ## Chronological development evidence
 

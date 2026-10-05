@@ -8,12 +8,7 @@ last_reviewed: 2026-10-04
 
 # Voyagewright features
 
-Landfall Phase 4 is an implementation candidate under native and hosted Device Lab
-validation. Its offline region preview separates preparation from download and
-shows verified progress, contents, expiry and local deletion boundaries. Admiralty
-can read bounded recent online-provider demand metadata without a Landfall probe.
-This candidate has not completed protected qualification, merge or phase closure;
-deployment, real hardware and owner acceptance remain separate.
+Landfall Phase 4 source is integrated through protected PR #677. Origin-bound native companions, signed offline regions, optional contextual providers and the permanent Device Lab preserve consent and canonical One Voyage progression. Preparation and download remain separate actions; verified resources expose progress, expiry and local deletion. Admiralty reads bounded provider-demand metadata without a probe. The [accepted capsule](../../Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_4_Accepted_Capsule.md) records acceptance and limitations. Signed releases, configured production services, physical-device/field/assistive proof and owner acceptance remain external gates.
 
 Voyagewright is a private, role-aware home for shared Chronicle experiences.
 

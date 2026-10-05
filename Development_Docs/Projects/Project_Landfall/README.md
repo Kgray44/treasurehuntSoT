@@ -50,11 +50,15 @@ The [final closure correction record](Project_Landfall_Phase_2_Final_Closure_Rec
 
 - [Phase 3 v1.1 amendment follow-up](Project_Landfall_Phase_3_v1.1_Amendment_Record.md): protected PR #675 audit closure for physical/virtual context, intentional contextual privacy, canonical independent evidence policies and expiry-at-delivery. Exact-head hosted qualification, full units/39 production scenarios and landed smoke pass; Watchglass remains NOT_CONFIGURED. This permanent evidence publication is additive to the historical PR #673/#674 baseline.
 
-## Phase 4 execution
+## Phase 4 accepted source and closure
 
-Hold the Bearing is in development. The Device Lab addendum is governing scope; development checkpoints are not phase acceptance, protected integration, or Project Landfall closure. Native companion deployment and physical/field evidence remain separately classified.
+Hold the Bearing source is integrated on protected main through PR #677. Its exact qualification and landed proof, scoped Device Lab acceptance and explicit external gates are bound below. The protected evidence/catalog publication closes Project Landfall; native distribution and physical/field/assistive/production qualification remain separate.
 
-- [Native companion and restart design](Project_Landfall_Phase_4_Native_Companion_Design.md): origin-bound acquisition, encrypted restart leases, shared reconciliation, development proof and remaining acceptance work.
-- [Operations and incident response](Project_Landfall_Phase_4_Operations_Record.md): implemented provider/device controls, failure detection, safe degradation, recovery evidence and user communication; deployment and closure remain pending.
-- [Acceptance matrix and external gates](Project_Landfall_Phase_4_Acceptance_Matrix.md): consolidated capability, privacy/security and measured-performance evidence with unresolved local work and separately classified device/field/deployment gates.
-- [Integration manifest](Project_Landfall_Phase_4_Integration_Manifest.md): canonical surface ownership, native/offline/provider data boundaries and the pending protected qualification handoff.
+- [Native companion and restart design](Project_Landfall_Phase_4_Native_Companion_Design.md): origin-bound acquisition, encrypted restart leases, shared reconciliation, immutable scoped proof and external production gates.
+- [Operations and incident response](Project_Landfall_Phase_4_Operations_Record.md): implemented provider/device controls, failure detection, safe degradation, recovery evidence and user communication; production deployment remains external.
+- [Acceptance matrix and external gates](Project_Landfall_Phase_4_Acceptance_Matrix.md): consolidated capability, privacy/security and measured-performance evidence with accepted local source and separately classified device/field/deployment gates.
+- [Integration manifest](Project_Landfall_Phase_4_Integration_Manifest.md): canonical surface ownership, native/offline/provider data boundaries and exact protected integration.
+
+- [Accepted Phase 4 capsule](Project_Landfall_Phase_4_Accepted_Capsule.md): bounded Project Trim context and source/validation scopes.
+- [Project Landfall completion receipt](Project_Landfall_Phase_4_Completion_Receipt.md): formal closure and external production gates.
+- [Exact qualification receipt](Project_Landfall_Phase_4_Qualification_Receipt.json): immutable identities, hashes, original failures and accepted scoped evidence.

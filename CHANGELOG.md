@@ -14,6 +14,8 @@ last_reviewed: 2026-10-04
 
 ### Added
 
+- Completed Project Landfall Phase4 source through protected PR #677: origin-bound native companions, signed offline regions, contextual providers and the permanent cross-platform Device Lab preserve One Voyage authority. Exact qualification, scoped native/browser/provider acceptance and landed verification pass; the protected evidence/catalog publication binds formal Project Landfall closure. Physical/RF/field/energy/assistive evidence, signed distribution, production configuration and owner acceptance remain external.
+
 - Apple companion configuration now declares portrait and landscape support
   for phones and tablets. Its unconfigured message scrolls at large text sizes;
   actual iOS26.5 Simulator rotation and Reduce Motion readback/restoration pass, with reviewed full-device screenshots. Physical assistive usability remains external.
@@ -57,7 +59,7 @@ last_reviewed: 2026-10-04
 
 - Closed the Landfall physical/virtual v1.1 audit corrections through protected PR #675: ordinary physical regions preserve authorized private Player context, strict bounded source bundles independently qualify real checks through One Voyage, pending completion rechecks expiry at delivery, and Creator findings reflect actual provider availability. Watchglass remains not configured; exact-head hosted qualification, 2,364 full-unit tests, 39 production scenarios and landed smoke pass. The amendment record preserves historical failures and permanent closure evidence.
 
-- Added Project Landfall Phase 3 contextual navigation: aligned floor/site maps and region hierarchies, corridor continuity and uncertainty, foreground motion/heading/elevation hints, region-gated landmark reference comparison, independent exact-target observation, accessible fallbacks and sanitized Creator/Captain/replay projections. Physical field quality remains separate evidence; native/background Phase 4 work is deferred.
+- Added Project Landfall Phase 3 contextual navigation: aligned floor/site maps and region hierarchies, corridor continuity and uncertainty, foreground motion/heading/elevation hints, region-gated landmark reference comparison, independent exact-target observation, accessible fallbacks and sanitized Creator/Captain/replay projections. Physical field quality remains separate evidence; subsequent native/background Phase4 acceptance is recorded above.
 
 - Added Project Landfall Phase 2 source: Creator Living Chart authoring, six Chronicle location blocks and typed completion, canonical Player and Captain progression, private map overlays, field-test receipts, Lanternwake outcomes, completed-voyage replay, and bounded web offline reconciliation. External geocoding, virtual telemetry, physical device proof, and deployment remain separate.
 
