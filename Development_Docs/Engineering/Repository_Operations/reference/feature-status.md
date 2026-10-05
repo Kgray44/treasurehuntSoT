@@ -8,9 +8,7 @@ last_reviewed: 2026-10-04
 
 # Feature status
 
-Landfall Phase 4 is a candidate in active hosted/native validation. Its companion,
-offline regions and provider operations are not yet accepted on protected main.
-Current evidence and remaining gates are recorded in the [native companion design](../../../Projects/Project_Landfall/Project_Landfall_Phase_4_Native_Companion_Design.md).
+Landfall Phase 4 source is available on protected main through [PR #677](https://github.com/Kgray44/treasurehuntSoT/pull/677), product merge `707b98ee97163df4e30fad388883db910e0c40ec`. Exact local/required hosted qualification and isolated landed verification pass. The [accepted capsule](../../../Projects/Project_Landfall/Project_Landfall_Phase_4_Accepted_Capsule.md) and [completion receipt](../../../Projects/Project_Landfall/Project_Landfall_Phase_4_Completion_Receipt.md) become authoritative with their protected evidence/catalog publication. Physical devices/RF/field/energy, assistive technology, signed distribution, production origin/MySQL, licensed providers and owner acceptance remain separate external gates.
 
 The [Landfall Phase 3 v1.1 follow-up](../../../Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) is available on protected main through PR #675, merge `64c780a0`: default private contextual authoring, authored-unit virtual context, operational independent-source canonical bundles and completion-time expiry. Full-unit, 39-case production acceptance, exact-head hosted PASS and landed smoke are recorded separately from the historical baseline below. Watchglass remains NOT_CONFIGURED; this protected evidence/catalog publication completes the permanent closure record.
 

@@ -40,7 +40,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Project Wakebook](Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf)
 - [Project Shipwright](Projects/Project%20Shipwright/README.md)
 - [Project Drydock](Projects/Project%20Drydock/README.md)
-- [Project Landfall](Projects/Project_Landfall/README.md)
+- [Project Landfall](Projects/Project_Landfall/README.md): [accepted Phase 4 capsule](Projects/Project_Landfall/Project_Landfall_Phase_4_Accepted_Capsule.md) and [completion receipt](Projects/Project_Landfall/Project_Landfall_Phase_4_Completion_Receipt.md), with qualified source and external production gates.
 - [Project Sextant](Projects/Project_Sextant/README.md)
 - [Project Parallax](Projects/Project_Parallax/README.md)
 - [Project Crossdeck](Projects/Project_Crossdeck/README.md)

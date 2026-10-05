@@ -1329,9 +1329,9 @@ Project Drydock Phase 4 gives Creators source-bound launch readiness, compatibil
 ## FT-044 - Landfall Living World Navigation
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Landfall Phases 1, 2 and 3
+**Program or subsystem:** Project Landfall Phases 1, 2, 3 and 4
 
-Creators author versioned physical and virtual Living Charts, protected floor/site regions and natural landmarks. Authored-unit virtual context and independently server-qualified source bundles retain honest uncertainty and canonical One Voyage authority, with private Player projections, accessible provider fallback, sanitized Captain/replay state and bounded encrypted web offline reconciliation.
+Creators author versioned physical and virtual Living Charts with protected contextual regions and natural landmarks. Origin-bound native companions, signed offline regions and replaceable contextual providers preserve consent, honest uncertainty and One Voyage authority; private Player projections, accessible fallback and governed cross-platform Device Lab evidence support bounded restart and reconciliation.
 
 ### Important subfeatures
 
@@ -1360,10 +1360,17 @@ Creators author versioned physical and virtual Living Charts, protected floor/si
 - Authored-unit physical and virtual contextual region/route/gate evaluation, with coarse semantic context and rejection of physical hints in virtual Worldspaces
 - Bounded canonical independent-source bundles qualify fresh available checks separately before fusion, reject repeated/shared/correlated/circular provenance and conflict, and revalidate pending completion at delivery
 - Ordinary physical contextual defaults retain private authorized Player inference; broad approximate evaluation is generalized and incompatible fine privacy blocks publication; provider capability findings expose unavailable stronger policies
+- Origin-bound Android WebView and Apple WKWebView companions share the existing Player/One Voyage contracts, contextual permission gates, encrypted metadata and conservative lifecycle teardown
+- Signed version-pinned offline region manifests and verified encrypted resources support bounded resume, corruption rejection, current authorization and canonical restart/lost-response reconciliation
+- Optional broad geofence wake and generic notifications require a fresh authorized foreground return; Android registered boot recovery respects consent and expiry and no wake confirms arrival
+- Replaceable authored and configured remote place, route and elevation providers retain licensing, server-only credential references, bounded demand health and readable fallback
+- Optional native heading, motion, barometer, signed QR/NFC and BLE/iBeacon/Eddystone/UWB or Nearby Interaction acquisition remain hints with freshness, correlation and identity limits
+- Permanent canonical Device Lab scenarios execute provider simulations, actual owned Android/iOS virtualization, hosted OS/toolchain matrices and source-bound cleanup/fidelity receipts
+- Coordinate-free operational outcomes and bounded provider diagnostics support containment, recovery and explicit production/device gates without a fleet kill service
 
 ### Primary surfaces
 
-`src/landfall`, `/api/studio/tales/[taleId]/landfall`, `/api/player/playthroughs/[playthroughId]/landfall`, `/studio/tales/[taleId]/landfall`, `/api/captain/voyages/[voyageId]/landfall`, `src/components/player/workspace/VoyageChart.tsx`, `src/components/player/journal/LandfallJournalChart.tsx`
+`src/landfall`, `/api/studio/tales/[taleId]/landfall`, `/api/player/playthroughs/[playthroughId]/landfall`, `/studio/tales/[taleId]/landfall`, `/api/captain/voyages/[voyageId]/landfall`, `src/components/player/workspace/VoyageChart.tsx`, `src/components/player/journal/LandfallJournalChart.tsx`, `native/android`, `native/ios`, `scripts/landfall/device-lab`
 
 ### Meaningful limitations
 
@@ -1372,9 +1379,12 @@ Creators author versioned physical and virtual Living Charts, protected floor/si
 - Live hardware and outdoor GPS quality, physical assistive technology, production map tiles, production MySQL, deployment and owner acceptance require separate evidence.
 - Fine indoor/exact-object GPS is capped at likely context. Browser elevation has no authored absolute-height calibration and cannot confirm a floor. Optional hints degrade to readable fallback when unavailable.
 - Natural-landmark verification is conservative authored-view comparison, not general object recognition or camera attestation. Changed angle/light/occlusion/crowds may require fallback; fresh online regional qualification is required. Process-local signed receipts expire after 30 seconds and restart requires re-verification.
-- Watchglass, game and native evidence providers remain NOT_CONFIGURED. Trusted synthetic adapter tests prove only the scoped certification/handoff contract; three/four-source policies cannot invent provider availability and require an effective fallback when unavailable.
+- Watchglass and game telemetry remain NOT_CONFIGURED. Native companion source and virtualized acquisition are available, but signed distribution, production origins, physical RF/accuracy and authenticated peer identity require separate evidence. Stronger source policies cannot invent provider availability.
 - Approximate physical context supports broad WGS84 site/compact-outdoor regions only, using a rounded center and radius of at least 500 meters. Fine rooms/floors/corridors require private or intentionally public-exact geometry. Current floor/site alignment controls are north-up geographic rectangles; arbitrary rotated/affine authoring is unavailable.
 - Multi-source bundles and opaque provider receipts require fresh online verification and are never retained in the durable outbox. Physical indoor accuracy and real game/camera recognition quality remain external evidence.
+- Native shells use the canonical embedded web Journal; the MapLibre-compatible descriptor does not supply a separate installed native renderer. Optional remote Nominatim-compatible, OSRM and Open-Elevation service configuration remains NOT_CONFIGURED until licensed operator credentials and endpoints are supplied.
+- Simulator presentation checks concern an unconfigured readable fallback and actual OS settings; shared browser accessibility coverage does not establish physical VoiceOver or complete production native usability.
+- Apple notification nonce landing proves actual OS delivery/native handoff only; production signed-return authority has separate shared and Android first-party evidence. Virtualized radio and mock OS positions do not prove physical RF or field timing.
 
 ### Evidence
 
@@ -1401,6 +1411,10 @@ Creators author versioned physical and virtual Living Charts, protected floor/si
 - test: `src/landfall/context-projection.test.ts`
 - completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md`
 - commit: `64c780a0c926ac8f78535fc43e9afc48f3b4880c`
+- commit: `707b98ee97163df4e30fad388883db910e0c40ec`
+- completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_4_Completion_Receipt.md`
+- completion-record: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_4_Accepted_Capsule.md`
+- path: `Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_4_Qualification_Receipt.json`
 
 ---
 

@@ -8,13 +8,13 @@ last_reviewed: 2026-10-04
 
 # Player guide
 
-The Phase 4 candidate adds an optional offline region panel in the Journal map.
+Where signed region preparation is enabled, an optional offline region panel appears in the Journal map.
 Select **Prepare offline region** to check availability, size, included released
 resources and authorization expiry; select **Download offline region** separately
 to download and verify them. Partial downloads can be resumed, and stale regions
 need a refresh. Removing a device's region preserves saved Chronicle history.
 External tiles and online suggestions require a connection. Availability depends
-on the deployment's signing configuration. Phase 4 acceptance is still pending.
+on the deployment's signing configuration. Native use also requires an origin-bound release qualified for your device.
 
 In a configured native companion, background reminders are optional. Enable them
 only when you want a broad reminder for the released objective, with separate

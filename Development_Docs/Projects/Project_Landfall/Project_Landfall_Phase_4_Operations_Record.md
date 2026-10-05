@@ -8,9 +8,7 @@ last_reviewed: 2026-10-04
 
 # Hold the Bearing operations record
 
-This is the development candidate's engineering runbook. Protected integration,
-production deployment, signed native release qualification and physical field
-acceptance remain pending. It describes source controls, not an operated production
+This engineering runbook describes the source integrated by protected PR #677. Exact qualification and landed verification pass; production deployment, signed native release qualification and physical field acceptance remain external gates. It describes source controls, not an operated production
 service. The [design record](Project_Landfall_Phase_4_Native_Companion_Design.md)
 and [Device Lab authority](Project_Landfall_Phase_4_Device_Lab_Addendum.md) govern
 scope and evidence. One Voyage remains the only progression writer. Provider
