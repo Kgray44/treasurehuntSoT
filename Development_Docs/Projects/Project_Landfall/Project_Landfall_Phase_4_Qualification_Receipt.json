@@ -6743,7 +6743,7 @@
     "sha256": "1f4945ac17289aeb1a8fe27c6fb8da76b0b266bd15549e55bb8019c28d4f877b",
     "developmentOnlyHighFindings": 5
   },
-  "evidencePublication": "PENDING_SEPARATE_PROTECTED_PUBLICATION",
+  "evidencePublication": "https://github.com/Kgray44/treasurehuntSoT/pull/683",
   "finalMainResolution": "Immutable merge_commit_sha of the separate protected evidence/catalog PR; accepted application tree preserved",
   "externalProductionValidation": "PENDING",
   "externalGates": [

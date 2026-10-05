@@ -10,7 +10,7 @@ last_reviewed: 2026-10-05
 
 Product [PR #677](https://github.com/Kgray44/treasurehuntSoT/pull/677) qualified candidate `cacf62b3cc96a517e3755d71870e2feb79b66016`, tree `0916887df5a89f5495aca599a8412be80c1b08cc`, against protected base `c5f040119cbea35236701504f199b2975bfdb775`. Required hosted [ordinary Sounding Line](https://github.com/Kgray44/treasurehuntSoT/actions/runs/37249494399), job `111574023310`, and local supported programmatic verification pass all obligations with no remainder or errors. Protected product main is `707b98ee97163df4e30fad388883db910e0c40ec`; its tree equals the candidate. Landed isolated smoke passes with owned cleanup. The qualification receipt retains exact source/test/native/artifact scopes and hashes.
 
-Final closure main resolves through the separate evidence/catalog publication's immutable `merge_commit_sha`. This evidence candidate becomes authoritative with that protected publication and final landed verification; it does not alter the accepted application tree.
+Final closure main resolves through the [protected evidence/catalog PR](https://github.com/Kgray44/treasurehuntSoT/pull/683)'s immutable `merge_commit_sha`. This evidence candidate becomes authoritative with that protected publication and final landed verification; it does not alter the accepted application tree.
 
 ## Architecture and retained acceptance
 
