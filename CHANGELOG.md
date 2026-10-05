@@ -16,11 +16,10 @@ last_reviewed: 2026-10-04
 
 - Apple companion configuration now declares portrait and landscape support
   for phones and tablets. Its unconfigured message scrolls at large text sizes;
-  actual Simulator rotation and reduced-motion acceptance remain under validation.
+  actual iOS26.5 Simulator rotation and Reduce Motion readback/restoration pass, with reviewed full-device screenshots. Physical assistive usability remains external.
 
 - Native iOS notification consent replies and notice-return navigation now run
-  on the UI thread. Actual permission acceptance passes; native notice handoff
-  and final Phase 4 acceptance remain under Device Lab validation.
+  on the UI thread. Actual permission refusal and positive nonce handoff pass; production signed authorization retains separate scope. Final protected Phase 4 integration remains pending.
 
 - Native iOS location throttling retains one latest transient fix for delivery
   at the requested interval, preserving its observation time. Stop, suspension,
@@ -34,7 +33,7 @@ last_reviewed: 2026-10-04
 - Corrected the Phase 4 notification-return adapter so removed membership or an
   unavailable pinned Voyage sends an authenticated Player to Player home instead
   of treating their account as signed out. Current membership and pinned-session
-  checks still refuse access; native return acceptance remains under validation.
+  checks still refuse access; actual Android signed return and Apple nonce handoff are accepted at their recorded fidelity.
 
 - Landfall Phase 4 candidate: native companions and an owned cross-platform Device
   Lab, bounded region preview/download progress, and coordinate-free operational

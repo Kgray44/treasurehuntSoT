@@ -22,7 +22,7 @@ background-location and notification permission. A generic notice opens a newly
 authorized Player destination; it does not confirm a visit. Return to the current
 Chart and choose **Use my location** for a fresh foreground check. **Disable
 reminders** clears the device's registration and pending hints. Delivery and
-reboot recovery remain subject to device behavior and the pending native matrix.
+reboot recovery remain subject to device behavior and signed-release qualification. Emulator/Simulator acceptance does not establish physical-device delivery or energy performance.
 
 Optional nearby-device hints use a short exchange prepared on both devices. The
 exchange expires even if the devices' clocks differ; prepare it again after a
