@@ -831,7 +831,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Figurehead_Spatial_Presence_Integration_Amendment_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -915,9 +927,27 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Storytide_Spatial_and_Multi_Surface_Integration_Amendment_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Trim_Codex_Context_and_Inference_Efficiency_Governing_Document_v1.0-R1.pdf",
       "record_type": "governing-record",
       "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Wakebook_Governing_Amendment_v1.1_Spatial_Memories_and_AR_Capture.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
       "canonical_for": null
     },
     {
