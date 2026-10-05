@@ -31,7 +31,6 @@ Protected qualification, merge, landed verification, evidence/catalog publicatio
 
 Run37244548883 on`2b6b5f72aa770f1440ef199636ab1458ec9b231e` retains FAIL at the positive notice return,4,413hashed artifacts and cleanupPASS. Consent, actual registration/background/region entry pass; two public taps and one hold are observed, but foreground/native tap/nonce return remain false and canonical progression stays zero. After the hold, screenshot78E2FC9A and hierarchyF351D476 show the system Open action at x10/y550.7,width90,height78.7points inside the unique Landfall ListCell. A later title tap closes it. The next driver selects only that actually observed button within the unique title/body/app-labelled card; the whole failed run is not reclassified.
 
-
 Earlier failed presentation attempts follow with their original source identities.
 
 Primary focused run37232748824 on `90ef2d75` fails before scenario execution:
