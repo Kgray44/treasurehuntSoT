@@ -151,6 +151,7 @@ final class NativeLifecycleTests: XCTestCase {
                     let cards=springboard.otherElements.matching(NSPredicate(format:"label CONTAINS %@ AND label CONTAINS %@",title,"No visit has been confirmed."))
                     let text=springboard.staticTexts.matching(NSPredicate(format:"label == %@",title))
                     let contentButtons=springboard.buttons.matching(identifier:"ShortLook.Platter.Content.Seamless").matching(NSPredicate(format:"label CONTAINS %@ AND label CONTAINS %@",title,"No visit has been confirmed."))
+                    let ownedCards=springboard.buttons.matching(identifier:"ListCell").matching(NSPredicate(format:"label CONTAINS %@ AND label CONTAINS %@ AND label CONTAINS %@","VOYAGEWRIGHT LANDFALL",title,"No visit has been confirmed."))
                     // SpringBoard can expose a notice as one combined accessible
                     // card/button rather than a separate title static text.
                     var notice:XCUIElement?
@@ -161,7 +162,8 @@ final class NativeLifecycleTests: XCTestCase {
                     else if cards.firstMatch.waitForExistence(timeout:5),cards.count == 1 {notice=cards.firstMatch;initialTarget="COMBINED_CARD"}
                     keepNoticeUi(springboard,"Owned notice before tap")
                     var tapped=false,foregroundObserved=false
-                    var tapAttempts=0,holdAttempts=0
+                    var tapAttempts=0,holdAttempts=0,systemOpenButtonCount=0
+                    var returnTarget="NONE"
                     if let notice=notice,notice.isHittable {
                         notice.tap();tapped=true;tapAttempts=1
                         // The retained screen shows the first tap expanding the
@@ -172,17 +174,21 @@ final class NativeLifecycleTests: XCTestCase {
                             if contentButtons.count == 1,contentButtons.firstMatch.isHittable {
                                 contentButtons.firstMatch.press(forDuration:1.2);holdAttempts=1
                                 keepNoticeUi(springboard,"Owned notice after public touch and hold")
-                                // Requery the actual public preview, rather than
-                                // retaining the now-moved short-look hit target.
-                                if text.firstMatch.waitForExistence(timeout:5),text.count == 1,text.firstMatch.isHittable {text.firstMatch.tap();tapAttempts=2}
-                                else if contentButtons.count == 1,contentButtons.firstMatch.isHittable {contentButtons.firstMatch.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.7)).tap();tapAttempts=2}
+                                // The retained actual screen/hierarchy exposes
+                                // Open inside this unique owned ListCell. Scope
+                                // the system action to that card, never Settings.
+                                if ownedCards.count == 1 {
+                                    let systemOpen=ownedCards.firstMatch.buttons.matching(identifier:"swipe-action-button-identifier").matching(NSPredicate(format:"label == %@","Open"))
+                                    systemOpenButtonCount=min(systemOpen.count,64)
+                                    if systemOpen.firstMatch.waitForExistence(timeout:5),systemOpen.count == 1,systemOpen.firstMatch.isHittable {systemOpen.firstMatch.tap();tapAttempts=2;returnTarget="SYSTEM_OPEN"}
+                                }
                             }
                         }
                         foregroundObserved=app.wait(for:.runningForeground,timeout:15)
                         if foregroundObserved {result="PASS"}
                     }
                     keepNoticeUi(springboard,"Owned notice after bounded taps")
-                    noticeDiagnostic=["initialTarget":initialTarget,"noticeContentButtonCount":min(contentButtons.count,64),"buttonTitleCount":min(buttons.count,64),"openButtonCount":min(openButtons.count,64),"tapAttempts":tapAttempts,"holdAttempts":holdAttempts,"combinedCardCount":min(cards.count,64),"staticTitleCount":min(text.count,64),"tapped":tapped,"foregroundObserved":foregroundObserved]
+                    noticeDiagnostic=["initialTarget":initialTarget,"returnTarget":returnTarget,"systemOpenButtonCount":systemOpenButtonCount,"noticeContentButtonCount":min(contentButtons.count,64),"buttonTitleCount":min(buttons.count,64),"openButtonCount":min(openButtons.count,64),"tapAttempts":tapAttempts,"holdAttempts":holdAttempts,"combinedCardCount":min(cards.count,64),"staticTitleCount":min(text.count,64),"tapped":tapped,"foregroundObserved":foregroundObserved]
                 }
                 try await post(origin,"/lab/os/result",["index":index,"state":result,"noticeUi":noticeDiagnostic])
                 continue

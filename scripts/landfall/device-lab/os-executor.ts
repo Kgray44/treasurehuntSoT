@@ -360,6 +360,7 @@ export async function executeLandfallOsScenario(
             "openButtonCount",
             "tapAttempts",
             "holdAttempts",
+            "systemOpenButtonCount",
             "combinedCardCount",
             "staticTitleCount",
             "noticeContentButtonCount",
@@ -380,6 +381,8 @@ export async function executeLandfallOsScenario(
               )
             )
               appleNoticeUiDiagnostic.initialTarget = diagnostic.initialTarget;
+            if (["NONE", "SYSTEM_OPEN"].includes(diagnostic.returnTarget))
+              appleNoticeUiDiagnostic.returnTarget = diagnostic.returnTarget;
           }
         }
         if (!osResults.has(value.index))
