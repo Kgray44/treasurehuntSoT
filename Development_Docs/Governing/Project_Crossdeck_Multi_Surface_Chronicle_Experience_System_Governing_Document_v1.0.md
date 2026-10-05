@@ -10,7 +10,7 @@ repository: "Kgray44/treasurehuntSoT"
 repository_baseline: "0215e27ce53961d0d65848ab6365e983ad3a5a5e"
 ---
 
-> **Governing Principle**  
+> **Governing Principle**
 > A Voyage belongs to the person, not to the screen. Project Crossdeck must let one canonical Player move attention, presentation, tools, artifacts, maps, notes, and Chronicle interactions fluidly among authorized surfaces without creating duplicate identity, duplicate progression, competing state, or visible technical ceremony. The interaction may feel magical. The state underneath it must remain explicit, attributable, reversible where appropriate, and boringly correct.
 
 Project Crossdeck is Voyagewright's canonical multi-surface participation, pairing, synchronization, handoff, surface-role, continuity, and device-to-device experience system.
@@ -70,81 +70,81 @@ No implementation prompt may create a second account/session model, a private Cr
 
 # Contents
 
-1. Executive Summary  
-2. Project Identity and Product Vision  
-3. Current Repository Context  
-4. Non-Negotiable Experience Principles  
-5. Scope and Non-Goals  
-6. Canonical Ownership and Boundaries  
-7. Terminology  
-8. Canonical Architecture  
-9. Person, Device, Session, Surface, and Voyage Identity  
-10. Surface Model and Surface Roles  
-11. Surface Capability Projection  
-12. Surface Discovery  
-13. Pairing Experience  
-14. Pairing Security and Trust  
-15. Trusted Device Reuse and Revocation  
-16. Surface Presence, Availability, and Liveness  
-17. Multi-Surface Presentation State  
-18. Focus, Custody, Mirroring, and Continuity  
-19. Handoff Semantics  
-20. Transferable Chronicle Object Taxonomy  
-21. Transfer Modes  
-22. Crossdeck Air Handoff  
-23. Gesture Recognition Ownership and Provider Contract  
-24. Air Handoff Gesture Grammar  
-25. Air Handoff State Machine  
-26. Sender Selection and Grab Semantics  
-27. Receiver Discovery and Targeting  
-28. Receiver Claim and Release  
-29. Timing, Correlation, and Device Attribution  
-30. False Positive Prevention and Ambiguity Resolution  
-31. Manual Handoff Methods  
-32. Touch, Drag, Keyboard, Controller, and Accessibility Paths  
-33. Motion, Haptics, Audio, and Lanternwake Presentation  
-34. Artifact, Map, Note, Clue, and Media Handoffs  
-35. Parallax Physical-Digital Artifact Integration  
-36. Chronicle Lens and Crossdeck  
-37. Storytide Surface Choreography  
-38. Watchglass Integration  
-39. Sextant Integration  
-40. Landfall Integration  
-41. One Voyage Integration and Authority  
-42. Wayfarer Identity and Session Integration  
-43. Wakebook and Memory Integration  
-44. Figurehead and Presence Integration  
-45. Shared Crew Displays and Co-Located Experiences  
-46. Cross-Person Transfers and Crew Handoffs  
-47. Realtime Synchronization Architecture  
-48. Ordering, Idempotency, and Conflict Resolution  
-49. Offline, Weak Network, and Reconnect  
-50. Background, Lock, Sleep, and App Lifecycle  
-51. Privacy and Data Minimization  
-52. Security and Threat Model  
-53. Safety and Human Factors  
-54. Accessibility and Inclusive Interaction  
-55. Performance, Latency, Battery, and Thermal Budgets  
-56. Creator Authoring Model  
-57. Player Settings and Discoverability  
-58. Data Model  
-59. API and Service Contracts  
-60. Canonical Events and Receipts  
-61. Diagnostics, Telemetry, and Operations  
-62. Voyagewright Device Lab Contract  
-63. Testing and Acceptance Matrix  
-64. Six-Phase Implementation Program  
-65. Final Acceptance Criteria  
-Appendix A. Surface Role Catalog  
-Appendix B. Handoff Capability and Policy Matrix  
-Appendix C. Air Handoff Interaction Timing  
-Appendix D. Air Handoff Failure and Recovery Copy  
-Appendix E. Security Checklist  
-Appendix F. Canonical Scenario Narratives  
-Appendix G. Event Vocabulary  
-Appendix H. Glossary  
-References  
-Final Governing Rule
+1. Executive Summary
+2. Project Identity and Product Vision
+3. Current Repository Context
+4. Non-Negotiable Experience Principles
+5. Scope and Non-Goals
+6. Canonical Ownership and Boundaries
+7. Terminology
+8. Canonical Architecture
+9. Person, Device, Session, Surface, and Voyage Identity
+10. Surface Model and Surface Roles
+11. Surface Capability Projection
+12. Surface Discovery
+13. Pairing Experience
+14. Pairing Security and Trust
+15. Trusted Device Reuse and Revocation
+16. Surface Presence, Availability, and Liveness
+17. Multi-Surface Presentation State
+18. Focus, Custody, Mirroring, and Continuity
+19. Handoff Semantics
+20. Transferable Chronicle Object Taxonomy
+21. Transfer Modes
+22. Crossdeck Air Handoff
+23. Gesture Recognition Ownership and Provider Contract
+24. Air Handoff Gesture Grammar
+25. Air Handoff State Machine
+26. Sender Selection and Grab Semantics
+27. Receiver Discovery and Targeting
+28. Receiver Claim and Release
+29. Timing, Correlation, and Device Attribution
+30. False Positive Prevention and Ambiguity Resolution
+31. Manual Handoff Methods
+32. Touch, Drag, Keyboard, Controller, and Accessibility Paths
+33. Motion, Haptics, Audio, and Lanternwake Presentation
+34. Artifact, Map, Note, Clue, and Media Handoffs
+35. Parallax Physical-Digital Artifact Integration
+36. Chronicle Lens and Crossdeck
+37. Storytide Surface Choreography
+38. Watchglass Integration
+39. Sextant Integration
+40. Landfall Integration
+41. One Voyage Integration and Authority
+42. Wayfarer Identity and Session Integration
+43. Wakebook and Memory Integration
+44. Figurehead and Presence Integration
+45. Shared Crew Displays and Co-Located Experiences
+46. Cross-Person Transfers and Crew Handoffs
+47. Realtime Synchronization Architecture
+48. Ordering, Idempotency, and Conflict Resolution
+49. Offline, Weak Network, and Reconnect
+50. Background, Lock, Sleep, and App Lifecycle
+51. Privacy and Data Minimization
+52. Security and Threat Model
+53. Safety and Human Factors
+54. Accessibility and Inclusive Interaction
+55. Performance, Latency, Battery, and Thermal Budgets
+56. Creator Authoring Model
+57. Player Settings and Discoverability
+58. Data Model
+59. API and Service Contracts
+60. Canonical Events and Receipts
+61. Diagnostics, Telemetry, and Operations
+62. Voyagewright Device Lab Contract
+63. Testing and Acceptance Matrix
+64. Six-Phase Implementation Program
+65. Final Acceptance Criteria
+    Appendix A. Surface Role Catalog
+    Appendix B. Handoff Capability and Policy Matrix
+    Appendix C. Air Handoff Interaction Timing
+    Appendix D. Air Handoff Failure and Recovery Copy
+    Appendix E. Security Checklist
+    Appendix F. Canonical Scenario Narratives
+    Appendix G. Event Vocabulary
+    Appendix H. Glossary
+    References
+    Final Governing Rule
 
 # 1. Executive Summary
 
@@ -664,12 +664,12 @@ Target experience: first-time pairing should feel like joining a call, not provi
 
 Desktop:
 
-> **Phone connected**  
+> **Phone connected**
 > Chronicle Lens is ready.
 
 Phone:
 
-> **Joined this Voyage**  
+> **Joined this Voyage**
 > Your desktop remains the main story surface.
 
 No IP addresses. No port numbers. No transport terminology.
@@ -1944,6 +1944,7 @@ Required scenario families include:
 Each phase is independently mainline-safe and may not assume later phases exist.
 
 ## Phase 1 - **Lay the Gangway**
+
 ### Surface Identity, Secure Pairing, Roles, Capability Projection, and Presence
 
 Build:
@@ -1964,6 +1965,7 @@ Build:
 **Gate:** one person can securely pair desktop and phone into the same Voyage without duplicate identity or progression; removing/revoking the surface works.
 
 ## Phase 2 - **Keep One Deck**
+
 ### Synchronization, Focus, Interaction Custody, Reconnect, and Manual Handoff
 
 Build:
@@ -1983,6 +1985,7 @@ Build:
 **Gate:** manual cross-surface handoff is reliable, fast, understandable, and does not mutate story truth unless explicitly routed through One Voyage.
 
 ## Phase 3 - **Pass the Chart**
+
 ### Air Handoff, Fluid Transfer UX, Gesture Evidence, Haptics, and Accessibility
 
 Build:
@@ -2004,6 +2007,7 @@ If Watchglass production gesture recognition is not ready, Phase 3 may ship the 
 **Gate:** real-device Air Handoff works on certified configurations, manual paths are equal citizens, and no accidental gesture can silently move sensitive content.
 
 ## Phase 4 - **Work the Whole Deck**
+
 ### Parallax, Storytide, Chronicle Lens, Crew Displays, and Rich Surface Choreography
 
 Build:
@@ -2022,6 +2026,7 @@ Build:
 **Gate:** a complete authored Chronicle moment can fluidly use desktop + phone + spatial artifact without duplicating truth or trapping the Player when a surface disappears.
 
 ## Phase 5 - **Weather the Passage**
+
 ### Offline, Lifecycle, Security, Privacy, Operations, and Scale
 
 Build/harden:
@@ -2042,6 +2047,7 @@ Build/harden:
 **Gate:** Crossdeck survives real interruptions, revocation, stale devices, and hostile/ambiguous conditions without split-brain state or privacy leakage.
 
 ## Phase 6 - **Make the Crossing Invisible**
+
 ### Device Lab, Field Qualification, UX Polish, Accessibility, Performance, and Program Closure
 
 Complete:
@@ -2166,16 +2172,16 @@ Surface used to provide alternate input/output without changing person identity.
 
 # Appendix B. Handoff Capability and Policy Matrix
 
-| Object family | Default personal handoff | Mirror allowed | Cross-person allowed | Strong confirmation |
-|---|---|---|---|---|
-| Map/chart | Yes | Yes | Story policy | No |
-| Public/crew note | Yes | Yes | Yes with visibility | Sometimes |
-| Private note | Yes | Personal only | No by default | Yes |
-| Artifact viewer | Yes | Yes | Story policy | No |
-| Artifact ownership | Not a Crossdeck action | N/A | Owner service only | Yes |
-| Chronicle Lens spatial artifact | Yes via Parallax | Contextual | Story policy | Contextual |
-| Captain control | Restricted | No | No | Yes |
-| Memory capture | Personal | Preview only | Explicit sharing only | Yes |
+| Object family                   | Default personal handoff | Mirror allowed | Cross-person allowed  | Strong confirmation |
+| ------------------------------- | ------------------------ | -------------- | --------------------- | ------------------- |
+| Map/chart                       | Yes                      | Yes            | Story policy          | No                  |
+| Public/crew note                | Yes                      | Yes            | Yes with visibility   | Sometimes           |
+| Private note                    | Yes                      | Personal only  | No by default         | Yes                 |
+| Artifact viewer                 | Yes                      | Yes            | Story policy          | No                  |
+| Artifact ownership              | Not a Crossdeck action   | N/A            | Owner service only    | Yes                 |
+| Chronicle Lens spatial artifact | Yes via Parallax         | Contextual     | Story policy          | Contextual          |
+| Captain control                 | Restricted               | No             | No                    | Yes                 |
+| Memory capture                  | Personal                 | Preview only   | Explicit sharing only | Yes                 |
 
 # Appendix C. Air Handoff Interaction Timing
 
@@ -2194,7 +2200,7 @@ These values are starting qualification ranges, not immutable truths.
 
 **No receiver found**
 
-> **Still holding it**  
+> **Still holding it**
 > Bring your hand near a paired device, or choose a device below.
 
 **Several devices available**
@@ -2203,7 +2209,7 @@ These values are starting qualification ranges, not immutable truths.
 
 **Receiver went away**
 
-> **That device disappeared**  
+> **That device disappeared**
 > The item stayed here.
 
 **Network delay**
@@ -2212,12 +2218,12 @@ These values are starting qualification ranges, not immutable truths.
 
 **Transfer failed**
 
-> **It came back**  
+> **It came back**
 > Try again or choose a device manually.
 
 **Gesture unavailable**
 
-> **Air Handoff isn't available here**  
+> **Air Handoff isn't available here**
 > Use `Send to...` instead.
 
 **Private-content confirmation**
@@ -2284,39 +2290,39 @@ Canonical Crossdeck event families should remain semantically stable across tran
 
 ## Surface lifecycle
 
-`SURFACE_DISCOVERED`  
-`SURFACE_PAIRING_STARTED`  
-`SURFACE_PAIRED`  
-`SURFACE_ROLE_CHANGED`  
-`SURFACE_ACTIVE`  
-`SURFACE_BACKGROUND`  
-`SURFACE_LOCKED`  
-`SURFACE_DISCONNECTED`  
-`SURFACE_RECONNECTED`  
+`SURFACE_DISCOVERED`
+`SURFACE_PAIRING_STARTED`
+`SURFACE_PAIRED`
+`SURFACE_ROLE_CHANGED`
+`SURFACE_ACTIVE`
+`SURFACE_BACKGROUND`
+`SURFACE_LOCKED`
+`SURFACE_DISCONNECTED`
+`SURFACE_RECONNECTED`
 `SURFACE_REVOKED`
 
 ## Focus/custody
 
-`PRESENTATION_FOCUS_CHANGED`  
-`INTERACTION_CUSTODY_REQUESTED`  
-`INTERACTION_CUSTODY_GRANTED`  
-`INTERACTION_CUSTODY_RELEASED`  
-`MIRROR_STARTED`  
+`PRESENTATION_FOCUS_CHANGED`
+`INTERACTION_CUSTODY_REQUESTED`
+`INTERACTION_CUSTODY_GRANTED`
+`INTERACTION_CUSTODY_RELEASED`
+`MIRROR_STARTED`
 `MIRROR_STOPPED`
 
 ## Handoff
 
-`HANDOFF_ARMED`  
-`HANDOFF_GRAB_DETECTED`  
-`HANDOFF_INTENT_OPENED`  
-`HANDOFF_TARGET_CANDIDATE`  
-`HANDOFF_TARGET_CLAIMED`  
-`HANDOFF_RELEASE_DETECTED`  
-`HANDOFF_COMMIT_REQUESTED`  
-`HANDOFF_COMMITTED`  
-`HANDOFF_DESTINATION_ACKNOWLEDGED`  
-`HANDOFF_CANCELLED`  
-`HANDOFF_EXPIRED`  
+`HANDOFF_ARMED`
+`HANDOFF_GRAB_DETECTED`
+`HANDOFF_INTENT_OPENED`
+`HANDOFF_TARGET_CANDIDATE`
+`HANDOFF_TARGET_CLAIMED`
+`HANDOFF_RELEASE_DETECTED`
+`HANDOFF_COMMIT_REQUESTED`
+`HANDOFF_COMMITTED`
+`HANDOFF_DESTINATION_ACKNOWLEDGED`
+`HANDOFF_CANCELLED`
+`HANDOFF_EXPIRED`
 `HANDOFF_FAILED`
 
 # Appendix H. Glossary
