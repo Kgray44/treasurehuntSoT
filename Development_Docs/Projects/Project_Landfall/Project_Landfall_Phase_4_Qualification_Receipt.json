@@ -6744,6 +6744,19 @@
     "developmentOnlyHighFindings": 5
   },
   "evidencePublication": "https://github.com/Kgray44/treasurehuntSoT/pull/683",
+  "publicationAttempts": [
+    {
+      "candidateSha": "0ea558ad007993f2aebb8d7716a84d20bcf48c8f",
+      "candidateTree": "4f59adcc219f1eea5d46c740b790f77918641c52",
+      "baseSha": "707b98ee97163df4e30fad388883db910e0c40ec",
+      "run": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/37251565926",
+      "job": "111580092040",
+      "result": "FAIL",
+      "reason": "Exact FT-044 catalog program assertion retained the Phase 1-3 expectation",
+      "repairScope": "Only the exact FT-044 program expectation changes to accepted Phases 1, 2, 3 and 4; current protected qualification and final landed domain/catalog proof remain required",
+      "receiptRebinding": "NONE"
+    }
+  ],
   "finalMainResolution": "Immutable merge_commit_sha of the separate protected evidence/catalog PR; accepted application tree preserved",
   "externalProductionValidation": "PENDING",
   "externalGates": [

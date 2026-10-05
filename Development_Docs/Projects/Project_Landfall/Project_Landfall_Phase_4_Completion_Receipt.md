@@ -12,6 +12,8 @@ Product [PR #677](https://github.com/Kgray44/treasurehuntSoT/pull/677) qualified
 
 Final closure main resolves through the [protected evidence/catalog PR](https://github.com/Kgray44/treasurehuntSoT/pull/683)'s immutable `merge_commit_sha`. This evidence candidate becomes authoritative with that protected publication and final landed verification; it does not alter the accepted application tree.
 
+The first publication qualification [run](https://github.com/Kgray44/treasurehuntSoT/actions/runs/37251565926) remains FAIL: its catalog test still expected Phases 1–3. The publication corrects only that exact Phase 4 expectation, preserves application inputs and requires fresh qualification; the failed run is not rebound or relabeled.
+
 ## Completion boundary
 
 PROJECT LANDFALL PHASE 4 COMPLETE
