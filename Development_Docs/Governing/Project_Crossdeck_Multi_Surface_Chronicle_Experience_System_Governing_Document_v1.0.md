@@ -2282,7 +2282,7 @@ Phone session is revoked from Personal Harbor while paired. Crossdeck invalidate
 
 Canonical Crossdeck event families should remain semantically stable across transport implementations.
 
-### Surface lifecycle
+## Surface lifecycle
 
 `SURFACE_DISCOVERED`  
 `SURFACE_PAIRING_STARTED`  
@@ -2295,7 +2295,7 @@ Canonical Crossdeck event families should remain semantically stable across tran
 `SURFACE_RECONNECTED`  
 `SURFACE_REVOKED`
 
-### Focus/custody
+## Focus/custody
 
 `PRESENTATION_FOCUS_CHANGED`  
 `INTERACTION_CUSTODY_REQUESTED`  
@@ -2304,7 +2304,7 @@ Canonical Crossdeck event families should remain semantically stable across tran
 `MIRROR_STARTED`  
 `MIRROR_STOPPED`
 
-### Handoff
+## Handoff
 
 `HANDOFF_ARMED`  
 `HANDOFF_GRAB_DETECTED`  
