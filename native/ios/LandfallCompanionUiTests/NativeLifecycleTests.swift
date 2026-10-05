@@ -180,7 +180,18 @@ final class NativeLifecycleTests: XCTestCase {
                                 if ownedCards.count == 1 {
                                     let systemOpen=ownedCards.firstMatch.buttons.matching(identifier:"swipe-action-button-identifier").matching(NSPredicate(format:"label == %@","Open"))
                                     systemOpenButtonCount=min(systemOpen.count,64)
-                                    if systemOpen.firstMatch.waitForExistence(timeout:5),systemOpen.count == 1,systemOpen.firstMatch.isHittable {systemOpen.firstMatch.tap();tapAttempts=2;returnTarget="SYSTEM_OPEN"}
+                                    if systemOpen.count == 1 {
+                                        // XCTest resolved this actual button, then lost
+                                        // its dynamic query while synthesizing .tap().
+                                        // Use only its observed on-screen center,
+                                        // anchored to the stable SpringBoard frame.
+                                        let openFrame=systemOpen.firstMatch.frame
+                                        let boardFrame=springboard.frame
+                                        if !openFrame.isEmpty,openFrame.midX.isFinite,openFrame.midY.isFinite,boardFrame.contains(openFrame) {
+                                            springboard.coordinate(withNormalizedOffset:.zero).withOffset(CGVector(dx:openFrame.midX-boardFrame.minX,dy:openFrame.midY-boardFrame.minY)).tap()
+                                            tapAttempts=2;returnTarget="SYSTEM_OPEN"
+                                        }
+                                    }
                                 }
                             }
                         }
