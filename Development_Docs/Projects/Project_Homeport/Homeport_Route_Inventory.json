@@ -36,7 +36,8 @@
     "lanternwake",
     "sounding-line",
     "project-admiralty",
-    "project-wakebook"
+    "project-wakebook",
+    "shipwright"
   ],
   "totals": {
     "routeFiles": 346,
@@ -53,7 +54,7 @@
       "implementationSource": "src/app/api/studio/tales/[taleId]/migrations/[blockId]/route.ts",
       "kind": "route",
       "classification": "API_OR_SERVICE",
-      "ownerProject": "one-voyage",
+      "ownerProject": "shipwright",
       "productArea": "Creator Studio",
       "shellMode": "N/A",
       "logicalParent": null,
@@ -25833,16 +25834,10 @@
     "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
     "updatedAt": "2026-08-03T18:00:00.000Z",
     "census": {
-      "sourceCount": 349,
-      "counts": {
-        "page": 109,
-        "route": 231,
-        "layout": 7,
-        "not-found": 0,
-        "error": 2
-      },
+      "sourceCount": 355,
+      "counts": { "page": 109, "route": 237, "layout": 7, "not-found": 0, "error": 2 },
       "humanRouteCount": 109,
-      "serviceRouteCount": 231
+      "serviceRouteCount": 237
     },
     "sourceParity": true,
     "noSchemaChange": true,

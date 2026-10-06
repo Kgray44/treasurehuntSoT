@@ -43,3 +43,25 @@ Early focused runs exposed three genuine harness/product mismatches: a nonexiste
 Visual review also rejected CSS `zoom: 2` as an inaccurate browser-zoom model because it preserved the desktop layout viewport. The accepted evidence uses a 720x500 CSS viewport at device scale 2, equivalent to a 1440x1000 physical viewport at 200 percent, and explicitly verifies the reflowed navigation controls.
 
 The first prepublication mainline decision failed closed on `browser.access-sentinel` because its assertions still expected role-specific sign-in surfaces. The product correctly routed Quartermaster and Studio entry through the canonical `/sign-in` lifecycle with encoded return targets; the sentinel was updated to that governed contract, and its focused registered rerun passed all 3 cases with clean isolation and cleanup. After the active registry was regenerated, the next mainline decision failed only `retirement.matrix-proof` because two historical rows retained replacement IDs that no longer existed. Semantic reconciliation updated the retirement ledger, and the focused retirement proof then passed all 316 historical identities. Neither rejected decision is release proof; publication depends on later clean terminal subsystem and mainline decisions against the final change set.
+
+## Sounding Line v1.4 inventory-reconciliation rebound
+
+The targeted Homeport source-parity increment was paused with checkpoint
+`270b22c5a10ea162e4e7ef9a768502e17c50a5ed` on the pre-cutover base
+`72075eb551ec39bdb59bd7d78fd900f2eaf73a88`. Its focused evidence is retained:
+the Phase 5 parity, graph, and second-run idempotency tests passed; the Phase 0
+artifact validator reported `ARTIFACT_SCHEMA_VALID`; and the Phase 5
+reachability validator reported zero unexplained ordinary-route orphans.
+
+After the v1.4 cutover, current protected main independently contained the
+Studio migration endpoint through the generic API census but attributed it to
+`one-voyage`. The endpoint was introduced by Shipwright source commit
+`06a0d1f3820503c3a33cd70d9651dc13f6189e01`, so the canonical Phase 5 updater
+now preserves the explicit `shipwright` owner for that `API_OR_SERVICE` record
+when regenerating an already-censused inventory. Rebound focused evidence on
+the v1.4 current-main reconciliation reported 109 page sources, 237 service
+sources, 346 inventory records, and zero unexplained ordinary-route orphans.
+
+This record preserves local development evidence only. The separate v1.4
+post-cutover hosted browser-fixture closure remains a hold on authoritative
+Mainline Decision and protected merge; no new acceptance claim is made here.
