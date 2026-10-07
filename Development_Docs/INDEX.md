@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-10-05
+last_reviewed: 2026-10-07
 ---
 
 # Engineering-record index
@@ -32,6 +32,10 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Watchglass Spatial Perception Integration Amendment](Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md) — Vision Waypoint/Parallax evidence bridge, relocalization, privacy screening, and abstention.
 - [Figurehead Spatial Presence Integration Amendment](Governing/Project_Figurehead_Spatial_Presence_Integration_Amendment_v1.0.md) — future character-state versus spatial-placement and surface-presence contract.
 - [Wakebook v1.1 Spatial Memories and AR Capture](Governing/Project_Wakebook_Governing_Amendment_v1.1_Spatial_Memories_and_AR_Capture.md) — post-closeout private Spatial Memory and clean AR capture contract.
+- [Sounding Line Voyagewright Device Lab Annex](Governing/Project_Sounding_Line_Voyagewright_Device_Lab_Governing_Annex_v1.0.md) — shared D0–D5 device/sensor/lifecycle/spatial verification facility and evidence-fidelity contract.
+- [Drydock v1.1 Spatial Provider and Device Lab Integration](Governing/Project_Drydock_Governing_Amendment_v1.1_Spatial_Provider_and_Device_Lab_Integration.md) — post-closeout spatial authoring, provider, fallback, Sea Trial, and publication-validation contract.
+- [Harborlight v1.1 Spatial Content Distribution and Compatibility](Governing/Project_Harborlight_Governing_Amendment_v1.1_Spatial_Content_Distribution_and_Compatibility.md) — immutable Spatial Library/community package, compatibility, privacy, remix, and distribution contract.
+- [Sealed Hold Spatial Media and Calibration Evidence Integration](Governing/Project_Sealed_Hold_Spatial_Media_and_Calibration_Evidence_Integration_Record_v1.0.md) — protected calibration imagery, Spatial Memories, derivatives, consent, retention, and cross-project privacy boundary.
 
 ## Current project references
 
