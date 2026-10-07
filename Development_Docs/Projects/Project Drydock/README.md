@@ -3,7 +3,7 @@ title: Project Drydock engineering records
 audience: engineering
 status: current
 canonical_for: project-drydock-engineering-records
-last_reviewed: 2026-08-30
+last_reviewed: 2026-10-07
 ---
 
 # Project Drydock engineering records
@@ -17,6 +17,8 @@ Phase 4, **Clear for Launch**, is **ACCEPTED MAINLINE** through protected PR
 compatibility, required Suite and publishing evidence, and migration parity
 without replacing Drydock's validation/simulation or One Voyage's publication
 authority.
+
+The [post-closeout v1.1 spatial/provider integration amendment](../../Governing/Project_Drydock_Governing_Amendment_v1.1_Spatial_Provider_and_Device_Lab_Integration.md) extends Drydock's existing typed extension/provider model to Parallax, Sextant, Landfall, Watchglass, Crossdeck, Figurehead, Wakebook, Harborlight, and Device Lab evidence. It does **not** create Project Drydock Phase 5 or make Drydock the Device Lab scheduler.
 
 ## Phase 1 records
 
