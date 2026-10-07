@@ -916,7 +916,6 @@ Do not solve a privacy incident by deleting every audit record and announcing vi
 - **Drydock:** authored validation.
 - **Sounding Line / Device Lab:** software/device verification.
 
-
 No subsystem may use this integration to steal the adjacent owner domain.
 
 ---

@@ -734,7 +734,7 @@ Harborlight spatial-content integration is accepted when:
 
 # Appendix A. Spatial Community Package Sketch
 
-```json
+```text
 {
   "type": "SPATIAL_MOMENT_PRESET",
   "release": "3.0.0",
@@ -759,14 +759,15 @@ This is illustrative. The implementation schema must be versioned and validated 
 
 # Appendix B. Example Listing Copy
 
-> **Desk Treasure Map**  
-> Place an interactive Chronicle map on a real horizontal surface. Supports shared crew placement, pick-up/replace interaction, and Guided Map fallback.  
->  
-> **Compatibility:** Enhanced Spatial  
-> **Requires:** Chronicle Lens / world-tracked AR for full experience  
-> **Fallback:** Guided 2D Map  
-> **Qualified:** Android Emulator, iOS Simulator  
-> **Real-device field qualification:** not yet published
+**Desk Treasure Map**
+
+Place an interactive Chronicle map on a real horizontal surface. Supports shared crew placement, pick-up/replace interaction, and Guided Map fallback.
+
+- **Compatibility:** Enhanced Spatial
+- **Requires:** Chronicle Lens / world-tracked AR for full experience
+- **Fallback:** Guided 2D Map
+- **Qualified:** Android Emulator, iOS Simulator
+- **Real-device field qualification:** not yet published
 
 This communicates useful truth without forcing somebody to read a compatibility JSON file before date night.
 
