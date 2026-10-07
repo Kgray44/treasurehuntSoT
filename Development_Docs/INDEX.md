@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-09-21
+last_reviewed: 2026-10-05
 ---
 
 # Engineering-record index
@@ -27,6 +27,11 @@ Use [document-index.json](document-index.json) for complete path-level classific
 
 - [Voyagewright Spatial Experience Architecture v1.0](Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md) — master ownership and integration baseline for device context, multi-surface Voyages, spatial computing, AR, adaptive staging, and the platform-wide Device Lab.
 - [Spatial Experience program home](Programs/Spatial_Experience/README.md) — implementation status, canonical owners, Device Lab rule, and required derived governing work.
+- [Landfall v1.2 Spatial Ownership and Integration Boundaries](Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md) — post-closure Landfall/Sextant/Parallax/Crossdeck/Device Lab boundary.
+- [Storytide Spatial and Multi-Surface Integration Amendment](Governing/Project_Storytide_Spatial_and_Multi_Surface_Integration_Amendment_v1.0.md) — narrative Spatial Moment, Chronicle Lens, surface choreography, and fallback contract.
+- [Watchglass Spatial Perception Integration Amendment](Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md) — Vision Waypoint/Parallax evidence bridge, relocalization, privacy screening, and abstention.
+- [Figurehead Spatial Presence Integration Amendment](Governing/Project_Figurehead_Spatial_Presence_Integration_Amendment_v1.0.md) — future character-state versus spatial-placement and surface-presence contract.
+- [Wakebook v1.1 Spatial Memories and AR Capture](Governing/Project_Wakebook_Governing_Amendment_v1.1_Spatial_Memories_and_AR_Capture.md) — post-closeout private Spatial Memory and clean AR capture contract.
 
 ## Current project references
 

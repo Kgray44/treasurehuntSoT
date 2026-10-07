@@ -3,20 +3,21 @@ title: Project Landfall engineering home
 audience: product-engineering
 status: current
 canonical_for: project-landfall-engineering-home
-last_reviewed: 2026-10-04
+last_reviewed: 2026-10-05
 ---
 
 # Project Landfall
 
-Project Landfall governs the Living World Navigation System. Phase 1, **Lay the Bearings**, is closed on protected main through PR #667. Phase 2, **Bring the World Aboard**, is integrated through PR #669: Creator authoring, Chronicle blocks, canonical progression, Player and Captain surfaces, replay, field testing, and bounded web offline behavior. The governing sources below define scope; implementation and validation records describe only work actually completed. Deployment, live-device field behavior, and owner acceptance remain separate evidence.
+Project Landfall governs the Living World Navigation System. The complete four-phase program is closed on protected main through the Phase 4 product/evidence integrations. The governing sources below define the accepted historical scope plus the post-closure spatial ownership boundary. Implementation and validation records describe only work actually completed. Deployment, physical-device/field behavior, assistive-technology qualification, production providers, and owner acceptance remain separate evidence.
 
 ## Governing authority
 
 1. [Project Landfall Governing Document v1.0](Project_Landfall_Governing_Document_v1.0.pdf) is the foundational governing baseline (July 24, 2026). SHA-256: `6d37b0c634fc1aa578debbbd79d6eb5a478526ab1143e0e80ee89393203aec5`.
 2. [Worldspaces and Virtual Navigation Amendment v1.1](../../Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) is the additive amendment (September 21, 2026). SHA-256: `358c7a91c53ec135e20c63505f2a6a72829b3c7967716c6c55b08bd71e3d830d`.
-3. [Phase 4 Device Lab Addendum v1.0](Project_Landfall_Phase_4_Device_Lab_Addendum.md) adds canonical scenarios, native virtualization, hosted Apple execution, host coverage, and explicitly classified physical/field gates.
+3. [Spatial Ownership and Integration Boundaries Amendment v1.2](../../Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md) is the post-closure ownership amendment (October 5, 2026). It preserves accepted Landfall behavior while routing generic device capability to Sextant, spatial/AR behavior to Parallax, multi-surface participation to Crossdeck, perception to Watchglass, and narrative meaning to Storytide.
+4. [Phase 4 Device Lab Addendum v1.0](Project_Landfall_Phase_4_Device_Lab_Addendum.md) remains the historical Phase 4 Landfall scenario/evidence authority. Under v1.2 and the Spatial Experience Architecture, its reusable lab architecture is promoted into the platform-wide **Voyagewright Device Lab**, governed by Sounding Line. Its historical evidence classifications and receipts are not renamed or upgraded.
 
-The amendment broadens Landfall to physical and virtual Worldspaces and supersedes only the explicitly amended assumptions. The v1.0 physical navigation, zero-infrastructure, confidence, privacy, safety, and progression rules remain authoritative. Current accepted repository source governs integration with existing Chronicle, Drydock, and One Voyage contracts.
+The v1.1 amendment broadens Landfall to physical and virtual Worldspaces and supersedes only the explicitly amended assumptions. The v1.2 amendment does not reopen Landfall, create Phase 5, or invalidate Phase 4. The v1.0 physical navigation, zero-infrastructure, confidence, privacy, safety, and progression rules remain authoritative inside Landfall's domain. Current accepted repository source governs implementation truth and compatibility seams.
 
 ## Phase 1 engineering records
 
