@@ -761,7 +761,7 @@ This is illustrative. The implementation schema must be versioned and validated 
 
 > **Desk Treasure Map**  
 > Place an interactive Chronicle map on a real horizontal surface. Supports shared crew placement, pick-up/replace interaction, and Guided Map fallback.  
->  
+>
 > **Compatibility:** Enhanced Spatial  
 > **Requires:** Chronicle Lens / world-tracked AR for full experience  
 > **Fallback:** Guided 2D Map  
