@@ -997,7 +997,8 @@ Ordinary addition of a project-owned scenario may follow the declarative registr
 
 Voyagewright Device Lab governance is accepted when:
 
-1. the facility is explicitly owned by Sounding Line rather than Landfall;2. historical Landfall Device Lab evidence remains truthful and intact;
+1. the facility is explicitly owned by Sounding Line rather than Landfall;
+2. historical Landfall Device Lab evidence remains truthful and intact;
 3. D0-D5 tiers are consistently defined;
 4. scenario definitions are reusable across execution adapters;
 5. projects register scenario packs rather than fork private lab implementations;
