@@ -3,7 +3,7 @@ title: Voyagewright Spatial Experience Architecture program home
 audience: product-engineering
 status: governing-baseline
 canonical_for: spatial-experience-program-home
-last_reviewed: 2026-10-05
+last_reviewed: 2026-10-07
 ---
 
 # Voyagewright Spatial Experience Architecture
@@ -37,7 +37,9 @@ The master architecture plus **Project Sextant v1.0**, **Project Parallax v1.0**
 
 Wave 2 integration governance is also published for Storytide, Watchglass, Figurehead, and Wakebook. These are integration authorities only: Storytide and Figurehead remain future/unimplemented owner projects, Watchglass remains planned/not validated beyond existing limited compatibility seams, and Wakebook remains closed through its accepted program while gaining a future spatial-memory contract.
 
-None of these governance records, by themselves, claim Sextant, Parallax, Crossdeck, Storytide, Watchglass, or Figurehead implementation.
+**Wave 3 integration governance is now complete.** Sounding Line owns the shared Voyagewright Device Lab; Drydock has the spatial/provider publication-validation contract; Harborlight has immutable spatial-content distribution and compatibility rules; and Sealed Hold has the protected calibration/spatial-media boundary. Wave 3 promotes or connects accepted owner systems without claiming that Sextant, Parallax, Crossdeck, Storytide, Watchglass, or Figurehead product implementation suddenly exists.
+
+None of these governance records, by themselves, claim implementation beyond the accepted current-main behavior of their owning projects.
 
 ## Required derived governing work
 
@@ -49,9 +51,9 @@ None of these governance records, by themselves, claim Sextant, Parallax, Crossd
 6. **[Project Watchglass Spatial Perception Integration Amendment v1.0](../../Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md) — COMPLETE (October 5, 2026).**
 7. **[Project Figurehead Spatial Presence Integration Amendment v1.0](../../Governing/Project_Figurehead_Spatial_Presence_Integration_Amendment_v1.0.md) — COMPLETE (October 5, 2026).**
 8. **[Project Wakebook Governing Amendment v1.1 — Spatial Memories and AR Capture](../../Governing/Project_Wakebook_Governing_Amendment_v1.1_Spatial_Memories_and_AR_Capture.md) — COMPLETE (October 5, 2026).**
-9. Sounding Line Device Lab governing annex.
-10. Drydock spatial/provider integration amendment or record.
-11. Harborlight spatial-content amendment.
-12. Sealed Hold spatial-media integration record.
+9. **[Sounding Line Voyagewright Device Lab Governing Annex v1.0](../../Governing/Project_Sounding_Line_Voyagewright_Device_Lab_Governing_Annex_v1.0.md) — COMPLETE (October 7, 2026).**
+10. **[Project Drydock Governing Amendment v1.1 — Spatial Provider and Device Lab Integration](../../Governing/Project_Drydock_Governing_Amendment_v1.1_Spatial_Provider_and_Device_Lab_Integration.md) — COMPLETE (October 7, 2026).**
+11. **[Project Harborlight Governing Amendment v1.1 — Spatial Content Distribution and Compatibility](../../Governing/Project_Harborlight_Governing_Amendment_v1.1_Spatial_Content_Distribution_and_Compatibility.md) — COMPLETE (October 7, 2026).**
+12. **[Project Sealed Hold Spatial Media and Calibration Evidence Integration Record v1.0](../../Governing/Project_Sealed_Hold_Spatial_Media_and_Calibration_Evidence_Integration_Record_v1.0.md) — COMPLETE (October 7, 2026).**
 
 No derived implementation phase is authorized merely by this list. Each project follows the repository's normal phase-level governance, focused development validation, ordinary Sounding Line final check, and protected-main integration process.

@@ -3,7 +3,7 @@ title: Sounding Line Effective Authority
 audience: engineering
 status: current-on-protected-mainline-acceptance
 canonical_for: sounding-line-effective-authority-human-index
-last_reviewed: 2026-08-15
+last_reviewed: 2026-10-07
 machine_source: testing/sounding-line-authority.json
 ---
 
@@ -28,6 +28,12 @@ authority. Runtime conformance is mandatory evidence inside that decision.
 Future repository-changing projects inherit this authority automatically;
 project-specific documents may add proof but cannot replace Sounding Line's
 planner, generic worker, evidence, finalizer, or protected-release authority.
+
+## Voyagewright Device Lab
+
+The [Voyagewright Device Lab Governing Annex v1.0](Project_Sounding_Line_Voyagewright_Device_Lab_Governing_Annex_v1.0.md) makes the reusable Landfall Phase 4 Device Lab architecture a **shared Sounding Line-governed platform verification facility**. Product projects own their behavior and register scenarios; Drydock may require device-evidence classes for Chronicle publication; Sounding Line owns scenario execution policy, evidence fidelity, resource isolation, cleanup, and software acceptance.
+
+The annex does **not** change `testing/sounding-line-authority.json`, the effective Sounding Line version, the required `Sounding Line / Mainline Decision` check, or `RELEASE_GO` semantics. Historical Landfall Device Lab receipts retain their original Landfall-scoped names and evidence classifications.
 
 Authoritative mainline or release-candidate execution is explicit finalization
 for one qualified frozen candidate. Development uses incremental local or

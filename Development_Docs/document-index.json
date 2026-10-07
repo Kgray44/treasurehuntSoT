@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-05",
+  "generated_at": "2026-10-07",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -825,6 +825,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Drydock_Governing_Amendment_v1.1_Spatial_Provider_and_Device_Lab_Integration.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Fairlead_GitHub_Interaction_and_Quota_Control_Plane_Governing_Document_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
@@ -832,6 +838,12 @@
     },
     {
       "path": "Development_Docs/Governing/Project_Figurehead_Spatial_Presence_Integration_Amendment_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Harborlight_Governing_Amendment_v1.1_Spatial_Content_Distribution_and_Compatibility.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -868,6 +880,12 @@
     },
     {
       "path": "Development_Docs/Governing/Project_Phase_2_Mainline_Convergence_Record.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sealed_Hold_Spatial_Media_and_Calibration_Evidence_Integration_Record_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -922,6 +940,12 @@
     },
     {
       "path": "Development_Docs/Governing/Project_Sounding_Line_v1.4_Performance_and_Efficiency_Governing_Addendum.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sounding_Line_Voyagewright_Device_Lab_Governing_Annex_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
