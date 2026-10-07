@@ -126,17 +126,29 @@ Wakebook Spatial Memories exist because a Player deliberately chooses to preserv
 
 These two classes MUST remain separate even when they originate from the same camera view.
 
-| Property | Calibration evidence | Spatial Memory |
-|---|---|---|
-| Primary purpose | improve spatial placement | personal remembrance |
-| Trigger | optional calibration workflow | explicit Player capture |
-| People allowed | automatic upload: **no** | yes in private capture, subject to later sharing consent |
-| Default audience | authorized Creator/calibration service | owner-private |
-| Default retention | bounded/minimized | durable owner archive policy |
-| Archive owner | Parallax + Sealed Hold evidence boundary | Wakebook |
-| Public projection | forbidden | separate Harborlight flow only |
-| Full room mesh | forbidden by default | forbidden by default |
-| Raw sensor stream | forbidden by default | forbidden by default |
+**Calibration evidence**
+
+- **Primary purpose:** improve spatial placement.
+- **Trigger:** optional calibration workflow.
+- **People allowed:** automatic upload **never** permits detected/suspected people or faces.
+- **Default audience:** authorized Creator/calibration service only.
+- **Default retention:** bounded/minimized.
+- **Archive owner:** Parallax + Sealed Hold evidence boundary.
+- **Public projection:** forbidden.
+- **Full room mesh:** forbidden by default.
+- **Raw sensor stream:** forbidden by default.
+
+**Spatial Memory**
+
+- **Primary purpose:** personal remembrance.
+- **Trigger:** explicit Player capture.
+- **People allowed:** yes in private capture, subject to later sharing consent.
+- **Default audience:** owner-private.
+- **Default retention:** durable owner archive policy.
+- **Archive owner:** Wakebook.
+- **Public projection:** separate Harborlight flow only.
+- **Full room mesh:** forbidden by default.
+- **Raw sensor stream:** forbidden by default.
 
 Calibration evidence MUST NOT silently appear in Chronicle Passport.
 
@@ -889,20 +901,21 @@ Do not solve a privacy incident by deleting every audit record and announcing vi
 
 # 35. Cross-Project Ownership Summary
 
-| Concern | Owner |
-|---|---|
-| protected bytes / grants / consent / derivatives | **Sealed Hold** |
-| spatial placement / calibration semantics | **Parallax** |
-| person/face/privacy visual screening evidence | **Watchglass** |
-| device/camera lifecycle capability | **Sextant** |
-| paired-surface session/transport | **Crossdeck** |
-| private personal Memory/archive | **Wakebook** |
-| public spatial content / public Memory derivative | **Harborlight** |
-| place/navigation context | **Landfall** |
-| narrative meaning | **Storytide** |
-| progression | **One Voyage** |
-| authored validation | **Drydock** |
-| software/device verification | **Sounding Line / Device Lab** |
+**Cross-project owner summary**
+
+- **Sealed Hold:** protected bytes, grants, consent, and derivatives.
+- **Parallax:** spatial placement and calibration semantics.
+- **Watchglass:** person/face/privacy visual-screening evidence.
+- **Sextant:** device and camera lifecycle capability.
+- **Crossdeck:** paired-surface session and transport.
+- **Wakebook:** private personal Memory/archive.
+- **Harborlight:** public spatial content and public Memory derivatives.
+- **Landfall:** place/navigation context.
+- **Storytide:** narrative meaning.
+- **One Voyage:** progression authority.
+- **Drydock:** authored validation.
+- **Sounding Line / Device Lab:** software/device verification.
+
 
 No subsystem may use this integration to steal the adjacent owner domain.
 
@@ -997,7 +1010,8 @@ No arrow exists from calibration evidence directly to Harborlight.
 
 Representative names only; final implementation follows current Sealed Hold registry conventions.
 
-```textCALIBRATION_CREATOR_REVIEW
+```text
+CALIBRATION_CREATOR_REVIEW
 SPATIAL_MEMORY_OWNER_ARCHIVE
 SPATIAL_MEMORY_CREW_SHARE
 WATCHGLASS_SPATIAL_REFERENCE
