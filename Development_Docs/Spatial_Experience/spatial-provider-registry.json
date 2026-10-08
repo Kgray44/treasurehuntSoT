@@ -26,12 +26,7 @@
         "device.lifecycle",
         "device.power-thermal"
       ],
-      "outcomes": [
-        "AVAILABLE",
-        "UNAVAILABLE",
-        "DEGRADED",
-        "PERMISSION_DENIED"
-      ],
+      "outcomes": ["AVAILABLE", "UNAVAILABLE", "DEGRADED", "PERMISSION_DENIED"],
       "privacyClass": "PRIVATE_DEVICE_CONTEXT",
       "runtimeState": "GOVERNED_NOT_IMPLEMENTED",
       "fallbackRequired": true,
@@ -41,18 +36,8 @@
       "id": "landfall.world-context",
       "owner": "LANDFALL",
       "authority": "Development_Docs/Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md",
-      "capabilities": [
-        "world.worldspace",
-        "world.place-context",
-        "world.route-waypoint",
-        "world.journey-state"
-      ],
-      "outcomes": [
-        "AVAILABLE",
-        "UNCERTAIN",
-        "UNAVAILABLE",
-        "OFFLINE_PENDING"
-      ],
+      "capabilities": ["world.worldspace", "world.place-context", "world.route-waypoint", "world.journey-state"],
+      "outcomes": ["AVAILABLE", "UNCERTAIN", "UNAVAILABLE", "OFFLINE_PENDING"],
       "privacyClass": "PRIVATE_LOCATION_CONTEXT",
       "runtimeState": "ACCEPTED_WITH_SPATIAL_INTEGRATION_PENDING",
       "fallbackRequired": true,
@@ -62,17 +47,8 @@
       "id": "parallax.world-tracking",
       "owner": "PARALLAX",
       "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
-      "capabilities": [
-        "spatial.entity",
-        "spatial.anchor",
-        "spatial.chronicle-lens"
-      ],
-      "outcomes": [
-        "TRACKING",
-        "LIMITED",
-        "LOST",
-        "UNAVAILABLE"
-      ],
+      "capabilities": ["spatial.entity", "spatial.anchor", "spatial.chronicle-lens"],
+      "outcomes": ["TRACKING", "LIMITED", "LOST", "UNAVAILABLE"],
       "privacyClass": "SPATIAL_ENVIRONMENT",
       "runtimeState": "GOVERNED_NOT_IMPLEMENTED",
       "fallbackRequired": true,
@@ -82,16 +58,8 @@
       "id": "parallax.adaptive-placement",
       "owner": "PARALLAX",
       "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
-      "capabilities": [
-        "spatial.adaptive-placement",
-        "spatial.adaptive-staging"
-      ],
-      "outcomes": [
-        "RESOLVED",
-        "NO_VALID_PLACEMENT",
-        "LOW_CONFIDENCE",
-        "UNAVAILABLE"
-      ],
+      "capabilities": ["spatial.adaptive-placement", "spatial.adaptive-staging"],
+      "outcomes": ["RESOLVED", "NO_VALID_PLACEMENT", "LOW_CONFIDENCE", "UNAVAILABLE"],
       "privacyClass": "SPATIAL_ENVIRONMENT",
       "runtimeState": "GOVERNED_NOT_IMPLEMENTED",
       "fallbackRequired": true,
@@ -101,15 +69,8 @@
       "id": "parallax.shared-scene",
       "owner": "PARALLAX",
       "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
-      "capabilities": [
-        "spatial.shared-scene"
-      ],
-      "outcomes": [
-        "SYNCHRONIZED",
-        "RELOCALIZING",
-        "CONFLICT",
-        "UNAVAILABLE"
-      ],
+      "capabilities": ["spatial.shared-scene"],
+      "outcomes": ["SYNCHRONIZED", "RELOCALIZING", "CONFLICT", "UNAVAILABLE"],
       "privacyClass": "SHARED_SPATIAL_STATE",
       "runtimeState": "GOVERNED_NOT_IMPLEMENTED",
       "fallbackRequired": true,
@@ -119,17 +80,8 @@
       "id": "watchglass.visual-evidence",
       "owner": "WATCHGLASS",
       "authority": "Development_Docs/Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md",
-      "capabilities": [
-        "perception.visual-evidence",
-        "perception.visual-relocalization"
-      ],
-      "outcomes": [
-        "MATCH",
-        "NO_MATCH",
-        "UNCERTAIN",
-        "ABSTAIN",
-        "UNAVAILABLE"
-      ],
+      "capabilities": ["perception.visual-evidence", "perception.visual-relocalization"],
+      "outcomes": ["MATCH", "NO_MATCH", "UNCERTAIN", "ABSTAIN", "UNAVAILABLE"],
       "privacyClass": "PRIVATE_VISUAL_EVIDENCE",
       "runtimeState": "GOVERNED_LIMITED_COMPATIBILITY_ONLY",
       "fallbackRequired": true,
@@ -139,16 +91,8 @@
       "id": "watchglass.privacy-screening",
       "owner": "WATCHGLASS",
       "authority": "Development_Docs/Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md",
-      "capabilities": [
-        "perception.privacy-screening"
-      ],
-      "outcomes": [
-        "CLEAR",
-        "PERSON_DETECTED",
-        "FACE_DETECTED",
-        "UNCERTAIN",
-        "UNAVAILABLE"
-      ],
+      "capabilities": ["perception.privacy-screening"],
+      "outcomes": ["CLEAR", "PERSON_DETECTED", "FACE_DETECTED", "UNCERTAIN", "UNAVAILABLE"],
       "privacyClass": "HIGHLY_SENSITIVE_VISUAL_EVIDENCE",
       "runtimeState": "GOVERNED_NOT_FULLY_IMPLEMENTED",
       "fallbackRequired": true,
@@ -164,13 +108,7 @@
         "surface.role-capability",
         "surface.synchronization"
       ],
-      "outcomes": [
-        "ACTIVE",
-        "DEGRADED",
-        "DISCONNECTED",
-        "REVOKED",
-        "UNAVAILABLE"
-      ],
+      "outcomes": ["ACTIVE", "DEGRADED", "DISCONNECTED", "REVOKED", "UNAVAILABLE"],
       "privacyClass": "PRIVATE_SESSION_STATE",
       "runtimeState": "GOVERNED_NOT_IMPLEMENTED",
       "fallbackRequired": true,
@@ -180,17 +118,8 @@
       "id": "crossdeck.handoff",
       "owner": "CROSSDECK",
       "authority": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
-      "capabilities": [
-        "surface.handoff"
-      ],
-      "outcomes": [
-        "ARMED",
-        "TARGET_CLAIMED",
-        "COMMITTED",
-        "ACKNOWLEDGED",
-        "CANCELLED",
-        "FAILED"
-      ],
+      "capabilities": ["surface.handoff"],
+      "outcomes": ["ARMED", "TARGET_CLAIMED", "COMMITTED", "ACKNOWLEDGED", "CANCELLED", "FAILED"],
       "privacyClass": "PRIVATE_SESSION_STATE",
       "runtimeState": "GOVERNED_NOT_IMPLEMENTED",
       "fallbackRequired": true,
@@ -200,15 +129,8 @@
       "id": "storytide.spatial-moment",
       "owner": "STORYTIDE",
       "authority": "Development_Docs/Governing/Project_Storytide_Spatial_and_Multi_Surface_Integration_Amendment_v1.0.md",
-      "capabilities": [
-        "narrative.spatial-moment"
-      ],
-      "outcomes": [
-        "ACTIVE",
-        "COMPLETED",
-        "FALLBACK",
-        "UNAVAILABLE"
-      ],
+      "capabilities": ["narrative.spatial-moment"],
+      "outcomes": ["ACTIVE", "COMPLETED", "FALLBACK", "UNAVAILABLE"],
       "privacyClass": "CHRONICLE_STATE",
       "runtimeState": "GOVERNED_NOT_IMPLEMENTED",
       "fallbackRequired": true,
@@ -218,14 +140,8 @@
       "id": "figurehead.spatial-presence",
       "owner": "FIGUREHEAD",
       "authority": "Development_Docs/Governing/Project_Figurehead_Spatial_Presence_Integration_Amendment_v1.0.md",
-      "capabilities": [
-        "character.spatial-presence"
-      ],
-      "outcomes": [
-        "AVAILABLE",
-        "FALLBACK",
-        "UNAVAILABLE"
-      ],
+      "capabilities": ["character.spatial-presence"],
+      "outcomes": ["AVAILABLE", "FALLBACK", "UNAVAILABLE"],
       "privacyClass": "CHARACTER_STATE",
       "runtimeState": "GOVERNED_NOT_IMPLEMENTED",
       "fallbackRequired": true,
@@ -235,15 +151,8 @@
       "id": "wakebook.spatial-memory",
       "owner": "WAKEBOOK",
       "authority": "Development_Docs/Governing/Project_Wakebook_Governing_Amendment_v1.1_Spatial_Memories_and_AR_Capture.md",
-      "capabilities": [
-        "memory.spatial-memory"
-      ],
-      "outcomes": [
-        "CAPTURED",
-        "STORED",
-        "DECLINED",
-        "UNAVAILABLE"
-      ],
+      "capabilities": ["memory.spatial-memory"],
+      "outcomes": ["CAPTURED", "STORED", "DECLINED", "UNAVAILABLE"],
       "privacyClass": "PRIVATE_MEMORY",
       "runtimeState": "OWNER_SYSTEM_ACCEPTED_SPATIAL_INTEGRATION_PENDING",
       "fallbackRequired": true,
@@ -253,16 +162,8 @@
       "id": "sealed-hold.spatial-media",
       "owner": "SEALED_HOLD",
       "authority": "Development_Docs/Governing/Project_Sealed_Hold_Spatial_Media_and_Calibration_Evidence_Integration_Record_v1.0.md",
-      "capabilities": [
-        "media.spatial-protected",
-        "media.calibration-evidence"
-      ],
-      "outcomes": [
-        "AUTHORIZED",
-        "DENIED",
-        "EXPIRED",
-        "PURGED"
-      ],
+      "capabilities": ["media.spatial-protected", "media.calibration-evidence"],
+      "outcomes": ["AUTHORIZED", "DENIED", "EXPIRED", "PURGED"],
       "privacyClass": "PROTECTED_MEDIA",
       "runtimeState": "OWNER_SYSTEM_ACCEPTED_SPATIAL_INTEGRATION_PENDING",
       "fallbackRequired": true,
@@ -272,15 +173,8 @@
       "id": "drydock.spatial-validation",
       "owner": "DRYDOCK",
       "authority": "Development_Docs/Governing/Project_Drydock_Governing_Amendment_v1.1_Spatial_Provider_and_Device_Lab_Integration.md",
-      "capabilities": [
-        "validation.spatial-chronicle"
-      ],
-      "outcomes": [
-        "PASS",
-        "BLOCK",
-        "WARN",
-        "PENDING_EXTERNAL_EVIDENCE"
-      ],
+      "capabilities": ["validation.spatial-chronicle"],
+      "outcomes": ["PASS", "BLOCK", "WARN", "PENDING_EXTERNAL_EVIDENCE"],
       "privacyClass": "ENGINEERING_VALIDATION",
       "runtimeState": "OWNER_SYSTEM_ACCEPTED_SPATIAL_INTEGRATION_PENDING",
       "fallbackRequired": true,
@@ -290,15 +184,8 @@
       "id": "harborlight.spatial-distribution",
       "owner": "HARBORLIGHT",
       "authority": "Development_Docs/Governing/Project_Harborlight_Governing_Amendment_v1.1_Spatial_Content_Distribution_and_Compatibility.md",
-      "capabilities": [
-        "distribution.spatial-content"
-      ],
-      "outcomes": [
-        "PUBLISHABLE",
-        "INCOMPATIBLE",
-        "QUARANTINED",
-        "BLOCKED"
-      ],
+      "capabilities": ["distribution.spatial-content"],
+      "outcomes": ["PUBLISHABLE", "INCOMPATIBLE", "QUARANTINED", "BLOCKED"],
       "privacyClass": "PUBLIC_OR_SANITIZED_DISTRIBUTION",
       "runtimeState": "OWNER_SYSTEM_ACCEPTED_SPATIAL_INTEGRATION_PENDING",
       "fallbackRequired": true,
@@ -308,15 +195,8 @@
       "id": "one-voyage.progression",
       "owner": "ONE_VOYAGE",
       "authority": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md",
-      "capabilities": [
-        "progression.authoritative"
-      ],
-      "outcomes": [
-        "ACCEPTED",
-        "REJECTED",
-        "DUPLICATE",
-        "STALE"
-      ],
+      "capabilities": ["progression.authoritative"],
+      "outcomes": ["ACCEPTED", "REJECTED", "DUPLICATE", "STALE"],
       "privacyClass": "CANONICAL_VOYAGE_STATE",
       "runtimeState": "AVAILABLE_ACCEPTED",
       "fallbackRequired": false,
