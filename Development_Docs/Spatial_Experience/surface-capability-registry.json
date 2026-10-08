@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "registry": "surface-capability-registry",
+  "title": "Voyagewright Surface Capability and Role Registry",
+  "effectiveDate": "2026-10-08",
+  "repositoryBaseline": "5f8edcdcc5d10bef363f8889eeeb903c17cb00b4",
+  "program": "Voyagewright Spatial Experience",
+  "authority": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
+  "status": "GOVERNING_MACHINE_READABLE_BASELINE",
+  "implementationClaim": "NONE",
+  "roles": [
+    {
+      "id": "PRIMARY_STORY",
+      "description": "Large or main narrative surface; commonly desktop/laptop but not hard-coded.",
+      "defaultVisibility": "PERSONAL_OR_CREW_BY_STORY",
+      "interactionCustody": "SUPPORTED",
+      "requiredCapabilities": [],
+      "preferredCapabilities": [
+        "large-viewport",
+        "keyboard-or-pointer",
+        "audio"
+      ],
+      "sensitiveContent": "ALLOWED_IF_AUTHORIZED",
+      "fallbackRoles": [
+        "JOURNAL"
+      ],
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "CHRONICLE_LENS",
+      "description": "Handheld spatial/perceptual surface.",
+      "defaultVisibility": "PERSONAL",
+      "interactionCustody": "SUPPORTED",
+      "requiredCapabilities": [
+        "camera"
+      ],
+      "preferredCapabilities": [
+        "orientation",
+        "haptics",
+        "ar-world-tracking",
+        "location"
+      ],
+      "sensitiveContent": "PERSONAL_BY_DEFAULT",
+      "fallbackRoles": [
+        "ARTIFACT_VIEWER",
+        "JOURNAL"
+      ],
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "CHART",
+      "description": "Persistent map or chart surface.",
+      "defaultVisibility": "PERSONAL_OR_CREW_BY_STORY",
+      "interactionCustody": "SUPPORTED",
+      "requiredCapabilities": [],
+      "preferredCapabilities": [
+        "touch-or-pointer",
+        "large-enough-viewport"
+      ],
+      "sensitiveContent": "POLICY_BOUND",
+      "fallbackRoles": [
+        "JOURNAL"
+      ],
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "JOURNAL",
+      "description": "Reading-focused narrative surface.",
+      "defaultVisibility": "PERSONAL",
+      "interactionCustody": "SUPPORTED",
+      "requiredCapabilities": [],
+      "preferredCapabilities": [
+        "readable-viewport",
+        "text-input-optional"
+      ],
+      "sensitiveContent": "PERSONAL_BY_DEFAULT",
+      "fallbackRoles": [
+        "PRIMARY_STORY"
+      ],
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "ARTIFACT_VIEWER",
+      "description": "High-detail interactive artifact presentation.",
+      "defaultVisibility": "PERSONAL",
+      "interactionCustody": "SUPPORTED",
+      "requiredCapabilities": [],
+      "preferredCapabilities": [
+        "touch-or-pointer",
+        "gpu-standard"
+      ],
+      "sensitiveContent": "POLICY_BOUND",
+      "fallbackRoles": [
+        "JOURNAL"
+      ],
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "SHARED_CREW_DISPLAY",
+      "description": "Crew-visible, generally read-mostly shared surface.",
+      "defaultVisibility": "CREW_SHARED",
+      "interactionCustody": "RESTRICTED",
+      "requiredCapabilities": [],
+      "preferredCapabilities": [
+        "large-viewport"
+      ],
+      "sensitiveContent": "SANITIZED_PROJECTION_ONLY",
+      "fallbackRoles": [],
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "AMBIENT",
+      "description": "Atmospheric or passive presentation surface.",
+      "defaultVisibility": "CREW_OR_PERSONAL",
+      "interactionCustody": "NONE_BY_DEFAULT",
+      "requiredCapabilities": [],
+      "preferredCapabilities": [
+        "audio-or-display"
+      ],
+      "sensitiveContent": "NO_PRIVATE_CONTENT_BY_DEFAULT",
+      "fallbackRoles": [],
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "CAPTAIN_AUXILIARY",
+      "description": "Captain-specific secondary control/presentation surface where separately authorized.",
+      "defaultVisibility": "CAPTAIN_PRIVATE",
+      "interactionCustody": "POLICY_BOUND",
+      "requiredCapabilities": [],
+      "preferredCapabilities": [
+        "secure-session",
+        "input"
+      ],
+      "sensitiveContent": "CAPTAIN_AUTHORIZATION_REQUIRED",
+      "fallbackRoles": [
+        "PRIMARY_STORY"
+      ],
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "CREATOR_PREVIEW",
+      "description": "Creator-only preview/simulation surface; never grants Player runtime authority.",
+      "defaultVisibility": "CREATOR_PRIVATE",
+      "interactionCustody": "AUTHORING_ONLY",
+      "requiredCapabilities": [],
+      "preferredCapabilities": [
+        "large-viewport",
+        "pointer"
+      ],
+      "sensitiveContent": "CREATOR_AUTHORIZATION_REQUIRED",
+      "fallbackRoles": [],
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "ACCESSIBILITY_COMPANION",
+      "description": "Alternate input/output surface without changing person identity.",
+      "defaultVisibility": "PERSONAL",
+      "interactionCustody": "SUPPORTED_FOR_ACCESSIBLE_PATHS",
+      "requiredCapabilities": [],
+      "preferredCapabilities": [
+        "assistive-output-or-input"
+      ],
+      "sensitiveContent": "PERSONAL_BY_DEFAULT",
+      "fallbackRoles": [
+        "PRIMARY_STORY"
+      ],
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    }
+  ],
+  "projectionFields": [
+    "formFactor",
+    "viewportClass",
+    "inputMethods",
+    "cameraAvailable",
+    "microphoneAvailable",
+    "hapticsAvailable",
+    "orientationAvailable",
+    "spatialRuntimeAvailable",
+    "nearbyRangingAvailable",
+    "lifecycleClass",
+    "backgroundLimitations",
+    "batteryClass",
+    "thermalClass",
+    "bandwidthClass",
+    "latencyClass",
+    "accessibilityPreferences",
+    "supportedPresentationFamilies"
+  ],
+  "securityRules": {
+    "roleDoesNotGrantPermission": true,
+    "sharedDisplayRequiresSanitizedProjection": true,
+    "privateContentAutoRouteToSharedDisplay": false,
+    "surfaceSessionCannotOutliveAccountSession": true
+  }
+}
