@@ -13,11 +13,7 @@
       "id": "DEVICE_CAPABILITY_CHANGED",
       "owner": "SEXTANT",
       "producer": "SEXTANT",
-      "consumers": [
-        "LANDFALL",
-        "PARALLAX",
-        "STORYTIDE"
-      ],
+      "consumers": ["LANDFALL", "PARALLAX", "STORYTIDE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -28,11 +24,7 @@
       "id": "DEVICE_PERMISSION_CHANGED",
       "owner": "SEXTANT",
       "producer": "SEXTANT",
-      "consumers": [
-        "LANDFALL",
-        "PARALLAX",
-        "STORYTIDE"
-      ],
+      "consumers": ["LANDFALL", "PARALLAX", "STORYTIDE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -43,11 +35,7 @@
       "id": "DEVICE_ORIENTATION_ALIGNED",
       "owner": "SEXTANT",
       "producer": "SEXTANT",
-      "consumers": [
-        "LANDFALL",
-        "PARALLAX",
-        "STORYTIDE"
-      ],
+      "consumers": ["LANDFALL", "PARALLAX", "STORYTIDE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -58,11 +46,7 @@
       "id": "DEVICE_GESTURE_COMPLETED",
       "owner": "SEXTANT",
       "producer": "SEXTANT",
-      "consumers": [
-        "LANDFALL",
-        "PARALLAX",
-        "STORYTIDE"
-      ],
+      "consumers": ["LANDFALL", "PARALLAX", "STORYTIDE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -73,11 +57,7 @@
       "id": "MAGNETIC_ANOMALY_OBSERVED",
       "owner": "SEXTANT",
       "producer": "SEXTANT",
-      "consumers": [
-        "LANDFALL",
-        "PARALLAX",
-        "STORYTIDE"
-      ],
+      "consumers": ["LANDFALL", "PARALLAX", "STORYTIDE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -88,11 +68,7 @@
       "id": "RELATIVE_ELEVATION_CHANGED",
       "owner": "SEXTANT",
       "producer": "SEXTANT",
-      "consumers": [
-        "LANDFALL",
-        "PARALLAX",
-        "STORYTIDE"
-      ],
+      "consumers": ["LANDFALL", "PARALLAX", "STORYTIDE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -103,12 +79,7 @@
       "id": "SPATIAL_SCENE_INITIALIZED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -119,12 +90,7 @@
       "id": "SPATIAL_ANCHOR_RESOLVED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -135,12 +101,7 @@
       "id": "SPATIAL_ANCHOR_RELOCALIZED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -151,12 +112,7 @@
       "id": "SPATIAL_ANCHOR_REANCHORED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -167,12 +123,7 @@
       "id": "SPATIAL_ENTITY_DISCOVERED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -183,12 +134,7 @@
       "id": "SPATIAL_ENTITY_PICKED_UP",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -199,12 +145,7 @@
       "id": "SPATIAL_ENTITY_PLACED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -215,12 +156,7 @@
       "id": "SPATIAL_ENTITY_INSPECTED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -231,12 +167,7 @@
       "id": "SHARED_SCENE_SYNCHRONIZED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -247,12 +178,7 @@
       "id": "DISCOVERY_HINT_ESCALATED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -263,12 +189,7 @@
       "id": "DISCOVERY_EXACT_REVEAL_USED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -279,12 +200,7 @@
       "id": "CALIBRATION_EVIDENCE_OFFERED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PROTECTED_SPATIAL_EVIDENCE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -295,12 +211,7 @@
       "id": "CALIBRATION_EVIDENCE_APPROVED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PROTECTED_SPATIAL_EVIDENCE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -311,10 +222,7 @@
       "id": "CALIBRATION_EVIDENCE_REJECTED_PRIVACY",
       "owner": "WATCHGLASS",
       "producer": "WATCHGLASS",
-      "consumers": [
-        "PARALLAX",
-        "SEALED_HOLD"
-      ],
+      "consumers": ["PARALLAX", "SEALED_HOLD"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PROTECTED_SPATIAL_EVIDENCE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -325,10 +233,7 @@
       "id": "SPATIAL_MEMORY_CAPTURED",
       "owner": "WAKEBOOK",
       "producer": "WAKEBOOK",
-      "consumers": [
-        "PARALLAX",
-        "CROSSDECK"
-      ],
+      "consumers": ["PARALLAX", "CROSSDECK"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -339,11 +244,7 @@
       "id": "SURFACE_DISCOVERED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -354,11 +255,7 @@
       "id": "SURFACE_PAIRING_STARTED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -369,11 +266,7 @@
       "id": "SURFACE_PAIRED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -384,11 +277,7 @@
       "id": "SURFACE_ROLE_CHANGED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -399,11 +288,7 @@
       "id": "SURFACE_ACTIVE",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -414,11 +299,7 @@
       "id": "SURFACE_BACKGROUND",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -429,11 +310,7 @@
       "id": "SURFACE_LOCKED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -444,11 +321,7 @@
       "id": "SURFACE_DISCONNECTED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -459,11 +332,7 @@
       "id": "SURFACE_RECONNECTED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -474,11 +343,7 @@
       "id": "SURFACE_REVOKED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -489,11 +354,7 @@
       "id": "PRESENTATION_FOCUS_CHANGED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -504,11 +365,7 @@
       "id": "INTERACTION_CUSTODY_REQUESTED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -519,11 +376,7 @@
       "id": "INTERACTION_CUSTODY_GRANTED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -534,11 +387,7 @@
       "id": "INTERACTION_CUSTODY_RELEASED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -549,11 +398,7 @@
       "id": "MIRROR_STARTED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -564,11 +409,7 @@
       "id": "MIRROR_STOPPED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -579,11 +420,7 @@
       "id": "HANDOFF_ARMED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -594,11 +431,7 @@
       "id": "HANDOFF_GRAB_DETECTED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -609,11 +442,7 @@
       "id": "HANDOFF_INTENT_OPENED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -624,11 +453,7 @@
       "id": "HANDOFF_TARGET_CANDIDATE",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -639,11 +464,7 @@
       "id": "HANDOFF_TARGET_CLAIMED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -654,11 +475,7 @@
       "id": "HANDOFF_RELEASE_DETECTED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -669,11 +486,7 @@
       "id": "HANDOFF_COMMIT_REQUESTED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -684,11 +497,7 @@
       "id": "HANDOFF_COMMITTED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -699,11 +508,7 @@
       "id": "HANDOFF_DESTINATION_ACKNOWLEDGED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -714,11 +519,7 @@
       "id": "HANDOFF_CANCELLED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -729,11 +530,7 @@
       "id": "HANDOFF_EXPIRED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -744,11 +541,7 @@
       "id": "HANDOFF_FAILED",
       "owner": "CROSSDECK",
       "producer": "CROSSDECK",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX", "ONE_VOYAGE"],
       "authority": "NON_PROGRESSION_EVENT",
       "privacyClass": "PRIVATE_SESSION_STATE",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -759,12 +552,7 @@
       "id": "PROGRESSION_SPATIAL_OBJECT_COMPLETION_PROPOSED",
       "owner": "PARALLAX",
       "producer": "PARALLAX",
-      "consumers": [
-        "STORYTIDE",
-        "CROSSDECK",
-        "DRYDOCK",
-        "ONE_VOYAGE"
-      ],
+      "consumers": ["STORYTIDE", "CROSSDECK", "DRYDOCK", "ONE_VOYAGE"],
       "authority": "PROPOSAL_ONLY",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
@@ -775,10 +563,7 @@
       "id": "PROGRESSION_SPATIAL_OBJECT_COMPLETION_ACCEPTED",
       "owner": "ONE_VOYAGE",
       "producer": "ONE_VOYAGE",
-      "consumers": [
-        "STORYTIDE",
-        "PARALLAX"
-      ],
+      "consumers": ["STORYTIDE", "PARALLAX"],
       "authority": "CANONICAL_PROGRESSION",
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_CANONICAL",
