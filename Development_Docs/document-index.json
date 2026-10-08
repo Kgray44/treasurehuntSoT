@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-07",
+  "generated_at": "2026-10-08",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -3571,6 +3571,12 @@
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Spatial_Experience/Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.0.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": "spatial-experience-wave4-implementation-launch"
     },
     {
       "path": "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
@@ -7957,6 +7963,42 @@
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Spatial_Experience/device-capability-registry.json",
+      "record_type": "governing-record",
+      "status": "current",
+      "canonical_for": "spatial-device-capability-registry"
+    },
+    {
+      "path": "Development_Docs/Spatial_Experience/device-lab-scenario-registry.json",
+      "record_type": "governing-record",
+      "status": "current",
+      "canonical_for": "spatial-device-lab-scenario-registry"
+    },
+    {
+      "path": "Development_Docs/Spatial_Experience/spatial-capability-ownership.json",
+      "record_type": "governing-record",
+      "status": "current",
+      "canonical_for": "spatial-capability-ownership-registry"
+    },
+    {
+      "path": "Development_Docs/Spatial_Experience/spatial-event-registry.json",
+      "record_type": "governing-record",
+      "status": "current",
+      "canonical_for": "spatial-event-registry"
+    },
+    {
+      "path": "Development_Docs/Spatial_Experience/spatial-provider-registry.json",
+      "record_type": "governing-record",
+      "status": "current",
+      "canonical_for": "spatial-provider-registry"
+    },
+    {
+      "path": "Development_Docs/Spatial_Experience/surface-capability-registry.json",
+      "record_type": "governing-record",
+      "status": "current",
+      "canonical_for": "spatial-surface-capability-registry"
     },
     {
       "path": "Development_Docs/Testing/Browser_and_Compatibility_Strategy.md",

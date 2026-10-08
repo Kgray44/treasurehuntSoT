@@ -1,0 +1,373 @@
+{
+  "schemaVersion": 1,
+  "registry": "spatial-capability-ownership",
+  "title": "Voyagewright Spatial Experience Capability Ownership Registry",
+  "effectiveDate": "2026-10-08",
+  "repositoryBaseline": "5f8edcdcc5d10bef363f8889eeeb903c17cb00b4",
+  "program": "Voyagewright Spatial Experience",
+  "authority": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md",
+  "status": "GOVERNING_MACHINE_READABLE_BASELINE",
+  "implementationClaim": "NONE",
+  "capabilities": [
+    {
+      "id": "device.capability-discovery",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["LANDFALL", "PARALLAX", "WATCHGLASS", "CROSSDECK", "STORYTIDE"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.permission-state",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["LANDFALL", "PARALLAX", "WATCHGLASS", "CROSSDECK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.position-observation",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["LANDFALL", "PARALLAX"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.heading",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["LANDFALL", "PARALLAX", "STORYTIDE"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.orientation",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.motion",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["LANDFALL", "PARALLAX", "STORYTIDE"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.gesture",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["STORYTIDE", "PARALLAX", "CROSSDECK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.magnetic-field",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "LANDFALL", "STORYTIDE"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.relative-elevation",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["LANDFALL", "PARALLAX", "STORYTIDE"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.haptics",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.camera-capability",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "WATCHGLASS", "CROSSDECK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.nearby-hardware",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["LANDFALL", "CROSSDECK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.lifecycle",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["LANDFALL", "PARALLAX", "CROSSDECK", "WATCHGLASS"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "device.power-thermal",
+      "owner": "SEXTANT",
+      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "WATCHGLASS", "CROSSDECK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "world.worldspace",
+      "owner": "LANDFALL",
+      "authority": "Development_Docs/Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md",
+      "consumers": ["PARALLAX", "STORYTIDE", "WATCHGLASS"],
+      "progressionAuthority": "NONE",
+      "implementationState": "OWNER_SYSTEM_ACCEPTED_IN_DOMAIN_REGISTRY_CONTRACT_MAY_REQUIRE_FUTURE_INTEGRATION"
+    },
+    {
+      "id": "world.place-context",
+      "owner": "LANDFALL",
+      "authority": "Development_Docs/Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md",
+      "consumers": ["PARALLAX", "STORYTIDE", "WATCHGLASS"],
+      "progressionAuthority": "NONE",
+      "implementationState": "OWNER_SYSTEM_ACCEPTED_IN_DOMAIN_REGISTRY_CONTRACT_MAY_REQUIRE_FUTURE_INTEGRATION"
+    },
+    {
+      "id": "world.route-waypoint",
+      "owner": "LANDFALL",
+      "authority": "Development_Docs/Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md",
+      "consumers": ["STORYTIDE", "PARALLAX", "WAKEBOOK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "OWNER_SYSTEM_ACCEPTED_IN_DOMAIN_REGISTRY_CONTRACT_MAY_REQUIRE_FUTURE_INTEGRATION"
+    },
+    {
+      "id": "world.journey-state",
+      "owner": "LANDFALL",
+      "authority": "Development_Docs/Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md",
+      "consumers": ["STORYTIDE", "WAKEBOOK", "ONE_VOYAGE"],
+      "progressionAuthority": "NONE",
+      "implementationState": "OWNER_SYSTEM_ACCEPTED_IN_DOMAIN_REGISTRY_CONTRACT_MAY_REQUIRE_FUTURE_INTEGRATION"
+    },
+    {
+      "id": "spatial.entity",
+      "owner": "PARALLAX",
+      "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
+      "consumers": ["STORYTIDE", "CROSSDECK", "WAKEBOOK", "DRYDOCK"],
+      "progressionAuthority": "NON_PROGRESSION_DOMAIN_TRUTH",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "spatial.anchor",
+      "owner": "PARALLAX",
+      "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
+      "consumers": ["STORYTIDE", "WATCHGLASS", "CROSSDECK", "DRYDOCK"],
+      "progressionAuthority": "NON_PROGRESSION_DOMAIN_TRUTH",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "spatial.adaptive-placement",
+      "owner": "PARALLAX",
+      "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
+      "consumers": ["STORYTIDE", "DRYDOCK"],
+      "progressionAuthority": "NON_PROGRESSION_DOMAIN_TRUTH",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "spatial.adaptive-staging",
+      "owner": "PARALLAX",
+      "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
+      "consumers": ["STORYTIDE", "DRYDOCK"],
+      "progressionAuthority": "NON_PROGRESSION_DOMAIN_TRUTH",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "spatial.shared-scene",
+      "owner": "PARALLAX",
+      "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
+      "consumers": ["CROSSDECK", "STORYTIDE", "WATCHGLASS", "DRYDOCK"],
+      "progressionAuthority": "NON_PROGRESSION_DOMAIN_TRUTH",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "spatial.chronicle-lens",
+      "owner": "PARALLAX",
+      "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
+      "consumers": ["STORYTIDE", "CROSSDECK", "WATCHGLASS"],
+      "progressionAuthority": "NON_PROGRESSION_DOMAIN_TRUTH",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "spatial.physical-digital-artifact",
+      "owner": "PARALLAX",
+      "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
+      "consumers": ["CROSSDECK", "STORYTIDE", "WAKEBOOK"],
+      "progressionAuthority": "NON_PROGRESSION_DOMAIN_TRUTH",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "spatial.remote-authoring",
+      "owner": "PARALLAX",
+      "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
+      "consumers": ["DRYDOCK", "SEALED_HOLD"],
+      "progressionAuthority": "NON_PROGRESSION_DOMAIN_TRUTH",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "spatial.field-calibration",
+      "owner": "PARALLAX",
+      "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
+      "consumers": ["WATCHGLASS", "SEALED_HOLD", "DRYDOCK"],
+      "progressionAuthority": "NON_PROGRESSION_DOMAIN_TRUTH",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "spatial.discovery-assistance",
+      "owner": "PARALLAX",
+      "authority": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
+      "consumers": ["STORYTIDE", "DRYDOCK"],
+      "progressionAuthority": "NON_PROGRESSION_DOMAIN_TRUTH",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "perception.visual-evidence",
+      "owner": "WATCHGLASS",
+      "authority": "Development_Docs/Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md",
+      "consumers": ["PARALLAX", "LANDFALL", "STORYTIDE", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "perception.visual-relocalization",
+      "owner": "WATCHGLASS",
+      "authority": "Development_Docs/Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md",
+      "consumers": ["PARALLAX"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "perception.privacy-screening",
+      "owner": "WATCHGLASS",
+      "authority": "Development_Docs/Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md",
+      "consumers": ["PARALLAX", "SEALED_HOLD"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "surface.surface-session",
+      "owner": "CROSSDECK",
+      "authority": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
+      "consumers": ["STORYTIDE", "PARALLAX", "WAKEBOOK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "surface.pairing",
+      "owner": "CROSSDECK",
+      "authority": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
+      "consumers": ["STORYTIDE", "PARALLAX"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "surface.role-capability",
+      "owner": "CROSSDECK",
+      "authority": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
+      "consumers": ["STORYTIDE", "PARALLAX", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "surface.synchronization",
+      "owner": "CROSSDECK",
+      "authority": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "STORYTIDE"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "surface.handoff",
+      "owner": "CROSSDECK",
+      "authority": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "STORYTIDE", "WAKEBOOK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "narrative.spatial-moment",
+      "owner": "STORYTIDE",
+      "authority": "Development_Docs/Governing/Project_Storytide_Spatial_and_Multi_Surface_Integration_Amendment_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "character.spatial-presence",
+      "owner": "FIGUREHEAD",
+      "authority": "Development_Docs/Governing/Project_Figurehead_Spatial_Presence_Integration_Amendment_v1.0.md",
+      "consumers": ["PARALLAX", "STORYTIDE", "CROSSDECK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "memory.spatial-memory",
+      "owner": "WAKEBOOK",
+      "authority": "Development_Docs/Governing/Project_Wakebook_Governing_Amendment_v1.1_Spatial_Memories_and_AR_Capture.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "SEALED_HOLD"],
+      "progressionAuthority": "NONE",
+      "implementationState": "OWNER_SYSTEM_ACCEPTED_IN_DOMAIN_REGISTRY_CONTRACT_MAY_REQUIRE_FUTURE_INTEGRATION"
+    },
+    {
+      "id": "validation.spatial-chronicle",
+      "owner": "DRYDOCK",
+      "authority": "Development_Docs/Governing/Project_Drydock_Governing_Amendment_v1.1_Spatial_Provider_and_Device_Lab_Integration.md",
+      "consumers": ["PARALLAX", "STORYTIDE", "HARBORLIGHT"],
+      "progressionAuthority": "NONE",
+      "implementationState": "OWNER_SYSTEM_ACCEPTED_IN_DOMAIN_REGISTRY_CONTRACT_MAY_REQUIRE_FUTURE_INTEGRATION"
+    },
+    {
+      "id": "verification.device-lab",
+      "owner": "SOUNDING_LINE",
+      "authority": "Development_Docs/Governing/Project_Sounding_Line_Voyagewright_Device_Lab_Governing_Annex_v1.0.md",
+      "consumers": ["SEXTANT", "LANDFALL", "PARALLAX", "CROSSDECK", "WATCHGLASS", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "SEED_IMPLEMENTATION_EXISTS_IN_LANDFALL_REQUIRES_GENERALIZATION"
+    },
+    {
+      "id": "distribution.spatial-content",
+      "owner": "HARBORLIGHT",
+      "authority": "Development_Docs/Governing/Project_Harborlight_Governing_Amendment_v1.1_Spatial_Content_Distribution_and_Compatibility.md",
+      "consumers": ["PARALLAX", "DRYDOCK", "SEALED_HOLD"],
+      "progressionAuthority": "NONE",
+      "implementationState": "OWNER_SYSTEM_ACCEPTED_IN_DOMAIN_REGISTRY_CONTRACT_MAY_REQUIRE_FUTURE_INTEGRATION"
+    },
+    {
+      "id": "media.spatial-protected",
+      "owner": "SEALED_HOLD",
+      "authority": "Development_Docs/Governing/Project_Sealed_Hold_Spatial_Media_and_Calibration_Evidence_Integration_Record_v1.0.md",
+      "consumers": ["PARALLAX", "WAKEBOOK", "WATCHGLASS", "HARBORLIGHT"],
+      "progressionAuthority": "NONE",
+      "implementationState": "OWNER_SYSTEM_ACCEPTED_IN_DOMAIN_REGISTRY_CONTRACT_MAY_REQUIRE_FUTURE_INTEGRATION"
+    },
+    {
+      "id": "media.calibration-evidence",
+      "owner": "SEALED_HOLD",
+      "authority": "Development_Docs/Governing/Project_Sealed_Hold_Spatial_Media_and_Calibration_Evidence_Integration_Record_v1.0.md",
+      "consumers": ["PARALLAX", "WATCHGLASS", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "OWNER_SYSTEM_ACCEPTED_IN_DOMAIN_REGISTRY_CONTRACT_MAY_REQUIRE_FUTURE_INTEGRATION"
+    },
+    {
+      "id": "progression.authoritative",
+      "owner": "ONE_VOYAGE",
+      "authority": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md",
+      "consumers": ["STORYTIDE", "PARALLAX", "CROSSDECK", "LANDFALL", "WATCHGLASS"],
+      "progressionAuthority": "CANONICAL",
+      "implementationState": "OWNER_SYSTEM_ACCEPTED_IN_DOMAIN_REGISTRY_CONTRACT_MAY_REQUIRE_FUTURE_INTEGRATION"
+    }
+  ]
+}

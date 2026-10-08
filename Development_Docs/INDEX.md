@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-10-07
+last_reviewed: 2026-10-08
 ---
 
 # Engineering-record index
@@ -27,6 +27,8 @@ Use [document-index.json](document-index.json) for complete path-level classific
 
 - [Voyagewright Spatial Experience Architecture v1.0](Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md) — master ownership and integration baseline for device context, multi-surface Voyages, spatial computing, AR, adaptive staging, and the platform-wide Device Lab.
 - [Spatial Experience program home](Programs/Spatial_Experience/README.md) — implementation status, canonical owners, Device Lab rule, and required derived governing work.
+- [Spatial Experience Wave 4 Implementation Launch Manifest](Programs/Spatial_Experience/Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.0.md) — machine-readable architecture contract baseline, dependency graph, phase entry conditions, and implementation sequencing.
+- [Spatial Experience machine-readable registries](Spatial_Experience/) — ownership, device capability, provider, surface, event, and Device Lab scenario registries.
 - [Landfall v1.2 Spatial Ownership and Integration Boundaries](Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md) — post-closure Landfall/Sextant/Parallax/Crossdeck/Device Lab boundary.
 - [Storytide Spatial and Multi-Surface Integration Amendment](Governing/Project_Storytide_Spatial_and_Multi_Surface_Integration_Amendment_v1.0.md) — narrative Spatial Moment, Chronicle Lens, surface choreography, and fallback contract.
 - [Watchglass Spatial Perception Integration Amendment](Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md) — Vision Waypoint/Parallax evidence bridge, relocalization, privacy screening, and abstention.
