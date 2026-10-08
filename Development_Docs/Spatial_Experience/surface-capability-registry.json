@@ -15,15 +15,9 @@
       "defaultVisibility": "PERSONAL_OR_CREW_BY_STORY",
       "interactionCustody": "SUPPORTED",
       "requiredCapabilities": [],
-      "preferredCapabilities": [
-        "large-viewport",
-        "keyboard-or-pointer",
-        "audio"
-      ],
+      "preferredCapabilities": ["large-viewport", "keyboard-or-pointer", "audio"],
       "sensitiveContent": "ALLOWED_IF_AUTHORIZED",
-      "fallbackRoles": [
-        "JOURNAL"
-      ],
+      "fallbackRoles": ["JOURNAL"],
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
     {
@@ -31,20 +25,10 @@
       "description": "Handheld spatial/perceptual surface.",
       "defaultVisibility": "PERSONAL",
       "interactionCustody": "SUPPORTED",
-      "requiredCapabilities": [
-        "camera"
-      ],
-      "preferredCapabilities": [
-        "orientation",
-        "haptics",
-        "ar-world-tracking",
-        "location"
-      ],
+      "requiredCapabilities": ["camera"],
+      "preferredCapabilities": ["orientation", "haptics", "ar-world-tracking", "location"],
       "sensitiveContent": "PERSONAL_BY_DEFAULT",
-      "fallbackRoles": [
-        "ARTIFACT_VIEWER",
-        "JOURNAL"
-      ],
+      "fallbackRoles": ["ARTIFACT_VIEWER", "JOURNAL"],
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
     {
@@ -53,14 +37,9 @@
       "defaultVisibility": "PERSONAL_OR_CREW_BY_STORY",
       "interactionCustody": "SUPPORTED",
       "requiredCapabilities": [],
-      "preferredCapabilities": [
-        "touch-or-pointer",
-        "large-enough-viewport"
-      ],
+      "preferredCapabilities": ["touch-or-pointer", "large-enough-viewport"],
       "sensitiveContent": "POLICY_BOUND",
-      "fallbackRoles": [
-        "JOURNAL"
-      ],
+      "fallbackRoles": ["JOURNAL"],
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
     {
@@ -69,14 +48,9 @@
       "defaultVisibility": "PERSONAL",
       "interactionCustody": "SUPPORTED",
       "requiredCapabilities": [],
-      "preferredCapabilities": [
-        "readable-viewport",
-        "text-input-optional"
-      ],
+      "preferredCapabilities": ["readable-viewport", "text-input-optional"],
       "sensitiveContent": "PERSONAL_BY_DEFAULT",
-      "fallbackRoles": [
-        "PRIMARY_STORY"
-      ],
+      "fallbackRoles": ["PRIMARY_STORY"],
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
     {
@@ -85,14 +59,9 @@
       "defaultVisibility": "PERSONAL",
       "interactionCustody": "SUPPORTED",
       "requiredCapabilities": [],
-      "preferredCapabilities": [
-        "touch-or-pointer",
-        "gpu-standard"
-      ],
+      "preferredCapabilities": ["touch-or-pointer", "gpu-standard"],
       "sensitiveContent": "POLICY_BOUND",
-      "fallbackRoles": [
-        "JOURNAL"
-      ],
+      "fallbackRoles": ["JOURNAL"],
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
     {
@@ -101,9 +70,7 @@
       "defaultVisibility": "CREW_SHARED",
       "interactionCustody": "RESTRICTED",
       "requiredCapabilities": [],
-      "preferredCapabilities": [
-        "large-viewport"
-      ],
+      "preferredCapabilities": ["large-viewport"],
       "sensitiveContent": "SANITIZED_PROJECTION_ONLY",
       "fallbackRoles": [],
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
@@ -114,9 +81,7 @@
       "defaultVisibility": "CREW_OR_PERSONAL",
       "interactionCustody": "NONE_BY_DEFAULT",
       "requiredCapabilities": [],
-      "preferredCapabilities": [
-        "audio-or-display"
-      ],
+      "preferredCapabilities": ["audio-or-display"],
       "sensitiveContent": "NO_PRIVATE_CONTENT_BY_DEFAULT",
       "fallbackRoles": [],
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
@@ -127,14 +92,9 @@
       "defaultVisibility": "CAPTAIN_PRIVATE",
       "interactionCustody": "POLICY_BOUND",
       "requiredCapabilities": [],
-      "preferredCapabilities": [
-        "secure-session",
-        "input"
-      ],
+      "preferredCapabilities": ["secure-session", "input"],
       "sensitiveContent": "CAPTAIN_AUTHORIZATION_REQUIRED",
-      "fallbackRoles": [
-        "PRIMARY_STORY"
-      ],
+      "fallbackRoles": ["PRIMARY_STORY"],
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
     {
@@ -143,10 +103,7 @@
       "defaultVisibility": "CREATOR_PRIVATE",
       "interactionCustody": "AUTHORING_ONLY",
       "requiredCapabilities": [],
-      "preferredCapabilities": [
-        "large-viewport",
-        "pointer"
-      ],
+      "preferredCapabilities": ["large-viewport", "pointer"],
       "sensitiveContent": "CREATOR_AUTHORIZATION_REQUIRED",
       "fallbackRoles": [],
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
@@ -157,13 +114,9 @@
       "defaultVisibility": "PERSONAL",
       "interactionCustody": "SUPPORTED_FOR_ACCESSIBLE_PATHS",
       "requiredCapabilities": [],
-      "preferredCapabilities": [
-        "assistive-output-or-input"
-      ],
+      "preferredCapabilities": ["assistive-output-or-input"],
       "sensitiveContent": "PERSONAL_BY_DEFAULT",
-      "fallbackRoles": [
-        "PRIMARY_STORY"
-      ],
+      "fallbackRoles": ["PRIMARY_STORY"],
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     }
   ],
