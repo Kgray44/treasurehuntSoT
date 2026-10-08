@@ -39,7 +39,6 @@ Wave 2 integration governance is also published for Storytide, Watchglass, Figur
 
 **Wave 3 integration governance is now complete.** Sounding Line owns the shared Voyagewright Device Lab; Drydock has the spatial/provider publication-validation contract; Harborlight has immutable spatial-content distribution and compatibility rules; and Sealed Hold has the protected calibration/spatial-media boundary. Wave 3 promotes or connects accepted owner systems without claiming that Sextant, Parallax, Crossdeck, Storytide, Watchglass, or Figurehead product implementation suddenly exists.
 
-
 **Wave 4 machine-readable implementation governance is complete.** The program now has a canonical ownership registry, device-capability registry, provider registry, surface-role/capability registry, normalized event registry, and Device Lab scenario registry under [Development_Docs/Spatial_Experience](../../Spatial_Experience/), plus the [Wave 4 Implementation Launch Manifest v1.0](Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.0.md). These records make the accepted architecture queryable by tooling without creating new product implementation claims.
 
 Wave 4 is the implementation handoff boundary. The next engineering step is the bounded generalization of the accepted Landfall Device Lab seed into neutral shared infrastructure, followed by Project Sextant Phase 1. Crossdeck and Parallax begin only as their manifest prerequisites are satisfied.
