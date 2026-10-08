@@ -1,0 +1,602 @@
+{
+  "schemaVersion": 1,
+  "registry": "device-lab-scenario-registry",
+  "title": "Voyagewright Device Lab Spatial Experience Scenario Registry",
+  "effectiveDate": "2026-10-08",
+  "repositoryBaseline": "5f8edcdcc5d10bef363f8889eeeb903c17cb00b4",
+  "program": "Voyagewright Spatial Experience",
+  "authority": "Development_Docs/Governing/Project_Sounding_Line_Voyagewright_Device_Lab_Governing_Annex_v1.0.md",
+  "status": "GOVERNING_MACHINE_READABLE_BASELINE",
+  "implementationClaim": "NONE",
+  "tierVocabulary": {
+    "D0": "Deterministic provider simulation",
+    "D1": "Browser/device API emulation",
+    "D2": "Android virtual device",
+    "D3": "Apple virtual device / hosted macOS",
+    "D4": "Controlled physical hardware",
+    "D5": "Real field qualification"
+  },
+  "scenarios": [
+    {
+      "scenarioId": "core.permission-denied",
+      "version": 1,
+      "owner": "SOUNDING_LINE",
+      "requiredCapabilities": [
+        "device.permission-state"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SOUNDING_LINE",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "core.permission-revoked-mid-session",
+      "version": 1,
+      "owner": "SOUNDING_LINE",
+      "requiredCapabilities": [
+        "device.permission-state",
+        "device.lifecycle"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SOUNDING_LINE",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "core.background-foreground",
+      "version": 1,
+      "owner": "SOUNDING_LINE",
+      "requiredCapabilities": [
+        "device.lifecycle"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SOUNDING_LINE",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "core.lock-unlock",
+      "version": 1,
+      "owner": "SOUNDING_LINE",
+      "requiredCapabilities": [
+        "device.lifecycle"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SOUNDING_LINE",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "core.process-restart",
+      "version": 1,
+      "owner": "SOUNDING_LINE",
+      "requiredCapabilities": [
+        "device.lifecycle"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SOUNDING_LINE",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "core.network-loss-recovery",
+      "version": 1,
+      "owner": "SOUNDING_LINE",
+      "requiredCapabilities": [
+        "surface.synchronization"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SOUNDING_LINE",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "core.low-power-quality-degrade",
+      "version": 1,
+      "owner": "SOUNDING_LINE",
+      "requiredCapabilities": [
+        "device.power-thermal"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SOUNDING_LINE",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "sextant.heading-turn",
+      "version": 1,
+      "owner": "SEXTANT",
+      "requiredCapabilities": [
+        "device.heading"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SEXTANT",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "sextant.spin-three-times",
+      "version": 1,
+      "owner": "SEXTANT",
+      "requiredCapabilities": [
+        "device.motion",
+        "device.gesture"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SEXTANT",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "sextant.magnetic-hidden-object",
+      "version": 1,
+      "owner": "SEXTANT",
+      "requiredCapabilities": [
+        "device.magnetic-field"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SEXTANT",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "sextant.relative-elevation-stairs",
+      "version": 1,
+      "owner": "SEXTANT",
+      "requiredCapabilities": [
+        "device.relative-elevation"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SEXTANT",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "landfall.degraded-gps-route-recovery",
+      "version": 1,
+      "owner": "LANDFALL",
+      "requiredCapabilities": [
+        "world.route-waypoint",
+        "device.position-observation"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "LANDFALL",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "landfall.background-arrival",
+      "version": 1,
+      "owner": "LANDFALL",
+      "requiredCapabilities": [
+        "world.place-context",
+        "device.lifecycle"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "LANDFALL",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "landfall.virtual-world-observation-loss",
+      "version": 1,
+      "owner": "LANDFALL",
+      "requiredCapabilities": [
+        "world.worldspace"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "LANDFALL",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "parallax.adaptive-floor-map",
+      "version": 1,
+      "owner": "PARALLAX",
+      "requiredCapabilities": [
+        "spatial.adaptive-placement",
+        "spatial.entity"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "PARALLAX",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "parallax.adaptive-per-run-variation",
+      "version": 1,
+      "owner": "PARALLAX",
+      "requiredCapabilities": [
+        "spatial.adaptive-placement"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "PARALLAX",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "parallax.shared-ar-late-join",
+      "version": 1,
+      "owner": "PARALLAX",
+      "requiredCapabilities": [
+        "spatial.shared-scene",
+        "surface.synchronization"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "PARALLAX",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "parallax.anchor-relocalization",
+      "version": 1,
+      "owner": "PARALLAX",
+      "requiredCapabilities": [
+        "spatial.anchor"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "PARALLAX",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "parallax.person-free-calibration",
+      "version": 1,
+      "owner": "PARALLAX",
+      "requiredCapabilities": [
+        "spatial.field-calibration",
+        "perception.privacy-screening",
+        "media.calibration-evidence"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "PROTECTED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "PARALLAX",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "parallax.discovery-hint-escalation",
+      "version": 1,
+      "owner": "PARALLAX",
+      "requiredCapabilities": [
+        "spatial.discovery-assistance"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "PARALLAX",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "crossdeck.desktop-phone-pair",
+      "version": 1,
+      "owner": "CROSSDECK",
+      "requiredCapabilities": [
+        "surface.pairing",
+        "surface.surface-session"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "CROSSDECK",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "crossdeck.phone-disconnect",
+      "version": 1,
+      "owner": "CROSSDECK",
+      "requiredCapabilities": [
+        "surface.synchronization",
+        "surface.surface-session"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "CROSSDECK",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "crossdeck.surface-handoff",
+      "version": 1,
+      "owner": "CROSSDECK",
+      "requiredCapabilities": [
+        "surface.handoff"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "CROSSDECK",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "crossdeck.air-handoff",
+      "version": 1,
+      "owner": "CROSSDECK",
+      "requiredCapabilities": [
+        "surface.handoff",
+        "perception.visual-evidence",
+        "device.haptics"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "CROSSDECK",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "watchglass.visual-relocalization-abstain",
+      "version": 1,
+      "owner": "WATCHGLASS",
+      "requiredCapabilities": [
+        "perception.visual-relocalization"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "WATCHGLASS",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "watchglass.person-in-frame-calibration-rejection",
+      "version": 1,
+      "owner": "WATCHGLASS",
+      "requiredCapabilities": [
+        "perception.privacy-screening",
+        "media.calibration-evidence"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "PROTECTED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "WATCHGLASS",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "wakebook.spatial-memory-crossdeck-capture",
+      "version": 1,
+      "owner": "WAKEBOOK",
+      "requiredCapabilities": [
+        "memory.spatial-memory",
+        "surface.handoff"
+      ],
+      "minimumTier": "D0",
+      "eligibleTiers": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "WAKEBOOK",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    }
+  ]
+}
