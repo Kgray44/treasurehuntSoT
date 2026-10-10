@@ -20,9 +20,9 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   await page.getByRole("link", { name: "Continue to account sign-in" }).click();
   await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
 
-  await page.getByLabel("Email or legacy Player name").fill(creatorEmail);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(creatorEmail);
   await page.getByLabel("Password").fill(creatorPassword);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page).toHaveURL(/\/studio\/library/u);
   await expect(page.getByRole("heading", { name: "Voyagewright Studio" })).toBeVisible();
 

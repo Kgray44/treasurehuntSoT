@@ -34,6 +34,7 @@ export default defineConfig({
   projects: [{ name: "tideglass-phase3-chromium", use: { browserName: "chromium" } }],
   webServer: {
     command: `"${process.execPath}" node_modules/next/dist/bin/next start -H 127.0.0.1 -p ${port}`,
+    cwd: process.cwd(),
     url: baseURL,
     reuseExistingServer: false,
     timeout: 180_000,

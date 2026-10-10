@@ -223,7 +223,7 @@ test.afterAll(async () => {
 async function signIn(page: Page, fixture: AccountFixture) {
   await page.context().clearCookies();
   await page.goto("/sign-in?returnTo=%2Faccount");
-  await page.getByLabel("Email or legacy Player name").fill(fixture.email);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(fixture.email);
   await page.getByLabel("Password").fill(password);
   await page.getByLabel("Password").press("Enter");
   await expect(page).toHaveURL(/\/account$/u);
@@ -245,7 +245,7 @@ async function signInFromGateway(page: Page, fixture: AccountFixture) {
   await page.goto("/");
   const menu = await openAccountMenu(page, "Account");
   await menu.getByRole("link", { name: "Sign In", exact: true }).click();
-  await page.getByLabel("Email or legacy Player name").fill(fixture.email);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(fixture.email);
   await page.getByLabel("Password").fill(password);
   await page.getByLabel("Password").press("Enter");
   await expect(page).toHaveURL(/\/$/u);

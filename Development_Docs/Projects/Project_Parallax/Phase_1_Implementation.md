@@ -75,6 +75,8 @@ The reconciled Parallax/Crossdeck tree passes 150 focused tests across contracts
 
 Android’s final Java source compiles with JDK 17 and the declared Android SDK. The hosted iOS companion build, native tests, and permission-denial scenario passed in [Landfall Device Lab run 38032011931](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38032011931), bound to candidate `3bdfccd980d862d61f740222da4ace9de94eb27d`. The final iOS source and project/build inputs are byte-identical to that candidate. The Android texture change was compiled separately after that run. These are software/build results; physical tracking accuracy and owner acceptance remain unestablished.
 
+The selected nested Playwright server configurations explicitly start from the repository root. Account-flow fixtures use the current exact field/action labels (sign-in, registration, verification, claim, email change, and recovery); their authentication, authority, timing, accessibility, and durable-receipt assertions remain intact. Focused production-browser checks pass for Admiralty Phase 1, all four Admiralty Phase 2 cases, both Admiralty Phase 3 cases, and Homeport Patch A’s owner-access regression.
+
 Ordinary Sounding Line remains the protected-main integration gate, through [PR #692](https://github.com/Kgray44/treasurehuntSoT/pull/692).
 
 ## Product acceptance still required

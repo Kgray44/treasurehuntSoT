@@ -44,7 +44,7 @@ test(`Journey A: account creation`, async ({ page }) => {
   await page.getByLabel("Confirm password").press("Enter");
   const delivery = await waitForDelivery("VERIFY_EMAIL", "registration-candidate@phase7.example.test");
   await page.getByLabel("Code").fill(delivery.token!);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Verify email", exact: true }).click();
   await expect(page.getByRole("button", { name: "Phase 7 Registration Candidate", exact: true })).toBeVisible();
   await page.goto("/account/profile");
   await expect(page.getByRole("button", { name: "Phase 7 Registration Candidate" })).toBeVisible();
@@ -391,7 +391,7 @@ async function signIn(page: Page, alias: string, password = credentialHandoff.pa
 }
 
 async function fillSignIn(page: Page, account: Alias, password: string) {
-  await page.getByLabel("Email or legacy Player name").fill(account.email ?? account.username!);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email ?? account.username!);
   await page.getByLabel("Password").fill(password);
   await page.getByLabel("Password").press("Enter");
 }
@@ -493,7 +493,7 @@ async function submitReset(page: Page, password: string) {
   await page.waitForLoadState("networkidle");
   await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByLabel("Confirm password", { exact: true }).fill(password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Reset password", exact: true }).click();
 }
 
 async function keyboardMilestone(page: Page) {

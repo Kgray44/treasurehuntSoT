@@ -170,7 +170,7 @@ test("Journey C: Sign-in to Home", async ({ page }) => {
   await fillSignIn(page, account);
   const receipt = await sampleNavigation(
     page,
-    () => page.getByRole("button", { name: "Continue" }).click({ noWaitAfter: true }),
+    () => page.getByRole("button", { name: "Sign in", exact: true }).click({ noWaitAfter: true }),
     "/",
     1_000,
   );
@@ -189,7 +189,7 @@ test("Journey D: Duplicate display name", async ({ page }) => {
   const beforeEmails = await db.accountEmail.count();
   await page.goto("/register");
   await fillRegistration(page, existing.displayName, email);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   await expect(page).toHaveURL(/\/register/u);
   const displayName = page.getByLabel("Display name");
   await expect(displayName).toHaveAttribute("aria-invalid", "true");
@@ -201,7 +201,7 @@ test("Journey D: Duplicate display name", async ({ page }) => {
   await capture(page, "HP-AUTH-PATCH-EV-D-DUPLICATE-DISPLAY-NAME", "ANONYMOUS_NEW_SYNTHETIC");
 
   await displayName.fill(`Patch A Display ${journeyId}`);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Verify email" })).toBeVisible();
   expect(await db.userAccount.count()).toBe(beforeAccounts + 1);
   expect(await db.accountEmail.count({ where: { normalizedEmail: email } })).toBe(1);
@@ -216,9 +216,9 @@ test("Journey E: Existing email", async ({ page }) => {
   });
   await page.goto("/register");
   await fillRegistration(page, `Patch A Existing Email ${journeyId}`, existing.email);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   await expect(page).toHaveURL(/\/sign-in\?.*reason=account-exists/u);
-  await expect(page.getByLabel("Email or legacy Player name")).toHaveValue(existing.email);
+  await expect(page.getByLabel("Email or Player name", { exact: true })).toHaveValue(existing.email);
   await expect(
     page.getByText("An account already uses this email address. Sign in instead.", { exact: true }),
   ).toBeVisible();
@@ -238,7 +238,7 @@ test("Journey F: Provider failure after creation", async ({ page }) => {
   const beforeAccounts = await db.userAccount.count();
   await page.goto("/register");
   await fillRegistration(page, `Patch A Provider Failure ${journeyId}`, email);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   await expect(page).toHaveURL(/\/verify-email\?.*delivery=failed/u);
   const deliveryFailure = page.getByRole("alert");
   await expect(
@@ -297,9 +297,9 @@ test("Journey H: Existing unverified account sign-in", async ({ page }) => {
     data: { username: legacyPlayerName },
   });
   await page.goto("/sign-in");
-  await page.getByLabel("Email or legacy Player name").fill(legacyPlayerName.toLocaleUpperCase("en-US"));
+  await page.getByLabel("Email or Player name", { exact: true }).fill(legacyPlayerName.toLocaleUpperCase("en-US"));
   await page.getByLabel("Password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page).toHaveURL(/\/$/u);
   await expect(page.getByRole("heading", { name: "Verify email" })).toHaveCount(0);
   const notice = page.getByRole("complementary", { name: "Email verification" });
@@ -319,9 +319,9 @@ test("Journey H: Existing unverified account sign-in", async ({ page }) => {
   await menu.getByRole("button", { name: "Sign Out" }).click();
   await expect(page.getByRole("button", { name: "Account", exact: true })).toBeVisible();
   await page.goto("/sign-in");
-  await page.getByLabel("Email or legacy Player name").fill(account.email.toLocaleUpperCase("en-US"));
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email.toLocaleUpperCase("en-US"));
   await page.getByLabel("Password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page).toHaveURL(/\/$/u);
   await expect(page.getByRole("heading", { name: "Verify email" })).toHaveCount(0);
   await expect(page.getByRole("complementary", { name: "Email verification" })).toBeVisible();
@@ -338,12 +338,12 @@ test("Journey I: Verification registration", async ({ page }) => {
   const displayName = `Patch A Verification ${journeyId}`;
   await page.goto("/register");
   await fillRegistration(page, displayName, email);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Verify email" })).toBeVisible();
   const delivery = await waitForDelivery("VERIFY_EMAIL", email);
   await capture(page, "HP-AUTH-PATCH-EV-J-VERIFICATION-CODE", "NEW_PENDING_SYNTHETIC");
   await page.getByLabel("Code").fill(delivery.token!);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Verify email", exact: true }).click();
   await expect(page.getByRole("button", { name: displayName, exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Verify email" })).toHaveCount(0);
   await capture(page, "HP-AUTH-PATCH-EV-K-AUTHENTICATED-HOME", "NEW_VERIFIED_SYNTHETIC");
@@ -443,13 +443,13 @@ test("Journey L: Mobile", async ({ page }) => {
   );
   await expect(page.getByText("Passwords match.", { exact: true })).toBeVisible();
   await capture(page, "HP-AUTH-PATCH-EV-L-MOBILE-SIGNUP", "ANONYMOUS_NEW_SYNTHETIC");
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   await expect(page.getByText("That display name is already in use.", { exact: true })).toBeVisible();
   await page.getByLabel("Display name").fill(`Patch A Mobile ${journeyId}`);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   const delivery = await waitForDelivery("VERIFY_EMAIL", email);
   await page.getByLabel("Code").fill(delivery.token!);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Verify email", exact: true }).click();
   await expect(page.getByRole("button", { name: `Patch A Mobile ${journeyId}`, exact: true })).toBeVisible();
 });
 
@@ -628,14 +628,14 @@ async function fillRegistration(page: Page, displayName: string, email: string) 
 }
 
 async function fillSignIn(page: Page, account: Alias) {
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password").fill(handoff.password);
 }
 
 async function signIn(page: Page, account: Alias) {
   await page.goto("/sign-in");
   await fillSignIn(page, account);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(page.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
 }
 

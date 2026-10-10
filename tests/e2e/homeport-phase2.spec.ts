@@ -173,7 +173,7 @@ async function signInFromGateway(page: Page, account: AccountFixture) {
   const menu = await openAccountMenu(page, "Account");
   await menu.getByRole("link", { name: "Sign In", exact: true }).click();
   await expectShell(page, "AUTHENTICATION");
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password").fill(password);
   await page.getByLabel("Password").press("Enter");
   await expect(page).toHaveURL(/\/$/u);

@@ -532,10 +532,10 @@ test("Journey R: Synthetic email walkthrough", async ({ page }) => {
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password", { exact: true }).fill(handoff.password);
   await page.getByLabel("Confirm password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   const verification = await waitForDelivery("VERIFY_EMAIL", email);
   await page.locator("main:visible").last().getByLabel("Code").fill(verification.token!);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Verify email", exact: true }).click();
   await expect(page.getByRole("button", { name: "Round 2 Email Walkthrough", exact: true })).toBeVisible();
   await page.goto("/account/personal-information");
   await expect(page.getByText(email, { exact: true })).toBeVisible();
@@ -543,12 +543,12 @@ test("Journey R: Synthetic email walkthrough", async ({ page }) => {
   expect(text).not.toMatch(/synthetic outbox|email simulator|test delivery|provider simulator/iu);
   await page.goto("/forgot-password");
   await page.getByLabel("Email").fill(email);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Send reset instructions", exact: true }).click();
   const recovery = await waitForDelivery("PASSWORD_RESET", email);
   await page.goto(`/reset-password?token=${encodeURIComponent(recovery.token!)}`);
   await page.getByLabel("Password", { exact: true }).fill(`${handoff.password}R`);
   await page.getByLabel("Confirm password").fill(`${handoff.password}R`);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Reset password", exact: true }).click();
   await expect(page.getByRole("button", { name: "Round 2 Email Walkthrough" })).toBeVisible();
 });
 
@@ -651,9 +651,9 @@ async function signIn(page: Page, alias: string) {
   await begin(page);
   const menu = await accountMenu(page, "Account");
   await settledLink(page, menu.getByRole("link", { name: "Sign In", exact: true }));
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
   return account;
 }

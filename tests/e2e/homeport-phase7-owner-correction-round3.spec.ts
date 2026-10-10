@@ -615,9 +615,9 @@ async function signInCredentials(page: Page, account: Alias) {
   await begin(page);
   const menu = await accountMenu(page, "Account");
   await settledLink(page, menu.getByRole("link", { name: "Sign In", exact: true }));
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
 }
 
@@ -625,9 +625,9 @@ async function signInPending(page: Page, account: Alias) {
   await begin(page);
   const menu = await accountMenu(page, "Account");
   await settledLink(page, menu.getByRole("link", { name: "Sign In", exact: true }));
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
   const notice = page.getByRole("complementary", { name: "Email verification" });
   await expect(notice).toContainText("ordinary navigation remain available");
@@ -657,7 +657,7 @@ async function register(page: Page, displayName: string, email: string) {
   await page.getByLabel("Email", { exact: true }).fill(email);
   await page.getByLabel("Password", { exact: true }).fill(handoff.password);
   await page.getByLabel("Confirm password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Verify email" })).toBeVisible();
   await expect(page.locator('[data-route-interactive="false"]')).toHaveCount(0);
 }
@@ -665,7 +665,7 @@ async function register(page: Page, displayName: string, email: string) {
 async function verifyCode(page: Page, code: string) {
   const input = page.getByLabel("Code");
   await input.fill(code);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Verify email", exact: true }).click();
 }
 
 async function accountMenu(page: Page, label: string) {
