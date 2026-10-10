@@ -2,17 +2,35 @@
 
 ## Availability
 
-The requested connection is a regular ChatGPT Chat to a native Codex Work chat **within the same desktop app**. It requires supported native tools in the invoking Chat. There is no browser or external bridge in this package.
+The required workflow is regular ChatGPT Chat -> automatic creation of a **separate** native VoyageWright Work chat in the same desktop app. The source Chat remains intact. Native project creation must be callable from that source surface; a request to continue the source in Work is not the requested integration.
 
-Verified in the owner's Work executor on 2026-10-10: native `mcp__codex_app` tools for list_projects, list_threads, list_archived_threads, read_thread, create_thread, send_message_to_thread, set_thread_title, wait_threads, get_worktree_creation_status, and set_thread_archived are exposed. `create_goal` is exposed to this executor. Project enumeration and current chat inspection worked.
+Verified in Work on 2026-10-10: native mcp\_\_codex_app operations for project discovery, active/archived inventories, context reads, project task creation, continuation, title repair, setup/status and archiving. The target executor exposes create_goal. These Work capabilities do not establish regular Chat exposure.
 
-Acceptance A/B invoked private v0.2.0 from the existing in-app ChatGPT discussion, Branch · Codex Workflow Setup. That Chat reported **UNSUPPORTED ON THIS SURFACE**: native project discovery, creation, Goal, status and verification tools were missing. The owner supplied its full response because read_thread exposed only a cached content reference. No task, Goal, worktree or relay was created; the fidelity marker was not delivered. This is a failed same-app handoff acceptance, not an observed successful launch.
+The owner supplied source-Chat results: v0.2.0 A/B reported UNSUPPORTED ON THIS SURFACE with missing native discovery/creation/status/Goal tools; no task, Goal or worktree created. A v0.2.1 retry reported a continuation handoff declined by the host ('The user chose not to hand off.'). A later retry completed but its answer is opaque to read_thread; reconcile any actual returned task before dispatch. The owner subsequently clarified that continuation handoffs and executor relays are unacceptable. They are removed from the current workflow, even if the host could accept them.
 
-Both manifests declare `requires_local_executor:true`; private save and local installation accepted the setting. It has not been proved to enable native tools in regular Chat. The package supplies no `mcp.json` or native endpoint. Its `.app.json` binds the verified optional GitHub connector; that is context access, not the Chat-to-Work connection. Discover actual host tools on invocation; if absent, return READY TO LAUNCH and the exact missing capability. Native tool schemas at runtime override this dated reference. Never treat installation, metadata inspection, or a Work executor's tools as proof that the source Chat has them.
+v0.3.1 retains requires_local_executor:false in both manifests so Chat may gather context and invoke its own native capabilities without forcing Work. This flag does not grant missing tools. The package has no mcp.json or native endpoint. Its optional GitHub app binding supplies repository context, not native task creation. Existing codex-app-tools v0.1.6 and GitHub were installed/enabled in Work; a supported native-provider refresh failed with Windows cache Access is denied, leaving the existing provider working.
 
-Verified hint: label `VoyageWright`, projectId `fd21b701-3215-417a-a413-0a17e02badbb`, projectKind `local`, hostId `local`, Git repository `C:\Users\kkids\Documents\Codex_TreasureHunt`. Revalidate the ID and label using list_projects. Prefer this ID when multiple Codex projects share the label, only if still live and matching. Otherwise use a unique live local/remote Codex match or ask a concise routing question. Never select a `chatgpt` project through label similarity or current working directory.
+Verified routing hint: label VoyageWright, projectId fd21b701-3215-417a-a413-0a17e02badbb, projectKind local, hostId local, Git repository C:\\Users\\kkids\\Documents\\Codex_TreasureHunt. Revalidate using actual project discovery. Prefer this ID only while live and matching; otherwise require a unique live native Codex match. Never select a ChatGPT project by label similarity or current directory.
 
-## Small native call sequence
+## Executable tool gap
+
+The owner requires a plugin-owned executable action, not merely instructions asking the chat to call native tools. The current package has skills and a deterministic Python planner/journal; it has no MCP server, published launch action or native backend binding. Its GitHub binding cannot create desktop conversations. Mark this implementation partial.
+
+A complete implementation needs a callable plugin action that receives the compact accepted context, resolves the native project, reconciles/reserves the request, creates the separate implementation task internally, tracks setup and verifies results. The action must use a supported host-authenticated desktop service binding and preserve real permission gates. The installed native provider's code requires a host pipe and executor-provided thread identity and selects distinct Chat/Work tool catalogs. These internal implementation details are not an independently supported plugin API. Do not copy proprietary provider code, manually supply another caller identity, expose the private pipe remotely, or label an unconnected/mock adapter a working launch tool.
+
+No supported native backend binding for a custom regular-Chat launch action has been established by the available package guides, tools or acceptance checks. A local MCP server alone would not prove regular Chat can run it or authorize native project creation. Establish actual server startup, source-Chat tool invocation, authorized service access and target evidence before claiming this gap fixed.
+
+## Direct creation contract
+
+1. Load the executable installed plugin workflow in the source Chat through its supported invocation mechanism. Metadata inspection is not invocation.
+2. Gather accepted discussion decisions, unique requirements, accessible attachments and relevant current GitHub/project sources. Freeze the short contract, source-main binding, title, destination, Goal instruction, fidelity marker and explicit gates.
+3. Reconcile prior attempts and durably reserve using the owner journal/helper, or an actually exposed native operation with equivalent receipt and locking semantics. Missing safe state storage must be reported; don't create a relay to obtain it.
+4. Call one actual native operation whose schema creates and starts a separate implementation chat in the correct Codex project, with the complete prompt and requested worktree isolation. Verify returned identity/project/title/context and target Goal evidence.
+5. Preserve the source Chat. Do not request mode continuation, migrate it, create a preparation/executor relay, or substitute a browser/API session. Platform permission gates remain real and cannot be bypassed; don't label a gated or absent operation an automatic launch.
+
+If source Chat lacks direct creation, report AUTOMATIC CREATION UNAVAILABLE and the exact missing operation; keep the prepared launch contract in that Chat. Do not reinterpret the request as authorization for a mode switch. Source Chat -> native target is the required proof chain.
+
+## Work-verified native call sequence
 
 | Tool                                                                  | Purpose and boundary                                                                                                                                                                                                    |
 | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -25,6 +43,8 @@ Verified hint: label `VoyageWright`, projectId `fd21b701-3215-417a-a413-0a17e02b
 | get_worktree_creation_status `{operationId}`                          | Resolve asynchronous worktree setup. A clientThreadId is not usable as threadId. On failure, retain the failed receipt; no blind re-dispatch.                                                                           |
 | set_thread_title `{threadId,title,source:"codex"}`                    | Repair title of this launch's own returned chat only. Reinspect collisions first.                                                                                                                                       |
 | set_thread_archived `{threadId,hostId,archived:true,source:"codex"}`  | Archive verified disposable relay IDs only. Never archive the implementation as relay cleanup.                                                                                                                          |
+
+These names and schemas are Work-verified examples. Use actual Chat equivalents only when their runtime schemas provide the same native project behavior; do not invent aliases.
 
 Default target:
 
@@ -46,7 +66,7 @@ Use the frozen request key and owner-local journal across launcher chats. A rese
 
 Title allocation is deterministic over observed titles and in-flight journal reservations. The native API cannot atomically reserve a title, and independent launchers may race. Check again immediately before dispatch and repair this launch's own title using the lowest available V suffix after readback. Do not advertise global or exactly-once guarantees.
 
-If native creation from the regular in-app Chat is missing, return the prepared prompt in that existing conversation. Do not open a browser, create an API session, or count a Work executor's separate launch as source-Chat acceptance. Switching host or opening a relay needs the user's instruction unless already authorized. If a relay is authorized, record its ID, source ID, implementation ID, and purpose. Archive it only after durable launch verification and settled relay work. Do not archive the current user discussion as a convenience. Record cleanup failure separately from launch success.
+If direct creation is missing, return the prepared contract and precise capability gap. Do not ask to continue in Work or count an independently started Work task as source-Chat acceptance. New launches create no relays. Cleanup applies only to explicitly tracked historical disposable relays after durable target verification and settled work; preserve source discussions and implementation chats. Record cleanup failure separately.
 
 ## Sources and token use
 

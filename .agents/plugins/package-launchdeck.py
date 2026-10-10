@@ -27,8 +27,13 @@ def validate():
     overlay = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
     assert overlay["interface"] == ui
     assert overlay["name"] == manifest["name"] and overlay["version"] == manifest["version"]
-    assert manifest["extensions"]["com.openai"]["requires_local_executor"] is True
-    assert overlay["requires_local_executor"] is True
+    assert manifest["extensions"]["com.openai"]["requires_local_executor"] is False
+    assert overlay["requires_local_executor"] is False
+    launch = (ROOT / "skills/launch-task/SKILL.md").read_text(encoding="utf-8")
+    assert "references/surfaces.md" in launch
+    assert "references/native-integration.md#direct-creation-contract" in launch
+    assert "Do not ask to continue the source Chat in Work" in launch
+    assert "AUTOMATIC CREATION UNAVAILABLE" in launch
     for skill in sorted((ROOT / "skills").iterdir()):
         content = (skill / "SKILL.md").read_text(encoding="utf-8")
         front = re.match(r"^---\n(.*?)\n---\n", content, re.S)
@@ -37,7 +42,8 @@ def validate():
         for md in skill.rglob("*.md"):
             for target in re.findall(r"\[[^\]]+\]\(([^)]+)\)", md.read_text(encoding="utf-8")):
                 if not re.match(r"https?:|#", target):
-                    assert (md.parent / target).is_file(), (md, target)
+                    linked = (md.parent / target.split("#", 1)[0]).resolve()
+                    assert linked.is_relative_to(ROOT.resolve()) and linked.is_file(), (md, target)
     return manifest
 
 
