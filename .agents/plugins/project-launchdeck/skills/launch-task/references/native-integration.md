@@ -2,6 +2,8 @@
 
 ## Availability
 
+Installed/private v0.3.1 evidence below is historical. The unpublished source candidate adds a local MCP component adapter, but normal launches remain blocked: live tests needed the desktop host title operation before app-server assignment appeared in the native project. App-server naming/assignment alone failed. See the [executable component contract](executable-launch.md); neither this adapter nor host-assisted tests prove ordinary-Chat acceptance.
+
 The required workflow is regular ChatGPT Chat -> automatic creation of a **separate** native VoyageWright Work chat in the same desktop app. The source Chat remains intact. Native project creation must be callable from that source surface; a request to continue the source in Work is not the requested integration.
 
 Verified in Work on 2026-10-10: native mcp\_\_codex_app operations for project discovery, active/archived inventories, context reads, project task creation, continuation, title repair, setup/status and archiving. The target executor exposes create_goal. These Work capabilities do not establish regular Chat exposure.
@@ -14,7 +16,7 @@ Verified routing hint: label VoyageWright, projectId fd21b701-3215-417a-a413-0a1
 
 ## Executable tool gap
 
-The owner requires a plugin-owned executable action, not merely instructions asking the chat to call native tools. The current package has skills and a deterministic Python planner/journal; it has no MCP server, published launch action or native backend binding. Its GitHub binding cannot create desktop conversations. Mark this implementation partial.
+The owner requires a plugin-owned executable action, not merely instructions asking the chat to call native tools. Installed/private v0.3.1 has skills and a deterministic Python planner/journal; it has no MCP server, published launch action or native backend binding. The unpublished candidate tests app-server components, but has no supported plugin-only desktop registration binding. Its GitHub binding cannot create desktop conversations. Mark this implementation partial.
 
 A complete implementation needs a callable plugin action that receives the compact accepted context, resolves the native project, reconciles/reserves the request, creates the separate implementation task internally, tracks setup and verifies results. The action must use a supported host-authenticated desktop service binding and preserve real permission gates. The installed native provider's code requires a host pipe and executor-provided thread identity and selects distinct Chat/Work tool catalogs. These internal implementation details are not an independently supported plugin API. Do not copy proprietary provider code, manually supply another caller identity, expose the private pipe remotely, or label an unconnected/mock adapter a working launch tool.
 

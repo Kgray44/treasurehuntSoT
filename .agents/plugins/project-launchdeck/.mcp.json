@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "project-launchdeck": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["-B", "-u", "${PLUGIN_ROOT}/server/launchdeck_mcp.py"],
+      "cwd": "${PLUGIN_ROOT}"
+    }
+  }
+}

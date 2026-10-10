@@ -235,6 +235,34 @@ class LaunchdeckTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 ld.execute("record", {"request_key": key, "state": "uncertain", field: value}, self.journal)
 
+    def test_failed_revalidation_retains_identity_and_prevents_redispatch(self):
+        key = ld.execute("reserve", self.data, self.journal)["request_key"]
+        ld.execute("record", {"request_key": key, "state": "verified", "threadId": "observed",
+                            "project_verified": True, "title_verified": True}, self.journal)
+        with self.assertRaises(ValueError):
+            ld.execute("record", {"request_key": key, "state": "uncertain",
+                                 "project_verified": False}, self.journal)
+        ld.execute("record", {"request_key": key, "state": "uncertain",
+                             "project_verified": False, "revalidation_failed": True}, self.journal)
+        result = ld.execute("reserve", self.data, self.journal)
+        self.assertEqual(result["action"], "reconcile_or_reuse")
+        self.assertEqual(result["receipt"]["threadId"], "observed")
+        self.assertFalse(result["receipt"]["project_verified"])
+        with self.assertRaises(ValueError):
+            ld.execute("record", {"request_key": key, "state": "not_created",
+                                 "no_side_effect_proven": True}, self.journal)
+
+    def test_adapter_blocks_before_any_reservation_or_native_call(self):
+        adapter_path = SCRIPT.parents[3] / "server/launchdeck_mcp.py"
+        adapter_spec = importlib.util.spec_from_file_location("launchdeck_adapter", adapter_path)
+        adapter = importlib.util.module_from_spec(adapter_spec)
+        adapter_spec.loader.exec_module(adapter)
+        launcher = adapter.Launcher.__new__(adapter.Launcher)
+        launcher.binding = {"desktopAssociationVerified": True, "pluginOnlyAssociationVerified": False}
+        # No app, journal or project object exists: the gate must stop before using any.
+        with self.assertRaisesRegex(ValueError, "no conversation created"):
+            launcher.launch(self.data["request"])
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -34,6 +34,11 @@ def validate():
     assert "references/native-integration.md#direct-creation-contract" in launch
     assert "Do not ask to continue the source Chat in Work" in launch
     assert "AUTOMATIC CREATION UNAVAILABLE" in launch
+    assert "references/executable-launch.md" in launch
+    portable = json.loads((ROOT / "mcp.json").read_text(encoding="utf-8"))
+    legacy = json.loads((ROOT / ".mcp.json").read_text(encoding="utf-8"))
+    assert portable["mcpServers"] == legacy["mcpServers"]
+    assert (ROOT / "server/launchdeck_mcp.py").is_file()
     for skill in sorted((ROOT / "skills").iterdir()):
         content = (skill / "SKILL.md").read_text(encoding="utf-8")
         front = re.match(r"^---\n(.*?)\n---\n", content, re.S)

@@ -48,3 +48,5 @@ Output includes request_key, title, target, prompt, inventory_complete, and stat
 The journal stores fingerprint, title, route, status, and IDs; it does not persist the full objective/prompt. Keep the prepared prompt in the source discussion or a requested output artifact for recovery. Local files need the owner's normal access protection. There is no background service, polling job, or automatic memory write.
 
 After a native collision repair, `record` may include the observed `title` with `title_verified:true`; it must retain the initiative and phase/purpose and use the base or a V2+ suffix. This updates the receipt without changing the request key or dispatching again. A proven no-side-effect retry reallocates its title against the latest inventory and reservations.
+
+If independent revalidation disproves prior evidence, a verified receipt may become uncertain only with `revalidation_failed:true` and an explicit false project/title/Goal evidence flag. Existing IDs remain immutable and cannot be reset to not_created; subsequent requests reconcile/reuse rather than redispatch.

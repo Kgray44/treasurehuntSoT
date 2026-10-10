@@ -268,7 +268,11 @@ def execute(operation, data, journal_path=None):
                        "verified": {"verified"},
                        "uncertain": {"pending", "created", "verified", "uncertain", "not_created"},
                        "not_created": {"not_created"}}
-            if state not in allowed.get(receipt["state"], set()):
+            invalidated = (receipt["state"] == "verified" and state == "uncertain"
+                           and data.get("revalidation_failed") is True
+                           and any(data.get(field) is False for field in
+                                   ("goal_verified", "project_verified", "title_verified")))
+            if state not in allowed.get(receipt["state"], set()) and not invalidated:
                 raise ValueError("Unsafe receipt transition")
             if state == "not_created" and data.get("no_side_effect_proven") is not True:
                 raise ValueError("Retry requires proof of no side effect")

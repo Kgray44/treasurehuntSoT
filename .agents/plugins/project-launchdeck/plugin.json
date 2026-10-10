@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "project-launchdeck",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Repository-owned VoyageWright Codex launches with full project/GitHub context, Project Trim contracts, standard titles, retry receipts, and safe fallback.",
   "author": {
     "name": "Project Launchdeck"
@@ -12,7 +12,7 @@
       "interface": {
         "displayName": "Project Launchdeck",
         "shortDescription": "VoyageWright task launching",
-        "longDescription": "Launch or prepare VoyageWright tasks from regular ChatGPT Chat, Work, and Codex using each surface's exposed context, GitHub and native actions. Uses repository-owned Project Trim, standard titles, durable retry receipts, Goal evidence and owned-relay cleanup. Current package provides launch instructions and deterministic helpers, not a plugin-owned executable chat-creation tool. The required direct regular-Chat launch remains blocked on a supported native backend binding. No source continuation or executor relays.",
+        "longDescription": "Development candidate with Project Trim, planning and retry receipts plus tested local MCP Goal/execution components. Normal launches are blocked: desktop project registration still requires a separate host operation. Ordinary Chat acceptance is unverified. Private installed v0.3.1 is unchanged; no continuation or relay fallback.",
         "developerName": "Project Launchdeck",
         "category": "Productivity",
         "logo": "./assets/logo.svg",
