@@ -4,7 +4,7 @@ import { spawnSync } from "node:child_process";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
-import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
+import { browserSuiteProfiles, isolatedBrowserFixtureCredentials } from "./browser-suite-profiles.mjs";
 
 const separator = process.argv.indexOf("--");
 const options = Object.fromEntries(
@@ -138,7 +138,10 @@ function taskOwnedProductionHttpEnvironment(profileId, sha) {
       .update(`sounding-line:${sha}:${profileId}`)
       .digest("hex");
   }
-  if (profileId === "generic") environment.SOUNDING_LINE_INTERNAL_RUNTIME = "1";
+  if (profileId === "generic") {
+    environment.SOUNDING_LINE_INTERNAL_RUNTIME = "1";
+    Object.assign(environment, isolatedBrowserFixtureCredentials(profileId));
+  }
   if (suiteProfile.cookieAdapter === "isolated-loopback") {
     environment.SOUNDING_LINE_TASK_OWNED_HTTP = "1";
     environment.FOREVER_VALIDATION_PRODUCTION_IDENTITY = "1";
