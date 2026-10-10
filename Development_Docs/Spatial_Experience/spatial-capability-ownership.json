@@ -335,7 +335,7 @@
       "authority": "Development_Docs/Governing/Project_Sounding_Line_Voyagewright_Device_Lab_Governing_Annex_v1.0.md",
       "consumers": ["SEXTANT", "LANDFALL", "PARALLAX", "CROSSDECK", "WATCHGLASS", "DRYDOCK"],
       "progressionAuthority": "NONE",
-      "implementationState": "SEED_IMPLEMENTATION_EXISTS_IN_LANDFALL_REQUIRES_GENERALIZATION"
+      "implementationState": "SHARED_INFRASTRUCTURE_AVAILABLE_LANDFALL_COMPATIBILITY_PRESERVED"
     },
     {
       "id": "distribution.spatial-content",

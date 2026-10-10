@@ -2793,6 +2793,28 @@
       "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
+    },
+    {
+      "id": "unit.device-lab",
+      "name": "Voyagewright shared Device Lab infrastructure and Landfall compatibility",
+      "tier": 2,
+      "owner": "sounding-line",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 10000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": ["device-lab.shared-infrastructure"],
+      "affectedPaths": [
+        "src/device-lab/**",
+        "scripts/device-lab/**",
+        "Development_Docs/Spatial_Experience/device-lab-scenario-registry.json"
+      ],
+      "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-family",
+      "adapter": "vitest-family"
     }
   ]
 }
