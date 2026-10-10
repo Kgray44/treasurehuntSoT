@@ -639,6 +639,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/Project_Sextant_Phase_2_Implementation_Receipt.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/README.md",
       "record_type": "engineering-record",
       "status": "current",

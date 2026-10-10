@@ -4817,22 +4817,42 @@
     {
       "path": "src/sextant/**",
       "suiteIds": ["unit.sextant", "unit.device-lab", "unit.landfall-device-lab", "static.core"],
-      "contractIds": ["sextant.phase1.foundation", "device-lab.shared-infrastructure", "landfall.device-lab-evidence"]
+      "contractIds": [
+        "sextant.phase1.foundation",
+        "device-lab.shared-infrastructure",
+        "landfall.device-lab-evidence",
+        "sextant.phase2.web-context"
+      ]
     },
     {
       "path": "scripts/sextant/**",
       "suiteIds": ["unit.sextant", "unit.device-lab", "unit.landfall-device-lab", "static.core"],
-      "contractIds": ["sextant.phase1.foundation", "device-lab.shared-infrastructure", "landfall.device-lab-evidence"]
+      "contractIds": [
+        "sextant.phase1.foundation",
+        "device-lab.shared-infrastructure",
+        "landfall.device-lab-evidence",
+        "sextant.phase2.web-context"
+      ]
     },
     {
       "path": "Development_Docs/Spatial_Experience/device-capability-registry.json",
       "suiteIds": ["unit.sextant", "unit.device-lab", "unit.landfall-device-lab", "static.core"],
-      "contractIds": ["sextant.phase1.foundation", "device-lab.shared-infrastructure", "landfall.device-lab-evidence"]
+      "contractIds": [
+        "sextant.phase1.foundation",
+        "device-lab.shared-infrastructure",
+        "landfall.device-lab-evidence",
+        "sextant.phase2.web-context"
+      ]
     },
     {
       "path": "Development_Docs/Spatial_Experience/spatial-capability-ownership.json",
       "suiteIds": ["unit.sextant", "unit.device-lab", "unit.landfall-device-lab", "static.core"],
-      "contractIds": ["sextant.phase1.foundation", "device-lab.shared-infrastructure", "landfall.device-lab-evidence"]
+      "contractIds": [
+        "sextant.phase1.foundation",
+        "device-lab.shared-infrastructure",
+        "landfall.device-lab-evidence",
+        "sextant.phase2.web-context"
+      ]
     }
   ],
   "contractMappings": [
@@ -6693,6 +6713,10 @@
     },
     {
       "contractId": "sextant.phase1.foundation",
+      "suiteIds": ["unit.sextant"]
+    },
+    {
+      "contractId": "sextant.phase2.web-context",
       "suiteIds": ["unit.sextant"]
     }
   ],

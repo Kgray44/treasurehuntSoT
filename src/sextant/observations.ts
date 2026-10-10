@@ -24,7 +24,7 @@ export function normalizeObservation(
     semanticVersion: 1,
     ageMs: context.now - sample.timestampMonotonic,
     sequence: context.sequence,
-    discontinuity: context.discontinuity,
+    discontinuity: context.discontinuity || sample.discontinuity === true,
     sourceClass: provider.simulationIdentity
       ? "SIMULATED"
       : provider.definition.platformFamily === "COMPATIBILITY"

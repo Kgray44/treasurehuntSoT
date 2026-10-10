@@ -3375,6 +3375,13 @@
       "authority": "project-sextant",
       "owners": ["project-sextant"],
       "critical": true
+    },
+    {
+      "id": "sextant.phase2.web-context",
+      "name": "Sextant web acquisition, frame normalization, motion classification, bounded gestures and haptics",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true
     }
   ]
 }

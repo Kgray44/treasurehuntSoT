@@ -83,6 +83,18 @@ export class SextantProviderRegistry {
       }
     });
   }
+  states(id: string) {
+    this.capabilities.get(id);
+    return [...this.providers.values()]
+      .filter((p) => p.definition.capabilities.includes(id))
+      .flatMap((p) => {
+        try {
+          return [stateSchema.parse(p.discover(id))];
+        } catch {
+          return [];
+        }
+      });
+  }
   list() {
     return [...this.definitions.values()].map((d) => structuredClone(d));
   }

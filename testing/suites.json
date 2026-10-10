@@ -2818,7 +2818,7 @@
     },
     {
       "id": "unit.sextant",
-      "name": "Sextant Phase 1 foundation, compatibility and D0 Device Lab contracts",
+      "name": "Sextant foundation, web device context, gestures, haptics, compatibility and D0/D1 Device Lab contracts",
       "tier": 2,
       "owner": "project-sextant",
       "command": "registry-selected Vitest files",
@@ -2828,7 +2828,7 @@
       "parallelSafe": true,
       "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": [],
-      "contracts": ["sextant.phase1.foundation"],
+      "contracts": ["sextant.phase1.foundation", "sextant.phase2.web-context"],
       "affectedPaths": [
         "src/sextant/**",
         "scripts/sextant/**",

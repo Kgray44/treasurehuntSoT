@@ -1,12 +1,26 @@
 ---
-title: Sextant Phase 1 implementation and compatibility boundary
+title: Sextant implementation and consumer integration
 audience: product-engineering
 status: current
 canonical_for: sextant-phase1-implementation
-last_reviewed: 2026-10-09
+last_reviewed: 2026-10-10
 ---
 
-# Sextant Phase 1 — Set the Sextant
+# Sextant — Device Context
+
+[Phase 2 — Hold the Horizon](Project_Sextant_Phase_2_Implementation_Receipt.md) adds real web event-family providers, normalized attitude/motion, six bounded device gestures, semantic haptics and accessible consent/status controls. Software qualification is separate from physical hardware evidence.
+
+New consumers use `webSextantRuntime(window, navigator)` once per active surface, then supply contextual purpose/consent from a user action to `acquire()` or `beginGesture()`. Reuse the runtime across Crossdeck/Parallax consumers. `DeviceContextControls` supplies a reusable permission/status/pause/alternative UI; consumers own its placement and the screen-control alternative. No capability is prompted or started by construction.
+
+Relative/absolute reference, quaternion normalization, separate gravity/linear/including-gravity observations, gyro rad/s axes, stability dwell/hysteresis, semantic freshness and interruption reset are enforced before device intent. All example gestures require a nonempty alternative. `beginGesture()` coordinates required semantic leases and cleans partial acquisition if one capability is unavailable. It returns an explicit release function; consumers release on unmount. Surface owners dispose on session end/sign-out.
+
+`runtime.haptics.request()` executes bounded semantic cues with a mandatory visual/text alternative. `setHapticPreferences()` supplies user and reduced-sensory policy. Basic vibration support and API acceptance do not guarantee a physical sensation. Important information always has another presentation path.
+
+The shared CLI now executes all 20 Sextant D0/D1 scenarios. Select one with `npm run sextant:device-lab -- --scenario sextant.web-heading-wrap`. Emulated browser events are D1, synthetic semantics are D0, and neither is physical qualification. Optional Generic Sensor providers are not necessary for the event-family plateau and are not claimed.
+
+Landfall's existing foreground context API remains compatible; generic acquisition lives in Sextant and shares its listener hub. Landfall still owns navigation/context meaning. New consumer code does not import raw Device Orientation/Motion or Vibration APIs.
+
+## Preserved Phase 1 — Set the Sextant
 
 Phase 1 implements the capability/provider/permission/lease foundation under the [Sextant governing document](../../Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md). It preserves accepted Chronicle behavior. It does not install new browser/native sensors, add a Player mechanic, implement AR/pairing, or certify physical hardware.
 

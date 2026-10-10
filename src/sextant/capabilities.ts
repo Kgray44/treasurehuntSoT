@@ -37,6 +37,8 @@ const specs: Spec[] = [
     quaternion,
   ],
   ["motion.linear-acceleration", "accelerometer", "m/s^2", ["DEVICE"], vector],
+  ["motion.acceleration-including-gravity", "accelerometer", "m/s^2", ["DEVICE"], vector],
+  ["motion.gravity", "accelerometer", "m/s^2", ["DEVICE"], vector],
   ["motion.angular-velocity", "gyroscope", "rad/s", ["DEVICE"], vector],
   ["motion.stability", "accelerometer", "classification", ["DEVICE"], z.enum(["STABLE", "MOVING", "UNKNOWN"])],
   ["motion.moving", "accelerometer", "boolean", ["DEVICE"], declaration],
@@ -91,7 +93,12 @@ export class SextantCapabilityRegistry {
         privacyClass: row.privacyClass,
         fallback: row.defaultFallback,
         valueSchema,
-        implementation: "FOUNDATION_ONLY",
+        implementation:
+          ["heading", "orientation", "accelerometer", "gyroscope", "fused-pose", "haptics"].includes(hardwareId) &&
+          !suffix.includes("rich") &&
+          !suffix.startsWith("gesture.")
+            ? "WEB_AVAILABLE"
+            : "FOUNDATION_ONLY",
       });
     }
   }

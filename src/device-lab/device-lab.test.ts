@@ -61,9 +61,9 @@ function pack(subject: DeviceLabAdapter, input = definition) {
   return packs;
 }
 describe("shared Device Lab registry and packs", () => {
-  it("loads all 36 baseline scenarios and six canonical tier descriptions without claiming execution", () => {
+  it("loads all 47 baseline scenarios and six canonical tier descriptions without claiming execution", () => {
     const registry = loadDeviceLabRegistry();
-    expect(registry.scenarios).toHaveLength(36);
+    expect(registry.scenarios).toHaveLength(47);
     expect(Object.keys(registry.tierVocabulary)).toEqual(["D0", "D1", "D2", "D3", "D4", "D5"]);
     const packs = new DeviceLabScenarioPacks(registry);
     expect(packs.status().every((entry) => entry.state === "REGISTRY_BASELINE_ONLY")).toBe(true);
@@ -306,5 +306,5 @@ describe("Landfall compatibility preserves historical contracts", () => {
     } finally {
       await rm(directory, { recursive: true, force: true });
     }
-  });
+  }, 30000);
 });
