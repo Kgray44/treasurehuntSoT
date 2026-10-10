@@ -274,7 +274,8 @@
     "migrate:legacy-companion": "tsx scripts/migrate-legacy-companion.ts",
     "migrate:legacy-companion:verify": "tsx scripts/migrate-legacy-companion.ts --verify",
     "parity:legacy-shadow": "tsx scripts/verify-legacy-shadow-parity.ts",
-    "rehearse:one-voyage:mysql": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/rehearse-project-one-voyage-phase2-mysql.ps1"
+    "rehearse:one-voyage:mysql": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/rehearse-project-one-voyage-phase2-mysql.ps1",
+    "sextant:device-lab": "node --import tsx scripts/sextant/device-lab.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

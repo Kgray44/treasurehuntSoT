@@ -2815,6 +2815,28 @@
       "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
+    },
+    {
+      "id": "unit.sextant",
+      "name": "Sextant Phase 1 foundation, compatibility and D0 Device Lab contracts",
+      "tier": 2,
+      "owner": "project-sextant",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 10000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": ["sextant.phase1.foundation"],
+      "affectedPaths": [
+        "src/sextant/**",
+        "scripts/sextant/**",
+        "Development_Docs/Spatial_Experience/device-capability-registry.json"
+      ],
+      "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-family",
+      "adapter": "vitest-family"
     }
   ]
 }

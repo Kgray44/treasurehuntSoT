@@ -15,7 +15,7 @@
       "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
       "consumers": ["LANDFALL", "PARALLAX", "WATCHGLASS", "CROSSDECK", "STORYTIDE"],
       "progressionAuthority": "NONE",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+      "implementationState": "SEXTANT_PHASE_1_FOUNDATION_IMPLEMENTED"
     },
     {
       "id": "device.permission-state",
@@ -23,7 +23,7 @@
       "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
       "consumers": ["LANDFALL", "PARALLAX", "WATCHGLASS", "CROSSDECK"],
       "progressionAuthority": "NONE",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+      "implementationState": "SEXTANT_PHASE_1_FOUNDATION_IMPLEMENTED"
     },
     {
       "id": "device.position-observation",

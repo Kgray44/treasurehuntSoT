@@ -7367,7 +7367,7 @@
     {
       "path": "Development_Docs/Projects/Project_Sextant/README.md",
       "record_type": "program-record",
-      "status": "preserved",
+      "status": "current",
       "canonical_for": null
     },
     {
@@ -8167,6 +8167,18 @@
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/README.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": "sextant-phase1-implementation"
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/Project_Sextant_Phase_1_Implementation_Receipt.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": "sextant-phase1-implementation-receipt"
     }
   ]
 }

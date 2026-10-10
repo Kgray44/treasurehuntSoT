@@ -20,7 +20,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4", "D5"],
       "realDeviceQualification": "D4_WHERE_PHYSICAL_ACCURACY_CLAIMED",
       "defaultFallback": "MANUAL_OR_LANDFALL_GUIDED",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "heading",
@@ -33,7 +33,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4", "D5"],
       "realDeviceQualification": "D4_FOR_MAGNETIC_REALITY",
       "defaultFallback": "MAP_OR_MANUAL_ALIGNMENT",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "orientation",
@@ -46,7 +46,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4_FOR_REAL_SENSOR_QUALITY",
       "defaultFallback": "SCREEN_CONTROLS",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "accelerometer",
@@ -59,7 +59,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4",
       "defaultFallback": "MANUAL_OR_ALTERNATE_GESTURE",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "gyroscope",
@@ -72,7 +72,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4",
       "defaultFallback": "MANUAL_OR_ALTERNATE_GESTURE",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "fused-pose",
@@ -85,7 +85,7 @@
       "simulationTiers": ["D0", "D2", "D3", "D4"],
       "realDeviceQualification": "D4",
       "defaultFallback": "LOWER_FIDELITY_ORIENTATION",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "magnetic-field",
@@ -98,7 +98,7 @@
       "simulationTiers": ["D0", "D2", "D3", "D4", "D5"],
       "realDeviceQualification": "D4",
       "defaultFallback": "VISUAL_NFC_QR_OR_CAPTAIN_FALLBACK",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "relative-pressure-elevation",
@@ -111,7 +111,7 @@
       "simulationTiers": ["D0", "D2", "D3", "D4", "D5"],
       "realDeviceQualification": "D4",
       "defaultFallback": "LANDFALL_MAP_OR_MANUAL_LEVEL",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "proximity-light-environment",
@@ -124,7 +124,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4_WHERE_USED",
       "defaultFallback": "IGNORE_OPTIONAL_SIGNAL",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "haptics",
@@ -137,7 +137,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4_FOR_FEEL",
       "defaultFallback": "VISUAL_AUDIO_TEXT",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "camera",
@@ -150,7 +150,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4", "D5"],
       "realDeviceQualification": "D4",
       "defaultFallback": "NON_CAMERA_FALLBACK",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "microphone",
@@ -163,7 +163,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4_WHERE_USED",
       "defaultFallback": "TEXT_OR_NON_AUDIO_PATH",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "ble",
@@ -176,7 +176,7 @@
       "simulationTiers": ["D0", "D2", "D3", "D4", "D5"],
       "realDeviceQualification": "D4",
       "defaultFallback": "QR_OR_MANUAL_DISCOVERY",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "uwb",
@@ -189,7 +189,7 @@
       "simulationTiers": ["D0", "D3", "D4", "D5"],
       "realDeviceQualification": "D4",
       "defaultFallback": "BLE_QR_OR_MANUAL",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "nfc",
@@ -202,7 +202,7 @@
       "simulationTiers": ["D0", "D2", "D3", "D4"],
       "realDeviceQualification": "D4",
       "defaultFallback": "QR_OR_VISUAL",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "notifications",
@@ -215,7 +215,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4_FOR_VENDOR_BEHAVIOR",
       "defaultFallback": "IN_APP_STATE",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "background-execution",
@@ -228,7 +228,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4_FOR_OEM_BEHAVIOR",
       "defaultFallback": "FOREGROUND_RECOVERY",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "power-thermal",
@@ -241,7 +241,7 @@
       "simulationTiers": ["D0", "D2", "D3", "D4"],
       "realDeviceQualification": "D4",
       "defaultFallback": "CONSERVATIVE_QUALITY",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "secure-local-storage",
@@ -254,7 +254,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4_FOR_NATIVE_SECURITY",
       "defaultFallback": "SERVER_SESSION_OR_EPHEMERAL",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED_WITH_ACCEPTED_LANDFALL_COMPATIBILITY_SEAMS"
+      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
     },
     {
       "id": "ar-world-tracking",

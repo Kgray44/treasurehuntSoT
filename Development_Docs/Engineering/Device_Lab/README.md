@@ -42,7 +42,7 @@ Load `loadDeviceLabRegistry()`, construct `DeviceLabScenarioPacks`, and register
 
 Adapters acquire mutable resources through the existing Sounding Line/project resource governor. The shared runner creates no independent lock system. Adapters must settle on abort, clean only their owned resources, and report remaining resources. Timeout, malformed results, missing assertions and unconfirmed cleanup fail closed; an executor still live after timeout is explicitly reported as unsettled. Recovery remains the owning resource governor's responsibility.
 
-Execution registration is separate from mainline acceptance. The runner never emits a release decision. Each owner must register real suites/tests/contracts through Sounding Line, supply genuine platform adapters, and meet required D4/D5 continuation gates. The 27 Wave 4 entries remain baseline declarations; Increment 0 does not claim their product implementations.
+Execution registration is separate from mainline acceptance. The runner never emits a release decision. Each owner must register real suites/tests/contracts through Sounding Line, supply genuine platform adapters, and meet required D4/D5 continuation gates. The original 27 Wave 4 entries remain baseline declarations; Increment 0 does not claim their product implementations. [Sextant Phase 1](../Sextant/README.md) adds nine separate D0 declarations and executable owner scenarios, bringing the current catalogue to 36 entries.
 
 ## Evidence compatibility
 
