@@ -89,6 +89,8 @@ The account disclosure becomes inert and leaves the accessibility tree as soon a
 
 Preference reconciliation ignores an initialization or focus read superseded by a newer same-tab save, account-scoped storage/broadcast update, later refresh, or account cleanup. Thirteen focused preference tests pass, including deterministic in-flight read races. The multi-tab browser journey verifies the second tab's authenticated public account control before measuring live synchronization.
 
+Auth-route temporal receipts timestamp navigation-generation changes and loading visibility through the same DOM observer. A later polling sample cannot shorten the measured loading delay. The existing 480 ms assertion and the production 500 ms delay are unchanged.
+
 Ordinary Sounding Line remains the protected-main integration gate, through [PR #692](https://github.com/Kgray44/treasurehuntSoT/pull/692).
 
 ## Product acceptance still required

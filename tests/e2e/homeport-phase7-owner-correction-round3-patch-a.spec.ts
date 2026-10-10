@@ -699,7 +699,7 @@ async function sampleNavigation(
   const startedAt = Date.now();
   const initial = await temporalFrame(page, 0);
   const frames = [initial];
-  await beginLoadingObservation(page, startedAt);
+  await beginLoadingObservation(page, startedAt, initial.activeGeneration);
   await action();
   let navigationStartedMs: number | null = null;
   let destinationReadyMs: number | null = null;
@@ -737,7 +737,11 @@ async function sampleNavigation(
   expect(navigationStartedMs, `navigation generation for ${targetPath}`).not.toBeNull();
   expect(destinationReadyMs, `ready destination ${targetPath}`).not.toBeNull();
   expect(destinationSettledMs, `settled destination ${targetPath}`).not.toBeNull();
-  const loadingTransitions = await endLoadingObservation(page);
+  const observation = await endLoadingObservation(page);
+  // Navigation and loading use the same DOM-observer clock. The polling loop
+  // may first see a generation one interval after it actually started.
+  navigationStartedMs = observation.navigationStartedMs ?? navigationStartedMs;
+  const loadingTransitions = observation.loadingTransitions;
   const loadingFrames = frames.filter((frame) => frame.loadingVisible);
   const animationDurations = frames.flatMap((frame) => frame.layers.flatMap((layer) => layer.animationDurationsMs));
   let sampledLoadingAppearances = 0;
@@ -770,62 +774,79 @@ async function sampleNavigation(
   };
 }
 
-async function beginLoadingObservation(page: Page, startedAt: number) {
-  await page.evaluate((observationStartedAt) => {
-    const key = "__homeportPhase7PatchALoadingObservation";
-    type Observation = {
-      observer: MutationObserver;
-      visible: boolean;
-      transitions: LoadingTransition[];
-      observe: () => void;
-    };
-    const windowWithObservation = window as unknown as { [key: string]: Observation | undefined };
-    const loadingVisible = () =>
-      [...document.querySelectorAll<HTMLElement>(".ui-loading-state")].some((loading) => {
-        const style = getComputedStyle(loading);
-        const box = loading.getBoundingClientRect();
-        return (
-          style.visibility !== "hidden" &&
-          Number.parseFloat(style.opacity || "1") > 0.02 &&
-          box.width > 0 &&
-          box.height > 0
-        );
+async function beginLoadingObservation(page: Page, startedAt: number, previousGeneration: number | null) {
+  await page.evaluate(
+    ({ observationStartedAt, previousGeneration }) => {
+      const key = "__homeportPhase7PatchALoadingObservation";
+      type Observation = {
+        observer: MutationObserver;
+        visible: boolean;
+        transitions: LoadingTransition[];
+        navigationStartedMs: number | null;
+        observe: () => void;
+      };
+      const windowWithObservation = window as unknown as { [key: string]: Observation | undefined };
+      const loadingVisible = () =>
+        [...document.querySelectorAll<HTMLElement>(".ui-loading-state")].some((loading) => {
+          const style = getComputedStyle(loading);
+          const box = loading.getBoundingClientRect();
+          return (
+            style.visibility !== "hidden" &&
+            Number.parseFloat(style.opacity || "1") > 0.02 &&
+            box.width > 0 &&
+            box.height > 0
+          );
+        });
+      const observation = {} as Observation;
+      observation.visible = loadingVisible();
+      observation.transitions = [];
+      observation.navigationStartedMs = null;
+      observation.observe = () => {
+        const transition = document.querySelector<HTMLElement>("[data-route-active-generation]");
+        const activeGeneration = transition ? Number(transition.dataset.routeActiveGeneration) : null;
+        if (
+          observation.navigationStartedMs === null &&
+          activeGeneration !== null &&
+          Number.isFinite(activeGeneration) &&
+          activeGeneration !== previousGeneration
+        )
+          observation.navigationStartedMs = Date.now() - observationStartedAt;
+        const visible = loadingVisible();
+        if (visible === observation.visible) return;
+        observation.visible = visible;
+        observation.transitions.push({ tMs: Date.now() - observationStartedAt, visible });
+      };
+      observation.observer = new MutationObserver(observation.observe);
+      observation.observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["aria-hidden", "class", "data-async-state", "data-route-active-generation", "style"],
+        childList: true,
+        subtree: true,
       });
-    const observation = {} as Observation;
-    observation.visible = loadingVisible();
-    observation.transitions = [];
-    observation.observe = () => {
-      const visible = loadingVisible();
-      if (visible === observation.visible) return;
-      observation.visible = visible;
-      observation.transitions.push({ tMs: Date.now() - observationStartedAt, visible });
-    };
-    observation.observer = new MutationObserver(observation.observe);
-    observation.observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["aria-hidden", "class", "data-async-state", "style"],
-      childList: true,
-      subtree: true,
-    });
-    windowWithObservation[key] = observation;
-  }, startedAt);
+      windowWithObservation[key] = observation;
+    },
+    { observationStartedAt: startedAt, previousGeneration },
+  );
 }
 
-async function endLoadingObservation(page: Page): Promise<LoadingTransition[]> {
+async function endLoadingObservation(
+  page: Page,
+): Promise<{ navigationStartedMs: number | null; loadingTransitions: LoadingTransition[] }> {
   return page.evaluate(() => {
     const key = "__homeportPhase7PatchALoadingObservation";
     type Observation = {
       observer: MutationObserver;
       transitions: LoadingTransition[];
+      navigationStartedMs: number | null;
       observe: () => void;
     };
     const windowWithObservation = window as unknown as { [key: string]: Observation | undefined };
     const observation = windowWithObservation[key];
-    if (!observation) return [];
+    if (!observation) return { navigationStartedMs: null, loadingTransitions: [] };
     observation.observe();
     observation.observer.disconnect();
     delete windowWithObservation[key];
-    return observation.transitions;
+    return { navigationStartedMs: observation.navigationStartedMs, loadingTransitions: observation.transitions };
   });
 }
 
