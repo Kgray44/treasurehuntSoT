@@ -334,9 +334,9 @@ async function signedInPage(browser: Browser, key: string, returnTo: string) {
   const page = await context.newPage();
   const account = credentials.accounts[key];
   await page.goto(`/sign-in?returnTo=${encodeURIComponent(returnTo)}`);
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password", { exact: true }).fill(credentials.password);
-  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
   await page.waitForURL((url) => url.pathname === returnTo);
   return { context, page } satisfies { context: BrowserContext; page: Page };
 }

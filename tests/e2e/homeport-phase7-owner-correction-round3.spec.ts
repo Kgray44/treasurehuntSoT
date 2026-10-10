@@ -401,7 +401,7 @@ test("Journey P: Slow transition and loading", async ({ page }) => {
   let intercepted = false;
   let navigationStarted = false;
   await page.route("**/community**", async (route) => {
-    if (!navigationStarted) {
+    if (!navigationStarted || route.request().headers()["next-router-prefetch"] === "1") {
       await route.abort();
       return;
     }
@@ -412,6 +412,7 @@ test("Journey P: Slow transition and loading", async ({ page }) => {
   });
   await page.goto("/tales");
   await expect(page.getByRole("heading", { name: "Choose a Chronicle" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Preview Chronicle", exact: true }).first()).toBeVisible();
   await expect(page.locator(".ui-loading-state")).toHaveCount(0);
   const link = page.getByRole("link", { name: "Community Harbor", exact: true }).first();
   navigationStarted = true;
@@ -450,9 +451,18 @@ test("Journey P: Slow transition and loading", async ({ page }) => {
 test("Journey Q: Account-menu visible motion", async ({ page }) => {
   const account = await signIn(page, "PROFILE_MEDIA_COMPLETE");
   const trigger = page.getByRole("button", { name: account.displayName, exact: true });
-  await trigger.click();
+  await trigger.locator("img").evaluate(async (image) => {
+    if (!(image instanceof HTMLImageElement)) throw new Error("The media-complete account has no avatar image.");
+    await image.decode();
+  });
   const menu = page.locator("#shell-account-disclosure");
-  const opening = await sampleAnimation(menu, 7, 32);
+  await expect(menu).toHaveCount(0);
+  const openingFrames = sampleOpeningAnimation(page, 7, 32);
+  await page.waitForFunction(
+    () => (window as unknown as { homeportMenuOpeningSamplerArmed?: boolean }).homeportMenuOpeningSamplerArmed === true,
+  );
+  await trigger.click();
+  const opening = await openingFrames;
   expect(new Set(opening.map((frame) => `${frame.opacity}:${frame.transform}:${frame.filter}`)).size).toBeGreaterThan(
     2,
   );
@@ -462,7 +472,12 @@ test("Journey Q: Account-menu visible motion", async ({ page }) => {
   await expect(menu.getByRole("link").first()).toBeFocused();
   await page.keyboard.press("ArrowDown");
   await capture(page, "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN", false);
-  const closing = await sampleClosingAnimation(menu, 5, 28);
+  const closingFrames = sampleClosingAnimation(menu, 5, 28);
+  await page.waitForFunction(
+    () => (window as unknown as { homeportMenuClosingSamplerArmed?: boolean }).homeportMenuClosingSamplerArmed === true,
+  );
+  await page.keyboard.press("Escape");
+  const closing = await closingFrames;
   await expect(menu).toHaveCount(0);
   expect(new Set(closing.map((frame) => `${frame.opacity}:${frame.transform}:${frame.filter}`)).size).toBeGreaterThan(
     1,
@@ -615,9 +630,12 @@ async function signInCredentials(page: Page, account: Alias) {
   await begin(page);
   const menu = await accountMenu(page, "Account");
   await settledLink(page, menu.getByRole("link", { name: "Sign In", exact: true }));
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  const providers = page.getByRole("region", { name: "Continue with a trusted provider", exact: true });
+  await expect(providers).toBeVisible();
+  await expect(providers.getByText("This sign-in option is being checked.", { exact: true })).toHaveCount(0);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
 }
 
@@ -625,9 +643,12 @@ async function signInPending(page: Page, account: Alias) {
   await begin(page);
   const menu = await accountMenu(page, "Account");
   await settledLink(page, menu.getByRole("link", { name: "Sign In", exact: true }));
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  const providers = page.getByRole("region", { name: "Continue with a trusted provider", exact: true });
+  await expect(providers).toBeVisible();
+  await expect(providers.getByText("This sign-in option is being checked.", { exact: true })).toHaveCount(0);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
   const notice = page.getByRole("complementary", { name: "Email verification" });
   await expect(notice).toContainText("ordinary navigation remain available");
@@ -657,7 +678,7 @@ async function register(page: Page, displayName: string, email: string) {
   await page.getByLabel("Email", { exact: true }).fill(email);
   await page.getByLabel("Password", { exact: true }).fill(handoff.password);
   await page.getByLabel("Confirm password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Verify email" })).toBeVisible();
   await expect(page.locator('[data-route-interactive="false"]')).toHaveCount(0);
 }
@@ -665,7 +686,7 @@ async function register(page: Page, displayName: string, email: string) {
 async function verifyCode(page: Page, code: string) {
   const input = page.getByLabel("Code");
   await input.fill(code);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Verify email", exact: true }).click();
 }
 
 async function accountMenu(page: Page, label: string) {
@@ -753,10 +774,15 @@ async function waitForDelivery(purpose: string, email: string) {
 }
 
 function runReconciliation(accountId: string, flags: string[]) {
-  const cli = path.join(process.cwd(), "node_modules", "tsx", "dist", "cli.mjs");
   const result = spawnSync(
     process.execPath,
-    [cli, "scripts/homeport/reconcile-claimed-account-capabilities.ts", `--account-id=${accountId}`, ...flags],
+    [
+      "--import",
+      "tsx",
+      "scripts/homeport/reconcile-claimed-account-capabilities.ts",
+      `--account-id=${accountId}`,
+      ...flags,
+    ],
     {
       cwd: process.cwd(),
       env: { ...process.env, DATABASE_URL: `file:${databasePath.replaceAll("\\", "/")}` },
@@ -796,15 +822,58 @@ async function sampleAnimation(locator: Locator, count: number, intervalMs: numb
   return frames;
 }
 
+async function sampleOpeningAnimation(page: Page, count: number, intervalMs: number) {
+  return page.evaluate(
+    async (options) => {
+      const menu = await new Promise<HTMLElement>((resolve) => {
+        const observer = new MutationObserver(() => {
+          const node = document.getElementById("shell-account-disclosure");
+          if (!node) return;
+          observer.disconnect();
+          resolve(node);
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+        (window as unknown as { homeportMenuOpeningSamplerArmed: boolean }).homeportMenuOpeningSamplerArmed = true;
+      });
+      const startedAt = performance.now();
+      const frames: Array<{ opacity: string; transform: string; filter: string; tMs: number }> = [];
+      for (let index = 0; index < options.count; index += 1) {
+        if (!menu.isConnected) break;
+        const style = getComputedStyle(menu);
+        frames.push({
+          opacity: style.opacity,
+          transform: style.transform,
+          filter: style.filter,
+          tMs: performance.now() - startedAt,
+        });
+        await new Promise((resolve) => window.setTimeout(resolve, options.intervalMs));
+        await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+      }
+      return frames;
+    },
+    { count, intervalMs },
+  );
+}
+
 async function sampleClosingAnimation(locator: Locator, count: number, intervalMs: number) {
   return locator.evaluate(
     async (node, options) => {
       const frames: Array<{ opacity: string; transform: string; filter: string }> = [];
-      window.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "Escape" }));
+      await new Promise<void>((resolve) => {
+        const onEscape = (event: KeyboardEvent) => {
+          if (event.key !== "Escape") return;
+          window.removeEventListener("keydown", onEscape, true);
+          resolve();
+        };
+        window.addEventListener("keydown", onEscape, true);
+        (window as unknown as { homeportMenuClosingSamplerArmed: boolean }).homeportMenuClosingSamplerArmed = true;
+      });
       for (let index = 0; index < options.count; index += 1) {
+        if (!node.isConnected) break;
         const style = getComputedStyle(node);
         frames.push({ opacity: style.opacity, transform: style.transform, filter: style.filter });
         await new Promise((resolve) => window.setTimeout(resolve, options.intervalMs));
+        await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
       }
       return frames;
     },

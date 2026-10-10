@@ -1650,6 +1650,7 @@ model TaleSideQuestObjective {
 }
 
 model TaleSession {
+  parallaxObservations ParallaxObservation[]
   musterMessages VoyageCrewMessage[]
   id                     String                     @id @default(cuid())
   taleId                 String
@@ -1787,6 +1788,7 @@ model ArtifactGrantReceipt {
 }
 
 model PlayerProfile {
+  parallaxObservations ParallaxObservation[]
   id                    String                   @id @default(cuid())
   accountId             String?                  @unique
   username              String?                  @unique
@@ -4166,6 +4168,24 @@ model CommunityGuideContent {
   updatedAt      DateTime  @updatedAt
 
   @@index([status, category, publishedAt])
+}
+
+// User-reported presentation evidence. Never a canonical completion event.
+model ParallaxObservation {
+  id String @id @default(cuid())
+  sessionId String
+  actorId String
+  idempotencyKey String
+  receiptDigest String
+  blockId String
+  publishedVersionId String
+  evidence String
+  observedAt DateTime
+  createdAt DateTime @default(now())
+  session TaleSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  actor PlayerProfile @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  @@unique([sessionId, actorId, idempotencyKey])
+  @@index([sessionId, blockId, createdAt])
 }
 
 // Crossdeck participation is derived from Wayfarer authentication and One Voyage membership.

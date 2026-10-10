@@ -61,9 +61,14 @@ function pack(subject: DeviceLabAdapter, input = definition) {
   return packs;
 }
 describe("shared Device Lab registry and packs", () => {
-  it("loads all 36 baseline scenarios and six canonical tier descriptions without claiming execution", () => {
+  it("loads the preserved 36 scenarios plus eight Phase 1 Parallax declarations and six canonical tier descriptions without claiming execution", () => {
     const registry = loadDeviceLabRegistry();
-    expect(registry.scenarios).toHaveLength(36);
+    expect(registry.scenarios).toHaveLength(44);
+    expect(
+      registry.scenarios.filter(
+        (s) => s.owner === "PARALLAX" && s.eligibleTiers.length === 1 && s.eligibleTiers[0] === "D0",
+      ),
+    ).toHaveLength(8);
     expect(Object.keys(registry.tierVocabulary)).toEqual(["D0", "D1", "D2", "D3", "D4", "D5"]);
     const packs = new DeviceLabScenarioPacks(registry);
     expect(packs.status().every((entry) => entry.state === "REGISTRY_BASELINE_ONLY")).toBe(true);

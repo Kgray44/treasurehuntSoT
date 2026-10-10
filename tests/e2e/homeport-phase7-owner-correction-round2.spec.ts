@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, rmSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -33,6 +34,7 @@ test("Journey C: Role-card first paint and hover", async ({ page }) => {
   const cards = page.locator(".role-object-card");
   await expect(cards).toHaveCount(3);
   await capture(page, "HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT");
+  await expect(page.getByRole("button", { name: "Replay presentation", exact: true })).toBeEnabled();
   for (let index = 0; index < 3; index += 1) {
     const card = cards.nth(index);
     const object = card.locator(".role-object");
@@ -505,6 +507,7 @@ test("Journey S: global navigation remains complete at effective 200 percent zoo
   await expect(accountButton).toHaveAttribute("aria-expanded", "true");
   await accountButton.click();
   await expect(accountButton).toHaveAttribute("aria-expanded", "false");
+  await expect(page.locator("#shell-account-disclosure")).toHaveCount(0);
   expect(await seriousOrCriticalAxeFindings()).toEqual(axeBaseline);
   expect(
     (await new AxeBuilder({ page }).include('[aria-label="Global navigation"]').analyze()).violations.filter((item) =>
@@ -532,10 +535,10 @@ test("Journey R: Synthetic email walkthrough", async ({ page }) => {
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password", { exact: true }).fill(handoff.password);
   await page.getByLabel("Confirm password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   const verification = await waitForDelivery("VERIFY_EMAIL", email);
   await page.locator("main:visible").last().getByLabel("Code").fill(verification.token!);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Verify email", exact: true }).click();
   await expect(page.getByRole("button", { name: "Round 2 Email Walkthrough", exact: true })).toBeVisible();
   await page.goto("/account/personal-information");
   await expect(page.getByText(email, { exact: true })).toBeVisible();
@@ -543,18 +546,20 @@ test("Journey R: Synthetic email walkthrough", async ({ page }) => {
   expect(text).not.toMatch(/synthetic outbox|email simulator|test delivery|provider simulator/iu);
   await page.goto("/forgot-password");
   await page.getByLabel("Email").fill(email);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Send reset instructions", exact: true }).click();
   const recovery = await waitForDelivery("PASSWORD_RESET", email);
   await page.goto(`/reset-password?token=${encodeURIComponent(recovery.token!)}`);
   await page.getByLabel("Password", { exact: true }).fill(`${handoff.password}R`);
   await page.getByLabel("Confirm password").fill(`${handoff.password}R`);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Reset password", exact: true }).click();
   await expect(page.getByRole("button", { name: "Round 2 Email Walkthrough" })).toBeVisible();
 });
 
 test("Journey T: Experience Images generation", async ({ page }) => {
-  const manifestPath = path.join(path.resolve(process.cwd()), "Experience_Images", "manifest.json");
-  const indexPath = path.join(path.resolve(process.cwd()), "Experience_Images", "index.html");
+  const repositoryRoot = path.resolve(process.cwd());
+  const evidenceRoot = "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2";
+  const manifestPath = path.join(repositoryRoot, evidenceRoot, "experience-images-manifest.json");
+  const indexPath = path.join(repositoryRoot, evidenceRoot, "experience-images-index.html");
   expect(existsSync(manifestPath)).toBe(true);
   expect(existsSync(indexPath)).toBe(true);
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as {
@@ -563,15 +568,27 @@ test("Journey T: Experience Images generation", async ({ page }) => {
     routeCensus: { humanFacingRoutes: number; capturedHumanFacingRoutes: number };
     visualReviewStatus: string;
   };
+  const publicationSha = execFileSync(
+    "git",
+    ["log", "--diff-filter=A", "--format=%H", "--", `${evidenceRoot}/experience-images-manifest.json`],
+    { cwd: repositoryRoot, encoding: "utf8" },
+  ).trim();
+  expect(publicationSha).toMatch(/^[0-9a-f]{40}$/u);
+  const publishedFile = (relativePath: string) =>
+    execFileSync("git", ["show", `${publicationSha}:Experience_Images/${relativePath}`], {
+      cwd: repositoryRoot,
+      maxBuffer: 20 * 1024 * 1024,
+    });
+  expect(JSON.parse(publishedFile("manifest.json").toString("utf8"))).toEqual(manifest);
   expect(manifest.sourceSha).toMatch(/^[0-9a-f]{40}$/u);
   const inheritedRound2Records = manifest.records.filter((record) => !/^Round\d+\//u.test(record.screenshotPath));
   expect(inheritedRound2Records).toHaveLength(227);
   expect(manifest.routeCensus.humanFacingRoutes).toBe(88);
   expect(manifest.routeCensus.capturedHumanFacingRoutes).toBe(88);
   for (const record of manifest.records) {
-    const imagePath = path.join(path.resolve(process.cwd()), "Experience_Images", record.screenshotPath);
-    expect(existsSync(imagePath)).toBe(true);
-    expect(createHash("sha256").update(readFileSync(imagePath)).digest("hex")).toBe(record.sha256);
+    const image = publishedFile(record.screenshotPath);
+    expect(image.length).toBeGreaterThan(0);
+    expect(createHash("sha256").update(image).digest("hex")).toBe(record.sha256);
     expect(record.visualReviewStatus).toBe("ACCEPTED");
   }
   expect(manifest.visualReviewStatus).toBe("ACCEPTED");
@@ -581,9 +598,7 @@ test("Journey T: Experience Images generation", async ({ page }) => {
     "Master_Light_Mode.png",
     "Master_Dark_Mode.png",
   ])
-    expect(
-      existsSync(path.join(path.resolve(process.cwd()), "Experience_Images", "Contact_Sheets", contactSheet)),
-    ).toBe(true);
+    expect(publishedFile(`Contact_Sheets/${contactSheet}`).length).toBeGreaterThan(0);
   await begin(page);
 });
 
@@ -651,9 +666,12 @@ async function signIn(page: Page, alias: string) {
   await begin(page);
   const menu = await accountMenu(page, "Account");
   await settledLink(page, menu.getByRole("link", { name: "Sign In", exact: true }));
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  const providers = page.getByRole("region", { name: "Continue with a trusted provider", exact: true });
+  await expect(providers).toBeVisible();
+  await expect(providers.getByText("This sign-in option is being checked.", { exact: true })).toHaveCount(0);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
   return account;
 }

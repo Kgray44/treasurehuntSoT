@@ -17,7 +17,8 @@ const databasePath = databaseUrl.startsWith("file:") ? path.resolve(databaseUrl.
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const syntheticPassword = required("HOMEPORT_PHASE7_SYNTHETIC_PASSWORD");
 const createdAt = new Date("2026-08-05T02:00:00.000Z");
-const activeGuestSessionExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+const fixtureNow = new Date();
+const activeGuestSessionExpiresAt = new Date(fixtureNow.getTime() + 24 * 60 * 60 * 1000);
 const soundingLineOwned = process.env.HOMEPORT_SOUNDING_LINE_TASK_ROOT === "1";
 const approvedTaskRoot = soundingLineOwned
   ? path.join(path.resolve(process.cwd()), "artifacts", "sounding-line")
@@ -258,7 +259,7 @@ async function seed() {
         accountId: aliases.PENDING_VERIFICATION.accountId,
         purpose: "VERIFY_EMAIL",
         tokenHash: sha256Text(tokenMaterial.pendingVerification),
-        expiresAt: new Date(createdAt.getTime() + 30 * 24 * 60 * 60 * 1000),
+        expiresAt: new Date(fixtureNow.getTime() + 30 * 24 * 60 * 60 * 1000),
         createdAt,
       },
       {
@@ -268,7 +269,7 @@ async function seed() {
         tokenHash: sha256Text(tokenMaterial.pendingEmailChange),
         pendingNormalizedEmail: "changed-address@owner-correction.example.test",
         pendingDisplayEmail: "changed-address@owner-correction.example.test",
-        expiresAt: new Date(createdAt.getTime() + 30 * 24 * 60 * 60 * 1000),
+        expiresAt: new Date(fixtureNow.getTime() + 30 * 24 * 60 * 60 * 1000),
         createdAt,
       },
     ],
@@ -324,7 +325,7 @@ async function seed() {
     schemaVersion: 1,
     exportId: "hp7c-export-ready",
     accountId: aliases.EXPORT_READY.accountId,
-    generatedAt: createdAt.toISOString(),
+    generatedAt: fixtureNow.toISOString(),
     scope: ["account.json", "profile.json"],
     exclusions: ["password hashes", "session and CSRF tokens", "one-time challenge tokens", "provider tokens"],
   };
@@ -342,8 +343,8 @@ async function seed() {
       manifest: JSON.stringify(exportManifest),
       payload: exportPayload,
       checksum: sha256Text(exportPayload),
-      readyAt: createdAt,
-      expiresAt: new Date(createdAt.getTime() + 30 * 24 * 60 * 60 * 1000),
+      readyAt: fixtureNow,
+      expiresAt: new Date(fixtureNow.getTime() + 30 * 24 * 60 * 60 * 1000),
     },
     create: {
       id: "hp7c-export-ready",
@@ -352,10 +353,10 @@ async function seed() {
       manifest: JSON.stringify(exportManifest),
       payload: exportPayload,
       checksum: sha256Text(exportPayload),
-      requestedAt: createdAt,
-      buildingAt: createdAt,
-      readyAt: createdAt,
-      expiresAt: new Date(createdAt.getTime() + 30 * 24 * 60 * 60 * 1000),
+      requestedAt: fixtureNow,
+      buildingAt: fixtureNow,
+      readyAt: fixtureNow,
+      expiresAt: new Date(fixtureNow.getTime() + 30 * 24 * 60 * 60 * 1000),
     },
   });
 
@@ -365,8 +366,8 @@ async function seed() {
       accountId: aliases.DEACTIVATED.accountId,
       kind: "DEACTIVATION",
       state: "COMPLETED",
-      completedAt: createdAt,
-      cancellableUntil: new Date(createdAt.getTime() + 30 * 24 * 60 * 60 * 1000),
+      completedAt: fixtureNow,
+      cancellableUntil: new Date(fixtureNow.getTime() + 30 * 24 * 60 * 60 * 1000),
       reason: "Synthetic owner correction deactivation",
     },
     {
@@ -374,8 +375,8 @@ async function seed() {
       accountId: aliases.DELETION_PENDING.accountId,
       kind: "DELETION",
       state: "SCHEDULED",
-      scheduledFor: new Date(createdAt.getTime() + 30 * 24 * 60 * 60 * 1000),
-      cancellableUntil: new Date(createdAt.getTime() + 30 * 24 * 60 * 60 * 1000),
+      scheduledFor: new Date(fixtureNow.getTime() + 30 * 24 * 60 * 60 * 1000),
+      cancellableUntil: new Date(fixtureNow.getTime() + 30 * 24 * 60 * 60 * 1000),
       reason: "Synthetic owner correction deletion",
     },
   ];
@@ -383,7 +384,7 @@ async function seed() {
     await db.accountLifecycleRequest.upsert({
       where: { id: row.id },
       update: row,
-      create: { ...row, requestedAt: createdAt },
+      create: { ...row, requestedAt: fixtureNow },
     });
   }
 

@@ -25,6 +25,8 @@ import java.util.UUID;
 /** Native acquisition only. One Voyage on the authenticated server owns all progression. */
 public final class LandfallActivity extends androidx.activity.ComponentActivity implements LocationListener {
   private WebView web;
+  private ParallaxLocalRuntime spatial;
+  private Runnable spatialPermissionReply;
   @Override public void onWindowFocusChanged(boolean focused){
     super.onWindowFocusChanged(focused);
     if(web!=null)LandfallOpeningGeometry.record(web);
@@ -148,6 +150,20 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
     JSONObject payload = request.optJSONObject("payload");
     if (payload == null) payload = new JSONObject();
     switch (operation) {
+      case "SPATIAL_STATE": reply(proxy,id,ParallaxLocalRuntime.state(this)); break;
+      case "SPATIAL_PERMISSION":
+        if(!foreground || spatialPermissionReply!=null){reply(proxy,id,new JSONObject().put("supported",false).put("permission","RESTRICTED"));break;}
+        if(checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED){reply(proxy,id,ParallaxLocalRuntime.state(this));break;}
+        spatialPermissionReply=()->{try{reply(proxy,id,ParallaxLocalRuntime.state(this));}catch(Exception ignored){}};
+        requestPermissions(new String[]{Manifest.permission.CAMERA},49);break;
+      case "SPATIAL_START":
+        if(!foreground || spatial!=null || power.critical()){reply(proxy,id,new JSONObject().put("accepted",false));break;}
+        spatial=new ParallaxLocalRuntime(this,value->{try{event(value);}catch(Exception ignored){}});
+        boolean started=spatial.start();if(!started)spatial=null;reply(proxy,id,new JSONObject().put("accepted",started));break;
+      case "SPATIAL_PLACE":reply(proxy,id,spatial==null?new JSONObject().put("pose",JSONObject.NULL):spatial.placement(payload.optString("alignment")));break;
+      case "SPATIAL_RENDER":reply(proxy,id,new JSONObject().put("accepted",spatial!=null && payload.optJSONArray("entities")!=null && spatial.render(payload.getJSONArray("entities"))));break;
+      case "SPATIAL_STOP":if(spatial!=null)spatial.stop();spatial=null;reply(proxy,id,new JSONObject().put("accepted",true));break;
+
       case "LOCATION_PERMISSION_STATE": reply(proxy, id, state(permission())); break;
       case "LOCATION_STATE":
         reply(proxy,id,new JSONObject().put("provider",selectedLocationProvider).put("registered",acquiring).put("enabled",!selectedLocationProvider.equals("NONE") && locations.isProviderEnabled(selectedLocationProvider)).put("permission",permission()).put("nativeCallbacks",locationCallbacks));
@@ -242,6 +258,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
   @Override public void onProviderDisabled(String provider) { try { event(new JSONObject().put("type", "error")); } catch(Exception ignored){} }
   @Override public void onRequestPermissionsResult(int code, String[] permissions, int[] results) {
     super.onRequestPermissionsResult(code, permissions, results);
+    if(code==49 && spatialPermissionReply!=null){Runnable pending=spatialPermissionReply;spatialPermissionReply=null;pending.run();}
     if (code == LOCATION_REQUEST && permissionReply != null) { try { reply(permissionReply, permissionRequestId, state(permission())); } catch(Exception ignored){} permissionReply=null; permissionRequestId=null; }
   }
   @Override public void onResume() { super.onResume(); foreground=true; if (web!=null) { web.onResume(); try { event(new JSONObject().put("type", "lifecycle").put("state", "FOREGROUND").put("pendingHints", LandfallSecureHints.read(this))); } catch(Exception ignored){} } }
@@ -253,6 +270,6 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
     String handle=intent.getStringExtra("returnHandle");
     if(web!=null && handle!=null && handle.matches("[A-Za-z0-9_-]{32,2048}"))openReturn(intent);
   }
-  @Override public void onPause() { try { event(new JSONObject().put("type", "lifecycle").put("state", "BACKGROUND")); } catch(Exception ignored){} foreground=false; stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null){web.onPause();LandfallCookiePersistence.request();} super.onPause(); }
+  @Override public void onPause() { if(spatial!=null){spatial.stop();spatial=null;} try { event(new JSONObject().put("type", "lifecycle").put("state", "BACKGROUND")); } catch(Exception ignored){} foreground=false; stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null){web.onPause();LandfallCookiePersistence.request();} super.onPause(); }
   @Override public void onDestroy() { stopLocation(); if(power!=null)power.close(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null){LandfallCookiePersistence.request();web.destroy();web=null;} super.onDestroy(); }
 }

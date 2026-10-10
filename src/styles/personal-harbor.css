@@ -261,6 +261,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 
 .harbor-stack {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.2rem;
 }
 .harbor-panel,
@@ -283,6 +284,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 
 .harbor-passport-gateway {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
@@ -320,6 +322,8 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 
 .harbor-passport-gateway .button {
   flex: none;
+  max-width: 100%;
+  white-space: normal;
 }
 .harbor-panel h2,
 .passport-record-hero h2,
@@ -369,7 +373,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 
 .harbor-stat-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
   gap: 0.8rem;
 }
 .harbor-stat {
@@ -391,7 +395,7 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 }
 .harbor-card-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
   gap: 0.75rem;
 }
 .harbor-link-card {
@@ -806,7 +810,9 @@ html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
 }
 
 .harbor-identity-hero__copy {
+  min-width: 0;
   padding-top: 1rem;
+  overflow-wrap: anywhere;
 }
 
 .harbor-identity-hero__copy > * {

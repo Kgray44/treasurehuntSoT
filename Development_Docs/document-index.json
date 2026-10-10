@@ -7497,6 +7497,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/Phase_1_Implementation.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": "parallax-phase-1-implementation"
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/README.md",
       "record_type": "program-record",
       "status": "preserved",

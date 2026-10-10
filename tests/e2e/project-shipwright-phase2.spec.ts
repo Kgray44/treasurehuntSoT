@@ -1,5 +1,78 @@
 import AxeBuilder from "@axe-core/playwright";
+import { PrismaClient } from "@prisma/client";
 import { expect, test } from "@playwright/test";
+import bcrypt from "bcryptjs";
+
+const creatorEmail = process.env.SHIPWRIGHT_TEST_CREATOR_EMAIL ?? "shipwright.phase2.creator@example.test";
+const creatorPassword = process.env.SHIPWRIGHT_TEST_CREATOR_PASSWORD ?? "Shipwright Phase2 2026!";
+const ordinaryVerifierCreator = {
+  id: "shipwright-p2-ordinary-account-creator",
+  profileId: "shipwright-p2-ordinary-profile-creator",
+  email: creatorEmail,
+  displayName: "Shipwright Phase 2 Ordinary Verifier",
+};
+
+let database: PrismaClient | undefined;
+
+test.beforeAll(async () => {
+  if (!process.env.DATABASE_URL?.startsWith("file:")) return;
+  database = new PrismaClient();
+  const existing = await database.accountEmail.findUnique({
+    where: { normalizedEmail: ordinaryVerifierCreator.email },
+    select: { id: true },
+  });
+  if (existing) return;
+
+  const createdAt = new Date("2026-08-24T00:00:00.000Z");
+  const passwordHash = await bcrypt.hash(creatorPassword, 10);
+  await database.$transaction([
+    database.userAccount.create({
+      data: {
+        id: ordinaryVerifierCreator.id,
+        status: "ACTIVE",
+        claimedAt: createdAt,
+        ordinaryWorkspaceEntryAt: createdAt,
+        lastSeenAt: createdAt,
+        createdAt,
+      },
+    }),
+    database.playerProfile.create({
+      data: {
+        id: ordinaryVerifierCreator.profileId,
+        accountId: ordinaryVerifierCreator.id,
+        displayName: ordinaryVerifierCreator.displayName,
+        normalizedDisplayName: ordinaryVerifierCreator.displayName.toLocaleLowerCase(),
+        handle: "shipwright-phase2-ordinary-verifier",
+        normalizedHandle: "shipwright-phase2-ordinary-verifier",
+        biography: "Synthetic Shipwright Phase 2 ordinary verifier. No real person is represented.",
+        defaultVisibility: "ONLY_ME",
+        status: "ACTIVE",
+        claimedAt: createdAt,
+        createdAt,
+      },
+    }),
+    database.accountEmail.create({
+      data: {
+        accountId: ordinaryVerifierCreator.id,
+        normalizedEmail: ordinaryVerifierCreator.email,
+        displayEmail: ordinaryVerifierCreator.email,
+        verificationState: "VERIFIED",
+        verifiedAt: createdAt,
+        createdAt,
+      },
+    }),
+    database.accountCredential.create({
+      data: { accountId: ordinaryVerifierCreator.id, passwordHash, changedAt: createdAt, createdAt },
+    }),
+    database.accountRoleAssignment.create({
+      data: { accountId: ordinaryVerifierCreator.id, role: "CREATOR", grantedAt: createdAt },
+    }),
+  ]);
+});
+
+test.afterAll(async () => {
+  await database?.$disconnect();
+});
 
 test.skip(({ browserName }) => browserName !== "chromium", "The task-owned mutable Studio journey runs once.");
 
@@ -7,8 +80,6 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   page,
 }) => {
   test.setTimeout(60_000);
-  const creatorEmail = process.env.SHIPWRIGHT_TEST_CREATOR_EMAIL ?? "shipwright.phase2.creator@example.test";
-  const creatorPassword = process.env.SHIPWRIGHT_TEST_CREATOR_PASSWORD ?? "Shipwright Phase2 2026!";
   const taleSlug = `shipwright-contract-aware-${Date.now()}`;
 
   await page.goto("/");
@@ -20,9 +91,9 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   await page.getByRole("link", { name: "Continue to account sign-in" }).click();
   await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
 
-  await page.getByLabel("Email or legacy Player name").fill(creatorEmail);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(creatorEmail);
   await page.getByLabel("Password").fill(creatorPassword);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page).toHaveURL(/\/studio\/library/u);
   await expect(page.getByRole("heading", { name: "Voyagewright Studio" })).toBeVisible();
 
@@ -58,6 +129,8 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   await expect(validationPanel).toBeVisible();
   await validationPanel.locator(".validation-issue").first().click();
   await expect(page.locator(".timeline-block").first()).toBeFocused();
+  await validationPanel.getByRole("button", { name: "Close validation results", exact: true }).click();
+  await expect(validationPanel).toBeHidden();
 
   await page.getByRole("button", { name: "Add Set Variable to first chapter" }).click();
   await expect(page.locator(".timeline-block")).toHaveCount(2);

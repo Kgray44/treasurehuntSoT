@@ -1,8 +1,9 @@
 import { createElement, StrictMode } from "react";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from "vitest";
 import type { JournalPhaseOutcome } from "@/animation/core/animation-types";
 import type { JournalOpeningPhase } from "@/animation/journal/opening-machine";
+import { syntheticBinding, syntheticSpatialMoment } from "@/parallax/fixtures";
 import {
   journalOpeningAllowsPersistence,
   runJournalOpeningPhases,
@@ -400,6 +401,82 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     vi.restoreAllMocks();
     localStorage.clear();
     ControlledEventSource.reset();
+  });
+
+  it("opens the released Chronicle Lens from a live control outside imperative book pages", async () => {
+    const moment = syntheticSpatialMoment();
+    const block = {
+      id: syntheticBinding.blockId,
+      chapterId: "spatial-chapter",
+      blockType: "narrative",
+      journalKind: "story",
+      title: "The Captain's note",
+      orderIndex: 0,
+      configuration: {},
+      presentation: { spatialMoment: moment },
+      connections: [],
+      progress: "active",
+      releasedAt: null,
+      completedAt: null,
+      selectedTargetId: null,
+    };
+    const state = {
+      ...sessionState(syntheticBinding.sessionId),
+      journal: {
+        mode: "active",
+        currentChapterId: block.chapterId,
+        currentBlockId: block.id,
+        chapters: [{ id: block.chapterId, title: "First bearing", subtitle: null, orderIndex: 0, blocks: [block] }],
+      },
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((input: RequestInfo | URL) =>
+        Promise.resolve(
+          jsonResponse(
+            String(input).startsWith("/api/crossdeck")
+              ? { surfaces: [], voyages: [], csrfToken: "synthetic-device-csrf" }
+              : String(input).includes("/parallax?")
+                ? { moment, binding: syntheticBinding, replayOnly: false }
+                : state,
+          ),
+        ),
+      ),
+    );
+    const originalShowModal = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "showModal");
+    const originalClose = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "close");
+    Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
+      configurable: true,
+      value: function (this: HTMLDialogElement) {
+        this.setAttribute("open", "");
+      },
+    });
+    Object.defineProperty(HTMLDialogElement.prototype, "close", {
+      configurable: true,
+      value: function (this: HTMLDialogElement) {
+        this.removeAttribute("open");
+      },
+    });
+    onTestFinished(() => {
+      if (originalShowModal) Object.defineProperty(HTMLDialogElement.prototype, "showModal", originalShowModal);
+      else Reflect.deleteProperty(HTMLDialogElement.prototype, "showModal");
+      if (originalClose) Object.defineProperty(HTMLDialogElement.prototype, "close", originalClose);
+      else Reflect.deleteProperty(HTMLDialogElement.prototype, "close");
+    });
+    const view = render(createElement(ChronicleJournalSession, { sessionId: syntheticBinding.sessionId }));
+    await act(flushMicrotasks);
+    expect(screen.queryByRole("button", { name: "Open Chronicle Lens" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
+    await act(flushMicrotasks);
+    const entry = screen.getByRole("button", { name: "Open Chronicle Lens" });
+    expect(entry.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
+    fireEvent.click(entry);
+    await act(flushMicrotasks);
+    const dialog = view.container.querySelector<HTMLDialogElement>("dialog[open]")!;
+    expect(dialog).not.toBeNull();
+    expect(dialog.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
+    expect(screen.getByText(/The next bearing is written in the stars/)).toBeVisible();
+    view.unmount();
   });
 
   it("cancels its scheduled initial load when unmounted before the queued microtask", async () => {

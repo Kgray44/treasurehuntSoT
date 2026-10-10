@@ -17,9 +17,9 @@ test("Shipwright Phase 5 lets a synthetic Creator review and publish an immutabl
     page.getByRole("link", { name: "Enter as Creator", exact: true }).click(),
   ]);
   await page.getByRole("link", { name: "Continue to account sign-in" }).click();
-  await page.getByLabel("Email or legacy Player name").fill(creatorEmail);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(creatorEmail);
   await page.getByLabel("Password").fill(creatorPassword);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   const studioReady = page.waitForResponse(
     (response) =>
       response.url().endsWith("/api/studio/tales") && response.request().method() === "GET" && response.ok(),
