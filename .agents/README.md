@@ -19,6 +19,7 @@ not authorize restarting a completed phase.
 - [Landfall Phase 3 amendment audit context](landfall-phase3-v11-audit.md)
 - [Refit Muster context](refit-muster.md)
 - [Confluence worker context](confluence-workers.md)
+- [Project Launchdeck task launching](project-launchdeck.md)
 
 The Landfall Phase 4 closure context binds accepted source and immutable proof.
 Its protected evidence/catalog publication and final landed verification establish

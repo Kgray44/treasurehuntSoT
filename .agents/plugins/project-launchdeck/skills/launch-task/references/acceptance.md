@@ -1,0 +1,22 @@
+# Owner acceptance contract
+
+The primary outcome is invocation from an existing regular ChatGPT **Chat inside this desktop app**, e.g. “Launch Project Crossdeck Phase 2 now,” that creates and starts a real Work chat in the existing VoyageWright Codex project. No browser/external Chat-to-Work connection is requested. GitHub remains the authorized repository-context source. Prompt preparation alone does not satisfy the outcome. The owner authorizes ordinary in-scope preparation/launch and the specified acceptance exercises; actual platform permissions still apply.
+
+Use current conversation decisions, unique requirements, exclusions, relevant implementation history, and accessible attachments. Combine them with live protected main, current governance, phase/prior acceptance, dependencies, relevant open work, AGENTS.md, applicable Project Trim context workflow, source-bound packets, and accepted capsules. Context-workflow files or helpers may be absent: inspect actual current paths and label the gap. Historical chat descriptions never override current source. Do not forward entire histories/document libraries to a backend.
+
+Title contract: `{Project} Phase {N}: {Phase Name}`; cross-project `{A} + {B}: {Purpose}`; other titles identify purpose. Omit VoyageWright. Allocate V2/V3 under the same owner-local journal lock; all Launchdeck launchers for this owner use that single journal. Check native inventory, including archived titles where exposed. Native tools cannot atomically reserve titles against unrelated manual/external launchers; reconcile this launch's own title and disclose that platform boundary rather than promise global uniqueness.
+
+Independent parallel launches get distinct request identities, context, title, worktree, branch where supported, and owned mutable resources. Record real dependencies: parallel startup does not waive prior-phase gates or permit cross-task changes. No session is created merely to prepare context.
+
+Acceptance exercises:
+
+| Test | Required evidence                                                                                                                                                                              |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A    | Invoke from a ChatGPT discussion; create Crossdeck Phase 2; observe actual native project ID/title, transferred requirements, execution, and usable link.                                      |
+| B    | Introduce a unique requirement in the invoking discussion; prove the target receives and applies it while reading current governance.                                                          |
+| C    | Repeat/resume the request; prove reuse/continuation or explicit new-run versioning without duplicate creation.                                                                                 |
+| D    | Start three authorized independent initiatives concurrently; observe separate native tasks, context, titles, worktrees/branches and resource ownership.                                        |
+| E    | Exercise unavailable integration, permission rejection, timeout, partial creation and retry. Distinguish simulation from live provider proof; retain uncertain receipts and never blind-retry. |
+| F    | Inspect short task contracts, relevant references and preserved acceptance gates. No copied historical boilerplate or claimed savings without comparable measurement.                          |
+
+Report separately: PLUGIN CREATED; PLUGIN INSTALLED AND INVOCABLE; GITHUB CONTEXT VERIFIED; CONVERSATION CONTEXT VERIFIED; NATIVE CODEX PROJECT ROUTING VERIFIED; NATIVE CONVERSATION CREATION VERIFIED; NAMING AND DUPLICATE HANDLING VERIFIED; PARALLEL EXECUTION VERIFIED; END-TO-END ACCEPTANCE PASSED. Qualify host/surface and mark unsupported or untested honestly. Do not collapse Work executor evidence into proof of dispatch from the invoking regular in-app Chat. A local marketplace install or private-plugin inspection does not prove source-Chat invocation or native tool availability. The v0.2.0 same-app A/B attempt reported missing native tools; preserve that failed acceptance result until a new observed launch supersedes it.

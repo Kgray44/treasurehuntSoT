@@ -1,0 +1,29 @@
+{
+  "name": "project-launchdeck",
+  "version": "0.2.1",
+  "description": "Repository-owned VoyageWright Codex launches with full project/GitHub context, Project Trim contracts, standard titles, retry receipts, and safe fallback.",
+  "author": {
+    "name": "Project Launchdeck"
+  },
+  "skills": "./skills/",
+  "apps": "./.app.json",
+  "interface": {
+    "displayName": "Project Launchdeck",
+    "shortDescription": "VoyageWright task launching",
+    "longDescription": "Launch an agreed initiative or phase directly into the VoyageWright Codex project when native host tools are available. Uses repository-owned Project Trim guidance and all relevant accessible project and GitHub sources. Applies standard titles, durable retry receipts, Goal requests and evidence checks, and cleanup of owned temporary relays. Provides a ready-to-launch prompt when native dispatch is unavailable. This plugin does not grant new host permissions or promise global exactly-once creation.",
+    "developerName": "Project Launchdeck",
+    "category": "Productivity",
+    "logo": "./assets/logo.svg",
+    "logoDark": "./assets/logo-dark.svg",
+    "composerIcon": "./assets/logo.svg",
+    "composerIconDark": "./assets/logo-dark.svg",
+    "brandColor": "#126F7B",
+    "brandColorDark": "#74D7CF",
+    "defaultPrompt": [
+      "Launch the agreed phase as a Goal in the VoyageWright Codex project using Project Trim.",
+      "Prepare a compact implementation launch from our agreed scope and current repository evidence.",
+      "Check a previous Launchdeck request and reconcile its receipt before retrying."
+    ]
+  },
+  "requires_local_executor": true
+}

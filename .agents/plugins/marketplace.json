@@ -1,0 +1,12 @@
+{
+  "name": "voyagewright-launchdeck",
+  "interface": { "displayName": "VoyageWright workflows" },
+  "plugins": [
+    {
+      "name": "project-launchdeck",
+      "source": { "source": "local", "path": "./.agents/plugins/project-launchdeck" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}

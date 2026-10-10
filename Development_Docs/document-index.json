@@ -2487,6 +2487,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Project_Launchdeck/Project_Launchdeck_Implementation_and_Verification.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Context_Budget_and_Usage_Worksheet.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -7505,8 +7511,8 @@
     {
       "path": "Development_Docs/Projects/Project_Parallax/Phase_1_Implementation.md",
       "record_type": "program-record",
-      "status": "current",
-      "canonical_for": "parallax-phase-1-implementation"
+      "status": "preserved",
+      "canonical_for": null
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/README.md",
