@@ -4798,6 +4798,21 @@
       "path": "tests/e2e/landfall-*.spec.ts",
       "suiteIds": ["browser.landfall"],
       "contractIds": ["landfall.player-live-position"]
+    },
+    {
+      "path": "src/device-lab/**",
+      "suiteIds": ["unit.device-lab", "unit.landfall-device-lab", "static.core"],
+      "contractIds": ["device-lab.shared-infrastructure", "landfall.device-lab-evidence"]
+    },
+    {
+      "path": "scripts/device-lab/**",
+      "suiteIds": ["unit.device-lab", "unit.landfall-device-lab", "static.core"],
+      "contractIds": ["device-lab.shared-infrastructure", "landfall.device-lab-evidence"]
+    },
+    {
+      "path": "Development_Docs/Spatial_Experience/device-lab-scenario-registry.json",
+      "suiteIds": ["unit.device-lab", "static.core"],
+      "contractIds": ["device-lab.shared-infrastructure"]
     }
   ],
   "contractMappings": [
@@ -6651,6 +6666,10 @@
     {
       "contractId": "public-privacy-projection",
       "suiteIds": ["unit.private-content", "build.production"]
+    },
+    {
+      "contractId": "device-lab.shared-infrastructure",
+      "suiteIds": ["unit.device-lab"]
     }
   ],
   "impactClasses": [

@@ -259,6 +259,7 @@
     "db:generate:mysql": "prisma generate --schema prisma/schema.prisma",
     "landfall:migrations": "node --experimental-sqlite scripts/landfall/rehearse-phase1-migrations.mjs",
     "landfall:phase2:migrations": "node --experimental-sqlite scripts/landfall/rehearse-phase2-migrations.mjs",
+    "device-lab": "node --import tsx scripts/device-lab/run.ts",
     "landfall:device-lab": "tsx scripts/landfall/device-lab/run.ts",
     "db:migrate:mysql:init": "prisma db execute --file prisma/mysql-migrations/0001_init/migration.sql --schema prisma/schema.prisma",
     "db:migrate:mysql:companion": "prisma db execute --file prisma/mysql-migrations/0002_player_companion_shell/migration.sql --schema prisma/schema.prisma",

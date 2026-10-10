@@ -3361,6 +3361,13 @@
       "authority": "project-landfall",
       "owners": ["landfall", "player-journal"],
       "critical": true
+    },
+    {
+      "id": "device-lab.shared-infrastructure",
+      "name": "Voyagewright shared Device Lab registry, pack isolation, source fidelity and cleanup",
+      "authority": "sounding-line",
+      "owners": ["sounding-line"],
+      "critical": true
     }
   ]
 }
