@@ -5,6 +5,12 @@ export const spatialId = z
   .min(1)
   .max(128)
   .regex(/^[A-Za-z0-9][A-Za-z0-9._:-]*$/);
+// Instance identity contains two independently bounded IDs plus its namespace.
+export const instanceIdSchema = z
+  .string()
+  .min(1)
+  .max(300)
+  .regex(/^[A-Za-z0-9][A-Za-z0-9._:-]*$/);
 const copy = (max: number) => z.string().trim().min(1).max(max);
 export const vectorSchema = z.strictObject({
   x: z.number().finite().min(-10000).max(10000),
@@ -196,7 +202,7 @@ export const receiptSchema = z
     schemaVersion: z.literal(1),
     interactionId: spatialId,
     idempotencyKey: spatialId,
-    instanceId: spatialId,
+    instanceId: instanceIdSchema,
     sessionId: spatialId,
     chronicleVersionId: spatialId,
     blockId: spatialId,

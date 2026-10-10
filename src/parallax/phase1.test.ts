@@ -111,6 +111,20 @@ describe("Parallax actual runtime and evidence seam", () => {
     });
     await runtime.close();
   });
+  it("binds maximally bounded attachment/run IDs without losing instance identity", async () => {
+    const moment = syntheticSpatialMoment();
+    moment.attachment.id = "a".repeat(128);
+    const binding = { ...syntheticBinding, runId: "r".repeat(128) };
+    const runtime = new ParallaxLensRuntime(moment, binding, guidedContext(), now);
+    expect(() => {
+      runtime.binding.actorId = "mutated";
+    }).toThrow();
+    await runtime.open();
+    const receipt = await runtime.interact("captains-note", "INSPECT", "long-instance");
+    expect(receipt.instanceId).toBe(`instance:${moment.attachment.id}:${binding.runId}`);
+    expect(evaluateSpatialEvidence(receipt, moment, binding, now()).progressionChanged).toBe(false);
+    await runtime.close();
+  });
   it("resolves local anchors once and composes immutable entity identity", async () => {
     const { runtime, adapter } = lab();
     await runtime.open(adapter);

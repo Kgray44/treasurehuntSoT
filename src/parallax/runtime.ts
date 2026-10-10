@@ -1,6 +1,7 @@
 import {
   spatialMomentSchema,
   instanceBindingSchema,
+  instanceIdSchema,
   receiptSchema,
   identityTransform,
   resolvedTransformSchema,
@@ -130,10 +131,9 @@ export class ParallaxLensRuntime {
       }
     };
     freeze(this.moment);
-    this.binding = instanceBindingSchema.parse(binding);
+    this.binding = Object.freeze(instanceBindingSchema.parse(binding));
     if (this.moment.attachment.storyMomentId !== binding.blockId) throw new Error("PARALLAX_ATTACHMENT_BLOCK_MISMATCH");
-    this.instanceId = `instance:${this.moment.attachment.id}:${binding.runId}`;
-    if (this.instanceId.length > 128) throw new Error("PARALLAX_INSTANCE_ID_TOO_LONG");
+    this.instanceId = instanceIdSchema.parse(`instance:${this.moment.attachment.id}:${binding.runId}`);
   }
   read(): LensSnapshot {
     return structuredClone(this.snapshot);
