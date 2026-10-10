@@ -87,6 +87,8 @@ All 15 original Homeport Phase 7 journeys pass in focused production-browser run
 
 The account disclosure becomes inert and leaves the accessibility tree as soon as its retained visual exit begins. A focused regression verifies that keyboard and assistive navigation cannot reach the closing dialog; the exit animation remains intact.
 
+Preference reconciliation ignores an initialization or focus read superseded by a newer same-tab save, account-scoped storage/broadcast update, later refresh, or account cleanup. Thirteen focused preference tests pass, including deterministic in-flight read races. The multi-tab browser journey verifies the second tab's authenticated public account control before measuring live synchronization.
+
 Ordinary Sounding Line remains the protected-main integration gate, through [PR #692](https://github.com/Kgray44/treasurehuntSoT/pull/692).
 
 ## Product acceptance still required

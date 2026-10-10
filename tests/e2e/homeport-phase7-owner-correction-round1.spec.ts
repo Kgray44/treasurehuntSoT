@@ -321,6 +321,7 @@ test("Journey N: Preference effects", async ({ context, page }) => {
 
   const second = await context.newPage();
   await second.goto("/");
+  await expect(second.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
   await expect(second.locator("html")).toHaveAttribute("data-voyage-theme", "dark");
   await page.getByRole("combobox", { name: "Theme", exact: true }).selectOption("LIGHT");
   await page.getByRole("button", { name: "Save preferences" }).click();
