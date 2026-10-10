@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SessionManager } from "@/components/homeport/AccountSurfaces";
 import { AuthenticatedHarborPage } from "@/components/homeport/AuthenticatedHarborPage";
 export const dynamic = "force-dynamic";
@@ -10,6 +11,11 @@ export default function SessionsPage() {
       title="Sessions & Devices"
       description="Review safe AccountSession summaries, revoke access, or sign out everywhere."
     >
+      <p>
+        <Link className="button" href="/account/devices">
+          Connect your Voyage devices
+        </Link>
+      </p>
       <SessionManager />
     </AuthenticatedHarborPage>
   );

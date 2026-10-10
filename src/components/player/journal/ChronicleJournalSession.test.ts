@@ -468,6 +468,9 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     vi.stubGlobal(
       "fetch",
       vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+        // Device participation has its own polling/cleanup controller. Track only the Journal's fulfilled work.
+        if (String(input).startsWith("/api/crossdeck"))
+          return Promise.resolve(jsonResponse({ surfaces: [], voyages: [], csrfToken: "synthetic-device-csrf" }));
         activeRequests += 1;
         if (init?.signal) fulfilledSignals.push(init.signal);
         const sessionId = String(input).split("/").at(-1) ?? "unknown";
@@ -544,7 +547,9 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     let fulfilledSignal: AbortSignal | undefined;
     vi.stubGlobal(
       "fetch",
-      vi.fn((_input: RequestInfo | URL, init?: RequestInit) => {
+      vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input).startsWith("/api/crossdeck"))
+          return Promise.resolve(jsonResponse({ surfaces: [], voyages: [], csrfToken: "synthetic-device-csrf" }));
         fulfilledSignal = init?.signal ?? undefined;
         return Promise.resolve(jsonResponse(sessionState("fulfilled")));
       }),
@@ -552,6 +557,8 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
 
     const view = render(createElement(ChronicleJournalSession, { sessionId: "fulfilled" }));
     await act(flushMicrotasks);
+    // The opening dialog makes the Journal tools inert until opened; the scoped entry is still prepared.
+    expect(view.container.querySelector('a[href="/account/devices?voyage=fulfilled"]')).toHaveTextContent("Devices");
     expect(fulfilledSignal?.aborted).toBe(false);
     expect(ControlledEventSource.activeStreams).toBe(1);
     const journalIntervals = setIntervalSpy.mock.results

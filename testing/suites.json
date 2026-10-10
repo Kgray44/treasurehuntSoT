@@ -2837,6 +2837,56 @@
       "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
       "adapter": "vitest-family"
+    },
+    {
+      "id": "unit.crossdeck",
+      "name": "Crossdeck secure pairing and surface participation",
+      "tier": 2,
+      "owner": "project-crossdeck",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 10000,
+      "hardBudgetMs": 300000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool", "owned-sqlite-fixture"],
+      "dependencies": [],
+      "contracts": ["crossdeck.phase1.participation"],
+      "affectedPaths": [
+        "src/crossdeck/**",
+        "src/app/api/crossdeck/**",
+        "src/components/crossdeck/**",
+        "src/app/account/devices/**",
+        "src/app/devices/**",
+        "scripts/crossdeck/**"
+      ],
+      "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-family",
+      "adapter": "vitest-family"
+    },
+    {
+      "id": "browser.crossdeck",
+      "name": "Crossdeck desktop and mobile browser pairing",
+      "tier": 4,
+      "owner": "project-crossdeck",
+      "command": "registry-selected Playwright cases",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 240000,
+      "hardBudgetMs": 600000,
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["unit.crossdeck"],
+      "contracts": ["crossdeck.phase1.participation"],
+      "affectedPaths": [
+        "src/crossdeck/**",
+        "src/app/api/crossdeck/**",
+        "src/components/crossdeck/**",
+        "src/app/account/devices/**",
+        "src/app/devices/**",
+        "tests/e2e/crossdeck-phase1.spec.ts"
+      ],
+      "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-browser-family",
+      "adapter": "playwright-family"
     }
   ]
 }

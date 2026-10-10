@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { CrossdeckDevices } from "@/components/crossdeck/CrossdeckDevices";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { AudioCuePlayer } from "@/animation/core/audio-cues";
@@ -1053,6 +1054,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
             <h1>{state.tale.title}</h1>
           </div>
           <div className="journal-session-tools">
+            {state.csrfToken && <CrossdeckDevices initialVoyage={sessionId} compact />}
             <span className={`runtime-connection ${connection}`} role="status">
               <i />
               {connection === "live"

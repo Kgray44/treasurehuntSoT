@@ -23,7 +23,7 @@ const entry = (overrides: Partial<FeatureCatalogEntry> = {}): FeatureCatalogEntr
 describe("Feature Catalog", () => {
   it("loads the audited catalog with stable ordering", () => {
     const { entries } = loadFeatureCatalog();
-    expect(entries).toHaveLength(61);
+    expect(entries).toHaveLength(62);
     expect(sortedEntries(entries).map((item) => item.id)).toEqual(
       [...sortedEntries(entries).map((item) => item.id)].sort((a, b) =>
         a.localeCompare(b, undefined, { numeric: true }),
@@ -33,6 +33,7 @@ describe("Feature Catalog", () => {
     expect(entries.find((item) => item.id === "FT-036")?.program).toBe("Project Drydock Phase 3");
     expect(entries.find((item) => item.id === "FT-039")?.program).toBe("Project Bridgewatch v1.2 P2 - Flood the Board");
     expect(entries.find((item) => item.id === "FT-044")?.program).toBe("Project Landfall Phases 1, 2, 3 and 4");
+    expect(entries.find((item) => item.id === "FT-045")?.program).toBe("Project Crossdeck Phase 1 — Lay the Gangway");
   });
 
   it("rejects duplicate and empty subfeatures", () => {

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "owner": "project-crossdeck",
+  "phase": 1,
+  "status": "READY_FOR_OWNER_WALKTHROUGH",
+  "routes": [
+    {
+      "path": "/account/devices",
+      "source": "src/app/account/devices/page.tsx",
+      "classification": "USER_NAVIGABLE",
+      "parent": "/account/sessions",
+      "desktopEntry": "Sessions & Devices → Connect your Voyage devices",
+      "mobileEntry": "Sessions & Devices → Connect your Voyage devices",
+      "contextualEntry": "Chronicle Journal → Devices",
+      "authentication": "CANONICAL_WAYFARER",
+      "back": "/account/sessions",
+      "states": [
+        "loading",
+        "empty",
+        "connected",
+        "pairing",
+        "expired-code",
+        "unavailable",
+        "removed-membership",
+        "signed-out"
+      ],
+      "tests": ["tests/e2e/crossdeck-phase1.spec.ts"]
+    },
+    {
+      "path": "/devices/pair",
+      "source": "src/app/devices/pair/page.tsx",
+      "classification": "TOKENIZED_DEEP_LINK",
+      "parent": "/account/devices",
+      "desktopEntry": "Pairing QR or manual code",
+      "mobileEntry": "Pairing QR or manual code",
+      "authentication": "PUBLIC_ENTRY_CANONICAL_WAYFARER_CONFIRMATION",
+      "back": "/account/sessions",
+      "states": ["signed-out", "loading", "confirmation", "connected", "expired-code", "unavailable"],
+      "tests": ["tests/e2e/crossdeck-phase1.spec.ts"]
+    },
+    {
+      "path": "/api/crossdeck",
+      "source": "src/app/api/crossdeck/route.ts",
+      "classification": "API_OR_SERVICE",
+      "authentication": "CANONICAL_WAYFARER_AND_MUTATION_CSRF",
+      "tests": ["src/app/api/crossdeck/route.test.ts"]
+    }
+  ]
+}
