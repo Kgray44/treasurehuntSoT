@@ -122,7 +122,7 @@ test("Journey A: Fast auth-page navigation", async ({ page }) => {
 test("Journey B: Slow auth-page navigation", async ({ page }) => {
   let navigationStarted = false;
   await page.route("**/register**", async (route) => {
-    if (!navigationStarted) {
+    if (!navigationStarted || route.request().headers()["next-router-prefetch"] === "1") {
       await route.abort();
       return;
     }

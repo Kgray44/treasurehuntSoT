@@ -480,7 +480,10 @@ test("Journey Q: Community reviews", async ({ page }) => {
   await capture(page, "HP-OWCR1-EV-W-COMMUNITY-REVIEW-COMPOSER");
   await page.getByRole("combobox", { name: /Rating/u }).selectOption("4");
   await page.getByLabel("Preview-safe review").fill("A responsive synthetic review for the correction journey.");
-  await page.getByLabel(/Include spoiler details/u).check();
+  await page
+    .getByRole("form", { name: "Write a review", exact: true })
+    .getByLabel(/Include spoiler details/u)
+    .check();
   await page
     .getByRole("textbox", { name: /^Spoiler details/u })
     .fill("Synthetic spoiler detail remains behind an explicit reveal.");

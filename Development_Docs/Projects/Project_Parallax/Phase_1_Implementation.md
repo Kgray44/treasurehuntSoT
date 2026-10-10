@@ -79,6 +79,8 @@ The selected nested Playwright server configurations explicitly start from the r
 
 The full selected generic cohort passes 24 production-browser cases. The existing Shipwright Phase 5 dedicated-fixture skip is retained. History and Artifacts are reached through current Chronicle Passport navigation; sign-in waits for the existing provider-readiness state. Shipwright Phase 2 seeds its missing synthetic Creator in the disposable SQLite fixture and closes the validation panel through its normal control before continuing Inspector work.
 
+Homeport correction fixtures anchor active token, guest-session, export, and lifecycle deadlines to one preparation clock, while retaining historical source records and deliberately expired cases. Account journeys wait for the public provider-readiness state before entering credentials, and the review spoiler control is scoped to its accessible review form. Focused Round 1 journeys J–U pass with the normal production build, including export, reactivation, deletion cancellation, loading, review CRUD, motion, and the mobile sweep; their existing receipt and timing assertions remain intact.
+
 Ordinary Sounding Line remains the protected-main integration gate, through [PR #692](https://github.com/Kgray44/treasurehuntSoT/pull/692).
 
 ## Product acceptance still required
