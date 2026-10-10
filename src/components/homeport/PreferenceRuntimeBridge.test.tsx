@@ -172,4 +172,89 @@ describe("Project Homeport preference reconciliation", () => {
 
     expect(mocks.apply).toHaveBeenCalledWith(nextPreferences);
   });
+
+  it.each(["local", "storage", "channel"])(
+    "keeps a newer %s save when an older hydration read completes",
+    async (source) => {
+      let completeRead!: (response: Response) => void;
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(
+          () =>
+            new Promise<Response>((resolve) => {
+              completeRead = resolve;
+            }),
+        ),
+      );
+      render(<PreferenceRuntimeBridge />);
+      if (source === "local") {
+        localStorage.setItem("voyagewright-preferences:account-1", JSON.stringify(nextPreferences));
+        window.dispatchEvent(
+          new CustomEvent("voyagewright-preferences-updated", {
+            detail: { accountId: "account-1", preferences: nextPreferences },
+          }),
+        );
+      } else if (source === "storage") {
+        localStorage.setItem("voyagewright-preferences:account-1", JSON.stringify(nextPreferences));
+        window.dispatchEvent(
+          new StorageEvent("storage", {
+            key: "voyagewright-preferences:account-1",
+            newValue: JSON.stringify(nextPreferences),
+          }),
+        );
+      } else {
+        messageListener?.(
+          new MessageEvent("message", {
+            data: { type: "preferences-updated", accountId: "account-1", preferences: nextPreferences },
+          }),
+        );
+      }
+      completeRead(
+        new Response(
+          JSON.stringify({
+            preferences: {
+              experience: { motion: "SYSTEM", textScale: 1, theme: "LIGHT", contrast: "STANDARD" },
+            },
+          }),
+          { status: 200 },
+        ),
+      );
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      systemPreferenceListener?.(new Event("change"));
+      expect(mocks.apply).toHaveBeenLastCalledWith(nextPreferences);
+      expect(mocks.apply.mock.calls.some(([preferences]) => preferences.experience.theme === "LIGHT")).toBe(false);
+      if (source !== "channel")
+        expect(JSON.parse(localStorage.getItem("voyagewright-preferences:account-1")!)).toEqual(nextPreferences);
+    },
+  );
+
+  it("ignores an older refresh and a response after account cleanup", async () => {
+    const pending: Array<(response: Response) => void> = [];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => new Promise<Response>((resolve) => pending.push(resolve))),
+    );
+    const view = render(<PreferenceRuntimeBridge />);
+    window.dispatchEvent(new Event("focus"));
+    pending[1](new Response(JSON.stringify({ preferences: nextPreferences }), { status: 200 }));
+    await waitFor(() => expect(mocks.apply).toHaveBeenCalledWith(nextPreferences));
+    mocks.apply.mockClear();
+    pending[0](
+      new Response(
+        JSON.stringify({
+          preferences: {
+            experience: { motion: "SYSTEM", textScale: 1, theme: "LIGHT", contrast: "STANDARD" },
+          },
+        }),
+        { status: 200 },
+      ),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(mocks.apply).not.toHaveBeenCalled();
+    window.dispatchEvent(new Event("focus"));
+    view.unmount();
+    pending[2](new Response(JSON.stringify({ preferences: nextPreferences }), { status: 200 }));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(mocks.apply).not.toHaveBeenCalled();
+  });
 });

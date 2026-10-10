@@ -19,10 +19,10 @@ test("Wayfarer Passport directs account changes to the current Personal Harbor s
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password", { exact: true }).fill("A secure test password 42!");
   await page.getByLabel("Confirm password", { exact: true }).fill("A secure test password 42!");
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   await expect(page).toHaveURL(/\/verify-email/u);
   await page.getByLabel("Code").fill(await verificationCodeFor(email));
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Verify email", exact: true }).click();
   await expect(page).toHaveURL(/\/passport/u);
 
   await page.goto("/passport");
@@ -102,7 +102,7 @@ test("Wayfarer Passport remains operable at required responsive viewports", asyn
     await page.setViewportSize(viewport);
     await page.goto("/register");
     await expect(page.getByRole("heading", { name: "Create your account" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Continue" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Create account", exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
   }
 });

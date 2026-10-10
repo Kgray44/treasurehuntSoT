@@ -61,9 +61,14 @@ function pack(subject: DeviceLabAdapter, input = definition) {
   return packs;
 }
 describe("shared Device Lab registry and packs", () => {
-  it("loads all 47 baseline scenarios and six canonical tier descriptions without claiming execution", () => {
+  it("loads all 55 Sextant and Parallax scenarios and six canonical tier descriptions without claiming execution", () => {
     const registry = loadDeviceLabRegistry();
-    expect(registry.scenarios).toHaveLength(47);
+    expect(registry.scenarios).toHaveLength(55);
+    expect(
+      registry.scenarios.filter(
+        (s) => s.owner === "PARALLAX" && s.eligibleTiers.length === 1 && s.eligibleTiers[0] === "D0",
+      ),
+    ).toHaveLength(8);
     expect(Object.keys(registry.tierVocabulary)).toEqual(["D0", "D1", "D2", "D3", "D4", "D5"]);
     const packs = new DeviceLabScenarioPacks(registry);
     expect(packs.status().every((entry) => entry.state === "REGISTRY_BASELINE_ONLY")).toBe(true);

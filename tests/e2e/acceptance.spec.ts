@@ -96,7 +96,7 @@ test("canonical Chronicle invitation journey keeps Player and Captain boundaries
     await captainPage.goto("/captain/sign-in");
     await expect(captainPage.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
     await captainPage.getByRole("link", { name: "Continue to account sign-in" }).click();
-    await captainPage.getByLabel("Email or legacy Player name").fill(captainEmail);
+    await captainPage.getByLabel("Email or Player name", { exact: true }).fill(captainEmail);
     await captainPage.getByLabel("Password").fill(captainPassword);
     await captainPage.getByLabel("Password").press("Enter");
     await expect(captainPage).toHaveURL(/\/captain\/library(?:\?.*)?$/u);

@@ -38,6 +38,7 @@ export default defineConfig({
   projects: [{ name: "admiralty-phase3-chromium", use: { browserName: "chromium" } }],
   webServer: {
     command: serverCommand,
+    cwd: process.cwd(),
     url: baseURL,
     reuseExistingServer: false,
     timeout: 180_000,

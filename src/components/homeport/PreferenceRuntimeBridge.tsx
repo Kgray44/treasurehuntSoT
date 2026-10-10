@@ -59,7 +59,11 @@ export function PreferenceRuntimeBridge() {
       }
     }
     const controller = new AbortController();
+    let preferenceRevision = 0;
+    let refreshRequest = 0;
     const refresh = async () => {
+      const request = ++refreshRequest;
+      const revision = preferenceRevision;
       try {
         const response = await fetch("/api/passport/preferences", {
           cache: "no-store",
@@ -69,6 +73,9 @@ export function PreferenceRuntimeBridge() {
         if (!response.ok) return;
         const body = (await response.json()) as PreferencesResponse;
         if (!isRuntimePreferences(body.preferences)) return;
+        // A saved preference received while this read was in flight is newer
+        // than its snapshot. Neither it nor a later refresh may be overwritten.
+        if (controller.signal.aborted || request !== refreshRequest || revision !== preferenceRevision) return;
         current.current = body.preferences;
         try {
           localStorage.setItem(cacheKey, JSON.stringify(body.preferences));
@@ -86,6 +93,7 @@ export function PreferenceRuntimeBridge() {
     const onLocalPreferenceUpdate = (event: Event) => {
       const detail = (event as CustomEvent<{ accountId?: string; preferences?: unknown }>).detail;
       if (detail?.accountId !== accountId || !isRuntimePreferences(detail.preferences)) return;
+      preferenceRevision += 1;
       current.current = detail.preferences;
     };
     const schemes = [
@@ -101,6 +109,7 @@ export function PreferenceRuntimeBridge() {
       try {
         const next = JSON.parse(event.newValue) as unknown;
         if (isRuntimePreferences(next)) {
+          preferenceRevision += 1;
           current.current = next;
           applyAccountRuntimePreferences(next);
         }
@@ -113,6 +122,7 @@ export function PreferenceRuntimeBridge() {
     channel?.addEventListener("message", (event) => {
       if (event.data?.type !== "preferences-updated" || event.data?.accountId !== accountId) return;
       if (isRuntimePreferences(event.data.preferences)) {
+        preferenceRevision += 1;
         current.current = event.data.preferences;
         applyAccountRuntimePreferences(event.data.preferences);
       }

@@ -45,6 +45,23 @@ describe("ProductShell", () => {
     vi.unstubAllGlobals();
   });
 
+  it("removes a closing account disclosure from keyboard and assistive navigation before its visual exit", async () => {
+    render(
+      <ProductShell>
+        <main>Catalog content</main>
+      </ProductShell>,
+    );
+    const trigger = screen.getByRole("button", { name: "Account" });
+    fireEvent.click(trigger);
+    const disclosure = screen.getByRole("dialog", { name: "Account navigation" });
+    expect(disclosure).not.toHaveAttribute("inert");
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(disclosure).toHaveAttribute("inert");
+    expect(disclosure).toHaveAttribute("aria-hidden", "true");
+    expect(screen.queryByRole("dialog", { name: "Account navigation" })).not.toBeInTheDocument();
+    await waitFor(() => expect(trigger).toHaveFocus());
+  });
+
   it("homeport.shell.gateway-account-control keeps the cinematic gateway inside a prompt global/account frame", () => {
     navigation.pathname = "/";
     render(

@@ -189,6 +189,7 @@ model AccountToken {
 }
 
 model AccountSession {
+  crossdeckSurfaces CrossdeckSurfaceSession[]
   id                   String                @id @default(cuid())
   accountId            String
   tokenHash            String                @unique
@@ -1649,6 +1650,7 @@ model TaleSideQuestObjective {
 }
 
 model TaleSession {
+  parallaxObservations ParallaxObservation[]
   musterMessages VoyageCrewMessage[]
   id                     String                     @id @default(cuid())
   taleId                 String
@@ -1786,6 +1788,7 @@ model ArtifactGrantReceipt {
 }
 
 model PlayerProfile {
+  parallaxObservations ParallaxObservation[]
   id                    String                   @id @default(cuid())
   accountId             String?                  @unique
   username              String?                  @unique
@@ -1972,6 +1975,7 @@ model PlatformRoleAssignment {
 }
 
 model PlaythroughMembership {
+  crossdeckSurfaces CrossdeckSurfaceSession[]
   id                         String                     @id @default(cuid())
   playthroughId              String
   playerProfileId            String
@@ -4164,4 +4168,58 @@ model CommunityGuideContent {
   updatedAt      DateTime  @updatedAt
 
   @@index([status, category, publishedAt])
+}
+
+// User-reported presentation evidence. Never a canonical completion event.
+model ParallaxObservation {
+  id String @id @default(cuid())
+  sessionId String
+  actorId String
+  idempotencyKey String
+  receiptDigest String
+  blockId String
+  publishedVersionId String
+  evidence String
+  observedAt DateTime
+  createdAt DateTime @default(now())
+  session TaleSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  actor PlayerProfile @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  @@unique([sessionId, actorId, idempotencyKey])
+  @@index([sessionId, blockId, createdAt])
+}
+
+// Crossdeck participation is derived from Wayfarer authentication and One Voyage membership.
+model CrossdeckSurfaceSession {
+  id               String                      @id @default(cuid())
+  surfaceId        String                      @unique
+  accountSessionId String
+  membershipId     String
+  label            String
+  role             String                      @default("PRIMARY_STORY")
+  capabilities     String                      @default("{}")
+  lifecycle        String                      @default("ACTIVE")
+  lastSeenAt       DateTime                    @default(now())
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  createdAt        DateTime                    @default(now())
+  accountSession   AccountSession              @relation(fields: [accountSessionId], references: [id], onDelete: Cascade)
+  membership       PlaythroughMembership       @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  challenges       CrossdeckPairingChallenge[]
+
+  @@index([membershipId, revokedAt, expiresAt])
+  @@index([accountSessionId, revokedAt])
+}
+
+model CrossdeckPairingChallenge {
+  id            String                  @id @default(cuid())
+  codeHash      String                  @unique
+  sourceId      String
+  requestedRole String
+  expiresAt     DateTime
+  consumedAt    DateTime?
+  claimedSurfaceId String?
+  createdAt     DateTime                @default(now())
+  source        CrossdeckSurfaceSession @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@index([sourceId, expiresAt])
 }

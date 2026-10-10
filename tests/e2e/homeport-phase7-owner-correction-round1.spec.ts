@@ -150,10 +150,10 @@ test("Journey F: Claim account", async ({ context, page }) => {
   const email = "claimed-guest@owner-correction.example.test";
   await page.getByRole("textbox", { name: "Email", exact: true }).fill(email);
   await page.getByLabel("Password").fill(credentialHandoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Claim voyage", exact: true }).click();
   const delivery = await waitForDelivery("VERIFY_EMAIL", email);
   await page.getByLabel("Code").fill(delivery.token!);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Verify email", exact: true }).click();
   await expect(page.getByRole("button", { name: guest.displayName, exact: true })).toBeVisible();
   await expect(page).toHaveURL(/\/passport/u);
   const account = await db.userAccount.findUnique({ where: { id: guest.accountId! } });
@@ -170,10 +170,10 @@ test("Journey G: Email registration and verification", async ({ page }) => {
   await page.getByRole("textbox", { name: "Email", exact: true }).fill(email);
   await page.getByLabel("Password", { exact: true }).fill(credentialHandoff.password);
   await page.getByLabel("Confirm password").fill(credentialHandoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
   const delivery = await waitForDelivery("VERIFY_EMAIL", email);
   await page.getByLabel("Code").fill(delivery.token!);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Verify email", exact: true }).click();
   await expect(page.getByRole("button", { name: "Verified Registration Test", exact: true })).toBeVisible();
   await page.goto("/account/personal-information");
   await expect(page.getByText(email, { exact: true })).toBeVisible();
@@ -190,7 +190,7 @@ test("Journey H: Email change and recovery", async ({ page }) => {
   await page.getByRole("button", { name: "Send verification" }).click();
   const change = await waitForDelivery("EMAIL_CHANGE", nextEmail);
   await page.goto(`/account/email-change?token=${encodeURIComponent(change.token!)}`);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Confirm email change", exact: true }).click();
   await expect(page.getByText(/confirmed|changed/u).first()).toBeVisible();
   const oldNotice = await waitForDelivery("EMAIL_CHANGE_NOTICE", account.email!);
   expect(oldNotice.detail).toContain("account recovery");
@@ -198,13 +198,13 @@ test("Journey H: Email change and recovery", async ({ page }) => {
 
   await page.goto("/forgot-password");
   await page.getByLabel("Email").fill(nextEmail);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Send reset instructions", exact: true }).click();
   const recovery = await waitForDelivery("PASSWORD_RESET", nextEmail);
   const newPassword = `${credentialHandoff.password}R`;
   await page.goto(`/reset-password?token=${encodeURIComponent(recovery.token!)}`);
   await page.getByLabel("Password", { exact: true }).fill(newPassword);
   await page.getByLabel("Confirm password").fill(newPassword);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Reset password", exact: true }).click();
   await expect(page.getByRole("button", { name: account.displayName })).toBeVisible();
 });
 
@@ -321,6 +321,7 @@ test("Journey N: Preference effects", async ({ context, page }) => {
 
   const second = await context.newPage();
   await second.goto("/");
+  await expect(second.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
   await expect(second.locator("html")).toHaveAttribute("data-voyage-theme", "dark");
   await page.getByRole("combobox", { name: "Theme", exact: true }).selectOption("LIGHT");
   await page.getByRole("button", { name: "Save preferences" }).click();
@@ -480,7 +481,10 @@ test("Journey Q: Community reviews", async ({ page }) => {
   await capture(page, "HP-OWCR1-EV-W-COMMUNITY-REVIEW-COMPOSER");
   await page.getByRole("combobox", { name: /Rating/u }).selectOption("4");
   await page.getByLabel("Preview-safe review").fill("A responsive synthetic review for the correction journey.");
-  await page.getByLabel(/Include spoiler details/u).check();
+  await page
+    .getByRole("form", { name: "Write a review", exact: true })
+    .getByLabel(/Include spoiler details/u)
+    .check();
   await page
     .getByRole("textbox", { name: /^Spoiler details/u })
     .fill("Synthetic spoiler detail remains behind an explicit reveal.");
@@ -606,9 +610,12 @@ async function signIn(page: Page, alias: string, password = credentialHandoff.pa
   await begin(page);
   const menu = await accountMenu(page, "Account");
   await settledLink(page, menu.getByRole("link", { name: "Sign In", exact: true }));
-  await page.getByLabel("Email or legacy Player name").fill(account.email ?? account.username!);
+  const providers = page.getByRole("region", { name: "Continue with a trusted provider", exact: true });
+  await expect(providers).toBeVisible();
+  await expect(providers.getByText("This sign-in option is being checked.", { exact: true })).toHaveCount(0);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(account.email ?? account.username!);
   await page.getByLabel("Password").fill(password);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
   return account;
 }

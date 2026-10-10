@@ -1,3 +1,5 @@
+import { randomBytes } from "node:crypto";
+
 const profileByTest = new Map([
   ["tests/e2e/admiralty-phase1.spec.ts", "admiralty-phase1"],
   ["tests/e2e/chronicle-platform.spec.ts", "lanternwake-phase3"],
@@ -31,7 +33,10 @@ export const browserSuiteProfiles = Object.freeze({
       GM_USERNAME: "kato",
       GM_PASSWORD: "development-captain-only",
     }),
-    preparers: Object.freeze([Object.freeze({ runtime: "tsx", script: "scripts/migrate-legacy-companion.ts" })]),
+    preparers: Object.freeze([
+      Object.freeze({ runtime: "tsx", script: "scripts/migrate-legacy-companion.ts" }),
+      Object.freeze({ runtime: "node", script: "scripts/sounding-line/prepare-validation-isolation.mjs" }),
+    ]),
     fixtureArguments: [],
   }),
   "harborlight-phase2": Object.freeze({
@@ -157,4 +162,10 @@ export function resolveBrowserSuiteDispatches(browserTests) {
     groups.set(profileId, group);
   }
   return [...groups.values()].map((group) => ({ ...group, browserTests: group.browserTests.sort() }));
+}
+
+export function isolatedBrowserFixtureCredentials(profileId) {
+  return profileId === "generic"
+    ? { PHASE2_LEGACY_ACCESS_CODE: `synthetic-${randomBytes(24).toString("base64url")}` }
+    : {};
 }

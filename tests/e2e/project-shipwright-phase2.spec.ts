@@ -1,5 +1,54 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { randomUUID } from "node:crypto";
+import { db } from "../../src/lib/db";
+import { registerAccount } from "../../src/wayfarer/accounts";
+
+let creatorEmail = process.env.SHIPWRIGHT_TEST_CREATOR_EMAIL ?? "shipwright.phase2.creator@example.test";
+let creatorPassword = process.env.SHIPWRIGHT_TEST_CREATOR_PASSWORD ?? "Shipwright Phase2 2026!";
+
+test.beforeAll(async ({ request }) => {
+  if (process.env.SOUNDING_LINE_INTERNAL_RUNTIME !== "1") return;
+  const identity = await request.get("/api/dev/validation/database-identity");
+  expect(identity.status()).toBe(200);
+  expect(await identity.json()).toEqual({ validationDatabase: true, nonceMatch: true });
+  const nonceHash = process.env.FOREVER_VALIDATION_NONCE_HASH;
+  expect(nonceHash).toMatch(/^[a-f0-9]{64}$/u);
+  expect(
+    await db.platformAuditEvent.count({
+      where: {
+        action: "VALIDATION_DATABASE_IDENTITY",
+        resourceType: "VALIDATION_DATABASE",
+        resourceId: nonceHash,
+        correlationId: nonceHash,
+      },
+    }),
+  ).toBe(1);
+  const fixtureId = randomUUID();
+  creatorEmail = `shipwright-phase2-${fixtureId}@example.invalid`;
+  creatorPassword = `Quartz-${fixtureId}!`;
+  const { account } = await registerAccount({
+    email: creatorEmail,
+    password: creatorPassword,
+    displayName: "Shipwright Synthetic Creator",
+    deviceLabel: "Isolated Shipwright fixture",
+  });
+  await db.$transaction([
+    db.userAccount.update({
+      where: { id: account.id },
+      data: { status: "ACTIVE", ordinaryWorkspaceEntryAt: new Date() },
+    }),
+    db.accountEmail.updateMany({
+      where: { accountId: account.id },
+      data: { verificationState: "VERIFIED", verifiedAt: new Date() },
+    }),
+    db.accountRoleAssignment.create({ data: { accountId: account.id, role: "CREATOR", grantedAt: new Date() } }),
+  ]);
+});
+
+test.afterAll(async () => {
+  await db.$disconnect();
+});
 
 test.skip(({ browserName }) => browserName !== "chromium", "The task-owned mutable Studio journey runs once.");
 
@@ -7,8 +56,6 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   page,
 }) => {
   test.setTimeout(60_000);
-  const creatorEmail = process.env.SHIPWRIGHT_TEST_CREATOR_EMAIL ?? "shipwright.phase2.creator@example.test";
-  const creatorPassword = process.env.SHIPWRIGHT_TEST_CREATOR_PASSWORD ?? "Shipwright Phase2 2026!";
   const taleSlug = `shipwright-contract-aware-${Date.now()}`;
 
   await page.goto("/");
@@ -20,9 +67,9 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   await page.getByRole("link", { name: "Continue to account sign-in" }).click();
   await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
 
-  await page.getByLabel("Email or legacy Player name").fill(creatorEmail);
+  await page.getByLabel("Email or Player name", { exact: true }).fill(creatorEmail);
   await page.getByLabel("Password").fill(creatorPassword);
-  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(page).toHaveURL(/\/studio\/library/u);
   await expect(page.getByRole("heading", { name: "Voyagewright Studio" })).toBeVisible();
 
@@ -58,6 +105,8 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   await expect(validationPanel).toBeVisible();
   await validationPanel.locator(".validation-issue").first().click();
   await expect(page.locator(".timeline-block").first()).toBeFocused();
+  await validationPanel.getByRole("button", { name: "Close validation results", exact: true }).click();
+  await expect(validationPanel).toBeHidden();
 
   await page.getByRole("button", { name: "Add Set Variable to first chapter" }).click();
   await expect(page.locator(".timeline-block")).toHaveCount(2);

@@ -687,6 +687,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/catalog/crossdeck.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/catalog/harborlight.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -4743,6 +4749,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Crossdeck_Phase_1_Route_Inventory.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Phase_1_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Crossdeck/README.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -7483,6 +7501,12 @@
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Phase_1_Implementation.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": "parallax-phase-1-implementation"
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/README.md",

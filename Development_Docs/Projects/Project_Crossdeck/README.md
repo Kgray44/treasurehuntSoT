@@ -3,7 +3,7 @@ title: Project Crossdeck engineering home
 audience: product-engineering
 status: governing-baseline
 canonical_for: project-crossdeck-engineering-home
-last_reviewed: 2026-10-09
+last_reviewed: 2026-10-10
 ---
 
 # Project Crossdeck
@@ -84,9 +84,11 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 
 ## Current implementation status
 
-**Governance complete. Implementation not started.**
+**Phase 1 implementation: Lay the Gangway.**
 
-Publishing this document does not claim that Crossdeck pairing, synchronized surfaces, manual handoff, Air Handoff, shared-display behavior, Parallax surface synchronization, or cross-device Chronicle continuity are implemented.
+The [Phase 1 implementation record](Phase_1_Implementation_Record.md) documents secure pairing, canonical surface participation, roles, capability projection, lifecycle, removal, software tests and shared Device Lab D0/D1 evidence. Protected-main qualification and owner product acceptance are separate recorded gates.
+
+Phase 1 implements secure pairing and surface participation only. Synchronized presentation, manual handoff, Air Handoff, shared-display content routing, Parallax rendering and cross-device content continuity remain later work.
 
 The current repository already contains canonical Wayfarer/Homeport account sessions with safe device labels and revocation. Crossdeck must consume those foundations rather than create a competing login or device-authentication system.
 

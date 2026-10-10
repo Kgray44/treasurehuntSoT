@@ -37,7 +37,10 @@ import {
   verificationObligationGroups,
   WINDOWS_SAFE_VITEST_COMMAND_LENGTH,
 } from "../../scripts/sounding-line/ordinary.mjs";
-import { resolveBrowserSuiteDispatches } from "../../scripts/sounding-line/browser-suite-profiles.mjs";
+import {
+  isolatedBrowserFixtureCredentials,
+  resolveBrowserSuiteDispatches,
+} from "../../scripts/sounding-line/browser-suite-profiles.mjs";
 
 const basePackage = {
   scripts: {
@@ -1071,6 +1074,7 @@ test("fixture-aware suite dispatch groups established fixture contracts without 
   });
   assert.deepEqual(dispatches.find(({ id }) => id === "generic").preparers, [
     { runtime: "tsx", script: "scripts/migrate-legacy-companion.ts" },
+    { runtime: "node", script: "scripts/sounding-line/prepare-validation-isolation.mjs" },
   ]);
 });
 
@@ -1713,4 +1717,13 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
     );
     assert.equal(release.result.freshObligations, release.result.finalization.requiredObligations);
   });
+});
+
+test("generic browser credentials are ephemeral and restricted to the isolated profile", () => {
+  const first = isolatedBrowserFixtureCredentials("generic");
+  const second = isolatedBrowserFixtureCredentials("generic");
+  assert.match(first.PHASE2_LEGACY_ACCESS_CODE, /^synthetic-[A-Za-z0-9_-]{32}$/u);
+  assert.notEqual(first.PHASE2_LEGACY_ACCESS_CODE, second.PHASE2_LEGACY_ACCESS_CODE);
+  for (const profile of ["homeport-phase3", "lanternwake-phase3", "harborlight-phase2", "unknown"])
+    assert.deepEqual(isolatedBrowserFixtureCredentials(profile), {});
 });

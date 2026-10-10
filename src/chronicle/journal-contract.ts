@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { spatialMomentSchema } from "@/parallax/contracts";
 import type { JsonObject, PublishedBlock } from "@/chronicle/types";
 
 export const journalContentKinds = [
@@ -20,6 +21,7 @@ export type JournalPageTurnBehavior = "manual" | "automatic" | "captain-triggere
 
 export const journalPresentationSchema = z
   .object({
+    spatialMoment: spatialMomentSchema.optional(),
     spreadMode: z.enum(["left", "right", "two-page", "overlay", "cinematic"]).optional(),
     pageTemplate: z.string().max(80).optional(),
     paperStyle: z.string().max(80).optional(),
@@ -143,6 +145,7 @@ export function parseJournalPresentation(value: JsonObject | undefined, blockTyp
   const parsed = journalPresentationSchema.safeParse(value ?? {});
   const safe = parsed.success ? parsed.data : {};
   return {
+    ...(safe.spatialMoment ? { spatialMoment: safe.spatialMoment } : {}),
     spreadMode: safe.spreadMode ?? defaultSpreadMode(blockType),
     pageTemplate: safe.pageTemplate ?? journalKindForBlock(blockType) ?? "story",
     paperStyle: safe.paperStyle ?? "weathered",

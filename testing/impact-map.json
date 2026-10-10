@@ -4853,6 +4853,41 @@
         "landfall.device-lab-evidence",
         "sextant.phase2.web-context"
       ]
+    },
+    {
+      "path": "src/crossdeck/**",
+      "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
+      "contractIds": ["crossdeck.phase1.participation"]
+    },
+    {
+      "path": "src/app/api/crossdeck/**",
+      "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
+      "contractIds": ["crossdeck.phase1.participation"]
+    },
+    {
+      "path": "src/components/crossdeck/**",
+      "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
+      "contractIds": ["crossdeck.phase1.participation"]
+    },
+    {
+      "path": "src/app/account/devices/**",
+      "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
+      "contractIds": ["crossdeck.phase1.participation"]
+    },
+    {
+      "path": "src/app/devices/**",
+      "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
+      "contractIds": ["crossdeck.phase1.participation"]
+    },
+    {
+      "path": "tests/e2e/crossdeck-phase1.spec.ts",
+      "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
+      "contractIds": ["crossdeck.phase1.participation"]
+    },
+    {
+      "path": "scripts/crossdeck/**",
+      "suiteIds": ["unit.crossdeck", "static.core"],
+      "contractIds": ["crossdeck.phase1.participation"]
     }
   ],
   "contractMappings": [
@@ -6718,6 +6753,10 @@
     {
       "contractId": "sextant.phase2.web-context",
       "suiteIds": ["unit.sextant"]
+    },
+    {
+      "contractId": "crossdeck.phase1.participation",
+      "suiteIds": ["unit.crossdeck", "browser.crossdeck"]
     }
   ],
   "impactClasses": [

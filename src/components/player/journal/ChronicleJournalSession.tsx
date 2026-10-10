@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { ParallaxJournalProvider, ChronicleLensEntry } from "@/components/player/parallax/ChronicleLens";
+import { CrossdeckDevices } from "@/components/crossdeck/CrossdeckDevices";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { AudioCuePlayer } from "@/animation/core/audio-cues";
@@ -997,6 +999,14 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
   const waitRemaining = Math.max(0, Date.parse(state.pendingVerification?.expiresAt ?? "") - now);
   const currentObjective = objectiveOf(currentBlock);
   const historical = state.journal.mode === "historical";
+  // Runtime pages are imperative clones. Lens controls/modal stay on the live React surface.
+  const spatialBlocks = [
+    ...new Map(
+      [currentBlock, ...pages.slice(currentPage, currentPage + 2).map((page) => page.block)]
+        .filter((block): block is PlayerJournalBlock => Boolean(block?.presentation.spatialMoment))
+        .map((block) => [block.id, block]),
+    ).values(),
+  ];
 
   return (
     <LandfallJournalProvider
@@ -1053,6 +1063,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
             <h1>{state.tale.title}</h1>
           </div>
           <div className="journal-session-tools">
+            {state.csrfToken && <CrossdeckDevices initialVoyage={sessionId} compact />}
             <span className={`runtime-connection ${connection}`} role="status">
               <i />
               {connection === "live"
@@ -1336,6 +1347,21 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
             />
           </aside>
         ) : null}
+
+        {journalReady && spatialBlocks.length > 0 && (
+          <ParallaxJournalProvider sessionId={sessionId} csrfToken={state.csrfToken ?? ""}>
+            <section aria-label="Spatial moments in your released passages">
+              {spatialBlocks.map((block) => (
+                <ChronicleLensEntry
+                  key={block.id}
+                  moment={block.presentation.spatialMoment!}
+                  blockId={block.id}
+                  replayOnly={historical || block.progress !== "active" || state.session.status !== "ACTIVE"}
+                />
+              ))}
+            </section>
+          </ParallaxJournalProvider>
+        )}
 
         {error && (
           <p className="journal-degradation-note" role="alert">

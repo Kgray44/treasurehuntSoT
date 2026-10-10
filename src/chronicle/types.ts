@@ -1,3 +1,4 @@
+import { validatePublishedSpatialMoments } from "@/parallax/publication";
 import type { DrydockValidationReport } from "@/drydock/reports";
 import type { LandfallDefinition } from "@/landfall/schema";
 import { validateLandfallDefinition } from "@/landfall/definition";
@@ -214,5 +215,6 @@ export function parsePublishedSnapshot(value: string): PublishedTaleSnapshot {
   if (snapshot.schemaVersion !== 1 || !snapshot.tale || !Array.isArray(snapshot.chapters))
     throw new Error("Published Chronicle snapshot is incomplete.");
   if (snapshot.landfall !== undefined) snapshot.landfall = validateLandfallDefinition(snapshot.landfall);
+  validatePublishedSpatialMoments(snapshot as PublishedTaleSnapshot);
   return snapshot as PublishedTaleSnapshot;
 }
