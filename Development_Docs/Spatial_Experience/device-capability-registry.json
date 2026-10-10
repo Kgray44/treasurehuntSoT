@@ -33,7 +33,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4", "D5"],
       "realDeviceQualification": "D4_FOR_MAGNETIC_REALITY",
       "defaultFallback": "MAP_OR_MANUAL_ALIGNMENT",
-      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
+      "implementationState": "PHASE_2_WEB_PROVIDER_AVAILABLE_PHYSICAL_QUALITY_NOT_QUALIFIED"
     },
     {
       "id": "orientation",
@@ -46,7 +46,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4_FOR_REAL_SENSOR_QUALITY",
       "defaultFallback": "SCREEN_CONTROLS",
-      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
+      "implementationState": "PHASE_2_WEB_PROVIDER_AVAILABLE_PHYSICAL_QUALITY_NOT_QUALIFIED"
     },
     {
       "id": "accelerometer",
@@ -59,7 +59,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4",
       "defaultFallback": "MANUAL_OR_ALTERNATE_GESTURE",
-      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
+      "implementationState": "PHASE_2_WEB_PROVIDER_AVAILABLE_PHYSICAL_QUALITY_NOT_QUALIFIED"
     },
     {
       "id": "gyroscope",
@@ -72,7 +72,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4",
       "defaultFallback": "MANUAL_OR_ALTERNATE_GESTURE",
-      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
+      "implementationState": "PHASE_2_WEB_PROVIDER_AVAILABLE_PHYSICAL_QUALITY_NOT_QUALIFIED"
     },
     {
       "id": "fused-pose",
@@ -85,7 +85,7 @@
       "simulationTiers": ["D0", "D2", "D3", "D4"],
       "realDeviceQualification": "D4",
       "defaultFallback": "LOWER_FIDELITY_ORIENTATION",
-      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
+      "implementationState": "PHASE_2_WEB_PROVIDER_AVAILABLE_PHYSICAL_QUALITY_NOT_QUALIFIED"
     },
     {
       "id": "magnetic-field",
@@ -137,7 +137,7 @@
       "simulationTiers": ["D0", "D1", "D2", "D3", "D4"],
       "realDeviceQualification": "D4_FOR_FEEL",
       "defaultFallback": "VISUAL_AUDIO_TEXT",
-      "implementationState": "PHASE_1_SEMANTIC_FOUNDATION_AVAILABLE_HARDWARE_PROVIDERS_NOT_CLAIMED"
+      "implementationState": "PHASE_2_WEB_BASIC_OUTPUT_AVAILABLE_RICH_NATIVE_OUTPUT_NOT_IMPLEMENTED"
     },
     {
       "id": "camera",

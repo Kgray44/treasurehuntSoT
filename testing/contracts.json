@@ -3377,6 +3377,13 @@
       "critical": true
     },
     {
+      "id": "sextant.phase2.web-context",
+      "name": "Sextant web acquisition, frame normalization, motion classification, bounded gestures and haptics",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true
+    },
+    {
       "id": "crossdeck.phase1.participation",
       "name": "Crossdeck Phase 1 canonical participation, pairing, roles, lifecycle and revocation",
       "authority": "project-crossdeck",

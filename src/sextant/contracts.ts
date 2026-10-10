@@ -72,7 +72,7 @@ export const observationSchema = z
       ctx.addIssue({ code: "custom", message: "SEXTANT_SIMULATION_IDENTITY_INVALID" });
   });
 export type Observation = z.infer<typeof observationSchema>;
-export type ProviderSample = Pick<
+export type ProviderSample = { discontinuity?: boolean } & Pick<
   Observation,
   | "capabilityId"
   | "value"
@@ -97,7 +97,7 @@ export type CapabilityDefinition = {
   privacyClass: string;
   fallback: string;
   valueSchema: z.ZodType;
-  implementation: "FOUNDATION_ONLY";
+  implementation: "FOUNDATION_ONLY" | "WEB_AVAILABLE";
 };
 export type ProviderDefinition = {
   providerId: string;

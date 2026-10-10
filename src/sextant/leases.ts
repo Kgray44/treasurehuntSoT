@@ -120,7 +120,7 @@ export class SextantLeaseBroker {
       this.disposed ||
       !this.foreground ||
       request.expiresAt <= this.now() ||
-      request.expiresAt - this.now() > 3600000
+      request.expiresAt - this.now() > (request.updateClass === "HIGH_FIDELITY_BURST" ? 30000 : 3600000)
     )
       throw new Error("SEXTANT_LEASE_UNAVAILABLE");
     const permission = await this.permissions.authorize(c.permission, request);
@@ -287,7 +287,7 @@ export class SextantLeaseBroker {
         continue;
       }
       if (now - lease.lastDelivered < updateInterval[lease.request.updateClass]) continue;
-      projected.discontinuity = lease.first;
+      projected.discontinuity = lease.first || observation.discontinuity;
       lease.first = false;
       lease.lastDelivered = now;
       this.deliver(lease, { type: "OBSERVATION", observation: projected });
@@ -374,7 +374,8 @@ export class SextantLeaseBroker {
     const active = p ? this.active.get(p.definition.providerId) : undefined;
     const timestamp = active?.clocks.get(capabilityId),
       metadata = active?.metadata.get(capabilityId);
-    let state = unknownState();
+    const states = this.providers.states(capabilityId);
+    let state = states.find((s) => s.support === "SUPPORTED") ?? states[0] ?? unknownState();
     try {
       if (p) state = stateSchema.parse(p.discover(capabilityId));
     } catch {

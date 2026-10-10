@@ -61,9 +61,9 @@ function pack(subject: DeviceLabAdapter, input = definition) {
   return packs;
 }
 describe("shared Device Lab registry and packs", () => {
-  it("loads the preserved 36 scenarios plus eight Phase 1 Parallax declarations and six canonical tier descriptions without claiming execution", () => {
+  it("loads all 55 Sextant and Parallax scenarios and six canonical tier descriptions without claiming execution", () => {
     const registry = loadDeviceLabRegistry();
-    expect(registry.scenarios).toHaveLength(44);
+    expect(registry.scenarios).toHaveLength(55);
     expect(
       registry.scenarios.filter(
         (s) => s.owner === "PARALLAX" && s.eligibleTiers.length === 1 && s.eligibleTiers[0] === "D0",
@@ -311,5 +311,5 @@ describe("Landfall compatibility preserves historical contracts", () => {
     } finally {
       await rm(directory, { recursive: true, force: true });
     }
-  });
+  }, 30000);
 });

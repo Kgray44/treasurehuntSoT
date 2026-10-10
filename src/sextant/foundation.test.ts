@@ -9,9 +9,9 @@ import { observationSchema } from "./contracts";
 import type { LeaseEvent } from "./leases";
 afterEach(() => vi.useRealTimers());
 describe("capability/provider/observation boundaries", () => {
-  it("resolves all 28 versioned product definitions to Sextant-owned Wave 4 hardware and authoring semantics", () => {
+  it("resolves all 30 versioned product definitions to Sextant-owned Wave 4 hardware and authoring semantics", () => {
     const r = new SextantCapabilityRegistry();
-    expect(r.list()).toHaveLength(28);
+    expect(r.list()).toHaveLength(30);
     expect(r.list().every((d) => d.owner === "SEXTANT" && d.version === 1)).toBe(true);
     expect(r.project().every((d) => !Object.hasOwn(d, "valueSchema"))).toBe(true);
     expect(() => r.get("spatial.anchor")).toThrow("SEXTANT_CAPABILITY_UNKNOWN");
