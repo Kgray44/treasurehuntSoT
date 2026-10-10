@@ -14,6 +14,8 @@ This record closes the documentation reconciliation scope for Reach's introducti
 
 Repository source baseline: `c4646fe6822f1cc957895b39e2ea46eac72c0658` (protected-main Device Lab Increment 0 integration). Reviewed the spatial master, Sextant/Parallax/Crossdeck baselines, Wave 4 launch manifest and six registries; Storytide/Watchglass/Figurehead/Wakebook integration authorities; Landfall v1.2; Drydock/Harborlight v1.1; Sealed Hold integration; Sounding Line effective authority, Device Lab annex and ordinary workflow; current Device Lab loader, pack contracts and focused tests. The supplied Landfall and Drydock v1.0 governing PDFs corroborate navigation/privacy/progression and canonical validation/simulation boundaries. Current repository amendments remain authoritative over older attachment assumptions.
 
+The integration candidate also incorporates protected main `6ad9ddb` (PR #689, Sextant Phase 1). Its nine separate executable D0 contracts, accepted foundation status, and engineering links are preserved. The original 27-scenario baseline and pending Reach declarations remain separate. Concurrent inventory conflicts were resolved by regenerating both projections from the combined tree.
+
 ## Change disposition
 
 | Domain                       | Reconciliation                                                                        | Status in this candidate                                         |

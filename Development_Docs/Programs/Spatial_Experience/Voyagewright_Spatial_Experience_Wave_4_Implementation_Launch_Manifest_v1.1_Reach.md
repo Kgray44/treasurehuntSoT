@@ -14,7 +14,7 @@ This successor adds Reach to the [v1.0 launch baseline](Voyagewright_Spatial_Exp
 
 ## Current state
 
-Landfall remains closed through its accepted Phase 4 source/evidence chain. Shared Device Lab Increment 0 exists. Reach, Sextant, Parallax and Crossdeck remain governed future product work; limited accepted compatibility seams do not complete those projects. Storytide/Watchglass/Figurehead status remains bounded by their current sources. Reach governance is complete on acceptance of this documentation candidate; product qualification is not.
+Landfall remains closed through its accepted Phase 4 source/evidence chain. Shared Device Lab Increment 0 exists. Sextant Phase 1 now provides the accepted capability/provider/permission/lease foundation and nine separately registered D0 contracts; it does not complete Sextant or qualify the live camera seam. Reach, Parallax, Crossdeck and later Sextant phases remain governed future product work. Storytide/Watchglass/Figurehead status remains bounded by their current sources. Reach governance is complete on acceptance of this documentation candidate; product qualification is not.
 
 The six v1.0 registries remain, with five safe governance projections updated. The accepted runtime-coupled 27-scenario registry is unchanged. A seventh registry declares Reach target/gesture/event contracts and 17 pending owner scenarios. Current counts are in the [registry guide](../../Spatial_Experience/README.md), avoiding stale numbers copied into multiple current documents.
 
