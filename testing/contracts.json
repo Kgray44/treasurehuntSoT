@@ -3375,6 +3375,13 @@
       "authority": "project-sextant",
       "owners": ["project-sextant"],
       "critical": true
+    },
+    {
+      "id": "crossdeck.phase1.participation",
+      "name": "Crossdeck Phase 1 canonical participation, pairing, roles, lifecycle and revocation",
+      "authority": "project-crossdeck",
+      "owners": ["project-crossdeck", "wayfarer"],
+      "critical": true
     }
   ]
 }

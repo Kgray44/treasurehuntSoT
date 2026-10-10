@@ -681,6 +681,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/catalog/crossdeck.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/catalog/harborlight.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -4732,6 +4738,18 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Admiralty/walkthrough/phase2/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Crossdeck_Phase_1_Route_Inventory.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Phase_1_Implementation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

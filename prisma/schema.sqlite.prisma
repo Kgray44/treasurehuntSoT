@@ -189,6 +189,7 @@ model AccountToken {
 }
 
 model AccountSession {
+  crossdeckSurfaces CrossdeckSurfaceSession[]
   id                   String                @id @default(cuid())
   accountId            String
   tokenHash            String                @unique
@@ -1972,6 +1973,7 @@ model PlatformRoleAssignment {
 }
 
 model PlaythroughMembership {
+  crossdeckSurfaces CrossdeckSurfaceSession[]
   id                         String                     @id @default(cuid())
   playthroughId              String
   playerProfileId            String
@@ -4164,4 +4166,40 @@ model CommunityGuideContent {
   updatedAt      DateTime  @updatedAt
 
   @@index([status, category, publishedAt])
+}
+
+// Crossdeck participation is derived from Wayfarer authentication and One Voyage membership.
+model CrossdeckSurfaceSession {
+  id               String                      @id @default(cuid())
+  surfaceId        String                      @unique
+  accountSessionId String
+  membershipId     String
+  label            String
+  role             String                      @default("PRIMARY_STORY")
+  capabilities     String                      @default("{}")
+  lifecycle        String                      @default("ACTIVE")
+  lastSeenAt       DateTime                    @default(now())
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  createdAt        DateTime                    @default(now())
+  accountSession   AccountSession              @relation(fields: [accountSessionId], references: [id], onDelete: Cascade)
+  membership       PlaythroughMembership       @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  challenges       CrossdeckPairingChallenge[]
+
+  @@index([membershipId, revokedAt, expiresAt])
+  @@index([accountSessionId, revokedAt])
+}
+
+model CrossdeckPairingChallenge {
+  id            String                  @id @default(cuid())
+  codeHash      String                  @unique
+  sourceId      String
+  requestedRole String
+  expiresAt     DateTime
+  consumedAt    DateTime?
+  claimedSurfaceId String?
+  createdAt     DateTime                @default(now())
+  source        CrossdeckSurfaceSession @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@index([sourceId, expiresAt])
 }

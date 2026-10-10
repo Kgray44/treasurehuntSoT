@@ -1418,6 +1418,44 @@ Creators author versioned physical and virtual Living Charts with protected cont
 
 ---
 
+## FT-045 - Crossdeck surface participation foundation
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Crossdeck Phase 1 — Lay the Gangway
+
+One canonical Player can connect several signed-in browser surfaces to the same Voyage using scoped one-time QR/code pairing, visible device roles, privacy-safe capability projection, bounded presence and revocable participation.
+
+### Important subfeatures
+
+- Durable AccountSession and membership-bound surface participation without duplicate identity or progression
+- Hashed expiring one-time QR/code challenges with atomic receiver creation and source confirmation
+- Presentation roles with Captain authority checks and honest unavailable Creator preview
+- Sextant capability projection preserves unknown, unavailable and denied states
+- Lifecycle heartbeats, stale-device exclusion, removal and live parent-session revocation checks
+- Personal Harbor and Journal device discovery with responsive keyboard-accessible controls
+- Shared Device Lab D0 service/database and D1 desktop/mobile browser scenario adapters
+
+### Primary surfaces
+
+`/account/devices`, `/devices/pair`, `/api/crossdeck`, `src/components/player/journal/ChronicleJournalSession.tsx`
+
+### Meaningful limitations
+
+- Synchronization, focus/custody, content handoff and Air Handoff belong to later phases.
+- Chronicle Lens spatial rendering remains Parallax-owned and is not implemented by a role label.
+- D1 browser emulation is distinct from D4 real hardware and D5 field qualification.
+- Product-owner live walkthrough acceptance is separate from software qualification.
+
+### Evidence
+
+- path: `src/crossdeck/service.ts`
+- test: `src/crossdeck/service.test.ts`
+- test: `src/app/api/crossdeck/route.test.ts`
+- test: `tests/e2e/crossdeck-phase1.spec.ts`
+- path: `Development_Docs/Projects/Project_Crossdeck/Phase_1_Implementation_Record.md`
+
+---
+
 ## FT-B001 - Unified Identity and Session Authority
 
 **Status:** MAINLINE
