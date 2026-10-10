@@ -33,6 +33,7 @@ test("Journey C: Role-card first paint and hover", async ({ page }) => {
   const cards = page.locator(".role-object-card");
   await expect(cards).toHaveCount(3);
   await capture(page, "HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT");
+  await expect(page.getByRole("button", { name: "Replay presentation", exact: true })).toBeEnabled();
   for (let index = 0; index < 3; index += 1) {
     const card = cards.nth(index);
     const object = card.locator(".role-object");
