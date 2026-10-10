@@ -6,7 +6,8 @@ final class ParallaxTests: XCTestCase {
     func testStartIdentityUsesStrictNumbers() {
         let start:[String:Any]=["sessionId":"fixture-session","epoch":1,"sceneTransferVersion":1,"versionChecksum":String(repeating:"a",count:64),"instanceId":"fixture-instance"]
         XCTAssertTrue(ParallaxSceneTransfer.validStart(start))
-        for invalid:Any in [1.5,true,"1",0,2147483648] {var p=start;p["epoch"]=invalid;XCTAssertFalse(ParallaxSceneTransfer.validStart(p))}
+        let invalids:[Any]=[1.5,true,"1",0,2147483648]
+        for invalid in invalids {var p=start;p["epoch"]=invalid;XCTAssertFalse(ParallaxSceneTransfer.validStart(p))}
         var p=start;p["sceneTransferVersion"]=true;XCTAssertFalse(ParallaxSceneTransfer.validStart(p))
         p=start;p["extra"]=1;XCTAssertFalse(ParallaxSceneTransfer.validStart(p))
     }
