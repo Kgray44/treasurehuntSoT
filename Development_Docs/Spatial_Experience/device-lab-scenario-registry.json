@@ -493,14 +493,9 @@
       "scenarioId": "parallax.local-frame",
       "version": 1,
       "owner": "PARALLAX",
-      "requiredCapabilities": [
-        "spatial.entity",
-        "spatial.anchor"
-      ],
+      "requiredCapabilities": ["spatial.entity", "spatial.anchor"],
       "minimumTier": "D0",
-      "eligibleTiers": [
-        "D0"
-      ],
+      "eligibleTiers": ["D0"],
       "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
       "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
       "oracleOwner": "PARALLAX",
@@ -511,14 +506,9 @@
       "scenarioId": "parallax.surface-placement",
       "version": 1,
       "owner": "PARALLAX",
-      "requiredCapabilities": [
-        "spatial.entity",
-        "spatial.anchor"
-      ],
+      "requiredCapabilities": ["spatial.entity", "spatial.anchor"],
       "minimumTier": "D0",
-      "eligibleTiers": [
-        "D0"
-      ],
+      "eligibleTiers": ["D0"],
       "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
       "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
       "oracleOwner": "PARALLAX",
@@ -529,14 +519,9 @@
       "scenarioId": "parallax.fixed-worldspace-fallback",
       "version": 1,
       "owner": "PARALLAX",
-      "requiredCapabilities": [
-        "spatial.entity",
-        "spatial.anchor"
-      ],
+      "requiredCapabilities": ["spatial.entity", "spatial.anchor"],
       "minimumTier": "D0",
-      "eligibleTiers": [
-        "D0"
-      ],
+      "eligibleTiers": ["D0"],
       "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
       "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
       "oracleOwner": "PARALLAX",
@@ -547,14 +532,9 @@
       "scenarioId": "parallax.tracking-recovery",
       "version": 1,
       "owner": "PARALLAX",
-      "requiredCapabilities": [
-        "spatial.entity",
-        "spatial.anchor"
-      ],
+      "requiredCapabilities": ["spatial.entity", "spatial.anchor"],
       "minimumTier": "D0",
-      "eligibleTiers": [
-        "D0"
-      ],
+      "eligibleTiers": ["D0"],
       "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
       "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
       "oracleOwner": "PARALLAX",
@@ -565,14 +545,9 @@
       "scenarioId": "parallax.guided-fallback",
       "version": 1,
       "owner": "PARALLAX",
-      "requiredCapabilities": [
-        "spatial.entity",
-        "spatial.anchor"
-      ],
+      "requiredCapabilities": ["spatial.entity", "spatial.anchor"],
       "minimumTier": "D0",
-      "eligibleTiers": [
-        "D0"
-      ],
+      "eligibleTiers": ["D0"],
       "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
       "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
       "oracleOwner": "PARALLAX",
@@ -583,14 +558,9 @@
       "scenarioId": "parallax.receipt-isolation",
       "version": 1,
       "owner": "PARALLAX",
-      "requiredCapabilities": [
-        "spatial.entity",
-        "spatial.anchor"
-      ],
+      "requiredCapabilities": ["spatial.entity", "spatial.anchor"],
       "minimumTier": "D0",
-      "eligibleTiers": [
-        "D0"
-      ],
+      "eligibleTiers": ["D0"],
       "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
       "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
       "oracleOwner": "PARALLAX",
@@ -601,14 +571,9 @@
       "scenarioId": "parallax.version-pin",
       "version": 1,
       "owner": "PARALLAX",
-      "requiredCapabilities": [
-        "spatial.entity",
-        "spatial.anchor"
-      ],
+      "requiredCapabilities": ["spatial.entity", "spatial.anchor"],
       "minimumTier": "D0",
-      "eligibleTiers": [
-        "D0"
-      ],
+      "eligibleTiers": ["D0"],
       "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
       "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
       "oracleOwner": "PARALLAX",
@@ -619,14 +584,9 @@
       "scenarioId": "parallax.native-unavailable",
       "version": 1,
       "owner": "PARALLAX",
-      "requiredCapabilities": [
-        "spatial.entity",
-        "spatial.anchor"
-      ],
+      "requiredCapabilities": ["spatial.entity", "spatial.anchor"],
       "minimumTier": "D0",
-      "eligibleTiers": [
-        "D0"
-      ],
+      "eligibleTiers": ["D0"],
       "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
       "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
       "oracleOwner": "PARALLAX",
