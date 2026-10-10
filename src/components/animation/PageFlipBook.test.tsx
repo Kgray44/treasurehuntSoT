@@ -532,6 +532,50 @@ describe("PageFlipBook", () => {
     await waitFor(() => expect(next).toHaveFocus());
   });
 
+  it("retains control focus intent when disabling a turn control blurs it to the body", async () => {
+    renderPageFlip(<PageFlipBook pages={fourPages} mode="full" />);
+    await waitFor(() => expect(calls.instance).not.toBeNull());
+    const next = screen.getByRole("button", { name: "Next journal page" });
+    next.focus();
+    fireEvent.click(next);
+    act(() => {
+      calls.instance!.handlers.get("changeState")?.({ data: "flipping" });
+    });
+    fireEvent.focusOut(next, { relatedTarget: document.body });
+    next.blur();
+    await advanceTurnReadinessFrame();
+    await settleMockTurn(1);
+    await waitFor(() => expect(next).toHaveFocus());
+  });
+
+  it("restores the activated turn control when pointer activation did not transfer focus", async () => {
+    renderPageFlip(<PageFlipBook pages={fourPages} mode="full" initialPage={1} />);
+    await waitFor(() => expect(calls.instance).not.toBeNull());
+    const previous = screen.getByRole("button", { name: "Previous journal page" });
+    const next = screen.getByRole("button", { name: "Next journal page" });
+    previous.focus();
+    fireEvent.click(next);
+    await settleMockTurn(2);
+    await waitFor(() => expect(next).toHaveFocus());
+  });
+
+  it("does not replace settled control focus or fabricate a gesture for a same-page runtime refresh", async () => {
+    const onTurnLifecycle = vi.fn();
+    renderPageFlip(<PageFlipBook pages={fourPages} mode="full" onTurnLifecycle={onTurnLifecycle} />);
+    await waitFor(() => expect(calls.instance).not.toBeNull());
+    const next = screen.getByRole("button", { name: "Next journal page" });
+    next.focus();
+    fireEvent.click(next);
+    await settleMockTurn(1);
+    const turns = onTurnLifecycle.mock.calls.length;
+    act(() => {
+      calls.instance!.handlers.get("flip")?.({ data: 1 });
+    });
+    await advanceTurnReadinessFrame();
+    expect(onTurnLifecycle).toHaveBeenCalledTimes(turns);
+    expect(next).toHaveFocus();
+  });
+
   it("mirrors each lifecycle transition once as a sanitized payload-free browser event", async () => {
     const browserEvents: PageTurnLifecycleBrowserDetail[] = [];
     const privatePages: FlipBookPage[] = [

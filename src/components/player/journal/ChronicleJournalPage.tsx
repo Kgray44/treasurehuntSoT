@@ -1,6 +1,5 @@
 "use client";
 
-import { ChronicleLensEntry } from "@/components/player/parallax/ChronicleLens";
 import type { PlayerJournalBlock } from "@/chronicle/journal-contract";
 import type { ChronicleJournalPage } from "@/chronicle/journal-page-model";
 import type { ReactNode } from "react";
@@ -59,16 +58,7 @@ export function ChronicleJournalPageContent({
         </>
       )}
       {page.kind === "block" && page.block && (
-        <>
-          <JournalBlock block={page.block} part={page.part ?? "primary"} assets={assets} chart={chart} />
-          {page.part !== "secondary" && page.block.presentation.spatialMoment && (
-            <ChronicleLensEntry
-              moment={page.block.presentation.spatialMoment}
-              blockId={page.block.id}
-              replayOnly={page.block.progress !== "active"}
-            />
-          )}
-        </>
+        <JournalBlock block={page.block} part={page.part ?? "primary"} assets={assets} chart={chart} />
       )}
       {page.kind === "endpaper" && (
         <>

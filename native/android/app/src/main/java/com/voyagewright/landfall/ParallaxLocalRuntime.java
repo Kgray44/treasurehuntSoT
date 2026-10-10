@@ -429,6 +429,11 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
       GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, e.texture);
       GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
       GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+      // GLES 2 requires edge clamping for our non-power-of-two parchment texture.
+      GLES20.glTexParameteri(
+          GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+      GLES20.glTexParameteri(
+          GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
       GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, image, 0);
       image.recycle();
       next.add(e);

@@ -444,7 +444,15 @@ export async function ensurePhase3JournalReady(page: Page) {
         { timeout: 20_000 },
       )
       .not.toBe("pending");
-    if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") await skip.click();
+    if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") {
+      try {
+        await skip.click({ timeout: 1_500 });
+      } catch (error) {
+        // A reduced-motion ceremony can finish while Playwright waits for a stable button.
+        // Accept only the same governed ready outcome; every other click failure remains fatal.
+        if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") throw error;
+      }
+    }
   }
   await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
     timeout: 20_000,

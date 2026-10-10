@@ -662,6 +662,8 @@ export const PageFlipBook = forwardRef<
 
   const forgetExternalFocus = useCallback((event: React.FocusEvent<HTMLElement>) => {
     const next = event.relatedTarget;
+    // Disabling the initiating control can blur it to the body during an animated turn.
+    if (next === event.currentTarget.ownerDocument.body) return;
     if (next instanceof Node && !event.currentTarget.contains(next)) focusMemory.current = null;
   }, []);
 
@@ -669,6 +671,9 @@ export const PageFlipBook = forwardRef<
     const rootElement = root.current;
     const memory = focusMemory.current;
     if (!rootElement || !memory) return;
+    // The runtime and React controls must both have settled before choosing a focus target.
+    if (flipStateRef.current !== "read" || (rootElement.dataset.flipState && rootElement.dataset.flipState !== "read"))
+      return;
     const active = rootElement.ownerDocument.activeElement;
     if (active && active !== rootElement.ownerDocument.body && !rootElement.contains(active)) return;
 
@@ -755,6 +760,12 @@ export const PageFlipBook = forwardRef<
   }, [logicalBookId, mountId]);
   restoreFocusRef.current = restoreFocus;
 
+  useEffect(() => {
+    if (flipState !== "read") return;
+    const frame = window.requestAnimationFrame(restoreFocus);
+    return () => window.cancelAnimationFrame(frame);
+  }, [flipState, restoreFocus]);
+
   const scheduleTurnReadiness = useCallback(
     function schedule(book: PageFlipInstance, runtimeIdentity: number) {
       if (turnReadinessFrame.current !== null) window.cancelAnimationFrame(turnReadinessFrame.current);
@@ -796,6 +807,10 @@ export const PageFlipBook = forwardRef<
 
   const requestTurn = useCallback(
     (intent: PageFlipTurnIntent) => {
+      // Pointer activation does not transfer focus on every browser/device.
+      if (intent.source === "control-next" || intent.source === "control-previous") {
+        focusMemory.current = { kind: "control", name: intent.source === "control-next" ? "next" : "previous" };
+      }
       const normalizedIntent =
         intent.kind === "flip-to" || intent.kind === "turn-to"
           ? ({ ...intent, page: clampPage(intent.page, pagesLength.current) } as PageFlipTurnIntent)
@@ -1070,6 +1085,13 @@ export const PageFlipBook = forwardRef<
           if (disposed || boundary.current !== activeBoundary) return;
           const page = Number(event.data);
           let turn = activeTurn.current;
+          // updateFromHtml and responsive refreshes emit flip for the existing spread.
+          // They must preserve settled control focus and cannot create a new gesture.
+          if (!turn && page === currentPage.current) {
+            activeBoundary.updateCurrentPage(page, flipStateRef.current === "read" ? "visible" : "settling");
+            window.requestAnimationFrame(restoreFocus);
+            return;
+          }
           if (!turn) {
             turn = {
               source: "runtime-gesture",

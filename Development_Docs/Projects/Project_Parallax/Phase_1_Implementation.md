@@ -36,6 +36,8 @@ Phase 2 supplies the Creator-facing Spatial Studio and Library. Phase 1 provides
 
 ## Runtime behavior
 
+Chronicle Lens entry controls and its modal stay on the live Journal React surface, outside the page-turn runtime’s imperative clones and inert source pages. Entries come only from released Journal passages; completed and historical entries remain replay-only. Page-turn control focus is restored after both runtime and rendered controls settle, preserving keyboard intent when a busy turn temporarily disables the initiating button. Same-page runtime refreshes retain that intent and cannot fabricate a new page-turn gesture. Pointer activation records the initiating control even on platforms that do not automatically transfer focus.
+
 - Native startup requires supported world tracking, an explicitly granted camera permission, foreground availability, and an accepted provider session. Browser-only and old native companions retain Guided View.
 - Native interaction becomes ready after three normal tracking samples. Limited/lost tracking blocks interaction; recovery preserves object/anchor identity. Interruptions and backgrounding stop the native session and select Guided View.
 - Fixed-worldspace anchors require an explicit matching worldspace and frame transform from the owning integration. Coordinates are never fabricated from latitude/longitude. The current Lens uses Guided View when that transform is unavailable.
@@ -66,6 +68,14 @@ gradle --no-daemon --max-workers=1 :app:compileDebugJavaWithJavac
 ```
 
 D0 receipts are written beneath `artifacts/parallax-device-lab` and bind to actual source SHA/tree/fingerprint and dirty state. They explicitly report provider simulation and future native/device/owner gates; they do not claim D4/D5 proof. Native build evidence establishes compilation, not tracking accuracy on real hardware.
+
+## Recorded software verification
+
+The reconciled Parallax/Crossdeck tree passes 150 focused tests across contracts, runtime, Drydock, API, Device Lab, Lens, Journal, PageFlip, and Crossdeck service/API seams. An additional 104 publication, snapshot-security, and Drydock registry regressions passed during implementation. All eight shared Parallax D0 scenarios pass. Both Prisma schemas validate, and all 73 SQLite migrations apply to an owned disposable database. Focused lint, formatting, and documentation validation pass.
+
+Android’s final Java source compiles with JDK 17 and the declared Android SDK. The hosted iOS companion build, native tests, and permission-denial scenario passed in [Landfall Device Lab run 38032011931](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38032011931), bound to candidate `3bdfccd980d862d61f740222da4ace9de94eb27d`. The final iOS source and project/build inputs are byte-identical to that candidate. The Android texture change was compiled separately after that run. These are software/build results; physical tracking accuracy and owner acceptance remain unestablished.
+
+Ordinary Sounding Line remains the protected-main integration gate, through [PR #692](https://github.com/Kgray44/treasurehuntSoT/pull/692).
 
 ## Product acceptance still required
 
