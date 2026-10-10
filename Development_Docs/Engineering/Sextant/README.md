@@ -22,7 +22,7 @@ Phase 1 implements the capability/provider/permission/lease foundation under the
 | `src/sextant/observations.ts`           | Strict semantic validation and provenance; confidence separate from uncertainty; explicit synthetic identity; current age projection                                                  |
 | `src/sextant/landfall-compatibility.ts` | Wrappers around accepted Landfall foreground context/position acquisition plus pure transient projections                                                                             |
 | `src/sextant/synthetic.ts`              | Deterministic explicit Device Lab push provider; no production auto-registration                                                                                                      |
-| `src/sextant/phase1-scenarios.ts`       | Nine executable D0 foundation scenarios in the shared Sounding Line Device Lab                                                                                                        |
+| `src/sextant/foundation-scenarios.ts`   | Nine executable D0 foundation scenarios in the shared Sounding Line Device Lab                                                                                                        |
 
 Product capability IDs (`sextant.heading.estimate`) are distinct from hardware IDs (`heading`) and architectural ownership IDs (`device.heading`). Every product definition maps to an existing Sextant-owned Wave 4 row. Parallax-owned world tracking, plane understanding and occlusion remain outside this registry. A definition means the semantic contract exists; it never means a native provider is installed or hardware is currently available.
 

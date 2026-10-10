@@ -1,6 +1,6 @@
 // @sounding-line-registration owner=project-sextant suite=unit.sextant contracts=sextant.phase1.foundation
 import { describe, it, expect } from "vitest";
-import { createSextantPhase1ScenarioPacks, phase1ScenarioIds } from "./phase1-scenarios";
+import { createSextantPhase1ScenarioPacks, phase1ScenarioIds } from "./foundation-scenarios";
 import { runDeviceLabScenario } from "@/device-lab/runner";
 import { loadDeviceLabRegistry } from "@/device-lab/registry";
 describe("Sextant Phase 1 real D0 executable contracts", () => {

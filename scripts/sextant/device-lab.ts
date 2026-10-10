@@ -3,7 +3,7 @@ import os from "node:os";
 import { deviceLabSourceIdentity } from "../device-lab/source";
 import { labTool } from "../device-lab/host";
 import { runDeviceLabScenario } from "../../src/device-lab/runner";
-import { createSextantPhase1ScenarioPacks, phase1ScenarioIds } from "../../src/sextant/phase1-scenarios";
+import { createSextantPhase1ScenarioPacks, phase1ScenarioIds } from "../../src/sextant/foundation-scenarios";
 import { loadDeviceLabRegistry } from "../../src/device-lab/registry";
 async function main() {
   const args = process.argv.slice(2);

@@ -2,7 +2,7 @@
 import { afterEach, describe, it, expect, vi } from "vitest";
 import { SextantCapabilityRegistry } from "./capabilities";
 import { SextantPermissionBroker } from "./permissions";
-import { sextantD0Fixture } from "./phase1-scenarios";
+import { sextantD0Fixture } from "./foundation-scenarios";
 import { SyntheticSextantProvider } from "./synthetic";
 import { normalizeObservation, projectObservation } from "./observations";
 import { observationSchema } from "./contracts";

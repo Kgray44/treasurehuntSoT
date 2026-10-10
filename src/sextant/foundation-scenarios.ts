@@ -84,7 +84,7 @@ export function createSextantPhase1ScenarioPacks() {
         protectedContracts: [`sextant.phase1.${suffix}`],
         expectedArtifacts: [],
         timeoutMs: 5000,
-        soundingLineTests: ["src/sextant/phase1-scenarios.test.ts"],
+        soundingLineTests: ["src/sextant/foundation-scenarios.test.ts"],
         requiredFutureGates: ["D4_REAL_DEVICE_REQUIRED_FOR_PHYSICAL_CLAIMS", "D5_FIELD_REQUIRED_FOR_FIELD_CLAIMS"],
       },
       createAdapter: () => {
