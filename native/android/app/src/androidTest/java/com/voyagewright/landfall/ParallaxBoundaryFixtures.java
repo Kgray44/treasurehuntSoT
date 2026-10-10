@@ -52,5 +52,5 @@ public final class ParallaxBoundaryFixtures {
     }
     return assertions;
   }
-  public static void main(String[] args) throws Exception {System.out.println("Parallax native JVM boundary: "+run(new JSONObject(Files.readString(Path.of(args[0]))))+" assertions passed (no Android UI/AR claim)");}
+  public static void main(String[] args) throws Exception {System.out.println("Parallax native JVM boundary: "+run(new JSONObject(new String(Files.readAllBytes(Paths.get(args[0])), StandardCharsets.UTF_8)))+" assertions passed (no Android UI/AR claim)");}
 }
