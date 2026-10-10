@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "registry": "surface-capability-registry",
   "title": "Voyagewright Surface Capability and Role Registry",
-  "effectiveDate": "2026-10-08",
-  "repositoryBaseline": "5f8edcdcc5d10bef363f8889eeeb903c17cb00b4",
+  "effectiveDate": "2026-10-09",
+  "repositoryBaseline": "c4646fe6822f1cc957895b39e2ea46eac72c0658",
   "program": "Voyagewright Spatial Experience",
-  "authority": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
+  "authority": "Development_Docs/Governing/Project_Crossdeck_Governing_Amendment_v1.1_Reach_Air_Handoff_Intent.md",
   "status": "GOVERNING_MACHINE_READABLE_BASELINE",
   "implementationClaim": "NONE",
   "roles": [
@@ -18,7 +18,10 @@
       "preferredCapabilities": ["large-viewport", "keyboard-or-pointer", "audio"],
       "sensitiveContent": "ALLOWED_IF_AUTHORIZED",
       "fallbackRoles": ["JOURNAL"],
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED",
+      "optionalInteractionProvider": "reach.spatial-interaction",
+      "interactionPermission": "EXPLICIT_TARGET_REGISTRATION_AND_OWNER_AUTHORIZATION",
+      "gestureRequired": false
     },
     {
       "id": "CHRONICLE_LENS",
@@ -29,7 +32,10 @@
       "preferredCapabilities": ["orientation", "haptics", "ar-world-tracking", "location"],
       "sensitiveContent": "PERSONAL_BY_DEFAULT",
       "fallbackRoles": ["ARTIFACT_VIEWER", "JOURNAL"],
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED",
+      "optionalInteractionProvider": "reach.spatial-interaction",
+      "interactionPermission": "EXPLICIT_TARGET_REGISTRATION_AND_OWNER_AUTHORIZATION",
+      "gestureRequired": false
     },
     {
       "id": "CHART",
@@ -40,7 +46,10 @@
       "preferredCapabilities": ["touch-or-pointer", "large-enough-viewport"],
       "sensitiveContent": "POLICY_BOUND",
       "fallbackRoles": ["JOURNAL"],
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED",
+      "optionalInteractionProvider": "reach.spatial-interaction",
+      "interactionPermission": "EXPLICIT_TARGET_REGISTRATION_AND_OWNER_AUTHORIZATION",
+      "gestureRequired": false
     },
     {
       "id": "JOURNAL",
@@ -51,7 +60,10 @@
       "preferredCapabilities": ["readable-viewport", "text-input-optional"],
       "sensitiveContent": "PERSONAL_BY_DEFAULT",
       "fallbackRoles": ["PRIMARY_STORY"],
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED",
+      "optionalInteractionProvider": "reach.spatial-interaction",
+      "interactionPermission": "EXPLICIT_TARGET_REGISTRATION_AND_OWNER_AUTHORIZATION",
+      "gestureRequired": false
     },
     {
       "id": "ARTIFACT_VIEWER",
@@ -62,7 +74,10 @@
       "preferredCapabilities": ["touch-or-pointer", "gpu-standard"],
       "sensitiveContent": "POLICY_BOUND",
       "fallbackRoles": ["JOURNAL"],
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED",
+      "optionalInteractionProvider": "reach.spatial-interaction",
+      "interactionPermission": "EXPLICIT_TARGET_REGISTRATION_AND_OWNER_AUTHORIZATION",
+      "gestureRequired": false
     },
     {
       "id": "SHARED_CREW_DISPLAY",
@@ -106,7 +121,10 @@
       "preferredCapabilities": ["large-viewport", "pointer"],
       "sensitiveContent": "CREATOR_AUTHORIZATION_REQUIRED",
       "fallbackRoles": [],
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED",
+      "optionalInteractionProvider": "reach.spatial-interaction",
+      "interactionPermission": "EXPLICIT_TARGET_REGISTRATION_AND_OWNER_AUTHORIZATION",
+      "gestureRequired": false
     },
     {
       "id": "ACCESSIBILITY_COMPANION",
@@ -117,7 +135,10 @@
       "preferredCapabilities": ["assistive-output-or-input"],
       "sensitiveContent": "PERSONAL_BY_DEFAULT",
       "fallbackRoles": ["PRIMARY_STORY"],
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED",
+      "optionalInteractionProvider": "reach.spatial-interaction",
+      "interactionPermission": "EXPLICIT_TARGET_REGISTRATION_AND_OWNER_AUTHORIZATION",
+      "gestureRequired": false
     }
   ],
   "projectionFields": [

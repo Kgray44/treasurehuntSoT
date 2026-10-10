@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "registry": "spatial-provider-registry",
   "title": "Voyagewright Spatial Experience Provider Registry",
-  "effectiveDate": "2026-10-08",
-  "repositoryBaseline": "5f8edcdcc5d10bef363f8889eeeb903c17cb00b4",
+  "effectiveDate": "2026-10-09",
+  "repositoryBaseline": "c4646fe6822f1cc957895b39e2ea46eac72c0658",
   "program": "Voyagewright Spatial Experience",
-  "authority": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md",
+  "authority": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Amendment_v1.1_Reach_and_Browser_First_Interaction.md",
   "status": "GOVERNING_MACHINE_READABLE_BASELINE",
   "implementationClaim": "NONE",
   "providers": [
@@ -117,13 +117,15 @@
     {
       "id": "crossdeck.handoff",
       "owner": "CROSSDECK",
-      "authority": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
+      "authority": "Development_Docs/Governing/Project_Crossdeck_Governing_Amendment_v1.1_Reach_Air_Handoff_Intent.md",
       "capabilities": ["surface.handoff"],
       "outcomes": ["ARMED", "TARGET_CLAIMED", "COMMITTED", "ACKNOWLEDGED", "CANCELLED", "FAILED"],
       "privacyClass": "PRIVATE_SESSION_STATE",
       "runtimeState": "GOVERNED_NOT_IMPLEMENTED",
       "fallbackRequired": true,
-      "simulator": "DEVICE_LAB_OR_DRYDOCK_AS_GOVERNED"
+      "simulator": "DEVICE_LAB_OR_DRYDOCK_AS_GOVERNED",
+      "inputProvider": "reach.spatial-interaction",
+      "manualFallbackIndependent": true
     },
     {
       "id": "storytide.spatial-moment",
@@ -201,6 +203,49 @@
       "runtimeState": "AVAILABLE_ACCEPTED",
       "fallbackRequired": false,
       "simulator": "RUNTIME_AUTHORITY"
+    },
+    {
+      "id": "watchglass.hand-observation",
+      "owner": "WATCHGLASS",
+      "authority": "Development_Docs/Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.1_Hand_Observation_Providers.md",
+      "capabilities": ["perception.hand-observation"],
+      "outcomes": ["TRACKED", "LOW_QUALITY", "OCCLUDED", "UNKNOWN", "UNAVAILABLE"],
+      "privacyClass": "PRIVATE_VISUAL_HAND_OBSERVATIONS",
+      "runtimeState": "GOVERNED_NOT_IMPLEMENTED",
+      "fallbackRequired": true,
+      "simulator": "DEVICE_LAB_OR_DRYDOCK_AS_GOVERNED"
+    },
+    {
+      "id": "reach.spatial-interaction",
+      "owner": "REACH",
+      "authority": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
+      "capabilities": [
+        "interaction.calibration",
+        "interaction.pointing",
+        "interaction.target-registration",
+        "interaction.target-acquisition",
+        "interaction.selection",
+        "interaction.manipulation",
+        "interaction.activation-intent",
+        "interaction.handoff-intent",
+        "interaction.input-arbitration"
+      ],
+      "outcomes": [
+        "READY",
+        "DEGRADED",
+        "CALIBRATION_REQUIRED",
+        "NO_USABLE_HAND",
+        "AMBIGUOUS",
+        "PERMISSION_DENIED",
+        "CAMERA_BUSY",
+        "UNSUPPORTED",
+        "SUSPENDED",
+        "ERROR"
+      ],
+      "privacyClass": "PRIVATE_INTERACTION_CONTEXT",
+      "runtimeState": "GOVERNED_NOT_IMPLEMENTED",
+      "fallbackRequired": true,
+      "simulator": "DECLARED_PENDING_REACH_PACK_REGISTRATION"
     }
   ]
 }

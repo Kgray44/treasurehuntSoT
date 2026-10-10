@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "registry": "spatial-event-registry",
   "title": "Voyagewright Spatial Experience Event and Evidence Registry",
-  "effectiveDate": "2026-10-08",
-  "repositoryBaseline": "5f8edcdcc5d10bef363f8889eeeb903c17cb00b4",
+  "effectiveDate": "2026-10-09",
+  "repositoryBaseline": "c4646fe6822f1cc957895b39e2ea46eac72c0658",
   "program": "Voyagewright Spatial Experience",
-  "authority": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md",
+  "authority": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Amendment_v1.1_Reach_and_Browser_First_Interaction.md",
   "status": "GOVERNING_MACHINE_READABLE_BASELINE",
   "implementationClaim": "NONE",
   "events": [
@@ -51,7 +51,8 @@
       "privacyClass": "BOUNDED_DOMAIN_EVENT",
       "replaySemantics": "IDEMPOTENT_OR_EPHEMERAL_BY_CONTRACT",
       "freshnessRequired": true,
-      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY",
+      "semanticScope": "HARDWARE_DEVICE_MOTION_DERIVATION_ONLY"
     },
     {
       "id": "MAGNETIC_ANOMALY_OBSERVED",
@@ -569,6 +570,138 @@
       "replaySemantics": "IDEMPOTENT_CANONICAL",
       "freshnessRequired": true,
       "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "REACH_TARGET_HIGHLIGHTED",
+      "owner": "REACH",
+      "producer": "REACH",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "BOUNDED_DOMAIN_EVENT",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "REACH_SELECTION_CONFIRMED",
+      "owner": "REACH",
+      "producer": "REACH",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "BOUNDED_DOMAIN_EVENT",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "REACH_MANIPULATION_STARTED",
+      "owner": "REACH",
+      "producer": "REACH",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "BOUNDED_DOMAIN_EVENT",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "REACH_MANIPULATION_UPDATED",
+      "owner": "REACH",
+      "producer": "REACH",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "BOUNDED_DOMAIN_EVENT",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "REACH_MANIPULATION_ENDED",
+      "owner": "REACH",
+      "producer": "REACH",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "BOUNDED_DOMAIN_EVENT",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "REACH_ACTIVATION_REQUESTED",
+      "owner": "REACH",
+      "producer": "REACH",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "BOUNDED_DOMAIN_EVENT",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "REACH_GRAB_CONFIRMED",
+      "owner": "REACH",
+      "producer": "REACH",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "BOUNDED_DOMAIN_EVENT",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "REACH_RELEASE_CONFIRMED",
+      "owner": "REACH",
+      "producer": "REACH",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "BOUNDED_DOMAIN_EVENT",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "REACH_INTERACTION_CANCELLED",
+      "owner": "REACH",
+      "producer": "REACH",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "BOUNDED_DOMAIN_EVENT",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "REACH_TRACKING_INTERRUPTED",
+      "owner": "REACH",
+      "producer": "REACH",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "BOUNDED_DOMAIN_EVENT",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "REACH_CALIBRATION_CHANGED",
+      "owner": "REACH",
+      "producer": "REACH",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "BOUNDED_DOMAIN_EVENT",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MINIMUM_NECESSARY_BY_OWNER_POLICY"
+    },
+    {
+      "id": "HAND_OBSERVATION_AVAILABLE",
+      "owner": "WATCHGLASS",
+      "producer": "WATCHGLASS",
+      "consumers": ["REACH"],
+      "authority": "NON_PROGRESSION_EVENT",
+      "privacyClass": "PRIVATE_VISUAL_HAND_OBSERVATIONS",
+      "replaySemantics": "EPHEMERAL_NO_REACTIVATION",
+      "freshnessRequired": true,
+      "retention": "MEMORY_ONLY_BY_DEFAULT"
     }
   ]
 }

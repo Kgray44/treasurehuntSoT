@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: governing-baseline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-04
+last_reviewed: 2026-10-09
 ---
 
 # Project Parallax
@@ -111,3 +111,7 @@ The governing evidence tiers remain D0 deterministic simulation through D5 real 
 - The six implementation phases must follow ordinary Voyagewright phase-level development, focused verification, Sounding Line final acceptance, and protected-main integration.
 
 Publishing this governed baseline does not automatically authorize Parallax Phase 1 or any later Spatial Experience project.
+
+## Reach-era effective integration
+
+Read the preserved authority above with the [current Reach integration amendment](../../Governing/Project_Parallax_Governing_Amendment_v1.1_Reach_Manipulation_Intent.md). The [effective spatial authority index](../../Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) resolves the complete additive chain. Reach owns calibrated target/gesture intent; this project retains its domain authority. The amendment is governance only and does not claim new implementation or reopen accepted closure.

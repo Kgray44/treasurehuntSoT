@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "registry": "spatial-capability-ownership",
   "title": "Voyagewright Spatial Experience Capability Ownership Registry",
-  "effectiveDate": "2026-10-08",
-  "repositoryBaseline": "5f8edcdcc5d10bef363f8889eeeb903c17cb00b4",
+  "effectiveDate": "2026-10-09",
+  "repositoryBaseline": "c4646fe6822f1cc957895b39e2ea46eac72c0658",
   "program": "Voyagewright Spatial Experience",
-  "authority": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md",
+  "authority": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Amendment_v1.1_Reach_and_Browser_First_Interaction.md",
   "status": "GOVERNING_MACHINE_READABLE_BASELINE",
   "implementationClaim": "NONE",
   "capabilities": [
@@ -13,7 +13,7 @@
       "id": "device.capability-discovery",
       "owner": "SEXTANT",
       "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
-      "consumers": ["LANDFALL", "PARALLAX", "WATCHGLASS", "CROSSDECK", "STORYTIDE"],
+      "consumers": ["LANDFALL", "PARALLAX", "WATCHGLASS", "CROSSDECK", "STORYTIDE", "REACH"],
       "progressionAuthority": "NONE",
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
@@ -21,7 +21,7 @@
       "id": "device.permission-state",
       "owner": "SEXTANT",
       "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
-      "consumers": ["LANDFALL", "PARALLAX", "WATCHGLASS", "CROSSDECK"],
+      "consumers": ["LANDFALL", "PARALLAX", "WATCHGLASS", "CROSSDECK", "REACH"],
       "progressionAuthority": "NONE",
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
@@ -45,7 +45,7 @@
       "id": "device.orientation",
       "owner": "SEXTANT",
       "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
-      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE"],
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "REACH"],
       "progressionAuthority": "NONE",
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
@@ -53,17 +53,19 @@
       "id": "device.motion",
       "owner": "SEXTANT",
       "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
-      "consumers": ["LANDFALL", "PARALLAX", "STORYTIDE"],
+      "consumers": ["LANDFALL", "PARALLAX", "STORYTIDE", "REACH"],
       "progressionAuthority": "NONE",
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
     {
       "id": "device.gesture",
       "owner": "SEXTANT",
-      "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
-      "consumers": ["STORYTIDE", "PARALLAX", "CROSSDECK"],
+      "authority": "Development_Docs/Governing/Project_Sextant_Governing_Amendment_v1.1_Reach_Camera_and_Device_Gesture_Boundaries.md",
+      "consumers": ["STORYTIDE", "PARALLAX", "CROSSDECK", "REACH"],
       "progressionAuthority": "NONE",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED",
+      "semanticScope": "HARDWARE_DEVICE_MOTION_DERIVATION_ONLY",
+      "excludes": ["VISUAL_HAND_CLASSIFICATION", "SCREEN_TARGET_SELECTION", "UI_ACTIVATION"]
     },
     {
       "id": "device.magnetic-field",
@@ -93,7 +95,7 @@
       "id": "device.camera-capability",
       "owner": "SEXTANT",
       "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
-      "consumers": ["PARALLAX", "WATCHGLASS", "CROSSDECK"],
+      "consumers": ["PARALLAX", "WATCHGLASS", "CROSSDECK", "REACH"],
       "progressionAuthority": "NONE",
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
@@ -109,7 +111,7 @@
       "id": "device.lifecycle",
       "owner": "SEXTANT",
       "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
-      "consumers": ["LANDFALL", "PARALLAX", "CROSSDECK", "WATCHGLASS"],
+      "consumers": ["LANDFALL", "PARALLAX", "CROSSDECK", "WATCHGLASS", "REACH"],
       "progressionAuthority": "NONE",
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
@@ -117,7 +119,7 @@
       "id": "device.power-thermal",
       "owner": "SEXTANT",
       "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
-      "consumers": ["PARALLAX", "WATCHGLASS", "CROSSDECK"],
+      "consumers": ["PARALLAX", "WATCHGLASS", "CROSSDECK", "REACH"],
       "progressionAuthority": "NONE",
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     },
@@ -292,10 +294,11 @@
     {
       "id": "surface.handoff",
       "owner": "CROSSDECK",
-      "authority": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
+      "authority": "Development_Docs/Governing/Project_Crossdeck_Governing_Amendment_v1.1_Reach_Air_Handoff_Intent.md",
       "consumers": ["PARALLAX", "STORYTIDE", "WAKEBOOK"],
       "progressionAuthority": "NONE",
-      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED",
+      "interactionIntentOwner": "REACH"
     },
     {
       "id": "narrative.spatial-moment",
@@ -368,6 +371,86 @@
       "consumers": ["STORYTIDE", "PARALLAX", "CROSSDECK", "LANDFALL", "WATCHGLASS"],
       "progressionAuthority": "CANONICAL",
       "implementationState": "OWNER_SYSTEM_ACCEPTED_IN_DOMAIN_REGISTRY_CONTRACT_MAY_REQUIRE_FUTURE_INTEGRATION"
+    },
+    {
+      "id": "interaction.calibration",
+      "owner": "REACH",
+      "authority": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "interaction.pointing",
+      "owner": "REACH",
+      "authority": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "interaction.target-registration",
+      "owner": "REACH",
+      "authority": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "interaction.target-acquisition",
+      "owner": "REACH",
+      "authority": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "interaction.selection",
+      "owner": "REACH",
+      "authority": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "interaction.manipulation",
+      "owner": "REACH",
+      "authority": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "interaction.activation-intent",
+      "owner": "REACH",
+      "authority": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "interaction.handoff-intent",
+      "owner": "REACH",
+      "authority": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "interaction.input-arbitration",
+      "owner": "REACH",
+      "authority": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
+      "consumers": ["PARALLAX", "CROSSDECK", "STORYTIDE", "LANDFALL", "DRYDOCK"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "perception.hand-observation",
+      "owner": "WATCHGLASS",
+      "authority": "Development_Docs/Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.1_Hand_Observation_Providers.md",
+      "consumers": ["REACH"],
+      "progressionAuthority": "NONE",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     }
   ]
 }

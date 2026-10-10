@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-09",
+  "generated_at": "2026-10-10",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -376,6 +376,18 @@
     },
     {
       "path": "Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Device_Lab/README.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Device_Lab/Spatial_Infrastructure_Increment_0_Implementation_Receipt.md",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
@@ -819,6 +831,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Crossdeck_Governing_Amendment_v1.1_Reach_Air_Handoff_Intent.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Crossdeck_Multi_Surface_Chronicle_Experience_System_Governing_Document_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
@@ -826,6 +844,12 @@
     },
     {
       "path": "Development_Docs/Governing/Project_Drydock_Governing_Amendment_v1.1_Spatial_Provider_and_Device_Lab_Integration.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Drydock_Governing_Amendment_v1.2_Reach_Interaction_Validation.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -849,6 +873,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Harborlight_Governing_Amendment_v1.2_Reach_Interaction_Packages.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf",
       "record_type": "governing-record",
       "status": "preserved",
@@ -856,6 +886,18 @@
     },
     {
       "path": "Development_Docs/Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Landfall_Governing_Amendment_v1.3_Reach_Map_Interaction_Boundary.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Lanternwake_Reach_Interaction_Presentation_Integration_Amendment_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -873,6 +915,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Parallax_Governing_Amendment_v1.1_Reach_Manipulation_Intent.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
@@ -885,6 +933,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sealed_Hold_Spatial_Integration_Amendment_v1.1_Reach_Calibration_and_Evidence.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Sealed_Hold_Spatial_Media_and_Calibration_Evidence_Integration_Record_v1.0.md",
       "record_type": "governing-record",
       "status": "preserved",
@@ -892,6 +952,12 @@
     },
     {
       "path": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sextant_Governing_Amendment_v1.1_Reach_Camera_and_Device_Gesture_Boundaries.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -951,7 +1017,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Sounding_Line_Voyagewright_Device_Lab_Governing_Annex_v1.1_Reach_Qualification.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Storytide_Spatial_and_Multi_Surface_Integration_Amendment_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Storytide_Spatial_and_Multi_Surface_Integration_Amendment_v1.1_Reach_Interaction_Meaning.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -970,6 +1048,12 @@
     },
     {
       "path": "Development_Docs/Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.1_Hand_Observation_Providers.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -1005,7 +1089,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Amendment_v1.1_Reach_and_Browser_First_Interaction.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Effective_Authority.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -3567,6 +3663,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Spatial_Experience/Project_Reach_Governance_Reconciliation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Spatial_Experience/README.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -3575,8 +3677,14 @@
     {
       "path": "Development_Docs/Programs/Spatial_Experience/Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.0.md",
       "record_type": "program-record",
-      "status": "current",
-      "canonical_for": "spatial-experience-wave4-implementation-launch"
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Spatial_Experience/Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.1_Reach.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
     },
     {
       "path": "Development_Docs/Programs/True_North/Project_True_North_Completion_Receipt.md",
@@ -7365,6 +7473,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Reach/Project_Reach_Requirements_and_Qualification_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Sextant/README.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -7966,39 +8086,51 @@
     },
     {
       "path": "Development_Docs/Spatial_Experience/device-capability-registry.json",
-      "record_type": "governing-record",
-      "status": "current",
-      "canonical_for": "spatial-device-capability-registry"
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
     },
     {
       "path": "Development_Docs/Spatial_Experience/device-lab-scenario-registry.json",
-      "record_type": "governing-record",
-      "status": "current",
-      "canonical_for": "spatial-device-lab-scenario-registry"
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Spatial_Experience/reach-interaction-registry.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Spatial_Experience/README.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
     },
     {
       "path": "Development_Docs/Spatial_Experience/spatial-capability-ownership.json",
-      "record_type": "governing-record",
-      "status": "current",
-      "canonical_for": "spatial-capability-ownership-registry"
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
     },
     {
       "path": "Development_Docs/Spatial_Experience/spatial-event-registry.json",
-      "record_type": "governing-record",
-      "status": "current",
-      "canonical_for": "spatial-event-registry"
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
     },
     {
       "path": "Development_Docs/Spatial_Experience/spatial-provider-registry.json",
-      "record_type": "governing-record",
-      "status": "current",
-      "canonical_for": "spatial-provider-registry"
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
     },
     {
       "path": "Development_Docs/Spatial_Experience/surface-capability-registry.json",
-      "record_type": "governing-record",
-      "status": "current",
-      "canonical_for": "spatial-surface-capability-registry"
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
     },
     {
       "path": "Development_Docs/Testing/Browser_and_Compatibility_Strategy.md",
@@ -8154,18 +8286,6 @@
       "path": "Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md",
       "record_type": "validation-evidence",
       "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Engineering/Device_Lab/README.md",
-      "record_type": "engineering-record",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Engineering/Device_Lab/Spatial_Infrastructure_Increment_0_Implementation_Receipt.md",
-      "record_type": "engineering-record",
-      "status": "current",
       "canonical_for": null
     }
   ]

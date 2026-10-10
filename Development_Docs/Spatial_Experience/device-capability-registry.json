@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "registry": "device-capability-registry",
   "title": "Voyagewright Device and Spatial Hardware Capability Registry",
-  "effectiveDate": "2026-10-08",
-  "repositoryBaseline": "5f8edcdcc5d10bef363f8889eeeb903c17cb00b4",
+  "effectiveDate": "2026-10-09",
+  "repositoryBaseline": "c4646fe6822f1cc957895b39e2ea46eac72c0658",
   "program": "Voyagewright Spatial Experience",
-  "authority": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+  "authority": "Development_Docs/Governing/Project_Sextant_Governing_Amendment_v1.1_Reach_Camera_and_Device_Gesture_Boundaries.md",
   "status": "GOVERNING_MACHINE_READABLE_BASELINE",
   "implementationClaim": "NONE",
   "capabilities": [
@@ -293,6 +293,19 @@
       "simulationTiers": ["D0", "D3", "D4"],
       "realDeviceQualification": "D4_WHERE_REQUIRED",
       "defaultFallback": "NO_OCCLUSION_OR_SIMPLIFIED_RENDER",
+      "implementationState": "GOVERNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "visual-hand-observation",
+      "semanticId": "perception.hand-observation",
+      "owner": "WATCHGLASS",
+      "providerClasses": ["WEB_CAMERA_HAND_MODEL", "OPTIONAL_NATIVE_HAND_PROVIDER"],
+      "permission": "CAMERA_PERMISSION_WITH_EXPLICIT_ENABLE",
+      "privacyClass": "PRIVATE_VISUAL_HAND_OBSERVATIONS",
+      "backgroundPolicy": "FOREGROUND_ONLY",
+      "simulationTiers": ["D0", "D1", "D4", "D5"],
+      "realDeviceQualification": "D4_AND_D5_FOR_TRACKING_AND_USABILITY_CLAIMS",
+      "defaultFallback": "CONVENTIONAL_INPUT",
       "implementationState": "GOVERNED_NOT_IMPLEMENTED"
     }
   ]

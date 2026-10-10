@@ -114,3 +114,7 @@ the record-only plan shape, the classified path set, the prior implementation
 ancestry, the evidence set, the sealed finalizer result, and the exact
 two-parent merge before publishing the unchanged protected context. Unsupported
 or ambiguous candidates fail closed.
+
+## Reach Device Lab qualification addition
+
+Read the preserved Device Lab annex v1.0 together with its [v1.1 Reach qualification annex](Project_Sounding_Line_Voyagewright_Device_Lab_Governing_Annex_v1.1_Reach_Qualification.md). This adds product-owned scenario/evidence obligations without changing the machine-readable Sounding Line authority version or Mainline Decision requirement. Reach declarations are pending executable registration; current Device Lab runtime acceptance remains intact.

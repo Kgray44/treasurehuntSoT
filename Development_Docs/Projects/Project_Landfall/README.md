@@ -3,7 +3,7 @@ title: Project Landfall engineering home
 audience: product-engineering
 status: current
 canonical_for: project-landfall-engineering-home
-last_reviewed: 2026-10-07
+last_reviewed: 2026-10-09
 ---
 
 # Project Landfall
@@ -63,3 +63,7 @@ Hold the Bearing source is integrated on protected main through PR #677. Its exa
 - [Accepted Phase 4 capsule](Project_Landfall_Phase_4_Accepted_Capsule.md): bounded Project Trim context and source/validation scopes.
 - [Project Landfall completion receipt](Project_Landfall_Phase_4_Completion_Receipt.md): formal closure and external production gates.
 - [Exact qualification receipt](Project_Landfall_Phase_4_Qualification_Receipt.json): immutable identities, hashes, original failures and accepted scoped evidence.
+
+## Reach-era effective integration
+
+Read the preserved authority above with the [current Reach integration amendment](../../Governing/Project_Landfall_Governing_Amendment_v1.3_Reach_Map_Interaction_Boundary.md). The [effective spatial authority index](../../Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) resolves the complete additive chain. Reach owns calibrated target/gesture intent; this project retains its domain authority. The amendment is governance only and does not claim new implementation or reopen accepted closure.

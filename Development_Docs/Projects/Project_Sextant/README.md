@@ -3,7 +3,7 @@ title: Project Sextant engineering home
 audience: product-engineering
 status: governing-baseline
 canonical_for: project-sextant-engineering-home
-last_reviewed: 2026-10-04
+last_reviewed: 2026-10-09
 ---
 
 # Project Sextant
@@ -78,3 +78,7 @@ The governing test tiers remain D0 deterministic simulation through D5 real fiel
 Implementation must preserve the architecture sequence and boundaries in the master Spatial Experience Architecture. In particular, native Landfall Phase 4 work cannot simply continue the old generic-sensor ownership model; the Landfall/Sextant boundary must be reconciled deliberately.
 
 Publishing this governing baseline does not authorize Parallax, Crossdeck, or later Sextant phases automatically.
+
+## Reach-era effective integration
+
+Read the preserved authority above with the [current Reach integration amendment](../../Governing/Project_Sextant_Governing_Amendment_v1.1_Reach_Camera_and_Device_Gesture_Boundaries.md). The [effective spatial authority index](../../Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) resolves the complete additive chain. Reach owns calibrated target/gesture intent; this project retains its domain authority. The amendment is governance only and does not claim new implementation or reopen accepted closure.

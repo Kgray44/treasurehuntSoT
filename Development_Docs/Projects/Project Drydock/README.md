@@ -84,3 +84,7 @@ Voyage authority.
 - [Validation Record](Project_Drydock_Phase_4_Validation_Record.md)
 - [Reconciliation Record](Project_Drydock_Phase_4_Reconciliation_Record.md)
 - [Completion Receipt](Project_Drydock_Phase_4_Completion_Receipt.md)
+
+## Reach-era validation contract
+
+The additive [Drydock v1.2 Reach Interaction Validation amendment](../../Governing/Project_Drydock_Governing_Amendment_v1.2_Reach_Interaction_Validation.md) extends the existing spatial validation chain with typed interaction definitions, essential alternatives, canonical completion boundaries and truthful evidence tiers. This is governance only; accepted Drydock runtime/evidence remains unchanged. Use the [effective spatial authority index](../../Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) for the complete chain.
