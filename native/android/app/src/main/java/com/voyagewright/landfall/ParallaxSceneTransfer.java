@@ -46,7 +46,7 @@ final class ParallaxSceneTransfer {
       buffer.write(bytes, 0, bytes.length); next++; return true;
     } catch (Exception e) { clear(); return false; }
   }
-  boolean abort(JSONObject p) { if (matches(p) && transaction != null && transaction.equals(p.optString("transactionId")) && currentGeneration == p.optInt("generation", -1)) clear(); return matches(p); }
+  boolean abort(JSONObject p) { if (matches(p) && transaction != null && transaction.equals(p.optString("transactionId")) && integer(p,"generation") && currentGeneration == p.optInt("generation", -1)) clear(); return matches(p); }
   JSONArray commit(JSONObject p, long now) {
     if (!current(p, now)) return null;
     try {

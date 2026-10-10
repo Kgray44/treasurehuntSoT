@@ -32,6 +32,13 @@ public final class ParallaxBoundaryFixtures {
     JSONArray cases=fixtures.getJSONArray("sceneCases");
     for(int i=0;i<cases.length();i++){JSONObject c=cases.getJSONObject(i);check(scene(c.getJSONObject("scene"))==c.getBoolean("accepted"),c.getString("name"));}
     JSONArray traces=fixtures.getJSONArray("transferTraces");
+    // A fractional generation must not truncate into an abort of the active transaction.
+    JSONArray complete=traces.getJSONObject(0).getJSONArray("steps");
+    ParallaxSceneTransfer fractionalAbort=new ParallaxSceneTransfer("fixture-session",1);
+    check(fractionalAbort.begin(complete.getJSONArray(0).getJSONObject(1),0),"fractional abort setup");
+    fractionalAbort.abort(identity().put("generation",1.5));
+    check(fractionalAbort.chunk(complete.getJSONArray(1).getJSONObject(1),0),"fractional abort preserves transaction");
+    check(fractionalAbort.commit(identity(),0)!=null,"fractional abort preserves commit");
     for(int i=0;i<traces.length();i++) {
       JSONObject trace=traces.getJSONObject(i);ParallaxSceneTransfer t=new ParallaxSceneTransfer("fixture-session",1);JSONArray steps=trace.getJSONArray("steps");long now=0;
       for(int j=0;j<steps.length();j++) {JSONArray step=steps.getJSONArray(j);JSONObject p=step.getJSONObject(1);boolean result;

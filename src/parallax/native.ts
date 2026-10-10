@@ -107,6 +107,8 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
       this.started = false;
       this.remove?.();
       this.remove = undefined;
+      // Invalidate identity before a delayed START acknowledgment can revive it.
+      void this.stop();
       c.emit({ type: "TRACKING", state: "INTERRUPTED" });
     };
     const receive = (e: Event) => {

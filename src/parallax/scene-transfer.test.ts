@@ -107,6 +107,31 @@ describe("shared native boundary v1 (D0 transport, native fixtures are separatel
       "REQUEST_TOO_LARGE",
     );
   });
+  it("cannot revive an interrupted provider with a late START acknowledgment", async () => {
+    const host = transport(),
+      adapter = new NativeSpatialAdapter();
+    const original = window.LandfallNative!.request;
+    let resume: (() => void) | undefined;
+    window.LandfallNative!.request = async (message: string) => {
+      const response = await original(message);
+      if (JSON.parse(message).operation === "SPATIAL_START")
+        await new Promise<void>((resolve) => {
+          resume = resolve;
+        });
+      return response;
+    };
+    const pending = adapter.start({
+      signal: new AbortController().signal,
+      emit: () => {},
+      sceneIdentity: { versionChecksum: "a".repeat(64), instanceId: "test" },
+    });
+    const rejected = expect(pending).rejects.toThrow("ABORTED");
+    await vi.waitFor(() => expect(resume).toBeDefined());
+    host.event({ type: "parallax-tracking", state: "INTERRUPTED" });
+    resume!();
+    await rejected;
+    await expect(adapter.place("HORIZONTAL")).rejects.toThrow("STOPPED");
+  });
   it("retains historical checksums and the separate 32 KiB canonical publication limit", () => {
     const historical = syntheticSpatialMoment();
     expect(validateSpatialMoment(historical)).toEqual(historical);
