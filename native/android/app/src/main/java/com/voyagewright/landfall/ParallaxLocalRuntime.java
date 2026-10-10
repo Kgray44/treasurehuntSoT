@@ -33,12 +33,15 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
   private Dialog dialog;
   private GLSurfaceView surface;
   private TextView status;
-  private JSONArray pending = new JSONArray();
+  private JSONArray pending;
   private final List<Entity> entities = new ArrayList<>();
   private Frame frame;
   private int width, height, cameraTexture, cameraProgram, entityProgram;
   private volatile String tracking = "INITIALIZING", selected;
-  private boolean active;
+  private volatile boolean active;
+  final ParallaxSceneTransfer transfer;
+  private final Runnable terminated;
+  private android.app.AlertDialog inspection;
   private int normalFrames;
 
   private static final class Entity {
@@ -48,13 +51,16 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     Anchor anchor;
   }
 
-  ParallaxLocalRuntime(Activity activity, Consumer<JSONObject> emit) {
+  ParallaxLocalRuntime(Activity activity, Consumer<JSONObject> emit, String sessionId, int epoch, Runnable terminated) {
+    this.transfer = new ParallaxSceneTransfer(sessionId, epoch);
+    this.terminated = terminated;
     this.activity = activity;
     this.emit = emit;
   }
 
   static JSONObject state(Activity a) throws JSONException {
     return new JSONObject()
+        .put("sceneTransferVersion", 1)
         .put("supported", ArCoreApk.getInstance().checkAvailability(a).isSupported())
         .put(
             "permission",
@@ -102,7 +108,6 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
         b.setOnClickListener(
             v -> {
               if (action.equals("GUIDED")) {
-                tracking("INTERRUPTED");
                 stop();
               } else interaction(action);
             });
@@ -125,7 +130,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
             return true;
           });
       dialog.setContentView(root);
-      dialog.setOnDismissListener(d -> stop());
+      bindDismissal(dialog);
       session.resume();
       active = true;
       dialog.show();
@@ -137,8 +142,11 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     }
   }
 
+  // Kept separate from ARCore acquisition so the OS Dialog lifecycle is testable without camera/tracking claims.
+  void bindDismissal(Dialog owned) { owned.setOnDismissListener(d -> stop()); }
+
   private void pick(float x, float y) {
-    if (frame == null || !tracking.equals("NORMAL")) return;
+    if (!active || frame == null || !tracking.equals("NORMAL")) return;
     float[] projection = new float[16],
         view = new float[16],
         model = new float[16],
@@ -183,7 +191,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
   }
 
   private void interaction(String action) {
-    if (!tracking.equals("NORMAL")) return;
+    if (!active || !tracking.equals("NORMAL")) return;
     String id = selected, content = null;
     synchronized (entities) {
       if (id == null && !entities.isEmpty()) id = entities.get(0).id;
@@ -191,7 +199,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     }
     if (id == null) return;
     if (action.equals("INSPECT"))
-      new android.app.AlertDialog.Builder(activity)
+      inspection = new android.app.AlertDialog.Builder(activity)
           .setTitle("Inspect object")
           .setMessage(content)
           .setPositiveButton("Return to the Lens", (d, w) -> {})
@@ -199,6 +207,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     try {
       emit.accept(
           new JSONObject()
+              .put("sessionId", transfer.sessionId).put("epoch", transfer.epoch)
               .put("type", "parallax-interaction")
               .put("entityId", id)
               .put("interactionType", action));
@@ -212,13 +221,14 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     tracking = value;
     activity.runOnUiThread(
         () -> {
+          if (!active) return;
           if (status != null)
             status.setText(
                 value.equals("NORMAL")
                     ? "Tap to choose the object, then inspect it."
                     : "Finding the space again. Guided View is always available.");
           try {
-            emit.accept(new JSONObject().put("type", "parallax-tracking").put("state", value));
+            emit.accept(new JSONObject().put("sessionId", transfer.sessionId).put("epoch", transfer.epoch).put("type", "parallax-tracking").put("state", value));
           } catch (JSONException ignored) {
           }
         });
@@ -247,43 +257,18 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
   }
 
   synchronized boolean render(JSONArray input) {
-    if (!active || input.length() > 32) return false;
-    try {
-      for (int i = 0; i < input.length(); i++) {
-        JSONObject j = input.getJSONObject(i),
-            t = j.getJSONObject("transform"),
-            p = t.getJSONObject("position"),
-            q = t.getJSONObject("rotation");
-        if (!j.getString("id").matches("[A-Za-z0-9][A-Za-z0-9._:-]{0,127}")
-            || j.getString("content").length() > 2000) return false;
-        double width = j.getDouble("widthMeters"), scale = t.getDouble("scale"), norm = 0;
-        if (!Double.isFinite(width)
-            || width < 0.01
-            || width > 5
-            || !Double.isFinite(scale)
-            || scale < 0.01
-            || scale > 10) return false;
-        for (String axis : new String[] {"x", "y", "z"}) {
-          double v = p.getDouble(axis);
-          if (!Double.isFinite(v) || Math.abs(v) > 10000) return false;
-        }
-        for (String axis : new String[] {"x", "y", "z", "w"}) {
-          double v = q.getDouble(axis);
-          if (!Double.isFinite(v)) return false;
-          norm += v * v;
-        }
-        if (Math.abs(Math.sqrt(norm) - 1) > 0.00001) return false;
-      }
-    } catch (JSONException e) {
-      return false;
-    }
+    if (!active || !ParallaxSceneTransfer.validEntities(input)) return false;
     pending = input;
     return true;
   }
 
   void stop() {
     if (!active && session == null) return;
+    boolean wasActive = active;
     active = false;
+    transfer.clear();
+    pending = null; selected = null; tracking = "INTERRUPTED"; normalFrames = 0;
+    if (inspection != null) { inspection.dismiss(); inspection = null; }
     if (surface != null) surface.onPause();
     if (session != null) {
       try {
@@ -299,7 +284,10 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     }
     Dialog old = dialog;
     dialog = null;
-    if (old != null && old.isShowing()) old.dismiss();
+    if (old != null) { old.setOnDismissListener(null); if (old.isShowing()) old.dismiss(); }
+    surface = null; status = null;
+    terminated.run();
+    if (wasActive) { try { emit.accept(new JSONObject().put("type", "parallax-tracking").put("state", "INTERRUPTED").put("sessionId", transfer.sessionId).put("epoch", transfer.epoch)); } catch (JSONException ignored) {} }
     frame = null;
   }
 
@@ -387,21 +375,19 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     JSONArray input = pending;
     pending = null;
     List<Entity> next = new ArrayList<>();
+    try {
     for (int i = 0; i < input.length(); i++) {
       JSONObject j = input.getJSONObject(i),
           t = j.getJSONObject("transform"),
           p = t.getJSONObject("position"),
           q = t.getJSONObject("rotation");
       Entity e = new Entity();
+      next.add(e);
       e.id = j.getString("id");
       e.content = j.getString("content");
       e.width = (float) j.getDouble("widthMeters");
       e.scale = (float) t.getDouble("scale");
-      if (e.content.length() > 2000
-          || e.width < 0.01
-          || e.width > 5
-          || e.scale < 0.01
-          || e.scale > 10) throw new IllegalArgumentException();
+      if (!ParallaxSceneTransfer.validEntities(input)) throw new IllegalArgumentException();
       e.anchor =
           session.createAnchor(
               new Pose(
@@ -436,7 +422,10 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
           GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
       GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, image, 0);
       image.recycle();
-      next.add(e);
+    }
+    } catch (Exception failure) {
+      for (Entity e : next) { if (e.anchor != null) e.anchor.detach(); if (e.texture != 0) GLES20.glDeleteTextures(1, new int[]{e.texture}, 0); }
+      throw failure;
     }
     synchronized (entities) {
       for (Entity e : entities) {
@@ -509,7 +498,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
         }
       }
     } catch (Exception e) {
-      tracking("LOST");
+      activity.runOnUiThread(this::stop);
     }
   }
 }

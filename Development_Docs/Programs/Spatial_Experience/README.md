@@ -3,7 +3,7 @@ title: Voyagewright Spatial Experience Architecture program home
 audience: product-engineering
 status: governing-baseline
 canonical_for: spatial-experience-program-home
-last_reviewed: 2026-10-09
+last_reviewed: 2026-10-10
 ---
 
 # Voyagewright Spatial Experience Architecture
@@ -42,7 +42,7 @@ Wave 2 integration governance is also published for Storytide, Watchglass, Figur
 
 **Wave 4 machine-readable implementation governance is complete.** The program now has a canonical ownership registry, device-capability registry, provider registry, surface-role/capability registry, normalized event registry, and Device Lab scenario registry under [Development_Docs/Spatial_Experience](../../Spatial_Experience/), plus the [Wave 4 Implementation Launch Manifest v1.0](Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.0.md). These records make the accepted architecture queryable by tooling without creating new product implementation claims.
 
-The [v1.1 Reach launch successor](Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.1_Reach.md) is the current implementation handoff; v1.0 remains historical. [Spatial Infrastructure Increment 0](../../Engineering/Device_Lab/README.md) provides the neutral Device Lab core, strict scenario catalogue loader, owner pack/runner interfaces and retained Landfall compatibility. The original 27 Wave 4 scenarios retain their baseline declarations. [Sextant Phase 1](../../Engineering/Sextant/README.md) implements the first capability/provider/permission/lease foundation and adds nine separately registered executable D0 contracts. Reach adds the browser interaction laboratory and a bounded Watchglass hand-provider dependency. Crossdeck manual work stays independent, while Air Handoff consumes qualified Reach intent. Crossdeck and Parallax begin only as their current v1.1 manifest prerequisites are satisfied.
+The [v1.1 Reach launch successor](Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.1_Reach.md) is the current governing handoff; v1.0 remains historical. [Spatial Infrastructure Increment 0](../../Engineering/Device_Lab/README.md) provides the neutral Device Lab core and retained Landfall compatibility. Current protected source implements [Sextant Phase 2](../../Engineering/Sextant/Project_Sextant_Phase_2_Implementation_Receipt.md), [Parallax Phase 1](../../Projects/Project_Parallax/Phase_1_Implementation.md), and [Crossdeck Phase 1](../../Projects/Project_Crossdeck/Phase_1_Implementation_Record.md) through PRs #691, #692 and #693. The [post-mainline correction receipt](../../Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) tracks gesture cadence, native scene transport, composed transforms and lifecycle repairs separately from those preserved phase records. Reach remains governed and unimplemented; its hand-provider dependency and Air Handoff belong to later authorized work. Native source, Device Lab software qualification, D4/D5 physical evidence and owner acceptance remain separate claims.
 
 None of these governance records, by themselves, claim implementation beyond the accepted current-main behavior of their owning projects.
 
