@@ -104,6 +104,8 @@ Late join, reconnect, tracking loss, and cross-platform resolution must all retu
 
 The governing evidence tiers remain D0 deterministic simulation through D5 real field qualification. Simulator/emulator proof must never be relabeled as real-device AR proof.
 
+See the [post-mainline correction receipt](../../Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for bounded scene transfer, resolved geometry limits, native session lifetimes and termination proof. Older companions remain Guided-only until they advertise the matching transport contract.
+
 ## Continuing implementation
 
 - Project Sextant governance is already published and should be consumed rather than duplicated.

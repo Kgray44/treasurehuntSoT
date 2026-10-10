@@ -3,10 +3,12 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-04
+last_reviewed: 2026-10-10
 ---
 
 # Voyagewright features
+
+Sextant Phase 2 device context, Crossdeck Phase 1 secure surface participation, and Parallax Phase 1 Chronicle Lens/Guided View are implemented on protected main through PRs #691, #692 and #693. The [boundary correction receipt](../../Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) tracks the scoped post-mainline repairs. Native camera/tracking availability is capability-dependent; software status does not close physical-device, field or owner acceptance gates.
 
 Landfall Phase 4 source is integrated through protected PR #677. Origin-bound native companions, signed offline regions, optional contextual providers and the permanent Device Lab preserve consent and canonical One Voyage progression. Preparation and download remain separate actions; verified resources expose progress, expiry and local deletion. Admiralty reads bounded provider-demand metadata without a probe. The [accepted capsule](../../Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_4_Accepted_Capsule.md) records acceptance and limitations. Signed releases, configured production services, physical-device/field/assistive proof and owner acceptance remain external gates.
 

@@ -50,7 +50,10 @@ targets:
   LandfallCompanionTests:
     type: bundle.unit-test
     platform: iOS
-    sources: [LandfallCompanionTests]
+    sources:
+      - LandfallCompanionTests
+      - path: ../../tests/fixtures/parallax
+        buildPhase: resources
     dependencies: [{ target: LandfallCompanion }]
     settings:
       base:

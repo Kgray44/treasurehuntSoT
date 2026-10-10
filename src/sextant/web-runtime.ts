@@ -7,6 +7,7 @@ import { WebDeviceSensorProvider, type WebSensorOptions, type WebSensorTarget } 
 import { DeviceGestureRecognizer, type GestureConfig, type GestureInput, type GestureResult } from "./gestures";
 import type { Observation, PermissionState } from "./contracts";
 import type { Quaternion, Vector3 } from "./attitude";
+import { gestureAcquisition, assertGestureCadence } from "./gesture-acquisition";
 const motionKey = "MOTION_PERMISSION_PLATFORM_DEPENDENT",
   headingKey = "MOTION_OR_LOCATION_PLATFORM_DEPENDENT";
 const runtimes = new WeakMap<object, WebSextantRuntime>();
@@ -120,58 +121,61 @@ export class WebSextantRuntime {
     config: GestureConfig,
     request: Omit<LeaseRequest, "capabilityId" | "frames">,
     onResult: (result: GestureResult) => void,
+    options: { signal?: AbortSignal } = {},
   ) {
     const session = new SextantGestureSession(config, this.now);
-    const kind = session.recognizer.config.kind;
-    const ids =
-      kind === "HOLD_STEADY"
-        ? ["motion.stability"]
-        : kind === "TURN_TO_BEARING"
-          ? ["heading.estimate", "motion.stability"]
-          : kind === "TILT_BAND"
-            ? ["orientation.attitude", "motion.stability"]
-            : ["motion.gravity", "motion.linear-acceleration", "motion.angular-velocity", "motion.stability"];
+    assertGestureCadence(session.recognizer.config, request.updateClass, request.expiresAt - this.now());
+    const policy = gestureAcquisition(session.recognizer.config);
     const leases: Awaited<ReturnType<WebSextantRuntime["acquire"]>>[] = [];
     let reportedCompletion = false;
-    try {
-      for (const id of ids)
-        leases.push(
-          await this.acquire(
-            {
-              ...request,
-              capabilityId: `sextant.${id}`,
-              frames:
-                id === "heading.estimate"
-                  ? [
-                      session.recognizer.config.kind === "TURN_TO_BEARING" &&
-                      session.recognizer.config.northReference === "TRUE"
-                        ? "EARTH_TRUE"
-                        : "EARTH_MAGNETIC",
-                    ]
-                  : id === "orientation.attitude"
-                    ? ["LOCAL_ARBITRARY", "EARTH_MAGNETIC", "EARTH_TRUE"]
-                    : ["DEVICE"],
-            },
-            (event) => {
-              const result = session.accept(event);
-              if (result && !(result.state === "COMPLETED" && reportedCompletion)) {
-                reportedCompletion ||= result.state === "COMPLETED";
-                onResult(result);
-              } else if (event.type !== "OBSERVATION")
-                onResult({ state: "UNAVAILABLE", count: 0, coverageDegrees: 0, fallback: config.fallback });
-            },
-          ),
-        );
-    } catch (error) {
-      await Promise.all(leases.map((lease) => lease.release()));
+    let acquiring = true,
+      ended = false;
+    const release = async () => {
+      ended = true;
+      options.signal?.removeEventListener("abort", abort);
+      const results = await Promise.allSettled(leases.map((lease) => lease.release()));
       session.reset();
+      if (results.some((r) => r.status === "rejected")) throw new Error("SEXTANT_GESTURE_CLEANUP_FAILED");
+    };
+    const abort = () => {
+      void release().catch(() => {});
+    };
+    options.signal?.addEventListener("abort", abort, { once: true });
+    try {
+      for (const channel of policy.channels) {
+        if (ended || options.signal?.aborted) throw new Error("SEXTANT_GESTURE_ABORTED");
+        const lease = await this.acquire(
+          {
+            ...request,
+            ...channel,
+            maxAgeMs: Math.min(request.maxAgeMs, policy.maxAgeMs),
+          },
+          (event) => {
+            if (ended) return;
+            if (event.type === "ENDED") {
+              abort();
+              onResult({ state: "UNAVAILABLE", count: 0, coverageDegrees: 0, fallback: config.fallback });
+              return;
+            }
+            if (acquiring) return;
+            const result = session.accept(event);
+            if (result && !(result.state === "COMPLETED" && reportedCompletion)) {
+              reportedCompletion ||= result.state === "COMPLETED";
+              onResult(result);
+            } else if (event.type !== "OBSERVATION")
+              onResult({ state: "UNAVAILABLE", count: 0, coverageDegrees: 0, fallback: config.fallback });
+          },
+        );
+        leases.push(lease);
+        if (ended || options.signal?.aborted) throw new Error("SEXTANT_GESTURE_ABORTED");
+      }
+      acquiring = false;
+    } catch (error) {
+      await release();
       throw error;
     }
     return {
-      release: async () => {
-        await Promise.all(leases.map((lease) => lease.release()));
-        session.reset();
-      },
+      release,
       fallback: session.recognizer.config.fallback,
     };
   }
@@ -289,40 +293,54 @@ export class SextantGestureSession {
       return null;
     }
     const o = event.observation;
+    const policy = gestureAcquisition(this.recognizer.config);
+    const channel = policy.channels.find((c) => c.capabilityId === o.capabilityId);
+    if (!channel) return null;
+    const previous = this.latest.get(o.capabilityId);
     const age = this.now() - o.timestampMonotonic;
     if (
       o.discontinuity ||
+      o.lifecycleState === "SUSPENDED" ||
+      (previous &&
+        (previous.providerIdDiagnostic !== o.providerIdDiagnostic ||
+          previous.provenanceRoot !== o.provenanceRoot ||
+          previous.referenceFrame !== o.referenceFrame ||
+          o.timestampMonotonic - previous.timestampMonotonic > policy.maxGapMs)) ||
       o.calibrationState === "DISTURBED" ||
       o.qualityClass === "UNKNOWN" ||
       o.qualityClass === "LOW" ||
       age < 0 ||
-      age > 500
+      age > policy.maxAgeMs ||
+      !channel.frames.includes(o.referenceFrame)
     ) {
       this.reset();
     }
     if (
       age < 0 ||
-      age > 500 ||
+      age > policy.maxAgeMs ||
+      !channel.frames.includes(o.referenceFrame) ||
       o.calibrationState === "DISTURBED" ||
       o.qualityClass === "UNKNOWN" ||
-      o.qualityClass === "LOW"
+      o.qualityClass === "LOW" ||
+      o.lifecycleState === "SUSPENDED"
     )
-      return null;
+      return { state: "UNAVAILABLE", count: 0, coverageDegrees: 0, fallback: this.recognizer.config.fallback };
     this.latest.set(o.capabilityId, structuredClone(o));
     // Each required channel must be present from the same sample frame, preventing cross-generation fusion.
     if (o.capabilityId !== "sextant.motion.stability") return null;
     const c = this.recognizer.config;
-    const required =
-      c.kind === "HOLD_STEADY"
-        ? ["motion.stability"]
-        : c.kind === "TURN_TO_BEARING"
-          ? ["heading.estimate", "motion.stability"]
-          : c.kind === "TILT_BAND"
-            ? ["orientation.attitude", "motion.stability"]
-            : ["motion.gravity", "motion.linear-acceleration", "motion.angular-velocity", "motion.stability"];
     const get = (suffix: string) => this.latest.get(`sextant.${suffix}`);
-    if (required.some((id) => !get(id) || Math.abs(get(id)!.timestampMonotonic - o.timestampMonotonic) > 100))
-      return null;
+    if (
+      policy.channels.some(
+        ({ capabilityId }) =>
+          !this.latest.get(capabilityId) ||
+          this.now() - this.latest.get(capabilityId)!.timestampMonotonic > policy.maxAgeMs ||
+          Math.abs(this.latest.get(capabilityId)!.timestampMonotonic - o.timestampMonotonic) > policy.maxSkewMs,
+      )
+    ) {
+      this.reset();
+      return { state: "UNAVAILABLE", count: 0, coverageDegrees: 0, fallback: c.fallback };
+    }
     const heading = get("heading.estimate");
     if (
       c.kind === "TURN_TO_BEARING" &&

@@ -25,6 +25,8 @@ Spatial Infrastructure Increment 0 extracts reusable verification infrastructure
 
 Landfall-specific provider assertions, One Voyage authority fixtures, browser/native drivers, platform builds, owned ADB controls and physical qualification remain in their accepted project paths. Their existing resource ownership and cleanup behavior are preserved. They are adapters, not generic sensor semantics owned by Device Lab.
 
+The [Sextant/Parallax correction receipt](Sextant_Parallax_Correction_Receipt.md) records a shared TypeScript/Java/Swift boundary fixture and explicitly separates native compilation/lifecycle proof from D4/D5.
+
 ## Commands
 
 - `npm run device-lab -- --catalog` validates and lists the Wave 4 declarations and tier descriptions.

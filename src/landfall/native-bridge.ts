@@ -70,6 +70,10 @@ export async function landfallNativeRequest(
     | "SPATIAL_START"
     | "SPATIAL_PLACE"
     | "SPATIAL_RENDER"
+    | "SPATIAL_SCENE_BEGIN"
+    | "SPATIAL_SCENE_CHUNK"
+    | "SPATIAL_SCENE_COMMIT"
+    | "SPATIAL_SCENE_ABORT"
     | "SPATIAL_STOP"
     | "LOCATION_PERMISSION"
     | "LOCATION_PERMISSION_STATE"
@@ -106,7 +110,7 @@ export async function landfallNativeRequest(
   const host = landfallNativeHost();
   if (!host) throw new Error("LANDFALL_NATIVE_NOT_CONFIGURED");
   const message = JSON.stringify({ version: 1, id: crypto.randomUUID(), operation, payload });
-  if (message.length > 16 * 1024) throw new Error("LANDFALL_NATIVE_REQUEST_TOO_LARGE");
+  if (new TextEncoder().encode(message).length > 16 * 1024) throw new Error("LANDFALL_NATIVE_REQUEST_TOO_LARGE");
   return host.request(message);
 }
 export function createLandfallNativeDriver(): NativeLocationDriver | null {

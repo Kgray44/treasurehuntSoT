@@ -1,6 +1,16 @@
+---
+title: Parallax Phase 1 implementation record
+audience: product-engineering
+status: phase-1-mainline-owner-acceptance-pending
+canonical_for: parallax-phase1-implementation
+last_reviewed: 2026-10-10
+---
+
 # Parallax Phase 1 — Establish the Frame
 
 Implementation date: October 10, 2026. Product acceptance: pending representative-device owner walkthrough.
+
+The [post-mainline boundary correction receipt](../../Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) records the four scoped Sextant/Parallax repairs and their independent qualification. The original phase implementation and physical/owner boundaries below remain historical evidence.
 
 ## Implemented plateau
 

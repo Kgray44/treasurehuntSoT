@@ -3,7 +3,7 @@ title: Project Sextant engineering home
 audience: product-engineering
 status: current
 canonical_for: project-sextant-engineering-home
-last_reviewed: 2026-10-09
+last_reviewed: 2026-10-10
 ---
 
 # Project Sextant
@@ -46,9 +46,9 @@ Sextant does **not** own:
 
 ## Current implementation status
 
-**Phase 1 foundation implemented; Phases 2–5 remain unimplemented.**
+**Phases 1–2 are implemented on protected main; Phases 3–5 remain unimplemented.**
 
-See the [Phase 1 implementation and compatibility record](../../Engineering/Sextant/README.md) for capability contracts, provider/permission/lease behavior, Landfall inventory, D0 scenarios and the acceptance boundary. Current consumers retain their accepted behavior. Physical/native qualification remains future owner work.
+See the [current implementation and compatibility record](../../Engineering/Sextant/README.md) for capability contracts, provider/permission/lease behavior, Landfall inventory, D0 scenarios and the acceptance boundary. Current consumers retain their accepted behavior. [Phase 2 evidence](../../Engineering/Sextant/Project_Sextant_Phase_2_Implementation_Receipt.md) and the [boundary correction receipt](../../Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) distinguish software qualification from physical/native and owner acceptance.
 
 The current application already contains accepted Landfall Phase 3 browser/context seams for optional foreground position, heading, motion, and elevation hints. Those remain accepted compatibility behavior. Sextant v1.0 does not retroactively invalidate them.
 

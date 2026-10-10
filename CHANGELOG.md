@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-04
+last_reviewed: 2026-10-10
 ---
 
 # Changelog
@@ -11,6 +11,10 @@ last_reviewed: 2026-10-04
 - Corrected Landfall Phase 2 closure gaps through protected PR #671: embedded canonical Living Charts, arrival-gated observation responses, durable encrypted offline reload/reconciliation and first-party imagery, foreground field-test cleanup, persistent Captain conflict feedback, and responsive/keyboard accessibility acceptance. Exact-head hosted qualification and landed smoke passed; permanent evidence and external boundaries are recorded in the Landfall final closure record.
 
 ## Unreleased
+
+### Corrected
+
+- Sextant gesture acquisition refuses incompatible slow delivery before sensor acquisition and cleans all owned leases on failure/abort/interruption. Parallax native scenes use bounded versioned UTF-8 chunks, independent resolved geometry validation and idempotent session-bound termination including Android Back. Existing published checksums, Guided accessibility and One Voyage progression authority are retained. See the [correction receipt](Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for qualification and remaining physical/owner gates.
 
 ### Added
 
