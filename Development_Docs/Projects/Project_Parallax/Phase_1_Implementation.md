@@ -77,6 +77,8 @@ Android’s final Java source compiles with JDK 17 and the declared Android SDK.
 
 The selected nested Playwright server configurations explicitly start from the repository root. Account-flow fixtures use the current exact field/action labels (sign-in, registration, verification, claim, email change, and recovery); their authentication, authority, timing, accessibility, and durable-receipt assertions remain intact. Focused production-browser checks pass for Admiralty Phase 1, all four Admiralty Phase 2 cases, both Admiralty Phase 3 cases, and Homeport Patch A’s owner-access regression.
 
+The full selected generic cohort passes 24 production-browser cases. The existing Shipwright Phase 5 dedicated-fixture skip is retained. History and Artifacts are reached through current Chronicle Passport navigation; sign-in waits for the existing provider-readiness state. Shipwright Phase 2 seeds its missing synthetic Creator in the disposable SQLite fixture and closes the validation panel through its normal control before continuing Inspector work.
+
 Ordinary Sounding Line remains the protected-main integration gate, through [PR #692](https://github.com/Kgray44/treasurehuntSoT/pull/692).
 
 ## Product acceptance still required

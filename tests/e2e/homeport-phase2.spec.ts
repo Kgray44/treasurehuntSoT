@@ -173,6 +173,9 @@ async function signInFromGateway(page: Page, account: AccountFixture) {
   const menu = await openAccountMenu(page, "Account");
   await menu.getByRole("link", { name: "Sign In", exact: true }).click();
   await expectShell(page, "AUTHENTICATION");
+  const providers = page.getByRole("region", { name: "Continue with a trusted provider", exact: true });
+  await expect(providers).toBeVisible();
+  await expect(providers.getByText("This sign-in option is being checked.", { exact: true })).toHaveCount(0);
   await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password").fill(password);
   await page.getByLabel("Password").press("Enter");
@@ -408,12 +411,20 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
       ["Chronicle Passport", /\/passport$/u, "Chronicle Passport"],
       ["Preferences", /\/account\/preferences$/u, "Preferences"],
       ["Privacy & Safety", /\/account\/privacy$/u, "Privacy & Safety"],
-      ["Chronicle History", /\/passport\/history$/u, "Your Voyages"],
-      ["Artifact Cabinet", /\/passport\/artifacts$/u, "Artifact Cabinet"],
+      ["Your Voyages", /\/passport\/history$/u, "Your Voyages"],
+      ["Artifacts", /\/passport\/artifacts$/u, "Artifact Cabinet"],
       ["Security & Sessions", /\/account\/security$/u, "Security"],
     ] as const;
     for (const [name, url, heading] of destinations) {
-      await navigateAccountLink(page, full, name);
+      if (name === "Your Voyages" || name === "Artifacts") {
+        await navigateAccountLink(page, full, "Chronicle Passport");
+        await page
+          .getByRole("navigation", { name: "Chronicle Passport sections" })
+          .getByRole("link", { name, exact: true })
+          .click();
+      } else {
+        await navigateAccountLink(page, full, name);
+      }
       await expect(page).toHaveURL(url);
       await expect(page.getByRole("heading", { name: heading, exact: true }).first()).toBeVisible();
     }
