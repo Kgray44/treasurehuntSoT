@@ -24,6 +24,11 @@ public final class ParallaxBoundaryFixtures {
   }
   public static int run(JSONObject fixtures) throws Exception {
     assertions=0;
+    JSONObject start=new JSONObject().put("sessionId","fixture-session").put("epoch",1).put("sceneTransferVersion",1).put("versionChecksum","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa").put("instanceId","fixture-instance");
+    check(ParallaxSceneTransfer.validStart(start),"valid start");
+    for(Object invalid:new Object[]{1.5,true,"1",0,2147483648L})check(!ParallaxSceneTransfer.validStart(new JSONObject(start.toString()).put("epoch",invalid)),"invalid start epoch");
+    check(!ParallaxSceneTransfer.validStart(new JSONObject(start.toString()).put("sceneTransferVersion",true)),"boolean start version");
+    check(!ParallaxSceneTransfer.validStart(new JSONObject(start.toString()).put("extra",1)),"extra start field");
     JSONObject limits=fixtures.getJSONObject("limits");
     check(limits.getInt("sceneBytes")==ParallaxSceneTransfer.SCENE_BYTES,"scene bytes");
     check(limits.getInt("chunkBytes")==ParallaxSceneTransfer.CHUNK_BYTES,"chunk bytes");

@@ -16,6 +16,13 @@ final class ParallaxSceneTransfer {
         guard let n = value as? NSNumber, CFGetTypeID(n) != CFBooleanGetTypeID(), n.doubleValue.isFinite else { return nil }; return n.doubleValue
     }
     private static func integer(_ value: Any?) -> Bool { guard let n = numeric(value) else { return false }; return n >= 0 && n <= 2147483647 && n.rounded(.towardZero) == n }
+    static func validStart(_ p: [String:Any]) -> Bool {
+        guard p.count == 5, integer(p["epoch"]), let epoch=p["epoch"] as? Int, epoch>0, integer(p["sceneTransferVersion"]), p["sceneTransferVersion"] as? Int == 1,
+              let session=p["sessionId"] as? String, session.range(of:"^[A-Za-z0-9-]{1,64}$",options:.regularExpression) != nil,
+              let checksum=p["versionChecksum"] as? String, checksum.range(of:"^[a-f0-9]{64}$",options:.regularExpression) != nil,
+              let instance=p["instanceId"] as? String, instance.range(of:"^[A-Za-z0-9][A-Za-z0-9._:-]{0,299}$",options:.regularExpression) != nil else { return false }
+        return true
+    }
     func matches(_ p: [String:Any]) -> Bool { p["sessionId"] as? String == sessionId && Self.integer(p["epoch"]) && p["epoch"] as? Int == epoch }
     func clear() { buffer = nil; transaction = nil }
     func expire(_ now: Double) { if buffer != nil && now >= deadline { clear() } }

@@ -111,10 +111,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             ParallaxLocalRuntime.permission(reply:replyHandler)
         case "SPATIAL_START":
             guard foreground,!power.critical,ParallaxLocalRuntime.state()["supported"] as? Bool == true,ParallaxLocalRuntime.state()["permission"] as? String == "GRANTED",let presenter=web?.window?.rootViewController,presenter.presentedViewController == nil,spatial == nil else {replyHandler(["accepted":false],nil);return}
-            guard let sessionId=payload["sessionId"] as? String, sessionId.range(of:"^[A-Za-z0-9-]{1,64}$", options:.regularExpression) != nil,
-                  let epoch=payload["epoch"] as? Int, epoch>0, payload["sceneTransferVersion"] as? Int == 1,
-                  let checksum=payload["versionChecksum"] as? String, checksum.range(of:"^[a-f0-9]{64}$",options:.regularExpression) != nil,
-                  let instanceId=payload["instanceId"] as? String, instanceId.range(of:"^[A-Za-z0-9][A-Za-z0-9._:-]{0,299}$",options:.regularExpression) != nil else { replyHandler(["accepted":false],nil);return }
+            guard ParallaxSceneTransfer.validStart(payload), let sessionId=payload["sessionId"] as? String, let epoch=payload["epoch"] as? Int else { replyHandler(["accepted":false],nil);return }
             let controller=ParallaxLocalRuntime(sessionId:sessionId,epoch:epoch);controller.emit={ [weak self] value in self?.event(value) };controller.modalPresentationStyle = .fullScreen
             controller.terminated={ [weak self, weak controller] in if let current=self?.spatial, current === controller { self?.spatial=nil } }
             spatial=controller;presenter.present(controller,animated:false);replyHandler(["accepted":true,"sceneTransferVersion":1,"sessionId":sessionId,"epoch":epoch],nil)

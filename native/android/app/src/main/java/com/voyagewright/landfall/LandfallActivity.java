@@ -159,7 +159,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
       case "SPATIAL_START":
         if(!foreground || spatial!=null || power.critical()){reply(proxy,id,new JSONObject().put("accepted",false));break;}
         String spatialSession=payload.optString("sessionId"); int spatialEpoch=payload.optInt("epoch",-1);
-        if(!spatialSession.matches("[A-Za-z0-9-]{1,64}") || spatialEpoch<1 || payload.optInt("sceneTransferVersion")!=1 || !payload.optString("versionChecksum").matches("[a-f0-9]{64}") || !payload.optString("instanceId").matches("[A-Za-z0-9][A-Za-z0-9._:-]{0,299}")){reply(proxy,id,new JSONObject().put("accepted",false));break;}
+        if(!ParallaxSceneTransfer.validStart(payload)){reply(proxy,id,new JSONObject().put("accepted",false));break;}
         ParallaxLocalRuntime owner=new ParallaxLocalRuntime(this,value->{try{event(value);}catch(Exception ignored){}},spatialSession,spatialEpoch,()->{if(spatial!=null && spatial.transfer.sessionId.equals(spatialSession))spatial=null;});
         spatial=owner; boolean started=owner.start(); if(!started && spatial==owner)spatial=null;
         reply(proxy,id,new JSONObject().put("accepted",started).put("sceneTransferVersion",1).put("sessionId",spatialSession).put("epoch",spatialEpoch));break;

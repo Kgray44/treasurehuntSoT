@@ -21,6 +21,9 @@ final class ParallaxSceneTransfer {
   ParallaxSceneTransfer(String sessionId, int epoch) { this.sessionId = sessionId; this.epoch = epoch; }
   private static boolean integer(JSONObject p, String key) { Object value=p.opt(key); return value instanceof Number && Double.isFinite(((Number)value).doubleValue()) && ((Number)value).doubleValue() == ((Number)value).intValue(); }
   private static boolean number(JSONObject p, String key) { return p.opt(key) instanceof Number; }
+  static boolean validStart(JSONObject p) {
+    return p.length()==5 && integer(p,"epoch") && p.optInt("epoch")>0 && integer(p,"sceneTransferVersion") && p.optInt("sceneTransferVersion")==1 && p.opt("sessionId") instanceof String && p.optString("sessionId").matches("[A-Za-z0-9-]{1,64}") && p.opt("versionChecksum") instanceof String && p.optString("versionChecksum").matches("[a-f0-9]{64}") && p.opt("instanceId") instanceof String && p.optString("instanceId").matches("[A-Za-z0-9][A-Za-z0-9._:-]{0,299}");
+  }
   boolean matches(JSONObject p) { return p.opt("sessionId") instanceof String && sessionId.equals(p.optString("sessionId")) && integer(p,"epoch") && epoch == p.optInt("epoch", -1); }
   void clear() { buffer = null; transaction = null; }
   void expire(long now) { if (buffer != null && now >= deadline) clear(); }
