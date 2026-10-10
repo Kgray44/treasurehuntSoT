@@ -83,6 +83,8 @@ Homeport correction fixtures anchor active token, guest-session, export, and lif
 
 All 14 Patch A journeys, all 23 Round 2 cases A–V, and all 21 Round 3 journeys A–U pass in focused production-browser runs. The inherited visual-inventory check validates the archived Homeport manifest against its original Git publication, including all 227 image checksums, 88-route census, contact sheets, and acceptance assertions; Brightwork's replacement corpus retains its separate pending-review status. Personal Harbor grids and the Passport action now reflow at 200% text zoom, with the unchanged overflow, keyboard, and accessibility checks passing. Slow-route fixtures prevent content prefetch from cancelling the intended delay, and motion probes sample mounted, rendered elements around actual user input. Reconciliation uses Node's `--import tsx` entrypoint without a CLI IPC socket.
 
+All 15 original Homeport Phase 7 journeys pass in focused production-browser runs, including the final whole-voyage rehearsal. That rehearsal waits for completed sign-out and its public return-home state before checking the protected Account redirect; it cannot abort logout by navigating immediately after the click.
+
 Ordinary Sounding Line remains the protected-main integration gate, through [PR #692](https://github.com/Kgray44/treasurehuntSoT/pull/692).
 
 ## Product acceptance still required

@@ -365,6 +365,8 @@ test(`Journey O: final whole-voyage rehearsal`, async ({ page }) => {
   await accountDestination(page, account, "Security & Sessions");
   const menu = await accountMenu(page, account.displayName);
   await menu.getByRole("button", { name: "Sign out" }).click();
+  await expect(page.getByRole("button", { name: /^(Account|Session ended)$/u })).toBeVisible();
+  await expect(page).toHaveURL(/\/$/u);
   await page.goto("/account");
   await expect(page).toHaveURL(/\/sign-in/u);
   await page.getByRole("link", { name: "Safe return", exact: true }).click();
