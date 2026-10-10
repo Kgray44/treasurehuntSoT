@@ -81,10 +81,12 @@ The full selected generic cohort passes 24 production-browser cases. The existin
 
 Homeport correction fixtures anchor active token, guest-session, export, and lifecycle deadlines to one preparation clock, while retaining historical source records and deliberately expired cases. Account journeys wait for the public provider-readiness state before entering credentials, and the review spoiler control is scoped to its accessible review form. Focused Round 1 journeys J–U pass with the normal production build, including export, reactivation, deletion cancellation, loading, review CRUD, motion, and the mobile sweep; their existing receipt and timing assertions remain intact.
 
+All 14 Patch A journeys, all 23 Round 2 cases A–V, and all 21 Round 3 journeys A–U pass in focused production-browser runs. The inherited visual-inventory check validates the archived Homeport manifest against its original Git publication, including all 227 image checksums, 88-route census, contact sheets, and acceptance assertions; Brightwork's replacement corpus retains its separate pending-review status. Personal Harbor grids and the Passport action now reflow at 200% text zoom, with the unchanged overflow, keyboard, and accessibility checks passing. Slow-route fixtures prevent content prefetch from cancelling the intended delay, and motion probes sample mounted, rendered elements around actual user input. Reconciliation uses Node's `--import tsx` entrypoint without a CLI IPC socket.
+
 Ordinary Sounding Line remains the protected-main integration gate, through [PR #692](https://github.com/Kgray44/treasurehuntSoT/pull/692).
 
 ## Product acceptance still required
 
 On representative actual iOS and Android devices, the owner must walk through released publication → Guided Lens → explicit consent → local native placement → pick/inspect → tracking loss/recovery → Guided return → background/close cleanup. Include denial, low light, seated operation, sound off, reduced motion, and the historical-passage replay path. Retain source-bound evidence using shared Voyagewright Device Lab conventions. Record D4 qualification and owner acceptance separately from ordinary Sounding Line software integration.
 
-Crossdeck's concurrent Phase 1 work can merge independently. Reconcile only genuinely overlapping shared catalog/native bridge changes against current main; do not absorb or alter its pairing and surface-identity work.
+Crossdeck Phase 1 is reconciled from protected main at `215beb2f81a7c9613993552b9f9999c00a4d34da`. Its devices UI, pairing and surface-identity models, APIs, and tests are preserved. Parallax's later shared-placement phases remain separate.
