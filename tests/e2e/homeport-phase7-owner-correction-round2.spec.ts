@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, rmSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -554,8 +555,10 @@ test("Journey R: Synthetic email walkthrough", async ({ page }) => {
 });
 
 test("Journey T: Experience Images generation", async ({ page }) => {
-  const manifestPath = path.join(path.resolve(process.cwd()), "Experience_Images", "manifest.json");
-  const indexPath = path.join(path.resolve(process.cwd()), "Experience_Images", "index.html");
+  const repositoryRoot = path.resolve(process.cwd());
+  const evidenceRoot = "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2";
+  const manifestPath = path.join(repositoryRoot, evidenceRoot, "experience-images-manifest.json");
+  const indexPath = path.join(repositoryRoot, evidenceRoot, "experience-images-index.html");
   expect(existsSync(manifestPath)).toBe(true);
   expect(existsSync(indexPath)).toBe(true);
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as {
@@ -564,15 +567,27 @@ test("Journey T: Experience Images generation", async ({ page }) => {
     routeCensus: { humanFacingRoutes: number; capturedHumanFacingRoutes: number };
     visualReviewStatus: string;
   };
+  const publicationSha = execFileSync(
+    "git",
+    ["log", "--diff-filter=A", "--format=%H", "--", `${evidenceRoot}/experience-images-manifest.json`],
+    { cwd: repositoryRoot, encoding: "utf8" },
+  ).trim();
+  expect(publicationSha).toMatch(/^[0-9a-f]{40}$/u);
+  const publishedFile = (relativePath: string) =>
+    execFileSync("git", ["show", `${publicationSha}:Experience_Images/${relativePath}`], {
+      cwd: repositoryRoot,
+      maxBuffer: 20 * 1024 * 1024,
+    });
+  expect(JSON.parse(publishedFile("manifest.json").toString("utf8"))).toEqual(manifest);
   expect(manifest.sourceSha).toMatch(/^[0-9a-f]{40}$/u);
   const inheritedRound2Records = manifest.records.filter((record) => !/^Round\d+\//u.test(record.screenshotPath));
   expect(inheritedRound2Records).toHaveLength(227);
   expect(manifest.routeCensus.humanFacingRoutes).toBe(88);
   expect(manifest.routeCensus.capturedHumanFacingRoutes).toBe(88);
   for (const record of manifest.records) {
-    const imagePath = path.join(path.resolve(process.cwd()), "Experience_Images", record.screenshotPath);
-    expect(existsSync(imagePath)).toBe(true);
-    expect(createHash("sha256").update(readFileSync(imagePath)).digest("hex")).toBe(record.sha256);
+    const image = publishedFile(record.screenshotPath);
+    expect(image.length).toBeGreaterThan(0);
+    expect(createHash("sha256").update(image).digest("hex")).toBe(record.sha256);
     expect(record.visualReviewStatus).toBe("ACCEPTED");
   }
   expect(manifest.visualReviewStatus).toBe("ACCEPTED");
@@ -582,9 +597,7 @@ test("Journey T: Experience Images generation", async ({ page }) => {
     "Master_Light_Mode.png",
     "Master_Dark_Mode.png",
   ])
-    expect(
-      existsSync(path.join(path.resolve(process.cwd()), "Experience_Images", "Contact_Sheets", contactSheet)),
-    ).toBe(true);
+    expect(publishedFile(`Contact_Sheets/${contactSheet}`).length).toBeGreaterThan(0);
   await begin(page);
 });
 
