@@ -401,7 +401,7 @@ test("Journey P: Slow transition and loading", async ({ page }) => {
   let intercepted = false;
   let navigationStarted = false;
   await page.route("**/community**", async (route) => {
-    if (!navigationStarted) {
+    if (!navigationStarted || route.request().headers()["next-router-prefetch"] === "1") {
       await route.abort();
       return;
     }
