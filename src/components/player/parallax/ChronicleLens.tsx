@@ -171,7 +171,9 @@ export function ChronicleLens({
     }
     void initialize();
     const pause = () => {
-      if (document.visibilityState === "hidden") void runtime.current?.useGuidedView();
+      // Native presentation can hide its WebView while the app remains foreground.
+      // The companion's canonical lifecycle event owns camera shutdown in that case.
+      if (document.visibilityState === "hidden" && !landfallNativeHost()) void runtime.current?.useGuidedView();
     };
     document.addEventListener("visibilitychange", pause);
     return () => {

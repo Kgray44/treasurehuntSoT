@@ -1,4 +1,4 @@
-import { beforeEach, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ChronicleLens } from "./ChronicleLens";
 import { syntheticSpatialMoment, syntheticBinding } from "@/parallax/fixtures";
@@ -65,4 +65,41 @@ it("retries the same receipt after failure rather than issuing a fresh interacti
   fireEvent.click(screen.getByText("Retry recording interaction"));
   await screen.findByText(/Interaction recorded/);
   expect(record.mock.calls[1][0]).toEqual(record.mock.calls[0][0]);
+});
+
+afterEach(() => {
+  cleanup();
+  delete window.LandfallNative;
+  vi.restoreAllMocks();
+});
+it("keeps native presentation active when its WebView hides, and stops on actual app background", async () => {
+  const request = vi.fn(async (message: string) => {
+    const { operation } = JSON.parse(message);
+    return ["SPATIAL_STATE", "SPATIAL_PERMISSION"].includes(operation)
+      ? { supported: true, permission: "GRANTED" }
+      : { accepted: true };
+  });
+  window.LandfallNative = { version: 1, platform: "IOS", request };
+  render(
+    <ChronicleLens
+      moment={syntheticSpatialMoment()}
+      binding={syntheticBinding}
+      replayOnly={false}
+      onClose={() => {}}
+    />,
+  );
+  fireEvent.click(await screen.findByRole("button", { name: "Use camera for local placement" }));
+  await screen.findByText("Camera View");
+  for (let i = 0; i < 3; i++)
+    fireEvent(
+      window,
+      new CustomEvent("landfall-native-event", { detail: { type: "parallax-tracking", state: "NORMAL" } }),
+    );
+  vi.spyOn(document, "visibilityState", "get").mockReturnValue("hidden");
+  fireEvent(document, new Event("visibilitychange"));
+  expect(screen.getByText("Camera View")).toBeVisible();
+  expect(request.mock.calls.some(([m]) => JSON.parse(m).operation === "SPATIAL_STOP")).toBe(false);
+  fireEvent(window, new CustomEvent("landfall-native-event", { detail: { type: "lifecycle", state: "BACKGROUND" } }));
+  await screen.findByText("Guided View");
+  expect(request.mock.calls.some(([m]) => JSON.parse(m).operation === "SPATIAL_STOP")).toBe(true);
 });
