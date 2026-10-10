@@ -177,6 +177,7 @@ export class WebDeviceSensorProvider implements SextantProvider {
       }
     };
     const listener: EventListener = (event) => {
+      if (!this.options.emulationIdentity && !event.isTrusted) return;
       if (!this.emit || context.signal.aborted || this.target?.document?.visibilityState === "hidden") return;
       const at = this.now();
       if (!Number.isFinite(at) || at < 0 || at <= this.clock) return;

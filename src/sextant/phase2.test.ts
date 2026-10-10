@@ -89,7 +89,7 @@ describe("web acquisition", () => {
     const f = emulatedWebSensors();
     const prompt = vi.fn(async () => "granted");
     f.target.DeviceMotionEvent = { requestPermission: prompt };
-    const r = new WebSextantRuntime(f.target, null, f.now);
+    const r = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" });
     expect(prompt).not.toHaveBeenCalled();
     expect(f.count("devicemotion")).toBe(0);
     expect(r.status("sextant.motion.gravity").freshness).toBe("UNKNOWN");
@@ -98,7 +98,7 @@ describe("web acquisition", () => {
   it("reports insecure and missing APIs independently from consent", async () => {
     const f = emulatedWebSensors();
     f.target.isSecureContext = false;
-    const r = new WebSextantRuntime(f.target, null, f.now);
+    const r = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" });
     expect(r.status("sextant.orientation.relative").support).toBe("UNSUPPORTED");
     expect(await r.enable(purpose)).toBe("DENIED");
     await r.dispose();
@@ -113,7 +113,7 @@ describe("web acquisition", () => {
       motion = vi.fn(() => p);
     f.target.DeviceOrientationEvent = { requestPermission: orientation };
     f.target.DeviceMotionEvent = { requestPermission: motion };
-    const r = new WebSextantRuntime(f.target, null, f.now);
+    const r = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" });
     const first = r.enable(purpose),
       second = r.enable({ ...purpose, consumerId: "crossdeck" });
     expect(orientation).toHaveBeenCalledTimes(1);
@@ -127,7 +127,7 @@ describe("web acquisition", () => {
     const f = emulatedWebSensors();
     const prompt = vi.fn(async () => "denied");
     f.target.DeviceOrientationEvent = { requestPermission: prompt };
-    const r = new WebSextantRuntime(f.target, null, f.now);
+    const r = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" });
     await r.enable(purpose);
     await r.enable(purpose);
     expect(prompt).toHaveBeenCalledTimes(1);
@@ -147,7 +147,7 @@ describe("web acquisition", () => {
           resolve = r;
         }),
     };
-    const r = new WebSextantRuntime(f.target, null, f.now);
+    const r = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" });
     const pending = r.enable(purpose);
     await r.pause();
     resolve("granted");
@@ -157,7 +157,7 @@ describe("web acquisition", () => {
   });
   it("shares provider starts and never removes another consumer's listener", async () => {
     const f = emulatedWebSensors();
-    const r = new WebSextantRuntime(f.target, null, f.now);
+    const r = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" });
     await r.enable(purpose);
     const a: LeaseEvent[] = [],
       b: LeaseEvent[] = [];
@@ -176,7 +176,7 @@ describe("web acquisition", () => {
   });
   it("preserves Landfall's accepted hints while sharing generic acquisition", async () => {
     const f = emulatedWebSensors();
-    const r = new WebSextantRuntime(f.target, null, f.now);
+    const r = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" });
     await r.enable(purpose);
     const lease = await r.acquire(request(), () => {});
     const legacy = new BrowserContextProvider(f.target, "world");
@@ -194,7 +194,7 @@ describe("web acquisition", () => {
   it("relative alpha and unqualified absolute events never invent north", async () => {
     const f = emulatedWebSensors();
     const samples: ProviderSample[] = [];
-    const p = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now);
+    const p = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now, { emulationIdentity: "unit-browser-api" });
     await p.start({
       signal: new AbortController().signal,
       updateClass: "INTERACTIVE",
@@ -212,7 +212,10 @@ describe("web acquisition", () => {
   it("qualified absolute attitude and heading retain explicit north frame and unknown uncertainty", async () => {
     const f = emulatedWebSensors();
     const samples: ProviderSample[] = [];
-    const p = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now, { absoluteNorthReference: "TRUE" });
+    const p = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now, {
+      absoluteNorthReference: "TRUE",
+      emulationIdentity: "unit-browser-api",
+    });
     await p.start({
       signal: new AbortController().signal,
       updateClass: "INTERACTIVE",
@@ -227,7 +230,7 @@ describe("web acquisition", () => {
   it("rejects negative compass accuracy and nonfinite/null components", async () => {
     const f = emulatedWebSensors();
     const samples: ProviderSample[] = [];
-    const p = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now);
+    const p = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now, { emulationIdentity: "unit-browser-api" });
     await p.start({
       signal: new AbortController().signal,
       updateClass: "INTERACTIVE",
@@ -244,7 +247,7 @@ describe("web acquisition", () => {
   it("normalizes gyro axis mapping and separates gravity, never relabels including-gravity as linear", async () => {
     const f = emulatedWebSensors();
     const samples: ProviderSample[] = [];
-    const p = new WebDeviceSensorProvider(f.target, "MOTION", f.now);
+    const p = new WebDeviceSensorProvider(f.target, "MOTION", f.now, { emulationIdentity: "unit-browser-api" });
     await p.start({
       signal: new AbortController().signal,
       updateClass: "INTERACTIVE",
@@ -270,7 +273,7 @@ describe("web acquisition", () => {
   it("honors rate classes and marks a sensor gap discontinuous", async () => {
     const f = emulatedWebSensors();
     const samples: ProviderSample[] = [];
-    const p = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now);
+    const p = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now, { emulationIdentity: "unit-browser-api" });
     await p.start({
       signal: new AbortController().signal,
       updateClass: "LOW_RATE",
@@ -289,7 +292,7 @@ describe("web acquisition", () => {
   });
   it("background and pagehide release resources, foreground requires explicit reacquisition", async () => {
     const f = emulatedWebSensors();
-    const r = new WebSextantRuntime(f.target, null, f.now);
+    const r = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" });
     await r.enable(purpose);
     await r.acquire(request(), () => {});
     f.background();
@@ -311,7 +314,7 @@ describe("web acquisition", () => {
   });
   it("revocation cleans leases and simulation cannot register in production", async () => {
     const f = emulatedWebSensors();
-    const r = new WebSextantRuntime(f.target, null, f.now);
+    const r = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" });
     await r.enable(purpose);
     await r.acquire(request(), () => {});
     await r.revoke();
@@ -441,7 +444,7 @@ describe("deterministic device intent", () => {
   });
   it("marks provider gap discontinuity in consumer envelopes", () => {
     const f = emulatedWebSensors();
-    const p = new WebDeviceSensorProvider(f.target, "MOTION", f.now);
+    const p = new WebDeviceSensorProvider(f.target, "MOTION", f.now, { emulationIdentity: "unit-browser-api" });
     const sample: ProviderSample = {
       capabilityId: "sextant.motion.linear-acceleration",
       value: { x: 0, y: 0, z: 0 },
@@ -513,7 +516,7 @@ describe("semantic haptic output", () => {
 
 it("consumer gesture wiring releases partial acquisitions and coordinates all semantic channels", async () => {
   const f = emulatedWebSensors();
-  const runtime = new WebSextantRuntime(f.target, null, f.now);
+  const runtime = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" });
   const results: string[] = [];
   const gesture = await runtime.beginGesture({ ...common, kind: "HOLD_STEADY" }, request(), (result) =>
     results.push(result.state),
@@ -539,7 +542,7 @@ it("consumer gesture wiring releases partial acquisitions and coordinates all se
 });
 it("high-fidelity bursts expire within 30 seconds and cannot become unlimited sampling", async () => {
   const f = emulatedWebSensors();
-  const runtime = new WebSextantRuntime(f.target, null, f.now);
+  const runtime = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" });
   await expect(
     runtime.acquire({ ...request(), updateClass: "HIGH_FIDELITY_BURST", expiresAt: f.now() + 30001 }, () => {}),
   ).rejects.toThrow("LEASE_UNAVAILABLE");
@@ -564,7 +567,9 @@ it("failed haptic cleanup is visible and quarantines future output", () => {
 
 it("projects basic output support separately from rich support and user preferences", async () => {
   const f = emulatedWebSensors();
-  const runtime = new WebSextantRuntime(f.target, { vibrate: () => true }, f.now);
+  const runtime = new WebSextantRuntime(f.target, { vibrate: () => true }, f.now, {
+    emulationIdentity: "unit-browser-api",
+  });
   expect(runtime.status("sextant.haptics.basic").support).toBe("SUPPORTED");
   expect(runtime.status("sextant.haptics.rich").support).toBe("UNSUPPORTED");
   runtime.setHapticPreferences(true, true);
@@ -576,7 +581,9 @@ it("projects basic output support separately from rich support and user preferen
 });
 it("bearing alignment abstains when uncertainty exceeds the authored tolerance", () => {
   const f = emulatedWebSensors();
-  const provider = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now);
+  const provider = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now, {
+    emulationIdentity: "unit-browser-api",
+  });
   const session = new SextantGestureSession(
     { ...common, kind: "TURN_TO_BEARING", targetDegrees: 1, toleranceDegrees: 5, northReference: "MAGNETIC" },
     f.now,
@@ -585,7 +592,9 @@ it("bearing alignment abstains when uncertainty exceeds the authored tolerance",
   const make = (capabilityId: string, value: unknown, uncertainty?: number) =>
     normalizeObservation(
       registry,
-      capabilityId.includes("heading") ? provider : new WebDeviceSensorProvider(f.target, "MOTION", f.now),
+      capabilityId.includes("heading")
+        ? provider
+        : new WebDeviceSensorProvider(f.target, "MOTION", f.now, { emulationIdentity: "unit-browser-api" }),
       {
         capabilityId,
         value,
@@ -604,4 +613,38 @@ it("bearing alignment abstains when uncertainty exceeds the authored tolerance",
   expect(session.accept({ type: "OBSERVATION", observation: make("sextant.motion.stability", "STABLE") })?.state).toBe(
     "UNAVAILABLE",
   );
+});
+
+it("production rejects scripted sensor events while explicit emulation retains simulation provenance", async () => {
+  const f = emulatedWebSensors();
+  const samples: ProviderSample[] = [];
+  const provider = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now);
+  await provider.start({
+    signal: new AbortController().signal,
+    updateClass: "INTERACTIVE",
+    emit: (sample) => samples.push(sample),
+    fail: () => {},
+  });
+  f.orientation();
+  expect(samples).toEqual([]);
+  await provider.stop();
+  const simulated = new WebDeviceSensorProvider(f.target, "ORIENTATION", f.now, {
+    emulationIdentity: "browser-api-emulation",
+  });
+  await simulated.start({
+    signal: new AbortController().signal,
+    updateClass: "INTERACTIVE",
+    emit: (sample) => samples.push(sample),
+    fail: () => {},
+  });
+  f.orientation();
+  expect(samples).toHaveLength(2);
+  const observation = normalizeObservation(new SextantCapabilityRegistry(), simulated, samples[0], {
+    now: f.now(),
+    sequence: 0,
+    discontinuity: true,
+  });
+  expect(observation.sourceClass).toBe("SIMULATED");
+  expect(observation.syntheticFlag).toBe(true);
+  await simulated.stop();
 });

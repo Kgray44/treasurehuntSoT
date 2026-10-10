@@ -9,7 +9,7 @@ it("presents contextual consent before prompting, with a usable accessible alter
   const f = emulatedWebSensors();
   const prompt = vi.fn(async () => "granted");
   f.target.DeviceMotionEvent = { requestPermission: prompt };
-  const runtime = new WebSextantRuntime(f.target, null, f.now),
+  const runtime = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" }),
     ready = vi.fn(),
     alternative = vi.fn();
   render(
@@ -36,7 +36,7 @@ it("presents contextual consent before prompting, with a usable accessible alter
 it("keeps the alternative available when the browser is unsupported", async () => {
   const f = emulatedWebSensors();
   f.target.DeviceOrientationEvent = undefined;
-  const runtime = new WebSextantRuntime(f.target, null, f.now),
+  const runtime = new WebSextantRuntime(f.target, null, f.now, { emulationIdentity: "unit-browser-api" }),
     alternative = vi.fn();
   render(
     <DeviceContextControls
