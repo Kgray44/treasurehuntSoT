@@ -391,6 +391,9 @@ async function signIn(page: Page, alias: string, password = credentialHandoff.pa
 }
 
 async function fillSignIn(page: Page, account: Alias, password: string) {
+  const providers = page.getByRole("region", { name: "Continue with a trusted provider", exact: true });
+  await expect(providers).toBeVisible();
+  await expect(providers.getByText("This sign-in option is being checked.", { exact: true })).toHaveCount(0);
   await page.getByLabel("Email or Player name", { exact: true }).fill(account.email ?? account.username!);
   await page.getByLabel("Password").fill(password);
   await page.getByLabel("Password").press("Enter");

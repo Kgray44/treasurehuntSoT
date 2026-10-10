@@ -297,6 +297,9 @@ test("Journey H: Existing unverified account sign-in", async ({ page }) => {
     data: { username: legacyPlayerName },
   });
   await page.goto("/sign-in");
+  const providers = page.getByRole("region", { name: "Continue with a trusted provider", exact: true });
+  await expect(providers).toBeVisible();
+  await expect(providers.getByText("This sign-in option is being checked.", { exact: true })).toHaveCount(0);
   await page.getByLabel("Email or Player name", { exact: true }).fill(legacyPlayerName.toLocaleUpperCase("en-US"));
   await page.getByLabel("Password").fill(handoff.password);
   await page.getByRole("button", { name: "Sign in" }).click();
@@ -319,6 +322,8 @@ test("Journey H: Existing unverified account sign-in", async ({ page }) => {
   await menu.getByRole("button", { name: "Sign Out" }).click();
   await expect(page.getByRole("button", { name: "Account", exact: true })).toBeVisible();
   await page.goto("/sign-in");
+  await expect(providers).toBeVisible();
+  await expect(providers.getByText("This sign-in option is being checked.", { exact: true })).toHaveCount(0);
   await page.getByLabel("Email or Player name", { exact: true }).fill(account.email.toLocaleUpperCase("en-US"));
   await page.getByLabel("Password").fill(handoff.password);
   await page.getByRole("button", { name: "Sign in" }).click();
@@ -628,6 +633,9 @@ async function fillRegistration(page: Page, displayName: string, email: string) 
 }
 
 async function fillSignIn(page: Page, account: Alias) {
+  const providers = page.getByRole("region", { name: "Continue with a trusted provider", exact: true });
+  await expect(providers).toBeVisible();
+  await expect(providers.getByText("This sign-in option is being checked.", { exact: true })).toHaveCount(0);
   await page.getByLabel("Email or Player name", { exact: true }).fill(account.email);
   await page.getByLabel("Password").fill(handoff.password);
 }
