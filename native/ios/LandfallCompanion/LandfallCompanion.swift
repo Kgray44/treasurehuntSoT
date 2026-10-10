@@ -111,11 +111,25 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             ParallaxLocalRuntime.permission(reply:replyHandler)
         case "SPATIAL_START":
             guard foreground,!power.critical,ParallaxLocalRuntime.state()["supported"] as? Bool == true,ParallaxLocalRuntime.state()["permission"] as? String == "GRANTED",let presenter=web?.window?.rootViewController,presenter.presentedViewController == nil,spatial == nil else {replyHandler(["accepted":false],nil);return}
-            let controller=ParallaxLocalRuntime();controller.emit={ [weak self] value in self?.event(value) };controller.modalPresentationStyle = .fullScreen
-            spatial=controller;presenter.present(controller,animated:false);replyHandler(["accepted":true],nil)
-        case "SPATIAL_PLACE": replyHandler(["pose":spatial?.placement(alignment:payload["alignment"] as? String ?? "HORIZONTAL") as Any? ?? NSNull()],nil)
-        case "SPATIAL_RENDER": replyHandler(["accepted":spatial?.render(payload["entities"] as? [[String:Any]] ?? []) ?? false],nil)
-        case "SPATIAL_STOP": spatial?.stop();spatial=nil;replyHandler(["accepted":true],nil)
+            guard let sessionId=payload["sessionId"] as? String, sessionId.range(of:"^[A-Za-z0-9-]{1,64}$", options:.regularExpression) != nil,
+                  let epoch=payload["epoch"] as? Int, epoch>0, payload["sceneTransferVersion"] as? Int == 1,
+                  let checksum=payload["versionChecksum"] as? String, checksum.range(of:"^[a-f0-9]{64}$",options:.regularExpression) != nil,
+                  let instanceId=payload["instanceId"] as? String, instanceId.range(of:"^[A-Za-z0-9][A-Za-z0-9._:-]{0,299}$",options:.regularExpression) != nil else { replyHandler(["accepted":false],nil);return }
+            let controller=ParallaxLocalRuntime(sessionId:sessionId,epoch:epoch);controller.emit={ [weak self] value in self?.event(value) };controller.modalPresentationStyle = .fullScreen
+            controller.terminated={ [weak self, weak controller] in if let current=self?.spatial, current === controller { self?.spatial=nil } }
+            spatial=controller;presenter.present(controller,animated:false);replyHandler(["accepted":true,"sceneTransferVersion":1,"sessionId":sessionId,"epoch":epoch],nil)
+        case "SPATIAL_PLACE": replyHandler(["pose":spatial?.transfer.matches(payload) == true ? spatial?.placement(alignment:payload["alignment"] as? String ?? "HORIZONTAL") as Any? ?? NSNull() : NSNull()],nil)
+        case "SPATIAL_RENDER": replyHandler(["accepted":false],nil)
+        case "SPATIAL_SCENE_BEGIN":
+            let begun=spatial?.transfer.begin(payload,ProcessInfo.processInfo.systemUptime*1000) ?? false
+            if begun, let owned=spatial?.transfer { DispatchQueue.main.asyncAfter(deadline:.now()+15) { owned.expire(ProcessInfo.processInfo.systemUptime*1000) } }
+            replyHandler(["accepted":begun],nil)
+        case "SPATIAL_SCENE_CHUNK": replyHandler(["accepted":spatial?.transfer.chunk(payload,ProcessInfo.processInfo.systemUptime*1000) ?? false],nil)
+        case "SPATIAL_SCENE_COMMIT":
+            let reconstructed=spatial?.transfer.commit(payload,ProcessInfo.processInfo.systemUptime*1000)
+            replyHandler(["accepted":reconstructed.map{spatial?.render($0) ?? false} ?? false],nil)
+        case "SPATIAL_SCENE_ABORT": replyHandler(["accepted":spatial?.transfer.abort(payload) ?? false],nil)
+        case "SPATIAL_STOP": if spatial?.transfer.matches(payload) == true { spatial?.stop() };replyHandler(["accepted":true],nil)
 
         case "PRIVATE_STORE_PUT": replyHandler(["accepted": foreground && (privateStore?.put(payload["key"] as? String ?? "", value: payload["value"] as? String ?? "", expiresAt: payload["expiresAt"] as? Double ?? 0) ?? false)], nil)
         case "PRIVATE_STORE_GET": replyHandler(["value": foreground ? privateStore?.get(payload["key"] as? String ?? "") as Any? ?? NSNull() : NSNull()], nil)

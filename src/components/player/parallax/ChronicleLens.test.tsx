@@ -74,9 +74,11 @@ afterEach(() => {
 });
 it("keeps native presentation active when its WebView hides, and stops on actual app background", async () => {
   const request = vi.fn(async (message: string) => {
-    const { operation } = JSON.parse(message);
+    const { operation, payload } = JSON.parse(message);
+    if (operation === "SPATIAL_START")
+      return { accepted: true, sceneTransferVersion: 1, sessionId: payload.sessionId, epoch: payload.epoch };
     return ["SPATIAL_STATE", "SPATIAL_PERMISSION"].includes(operation)
-      ? { supported: true, permission: "GRANTED" }
+      ? { supported: true, permission: "GRANTED", sceneTransferVersion: 1 }
       : { accepted: true };
   });
   window.LandfallNative = { version: 1, platform: "IOS", request };
@@ -90,10 +92,15 @@ it("keeps native presentation active when its WebView hides, and stops on actual
   );
   fireEvent.click(await screen.findByRole("button", { name: "Use camera for local placement" }));
   await screen.findByText("Camera View");
+  const identity = JSON.parse(
+    request.mock.calls.find(([m]) => JSON.parse(m).operation === "SPATIAL_START")![0],
+  ).payload;
   for (let i = 0; i < 3; i++)
     fireEvent(
       window,
-      new CustomEvent("landfall-native-event", { detail: { type: "parallax-tracking", state: "NORMAL" } }),
+      new CustomEvent("landfall-native-event", {
+        detail: { type: "parallax-tracking", state: "NORMAL", sessionId: identity.sessionId, epoch: identity.epoch },
+      }),
     );
   vi.spyOn(document, "visibilityState", "get").mockReturnValue("hidden");
   fireEvent(document, new Event("visibilitychange"));

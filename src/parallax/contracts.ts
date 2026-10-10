@@ -26,11 +26,15 @@ export const resolvedTransformSchema = z.strictObject({
   rotation: quaternionSchema,
   scale: z.number().finite().positive(),
 });
-export const transformSchema = z.strictObject({
+export const authoredTransformSchema = z.strictObject({
   position: vectorSchema,
   rotation: quaternionSchema,
   scale: z.number().finite().min(0.01).max(10),
 });
+// Historical source schema name remains compatible with published checksum material.
+export const transformSchema = authoredTransformSchema;
+export type AuthoredTransform = z.infer<typeof authoredTransformSchema>;
+export type ResolvedTransform = z.infer<typeof resolvedTransformSchema>;
 export type Transform = {
   position: { x: number; y: number; z: number };
   rotation: { x: number; y: number; z: number; w: number };

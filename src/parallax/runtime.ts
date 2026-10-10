@@ -34,7 +34,11 @@ export interface SpatialRuntimeAdapter {
   readonly mode: RuntimeMode;
   readonly worldTracking: boolean;
   readonly planePlacement: boolean;
-  start(context: { signal: AbortSignal; emit: (event: SpatialRuntimeEvent) => void }): Promise<void>;
+  start(context: {
+    signal: AbortSignal;
+    emit: (event: SpatialRuntimeEvent) => void;
+    sceneIdentity?: { versionChecksum: string; instanceId: string };
+  }): Promise<void>;
   resolve(anchor: Anchor): Promise<Transform | null>;
   place(alignment: "HORIZONTAL" | "VERTICAL"): Promise<Transform | null>;
   render(
@@ -173,6 +177,7 @@ export class ParallaxLensRuntime {
     try {
       await this.adapter.start({
         signal: this.abort.signal,
+        sceneIdentity: { versionChecksum: this.moment.version.checksum, instanceId: this.instanceId },
         emit: (e) => {
           if (epoch === this.epoch && !this.abort.signal.aborted) this.onEvent(e);
         },
@@ -245,6 +250,15 @@ export class ParallaxLensRuntime {
   async useGuidedView() {
     const epoch = ++this.epoch;
     this.abort.abort();
+    this.normalSamples = 0;
+    this.interactionPending = false;
+    this.update({
+      state: "DEGRADED",
+      tracking: "INTERRUPTED",
+      guidance: guidance.INTERRUPTED,
+      selectedEntityId: null,
+      inspectedEntityId: null,
+    });
     await this.adapter.stop().catch(() => undefined);
     if (epoch !== this.epoch) return;
     this.abort = new AbortController();
@@ -368,7 +382,7 @@ export class ParallaxLensRuntime {
       });
       return structuredClone(r);
     } finally {
-      this.interactionPending = false;
+      if (this.epoch === epoch) this.interactionPending = false;
       if (this.epoch === epoch && this.snapshot.state === "INTERACTING")
         this.update({ state: this.adapter.mode === "GUIDED" ? "GUIDED_FALLBACK" : "READY" });
     }
@@ -377,6 +391,8 @@ export class ParallaxLensRuntime {
     const epoch = ++this.epoch;
     this.abort.abort();
     this.normalSamples = 0;
+    this.interactionPending = false;
+    this.update({ state: "CLOSED", anchors: {}, selectedEntityId: null, inspectedEntityId: null });
     await this.adapter.stop().catch(() => undefined);
     if (epoch !== this.epoch) return;
     this.update({ state: "CLOSED", anchors: {}, selectedEntityId: null, inspectedEntityId: null });

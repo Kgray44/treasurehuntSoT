@@ -85,7 +85,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
       TextView message = new TextView(this); message.setText("Update Android System WebView to enable native navigation. Your browser chart remains available."); setContentView(message); return;
     }
     WebViewCompat.addWebMessageListener(web, "LandfallHost", Collections.singleton(origin), (view, message, source, mainFrame, reply) -> {
-      if (!mainFrame || !source.toString().equals(origin) || message.getData() == null || message.getData().length() > 16384) return;
+      if (!mainFrame || !source.toString().equals(origin) || message.getData() == null || message.getData().getBytes(java.nio.charset.StandardCharsets.UTF_8).length > 16384) return;
       try { command(new JSONObject(message.getData()), reply); }
       catch (Exception ignored) { /* No coordinates, tokens or page payloads enter logs. */ }
     });
@@ -158,11 +158,23 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
         requestPermissions(new String[]{Manifest.permission.CAMERA},49);break;
       case "SPATIAL_START":
         if(!foreground || spatial!=null || power.critical()){reply(proxy,id,new JSONObject().put("accepted",false));break;}
-        spatial=new ParallaxLocalRuntime(this,value->{try{event(value);}catch(Exception ignored){}});
-        boolean started=spatial.start();if(!started)spatial=null;reply(proxy,id,new JSONObject().put("accepted",started));break;
-      case "SPATIAL_PLACE":reply(proxy,id,spatial==null?new JSONObject().put("pose",JSONObject.NULL):spatial.placement(payload.optString("alignment")));break;
-      case "SPATIAL_RENDER":reply(proxy,id,new JSONObject().put("accepted",spatial!=null && payload.optJSONArray("entities")!=null && spatial.render(payload.getJSONArray("entities"))));break;
-      case "SPATIAL_STOP":if(spatial!=null)spatial.stop();spatial=null;reply(proxy,id,new JSONObject().put("accepted",true));break;
+        String spatialSession=payload.optString("sessionId"); int spatialEpoch=payload.optInt("epoch",-1);
+        if(!spatialSession.matches("[A-Za-z0-9-]{1,64}") || spatialEpoch<1 || payload.optInt("sceneTransferVersion")!=1 || !payload.optString("versionChecksum").matches("[a-f0-9]{64}") || !payload.optString("instanceId").matches("[A-Za-z0-9][A-Za-z0-9._:-]{0,299}")){reply(proxy,id,new JSONObject().put("accepted",false));break;}
+        ParallaxLocalRuntime owner=new ParallaxLocalRuntime(this,value->{try{event(value);}catch(Exception ignored){}},spatialSession,spatialEpoch,()->{if(spatial!=null && spatial.transfer.sessionId.equals(spatialSession))spatial=null;});
+        spatial=owner; boolean started=owner.start(); if(!started && spatial==owner)spatial=null;
+        reply(proxy,id,new JSONObject().put("accepted",started).put("sceneTransferVersion",1).put("sessionId",spatialSession).put("epoch",spatialEpoch));break;
+      case "SPATIAL_PLACE":reply(proxy,id,spatial==null || !spatial.transfer.matches(payload)?new JSONObject().put("pose",JSONObject.NULL):spatial.placement(payload.optString("alignment")));break;
+      case "SPATIAL_RENDER":reply(proxy,id,new JSONObject().put("accepted",false));break;
+      case "SPATIAL_SCENE_BEGIN":
+        boolean begun=spatial!=null && spatial.transfer.begin(payload,android.os.SystemClock.elapsedRealtime());
+        if(begun){ParallaxSceneTransfer owned=spatial.transfer;new android.os.Handler(getMainLooper()).postDelayed(()->owned.expire(android.os.SystemClock.elapsedRealtime()),ParallaxSceneTransfer.TIMEOUT_MS);}
+        reply(proxy,id,new JSONObject().put("accepted",begun));break;
+      case "SPATIAL_SCENE_CHUNK":reply(proxy,id,new JSONObject().put("accepted",spatial!=null && spatial.transfer.chunk(payload,android.os.SystemClock.elapsedRealtime())));break;
+      case "SPATIAL_SCENE_COMMIT":
+        JSONArray sceneEntities=spatial==null?null:spatial.transfer.commit(payload,android.os.SystemClock.elapsedRealtime());
+        reply(proxy,id,new JSONObject().put("accepted",sceneEntities!=null && spatial.render(sceneEntities)));break;
+      case "SPATIAL_SCENE_ABORT":reply(proxy,id,new JSONObject().put("accepted",spatial!=null && spatial.transfer.abort(payload)));break;
+      case "SPATIAL_STOP":if(spatial!=null && spatial.transfer.matches(payload))spatial.stop();reply(proxy,id,new JSONObject().put("accepted",true));break;
 
       case "LOCATION_PERMISSION_STATE": reply(proxy, id, state(permission())); break;
       case "LOCATION_STATE":
