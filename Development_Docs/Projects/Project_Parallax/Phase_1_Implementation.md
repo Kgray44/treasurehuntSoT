@@ -85,6 +85,8 @@ All 14 Patch A journeys, all 23 Round 2 cases A–V, and all 21 Round 3 journeys
 
 All 15 original Homeport Phase 7 journeys pass in focused production-browser runs, including the final whole-voyage rehearsal. That rehearsal waits for completed sign-out and its public return-home state before checking the protected Account redirect; it cannot abort logout by navigating immediately after the click.
 
+The account disclosure becomes inert and leaves the accessibility tree as soon as its retained visual exit begins. A focused regression verifies that keyboard and assistive navigation cannot reach the closing dialog; the exit animation remains intact.
+
 Ordinary Sounding Line remains the protected-main integration gate, through [PR #692](https://github.com/Kgray44/treasurehuntSoT/pull/692).
 
 ## Product acceptance still required

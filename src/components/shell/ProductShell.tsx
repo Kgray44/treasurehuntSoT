@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ComponentProps } from "react";
+import { AnimatePresence, motion, useIsPresent } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { RouteMotionBoundary } from "@/animation/platform/RouteMotionBoundary";
@@ -95,6 +95,13 @@ const accountGroupLabels: Readonly<Record<AccountGroup, string>> = {
   workspace: "Workspaces",
   action: "Account actions",
 };
+
+function AccountDisclosure(props: ComponentProps<typeof motion.div>) {
+  const isPresent = useIsPresent();
+  // AnimatePresence retains the visual exit; closed navigation must already be
+  // absent from keyboard interaction and the accessibility tree during that exit.
+  return <motion.div {...props} aria-hidden={!isPresent || undefined} inert={!isPresent || undefined} />;
+}
 
 export function ProductShell({ children }: { children: React.ReactNode }) {
   const { mode } = useMotionMode();
@@ -397,7 +404,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
             </button>
             <AnimatePresence initial={false}>
               {accountOpen ? (
-                <motion.div
+                <AccountDisclosure
                   ref={accountDisclosureRef}
                   id="shell-account-disclosure"
                   className="shell-account-disclosure"
@@ -518,7 +525,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                       })}
                     </>
                   )}
-                </motion.div>
+                </AccountDisclosure>
               ) : null}
             </AnimatePresence>
           </div>

@@ -507,6 +507,7 @@ test("Journey S: global navigation remains complete at effective 200 percent zoo
   await expect(accountButton).toHaveAttribute("aria-expanded", "true");
   await accountButton.click();
   await expect(accountButton).toHaveAttribute("aria-expanded", "false");
+  await expect(page.locator("#shell-account-disclosure")).toHaveCount(0);
   expect(await seriousOrCriticalAxeFindings()).toEqual(axeBaseline);
   expect(
     (await new AxeBuilder({ page }).include('[aria-label="Global navigation"]').analyze()).violations.filter((item) =>
