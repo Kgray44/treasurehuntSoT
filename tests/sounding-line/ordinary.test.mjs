@@ -37,7 +37,10 @@ import {
   verificationObligationGroups,
   WINDOWS_SAFE_VITEST_COMMAND_LENGTH,
 } from "../../scripts/sounding-line/ordinary.mjs";
-import { isolatedBrowserFixtureCredentials, resolveBrowserSuiteDispatches } from "../../scripts/sounding-line/browser-suite-profiles.mjs";
+import {
+  isolatedBrowserFixtureCredentials,
+  resolveBrowserSuiteDispatches,
+} from "../../scripts/sounding-line/browser-suite-profiles.mjs";
 
 const basePackage = {
   scripts: {
