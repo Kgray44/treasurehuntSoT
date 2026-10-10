@@ -387,6 +387,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Device_Lab/Spatial_Infrastructure_Increment_0_Implementation_Receipt.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -7505,8 +7511,8 @@
     {
       "path": "Development_Docs/Projects/Project_Parallax/Phase_1_Implementation.md",
       "record_type": "program-record",
-      "status": "current",
-      "canonical_for": "parallax-phase-1-implementation"
+      "status": "preserved",
+      "canonical_for": null
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/README.md",

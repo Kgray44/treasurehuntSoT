@@ -3,10 +3,12 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-04
+last_reviewed: 2026-10-10
 ---
 
 # Player guide
+
+When a released passage includes a spatial moment, choose **Open Chronicle Lens** to read and interact with its clue in Guided View. The same clue stays readable without a camera, while seated or using a keyboard. A compatible native companion can offer local camera placement. Closing the camera, using Android Back, or losing its permission returns the moment to Guided View; reopen it explicitly for a fresh camera session. Lens interactions are recorded separately from Voyage progression. Revisited passages preserve their meaning without changing progress.
 
 Where signed region preparation is enabled, an optional offline region panel appears in the Journal map.
 Select **Prepare offline region** to check availability, size, included released
