@@ -1,3 +1,4 @@
+import { validateSpatialMoment } from "@/parallax/publication";
 import type { z } from "zod";
 import type { JsonObject } from "@/chronicle/types";
 import { canonicalJson, canonicalizeValue } from "@/drydock/canonical";
@@ -306,6 +307,23 @@ export function parseDrydockBlock(input: DrydockAuthoredBlockInput): DrydockBloc
       ? { expression: configuration.data.expression as CanonicalDrydockBlock["expression"] }
       : {}),
   };
+  if (block.presentation.spatialMoment !== undefined) {
+    try {
+      validateSpatialMoment(block.presentation.spatialMoment, block.id);
+    } catch {
+      issues.push(
+        createDrydockIssue({
+          code: "DRYDOCK_SPATIAL_ATTACHMENT_INVALID",
+          category: "SCHEMA",
+          severity: "ERROR",
+          ruleVersion: 1,
+          location: { blockId: block.id, fieldPath: "presentation.spatialMoment" },
+          message: "Spatial Moment must be valid, checksum-pinned, and attached to this passage.",
+          remediation: "Materialize an immutable spatial version and reattach it to this passage.",
+        }),
+      );
+    }
+  }
   issues.push(...connectionIssues(block), ...providerIssues(block));
   if (issues.some((issue) => issue.severity === "ERROR"))
     return {

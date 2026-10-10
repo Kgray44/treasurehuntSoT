@@ -8,6 +8,8 @@ import UserNotifications
 
 /** Native acquisition and presentation. Canonical progression stays on the authorized One Voyage server. */
 final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandlerWithReply, CLLocationManagerDelegate, UNUserNotificationCenterDelegate {
+    private var spatial: ParallaxLocalRuntime?
+
     let origin: URL?
     private let location = CLLocationManager()
     private let motion = CMMotionManager()
@@ -103,6 +105,18 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
               JSONSerialization.isValidJSONObject(request), let encoded = try? JSONSerialization.data(withJSONObject: request), encoded.count <= 16384 else { replyHandler(nil, "INVALID_NATIVE_REQUEST"); return }
         let payload = request["payload"] as? [String: Any] ?? [:]
         switch operation {
+        case "SPATIAL_STATE": replyHandler(ParallaxLocalRuntime.state(),nil)
+        case "SPATIAL_PERMISSION":
+            guard foreground else {replyHandler(["supported":false,"permission":"RESTRICTED"],nil);return}
+            ParallaxLocalRuntime.permission(reply:replyHandler)
+        case "SPATIAL_START":
+            guard foreground,!power.critical,ParallaxLocalRuntime.state()["supported"] as? Bool == true,ParallaxLocalRuntime.state()["permission"] as? String == "GRANTED",let presenter=web?.window?.rootViewController,presenter.presentedViewController == nil,spatial == nil else {replyHandler(["accepted":false],nil);return}
+            let controller=ParallaxLocalRuntime();controller.emit={ [weak self] value in self?.event(value) };controller.modalPresentationStyle = .fullScreen
+            spatial=controller;presenter.present(controller,animated:false);replyHandler(["accepted":true],nil)
+        case "SPATIAL_PLACE": replyHandler(["pose":spatial?.placement(alignment:payload["alignment"] as? String ?? "HORIZONTAL") as Any? ?? NSNull()],nil)
+        case "SPATIAL_RENDER": replyHandler(["accepted":spatial?.render(payload["entities"] as? [[String:Any]] ?? []) ?? false],nil)
+        case "SPATIAL_STOP": spatial?.stop();spatial=nil;replyHandler(["accepted":true],nil)
+
         case "PRIVATE_STORE_PUT": replyHandler(["accepted": foreground && (privateStore?.put(payload["key"] as? String ?? "", value: payload["value"] as? String ?? "", expiresAt: payload["expiresAt"] as? Double ?? 0) ?? false)], nil)
         case "PRIVATE_STORE_GET": replyHandler(["value": foreground ? privateStore?.get(payload["key"] as? String ?? "") as Any? ?? NSNull() : NSNull()], nil)
         case "PRIVATE_STORE_LIST": replyHandler(["keys": foreground ? privateStore?.list() ?? [] : []], nil)
@@ -315,7 +329,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         event(["type":"power", "power":power.snapshot()])
     }
     private func stopSensors() { location.stopUpdatingHeading(); motion.stopAccelerometerUpdates(); motion.stopDeviceMotionUpdates(); altimeter.stopRelativeAltitudeUpdates() }
-    private func pause() { event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop() }
+    private func pause() { spatial?.stop();spatial=nil; event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop() }
     private func event(_ payload: [String: Any]) {
         guard foreground, let web=web, accepts(web.url), JSONSerialization.isValidJSONObject(payload), let data=try? JSONSerialization.data(withJSONObject: payload, options: [.fragmentsAllowed]), let json=String(data: data, encoding: .utf8) else { return }
         DispatchQueue.main.async { [weak self] in

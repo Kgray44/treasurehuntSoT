@@ -1,3 +1,4 @@
+import { validatePublishedSpatialMoments } from "@/parallax/publication";
 import { db } from "@/lib/db";
 import type { Prisma } from "@prisma/client";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
@@ -185,5 +186,6 @@ export function parsePublishedSnapshot(raw: string): PublishedTaleSnapshot {
   if (snapshot.schemaVersion !== 1 || !Array.isArray(snapshot.chapters))
     throw new Error("This Chronicle version uses an unsupported format. Update Voyagewright, then try again.");
   if (snapshot.landfall !== undefined) snapshot.landfall = validateLandfallDefinition(snapshot.landfall);
+  validatePublishedSpatialMoments(snapshot as PublishedTaleSnapshot);
   return snapshot;
 }

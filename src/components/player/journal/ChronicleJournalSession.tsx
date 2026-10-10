@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ParallaxJournalProvider } from "@/components/player/parallax/ChronicleLens";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { AudioCuePlayer } from "@/animation/core/audio-cues";
@@ -768,22 +769,24 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
         density: page.density,
         label: page.label,
         content: (
-          <ChronicleJournalPageContent
-            page={page}
-            assets={state?.assets ?? []}
-            chart={
-              index === currentPage && reading.openDrawer !== "map" && page.block?.blockType === "livingChart" ? (
-                <LandfallJournalChart
-                  readOnly={page.block.progress !== "active" || state?.session.status === "COMPLETED"}
-                  blockId={page.block.id}
-                  worldspaceId={String(page.block.configuration.worldspaceId ?? "")}
-                />
-              ) : undefined
-            }
-          />
+          <ParallaxJournalProvider sessionId={sessionId} csrfToken={state?.csrfToken ?? ""}>
+            <ChronicleJournalPageContent
+              page={page}
+              assets={state?.assets ?? []}
+              chart={
+                index === currentPage && reading.openDrawer !== "map" && page.block?.blockType === "livingChart" ? (
+                  <LandfallJournalChart
+                    readOnly={page.block.progress !== "active" || state?.session.status === "COMPLETED"}
+                    blockId={page.block.id}
+                    worldspaceId={String(page.block.configuration.worldspaceId ?? "")}
+                  />
+                ) : undefined
+              }
+            />
+          </ParallaxJournalProvider>
         ),
       })),
-    [pages, state?.assets, state?.session, currentPage, reading.openDrawer],
+    [pages, state?.assets, state?.session, state?.csrfToken, sessionId, currentPage, reading.openDrawer],
   );
   const contextBlocks = useMemo(
     () => state?.journal.chapters.flatMap((chapter) => chapter.blocks) ?? [],

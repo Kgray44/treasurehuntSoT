@@ -36,7 +36,7 @@ targets:
         NSBluetoothAlwaysUsageDescription: Optional configured nearby providers can supply proximity hints. Bluetooth never completes a waypoint by itself.
         NSNearbyInteractionUsageDescription: Optional paired devices can share short-lived distance hints while this journey is open. A range cannot confirm a visit by itself.
         NFCReaderUsageDescription: Read an optional signed journey token. Unsigned tags and links cannot change Voyage progress.
-        NSCameraUsageDescription: Read an optional signed QR journey token. Images are not stored or uploaded by this scanner.
+        NSCameraUsageDescription: Optional Chronicle Lens placement and signed QR tokens use the camera while this journey is open. Camera images are not stored or uploaded.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.voyagewright.landfall

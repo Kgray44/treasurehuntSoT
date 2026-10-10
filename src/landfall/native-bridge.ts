@@ -65,6 +65,12 @@ export function subscribeLandfallNativeLifecycle(listener: (state: "FOREGROUND" 
 }
 export async function landfallNativeRequest(
   operation:
+    | "SPATIAL_STATE"
+    | "SPATIAL_PERMISSION"
+    | "SPATIAL_START"
+    | "SPATIAL_PLACE"
+    | "SPATIAL_RENDER"
+    | "SPATIAL_STOP"
     | "LOCATION_PERMISSION"
     | "LOCATION_PERMISSION_STATE"
     | "LOCATION_STATE"

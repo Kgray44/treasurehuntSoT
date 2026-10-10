@@ -1,9 +1,9 @@
 ---
 title: Project Parallax engineering home
 audience: product-engineering
-status: governing-baseline
+status: phase-1-implemented-owner-acceptance-pending
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-09
+last_reviewed: 2026-10-10
 ---
 
 # Project Parallax
@@ -55,11 +55,13 @@ Parallax does **not** own:
 
 ## Current implementation status
 
-**Governance complete. Implementation not started.**
+**Phase 1 — Establish the Frame is implemented. Representative-device owner acceptance remains pending.**
 
-Publishing this document does not claim that native AR, Chronicle Lens spatial runtime, Spatial Studio, Spatial Library, shared anchors, remote calibration, adaptive staging, or cross-device shared AR are implemented.
+The [Phase 1 implementation and verification record](Phase_1_Implementation.md) documents the published Spatial Moment contract, Chronicle Lens, foreground iOS/Android providers, fixed/local/surface anchors, Guided View, isolated interaction observations, Drydock integration, migrations, and eight executable D0 scenarios in the shared Voyagewright Device Lab.
 
-The repository already contains accepted Landfall/Sextant/One Voyage/Drydock integration seams that future Parallax implementation must consume rather than duplicate. Watchglass and Crossdeck remain separate owner domains and may be absent or unimplemented during early Parallax phases; Parallax must preserve safe fallback behavior rather than inventing shadow versions of them.
+Software integration does not certify real-world placement accuracy. D4 hardware qualification and the actual representative-device owner walkthrough remain explicit product acceptance gates. Phase 2–6 authoring, adaptive staging, persistence, shared anchors, Spatial Library, and rich artifacts remain future work.
+
+Crossdeck Phase 1 can proceed independently: this implementation adds no pairing, surface-identity, shared-scene transport, or cross-device synchronization authority.
 
 ## Six-phase program
 
@@ -102,7 +104,7 @@ Late join, reconnect, tracking loss, and cross-platform resolution must all retu
 
 The governing evidence tiers remain D0 deterministic simulation through D5 real field qualification. Simulator/emulator proof must never be relabeled as real-device AR proof.
 
-## Before implementation
+## Continuing implementation
 
 - Project Sextant governance is already published and should be consumed rather than duplicated.
 - Project Crossdeck governance is required before Phase 4 can claim canonical multi-surface pairing/synchronization behavior.
@@ -110,7 +112,7 @@ The governing evidence tiers remain D0 deterministic simulation through D5 real 
 - Storytide, Figurehead, Wakebook, Landfall, Drydock, Harborlight, Sealed Hold, and Sounding Line integrations must preserve their owner-domain authority.
 - The six implementation phases must follow ordinary Voyagewright phase-level development, focused verification, Sounding Line final acceptance, and protected-main integration.
 
-Publishing this governed baseline does not automatically authorize Parallax Phase 1 or any later Spatial Experience project.
+Later phases require their own explicit implementation scope; Phase 1 does not silently start them.
 
 ## Reach-era effective integration
 
