@@ -5,6 +5,11 @@ async function main() {
     await import("./catalog");
     return;
   }
+  if (args[0] === "--project" && args[1] === "sextant") {
+    process.argv = [...process.argv.slice(0, 2), ...args.slice(2)];
+    await import("../sextant/device-lab");
+    return;
+  }
   if (args[0] !== "--project" || args[1] !== "landfall") throw new Error("DEVICE_LAB_PROJECT_NOT_REGISTERED");
   // Keep the accepted CLI's option parsing, exit codes and artifact namespace exact.
   process.argv = [...process.argv.slice(0, 2), ...args.slice(2)];

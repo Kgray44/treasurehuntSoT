@@ -3368,6 +3368,13 @@
       "authority": "sounding-line",
       "owners": ["sounding-line"],
       "critical": true
+    },
+    {
+      "id": "sextant.phase1.foundation",
+      "name": "Sextant Phase 1 capability/provider/permission/lease foundation and Landfall compatibility",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true
     }
   ]
 }
