@@ -51,7 +51,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Project Helm](Projects/Project_Helm/README.md)
 - [Project Admiralty](Projects/Project_Admiralty/README.md)
 - [Project Wakebook](Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf)
-- [Project Shipwright](Projects/Project%20Shipwright/README.md)
+- [Project Shipwright](Projects/Project%20Shipwright/)
 - [Project Drydock](Projects/Project%20Drydock/README.md)
 - [Project Landfall](Projects/Project_Landfall/README.md): [accepted Phase 4 capsule](Projects/Project_Landfall/Project_Landfall_Phase_4_Accepted_Capsule.md) and [completion receipt](Projects/Project_Landfall/Project_Landfall_Phase_4_Completion_Receipt.md), with qualified source and external production gates.
 - [Project Sextant](Projects/Project_Sextant/README.md)
@@ -61,3 +61,10 @@ Use [document-index.json](document-index.json) for complete path-level classific
 ## Historical and additive governing records
 
 The [Project Landfall v1.0 governing document](Projects/Project_Landfall/Project_Landfall_Governing_Document_v1.0.pdf) is the foundational baseline. The [v1.1 Worldspaces and Virtual Navigation amendment](Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) adds to it and supersedes only explicitly amended portions. Historical Project Trim, Fairlead, Nightwatch, Bosun, and Sounding Line records remain available from [Governing](Governing/) and their program homes; their preserved records remain the source for their historical claims.
+
+## Current Reach and spatial authority
+
+- [Effective spatial authority](Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) — complete additive chain and Reach-era amendments.
+- [Project Reach](Projects/Project_Reach/README.md) — governing constitution, five phases and qualification plan; not implemented.
+- [Current launch manifest v1.1](Programs/Spatial_Experience/Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.1_Reach.md) — browser-first owner/dependency update.
+- [Registry guide](Spatial_Experience/README.md) — current projections and pending Reach scenario registration.

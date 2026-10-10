@@ -3,7 +3,7 @@ title: Voyagewright Spatial Experience Architecture program home
 audience: product-engineering
 status: governing-baseline
 canonical_for: spatial-experience-program-home
-last_reviewed: 2026-10-08
+last_reviewed: 2026-10-09
 ---
 
 # Voyagewright Spatial Experience Architecture
@@ -16,8 +16,9 @@ This program home indexes the cross-project architecture for device context, mul
 - Existing project authorities remain authoritative inside their owned domains. This umbrella document freezes boundaries and integration contracts; it does not silently absorb those projects.
 - Project Sounding Line remains the repository-wide software verification authority. One Voyage remains authoritative for Chronicle progression.
 
-## Canonical ownership introduced by v1.0
+## Canonical ownership (v1.0 plus Reach v1.1)
 
+- **Project Reach** — calibrated target acquisition, selection, manipulation and interaction intent.
 - **Project Sextant** — device context and hardware capability truth.
 - **Project Landfall** — physical and virtual Worldspaces, place, routes, waypoints, journey state, and navigation.
 - **Project Parallax** — spatial entities, Chronicle Lens spatial behavior, AR, anchors, adaptive staging, and shared spatial reality.
@@ -41,7 +42,7 @@ Wave 2 integration governance is also published for Storytide, Watchglass, Figur
 
 **Wave 4 machine-readable implementation governance is complete.** The program now has a canonical ownership registry, device-capability registry, provider registry, surface-role/capability registry, normalized event registry, and Device Lab scenario registry under [Development_Docs/Spatial_Experience](../../Spatial_Experience/), plus the [Wave 4 Implementation Launch Manifest v1.0](Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.0.md). These records make the accepted architecture queryable by tooling without creating new product implementation claims.
 
-Wave 4 is the implementation handoff boundary. [Spatial Infrastructure Increment 0](../../Engineering/Device_Lab/README.md) provides the neutral Device Lab core, strict scenario catalogue loader, owner pack/runner interfaces and retained Landfall compatibility. The original 27 Wave 4 scenarios retain their baseline declarations. [Sextant Phase 1](../../Engineering/Sextant/README.md) implements the first capability/provider/permission/lease foundation and adds nine separately registered executable D0 contracts; Crossdeck and Parallax begin only as their manifest prerequisites are satisfied.
+The [v1.1 Reach launch successor](Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.1_Reach.md) is the current implementation handoff; v1.0 remains historical. [Spatial Infrastructure Increment 0](../../Engineering/Device_Lab/README.md) provides the neutral Device Lab core, strict scenario catalogue loader, owner pack/runner interfaces and retained Landfall compatibility. The original 27 Wave 4 scenarios retain their baseline declarations. [Sextant Phase 1](../../Engineering/Sextant/README.md) implements the first capability/provider/permission/lease foundation and adds nine separately registered executable D0 contracts. Reach adds the browser interaction laboratory and a bounded Watchglass hand-provider dependency. Crossdeck manual work stays independent, while Air Handoff consumes qualified Reach intent. Crossdeck and Parallax begin only as their current v1.1 manifest prerequisites are satisfied.
 
 None of these governance records, by themselves, claim implementation beyond the accepted current-main behavior of their owning projects.
 
@@ -73,3 +74,7 @@ No derived implementation phase is authorized merely by this list. Each project 
 - [Implementation Launch Manifest v1.0](Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.0.md)
 
 The registries are machine-readable projections of accepted governing documents. They do not supersede those documents, claim implementation, or grant progression authority beyond Project One Voyage.
+
+## Reach-era current authority
+
+The [Spatial Experience v1.1 amendment](../../Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Amendment_v1.1_Reach_and_Browser_First_Interaction.md) and [effective authority index](../../Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) identify all current owner amendments. The [Reach project home](../../Projects/Project_Reach/README.md) supplies its constitution and five-phase qualification plan. The [registry guide](../../Spatial_Experience/README.md) explains current counts and the separate pending Reach scenarios. All earlier completed governance waves and accepted evidence remain preserved. Reach is governed, not implemented.

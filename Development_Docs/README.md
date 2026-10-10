@@ -22,7 +22,7 @@ Use [INDEX.md](INDEX.md) for the current taxonomy and [document-index.json](docu
 - [Project Helm](Projects/Project_Helm/README.md) — Captain operations records.
 - [Project Admiralty](Projects/Project_Admiralty/README.md) — platform-administration and operations records.
 - [Project Wakebook](Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf) — private Journey Archive governing document, records, and evidence in one canonical home.
-- [Project Shipwright](Projects/Project%20Shipwright/README.md) — Creator Studio program records.
+- [Project Shipwright](Projects/Project%20Shipwright/) — Creator Studio program records.
 - [Project Drydock](Projects/Project%20Drydock/README.md) — Chronicle authoring-contract and simulation records.
 - [Project Landfall](Projects/Project_Landfall/README.md) — governing baseline, Worldspaces amendment, and Phase 1 engineering records.
 
@@ -33,3 +33,10 @@ The [Governing](Governing/) and [Governance](Governance/) directories hold repos
 ## Repository operations
 
 [Repository operations](Engineering/Repository_Operations/README.md) contains current maintenance guidance, operations records, developer references, and product-status records. Documentation-authoring references live in [Engineering/Documentation](Engineering/Documentation/).
+
+## Current Reach and spatial authority
+
+- [Effective spatial authority](Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) — complete additive chain and Reach-era amendments.
+- [Project Reach](Projects/Project_Reach/README.md) — governing constitution, five phases and qualification plan; not implemented.
+- [Current launch manifest v1.1](Programs/Spatial_Experience/Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.1_Reach.md) — browser-first owner/dependency update.
+- [Registry guide](Spatial_Experience/README.md) — current projections and pending Reach scenario registration.
