@@ -130,6 +130,11 @@
   display: block;
   width: 100%;
   max-width: 100%;
+  min-height: 2.75rem;
+}
+.handoff summary {
+  min-height: 2.75rem;
+  padding-block: 0.5rem;
 }
 .handoff button {
   margin: 0.25rem;

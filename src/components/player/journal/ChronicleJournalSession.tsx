@@ -1115,6 +1115,16 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
                     pageId: pages[page]?.id ?? null,
                     openDrawer: ref.family === "MAP" ? "map" : ref.family === "ARTIFACT" ? "artifacts" : null,
                   });
+                  const displayed = () => {
+                    const view = book.current;
+                    if (!view?.readiness().ready) return false;
+                    const current = view.currentPage();
+                    return current === page || (view.orientation() === "landscape" && current + 1 === page);
+                  };
+                  const started = Date.now();
+                  while (!displayed() && Date.now() - started < 5000)
+                    await new Promise((resolve) => setTimeout(resolve, 50));
+                  if (!displayed()) throw new Error("The Journal view is not ready to receive this item.");
                   if (ref.family === "NOTE")
                     requestAnimationFrame(() => {
                       const content = root.current?.querySelector<HTMLElement>(
