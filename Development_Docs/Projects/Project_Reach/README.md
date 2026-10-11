@@ -1,14 +1,14 @@
 ---
 title: Project Reach engineering home
 audience: product-engineering
-status: phase1-implementation-pending-qualification
+status: integrated-foundation-preview
 canonical_for: project-reach-engineering-home
-last_reviewed: 2026-10-09
+last_reviewed: 2026-10-11
 ---
 
 # Project Reach engineering home
 
-Reach is Voyagewright's reusable browser-first spatial interaction and intent system. Phase 1's browser hand laboratory, observation/coordinate foundation and independent calibration workflow are implemented on the owned candidate; physical webcam qualification and protected integration remain pending. See the [implementation and validation record](Project_Reach_Phase_1_Implementation_and_Validation_Record.md). Later-phase target acquisition, selection, manipulation and owner integrations are not implemented by this phase.
+Reach is Voyagewright's reusable browser-first spatial interaction and intent system. Phase 1's browser hand laboratory, observation/coordinate foundation and independent calibration workflow are integrated as a foundation preview through [PR #697](https://github.com/Kgray44/treasurehuntSoT/pull/697), main commit `7284b0dfaa31037d074d27df0f27b968f3977000`, after the [required Mainline Decision](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38113725340) passed. Landed source/asset verification passed. Physical webcam and held-out calibration, accuracy, jitter, exposure-to-visible latency, ergonomics and owner acceptance remain open; full Phase 1 is not accepted. See the [implementation and validation record](Project_Reach_Phase_1_Implementation_and_Validation_Record.md). Later-phase target acquisition, selection, manipulation and owner integrations are not implemented by this phase.
 
 ## Effective governing sources
 
@@ -31,4 +31,4 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 Sextant owns camera capability/lifecycle; Watchglass owns the hand observation provider. Parallax, Crossdeck, Landfall and UI owners apply permitted actions. Storytide interprets narrative outcomes and One Voyage alone advances progression. Conventional controls remain essential equivalents.
 
-Phase 1 implementation is the current owner-directed task. Each phase uses focused tests before an ordinary Sounding Line final check and protected-main merge. Phase records are written from actual work and evidence. Physical acceptance remains open until qualified trials are available.
+Phase 1's foundation preview is integrated; physical and owner acceptance remain open until qualified trials are available. Each phase uses focused tests before an ordinary Sounding Line final check and protected-main merge. Phase records are written from actual work and evidence. Phase 2 has not begun.

@@ -1,7 +1,7 @@
 ---
 title: Reach Phase 1 implementation and validation record
 audience: product-engineering
-status: local-qualified-integration-pending
+status: integrated-foundation-preview
 canonical_for: reach-phase1-implementation-validation
 last_reviewed: 2026-10-11
 ---
@@ -14,7 +14,7 @@ This owner-directed implementation uses Reach v1.0 Sections 6â€“11, 19, 24, 26â€
 
 Native implementation task `01a12883-5c57-77bd-8a5d-8dd5a9c7103b` was verified as a Codex task with the delivered complete contract. Reconciliation marker: `ld-Sentinel_6845783f9a2481918bfde3e76cc12eca-reach-p1`. The native readback returned projectId null; association with the requested VoyageWright project `fd21b701-3215-417a-a413-0a17e02badbb` could not be confirmed, and the available move operation could not bind this execution host. No native Goal persistence capability was exposed. Prompt delivery is verified separately from those unsupported metadata operations. No duplicate task was dispatched.
 
-[PR #697](https://github.com/Kgray44/treasurehuntSoT/pull/697) contains the implementation and lifecycle corrections. The first native attachment attempt returned `Transport closed`; a subsequent attachment succeeded after the connection recovered. The local-qualified candidate is `512b63da7e4626df9319fc60c75fdd5a49a4fe5f`. This record update follows that qualification, so its eventual commit is distinct from the local-tested source. The ordinary protected-main check must bind the final PR head before integration. No merge is claimed here.
+[PR #697](https://github.com/Kgray44/treasurehuntSoT/pull/697) contains the implementation and lifecycle corrections. The first native attachment attempt returned `Transport closed`; a subsequent attachment succeeded after the connection recovered. The local-qualified candidate is `512b63da7e4626df9319fc60c75fdd5a49a4fe5f`. The final PR head `0949d8a06f54493e50e757337528b4052908f439` adds the local qualification record. Its [required Mainline Decision](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38113725340) passed against base `2e367c372a6d44e4e6a68bb38266196954f8d486`. Protected integration completed at 2026-10-11 05:13:05 UTC in main commit `7284b0dfaa31037d074d27df0f27b968f3977000`. This is an integrated foundation preview; physical acceptance remains open.
 
 Project Trim was applied through current isolated-source authority, a Phase 1 contract and explicit scope/evidence limits. No token-savings figure is asserted. The shared source checkout and unmerged sibling source were not consumed or edited.
 
@@ -52,13 +52,13 @@ Filtering uses a velocity-adaptive low-pass cutoff of 2 Hz plus gain 12, with ve
 
 Focused development initially found an invalid orientation schema and corrected it; those failures remain failures. A synthetic browser attempt failed held-out validation at 5.02% p95; the gate rejected it. Subsequent corrections fixed the synthetic input fixture and CSS aspect-ratio metric without changing the 3% gate. Worker trials identified the pinned runtime's classic-loader requirement and missing initialization dispatch; those were corrected before the emulated model-inference trial passed. The original browser attempt also exposed a pre-existing Node-only audit import in Next instrumentation. The runtime-specific dynamic import follows the installed Next.js guide, retains the audit safety check for Node, and restores the route. The shared Device Lab source-identity test now uses a file URL for the Windows ESM loader; it retains its original provenance assertions.
 
-The exact local candidate and final local results are recorded below. No protected merge or landed smoke is claimed until it actually occurs.
+The exact local candidate, final local results, protected integration and landed smoke are recorded below. These results do not close the physical or owner acceptance gates.
 
 ## Qualification status
 
-Development evidence: 24 focused Reach/asset/shared Device Lab tests passed before the final startup correction, and both reproduced startup race tests passed after correction. Four Chromium journeys passed before that correction: synthetic fit/held-out validation and export/delete; actual pinned model inference on an emulated stream with suspension/restart cleanup; model unavailability; permission denial/fallback. Final browser confirmation on the frozen candidate remains pending.
+Development evidence: 24 focused Reach/asset/shared Device Lab tests passed before the final startup correction, and both reproduced startup race tests passed after correction. Four Chromium journeys passed before that correction: synthetic fit/held-out validation and export/delete; actual pinned model inference on an emulated stream with suspension/restart cleanup; model unavailability; permission denial/fallback. Final browser confirmation was pending at that checkpoint and subsequently passed as recorded below.
 
-Documentation and Feature Catalog validation passed. A light source comparison confirmed all 55 pre-Reach scenario records and all existing suite/contract definitions are unchanged. Private-content staged-diff scanning passed before final light corrections. The ordinary Sounding Line regression had 57 passes and one infrastructure failure when Windows could not start `git init`; this is not recorded as a passing aggregate check. The computer restart interrupted other verification. In-progress typecheck/lint were deliberately stopped to release the parent's shared heavy-testing slot. Source is preserved and only light review/candidate preparation continues until Reach is granted that slot after Sextant, Parallax and Crossdeck.
+Documentation and Feature Catalog validation passed. A light source comparison confirmed all 55 pre-Reach scenario records and all existing suite/contract definitions are unchanged. Private-content staged-diff scanning passed before final light corrections. The ordinary Sounding Line regression had 57 passes and one infrastructure failure when Windows could not start `git init`; this is not recorded as a passing aggregate check. The computer restart interrupted other verification. In-progress typecheck/lint were deliberately stopped to release the parent's shared heavy-testing slot. At that checkpoint, source was preserved and only light review/candidate preparation continued; qualification resumed after the parent granted Reach its slot, as recorded below.
 
 Light lifecycle review added generation isolation for a late denial and regression cases for stale `ended` callbacks/old lease releases, failed lease construction and a source ending during listener registration. Listener registration cleanup rejects that source without retaining a track or listener. These cases passed in the final focused run. Earlier interrupted checks remain interrupted; later passes are separate executions. Owner-present physical hand calibration is pending and will not start while the owner is gaming.
 
@@ -77,7 +77,13 @@ The parent granted the shared testing slot after a fresh host check. Canonical o
 
 The original decision, execution logs and seven D0 receipts are preserved unchanged in task-local `artifacts/reach-qualification-512b63da/`, with original paths and SHA-256 in `preservation-manifest.json`. That manifest is delivery preservation metadata, not a replacement canonical decision. At 05:03:39 UTC the source was clean, no Reach heavy descendants remained, and Reach released its shared slot. No further local heavy run was started.
 
-The ordinary protected-main decision and landed smoke remain pending. Physical webcam/held-out calibration, accuracy, jitter, exposure-to-visible latency, ergonomics and owner acceptance remain open. These D0/D1 results do not qualify human pointing or close Phase 1 acceptance. Feature Catalog is unchanged.
+### Protected integration and landed verification
+
+The required [Mainline Decision run 38113725340](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38113725340) returned PASS on final head `0949d8a06f54493e50e757337528b4052908f439` against base `2e367c372a6d44e4e6a68bb38266196954f8d486`. Its canonical evidence finalizer closed all ten required obligations with no remainder or errors. The hosted decision is preserved in task-local `artifacts/reach-protected-head-0949d8a0/ordinary-decision.json`; it is distinct from the earlier local decision.
+
+PR #697 merged through the normal protected workflow at 2026-10-11 05:13:05 UTC, producing `7284b0dfaa31037d074d27df0f27b968f3977000`. The light landed verification at 05:15:06 UTC confirmed exact tree equality with the protected candidate, tree `411bdc8ee4a572b19033b58bbee47133ac381e73`, the laboratory route and all seven pinned asset byte counts/SHA-256 values. Its task-local record is `artifacts/reach-landed-smoke.json`. This was a source/asset smoke check, not another browser or physical qualification run. No protection bypass or deployment occurred.
+
+The foundation preview is integrated. Physical webcam/held-out calibration, accuracy, jitter, exposure-to-visible latency, ergonomics and owner acceptance remain open. These D0/D1 results do not qualify human pointing or close full Phase 1 acceptance. Feature Catalog is unchanged.
 
 ## Technical basis
 
