@@ -12,8 +12,8 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
 
     let origin: URL?
     private let location = CLLocationManager()
-    private let motion = CMMotionManager()
-    private let altimeter = CMAltimeter()
+    private var sextant: SextantSensors?
+    private let sextantHaptics = SextantHaptics()
     private var web: WKWebView?
     private var foreground = true
     private var acquiring = false
@@ -67,6 +67,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             if let self=self { for region in self.location.monitoredRegions where !self.hints.active(handle:region.identifier) {self.location.stopMonitoring(for:region)} }
             self?.event(["type": "lifecycle", "state": "FOREGROUND", "pendingHints": self?.hints.read() ?? []])
         })
+        sextant = SextantSensors { [weak self] event in self?.event(event) }
         hardware = LandfallHardware { [weak self] event in self?.event(event) }
         nearby = LandfallNearbyInteraction { [weak self] event in self?.event(event) }
         UIDevice.current.isBatteryMonitoringEnabled = true
@@ -75,7 +76,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             observers.append(NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in self?.powerChanged() })
         }
     }
-    deinit { for observer in observers { NotificationCenter.default.removeObserver(observer) }; location.stopUpdatingLocation(); location.stopUpdatingHeading(); motion.stopDeviceMotionUpdates(); altimeter.stopRelativeAltitudeUpdates() }
+    deinit { for observer in observers { NotificationCenter.default.removeObserver(observer) }; location.stopUpdatingLocation(); location.stopUpdatingHeading(); sextant?.stopAll("BACKGROUND"); sextantHaptics.stopAll() }
     func accepts(_ url: URL?) -> Bool {
         guard let url = url, let origin = origin else { return false }
         return url.scheme == origin.scheme && url.host == origin.host && (url.port ?? 443) == (origin.port ?? 443) && url.user == nil && url.password == nil
@@ -167,6 +168,18 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             }
         case "GEOFENCE_CLEAR": clearGeofences(); replyHandler(["accepted": true], nil)
         case "POWER_STATE": replyHandler(power.snapshot(), nil)
+        case "SEXTANT_STATE": replyHandler(sextant?.snapshot(foreground:foreground && !power.critical) ?? ["version":1,"states":[:],"background":"FOREGROUND_ONLY"],nil)
+        case "SEXTANT_START": sextant?.setConstrained(power.constrained);replyHandler(sextant?.start(payload,foreground:foreground && !power.critical) ?? ["accepted":false],nil)
+        case "SEXTANT_STOP": sextant?.stop(payload["leaseId"] as? String ?? "");replyHandler(["accepted":true],nil)
+        case "SEXTANT_UPDATE": replyHandler(["accepted":sextant?.update(payload["leaseId"] as? String ?? "",interval:payload["intervalMs"] as? Int ?? 0) ?? false],nil)
+        case "SEXTANT_PERMISSION":
+            let capability=payload["capabilityId"] as? String ?? ""
+            guard foreground else{replyHandler(["state":"RESTRICTED"],nil);return}
+            if capability == "sextant.heading.estimate",location.authorizationStatus == .notDetermined {
+                guard permissionReply == nil else{replyHandler(["state":"RESTRICTED"],nil);return};permissionReply={ [weak self] _,error in replyHandler(["state":self?.sextant?.permission(capability) ?? "RESTRICTED"],error)};location.requestWhenInUseAuthorization()
+            }else if let sensors=sextant{sensors.requestPermission(capability){state in replyHandler(["state":state],nil)}}else{replyHandler(["state":"RESTRICTED"],nil)}
+        case "SEXTANT_HAPTIC": replyHandler(sextantHaptics.execute(payload,foreground:foreground,critical:power.critical),nil)
+        case "SEXTANT_HAPTIC_STOP": sextantHaptics.stop(payload["leaseId"] as? String ?? "");replyHandler(["accepted":true],nil)
         case "SENSORS_START": replyHandler(["accepted": startSensors()], nil)
         case "SENSORS_STOP": stopSensors(); replyHandler(["accepted": true], nil)
         case "BLE_START": replyHandler(["state": hardware?.startBle(foreground: foreground && !power.constrained, scanId: payload["scanId"] as? String ?? "") ?? "UNAVAILABLE"], nil)
@@ -179,7 +192,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "QR_SCAN": replyHandler(["state": hardware?.startQr(foreground: foreground && !power.constrained, scanId: payload["scanId"] as? String ?? "", presenter: web?.window?.rootViewController) ?? "UNAVAILABLE"], nil)
         case "INTERACTION_STOP": hardware?.stopInteractions(scanId: payload["scanId"] as? String ?? ""); replyHandler(["accepted": true], nil)
         case "CLEAR_PRIVATE_DATA":
-            stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop()
+            stopLocation(); sextant?.stopAll("BACKGROUND"); sextantHaptics.stopAll(); stopSensors(); hardware?.stop(); nearby?.stop()
             clearGeofences(); privateStore?.clear()
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             UNUserNotificationCenter.current().removeAllDeliveredNotifications()
@@ -317,14 +330,8 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     }
     private func startSensors() -> Bool {
         guard foreground, !power.constrained else { return false }
-        stopSensors()
-        if CLLocationManager.headingAvailable() { location.headingFilter=10; location.startUpdatingHeading() }
-        if motion.isAccelerometerAvailable { motion.accelerometerUpdateInterval=0.25; motion.startAccelerometerUpdates(to: .main) { [weak self] sample, _ in if let value=sample?.acceleration { self?.sensor("ACCELEROMETER", [value.x*9.80665,value.y*9.80665,value.z*9.80665], accuracy: 1) } } }
-        if CMAltimeter.isRelativeAltitudeAvailable() { altimeter.startRelativeAltitudeUpdates(to: .main) { [weak self] sample, _ in if let sample=sample { self?.sensor("PRESSURE", [sample.pressure.doubleValue*10], accuracy: 1) } } }
-        return CLLocationManager.headingAvailable() || motion.isAccelerometerAvailable || CMAltimeter.isRelativeAltitudeAvailable()
+        return sextant?.startLegacy(foreground: foreground) ?? false
     }
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading heading: CLHeading) { if heading.headingAccuracy>=0 { sensor("HEADING", [heading.magneticHeading], accuracy: heading.headingAccuracy) } }
-    private func sensor(_ kind: String, _ values: [Double], accuracy: Double) { guard foreground else { return }; event(["type": "sensor", "frame": ["id": UUID().uuidString, "observedAt": Int(Date().timeIntervalSince1970*1000), "kind": kind, "values": values, "accuracy": accuracy]]) }
     private func stopLocation() { acquiring=false; locationThrottle.stop(); location.stopUpdatingLocation() }
     private func configureLocationPower() {
         locationIntervalMs = power.interval(requestedIntervalMs)
@@ -334,13 +341,16 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private func powerChanged() {
         guard foreground else { return }
         if power.constrained { stopSensors() }
+        sextant?.setConstrained(power.constrained)
+        if power.critical { sextant?.stopAll("POWER") }
+        if power.critical { sextantHaptics.stopAll() }
         if power.constrained { hardware?.stopInteractions();hardware?.stopBle() }
         if power.critical { hardware?.stop(); nearby?.stop(); if acquiring { stopLocation(); event(["type":"error"]) } }
         else if acquiring { configureLocationPower() }
         event(["type":"power", "power":power.snapshot()])
     }
-    private func stopSensors() { location.stopUpdatingHeading(); motion.stopAccelerometerUpdates(); motion.stopDeviceMotionUpdates(); altimeter.stopRelativeAltitudeUpdates() }
-    private func pause() { spatial?.stop();spatial=nil; event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop() }
+    private func stopSensors() { sextant?.stopLegacy() }
+    private func pause() { spatial?.stop();spatial=nil; event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); sextant?.stopAll("BACKGROUND"); sextantHaptics.stopAll(); stopSensors(); hardware?.stop(); nearby?.stop() }
     private func event(_ payload: [String: Any]) {
         guard foreground, let web=web, accepts(web.url), JSONSerialization.isValidJSONObject(payload), let data=try? JSONSerialization.data(withJSONObject: payload, options: [.fragmentsAllowed]), let json=String(data: data, encoding: .utf8) else { return }
         DispatchQueue.main.async { [weak self] in

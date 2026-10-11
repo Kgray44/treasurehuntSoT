@@ -32,6 +32,7 @@ export type WebSensorTarget = {
   screen?: { orientation?: { angle: number } };
 };
 export type WebSensorOptions = {
+  nativeTransport?: import("./native-provider").SextantNativeTransport;
   /** Only a qualified provider/platform policy can assert the north reference of absolute event alpha. */
   absoluteNorthReference?: "MAGNETIC" | "TRUE" | "UNKNOWN";
   emulationIdentity?: string;

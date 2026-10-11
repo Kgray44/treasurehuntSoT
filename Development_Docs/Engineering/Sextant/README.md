@@ -8,7 +8,7 @@ last_reviewed: 2026-10-10
 
 # Sextant — Device Context
 
-[Phase 3 - Read the Field](Project_Sextant_Phase_3_Implementation_Receipt.md) is an isolated local candidate for rich magnetic/pressure/step semantics, media declarations, bounded optional BLE/NFC, secure ranging contracts, safe magnetic reference controls and versioned Drydock requirements. Its D0/D1 software evidence is distinct from D2/native, D4/D5, protected mainline and owner acceptance. Reuse the existing runtime's `advanced` context; media factories and authenticated peer meaning remain with their consumers.
+[Phase 3 - Read the Field](Project_Sextant_Phase_3_Implementation_Receipt.md) is integrated on protected main for rich magnetic/pressure/step semantics, media declarations, bounded optional BLE/NFC, secure ranging contracts, safe magnetic reference controls and versioned Drydock requirements. Its D0/D1 software evidence is distinct from native parity, D4/D5 and owner acceptance. Reuse the existing runtime's `advanced` context; media factories and authenticated peer meaning remain with their consumers.
 
 [Phase 2 — Hold the Horizon](Project_Sextant_Phase_2_Implementation_Receipt.md) adds real web event-family providers, normalized attitude/motion, six bounded device gestures, semantic haptics and accessible consent/status controls. Software qualification is separate from physical hardware evidence.
 
@@ -20,9 +20,11 @@ Relative/absolute reference, quaternion normalization, separate gravity/linear/i
 
 The [post-mainline correction receipt](../Device_Lab/Sextant_Parallax_Correction_Receipt.md) records the shared six-gesture acquisition policy, refusal boundaries and cleanup/continuity regressions separately from the retained phase evidence.
 
-The shared CLI now executes all 20 Sextant D0/D1 scenarios. Select one with `npm run sextant:device-lab -- --scenario sextant.web-heading-wrap`. Emulated browser events are D1, synthetic semantics are D0, and neither is physical qualification. Optional Generic Sensor providers are not necessary for the event-family plateau and are not claimed.
+The shared CLI now executes all 36 Sextant D0/D1 scenarios. Select one with `npm run sextant:device-lab -- --scenario sextant.web-heading-wrap`. Emulated browser events are D1, synthetic semantics are D0, and neither is physical qualification. Optional Generic Sensor providers are not necessary for the event-family plateau and are not claimed.
 
 Landfall's existing foreground context API remains compatible; generic acquisition lives in Sextant and shares its listener hub. Landfall still owns navigation/context meaning. New consumer code does not import raw Device Orientation/Motion or Vibration APIs.
+
+[Phase 4 — Take It Afield](Project_Sextant_Phase_4_Implementation_Record.md) is in development. The existing hosted Android and Apple lab has been activated on the accepted base; new native owners and semantic integration still require their own qualification. Formal Phase 4 acceptance requires D4 core bring-up.
 
 ## Preserved Phase 1 — Set the Sextant
 

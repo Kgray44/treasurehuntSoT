@@ -39,7 +39,10 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
   private boolean acquiring;
   private JavaScriptReplyProxy permissionReply;
   private String permissionRequestId;
+  private Runnable sextantPermissionReply;
   private LandfallSensors sensors;
+  private SextantSensors sextant;
+  private SextantHaptics sextantHaptics;
   private LandfallHardware hardware;
   private LandfallUwbDriver uwb;
   private LandfallPrivateStore privateStore;
@@ -58,7 +61,9 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
     if (origin.isEmpty()) { TextView message = new TextView(this); message.setText("Landfall companion is not configured. Build with your VoyageWright HTTPS origin."); setContentView(message); return; }
     privateStore = new LandfallPrivateStore(origin);
     locations = (LocationManager)getSystemService(LOCATION_SERVICE);
-    sensors = new LandfallSensors(this, this::event);
+    sextant = new SextantSensors(this, this::event);
+    sextantHaptics = new SextantHaptics(this);
+    sensors = new LandfallSensors(sextant);
     hardware = new LandfallHardware(this, this::event);
     uwb = LandfallUwbDriver.create(this, this::event);
     power = new LandfallPower(this, this::powerChanged);
@@ -208,6 +213,20 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
       case "GEOFENCE_REGISTER": registerGeofence(payload, proxy, id); break;
       case "GEOFENCE_CLEAR": LandfallGeofences.clear(this, accepted -> {try{reply(proxy,id,new JSONObject().put("accepted",accepted));}catch(Exception ignored){}}); break;
       case "POWER_STATE": reply(proxy,id,power.snapshot());break;
+      case "SEXTANT_STATE": reply(proxy,id,sextant.snapshot(foreground && !power.critical()));break;
+      case "SEXTANT_START": sextant.setConstrained(power.constrained());reply(proxy,id,sextant.start(payload,foreground && !power.critical()));break;
+      case "SEXTANT_STOP": sextant.stop(payload.optString("leaseId"));reply(proxy,id,new JSONObject().put("accepted",true));break;
+      case "SEXTANT_UPDATE": reply(proxy,id,new JSONObject().put("accepted",sextant.update(payload.optString("leaseId"),payload.optInt("intervalMs"))));break;
+      case "SEXTANT_PERMISSION":
+        String capability=payload.optString("capabilityId");
+        if(!foreground || sextantPermissionReply!=null){reply(proxy,id,state("RESTRICTED"));break;}
+        String sensorPermission=sextant.permissionState(capability);
+        if(sensorPermission.equals("PROMPT") && capability.equals("sextant.motion.pedometer")){
+          sextantPermissionReply=()->{try{reply(proxy,id,state(sextant.permissionState(capability).equals("GRANTED")?"GRANTED":"DENIED"));}catch(Exception ignored){}};
+          requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION},50);
+        }else reply(proxy,id,state(sensorPermission));break;
+      case "SEXTANT_HAPTIC": reply(proxy,id,sextantHaptics.execute(payload,foreground,power.critical()));break;
+      case "SEXTANT_HAPTIC_STOP": sextantHaptics.stop(payload.optString("leaseId"));reply(proxy,id,new JSONObject().put("accepted",true));break;
       case "SENSORS_START": reply(proxy, id, new JSONObject().put("accepted", sensors.start(foreground && !power.constrained()))); break;
       case "SENSORS_STOP": sensors.stop(); reply(proxy, id, new JSONObject().put("accepted", true)); break;
       case "BLE_START": reply(proxy, id, state(hardware.startBle(foreground && !power.constrained(),payload.optString("scanId")))); break;
@@ -224,7 +243,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
       case "PRIVATE_STORE_GET": reply(proxy,id,new JSONObject().put("value",foreground ? privateStore.get(this,payload.optString("key")) : JSONObject.NULL)); break;
       case "PRIVATE_STORE_LIST": reply(proxy,id,new JSONObject().put("keys",foreground ? privateStore.list(this) : new JSONArray())); break;
       case "PRIVATE_STORE_DELETE": if(foreground)privateStore.remove(this,payload.optString("key"));reply(proxy,id,new JSONObject().put("accepted",foreground));break;
-      case "CLEAR_PRIVATE_DATA": stopLocation(); sensors.stop(); hardware.stop(); uwb.stop(); privateStore.clear(this); web.clearCache(true); LandfallGeofences.clear(this,accepted -> {try{reply(proxy,id,new JSONObject().put("accepted",accepted));}catch(Exception ignored){}}); break;
+      case "CLEAR_PRIVATE_DATA": stopLocation(); sextant.stopAll("BACKGROUND"); sextantHaptics.stopAll(); sensors.stop(); hardware.stop(); uwb.stop(); privateStore.clear(this); web.clearCache(true); LandfallGeofences.clear(this,accepted -> {try{reply(proxy,id,new JSONObject().put("accepted",accepted));}catch(Exception ignored){}}); break;
       default: reply(proxy, id, state("UNSUPPORTED"));
     }
   }
@@ -243,6 +262,9 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
   private void powerChanged(){
     if(!foreground || power==null)return;
     if(power.constrained() && sensors!=null)sensors.stop();
+    if(sextant!=null)sextant.setConstrained(power.constrained());
+    if(power.critical() && sextant!=null)sextant.stopAll("POWER");
+    if(power.critical() && sextantHaptics!=null)sextantHaptics.stopAll();
     if(power.constrained() && hardware!=null){hardware.stopInteractions();hardware.stopBle();}
     if(power.critical() && hardware!=null)hardware.stop();
     if(power.critical() && uwb!=null)uwb.stop();
@@ -271,6 +293,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
   @Override public void onRequestPermissionsResult(int code, String[] permissions, int[] results) {
     super.onRequestPermissionsResult(code, permissions, results);
     if(code==49 && spatialPermissionReply!=null){Runnable pending=spatialPermissionReply;spatialPermissionReply=null;pending.run();}
+    if(code==50 && sextantPermissionReply!=null){Runnable pending=sextantPermissionReply;sextantPermissionReply=null;pending.run();}
     if (code == LOCATION_REQUEST && permissionReply != null) { try { reply(permissionReply, permissionRequestId, state(permission())); } catch(Exception ignored){} permissionReply=null; permissionRequestId=null; }
   }
   @Override public void onResume() { super.onResume(); foreground=true; if (web!=null) { web.onResume(); try { event(new JSONObject().put("type", "lifecycle").put("state", "FOREGROUND").put("pendingHints", LandfallSecureHints.read(this))); } catch(Exception ignored){} } }
@@ -282,6 +305,6 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
     String handle=intent.getStringExtra("returnHandle");
     if(web!=null && handle!=null && handle.matches("[A-Za-z0-9_-]{32,2048}"))openReturn(intent);
   }
-  @Override public void onPause() { if(spatial!=null){spatial.stop();spatial=null;} try { event(new JSONObject().put("type", "lifecycle").put("state", "BACKGROUND")); } catch(Exception ignored){} foreground=false; stopLocation(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null){web.onPause();LandfallCookiePersistence.request();} super.onPause(); }
-  @Override public void onDestroy() { stopLocation(); if(power!=null)power.close(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null){LandfallCookiePersistence.request();web.destroy();web=null;} super.onDestroy(); }
+  @Override public void onPause() { if(spatial!=null){spatial.stop();spatial=null;} try { event(new JSONObject().put("type", "lifecycle").put("state", "BACKGROUND")); } catch(Exception ignored){} foreground=false; stopLocation(); if(sextant!=null)sextant.stopAll("BACKGROUND"); if(sextantHaptics!=null)sextantHaptics.stopAll(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null){web.onPause();LandfallCookiePersistence.request();} super.onPause(); }
+  @Override public void onDestroy() { stopLocation(); if(sextant!=null)sextant.stopAll("BACKGROUND"); if(sextantHaptics!=null)sextantHaptics.stopAll(); if(power!=null)power.close(); if(sensors!=null)sensors.stop(); if(hardware!=null)hardware.stop(); if(uwb!=null)uwb.stop(); if(web!=null){LandfallCookiePersistence.request();web.destroy();web=null;} super.onDestroy(); }
 }

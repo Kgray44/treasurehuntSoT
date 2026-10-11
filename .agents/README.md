@@ -14,6 +14,7 @@ retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)
+- [Sextant Phase 4 owned implementation context](sextant-phase4.md)
 - [Landfall Phase 4 closure context](landfall-phase4.md)
 - [Landfall hosted Device Lab transport template](landfall-device-lab-hosted.yml)
 - [Landfall Phase 3 context](landfall-phase3.md)

@@ -5,7 +5,10 @@ import { SextantLeaseBroker, type LeaseRequest, type LeaseEvent } from "./leases
 import { SextantHaptics, webHapticAdapter } from "./haptics";
 import { WebDeviceSensorProvider, type WebSensorOptions, type WebSensorTarget } from "./web-provider";
 import { DeviceGestureRecognizer, type GestureConfig, type GestureInput, type GestureResult } from "./gestures";
-import type { Observation, PermissionState } from "./contracts";
+import { permissionSchema, type Observation, type PermissionState } from "./contracts";
+import { NativeSensorProvider, nativeSensorFamilies } from "./native-provider";
+import { createSextantNativeTransport } from "./native-transport";
+import { subscribeLandfallNativeLifecycle, subscribeNativeLandfallPower } from "@/landfall/native-bridge";
 import type { Quaternion, Vector3 } from "./attitude";
 import { gestureAcquisition, assertGestureCadence } from "./gesture-acquisition";
 import { AdvancedWebSextant, type AdvancedWebTarget } from "./advanced-web";
@@ -27,12 +30,20 @@ export class WebSextantRuntime {
   private readonly detach: () => void;
   private readonly listeners = new Set<() => void>();
   private readonly detachPermission: () => void;
+  private readonly nativeProviders: NativeSensorProvider[] = [];
+  private readonly nativeTransport: import("./native-provider").SextantNativeTransport | null;
+  readonly ready: Promise<void>;
   constructor(
     private readonly target: WebSensorTarget | null,
     navigator: Pick<Navigator, "vibrate"> | null = null,
     private readonly now: () => number = () => performance.now(),
     options: WebSensorOptions = {},
   ) {
+    this.nativeTransport =
+      options.nativeTransport ??
+      (!options.emulationIdentity && typeof window !== "undefined" && target === window
+        ? createSextantNativeTransport()
+        : null);
     this.providers = new SextantProviderRegistry(
       this.capabilities,
       options.emulationIdentity ? "DEVICE_LAB" : "PRODUCTION",
@@ -64,18 +75,40 @@ export class WebSextantRuntime {
       now,
       options.emulationIdentity,
     );
-    this.permissions = new SextantPermissionBroker((key) =>
-      [motionKey, headingKey].includes(key)
-        ? requester()
-        : Promise.resolve(
-            key === "PLATFORM_DEPENDENT" && this.advanced.magnetic.discover().support === "SUPPORTED"
-              ? "GRANTED"
-              : "RESTRICTED",
-          ),
+    this.permissions = new SextantPermissionBroker((key, purpose) =>
+      this.nativeTransport
+        ? this.nativeTransport
+            .request("SEXTANT_PERMISSION", {
+              capabilityId:
+                purpose.capabilityId ??
+                (key === headingKey
+                  ? "sextant.heading.estimate"
+                  : key === "PLATFORM_DEPENDENT"
+                    ? "sextant.magnetic.field"
+                    : "sextant.motion.acceleration-including-gravity"),
+            })
+            .then((reply) => permissionSchema.parse((reply as { state?: unknown })?.state))
+        : [motionKey, headingKey].includes(key)
+          ? requester()
+          : Promise.resolve(
+              key === "PLATFORM_DEPENDENT" && this.advanced.magnetic.discover().support === "SUPPORTED"
+                ? "GRANTED"
+                : "RESTRICTED",
+            ),
     );
-    this.providers.register(this.advanced.magnetic);
-    this.providers.register(new WebDeviceSensorProvider(target, "ORIENTATION", now, options));
-    this.providers.register(new WebDeviceSensorProvider(target, "MOTION", now, options));
+    if (this.nativeTransport) {
+      for (const family of Object.keys(nativeSensorFamilies) as (keyof typeof nativeSensorFamilies)[]) {
+        const provider = new NativeSensorProvider(this.nativeTransport, family, now);
+        this.nativeProviders.push(provider);
+        this.providers.register(provider);
+      }
+    } else {
+      this.providers.register(this.advanced.magnetic);
+      this.providers.register(new WebDeviceSensorProvider(target, "ORIENTATION", now, options));
+      this.providers.register(new WebDeviceSensorProvider(target, "MOTION", now, options));
+    }
+    this.ready = Promise.all(this.nativeProviders.map((provider) => provider.refresh())).then(() => this.notify());
+    void this.ready.catch(() => this.notify());
     this.leases = new SextantLeaseBroker(this.capabilities, this.providers, this.permissions, now);
     this.haptics = new SextantHaptics(webHapticAdapter(navigator), now);
     const visibility: EventListener = () => {
@@ -99,7 +132,29 @@ export class WebSextantRuntime {
       target?.document?.removeEventListener("visibilitychange", visibility);
       target?.removeEventListener("pagehide", pagehide);
       target?.removeEventListener("pageshow", pageshow);
+      detachNativeLifecycle();
+      detachNativePower();
     };
+    const detachNativeLifecycle = this.nativeTransport
+      ? subscribeLandfallNativeLifecycle((state) => {
+          this.haptics.setForeground(state === "FOREGROUND");
+          void this.leases.setForeground(state === "FOREGROUND").finally(() => {
+            if (state === "FOREGROUND")
+              void Promise.all(this.nativeProviders.map((p) => p.refresh()))
+                .then(() => this.notify())
+                .catch(() => this.notify());
+            this.notify();
+          });
+        })
+      : () => {};
+    const detachNativePower = this.nativeTransport
+      ? subscribeNativeLandfallPower((power) => {
+          if (power.critical) {
+            this.haptics.setForeground(false);
+            void this.leases.setForeground(false).finally(() => this.notify());
+          }
+        })
+      : () => {};
     this.detachPermission = this.permissions.onChange(() => this.notify());
     if (target?.document?.visibilityState === "hidden") visibility(new Event("visibilitychange"));
   }
@@ -116,17 +171,26 @@ export class WebSextantRuntime {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
   }
-  async enable(purpose: PermissionPurpose) {
+  async enable(purpose: PermissionPurpose, capabilityId?: string) {
     if (this.disposed) throw new Error("SEXTANT_RUNTIME_DISPOSED");
     // Both purpose records share one in-flight platform request, while consent remains per purpose.
-    const decisions = await Promise.all([motionKey, headingKey].map((key) => this.permissions.authorize(key, purpose)));
+    const keys =
+      this.nativeTransport && capabilityId ? [this.capabilities.get(capabilityId).permission] : [motionKey, headingKey];
+    const decisions = await Promise.all(
+      keys.map((key) => this.permissions.authorize(key, { ...purpose, ...(capabilityId ? { capabilityId } : {}) })),
+    );
+    if (this.nativeTransport) await Promise.all(this.nativeProviders.map((p) => p.refresh()));
     this.notify();
-    return decisions.every((d) => d === "GRANTED") ? ("GRANTED" as const) : ("DENIED" as const);
+    return decisions.every((d) => ["GRANTED", "NOT_REQUIRED"].includes(d)) ? ("GRANTED" as const) : ("DENIED" as const);
   }
   async acquire(request: LeaseRequest, callback: (event: LeaseEvent) => void) {
     if (this.disposed) throw new Error("SEXTANT_RUNTIME_DISPOSED");
-    if ([motionKey, headingKey].includes(this.capabilities.get(request.capabilityId).permission))
-      await this.enable(request);
+    await this.ready;
+    if (
+      this.nativeTransport ||
+      [motionKey, headingKey].includes(this.capabilities.get(request.capabilityId).permission)
+    )
+      await this.enable(request, request.capabilityId);
     const lease = await this.leases.acquire(request, (event) => {
       callback(event);
       this.notify();
@@ -330,6 +394,7 @@ export class WebSextantRuntime {
     this.haptics.dispose();
     this.advanced.dispose();
     await this.leases.dispose();
+    await Promise.all(this.nativeProviders.map((p) => p.dispose()));
     this.notify();
     this.listeners.clear();
     if (this.target && runtimes.get(this.target) === this) runtimes.delete(this.target);

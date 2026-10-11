@@ -6,6 +6,7 @@ export type PermissionPurpose = {
   consent: boolean;
   userInitiated: boolean;
   retry?: boolean;
+  capabilityId?: string;
 };
 type RecordState = { state: PermissionState; enabled: boolean; epoch: number; pending?: Promise<PermissionState> };
 /** Injected platform requester; construction/discovery never prompts. Permission grants do not imply purpose consent. */
