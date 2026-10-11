@@ -39,7 +39,7 @@ export const pilotActivities = [
     id: "transfer",
     title: "Pass the chart",
     detail:
-      "During Carry the course to the lighthouse, open Chart then close the drawer. Open Send to…, choose the phone and Continue there, then Send view. Choose Receive on the phone. Confirm its chart opens before calling the transfer successful.",
+      "During Carry the course to the lighthouse, open Chart then close the drawer. Open Send to…, choose the phone and Control there, then Send view. Choose Receive on the phone. Confirm its chart opens before calling the transfer successful.",
     destination: "journal",
   },
   {
