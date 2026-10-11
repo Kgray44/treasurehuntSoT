@@ -56,6 +56,14 @@ The common Windows source-binding fixture correction is isolated as `f5c34d5bd38
 - The later isolated Landfall retry could not start a Vitest worker within sixty seconds and ran no tests (`artifacts-landfall-isolated-after-load.log`). Host pressure and earlier thirty-second wrapper timeouts remain development evidence; they do not count as passes.
 - After restart, the parent assigned Sextant the first shared heavy-testing slot under UNATTENDED_CONTINUATION. Qualification runs one heavy job at a time, uses only supported runner concurrency controls, and does not alter OS priorities, security or game/sibling processes. The governing decision remains required before catalog completion.
 
+### Media generation-isolation correction
+
+Final source review found that a delayed denial from an old acquisition could change the permission of a newer granted source, and a queued old track-ended callback could stop that newer source. Listener registration could also end synchronously before its returned detach function was stored for cleanup. Three focused regression cases fail before the correction (`artifacts-media-race-before.log`) and pass after it (`artifacts-media-race-after.log`).
+
+`media-capability.ts` now binds synchronous/asynchronous failure handling and track-ended callbacks to the current slot identity before mutating permission, availability or generation. It immediately detaches the returned listener if the source ends during registration. This preserves current grants/leases against old callbacks without changing sharing, consent or source ownership. Reach's separate camera lease should apply the same generation-isolation and registration-cleanup invariants; this task does not edit its implementation.
+
+The resumed aggregate on `be8d70c732e6821e27b1285e89da8a908dab8454` was intentionally stopped for this source correction and is not complete qualification. Its controller and positively identified retained Vitest descendants were cleaned; no sibling/game process was stopped. The parent assigned the heavy slot to Parallax while Sextant performs focused correction checks. No further aggregate begins until the parent grants the slot. Final-head TypeScript and ordinary qualification remain required for the corrected source.
+
 ## Native task and concurrent integration
 
 The native title and request marker were reconciled on this newly owned task. VoyageWright project `fd21b701-3215-417a-a413-0a17e02badbb` exists, but durable readback reports `projectId: null`; local sidebar membership is unverified. Native Goal mutation/readback is not callable. The parent native messaging route returns thread-not-found, so no outbound coordination success is claimed. These metadata gaps do not prevent isolated software implementation. The durable task is `01a1287c-8f80-7366-a379-4939d974a032`, marker `ld-Sentinel_ced57a02aaf0819185ccbb151fe64653-sextant-p3`.

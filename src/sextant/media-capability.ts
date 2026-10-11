@@ -133,8 +133,10 @@ export class SextantMediaCapabilities {
     try {
       acquired = acquireConsumerResource();
     } catch (error) {
-      this.recordFailure(kind, error);
-      this.invalidate(kind, "PROVIDER_FAILED");
+      if (this.slots.get(kind) === slot) {
+        this.recordFailure(kind, error);
+        this.invalidate(kind, "PROVIDER_FAILED");
+      }
       throw new Error("SEXTANT_MEDIA_PROVIDER_FAILED");
     }
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -160,16 +162,28 @@ export class SextantMediaCapabilities {
       slot.acquisition = a;
       slot.pending = false;
       this.permissions[kind] = "GRANTED";
-      slot.detach = a.resource.onEnded(() => this.invalidate(kind, "TRACK_ENDED"));
-      if (this.slots.get(kind) !== slot) throw new Error("SEXTANT_MEDIA_ENDED_DURING_START");
+      slot.detach = a.resource.onEnded(() => {
+        if (this.slots.get(kind) === slot) this.invalidate(kind, "TRACK_ENDED");
+      });
+      if (this.slots.get(kind) !== slot) {
+        try {
+          slot.detach();
+        } catch {
+          this.cleanupFailures++;
+        }
+        slot.detach = undefined;
+        throw new Error("SEXTANT_MEDIA_ENDED_DURING_START");
+      }
       return a;
     });
     try {
       await Promise.race([checked, timeout]);
       return this.lease(slot, purpose.consumerId);
     } catch (error) {
-      this.recordFailure(kind, error);
-      if (this.slots.get(kind) === slot) this.invalidate(kind, "PROVIDER_FAILED");
+      if (this.slots.get(kind) === slot) {
+        this.recordFailure(kind, error);
+        this.invalidate(kind, "PROVIDER_FAILED");
+      }
       throw new Error("SEXTANT_MEDIA_UNAVAILABLE");
     } finally {
       clearTimeout(timer);

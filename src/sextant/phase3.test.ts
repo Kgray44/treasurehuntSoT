@@ -125,6 +125,94 @@ describe("honest local field semantics", () => {
   });
 });
 describe("camera/microphone state and consumer-owned resources", () => {
+  it("isolates a late media denial from a newer granted source generation", async () => {
+    const f = phase3Fixture();
+    let denyOld!: (error: unknown) => void;
+    const old = f.media.acquire(
+      "CAMERA",
+      mediaPurpose,
+      () =>
+        new Promise((_, reject) => {
+          denyOld = reject;
+        }),
+      () => {},
+    );
+    f.media.cancelConsumer(mediaPurpose.consumerId);
+    const current = await f.media.acquire(
+      "CAMERA",
+      { ...mediaPurpose, consumerId: "new-camera-consumer" },
+      async () => ({ resource: f.resource }),
+      () => {},
+    );
+    const rejected = expect(old).rejects.toThrow("SEXTANT_MEDIA_UNAVAILABLE");
+    denyOld(new DOMException("old request denied", "NotAllowedError"));
+    await rejected;
+    expect(f.media.snapshot("CAMERA")).toMatchObject({
+      permission: "GRANTED",
+      availability: "AVAILABLE",
+      generation: current.generation,
+    });
+    expect(f.media.diagnostics().activeResources).toBe(1);
+    current.release();
+  });
+  it("isolates a queued old media ended callback from a newer source generation", async () => {
+    const f = phase3Fixture();
+    let endedOld!: () => void;
+    const old = await f.media.acquire(
+      "CAMERA",
+      mediaPurpose,
+      async () => ({
+        resource: {
+          stop: f.resource.stop,
+          onEnded: (callback) => {
+            endedOld = callback;
+            return () => {};
+          },
+        },
+      }),
+      () => {},
+    );
+    old.release();
+    const current = await f.media.acquire(
+      "CAMERA",
+      { ...mediaPurpose, consumerId: "new-camera-consumer" },
+      async () => ({ resource: f.resource }),
+      () => {},
+    );
+    endedOld();
+    expect(f.media.snapshot("CAMERA")).toMatchObject({
+      permission: "GRANTED",
+      availability: "AVAILABLE",
+      generation: current.generation,
+    });
+    expect(f.media.diagnostics().activeResources).toBe(1);
+    current.release();
+    expect(f.stats().stops).toBe(2);
+  });
+  it("detaches media listeners when the source ends synchronously during registration", async () => {
+    const f = phase3Fixture();
+    let detached = 0;
+    await expect(
+      f.media.acquire(
+        "CAMERA",
+        mediaPurpose,
+        async () => ({
+          resource: {
+            stop: f.resource.stop,
+            onEnded: (callback) => {
+              callback();
+              return () => {
+                detached++;
+              };
+            },
+          },
+        }),
+        () => {},
+      ),
+    ).rejects.toThrow();
+    expect(detached).toBe(1);
+    expect(f.media.diagnostics().activeResources).toBe(0);
+  });
   it("projects a granted busy camera separately from denial and supports explicit retry", async () => {
     const f = phase3Fixture();
     f.media.setPermission("CAMERA", "GRANTED");
