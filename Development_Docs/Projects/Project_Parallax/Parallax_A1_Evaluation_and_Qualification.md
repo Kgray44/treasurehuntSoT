@@ -67,10 +67,18 @@ identity reuse, acceptance after verified acknowledgement, history callbacks and
 safe session metadata. This is not rendered viewport/mobile/visual acceptance.
 
 Shared Studio integration, authenticated atomic Apply, legacy network-path
-migration, mounted quota/Assistant browser journeys, motion/viewport package,
+migration, mounted Assistant browser journeys, motion/viewport package,
 ordinary final Sounding Line, PR qualification, live provider canary and owner
 visual review remain pending. The latest fetched main is
 `01d32824127d00628546ea4209d09fea57c335c1`; the independent branch still derives
 from `f458bf2dc1176016c2d166180f038f0f15ac9f7c`. No unmerged Phase 3 source was
 imported and no shared development server, account database or real private
 content was used for validation.
+
+## Published independent checkpoint
+
+Draft PR [#710](https://github.com/Kgray44/treasurehuntSoT/pull/710) preserves the independent candidate. The source checkpoint `057c92877e61dd7852ff2c994c8d1d236a684514` has tree `7b3af8d5e944b24dc250226f3cae7001142eab0e`; Node 24.18.0/npm 11.9.0 and lock SHA-256 `a2f4140400648da7810670a7ef677e04d526628a8f66a98efcc180f5eef74014` were used.
+
+The generic isolated production browser journey passed People search -> canonical dossier -> 500-to-250 allowance change -> privileged password assurance -> audit receipt -> restore inheritance. It also passed missing-CSRF rejection, provider health metadata, serious/critical accessibility filtering and 390px panel-width checks. The synthetic mobile capture was inspected; it is component/layout evidence, not owner visual acceptance. The harness cleaned its owned runtime; ports 53078/53079 had no remaining listeners. Browser receipt SHA-256 `c1b3e52c42b4e142c1c5d221138c054b021c3c79aaf32e3c1ad02719d9cfca64`, profile receipt `4365c741ce7971c0b77a3dfa315a294b3a9b60b29a4f09d2e3e656dca2ce2208`, and mobile PNG `70df1372196829ffc39b3677df4ce78c9b50926c355ac46567c6b310512ca61a` are retained locally under ignored task artifacts. A subsequent browser extension adds reviewed global-policy editing; its result is not covered by this checkpoint receipt.
+
+This is a focused development checkpoint, not the final ordinary Sounding Line or integrated A1 acceptance. Resume shared integration only on the newest accepted canonical Phase 3 source with the mutually accepted generation/save-acknowledgement interface. Final qualification must bind the later complete candidate and must not reuse these focused receipts as whole-feature authority.

@@ -75,4 +75,18 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   expect(bounds!.x).toBeGreaterThanOrEqual(0);
   expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(391);
   await panel.screenshot({ path: test.info().outputPath("account-ai-quotas-mobile.png") });
+  await page.goto("/admin/ai-usage");
+  await page.getByRole("button", { name: "Global Policy", exact: true }).click();
+  await page.getByLabel("Global spending cap (USD)", { exact: true }).fill("8");
+  await page.getByLabel("Reason for change", { exact: true }).fill("Synthetic global resource ceiling");
+  await page.getByRole("button", { name: "Preview global policy", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Confirm & apply policy" })).toBeDisabled();
+  await page.getByLabel("Current password for privileged assurance").fill(password);
+  await page.getByRole("button", { name: "Verify current password" }).click();
+  await expect(page.getByRole("button", { name: "Confirm & apply policy" })).toBeEnabled();
+  await page.getByRole("button", { name: "Confirm & apply policy" }).click();
+  await expect(page.getByText(/Policy applied at revision 1/)).toBeVisible();
+  const global = await db.aIQuotaControl.findUniqueOrThrow({ where: { id: "PARALLAX_SPATIAL_ASSISTANT" } });
+  expect(JSON.parse(global.policy)).toMatchObject({ monthlySpendNano: 8000000000, enabled: false });
+  expect(await db.aIQuotaPolicyRevision.count({ where: { targetAccountId: null } })).toBe(1);
 });
