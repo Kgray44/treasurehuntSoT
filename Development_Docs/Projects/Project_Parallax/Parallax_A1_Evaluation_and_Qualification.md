@@ -69,8 +69,8 @@ safe session metadata. This is not rendered viewport/mobile/visual acceptance.
 Shared Studio integration, authenticated atomic Apply, legacy network-path
 migration, mounted Assistant browser journeys, motion/viewport package,
 ordinary final Sounding Line, PR qualification, live provider canary and owner
-visual review remain pending. The latest fetched main is
-`01d32824127d00628546ea4209d09fea57c335c1`; the independent branch still derives
+visual review remain pending. The latest verified fetched main is
+`efa689f20d2a9dead852135302dd6961c9f0f0d2` (accepted Crossdeck PR #706 and evidence PR #708, preserving Pilot); the independent branch still derives
 from `f458bf2dc1176016c2d166180f038f0f15ac9f7c`. No unmerged Phase 3 source was
 imported and no shared development server, account database or real private
 content was used for validation.
