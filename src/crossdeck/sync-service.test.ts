@@ -418,7 +418,7 @@ describe("shared Device Lab Phase 2 D0", () => {
         const source = await deviceLabSourceIdentity(["src/crossdeck"]);
         const receipt = await runDeviceLabScenario(packs, scenarioId, {
           source,
-          baseSha: "2e367c372a6d44e4e6a68bb38266196954f8d486",
+          baseSha: "7284b0dfaa31037d074d27df0f27b968f3977000",
           tier: "D0",
           profile: "synthetic",
           hostOs: process.platform,

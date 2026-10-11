@@ -1,14 +1,14 @@
 ---
 title: Project Reach engineering home
 audience: product-engineering
-status: governing-not-implemented
+status: phase1-implementation-pending-qualification
 canonical_for: project-reach-engineering-home
 last_reviewed: 2026-10-09
 ---
 
 # Project Reach engineering home
 
-Reach is Voyagewright's reusable browser-first spatial interaction and intent system. It owns calibrated pointing, stable highlighting, deliberate selection, bounded manipulation, gesture grammar and safe interruption. It is **governed, not implemented**. No phase, accuracy claim or integration is accepted by this documentation publication.
+Reach is Voyagewright's reusable browser-first spatial interaction and intent system. Phase 1's browser hand laboratory, observation/coordinate foundation and independent calibration workflow are implemented on the owned candidate; physical webcam qualification and protected integration remain pending. See the [implementation and validation record](Project_Reach_Phase_1_Implementation_and_Validation_Record.md). Later-phase target acquisition, selection, manipulation and owner integrations are not implemented by this phase.
 
 ## Effective governing sources
 
@@ -31,4 +31,4 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 Sextant owns camera capability/lifecycle; Watchglass owns the hand observation provider. Parallax, Crossdeck, Landfall and UI owners apply permitted actions. Storytide interprets narrative outcomes and One Voyage alone advances progression. Conventional controls remain essential equivalents.
 
-Implementation is a later owner-directed task. Each phase uses focused tests before an ordinary Sounding Line final check and protected-main merge. Phase records are written from actual work and evidence; no fabricated implementation or completion receipts are seeded here.
+Phase 1 implementation is the current owner-directed task. Each phase uses focused tests before an ordinary Sounding Line final check and protected-main merge. Phase records are written from actual work and evidence. Physical acceptance remains open until qualified trials are available.

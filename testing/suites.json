@@ -2888,6 +2888,58 @@
       "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"
+    },
+    {
+      "id": "unit.reach",
+      "name": "Reach Phase 1 foundation and laboratory",
+      "tier": 2,
+      "owner": "reach",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 10000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": ["reach.phase1.foundation"],
+      "affectedPaths": [
+        "src/reach/**",
+        "src/watchglass/hand-provider.ts",
+        "src/sextant/camera.ts",
+        "src/app/devices/reach/**",
+        "public/reach/**",
+        "scripts/reach/**",
+        "src/watchglass/hand-observation.ts"
+      ],
+      "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-family",
+      "adapter": "vitest-family"
+    },
+    {
+      "id": "browser.reach",
+      "name": "Reach browser laboratory and local worker",
+      "tier": 4,
+      "owner": "reach",
+      "command": "registry-selected Playwright cases",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 240000,
+      "hardBudgetMs": 600000,
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["unit.reach"],
+      "contracts": ["reach.phase1.foundation"],
+      "affectedPaths": [
+        "src/reach/**",
+        "src/watchglass/hand-provider.ts",
+        "src/sextant/camera.ts",
+        "src/app/devices/reach/**",
+        "src/app/devices/pair/page.tsx",
+        "public/reach/**",
+        "src/watchglass/hand-observation.ts"
+      ],
+      "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-browser-family",
+      "adapter": "playwright-family"
     }
   ]
 }

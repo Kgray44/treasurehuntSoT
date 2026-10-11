@@ -36,7 +36,7 @@ async function main() {
       }));
       const receipt = await runDeviceLabScenario(packs, id, {
         source,
-        baseSha: "2e367c372a6d44e4e6a68bb38266196954f8d486",
+        baseSha: "7284b0dfaa31037d074d27df0f27b968f3977000",
         tier: "D2",
         profile: "android-emulator",
         hostOs: process.platform,

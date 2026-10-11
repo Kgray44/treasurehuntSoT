@@ -10,6 +10,8 @@ last_reviewed: 2026-10-11
 
 This isolated candidate implements Crossdeck v1.0 §64 Phase 2 on protected baseline `2e367c372a6d44e4e6a68bb38266196954f8d486`. The Reach v1.1 amendment remains effective: calibrated intent is Reach-owned; this candidate implements manual destination selection, without gesture recognition, spatial targeting or Reach source dependencies. No publication, merge or deployment is authorized.
 
+The owner-directed continuation reconciles protected main `7284b0dfaa31037d074d27df0f27b968f3977000` (Reach foundation PR #697) into this isolated branch. The saved `24a3a49f` candidate and its historical evidence remain intact. Reach's registry additions, pairing-page link and Windows loader correction are preserved; Crossdeck does not acquire hand observations or implement Reach actions. New scenario receipts bind the refreshed base, while historical receipts retain their original identities.
+
 ## Player path
 
 Pair desktop and phone through the existing **Devices** panel using the same Wayfarer person and Voyage. In the Journal, open **Send to...**, choose a device and how the released map, note or artifact should open, then choose **Send view**. The destination explicitly chooses **Receive**. Notes require a private-content confirmation. All controls support keyboard input and ordinary reduced-motion rendering.
@@ -74,6 +76,8 @@ Sounding Line decision at `artifacts/sounding-line/ordinary-decision.json` is
 authoritative for this candidate only when its `candidateSha` matches HEAD and
 its required obligations are satisfied. The final delivery reports that actual
 decision separately from the historical receipts; no helper output is fabricated.
+
+The exact `24a3a49f` ordinary attempt ended normally with FAIL: 1,492 tests passed and the unchanged Landfall provider corpus exceeded its fixed 170-second subprocess deadline. It emitted 128 of 159 scenario receipts before stopping, without a corpus summary. The failed run and the retained synthetic Eddystone authority fixture remain in `artifacts/crossdeck/phase2/final-attempt-24a3a49f`; all owned heavy processes exited before the slot was released. The canonical FAIL document contains browser metadata left from the earlier `43812da1` run; those fields do not constitute `24a3a49f` browser evidence. The refreshed qualification attempt retains every assertion and deadline, uses one worker and may use Node 24's content-sensitive compilation cache to reduce repeated child startup work.
 
 The permanent evidence directory records the exact software fidelity and source identity. D0 executes deterministic synthetic service/database scenarios. D1 uses two production-route Chromium contexts with mobile emulation. D2 requires an actual task-owned Android virtual device and Android Chrome; `scripts/crossdeck/qualify-d2.ts` validates its platform or emits UNSUPPORTED receipts. It does not label browser emulation as Android evidence.
 
