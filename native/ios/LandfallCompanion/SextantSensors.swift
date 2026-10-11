@@ -72,6 +72,7 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
         }
     }
     private func vector(_ x: Double, _ y: Double, _ z: Double) -> [String: Double] { ["x":x,"y":y,"z":z] }
+    static func canonicalAcceleration(_ value:CMAcceleration)->[String:Double]{["x":-value.x*9.80665,"y":-value.y*9.80665,"z":-value.z*9.80665]}
     private func publish(_ suffix: String, _ value: Any, _ units: String, _ frame: String, _ at: Double, calibration: String = "UNKNOWN", quality: String = "MEDIUM", uncertainty: Double? = nil, receiptTime: Bool = false) {
         let id="sextant.\(suffix)"; guard caps.contains(id) else { return }
         emit?(SextantNativeSample(capability:id,value:value,units:units,frame:frame,at:at*1000,quality:receiptTime ? "LOW":quality,calibration:calibration,warnings:receiptTime ? ["PLATFORM_ACCURACY_UNQUALIFIED","RECEIPT_TIME_CAPTURE_UNCERTAIN"]:["PLATFORM_ACCURACY_UNQUALIFIED"],uncertainty:uncertainty))
@@ -89,7 +90,7 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
                 guard let self=self else{return};if error != nil {self.fail?("sextant.motion.acceleration-including-gravity");return};guard let value=value else{return}
                 // Core Motion reports gravity acceleration; canonical Sextant
                 // specific force uses the Android/W3C stationary +up sign.
-                self.publish("motion.acceleration-including-gravity",self.vector(-value.acceleration.x*9.80665,-value.acceleration.y*9.80665,-value.acceleration.z*9.80665),"m/s^2","DEVICE",value.timestamp)
+                self.publish("motion.acceleration-including-gravity",Self.canonicalAcceleration(value.acceleration),"m/s^2","DEVICE",value.timestamp)
             } }
         } else { motion.stopAccelerometerUpdates() }
         if requested.contains("sextant.motion.angular-velocity") && motion.isGyroAvailable {
@@ -116,8 +117,8 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
                         return
                     };guard let v=value else{return}
                     let g=v.gravity,a=v.userAcceleration
-                    self.publish("motion.gravity",self.vector(-g.x*9.80665,-g.y*9.80665,-g.z*9.80665),"m/s^2","DEVICE",v.timestamp)
-                    self.publish("motion.linear-acceleration",self.vector(-a.x*9.80665,-a.y*9.80665,-a.z*9.80665),"m/s^2","DEVICE",v.timestamp)
+                    self.publish("motion.gravity",Self.canonicalAcceleration(g),"m/s^2","DEVICE",v.timestamp)
+                    self.publish("motion.linear-acceleration",Self.canonicalAcceleration(a),"m/s^2","DEVICE",v.timestamp)
                     let q=Self.canonicalAttitude(v.attitude.quaternion,magnetic:self.magneticFrame)
                     self.publish("orientation.attitude",q,"quaternion",self.magneticFrame ? "EARTH_MAGNETIC":"LOCAL_ARBITRARY",v.timestamp)
                     self.publish("orientation.relative",q,"quaternion","LOCAL_ARBITRARY",v.timestamp)

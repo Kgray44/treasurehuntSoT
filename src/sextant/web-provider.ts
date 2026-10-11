@@ -30,13 +30,20 @@ export type WebSensorTarget = {
   DeviceOrientationEvent?: { requestPermission?: (absolute?: boolean) => Promise<string> };
   DeviceMotionEvent?: { requestPermission?: () => Promise<string> };
   screen?: { orientation?: { angle: number } };
+  navigator?: { userAgent?: string };
 };
 export type WebSensorOptions = {
   nativeTransport?: import("./native-provider").SextantNativeTransport;
   /** Only a qualified provider/platform policy can assert the north reference of absolute event alpha. */
   absoluteNorthReference?: "MAGNETIC" | "TRUE" | "UNKNOWN";
   emulationIdentity?: string;
+  motionConvention?: "W3C" | "IOS_WEBKIT";
 };
+/** Source convention only; the string is neither retained nor exposed as an identity. */
+export function webMotionConvention(target: WebSensorTarget | null): "W3C" | "IOS_WEBKIT" {
+  const agent = target?.navigator?.userAgent ?? "";
+  return /AppleWebKit\//.test(agent) && /iPhone|iPad|iPod|Macintosh.*Mobile\//.test(agent) ? "IOS_WEBKIT" : "W3C";
+}
 export const webMotionCapabilities = [
   "sextant.motion.linear-acceleration",
   "sextant.motion.acceleration-including-gravity",
@@ -301,12 +308,19 @@ export class WebDeviceSensorProvider implements SextantProvider {
     }
   }
   private motion(event: DeviceMotionEvent, at: number, deliver: boolean) {
-    const linear = finiteVector(event.acceleration),
-      including = finiteVector(event.accelerationIncludingGravity);
+    const apple = (this.options.motionConvention ?? webMotionConvention(this.target)) === "IOS_WEBKIT";
+    const normalize = (value: DeviceMotionEventAcceleration | null) => {
+      const vector = finiteVector(value);
+      return vector && apple ? { x: -vector.x, y: -vector.y, z: -vector.z } : vector;
+    };
+    const linear = normalize(event.acceleration),
+      including = normalize(event.accelerationIncludingGravity);
     const r = event.rotationRate;
     const angular =
       r && [r.alpha, r.beta, r.gamma].every((v) => typeof v === "number" && Number.isFinite(v))
-        ? { x: radians(r.beta!), y: radians(r.gamma!), z: radians(r.alpha!) }
+        ? apple
+          ? { x: radians(r.alpha!), y: radians(r.beta!), z: radians(r.gamma!) }
+          : { x: radians(r.beta!), y: radians(r.gamma!), z: radians(r.alpha!) }
         : null;
     const state = this.classifier.update(at, linear, angular);
     if (!deliver) return;

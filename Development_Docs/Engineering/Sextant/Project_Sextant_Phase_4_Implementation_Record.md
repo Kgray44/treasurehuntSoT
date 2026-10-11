@@ -114,6 +114,41 @@ on a simulator, physical sensor accuracy, tactile output, RF behavior or energy.
 
 ## Remote physical qualification investigation
 
+Second source candidate `e4b2bee38ee91d122c10cad576e71ba1f7f5ac37`, tree
+`b3c3d18b2904e75bc2d67d36dd1b0f76f27b347c`, passed all 53 source-bound
+D0/D1 CLI scenarios and changed-file lint with zero warnings. Local feedback used
+Node24.18.0/npm11.9.0; formal hosted qualification uses pinned Node24.19.0.
+Android run [38168555364](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38168555364)
+failed at Java compilation because the UWB owner migration referenced the absent
+`SextantUwbParameters`. No emulator scenario executed and no artifacts were
+produced; the exact source-bound log is retained and transport cleanup passed.
+The correction moves the existing strict shape/integer boundary into Sextant and
+keeps the accepted Landfall validator as a delegate. Fresh qualification is required.
+Ordinary run [38168614879](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38168614879)
+passed its selected unit, format/lint/type/privacy, registration and migration
+checks, then failed the first desktop UI assertion: the test assumed every page
+bridge call was Sextant discovery, overlooking accepted shell operations. The
+correction checks all Sextant operations are discovery and independently rejects
+any acquisition, permission prompt, scan or haptic operation before consent.
+The immutable failed decision and log are retained. The mobile journey did not
+run; the actual native Journal journey was skipped in this browser-only job and
+requires its separate owned emulator harness. No UI PASS is inferred.
+
+Web/native conformance review used the W3C Device Orientation/Motion convention
+and current WebKit source (`f95488e1a6e09798b86f2252bde2aff33256337e`).
+[WebCoreMotionManager](https://github.com/WebKit/WebKit/blob/f95488e1a6e09798b86f2252bde2aff33256337e/Source/WebCore/platform/ios/WebCoreMotionManager.mm)
+forwards Core Motion signs and x/y/z gyro rates into
+[DeviceMotionClientIOS](https://github.com/WebKit/WebKit/blob/f95488e1a6e09798b86f2252bde2aff33256337e/Source/WebCore/platform/ios/DeviceMotionClientIOS.mm)
+without the canonical proper-acceleration sign or W3C alpha/beta/gamma mapping.
+The browser provider now explicitly normalizes identified iOS WebKit sources,
+with an overridable source convention for qualified alternative engines. Source
+identification is ephemeral and never stored as device identity. Matched Android/
+W3C, iPhone WebKit and desktop-mode iPad fixtures prove the software conversion,
+and the Swift conversion is exercised by native tests. These are source/fixture
+conformance checks, not measured physical sensor accuracy. D4 remains required.
+The focused conformance/native-provider boundary passes 69 tests in four files.
+The iOS run remains pending; no passing result is inferred.
+
 Firebase Test Lab supports Android instrumentation and iOS XCTest on hosted real
 devices. Its current [quota documentation](https://firebase.google.com/docs/test-lab/usage-quotas-pricing)
 describes a no-cost Spark physical-device quota. A billing plan's alerts do not cap

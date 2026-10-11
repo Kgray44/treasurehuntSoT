@@ -66,7 +66,17 @@ for (const viewport of [
       await expect(panel.getByRole("button", { name: "Enable device input", exact: true })).toBeDisabled();
       const operations = () =>
         page.evaluate(() => (window as unknown as { __sextantOperations: string[] }).__sextantOperations);
-      expect((await operations()).every((operation) => operation === "SEXTANT_STATE")).toBe(true);
+      const passiveOperations = await operations();
+      expect(passiveOperations).toContain("SEXTANT_STATE");
+      expect(passiveOperations.filter((operation) => operation.startsWith("SEXTANT_"))).toEqual(
+        passiveOperations.filter((operation) => operation === "SEXTANT_STATE"),
+      );
+      expect(
+        passiveOperations.filter((operation) =>
+          /_START$|_PERMISSION$|^SEXTANT_HAPTIC$|^QR_SCAN$|^NFC_READ$/.test(operation),
+        ),
+        JSON.stringify(passiveOperations),
+      ).toEqual([]);
       await panel.getByRole("checkbox", { name: "Allow device motion for this interaction" }).check();
       await panel.getByRole("button", { name: "Enable device input", exact: true }).click();
       await expect(

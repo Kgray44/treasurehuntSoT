@@ -78,6 +78,8 @@ final class SextantSensorTests:XCTestCase {
         XCTAssertEqual(events.last?["reason"] as? String,"PERMISSION");XCTAssertEqual(sensors.activeLeaseCount,0)
     }
     func testFrameTransformAndRelativeAttitudeUseCanonicalQuaternion() {
+        let acceleration=CoreMotionSextantSource.canonicalAcceleration(CMAcceleration(x:-1/9.80665,y:-2/9.80665,z:-3/9.80665))
+        XCTAssertEqual(acceleration["x"] ?? 0,1,accuracy:0.000001);XCTAssertEqual(acceleration["y"] ?? 0,2,accuracy:0.000001);XCTAssertEqual(acceleration["z"] ?? 0,3,accuracy:0.000001)
         let q=CMQuaternion(x:0,y:0,z:0,w:1),local=CoreMotionSextantSource.canonicalAttitude(q,magnetic:false),earth=CoreMotionSextantSource.canonicalAttitude(q,magnetic:true)
         XCTAssertEqual(local["w"],1);XCTAssertEqual(earth["z"] ?? 0,sqrt(0.5),accuracy:0.000001)
         let relative=SextantSensors.relativeAttitude(earth,earth)
