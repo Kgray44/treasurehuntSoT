@@ -657,12 +657,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Features/branch-complete/parallax-phase2.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -730,6 +724,12 @@
     },
     {
       "path": "Development_Docs/Features/catalog/one-voyage.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/parallax.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

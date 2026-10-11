@@ -2201,11 +2201,9 @@ Project Wakebook Phase 6 gives an owner a printable, private Voyage Book built o
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
-
 ## FT-B092 - Parallax Spatial Studio and Versioned Spatial Library
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Parallax
 
 Creators build, preview, validate and version spatial scenes in a dedicated Studio, attach exact immutable versions to Chronicles, and publish/reopen them through the existing One Voyage flow.
@@ -2235,8 +2233,7 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 
 ### Evidence
 
-- commit: `44af7decfec7c375002567a76a2ca3d4beb42a7c`
-- branch: `codex/parallax-phase2-spatial-studio`
+- commit: `d43e9403746988985863e2950f6de7ff36b4db0c`
 - path: `src/components/studio/parallax/SpatialStudio.tsx`
 - path: `src/parallax/library-service.ts`
 - test: `src/parallax/authoring.test.ts`
@@ -2245,6 +2242,8 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 - completion-record: `Development_Docs/Projects/Project_Parallax/Phase_2_Implementation.md`
 
 ---
+
+# Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
 

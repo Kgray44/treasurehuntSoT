@@ -1,14 +1,23 @@
 ---
 title: Parallax Phase 2 implementation and local qualification
 audience: product-engineering
-status: software-qualified-branch
+status: software-qualified-mainline
 canonical_for: parallax-phase-2-implementation
 last_reviewed: 2026-10-11
 ---
 
 # Parallax Phase 2: Open the Spatial Studio
 
-The owned branch implements the dedicated `/studio/parallax` Creator workspace, backed by server-authorized working drafts and append-only spatial library versions. This record binds [§88 Phase 2](../../Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md) to source and proof. It does not announce protected-main integration, deployment or physical acceptance.
+Phase 2 implements the dedicated `/studio/parallax` Creator workspace, backed by server-authorized working drafts and append-only spatial library versions. This record binds [§88 Phase 2](../../Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md) to source and proof. Software is integrated on protected main; deployment and physical/owner acceptance remain separate.
+
+## Mainline acceptance and landed smoke
+
+- [Implementation PR #698](https://github.com/Kgray44/treasurehuntSoT/pull/698) merged through normal protections at `2026-10-11T07:45:27Z`, integration commit **`d43e9403746988985863e2950f6de7ff36b4db0c`**. Its two parents are accepted Crossdeck main `d4f67cb8981d2834c3c614df221b74fa851b02eb` and qualified Parallax head `f0535d8fc6b4be77c75b67e32ed4bc0fcd06c226`.
+- The landed tree exactly equals the qualified candidate tree: **`570d2a4ea671d4c422adb369b0b8dd7dd3ddc893`**. No protection bypass, deployment or later-phase launch occurred.
+- [Current-base protected ordinary run 38121953622](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38121953622) passed at `2026-10-11T07:44:16Z`: all **nine** required obligations, zero errors/remainder; **1,629 tests across 278 files**, Creator validation/Sea Trial/suite/publication/pinned reopen, formatting, lint, TypeScript, privacy scan, Prisma and production build passed. Original hosted decision and full logs are archived under `artifacts/parallax-phase2/hosted-f0535d8f`.
+- Actual landed-tree smoke: **52 tests across six files PASS**, covering authoring/history, immutable library/attachments, retained P1 behavior, Drydock, Studio UI and API. Prisma client was regenerated from the accepted schema. **Eight fresh D0 scenarios PASS**, source-bound to the clean actual merge; these establish no physical-device claim. Original JSON/log and receipts are preserved under `artifacts/parallax-phase2/landed-d43e9403`.
+- Feature Catalog **FT-B092** moves to `Development_Docs/Features/catalog/parallax.json` as **MAINLINE**, references the integration commit and retains physical/provider/rendering limitations. Its branch-complete copy is removed and governed inventories regenerated in this record closeout.
+- Representative-device owner acceptance, D4/D5 physical/field qualification and live AI-provider quality/operations remain open. No physical/camera acquisition or owner session was attempted while the owner sleeps. Release and deployment are outside the authorization.
 
 ## Requirement-to-evidence map
 
