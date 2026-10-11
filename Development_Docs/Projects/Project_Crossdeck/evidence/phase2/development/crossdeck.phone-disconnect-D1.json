@@ -1,0 +1,49 @@
+{
+  "version": 2,
+  "scenarioId": "crossdeck.phone-disconnect",
+  "scenarioVersion": 1,
+  "owningProject": "CROSSDECK",
+  "scenarioFingerprint": "a0fd92af6989d8537539314cc94e6f4f9172ada17e8bb4e73c8ffc45ca2b2375",
+  "source": {
+    "sourceSha": "2e367c372a6d44e4e6a68bb38266196954f8d486",
+    "sourceTree": "07a2583dd51d0f1ed2acba1883d23fbd008b85b5",
+    "sourceFingerprint": "90d64f200fa3139066f043c6e5e81d421fc8db8a3bc8f9f43dee40cf8c78b420",
+    "dirty": true
+  },
+  "baseSha": "2e367c372a6d44e4e6a68bb38266196954f8d486",
+  "tier": "D1",
+  "profile": "chromium-mobile",
+  "hostOs": "win32",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": ["surface.synchronization", "surface.surface-session"],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-11T01:36:06.230Z",
+  "completedAt": "2026-10-11T01:36:47.855Z",
+  "assertions": [
+    {
+      "id": "crossdeck.phase2.continuity",
+      "state": "PASS"
+    },
+    {
+      "id": "keyboard-reduced-motion-privacy",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "BROWSER_EMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": ["D4_REAL_HARDWARE", "D5_COLOCATED_FIELD", "OWNER_WALKTHROUGH"],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\kkids\\Documents\\Codex\\2026-10-10\\task\\crossdeck-p2\\test-results\\crossdeck-phase2-crossdeck-phone-disconnect-chromium\\crossdeck-continuity.png",
+      "sha256": "69d6e016f9a47cba8c046b23ad9ffc9cb0f8bf2e6b7473ab985bac53a8937fbd",
+      "kind": "SCREENSHOT"
+    }
+  ],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": ["owned-desktop", "owned-receiver", "synthetic-account-voyage"],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

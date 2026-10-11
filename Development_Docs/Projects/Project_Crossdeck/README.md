@@ -88,7 +88,7 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 
 The [Phase 1 implementation record](Phase_1_Implementation_Record.md) documents secure pairing, canonical surface participation, roles, capability projection, lifecycle, removal, software tests and shared Device Lab D0/D1 evidence. Protected-main qualification and owner product acceptance are separate recorded gates.
 
-Phase 1 implements secure pairing and surface participation only. Synchronized presentation, manual handoff, Air Handoff, shared-display content routing, Parallax rendering and cross-device content continuity remain later work.
+Phase 1 implements secure pairing and surface participation. The [Phase 2 candidate record](Phase_2_Implementation_Record.md) describes durable synchronization, manual handoff, focus/custody, map/note/artifact continuity, recovery and the restricted shared-display route. Its local qualification and outstanding D2/owner/integration gates are separate from Phase 1 mainline acceptance. Air Handoff and rich Parallax choreography remain later work.
 
 The current repository already contains canonical Wayfarer/Homeport account sessions with safe device labels and revocation. Crossdeck must consume those foundations rather than create a competing login or device-authentication system.
 

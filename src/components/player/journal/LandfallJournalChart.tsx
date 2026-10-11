@@ -3,6 +3,8 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import type { MotionMode } from "@/animation/core/animation-types";
 import { VoyageChart } from "@/components/player/workspace/VoyageChart";
+import { useCrossdeckContinuity } from "@/components/crossdeck/CrossdeckContinuity";
+import type { Continuity } from "@/crossdeck/sync-contracts";
 import { LandfallPresentation } from "@/components/player/journal/LandfallPresentation";
 import { LandfallContextGuidance } from "@/components/player/journal/LandfallContextGuidance";
 import { LandfallPlaceSearch } from "@/components/player/journal/LandfallPlaceSearch";
@@ -715,9 +717,62 @@ export function LandfallJournalChart({
   blockId,
 }: { readOnly?: boolean; worldspaceId?: string; blockId?: string } = {}) {
   const controller = useContext(LandfallControllerContext);
+  const bridge = useCrossdeckContinuity();
+  const chartContinuity = useRef<Continuity>({});
+  const chartResume = useRef<(context: Continuity) => void>(() => {});
+  const [receivedCamera, setReceivedCamera] = useState<Continuity["camera"]>();
   const [historicalChart, setHistoricalChart] = useState<PlayerLandfallBootstrap | null>(null);
   const [viewingMapId, setViewingMapId] = useState<string | null>(null);
   const [selectedPlace, setSelectedPlace] = useState<{ mapId: string; featureId: string; scope: string } | null>(null);
+  useEffect(() => {
+    const bootstrap = readOnly && blockId ? historicalChart : controller?.bootstrap;
+    if (!bootstrap) return;
+    const searchScope = JSON.stringify([
+      bootstrap.sessionId,
+      bootstrap.publishedVersionId,
+      bootstrap.currentSequence,
+      blockId ?? null,
+      bootstrap.replayOnly || readOnly,
+    ]);
+    const scene = bootstrap.availableMaps?.find((map) => map.id === viewingMapId)?.scene ?? bootstrap.scene;
+    const camera = receivedCamera ?? scene.camera;
+    chartContinuity.current = {
+      mapId: scene.mapId,
+      worldspaceId: scene.worldspaceId,
+      selectedMarkerId: selectedPlace?.scope === searchScope ? selectedPlace.featureId : undefined,
+      activeRouteId: bootstrap.runtimeDefinition.routes[0]?.id,
+      camera: { center: [camera.center[0], camera.center[1]], zoom: camera.zoom, bearing: camera.bearing },
+      zoomClass: camera.zoom < 6 ? "REGION" : camera.zoom < 12 ? "LOCAL" : "DETAIL",
+      toolMode: "CHART",
+    };
+    chartResume.current = (context) => {
+      const available = bootstrap.availableMaps?.find((map) => map.id === context.mapId);
+      const releasedScene = available?.scene ?? bootstrap.scene;
+      if (
+        (context.mapId && releasedScene.mapId !== context.mapId) ||
+        (context.worldspaceId && releasedScene.worldspaceId !== context.worldspaceId)
+      )
+        throw new Error("Chart context not released");
+      if (context.selectedMarkerId && !releasedScene.features.some((f) => f.id === context.selectedMarkerId))
+        throw new Error("Chart marker not released");
+      setViewingMapId(releasedScene.mapId);
+      setSelectedPlace(
+        context.selectedMarkerId
+          ? { mapId: releasedScene.mapId, featureId: context.selectedMarkerId, scope: searchScope }
+          : null,
+      );
+      setReceivedCamera(context.camera);
+    };
+    bridge?.changes.dispatchEvent(new Event("change"));
+  }, [bridge, controller?.bootstrap, readOnly, blockId, historicalChart, viewingMapId, selectedPlace, receivedCamera]);
+  useEffect(() => {
+    if (!bridge || !controller?.bootstrap || readOnly) return;
+    const connection = {
+      capture: () => chartContinuity.current,
+      resume: (context: Continuity) => chartResume.current(context),
+    };
+    return bridge.register(connection);
+  }, [bridge, controller?.bootstrap, readOnly]);
   useEffect(() => {
     if (!readOnly || !blockId || !controller?.bootstrap) return;
     const abort = new AbortController();
@@ -792,10 +847,11 @@ export function LandfallJournalChart({
     isHistorical,
   ]);
   const viewedScene = viewingMap?.scene ?? bootstrap.scene;
-  const searchedScene =
+  const selectedScene =
     selectedPlace?.scope === searchScope && selectedPlace.mapId === viewedScene.mapId
       ? selectReleasedChartPlace(viewedScene, selectedPlace.featureId)
       : viewedScene;
+  const searchedScene = receivedCamera ? { ...selectedScene, camera: receivedCamera } : selectedScene;
   const contextual = isHistorical
     ? (replay?.contextualSummary ?? bootstrap.contextualSummary ?? null)
     : contextSnapshot;
@@ -951,6 +1007,10 @@ export function LandfallJournalChart({
       <VoyageChart
         mode={mode}
         landfallScene={searchedScene}
+        onLandfallCameraChange={(camera) => {
+          chartContinuity.current = { ...chartContinuity.current, camera };
+          bridge?.changes.dispatchEvent(new Event("change"));
+        }}
         landfallPosition={!viewingMap || viewingMap.id === bootstrap.scene.mapId ? position : null}
       />
       {bootstrap.runtimeDefinition.context && worldspace.kind === "PHYSICAL" && !isHistorical && !bootstrap.paused && (

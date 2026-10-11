@@ -3391,6 +3391,13 @@
       "critical": true
     },
     {
+      "id": "crossdeck.phase2.continuity",
+      "name": "Crossdeck ordered durable handoff, acknowledgment, custody, continuity and shared-display privacy",
+      "authority": "project-crossdeck",
+      "owners": ["project-crossdeck", "wayfarer", "player-journal"],
+      "critical": true
+    },
+    {
       "id": "reach.phase1.foundation",
       "name": "Reach Phase 1 observation, calibration and laboratory foundation",
       "authority": "reach",

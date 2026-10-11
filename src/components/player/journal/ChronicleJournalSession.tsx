@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { ParallaxJournalProvider, ChronicleLensEntry } from "@/components/player/parallax/ChronicleLens";
 import { CrossdeckDevices } from "@/components/crossdeck/CrossdeckDevices";
+import { CrossdeckHandoff } from "@/components/crossdeck/CrossdeckHandoff";
+import { CrossdeckContinuityProvider } from "@/components/crossdeck/CrossdeckContinuity";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { AudioCuePlayer } from "@/animation/core/audio-cues";
@@ -215,11 +217,13 @@ type ChronicleJournalSessionProps = Readonly<{
 
 export function ChronicleJournalSession({ sessionId, identitySession = false }: ChronicleJournalSessionProps) {
   return (
-    <ChronicleJournalSessionIdentity
-      key={`${identitySession ? "identity" : "compatibility"}:${sessionId}`}
-      sessionId={sessionId}
-      identitySession={identitySession}
-    />
+    <CrossdeckContinuityProvider key={`${identitySession ? "identity" : "compatibility"}:${sessionId}`}>
+      <ChronicleJournalSessionIdentity
+        key={`${identitySession ? "identity" : "compatibility"}:${sessionId}`}
+        sessionId={sessionId}
+        identitySession={identitySession}
+      />
+    </CrossdeckContinuityProvider>
   );
 }
 
@@ -1064,6 +1068,75 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
           </div>
           <div className="journal-session-tools">
             {state.csrfToken && <CrossdeckDevices initialVoyage={sessionId} compact />}
+            {state.csrfToken && (
+              <CrossdeckHandoff
+                voyageId={sessionId}
+                csrfToken={state.csrfToken}
+                object={(() => {
+                  const selected = pages[currentPage]?.block ?? currentBlock;
+                  const family =
+                    selected?.journalKind === "map"
+                      ? "MAP"
+                      : selected?.journalKind === "artifact"
+                        ? "ARTIFACT"
+                        : selected?.journalKind === "message" || selected?.journalKind === "story"
+                          ? "NOTE"
+                          : null;
+                  return selected && family
+                    ? { family, objectId: selected.id, version: state.session.versionId }
+                    : null;
+                })()}
+                context={{
+                  blockId: (pages[currentPage]?.block ?? currentBlock)?.id,
+                  readingPosition: 0,
+                  toolMode: reading.openDrawer === "map" ? "CHART" : "READ",
+                }}
+                captureContext={() => {
+                  const content = root.current?.querySelector<HTMLElement>(
+                    ".stf__item.--active .journal-leaf, .journal-page-content, .journal-leaf",
+                  );
+                  return {
+                    readingPosition:
+                      content && content.scrollHeight > content.clientHeight
+                        ? content.scrollTop / (content.scrollHeight - content.clientHeight)
+                        : 0,
+                  };
+                }}
+                resume={async (ref, context) => {
+                  const block = stateRef.current?.journal.chapters
+                    .flatMap((chapter) => chapter.blocks)
+                    .find((item) => item.id === ref.objectId);
+                  if (!block || stateRef.current?.session.versionId !== ref.version)
+                    throw new Error("Refresh the Voyage before opening this view.");
+                  const page = pageIndexForJournalBlock(pages, ref.objectId);
+                  followingCurrent.current = false;
+                  book.current?.flipTo(page);
+                  saveReading({
+                    pageId: pages[page]?.id ?? null,
+                    openDrawer: ref.family === "MAP" ? "map" : ref.family === "ARTIFACT" ? "artifacts" : null,
+                  });
+                  const displayed = () => {
+                    const view = book.current;
+                    if (!view?.readiness().ready) return false;
+                    const current = view.currentPage();
+                    return current === page || (view.orientation() === "landscape" && current + 1 === page);
+                  };
+                  const started = Date.now();
+                  while (!displayed() && Date.now() - started < 5000)
+                    await new Promise((resolve) => setTimeout(resolve, 50));
+                  if (!displayed()) throw new Error("The Journal view is not ready to receive this item.");
+                  if (ref.family === "NOTE")
+                    requestAnimationFrame(() => {
+                      const content = root.current?.querySelector<HTMLElement>(
+                        ".stf__item.--active .journal-leaf, .journal-page-content, .journal-leaf",
+                      );
+                      if (content)
+                        content.scrollTop =
+                          (content.scrollHeight - content.clientHeight) * (context.readingPosition ?? 0);
+                    });
+                }}
+              />
+            )}
             <span className={`runtime-connection ${connection}`} role="status">
               <i />
               {connection === "live"

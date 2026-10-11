@@ -93,6 +93,7 @@ export async function crossdeckFixture() {
     phone,
     member,
     voyage,
+    tale,
     source,
     caps,
     challenge,
