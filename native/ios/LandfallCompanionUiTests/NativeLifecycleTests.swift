@@ -43,8 +43,8 @@ final class NativeLifecycleTests: XCTestCase {
         XCTAssertTrue(ready.waitForExistence(timeout:10),"SEXTANT_SCREEN_FALLBACK_REQUIRED")
         let enable=web.buttons["Resume device input"].firstMatch
         XCTAssertTrue(enable.exists && !enable.isEnabled,"SEXTANT_SIMULATOR_MOTION_MUST_NOT_BE_FABRICATED")
-        let unavailable=web.staticTexts["Unavailable on this device"]
-        XCTAssertGreaterThan(unavailable.count,0,"SEXTANT_NATIVE_CAPABILITY_REFUSAL_REQUIRED")
+        let unavailable=web.staticTexts["Unavailable on this device"].firstMatch
+        XCTAssertTrue(unavailable.waitForExistence(timeout:10),"SEXTANT_NATIVE_CAPABILITY_REFUSAL_REQUIRED")
         for orientation in [UIDeviceOrientation.portrait,.landscapeLeft] {
             XCUIDevice.shared.orientation=orientation
             let landscape=orientation == .landscapeLeft

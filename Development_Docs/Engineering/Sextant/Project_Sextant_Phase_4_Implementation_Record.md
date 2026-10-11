@@ -444,3 +444,23 @@ original worktree path is a junction; all 40154 pre-transfer files were retained
 and 21 historical hosted receipts/39882 artifact hashes verified. New harvested
 receipts preserve their original source identities. This storage recovery is not
 native qualification. Required D4 access/signing and formal acceptance remain open.
+
+### Apple product-test compiler correction
+
+[Run 38177781664](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38177781664),
+candidate `4f3e3a424bd931b43e2182a8544f1892de13e49c`, tree
+`d20cdf38033f4d6036bb0033f55692dd39b3754c`, failed while compiling the added
+product UI test. Its label subscript returned one `XCUIElement`; the assertion
+incorrectly requested a query's `count`. The correction selects the first matching
+real static-text element and waits for its existence. The native test plan,
+canonical scenarios and product journey did not execute; this run supplies no
+native qualification. Its 3164 artifact files are preserved; native simulator
+cleanup and transport cleanup both passed. Use a distinct corrected-source
+contract for the same bounded primary Mac scope.
+
+[Ordinary check 38177846432](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38177846432)
+completed PASS for the original `4f3e3a42` candidate against accepted base
+`678dd1156d39537d288ba3c2e5ce5c6efc2259d0`: all ten finalizer obligations closed,
+2173 tests across 322 selected files passed, and both desktop/mobile D1 product
+cases passed. Two opt-in native cases were skipped. This receipt does not prove
+Swift compilation or execution, and is not relabeled for the corrected source.

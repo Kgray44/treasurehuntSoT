@@ -144,6 +144,14 @@ canonical scenarios and execute the separate product journey; do not create a
 second Device Lab or duplicate the consumed root runs. At c21c8cd9, combined root
 38173786484 passed3268/533 and ordinary38173726401 passed all10 obligations.
 
+At candidate4f3e3a42, owned Mac38177781664 ended FAIL in UI-test compilation:
+`XCUIElement` has no `count`. The query now selects firstMatch and requires actual
+existence. No native test/scenario/product journey ran in that failed job. Preserve
+the compiler/result/cleanup artifacts and use a distinct corrected-source contract
+for the same bounded primary Mac scope. Ordinary38177846432 completed PASS for
+4f3e3a42/base678dd115: all10 obligations,2173tests/322files,two D1 PASS and two
+opt-in native SKIP. Never relabel it or duplicate it to debug the Swift test.
+
 Native artifacts are stored at
 `D:\Codex_Task_Artifacts\Sextant_Phase4_01a12c17_20261011\landfall-device-lab`;
 the original ignored worktree artifact path is a junction. Relocation retained

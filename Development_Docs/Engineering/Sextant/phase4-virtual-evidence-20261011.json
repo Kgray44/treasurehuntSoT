@@ -1634,7 +1634,7 @@
     "Remote D4 core bring-up lacks authorized provider/project access and signing configuration",
     "No formal Phase 4 acceptance, protected merge, release or Phase 5 authority"
   ],
-  "updatedAt": "2026-10-11T21:40:34.421Z",
+  "updatedAt": "2026-10-11T22:02:42.184Z",
   "acceptedMainReconciliation": {
     "baseSha": "af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf",
     "baseTree": "2456cb6cf7091048d17d5e5d52b865b97ded9d6e",
@@ -1861,5 +1861,136 @@
       "lostResponsePolicy": "EXPLICIT_SYNTHETIC_TEN_MINUTE_PUBLISHED_WINDOW; original timestamps; product defaults and stale cases preserved"
     },
     "formalD4": "NOT_PROVEN_NO_AUTHORIZED_PROVIDER_SIGNING"
+  },
+  "appleProductCompilerFollowup": {
+    "recordedAt": "2026-10-11T22:02:42.182Z",
+    "sourceSha": "4f3e3a424bd931b43e2182a8544f1892de13e49c",
+    "sourceTree": "d20cdf38033f4d6036bb0033f55692dd39b3754c",
+    "ordinary": {
+      "runId": "38177846432",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38177846432",
+      "baseSha": "678dd1156d39537d288ba3c2e5ce5c6efc2259d0",
+      "decision": "PASS",
+      "finalization": {
+        "authority": "SOUNDING_LINE_EVIDENCE_FINALIZER",
+        "requiredObligations": 10,
+        "closure": [
+          {
+            "obligationId": "preflight.dfbb9608eac5a4afbd9461f4",
+            "receiptId": "sl14-52d3575886d809001eb3a21f0c7f269a",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.53d6a0a19ed318f3844a3e65",
+            "receiptId": "sl14-2067fb539452409f4dcc21b8a07537fb",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.b6afec1badc6d034b0aaa5a0",
+            "receiptId": "sl14-00c26521224b167557f890a388914327",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.06bb2802ffe5ab9677efa486",
+            "receiptId": "sl14-b1e5e6c87e8d61fde21ec0fe517062c8",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.bda79721781de0679d88e863",
+            "receiptId": "sl14-24b2c8e14b4c3431f55bead7de7381f9",
+            "satisfied": true
+          },
+          {
+            "obligationId": "unit.174de9cbbedad2ba41fa84dc",
+            "receiptId": "sl14-14ac23b1948b26f72941ea28ac7385bb",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.626397032f8030d2781f7950",
+            "receiptId": "sl14-b36dd1f5dcfce6739cf5993c8ab8c91e",
+            "satisfied": true
+          },
+          {
+            "obligationId": "migration.881c319da844d6391aac0892",
+            "receiptId": "sl14-d37724b3c93425a6b0048fe37025b0ca",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.b36b1612f84c63ac9842de6a",
+            "receiptId": "sl14-48e4635606bf8b899a8af4ff7195810d",
+            "satisfied": true
+          },
+          {
+            "obligationId": "browser.50e0161cb8ac97096a469763",
+            "receiptId": "sl14-b0775bd947d96487ee3853c00090fa28",
+            "satisfied": true
+          }
+        ],
+        "remainder": [],
+        "counts": {
+          "FRESH": 4,
+          "PRESERVED": 0,
+          "REBOUND": 2,
+          "INVALIDATED": 4,
+          "CONSERVATIVE_FALLBACK": 0
+        },
+        "errors": [],
+        "decision": "PASS"
+      },
+      "tests": 2173,
+      "files": 322,
+      "browser": {
+        "passed": 2,
+        "skippedNative": 2,
+        "selected": [
+          "tests/e2e/landfall-native-nearby.spec.ts",
+          "tests/e2e/sextant-native-apple-devices.spec.ts",
+          "tests/e2e/sextant-phase4.spec.ts"
+        ],
+        "qualification": {
+          "version": 1,
+          "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+          "baseURL": "http://127.0.0.1:34661",
+          "failureCategory": null,
+          "failureCode": null,
+          "timings": {
+            "serverPreparationMs": 3,
+            "serverReadinessMs": 1548,
+            "browserExecutionMs": 8689,
+            "infrastructureFailureWaitMs": 0,
+            "cleanupMs": 28
+          }
+        },
+        "nativeProven": false
+      },
+      "receiptFile": "artifacts/ordinary-38177846432-evidence/sounding-line-ordinary-4f3e3a424bd931b43e2182a8544f1892de13e49c/ordinary-decision.json",
+      "receiptSha256": "85b679835f220e193476130473b6d00bf40c128bcbf0eef7f8be317b190b9213"
+    },
+    "native": {
+      "runId": "38177781664",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38177781664",
+      "transportSha": "dab4cd7045e860f044471261204e407f2d7bad61",
+      "result": "FAIL_COMPILER",
+      "error": "NativeLifecycleTests.swift:47: XCUIElement has no count",
+      "nativeTestsExecuted": 0,
+      "canonicalScenariosExecuted": 0,
+      "productJourneyExecuted": false,
+      "files": 3164,
+      "nativeCleanup": {
+        "result": "PASS",
+        "ownedResources": ["15FFD59C-5C36-447E-9238-3846D85896F8"],
+        "remainingResources": []
+      },
+      "transportCleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-4f3e3a424bd9-1791755216924"],
+        "remainingResources": []
+      },
+      "receiptFile": "artifacts/landfall-device-lab/hosted-4f3e3a424bd9-1791755216924/run-38177781664/hosted-receipt.json",
+      "receiptSha256": "bdb45b6a3898f406685b9bd7d8bc775a28c325d4527bea5fe9bc89c9906d8a8f"
+    },
+    "correction": "First matching actual static-text element with bounded waitForExistence; same refusal requirement, no weakened test",
+    "retry": "ONE_DISTINCT_CORRECTED_SOURCE_PRIMARY_MAC_CONTRACT",
+    "phaseAcceptance": false
   }
 }
