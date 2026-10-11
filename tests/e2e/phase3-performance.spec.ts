@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { performance as nodePerformance } from "node:perf_hooks";
+import { performance } from "node:perf_hooks";
 
 import { devices, type Locator, type Page } from "@playwright/test";
 
@@ -449,14 +449,14 @@ async function measureNavigationResponse(control: Locator, destination: string) 
 async function measuredReplay(page: Page, phase3: Phase3FixtureManager, eventId: string, measureResponse: boolean) {
   const startingCount = (await readPhase3Evidence(page)).receipts.length;
   await startVisualProbe(page);
-  const startedAt = nodePerformance.now();
+  const startedAt = performance.now();
   const responseMs = measureResponse
     ? await measureReplayResponse(
         page.locator(`[data-progress-event-id="${eventId}"]`).getByRole("button", { name: "Replay presentation" }),
       )
     : (await phase3.replay(page, eventId), null);
   const receipt = await waitForNewReceipt(page, eventId, startingCount, "replay");
-  const durationMs = nodePerformance.now() - startedAt;
+  const durationMs = performance.now() - startedAt;
   const visual = await stopVisualProbe(page);
   return { receipt, durationMs, responseMs, visual };
 }
@@ -501,10 +501,10 @@ phase3Test("owned production P0 performance and lifecycle budgets", async ({ pag
 
   const startingCount = (await readPhase3Evidence(page)).receipts.length;
   await startVisualProbe(page);
-  const coldStartedAt = nodePerformance.now();
+  const coldStartedAt = performance.now();
   const command = await phase3.publish(fixture);
   const coldReceipt = await waitForNewReceipt(page, command.event.id, startingCount, "live");
-  const coldDurationMs = nodePerformance.now() - coldStartedAt;
+  const coldDurationMs = performance.now() - coldStartedAt;
   const coldVisual = await stopVisualProbe(page);
   validateReceipt(coldReceipt, "full", "presented");
   const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
