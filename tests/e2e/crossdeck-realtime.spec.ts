@@ -149,6 +149,7 @@ test("actual browser transport load, event latency, missed-event recovery and re
   );
   ensureGenericSoundingLineIsolation();
   const compiled = await bundles();
+  const activeOnly = process.env.CROSSDECK_ACTIVE_MEASUREMENT_ONLY === "1";
   const output: Record<string, unknown> = {
     baselineSha,
     currentSha: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
@@ -159,12 +160,13 @@ test("actual browser transport load, event latency, missed-event recovery and re
     runtime: process.version,
     cohorts: [],
     qualification: "D1_BROWSER_HTTP_TRANSPORT_ONLY_NOT_PHYSICAL",
+    measurementScope: activeOnly ? "ACTIVE_AND_RECOVERY_SUPPLEMENT" : "IDLE_AND_ACTIVE_COMPARISON",
   };
   const cohorts: unknown[] = [];
   const owned: BrowserContext[] = [];
   const extraBrowsers: Browser[] = [];
   try {
-    for (const count of [2, 5, 20, 32]) {
+    for (const count of activeOnly ? [2] : [2, 5, 20, 32]) {
       const pages: {
         page: Page;
         context: BrowserContext;
@@ -227,10 +229,11 @@ test("actual browser transport load, event latency, missed-event recovery and re
         personVoyageScopes: Math.ceil(count / 10),
         windowMs: 20000,
       };
-      for (const [name, code] of [
+      const idleModes = [
         ["polling500ms", compiled.previous],
         ["sse10s", compiled.current],
-      ] as const) {
+      ] as const;
+      for (const [name, code] of activeOnly ? [] : idleModes) {
         console.log(`Crossdeck measure: ${count} surfaces, ${name}; steady state after staggered startup`);
         for (const participant of pages)
           await start(participant.page, code, participant.voyage, participant.surface, participant.csrf);
@@ -279,11 +282,14 @@ test("actual browser transport load, event latency, missed-event recovery and re
         });
         await Promise.all(pages.map((p) => p.page.evaluate(() => window.crossdeckDriver.stop())));
       }
-      const old = result.polling500ms as { idleSnapshotRequests: number },
-        updated = result.sse10s as { idleSnapshotRequests: number };
-      result.measuredIdleSnapshotReductionPercent = 100 * (1 - updated.idleSnapshotRequests / old.idleSnapshotRequests);
-      expect(updated.idleSnapshotRequests).toBeLessThan(old.idleSnapshotRequests / 5);
-      cohorts.push(result);
+      if (!activeOnly) {
+        const old = result.polling500ms as { idleSnapshotRequests: number },
+          updated = result.sse10s as { idleSnapshotRequests: number };
+        result.measuredIdleSnapshotReductionPercent =
+          100 * (1 - updated.idleSnapshotRequests / old.idleSnapshotRequests);
+        expect(updated.idleSnapshotRequests).toBeLessThan(old.idleSnapshotRequests / 5);
+        cohorts.push(result);
+      }
       if (count === 2) {
         const source = pages[0],
           target = pages[1];
@@ -296,6 +302,11 @@ test("actual browser transport load, event latency, missed-event recovery and re
         }
         const beforeProgression = await db.taleSessionEvent.count({ where: { sessionId: source.voyage } });
         await Promise.all(pages.map((p) => start(p.page, compiled.current, p.voyage, p.surface, p.csrf)));
+        const activeBefore = await Promise.all(
+          pages.map((p) => p.page.evaluate(() => ({ ...window.crossdeckDriver.metrics }))),
+        );
+        const activeBackendBefore = JSON.parse(await readFile(process.env.CROSSDECK_SERVER_METRICS_PATH!, "utf8"));
+        const activeStarted = Date.now();
         const latencies: number[] = [];
         for (let index = 0; index < 20; index++) {
           const snapshot = await source.context.request.get(
@@ -330,6 +341,27 @@ test("actual browser transport load, event latency, missed-event recovery and re
           p95: percentile(latencies, 0.95),
           p99: percentile(latencies, 0.99),
           scope: "includes command HTTP round-trip, canonical fetch and driver callback; not physical display paint",
+        };
+        const activeAfter = await Promise.all(
+          pages.map((p) => p.page.evaluate(() => ({ ...window.crossdeckDriver.metrics }))),
+        );
+        await target.page.waitForTimeout(1100); // Complete the one-second backend observation window.
+        const activeBackendAfter = JSON.parse(await readFile(process.env.CROSSDECK_SERVER_METRICS_PATH!, "utf8"));
+        const backendStart = activeBackendBefore.samples.at(-1),
+          backendEnd = activeBackendAfter.samples.at(-1);
+        output.activeChangeLoad = {
+          commands: 20,
+          explicitSequenceSnapshotReads: 20,
+          notificationSnapshotReads: activeAfter.reduce((sum, m, i) => sum + m.reads - activeBefore[i].reads, 0),
+          eventNotifications: activeAfter.reduce((sum, m, i) => sum + m.events - activeBefore[i].events, 0),
+          eventConnectionsOpened: activeAfter.reduce((sum, m, i) => sum + m.opened - activeBefore[i].opened, 0),
+          callbackWindowMs: Date.now() - activeStarted - 1100,
+          backendSampleWindowMs: backendEnd.at - backendStart.at,
+          observedSqlQueries: backendEnd.sqlQueries - backendStart.sqlQueries,
+          cpuMs:
+            (backendEnd.cpuUserUs + backendEnd.cpuSystemUs - backendStart.cpuUserUs - backendStart.cpuSystemUs) / 1000,
+          scope:
+            "actual HTTP commands; authorized sequence fetches plus subscribed fetches; sampled window includes periodic authority checks",
         };
         const focusOn = async (participant: typeof source, targetId: string, serverURL = baseURL!) => {
           const state = await (
@@ -475,6 +507,9 @@ test("actual browser transport load, event latency, missed-event recovery and re
     await Promise.all(extraBrowsers.map((device) => device.close()));
     output.cohorts = cohorts;
     await mkdir("artifacts/crossdeck/realtime-browser", { recursive: true });
-    await writeFile("artifacts/crossdeck/realtime-browser/measurements.json", JSON.stringify(output, null, 2) + "\n");
+    await writeFile(
+      `artifacts/crossdeck/realtime-browser/${activeOnly ? "active-measurements" : "measurements"}.json`,
+      JSON.stringify(output, null, 2) + "\n",
+    );
   }
 });

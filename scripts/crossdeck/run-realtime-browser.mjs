@@ -57,7 +57,32 @@ run(["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", env.DATABAS
 run(["node_modules/tsx/dist/cli.mjs", "prisma/seed.ts"]);
 run(["node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts"]);
 run(["scripts/sounding-line/prepare-validation-isolation.mjs"]);
-if (process.env.CROSSDECK_REUSE_FOCUSED_BUILD !== "1") run(["node_modules/next/dist/bin/next", "build"]);
+let buildSourceSha = sourceSha;
+const reusedProductBuild = process.env.CROSSDECK_REUSE_FOCUSED_BUILD === "1";
+if (reusedProductBuild) {
+  const previous = JSON.parse(await readFile(path.join(artifactRoot, "runtime.json"), "utf8"));
+  if (previous.status !== "PASS") throw new Error("CROSSDECK_PREVIOUS_BUILD_NOT_QUALIFIED");
+  buildSourceSha = previous.buildSourceSha ?? previous.sourceSha;
+  const changedProduct = execFileSync(
+    "git",
+    [
+      "diff",
+      "--name-only",
+      buildSourceSha,
+      sourceSha,
+      "--",
+      "src",
+      "prisma",
+      "public",
+      "package.json",
+      "package-lock.json",
+      "next.config.ts",
+      "tsconfig.json",
+    ],
+    { encoding: "utf8" },
+  ).trim();
+  if (changedProduct) throw new Error("CROSSDECK_PRODUCT_CHANGED_REBUILD_REQUIRED");
+} else run(["node_modules/next/dist/bin/next", "build"]);
 const log = [];
 const metricsPath = path.join(artifactRoot, "server-metrics.json");
 env.CROSSDECK_SERVER_METRICS_PATH = metricsPath;
@@ -127,6 +152,8 @@ try {
       {
         status,
         sourceSha,
+        buildSourceSha,
+        reusedProductBuild,
         sourceTree: execFileSync("git", ["rev-parse", "HEAD^{tree}"], { encoding: "utf8" }).trim(),
         dirtySource: execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" }).trim().length > 0,
         lockfileSha256: createHash("sha256")

@@ -89,16 +89,25 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
           await sending.getByLabel("Transfer mode").selectOption("MOVE_CUSTODY");
           const sendButton = sending.getByRole("button", { name: "Send view", exact: true });
           await expect(sendButton).toBeEnabled();
+          const visibleMeasurements: { direction: string; revision: number; requestedAt: number; visibleAt: number }[] =
+            [];
           const sentResponse = d.waitForResponse(
             (response) => response.url().includes("/api/crossdeck/sync?") && response.request().method() === "POST",
           );
           await sendButton.focus();
+          const requestedAt = Date.now();
           await sendButton.press("Enter");
           const sent = await sentResponse;
           const sentBody = await sent.json();
           expect(sent.status(), sentBody.error ?? "Send must produce a durable offer").toBe(200);
           const receiving = p.getByRole("region", { name: "Send to your devices" });
           await expect(receiving.getByRole("button", { name: /^Receive / })).toBeVisible();
+          visibleMeasurements.push({
+            direction: "desktop-to-phone",
+            revision: sentBody.revision,
+            requestedAt,
+            visibleAt: Date.now(),
+          });
           await receiving.getByRole("button", { name: /^Receive / }).click();
           await expect(p.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible();
           await expect
@@ -124,8 +133,20 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
             });
             await receiving.getByLabel("Send destination").selectOption(desktopSurface.surfaceId);
             await receiving.getByLabel("Transfer mode").selectOption("MOVE_CUSTODY");
+            const reverseResponse = p.waitForResponse(
+              (response) => response.url().includes("/api/crossdeck/sync?") && response.request().method() === "POST",
+            );
+            const reverseRequestedAt = Date.now();
             await receiving.getByRole("button", { name: "Send view", exact: true }).click();
             await expect(sending.getByRole("button", { name: /^Receive / })).toBeVisible();
+            const reverse = await reverseResponse;
+            expect(reverse.ok()).toBe(true);
+            visibleMeasurements.push({
+              direction: "phone-to-desktop",
+              revision: (await reverse.json()).revision,
+              requestedAt: reverseRequestedAt,
+              visibleAt: Date.now(),
+            });
             await sending.getByRole("button", { name: /^Receive / }).click();
             await expect(d.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible();
             await expect
@@ -175,6 +196,53 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
           expect((await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } })).currentSequence).toBe(
             before.sequence,
           );
+          if (process.env.CROSSDECK_SERVER_METRICS_PATH) {
+            let hints: { revision: number; at: number }[] = [];
+            await expect
+              .poll(
+                async () => {
+                  const metrics = JSON.parse(await readFile(process.env.CROSSDECK_SERVER_METRICS_PATH!, "utf8"));
+                  hints = metrics.committedHints;
+                  return visibleMeasurements.every((measurement) =>
+                    hints.some(
+                      (hint) =>
+                        hint.revision === measurement.revision &&
+                        hint.at >= measurement.requestedAt &&
+                        hint.at <= measurement.visibleAt,
+                    ),
+                  );
+                },
+                { timeout: 3000 },
+              )
+              .toBe(true);
+            await mkdir("artifacts/crossdeck/realtime-browser", { recursive: true });
+            await writeFile(
+              `artifacts/crossdeck/realtime-browser/${scenarioId}-visible.json`,
+              JSON.stringify(
+                {
+                  source,
+                  scope:
+                    "real Crossdeck UI; post-transaction hint to Playwright-visible Receive prompt; not physical paint",
+                  measurements: visibleMeasurements.map((measurement) => {
+                    const hint = hints.find(
+                      (hint) =>
+                        hint.revision === measurement.revision &&
+                        hint.at >= measurement.requestedAt &&
+                        hint.at <= measurement.visibleAt,
+                    )!;
+                    return {
+                      direction: measurement.direction,
+                      revision: measurement.revision,
+                      requestToVisibleMs: measurement.visibleAt - measurement.requestedAt,
+                      afterCommitHintToVisibleMs: measurement.visibleAt - hint.at,
+                    };
+                  }),
+                },
+                null,
+                2,
+              ),
+            );
+          }
           const imagePath = testInfo.outputPath("crossdeck-continuity.png");
           await d.screenshot({ path: imagePath, fullPage: true });
           return {

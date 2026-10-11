@@ -28,6 +28,28 @@ prisma.PrismaClient = class extends Original {
   }
 };
 const samples = [];
+const committedHints = [];
+const revisions = new Map();
+const instrumented = new WeakSet();
+// Observe the real post-transaction hint method without replacing its delivery.
+// Scope keys stay in memory; artifacts contain only ordinal scopes/revisions/times.
+function observeBus() {
+  const bus = globalThis.crossdeckCommittedChangeBus;
+  if (!bus || instrumented.has(bus)) return;
+  const publish = bus.publish;
+  bus.publish = (change) => {
+    const key = JSON.stringify([change.accountId, change.voyageId]);
+    const previous = revisions.get(key);
+    if (!previous || change.revision > previous.revision) {
+      const scope = previous?.scope ?? revisions.size;
+      revisions.set(key, { scope, revision: change.revision });
+      committedHints.push({ scope, revision: change.revision, at: Date.now() });
+      if (committedHints.length > 5000) committedHints.shift();
+    }
+    return publish.call(bus, change);
+  };
+  instrumented.add(bus);
+}
 function record() {
   const memory = process.memoryUsage(),
     cpu = process.cpuUsage();
@@ -40,9 +62,10 @@ function record() {
     cpuSystemUs: cpu.system,
   });
   if (samples.length > 1200) samples.shift();
-  fs.writeFileSync(`${metricsPath}.tmp`, JSON.stringify({ pid: process.pid, instances, samples }));
+  fs.writeFileSync(`${metricsPath}.tmp`, JSON.stringify({ pid: process.pid, instances, samples, committedHints }));
   fs.renameSync(`${metricsPath}.tmp`, metricsPath);
 }
 fs.mkdirSync(allowedRoot, { recursive: true });
 record();
 setInterval(record, 1000).unref();
+setInterval(observeBus, 100).unref();
