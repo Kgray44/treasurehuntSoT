@@ -14,11 +14,11 @@ export function OwnerSeaTrials({ initialPilot, csrfToken }: { initialPilot: Pilo
     [busy, setBusy] = useState(false),
     [message, setMessage] = useState("");
   const [feedback, setFeedback] = useState<Feedback>({}),
-    [restored, setRestored] = useState(false);
+    [restoredKey, setRestoredKey] = useState<string | null>(null);
   const key = `voyagewright:${pilot?.versionId ?? "unprovisioned"}:owner-sea-trials`;
   useEffect(() => {
-    setRestored(false);
-    let next: Feedback = {};
+    let active = true;
+    const next: Feedback = {};
     try {
       const raw = JSON.parse(localStorage.getItem(key) ?? "{}");
       for (const item of pilotActivities) {
@@ -33,17 +33,23 @@ export function OwnerSeaTrials({ initialPilot, csrfToken }: { initialPilot: Pilo
     } catch {
       /* Keep a usable form when browser storage is unavailable. */
     }
-    setFeedback(next);
-    setRestored(true);
+    queueMicrotask(() => {
+      if (!active) return;
+      setFeedback(next);
+      setRestoredKey(key);
+    });
+    return () => {
+      active = false;
+    };
   }, [key]);
   useEffect(() => {
-    if (!restored) return;
+    if (restoredKey !== key) return;
     try {
       localStorage.setItem(key, JSON.stringify(feedback));
     } catch {
-      setMessage("Browser storage is unavailable. Export your report before leaving.");
+      queueMicrotask(() => setMessage("Browser storage is unavailable. Export your report before leaving."));
     }
-  }, [feedback, key, restored]);
+  }, [feedback, key, restoredKey]);
   async function provision(action: "provision" | "replay") {
     setBusy(true);
     setMessage("Preparing the authored voyage and its immutable publication…");

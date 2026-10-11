@@ -14,13 +14,19 @@ export function PilotCompass() {
   const consumerId = "spatial-pilot-compass";
   useEffect(() => {
     const device = webSextantRuntime(window as unknown as WebSensorTarget, navigator);
-    setRuntime(device);
+    let active = true;
+    queueMicrotask(() => {
+      if (active) setRuntime(device);
+    });
     const timer = setInterval(() => {
       if (release.current && device.status("sextant.heading.estimate", 1000).freshness !== "FRESH")
         setReading("The heading is unavailable or out of date. Use the compass rose.");
     }, 1000);
     return () => {
       clearInterval(timer);
+      active = false;
+      // This counter intentionally invalidates any asynchronous consumer callback.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       generation.current++;
       void device.leases.cancelConsumer(consumerId);
     };
