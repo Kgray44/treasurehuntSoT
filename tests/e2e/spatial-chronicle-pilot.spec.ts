@@ -69,6 +69,9 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     reducedMotion: "reduce",
   });
   const outsider = await browser.newContext();
+  await phone.addInitScript(() => {
+    Object.defineProperty(globalThis.crypto, "randomUUID", { value: undefined, configurable: true });
+  });
   try {
     const d = await desktop.newPage(),
       p = await phone.newPage();
@@ -84,8 +87,9 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       expect(response.status()).toBe(200);
       const session = await response.json();
       await expect(page).toHaveURL(`${origin}/dev/spatial-pilot`);
-      expect((await page.context().cookies()).some((cookie) => cookie.name === "wayfarer_account")).toBe(true);
-      return session;
+      const cookie = (await page.context().cookies()).find((cookie) => cookie.name === "wayfarer_account");
+      expect(cookie).toBeDefined();
+      return { ...session, token: cookie!.value };
     }
     const session = await signIn(d, baseURL!);
     const receiver = await signIn(p, companionURL.origin);

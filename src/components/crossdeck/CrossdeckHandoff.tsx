@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { storageKey } from "@/crossdeck/client";
+import { createCrossdeckId, storageKey } from "@/crossdeck/client";
 import { createHttpSyncTransport, type SurfaceSyncTransport, SyncTransportError } from "@/crossdeck/transport";
 import {
   modes,
@@ -147,7 +147,7 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
         retry && pending.current
           ? pending.current
           : {
-              messageId: crypto.randomUUID(),
+              messageId: createCrossdeckId(),
               surfaceId: current.current.surfaceId,
               voyageId,
               sequence: current.current.nextSequence,

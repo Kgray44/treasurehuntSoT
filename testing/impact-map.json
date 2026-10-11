@@ -3,6 +3,11 @@
   "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "pathMappings": [
     {
+      "path": "src/lib/browser-uuid.ts",
+      "suiteIds": ["unit.crossdeck", "browser.spatial-pilot", "static.core"],
+      "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity", "spatial-pilot.experience"]
+    },
+    {
       "path": "src/spatial-pilot/**",
       "suiteIds": ["unit.spatial-pilot", "browser.spatial-pilot", "browser.reach", "static.core"],
       "contractIds": ["spatial-pilot.experience", "reach.phase1.foundation"]
