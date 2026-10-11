@@ -20,7 +20,7 @@
     "Owned persisted preview setup and replay through canonical Captain cancellation"
   ],
   "evidence": [
-    { "kind": "commit", "value": "cbd511e3d37833971bc1f325b694df300c0e4131" },
+    { "kind": "commit", "value": "37ac0fc5238b66f3b46608a6de010038056d067b" },
     { "kind": "path", "value": "src/spatial-pilot/service.ts" },
     { "kind": "test", "value": "tests/e2e/spatial-chronicle-pilot.spec.ts" },
     { "kind": "completion-record", "value": "Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md" }
