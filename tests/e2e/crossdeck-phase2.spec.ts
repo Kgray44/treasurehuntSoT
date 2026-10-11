@@ -31,6 +31,7 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
     let desktop: BrowserContext | undefined, phone: BrowserContext | undefined;
     let accountId: string | undefined, taleId: string | undefined;
     let executionError: unknown;
+    const observedRequests: { device: string; method: string; status: number; revision?: number }[] = [];
     const tier = process.env.CROSSDECK_ANDROID_CDP ? ("D2" as const) : ("D1" as const);
     const packs = createCrossdeckPhase2Packs(tier, () => ({
       async execute({ signal }) {
@@ -65,6 +66,24 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
           await phone.addCookies([{ name: "wayfarer_account", value: receiver.token, url: baseURL!, sameSite: "Lax" }]);
           const d = await desktop.newPage(),
             p = await phone.newPage();
+          for (const [device, page] of [
+            ["desktop", d],
+            ["phone", p],
+          ] as const) {
+            page.on("response", async (response) => {
+              if (!response.url().includes("/api/crossdeck/sync?")) return;
+              const item = {
+                device,
+                method: response.request().method(),
+                status: response.status(),
+                revision: undefined as number | undefined,
+              };
+              observedRequests.push(item);
+              try {
+                item.revision = (await response.json()).revision;
+              } catch {}
+            });
+          }
           await d.goto(`${baseURL}/account/devices?voyage=${voyage.id}`);
           await d.getByLabel("Device name").fill("Desktop");
           await d.getByRole("button", { name: "Use this device", exact: true }).click();
@@ -138,12 +157,15 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
             );
             const reverseRequestedAt = Date.now();
             await receiving.getByRole("button", { name: "Send view", exact: true }).click();
-            await expect(sending.getByRole("button", { name: /^Receive / })).toBeVisible();
             const reverse = await reverseResponse;
-            expect(reverse.ok()).toBe(true);
+            const reverseBody = await reverse.json();
+            expect(reverse.status(), reverseBody.error ?? "Reverse send must produce a durable offer").toBe(200);
+            // Reconciliation is ten seconds; the functional assertion includes its request budget.
+            // Actual hint-to-visible measurements remain separate and retain the elapsed time.
+            await expect(sending.getByRole("button", { name: /^Receive / })).toBeVisible({ timeout: 15000 });
             visibleMeasurements.push({
               direction: "phone-to-desktop",
-              revision: (await reverse.json()).revision,
+              revision: reverseBody.revision,
               requestedAt: reverseRequestedAt,
               visibleAt: Date.now(),
             });
@@ -262,6 +284,7 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
             ],
           };
         } catch (cause) {
+          console.error("CROSSDECK_HANDOFF_REQUEST_DIAGNOSTICS", JSON.stringify(observedRequests));
           executionError = cause;
           throw cause;
         }

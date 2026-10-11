@@ -8,6 +8,8 @@ last_reviewed: 2026-10-11
 
 # Voyagewright features
 
+The authorized internal [Spatial Chronicle Pilot](../../Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md) combines a fictional published adventure with a guided device, Spatial Studio and Reach owner session. Its source is in qualification; complete automated and physical/owner acceptance remain separate. It is gated to a task-owned synthetic environment.
+
 The [Find the Hand laboratory](../user/hand-laboratory.md) provides a local camera/synthetic observation and calibration preview. Physical accuracy and Phase 1 acceptance remain pending; selection, manipulation and handoff are outside this preview.
 
 Sextant Phase 3 field/media/nearby context, Crossdeck Phase 2 durable presentation/manual handoff and Parallax Phase 2 Spatial Studio are implemented on protected main through PRs #701, #699 and #698. Connected Crossdeck screens can receive committed-change hints and reconcile the authorized current view; transfer acceptance and recovery retain their existing rules. The [boundary correction receipt](../../Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) tracks scoped compatibility repairs. Native camera/tracking availability is capability-dependent; software status does not close physical-device, field or owner acceptance gates.

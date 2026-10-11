@@ -3,6 +3,13 @@
   "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "contracts": [
     {
+      "id": "spatial-pilot.experience",
+      "name": "Synthetic Spatial Chronicle publication, multi-device adventure and gated owner trials",
+      "authority": "one-voyage",
+      "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+      "critical": true
+    },
+    {
       "id": "invitation-acceptance",
       "name": "Invitation acceptance",
       "authority": "one-voyage",

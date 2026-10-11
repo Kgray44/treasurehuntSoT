@@ -2285,6 +2285,44 @@ Bounded field, media and nearby capability contracts provide local device contex
 
 ---
 
+## FT-B110 - Spatial Chronicle Pilot and Consolidated Owner Sea Trials
+
+**Status:** MAINLINE
+**Program or subsystem:** Spatial Chronicle Pilot
+
+An authorized synthetic adventure connects published One Voyage story progression, a fictional Living Chart, versioned spatial clues, genuine companion handoff and recovery, optional heading, and one Reach/Pilot owner feedback session.
+
+### Important subfeatures
+
+- Ten canonically authored and published story passages with a preserved immutable edition
+- Fictional virtual chart, recorded discoveries and a hidden harbor reveal
+- Creator-owned Spatial Library version with parchment, compass and inspection behavior
+- Same-person desktop/phone pairing, receiver acknowledgement, custody and recovery
+- Consent-based trustworthy heading with a meaning-preserving screen alternative
+- Twelve guided owner activities with local edition-bound feedback and one JSON export
+- Owned persisted preview setup and replay through canonical Captain cancellation
+
+### Primary surfaces
+
+`/dev/spatial-pilot`, `/player/playthroughs/[playthroughId]/journal`, `/studio/parallax`, `/devices/reach`
+
+### Meaningful limitations
+
+- Entry requires the explicit isolated preview environment and exact synthetic owner; it is not a publicly advertised Chronicle.
+- Owner experience acceptance and physical Reach/camera/heading acceptance remain pending.
+- Phone camera and motion require a trusted reachable secure context; network HTTP supports the conventional story and manual transfer path.
+- Desktop/mobile Chromium emulation and synthetic Device Lab evidence do not establish Android/iOS simulator, physical AR, exposure-to-display latency, or field proof.
+- Reach estimates pointing; gesture selection/manipulation, shared adaptive staging and Air Handoff remain outside this pilot.
+
+### Evidence
+
+- commit: `37ac0fc5238b66f3b46608a6de010038056d067b`
+- path: `src/spatial-pilot/service.ts`
+- test: `tests/e2e/spatial-chronicle-pilot.spec.ts`
+- completion-record: `Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md`
+
+---
+
 # Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete

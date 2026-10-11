@@ -8,6 +8,8 @@ last_reviewed: 2026-10-11
 
 # Current status
 
+The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is integrated on protected main through PR #707, combining accepted spatial/device contracts with one guided synthetic Reach/Pilot session. Its source and automated qualification do not close owner or physical acceptance gates.
+
 Reach Phase 1's local camera/synthetic hand laboratory and independent calibration are an integrated foundation preview on protected main through PR #697. It is not physically qualified or phase-complete. The [implementation record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md) retains software evidence, the failed live-camera attempt and integration status.
 
 Sextant Phase 3 field/media/nearby context, Crossdeck Phase 2 durable presentation and manual handoff, and Parallax Phase 2 Spatial Studio are implemented on protected main through PRs #701, #699 and #698. Their phase records preserve exact qualification and landed evidence. The [boundary correction receipt](../../Device_Lab/Sextant_Parallax_Correction_Receipt.md) tracks scoped compatibility repairs. Native camera/tracking availability is capability-dependent; software status does not close physical-device, field or owner acceptance gates. Later phases and Spatial Studio design acceptance are not implied.

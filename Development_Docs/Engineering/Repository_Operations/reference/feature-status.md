@@ -6,6 +6,8 @@ canonical_for: feature-status
 last_reviewed: 2026-10-11
 ---
 
+The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
+
 # Feature status
 
 Reach Phase 1's observation/calibration laboratory is an integrated foundation preview through protected PR #697; physical qualification remains pending. See the [phase record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md); no Phase 2 action capability is claimed.

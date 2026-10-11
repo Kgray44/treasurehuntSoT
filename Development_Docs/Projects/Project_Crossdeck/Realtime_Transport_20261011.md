@@ -211,7 +211,21 @@ the corrected head separately from the earlier transport measurements.
 
 [Transport PR #706](https://github.com/Kgray44/treasurehuntSoT/pull/706) remains a
 candidate pending the required ordinary Sounding Line Mainline Decision. The
-protected base was refreshed and remains `f458bf2dc1176016c2d166180f038f0f15ac9f7c`.
+original protected base was `f458bf2dc1176016c2d166180f038f0f15ac9f7c`.
+Concurrent Pilot PR #707 subsequently landed as `01d32824127d00628546ea4209d09fea57c335c1`;
+the candidate preserves that accepted Pilot and reconciles the current-status conflict.
+Hosted run [38165997232](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38165997232)
+passes for measurement/documentation head `2f3e55e6` only. Corrected display head
+`9e3415cd` passes all 70 focused tests and four fresh production-browser journeys
+locally. Its hosted run [38166891441](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38166891441)
+fails the reverse handoff's ten-second Receive visibility assertion after unit,
+static and build checks pass. This failure remains a failure. The revised browser
+case checks the reverse HTTP response before visibility, retains metadata-only
+request diagnostics on failure, and gives the ten-second reconciliation interval
+five seconds of request budget. Measured latency samples retain their actual
+elapsed time; the functional budget is not a latency claim. Fresh qualification
+of the reconciled candidate is required.
+
 All measurements above are focused development evidence, not protected acceptance.
 Final ordinary qualification is delegated to the PR's trusted hosted workflow;
 no duplicate local/cloud ordinary run is started. Normal protected merge and
