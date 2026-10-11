@@ -11,8 +11,10 @@ last_reviewed: 2026-10-11
 Launchdeck request: `ld-Sentinel_ced57a02aaf0819185ccbb151fe64653-sextant-p3`.
 Task: `01a1287c-8f80-7366-a379-4939d974a032`, Sextant Phase 3: Read the Field.
 Profile: product-phase; UNATTENDED_CONTINUATION (owner-authorized 2026-10-11).
-Base: protected remote main
+Original implementation base: protected remote main
 `2e367c372a6d44e4e6a68bb38266196954f8d486`, independently verified 2026-10-11.
+Current reconciliation/qualification base: `7284b0dfaa31037d074d27df0f27b968f3977000`
+(merged Reach #697), independently refreshed 2026-10-11.
 Owned clone: task-3/sextant-p3; branch sextant/phase-3-read-the-field.
 
 This is a manual minimum-sufficient packet, not canonical packet-v2 helper output.
@@ -60,6 +62,9 @@ Continuation checkpoint: clean 7b01ce61 passed 1,501 product tests in 241 files,
 preserved after the owned harness was stopped for Next's fifteen page-data workers.
 Opt-in one-worker Next correction: 81840185; actual capped-build proof is pending.
 Refreshed protected main: 7284b0df (Reach #697), inspected without mutating that run.
-Combined registry must retain 88 scenarios: 71 non-Reach and 17 Reach.
-Slot B was released at 05:25 UTC; no heavy retry until a new coordinator grant.
+Combined registry retains 88 scenarios: 71 non-Reach and 17 Reach; Sextant has
+40 declarations, including 24 baseline entries, versus 36 executable CLI scenarios.
+Slot B was released at 05:25 UTC and granted again for this reconciliation/run.
+Focused reconciliation: 66 tests/3 files PASS, with one accepted camera capture,
+compatible declaration sharing and exact background cleanup; broker source preserved.
 See the Phase 3 implementation receipt for exact source, failure and cleanup proof.

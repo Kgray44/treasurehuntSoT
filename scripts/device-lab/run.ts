@@ -10,6 +10,11 @@ async function main() {
     await import("../parallax/device-lab");
     return;
   }
+  if (args[0] === "--project" && args[1] === "reach") {
+    process.argv = [...process.argv.slice(0, 2), ...args.slice(2)];
+    await import("../reach/device-lab");
+    return;
+  }
   if (args[0] === "--project" && args[1] === "sextant") {
     process.argv = [...process.argv.slice(0, 2), ...args.slice(2)];
     await import("../sextant/device-lab");

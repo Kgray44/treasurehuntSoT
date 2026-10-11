@@ -19,6 +19,7 @@ last_reviewed: 2026-10-10
 ### Added
 
 - Sextant Phase 3 local candidate adds calibrated field semantics, relative pressure/step context, media capability lifecycle, optional bounded BLE/NFC, authenticated peer/ranging contracts, safe magnetic reference controls and Drydock requirements. The [implementation receipt](Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) distinguishes D0/D1 software proof from native/physical/owner and protected-mainline gates.
+- Reach Phase 1 candidate adds the local camera/synthetic hand laboratory, pinned worker inference, strict observations, coordinate diagnostics, repeated training and independent calibration validation, consented aggregate export and governed Device Lab owner scenarios. Physical webcam accuracy and protected integration remain pending; no selection, manipulation or handoff is included.
 
 - Completed Project Landfall Phase4 source through protected PR #677: origin-bound native companions, signed offline regions, contextual providers and the permanent cross-platform Device Lab preserve One Voyage authority. Exact qualification, scoped native/browser/provider acceptance and landed verification pass; the protected evidence/catalog publication binds formal Project Landfall closure. Physical/RF/field/energy/assistive evidence, signed distribution, production configuration and owner acceptance remain external.
 

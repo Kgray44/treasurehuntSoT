@@ -3,6 +3,46 @@
   "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "pathMappings": [
     {
+      "path": "src/watchglass/hand-observation.ts",
+      "suiteIds": ["unit.reach", "static.core", "browser.reach"],
+      "contractIds": ["reach.phase1.foundation"]
+    },
+    {
+      "path": "tests/e2e/reach-laboratory.spec.ts",
+      "suiteIds": ["browser.reach"],
+      "contractIds": ["reach.phase1.foundation"]
+    },
+    {
+      "path": "scripts/reach/**",
+      "suiteIds": ["unit.reach", "static.core", "browser.reach"],
+      "contractIds": ["reach.phase1.foundation"]
+    },
+    {
+      "path": "public/reach/**",
+      "suiteIds": ["unit.reach", "static.core", "browser.reach"],
+      "contractIds": ["reach.phase1.foundation"]
+    },
+    {
+      "path": "src/app/devices/reach/**",
+      "suiteIds": ["unit.reach", "static.core", "browser.reach"],
+      "contractIds": ["reach.phase1.foundation"]
+    },
+    {
+      "path": "src/sextant/camera.ts",
+      "suiteIds": ["unit.reach", "static.core", "browser.reach"],
+      "contractIds": ["reach.phase1.foundation"]
+    },
+    {
+      "path": "src/watchglass/hand-provider.ts",
+      "suiteIds": ["unit.reach", "static.core", "browser.reach"],
+      "contractIds": ["reach.phase1.foundation"]
+    },
+    {
+      "path": "src/reach/**",
+      "suiteIds": ["unit.reach", "static.core", "browser.reach"],
+      "contractIds": ["reach.phase1.foundation"]
+    },
+    {
       "path": "bridgewatch/**",
       "suiteIds": ["unit.bridgewatch", "static.core"],
       "contractIds": ["bridgewatch.mission-control"]

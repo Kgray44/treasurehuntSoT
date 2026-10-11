@@ -8,6 +8,8 @@ last_reviewed: 2026-10-10
 
 # Current status
 
+Reach Phase 1 has an owned implementation candidate for a local camera/synthetic hand laboratory and independent calibration. It is not physically qualified or phase-complete. The [implementation record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md) retains software evidence, the failed live-camera attempt and integration status.
+
 Sextant Phase 2 device context, Crossdeck Phase 1 secure surface participation, and Parallax Phase 1 Chronicle Lens/Guided View are implemented on protected main through PRs #691, #692 and #693. The [boundary correction receipt](../../Device_Lab/Sextant_Parallax_Correction_Receipt.md) tracks the scoped post-mainline repairs. Native camera/tracking availability is capability-dependent; software status does not close physical-device, field or owner acceptance gates.
 
 Landfall Phase 4 source is available on protected main through [PR #677](https://github.com/Kgray44/treasurehuntSoT/pull/677), product merge `707b98ee97163df4e30fad388883db910e0c40ec`. Exact local/required hosted qualification and isolated landed verification pass. The [accepted capsule](../../../Projects/Project_Landfall/Project_Landfall_Phase_4_Accepted_Capsule.md) and [completion receipt](../../../Projects/Project_Landfall/Project_Landfall_Phase_4_Completion_Receipt.md) become authoritative with their protected evidence/catalog publication. Physical devices/RF/field/energy, assistive technology, signed distribution, production origin/MySQL, licensed providers and owner acceptance remain separate external gates.

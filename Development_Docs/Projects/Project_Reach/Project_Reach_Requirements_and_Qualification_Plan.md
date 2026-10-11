@@ -22,7 +22,7 @@ This plan traces the full initial constitution to implementation phases and pend
 | Privacy/compatibility          | 24–25              | 1–5   | privacy-persistence-and-cleanup; target-version-and-authorization           | Data/export/delete and authored-definition validation   |
 | Performance/field experience   | 26–28              | 1–5   | latency-jitter-and-fatigue                                                  | Exact setup, p95 metrics, per-user results and D5       |
 
-All scenario names have the `reach.` prefix in the [registry](../../Spatial_Experience/reach-interaction-registry.json). They remain unregistered. Each future pack must add exact tests, adapters, fixtures, resource policy, evidence artifacts, timeout, cleanup and pending tier gates before execution. The accepted 27-scenario loader baseline is not replaced by these declarations.
+All scenario names have the `reach.` prefix in the [registry](../../Spatial_Experience/reach-interaction-registry.json). Phase 1 registers seven D0 oracles through the shared Device Lab loader, with focused D1 browser tests and explicit pending physical gates. Ten later-phase scenarios remain non-executable. All 55 accepted pre-Reach catalog declarations are retained; the additive catalog contains 72 declarations. See the [implementation and validation record](Project_Reach_Phase_1_Implementation_and_Validation_Record.md) for actual evidence and remaining limits. Catalog declarations never substitute for passing receipts.
 
 ## Reference qualification design
 

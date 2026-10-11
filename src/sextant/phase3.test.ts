@@ -9,6 +9,7 @@ import {
   stepEvidenceSchema,
 } from "./field-context";
 import { SextantCapabilityRegistry } from "./capabilities";
+import { BrowserCameraBroker } from "./camera";
 import { SecureRangingSession, WebBleCapability, WebNfcCapability, ndefEnvelopeSchema } from "./nearby";
 import { webMediaCapabilities } from "./media-capability";
 import { WebMagneticFieldProvider, SextantFieldDerivations } from "./field-provider";
@@ -125,6 +126,49 @@ describe("honest local field semantics", () => {
   });
 });
 describe("camera/microphone state and consumer-owned resources", () => {
+  it("shares declarations through the accepted camera broker without a parallel capture", async () => {
+    const f = phase3Fixture();
+    const track = Object.assign(new EventTarget(), {
+      readyState: "live",
+      stop: vi.fn(() => {
+        track.readyState = "ended";
+      }),
+    });
+    const stream = { getTracks: () => [track], getVideoTracks: () => [track] } as unknown as MediaStream;
+    const media = { getUserMedia: vi.fn(async () => stream) };
+    const owner = new BrowserCameraBroker(media);
+    const factory = vi.fn(async () => {
+      const lease = await owner.acquire(true, true);
+      return {
+        resource: {
+          stop: () => lease.release(),
+          onEnded: (callback: () => void) => {
+            track.addEventListener("ended", callback);
+            return () => track.removeEventListener("ended", callback);
+          },
+        },
+      };
+    });
+    const invalidated = vi.fn();
+    try {
+      const purpose = { ...mediaPurpose, shareKey: "accepted-camera" };
+      const first = await f.media.acquire("CAMERA", purpose, factory, () => {});
+      await f.media.acquire("CAMERA", { ...purpose, consumerId: "shared-camera-consumer" }, factory, invalidated);
+      expect(factory).toHaveBeenCalledTimes(1);
+      expect(media.getUserMedia).toHaveBeenCalledTimes(1);
+      await expect(new BrowserCameraBroker(media).acquire(true, true)).rejects.toThrow("CAMERA_EXCLUSIVE_LEASE_BUSY");
+      first.release();
+      expect(owner.ownedTracks).toBe(1);
+      f.media.setForeground(false);
+      expect(invalidated).toHaveBeenCalledWith("BACKGROUND_RESTRICTED");
+      expect(owner.ownedTracks).toBe(0);
+      expect(track.stop).toHaveBeenCalledTimes(1);
+      expect(f.media.diagnostics().activeResources).toBe(0);
+    } finally {
+      f.media.dispose();
+      owner.release();
+    }
+  });
   it("isolates a late media denial from a newer granted source generation", async () => {
     const f = phase3Fixture();
     let denyOld!: (error: unknown) => void;
