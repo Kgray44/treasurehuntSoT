@@ -9,7 +9,7 @@ last_reviewed: 2026-10-11
 # Describe your spatial idea
 
 The A1 Spatial Assistant is an implementation candidate. It is mounted in the candidate Spatial Studio;
-full browser qualification and visual review are pending; this guide describes the candidate
+production-browser checks pass; final software qualification and visual review are pending. This guide describes the candidate
 review experience and does not announce general availability.
 
 Open **Ask Parallax** in Spatial Studio, select an object, and describe the experience you want. For example: “Move the map
@@ -24,6 +24,9 @@ can approve the complete proposal or choose independent changes. Changes that
 depend on another change must be selected together. **Apply** saves reviewed
 changes; **Reject** leaves the scene unchanged. Undo and Redo use the ordinary
 editor history.
+
+On a narrow screen, **View canvas** hides the panel while preserving the proposed
+scene. Reopen **Ask Parallax** to continue the same review and apply or reject it.
 
 After the scene is saved, its address identifies that working scene. Refreshing
 reopens the same saved draft; its Chronicle and Passage context stay in the address.

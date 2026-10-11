@@ -8,7 +8,7 @@ last_reviewed: 2026-10-11
 
 # Evidence boundaries
 
-The versioned corpus `parallax-spatial-assistant-2026-10-11-v1` defines 60 distinct
+The versioned corpus `parallax-spatial-assistant-2026-10-11-v2` defines 60 distinct
 instructions across object creation, placement, relative positioning, editing,
 multi-object scenes, timeline, interactions, ambiguity, unsupported effects,
 accessibility, safety, privacy, follow-ups, conflicts and prompt injection. Each
@@ -44,8 +44,8 @@ Results use strict property expectations against the saved synthetic fixtures;
 review failure categories and actual scene semantics before claiming quality.
 The command does not establish mounted end-to-end Studio behavior or owner
 visual acceptance. Full-corpus comparison requires sufficient explicit allowance
-and remains optional. No paid evaluator or canary has been executed for this
-candidate, despite the configured Windows user credential.
+and remains optional. The bounded six-call canary below records the actual live
+evidence, including the original evaluator's fixture-identity defect.
 
 ## Earlier independent development evidence
 
@@ -219,3 +219,54 @@ it preserves the actual proposal while hiding the panel, reopens the same review
 without saving and verifies reachable Apply controls. The
 [presentation review](Parallax_A1_Presentation_Review.md) records its
 review package and acceptance boundary.
+
+## Authorized bounded live-provider canary
+
+The owner explicitly authorized six calls with a $0.50 total ceiling and no
+retries. On clean source `d6d63b2ccf9da4e0d1ece9141dcbacaa99badfe8`, the evaluator
+used the shared Windows user credential only in its server process environment.
+It executed `create-note`, `relative-left` and `ambiguous-content` once each with
+Luna and Sol, against a disposable synthetic SQLite store. Initial fixture
+provisioning failed before any provider attempt; the evaluator was corrected to
+reuse the existing migration bootstrap before these six calls. No shared runtime,
+real Creator scene or credential file was involved.
+
+All six HTTPS calls returned validated structured interpretations and settled
+usage. The durable ledger total is 18,827,055 nanodollars ($0.018827055), below the
+500,000,000-nanodollar authorization ceiling. Each record includes input/output
+tokens and admission/context/provider/validation/materialization timings.
+The unchanged original safe report is
+`tmp/parallax-a1/evaluations/live-ca5c5954-3795-499f-bf7f-19a10f73ec67.json`,
+SHA-256 `48f815cc93321f52b3bdfe65b9bf43771431f59a7ca29a88db6d3a24767e1051`.
+It contains no prompts, responses,
+credential values or private scenes.
+
+The v1 report records four passing semantic evaluations and two
+`REQUIRED_CREATE_MISSING` findings. Both creation results passed intent, final
+parchment kind/content and materialization checks. Inspection found that the
+required CREATE matcher also demanded the private fixture ID `pirate-note`,
+which the provider was never given. This is an evaluator false negative, rather
+than evidence that the requested note was absent. The raw report is preserved;
+it is not relabeled as six green evaluations.
+
+Corpus v2 matches CREATE kind, requested content and placement while allowing
+valid newly chosen identities. Existing edit targets remain exact. Two regression
+checks prove that arbitrary valid new IDs are accepted while wrong creation
+content/placement and wrong existing targets still fail. The 63-check corpus
+suite passes. No additional paid request was made, and this corrected matcher has
+not been rerun live. Six synthetic samples do not establish full-corpus model
+quality or physical AR acceptance.
+
+## Requirement audit before final ordinary qualification
+
+| Requirement group                                | Current evidence and boundary                                                                                                                                                                                     |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Shared local credential and absent-key operation | Safe fresh-child probes from three independent checkout directories; provider tests reject missing keys before fetch and preserve manual editing. Only server environment access is used.                         |
+| Canonical Assistant and reviewed proposals       | Mounted host, strict same-route HTTP/service tests, operation/dependency/schema checks and 60 deterministic corpus cases. No tools or unmetered legacy inference path.                                            |
+| Preview, Apply, history and persistence          | Production 28-step Creator journey, actual WebGL correspondence, durable atomic-save/retry-receipt tests and monotonic stale-generation checks.                                                                   |
+| Adaptive/library/Chronicle ownership             | Focused compatibility checks plus immutable Library and exact Chronicle pin/reopen with unchanged progression in the production journey.                                                                          |
+| Quotas, accounting and administration            | Isolated ledger/policy races and three authenticated quota journeys, including the normal People dossier, assurance, reviewed mutations, audit, suspension, advanced grants, exhaustion and independent sessions. |
+| Live provider                                    | Six authenticated structured responses with settled usage; four raw semantic passes and two documented fixture-ID false negatives. Corrected v2 matcher is deterministic-only.                                    |
+| Presentation and accessibility                   | Twelve viewport/mode/docking combinations, visible accessibility/motion/focus checks and inspected captures; gallery awaits owner review. Physical phone keyboard/touch and AR quality remain separate.           |
+| Documentation and catalog                        | Product/status/guide/changelog review and governed documentation/index/catalog validation; partial A1 is not promoted as mainline availability.                                                                   |
+| Final acceptance                                 | Ordinary exact-candidate Sounding Line, protected merge and landed smoke remain outstanding. Browser proof and the live canary do not replace that authority.                                                     |

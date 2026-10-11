@@ -74,6 +74,14 @@ with a $0.50 total ceiling and no retries. Final ordinary SL/PR/landed
 qualification, live-provider evidence and owner visual acceptance remain open.
 Feature catalog does not promote partial A1 capability.
 
+Authorized canary executed six calls on clean `d6d63b2c`: all six provider
+responses validated and settled for $0.018827055. Original v1 semantic results
+are four passes and two CREATE fixture-ID false negatives; preserve the report.
+Corpus v2 requires creation semantics rather than an undisclosed fixture ID and
+retains exact existing targets, with 63 passing corpus checks. No paid retry or
+additional call is authorized. Final ordinary qualification and owner review
+remain separate; never label deterministic v2 proof as a fresh live rerun.
+
 Newest fetched main includes records-only closure `af867c01` (product source
 verified equal to `0327eeb7`) and phone correction PR #712 at `678dd115`.
 Implementation was published and additively reconciled in `6d19d0d6`. Canonical

@@ -1,7 +1,7 @@
 import { createSpatialDraft, editSpatialDraft, type SpatialDraft } from "../../src/parallax/authoring";
 import type { AssistantInterpretation, AssistantOperation } from "../../src/parallax/spatial-assistant";
 
-export const CORPUS_VERSION = "parallax-spatial-assistant-2026-10-11-v1";
+export const CORPUS_VERSION = "parallax-spatial-assistant-2026-10-11-v2";
 export const MAP = "synthetic-evaluation:entity-0";
 export type SceneExpectation = { path: string; value: unknown };
 export type AssistantEvaluationCase = {
@@ -13,7 +13,14 @@ export type AssistantEvaluationCase = {
   expected: {
     intentType: AssistantInterpretation["intentType"];
     classification: "SUPPORTED" | "CLARIFY" | "UNSUPPORTED";
-    requiredOperations: { type: AssistantOperation["type"]; entityId?: string; targetEntityId?: string }[];
+    requiredOperations: {
+      type: AssistantOperation["type"];
+      entityId?: string;
+      targetEntityId?: string;
+      kind?: string;
+      content?: string;
+      placement?: string;
+    }[];
     forbiddenOperations: string[];
     uncertainty: "NONE" | "ASK" | "EXPLAIN_LIMITATION";
     scene: SceneExpectation[];
@@ -107,11 +114,17 @@ function supported(
     expected: {
       intentType,
       classification: "SUPPORTED",
-      requiredOperations: operations.map((operation) => ({
-        type: operation.type,
-        ...("entityId" in operation ? { entityId: operation.entityId } : {}),
-        ...("targetEntityId" in operation ? { targetEntityId: operation.targetEntityId } : {}),
-      })),
+      // A live model cannot know fixture-only new identities. Require creation
+      // semantics; references to existing scene identities must still be exact.
+      requiredOperations: operations.map((operation) =>
+        operation.type === "CREATE"
+          ? { type: operation.type, kind: operation.kind, content: operation.content, placement: operation.placement }
+          : {
+              type: operation.type,
+              ...("entityId" in operation ? { entityId: operation.entityId } : {}),
+              ...("targetEntityId" in operation ? { targetEntityId: operation.targetEntityId } : {}),
+            },
+      ),
       forbiddenOperations: baseForbidden,
       uncertainty: "NONE",
       scene,

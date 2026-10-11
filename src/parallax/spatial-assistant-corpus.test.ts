@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { materializeAssistantInterpretation, prepareAssistantContext } from "./spatial-assistant";
 import { assistantEvaluationCorpus, evaluationScene } from "../../tests/parallax/spatial-assistant-corpus-v1";
+import { evaluateAssistantCase } from "../../tests/parallax/evaluate-assistant-case";
 export function valueAt(input: unknown, path: string): unknown {
   return path
     .split(".")
@@ -12,6 +13,29 @@ export function valueAt(input: unknown, path: string): unknown {
     );
 }
 describe("Versioned deterministic semantic contract corpus (no live-model evidence)", () => {
+  it("accepts a valid newly chosen identity while requiring creation content and placement", () => {
+    const item = assistantEvaluationCorpus.find((candidate) => candidate.id === "create-note")!;
+    const proposal = structuredClone(item.deterministicFixture);
+    const operation = proposal.operations[0];
+    if (operation.type !== "CREATE") throw new Error("Expected creation fixture.");
+    operation.entityId = "model-chosen-note";
+    expect(evaluateAssistantCase(item, evaluationScene(item), proposal)).toEqual({ passed: true, findings: [] });
+    operation.placement = "WALL";
+    expect(evaluateAssistantCase(item, evaluationScene(item), proposal).findings).toContain("REQUIRED_CREATE_MISSING");
+    operation.placement = "DESK";
+    operation.content = "Different note";
+    expect(evaluateAssistantCase(item, evaluationScene(item), proposal).findings).toContain("REQUIRED_CREATE_MISSING");
+  });
+  it("still rejects a different existing edit target", () => {
+    const item = assistantEvaluationCorpus.find((candidate) => candidate.id === "relative-left")!;
+    const proposal = structuredClone(item.deterministicFixture);
+    const operation = proposal.operations[0];
+    if (operation.type !== "TRANSFORM") throw new Error("Expected transform fixture.");
+    operation.entityId = "different-existing-map";
+    expect(evaluateAssistantCase(item, evaluationScene(item), proposal).findings).toContain(
+      "REQUIRED_TRANSFORM_MISSING",
+    );
+  });
   it("contains sixty distinct instructions across all fifteen required categories", () => {
     expect(assistantEvaluationCorpus).toHaveLength(60);
     expect(new Set(assistantEvaluationCorpus.map((item) => item.category)).size).toBe(15);

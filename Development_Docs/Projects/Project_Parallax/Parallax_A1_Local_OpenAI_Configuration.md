@@ -80,6 +80,13 @@ configuration output and exclusion from request bodies. These checks establish
 local credential loading, not live-provider availability or integrated Studio
 acceptance.
 
+Refreshed zero-network probes again passed from all three directories after the
+bounded live canary. That diagnostic process now reported an inherited credential
+and no restart requirement. Six authorized real calls through the server adapter
+returned structured responses and settled usage; the
+[qualification record](Parallax_A1_Evaluation_and_Qualification.md) preserves the
+source, cost and semantic-evaluation limitations. No credential value was emitted.
+
 Codex Cloud Personal Vault is a separate execution environment. Its network
 secret is not automatically inherited by Windows processes. Local configuration
 does not need cloud secret managers, containers or additional services.

@@ -10,7 +10,8 @@ last_reviewed: 2026-10-11
 
 The A1 candidate adds **AI Usage & Quotas** to Admiralty. Deploying its additive
 database migrations is required before those views can query their new tables.
-Integrated browser and final qualification are pending.
+Integrated browser checks pass; final ordinary qualification and owner review
+remain pending.
 
 Use **Overview** to inspect monthly accounted spending, settled spending,
 remaining global budget, requests, active Creators, daily spending and outcomes.
@@ -54,7 +55,14 @@ guide](Parallax_A1_Local_OpenAI_Configuration.md). Local quotas bound admitted
 application exposure; they are not an OpenAI account-wide invoice cap and cannot
 control unrelated processes using the same credential. Review provider-side
 account controls separately, including the [enforced project/organization spend
-limits](https://developers.openai.com/api/docs/guides/error-codes) when multiple
+limits](https://developers.openai.com/api/docs/guides/spend-limits) when multiple
 worktrees share a credential across independent databases. A local warning is informational; reservations
 against the local hard cap fail closed. Do not release unresolved usage as zero
 merely because a connection timed out.
+
+In the OpenAI API Platform, open the relevant organization or project **Limits**
+page, choose **Spend → Edit spend limit**, enter the monthly amount, enable
+**Enforce a hard limit**, and save. Alerts alone do not stop requests. Provider
+enforcement can lag and allow a small overshoot; the local ledger still reserves
+conservative exposure before dispatch. These provider controls are separate from
+Voyagewright's reviewed policy and apply to other processes using that project.
