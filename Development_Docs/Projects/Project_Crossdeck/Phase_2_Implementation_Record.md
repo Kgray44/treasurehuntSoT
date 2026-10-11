@@ -50,12 +50,30 @@ documentation validation and catalog validation also passed at their recorded
 development snapshots. These observations are development evidence, not a final
 head Sounding Line acceptance receipt.
 
-After the owner computer restart, workspace and commit `7ce1a6c6` were reconciled
-with a clean working tree. The coordinator assigned Sextant the first shared
-heavy-testing slot; Crossdeck's owned verifier was stopped before dispatching
-heavy checks. Final aggregate/build/browser proof is held until that slot is
-granted. Native application metadata remained unavailable after restart, while
-shell execution resumed successfully. No sibling or game processes were altered.
+The coordinator subsequently assigned Crossdeck the single shared heavy-testing
+slot. Verification uses one Vitest fork, one Playwright worker and the supported
+Next page-worker limit. No sibling or game processes were altered. Two earlier
+aggregate failures remain preserved: `356e5425` exposed a Windows Node test-loader
+URL defect; `bbd73638` passed 297 unit files (1,918 tests), 58 Node registration
+tests and the production build before exposing an inactive source surface in the
+D1 handoff. The isolated loader correction is equivalent to Sextant's independently
+reported `f5c34d5b` change; reconcile that one shared-file edit before integration.
+
+The presence correction sends an immediate authorized heartbeat when the Journal
+mounts and fences subsequent background heartbeats after page exit. Recovery
+checks canonical server presence rather than a raw stored lifecycle. Both D1
+journeys and the production build passed on clean `43812da1`. SQLite creation,
+compare-and-swap, uniqueness and cascade rehearsal, MySQL static DDL checks and
+MySQL Prisma schema validation passed at that revision. D2 discovery at the same
+revision emitted UNSUPPORTED receipts. Four focused presence/status regression
+tests passed before the final status-message commit `4db13339`.
+
+`evidence/phase2/recovery` preserves these observations with their original source
+identities and hashes. They do not substitute for final-head proof. The local
+Sounding Line decision at `artifacts/sounding-line/ordinary-decision.json` is
+authoritative for this candidate only when its `candidateSha` matches HEAD and
+its required obligations are satisfied. The final delivery reports that actual
+decision separately from the historical receipts; no helper output is fabricated.
 
 The permanent evidence directory records the exact software fidelity and source identity. D0 executes deterministic synthetic service/database scenarios. D1 uses two production-route Chromium contexts with mobile emulation. D2 requires an actual task-owned Android virtual device and Android Chrome; `scripts/crossdeck/qualify-d2.ts` validates its platform or emits UNSUPPORTED receipts. It does not label browser emulation as Android evidence.
 
