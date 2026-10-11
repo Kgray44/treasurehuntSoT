@@ -1,56 +1,119 @@
-{
-  "id": "FT-B092",
-  "title": "Parallax Spatial Studio and Versioned Spatial Library",
-  "summary": "Creators build, preview, validate and version spatial scenes in a dedicated Studio, attach exact immutable versions to Chronicles, and publish/reopen them through the existing One Voyage flow.",
-  "status": "MAINLINE",
-  "program": "Parallax",
-  "surfaces": ["/studio/parallax", "/studio/tales/[taleId]"],
-  "subfeatures": [
-    "Spatial canvas with direct and keyboard manipulation",
-    "Scene hierarchy, layers, visibility, locking and object inspection",
-    "Declarative behavior timeline with deterministic runtime evaluation",
-    "Guided, Detailed and Engineering authoring modes",
-    "Creator-owned library scopes, immutable versions, forks and provenance",
-    "Five editable first-party presets and ten synthetic reference environments",
-    "Reviewed AI intent and critique adapters with deterministic edits and undo/redo",
-    "Checksum-pinned Chronicle attachments with reversible attachment history",
-    "Selected-object Drydock links and asset, scale and performance validation"
-  ],
-  "evidence": [
-    {
-      "kind": "commit",
-      "value": "d43e9403746988985863e2950f6de7ff36b4db0c"
-    },
-    {
-      "kind": "path",
-      "value": "src/components/studio/parallax/SpatialStudio.tsx"
-    },
-    {
-      "kind": "path",
-      "value": "src/parallax/library-service.ts"
-    },
-    {
-      "kind": "test",
-      "value": "src/parallax/authoring.test.ts"
-    },
-    {
-      "kind": "test",
-      "value": "src/parallax/library-service.test.ts"
-    },
-    {
-      "kind": "test",
-      "value": "tests/e2e/parallax-studio.spec.ts"
-    },
-    {
-      "kind": "completion-record",
-      "value": "Development_Docs/Projects/Project_Parallax/Phase_2_Implementation.md"
-    }
-  ],
-  "limitations": [
-    "Local software qualification does not establish representative-device owner acceptance or D4 physical AR evidence.",
-    "AI authoring requires an owner-configured HTTPS provider; live provider quality and operations remain an environment gate.",
-    "Synthetic previews and complexity estimates do not establish measured device frame rates or shared-anchor synchronization.",
-    "Unsupported imported renderer assets block release; richer rendering, adaptive placement, recognition and Reach manipulation remain governed by their owning later phases."
-  ],
-  "catalogVersion": 1
-}
+[
+  {
+    "id": "FT-B092",
+    "title": "Parallax Spatial Studio and Versioned Spatial Library",
+    "summary": "Creators build, preview, validate and version spatial scenes in a dedicated Studio, attach exact immutable versions to Chronicles, and publish/reopen them through the existing One Voyage flow.",
+    "status": "MAINLINE",
+    "program": "Parallax",
+    "surfaces": ["/studio/parallax", "/studio/tales/[taleId]"],
+    "subfeatures": [
+      "Spatial canvas with direct and keyboard manipulation",
+      "Scene hierarchy, layers, visibility, locking and object inspection",
+      "Declarative behavior timeline with deterministic runtime evaluation",
+      "Guided, Detailed and Engineering authoring modes",
+      "Creator-owned library scopes, immutable versions, forks and provenance",
+      "Five editable first-party presets and ten synthetic reference environments",
+      "Reviewed AI intent and critique adapters with deterministic edits and undo/redo",
+      "Checksum-pinned Chronicle attachments with reversible attachment history",
+      "Selected-object Drydock links and asset, scale and performance validation"
+    ],
+    "evidence": [
+      {
+        "kind": "commit",
+        "value": "d43e9403746988985863e2950f6de7ff36b4db0c"
+      },
+      {
+        "kind": "path",
+        "value": "src/components/studio/parallax/SpatialStudio.tsx"
+      },
+      {
+        "kind": "path",
+        "value": "src/parallax/library-service.ts"
+      },
+      {
+        "kind": "test",
+        "value": "src/parallax/authoring.test.ts"
+      },
+      {
+        "kind": "test",
+        "value": "src/parallax/library-service.test.ts"
+      },
+      {
+        "kind": "test",
+        "value": "tests/e2e/parallax-studio.spec.ts"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Parallax/Phase_2_Implementation.md"
+      }
+    ],
+    "limitations": [
+      "Local software qualification does not establish representative-device owner acceptance or D4 physical AR evidence.",
+      "AI authoring requires an owner-configured HTTPS provider; live provider quality and operations remain an environment gate.",
+      "Synthetic previews and complexity estimates do not establish measured device frame rates or shared-anchor synchronization.",
+      "Unsupported imported renderer assets block release; richer rendering, recognition, shared physical anchors and Reach manipulation remain governed by their owning phases."
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-B111",
+    "title": "Parallax Adaptive Semantic Staging and Discovery",
+    "summary": "Creators author multi-object semantic scenes remotely, preview differing safe arrangements, publish stable version-bound logical placement policies, and provide bounded accessible discovery with optional consented metadata calibration in the refined 3D workstation.",
+    "status": "MAINLINE",
+    "program": "Parallax Phase 3",
+    "surfaces": ["/studio/parallax", "/player/voyages/[playthroughId]"],
+    "subfeatures": [
+      "Typed semantic surfaces, context, safety, accessibility and fallback recipes",
+      "Deterministic unsafe-first multi-entity staging with bounded scene budgets and conflict diagnostics",
+      "Sticky, crew, run, variant and calibrated policies with durable logical decisions",
+      "Provider-independent guided remote authoring and reviewable supported phrase preview",
+      "Real 3D editing with four workspace layouts, adaptive resizable docks and account-scoped presentation preferences",
+      "Meaningful search timers, progressive hints, exact reveal and accessible canonical completion paths",
+      "Optional minimized field metadata with consent, withdrawal, retention, authorized sequential review and immutable calibration releases",
+      "Separate simulated and self-reported quality summaries with actionable Creator guidance",
+      "Shared Device Lab runtime and field-service packs plus complete Creator and Player publication/republication browser journeys"
+    ],
+    "evidence": [
+      {
+        "kind": "commit",
+        "value": "0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6"
+      },
+      {
+        "kind": "path",
+        "value": "src/parallax/adaptive.ts"
+      },
+      {
+        "kind": "path",
+        "value": "src/parallax/field-service.ts"
+      },
+      {
+        "kind": "test",
+        "value": "src/parallax/adaptive.test.ts"
+      },
+      {
+        "kind": "test",
+        "value": "src/parallax/field-service.test.ts"
+      },
+      {
+        "kind": "test",
+        "value": "tests/e2e/parallax-adaptive.spec.ts"
+      },
+      {
+        "kind": "test",
+        "value": "tests/e2e/parallax-workstation.spec.ts"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md"
+      }
+    ],
+    "limitations": [
+      "Physical AR accuracy, actual field reliability, representative-device performance and cross-device physical alignment are not established by synthetic software proof.",
+      "Native semantic candidate acquisition is unavailable; existing adapters degrade to Guided rather than invent geometry.",
+      "Physical provenance is self-reported; simulation cannot promote physical maturity and neither establishes certified hardware attestation.",
+      "Automatic room-image transfer is disabled until certified local person/face screening and the approved protected-media purpose are available.",
+      "Live AI-provider quality, separately owned Assistant A1 integration and unsupported imported renderers remain unavailable or unqualified."
+    ],
+    "catalogVersion": 1
+  }
+]

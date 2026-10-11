@@ -10,7 +10,7 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-Parallax Phase 3 has completed local implementation and Creator/Player browser journeys for semantic staging, scoped logical decisions, optional metadata calibration, discovery recovery and the refined 3D workstation. The [implementation record](../../../Projects/Project_Parallax/Phase_3_Implementation.md) reconciles requirements and evidence; [final refinement approval](../../../Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) binds `592217e3` on 2026-10-11. Ordinary protected qualification and integration remain pending. Physical accuracy, shared physical alignment and live AI-provider quality remain separate gates.
+Parallax Phase 3 is software-qualified and integrated through protected PR #711 at `0327eeb7`. Semantic staging, scoped logical decisions, optional metadata calibration, discovery recovery and the refined 3D workstation passed ordinary Sounding Line and landed smoke. The [implementation record](../../../Projects/Project_Parallax/Phase_3_Implementation.md) reconciles requirements and evidence; [final refinement approval](../../../Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) binds `592217e3` on 2026-10-11. Catalog FT-B111 records mainline availability. Physical accuracy, shared physical alignment and live AI-provider quality remain separate gates.
 
 Reach Phase 1's observation/calibration laboratory is an integrated foundation preview through protected PR #697; physical qualification remains pending. See the [phase record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md); no Phase 2 action capability is claimed.
 

@@ -1,7 +1,7 @@
 ---
 title: Parallax Spatial Studio Creator guide
 audience: creators
-status: local-implementation
+status: current
 canonical_for: parallax-spatial-studio-guide
 last_reviewed: 2026-10-11
 ---
@@ -10,7 +10,7 @@ last_reviewed: 2026-10-11
 
 Open **Spatial Studio** from Creator Studio, or select **Add Spatial Moment** on a Chronicle passage. Guided mode starts with a Desk Map and keeps the canvas at the center of the workspace.
 
-The [Phase 3 implementation](Phase_3_Implementation.md) and [refined workstation](Phase_3_Workspace_Refinement.md) have completed local browser journeys and explicit owner visual approval on 2026-10-11. Protected-main qualification is pending. The editing workflow is:
+The [Phase 3 implementation](Phase_3_Implementation.md) and [refined workstation](Phase_3_Workspace_Refinement.md) are software-qualified on protected main through PR #711 and received explicit owner visual approval on 2026-10-11. The editing workflow is:
 
 - Add a visual asset to the current scene from the asset browser, or drag it into the viewport. **New scene** opens a separate spatial moment.
 - Select an object in the scene or hierarchy. Choose **Move**, **Rotate** or **Scale** to use its gizmo. Drag empty space to orbit, Shift-drag to pan and scroll to zoom. Plan and elevation views help inspect placement; precise inspector controls and keyboard movement remain available.

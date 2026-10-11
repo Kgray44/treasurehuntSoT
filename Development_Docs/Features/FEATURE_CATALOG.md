@@ -2229,7 +2229,7 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 - Local software qualification does not establish representative-device owner acceptance or D4 physical AR evidence.
 - AI authoring requires an owner-configured HTTPS provider; live provider quality and operations remain an environment gate.
 - Synthetic previews and complexity estimates do not establish measured device frame rates or shared-anchor synchronization.
-- Unsupported imported renderer assets block release; richer rendering, adaptive placement, recognition and Reach manipulation remain governed by their owning later phases.
+- Unsupported imported renderer assets block release; richer rendering, recognition, shared physical anchors and Reach manipulation remain governed by their owning phases.
 
 ### Evidence
 
@@ -2323,11 +2323,9 @@ An authorized synthetic adventure connects published One Voyage story progressio
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
-
 ## FT-B111 - Parallax Adaptive Semantic Staging and Discovery
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Parallax Phase 3
 
 Creators author multi-object semantic scenes remotely, preview differing safe arrangements, publish stable version-bound logical placement policies, and provide bounded accessible discovery with optional consented metadata calibration in the refined 3D workstation.
@@ -2358,7 +2356,7 @@ Creators author multi-object semantic scenes remotely, preview differing safe ar
 
 ### Evidence
 
-- commit: `f521aaacf0f285ced5ffa3013d5de387d5b242f3`
+- commit: `0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6`
 - path: `src/parallax/adaptive.ts`
 - path: `src/parallax/field-service.ts`
 - test: `src/parallax/adaptive.test.ts`
@@ -2368,6 +2366,8 @@ Creators author multi-object semantic scenes remotely, preview differing safe ar
 - completion-record: `Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md`
 
 ---
+
+# Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
 

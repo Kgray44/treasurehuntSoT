@@ -1,16 +1,26 @@
 ---
 title: Parallax Phase 3 implementation and qualification
 audience: product-engineering
-status: branch-complete-protected-qualification-pending
+status: software-qualified-mainline
 canonical_for: parallax-phase-3-implementation
 last_reviewed: 2026-10-11
 ---
 
 # Let the World Adapt
 
-Phase 3 extends the existing Spatial Studio, immutable Spatial Library and Chronicle Lens. Creators can describe surface and context intent, stage several related objects, compare synthetic rooms, configure bounded discovery recovery, publish the exact version and review optional minimized field feedback. The same canonical draft, library, publication and One Voyage progression authorities remain in use. This record reconciles governing §88 Phase 3; protected integration and physical qualification have separate evidence requirements.
+Phase 3 extends the existing Spatial Studio, immutable Spatial Library and Chronicle Lens. Creators can describe surface and context intent, stage several related objects, compare synthetic rooms, configure bounded discovery recovery, publish the exact version and review optional minimized field feedback. The same canonical draft, library, publication and One Voyage progression authorities remain in use. This record reconciles governing §88 Phase 3. Software is qualified and integrated on protected main; physical qualification remains separate.
 
 The owner approved the populated workstation at `01de94c67ed82d0812db6f884389e0b0fc52d274` and the refined workstation at `592217e3edb214bab76373dc64cbe4b954ba3703`, tree `36cb8d072caa7c17519d6398bd994c26c4c4a05f`, on 2026-10-11. The latter decision was **Approve the refined workstation**. These are visual decisions for the shown sources, not approval receipts for subsequent service/test edits. [Workstation evidence](Phase_3_Workstation_Review.md) and [refinement measurements](Phase_3_Workspace_Refinement.md) retain the exact bindings.
+
+## Protected integration and landed verification
+
+[Product PR #711](https://github.com/Kgray44/treasurehuntSoT/pull/711) merged through existing protections at **2026-10-11T20:21:22Z**, integration commit **`0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6`**. Its tree **`36529aefcac815a8a1cef0434624149b9b567e6f`** exactly equals qualified candidate **`e40cd35d78089a2472473cadd2b7abae46b9aaae`**. The accepted base is **`efa689f20d2a9dead852135302dd6961c9f0f0d2`**; Pilot and Crossdeck source/evidence are preserved.
+
+[Ordinary Sounding Line run 38171123906](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38171123906) passed all **nine** required obligations with zero errors and zero remainder at `2026-10-11T20:20:09.006Z`. **1,739 tests across 277 files** passed. All **four** product browser journeys passed in the built isolated server; the historical Phase 2 capture test was intentionally skipped. Formatting, ESLint, TypeScript, privacy scan, migration/Prisma proof and production build passed. The [original decision](phase3-evidence-20261011/ordinary-pass-e40cd35d.json) retains exact candidate/base/tree and individual receipts; it is not rewritten to the merge identity.
+
+The clean actual landed tree passed **79 focused smoke tests across eight files** and **26 fresh D0 scenarios**. [Landed smoke](phase3-evidence-20261011/landed-smoke.json), original frozen and landed Device Lab receipts, [owner approval binding](phase3-evidence-20261011/owner-acceptance.json), [capture manifest](phase3-evidence-20261011/screenshots.json) and [renderer measurements](phase3-evidence-20261011/viewport-measurements.json) are preserved under `phase3-evidence-20261011/`. Every Device Lab receipt retains its original source and virtual/simulation evidence class. [Original receipt inventory](phase3-evidence-20261011/original-receipts.json) binds byte-preserved `.original-receipt` files to readable JSON copies with identical parsed content. The six field-service drivers are additionally covered by the protected unit obligation; their synthetic unit receipt envelopes are not substituted for these clean-source receipts.
+
+Feature Catalog **FT-B111** is promoted from branch-complete to the Parallax mainline fragment with the integration commit. **FT-B092** retains the accepted Phase 2 capability. Workstation UI/navigation has no source diff from the visually approved `592217e3` to the qualified candidate; later field/receipt changes have independent software proof. Assistant A1 can reconcile its mounted integration against this exact protected tree using the acknowledged host amendments. This phase implements no A1 mount, deployment, protection bypass or Phase 4 authority.
 
 ## Domain and runtime design
 
@@ -83,7 +93,7 @@ All evidence below is software/synthetic proof unless explicitly classified othe
 
 ## Development proof and preserved artifacts
 
-- Relevant Parallax/Studio/catalog subsystem: 171 tests across 17 files passed after the final service-pack/receipt additions. The final affected shared-runner/field/runtime check passed 24 tests across three files. TypeScript and affected ESLint checks passed; ordinary protected qualification remains separate.
+- Relevant Parallax/Studio/catalog subsystem: 171 tests across 17 files passed after the final service-pack/receipt additions. The final affected shared-runner/field/runtime check passed 24 tests across three files. TypeScript and affected ESLint checks passed; the ordinary protected decision above supersedes these development diagnostics for software acceptance.
 - Production-browser workstation journeys at `26e895c42247104bb5ffb9b2f21c199244893005` passed in 10.0 and 11.7 seconds. The fixed publication/reopen journey passed at `5e98f1c8`. The complete adaptive journey passed at `592217e3` in 51.6 seconds, including consent, retry/withdrawal, owner review, bounded recipe adjustment, new immutable release and Chronicle republication.
 - Browser calibration deliberately supplies invented self-reported metadata to exercise the software lifecycle. It is neither a real field observation nor hardware attestation. A separate ordinary Player preserves the existing active-Player workspace lock when the Creator returns to review.
 - Original baseline captures remain under `artifacts/parallax-phase3/baseline/` and `workstation/`; refined captures and actual renderer bounds are in `workstation-refinement/`. Failed diagnostic iterations and their logs remain preserved. Owner review runs on an owned loopback production server with a disposable synthetic database; its source-bound runtime/login receipt is in `owner-review/`.
@@ -91,7 +101,7 @@ All evidence below is software/synthetic proof unless explicitly classified othe
 
 ## Integration boundary and remaining qualification
 
-Current protected main was fetched again after owner approval; accepted Pilot and Crossdeck changes are reconciled without importing unmerged sibling source. Final source must be frozen, opened as one ordinary product PR, pass normal Sounding Line, merge through existing protections and pass landed smoke. The integration SHA/tree and hosted decision belong in this record after they exist. No protection bypass, release certification campaign, deployment or Phase 4 work is authorized.
+Current protected main was fetched again after owner approval; accepted Pilot and Crossdeck changes were reconciled without importing unmerged sibling source. The frozen ordinary product PR, exact Sounding Line decision, protected merge and clean landed smoke are complete as recorded above. No release certification campaign, deployment or Phase 4 work occurred.
 
 D4/D5 physical-device accuracy, actual field calibration reliability, native semantic candidate acquisition, representative-device performance, certified imagery screening, shared physical anchors and live AI-provider quality remain unqualified. The workstation visual approvals do not close those gates. Software remains usable through honest Guided/accessible fallback without an external provider or later phase.
 

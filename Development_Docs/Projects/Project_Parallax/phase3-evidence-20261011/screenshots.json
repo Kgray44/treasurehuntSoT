@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "workstationOwnerApprovedSource": "592217e3edb214bab76373dc64cbe4b954ba3703",
+  "workstationUiUnchangedSinceCaptureSource": "26e895c42247104bb5ffb9b2f21c199244893005",
+  "physicalQualification": "NOT_ESTABLISHED",
+  "screenshots": [
+    {
+      "file": "workstation-refinement-default-spatial-editing.png",
+      "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005",
+      "sha256": "77024892d002a1f5e89606aca0aa87d8344c43360e6203c36e79e09876729a01",
+      "width": 1920,
+      "height": 1080,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "workstation-refinement-construction-layout.png",
+      "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005",
+      "sha256": "750e89ed600762e08c4f49a637d17f625f0184810c43a7b863ae2cbfa3ae4698",
+      "width": 1920,
+      "height": 1080,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "workstation-refinement-behavior-authoring.png",
+      "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005",
+      "sha256": "ac0f55ae614f55e30b89aa61d0c86c8fd14db28a8b83f0510df0fa9a6d87d8d2",
+      "width": 1920,
+      "height": 1080,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "workstation-refinement-focus-1920x1080.png",
+      "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005",
+      "sha256": "60444a0e8b0abc4cad2d27894bb97a965c58f5bf7d7065aaf9a305b2917719aa",
+      "width": 1920,
+      "height": 1080,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "workstation-refinement-focus-1440x900.png",
+      "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005",
+      "sha256": "35869c493458d1e3b244334d48c459710202db1a7121298bad5380288d96b28e",
+      "width": 1440,
+      "height": 900,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "workstation-refinement-focus-1366x768.png",
+      "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005",
+      "sha256": "938fc787a77716e103fe9c0fe9cb67b6a398638948351fed61030afe65b81095",
+      "width": 1366,
+      "height": 768,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "workstation-refinement-focus-1280x800.png",
+      "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005",
+      "sha256": "151791c14676d5728ac6596d300c30999f74fe92e4d31f78e346197065acf318",
+      "width": 1280,
+      "height": 800,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "workstation-refinement-focus-1024x768.png",
+      "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005",
+      "sha256": "33f2d791b04f7dc5610ce0f5d8ffad69cefac2777e489c046db0b91c642b5f71",
+      "width": 1024,
+      "height": 768,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "workstation-refinement-focus-390x844.png",
+      "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005",
+      "sha256": "ec7276fc8cd5116e7f6d723742f1641781af06b68aaa865613d2baa3c046980b",
+      "width": 390,
+      "height": 844,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "workstation-refinement-constrained-desktop-guided.png",
+      "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005",
+      "sha256": "4bf5ea7e7f24d35dfdbe4ca980dd91d00741c8054a76531559aaefffb090b805",
+      "width": 1366,
+      "height": 768,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "workstation-refinement-constrained-desktop-engineering.png",
+      "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005",
+      "sha256": "b9287b173991ae801a541a3c1bca311cb44a2fd358759106885683f18821708e",
+      "width": 1366,
+      "height": 768,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "browser-living-room.png",
+      "sourceSha": "592217e3edb214bab76373dc64cbe4b954ba3703",
+      "sha256": "08aee7725ece89a407cbc5b117866930623dad5d838ff29c0aef9d7b8a25aeca",
+      "width": 1280,
+      "height": 720,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "browser-no-safe-staging.png",
+      "sourceSha": "592217e3edb214bab76373dc64cbe4b954ba3703",
+      "sha256": "e34087957727a4e6b412266d84cc3de991aa222de7d7bca45fcfe2098b8a5193",
+      "width": 1280,
+      "height": 720,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "browser-lens-desktop-consent.png",
+      "sourceSha": "592217e3edb214bab76373dc64cbe4b954ba3703",
+      "sha256": "e787e1b508e5673d3fb92263559212e709a9eda89056e1b950bf21f6ae4c8e33",
+      "width": 1440,
+      "height": 1577,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "browser-lens-mobile-feedback.png",
+      "sourceSha": "592217e3edb214bab76373dc64cbe4b954ba3703",
+      "sha256": "31aebb8641832899c44e22c40d78547a5d0950a03560636dbe7137abc2992fb9",
+      "width": 390,
+      "height": 1723,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    },
+    {
+      "file": "browser-creator-field-refinement.png",
+      "sourceSha": "592217e3edb214bab76373dc64cbe4b954ba3703",
+      "sha256": "ffb0489baa5106045ffa02c0f46da294c27d2c60394913e1fcd11e84e91fccf4",
+      "width": 1440,
+      "height": 900,
+      "classification": "REAL_BROWSER_SYNTHETIC_CONTENT_ONLY"
+    }
+  ]
+}
