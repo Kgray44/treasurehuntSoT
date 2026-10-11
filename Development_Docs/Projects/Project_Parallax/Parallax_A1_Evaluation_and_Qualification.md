@@ -47,7 +47,7 @@ visual acceptance. Full-corpus comparison requires sufficient explicit allowance
 and remains optional. No paid evaluator or canary has been executed for this
 candidate, despite the configured Windows user credential.
 
-## Local development evidence
+## Earlier independent development evidence
 
 The focused local suite passes 209 checks across 13 files. Sixty deterministic evaluator results and the 61-check corpus suite pass. TypeScript, changed-source ESLint, documentation/index validation and generated Feature Catalog validation pass. No major catalog fragment changes are justified by this partial candidate.
 Owner-bound service tests use actual isolated SQLite and a mocked HTTPS adapter
@@ -99,10 +99,10 @@ below supersedes that implementation status. These checks use mocked HTTP and sy
 authenticated atomic backend Apply, a real history installation, persistence or
 the full Creator browser journey. Those gates remain pending.
 
-The complete authenticated Assistant browser journey, motion/viewport package,
-ordinary final Sounding Line, PR qualification, live provider canary and owner
-visual review remain pending. Canonical integration and atomic Apply now have
-focused source, persistence and mounted DOM proof as recorded below. The latest verified fetched main is
+At this earlier checkpoint the complete authenticated Assistant browser journey,
+motion/viewport package, ordinary final Sounding Line, PR qualification, live
+provider canary and owner visual review remained pending. The later records below
+supersede that implementation and browser status. The then-fetched main was
 `0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6` (accepted Phase 3 PR #711, preserving Crossdeck and Pilot); the independent checkpoint still derives
 from `f458bf2dc1176016c2d166180f038f0f15ac9f7c`. No unmerged Phase 3 source was
 imported and no shared development server, account database or real private
@@ -150,7 +150,7 @@ Apply uses the canonical save/CAS implementation and commits a metadata-only
 retry receipt atomically. No additional provider, endpoint, history or content
 store was introduced.
 
-The current focused suite passed 271 checks across 19 files. Six durable Apply
+The mounted checkpoint suite passed 271 checks across 19 files. Six durable Apply
 checks cover a saved revision and receipt, concurrent retries, fresh-server replay,
 receipt-write rollback, changed identities, later Creator work and stale/foreign/
 expired proposals. Ten same-route HTTP checks cover canonical session/CSRF and
@@ -166,7 +166,7 @@ Both Prisma schemas validate. TypeScript and scoped lint pass. Shared schema
 references and a four-object context bound fit the tested eight-object adaptive
 scene under the unchanged 12,000 conservative input allowance. Full canonical
 scene validation still governs every selected bundle. No paid request occurred.
-The next gates are the complete authenticated built-server Creator journey,
+The checkpoint's next gates were the complete authenticated built-server Creator journey,
 quota enforcement/browser scenarios, motion/viewport captures and final ordinary
 qualification. Model semantic quality, paid canary and owner visual acceptance
 remain separate from these deterministic checks.
@@ -175,5 +175,47 @@ Native fetch subsequently includes closure PR #713 at
 `af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf`, tree
 `2456cb6cf7091048d17d5e5d52b865b97ded9d6e`; direct Git comparison confirms its
 product source matches the Phase 3 product merge. Main has since advanced through
-phone sign-in correction PR #712 as `678dd115`. The next additive reconciliation
-must preserve that accepted correction; no sibling checkout was changed.
+phone sign-in correction PR #712 as `678dd115`. Additive reconciliation `6d19d0d6`
+preserves that accepted correction and closure records; no sibling checkout changed.
+
+## Authenticated production browser checkpoint
+
+Source `6cc62ef911c86c038ef990db5613b5ef6328b5d3`, tree
+`d3671cc09862db3ba35b9adbfb5d861a0b5ad4cb`, passed all five isolated production
+browser journeys. The guarded fixture intercepts only the fixed OpenAI Responses
+upstream inside a disposable runtime; real authentication, Studio/Admiralty routes,
+canonical persistence, accounting, WebGL preview and publication remain intact.
+No actual OpenAI network request or paid usage occurred. The source-bound local
+receipt, captures, safe synthetic provider metadata and hashed recordings are in
+`artifacts/parallax-a1/browser/6cc62ef911c8`. These are local evidence and are not
+substitutes for the ordinary final Sounding Line authority.
+
+The complete 28-step Creator journey passes response-to-scene correspondence,
+one atomic saved Apply/ledger receipt, Undo/Redo, saved-address refresh, prior-object
+refinement, Drydock, immutable Library version, exact Chronicle pin/reopen and
+unchanged progression records. Browser proof exposed and corrected the saved
+draft URL restoration defect.
+
+Three quota journeys cover the canonical People dossier, inheritance, larger and
+smaller allowances, privileged password assurance, suspension/reenabling, advanced
+grant/denial, monthly exhaustion, global warning/disable/reservation funding cap,
+stale reviews, privilege/private-history rejection, independent-user/global and
+same-user/session capacity races, and durable same-key replay. Global reservation
+funding denial is not a claim of literal 100 percent settled spending.
+
+Presentation proof covers 12 welcome viewport/mode/docking combinations plus
+composer reachability, real light/dark account appearance, reduced-motion styles,
+rendered-review focus, provider failure/recovery, unsupported capability and settled
+usage approaching/reaching a five-request synthetic allowance. Visible welcome
+and light proposal accessibility checks report no violations. The earlier hidden
+panel accessibility check is not used as visible-panel evidence. Layout and contrast
+defects found by these checks were fixed; captures do not establish owner approval.
+
+The expanded focused suite now passes 304 checks across 19 files, including
+adaptive/library/layout compatibility. TypeScript and scoped lint pass. Final
+ordinary qualification, exact PR/landed evidence, live-provider quality and owner
+visual acceptance remain open. The mobile canvas-switch check also passes:
+it preserves the actual proposal while hiding the panel, reopens the same review
+without saving and verifies reachable Apply controls. The
+[presentation review](Parallax_A1_Presentation_Review.md) records its
+review package and acceptance boundary.

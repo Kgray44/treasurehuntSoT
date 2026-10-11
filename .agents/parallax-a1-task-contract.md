@@ -63,13 +63,19 @@ invalidation. Legacy inference cannot bypass accounting. Assistant preview is
 separate from guided composer state; new-object selection preserves the actual
 verified preview. No paid provider, sibling mutation or shared runtime was used.
 
-Focused candidate proof: 271 checks across 19 files, TypeScript/scoped lint and
-both schema validations pass. Full authenticated browser/quotas, motion/viewport
-captures, final ordinary SL/PR/landed qualification and explicit paid/owner gates
-remain pending. Feature catalog does not promote partial A1 capability.
+Latest focused proof: 304 checks across 19 files; TypeScript/scoped lint and both
+schema validations pass. Source `6cc62ef9` passed all five isolated built-server
+journeys: full 28-step Creator publication/reopen, three actual quota/race journeys
+and visible presentation/accessibility/motion checks. Local source-bound receipts,
+captures and hashed recordings are under `artifacts/parallax-a1/browser`.
+The mobile canvas-switch check preserves preview without saving and reopens a
+reachable Apply review. Six live synthetic calls are now explicitly authorized,
+with a $0.50 total ceiling and no retries. Final ordinary SL/PR/landed
+qualification, live-provider evidence and owner visual acceptance remain open.
+Feature catalog does not promote partial A1 capability.
 
 Newest fetched main includes records-only closure `af867c01` (product source
-verified equal to `0327eeb7`) and phone correction PR #712 at `678dd115`. Publish
-this implementation checkpoint, then additively reconcile current accepted main;
-review the canonical browser UUID/local-HTTP correction before browser proof.
+verified equal to `0327eeb7`) and phone correction PR #712 at `678dd115`.
+Implementation was published and additively reconciled in `6d19d0d6`. Canonical
+account UUID/local-HTTP behavior is covered by the authenticated browser journey.
 Do not reset the primary/sibling checkout or reuse P3 qualification as A1 evidence.

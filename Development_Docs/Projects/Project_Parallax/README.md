@@ -19,6 +19,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 ## Governing authority
 
 - [A1 local OpenAI configuration](Parallax_A1_Local_OpenAI_Configuration.md) describes the shared Windows user credential, safe diagnostics and account-dossier quota controls.
+- [A1 Assistant presentation review](Parallax_A1_Presentation_Review.md) records source-bound production-browser captures, motion evidence and the outstanding owner visual review.
 
 - [Supplemental A1 Spatial Assistant amendment](../../Governing/Project_Parallax_A1_Spatial_Assistant_Governing_Amendment.md) adds reviewed natural-language authoring, OpenAI integration and Admiralty-controlled durable AI quotas. Implementation and qualification are in progress in a dedicated worktree; live canary and owner visual acceptance remain pending.
 
