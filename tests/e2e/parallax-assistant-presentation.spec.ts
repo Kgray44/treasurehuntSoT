@@ -115,7 +115,9 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
   await writeFile(`${artifactRoot}/reduced-motion.json`, JSON.stringify(reduced, null, 2) + "\n");
   expect(reduced.animation).toBe("none");
   expect(
-    reduced.transitions.every((duration) => duration.split(",").every((part) => Number.parseFloat(part) === 0)),
+    // The product-wide reduced-motion rule retains an effectively immediate
+    // 0.01ms transition for lifecycle events; no visible travel is permitted.
+    reduced.transitions.every((duration) => duration.split(",").every((part) => Number.parseFloat(part) <= 0.00001)),
   ).toBe(true);
   await capture(page, "reduced-motion-welcome");
   const accessibility = await new AxeBuilder({ page }).include("#parallax-assistance").analyze();

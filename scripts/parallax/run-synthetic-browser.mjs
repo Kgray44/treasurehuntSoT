@@ -1,7 +1,7 @@
 import path from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
 import { randomUUID, createHash } from "node:crypto";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const root = process.cwd();
 const candidate = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
@@ -51,9 +51,26 @@ const result = spawnSync(
     },
   },
 );
+// Playwright owns and replaces test-results on each run. Retain its motion
+// recordings beside this exact source receipt before another run can replace them.
+const recordings = [];
+const resultRoot = path.resolve(root, "test-results");
+if (existsSync(resultRoot)) {
+  for (const directory of readdirSync(resultRoot, { withFileTypes: true })) {
+    if (!directory.isDirectory() || !directory.name.startsWith("parallax-")) continue;
+    const file = path.join(resultRoot, directory.name, "video.webm");
+    if (!existsSync(file)) continue;
+    const destination = path.join(artifactRoot, `${directory.name}.webm`);
+    copyFileSync(file, destination);
+    recordings.push({
+      file: path.basename(destination),
+      sha256: createHash("sha256").update(readFileSync(destination)).digest("hex"),
+    });
+  }
+}
 writeFileSync(
   path.join(artifactRoot, "run.json"),
-  JSON.stringify({ ...record, finishedAt: new Date().toISOString(), exitCode: result.status }, null, 2),
+  JSON.stringify({ ...record, finishedAt: new Date().toISOString(), exitCode: result.status, recordings }, null, 2),
 );
 if (result.error) throw result.error;
 process.exitCode = result.status ?? 1;
