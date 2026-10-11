@@ -3,7 +3,7 @@ title: Project Crossdeck engineering home
 audience: product-engineering
 status: governing-baseline
 canonical_for: project-crossdeck-engineering-home
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Project Crossdeck
@@ -92,6 +92,11 @@ Phase 1 implements secure pairing and surface participation. The [Phase 2 implem
 
 The current repository already contains canonical Wayfarer/Homeport account sessions with safe device labels and revocation. Crossdeck must consume those foundations rather than create a competing login or device-authentication system.
 
+The [committed-change transport correction](Realtime_Transport_20261011.md) records
+SSE invalidation, active reconciliation, recovery/security proof and measured
+load separately from the historical Phase 2 acceptance receipt. Its protected
+integration status remains explicitly recorded there.
+
 ## Six-phase program
 
 1. **Phase 1 — Lay the Gangway**  
@@ -148,3 +153,7 @@ Publishing this governed baseline does not automatically authorize Crossdeck Pha
 ## Reach-era effective integration
 
 Read the preserved authority above with the [current Reach integration amendment](../../Governing/Project_Crossdeck_Governing_Amendment_v1.1_Reach_Air_Handoff_Intent.md). The [effective spatial authority index](../../Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) resolves the complete additive chain. Reach owns calibrated target/gesture intent; this project retains its domain authority. The amendment is governance only and does not claim new implementation or reopen accepted closure.
+
+## Committed-change transport closure
+
+The [realtime design and measurements](Realtime_Transport_20261011.md) and [protected integration closure](Realtime_Transport_Protected_Closure_20261011.md) record PR #706, exact-source acceptance and landed D0/D1 verification. Production, physical and owner acceptance remain separate gates.

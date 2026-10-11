@@ -213,21 +213,31 @@ export async function runJournalOpeningPhases({
 type ChronicleJournalSessionProps = Readonly<{
   sessionId: string;
   identitySession?: boolean;
+  instruments?: React.ReactNode;
 }>;
 
-export function ChronicleJournalSession({ sessionId, identitySession = false }: ChronicleJournalSessionProps) {
+export function ChronicleJournalSession({
+  sessionId,
+  identitySession = false,
+  instruments,
+}: ChronicleJournalSessionProps) {
   return (
     <CrossdeckContinuityProvider key={`${identitySession ? "identity" : "compatibility"}:${sessionId}`}>
       <ChronicleJournalSessionIdentity
         key={`${identitySession ? "identity" : "compatibility"}:${sessionId}`}
         sessionId={sessionId}
         identitySession={identitySession}
+        instruments={instruments}
       />
     </CrossdeckContinuityProvider>
   );
 }
 
-function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }: ChronicleJournalSessionProps) {
+function ChronicleJournalSessionIdentity({
+  sessionId,
+  identitySession = false,
+  instruments,
+}: ChronicleJournalSessionProps) {
   const root = useRef<HTMLElement>(null);
   const book = useRef<PageFlipBookHandle>(null);
   const journalHeading = useRef<HTMLHeadingElement>(null);
@@ -1055,6 +1065,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
           <div data-scene-part="ocean" />
           <div data-scene-part="fog-near" />
         </div>
+        {instruments}
         <header
           className="chronicle-session-header persistent-interface"
           data-opening-actor="persistent-interface"

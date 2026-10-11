@@ -31,6 +31,7 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
     let desktop: BrowserContext | undefined, phone: BrowserContext | undefined;
     let accountId: string | undefined, taleId: string | undefined;
     let executionError: unknown;
+    const observedRequests: { device: string; method: string; status: number; revision?: number }[] = [];
     const tier = process.env.CROSSDECK_ANDROID_CDP ? ("D2" as const) : ("D1" as const);
     const packs = createCrossdeckPhase2Packs(tier, () => ({
       async execute({ signal }) {
@@ -65,6 +66,24 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
           await phone.addCookies([{ name: "wayfarer_account", value: receiver.token, url: baseURL!, sameSite: "Lax" }]);
           const d = await desktop.newPage(),
             p = await phone.newPage();
+          for (const [device, page] of [
+            ["desktop", d],
+            ["phone", p],
+          ] as const) {
+            page.on("response", async (response) => {
+              if (!response.url().includes("/api/crossdeck/sync?")) return;
+              const item = {
+                device,
+                method: response.request().method(),
+                status: response.status(),
+                revision: undefined as number | undefined,
+              };
+              observedRequests.push(item);
+              try {
+                item.revision = (await response.json()).revision;
+              } catch {}
+            });
+          }
           await d.goto(`${baseURL}/account/devices?voyage=${voyage.id}`);
           await d.getByLabel("Device name").fill("Desktop");
           await d.getByRole("button", { name: "Use this device", exact: true }).click();
@@ -89,16 +108,25 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
           await sending.getByLabel("Transfer mode").selectOption("MOVE_CUSTODY");
           const sendButton = sending.getByRole("button", { name: "Send view", exact: true });
           await expect(sendButton).toBeEnabled();
+          const visibleMeasurements: { direction: string; revision: number; requestedAt: number; visibleAt: number }[] =
+            [];
           const sentResponse = d.waitForResponse(
             (response) => response.url().includes("/api/crossdeck/sync?") && response.request().method() === "POST",
           );
           await sendButton.focus();
+          const requestedAt = Date.now();
           await sendButton.press("Enter");
           const sent = await sentResponse;
           const sentBody = await sent.json();
           expect(sent.status(), sentBody.error ?? "Send must produce a durable offer").toBe(200);
           const receiving = p.getByRole("region", { name: "Send to your devices" });
           await expect(receiving.getByRole("button", { name: /^Receive / })).toBeVisible();
+          visibleMeasurements.push({
+            direction: "desktop-to-phone",
+            revision: sentBody.revision,
+            requestedAt,
+            visibleAt: Date.now(),
+          });
           await receiving.getByRole("button", { name: /^Receive / }).click();
           await expect(p.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible();
           await expect
@@ -115,6 +143,46 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
           expect(deck.handoffs[0].context.worldspaceId).toBeDefined();
           expect(deck.handoffs[0].context.mapId).toBeDefined();
           expect(deck.objects[`MAP:${voyage.activeId}`].custody).toBe(phoneSurface.surfaceId);
+          if (scenarioId === "crossdeck.surface-handoff") {
+            // Exercise the same canonical UI journey in the reverse direction.
+            await p.getByRole("button", { name: "Close journal tool drawer", exact: true }).click();
+            await receiving.locator("summary").click();
+            const desktopSurface = await db.crossdeckSurfaceSession.findFirstOrThrow({
+              where: { accountSession: { accountId: account.id }, surfaceId: { not: phoneSurface.surfaceId } },
+            });
+            await receiving.getByLabel("Send destination").selectOption(desktopSurface.surfaceId);
+            await receiving.getByLabel("Transfer mode").selectOption("MOVE_CUSTODY");
+            const reverseResponse = p.waitForResponse(
+              (response) => response.url().includes("/api/crossdeck/sync?") && response.request().method() === "POST",
+            );
+            const reverseRequestedAt = Date.now();
+            await receiving.getByRole("button", { name: "Send view", exact: true }).click();
+            const reverse = await reverseResponse;
+            const reverseBody = await reverse.json();
+            expect(reverse.status(), reverseBody.error ?? "Reverse send must produce a durable offer").toBe(200);
+            // Reconciliation is ten seconds; the functional assertion includes its request budget.
+            // Actual hint-to-visible measurements remain separate and retain the elapsed time.
+            await expect(sending.getByRole("button", { name: /^Receive / })).toBeVisible({ timeout: 15000 });
+            visibleMeasurements.push({
+              direction: "phone-to-desktop",
+              revision: reverseBody.revision,
+              requestedAt: reverseRequestedAt,
+              visibleAt: Date.now(),
+            });
+            await sending.getByRole("button", { name: /^Receive / }).click();
+            await expect(d.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible();
+            await expect
+              .poll(async () => {
+                const current = await db.crossdeckDeck.findUniqueOrThrow({ where: { id: row.id } });
+                const state = JSON.parse(current.state);
+                return {
+                  custody: state.objects[`MAP:${voyage.activeId}`].custody,
+                  acknowledged: state.handoffs.every((offer: { state: string }) => offer.state === "ACKNOWLEDGED"),
+                };
+              })
+              .toEqual({ custody: desktopSurface.surfaceId, acknowledged: true });
+            await d.getByRole("button", { name: "Close journal tool drawer", exact: true }).click();
+          }
           if (scenarioId === "crossdeck.phone-disconnect") {
             await p.goto("about:blank");
             // Page-exit delivery is best effort. Require the server's canonical
@@ -150,6 +218,53 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
           expect((await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } })).currentSequence).toBe(
             before.sequence,
           );
+          if (process.env.CROSSDECK_SERVER_METRICS_PATH) {
+            let hints: { revision: number; at: number }[] = [];
+            await expect
+              .poll(
+                async () => {
+                  const metrics = JSON.parse(await readFile(process.env.CROSSDECK_SERVER_METRICS_PATH!, "utf8"));
+                  hints = metrics.committedHints;
+                  return visibleMeasurements.every((measurement) =>
+                    hints.some(
+                      (hint) =>
+                        hint.revision === measurement.revision &&
+                        hint.at >= measurement.requestedAt &&
+                        hint.at <= measurement.visibleAt,
+                    ),
+                  );
+                },
+                { timeout: 3000 },
+              )
+              .toBe(true);
+            await mkdir("artifacts/crossdeck/realtime-browser", { recursive: true });
+            await writeFile(
+              `artifacts/crossdeck/realtime-browser/${scenarioId}-visible.json`,
+              JSON.stringify(
+                {
+                  source,
+                  scope:
+                    "real Crossdeck UI; post-transaction hint to Playwright-visible Receive prompt; not physical paint",
+                  measurements: visibleMeasurements.map((measurement) => {
+                    const hint = hints.find(
+                      (hint) =>
+                        hint.revision === measurement.revision &&
+                        hint.at >= measurement.requestedAt &&
+                        hint.at <= measurement.visibleAt,
+                    )!;
+                    return {
+                      direction: measurement.direction,
+                      revision: measurement.revision,
+                      requestToVisibleMs: measurement.visibleAt - measurement.requestedAt,
+                      afterCommitHintToVisibleMs: measurement.visibleAt - hint.at,
+                    };
+                  }),
+                },
+                null,
+                2,
+              ),
+            );
+          }
           const imagePath = testInfo.outputPath("crossdeck-continuity.png");
           await d.screenshot({ path: imagePath, fullPage: true });
           return {
@@ -169,6 +284,7 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
             ],
           };
         } catch (cause) {
+          console.error("CROSSDECK_HANDOFF_REQUEST_DIAGNOSTICS", JSON.stringify(observedRequests));
           executionError = cause;
           throw cause;
         }

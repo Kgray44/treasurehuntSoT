@@ -25,21 +25,18 @@ const modeNames: Record<TransferMode, string> = {
   PIN_TO_SURFACE: "Keep on that device",
   SEND_VIEW: "Send read-only view",
 };
-export function CrossdeckHandoff({
-  voyageId,
-  csrfToken,
-  object,
-  context,
-  captureContext,
-  resume,
-}: {
+type HandoffProps = {
   voyageId: string;
   csrfToken: string;
   object: ObjectRef | null;
   context: Continuity;
   captureContext?: () => Continuity;
   resume: (object: ObjectRef, context: Continuity) => void | Promise<void>;
-}) {
+};
+export function CrossdeckHandoff(props: HandoffProps) {
+  return <CrossdeckHandoffSession key={`${props.voyageId}:${props.csrfToken}`} {...props} />;
+}
+function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, captureContext, resume }: HandoffProps) {
   const [snapshot, setSnapshot] = useState<SyncSnapshot | null>(null);
   const [surfaces, setSurfaces] = useState<SurfaceDto[]>([]);
   const [target, setTarget] = useState("");
@@ -50,6 +47,7 @@ export function CrossdeckHandoff({
   const [busy, setBusy] = useState(false);
   const [retryPayload, setRetryPayload] = useState<SyncCommand["payload"] | null>(null);
   const transport = useRef<SurfaceSyncTransport | null>(null);
+  const commandController = useRef<AbortController | null>(null);
   const current = useRef<SyncSnapshot | null>(null);
   const pending = useRef<SyncCommand | null>(null);
   const lock = useRef(false);
@@ -67,6 +65,7 @@ export function CrossdeckHandoff({
     const sync = createHttpSyncTransport(voyageId, id, csrfToken);
     transport.current = sync;
     const controller = new AbortController();
+    commandController.current = controller;
     const applied = resumed.current;
     const versions = lastApplied.current;
     let stopped = false;
@@ -86,6 +85,7 @@ export function CrossdeckHandoff({
         if (restored) setMessage("Connection restored. Check your current view status above.");
       },
       (error) => {
+        if (stopped) return;
         hadFailure = true;
         setOnline(false);
         setMessage(
@@ -95,6 +95,16 @@ export function CrossdeckHandoff({
         );
         // Clear private presentation and offers on every failed authority/network refresh.
         setSnapshot(null);
+        if (error instanceof SyncTransportError && [401, 403].includes(error.status)) {
+          controller.abort();
+          current.current = null;
+          pending.current = null;
+          transport.current = null;
+          lock.current = false;
+          setBusy(false);
+          setRetryPayload(null);
+          setSurfaces([]);
+        }
       },
     );
     const devices = async () => {
@@ -111,14 +121,17 @@ export function CrossdeckHandoff({
       }
     };
     void devices();
-    const timer = setInterval(() => void devices(), 5000);
+    const timer = setInterval(() => void devices(), 10000);
     return () => {
       stopped = true;
       controller.abort();
       unsubscribe();
       clearInterval(timer);
       transport.current = null;
+      commandController.current = null;
       current.current = null;
+      pending.current = null;
+      lock.current = false;
       applied.clear();
       versions.clear();
     };
@@ -143,10 +156,15 @@ export function CrossdeckHandoff({
             };
       pending.current = input;
       setRetryPayload(payload);
+      const sessionTransport = transport.current;
+      const signal = commandController.current?.signal;
+      const stillCurrent = () => !signal?.aborted && transport.current === sessionTransport;
       try {
-        const next = await transport.current.send(input);
+        const next = await sessionTransport.send(input, signal);
+        if (!stillCurrent()) return;
         pending.current = null;
         setRetryPayload(null);
+        if (current.current && next.revision < current.current.revision) return current.current;
         current.current = next;
         setSnapshot(next);
         setOnline(true);
@@ -157,14 +175,17 @@ export function CrossdeckHandoff({
         );
         return next;
       } catch (error) {
+        if (!stillCurrent()) return;
         if (error instanceof SyncTransportError && error.status < 500) {
           pending.current = null;
           setRetryPayload(null);
         }
         setMessage(error instanceof Error ? error.message : "Check the transfer before trying again.");
       } finally {
-        lock.current = false;
-        setBusy(false);
+        if (stillCurrent()) {
+          lock.current = false;
+          setBusy(false);
+        }
       }
     },
     [voyageId],
