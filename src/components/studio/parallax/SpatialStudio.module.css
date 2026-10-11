@@ -1818,11 +1818,42 @@
 .assistantWorkspace[data-docked="true"] {
   position: relative;
   width: 100%;
-  max-height: 240px;
+  max-height: min(540px, 60%);
   min-height: 100px;
   flex: none;
   left: auto;
   bottom: auto;
+}
+.assistantWorkspace > .dockTitle,
+.assistantWorkspace > .dockTitle button {
+  color: #dce9f6;
+}
+.assistantWorkspace > aside {
+  width: 100%;
+  max-width: 100%;
+  height: min(650px, calc(100dvh - 240px));
+  min-height: 280px;
+  resize: none;
+}
+.assistantWorkspace[data-docked="true"] > aside {
+  height: min(500px, 45dvh);
+}
+@media (max-height: 520px) {
+  .assistantWorkspace,
+  .assistantWorkspace[data-docked="true"] {
+    position: fixed;
+    top: calc(var(--studio-top, 76px) + 4px);
+    bottom: 8px;
+    left: 8px;
+    width: min(560px, calc(100% - 16px));
+    max-height: none;
+    min-height: 0;
+  }
+  .assistantWorkspace > aside,
+  .assistantWorkspace[data-docked="true"] > aside {
+    height: calc(100dvh - var(--studio-top, 76px) - 76px);
+    min-height: 0;
+  }
 }
 .adaptiveWorkspace .assistantWorkspace .composer {
   margin: 0;
@@ -2058,9 +2089,24 @@
     display: none;
   }
   .assistantWorkspace {
-    left: 5px;
-    width: calc(100% - 10px);
-    max-height: calc(100% - 80px);
+    position: fixed;
+    top: calc(var(--studio-top, 76px) + 4px);
+    bottom: 8px;
+    left: 8px;
+    width: calc(100% - 16px);
+    max-height: none;
+  }
+  .assistantWorkspace[data-docked="true"] {
+    position: fixed;
+    left: 8px;
+    bottom: 8px;
+    width: calc(100% - 16px);
+    max-height: none;
+  }
+  .assistantWorkspace > aside,
+  .assistantWorkspace[data-docked="true"] > aside {
+    height: calc(100dvh - var(--studio-top, 76px) - 76px);
+    min-height: 0;
   }
   .adaptiveWorkspace .selectionInstrument {
     right: 8px;

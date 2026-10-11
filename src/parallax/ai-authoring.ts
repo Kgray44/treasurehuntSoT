@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { editSpatialDraft, type SpatialDraft } from "./authoring";
-import { validateSpatialAuthoring } from "./studio-validation";
 import { semanticRecipeSchema } from "./adaptive-contracts";
 import { enableAdaptiveAuthoring, invalidateAdaptiveCalibration } from "./adaptive-authoring";
 
@@ -45,54 +44,19 @@ export const critiqueSchema = z.strictObject({
     .max(12),
 });
 
-/** Model output is untrusted data. Only this strict allowlist can propose reversible edits. */
+/** Retired compatibility entry: all inference uses the authenticated, metered
+ * Spatial Assistant service. Legacy endpoint credentials never authorize a call. */
 export async function requestSpatialAI(
-  kind: "INTENT" | "CRITIQUE",
-  request: string,
-  draft: SpatialDraft,
-  fetcher: typeof fetch = fetch,
+  _kind: "INTENT" | "CRITIQUE",
+  _request: string,
+  _draft: SpatialDraft,
+  _fetcher: typeof fetch = fetch,
 ) {
-  const endpoint = process.env.PARALLAX_AUTHORING_AI_URL;
-  const token = process.env.PARALLAX_AUTHORING_AI_TOKEN;
-  if (!endpoint || !token)
-    return {
-      status: "UNAVAILABLE" as const,
-      message: "AI authoring is not configured. Manual authoring and deterministic validation remain available.",
-    };
-  const url = new URL(endpoint);
-  if (url.protocol !== "https:") throw new Error("Spatial AI requires a configured HTTPS provider.");
-  // External asset/room/library text is never promoted into model instructions or sent here.
-  const payload = {
-    schemaVersion: 1,
-    task: kind,
-    creatorRequest: request.slice(0, 2000),
-    constraints: {
-      placement: ["DESK", "WALL", "ENTRANCE", "LOCAL"],
-      maximumEntities: 32,
-      noExecutableContent: true,
-      advisoryOnly: true,
-      semanticRecipes: true,
-      reviewRequired: true,
-    },
-    scene: {
-      entityCount: draft.content.entities.length,
-      dimensionsMeters: draft.content.entities.map((e) => e.widthMeters),
-      findings: validateSpatialAuthoring(draft.content).map((i) => ({ code: i.code, severity: i.severity })),
-    },
-    responseSchema: kind === "INTENT" ? z.toJSONSchema(intentProposalSchema) : z.toJSONSchema(critiqueSchema),
+  void _fetcher;
+  return {
+    status: "UNAVAILABLE" as const,
+    code: "LEGACY_AI_RETIRED",
+    message:
+      "Use Spatial Assistant to prepare a reviewed proposal. Manual authoring and deterministic validation remain available.",
   };
-  const response = await fetcher(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-    body: JSON.stringify(payload),
-    signal: AbortSignal.timeout(20000),
-    redirect: "error",
-  });
-  if (!response.ok) throw new Error("The AI provider could not prepare a proposal. Your draft is unchanged.");
-  const body = await response.text();
-  if (body.length > 32000) throw new Error("The AI proposal exceeds the allowed size.");
-  const data = JSON.parse(body);
-  return kind === "INTENT"
-    ? { status: "PROPOSED" as const, kind, proposal: intentProposalSchema.parse(data) }
-    : { status: "PROPOSED" as const, kind, critique: critiqueSchema.parse(data) };
 }

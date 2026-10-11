@@ -295,62 +295,34 @@ describe("Parallax creator authoring", () => {
     await vi.advanceTimersByTimeAsync(2000);
     expect(changed).toHaveBeenCalledTimes(calls);
   });
-  it("reports missing live AI honestly and rejects injected provider fields", async () => {
-    vi.stubEnv("PARALLAX_AUTHORING_AI_URL", "");
-    vi.stubEnv("PARALLAX_AUTHORING_AI_TOKEN", "");
-    const draft = createSpatialDraft("owned");
-    const fetcher = vi.fn();
-    expect(await requestSpatialAI("INTENT", "Make a letter", draft, fetcher)).toMatchObject({ status: "UNAVAILABLE" });
-    expect(fetcher).not.toHaveBeenCalled();
+  it("retires the legacy network path even when legacy credentials are configured", async () => {
     vi.stubEnv("PARALLAX_AUTHORING_AI_URL", "https://authoring.example.test/proposal");
     vi.stubEnv("PARALLAX_AUTHORING_AI_TOKEN", "synthetic-token");
-    fetcher.mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          placement: "DESK",
-          content: "Clue",
-          alternativeText: "Clue",
-          explanation: "Desk",
-          execute: "injected",
-        }),
-      ),
-    );
-    await expect(requestSpatialAI("INTENT", "Make a letter", draft, fetcher)).rejects.toThrow();
-    const transmitted = JSON.parse(fetcher.mock.calls[0][1].body);
-    expect(transmitted.scene).not.toHaveProperty("content");
-    expect(transmitted).not.toHaveProperty("assetNames");
-  });
-  it("accepts a strict intent proposal and critique without mutating the draft", async () => {
-    vi.stubEnv("PARALLAX_AUTHORING_AI_URL", "https://authoring.example.test/proposal");
-    vi.stubEnv("PARALLAX_AUTHORING_AI_TOKEN", "synthetic-token");
+    vi.stubEnv("OPENAI_API_KEY", "synthetic-token");
     const draft = createSpatialDraft("owned");
     const before = JSON.stringify(draft);
+    const fetcher = vi.fn();
+    for (const kind of ["INTENT", "CRITIQUE"] as const)
+      expect(await requestSpatialAI(kind, "Move the clue", draft, fetcher)).toMatchObject({
+        status: "UNAVAILABLE",
+        code: "LEGACY_AI_RETIRED",
+      });
+    expect(fetcher).not.toHaveBeenCalled();
+    expect(JSON.stringify(draft)).toBe(before);
+  });
+  it("retains deterministic strict intent materialization for canonical phrase controls", () => {
+    const draft = createSpatialDraft("owned");
     const proposal = {
       placement: "WALL",
       content: "Read the north wall.",
       alternativeText: "North wall clue.",
       explanation: "A seated-height wall clue.",
     };
-    const fetcher = vi
-      .fn()
-      .mockResolvedValueOnce(new Response(JSON.stringify(proposal)))
-      .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify({ findings: [{ topic: "ACCESSIBILITY", message: "Keep the seated alternative readable." }] }),
-        ),
-      );
-    const intent = await requestSpatialAI("INTENT", "Move the clue to the wall", draft, fetcher);
-    expect(intent).toMatchObject({ status: "PROPOSED", proposal });
-    expect(await requestSpatialAI("CRITIQUE", "Check accessibility", draft, fetcher)).toMatchObject({
-      status: "PROPOSED",
-      critique: { findings: [{ topic: "ACCESSIBILITY" }] },
-    });
-    expect(JSON.stringify(draft)).toBe(before);
     const changed = materializeIntent(draft, draft.content.entities[0].id, proposal);
     expect(changed.content.entities[0].content).toBe(proposal.content);
-    expect(fetcher.mock.calls[0][1]).toMatchObject({
-      redirect: "error",
-      headers: { Authorization: "Bearer synthetic-token" },
-    });
+    expect(draft.content.entities[0].content).not.toBe(proposal.content);
+    expect(() =>
+      materializeIntent(draft, draft.content.entities[0].id, { ...proposal, execute: "injected" }),
+    ).toThrow();
   });
 });
