@@ -325,8 +325,20 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await page.getByRole("button", { name: "Add Continue", exact: true }).click();
     await page.getByRole("button", { name: "Save and run Sea Trial" }).click();
     await expect(page.getByRole("region", { name: "Sea Trial receipt" })).toContainText("COMPLETED");
+    await page.getByLabel("Scenario Suite title").fill("Calibrated refinement source-bound suite");
     await page.getByRole("button", { name: "Save current revisions as Suite" }).click();
-    await page.getByRole("button", { name: "Run Suite", exact: true }).click();
+    const refinedSuite = page.getByRole("listitem").filter({ hasText: "Calibrated refinement source-bound suite" });
+    const [refinedSuiteResponse] = await Promise.all([
+      page.waitForResponse(
+        (response) =>
+          response.url().includes("/scenarios/suites/") &&
+          response.url().endsWith("/runs") &&
+          response.request().method() === "POST",
+      ),
+      refinedSuite.getByRole("button", { name: "Run Suite", exact: true }).click(),
+    ]);
+    expect(refinedSuiteResponse.ok()).toBe(true);
+    expect((await refinedSuiteResponse.json()).result.proofStatus).toBe("COMPLETE");
     await page.reload();
     await expect(page.getByText("VERIFIED", { exact: true })).toBeVisible();
     await page.goto(`/studio/tales/${tale.id}/versions#publication-review`);
