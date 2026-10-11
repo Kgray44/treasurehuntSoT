@@ -1,4 +1,5 @@
 "use client";
+import { createBrowserUuid } from "@/lib/browser-uuid";
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { ParallaxLensRuntime, type LensSnapshot } from "@/parallax/runtime";
 import { unknownState } from "@/sextant/contracts";
@@ -162,7 +163,7 @@ export function ChronicleLens({
     [fieldId, setFieldId] = useState(""),
     [fieldStatus, setFieldStatus] = useState(""),
     [reading, setReading] = useState(false);
-  const fieldKey = useRef(crypto.randomUUID());
+  const fieldKey = useRef(createBrowserUuid());
   const [manualConfidence, setManualConfidence] = useState<FieldMetadata["confidence"]>("ACCEPTABLE");
   const [manualResolved, setManualResolved] = useState(false),
     [manualSurface, setManualSurface] = useState<FieldMetadata["surface"]>("TABLE");
@@ -264,7 +265,7 @@ export function ChronicleLens({
     setError(null);
     setObserved(false);
     try {
-      const receipt = await runtime.current.interact(entityId, type, crypto.randomUUID());
+      const receipt = await runtime.current.interact(entityId, type, createBrowserUuid());
       setPending(receipt);
       if (!replay && record) await record(receipt);
       setPending(null);

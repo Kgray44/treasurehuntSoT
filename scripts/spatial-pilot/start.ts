@@ -30,6 +30,7 @@ async function main() {
     SPATIAL_PILOT_ENABLED: "1",
     SPATIAL_PILOT_OWNER_ID: receipt.ownerAccountId,
     SPATIAL_PILOT_SOURCE_SHA: source,
+    SPATIAL_PILOT_LOCAL_HTTP: "1",
   };
   // Run repository-local tools without a shell, keeping environment and ownership explicit.
   execFileSync(

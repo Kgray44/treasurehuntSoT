@@ -1,4 +1,5 @@
 "use client";
+import { createBrowserUuid } from "@/lib/browser-uuid";
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import type { MotionMode } from "@/animation/core/animation-types";
@@ -511,7 +512,7 @@ function useLandfallController({
             waypointId: waypoint.id,
             evidenceId: observation.id,
             expectedSequence: bootstrap.currentSequence,
-            idempotencyKey: crypto.randomUUID(),
+            idempotencyKey: createBrowserUuid(),
             method: "FOREGROUND_LOCATION",
             observations: evidence,
           });
@@ -550,9 +551,9 @@ function useLandfallController({
       publishedVersionId,
       worldspaceId: bootstrap.runtimeDefinition.worldspaces[0].id,
       waypointId: bootstrap.activeWaypointId,
-      evidenceId: crypto.randomUUID(),
+      evidenceId: createBrowserUuid(),
       expectedSequence: bootstrap.currentSequence,
-      idempotencyKey: crypto.randomUUID(),
+      idempotencyKey: createBrowserUuid(),
       method: corroborate ? "EVIDENCE_BUNDLE" : "PLAYER_FALLBACK",
       ...(corroborate
         ? {
@@ -562,7 +563,7 @@ function useLandfallController({
                 evidenceId: samples.current.at(-1)!.id,
                 observations: [...samples.current],
               },
-              { method: "PLAYER_FALLBACK" as const, evidenceId: crypto.randomUUID() },
+              { method: "PLAYER_FALLBACK" as const, evidenceId: createBrowserUuid() },
             ],
           }
         : {}),
@@ -624,9 +625,9 @@ function useLandfallController({
       publishedVersionId,
       worldspaceId: bootstrap.runtimeDefinition.worldspaces[0].id,
       waypointId: bootstrap.activeWaypointId,
-      evidenceId: crypto.randomUUID(),
+      evidenceId: createBrowserUuid(),
       expectedSequence: bootstrap.currentSequence,
-      idempotencyKey: crypto.randomUUID(),
+      idempotencyKey: createBrowserUuid(),
       method: "LANDMARK",
       landmarkReceipt: receipt,
       observations: [...samples.current],
