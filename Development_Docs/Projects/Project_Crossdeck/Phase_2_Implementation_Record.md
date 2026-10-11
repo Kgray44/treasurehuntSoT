@@ -1,16 +1,16 @@
 ---
 title: Crossdeck Phase 2 implementation and qualification record
 audience: product-engineering
-status: local-qualification
+status: integrated
 canonical_for: crossdeck-phase2-implementation
 last_reviewed: 2026-10-11
 ---
 
 # Phase 2 — Keep One Deck
 
-This isolated candidate implements Crossdeck v1.0 §64 Phase 2 on protected baseline `2e367c372a6d44e4e6a68bb38266196954f8d486`. The Reach v1.1 amendment remains effective: calibrated intent is Reach-owned; this candidate implements manual destination selection, without gesture recognition, spatial targeting or Reach source dependencies. No publication, merge or deployment is authorized.
+This record documents Crossdeck v1.0 §64 Phase 2, originally implemented on protected baseline `2e367c372a6d44e4e6a68bb38266196954f8d486` and integrated through owner-authorized [PR #699](https://github.com/Kgray44/treasurehuntSoT/pull/699) as `d4f67cb8981d2834c3c614df221b74fa851b02eb` on 2026-10-11. The Reach v1.1 amendment remains effective: calibrated intent is Reach-owned; this implementation provides manual destination selection, without gesture recognition, spatial targeting or Reach source dependencies. Deployment remains outside this integration's scope.
 
-The owner-directed continuation reconciles protected main `7284b0dfaa31037d074d27df0f27b968f3977000` (Reach foundation PR #697) into this isolated branch. The saved `24a3a49f` candidate and its historical evidence remain intact. Reach's registry additions, pairing-page link and Windows loader correction are preserved; Crossdeck does not acquire hand observations or implement Reach actions. New scenario receipts bind the refreshed base, while historical receipts retain their original identities.
+The owner-directed continuation reconciled protected main `7284b0dfaa31037d074d27df0f27b968f3977000` (Reach foundation PR #697) before qualification and integration. The saved `24a3a49f` candidate and its historical evidence remain intact. Reach's registry additions, pairing-page link and Windows loader correction are preserved; Crossdeck does not acquire hand observations or implement Reach actions. Integration receipts bind the qualified candidate or landed head, while historical receipts retain their original identities.
 
 ## Player path
 
@@ -38,11 +38,19 @@ Crew displays use `/devices/display?voyage=<id>` and the sponsoring canonical Ac
 
 ## Durable state and integration seams
 
-One additive `CrossdeckDeck` row belongs to the existing `PlaythroughMembership`. JSON contains bounded presentation and handoff metadata, not copied Chronicle text, account credentials, raw sensors or progression. Both datamodels retain existing Device Lab/Sextant contracts. SQLite and MySQL migrations use the independent name `20261011_0001_crossdeck_phase2`; reconcile that reservation before integration with concurrent branches. SQLite execution and MySQL static DDL verification are separate from a live MySQL migration gate.
+One additive `CrossdeckDeck` row belongs to the existing `PlaythroughMembership`. JSON contains bounded presentation and handoff metadata, not copied Chronicle text, account credentials, raw sensors or progression. Both datamodels retain existing Device Lab/Sextant contracts. The integrated SQLite and MySQL migrations use the independent name `20261011_0001_crossdeck_phase2`. SQLite execution and MySQL static DDL verification are separate from a live MySQL migration gate.
 
-The shared changes are additions to `testing/contracts.json`, `testing/suites.json`, `testing/impact-map.json`, both Prisma schemas and the Journal/Landfall presentation seams. No dependency, package-script, Device Lab registry/schema, Sextant provider, Parallax entity/anchor, Drydock catalog, or Reach implementation is changed. Parent messaging was unavailable from this task (`thread not found`); these overlaps must be reconciled before integration rather than consuming another task's unmerged source.
+The Crossdeck changes integrated in PR #699 add to `testing/contracts.json`, `testing/suites.json`, `testing/impact-map.json`, both Prisma schemas and the Journal/Landfall presentation seams. They introduce no dependency, package-script, Device Lab registry/schema, Sextant provider, Parallax entity/anchor, Drydock catalog, or Reach implementation changes. Integration consumed protected main rather than another task's unmerged source.
 
 ## Qualification and acceptance
+
+Protected software integration is complete. The required **Sounding Line / Mainline Decision** check succeeded in [run `38121038052`](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38121038052), job `114415643861`, for exact candidate `0e778379cb1a3340ca4cffaa2680aa4c443a6ce1` against base `7284b0dfaa31037d074d27df0f27b968f3977000`. The downloaded canonical ordinary decision is PASS: all 10 obligations satisfied, no remainder, nine freshly executed and one canonical REBOUND. Hosted proof passed 300 unit files / 1,925 tests, 58 Node registration tests, the production build and both Chromium journeys. Workflow wall time was approximately 8m26s; verifier time was 6m39.050s.
+
+PR #699 merged at 07:31:11 UTC as `d4f67cb8981d2834c3c614df221b74fa851b02eb`. The qualified candidate and landed head have identical Git tree `473153f26c1c6ac87b3b26a8e92c56fac815cf60`. Landed smoke passed 24 focused service/transport/sync/view API tests and both production-route browser journeys. Both landed D0 and D1 scenarios passed on that clean head; both landed D2 scenarios emitted UNSUPPORTED receipts. The already qualified production output was reused only after exact tree equality was verified. Owned test resources and the browser server were cleaned up.
+
+The integration task preserves the original hosted decision, merge/check metadata, logs, landed receipts and screenshots in `artifacts/crossdeck/phase2/integration-pr699`, with 23 files indexed by its SHA-256 preservation manifest. This software integration does not establish total Phase 2, real-device or owner acceptance; the remaining gates below are unchanged.
+
+### Preserved development history
 
 Development verification has passed the real service/API seam, both D0 scenarios,
 both desktop/mobile D1 journeys, the transport and approved-view API tests, the
@@ -52,14 +60,15 @@ documentation validation and catalog validation also passed at their recorded
 development snapshots. These observations are development evidence, not a final
 head Sounding Line acceptance receipt.
 
-The coordinator subsequently assigned Crossdeck the single shared heavy-testing
-slot. Verification uses one Vitest fork, one Playwright worker and the supported
+During the earlier coordinator-assigned shared heavy-testing
+slot, verification used one Vitest fork, one Playwright worker and the supported
 Next page-worker limit. No sibling or game processes were altered. Two earlier
 aggregate failures remain preserved: `356e5425` exposed a Windows Node test-loader
 URL defect; `bbd73638` passed 297 unit files (1,918 tests), 58 Node registration
 tests and the production build before exposing an inactive source surface in the
 D1 handoff. The isolated loader correction is equivalent to Sextant's independently
-reported `f5c34d5b` change; reconcile that one shared-file edit before integration.
+reported `f5c34d5b` change. The correction was already present on reconciled base
+`7284b0df`; PR #699 introduces no diff to that shared loader file.
 
 The presence correction sends an immediate authorized heartbeat when the Journal
 mounts and fences subsequent background heartbeats after page exit. Recovery
@@ -81,9 +90,9 @@ The exact `24a3a49f` ordinary attempt ended normally with FAIL: 1,492 tests pass
 
 The permanent evidence directory records the exact software fidelity and source identity. D0 executes deterministic synthetic service/database scenarios. D1 uses two production-route Chromium contexts with mobile emulation. D2 requires an actual task-owned Android virtual device and Android Chrome; `scripts/crossdeck/qualify-d2.ts` validates its platform or emits UNSUPPORTED receipts. It does not label browser emulation as Android evidence.
 
-D2, live MySQL, protected-main integration, the owner walkthrough and physical/field qualification remain distinct gates until their own evidence exists. An unavailable emulator is an environmental qualification blocker, not permission to omit the scenario or declare Phase 2 accepted. Air Handoff, rich Parallax/Storytide choreography, full offline synchronization and physical D4/D5 closure remain their governed later phases.
+D2, live MySQL, the owner walkthrough and physical/field qualification remain distinct open gates. Landed host discovery found no Android SDK/ADB/emulator; read-only feasibility inspection found Windows Hypervisor Platform disabled, and enabling it requires an OS feature change outside the authorization. An unavailable emulator is an environmental qualification blocker, not permission to omit the scenario or declare Phase 2 accepted. Air Handoff, rich Parallax/Storytide choreography, full offline synchronization and physical D4/D5 closure remain their governed later phases.
 
-Feature Catalog: NO CHANGE REQUIRED — the completed-feature catalog excludes unaccepted branches; Phase 2 has an outstanding D2 gate. The existing Phase 1 mainline entry remains truthful about its accepted scope.
+Feature Catalog: NO CHANGE REQUIRED - the completed-feature catalog requires accepted phase completion; protected software integration does not close Phase 2's outstanding D2 and owner/device/field gates. The existing Phase 1 mainline entry remains truthful about its accepted scope.
 
 ## Task binding
 
