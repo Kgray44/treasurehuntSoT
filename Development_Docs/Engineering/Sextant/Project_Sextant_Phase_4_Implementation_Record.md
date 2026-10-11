@@ -147,7 +147,21 @@ W3C, iPhone WebKit and desktop-mode iPad fixtures prove the software conversion,
 and the Swift conversion is exercised by native tests. These are source/fixture
 conformance checks, not measured physical sensor accuracy. D4 remains required.
 The focused conformance/native-provider boundary passes 69 tests in four files.
-The iOS run remains pending; no passing result is inferred.
+The iOS run [38168558978](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38168558978)
+completed successfully: native Swift/XCTest/XCUITest and the actual simulator
+permission-denied scenario executed. Its source fingerprint is
+`c14adb70a81e5f2a2bbf252b347465410225695b66210efb7206a15317db5f22`.
+Artifact harvest/cleanup is underway; named test counts and simulator metadata
+will be recorded from retained receipts. This success qualifies only `e4b2bee3`.
+The later conversion/kernel, Android validator and accepted-main reconciliation
+require fresh native execution.
+
+Accepted Crossdeck PR #706 and synthetic Pilot PR #707, plus Crossdeck evidence
+PR #708, were reconciled additively from protected main
+`efa689f2` into the owned branch. The seven documentation conflicts retain Sextant
+candidate statements and accepted mainline status; transport, pairing, narrative
+and authoring ownership remain intact. Post-reconciliation focused checks passed
+284 tests in 23 files, including Crossdeck controls and Pilot story/authorization.
 
 Firebase Test Lab supports Android instrumentation and iOS XCTest on hosted real
 devices. Its current [quota documentation](https://firebase.google.com/docs/test-lab/usage-quotas-pricing)

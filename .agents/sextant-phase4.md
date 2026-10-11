@@ -13,6 +13,9 @@ minimum-sufficient source summary adapted from Project Trim, not a canonical
 packet-v2 receipt or a release decision.
 
 Base: `f458bf2dc1176016c2d166180f038f0f15ac9f7c`, fetched protected main.
+Accepted main `efa689f2` (Crossdeck #706/#708 and synthetic Pilot #707) was
+reconciled additively after the second candidate. Use the exact refreshed main
+SHA/tree from the latest checkpoint for fresh ordinary qualification.
 Owned branch: `codex/sextant-phase4-take-it-afield`. Phase 3 product #701 merged
 as `787d406b382f251baa691a536cdaa41446e8e0ac`; evidence #702 merged as
 `508ee106d8bc8cacbebaf169372dda75d15f2f18`. Actual GitHub merge readback and
@@ -55,7 +58,7 @@ core D4 bring-up; virtual evidence cannot waive it.
 Source under development contains native generic acquisition/hardware/power and
 position ownership, shared companion transport, ordinary Devices controls, 17
 additional D0 scenarios, and registered `unit.sextant` / `browser.sextant` coverage.
-The 273-test focused boundary regression passes. Full root units and E2E have NOT
+The reconciled 284-test focused boundary regression passes. Full root units and E2E have NOT
 STARTED locally; they are explicitly deferred to isolated hosted/coordinator
 capacity. Do not launch duplicates without assigning the owner/check first.
 
