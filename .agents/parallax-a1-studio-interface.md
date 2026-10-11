@@ -17,7 +17,7 @@ Server proposal identity: schemaVersion 1, requestId, definitionId, sceneRevisio
 
 Observed relay checkpoint: Phase 3 candidate `abacc30d` has workstation/adaptive browser PASS; those are Phase 3's claims, not A1 evidence. Its legacy IntentProposal/optional semanticRecipe is narrower than A1's bundle. Resume shared integration only after concrete interface agreement and the newest accepted canonical source are available. Preserve complete independent A1 candidate if Phase 3 is still unmerged. No source import, paid canary, cloud tests or authority reuse is implied.
 
-Checks currently DEFERRED: full authenticated Assistant browser journey, mobile/visual/motion package, integrated quota browser journeys and final ordinary Sounding Line. Deterministic local checks already run are not scheduled for duplicate cloud qualification. No frozen remote checkpoint has been published yet; publish a source-bound independent checkpoint only after its focused checks and documentation/index validation, then provide exact SHA/tree/commands when useful.
+Checks currently DEFERRED: full authenticated Assistant browser journey, mobile/visual/motion package and final ordinary Sounding Line. Independent Admiralty quota/dossier browser journeys have passed, and draft PR #710 preserves the source-bound independent checkpoint; exact source and receipt identities are recorded in the A1 evaluation document. Deterministic local checks already run are not scheduled for duplicate cloud qualification. These focused receipts do not qualify the unmounted Assistant or deferred canonical Apply.
 
 ## Bilateral amendment acknowledgement, 2026-10-11
 

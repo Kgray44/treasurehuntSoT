@@ -49,7 +49,7 @@ candidate, despite the configured Windows user credential.
 
 ## Local development evidence
 
-The focused local suite passes 177 checks across 11 files. Sixty deterministic evaluator results and the 61-check corpus suite pass. TypeScript, changed-source ESLint, documentation/index validation and generated Feature Catalog validation pass. No major catalog fragment changes are justified by this partial candidate.
+The focused local suite passes 187 checks across 12 files. Sixty deterministic evaluator results and the 61-check corpus suite pass. TypeScript, changed-source ESLint, documentation/index validation and generated Feature Catalog validation pass. No major catalog fragment changes are justified by this partial candidate.
 Owner-bound service tests use actual isolated SQLite and a mocked HTTPS adapter
 to prove admission before dispatch, exact saved revision/ownership, safe private
 context, proposal retention, duplicate replay, disabled/absent provider behavior,
@@ -60,6 +60,16 @@ tests exercise durable exact-session previews, stale revisions, audits and
 inherited/expiring policy behavior. Account-dossier UI/route tests exercise
 existing identity, observation capabilities, safe history bounds, policy preview
 and assurance gating without a second user search.
+
+Ten mutation-route checks exercise the actual canonical session, CSRF,
+capability, request parsing and privileged-assurance gates, with synthetic
+session/account lookup and mocked owner persistence. Unauthenticated requests,
+invalid CSRF, Creator/support roles, expired session-bound assurance, missing
+confirmation, invalid preview identities and rate limits stop before owner
+policy mutation. Successful requests pass the exact reviewed identity to the
+owner service and return private, non-cacheable metadata. These HTTP checks
+complement the existing durable policy tests and isolated production browser
+journey; they do not replace either.
 
 The isolated panel has component proof for intentional submission, preview,
 explicit review, generation-based stale rejection, cancellation, uncertain-save
