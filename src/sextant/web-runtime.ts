@@ -8,6 +8,8 @@ import { DeviceGestureRecognizer, type GestureConfig, type GestureInput, type Ge
 import type { Observation, PermissionState } from "./contracts";
 import type { Quaternion, Vector3 } from "./attitude";
 import { gestureAcquisition, assertGestureCadence } from "./gesture-acquisition";
+import { AdvancedWebSextant, type AdvancedWebTarget } from "./advanced-web";
+import { MagneticHunt } from "./field-context";
 const motionKey = "MOTION_PERMISSION_PLATFORM_DEPENDENT",
   headingKey = "MOTION_OR_LOCATION_PLATFORM_DEPENDENT";
 const runtimes = new WeakMap<object, WebSextantRuntime>();
@@ -18,6 +20,7 @@ export class WebSextantRuntime {
   readonly permissions: SextantPermissionBroker;
   readonly leases: SextantLeaseBroker;
   readonly haptics: SextantHaptics;
+  readonly advanced: AdvancedWebSextant;
   private disposed = false;
   private hapticsEnabled = true;
   private reducedSensory = false;
@@ -56,19 +59,33 @@ export class WebSextantRuntime {
         return Promise.resolve("RESTRICTED" as const);
       }
     };
-    this.permissions = new SextantPermissionBroker((key) =>
-      [motionKey, headingKey].includes(key) ? requester() : Promise.resolve("RESTRICTED"),
+    this.advanced = new AdvancedWebSextant(
+      target as (WebSensorTarget & AdvancedWebTarget) | null,
+      now,
+      options.emulationIdentity,
     );
+    this.permissions = new SextantPermissionBroker((key) =>
+      [motionKey, headingKey].includes(key)
+        ? requester()
+        : Promise.resolve(
+            key === "PLATFORM_DEPENDENT" && this.advanced.magnetic.discover().support === "SUPPORTED"
+              ? "GRANTED"
+              : "RESTRICTED",
+          ),
+    );
+    this.providers.register(this.advanced.magnetic);
     this.providers.register(new WebDeviceSensorProvider(target, "ORIENTATION", now, options));
     this.providers.register(new WebDeviceSensorProvider(target, "MOTION", now, options));
     this.leases = new SextantLeaseBroker(this.capabilities, this.providers, this.permissions, now);
     this.haptics = new SextantHaptics(webHapticAdapter(navigator), now);
     const visibility: EventListener = () => {
       const visible = target?.document?.visibilityState !== "hidden";
+      this.advanced.setForeground(visible);
       this.haptics.setForeground(visible);
       void this.leases.setForeground(visible).finally(() => this.notify());
     };
     const pagehide: EventListener = () => {
+      this.advanced.setForeground(false);
       this.haptics.setForeground(false);
       void this.leases.setForeground(false).finally(() => this.notify());
     };
@@ -180,12 +197,61 @@ export class WebSextantRuntime {
     };
   }
   async pause() {
+    this.advanced.setPaused(true, false);
+    this.permissions.pause("PLATFORM_DEPENDENT");
     for (const key of [motionKey, headingKey]) this.permissions.pause(key);
     this.haptics.setPreferences(false, this.reducedSensory);
     await this.leases.idle();
     this.notify();
   }
+  async beginMagneticHunt(
+    config: unknown,
+    request: Omit<LeaseRequest, "capabilityId" | "frames">,
+    onResult: (result: { state: "SEARCHING" | "REFERENCE_REACHED" | "FALLBACK"; fallback: string }) => void,
+  ) {
+    const hunt = new MagneticHunt(config);
+    let ended = false;
+    let lease: Awaited<ReturnType<WebSextantRuntime["acquire"]>> | undefined;
+    const release = async () => {
+      ended = true;
+      hunt.reset();
+      await lease?.release();
+    };
+    try {
+      lease = await this.acquire(
+        {
+          ...request,
+          capabilityId: "sextant.magnetic.field",
+          frames: ["DEVICE"],
+          maxAgeMs: Math.min(1000, request.maxAgeMs),
+          expiresAt: Math.min(request.expiresAt, this.now() + hunt.config.timeoutMs),
+        },
+        (event) => {
+          if (ended) return;
+          if (event.type !== "OBSERVATION") {
+            ended = true;
+            hunt.reset();
+            onResult({ state: "FALLBACK", fallback: hunt.config.fallback });
+            void lease?.release();
+            return;
+          }
+          const result = hunt.accept(event.observation, this.now());
+          onResult({ state: result.state, fallback: hunt.config.fallback });
+          if (result.state !== "SEARCHING") void release();
+        },
+      );
+      if (ended) await lease.release();
+      return { release, fallback: hunt.config.fallback };
+    } catch {
+      await release();
+      onResult({ state: "FALLBACK", fallback: hunt.config.fallback });
+      return { release, fallback: hunt.config.fallback };
+    }
+  }
   resume(userInitiated: boolean) {
+    if (!userInitiated) throw new Error("SEXTANT_USER_ACTION_REQUIRED");
+    this.advanced.setPaused(false, this.target?.document?.visibilityState !== "hidden");
+    this.permissions.resume("PLATFORM_DEPENDENT", userInitiated);
     for (const key of [motionKey, headingKey]) this.permissions.resume(key, userInitiated);
     this.haptics.setPreferences(this.hapticsEnabled, this.reducedSensory);
     this.notify();
@@ -262,6 +328,7 @@ export class WebSextantRuntime {
     this.detach();
     this.detachPermission();
     this.haptics.dispose();
+    this.advanced.dispose();
     await this.leases.dispose();
     this.notify();
     this.listeners.clear();

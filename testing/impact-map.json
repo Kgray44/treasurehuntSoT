@@ -4821,7 +4821,8 @@
         "sextant.phase1.foundation",
         "device-lab.shared-infrastructure",
         "landfall.device-lab-evidence",
-        "sextant.phase2.web-context"
+        "sextant.phase2.web-context",
+        "sextant.phase3.field-context"
       ]
     },
     {
@@ -4831,7 +4832,8 @@
         "sextant.phase1.foundation",
         "device-lab.shared-infrastructure",
         "landfall.device-lab-evidence",
-        "sextant.phase2.web-context"
+        "sextant.phase2.web-context",
+        "sextant.phase3.field-context"
       ]
     },
     {
@@ -6757,6 +6759,10 @@
     {
       "contractId": "crossdeck.phase1.participation",
       "suiteIds": ["unit.crossdeck", "browser.crossdeck"]
+    },
+    {
+      "contractId": "sextant.phase3.field-context",
+      "suiteIds": ["unit.sextant"]
     }
   ],
   "impactClasses": [

@@ -12,3 +12,8 @@ export * from "./gestures";
 export * from "./web-provider";
 export * from "./haptics";
 export * from "./web-runtime";
+export * from "./field-context";
+export * from "./field-provider";
+export * from "./media-capability";
+export * from "./nearby";
+export * from "./requirements";

@@ -5,6 +5,7 @@ import { labTool } from "../device-lab/host";
 import { runDeviceLabScenario } from "../../src/device-lab/runner";
 import { createSextantPhase1ScenarioPacks, phase1ScenarioIds } from "../../src/sextant/foundation-scenarios";
 import { createSextantPhase2ScenarioPacks, phase2ScenarioTiers } from "../../src/sextant/phase2-scenarios";
+import { createSextantPhase3ScenarioPacks, phase3ScenarioTiers } from "../../src/sextant/phase3-scenarios";
 import { loadDeviceLabRegistry } from "../../src/device-lab/registry";
 async function main() {
   const args = process.argv.slice(2);
@@ -12,19 +13,27 @@ async function main() {
     args.length &&
     (args.length !== 2 ||
       args[0] !== "--scenario" ||
-      ![...phase1ScenarioIds, ...Object.keys(phase2ScenarioTiers)].some((id) => `sextant.${id}` === args[1]))
+      ![...phase1ScenarioIds, ...Object.keys(phase2ScenarioTiers), ...Object.keys(phase3ScenarioTiers)].some(
+        (id) => `sextant.${id}` === args[1],
+      ))
   )
     throw new Error("SEXTANT_D0_ARGUMENT_INVALID");
   const source = await deviceLabSourceIdentity(["scripts/sextant"]),
     baseSha = (await labTool("git", ["rev-parse", "origin/main"])).trim();
-  const packs = createSextantPhase2ScenarioPacks(createSextantPhase1ScenarioPacks());
+  const packs = createSextantPhase3ScenarioPacks(createSextantPhase2ScenarioPacks(createSextantPhase1ScenarioPacks()));
   const registry = loadDeviceLabRegistry();
   await mkdir("artifacts/sextant-device-lab", { recursive: true });
   for (const id of args.length
     ? [args[1]]
-    : [...phase1ScenarioIds, ...Object.keys(phase2ScenarioTiers)].map((s) => `sextant.${s}`)) {
+    : [...phase1ScenarioIds, ...Object.keys(phase2ScenarioTiers), ...Object.keys(phase3ScenarioTiers)].map(
+        (s) => `sextant.${s}`,
+      )) {
     const declaration = registry.scenarios.find((s) => s.scenarioId === id)!;
-    const tier = phase2ScenarioTiers[id.slice("sextant.".length) as keyof typeof phase2ScenarioTiers] ?? "D0";
+    const suffix = id.slice("sextant.".length);
+    const tier =
+      phase3ScenarioTiers[suffix as keyof typeof phase3ScenarioTiers] ??
+      phase2ScenarioTiers[suffix as keyof typeof phase2ScenarioTiers] ??
+      "D0";
     const receipt = await runDeviceLabScenario(packs, id, {
       source,
       baseSha,

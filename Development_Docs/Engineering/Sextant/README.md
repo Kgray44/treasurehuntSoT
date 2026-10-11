@@ -8,6 +8,8 @@ last_reviewed: 2026-10-10
 
 # Sextant — Device Context
 
+[Phase 3 - Read the Field](Project_Sextant_Phase_3_Implementation_Receipt.md) is an isolated local candidate for rich magnetic/pressure/step semantics, media declarations, bounded optional BLE/NFC, secure ranging contracts, safe magnetic reference controls and versioned Drydock requirements. Its D0/D1 software evidence is distinct from D2/native, D4/D5, protected mainline and owner acceptance. Reuse the existing runtime's `advanced` context; media factories and authenticated peer meaning remain with their consumers.
+
 [Phase 2 — Hold the Horizon](Project_Sextant_Phase_2_Implementation_Receipt.md) adds real web event-family providers, normalized attitude/motion, six bounded device gestures, semantic haptics and accessible consent/status controls. Software qualification is separate from physical hardware evidence.
 
 New consumers use `webSextantRuntime(window, navigator)` once per active surface, then supply contextual purpose/consent from a user action to `acquire()` or `beginGesture()`. Reuse the runtime across Crossdeck/Parallax consumers. `DeviceContextControls` supplies a reusable permission/status/pause/alternative UI; consumers own its placement and the screen-control alternative. No capability is prompted or started by construction.
@@ -81,6 +83,6 @@ Legacy HEADING lacks reliable north-reference/calibration provenance, so its pro
 
 `npm run device-lab -- --project sextant` runs the nine D0 contracts through the existing platform runner. `npm run sextant:device-lab -- --scenario sextant.permission-revoked` selects one. Source-bound v2 receipts are written under `artifacts/sextant-device-lab`; each includes scenario identity/fingerprint, actual source/base, assertions, cleanup and future physical/field requirements. The source fingerprint includes Sextant source and its CLI. Simulation is explicit in every observation; production provider registration rejects it.
 
-The nine scenarios cover supported/unavailable capability, denied/revoked permission, provider switch, stale/low-quality observations, consumer sharing and simulation identity. Original 27 Wave 4 declarations remain historical baselines; nine Phase 1 declarations are added, with executability registered in the separate owner pack. Later magnetic and physical scenarios remain unimplemented; the Phase 2 gesture and D1 scenarios are described above. D0 evidence cannot be promoted to D4/D5 by choosing a tier.
+The nine foundation scenarios cover supported/unavailable capability, denied/revoked permission, provider switch, stale/low-quality observations, consumer sharing and simulation identity. Original 27 Wave 4 declarations remain historical baselines. The current CLI retains twenty Phase 1/2 scenarios and adds sixteen Phase 3 D0/D1 scenarios through the owner pack; physical qualification remains separate. D0 evidence cannot be promoted to D2/D4/D5 by choosing a tier.
 
 Sounding Line suite `unit.sextant` protects `sextant.phase1.foundation`; shared infrastructure and Landfall compatibility remain separately selected. [Phase 1 implementation receipt](Project_Sextant_Phase_1_Implementation_Receipt.md) records the acceptance boundary. Ordinary Sounding Line on the exact candidate remains the sole mainline decision.
