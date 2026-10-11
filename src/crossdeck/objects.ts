@@ -102,6 +102,10 @@ export async function resolveCrossdeckObject(
     if (context.annotationContextId)
       throw new CrossdeckError(409, "Private chart annotation drafts stay on their originating device.");
     scene = projected?.availableMaps?.find((map) => map.id === context.mapId)?.scene ?? projected?.scene;
+    if (context.worldspaceId && scene?.worldspaceId !== context.worldspaceId)
+      throw new CrossdeckError(409, "Refresh this chart before sending.");
+    if (context.selectedMarkerId && !scene?.features.some((feature) => feature.id === context.selectedMarkerId))
+      throw new CrossdeckError(409, "Choose a place on the chart you are sending.");
     if (scene && context.camera) scene = { ...scene, camera: context.camera };
   }
   return { title: safe.title, visibility, block: safe, scene };
