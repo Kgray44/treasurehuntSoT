@@ -35,7 +35,7 @@ The optional `studio` extension adds no default fields to P1 releases. Existing 
 
 ## Qualification ledger
 
-- Focused development run: **108 tests passed across 11 files**. The combined rerun passed 105 tests, with one UI worker-start timeout; the isolated UI retry passed its three tests. Earlier baseline focused run passed 101 tests. These cover existing Parallax/Lens behavior and new authoring/library/API/Studio contracts.
+- Focused development run: **108 tests passed across 11 files** before the restart review corrections. The combined rerun passed 105 tests, with one UI worker-start timeout; the isolated UI retry passed its three tests. Earlier baseline focused run passed 101 tests. These cover existing Parallax/Lens behavior and new authoring/library/API/Studio contracts. Four additional regression cases (global scope, surface offsets, preview movement and cross-anchor grouping) await execution; the latest candidate is not qualified by the earlier passing count.
 - Existing shared Device Lab: all eight Parallax D0 scenarios passed; receipts remain labeled deterministic synthetic evidence.
 - Production compilation and TypeScript completed successfully during the development browser run. Documentation indexing and validation passed.
 - Integrated TypeScript, lint, production build, isolated Creator browser workflow and final ordinary Sounding Line: pending completion in this record.
@@ -51,6 +51,8 @@ The parent assigned the shared heavy-testing slot to Sextant first. Parallax sto
 Light placement review also separated surface-relative authored offsets from the synthetic room's preview frame. Desk and wall presets and semantic placement now retain a one-centimeter surface-normal offset; preview and direct manipulation compose a fixed reference frame without storing its room position in a released anchor. Selected-surface placement and preview-to-local movement regressions are queued with the scope regression. This is fixed authoring-frame math, with no adaptive placement or physical-acceptance claim.
 
 The corrected Preview browser query still needs the complete Creator publication/reopen gate. Branch-complete catalog admission waits for that local acceptance and final ordinary Sounding Line. Representative-device/physical acceptance remains separate.
+
+The frozen source candidate after light review is `a571347e47971bb048b57c8ad3c55207ccf6586b` on `codex/parallax-phase2-spatial-studio`. No new ordinary run is active. Resume qualification only after the parent assigns Parallax the shared testing slot; use the existing ordinary runner with the repository-supported single-fork option. Feature Catalog admission is deferred because this candidate's local acceptance has not passed.
 
 ## Explicit limits and remaining gates
 
