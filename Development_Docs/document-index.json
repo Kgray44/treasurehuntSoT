@@ -735,6 +735,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/catalog/parallax.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/catalog/platform.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -7647,7 +7653,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/Phase_2_Context_Packet.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Phase_2_Implementation.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Spatial_Studio_Guide.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

@@ -131,6 +131,11 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
           chapterId: chapter.id,
           blockId: block.id,
           field: issue.location.fieldPath,
+          ...(typeof issue.metadata?.spatialStudioHref === "string"
+            ? {
+                spatialStudioHref: `${issue.metadata.spatialStudioHref}&chronicle=${encodeURIComponent(taleId)}&block=${encodeURIComponent(block.id)}`,
+              }
+            : {}),
         });
       }
       if (block.blockType === "taleComplete") taleCompleteCount += 1;

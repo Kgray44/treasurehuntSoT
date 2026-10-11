@@ -115,7 +115,7 @@ export async function listInstalledCommunityReusableContent(ownerAccountId: stri
 
 export async function listReusableAuthoringItems(ownerAccountId: string) {
   const items = await db.reusableAuthoringItem.findMany({
-    where: { ownerAccountId, archivedAt: null },
+    where: { ownerAccountId, archivedAt: null, kind: { not: "PARALLAX_STUDIO" } },
     orderBy: [{ updatedAt: "desc" }],
     include: { versions: { orderBy: { versionNumber: "desc" }, take: 1 }, _count: { select: { usages: true } } },
   });

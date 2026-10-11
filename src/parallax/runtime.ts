@@ -12,6 +12,7 @@ import {
   type Anchor,
 } from "./contracts";
 import { composeTransform } from "./transforms";
+import { evaluateSpatialBehavior, type SpatialInput } from "./behavior";
 import type { CapabilityState } from "@/sextant/contracts";
 
 export type TrackingState =
@@ -70,6 +71,8 @@ export type LensSnapshot = {
   selectedEntityId: string | null;
   inspectedEntityId: string | null;
   anchors: Readonly<Record<string, ResolvedAnchor>>;
+  visibleEntityIds: string[];
+  highlightedEntityIds: string[];
 };
 const guidance: Record<TrackingState, string> = {
   INITIALIZING: "Opening the Chronicle Lens…",
@@ -110,6 +113,9 @@ export class ParallaxLensRuntime {
   private epoch = 0;
   private normalSamples = 0;
   private interactionPending = false;
+  private startedAt = 0;
+  private spatialInputs: SpatialInput[] = [];
+  private timers: ReturnType<typeof setTimeout>[] = [];
   private readonly ledger = new Map<string, InteractionReceipt>();
   private snapshot: LensSnapshot = {
     state: "CLOSED",
@@ -119,6 +125,8 @@ export class ParallaxLensRuntime {
     selectedEntityId: null,
     inspectedEntityId: null,
     anchors: {},
+    visibleEntityIds: [],
+    highlightedEntityIds: [],
   };
   constructor(
     input: unknown,
@@ -159,6 +167,11 @@ export class ParallaxLensRuntime {
     await this.close();
     const epoch = ++this.epoch;
     this.abort = new AbortController();
+    this.startedAt = this.now().getTime();
+    this.spatialInputs = [
+      { trigger: "SCENE_ENTER", atMs: 0 },
+      { trigger: "TIMER", atMs: 0 },
+    ];
     if (candidate?.mode === "SIMULATED" && this.context.environment !== "DEVICE_LAB")
       throw new Error("PARALLAX_SIMULATION_FORBIDDEN");
     this.adapter =
@@ -212,6 +225,7 @@ export class ParallaxLensRuntime {
         guidance: this.adapter.mode === "GUIDED" ? guidance.UNSUPPORTED : guidance.NORMAL,
       });
       await this.draw();
+      this.scheduleBehavior();
     } catch {
       if (epoch === this.epoch) await this.useGuidedView();
     }
@@ -248,6 +262,8 @@ export class ParallaxLensRuntime {
     }
   }
   async useGuidedView() {
+    this.timers.forEach(clearTimeout);
+    this.timers = [];
     const epoch = ++this.epoch;
     this.abort.abort();
     this.normalSamples = 0;
@@ -276,12 +292,27 @@ export class ParallaxLensRuntime {
       guidance: guidance.UNSUPPORTED,
       anchors,
     });
+    await this.draw();
   }
   async updateDeviceContext(camera: CapabilityState) {
     this.context.camera = camera;
     if (this.adapter.mode === "NATIVE" && !this.usableCamera()) await this.useGuidedView();
   }
   private async draw() {
+    const states = evaluateSpatialBehavior(
+      this.moment.version,
+      this.spatialInputs,
+      this.now().getTime() - this.startedAt,
+    );
+    const visible = this.moment.version.entities.filter((e) =>
+      this.snapshot.mode === "GUIDED"
+        ? this.moment.version.studio?.layers.find((l) => l.entityId === e.id)?.audience !== "EDITOR_ONLY"
+        : states[e.id].visible,
+    );
+    this.update({
+      visibleEntityIds: visible.map((e) => e.id),
+      highlightedEntityIds: visible.filter((e) => states[e.id].highlighted).map((e) => e.id),
+    });
     const transforms = new Map<string, Transform>();
     const resolve = (id: string): Transform => {
       const found = transforms.get(id);
@@ -295,7 +326,7 @@ export class ParallaxLensRuntime {
       return t;
     };
     await this.adapter.render(
-      this.moment.version.entities.map((e) => ({
+      visible.map((e) => ({
         id: e.id,
         kind: e.kind,
         content: e.content,
@@ -303,6 +334,30 @@ export class ParallaxLensRuntime {
         transform: resolve(e.id),
       })),
     );
+  }
+  private scheduleBehavior() {
+    this.timers.forEach(clearTimeout);
+    this.timers = [];
+    const epoch = this.epoch;
+    const elapsed = this.now().getTime() - this.startedAt;
+    const due = new Set(
+      (this.moment.version.studio?.behaviors ?? [])
+        .flatMap((b) =>
+          this.spatialInputs
+            .filter((i) => i.trigger === b.trigger && (!b.sourceEntityId || i.entityId === b.sourceEntityId))
+            .map((i) => i.atMs + b.delayMs),
+        )
+        .filter((t) => t > elapsed),
+    );
+    for (const time of due)
+      this.timers.push(
+        setTimeout(
+          () => {
+            if (epoch === this.epoch && !this.abort.signal.aborted) void this.draw().catch(() => this.useGuidedView());
+          },
+          time - elapsed + 1,
+        ),
+      );
   }
   async interact(
     entityId: string,
@@ -320,6 +375,9 @@ export class ParallaxLensRuntime {
       throw new Error("PARALLAX_LENS_NOT_READY");
     const entity = this.moment.version.entities.find((e) => e.id === entityId);
     if (!entity || !entity.interactions.includes(type)) throw new Error("PARALLAX_INTERACTION_FORBIDDEN");
+    const layer = this.moment.version.studio?.layers.find((l) => l.entityId === entityId);
+    if (!this.snapshot.visibleEntityIds.includes(entityId) || layer?.selectable === false)
+      throw new Error("PARALLAX_INTERACTION_FORBIDDEN");
     const anchor = this.snapshot.anchors[entity.anchorId];
     if (!anchor) throw new Error("PARALLAX_ANCHOR_UNRESOLVED");
     const epoch = this.epoch;
@@ -375,6 +433,9 @@ export class ParallaxLensRuntime {
         authority: "NONAUTHORITATIVE",
       });
       this.ledger.set(key, r);
+      this.spatialInputs.push({ trigger: type, entityId, atMs: this.now().getTime() - this.startedAt });
+      await this.draw();
+      this.scheduleBehavior();
       this.update({
         state: this.adapter.mode === "GUIDED" ? "GUIDED_FALLBACK" : "READY",
         selectedEntityId: entityId,
@@ -390,6 +451,8 @@ export class ParallaxLensRuntime {
   async close() {
     const epoch = ++this.epoch;
     this.abort.abort();
+    this.timers.forEach(clearTimeout);
+    this.timers = [];
     this.normalSamples = 0;
     this.interactionPending = false;
     this.update({ state: "CLOSED", anchors: {}, selectedEntityId: null, inspectedEntityId: null });

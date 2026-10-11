@@ -46,6 +46,7 @@ import { DrydockLaunchGate } from "@/components/studio/DrydockLaunchGate";
 import { DrydockCompatibilityPanel } from "@/components/studio/DrydockCompatibilityPanel";
 import { ShipwrightPublishingReview } from "@/components/studio/ShipwrightPublishingReview";
 import { LandfallWorkspace } from "@/components/studio/LandfallWorkspace";
+import { SpatialAttachment } from "@/components/studio/parallax/SpatialAttachment";
 import {
   TideglassStudioComparison,
   type TideglassStudioComparisonDto,
@@ -1172,6 +1173,10 @@ export function TaleEditor({
   }
 
   function focusValidationIssue(issue: ValidationIssue, origin: HTMLElement) {
+    if (issue.spatialStudioHref?.startsWith("/studio/parallax?")) {
+      window.location.assign(issue.spatialStudioHref);
+      return;
+    }
     setValidationPanelOpen(true);
     setSelectedRuleCode(issue.code);
     setSelectedRepairBlockId(issue.code === "DRYDOCK_LEGACY_NEXT_TARGET_CONFLICT" ? (issue.blockId ?? null) : null);
@@ -2940,6 +2945,7 @@ export function TaleEditor({
                       titleInputRef={inspectorTitle}
                       onClose={closeInspector}
                     />
+                    <SpatialAttachment taleId={taleId} block={selected.block} onChange={updateSelected} />
                     {legacyInspectorFallbackEnabled && selected && selectedDefinition && data ? (
                       <>
                         <header>
