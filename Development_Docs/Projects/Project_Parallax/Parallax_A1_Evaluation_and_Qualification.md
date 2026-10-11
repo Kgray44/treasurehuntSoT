@@ -49,7 +49,7 @@ candidate, despite the configured Windows user credential.
 
 ## Local development evidence
 
-The focused local suite passes 187 checks across 12 files. Sixty deterministic evaluator results and the 61-check corpus suite pass. TypeScript, changed-source ESLint, documentation/index validation and generated Feature Catalog validation pass. No major catalog fragment changes are justified by this partial candidate.
+The focused local suite passes 195 checks across 12 files. Sixty deterministic evaluator results and the 61-check corpus suite pass. TypeScript, changed-source ESLint, documentation/index validation and generated Feature Catalog validation pass. No major catalog fragment changes are justified by this partial candidate.
 Owner-bound service tests use actual isolated SQLite and a mocked HTTPS adapter
 to prove admission before dispatch, exact saved revision/ownership, safe private
 context, proposal retention, duplicate replay, disabled/absent provider behavior,
@@ -75,6 +75,15 @@ The isolated panel has component proof for intentional submission, preview,
 explicit review, generation-based stale rejection, cancellation, uncertain-save
 identity reuse, acceptance after verified acknowledgement, history callbacks and
 safe session metadata. This is not rendered viewport/mobile/visual acceptance.
+
+Additional context checks cover a clarification followed by its targeted answer,
+two-turn chronological bounds, owner/draft/expiry/duplicate/cycle/malformed guards,
+exclusion from safe usage reports and idempotent replay, replay after older context
+expires, and derivation of object existence from the current scene. Component
+checks cover deliberate follow-up identity, a fresh task without inference or
+scene mutation, and account-scoped session restoration. These use synthetic
+content and a mocked upstream with actual isolated durable records; they do not
+prove live semantic quality or the mounted Studio refinement journey.
 
 Shared Studio integration, authenticated atomic Apply, legacy network-path
 migration, mounted Assistant browser journeys, motion/viewport package,

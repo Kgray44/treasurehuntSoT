@@ -18,7 +18,7 @@ last_reviewed: 2026-10-11
 
 ### Added
 
-- Parallax A1 implementation candidate adds typed reviewed Assistant proposals, shared local server-side `OPENAI_API_KEY` support, durable quota/accounting controls and per-user AI policy inside the existing Admiralty People dossier. Shared Studio integration, final qualification, paid provider canary and visual owner review remain pending; see the [candidate record](Development_Docs/Projects/Project_Parallax/Parallax_A1_Evaluation_and_Qualification.md).
+- Parallax A1 implementation candidate adds typed reviewed Assistant proposals, bounded private clarification/follow-up context, shared local server-side `OPENAI_API_KEY` support, durable quota/accounting controls and per-user AI policy inside the existing Admiralty People dossier. Shared Studio integration, final qualification, paid provider canary and visual owner review remain pending; see the [candidate record](Development_Docs/Projects/Project_Parallax/Parallax_A1_Evaluation_and_Qualification.md).
 
 - Sextant Phase 3 local candidate adds calibrated field semantics, relative pressure/step context, media capability lifecycle, optional bounded BLE/NFC, authenticated peer/ranging contracts, safe magnetic reference controls and Drydock requirements. The [implementation receipt](Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) distinguishes D0/D1 software proof from native/physical/owner and protected-mainline gates.
 - Crossdeck Phase 2 candidate adds durable presentation synchronization, explicit

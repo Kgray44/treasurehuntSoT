@@ -12,6 +12,8 @@ import { requestSpatialAssistant } from "./spatial-assistant-service";
 import { spatialItemKind } from "./library-service";
 import { prepareSpatialAssistantApplication } from "./spatial-assistant-application";
 import { assistantProposalSchema } from "./spatial-assistant";
+import { readAssistantConversation } from "./assistant-conversation";
+import { aiQuotaUsageHistory } from "./ai-quota-projections";
 
 const root = mkdtempSync(join(tmpdir(), "voyagewright-parallax-a1-service-"));
 const store = new PrismaClient({
@@ -98,6 +100,187 @@ afterAll(async () => {
   rmSync(root, { recursive: true });
 });
 describe("Spatial Assistant owner-bound server orchestration", () => {
+  it("resolves a clarification using bounded private prior context without exposing it in replies or usage reports", async () => {
+    const first = request(),
+      clarification = {
+        ...interpretation,
+        intentType: "CLARIFICATION",
+        summary: "Choose the map",
+        clarification: "Which map should move?",
+        operations: [],
+      };
+    first.request = "PRIVATE_TASK_DESCRIPTION move a map near the entrance";
+    const initial = await requestSpatialAssistant(accountId, first, {
+      store,
+      fetcher: vi.fn<typeof fetch>(async () =>
+        Response.json(
+          providerBody({
+            output: [{ type: "message", content: [{ type: "output_text", text: JSON.stringify(clarification) }] }],
+          }),
+        ),
+      ),
+    });
+    expect(initial).toMatchObject({ status: "PROPOSED", proposal: { intentType: "CLARIFICATION" } });
+    expect(JSON.stringify(initial)).not.toContain("PRIVATE_TASK_DESCRIPTION");
+    const second = {
+      ...request(),
+      request: "The selected map",
+      requestId: "synthetic-followup-request",
+      idempotencyKey: "synthetic-followup-key",
+      previousRequestId: first.requestId,
+    };
+    const fetcher = vi.fn<typeof fetch>(async (_url, options) => {
+      const body = JSON.parse(options!.body as string);
+      const context = JSON.parse(body.input[0].content);
+      expect(context.creatorRequest).toBe("The selected map");
+      expect(context.sceneContext.recentTaskTurns).toEqual([
+        expect.objectContaining({
+          creatorRequest: first.request,
+          clarification: "Which map should move?",
+          authority: "ADVISORY_ONLY",
+        }),
+      ]);
+      expect(options!.body).not.toContain(draft.content.entities[0].content);
+      return Response.json(providerBody());
+    });
+    await requestSpatialAssistant(accountId, second, { store, fetcher });
+    const replay = await requestSpatialAssistant(accountId, first, { store, fetcher });
+    expect(replay).toMatchObject({ status: "PROPOSED", replay: true });
+    expect(JSON.stringify(replay)).not.toContain("PRIVATE_TASK_DESCRIPTION");
+    const history = await aiQuotaUsageHistory(
+      { accountId, from: new Date(0), to: new Date(Date.now() + 86400000), take: 100 },
+      store,
+    );
+    expect(JSON.stringify(history)).not.toMatch(/PRIVATE_TASK_DESCRIPTION|Which map should move/);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+  it("rejects foreign, wrong-draft, expired and ambiguous conversation identities before dispatch", async () => {
+    await requestSpatialAssistant(accountId, request(), {
+      store,
+      fetcher: vi.fn<typeof fetch>(async () => Response.json(providerBody())),
+    });
+    const original = await store.aIUsageLedger.findFirstOrThrow();
+    for (const patch of [
+      { accountId: "foreign-owner" },
+      { definitionId: "foreign-draft" },
+      { resultExpiresAt: new Date(0) },
+    ]) {
+      await store.aIUsageLedger.update({ where: { id: original.id }, data: patch });
+      const fetcher = vi.fn<typeof fetch>();
+      await expect(
+        requestSpatialAssistant(
+          accountId,
+          {
+            ...request(),
+            requestId: crypto.randomUUID(),
+            idempotencyKey: crypto.randomUUID(),
+            previousRequestId: request().requestId,
+          },
+          { store, fetcher },
+        ),
+      ).rejects.toMatchObject({ code: "CONTEXT_UNAVAILABLE" });
+      expect(fetcher).not.toHaveBeenCalled();
+      const failed = await store.aIUsageLedger.findFirstOrThrow({ where: { failureCode: "CONTEXT_UNAVAILABLE" } });
+      expect(failed.status).toBe("RELEASED");
+      expect(failed.exposureNano).toBe(BigInt(0));
+      await store.aIUsageLedger.update({
+        where: { id: original.id },
+        data: {
+          accountId,
+          definitionId: draft.content.definitionId,
+          resultExpiresAt: original.resultExpiresAt,
+          result: original.result,
+        },
+      });
+    }
+    await store.aIUsageLedger.create({
+      data: { ...original, id: crypto.randomUUID(), idempotencyKey: "synthetic-ambiguous-context" },
+    });
+    await expect(readAssistantConversation(store, accountId, draft, request().requestId)).rejects.toMatchObject({
+      code: "CONTEXT_UNAVAILABLE",
+    });
+  });
+  it("bounds context to two advisory turns, excludes prior operation content and always derives object existence from the current scene", async () => {
+    let previousRequestId: string | null = null;
+    for (let i = 0; i < 4; i++) {
+      const input: ReturnType<typeof request> & { previousRequestId: string | null } = {
+        ...request(),
+        request: `Follow-up instruction ${i}`,
+        requestId: `synthetic-turn-${i}`,
+        idempotencyKey: `synthetic-turn-key-${i}`,
+        previousRequestId,
+      };
+      await requestSpatialAssistant(accountId, input, {
+        store,
+        fetcher: vi.fn<typeof fetch>(async () => Response.json(providerBody())),
+      });
+      previousRequestId = input.requestId;
+    }
+    const context = await readAssistantConversation(store, accountId, draft, previousRequestId);
+    expect(context.map((turn) => turn.creatorRequest)).toEqual(["Follow-up instruction 2", "Follow-up instruction 3"]);
+    expect(context.every((turn) => turn.authority === "ADVISORY_ONLY")).toBe(true);
+    expect(context[0].operations).toEqual([
+      { type: "PLACEMENT", entityId: draft.content.entities[0].id, existsInCurrentScene: true, proposedName: null },
+    ]);
+    const empty = structuredClone(draft);
+    empty.content.entities = [];
+    expect(
+      (await readAssistantConversation(store, accountId, empty, previousRequestId))[0].operations[0]
+        .existsInCurrentScene,
+    ).toBe(false);
+    expect(JSON.stringify(context)).not.toContain(draft.content.entities[0].content);
+  });
+  it("replays an admitted follow-up even after its older task context expires", async () => {
+    const fetcher = vi.fn<typeof fetch>(async () => Response.json(providerBody()));
+    await requestSpatialAssistant(accountId, request(), { store, fetcher });
+    const next = {
+      ...request(),
+      request: "Make it smaller",
+      requestId: "synthetic-followup",
+      idempotencyKey: "synthetic-followup-replay",
+      previousRequestId: request().requestId,
+    };
+    await requestSpatialAssistant(accountId, next, { store, fetcher });
+    await store.aIUsageLedger.updateMany({
+      where: { requestId: request().requestId },
+      data: { resultExpiresAt: new Date(0) },
+    });
+    expect(await requestSpatialAssistant(accountId, next, { store, fetcher })).toMatchObject({
+      status: "PROPOSED",
+      replay: true,
+    });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+  it("rejects malformed or circular retained context without trusting client conversation text", async () => {
+    await requestSpatialAssistant(accountId, request(), {
+      store,
+      fetcher: vi.fn<typeof fetch>(async () => Response.json(providerBody())),
+    });
+    const row = await store.aIUsageLedger.findFirstOrThrow();
+    const result = JSON.parse(row.result!);
+    for (const retained of [
+      "{broken-json",
+      JSON.stringify({
+        ...result,
+        conversation: { request: "Private oversized task".repeat(1000), previousRequestId: null },
+      }),
+      JSON.stringify({ ...result, conversation: { request: "A prior task", previousRequestId: request().requestId } }),
+    ]) {
+      await store.aIUsageLedger.update({ where: { id: row.id }, data: { result: retained } });
+      await expect(readAssistantConversation(store, accountId, draft, request().requestId)).rejects.toMatchObject({
+        code: "CONTEXT_UNAVAILABLE",
+      });
+    }
+    const fetcher = vi.fn<typeof fetch>();
+    await expect(
+      requestSpatialAssistant(
+        accountId,
+        { ...request(), conversation: [{ creatorRequest: "Client-invented authoritative history" }] },
+        { store, fetcher },
+      ),
+    ).rejects.toThrow();
+    expect(fetcher).not.toHaveBeenCalled();
+  });
   it("prepares only the retained owner proposal and selected canonical edits without saving", async () => {
     const fetcher = vi.fn<typeof fetch>(async () => Response.json(providerBody()));
     const reply = await requestSpatialAssistant(accountId, request(), { store, fetcher });
@@ -230,7 +413,10 @@ describe("Spatial Assistant owner-bound server orchestration", () => {
       code: "REJECTED_OPERATION",
       accounting: "SETTLED",
     });
-    expect((await store.aIUsageLedger.findFirstOrThrow()).status).toBe("SETTLED");
+    const billed = await store.aIUsageLedger.findFirstOrThrow();
+    expect(billed.status).toBe("SETTLED");
+    expect(billed.result).not.toContain(request().request);
+    expect(JSON.parse(billed.result!)).not.toHaveProperty("conversation");
     expect((await store.reusableAuthoringItemVersion.findFirstOrThrow()).checksum).toBe(canonicalChecksum(draft));
   });
   it("retains replayable proposals with conservative exposure when provider usage is missing", async () => {

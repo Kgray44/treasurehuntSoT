@@ -24,3 +24,14 @@ Checks currently DEFERRED: full authenticated Assistant browser journey, mobile/
 A1 ACCEPTS every item in Phase 3 `.agents/parallax-phase3.md` section "A1 interface decision: ACCEPT WITH AMENDMENTS; integration HELD", read directly from the sibling owned checkout. This supersedes the earlier proposed autosave-after-apply wording: prepareBase drains persistence and returns draft/revision/generation; asynchronous response checks all three; canonical atomic Apply acknowledgement precedes ONE already-saved history install; rejection preserves history; uncertain network results reuse the same application identity; edits/Undo/Redo clear preview and review even if bytes match; narrow IntentProposal remains separate. A1 owns only additive CREATE/CONTENT/BEHAVIOR/FALLBACK and proposal/quota/usage models. Phase 3 owns resolution/field/calibration models. Reconcile both Prisma schemas/migrations by exact additive sections, never whole-file imports.
 
 The isolated panel's contract tests prove generation-based rejection and stable uncertain-save retry identity. They do not prove a mounted host adapter, server atomic Apply, integrated browser behavior, owner visuals, or accepted mainline compatibility. Pilot mainline advance `01d32824127d00628546ea4209d09fea57c335c1` was verified by native origin/main fetch/readback. Phase 3's later viewport/docking/compact command refinement requires new owner visual review; prior approval of `01de94c67ed82d0812db6f884389e0b0fc52d274` does not approve those refinements or A1 visuals. Integration remains HELD until the newest accepted canonical Phase 3 source exists.
+
+## Refined workstation approval and canonical handoff
+
+The Phase 3 owner's current task authority now records direct visual approval of
+source `592217e3edb214bab76373dc64cbe4b954ba3703`, tree
+`36cb8d072caa7c17519d6398bd994c26c4c4a05f`. This supersedes the Phase 3 visual
+hold above. Preparation may use that approved source and the agreed interface.
+The canonical handoff remains Phase 3 ordinary qualification and protected merge;
+mounted A1 integration must reconcile the final protected Phase 3 tree. This
+approval does not cover A1's unmounted panel, its future integrated visuals or
+subsequent Phase 3 field/Device Lab changes. The sibling checkout remains untouched.

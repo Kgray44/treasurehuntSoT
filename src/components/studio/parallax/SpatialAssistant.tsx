@@ -2,6 +2,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import type { SpatialDraft } from "@/parallax/authoring";
+import { spatialId } from "@/parallax/contracts";
 import {
   assistantProposalSchema,
   materializeAssistantProposal,
@@ -177,6 +178,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
     [selectedIds, setSelectedIds] = useState<string[]>([]),
     [advanced, setAdvanced] = useState(false),
     [restored, setRestored] = useState(false),
+    [previousRequestId, setPreviousRequestId] = useState<string | null>(null),
     [previewing, setPreviewing] = useState(false);
   const [baseState, setBaseState] = useState("");
   const controller = useRef<AbortController | null>(null),
@@ -207,7 +209,13 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
       try {
         const saved = sessionStorage.getItem(sessionKey);
         const state = saved ? JSON.parse(saved) : null;
-        setRestored(Boolean(state?.lastRequestAt && Date.now() - state.lastRequestAt < 86400000));
+        const recent =
+          Number.isFinite(state?.lastRequestAt) &&
+          Date.now() >= state.lastRequestAt &&
+          Date.now() - state.lastRequestAt < 86400000;
+        setRestored(Boolean(recent));
+        if (recent && spatialId.safeParse(state?.previousRequestId).success)
+          setPreviousRequestId(state.previousRequestId);
       } catch {
         setRestored(false);
       }
@@ -301,6 +309,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
           idempotencyKey: crypto.randomUUID(),
           request: composer.trim(),
           selectedEntityId: latest.current.selectedEntityId,
+          previousRequestId,
           mode: advanced ? "ADVANCED" : "STANDARD",
         },
         abort.signal,
@@ -336,15 +345,20 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
       )
         throw new Error("Your scene has changed. Regenerate this proposal to preserve your newer work.");
       setProposal(checked);
+      setPreviousRequestId(checked.requestId);
       setSelectedIds(checked.operations.map((operation) => operation.id));
       setStage(
         checked.clarification ? "CLARIFICATION" : checked.intentType === "UNSUPPORTED" ? "UNSUPPORTED" : "PREVIEW",
       );
-      // Persistence contains only timing/count identifiers. It never stores prompts, scene content or API credentials.
+      // Persist only timing/count and an owner/draft-scoped context identity, never text or scenes.
       try {
         sessionStorage.setItem(
           sessionKey,
-          JSON.stringify({ lastRequestAt: Date.now(), operationCount: checked.operations.length }),
+          JSON.stringify({
+            lastRequestAt: Date.now(),
+            operationCount: checked.operations.length,
+            previousRequestId: checked.requestId,
+          }),
         );
       } catch {}
       setRestored(false);
@@ -594,7 +608,13 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                 </div>
               </>
             )}
-            <button className={styles.linkButton} onClick={() => input.current?.focus()}>
+            <button
+              className={styles.linkButton}
+              onClick={() => {
+                setComposer("");
+                input.current?.focus();
+              }}
+            >
               Refine this proposal
             </button>
           </section>
@@ -631,6 +651,26 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
               <br />
               {composer.length}/2,000
             </small>
+            <button
+              type="button"
+              disabled={working}
+              onClick={() => {
+                setPreviousRequestId(null);
+                setRestored(false);
+                setComposer("");
+                setProposal(null);
+                props.onPreview(null, []);
+                setPreviewing(false);
+                setStage("IDLE");
+                setNotice("New task started. I’ll use your current saved scene.");
+                try {
+                  sessionStorage.removeItem(sessionKey);
+                } catch {}
+                input.current?.focus();
+              }}
+            >
+              Start new task
+            </button>
             {working && stage !== "APPLYING" ? (
               <button
                 type="button"

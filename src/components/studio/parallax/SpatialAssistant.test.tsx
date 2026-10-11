@@ -80,6 +80,74 @@ async function proposal(): Promise<AssistantProposal> {
   };
 }
 describe("Spatial Assistant deliberate, accessible proposal review", () => {
+  it("carries the retained request identity into a deliberate clarification answer", async () => {
+    const input = props(),
+      checked = {
+        ...(await proposal()),
+        intentType: "CLARIFICATION" as const,
+        clarification: "Which map should move?",
+        operations: [],
+      };
+    const requestPort = vi
+      .fn<SpatialAssistantProps["port"]["request"]>()
+      .mockResolvedValueOnce({ status: "PROPOSED", proposal: checked })
+      .mockResolvedValue({ status: "UNAVAILABLE", message: "Synthetic provider unavailable" });
+    input.port.request = requestPort;
+    render(<SpatialAssistant {...input} />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Move a map" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    await screen.findByText("Which map should move?");
+    fireEvent.click(screen.getByRole("button", { name: "Refine this proposal" }));
+    expect(screen.getByRole("textbox")).toHaveValue("");
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "The selected map" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    await waitFor(() => expect(requestPort).toHaveBeenCalledTimes(2));
+    expect(requestPort.mock.calls[1][0]).toMatchObject({
+      request: "The selected map",
+      previousRequestId: checked.requestId,
+    });
+    expect(input.port.apply).not.toHaveBeenCalled();
+  });
+  it("starts a fresh task without inference, retained context, preview or scene mutation", async () => {
+    const input = props(),
+      checked = await proposal();
+    const requestPort = vi
+      .fn<SpatialAssistantProps["port"]["request"]>()
+      .mockResolvedValue({ status: "PROPOSED", proposal: checked });
+    input.port.request = requestPort;
+    render(<SpatialAssistant {...input} />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Move it" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    await screen.findByRole("button", { name: "Apply all changes" });
+    fireEvent.click(screen.getByRole("button", { name: "Start new task" }));
+    expect(requestPort).toHaveBeenCalledTimes(1);
+    expect(input.port.apply).not.toHaveBeenCalled();
+    expect(screen.queryByRole("button", { name: "Apply all changes" })).not.toBeInTheDocument();
+    expect(sessionStorage.getItem(`parallax.assistant.v1:synthetic-user:${draft.content.definitionId}`)).toBeNull();
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Review accessibility" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    await waitFor(() => expect(requestPort).toHaveBeenCalledTimes(2));
+    expect(requestPort.mock.calls[1][0].previousRequestId).toBeNull();
+  });
+  it("restores only recent account/draft metadata and clears context on account switch", async () => {
+    const input = props();
+    sessionStorage.setItem(
+      `parallax.assistant.v1:synthetic-user:${draft.content.definitionId}`,
+      JSON.stringify({ lastRequestAt: Date.now(), previousRequestId: "synthetic-prior-context" }),
+    );
+    const view = render(<SpatialAssistant {...input} />);
+    await screen.findByText(/Your task session is restored/);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Continue the previous idea" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    await waitFor(() => expect(input.port.request).toHaveBeenCalledTimes(1));
+    expect(vi.mocked(input.port.request).mock.calls[0][0].previousRequestId).toBe("synthetic-prior-context");
+    await screen.findByText("Synthetic provider unavailable");
+    view.rerender(<SpatialAssistant {...input} accountId="different-synthetic-user" />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "A new account task" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    await waitFor(() => expect(input.port.request).toHaveBeenCalledTimes(2));
+    expect(vi.mocked(input.port.request).mock.calls[1][0].previousRequestId).toBeNull();
+  });
   it("rejects an async proposal after edit followed by Undo even when the draft bytes match", async () => {
     const input = props(),
       checked = await proposal();

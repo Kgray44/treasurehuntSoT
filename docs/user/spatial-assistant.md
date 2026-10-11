@@ -26,8 +26,13 @@ changes; **Reject** leaves the scene unchanged. Undo and Redo use the ordinary
 editor history.
 
 If a request is unclear, answer the clarification with the object, direction,
-distance, exact text or interaction you mean. Refine and send a new request when
-you want a different proposal. The Assistant never chooses to apply a proposal
+distance, exact text or interaction you mean. **Refine this proposal** prepares
+the composer for your follow-up. The candidate keeps bounded recent task context
+for that scene, so an answer such as “The selected map” retains the original
+instruction. Previous proposals remain suggestions; the saved scene determines
+what exists now. **Start new task** clears the local task context and review,
+leaving your scene unchanged. If older context has expired, start a new task and
+describe the change using your current scene. The Assistant never chooses to apply a proposal
 for you. An edit, Undo or Redo while a proposal is pending clears that review;
 prepare a new proposal against the current scene.
 
@@ -45,7 +50,10 @@ retry the same reviewed change. Assistance can be unavailable because it is
 unconfigured, disabled, temporarily unreachable, or at an allowance limit. You
 can continue editing manually.
 
-Only your submitted instruction and bounded scene context are sent for
-interpretation. Existing clue text, private Guided descriptions, media and other
+Your submitted instruction, up to two relevant previous task turns and bounded
+scene context are sent for interpretation. The submitted instruction is retained
+with its private proposal for the administrator-configured retention period;
+the default is 30 days. It does not appear in general usage reports or browser
+storage. Existing clue text, private Guided descriptions, media and other
 accounts' content are excluded from that context. Object labels are included;
 avoid putting sensitive information in a submitted instruction or label.

@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { draftSchema } from "./authoring";
 import { spatialId } from "./contracts";
+import { readAssistantConversation, publicAssistantResult } from "./assistant-conversation";
 import { assertSpatialDraftAccess, spatialItemKind } from "./library-service";
 import {
   assistantSceneDigest,
@@ -36,6 +37,7 @@ export const assistantRequestSchema = z.strictObject({
   idempotencyKey: z.string().regex(/^[A-Za-z0-9_-]{16,128}$/),
   request: z.string().trim().min(1).max(2000),
   selectedEntityId: spatialId.nullable(),
+  previousRequestId: spatialId.nullable().optional(),
   mode: z.enum(["STANDARD", "ADVANCED"]),
 });
 export type AssistantRequest = z.infer<typeof assistantRequestSchema>;
@@ -97,7 +99,11 @@ export async function requestSpatialAssistant(
   );
   if (admission.replay) {
     if (admission.record.result && (!admission.record.resultExpiresAt || admission.record.resultExpiresAt > new Date()))
-      return { ...JSON.parse(admission.record.result), usage: await creatorAIUsage(accountId, store), replay: true };
+      return {
+        ...publicAssistantResult(JSON.parse(admission.record.result)),
+        usage: await creatorAIUsage(accountId, store),
+        replay: true,
+      };
     return {
       status: "UNCHANGED" as const,
       code: "REQUEST_ALREADY_ADMITTED",
@@ -110,7 +116,10 @@ export async function requestSpatialAssistant(
   const timings: Record<string, number> = { admissionMs: performance.now() - started };
   try {
     const contextStarted = performance.now();
-    const context = prepareAssistantContext(input.draft, input.selectedEntityId);
+    // Replay does not depend on older context still existing. New requests resolve
+    // bounded private discussion before dispatch; failures release undispatched capacity.
+    const conversation = await readAssistantConversation(store, accountId, input.draft, input.previousRequestId);
+    const context = { ...prepareAssistantContext(input.draft, input.selectedEntityId), recentTaskTurns: conversation };
     const body = buildOpenAIRequest({
       request: input.request,
       context,
@@ -157,15 +166,22 @@ export async function requestSpatialAssistant(
       }
       timings.validationMs = performance.now() - validateStarted;
     }
+    const retained =
+      result.status === "PROPOSED"
+        ? {
+            ...result,
+            conversation: { request: input.request, previousRequestId: input.previousRequestId ?? null },
+          }
+        : result;
     if (outcome.usage)
       await settleAIUsage(
         admission.record.id,
-        { usage: outcome.usage, providerResponseId: outcome.responseId, result, timings },
+        { usage: outcome.usage, providerResponseId: outcome.responseId, result: retained, timings },
         store,
       );
     else
       await failAIUsage(admission.record.id, "UNKNOWN_PROVIDER_USAGE", false, store, new Date(), {
-        result: { ...result, accounting: "CONSERVATIVE_PENDING" },
+        result: { ...retained, accounting: "CONSERVATIVE_PENDING" },
         timings,
       });
     return {

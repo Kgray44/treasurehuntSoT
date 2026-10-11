@@ -68,12 +68,33 @@ the authorization header to the fixed provider. Safe diagnostics return configur
 booleans. No credential file, cloud service, public environment variable or browser
 secret is introduced. Browser imports of server modules are type-only.
 
-Usage history explicitly selects safe metadata. Raw prompts are not stored by
-these modules. Owner-scoped generated proposals are bounded to 64 KB and expire
-after the configured 1–90 day retention period; defaults are 30 days. Expiration
-is cleared on the next admission. Browser session storage contains only timing
-and operation counts, not prompts or scenes. Financial/policy records remain
-durable. Account/draft switches remount the panel and abort in-flight work.
+Usage history explicitly selects safe metadata and excludes private retained
+results. A successful advisory result retains the submitted instruction (at
+most 2,000 characters) and the previous request identity inside its existing
+owner/draft-scoped result, so a short clarification answer can retain the original
+task's meaning. Failed results do not retain instruction text. Complete retained
+results are bounded to 64 KB and expire after the configured 1–90 day retention
+period; defaults are 30 days. Expiration is cleared on the next admission.
+
+An explicit previous request identity resolves at most two chronological turns
+from that same owner and draft. Context contains the submitted instructions,
+bounded proposal summary/question and operation types/identities; it excludes
+previous generated clue/alternative text and full proposal bodies. Those turns
+are marked advisory. Current object existence comes from the current canonical
+scene, and discussion cannot apply or restore edits. Foreign, expired, malformed,
+duplicate or circular references fail before upstream dispatch; undispatched
+reservations release their exposure. Idempotent replay strips private conversation
+fields and remains independent of older context expiring. Administrators' usage
+exports and diagnostics do not contain retained instruction text. The private
+conversation field is excluded from ordinary provider replies. No instruction
+is logged or placed in browser storage.
+
+Browser session storage contains only timing/count metadata and a request
+identity, scoped by account and draft. A recent session may restore that identity
+without making an inference call; a fresh session uses current saved scene state.
+**Start new task** clears local context and review without mutating the scene or
+calling the provider. Financial/policy records remain durable. Account/draft
+switches remount the panel and abort in-flight work.
 
 ## Integration boundary
 
