@@ -110,6 +110,8 @@ See the [post-mainline correction receipt](../../Engineering/Device_Lab/Sextant_
 
 ## Continuing implementation
 
+The [actual Spatial Studio visual baseline](Spatial_Studio_Visual_Review_20261011.md) includes source-bound full-resolution screenshots, mode comparisons, responsive layouts, a contact sheet and visual findings. Owner visual acceptance remains pending.
+
 - Project Sextant governance is already published and should be consumed rather than duplicated.
 - Project Crossdeck governance is required before Phase 4 can claim canonical multi-surface pairing/synchronization behavior.
 - Watchglass integration must remain optional/abstaining until Watchglass has accepted implementation and certification.
