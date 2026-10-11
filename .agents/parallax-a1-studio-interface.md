@@ -35,3 +35,32 @@ The canonical handoff remains Phase 3 ordinary qualification and protected merge
 mounted A1 integration must reconcile the final protected Phase 3 tree. This
 approval does not cover A1's unmounted panel, its future integrated visuals or
 subsequent Phase 3 field/Device Lab changes. The sibling checkout remains untouched.
+
+## Prepared canonical adapter
+
+`src/components/studio/parallax/spatial-assistant-port.ts` prepares the agreed
+port against that approved source. The host provides current account/draft scope,
+CSRF, `readBase`, serialized `prepareBase`, and synchronous `installSaved(saved,
+expectedBase)`. Mount one stable adapter per account/draft. InstallSaved must
+recheck local generation, make ONE ordinary history replacement, update the
+revision/saved JSON and refs, and return without enqueuing a duplicate autosave.
+The helper validates exact response binding and saved materialization before
+calling that seam; it never invokes ordinary SAVE or owns history.
+
+Prepared HTTP bodies use the existing `/api/studio/parallax`: `action: AI,
+kind: ASSISTANT` plus the bounded request fields, and non-paid
+`action: ASSISTANT_APPLY` plus retained proposal/selected IDs/idempotency. These
+handlers are not yet installed. Canonical integration must add them to the
+existing authenticated/CSRF/rate-limited route, pass the request abort signal to
+the service, install atomic canonical save/receipt logic, and migrate the legacy
+unmetered network path. The current action names do not authorize a competing
+inference endpoint. Fourteen adapter tests are narrow mocked transport/host
+proof, not mounted or backend qualification.
+
+Native handoff verification now clears the protected-source prerequisite:
+PR #711 is merged as `0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6`, fetched
+main tree `36529aefcac815a8a1cef0434624149b9b567e6f`; normal run
+`38171123906`, job `114563773604` completed successfully. This authorizes the
+original exact additive A1 reconciliation in its owned checkout. Phase 3 visual
+approval remains bound to its reviewed workstation source; A1 must still qualify
+its own resulting integration, saved Apply, browser journeys and visuals.

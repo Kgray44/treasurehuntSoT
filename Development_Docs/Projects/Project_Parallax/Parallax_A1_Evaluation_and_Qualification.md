@@ -49,7 +49,7 @@ candidate, despite the configured Windows user credential.
 
 ## Local development evidence
 
-The focused local suite passes 195 checks across 12 files. Sixty deterministic evaluator results and the 61-check corpus suite pass. TypeScript, changed-source ESLint, documentation/index validation and generated Feature Catalog validation pass. No major catalog fragment changes are justified by this partial candidate.
+The focused local suite passes 209 checks across 13 files. Sixty deterministic evaluator results and the 61-check corpus suite pass. TypeScript, changed-source ESLint, documentation/index validation and generated Feature Catalog validation pass. No major catalog fragment changes are justified by this partial candidate.
 Owner-bound service tests use actual isolated SQLite and a mocked HTTPS adapter
 to prove admission before dispatch, exact saved revision/ownership, safe private
 context, proposal retention, duplicate replay, disabled/absent provider behavior,
@@ -85,11 +85,25 @@ scene mutation, and account-scoped session restoration. These use synthetic
 content and a mocked upstream with actual isolated durable records; they do not
 prove live semantic quality or the mounted Studio refinement journey.
 
+The prepared canonical HTTP/host adapter has fourteen focused checks for the
+saved-snapshot boundary, same-origin Studio action/CSRF/cancellation, exact
+request/proposal binding, acknowledged materialization before one host install,
+concurrent and repeated application identity, uncertain response retry, malformed
+or wrong acknowledgements, intervening local edits, account-scope changes, and
+safe quota/reset projections. Its host callback owns the ordinary history and
+marks the acknowledgement already saved. The bounded full-scene acknowledgement
+check includes a supported 32-entity draft larger than the provider response
+budget, without weakening response bounds. The adapter is not mounted, and its
+ASSISTANT/ASSISTANT_APPLY action handlers are not yet installed in the canonical
+route. These checks use mocked HTTP and synthetic host state; they do not prove
+authenticated atomic backend Apply, a real history installation, persistence or
+the full Creator browser journey. Those gates remain pending.
+
 Shared Studio integration, authenticated atomic Apply, legacy network-path
 migration, mounted Assistant browser journeys, motion/viewport package,
 ordinary final Sounding Line, PR qualification, live provider canary and owner
 visual review remain pending. The latest verified fetched main is
-`efa689f20d2a9dead852135302dd6961c9f0f0d2` (accepted Crossdeck PR #706 and evidence PR #708, preserving Pilot); the independent branch still derives
+`0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6` (accepted Phase 3 PR #711, preserving Crossdeck and Pilot); the independent checkpoint still derives
 from `f458bf2dc1176016c2d166180f038f0f15ac9f7c`. No unmerged Phase 3 source was
 imported and no shared development server, account database or real private
 content was used for validation.

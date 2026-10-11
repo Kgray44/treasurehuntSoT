@@ -12,6 +12,7 @@ import {
   aiMaximumExposureNano,
   aiUsageCostNano,
   aiUsageSchema,
+  creatorAIUsageSchema,
   type AIGlobalPolicy,
   type AIUsage,
   type AIModelPricing,
@@ -321,7 +322,7 @@ export async function creatorAIUsage(accountId: string, store: PrismaClient = db
     effective = await effectiveFor(store, policy, accountId, now),
     period = aiUTCPeriod(now);
   const used = await store.aIUsageLedger.count({ where: { accountId, period: period.id, status: { in: consuming } } });
-  return {
+  return creatorAIUsageSchema.parse({
     enabled: policy.enabled && !effective.suspended,
     advancedEnabled: effective.advancedEnabled,
     allowance: effective.monthlyRequests,
@@ -330,5 +331,5 @@ export async function creatorAIUsage(accountId: string, store: PrismaClient = db
     resetAt: period.reset.toISOString(),
     source: effective.source,
     nearingLimit: effective.monthlyRequests > 0 && used / effective.monthlyRequests >= 0.8,
-  };
+  });
 }

@@ -27,3 +27,14 @@ The subsequent explicit main fetch succeeded: `origin/main` is verified at `efa6
 Latest read-only Phase 3 checkpoint: `7a870a394148201b3abad65529105d3e06c268e6`; its task authority still explicitly holds A1 mounting until the newest canonical refinement receives owner acceptance. Main was fetched again and remains `efa689f20d2a9dead852135302dd6961c9f0f0d2`. Independent quota mutation HTTP guards now have ten additional passing checks, bringing the focused suite to 187 across 12 files. Shared-key zero-network probes were refreshed from the same three checkout directories; Windows user configuration is present, this existing Codex process still needs environment refresh, and no key or private content was emitted. No sibling source or shared server was changed.
 
 The coordinator subsequently relayed native owner approval of the refined workstation at exact Phase 3 source `592217e3edb214bab76373dc64cbe4b954ba3703`, tree `36cb8d072caa7c17519d6398bd994c26c4c4a05f`. This resolves that source's visual decision only, not final software acceptance or later field/Device Lab changes. A1 retains the original accepted-canonical-source integration prerequisite. Independent bounded task context now resolves at most two owner/draft-scoped retained turns, strips private context on replay/reporting, releases undispatched failed lookups, and preserves current-scene authority. No paid call, sibling mutation or new conversation store was introduced.
+
+Latest read-only handoff audit: Phase 3 is at `f521aaacf0f285ced5ffa3013d5de387d5b242f3`; its task authority confirms visual approval and preparation against `592217e3`, with mounted integration after ordinary qualification and protected merge. Main remains fetched at `efa689f20d2a9dead852135302dd6961c9f0f0d2`. The prepared same-route HTTP/host adapter now has thirteen passing checks; the combined focused suite is 208 across 13 files. It is unmounted and does not install route handlers or canonical save/receipt logic. The shared safe Creator usage schema avoids a competing projection definition. Next canonical work remains the exact additive reconcile, backend atomic Apply/idempotency, legacy-provider migration and host mount, followed by full browser/visual/motion/ordinary qualification. No sibling files, shared runtime, cloud executor or paid provider were used.
+
+The subsequent native PR/job readback and main fetch verified the canonical
+handoff: PR #711 merged as `0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6`, tree
+`36529aefcac815a8a1cef0434624149b9b567e6f`; ordinary run `38171123906` and
+job `114563773604` succeeded. The complete independent checkpoint has 209 passing
+checks (fourteen adapter checks including a bounded full-scene acknowledgement),
+typecheck/lint and docs/catalog validation. Publish it before the original exact
+additive mainline reconciliation. This is A1's owned merge only; the sibling
+checkout remains protected. Final integrated acceptance is still unproven.

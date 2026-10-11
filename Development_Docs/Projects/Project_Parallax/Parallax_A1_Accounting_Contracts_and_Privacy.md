@@ -24,6 +24,20 @@ Clients cannot provide authoritative approved proposals: atomic Apply must use
 the owner-scoped retained server result. Its final authenticated route and one
 already-saved host history installation remain held for canonical integration.
 
+The prepared `spatial-assistant-port.ts` adapter uses the existing same-origin
+Studio endpoint, its current CSRF token and request cancellation. Request replies
+bind request, draft, revision, generation and digest before display. Apply
+compares the canonical acknowledgement to the exact deterministic selected
+materialization before calling the host's synchronous one-history-install seam.
+It rechecks local generation after dispatch, preserves uncertain-retry identity,
+deduplicates concurrent/repeated acknowledgements and refuses account/draft scope
+changes. A bounded in-memory receipt cache is an optimization; backend
+idempotency remains authoritative. Error bodies are not forwarded as arbitrary
+messages, and safe Creator usage parsing shares the server projection schema.
+The adapter is preparation only until the canonical actions and host callbacks
+are integrated against the final protected Phase 3 tree. It does not introduce
+another paid endpoint or own an editor history/save implementation.
+
 ## Admission and accounting
 
 SQLite and MySQL additive schemas own global control, user policy, policy

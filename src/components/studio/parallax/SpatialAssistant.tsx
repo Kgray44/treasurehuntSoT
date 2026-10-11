@@ -14,15 +14,23 @@ import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import styles from "./SpatialAssistant.module.css";
 
 type Usage = Awaited<ReturnType<typeof creatorAIUsage>>;
-type Reply = { status: string; proposal?: AssistantProposal; usage?: Usage; code?: string; message?: string };
+export type SpatialAssistantReply = {
+  status: string;
+  proposal?: AssistantProposal;
+  usage?: Usage;
+  code?: string;
+  message?: string;
+};
+export type SpatialAssistantBase = { draft: SpatialDraft; revision: number; editorGeneration: number };
+export type SpatialAssistantSavedDraft = { status: "SAVED"; draft: SpatialDraft; revision: number };
 export type SpatialAssistantPort = {
-  prepareBase: () => Promise<{ draft: SpatialDraft; revision: number; editorGeneration: number }>;
-  request: (input: AssistantRequest, signal: AbortSignal) => Promise<Reply>;
+  prepareBase: () => Promise<SpatialAssistantBase>;
+  request: (input: AssistantRequest, signal: AbortSignal) => Promise<SpatialAssistantReply>;
   apply: (
     proposal: AssistantProposal,
     selectedOperationIds: readonly string[],
     idempotencyKey: string,
-  ) => Promise<{ status: "SAVED"; draft: SpatialDraft; revision: number }>;
+  ) => Promise<SpatialAssistantSavedDraft>;
 };
 export type SpatialAssistantProps = {
   draft: SpatialDraft;

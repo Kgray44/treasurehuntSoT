@@ -6,6 +6,17 @@ export type AIModelId = (typeof aiModelIds)[number];
 const integer = (min: number, max: number) => z.number().int().min(min).max(max);
 // USD nanodollars; $1 = 1,000,000,000 units. Public JSON uses safe integers.
 export const USD_NANO = 1_000_000_000;
+// Safe Creator projection shared by the server and canonical Studio adapter.
+export const creatorAIUsageSchema = z.object({
+  enabled: z.boolean(),
+  advancedEnabled: z.boolean(),
+  allowance: z.number().int().nonnegative(),
+  used: z.number().int().nonnegative(),
+  remaining: z.number().int().nonnegative(),
+  resetAt: z.iso.datetime(),
+  source: z.enum(["INHERITED", "OVERRIDE"]),
+  nearingLimit: z.boolean(),
+});
 const money = integer(0, 1_000_000 * USD_NANO);
 export const aiGlobalPolicySchema = z
   .strictObject({
