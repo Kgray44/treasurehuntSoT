@@ -1,7 +1,7 @@
 ---
 title: Crossdeck committed-change transport and measured validation
 audience: product-engineering
-status: implementation-candidate
+status: integrated-mainline
 canonical_for: crossdeck-realtime-transport-20261011
 last_reviewed: 2026-10-11
 ---
@@ -209,8 +209,9 @@ the corrected head separately from the earlier transport measurements.
 
 ## Protected qualification and integration
 
-[Transport PR #706](https://github.com/Kgray44/treasurehuntSoT/pull/706) remains a
-candidate pending the required ordinary Sounding Line Mainline Decision. The
+[Transport PR #706](https://github.com/Kgray44/treasurehuntSoT/pull/706) is merged at
+`e4c5f19e1e5936a059ebaeb17e1179f10490418c`. The [protected closure receipt](Realtime_Transport_Protected_Closure_20261011.md)
+records final exact-source acceptance and landed verification. The
 original protected base was `f458bf2dc1176016c2d166180f038f0f15ac9f7c`.
 Concurrent Pilot PR #707 subsequently landed as `01d32824127d00628546ea4209d09fea57c335c1`;
 the candidate preserves that accepted Pilot and reconciles the current-status conflict.
@@ -223,13 +224,13 @@ static and build checks pass. This failure remains a failure. The revised browse
 case checks the reverse HTTP response before visibility, retains metadata-only
 request diagnostics on failure, and gives the ten-second reconciliation interval
 five seconds of request budget. Measured latency samples retain their actual
-elapsed time; the functional budget is not a latency claim. Fresh qualification
-of the reconciled candidate is required.
+elapsed time; the functional budget is not a latency claim. The reconciled candidate subsequently passes required hosted qualification,
+as recorded in the separate protected closure receipt.
 
 All measurements above are focused development evidence, not protected acceptance.
-Final ordinary qualification is delegated to the PR's trusted hosted workflow;
-no duplicate local/cloud ordinary run is started. Normal protected merge and
-exact landed smoke remain required. No deployment, release or owner/native/
+Final ordinary qualification passes in the PR's trusted hosted workflow;
+no duplicate local/cloud ordinary run was started. Normal protected merge and
+exact landed smoke both pass. No deployment, release or owner/native/
 physical acceptance is included.
 
 ## Documentation and catalog decision

@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "scenarioId": "crossdeck.phone-disconnect",
+  "scenarioVersion": 1,
+  "owningProject": "CROSSDECK",
+  "scenarioFingerprint": "54497fe20e21d51696d07fe3bdc961f2f7d6d974a9775cf2bd2c195b731b59c0",
+  "source": {
+    "sourceSha": "1b65c50429ff149ba0da90600f62d738b6922cf6",
+    "sourceTree": "e8014786eaa12767c0891641a81f2250a26497d3",
+    "sourceFingerprint": "da79fa3b626597dacb9de91046a55449efa490a3327500a3dd70c3ac5d9d5ce8",
+    "dirty": false
+  },
+  "baseSha": "1b65c50429ff149ba0da90600f62d738b6922cf6",
+  "tier": "D0",
+  "profile": "synthetic",
+  "hostOs": "win32",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": ["surface.synchronization", "surface.surface-session"],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-11T19:22:08.643Z",
+  "completedAt": "2026-10-11T19:22:14.404Z",
+  "assertions": [
+    {
+      "id": "crossdeck.phase1.participation",
+      "state": "PASS"
+    },
+    {
+      "id": "presence-removal",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "PROVIDER_SIMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": ["D4_REAL_DEVICE_PAIRING", "D5_COLOCATED_FIELD_TRIAL", "PHASE2_SYNC_AND_HANDOFF"],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": ["owned-sqlite-fixture"],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}
