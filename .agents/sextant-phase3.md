@@ -1,7 +1,7 @@
 ---
 title: Sextant Phase 3 task context
 audience: automation
-status: active-local-implementation
+status: software-qualified-mainline
 canonical_for: sextant-phase3-local-context
 last_reviewed: 2026-10-11
 ---

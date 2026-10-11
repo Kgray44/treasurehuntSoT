@@ -180,7 +180,7 @@ publication, protected merge and landed smoke. The parent cleared the merge hold
 after Parallax landed. Deployment, later phases and physical owner sessions remain
 outside scope. The reconciled final-head ordinary decision is still required.
 
-## Remaining acceptance gates
+## Acceptance gates at the recovery checkpoint
 
 - D2 Android execution requires an actual configured emulator/bridge. D3 native iOS and native transport parity remain Phase 4.
 - D4 actual sensor/RF/camera/microphone/accessory accuracy, calibration, drift, interruption, power/thermal behavior and tactile output; D5 venue/weather/accessibility/field safety and weak-prop trials require physical evidence.
@@ -258,3 +258,15 @@ Companion benchmark remains explicitly unqualified above and is not a claim of
 full production performance certification. Native Goal and durable sidebar
 membership readback are unavailable; these metadata limits do not block the
 implemented and protected software result.
+
+The metadata promotion candidate `236c24953007b3a3c00a877f6f731f424e17933f`
+passes ordinary qualification at `2026-10-11T08:54:37.939Z`, closing six obligations
+with zero remainder. Its selected shared-contract coverage passes 2,266 tests
+in 389 files; the promoted catalog also passes all nine tests in an independent
+fresh run. A stale generated migration-inventory branch-path row was identified
+and regenerated after the catalog rename was committed. Final clean metadata
+qualification and protected closeout follow; product source remains the accepted
+integration above. Current outstanding acceptance is D2 where an actual runtime
+becomes available, Phase 4 native parity, D4 physical evidence, D5 field safety and
+owner/product acceptance, plus the explicitly unqualified historical performance
+benchmark. None is represented by synthetic software qualification.
