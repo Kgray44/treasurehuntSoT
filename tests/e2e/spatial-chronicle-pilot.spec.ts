@@ -2,7 +2,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import AxeBuilder from "@axe-core/playwright";
-import { randomBytes } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { hash } from "bcryptjs";
 import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure, enterClosureJournal, openClosureMap } from "./fixtures/landfall-closure";
@@ -89,7 +89,12 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       await expect(page).toHaveURL(`${origin}/dev/spatial-pilot`);
       const cookie = (await page.context().cookies()).find((cookie) => cookie.name === "wayfarer_account");
       expect(cookie).toBeDefined();
-      return { ...session, token: cookie!.value };
+      const issued = await db.accountSession.findUniqueOrThrow({
+        where: { tokenHash: createHash("sha256").update(cookie!.value).digest("hex") },
+      });
+      expect(issued.accountId).toBe(ownerId);
+      expect(issued.csrfToken).toBe(session.csrfToken);
+      return { ...session, token: cookie!.value, id: issued.id };
     }
     const session = await signIn(d, baseURL!);
     const receiver = await signIn(p, companionURL.origin);
