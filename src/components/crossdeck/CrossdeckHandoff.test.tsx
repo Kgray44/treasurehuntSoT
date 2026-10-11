@@ -64,6 +64,7 @@ it("clears offers during a failed refresh and restores an unchanged authoritativ
   expect(screen.queryByRole("button", { name: "Receive Private note" })).not.toBeInTheDocument();
   await act(async () => mocks.next!({ ...snapshot, observedAt: new Date().toISOString() }));
   expect(screen.getByRole("button", { name: "Receive Private note" })).toBeEnabled();
+  expect(screen.getByRole("status")).toHaveTextContent("Connection restored");
   cleanup();
   expect(mocks.unsubscribe).toHaveBeenCalledOnce();
 });

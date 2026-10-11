@@ -78,10 +78,12 @@ export function CrossdeckHandoff({
           !hadFailure &&
           current.current &&
           JSON.stringify({ ...current.current, observedAt: "" }) === JSON.stringify({ ...next, observedAt: "" });
+        const restored = hadFailure;
         current.current = next;
         hadFailure = false;
         if (!unchanged) setSnapshot(next);
         setOnline(true);
+        if (restored) setMessage("Connection restored. Check your current view status above.");
       },
       (error) => {
         hadFailure = true;
@@ -150,7 +152,7 @@ export function CrossdeckHandoff({
         setOnline(true);
         setMessage(
           payload.action === "send"
-            ? "Ready on your other device. Choose Receive there."
+            ? "View requested. Its current transfer status appears above."
             : "Your devices are up to date.",
         );
         return next;
