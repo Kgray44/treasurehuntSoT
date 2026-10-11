@@ -35,7 +35,9 @@ The optional `studio` extension adds no default fields to P1 releases. Existing 
 
 ## Qualification ledger
 
-- Focused development run: **101 tests passed across 11 files**, covering existing Parallax/Lens tests and new authoring/library/API/Studio tests.
+- Focused development run: **108 tests passed across 11 files**. The combined rerun passed 105 tests, with one UI worker-start timeout; the isolated UI retry passed its three tests. Earlier baseline focused run passed 101 tests. These cover existing Parallax/Lens behavior and new authoring/library/API/Studio contracts.
+- Existing shared Device Lab: all eight Parallax D0 scenarios passed; receipts remain labeled deterministic synthetic evidence.
+- Production compilation and TypeScript completed successfully during the development browser run. Documentation indexing and validation passed.
 - Integrated TypeScript, lint, production build, isolated Creator browser workflow and final ordinary Sounding Line: pending completion in this record.
 - Browser screenshots and receipts are kept under this clone's ignored `artifacts` directories. No production account, Chronicle, database or publication is used.
 - Final-head proof and exact local candidate are recorded at closeout; protected-main acceptance requires the normal repository route after separate publication authorization.

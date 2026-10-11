@@ -100,6 +100,7 @@ export function SpatialStudio({
   }, []);
   const persist = useCallback(async () => {
     if (saving.current) return saving.current;
+    if (!draftRef.current || savedJson.current === JSON.stringify(draftRef.current)) return;
     const task = async () => {
       while (draftRef.current && savedJson.current !== JSON.stringify(draftRef.current)) {
         const snapshot = draftRef.current;
@@ -307,7 +308,19 @@ export function SpatialStudio({
     <main className={styles.studio}>
       <header className={styles.header}>
         <div>
-          <Link href={chronicleId ? `/studio/tales/${encodeURIComponent(chronicleId)}` : "/studio/library"}>
+          <Link
+            href={chronicleId ? `/studio/tales/${encodeURIComponent(chronicleId)}` : "/studio/library"}
+            onClick={(event) => {
+              if (event.ctrlKey || event.metaKey) return;
+              event.preventDefault();
+              if (busy) return;
+              const href = event.currentTarget.href;
+              void action(async () => {
+                await persist();
+                window.location.assign(href);
+              });
+            }}
+          >
             ← {loaded.chronicle?.title ?? "Creator Studio"}
           </Link>
           <p className={styles.eyebrow}>PARALLAX / Spatial Studio</p>
@@ -1157,7 +1170,19 @@ export function SpatialStudio({
                 >
                   Redo attachment
                 </button>
-                <Link href={`/studio/tales/${encodeURIComponent(loaded.chronicle.id)}/versions`}>
+                <Link
+                  href={`/studio/tales/${encodeURIComponent(loaded.chronicle.id)}/versions`}
+                  onClick={(event) => {
+                    if (event.ctrlKey || event.metaKey) return;
+                    event.preventDefault();
+                    if (busy) return;
+                    const href = event.currentTarget.href;
+                    void action(async () => {
+                      await persist();
+                      window.location.assign(href);
+                    });
+                  }}
+                >
                   Publish and reopen Chronicle →
                 </Link>
               </>
