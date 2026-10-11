@@ -207,3 +207,22 @@ The optional inherited Companion benchmark remains outside this required
 canonical decision and is not represented as a pass. Physical/native/field and
 owner/product gates remain open; normal protected integration and landed smoke
 are authorized and still required before mainline catalog promotion.
+
+### Hosted catalog boundary correction
+
+PR #701's first protected run, `38124308090`, fails on clean `bb45149` at
+`2026-10-11T08:21:53.133Z`: 776 unit tests pass and one fails because the audited
+catalog assertion still expects 63 entries instead of the new 64. This was a
+missed task integration assertion, not an environment failure. The local finalizer
+had rebound that unit batch without observing the changed catalog data dependency;
+its recorded local PASS is preserved, but is insufficient protected qualification.
+The actual failed hosted decision and logs are retained under
+`artifacts/sounding-line/pr701-first-hosted-decision` and
+`artifacts-sextant-pr701-failure.log`. No failure is waived or merged.
+
+The correction updates the exact audited count to 64 and explicitly requires
+FT-B103's stable title. It preserves all duplicate-ID, ordering, schema, branch
+metadata and privacy assertions. Changing that test source forces fresh affected
+unit proof. No Sounding Line engine, workflow, selection rule or unrelated
+maintenance work is added; the data-dependency/reuse limitation is reported for
+parent coordination. Renewed exact-head local and protected checks are required.
