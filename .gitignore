@@ -108,5 +108,7 @@ next-env.d.ts
 
 # task-local validation receipts
 /artifacts/
+/.agents/plugins/generated/
+/outputs/launchdeck-skill/
 # Retired root planning document. Do not reintroduce it without an active owner-approved system.
 PLANS.md

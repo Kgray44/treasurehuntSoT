@@ -12,6 +12,10 @@ last_reviewed: 2026-10-10
 
 ## Unreleased
 
+### Developer workflows
+
+- Consolidated Launchdeck into one repository Skill with deterministic private-plugin distribution and supported host delegation. The optional adapter remains blocked; caller-specific acceptance is tracked separately in the [integration record](Development_Docs/Programs/Project_Launchdeck/Project_Launchdeck_Skill_Integration_Acceptance.md).
+
 ### Corrected
 
 - Sextant gesture acquisition refuses incompatible slow delivery before sensor acquisition and cleans all owned leases on failure/abort/interruption. Parallax native scenes use bounded versioned UTF-8 chunks, independent resolved geometry validation and idempotent session-bound termination including Android Back. Existing published checksums, Guided accessibility and One Voyage progression authority are retained. See the [correction receipt](Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for qualification and remaining physical/owner gates.

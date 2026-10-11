@@ -1,0 +1,4 @@
+interface:
+  display_name: "Launchdeck"
+  short_description: "Prepare and delegate authorized Codex tasks"
+  default_prompt: "Use $launchdeck to launch the agreed task in the VoyageWright Codex Project."

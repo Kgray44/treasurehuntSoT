@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-09-21
+last_reviewed: 2026-10-10
 ---
 
 # Engineering records
@@ -15,6 +15,7 @@ Use [INDEX.md](INDEX.md) for the current taxonomy and [document-index.json](docu
 ## Current project homes
 
 - [Project Homeport](Projects/Project_Homeport/README.md) — product-reality and convergence records.
+- [Project Launchdeck](Programs/Project_Launchdeck/Project_Launchdeck_Skill_Integration_Acceptance.md) — canonical Skill, private distribution and per-host acceptance.
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md) — current owner-directed experience-redesign control area.
 - [Project Tideglass](Projects/Project_Tideglass/README.md) — semantic-edition intelligence; its Phase 4 record is accepted on protected main.
 - [Project Bridgewatch](Programs/Bridgewatch/Project_Bridgewatch_Completion_Receipt.md) — original program completion, with its v1.2 records retained as a separate version amendment.

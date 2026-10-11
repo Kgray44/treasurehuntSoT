@@ -1,0 +1,23 @@
+{
+  "savedRelease": "pluginrel_6acad6a8b18c8191ab62bce6c367f68d",
+  "version": "0.4.2",
+  "filesCompared": 20,
+  "canonicalSkillHashes": {
+    "skills/launchdeck/SKILL.md": "0e77c63ed9f55a46fc8626042e580fd6b1bf8f5b91d9d0d3c5b0d2ec562b5145",
+    "skills/launchdeck/agents/openai.yaml": "f014a0a09e8b462f5484bb50c93b784d4bb2937d26c9fce7c7ce471401e462ba",
+    "skills/launchdeck/references/acceptance.md": "a1a523ac4017a14d7e4ab67a8aec6ca2a0585e9a61fee93d1600093133560baa",
+    "skills/launchdeck/references/executable-launch.md": "b292104f4ece9efa383a4102247d0a9b42045eba87fc21c3db081ffa07ae39b6",
+    "skills/launchdeck/references/helper-contract.md": "6c49abc754fd15bf21185bdd0abdd11bdf8cad87cffa3cf9359b9c10e92c7528",
+    "skills/launchdeck/references/host-capabilities.md": "8c3ed1e499740c73bdb43249a9fcefa1852bfb37fdbdcef3ee848c681dcdb91d",
+    "skills/launchdeck/references/native-integration.md": "44f97ea5d17630242aeb87190b6eb87703ef0ec54f710e19b2a09191caecf5f1",
+    "skills/launchdeck/references/project-access.md": "1fd3f02ec98904829f0259401484c03d35e74552a9b46cd29e1b0e4db10df323",
+    "skills/launchdeck/references/routing-and-naming.md": "2a11cf6f89c2f3273d30f46b5569f662f282f8222f98d0e4d764308adce2996f",
+    "skills/launchdeck/references/task-contract.md": "bd3f16ac09a385db35af2ffd07e573854face49d642b7a7c15c5c6fb3f384550",
+    "skills/launchdeck/scripts/launchdeck.py": "eb908321c7bbb8e2710bebfdd879c82551b77960695aea133ede99ded6036ba5"
+  },
+  "cacheEqual": true,
+  "savedSkillEqual": true,
+  "adapterActivated": false,
+  "savedManifestEquivalent": true,
+  "archiveSha256": "13a1d0df7625b51deb0aec94cd870358a57ef5c6c36592bfc09bf3fbd0f31fa8"
+}

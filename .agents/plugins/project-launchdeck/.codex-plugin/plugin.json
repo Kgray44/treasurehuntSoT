@@ -1,0 +1,29 @@
+{
+  "name": "project-launchdeck",
+  "version": "0.4.2",
+  "description": "Repository-owned VoyageWright Codex launches with full project/GitHub context, Project Trim contracts, standard titles, retry receipts, and safe fallback.",
+  "author": {
+    "name": "Project Launchdeck"
+  },
+  "skills": "./skills/",
+  "apps": "./.app.json",
+  "interface": {
+    "displayName": "Project Launchdeck",
+    "shortDescription": "VoyageWright task launching",
+    "longDescription": "One canonical Launchdeck Skill for task preparation and supported native delegation across Codex Desktop, Gibbs, ChatGPT and Work. Host capabilities and required approvals determine launch availability. The optional executable adapter remains blocked and is excluded from this Skill-only release. End-to-end acceptance is reported separately per surface.",
+    "developerName": "Project Launchdeck",
+    "category": "Productivity",
+    "logo": "./assets/logo.svg",
+    "logoDark": "./assets/logo-dark.svg",
+    "composerIcon": "./assets/logo.svg",
+    "composerIconDark": "./assets/logo-dark.svg",
+    "brandColor": "#126F7B",
+    "brandColorDark": "#74D7CF",
+    "defaultPrompt": [
+      "Launch the agreed phase as a Goal in the VoyageWright Codex project using Project Trim.",
+      "Prepare a compact implementation launch from our agreed scope and current repository evidence.",
+      "Check a previous Launchdeck request and reconcile its receipt before retrying."
+    ]
+  },
+  "requires_local_executor": false
+}
