@@ -257,7 +257,7 @@ export function ChronicleLens({
           {activeMoment.attachment.overrides.narrative ?? activeMoment.version.fallback.narrative}
         </p>
         <div className={styles.objects}>
-          {activeMoment.version.entities.map((e) => (
+          {activeMoment.version.entities.filter((e) => state?.visibleEntityIds.includes(e.id)).map((e) => (
             <article
               key={e.id}
               className={`${styles.object} ${state?.selectedEntityId === e.id ? styles.selected : ""}`}

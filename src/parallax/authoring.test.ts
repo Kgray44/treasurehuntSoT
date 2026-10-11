@@ -1,0 +1,250 @@
+import { describe, expect, it, vi, afterEach } from "vitest";
+import {
+  createSpatialDraft,
+  editSpatialDraft,
+  worldTransform,
+  changeHistory,
+  undo,
+  redo,
+  forkSpatialDraft,
+  presetNames,
+  draftSchema,
+} from "./authoring";
+import { materializeIntent, requestSpatialAI } from "./ai-authoring";
+import { materializeSpatialVersion, validateSpatialMoment } from "./publication";
+import { validateSpatialAuthoring, simulateSpatialEnvironments, spatialStudioHref } from "./studio-validation";
+import { evaluateSpatialBehavior } from "./behavior";
+import { syntheticSpatialMoment, syntheticBinding, guidedContext } from "./fixtures";
+import { ParallaxLensRuntime } from "./runtime";
+import { SyntheticSpatialAdapter } from "./synthetic";
+afterEach(() => {
+  vi.unstubAllEnvs();
+  vi.useRealTimers();
+});
+describe("Parallax creator authoring", () => {
+  it.each(presetNames)("materializes editable %s with fallback and a truthful environment census", (name) => {
+    const draft = createSpatialDraft("owned", name);
+    expect(validateSpatialAuthoring(draft.content).filter((i) => i.severity === "ERROR")).toEqual([]);
+    expect(simulateSpatialEnvironments(draft.content)).toHaveLength(10);
+    expect(simulateSpatialEnvironments(draft.content).every((e) => e.physicalQualification === "NOT_ESTABLISHED")).toBe(
+      true,
+    );
+    expect(materializeSpatialVersion(draft.content)).toEqual(
+      materializeSpatialVersion(JSON.parse(JSON.stringify(draft.content))),
+    );
+  });
+  it("preserves world pose across reparent/unparent and rejects cycles without editing the original", () => {
+    let draft = createSpatialDraft("owned");
+    const id = draft.content.entities[0].id;
+    draft = editSpatialDraft(draft, { type: "DUPLICATE", entityId: id, newId: "child" });
+    const before = worldTransform(draft.content, "child");
+    const grouped = editSpatialDraft(draft, { type: "PARENT", entityId: "child", parentId: id });
+    expect(worldTransform(grouped.content, "child")).toEqual(before);
+    expect(
+      worldTransform(editSpatialDraft(grouped, { type: "PARENT", entityId: "child", parentId: null }).content, "child"),
+    ).toEqual(before);
+    expect(() => editSpatialDraft(grouped, { type: "PARENT", entityId: id, parentId: "child" })).toThrow(/itself/);
+    expect(draft.content.entities[1].parentEntityId).toBeUndefined();
+  });
+  it("applies constrained edits, locks, atomic AI acceptance and undo/redo", () => {
+    const draft = createSpatialDraft("owned");
+    const entityId = draft.content.entities[0].id;
+    const locked = editSpatialDraft(draft, { type: "LAYER", entityId, patch: { locked: true } });
+    expect(() => editSpatialDraft(locked, { type: "PLACEMENT", entityId, placement: "WALL" })).toThrow(/Unlock/);
+    const ai = materializeIntent(draft, entityId, {
+      placement: "WALL",
+      content: "A clue",
+      alternativeText: "Readable wall clue",
+      explanation: "A vertical reference surface.",
+    });
+    const history = changeHistory({ past: [], present: draft, future: [] }, { type: "REPLACE", draft: ai });
+    expect(undo(history).present).toEqual(draft);
+    expect(redo(undo(history)).present).toEqual(ai);
+    expect(() =>
+      materializeIntent(draft, entityId, {
+        placement: "WALL",
+        content: "A clue",
+        alternativeText: "A clue",
+        explanation: "ok",
+        script: "fetch(secret)",
+      }),
+    ).toThrow();
+    expect(() =>
+      editSpatialDraft(draft, {
+        type: "TRANSFORM",
+        entityId,
+        transform: { ...draft.content.entities[0].transform, scale: -1 },
+      }),
+    ).toThrow();
+  });
+  it("clears redo after a new branch and gives forks independent immutable lineage", () => {
+    const draft = createSpatialDraft("owned");
+    const entityId = draft.content.entities[0].id;
+    const history = changeHistory(
+      { past: [], present: draft, future: [] },
+      { type: "DUPLICATE", entityId, newId: "copy" },
+    );
+    expect(changeHistory(undo(history), { type: "PLACEMENT", entityId, placement: "WALL" }).future).toEqual([]);
+    const fork = forkSpatialDraft(draft, "fork");
+    expect(fork.content.definitionId).toBe("fork");
+    expect(fork.lineage?.definitionId).toBe("owned");
+    expect(draft.content.definitionId).toBe("owned");
+  });
+  it("executes declarative timeline state at exact event-relative deadlines", () => {
+    const draft = createSpatialDraft("owned");
+    const entityId = draft.content.entities[0].id;
+    draft.content.studio!.behaviors = [
+      {
+        id: "hide",
+        trigger: "INSPECT",
+        sourceEntityId: entityId,
+        delayMs: 500,
+        targetEntityId: entityId,
+        action: "HIDE",
+      },
+    ];
+    const inputs = [{ trigger: "INSPECT" as const, entityId, atMs: 1000 }];
+    expect(evaluateSpatialBehavior(draft.content, inputs, 1499)[entityId].visible).toBe(true);
+    expect(evaluateSpatialBehavior(draft.content, inputs, 1500)[entityId].visible).toBe(false);
+    expect(
+      evaluateSpatialBehavior(draft.content, [{ ...inputs[0], entityId: "unrelated" }], 5000)[entityId].visible,
+    ).toBe(true);
+    expect(() =>
+      draftSchema.parse({
+        ...draft,
+        content: {
+          ...draft.content,
+          studio: {
+            ...draft.content.studio,
+            behaviors: [{ ...draft.content.studio!.behaviors[0], action: "EXECUTE" }],
+          },
+        },
+      }),
+    ).toThrow();
+  });
+  it("rejects invalid geometry and media while pinning Vision Waypoint identities", () => {
+    const draft = createSpatialDraft("owned");
+    const entityId = draft.content.entities[0].id;
+    draft.content.entities[0].transform.scale = 10;
+    draft.content.entities[0].widthMeters = 5;
+    draft.content.studio!.visionReferences = [
+      {
+        entityId,
+        waypointId: "sibling-waypoint",
+        versionId: "waypoint-v2",
+        checksum: "a".repeat(64),
+        purpose: "RELOCALIZATION",
+      },
+    ];
+    draft.content.studio!.assets = [
+      {
+        id: "asset",
+        entityId,
+        kind: "MODEL",
+        assetId: "unavailable",
+        checksum: "b".repeat(64),
+        format: "PNG",
+        bytes: 20000000,
+        triangles: 90000,
+        texturePixels: 0,
+        durationSeconds: 0,
+        metersPerUnit: 1,
+        alternativeText: "Model",
+        license: "Creator owned",
+        provenance: "CREATOR",
+      },
+    ];
+    expect(validateSpatialAuthoring(draft.content).map((i) => i.code)).toEqual(
+      expect.arrayContaining([
+        "PARALLAX_SCALE_UNSAFE",
+        "PARALLAX_ASSET_FORMAT_INVALID",
+        "PARALLAX_ASSET_BUDGET_EXCEEDED",
+        "PARALLAX_VISION_PROVIDER_PENDING",
+      ]),
+    );
+    expect(spatialStudioHref("scene:1", entityId, "chronicle", "block")).toContain("definition=scene%3A1");
+  });
+  it("keeps historical Phase 1 checksum material unchanged", () => {
+    const moment = syntheticSpatialMoment();
+    expect(validateSpatialMoment(JSON.parse(JSON.stringify(moment)))).toEqual(moment);
+    expect(moment.version.studio).toBeUndefined();
+  });
+  it("keeps editor-only objects out of Lens and preserves fallback content", async () => {
+    let draft = createSpatialDraft("owned", "Floating Compass");
+    const id = draft.content.entities[0].id;
+    draft = editSpatialDraft(draft, { type: "DUPLICATE", entityId: id, newId: "editor-only" });
+    draft = editSpatialDraft(draft, { type: "LAYER", entityId: "editor-only", patch: { audience: "EDITOR_ONLY" } });
+    const version = materializeSpatialVersion(draft.content);
+    const moment = {
+      ...syntheticSpatialMoment(),
+      definition: {
+        id: "owned",
+        ownerPersonId: "synthetic-creator",
+        title: version.title,
+        libraryScope: "MY_LIBRARY" as const,
+      },
+      version,
+    };
+    moment.attachment.spatialDefinitionVersionId = version.id;
+    moment.attachment.versionChecksum = version.checksum;
+    const runtime = new ParallaxLensRuntime(moment, syntheticBinding, guidedContext());
+    await runtime.open();
+    expect(runtime.read().visibleEntityIds).toEqual([id]);
+    await expect(runtime.interact("editor-only", "INSPECT", "bad")).rejects.toThrow(/FORBIDDEN/);
+    await runtime.close();
+  });
+  it("cancels pending behavior timers on runtime close", async () => {
+    vi.useFakeTimers();
+    const draft = createSpatialDraft("owned", "Floating Compass");
+    const id = draft.content.entities[0].id;
+    draft.content.studio!.behaviors = [
+      { id: "hide", trigger: "TIMER", delayMs: 1000, targetEntityId: id, action: "HIDE" },
+    ];
+    const version = materializeSpatialVersion(draft.content);
+    const original = syntheticSpatialMoment();
+    const moment = {
+      ...original,
+      definition: { ...original.definition, id: "owned" },
+      version,
+      attachment: { ...original.attachment, spatialDefinitionVersionId: version.id, versionChecksum: version.checksum },
+    };
+    const changed = vi.fn();
+    const runtime = new ParallaxLensRuntime(
+      moment,
+      syntheticBinding,
+      { ...guidedContext(), environment: "DEVICE_LAB" },
+      undefined,
+      changed,
+    );
+    await runtime.open(new SyntheticSpatialAdapter());
+    await runtime.close();
+    const calls = changed.mock.calls.length;
+    await vi.advanceTimersByTimeAsync(2000);
+    expect(changed).toHaveBeenCalledTimes(calls);
+  });
+  it("reports missing live AI honestly and rejects injected provider fields", async () => {
+    vi.stubEnv("PARALLAX_AUTHORING_AI_URL", "");
+    vi.stubEnv("PARALLAX_AUTHORING_AI_TOKEN", "");
+    const draft = createSpatialDraft("owned");
+    const fetcher = vi.fn();
+    expect(await requestSpatialAI("INTENT", "Make a letter", draft, fetcher)).toMatchObject({ status: "UNAVAILABLE" });
+    expect(fetcher).not.toHaveBeenCalled();
+    vi.stubEnv("PARALLAX_AUTHORING_AI_URL", "https://authoring.example.test/proposal");
+    vi.stubEnv("PARALLAX_AUTHORING_AI_TOKEN", "synthetic-token");
+    fetcher.mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          placement: "DESK",
+          content: "Clue",
+          alternativeText: "Clue",
+          explanation: "Desk",
+          execute: "injected",
+        }),
+      ),
+    );
+    await expect(requestSpatialAI("INTENT", "Make a letter", draft, fetcher)).rejects.toThrow();
+    const transmitted = JSON.parse(fetcher.mock.calls[0][1].body);
+    expect(transmitted.scene).not.toHaveProperty("content");
+    expect(transmitted).not.toHaveProperty("assetNames");
+  });
+});
