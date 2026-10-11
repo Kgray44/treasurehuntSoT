@@ -222,3 +222,45 @@ export async function attachSpatialVersion(input: {
     input.ownerAccountId,
   );
 }
+
+/** Attachment history restores content only from the owner's immutable library. */
+export async function restoreSpatialAttachment(input: {
+  ownerAccountId: string;
+  chronicleId: string;
+  blockId: string;
+  autosaveVersion: number;
+  moment: SpatialMoment | null;
+}) {
+  if (!(await requireOwnedStudioTale(input.chronicleId))) throw new Error("Chronicle unavailable.");
+  if (input.moment) {
+    const moment = validateSpatialMoment(input.moment, input.blockId);
+    const row = await db.reusableAuthoringItemVersion.findFirst({
+      where: {
+        id: moment.version.id,
+        itemId: moment.definition.id,
+        versionNumber: { gt: 0 },
+        item: { ownerAccountId: input.ownerAccountId, kind: spatialItemKind, archivedAt: null },
+      },
+    });
+    if (!row || row.checksum !== moment.version.checksum)
+      throw new Error("Attachment history must reference an owned immutable library version.");
+    const stored = validateSpatialMoment(JSON.parse(row.envelope));
+    if (stored.definition.id !== moment.definition.id || stored.version.checksum !== moment.version.checksum)
+      throw new Error("Spatial version binding is invalid.");
+    return attachSpatialVersion({
+      ...input,
+      definitionId: moment.definition.id,
+      versionId: moment.version.id,
+      narrative: moment.attachment.overrides.narrative,
+    });
+  }
+  const source = await getStudioTale(input.chronicleId);
+  const block = source.draft.chapters.flatMap((c) => c.blocks).find((b) => b.id === input.blockId);
+  if (!block) throw new Error("Choose a current Chronicle Passage.");
+  delete block.presentation.spatialMoment;
+  return saveStudioDraft(
+    input.chronicleId,
+    { ...source.draft, autosaveVersion: input.autosaveVersion, tale: source.tale },
+    input.ownerAccountId,
+  );
+}

@@ -41,7 +41,8 @@ export function evaluateSpatialBehavior(
     .sort((a, b) => a.at - b.at || a.index - b.index);
   for (const { b } of events) {
     const target = states[b.targetEntityId];
-    if (target && content.studio?.layers.find((l) => l.entityId === b.targetEntityId)?.audience !== "EDITOR_ONLY") {
+    const audience = content.studio?.layers.find((l) => l.entityId === b.targetEntityId)?.audience;
+    if (target && (editor ? audience !== "RUNTIME_ONLY" : audience !== "EDITOR_ONLY")) {
       if (b.action === "HIGHLIGHT") target.highlighted = true;
       else target.visible = b.action === "SHOW";
     }

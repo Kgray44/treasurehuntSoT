@@ -331,6 +331,9 @@ export function parseDrydockBlock(input: DrydockAuthoredBlockInput): DrydockBloc
         );
     } catch {
       const identity = spatialMomentSchema.safeParse(block.presentation.spatialMoment);
+      const entityId = identity.success
+        ? validateSpatialAuthoring(identity.data.version).find((i) => i.entityId)?.entityId
+        : undefined;
       issues.push(
         createDrydockIssue({
           code: "DRYDOCK_SPATIAL_ATTACHMENT_INVALID",
@@ -341,7 +344,7 @@ export function parseDrydockBlock(input: DrydockAuthoredBlockInput): DrydockBloc
           message: "Spatial Moment must be valid, checksum-pinned, and attached to this passage.",
           remediation: "Materialize an immutable spatial version and reattach it to this passage.",
           ...(identity.success
-            ? { metadata: { spatialStudioHref: spatialStudioHref(identity.data.definition.id) } }
+            ? { metadata: { spatialStudioHref: spatialStudioHref(identity.data.definition.id, entityId) } }
             : {}),
         }),
       );

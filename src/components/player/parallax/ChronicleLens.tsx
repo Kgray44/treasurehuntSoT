@@ -257,46 +257,48 @@ export function ChronicleLens({
           {activeMoment.attachment.overrides.narrative ?? activeMoment.version.fallback.narrative}
         </p>
         <div className={styles.objects}>
-          {activeMoment.version.entities.filter((e) => state?.visibleEntityIds.includes(e.id)).map((e) => (
-            <article
-              key={e.id}
-              className={`${styles.object} ${state?.selectedEntityId === e.id ? styles.selected : ""}`}
-              aria-label={e.alternativeText}
-            >
-              <p className={styles.objectKind}>
-                {e.kind === "PARCHMENT"
-                  ? "A note from the voyage"
-                  : e.kind === "MARKER"
-                    ? "A mark to remember"
-                    : "Words in the world"}
-              </p>
-              <h3>{e.name}</h3>
-              <p>{e.content}</p>
-              <div className={styles.controls}>
-                {e.interactions.map((type) => (
-                  <button
-                    type="button"
-                    key={type}
-                    disabled={busy || !state || !["READY", "GUIDED_FALLBACK"].includes(state.state)}
-                    onClick={() => void interact(e.id, type)}
-                  >
-                    {type === "PICK"
-                      ? "Choose"
-                      : type === "INSPECT"
-                        ? "Inspect"
-                        : state?.mode === "NATIVE"
-                          ? "Place on surface"
-                          : "Place in Guided View"}
-                  </button>
-                ))}
-              </div>
-              {state?.inspectedEntityId === e.id && (
-                <p className={styles.inspected}>
-                  You are inspecting {e.name}. {e.alternativeText}
+          {activeMoment.version.entities
+            .filter((e) => state?.visibleEntityIds.includes(e.id))
+            .map((e) => (
+              <article
+                key={e.id}
+                className={`${styles.object} ${state?.selectedEntityId === e.id || state?.highlightedEntityIds.includes(e.id) ? styles.selected : ""}`}
+                aria-label={e.alternativeText}
+              >
+                <p className={styles.objectKind}>
+                  {e.kind === "PARCHMENT"
+                    ? "A note from the voyage"
+                    : e.kind === "MARKER"
+                      ? "A mark to remember"
+                      : "Words in the world"}
                 </p>
-              )}
-            </article>
-          ))}
+                <h3>{e.name}</h3>
+                <p>{e.content}</p>
+                <div className={styles.controls}>
+                  {e.interactions.map((type) => (
+                    <button
+                      type="button"
+                      key={type}
+                      disabled={busy || !state || !["READY", "GUIDED_FALLBACK"].includes(state.state)}
+                      onClick={() => void interact(e.id, type)}
+                    >
+                      {type === "PICK"
+                        ? "Choose"
+                        : type === "INSPECT"
+                          ? "Inspect"
+                          : state?.mode === "NATIVE"
+                            ? "Place on surface"
+                            : "Place in Guided View"}
+                    </button>
+                  ))}
+                </div>
+                {state?.inspectedEntityId === e.id && (
+                  <p className={styles.inspected}>
+                    You are inspecting {e.name}. {e.alternativeText}
+                  </p>
+                )}
+              </article>
+            ))}
         </div>
       </div>
       <footer>

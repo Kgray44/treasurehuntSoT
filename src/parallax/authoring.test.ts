@@ -169,6 +169,20 @@ describe("Parallax creator authoring", () => {
     expect(validateSpatialMoment(JSON.parse(JSON.stringify(moment)))).toEqual(moment);
     expect(moment.version.studio).toBeUndefined();
   });
+  it("preserves audience restrictions when a timeline reveals an object", () => {
+    const draft = createSpatialDraft("owned");
+    const id = draft.content.entities[0].id;
+    draft.content.studio!.layers[0].audience = "RUNTIME_ONLY";
+    draft.content.studio!.behaviors = [
+      { id: "show", trigger: "SCENE_ENTER", delayMs: 0, targetEntityId: id, action: "SHOW" },
+    ];
+    const inputs = [{ trigger: "SCENE_ENTER" as const, atMs: 0 }];
+    expect(evaluateSpatialBehavior(draft.content, inputs, 0, true)[id].visible).toBe(false);
+    expect(evaluateSpatialBehavior(draft.content, inputs, 0, false)[id].visible).toBe(true);
+    draft.content.studio!.layers[0].audience = "EDITOR_ONLY";
+    expect(evaluateSpatialBehavior(draft.content, inputs, 0, false)[id].visible).toBe(false);
+    expect(evaluateSpatialBehavior(draft.content, inputs, 0, true)[id].visible).toBe(true);
+  });
   it("keeps editor-only objects out of Lens and preserves fallback content", async () => {
     let draft = createSpatialDraft("owned", "Floating Compass");
     const id = draft.content.entities[0].id;
@@ -246,5 +260,38 @@ describe("Parallax creator authoring", () => {
     const transmitted = JSON.parse(fetcher.mock.calls[0][1].body);
     expect(transmitted.scene).not.toHaveProperty("content");
     expect(transmitted).not.toHaveProperty("assetNames");
+  });
+  it("accepts a strict intent proposal and critique without mutating the draft", async () => {
+    vi.stubEnv("PARALLAX_AUTHORING_AI_URL", "https://authoring.example.test/proposal");
+    vi.stubEnv("PARALLAX_AUTHORING_AI_TOKEN", "synthetic-token");
+    const draft = createSpatialDraft("owned");
+    const before = JSON.stringify(draft);
+    const proposal = {
+      placement: "WALL",
+      content: "Read the north wall.",
+      alternativeText: "North wall clue.",
+      explanation: "A seated-height wall clue.",
+    };
+    const fetcher = vi
+      .fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify(proposal)))
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({ findings: [{ topic: "ACCESSIBILITY", message: "Keep the seated alternative readable." }] }),
+        ),
+      );
+    const intent = await requestSpatialAI("INTENT", "Move the clue to the wall", draft, fetcher);
+    expect(intent).toMatchObject({ status: "PROPOSED", proposal });
+    expect(await requestSpatialAI("CRITIQUE", "Check accessibility", draft, fetcher)).toMatchObject({
+      status: "PROPOSED",
+      critique: { findings: [{ topic: "ACCESSIBILITY" }] },
+    });
+    expect(JSON.stringify(draft)).toBe(before);
+    const changed = materializeIntent(draft, draft.content.entities[0].id, proposal);
+    expect(changed.content.entities[0].content).toBe(proposal.content);
+    expect(fetcher.mock.calls[0][1]).toMatchObject({
+      redirect: "error",
+      headers: { Authorization: "Bearer synthetic-token" },
+    });
   });
 });

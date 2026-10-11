@@ -37,6 +37,7 @@ type Chronicle = {
   blocks: { id: string; title: string; spatialMoment: SpatialMoment | null }[];
 };
 type Loaded = { csrfToken: string; items: SpatialLibraryRecord[]; chronicle: Chronicle | null; aiAvailable: boolean };
+type AttachmentChange = { blockId: string; before: SpatialMoment | null; after: SpatialMoment };
 const fresh = (chronicleId?: string) => createSpatialDraft(crypto.randomUUID(), "Desk Map", chronicleId ?? null);
 export function SpatialStudio({
   chronicleId,
@@ -51,11 +52,14 @@ export function SpatialStudio({
 }) {
   const [loaded, setLoaded] = useState<Loaded | null>(null),
     [history, setHistory] = useState<History | null>(null);
+  const [attachmentPast, setAttachmentPast] = useState<AttachmentChange[]>([]),
+    [attachmentFuture, setAttachmentFuture] = useState<AttachmentChange[]>([]);
   const [selected, setSelected] = useState<string | null>(entityId ?? null),
     [mode, setMode] = useState("GUIDED"),
     [preview, setPreview] = useState("EDITOR"),
     [environment, setEnvironment] = useState("bedroom");
   const [query, setQuery] = useState(""),
+    [sceneQuery, setSceneQuery] = useState(""),
     [filter, setFilter] = useState("ALL"),
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
@@ -79,6 +83,7 @@ export function SpatialStudio({
     csrf = useRef(""),
     initialized = useRef(false);
   const proposalBinding = useRef<string | null>(null);
+  const proposalTarget = useRef<string | null>(null);
   const draft = history?.present;
   useEffect(() => {
     draftRef.current = draft ?? null;
@@ -226,6 +231,31 @@ export function SpatialStudio({
       await persist();
       const next = createSpatialDraft(crypto.randomUUID(), name, chronicleId ?? null);
       install(next, 0, false);
+    });
+  const restoreAttachment = (change: AttachmentChange, direction: "UNDO" | "REDO") =>
+    void action(async () => {
+      const current = await load();
+      if (!current.chronicle) throw new Error("Chronicle unavailable.");
+      const expected = direction === "UNDO" ? change.after : change.before;
+      const actual = current.chronicle.blocks.find((b) => b.id === change.blockId)?.spatialMoment ?? null;
+      if (JSON.stringify(actual) !== JSON.stringify(expected))
+        throw new Error("This attachment changed. Reopen its current version before editing history.");
+      await api({
+        action: "RESTORE_ATTACHMENT",
+        chronicleId: current.chronicle.id,
+        blockId: change.blockId,
+        autosaveVersion: current.chronicle.autosaveVersion,
+        moment: direction === "UNDO" ? change.before : change.after,
+      });
+      await load();
+      if (direction === "UNDO") {
+        setAttachmentPast(attachmentPast.slice(0, -1));
+        setAttachmentFuture([...attachmentFuture, change]);
+      } else {
+        setAttachmentPast([...attachmentPast, change]);
+        setAttachmentFuture(attachmentFuture.slice(0, -1));
+      }
+      setStatus(direction === "UNDO" ? "Spatial attachment undone" : "Spatial attachment redone");
     });
   const currentEntity = draft?.content.entities.find((e) => e.id === selected);
   const record = loaded?.items.find((i) => i.id === draft?.content.definitionId);
@@ -485,14 +515,18 @@ export function SpatialStudio({
             <h2>Scene graph</h2>
             <label>
               Find an entity
-              <input aria-label="Scene graph search" value={query} onChange={(e) => setQuery(e.target.value)} />
+              <input
+                aria-label="Scene graph search"
+                value={sceneQuery}
+                onChange={(e) => setSceneQuery(e.target.value)}
+              />
             </label>
             <ul>
               {draft.content.entities
                 .filter((e) =>
                   `${e.name} ${e.kind} ${e.anchorId} ${e.interactions.join(" ")} ${draft.content.studio?.layers.find((l) => l.entityId === e.id)?.tags.join(" ")}`
                     .toLowerCase()
-                    .includes(query.toLowerCase()),
+                    .includes(sceneQuery.toLowerCase()),
                 )
                 .map((entity) => {
                   const l = draft.content.studio?.layers.find((l) => l.entityId === entity.id);
@@ -989,10 +1023,12 @@ export function SpatialStudio({
                   onClick={() =>
                     void action(async () => {
                       const binding = JSON.stringify(draftRef.current);
+                      const target = selected;
                       const result = await api({ action: "AI", kind, request, draft: draftRef.current });
                       if (result.status !== "PROPOSED") throw new Error(result.message);
                       if (kind === "INTENT") {
                         proposalBinding.current = binding;
+                        proposalTarget.current = target;
                         setProposal(result.proposal);
                       } else setCritique(result.critique.findings);
                     })
@@ -1008,12 +1044,16 @@ export function SpatialStudio({
                 <pre>{JSON.stringify(proposal, null, 2)}</pre>
                 <button
                   onClick={() => {
-                    if (proposalBinding.current !== JSON.stringify(draft)) {
-                      setError("The scene changed. Request a fresh AI proposal.");
+                    if (proposalBinding.current !== JSON.stringify(draft) || proposalTarget.current !== selected) {
+                      setError("The scene or selected object changed. Request a fresh AI proposal.");
                       return;
                     }
-                    replace(materializeIntent(draft, selected!, proposal));
-                    setProposal(null);
+                    try {
+                      replace(materializeIntent(draft, selected!, proposal));
+                      setProposal(null);
+                    } catch (cause) {
+                      setError(cause instanceof Error ? cause.message : "The proposal cannot edit this object.");
+                    }
                   }}
                 >
                   Accept as reversible edit
@@ -1073,6 +1113,7 @@ export function SpatialStudio({
                   onClick={() =>
                     void action(async () => {
                       await persist();
+                      const before = loaded.chronicle!.blocks.find((b) => b.id === targetBlock)?.spatialMoment ?? null;
                       await api({
                         action: "ATTACH",
                         definitionId: draft.content.definitionId,
@@ -1082,7 +1123,20 @@ export function SpatialStudio({
                         autosaveVersion: loaded.chronicle!.autosaveVersion,
                         narrative: override || undefined,
                       });
-                      await load();
+                      const refreshed = await load();
+                      const after = refreshed.chronicle!.blocks.find((b) => b.id === targetBlock)!.spatialMoment!;
+                      if (
+                        !before ||
+                        loaded.items.some((i) =>
+                          i.releases.some((v) => v.id === before.version.id && v.checksum === before.version.checksum),
+                        )
+                      ) {
+                        setAttachmentPast([...attachmentPast, { blockId: targetBlock, before, after }].slice(-100));
+                        setAttachmentFuture([]);
+                      } else
+                        setStatus(
+                          "Pinned version attached. Imported attachment history remains in its original Chronicle.",
+                        );
                       setStatus(
                         "Pinned spatial version attached. Continue Chronicle validation and publication in Creator Studio.",
                       );
@@ -1090,6 +1144,18 @@ export function SpatialStudio({
                   }
                 >
                   Attach exact version
+                </button>
+                <button
+                  disabled={!attachmentPast.length || busy}
+                  onClick={() => restoreAttachment(attachmentPast[attachmentPast.length - 1], "UNDO")}
+                >
+                  Undo attachment
+                </button>
+                <button
+                  disabled={!attachmentFuture.length || busy}
+                  onClick={() => restoreAttachment(attachmentFuture[attachmentFuture.length - 1], "REDO")}
+                >
+                  Redo attachment
                 </button>
                 <Link href={`/studio/tales/${encodeURIComponent(loaded.chronicle.id)}/versions`}>
                   Publish and reopen Chronicle →

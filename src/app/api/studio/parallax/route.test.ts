@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
   save: vi.fn(),
   release: vi.fn(),
   attach: vi.fn(),
+  restore: vi.fn(),
   access: vi.fn(),
   studio: vi.fn(),
 }));
@@ -22,6 +23,7 @@ vi.mock("@/parallax/library-service", () => ({
   saveSpatialDraft: mocks.save,
   releaseSpatialVersion: mocks.release,
   attachSpatialVersion: mocks.attach,
+  restoreSpatialAttachment: mocks.restore,
   assertSpatialDraftAccess: mocks.access,
 }));
 import { GET, POST } from "./route";
@@ -31,7 +33,27 @@ beforeEach(() => {
   mocks.workspace.mockResolvedValue({ accountId: "synthetic-creator", csrfToken: "csrf" });
   mocks.list.mockResolvedValue([]);
   mocks.save.mockResolvedValue(1);
+  mocks.restore.mockResolvedValue({ autosaveVersion: 9 });
   mocks.owned.mockResolvedValue(null);
+});
+it("binds attachment history to authenticated owner and Chronicle revision", async () => {
+  const response = await POST(
+    new Request("https://example.test/api/studio/parallax", {
+      method: "POST",
+      headers: { "x-csrf-token": "csrf" },
+      body: JSON.stringify({
+        action: "RESTORE_ATTACHMENT",
+        chronicleId: "chronicle",
+        blockId: "block",
+        autosaveVersion: 8,
+        moment: null,
+      }),
+    }),
+  );
+  expect(response.status).toBe(200);
+  expect(mocks.restore).toHaveBeenCalledWith(
+    expect.objectContaining({ ownerAccountId: "synthetic-creator", autosaveVersion: 8, moment: null }),
+  );
 });
 it("returns no private data without Creator access and refuses unauthorized Chronicles", async () => {
   mocks.workspace.mockResolvedValueOnce(null);

@@ -7,6 +7,11 @@ import { drydockSimulationSourceChecksum } from "@/drydock/simulation/source";
 import { ParallaxLensRuntime } from "./runtime";
 import { evaluateSpatialEvidence } from "./evidence";
 import type { DrydockScenario } from "@/drydock/simulation/model";
+import { parseDrydockBlock } from "@/drydock/contracts/parser";
+import { createSpatialDraft } from "./authoring";
+import { materializeSpatialVersion } from "./publication";
+import { materializeLibraryMoment } from "./library-service";
+import type { JsonObject } from "@/chronicle/types";
 
 it("reopens a synthetic immutable publication, invokes its Lens, and leaves completion with One Voyage", async () => {
   const source = parsePublishedSnapshot(JSON.stringify(syntheticPublishedChronicle()));
@@ -49,4 +54,43 @@ it("reopens a synthetic immutable publication, invokes its Lens, and leaves comp
   expect(result.assertions.every((a) => a.passed)).toBe(true);
   expect(JSON.stringify(source)).toBe(original);
   await runtime.close();
+});
+it("opens the exact object from a Drydock spatial finding without changing the block contract", () => {
+  const draft = createSpatialDraft("owned");
+  draft.content.entities[0].transform.position.y = 3.2;
+  const capsule = materializeLibraryMoment(draft, "creator", 1);
+  capsule.attachment.storyMomentId = "block";
+  const result = parseDrydockBlock({
+    id: "block",
+    blockType: "narrative",
+    schemaVersion: 1,
+    configuration: { heading: "Clue", body: "Inspect the map." },
+    presentation: { spatialMoment: capsule as unknown as JsonObject },
+    completion: { mode: "playerConfirmation" },
+    connections: [],
+  });
+  const issue = result.issues.find((i) => i.code === "PARALLAX_HEIGHT_REVIEW")!;
+  expect(issue.location.blockId).toBe("block");
+  expect(issue.metadata?.spatialStudioHref).toContain("definition=owned");
+  expect(issue.metadata?.spatialStudioHref).toContain("entity=owned%3Aentity-0");
+});
+it("retains object navigation when a checksum-valid spatial version fails scale validation", () => {
+  const draft = createSpatialDraft("owned");
+  const capsule = materializeLibraryMoment(draft, "creator", 1);
+  draft.content.entities[0].widthMeters = 0.01;
+  capsule.version = materializeSpatialVersion({ ...draft.content, id: capsule.version.id });
+  capsule.attachment.storyMomentId = "block";
+  capsule.attachment.versionChecksum = capsule.version.checksum;
+  const result = parseDrydockBlock({
+    id: "block",
+    blockType: "narrative",
+    schemaVersion: 1,
+    configuration: { heading: "Clue", body: "Inspect the map." },
+    presentation: { spatialMoment: capsule as unknown as JsonObject },
+    completion: { mode: "playerConfirmation" },
+    connections: [],
+  });
+  expect(
+    result.issues.find((i) => i.code === "DRYDOCK_SPATIAL_ATTACHMENT_INVALID")?.metadata?.spatialStudioHref,
+  ).toContain("entity=owned%3Aentity-0");
 });

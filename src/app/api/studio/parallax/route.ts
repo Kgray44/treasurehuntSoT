@@ -5,12 +5,13 @@ import { getStudioTale } from "@/chronicle/studio-service";
 import { apiError } from "@/chronicle/api";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import { draftSchema } from "@/parallax/authoring";
-import { spatialId } from "@/parallax/contracts";
+import { spatialId, spatialMomentSchema } from "@/parallax/contracts";
 import {
   listSpatialItems,
   saveSpatialDraft,
   releaseSpatialVersion,
   attachSpatialVersion,
+  restoreSpatialAttachment,
   assertSpatialDraftAccess,
 } from "@/parallax/library-service";
 import {
@@ -38,6 +39,13 @@ const inputSchema = z.discriminatedUnion("action", [
     blockId: spatialId,
     autosaveVersion: z.number().int().min(1),
     narrative: z.string().trim().max(4000).optional(),
+  }),
+  z.strictObject({
+    action: z.literal("RESTORE_ATTACHMENT"),
+    chronicleId: spatialId,
+    blockId: spatialId,
+    autosaveVersion: z.number().int().min(1),
+    moment: spatialMomentSchema.nullable(),
   }),
 ]);
 const headers = { "Cache-Control": "private, no-store", Vary: "Cookie" };
@@ -110,6 +118,10 @@ export async function POST(request: Request) {
         return NextResponse.json(await requestSpatialAI(input.kind, input.request, input.draft), { headers });
       case "ATTACH":
         return NextResponse.json(await attachSpatialVersion({ ...input, ownerAccountId: session.accountId }), {
+          headers,
+        });
+      case "RESTORE_ATTACHMENT":
+        return NextResponse.json(await restoreSpatialAttachment({ ...input, ownerAccountId: session.accountId }), {
           headers,
         });
     }

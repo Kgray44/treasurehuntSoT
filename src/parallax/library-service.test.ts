@@ -39,6 +39,7 @@ import {
   saveSpatialDraft,
   releaseSpatialVersion,
   attachSpatialVersion,
+  restoreSpatialAttachment,
   materializeLibraryMoment,
 } from "./library-service";
 function item() {
@@ -147,5 +148,50 @@ describe("owner-scoped Spatial Library storage", () => {
       }),
     ).rejects.toThrow(/My Spatial Library/);
     expect(mocks.save).not.toHaveBeenCalled();
+  });
+  it("undoes a new attachment through normal Chronicle revision control", async () => {
+    mocks.studio.mockResolvedValue({
+      tale: { title: "Synthetic" },
+      draft: {
+        autosaveVersion: 8,
+        chapters: [{ blocks: [{ id: "block", presentation: { spatialMoment: "existing", other: true } }] }],
+      },
+    });
+    await restoreSpatialAttachment({
+      ownerAccountId: "creator",
+      chronicleId: "chronicle",
+      blockId: "block",
+      autosaveVersion: 8,
+      moment: null,
+    });
+    const saved = mocks.save.mock.calls[0][1];
+    expect(saved.autosaveVersion).toBe(8);
+    expect(saved.chapters[0].blocks[0].presentation).toEqual({ other: true });
+    mocks.owned.mockResolvedValue(null);
+    await expect(
+      restoreSpatialAttachment({
+        ownerAccountId: "creator",
+        chronicleId: "chronicle",
+        blockId: "block",
+        autosaveVersion: 8,
+        moment: null,
+      }),
+    ).rejects.toThrow(/unavailable/);
+  });
+  it("rejects counterfeit history instead of overwriting an immutable release", async () => {
+    const capsule = materializeLibraryMoment(createSpatialDraft("owned"), "creator", 1);
+    capsule.attachment.storyMomentId = "block";
+    mocks.findVersion.mockResolvedValue({ checksum: "f".repeat(64), envelope: JSON.stringify(capsule) });
+    await expect(
+      restoreSpatialAttachment({
+        ownerAccountId: "creator",
+        chronicleId: "chronicle",
+        blockId: "block",
+        autosaveVersion: 8,
+        moment: capsule,
+      }),
+    ).rejects.toThrow(/owned immutable/);
+    expect(mocks.save).not.toHaveBeenCalled();
+    expect(mocks.updateDraft).not.toHaveBeenCalled();
   });
 });

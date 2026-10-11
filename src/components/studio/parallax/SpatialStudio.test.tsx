@@ -59,9 +59,9 @@ it("records manual transforms as reversible edits and serializes autosave", asyn
     (calls.find((c) => c.action === "SAVE")!.draft as ReturnType<typeof createSpatialDraft>).content.entities[0]
       .widthMeters,
   ).toBe(0.6);
-  fireEvent.click(screen.getByRole("button", { name: "Undo", exact: true }));
+  fireEvent.click(screen.getByRole("button", { name: "Undo" }));
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.5);
-  fireEvent.click(screen.getByRole("button", { name: "Redo", exact: true }));
+  fireEvent.click(screen.getByRole("button", { name: "Redo" }));
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.6);
 });
 it("presents truthful fallback and all ten synthetic environment results", async () => {

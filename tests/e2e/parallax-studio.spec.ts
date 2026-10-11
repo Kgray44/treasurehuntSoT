@@ -78,6 +78,11 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
     await expect(page.getByRole("status")).toContainText("Immutable version created");
     await page.getByRole("button", { name: "Attach exact version" }).click();
     await expect(page.getByRole("status")).toContainText("Pinned spatial version attached");
+    await page.getByRole("button", { name: "Undo attachment", exact: true }).click();
+    await expect(page.getByRole("status")).toHaveText("Spatial attachment undone");
+    expect((await getStudioTale(tale.id)).draft.chapters[0].blocks[0].presentation.spatialMoment).toBeUndefined();
+    await page.getByRole("button", { name: "Redo attachment", exact: true }).click();
+    await expect(page.getByRole("status")).toHaveText("Spatial attachment redone");
     const saved = await getStudioTale(tale.id);
     const capsule = validateSpatialMoment(saved.draft.chapters[0].blocks[0].presentation.spatialMoment, blockId);
     expect(capsule.version.entities[0].content).toBe("The northern harbor is your next bearing.");
