@@ -13,8 +13,8 @@ Task: `01a1287c-8f80-7366-a379-4939d974a032`, Sextant Phase 3: Read the Field.
 Profile: product-phase; UNATTENDED_CONTINUATION (owner-authorized 2026-10-11).
 Original implementation base: protected remote main
 `2e367c372a6d44e4e6a68bb38266196954f8d486`, independently verified 2026-10-11.
-Current reconciliation/qualification base: `7284b0dfaa31037d074d27df0f27b968f3977000`
-(merged Reach #697), independently refreshed 2026-10-11.
+Current reconciliation/qualification base: `589d3f8ed43070d647cd5f905b3a93cc574a9fee`
+(accepted Reach, Crossdeck and Parallax including #700), independently refreshed 2026-10-11.
 Owned clone: task-3/sextant-p3; branch sextant/phase-3-read-the-field.
 
 This is a manual minimum-sufficient packet, not canonical packet-v2 helper output.
@@ -22,7 +22,9 @@ Pointers below are bound to that base commit; refresh bindings if main advances.
 Confidence EXACT for source; bounded for native metadata. Token accounting unavailable.
 
 - Current AGENTS.md and .agents/README.md: isolated work, focused development,
-  ordinary final verification; explicit task authorization excludes push/PR/merge.
+  ordinary final verification. Subsequent explicit owner authorization permits
+  normal protected publication/integration and landed smoke; no deployment,
+  later-phase work or physical owner sessions. Parent cleared the Parallax merge hold.
 - Sextant v1.0 sections 22–24, 27, 29–31, 35–37, 48–54 and 55.3:
   optional field/nearby semantics, explicit failures, safety and accessible fallbacks.
 - Sextant v1.1 camera/device gesture amendment: source geometry/generation,
@@ -90,3 +92,12 @@ control waiting are isolated repairs; no renderer/Crossdeck edits or time expans
 Clean repaired e892a139 passes the same 3 viewport cases, with all assertions kept.
 Next frozen ordinary candidate is pending; preserve red/green comparison directories
 under artifacts/sounding-line. B remains assigned; publication is still unauthorized.
+Current status supersedes the historical blocked checkpoints above. Ordinary
+04be433 passed 1,639 tests/263 files and all 78 required viewport cases; 36 clean
+source-bound D0/D1 scenarios passed. The optional stale Companion performance
+benchmark remains a documented baseline failure, not a duration certification.
+Accepted Crossdeck and Parallax main 589d3f8e are reconciled; clean 0907cd9 passes
+59 focused boundary tests and all 36 CLI scenarios. No D2 tools are configured.
+Normal protected publication/merge is explicitly authorized and the parent hold
+is cleared. Freeze the next documentation/catalog candidate for final ordinary
+qualification; never use physical/owner acceptance or deployment as implied scope.

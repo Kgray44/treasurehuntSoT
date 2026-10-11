@@ -130,10 +130,60 @@ The compatibility repair is deliberately limited to two shared files, reported b
 
 On the same clean repaired candidate, all three targeted cases pass, with one build/test worker and successful cleanup (`artifacts/sounding-line/lanternwake-repaired-comparison`). This establishes concrete protected-main red / repaired-candidate green proof for the original signatures. A malformed manually entered fixture filename was rejected before test execution on the first repaired invocation; the subsequent invocation derives the guarded path from the exact candidate SHA and retains the rejected setup log. No required check or fixture guard was weakened. Full ordinary qualification of the next frozen candidate remains pending at this checkpoint; the earlier failed ordinary decisions remain preserved history.
 
+### Successful recovery and accepted-main reconciliation
+
+Clean `04be433d824230290ea8e26e2f9b1ebe60469bb4` passed ordinary Sounding Line at
+`2026-10-11T07:24:12.739Z`: 1,639 product tests in 263 files, all 78 selected
+viewport cases, formatting, ESLint, full TypeScript, private-content scanning and
+production build. The canonical finalizer closed ten required obligations with
+zero remainder (seven fresh, three legitimately rebound). Evidence:
+`artifacts/sounding-line/recovery-candidate-ordinary-decision.json` and
+`artifacts-sounding-line-recovery-candidate.log`. All 36 clean source-bound
+Sextant D0/D1 scenarios passed on that same candidate.
+
+The additional seven-file browser comparison completed 34 of 35 cases successfully
+on that candidate. Its performance case failed before measurement because a Node
+`perf_hooks` import was serialized into a browser callback. Untouched accepted
+Crossdeck main `d4f67cb8981d2834c3c614df221b74fa851b02eb` reproduced that error.
+An exploratory clock-only repair on `9d894af623a3ed30c76cd11207e2e056123ac000`
+then exposed a second stale assumption: the benchmark requires retired Companion
+`forever:progression-receipt` events and six-section navigation, while the accepted
+canonical journal deliberately has neither. Current event/motion/lifecycle tests
+and the final Lanternwake performance report use canonical bounded ownership and
+cleanup. Reverting the exploratory change restores the benchmark byte-for-byte
+to accepted main; no new test omission, timeout, budget change or synthetic
+performance pass is introduced. This optional historical benchmark is not a
+completed production duration certification. Its failure remains preserved in
+`artifacts/sounding-line/performance-clock-baseline-d4f67cb8`,
+`artifacts/sounding-line/performance-clock-repaired-9d894af6` and
+`artifacts/sounding-line/lanternwake-supplemental-04be-failure`.
+
+Accepted Crossdeck main and then Parallax closeout main
+`589d3f8ed43070d647cd5f905b3a93cc574a9fee` were merged into this isolated branch.
+No unmerged sibling source was used. Shared registration/changelog changes remain
+additive, Parallax's catalog and Drydock parser remain accepted, and this phase
+introduces no migration or package-script changes. Clean reconciliation candidate
+`0907cd953a1e5de89b1a9458e22ef17c213897ad` passes 59 focused tests in four files,
+including the accepted Parallax/Drydock boundary, plus all 36 source-bound D0/D1
+scenarios with clean owned resources. The registry remains 88 total declarations,
+40 Sextant declarations and 17 Reach declarations; 36 is the executable Sextant
+CLI subset, not the registry total.
+
+At `2026-10-11T08:01:06.571Z`, the actual host helper again reports Windows,
+no configured Android SDK/ADB/emulator and no Apple runtime. D2 is unavailable,
+not passed. The first host-refresh invocation used an incorrect CJS module
+projection and failed before discovery; the corrected harmless read succeeded.
+Both results are retained under `artifacts/sounding-line`.
+
+Subsequent explicit human overnight authorization permits normal branch
+publication, protected merge and landed smoke. The parent cleared the merge hold
+after Parallax landed. Deployment, later phases and physical owner sessions remain
+outside scope. The reconciled final-head ordinary decision is still required.
+
 ## Remaining acceptance gates
 
 - D2 Android execution requires an actual configured emulator/bridge. D3 native iOS and native transport parity remain Phase 4.
 - D4 actual sensor/RF/camera/microphone/accessory accuracy, calibration, drift, interruption, power/thermal behavior and tactile output; D5 venue/weather/accessibility/field safety and weak-prop trials require physical evidence.
 - Surface owners place reference controls, supply existing media factories/authentication, requalify local guidance, and accept their product integrations. This phase supplies reusable software contracts rather than implementing Reach, Watchglass, Crossdeck pairing or Parallax tracking.
-- Owner/product acceptance, protected mainline qualification, publication and deployment remain separate and unauthorized here.
-- The required ordinary browser gate remains blocked by the failures above. Completing the selected browser checks on a repaired, source-bound candidate is required for software qualification.
+- Owner/product acceptance and deployment remain separate; deployment and physical owner sessions are unauthorized here.
+- Reconciled final-head ordinary qualification, protected publication/integration and landed smoke remain pending at this checkpoint. The earlier failed decisions and historical performance limitation are preserved above.
