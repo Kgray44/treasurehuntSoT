@@ -92,9 +92,38 @@ The native title and request marker were reconciled on this newly owned task. Vo
 
 Concurrent Crossdeck, Parallax and Reach must reconcile additive Device Lab registry, test registrations, Drydock extension registration and generated documentation/catalog. There are no database migrations, package/lockfile changes or dependencies on another task's unmerged source. Reach owns hand providers/webcam/calibration and target intent; Sextant owns capability state/lease/lifecycle only. Accepted Landfall and original Sextant contracts remain intact.
 
+### Reconciled candidate qualification - blocked
+
+The frozen clean candidate is `239ee9a6e28c7b5a959efb87ada3351305ef8f87`, tree `e10a957f1c6fc74cf3a96212e8ddd299b9f9f5d4`, against protected-main `7284b0dfaa31037d074d27df0f27b968f3977000`. The canonical ordinary run began at 05:48:44 UTC and recorded `FAIL`, category `PRODUCT_FAILURE`, at 06:39:28 UTC on 2026-10-11. This is an incomplete failed attempt, not software acceptance. The exact decision is preserved in `artifacts/sounding-line/reconciled-cap-ordinary-decision.json`; the full output is `artifacts-sounding-line-reconciled-cap.log`.
+
+The unchanged canonical invocation was `node scripts/sounding-line/ordinary.mjs --mode ordinary --base 7284b0dfaa31037d074d27df0f27b968f3977000 --candidate 239ee9a6e28c7b5a959efb87ada3351305ef8f87`, with task-local `SEALED_HOLD_SINGLE_FORK=1` and `VITEST_MAX_WORKERS=1`. The opt-in Next correction is now proven by actual production builds: all three logged page-data collections explicitly use one worker. No OS priority, security setting, test time limit, viewport or assertion was changed.
+
+| Check                                                                 | Reconciled candidate result                                                                                                                        |
+| --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Format, ESLint, TypeScript, private-source scan and Prisma validation | PASS                                                                                                                                               |
+| Product unit batches                                                  | PASS: 719 + 795 = 1,514 tests, 114 + 131 = 245 files                                                                                               |
+| Sounding Line runner tests                                            | PASS: 58 tests                                                                                                                                     |
+| Dedicated browser profiles before Lanternwake                         | PASS: Admiralty 2, subsequent isolated profiles 4, 1 and 1; one Playwright worker                                                                  |
+| Capped production builds                                              | PASS: compile, one-worker page collection and route generation, including accepted Reach routes                                                    |
+| Lanternwake selected browser batch                                    | FAIL/incomplete: fifteen completed failing cases were observed before ending the attempt; later selected cases are unqualified                     |
+| Sextant Device Lab replay on the same clean candidate                 | PASS: all 36 executable scenarios, 21 D0 and 15 D1; source identity matches the candidate, all cleanup receipts PASS with zero remaining resources |
+
+The browser failure evidence is concrete:
+
+- `2560x1440 replay`: `phase3-accessibility-viewports.spec.ts:600` expects `JOURNAL_READY` after replay, but receives `BOOK_SETTLING` at the unchanged ten-second assertion boundary.
+- All thirteen `390x844` flows: `openReadableJournal` at line 333 loses `.chronicle-journal-shell` after the existing forced skip click; the captured page is the Chronicle Library. This is not a passing accessibility result.
+- `844x390 journal-first-opening`: line 313 cannot click `Open the journal` within the existing 180-second test limit because `.shell-contextual-navigation` repeatedly intercepts pointer events.
+
+Completed failure traces, screenshots and page snapshots are preserved under `artifacts/sounding-line/reconciled-browser-failures`. The test, journal renderer, opening-machine and Player styles are byte-identical to the protected-main base; this establishes that those files were not modified by Sextant, but does not establish that a separately executed baseline passes or fails. Root-cause repair and a source-bound baseline comparison remain necessary before any aggregate acceptance claim. Required checks are neither waived nor relabeled as an environment problem.
+
+After the real browser failures were retained, only the freshly verified owned Playwright CLI subtree was stopped to bound the failed attempt and release the shared resource slot. The ordinary controller subsequently recorded `SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED` with browser `PLAYWRIGHT_EXITED`. This stop is part of the failed-attempt provenance; it is not a complete execution of the remaining selected suite. The source-bound Sextant CLI replay followed sequentially (`artifacts-device-lab-reconciled-head.log`). At 06:40:06 UTC, fresh process readback found zero owned-path Node processes and no frozen controller (`reconciled-cleanup-summary.json`); slot B was released.
+
+Feature Catalog: BLOCKED. No branch-complete entry is added while the required ordinary gate fails. The final closeout commit contains documentation only; the final clean-head Device Lab replay and documentation checks are retained separately. The implementation candidate's failed ordinary decision remains authoritative and is not replaced by documentation-only proof. No push, PR, protected-main merge, deployment, release or publication occurred.
+
 ## Remaining acceptance gates
 
 - D2 Android execution requires an actual configured emulator/bridge. D3 native iOS and native transport parity remain Phase 4.
 - D4 actual sensor/RF/camera/microphone/accessory accuracy, calibration, drift, interruption, power/thermal behavior and tactile output; D5 venue/weather/accessibility/field safety and weak-prop trials require physical evidence.
 - Surface owners place reference controls, supply existing media factories/authentication, requalify local guidance, and accept their product integrations. This phase supplies reusable software contracts rather than implementing Reach, Watchglass, Crossdeck pairing or Parallax tracking.
 - Owner/product acceptance, protected mainline qualification, publication and deployment remain separate and unauthorized here.
+- The required ordinary browser gate remains blocked by the failures above. Completing the selected browser checks on a repaired, source-bound candidate is required for software qualification.

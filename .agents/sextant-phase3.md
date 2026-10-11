@@ -68,3 +68,16 @@ Slot B was released at 05:25 UTC and granted again for this reconciliation/run.
 Focused reconciliation: 66 tests/3 files PASS, with one accepted camera capture,
 compatible declaration sharing and exact background cleanup; broker source preserved.
 See the Phase 3 implementation receipt for exact source, failure and cleanup proof.
+
+Reconciled clean candidate: 239ee9a6e28c7b5a959efb87ada3351305ef8f87.
+Ordinary attempt 05:48:44-06:39:28 UTC: FAIL/PRODUCT_FAILURE, incomplete.
+Preflight, 1,514 product tests/245 files, 58 runner tests, isolated browser profiles
+and actual Next one-worker builds PASS. Lanternwake has fifteen observed failures:
+desktop replay waits at BOOK_SETTLING; all 390x844 cases lose the journal after
+the existing forced skip; landscape opening is occluded by contextual navigation.
+Those renderer/style/test files match protected main; no baseline-pass inference.
+Only the freshly verified owned Playwright subtree was stopped after preserving
+failures. Canonical FAIL and traces retained. No assertions/time limits waived.
+Clean candidate replay: all 36 source-bound D0/D1 CLI scenarios and cleanup PASS.
+Slot B released 06:40 UTC; zero owned-path Node processes/controller remain.
+Feature Catalog BLOCKED; no software acceptance or publication claim.
