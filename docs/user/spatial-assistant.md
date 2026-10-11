@@ -25,6 +25,9 @@ depend on another change must be selected together. **Apply** saves reviewed
 changes; **Reject** leaves the scene unchanged. Undo and Redo use the ordinary
 editor history.
 
+After the scene is saved, its address identifies that working scene. Refreshing
+reopens the same saved draft; its Chronicle and Passage context stay in the address.
+
 If a request is unclear, answer the clarification with the object, direction,
 distance, exact text or interaction you mean. **Refine this proposal** prepares
 the composer for your follow-up. The candidate keeps bounded recent task context

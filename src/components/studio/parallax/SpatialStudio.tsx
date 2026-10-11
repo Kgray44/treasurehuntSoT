@@ -58,6 +58,14 @@ type Loaded = {
 };
 type AttachmentChange = { blockId: string; before: SpatialMoment | null; after: SpatialMoment };
 const fresh = (chronicleId?: string) => createSpatialDraft(crypto.randomUUID(), "Desk Map", chronicleId ?? null);
+function bindSavedSceneUrl(definitionId: string) {
+  const url = new URL(window.location.href);
+  if (url.pathname !== "/studio/parallax" || url.searchParams.get("definition") === definitionId) return;
+  url.searchParams.set("definition", definitionId);
+  // Preserve Chronicle/Passage context and Next's history state without a route
+  // navigation that would remount the editor and discard ordinary Undo history.
+  window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+}
 export function SpatialStudio({
   chronicleId,
   definitionId,
@@ -275,6 +283,8 @@ export function SpatialStudio({
         revision.current = result.revision;
         setSavedRevision(result.revision);
         savedJson.current = JSON.stringify(snapshot);
+        if (draftRef.current?.content.definitionId === snapshot.content.definitionId)
+          bindSavedSceneUrl(snapshot.content.definitionId);
       }
       setStatus("Working draft saved");
     };
@@ -313,6 +323,7 @@ export function SpatialStudio({
           revision.current = saved.revision;
           setSavedRevision(saved.revision);
           savedJson.current = JSON.stringify(saved.draft);
+          bindSavedSceneUrl(saved.draft.content.definitionId);
           writeHistory(changeHistory(current, { type: "REPLACE", draft: saved.draft }));
           setFindings(null);
           setStatus("Reviewed Assistant changes saved");
@@ -361,6 +372,7 @@ export function SpatialStudio({
       revision.current = nextRevision;
       setSavedRevision(nextRevision);
       savedJson.current = saved ? JSON.stringify(next) : "";
+      if (saved) bindSavedSceneUrl(next.content.definitionId);
       writeHistory({ past: [], present: next, future: [] });
       setSelected(next.content.entities.some((e) => e.id === entityId) ? entityId! : next.content.entities[0].id);
       setFindings(null);

@@ -10,10 +10,11 @@ import {
 } from "@/parallax/spatial-assistant";
 import type { SpatialDraft } from "@/parallax/authoring";
 import { SpatialStudio } from "./SpatialStudio";
-import { createSpatialDraft } from "@/parallax/authoring";
+import { createSpatialDraft, draftSchema } from "@/parallax/authoring";
 let calls: Record<string, unknown>[];
 const render = (ui: ReactElement) => renderUI(ui, { wrapper: AnimationProvider });
 beforeEach(() => {
+  window.history.replaceState(null, "", "/");
   calls = [];
   sessionStorage.clear();
   localStorage.clear();
@@ -245,6 +246,27 @@ it("presents truthful fallback and all ten synthetic environment results", async
   fireEvent.click(screen.getByRole("button", { name: "Test in 10 environments" }));
   expect(screen.getByText(/Synthetic previews and physical\/owner acceptance/)).toBeVisible();
   expect(screen.getByRole("button", { name: /Outdoor trail.*GUIDED FALLBACK/ })).toBeVisible();
+});
+it("keeps a newly saved scene in the URL without losing Chronicle, Passage or history state", async () => {
+  window.history.replaceState(
+    { syntheticNavigation: "preserved" },
+    "",
+    "/studio/parallax?chronicle=chronicle&block=block#inspector",
+  );
+  render(<SpatialStudio chronicleId="chronicle" blockId="block" />);
+  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  fireEvent.click(screen.getByRole("button", { name: "Save draft" }));
+  await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true));
+  const saved = calls.find((call) => call.action === "SAVE")!;
+  const savedDraft = draftSchema.parse(saved.draft);
+  await waitFor(() =>
+    expect(new URL(window.location.href).searchParams.get("definition")).toBe(savedDraft.content.definitionId),
+  );
+  const url = new URL(window.location.href);
+  expect(url.searchParams.get("chronicle")).toBe("chronicle");
+  expect(url.searchParams.get("block")).toBe("block");
+  expect(url.hash).toBe("#inspector");
+  expect(window.history.state).toEqual({ syntheticNavigation: "preserved" });
 });
 it("mounts the real port, previews without saving, installs one acknowledged history change and avoids duplicate autosave", async () => {
   const fixture = assistantHTTPFixture();

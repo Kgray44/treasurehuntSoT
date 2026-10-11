@@ -12,6 +12,7 @@ import { defaultAIGlobalPolicy, aiPricing, aiMaximumExposureNano } from "../../s
 
 test.describe.configure({ mode: "serial", timeout: 300000 });
 test.use({ actionTimeout: 30000 });
+test.skip(process.env.PARALLAX_A1_SYNTHETIC_PROVIDER !== "1", "Run the guarded unpaid Parallax browser fixture.");
 test.afterAll(() => db.$disconnect());
 const password = "Synthetic-A1-Enforcement-2026!";
 const requestText = "Explain an unsupported glowing particle effect.";

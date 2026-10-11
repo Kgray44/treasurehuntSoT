@@ -18,6 +18,9 @@ import type { SpatialDraft } from "../../src/parallax/authoring";
 
 test.describe.configure({ mode: "serial", timeout: 300000 });
 test.use({ actionTimeout: 30000, viewport: { width: 1440, height: 1000 }, video: "on" });
+// The owned runner installs an upstream-only synthetic interceptor. A generic
+// browser server has no such interception and must never turn this into a paid call.
+test.skip(process.env.PARALLAX_A1_SYNTHETIC_PROVIDER !== "1", "Run the guarded unpaid Parallax browser fixture.");
 test.afterAll(() => db.$disconnect());
 const artifactRoot = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
 const createRequest = "Create a pirate map on a desk with a readable clue and a guided alternative.";
