@@ -3389,6 +3389,13 @@
       "authority": "project-crossdeck",
       "owners": ["project-crossdeck", "wayfarer"],
       "critical": true
+    },
+    {
+      "id": "crossdeck.phase2.continuity",
+      "name": "Crossdeck ordered durable handoff, acknowledgment, custody, continuity and shared-display privacy",
+      "authority": "project-crossdeck",
+      "owners": ["project-crossdeck", "wayfarer", "player-journal"],
+      "critical": true
     }
   ]
 }

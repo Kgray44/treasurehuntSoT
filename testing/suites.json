@@ -2840,7 +2840,7 @@
     },
     {
       "id": "unit.crossdeck",
-      "name": "Crossdeck secure pairing and surface participation",
+      "name": "Crossdeck secure participation and durable presentation continuity",
       "tier": 2,
       "owner": "project-crossdeck",
       "command": "registry-selected Vitest files",
@@ -2850,7 +2850,7 @@
       "parallelSafe": true,
       "resources": ["node-slot", "vitest-worker-pool", "owned-sqlite-fixture"],
       "dependencies": [],
-      "contracts": ["crossdeck.phase1.participation"],
+      "contracts": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity"],
       "affectedPaths": [
         "src/crossdeck/**",
         "src/app/api/crossdeck/**",
@@ -2865,7 +2865,7 @@
     },
     {
       "id": "browser.crossdeck",
-      "name": "Crossdeck desktop and mobile browser pairing",
+      "name": "Crossdeck desktop and mobile browser pairing and continuity",
       "tier": 4,
       "owner": "project-crossdeck",
       "command": "registry-selected Playwright cases",
@@ -2875,14 +2875,15 @@
       "parallelSafe": false,
       "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": ["unit.crossdeck"],
-      "contracts": ["crossdeck.phase1.participation"],
+      "contracts": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity"],
       "affectedPaths": [
         "src/crossdeck/**",
         "src/app/api/crossdeck/**",
         "src/components/crossdeck/**",
         "src/app/account/devices/**",
         "src/app/devices/**",
-        "tests/e2e/crossdeck-phase1.spec.ts"
+        "tests/e2e/crossdeck-phase1.spec.ts",
+        "tests/e2e/crossdeck-phase2.spec.ts"
       ],
       "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",

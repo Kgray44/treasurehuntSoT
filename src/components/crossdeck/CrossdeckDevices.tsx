@@ -400,7 +400,15 @@ export function CrossdeckDevices({
                     ))}
                 </select>
               </label>
-              <Link href={s.voyageHref}>Continue Voyage</Link>
+              <Link
+                href={
+                  s.role === "SHARED_CREW_DISPLAY"
+                    ? `/devices/display?voyage=${encodeURIComponent(s.voyageId)}`
+                    : s.voyageHref
+                }
+              >
+                {s.role === "SHARED_CREW_DISPLAY" ? "Open crew display" : "Continue Voyage"}
+              </Link>
               <button
                 className="button button--danger"
                 disabled={busy}
@@ -415,8 +423,8 @@ export function CrossdeckDevices({
         </ul>
       )}
       <p className={styles.note}>
-        Companion roles are ready for upcoming Chronicle features. Spatial viewing and content handoff arrive in later
-        phases. Connecting never turns on your camera or changes your story progress.
+        Open your Voyage Journal to send a released chart, note, or artifact to another connected device. Crew displays
+        receive explicitly shared read-only views. Connecting never turns on your camera or changes your story progress.
       </p>
       <Link href="/account/sessions">Manage sign-ins and revoke device access</Link>
     </section>

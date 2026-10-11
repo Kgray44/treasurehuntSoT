@@ -8,6 +8,15 @@ last_reviewed: 2026-10-10
 
 # Player guide
 
+In the Crossdeck Phase 2 candidate, connect your screens through **Devices** using
+the same account and Voyage. The Journal's **Send to...** lets you choose another
+active device and send the current released map, note or artifact. Choose **Receive**
+on that device to open it. Your original view stays recoverable while it arrives.
+Private notes require confirmation. If the controlling device goes away, choose
+**Recover view here** on an available personal device. Crew displays show only
+content explicitly shared with the crew. This candidate still requires its Android
+virtual-device qualification and owner walkthrough before phase acceptance.
+
 When a released passage includes a spatial moment, choose **Open Chronicle Lens** to read and interact with its clue in Guided View. The same clue stays readable without a camera, while seated or using a keyboard. A compatible native companion can offer local camera placement. Closing the camera, using Android Back, or losing its permission returns the moment to Guided View; reopen it explicitly for a fresh camera session. Lens interactions are recorded separately from Voyage progression. Revisited passages preserve their meaning without changing progress.
 
 Where signed region preparation is enabled, an optional offline region panel appears in the Journal map.

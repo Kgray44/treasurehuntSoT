@@ -18,6 +18,12 @@ last_reviewed: 2026-10-10
 
 ### Added
 
+- Crossdeck Phase 2 candidate adds durable presentation synchronization, explicit
+  manual Send to and destination acknowledgement, focus/custody and companion
+  modes, released map/note/artifact continuity, stale-device recovery and restricted
+  crew displays. Local software evidence and outstanding Android/owner/integration
+  gates are recorded in the [Phase 2 record](Development_Docs/Projects/Project_Crossdeck/Phase_2_Implementation_Record.md).
+
 - Completed Project Landfall Phase4 source through protected PR #677: origin-bound native companions, signed offline regions, contextual providers and the permanent cross-platform Device Lab preserve One Voyage authority. Exact qualification, scoped native/browser/provider acceptance and landed verification pass; the protected evidence/catalog publication binds formal Project Landfall closure. Physical/RF/field/energy/assistive evidence, signed distribution, production configuration and owner acceptance remain external.
 
 - Apple companion configuration now declares portrait and landscape support

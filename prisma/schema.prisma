@@ -1970,6 +1970,7 @@ model PlatformRoleAssignment {
 }
 
 model PlaythroughMembership {
+  crossdeckDeck CrossdeckDeck?
   crossdeckSurfaces CrossdeckSurfaceSession[]
   id                         String                     @id @default(cuid())
   playthroughId              String
@@ -4203,6 +4204,15 @@ model CrossdeckSurfaceSession {
 
   @@index([membershipId, revokedAt, expiresAt])
   @@index([accountSessionId, revokedAt])
+}
+
+model CrossdeckDeck {
+  id           String @id @default(cuid())
+  membershipId String @unique
+  revision     Int @default(0)
+  state        String @db.LongText
+  updatedAt    DateTime @updatedAt
+  membership   PlaythroughMembership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
 }
 
 model CrossdeckPairingChallenge {

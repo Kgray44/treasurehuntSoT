@@ -4857,37 +4857,47 @@
     {
       "path": "src/crossdeck/**",
       "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
-      "contractIds": ["crossdeck.phase1.participation"]
+      "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity"]
     },
     {
       "path": "src/app/api/crossdeck/**",
       "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
-      "contractIds": ["crossdeck.phase1.participation"]
+      "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity"]
     },
     {
       "path": "src/components/crossdeck/**",
       "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
-      "contractIds": ["crossdeck.phase1.participation"]
+      "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity"]
     },
     {
       "path": "src/app/account/devices/**",
       "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
-      "contractIds": ["crossdeck.phase1.participation"]
+      "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity"]
     },
     {
       "path": "src/app/devices/**",
       "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
-      "contractIds": ["crossdeck.phase1.participation"]
+      "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity"]
     },
     {
       "path": "tests/e2e/crossdeck-phase1.spec.ts",
       "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
-      "contractIds": ["crossdeck.phase1.participation"]
+      "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity"]
     },
     {
       "path": "scripts/crossdeck/**",
       "suiteIds": ["unit.crossdeck", "static.core"],
-      "contractIds": ["crossdeck.phase1.participation"]
+      "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity"]
+    },
+    {
+      "path": "tests/e2e/crossdeck-phase2.spec.ts",
+      "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
+      "contractIds": ["crossdeck.phase2.continuity"]
+    },
+    {
+      "path": "prisma/**/20261011_0001_crossdeck_phase2/**",
+      "suiteIds": ["unit.crossdeck", "static.core"],
+      "contractIds": ["crossdeck.phase2.continuity"]
     }
   ],
   "contractMappings": [
@@ -6756,6 +6766,10 @@
     },
     {
       "contractId": "crossdeck.phase1.participation",
+      "suiteIds": ["unit.crossdeck", "browser.crossdeck"]
+    },
+    {
+      "contractId": "crossdeck.phase2.continuity",
       "suiteIds": ["unit.crossdeck", "browser.crossdeck"]
     }
   ],
