@@ -1824,6 +1824,10 @@
   left: auto;
   bottom: auto;
 }
+.assistantWorkspace > .dockTitle,
+.assistantWorkspace > .dockTitle button {
+  color: #dce9f6;
+}
 .assistantWorkspace > aside {
   width: 100%;
   max-width: 100%;

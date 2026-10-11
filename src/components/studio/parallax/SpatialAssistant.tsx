@@ -609,9 +609,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                     Proposed scene
                   </button>
                 </div>
-                <p className={styles.reassurance}>
-                  Preview uses your actual spatial canvas. Synthetic views don’t establish physical AR effects.
-                </p>
+                <p className={styles.reassurance}>Review changes in your scene before you apply them.</p>
                 <div className={styles.applyBar}>
                   <button
                     className={styles.primary}

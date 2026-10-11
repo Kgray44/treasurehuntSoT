@@ -179,6 +179,10 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
   await submit("Create a pirate map on a desk with a readable clue and a guided alternative.");
   await expect(assistant.getByRole("region", { name: "Review spatial proposal" })).toBeFocused();
   const proposalAccessibility = await new AxeBuilder({ page }).include("#parallax-assistance").analyze();
+  await writeFile(
+    `${artifactRoot}/proposal-accessibility.json`,
+    JSON.stringify(proposalAccessibility.violations, null, 2) + "\n",
+  );
   expect(
     proposalAccessibility.violations.filter(({ impact }) => ["serious", "critical"].includes(impact ?? "")),
   ).toEqual([]);
