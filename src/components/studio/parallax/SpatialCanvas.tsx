@@ -13,6 +13,7 @@ import styles from "./SpatialStudio.module.css";
 export function SpatialCanvas(props: {
   draft: SpatialDraft;
   selectedId: string | null;
+  highlightedEntityIds?: readonly string[];
   onSelect: (id: string) => void;
   onInspect?: () => void;
   onEdit: (edit: Edit) => void;
@@ -131,7 +132,7 @@ export function SpatialCanvas(props: {
         entity,
         world: resolvedWorld(entity.id),
         visible: states[entity.id].visible,
-        highlighted: states[entity.id].highlighted,
+        highlighted: states[entity.id].highlighted || (props.highlightedEntityIds?.includes(entity.id) ?? false),
         selectable: states[entity.id].selectable,
         locked: draft.content.studio?.layers.find((l) => l.entityId === entity.id)?.locked ?? false,
       })),

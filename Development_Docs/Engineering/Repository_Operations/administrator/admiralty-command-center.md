@@ -61,3 +61,7 @@ provider credentials, private Chronicle content, raw event/job payloads,
 Community report prose, private assets, object keys, storage roots, encryption
 material, or arbitrary database access. Broad administrative mutation is a
 later-phase capability and is not present in Phase 2.
+
+## A1 AI resource control candidate
+
+The [AI quota operator guide](../../../Projects/Project_Parallax/Parallax_A1_Quota_Operator_Guide.md) describes global AI policy/spending/provider views and account exceptions in the existing People dossier. Integrated browser qualification remains pending.

@@ -10,6 +10,10 @@ last_reviewed: 2026-10-11
 
 The [implementation PR](https://github.com/Kgray44/treasurehuntSoT/pull/714) starts at protected base
 `678dd1156d39537d288ba3c2e5ce5c6efc2259d0` in an owned worktree.
+The final integration incorporates subsequently landed protected main
+`ee8caa83e79b6b5802f8773689e802705c5154d3` (Parallax A1, PR #710), preserving
+that work. The frozen local capture below retains its original checkpoint;
+hosted activation binds the final integrated source separately.
 Sounding Line remains the sole mainline decision. Global Product Governance,
 Homeport, Brightwork, Deepwater and Lanternwake retain their authority.
 

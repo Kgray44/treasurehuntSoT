@@ -16,7 +16,7 @@ Voyagewright helps people discover, create, and run shared Chronicle experiences
 
 ## Your Chronicle experiences
 
-[Player guide](user/player-guide.md), [Captain guide](user/captain-guide.md), [Creator guide](user/creator-guide.md), [Chronicle Passport](user/chronicle-passport.md), [Chronicle preview and start](user/chronicle-preview-and-start.md), [Community Harbor](user/community-harbor.md), and [Community reviews and saves](user/community-reviews-and-saves.md).
+[Player guide](user/player-guide.md), [Captain guide](user/captain-guide.md), [Creator guide](user/creator-guide.md), [Spatial Assistant candidate](user/spatial-assistant.md), [Chronicle Passport](user/chronicle-passport.md), [Chronicle preview and start](user/chronicle-preview-and-start.md), [Community Harbor](user/community-harbor.md), and [Community reviews and saves](user/community-reviews-and-saves.md).
 
 ## Account, profile, and privacy
 

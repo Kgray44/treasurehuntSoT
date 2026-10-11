@@ -10,6 +10,8 @@ last_reviewed: 2026-10-03
 
 Creator Studio is where you build a Chronicle. Create or choose a Chronicle, then use its settings, story blocks, locations, media, artifacts, and editions to shape the experience. Published editions stay unchanged so active Voyages can rely on them.
 
+The [Spatial Assistant candidate guide](spatial-assistant.md) describes reviewed natural-language spatial proposals. Its shared Studio integration and visual acceptance remain pending.
+
 ## Build your story
 
 Select a Story Block to open its Inspector. **Guided** mode focuses on the next authoring step, **Detailed** shows the available controls, and **Engineering** offers advanced information for experienced Creators. Choose destinations by their chapter and block title, then use the visual editor to build the available conditions.
