@@ -337,6 +337,11 @@ it("locates a proposed object in the real preview without erasing it on selectio
   await canvas.findByRole("button", { name: /^Proposed note\./ });
   expect(fixture.readSaved().draft.content.entities).toHaveLength(1);
   expect(screen.getByText(/Review placement preview/)).toBeVisible();
+  fireEvent.click(panel.getByRole("button", { name: "View canvas" }));
+  await waitFor(() => expect(screen.getByRole("button", { name: /Ask Parallax/ })).toHaveFocus());
+  expect(screen.queryByRole("region", { name: "Spatial Assistant" })).not.toBeInTheDocument();
+  expect(canvas.getByRole("button", { name: /^Proposed note\./ })).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
   fireEvent.click(panel.getByRole("button", { name: "Apply all changes" }));
   await panel.findByText(/Reviewed changes are saved/);
   expect(fixture.readSaved().draft.content.entities).toHaveLength(2);

@@ -187,6 +187,25 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
     proposalAccessibility.violations.filter(({ impact }) => ["serious", "critical"].includes(impact ?? "")),
   ).toEqual([]);
   await capture(page, "light-theme-proposal");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await assistant.getByRole("button", { name: "Proposed scene", exact: true }).click();
+  await assistant.getByRole("button", { name: "View canvas", exact: true }).click();
+  await expect(assistant).toBeHidden();
+  const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
+  await expect(canvas.getByRole("button", { name: /^Pirate map\./ })).toBeVisible();
+  await expect(canvas.locator('[data-renderer="READY"]')).toBeVisible();
+  await capture(page, "phone-proposed-canvas-light");
+  await page.getByRole("button", { name: /Ask Parallax/ }).click();
+  const apply = assistant.getByRole("button", { name: "Apply all changes", exact: true });
+  await apply.scrollIntoViewIfNeeded();
+  expect(
+    await apply.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return element.contains(document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2));
+    }),
+  ).toBe(true);
+  await capture(page, "phone-proposal-apply-light");
+  await page.setViewportSize({ width: 1440, height: 1000 });
   // Known upstream rejection releases its reservation. Consume the allowance
   // with settled responses, rather than treating an unbilled failure as usage.
   await submit("Explain an unsupported glowing particle effect.");

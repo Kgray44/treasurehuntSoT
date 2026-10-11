@@ -1062,7 +1062,12 @@ export function SpatialStudio({
                 canUndo={!!history.past.length && !busy}
                 canRedo={!!history.future.length && !busy}
                 onClose={closeAssistant}
-                onCanvasView={closeAssistant}
+                onCanvasView={() => {
+                  setAssistantOpen(false);
+                  queueMicrotask(() =>
+                    document.querySelector<HTMLButtonElement>('[aria-controls="parallax-assistance"]')?.focus(),
+                  );
+                }}
               />
             )}
             <details className={styles.assistantDetails}>
