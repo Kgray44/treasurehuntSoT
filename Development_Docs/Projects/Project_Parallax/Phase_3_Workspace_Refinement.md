@@ -1,7 +1,7 @@
 ---
 title: Parallax Phase 3 workspace ergonomics refinement
 audience: product-engineering
-status: implementation-in-progress-owner-review-required
+status: owner-approved-software-candidate-in-qualification
 canonical_for: parallax-phase-3-workspace-refinement
 last_reviewed: 2026-10-11
 ---
@@ -24,8 +24,31 @@ Account-scoped browser preferences retain dock state, bounded dimensions, worksp
 
 ## Validation and review
 
-The layout and Studio component checks passed during development. Real production-browser qualification, measured viewport-area comparisons, desktop/tablet/mobile captures and the owner's final visual decision remain pending. The browser journey covers the six requested sizes, actual drag-and-drop, edits, timeline changes, dock resizing, canonical save/reload, layout reset, keyboard focus, reduced motion and truthful unavailable AI.
+The owner explicitly answered **Approve the refined workstation** for candidate `592217e3edb214bab76373dc64cbe4b954ba3703`, tree `36cb8d072caa7c17519d6398bd994c26c4c4a05f`, on 2026-10-11. This closes the refinement visual decision, separately from the earlier baseline approval. It does not certify physical placement or the separately owned A1 assistant.
+
+Both production-browser workstation journeys passed against `26e895c42247104bb5ffb9b2f21c199244893005`: 10.0 seconds for adaptive docks and 11.7 seconds for populated 3D editing. Later changes through the approved `592217e3` affected browser-test handling of persisted Inspector state, separate Creator/Player authority and exact current-source Suite selection; the renderer and workstation UI are unchanged. The fixed-scene publication journey passed at `5e98f1c8`. The extended adaptive journey passed at `592217e3` in 51.6 seconds, including field review/refinement and immutable Chronicle republication.
+
+The workstation journeys exercise drag-and-drop, pointer gizmo editing, Undo/Redo, camera navigation, timeline editing/playback, repeated dock resizing, shared-tab filter/selection retention, persistence/reload/reset, predictable collapse/Assistant focus, reduced motion and honest unavailable AI. All six requested sizes have real captures, no horizontal or vertical document overflow, and the same renderer DOM node across layout changes. Desktop/mobile axe checks have no serious or critical findings. The relevant subsystem check passed 165 tests across 17 files before the final shared field-scenario bindings; final qualification remains separate.
+
+## Measured usable viewport
+
+These are actual renderer CSS-pixel bounds with the exercised, resized dock preferences. Focus gains compare against the expanded Construction layout at the same browser size. Supporting drawers overlay temporarily on tablet/mobile, so their layouts retain the same renderer bounds; this does not claim the open drawer leaves the scene unobstructed.
+
+| Browser     | Construction | Spatial Editing | Focus      | Focus area gain   |
+| ----------- | ------------ | --------------- | ---------- | ----------------- |
+| 1920 × 1080 | 1270 × 754   | 1570 × 754      | 1814 × 754 | 42.8%             |
+| 1440 × 900  | 790 × 574    | 1090 × 574      | 1334 × 574 | 68.9%             |
+| 1366 × 768  | 716 × 442    | 1016 × 442      | 1260 × 442 | 76.0%             |
+| 1280 × 800  | 630 × 474    | 930 × 474       | 1174 × 474 | 86.3%             |
+| 1024 × 768  | 924 × 442    | 924 × 442       | 924 × 442  | temporary drawers |
+| 390 × 844   | 302 × 504    | 302 × 504       | 302 × 504  | temporary drawers |
+
+At 1920 × 1080 the Spatial Editing canvas occupies 81.8% of browser width, and Focus occupies 94.5%. Earlier approved 1680 × 1050 capture bounds are approximately 1080 × 455; that is an image-based estimate, not an earlier DOM measurement. The new 1920 measurements must not be presented as a same-size before/after comparison. Measured data is `artifacts/parallax-phase3/workstation-refinement/viewport-measurements.json`.
+
+## Running owner review
+
+The owner-reviewed application is available at `http://localhost:62619/studio/parallax?definition=2146f777-4394-4661-bfbe-03c89a9c3d6f` while its task-owned runtime remains running. It uses a disposable synthetic database cloned from the populated workstation fixture, ordinary password sign-in, no configured external providers and loopback binding. Runtime ownership, source/tree/lock hash and synthetic login proof are retained in `artifacts/parallax-phase3/owner-review/`. The process/port belong to this task; preserve them during owner inspection. A running process is not physical-device proof.
 
 New evidence belongs under `artifacts/parallax-phase3/workstation-refinement/`. Earlier owner-approved captures remain under `artifacts/parallax-phase3/workstation/`; they are preserved as the visual baseline. No ordinary final Sounding Line, protected integration, landed smoke, deployment or physical qualification is claimed by this record.
 
-Documentation classification: current engineering evidence under `Development_Docs`; the Creator guide remains human product guidance and `.agents/parallax-phase3.md` remains active automation context. Full Phase 3 implementation and qualification remain in progress, so the completed Feature Catalog remains unchanged at this checkpoint.
+Documentation classification: current engineering evidence under `Development_Docs`; the Creator guide remains human product guidance and `.agents/parallax-phase3.md` remains active automation context. The [full Phase 3 implementation record](Phase_3_Implementation.md) reconciles the completed local capability and remaining ordinary protected qualification.

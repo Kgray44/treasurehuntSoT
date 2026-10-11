@@ -117,7 +117,14 @@ The native coordinator readback confirms A1 explicitly accepted every amendment,
 including monotonic editor generation, serialized persistence, atomic saved Apply,
 one already-saved history installation, same-key retry and exact additive schema
 ownership. Bilateral interface acknowledgement is established. Mounted integration
-remains HELD until the newest canonical refinement receives owner acceptance.
+has cleared the owner visual prerequisite: on 2026-10-11 the owner directly
+answered "Approve the refined workstation" for source
+`592217e3edb214bab76373dc64cbe4b954ba3703`, tree
+`36cb8d072caa7c17519d6398bd994c26c4c4a05f`. This supersedes the visual hold;
+it does not certify later field/Device Lab changes or protected integration.
+The canonical handoff is this owned branch after Phase 3 ordinary qualification
+and protected merge. A1 may prepare against the approved source using the agreed
+interfaces; mounted integration must reconcile the final protected Phase 3 tree.
 No sibling source or worktree was changed.
 
 The refined assistance host is `#parallax-assistance`, controlled by shell-owned

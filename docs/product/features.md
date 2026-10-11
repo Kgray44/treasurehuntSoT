@@ -8,7 +8,7 @@ last_reviewed: 2026-10-11
 
 # Voyagewright features
 
-Parallax Phase 3 has an owned adaptive-authoring and 3D workstation candidate. The [workstation review](../../Development_Docs/Projects/Project_Parallax/Phase_3_Workstation_Review.md) records populated browser evidence and explicit owner visual approval on 2026-10-11 for the corrected design. This candidate is not yet protected-main availability or physical qualification.
+Parallax Phase 3 is locally implemented: semantic multi-object placement, stable logical policies, remote authoring, optional minimized field calibration and bounded discovery recovery. The [implementation record](../../Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md) binds source and browser journeys. The [refined workstation](../../Development_Docs/Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) received final owner visual approval at `592217e3` on 2026-10-11. Ordinary protected integration remains pending; synthetic proof does not establish physical AR qualification.
 
 The authorized internal [Spatial Chronicle Pilot](../../Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md) combines a fictional published adventure with a guided device, Spatial Studio and Reach owner session. Its source is in qualification; complete automated and physical/owner acceptance remain separate. It is gated to a task-owned synthetic environment.
 

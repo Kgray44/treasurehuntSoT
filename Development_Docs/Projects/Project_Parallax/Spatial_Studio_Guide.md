@@ -10,7 +10,7 @@ last_reviewed: 2026-10-11
 
 Open **Spatial Studio** from Creator Studio, or select **Add Spatial Moment** on a Chronicle passage. Guided mode starts with a Desk Map and keeps the canvas at the center of the workspace.
 
-The [Phase 3 workstation candidate](Phase_3_Workstation_Review.md) is under development; its shown workstation experience received explicit owner visual approval on 2026-10-11. It is not yet the protected-main experience. Its editing workflow is:
+The [Phase 3 implementation](Phase_3_Implementation.md) and [refined workstation](Phase_3_Workspace_Refinement.md) have completed local browser journeys and explicit owner visual approval on 2026-10-11. Protected-main qualification is pending. The editing workflow is:
 
 - Add a visual asset to the current scene from the asset browser, or drag it into the viewport. **New scene** opens a separate spatial moment.
 - Select an object in the scene or hierarchy. Choose **Move**, **Rotate** or **Scale** to use its gizmo. Drag empty space to orbit, Shift-drag to pan and scroll to zoom. Plan and elevation views help inspect placement; precise inspector controls and keyboard movement remain available.
@@ -22,7 +22,7 @@ The [Phase 3 workstation candidate](Phase_3_Workstation_Review.md) is under deve
 - Author visual state changes in the timeline. Drag an event or use its arrow keys to change the delay; seek and play to inspect the result. Expand **Sequence properties & simulation** for trigger, target and simulation controls.
 - Use Guided preview to inspect the same authored clue without camera or precision movement. Synthetic scenes and confidence overlays do not establish real AR tracking or physical qualification. Optional field feedback retains only consented bounded metadata; automatic room-image upload is disabled.
 
-The accepted Phase 2 publication and library workflow remains:
+The canonical publication and library workflow remains:
 
 1. Choose a preset, name the experience and edit its clue. Choose desk, wall, entrance or local placement. Drag an object in the canvas or use its keyboard movement and size/rotation controls. Detailed mode reveals hierarchy, layers and timeline; Engineering adds explicit coordinates. Changing mode does not change the experience.
 2. Select a synthetic environment and preview the Lens, phone frame, Guided fallback or accessibility view. Check that the alternative text preserves the clue. Crew and remote previews compare fixed synthetic views; they do not establish real-world placement or shared-device synchronization.
@@ -34,3 +34,21 @@ The accepted Phase 2 publication and library workflow remains:
 Undo and redo apply to ordinary editing and accepted AI proposals. When configured, AI intent and critique are advisory: review the proposed placement, content and alternative text before applying it. If you edit the draft after requesting a proposal, request a fresh proposal before applying. Manual editing remains available when AI is unconfigured.
 
 If a save conflicts with another revision, preserve your work as a new fork or reload the authoritative item. An immutable version is never overwritten. Synthetic previews are authoring aids; representative-device acceptance and physical tracking qualification remain separate.
+
+## Author an adaptive scene remotely
+
+Choose Remote Semantic Placement in the placement controls. Select preferred surfaces and surrounding context, then refine height, orientation, concealment, clearance, reach and allowed substitutes. A supported phrase such as placing a map near furniture can produce a reviewable structured recipe without an AI provider. Unsupported or ambiguous phrases explain the limit; use the guided controls to finish the recipe.
+
+Add related objects from the Library and choose their separation and reveal relationships. Compare the same scene in several synthetic environments. Placement diagnostics distinguish a good match, acceptable substitute, low confidence and no valid placement. If no safe arrangement exists, revise the conflicting constraint or improve the Guided alternative; the resolver will not fabricate a surface.
+
+Choose a placement policy appropriate to the story. Sticky retains a lifecycle; Per Crew shares a logical crew decision; Per Run permits an authorized new run to vary; Variant uses the selected run variant. Calibrated preserves a reviewed semantic recipe and still resolves safe geometry. These policies do not promise that separate physical devices share an aligned real-world anchor.
+
+For mandatory discoveries, author bounded hint stages, expected and maximum search time, Show me, an accessible direct clue and the alternate completion text. Preview the terminal recovery before creating an immutable version. Player search time pauses during irrelevant or interrupted activity. Guided recovery exposes the clue; ordinary Chronicle controls still determine completion.
+
+## Review optional field feedback
+
+Players can decline optional feedback and continue normally. The consent explanation names the retained categories, Creator access, retention and withdrawal. Feedback contains no room image, audio, location, coordinates or scanning path. Automatic image upload is unavailable. Player-reported physical feedback is self-reported evidence, not certified device accuracy.
+
+Open Field Quality for an owned definition. Simulation and physical reports appear separately. Review eligible feedback against the current draft, make a bounded recipe adjustment and acknowledge Creator Reviewed before Calibrated. Changing the recipe invalidates the old acknowledgement. A stale or concurrent review must be refreshed. Verified requires later independent eligible reports for the calibrated released version; it is not a physical AR certification label.
+
+Create a new immutable Spatial Library version and attach that exact version before the Chronicle's normal validation, Suite and publication review. Earlier published versions remain unchanged. Feedback withdrawal deletes the original retained report; already published reviewed recipes may remain without that report.

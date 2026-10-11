@@ -14,7 +14,7 @@ last_reviewed: 2026-10-11
 
 ### Corrected
 
-- Parallax's owned Phase 3 candidate reimagines Spatial Studio around a populated synthetic 3D viewport, direct editing gizmos, a visual asset browser, contextual placement preview and behavior tracks. It preserves canonical drafts, validation, immutable versions and Chronicle attachment. The [workstation review](Development_Docs/Projects/Project_Parallax/Phase_3_Workstation_Review.md) records development evidence; owner visual approval was received on 2026-10-11; final protected integration remains pending.
+- Parallax Phase 3 adds semantic multi-object staging, scoped durable logical placement, remote recipes, optional consented metadata calibration, bounded discovery recovery and a refined 3D workstation with four layouts and adaptive docks. Canonical drafts, Undo/Redo, Drydock, immutable spatial versions and Chronicle publication remain authoritative. The [implementation record](Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md) preserves executable/browser proof and physical limits; final workstation visual approval binds `592217e3` on 2026-10-11. Protected integration remains pending.
 
 - Crossdeck replaces 500 ms snapshot polling with authorized committed-change
   notifications and nominal 10-second active reconciliation. Reconnect and

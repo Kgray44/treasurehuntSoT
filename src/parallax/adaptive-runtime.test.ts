@@ -30,6 +30,10 @@ describe("adaptive Lens lifecycle and discovery", () => {
     openRuntimes.push(r);
     await r.open(adapter);
     const seed = r.read().resolution!.seed;
+    const receipt = r.read().resolutionReceipt!;
+    expect(receipt.seed).toBe(seed);
+    expect(receipt.entities[0]).toMatchObject({ confidenceBand: "HIGH", scoreBand: "HIGH_MATCH" });
+    expect(JSON.stringify(receipt)).not.toMatch(/candidateId|position|rotation|frameId/);
     adapter.push({ type: "ANCHOR_LOST", anchorId: Object.keys(r.read().anchors)[0] });
     await vi.waitFor(() => expect(r.read().state).toBe("GUIDED_FALLBACK"));
     expect(r.read().resolution!.seed).toBe(seed);

@@ -17,6 +17,7 @@ import type { CapabilityState } from "@/sextant/contracts";
 import {
   resolveAdaptiveScene,
   revalidateAdaptiveScene,
+  minimizedResolutionReceipt,
   resolutionIdentity,
   type EnvironmentEvidence,
   type SceneResolution,
@@ -91,6 +92,7 @@ export type LensSnapshot = {
   highlightedEntityIds: string[];
   discovery?: Record<string, DiscoveryState>;
   resolution?: SceneResolution;
+  resolutionReceipt?: ReturnType<typeof minimizedResolutionReceipt>;
   activeDiscoveryEntityId?: string;
   trackingRecovered?: boolean;
 };
@@ -192,7 +194,9 @@ export class ParallaxLensRuntime {
     );
   }
   read(): LensSnapshot {
-    return structuredClone(this.snapshot);
+    const snapshot = structuredClone(this.snapshot);
+    if (snapshot.resolution) snapshot.resolutionReceipt = minimizedResolutionReceipt(snapshot.resolution);
+    return snapshot;
   }
   private update(patch: Partial<LensSnapshot>) {
     this.snapshot = { ...this.snapshot, ...patch };

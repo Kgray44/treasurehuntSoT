@@ -1359,6 +1359,71 @@
       "oracleOwner": "PARALLAX",
       "cleanupRequired": true,
       "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "parallax.phase3-field-calibration",
+      "version": 1,
+      "owner": "PARALLAX",
+      "requiredCapabilities": ["spatial.field-calibration"],
+      "minimumTier": "D0",
+      "eligibleTiers": ["D0", "D1"],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "PARALLAX",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "parallax.phase3-concurrent-review",
+      "version": 1,
+      "owner": "PARALLAX",
+      "requiredCapabilities": ["spatial.field-calibration"],
+      "minimumTier": "D0",
+      "eligibleTiers": ["D0", "D1"],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "PARALLAX",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "parallax.phase3-consent-withdrawal",
+      "version": 1,
+      "owner": "PARALLAX",
+      "requiredCapabilities": ["spatial.field-calibration"],
+      "minimumTier": "D0",
+      "eligibleTiers": ["D0", "D1"],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "PARALLAX",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "parallax.phase3-field-stale-version",
+      "version": 1,
+      "owner": "PARALLAX",
+      "requiredCapabilities": ["spatial.field-calibration"],
+      "minimumTier": "D0",
+      "eligibleTiers": ["D0", "D1"],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "PARALLAX",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "parallax.phase3-field-retry",
+      "version": 1,
+      "owner": "PARALLAX",
+      "requiredCapabilities": ["spatial.field-calibration"],
+      "minimumTier": "D0",
+      "eligibleTiers": ["D0", "D1"],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "PARALLAX",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
     }
   ]
 }
