@@ -109,3 +109,37 @@
     flex-direction: column;
   }
 }
+.handoff {
+  max-width: min(32rem, 100%);
+  color: var(--text-primary, inherit);
+}
+.handoff details {
+  padding: 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: 0.5rem;
+}
+.handoff summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.handoff label {
+  display: block;
+  margin-block: 0.5rem;
+}
+.handoff select {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 2.75rem;
+}
+.handoff summary {
+  min-height: 2.75rem;
+  padding-block: 0.5rem;
+}
+.handoff button {
+  margin: 0.25rem;
+  min-height: 2.75rem;
+}
+.handoff p:empty {
+  display: none;
+}

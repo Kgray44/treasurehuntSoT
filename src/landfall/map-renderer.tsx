@@ -99,17 +99,23 @@ function PhysicalMap({
   provider,
   position,
   interaction,
+  onCameraChange,
 }: {
   scene: LandfallMapScene;
   provider?: LandfallMapDataProvider;
   position?: LandfallCurrentPosition | null;
   interaction?: LandfallMapInteraction;
+  onCameraChange?: (camera: { center: [number, number]; zoom: number; bearing: number }) => void;
 }) {
   const element = useRef<HTMLDivElement>(null);
   const mapRef = useRef<import("maplibre-gl").Map | null>(null);
   const positionRef = useRef(position);
   const sceneRef = useRef(scene);
   const interactionRef = useRef(interaction);
+  const cameraCallback = useRef(onCameraChange);
+  useEffect(() => {
+    cameraCallback.current = onCameraChange;
+  }, [onCameraChange]);
   const [failure, setFailure] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [raster, setRaster] = useState<RasterMapConfiguration | null>(null);
@@ -230,6 +236,15 @@ function PhysicalMap({
           attributionControl: { compact: true },
         });
         mapRef.current = map;
+        map.on("moveend", () => {
+          if (!map || disposed) return;
+          const center = map.getCenter();
+          cameraCallback.current?.({
+            center: [center.lng, center.lat],
+            zoom: map.getZoom(),
+            bearing: map.getBearing(),
+          });
+        });
         map.on("load", () => {
           const source = map?.getSource("landfall") as import("maplibre-gl").GeoJSONSource | undefined;
           source?.setData(mapLibreFeatures(sceneRef.current, positionRef.current));
@@ -475,10 +490,12 @@ export function LandfallMapRenderer({
   scene,
   provider,
   interaction,
+  onCameraChange,
 }: {
   scene: LandfallMapScene;
   provider?: LandfallMapDataProvider;
   interaction?: LandfallMapInteraction;
+  onCameraChange?: (camera: { center: [number, number]; zoom: number; bearing: number }) => void;
 }) {
   return (
     <section aria-label="Landfall map preview">
@@ -489,6 +506,7 @@ export function LandfallMapRenderer({
           provider={provider}
           position={scene.currentPosition}
           interaction={interaction}
+          onCameraChange={onCameraChange}
         />
       ) : (
         <VirtualMap scene={scene} interaction={interaction} />
