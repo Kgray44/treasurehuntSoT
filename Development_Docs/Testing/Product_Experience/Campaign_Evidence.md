@@ -89,8 +89,9 @@ because this campaign changes developer qualification, not user flows.
 
 FT-033's owning fragment records the meaningful Sounding Line capability
 expansion. Generated catalogs and indexes are produced by their generators.
-Final local and hosted checks and the PR link are recorded in the submitted
-candidate and final campaign response.
+The [activation closure](Activation_Closure.md) records the final ordinary
+decision, accepted source and installed workflow receipts separately from the
+frozen local development proof.
 
 Spatial Experience Refit, live provider quality, physical assistive technology,
 real-device spatial performance and KG's PRODUCT_ACCEPTED remain outside this

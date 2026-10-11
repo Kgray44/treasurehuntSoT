@@ -1,0 +1,553 @@
+{
+  "version": 1,
+  "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+  "sourceDigest": "6baba262a7ca0340ceb85e7fd895908d126302966f9111c6bd399b7a48669a12",
+  "contractDigest": "98fbeda9cd33e7a771a42a171e33ae23dff549f00ba5943df130d905769b982e",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "artifacts": [
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2.png",
+      "sha256": "3a9e607697c5b4d1b328724c9976fa4b89c7919d4db4fe2e9c424517fcf5f1e1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "SIGN_IN_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5.png",
+      "sha256": "388643266002d2957522c8c63cf2bbc4e3d4df444ab121efac13f6454427f993",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "RECOVERY_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7.png",
+      "sha256": "3a9e607697c5b4d1b328724c9976fa4b89c7919d4db4fe2e9c424517fcf5f1e1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "b7f64972a0e27e965b37ed9acb8cd0e2d5a523a43bfc8b6967a23790a4b07069",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/149d0b4f19144b922c3d378ae19db7a0.webm",
+      "sha256": "2e00e339a475f8178bdf9d2ac51014d247448db1245b59c9a70885aa812d08bc",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2.png",
+      "sha256": "39014e9234efbf34eea450e78c963f7cfdc17a02bb27b2fe0e6f7366a1fe78fc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "SIGN_IN_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5.png",
+      "sha256": "5d09c61425c12a724716d52adef46426c93daf6662bd86fa137e3ebdc00fa99f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "RECOVERY_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7.png",
+      "sha256": "39014e9234efbf34eea450e78c963f7cfdc17a02bb27b2fe0e6f7366a1fe78fc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "75c5043a70306ba130db6c6059f88db89d7daa8218e32149fb3fb504e96ed6b7",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/763954e56ade400127c398ccd6bbf17a.webm",
+      "sha256": "71e9da321c00b9de01bb73d321cbe7696ef5246a48fb6f7ce51ffaf757533790",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "journeys": [
+    {
+      "id": "account-recovery",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED",
+      "entryPoint": "/",
+      "outcome": "A person reaches canonical account recovery through visible gateway controls and returns to sign-in",
+      "observations": [
+        {
+          "step": 2,
+          "meaning": "The gateway action opens a usable canonical account task rather than persisting a role",
+          "role": "main",
+          "name": "",
+          "text": "One Voyagewright account"
+        },
+        {
+          "step": 5,
+          "meaning": "The recovery destination provides the advertised email-based reset task",
+          "role": "main",
+          "name": "",
+          "text": "Send reset instructions"
+        }
+      ],
+      "visibleActions": 4,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 0,
+      "measurement": null,
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "SIGN_IN_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RECOVERY_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "account-recovery",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED",
+      "entryPoint": "/",
+      "outcome": "A person reaches canonical account recovery through visible gateway controls and returns to sign-in",
+      "observations": [
+        {
+          "step": 2,
+          "meaning": "The gateway action opens a usable canonical account task rather than persisting a role",
+          "role": "main",
+          "name": "",
+          "text": "One Voyagewright account"
+        },
+        {
+          "step": 5,
+          "meaning": "The recovery destination provides the advertised email-based reset task",
+          "role": "main",
+          "name": "",
+          "text": "Send reset instructions"
+        }
+      ],
+      "visibleActions": 4,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 0,
+      "measurement": null,
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "SIGN_IN_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RECOVERY_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    }
+  ],
+  "reviews": [
+    {
+      "contractId": "homeport.transition.auth-routes",
+      "builderContext": "/root",
+      "reviewerContext": "/root/experience_visual_review",
+      "independence": "SEPARATE_CONTEXT",
+      "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+      "sourceInspected": false,
+      "packetDigest": "d116aa970e8a9af647ec023dfe7185b692dc88088e373a7ef065a7b1b3d68fe7",
+      "sourceDigest": "6baba262a7ca0340ceb85e7fd895908d126302966f9111c6bd399b7a48669a12",
+      "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+      "captureRoot": "C:/Users/kkids/.codex/worktrees/product-experience-engineering/Codex_TreasureHunt/artifacts/hosted-activation/capture-6d13c357",
+      "packetPath": "C:/Users/kkids/.codex/worktrees/product-experience-engineering/Codex_TreasureHunt/artifacts/hosted-activation/capture-6d13c357/Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-review-packet.json",
+      "capturePath": "C:/Users/kkids/.codex/worktrees/product-experience-engineering/Codex_TreasureHunt/artifacts/hosted-activation/capture-6d13c357/artifacts/sounding-line/product-experience-submission/capture.json",
+      "reviewPurpose": "Independent visual and interaction judgment of the refreshed exact protected-main hosted representative account-recovery capture. The previous hosted verdict was not relabelled. Still-image observations were reused only after independently verifying equality of the six actual PNG SHA-256 values; the new recordings and traces were inspected separately before this verdict. No implementation source or builder rationale was inspected.",
+      "dimensions": {
+        "composition": {
+          "observation": "The hosted desktop captures use a centered cream ledger against the dark shell, with the credentials grouped into a narrower column. Mobile uses one column with bounded side margins. Recovery removes provider content and concentrates the email task and return link in a compact card. The reviewed accepted references' task-first ledger composition is preserved.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5"
+          ]
+        },
+        "hierarchy": {
+          "observation": "The large Sign in and Forgot password headings clearly separate the two tasks, and each form has one prominent brass action. The provider explanation has secondary visual weight but comes before recovery navigation, placing Forgot Password below the initial desktop/mobile viewport. Actual hosted video shows focus scrolling the link into view, so this is a discovery-effort opportunity rather than a blocked action.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+          ]
+        },
+        "typography": {
+          "observation": "The hosted serif headings and sans-serif instructions remain readable, with strong uppercase labels. The desktop sign-in introduction wraps to two lines and mobile to three without collision; the long mobile recovery heading stays within the card. The dark account eyebrow is more legible against cream than the pale eyebrow in the accepted references. Stable captures show no text clipping.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5"
+          ]
+        },
+        "spacing": {
+          "observation": "Labels are visually attached to their inputs, and the inputs, buttons, and contextual links have enough separation to identify each action. Recovery has clear padding before its return link. Provider cards stack cleanly on mobile, although their explanatory copy increases the sign-in page height to a long scroll.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5"
+          ]
+        },
+        "controls": {
+          "observation": "The hosted screenshots show labelled Email or player name and Password fields with Sign in, and a labelled Email field with Send reset instructions on recovery. Underlined links are recognizable and the primary actions are conspicuous. Actual videos show menu opening and route activation. No entered values or submit action is part of this representative journey, so backend success is not inferred.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+          ]
+        },
+        "contrast": {
+          "observation": "Dark task headings, labels, body text, and links contrast clearly with the cream ledger; dark text is readable on the brass primary buttons. Menu text and the focused Sign In outline remain distinguishable against the dark gateway. Hosted capture metadata records no serious axe violations for the three states. Visual legibility is supported, but this review does not independently measure every gradient contrast ratio.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+          ]
+        },
+        "consistency": {
+          "observation": "The shell branding, Safe return control, ledger material, field treatment, and brass primary action recur across both tasks and widths. Initial and returned hosted PNG hashes match for each device. Sign in uses sentence case while Forgot Password and Return to Sign In use title case; that variation is cosmetic and does not obscure their relationship.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7"
+          ]
+        },
+        "states": {
+          "observation": "The refreshed desktop recording shows gateway Checking account settling to Account. The refreshed mobile frames show Checking Google resolving to Google unavailable, and stable PNGs explicitly show Google unavailable and GitHub unavailable. Recovery has a distinct heading and one-field form; the returned state restores Sign in. The three declared stable states are readable on both widths. Error, busy, and success states after submitting an email or credentials are outside this navigation journey.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7"
+          ]
+        },
+        "responsive": {
+          "observation": "The traces establish 1440x900 and 390x844 Chromium viewports. On mobile the shell simplifies, the provider cards stack, and link rows wrap without horizontal overflow in stable captures. Recovery fits the mobile viewport. The initial sign-in page is taller than both tested viewports, but the hosted recordings show scrolling to the recovery link. This is browser-size emulation, not physical phone proof.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+          ]
+        },
+        "keyboard": {
+          "observation": "The refreshed hosted traces record 14 desktop and 12 mobile Tab presses and Enter activation of Account, Sign In, Forgot Password, and Return to Sign In, with no recorded action errors. The new recordings visibly show focused menu Sign In, scrolling to focused Forgot Password, and focused Return to Sign In on both widths. These material checkpoints establish the promised navigation route's keyboard traversal; submissions and physical assistive technology were not exercised.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+          ]
+        },
+        "focus": {
+          "observation": "Stable route captures show a clear two-tone destination-heading outline. The refreshed desktop recording visibly shows menu Sign In focus at frame 51, Forgot Password at frame 101, recovery heading at frame 108, email at frame 126, and Return to Sign In at frames 128-129. The refreshed mobile recording shows menu Sign In at frame 41, Forgot Password at frame 86 after scrolling, recovery heading at frame 101, and Return to Sign In at frame 111. Returned heading focus is visible on both devices. Fine appearance of every rapidly traversed field/button is limited by 25 fps recording, but the material navigation checkpoints are directly visible.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace"
+          ]
+        },
+        "feedback": {
+          "observation": "Checking account and Checking Google give concrete ongoing-work feedback before resolving to availability text in the refreshed recordings. Navigation feedback is explicit: the heading and fields change to recovery and back to sign-in. Send reset instructions names the expected action. No reset submission result or live delivery was recorded, so those feedback behaviors remain unreviewed.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5"
+          ]
+        },
+        "motion": {
+          "observation": "Both refreshed traces specify reducedMotion=reduce, and the gateway shows a reduced-motion indicator before account navigation. The recorded account transitions preserve readable task meaning and reach stable destinations without a prolonged animation. Temporary content rescaling with gray side padding appears during full-page screenshot capture periods: desktop around 6.0-6.4 seconds and mobile around 3.0 seconds. Stable before/after views restore the expected scale. Its cause was not isolated, so it is an attribution limit rather than a confirmed product defect. This reduced-motion journey does not certify full-motion presentation.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+          ]
+        },
+        "continuity": {
+          "observation": "The actual hosted sequence opens account access from the gateway, enters Sign in, follows Forgot Password, and returns to Sign in on each viewport. Branding and Safe return stay present. Initial and returned hosted PNG bytes match per device. No role selection is imposed and no credentials were typed, so this proves route/task continuity but not preservation of entered form values.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7"
+          ]
+        },
+        "complexity": {
+          "observation": "Recovery is an appropriately small task with one email field, one primary action, and one return link. Sign-in requires scanning a provider explanation and two unconfigured-provider panels before contextual recovery navigation. Compacting that unavailable state or improving recovery-link placement could reduce discovery effort while preserving its explanation; this is a subjective design opportunity.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+          ]
+        },
+        "role-outcomes": {
+          "observation": "The anonymous person can use visible gateway account controls to reach a canonical sign-in form, a distinct email recovery task, and the parent sign-in task again. The hosted videos show the route completing without selecting Player, Captain, or Creator. Successful authentication, delivery of reset mail, and owner acceptance are not established by this navigation journey.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7"
+          ]
+        },
+        "fallbacks": {
+          "observation": "The hosted sign-in state explicitly says Google unavailable and GitHub unavailable, explains that each option is unconfigured, and directs the person toward email/password or a later return. Credentials and recovery remain available and the hosted recovery route succeeds. This verifies the observed unconfigured-provider fallback, not accepted OAuth sign-in or provider outage recovery.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "contractId": "homeport.transition.auth-routes",
+          "id": "HOSTED-6D13C357-VIS-01",
+          "classification": "SUBJECTIVE_DESIGN_OPPORTUNITY",
+          "severity": "NON_BLOCKING",
+          "dimensions": ["hierarchy", "complexity", "responsive"],
+          "observation": "Unavailable-provider explanations precede Forgot Password, placing recovery below the initial viewport on both tested sizes and particularly far down the mobile page. The hosted recording visibly scrolls the focused recovery link into view and completes the journey, so discovery takes extra scanning but is not blocked.",
+          "suggestion": "Consider a smaller unavailable-provider presentation or a more immediately discoverable recovery link near the credential task.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+          ],
+          "resolution": "OPTIONAL"
+        },
+        {
+          "contractId": "homeport.transition.auth-routes",
+          "id": "HOSTED-6D13C357-VIS-02",
+          "classification": "MINOR_POLISH",
+          "severity": "NON_BLOCKING",
+          "dimensions": ["consistency", "typography"],
+          "observation": "Sign in uses sentence case, while contextual actions say Forgot Password and Return to Sign In. This is a small copy consistency issue with no route or comprehension failure.",
+          "suggestion": "Align action capitalization with the product's preferred copy style during later polish.",
+          "evidenceIds": [
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+            "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5"
+          ],
+          "resolution": "OPTIONAL"
+        }
+      ],
+      "recordingInspection": {
+        "method": "ORDERED_IN_MEMORY_DECODED_PNG_FRAMES",
+        "decoder": "C:/Users/kkids/AppData/Local/ms-playwright/ffmpeg-1011/ffmpeg-win64.exe",
+        "filesWrittenForDecoding": false,
+        "desktop": {
+          "path": "C:/Users/kkids/.codex/worktrees/product-experience-engineering/Codex_TreasureHunt/artifacts/hosted-activation/capture-6d13c357/Development_Docs/Testing/Product_Experience/evidence/generic/149d0b4f19144b922c3d378ae19db7a0.webm",
+          "sha256": "2e00e339a475f8178bdf9d2ac51014d247448db1245b59c9a70885aa812d08bc",
+          "durationSeconds": 7.48,
+          "encodedResolution": "800x500",
+          "sourceViewport": "1440x900",
+          "nativeRate": 25,
+          "nativeDecodedFrames": 187,
+          "nativeViewedFrames": [
+            1, 26, 51, 76, 101, 108, 111, 126, 127, 128, 129, 130, 131, 132, 139, 151, 161, 171, 181, 187
+          ],
+          "viewedSeconds": [
+            0, 1, 2, 3, 4, 4.28, 4.4, 5, 5.04, 5.08, 5.12, 5.16, 5.2, 5.24, 5.52, 6, 6.4, 6.8, 7.2, 7.44
+          ]
+        },
+        "mobile": {
+          "path": "C:/Users/kkids/.codex/worktrees/product-experience-engineering/Codex_TreasureHunt/artifacts/hosted-activation/capture-6d13c357/Development_Docs/Testing/Product_Experience/evidence/generic/763954e56ade400127c398ccd6bbf17a.webm",
+          "sha256": "71e9da321c00b9de01bb73d321cbe7696ef5246a48fb6f7ce51ffaf757533790",
+          "durationSeconds": 6.4,
+          "encodedResolution": "368x800",
+          "sourceViewport": "390x844",
+          "nativeRate": 25,
+          "nativeDecodedFrames": 160,
+          "nativeViewedFrames": [
+            1, 26, 31, 36, 41, 46, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 76, 82, 83, 84, 85, 86, 87, 101,
+            106, 107, 108, 109, 110, 111, 112, 113, 126, 136, 146, 156, 160
+          ],
+          "viewedSeconds": [
+            0, 1, 1.2, 1.4, 1.6, 1.8, 1.92, 1.96, 2, 2.04, 2.08, 2.12, 2.16, 2.2, 2.24, 2.28, 2.32, 2.36, 2.4, 3, 3.24,
+            3.28, 3.32, 3.36, 3.4, 3.44, 4, 4.2, 4.24, 4.28, 4.32, 4.36, 4.4, 4.44, 4.48, 5, 5.4, 5.8, 6.2, 6.36
+          ]
+        },
+        "limitations": [
+          "Actual refreshed WebM files were decoded and reviewed as ordered PNG images rather than native playback; all frames were decoded, while the listed material checkpoints and surrounding frames were visually inspected.",
+          "Recordings are short, lossy, and scaled below the source browser viewports; fine rendering and rapid intermediate focus changes cannot be exhaustively certified from them.",
+          "Tab and Enter operations can fall between 25 fps frames. The actual new trace actions corroborate the route; recordings directly show its material menu, recovery, and return focus checkpoints on both widths.",
+          "Temporary recorded rescaling and gray side padding occur during full-page screenshot capture periods. Recording/screenshot instrumentation versus product rendering attribution was not isolated. Stable PNGs and readable before/after video frames support the declared route outcome; this transient is not treated as a confirmed product defect.",
+          "Both traces identify Chromium on Linux with resized browser viewports. MOBILE does not establish a physical phone, touch interaction, software keyboard, or physical assistive-technology behavior.",
+          "This is hosted CI execution of an isolated generic fixture, not proof of the deployed public service. No entered credentials, authentication success, reset submission result, live mail delivery, accepted OAuth flow, other browser engines, browser zoom, full-motion presentation, or owner acceptance is established."
+        ]
+      },
+      "artifactIntegrity": {
+        "allArtifactHashesMatched": true,
+        "artifactCount": 10,
+        "frozenCapture": true,
+        "packetFileSha256": "a83840e2f2f81f78545e5b2638cbf53e4ad7f43a5e7bed3603a46e7d4d771e21",
+        "sourceDigestMatchesAggregate": true,
+        "aggregateBaseShaMatchesRequestedProtectedMain": true,
+        "returnedPngEqualsInitialForBothDevices": true,
+        "reusedStillObservationsOnlyAfterByteComparison": true,
+        "previousCaptureCompared": "C:/Users/kkids/.codex/worktrees/product-experience-engineering/Codex_TreasureHunt/artifacts/hosted-activation/capture",
+        "identicalPngCount": 6,
+        "changedRecordingCount": 2,
+        "changedTraceCount": 2,
+        "newRecordingsAndTracesInspected": true,
+        "recheckedAtCompletion": true
+      },
+      "acceptedReferencePaths": [
+        "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+        "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png"
+      ],
+      "iterations": 1,
+      "status": "ACCEPTED",
+      "confirmedBlockingProductDefects": 0,
+      "unresolvedBlockingFindings": 0,
+      "acceptanceScope": "EXACT_HOSTED_CAPTURE_OF_REPRESENTATIVE_ANONYMOUS_NAVIGATION_JOURNEY",
+      "productAcceptance": "NOT_INFERRED",
+      "ownerAcceptance": "NOT_CLAIMED",
+      "summary": "For exact protected main SHA 6d13c357be93514c94e7f36db1a8c930265e65e2 and packet d116aa970e8a9af647ec023dfe7185b692dc88088e373a7ef065a7b1b3d68fe7, the refreshed actual media and traces support gateway account discovery, canonical sign-in, distinct recovery, and return on both promised viewports. No unresolved blocking finding prevents judging that journey. Two optional findings remain: recovery-link discovery effort and capitalization consistency. This distinct verdict does not inherit or relabel the previous hosted/source acceptance and does not imply PRODUCT_ACCEPTED."
+    }
+  ],
+  "captureArtifactId": 11718023011,
+  "qualificationScope": "PROTECTED_MAIN_ACTIVATION_DIAGNOSTIC"
+}

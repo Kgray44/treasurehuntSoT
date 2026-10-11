@@ -1,0 +1,11 @@
+{
+  "captureArtifactId": 11718023011,
+  "runId": 38182762332,
+  "sourceSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+  "sourceDigest": "6baba262a7ca0340ceb85e7fd895908d126302966f9111c6bd399b7a48669a12",
+  "contractDigest": "98fbeda9cd33e7a771a42a171e33ae23dff549f00ba5943df130d905769b982e",
+  "artifactDigest": "sha256:46976457187e773f2d3e99bc5639377db324e94f46bc6aed5340d9092ecf91b9",
+  "artifactName": "product-experience-capture-6baba262a7ca0340",
+  "status": "CAPTURE_AND_AUTOMATED_OBLIGATIONS_PASSED",
+  "independentReview": "ACCEPTED"
+}

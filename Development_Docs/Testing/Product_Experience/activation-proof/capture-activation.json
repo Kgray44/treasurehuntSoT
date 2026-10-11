@@ -1,0 +1,8 @@
+{
+  "sourceSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+  "diagnostic": true,
+  "missingEvidenceRejected": true,
+  "backendOnlyExempt": true,
+  "realBrowserReplay": "PASS",
+  "ownerAcceptance": "NOT_CLAIMED"
+}

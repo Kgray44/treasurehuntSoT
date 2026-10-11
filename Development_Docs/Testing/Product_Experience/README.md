@@ -16,6 +16,9 @@ remains the product authority. The automatic development procedure lives in
 real browser evidence, separate criticism and bounded repair without a special
 owner prompt. No new acceptance service or competing design system is introduced.
 
+The [activation closure](Activation_Closure.md) binds implementation acceptance,
+installed verification receipts and their limits to exact source identities.
+
 ## Contract and impact
 
 Extend `experience` on the owning `testing/contracts.json` entry. It declares

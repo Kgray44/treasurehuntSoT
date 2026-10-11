@@ -9087,7 +9087,85 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/Activation_Closure.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/activation-proof/capture-activation.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/activation-proof/capture-reference.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/activation-proof/checkpoints/1b550935ce9e/capture-reference.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/activation-proof/checkpoints/1b550935ce9e/effective-gate.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/activation-proof/checkpoints/1b550935ce9e/plan.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/activation-proof/checkpoints/1b550935ce9e/visual-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/activation-proof/effective-gate.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/activation-proof/plan.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/Campaign_Evidence.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/candidate-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/capture.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/capture.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-review-packet.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

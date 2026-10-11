@@ -1,0 +1,14 @@
+{
+  "captureArtifactId": 11718162716,
+  "runId": 38181905650,
+  "sourceSha": "1b550935ce9ede271e858faf37b9244437723dc0",
+  "sourceDigest": "b4568aaeb0a02d11acd33a6d4b57c0e0d8b5a2de08390e75ca74a2b286206138",
+  "contractDigest": "98fbeda9cd33e7a771a42a171e33ae23dff549f00ba5943df130d905769b982e",
+  "artifactDigest": "sha256:691b0c6c0f143b372cde44e50354297bd84214196ec88999ecafb80a46b5dad0",
+  "artifactName": "product-experience-capture-b4568aaeb0a02d11",
+  "status": "CAPTURE_AND_AUTOMATED_OBLIGATIONS_PASSED",
+  "independentReview": "ACCEPTED",
+  "trustedCaptureLoader": "PASS",
+  "reviewSubmission": "NOT_SUBMITTED_PROTECTED_BASE_ADVANCED",
+  "qualifyingScope": "ARCHIVED_CAPTURE_AND_INDEPENDENT_REVIEW_OF_RECORDED_SOURCE_ONLY"
+}

@@ -1,0 +1,25 @@
+---
+title: Product Experience Engineering activation closure
+audience: engineering
+status: current
+canonical_for: product-experience-activation-closure
+last_reviewed: 2026-10-11
+---
+
+# Product Experience Engineering closure
+
+[PR #714](https://github.com/Kgray44/treasurehuntSoT/pull/714) merged through protected main at `1b550935ce9ede271e858faf37b9244437723dc0`. Its required [ordinary Sounding Line decision](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38181745859) passed for candidate `a11fb295832a41e820bf71b01c3a717ce461f370` against base `ee8caa83e79b6b5802f8773689e802705c5154d3`; the landed tree equals that candidate tree. [Installed capture](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38181905650) and its attestation passed. Main subsequently advanced through Parallax qualification PR #715 to `6d13c357be93514c94e7f36db1a8c930265e65e2`, preserving the enforcement code and product UI. Exact-base binding requires [refreshed capture](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38182762332). Hosted visual review and authenticated review/verification remain pending. PRODUCT_ACCEPTED is not claimed.
+
+Permanent implementation extends the existing Sounding Line authority. AGENTS.md automatically sends UI and user-facing projection tasks to .agents/product-experience-workflow.md. Protected-base source analysis selects affected consumers, roles, device states and full cross-project journeys. Existing testing/contracts.json records contain human objectives, natural entry, design target, visible outcomes, return predicates, reference media, accountable integration ownership and domain ownership.
+
+The browser runner uses synthetic fixtures, owned databases and loopback servers. It records actual state PNGs, WebM interactions and traces while operating visible controls with Tab and Enter. Assertions require a changed target outcome, meaningful return, role witnesses, continuity through destinations and across contexts, accessibility and relevant responsiveness/motion boundaries. Review packets bind exact product and contract digests. A separate context inspects the experience before source and records all 17 review dimensions. Confirmed blocking findings trigger bounded repair, recapture and re-review; unresolved work cannot be accepted. Protected workflow artifacts authenticate capture and review submission, then the ordinary verifier repeats the visible journey. Preparation never issues a mainline decision.
+
+The current main product digest is `6baba262a7ca0340ceb85e7fd895908d126302966f9111c6bd399b7a48669a12`; the contract digest is `98fbeda9cd33e7a771a42a171e33ae23dff549f00ba5943df130d905769b982e`. The [effective ordinary gate probe](activation-proof/effective-gate.json) rejects missing evidence on an isolated UI specimen and exempts an unrelated backend specimen from experience capture/review. Neither synthetic commit was published. Existing ordinary fallback test selection remains in force.
+
+Proof includes 102 focused enforcement regressions, nine real Chromium adversarial/positive cases, an isolated production account/recovery capture and an accepted independent visual review. Invalid role completion, hidden workflows, API-only realization, screenshot-only acceptance, disconnected output, eligibility confusion, misleading/no-op controls, wrong cross-device identity, invented baseline debt and candidate exemptions are rejected. Pure backend changes with no UI consumer remain visually exempt and retain ordinary focused verification.
+
+A future request such as "Improve password-recovery discovery on mobile" needs no special experience prompt: the agent follows AGENTS.md, plans consumers, preserves or extends the Homeport account contract, states the intended composition, implements the change, captures applicable states, delegates the bounded packet, repairs confirmed defects, submits immutable evidence and obtains the ordinary protected decision.
+
+Spatial Experience Refit remains unstarted. Existing contracts and Homeport debt now require contextual Crossdeck pairing that reaches the same Voyage Lens and safe return; distinct Reach detection, classification and calibration eligibility; a published Parallax clue that reaches the promised Player capability tier; and Sextant instrument selection that produces its contextual task or truthful fallback. These inputs also support Spatial Chronicle Pilot V2's connected multi-device journey. The four concerns are owner-reported and await rendered confirmation; they are not baseline waivers.
+
+Limitations remain explicit: graphical review runs in the supported agent host, not as an unattended model process inside GitHub Actions; authenticated submission is not cryptographic model identity. The representative account contract does not test mail delivery, live OAuth, physical assistive technology or real mobile hardware. Dedicated Admiralty profile adapters require supported provisioning before use. Compressed recordings limit fine transient rendering judgments. None of this claims owner acceptance or repairs the spatial product surfaces.

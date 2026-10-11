@@ -1,0 +1,175 @@
+{
+  "classification": "PAGE_SURFACE_DESIGN",
+  "applicable": true,
+  "contractIds": [
+    "homeport.transition.auth-routes"
+  ],
+  "affectedSurfaces": [
+    "src/app/sign-in/page.tsx"
+  ],
+  "transitivePaths": [
+    "src/app/sign-in/page.tsx"
+  ],
+  "uncertainty": [],
+  "contracts": [
+    {
+      "id": "homeport.transition.auth-routes",
+      "name": "Project Homeport Auth Route Transition Lifecycle",
+      "authority": "project-homeport",
+      "owners": [
+        "project-homeport"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "An anonymous person who needs account access or recovery",
+        "objective": "Discover sign-in from the product gateway, find account recovery, and return without losing context",
+        "visibleOutcome": "A usable canonical sign-in form and distinct password recovery screen with visible return actions",
+        "integrationOwner": "Project Homeport account experience integration",
+        "systems": [
+          "project-homeport"
+        ],
+        "sourcePaths": [
+          "src/components/wayfarer/AccountFlow.tsx",
+          "src/app/sign-in",
+          "src/app/forgot-password",
+          "src/homeport/return-to.ts"
+        ],
+        "projectionPaths": [
+          "src/app/api/auth",
+          "src/wayfarer/password-policy.ts"
+        ],
+        "entryPoint": "/",
+        "states": [
+          "SIGN_IN_READY",
+          "RECOVERY_READY",
+          "RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "ANONYMOUS"
+        ],
+        "accessibility": "Tab navigation reaches every account action; visible focus and reduced-motion presentation preserve meaning.",
+        "fallback": "Unconfigured identity providers explain availability while email/password and recovery remain usable.",
+        "navigation": "Gateway account control opens sign-in; Forgot Password opens recovery; Return to Sign In restores the parent task.",
+        "designTarget": "A narrow task-first ledger, distinct account/recovery headings, grouped fields, one primary action and contextual links.",
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "The accepted narrow task composition uses one visible objective and a clear recovery/return hierarchy.",
+            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "The accepted mobile account ledger keeps fields and recovery actions readable and reachable.",
+            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+          }
+        ],
+        "homeportScreenIds": [
+          "screen-page-sign-in",
+          "screen-page-forgot-password"
+        ],
+        "homeportJourneyIds": [
+          "C"
+        ],
+        "browserTests": [
+          "tests/e2e/homeport-phase2.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "This representative anonymous journey does not establish live mail delivery, OAuth provider acceptance or physical assistive-technology proof."
+        ],
+        "journeys": [
+          {
+            "id": "account-recovery",
+            "roles": [
+              "ANONYMOUS"
+            ],
+            "outcome": "A person reaches canonical account recovery through visible gateway controls and returns to sign-in",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Account"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Sign In"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "path": "/sign-in",
+                "text": "One Voyagewright account",
+                "meaning": "The gateway action opens a usable canonical account task rather than persisting a role",
+                "state": "SIGN_IN_READY"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Forgot Password"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "path": "/forgot-password",
+                "text": "Send reset instructions",
+                "meaning": "The recovery destination provides the advertised email-based reset task",
+                "state": "RECOVERY_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Sign In"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in",
+                "path": "/sign-in",
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ],
+        "roleSetup": {}
+      }
+    }
+  ],
+  "evidencePath": "Development_Docs/Testing/Product_Experience/candidate-review.json",
+  "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+  "candidateSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+  "sourceDigest": "6baba262a7ca0340ceb85e7fd895908d126302966f9111c6bd399b7a48669a12",
+  "contractDigest": "98fbeda9cd33e7a771a42a171e33ae23dff549f00ba5943df130d905769b982e",
+  "browserTests": [
+    "tests/e2e/homeport-phase2.spec.ts"
+  ],
+  "attestationPolicy": {
+    "required": true,
+    "trustedReviewActors": [
+      "Kgray44"
+    ],
+    "workflow": ".github/workflows/sounding-line-ordinary.yml"
+  },
+  "debt": []
+}

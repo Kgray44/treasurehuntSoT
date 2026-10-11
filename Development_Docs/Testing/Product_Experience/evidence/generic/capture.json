@@ -1,0 +1,242 @@
+{
+  "version": 1,
+  "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+  "sourceDigest": "6baba262a7ca0340ceb85e7fd895908d126302966f9111c6bd399b7a48669a12",
+  "contractDigest": "98fbeda9cd33e7a771a42a171e33ae23dff549f00ba5943df130d905769b982e",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "artifacts": [
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-2.png",
+      "sha256": "3a9e607697c5b4d1b328724c9976fa4b89c7919d4db4fe2e9c424517fcf5f1e1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "SIGN_IN_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-5.png",
+      "sha256": "388643266002d2957522c8c63cf2bbc4e3d4df444ab121efac13f6454427f993",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "RECOVERY_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7.png",
+      "sha256": "3a9e607697c5b4d1b328724c9976fa4b89c7919d4db4fe2e9c424517fcf5f1e1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "b7f64972a0e27e965b37ed9acb8cd0e2d5a523a43bfc8b6967a23790a4b07069",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/149d0b4f19144b922c3d378ae19db7a0.webm",
+      "sha256": "2e00e339a475f8178bdf9d2ac51014d247448db1245b59c9a70885aa812d08bc",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-2.png",
+      "sha256": "39014e9234efbf34eea450e78c963f7cfdc17a02bb27b2fe0e6f7366a1fe78fc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "SIGN_IN_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-5.png",
+      "sha256": "5d09c61425c12a724716d52adef46426c93daf6662bd86fa137e3ebdc00fa99f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "RECOVERY_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7.png",
+      "sha256": "39014e9234efbf34eea450e78c963f7cfdc17a02bb27b2fe0e6f7366a1fe78fc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "75c5043a70306ba130db6c6059f88db89d7daa8218e32149fb3fb504e96ed6b7",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.auth-routes-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/763954e56ade400127c398ccd6bbf17a.webm",
+      "sha256": "71e9da321c00b9de01bb73d321cbe7696ef5246a48fb6f7ce51ffaf757533790",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "journeys": [
+    {
+      "id": "account-recovery",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED",
+      "entryPoint": "/",
+      "outcome": "A person reaches canonical account recovery through visible gateway controls and returns to sign-in",
+      "observations": [
+        {
+          "step": 2,
+          "meaning": "The gateway action opens a usable canonical account task rather than persisting a role",
+          "role": "main",
+          "name": "",
+          "text": "One Voyagewright account"
+        },
+        {
+          "step": 5,
+          "meaning": "The recovery destination provides the advertised email-based reset task",
+          "role": "main",
+          "name": "",
+          "text": "Send reset instructions"
+        }
+      ],
+      "visibleActions": 4,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 0,
+      "measurement": null,
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "SIGN_IN_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RECOVERY_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "account-recovery",
+      "contractId": "homeport.transition.auth-routes",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED",
+      "entryPoint": "/",
+      "outcome": "A person reaches canonical account recovery through visible gateway controls and returns to sign-in",
+      "observations": [
+        {
+          "step": 2,
+          "meaning": "The gateway action opens a usable canonical account task rather than persisting a role",
+          "role": "main",
+          "name": "",
+          "text": "One Voyagewright account"
+        },
+        {
+          "step": 5,
+          "meaning": "The recovery destination provides the advertised email-based reset task",
+          "role": "main",
+          "name": "",
+          "text": "Send reset instructions"
+        }
+      ],
+      "visibleActions": 4,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 0,
+      "measurement": null,
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "SIGN_IN_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RECOVERY_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    }
+  ],
+  "reviews": []
+}

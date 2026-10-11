@@ -1,0 +1,13 @@
+{
+  "authority": "INSTALLED_ORDINARY_BUILD_PLAN",
+  "baseSha": "1b550935ce9ede271e858faf37b9244437723dc0",
+  "uiCandidate": "da4180909e03fe6b7609d5cacf6b51680f552c77",
+  "rejection": "PRODUCT_EXPERIENCE_EVIDENCE_MISSING",
+  "backendCandidate": "b3922ce3e86f5481a06224871dd16f29e4cea49e",
+  "backendOnlyExempt": true,
+  "backendClassification": "BACKEND_ONLY",
+  "backendBrowserRequired": true,
+  "unchangedHead": true,
+  "syntheticCommitsPublished": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}
