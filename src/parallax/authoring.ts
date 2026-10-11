@@ -2,6 +2,7 @@ import { z } from "zod";
 import { versionContentSchema, identityTransform, type Anchor, type SpatialEntity, type Transform } from "./contracts";
 import { emptyStudioContent, type StudioContent } from "./studio-contracts";
 import { composeTransform, inverseTransform } from "./transforms";
+import { defaultRecipe, defaultDiscovery } from "./adaptive-contracts";
 
 export const authoringModes = ["GUIDED", "DETAILED", "ENGINEERING"] as const;
 export const previewModes = [
@@ -180,7 +181,30 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
   if (edit.type === "CREATE") {
     if (next.content.entities.some((entity) => entity.id === edit.entity.id))
       throw new Error("Entity identity already exists.");
-    next.content.entities.push(structuredClone(edit.entity));
+    const created = structuredClone(edit.entity);
+    if (next.content.adaptive) {
+      if (created.parentEntityId) throw new Error("Create a semantic root before grouping it.");
+      const anchorId = `${created.id}:semantic`;
+      if (next.content.anchors.some((anchor) => anchor.id === anchorId))
+        throw new Error("Entity anchor identity already exists.");
+      created.anchorId = anchorId;
+      created.coordinateSpace = "LOCAL_SESSION";
+      created.transform.position = { x: 0, y: 0, z: 0 };
+      next.content.anchors.push({
+        id: anchorId,
+        kind: "LOCAL_WORLD",
+        frameId: "semantic-local-frame",
+        transform: identityTransform(),
+      });
+      const adaptive = next.content.adaptive;
+      adaptive.recipes.push(defaultRecipe(created.id));
+      adaptive.discovery.push(defaultDiscovery(created.id));
+      if (adaptive.revealOrder.length) adaptive.revealOrder.push(created.id);
+      adaptive.calibration.maturity = "SEMANTIC";
+      delete adaptive.calibration.reviewReceiptId;
+      if (next.content.placementPolicy === "CALIBRATED") next.content.placementPolicy = "ADAPTIVE_STICKY";
+    }
+    next.content.entities.push(created);
     studio.layers.push({
       entityId: edit.entity.id,
       tags: [],

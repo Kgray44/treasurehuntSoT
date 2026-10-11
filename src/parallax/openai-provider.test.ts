@@ -2,6 +2,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createSpatialDraft } from "./authoring";
 import { prepareAssistantContext } from "./spatial-assistant";
+import { enableAdaptiveAuthoring } from "./adaptive-authoring";
+import { insertSpatialPreset } from "./editor-assets";
 import { defaultAIGlobalPolicy } from "./ai-policy";
 import {
   OPENAI_RESPONSES_URL,
@@ -110,9 +112,28 @@ describe("OpenAI Responses strict, bounded and credential-safe provider", () => 
     expect(body.reasoning.effort).toBe("low");
     expect(body.text.format).toMatchObject({ type: "json_schema", strict: true });
     expect(body.text.format.schema.additionalProperties).toBe(false);
+    expect(body.text.format.schema).toHaveProperty("$defs");
     expect(body.tools).toEqual([]);
     expect(body.store).toBe(false);
     expect(body.service_tier).toBe("default");
+    expect(JSON.stringify(body)).not.toContain("Follow the compass rose");
+  });
+  it("fits a bounded multi-object adaptive scene within the unchanged default input allowance", () => {
+    let draft = enableAdaptiveAuthoring(createSpatialDraft("synthetic-context"));
+    for (let i = 1; i < 8; i++) draft = insertSpatialPreset(draft, "Desk Map", `synthetic-${i}`);
+    const context = prepareAssistantContext(draft, draft.content.entities[0].id);
+    expect(context.entities).toHaveLength(4);
+    expect(context.totalEntities).toBe(8);
+    const body = buildOpenAIRequest({
+      request: "Place the selected map on a desk near the entrance.",
+      context,
+      mode: "STANDARD",
+      model: "gpt-6-luna",
+      policy: defaultAIGlobalPolicy,
+    });
+    expect(Buffer.byteLength(JSON.stringify(body), "utf8") + 256).toBeLessThanOrEqual(
+      defaultAIGlobalPolicy.maximumInputTokens,
+    );
     expect(JSON.stringify(body)).not.toContain("Follow the compass rose");
   });
   it("rejects oversized context and arbitrary model identifiers before dispatch", () => {

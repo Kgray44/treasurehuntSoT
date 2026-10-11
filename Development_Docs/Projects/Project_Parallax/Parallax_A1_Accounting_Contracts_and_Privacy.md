@@ -10,7 +10,7 @@ last_reviewed: 2026-10-11
 
 The implementation candidate has one pure typed interpretation schema and a
 separate owner-bound proposal envelope. Supported operations are CREATE, CONTENT,
-TRANSFORM, PLACEMENT, VISIBILITY, BEHAVIOR and FALLBACK. Model output remains
+TRANSFORM, PLACEMENT, SEMANTIC_PLACEMENT, VISIBILITY, BEHAVIOR and FALLBACK. Model output remains
 advisory. Dependency-closed bundles materialize atomically through canonical
 authoring edits and deterministic spatial validation. Locks, missing references,
 invalid bounds, missing reveal paths and missing accessible alternatives reject
@@ -21,10 +21,11 @@ revision, local editor generation and SHA-256 digest of the complete parsed
 draft. Saved ownership and checksum are checked before inference. The local
 generation catches an edit followed by Undo even when the digest matches again.
 Clients cannot provide authoritative approved proposals: atomic Apply must use
-the owner-scoped retained server result. Its final authenticated route and one
-already-saved host history installation remain held for canonical integration.
+the owner-scoped retained server result. The existing authenticated Studio route
+now owns inference and atomic Apply; its host installs one already-saved ordinary
+history change. Integrated browser and final qualification remain pending.
 
-The prepared `spatial-assistant-port.ts` adapter uses the existing same-origin
+The mounted `spatial-assistant-port.ts` adapter uses the existing same-origin
 Studio endpoint, its current CSRF token and request cancellation. Request replies
 bind request, draft, revision, generation and digest before display. Apply
 compares the canonical acknowledgement to the exact deterministic selected
@@ -34,9 +35,34 @@ deduplicates concurrent/repeated acknowledgements and refuses account/draft scop
 changes. A bounded in-memory receipt cache is an optimization; backend
 idempotency remains authoritative. Error bodies are not forwarded as arbitrary
 messages, and safe Creator usage parsing shares the server projection schema.
-The adapter is preparation only until the canonical actions and host callbacks
-are integrated against the final protected Phase 3 tree. It does not introduce
-another paid endpoint or own an editor history/save implementation.
+The adapter is mounted against accepted Phase 3 source. It does not introduce
+another paid endpoint or own an editor history/save implementation. The canonical
+save/CAS implementation is shared by manual autosave and Assistant Apply. Apply
+commits the saved revision and five metadata-only receipt fields in the existing
+usage ledger together. Retry after a server restart acknowledges only the exact
+unchanged saved result; later work is preserved with an already-applied response.
+No additional scene, instruction or credential content is copied into the receipt.
+
+Canonical session/Chronicle access is checked before opening the SQLite
+transaction, then bound to the saved checksum. All transactional reads and writes,
+including calibration verification, use the transaction client. This avoids a
+nested ordinary-client query while retaining atomic ownership, checksum, CAS and
+receipt checks. A receipt-write failure rolls back the save.
+
+Adaptive creates receive canonical root anchors, recipes and discovery defaults.
+Semantic edits preserve other objects, relationships, discovery and forbidden
+constraints; changed recipes invalidate calibration evidence. Fixed scenes stay
+fixed until the Creator enables adaptive authoring with the guided controls.
+Scene context includes the selected object and three neighbors (or four objects
+without selection), with total count and deduplicated safe recipe projections.
+The complete canonical draft remains authoritative for materialization. Discovery
+text, calibration receipts, private clue text and complete imported metadata are
+not model context. Shared JSON Schema definitions reduce request overhead without
+raising the input policy or weakening its conservative byte bound.
+
+The legacy INTENT/CRITIQUE network entry is retired even if its old endpoint/token
+variables exist. It cannot bypass accounting. Deterministic intent materialization
+and the canonical phrase controls remain available without a provider.
 
 ## Admission and accounting
 

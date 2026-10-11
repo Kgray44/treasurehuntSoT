@@ -38,7 +38,10 @@ const input = (id = "first", accountId = "synthetic-creator") => ({
   mode: "STANDARD" as const,
 });
 beforeAll(async () => {
-  const sql = readFileSync(resolve("prisma/migrations/20261011180000_parallax_a1_ai_quotas/migration.sql"), "utf8");
+  const sql =
+    readFileSync(resolve("prisma/migrations/20261011180000_parallax_a1_ai_quotas/migration.sql"), "utf8") +
+    "\n" +
+    readFileSync(resolve("prisma/migrations/20261011210000_parallax_a1_application_receipt/migration.sql"), "utf8");
   for (const statement of sql
     .split(";")
     .map((part) => part.trim())

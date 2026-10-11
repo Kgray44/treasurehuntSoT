@@ -10,7 +10,7 @@ import { AI_CONTROL_ID } from "./ai-ledger";
 import { defaultAIGlobalPolicy } from "./ai-policy";
 import { requestSpatialAssistant } from "./spatial-assistant-service";
 import { spatialItemKind } from "./library-service";
-import { prepareSpatialAssistantApplication } from "./spatial-assistant-application";
+import { prepareSpatialAssistantApplication, applySpatialAssistant } from "./spatial-assistant-application";
 import { assistantProposalSchema } from "./spatial-assistant";
 import { readAssistantConversation } from "./assistant-conversation";
 import { aiQuotaUsageHistory } from "./ai-quota-projections";
@@ -59,8 +59,23 @@ const providerBody = (changes: Record<string, unknown> = {}) => ({
   usage: { input_tokens: 1000, output_tokens: 250 },
   ...changes,
 });
+async function reviewedApplication() {
+  const result = await requestSpatialAssistant(accountId, request(), {
+    store,
+    fetcher: vi.fn<typeof fetch>(async () => new Response(JSON.stringify(providerBody()))),
+  });
+  if (!("proposal" in result)) throw new Error("Synthetic provider did not return a reviewed proposal.");
+  return {
+    proposal: assistantProposalSchema.parse(result.proposal),
+    selectedOperationIds: ["placement"],
+    idempotencyKey: "synthetic-application-key",
+  };
+}
 beforeAll(async () => {
-  const sql = readFileSync(resolve("prisma/migrations/20261011180000_parallax_a1_ai_quotas/migration.sql"), "utf8");
+  const sql =
+    readFileSync(resolve("prisma/migrations/20261011180000_parallax_a1_ai_quotas/migration.sql"), "utf8") +
+    "\n" +
+    readFileSync(resolve("prisma/migrations/20261011210000_parallax_a1_application_receipt/migration.sql"), "utf8");
   for (const statement of sql
     .split(";")
     .map((part) => part.trim())
@@ -98,6 +113,106 @@ afterAll(async () => {
   if (!resolve(root).startsWith(resolve(tmpdir()) + "/") && !resolve(root).startsWith(resolve(tmpdir()) + "\\"))
     throw new Error("Unsafe fixture cleanup target");
   rmSync(root, { recursive: true });
+});
+
+describe("Spatial Assistant atomic canonical Apply", () => {
+  it("saves one revision and its receipt together, then replays from a fresh server without another save", async () => {
+    const input = await reviewedApplication();
+    const saved = await applySpatialAssistant(accountId, input, store);
+    expect(saved).toMatchObject({ status: "SAVED", revision: 2 });
+    const ledger = await store.aIUsageLedger.findFirstOrThrow();
+    expect(ledger).toMatchObject({
+      applicationKey: input.idempotencyKey,
+      applicationRevision: 2,
+      applicationChecksum: canonicalChecksum(saved.draft),
+    });
+    expect(ledger.appliedAt).toBeInstanceOf(Date);
+    const freshServer = new PrismaClient({
+      datasources: { db: { url: `file:${join(root, "fixture.sqlite").replaceAll("\\", "/")}` } },
+    });
+    try {
+      expect(await applySpatialAssistant(accountId, input, freshServer)).toEqual(saved);
+    } finally {
+      await freshServer.$disconnect();
+    }
+    expect((await store.reusableAuthoringItem.findFirstOrThrow()).currentVersionNumber).toBe(2);
+    expect(await store.aIUsageLedger.count()).toBe(1);
+  });
+  it("serializes concurrent repeat applications without a second revision", async () => {
+    const input = await reviewedApplication();
+    const result = await Promise.all([
+      applySpatialAssistant(accountId, input, store),
+      applySpatialAssistant(accountId, input, store),
+    ]);
+    expect(result[0]).toEqual(result[1]);
+    expect((await store.reusableAuthoringItem.findFirstOrThrow()).currentVersionNumber).toBe(2);
+  });
+  it("rolls back the canonical save when the durable receipt cannot commit", async () => {
+    const input = await reviewedApplication();
+    await store.$executeRawUnsafe(
+      'CREATE TRIGGER synthetic_receipt_failure BEFORE UPDATE ON "AIUsageLedger" WHEN NEW."applicationKey" IS NOT NULL BEGIN SELECT RAISE(ABORT, \'synthetic receipt failure\'); END',
+    );
+    try {
+      await expect(applySpatialAssistant(accountId, input, store)).rejects.toThrow();
+    } finally {
+      await store.$executeRawUnsafe("DROP TRIGGER synthetic_receipt_failure");
+    }
+    expect((await store.reusableAuthoringItem.findFirstOrThrow()).currentVersionNumber).toBe(1);
+    expect((await store.reusableAuthoringItemVersion.findFirstOrThrow()).checksum).toBe(canonicalChecksum(draft));
+    expect((await store.aIUsageLedger.findFirstOrThrow()).applicationKey).toBeNull();
+    expect((await applySpatialAssistant(accountId, input, store)).revision).toBe(2);
+  });
+  it("rejects altered retry contents and reapplication under a different identity", async () => {
+    const input = await reviewedApplication();
+    await applySpatialAssistant(accountId, input, store);
+    await expect(
+      applySpatialAssistant(accountId, { ...input, selectedOperationIds: ["unknown"] }, store),
+    ).rejects.toMatchObject({ code: "IDEMPOTENCY_CONFLICT" });
+    await expect(
+      applySpatialAssistant(accountId, { ...input, idempotencyKey: "synthetic-another-apply-key" }, store),
+    ).rejects.toMatchObject({ code: "PROPOSAL_ALREADY_APPLIED" });
+    expect((await store.reusableAuthoringItem.findFirstOrThrow()).currentVersionNumber).toBe(2);
+  });
+  it("never returns an old acknowledged draft over later saved Creator work", async () => {
+    const input = await reviewedApplication();
+    const saved = await applySpatialAssistant(accountId, input, store);
+    const newer = structuredClone(saved.draft);
+    newer.content.entities[0].content = "Newer synthetic Creator work";
+    await store.$transaction(async (tx) => {
+      await tx.reusableAuthoringItem.update({
+        where: { id: draft.content.definitionId },
+        data: { currentVersionNumber: 3 },
+      });
+      await tx.reusableAuthoringItemVersion.updateMany({
+        where: { itemId: draft.content.definitionId, versionNumber: 0 },
+        data: { envelope: JSON.stringify(newer), checksum: canonicalChecksum(newer) },
+      });
+    });
+    await expect(applySpatialAssistant(accountId, input, store)).rejects.toMatchObject({
+      code: "PROPOSAL_ALREADY_APPLIED",
+    });
+    expect(JSON.parse((await store.reusableAuthoringItemVersion.findFirstOrThrow()).envelope)).toEqual(newer);
+  });
+  it("rejects foreign, expired, stale and incomplete proposals before a save or receipt", async () => {
+    const input = await reviewedApplication();
+    await expect(applySpatialAssistant("synthetic-other-owner", input, store)).rejects.toMatchObject({
+      code: "DRAFT_UNAVAILABLE",
+    });
+    await expect(
+      applySpatialAssistant(accountId, { ...input, selectedOperationIds: ["absent"] }, store),
+    ).rejects.toMatchObject({ code: "INVALID_SELECTION" });
+    await store.reusableAuthoringItem.update({
+      where: { id: draft.content.definitionId },
+      data: { currentVersionNumber: 2 },
+    });
+    await expect(applySpatialAssistant(accountId, input, store)).rejects.toMatchObject({ code: "STALE_SCENE" });
+    await store.aIUsageLedger.updateMany({ data: { resultExpiresAt: new Date(0) } });
+    await expect(applySpatialAssistant(accountId, input, store)).rejects.toMatchObject({
+      code: "PROPOSAL_UNAVAILABLE",
+    });
+    expect((await store.aIUsageLedger.findFirstOrThrow()).applicationKey).toBeNull();
+    expect((await store.reusableAuthoringItemVersion.findFirstOrThrow()).checksum).toBe(canonicalChecksum(draft));
+  });
 });
 describe("Spatial Assistant owner-bound server orchestration", () => {
   it("resolves a clarification using bounded private prior context without exposing it in replies or usage reports", async () => {

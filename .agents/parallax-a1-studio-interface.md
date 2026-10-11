@@ -7,7 +7,7 @@ The independent Assistant receives current `draft`, numeric saved `revision`, mo
 Agreed mount callbacks (independent A1 component implements its side only):
 
 - `onPreview(next: SpatialDraft | null, affectedEntityIds: readonly string[])`: place the validated proposed content in the real preview seam (Phase 3 placementPreview/setPlacementPreview or its accepted successor) and highlight exact affected identities. Manual changes clear preview and stale review. Preview does not replace `history.present` or persist.
-- `port.apply(proposal, selectedOperationIds, idempotencyKey)`: authenticated atomic apply rechecks current owned saved scene/revision against the retained canonical proposal, then returns `{ status: "SAVED", draft, revision }`. The Phase 3 host installs that acknowledged canonical draft through ONE history replacement marked already saved, and resolves only after installation. No duplicate autosave CAS against the old revision; no second history implementation. Rejections leave history unchanged. Uncertain network outcomes retry the same idempotency identity before installation. The Assistant verifies the acknowledged draft and next revision before reporting acceptance. Backend apply and host installation remain deferred to agreed canonical integration.
+- `port.apply(proposal, selectedOperationIds, idempotencyKey)`: authenticated atomic apply rechecks current owned saved scene/revision against the retained canonical proposal, then returns `{ status: "SAVED", draft, revision }`. The Phase 3 host installs that acknowledged canonical draft through ONE history replacement marked already saved, and resolves only after installation. No duplicate autosave CAS against the old revision; no second history implementation. Rejections leave history unchanged. Uncertain network outcomes retry the same idempotency identity before installation. The Assistant verifies the acknowledged draft and next revision before reporting acceptance. Backend Apply and host installation are now implemented against accepted Phase 3 source; complete browser qualification remains pending.
 
 - `onSelect(entityId: string)`: focus/select a current or proposed object using the renderer's accepted selection contract.
 - `onUndo()` / `onRedo()`: existing history authority; callbacks expose actual success feedback and clear pending proposal preview.
@@ -17,7 +17,7 @@ Server proposal identity: schemaVersion 1, requestId, definitionId, sceneRevisio
 
 Observed relay checkpoint: Phase 3 candidate `abacc30d` has workstation/adaptive browser PASS; those are Phase 3's claims, not A1 evidence. Its legacy IntentProposal/optional semanticRecipe is narrower than A1's bundle. Resume shared integration only after concrete interface agreement and the newest accepted canonical source are available. Preserve complete independent A1 candidate if Phase 3 is still unmerged. No source import, paid canary, cloud tests or authority reuse is implied.
 
-Checks currently DEFERRED: full authenticated Assistant browser journey, mobile/visual/motion package and final ordinary Sounding Line. Independent Admiralty quota/dossier browser journeys have passed, and draft PR #710 preserves the source-bound independent checkpoint; exact source and receipt identities are recorded in the A1 evaluation document. Deterministic local checks already run are not scheduled for duplicate cloud qualification. These focused receipts do not qualify the unmounted Assistant or deferred canonical Apply.
+Checks currently DEFERRED: full authenticated Assistant browser journey, mobile/visual/motion package and final ordinary Sounding Line. Independent Admiralty quota/dossier browser journeys have passed, and draft PR #710 preserves the source-bound independent checkpoint; exact source and receipt identities are recorded in the A1 evaluation document. Deterministic local checks already run are not scheduled for duplicate cloud qualification. These earlier focused receipts alone do not qualify the integrated Assistant or its canonical Apply.
 
 ## Bilateral amendment acknowledgement, 2026-10-11
 
@@ -50,10 +50,9 @@ calling that seam; it never invokes ordinary SAVE or owns history.
 Prepared HTTP bodies use the existing `/api/studio/parallax`: `action: AI,
 kind: ASSISTANT` plus the bounded request fields, and non-paid
 `action: ASSISTANT_APPLY` plus retained proposal/selected IDs/idempotency. These
-handlers are not yet installed. Canonical integration must add them to the
-existing authenticated/CSRF/rate-limited route, pass the request abort signal to
-the service, install atomic canonical save/receipt logic, and migrate the legacy
-unmetered network path. The current action names do not authorize a competing
+handlers are now installed in the existing authenticated/CSRF/rate-limited
+route with request cancellation, atomic canonical save/receipt logic, and a
+retired legacy network path. The current action names do not authorize a competing
 inference endpoint. Fourteen adapter tests are narrow mocked transport/host
 proof, not mounted or backend qualification.
 
@@ -64,3 +63,23 @@ main tree `36529aefcac815a8a1cef0434624149b9b567e6f`; normal run
 original exact additive A1 reconciliation in its owned checkout. Phase 3 visual
 approval remains bound to its reviewed workstation source; A1 must still qualify
 its own resulting integration, saved Apply, browser journeys and visuals.
+
+## Mounted integration checkpoint
+
+The candidate reconciled accepted main in commit `a4d469bb`. The port is now
+created outside render and scoped to account/definition. All canonical mutations,
+installs, Undo and Redo advance a monotonic local generation; refs are updated
+synchronously. Apply uses the same serialized persistence queue, installs one
+ordinary history entry after the exact save acknowledgement, and marks it already
+saved. Canonical save and metadata-only retry receipt commit in one transaction.
+Authorization is resolved before that transaction and bound to its checksum;
+transactional calibration checks use the transaction client. No second inference
+or save endpoint exists, and legacy network requests are retired.
+
+Assistant and guided-composer previews have separate host state. Selecting or
+locating a newly proposed object retains its actual verified canvas preview.
+Canonical mutations, draft switches, close and Escape clear it. Preview rechecks
+local generation after async materialization. This source/DOM proof does not
+establish WebGL pixels, mobile layout, motion captures or owner visual acceptance.
+The complete authenticated browser journey, final ordinary qualification and
+explicit paid canary gates remain pending.

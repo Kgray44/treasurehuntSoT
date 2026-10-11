@@ -1818,11 +1818,21 @@
 .assistantWorkspace[data-docked="true"] {
   position: relative;
   width: 100%;
-  max-height: 240px;
+  max-height: min(540px, 60%);
   min-height: 100px;
   flex: none;
   left: auto;
   bottom: auto;
+}
+.assistantWorkspace > aside {
+  width: 100%;
+  max-width: 100%;
+  height: min(650px, calc(100dvh - 240px));
+  min-height: 280px;
+  resize: none;
+}
+.assistantWorkspace[data-docked="true"] > aside {
+  height: min(500px, 45dvh);
 }
 .adaptiveWorkspace .assistantWorkspace .composer {
   margin: 0;

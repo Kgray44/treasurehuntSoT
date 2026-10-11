@@ -20,6 +20,12 @@ import {
   spatialPerformanceEstimate,
 } from "@/parallax/studio-validation";
 import { requestSpatialAI } from "@/parallax/ai-authoring";
+import { assistantRequestSchema, requestSpatialAssistant } from "@/parallax/spatial-assistant-service";
+import { assistantApplicationSchema, applySpatialAssistant } from "@/parallax/spatial-assistant-application";
+import { creatorAIUsage, readAIPolicy } from "@/parallax/ai-ledger";
+import { openAIProviderConfiguration } from "@/parallax/openai-provider";
+import { SpatialAssistantError } from "@/parallax/spatial-assistant";
+import { DraftConflictError } from "@/chronicle/studio-service";
 import { creatorFieldQuality, reviewCalibration } from "@/parallax/field-service";
 import { calibrationReviewInputSchema } from "@/parallax/field-contracts";
 
@@ -29,12 +35,16 @@ const inputSchema = z.discriminatedUnion("action", [
   z.strictObject({ action: z.literal("SAVE"), draft: draftSchema, revision: z.number().int().min(0) }),
   z.strictObject({ action: z.literal("RELEASE"), definitionId: spatialId, revision: z.number().int().min(1) }),
   z.strictObject({ action: z.literal("VALIDATE"), draft: draftSchema }),
-  z.strictObject({
-    action: z.literal("AI"),
-    draft: draftSchema,
-    kind: z.enum(["INTENT", "CRITIQUE"]),
-    request: z.string().trim().min(1).max(2000),
-  }),
+  z.discriminatedUnion("kind", [
+    assistantRequestSchema.extend({ action: z.literal("AI"), kind: z.literal("ASSISTANT") }),
+    z.strictObject({
+      action: z.literal("AI"),
+      draft: draftSchema,
+      kind: z.enum(["INTENT", "CRITIQUE"]),
+      request: z.string().trim().min(1).max(2000),
+    }),
+  ]),
+  assistantApplicationSchema.extend({ action: z.literal("ASSISTANT_APPLY") }),
   z.strictObject({
     action: z.literal("ATTACH"),
     definitionId: spatialId,
@@ -53,6 +63,36 @@ const inputSchema = z.discriminatedUnion("action", [
   }),
 ]);
 const headers = { "Cache-Control": "private, no-store", Vary: "Cookie" };
+async function assistantError(cause: unknown, accountId: string) {
+  const status =
+    cause instanceof SpatialAssistantError
+      ? cause.status
+      : cause instanceof DraftConflictError
+        ? 409
+        : cause instanceof z.ZodError || cause instanceof SyntaxError
+          ? 400
+          : 500;
+  const code =
+    cause instanceof SpatialAssistantError
+      ? cause.code
+      : cause instanceof DraftConflictError
+        ? "DRAFT_CONFLICT"
+        : status === 400
+          ? "INVALID_REQUEST"
+          : "STUDIO_REQUEST_FAILED";
+  const message =
+    cause instanceof SpatialAssistantError
+      ? cause.message
+      : status === 409
+        ? "The saved scene changed. Review its current revision before applying changes."
+        : status === 400
+          ? "The spatial request is invalid."
+          : "The Studio request could not finish. Your local work is unchanged.";
+  return NextResponse.json(
+    { status: "FAILED", code, message, usage: await creatorAIUsage(accountId).catch(() => undefined) },
+    { status, headers },
+  );
+}
 export async function GET(request: Request) {
   const session = await requireStudioWorkspace();
   if (!session) return NextResponse.json({ error: "Creator access required." }, { status: 401, headers });
@@ -72,13 +112,17 @@ export async function GET(request: Request) {
         ),
       };
     }
+    const [usage, policy] = await Promise.all([creatorAIUsage(session.accountId), readAIPolicy()]);
+    const provider = openAIProviderConfiguration(policy.policy);
     return NextResponse.json(
       {
         csrfToken: session.csrfToken,
         layoutScope: session.accountId,
         items: await listSpatialItems(session.accountId),
         chronicle,
-        aiAvailable: Boolean(process.env.PARALLAX_AUTHORING_AI_URL && process.env.PARALLAX_AUTHORING_AI_TOKEN),
+        aiAvailable: provider.configured && usage.enabled,
+        aiConfigured: provider.configured,
+        aiUsage: { ...usage, enabled: usage.enabled && provider.configured },
       },
       { headers },
     );
@@ -92,11 +136,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Creator access and CSRF verification required." }, { status: 401, headers });
   const rate = consumeRateLimit(`parallax.studio:${session.accountId}`, { limit: 60, windowMs: 60000 });
   if (!rate.allowed) return NextResponse.json({ error: "Please wait before trying again." }, { status: 429, headers });
+  let assistantAction = false;
   try {
     const body = await request.text();
     if (Buffer.byteLength(body, "utf8") > 256 * 1024)
       return NextResponse.json({ error: "Spatial request exceeds 256 KiB." }, { status: 413, headers });
-    const input = inputSchema.parse(JSON.parse(body));
+    const raw = JSON.parse(body);
+    assistantAction = raw?.action === "ASSISTANT_APPLY" || (raw?.action === "AI" && raw?.kind === "ASSISTANT");
+    const input = inputSchema.parse(raw);
     if ("draft" in input && input.draft) await assertSpatialDraftAccess(input.draft);
     switch (input.action) {
       case "FIELD_QUALITY":
@@ -126,7 +173,21 @@ export async function POST(request: Request) {
           { headers },
         );
       case "AI":
+        if (input.kind === "ASSISTANT") {
+          const { action: _action, kind: _kind, ...assistant } = input;
+          void _action;
+          void _kind;
+          return NextResponse.json(
+            await requestSpatialAssistant(session.accountId, assistant, { signal: request.signal }),
+            { headers },
+          );
+        }
         return NextResponse.json(await requestSpatialAI(input.kind, input.request, input.draft), { headers });
+      case "ASSISTANT_APPLY": {
+        const { action: _action, ...application } = input;
+        void _action;
+        return NextResponse.json(await applySpatialAssistant(session.accountId, application), { headers });
+      }
       case "ATTACH":
         return NextResponse.json(await attachSpatialVersion({ ...input, ownerAccountId: session.accountId }), {
           headers,
@@ -137,6 +198,7 @@ export async function POST(request: Request) {
         });
     }
   } catch (cause) {
+    if (assistantAction) return assistantError(cause, session.accountId);
     return apiError(cause);
   }
 }

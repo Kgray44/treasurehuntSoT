@@ -1,6 +1,8 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { createSpatialDraft, changeHistory, undo, redo } from "./authoring";
+import { enableAdaptiveAuthoring } from "./adaptive-authoring";
+import { insertSpatialPreset } from "./editor-assets";
 import {
   materializeAssistantInterpretation,
   materializeAssistantProposal,
@@ -52,6 +54,70 @@ const create: AssistantOperation = {
   scale: 1,
 };
 describe("Spatial Assistant deterministic authoring boundary", () => {
+  it("creates an adaptive root with its own anchor, discovery and recipe while preserving existing objects", () => {
+    const source = enableAdaptiveAuthoring(draft());
+    source.content.adaptive!.calibration = {
+      ...source.content.adaptive!.calibration,
+      maturity: "CALIBRATED",
+      reviewReceiptId: "synthetic-review",
+    };
+    source.content.placementPolicy = "CALIBRATED";
+    const next = materializeAssistantInterpretation(source, proposal([{ ...create, position: { x: 0, y: 0, z: 0 } }]));
+    expect(next.content.entities[0]).toEqual(source.content.entities[0]);
+    expect(next.content.adaptive!.recipes[0]).toEqual(source.content.adaptive!.recipes[0]);
+    expect(next.content.adaptive!.discovery.map((entry) => entry.entityId)).toContain(create.entityId);
+    expect(new Set(next.content.entities.map((entity) => entity.anchorId)).size).toBe(2);
+    expect(next.content.adaptive!.calibration.maturity).toBe("SEMANTIC");
+    expect(next.content.adaptive!.calibration.reviewReceiptId).toBeUndefined();
+    expect(next.content.placementPolicy).toBe("ADAPTIVE_STICKY");
+    expect(source.content.entities).toHaveLength(1);
+  });
+  it("maps entrance placement to a canonical adaptive recipe without destroying discovery or constraints", () => {
+    const source = enableAdaptiveAuthoring(draft());
+    const next = materializeAssistantInterpretation(source, proposal([move]));
+    expect(next.content.entities).toEqual(source.content.entities);
+    expect(next.content.adaptive!.recipes[0]).toMatchObject({
+      preferredContext: ["ENTRANCE"],
+      searchRegion: "ENTRANCE_REGION",
+      forbiddenContext: ["WALKWAY", "STAIRS", "OBSTACLE", "PRIVATE_REGION"],
+      seatedRequired: true,
+    });
+    expect(next.content.adaptive!.discovery).toEqual(source.content.adaptive!.discovery);
+  });
+  it("changes one semantic recipe, preserves others and invalidates calibrated authority", () => {
+    const source = insertSpatialPreset(enableAdaptiveAuthoring(draft()), "Desk Map", "second");
+    source.content.adaptive!.calibration = {
+      ...source.content.adaptive!.calibration,
+      maturity: "CALIBRATED",
+      reviewReceiptId: "synthetic-review",
+    };
+    source.content.placementPolicy = "CALIBRATED";
+    const operation: AssistantOperation = {
+      ...common,
+      type: "SEMANTIC_PLACEMENT",
+      entityId: move.entityId,
+      surface: "FLOOR",
+      context: "FURNITURE",
+      relativePlacement: "LEFT",
+      concealment: "PARTIAL",
+    };
+    const next = materializeAssistantInterpretation(source, proposal([operation]));
+    expect(next.content.adaptive!.recipes[0]).toMatchObject({
+      preferredSurfaces: ["FLOOR"],
+      maximumHeightMeters: 0.3,
+      preferredHeightMeters: 0,
+      relativePlacement: "LEFT",
+      concealment: "PARTIAL",
+      seatedRequired: true,
+    });
+    expect(next.content.adaptive!.recipes[1]).toEqual(source.content.adaptive!.recipes[1]);
+    expect(next.content.adaptive!.discovery).toEqual(source.content.adaptive!.discovery);
+    expect(next.content.adaptive!.calibration.reviewReceiptId).toBeUndefined();
+    expect(next.content.placementPolicy).toBe("ADAPTIVE_STICKY");
+    source.content.adaptive!.recipes[0].forbiddenSurfaces = ["FLOOR"];
+    expect(() => materializeAssistantInterpretation(source, proposal([operation]))).toThrow(/safety constraints/);
+    expect(() => materializeAssistantInterpretation(draft(), proposal([operation]))).toThrow(/guided controls/);
+  });
   it("creates and previews supported content without touching the input", () => {
     const source = draft(),
       next = materializeAssistantInterpretation(source, proposal([create], { intentType: "CREATE" }));

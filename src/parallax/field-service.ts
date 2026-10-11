@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import type { Prisma, PrismaClient } from "@prisma/client";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { loadReleasedSpatialMoment } from "./service";
 import {
@@ -242,10 +243,14 @@ export async function reviewCalibration(ownerAccountId: string, raw: unknown, ra
       throw error;
     });
 }
-export async function assertCalibrationClaim(ownerAccountId: string, draft: SpatialDraft) {
+export async function assertCalibrationClaim(
+  ownerAccountId: string,
+  draft: SpatialDraft,
+  store: PrismaClient | Prisma.TransactionClient = db,
+) {
   const a = draft.content.adaptive;
   if (!a || a.calibration.maturity === "SEMANTIC") return;
-  const review = await db.parallaxCalibrationReview.findFirst({
+  const review = await store.parallaxCalibrationReview.findFirst({
     where: {
       id: a.calibration.reviewReceiptId,
       definitionId: draft.content.definitionId,

@@ -42,6 +42,9 @@ const safeMessages: Record<string, string> = {
   DRAFT_CONFLICT: "The saved scene changed. Review its current revision before applying changes.",
   IDEMPOTENCY_CONFLICT: "This request identity belongs to another change. Review the current scene before retrying.",
   PROPOSAL_UNAVAILABLE: "The reviewed proposal is unavailable or expired. Request a fresh proposal.",
+  PROPOSAL_ALREADY_APPLIED: "These changes were saved earlier. Reopen the current scene to preserve later work.",
+  ADAPTIVE_SETUP_REQUIRED:
+    "Enable adaptive placement with the guided controls before requesting semantic recipe changes.",
 };
 class HTTPFailure extends SpatialAssistantError {
   constructor(
@@ -62,9 +65,9 @@ function assertSameBase(current: SpatialAssistantBase, expected: SpatialAssistan
     throw new SpatialAssistantError("STALE_SCENE", safeMessages.STALE_SCENE, 409);
 }
 
-/** Prepared canonical Studio adapter. The host owns all persistence/history.
- * Mount only after the corresponding actions are integrated into the existing
- * authenticated route. One stable adapter instance belongs to one account/draft.
+/** Canonical Studio adapter. The host owns persistence/history; the existing
+ * authenticated route owns inference and atomic saved application.
+ * One stable adapter instance belongs to one account/draft.
  */
 export function createSpatialAssistantPort(host: {
   scope: () => { accountId: string; definitionId: string };

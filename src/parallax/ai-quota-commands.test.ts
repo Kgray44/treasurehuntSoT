@@ -27,9 +27,10 @@ const command = (rest: Partial<Extract<AIQuotaCommandInput, { target: "GLOBAL" }
   ...rest,
 });
 beforeAll(async () => {
-  for (const sql of readFileSync(
-    resolve("prisma/migrations/20261011180000_parallax_a1_ai_quotas/migration.sql"),
-    "utf8",
+  for (const sql of (
+    readFileSync(resolve("prisma/migrations/20261011180000_parallax_a1_ai_quotas/migration.sql"), "utf8") +
+    "\n" +
+    readFileSync(resolve("prisma/migrations/20261011210000_parallax_a1_application_receipt/migration.sql"), "utf8")
   )
     .split(";")
     .map((part) => part.trim())

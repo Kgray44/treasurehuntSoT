@@ -4,7 +4,9 @@ import { db } from "@/lib/db";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { draftSchema } from "./authoring";
 import { spatialId } from "./contracts";
-import { assertSpatialDraftAccess, spatialItemKind } from "./library-service";
+import { assertSpatialDraftAccess, spatialItemKind, saveSpatialDraftInTransaction } from "./library-service";
+import { assertCalibrationClaim } from "./field-service";
+import { lockAIControl } from "./ai-ledger";
 import { assistantProposalSchema, materializeAssistantProposal, SpatialAssistantError } from "./spatial-assistant";
 
 export const assistantApplicationSchema = z.strictObject({
@@ -14,14 +16,21 @@ export const assistantApplicationSchema = z.strictObject({
 });
 export type AssistantApplication = z.infer<typeof assistantApplicationSchema>;
 
-/** Owner-side application preparation, with no writes. Final integration must
- * invoke this inside the canonical save transaction and commit its CAS/receipt
- * atomically. This function alone is NOT a completed or saved application. */
+/** Owner-side preparation without writes; Apply calls this within the canonical save transaction. */
 export async function prepareSpatialAssistantApplication(
   accountId: string,
   raw: unknown,
   store: PrismaClient | Prisma.TransactionClient = db,
   now = new Date(),
+) {
+  return prepareOwnedApplication(accountId, raw, store, now);
+}
+async function prepareOwnedApplication(
+  accountId: string,
+  raw: unknown,
+  store: PrismaClient | Prisma.TransactionClient,
+  now: Date,
+  authorizedChecksum?: string,
 ) {
   const input = assistantApplicationSchema.parse(raw);
   const records = await store.aIUsageLedger.findMany({
@@ -58,7 +67,13 @@ export async function prepareSpatialAssistantApplication(
   if (!item || !working)
     throw new SpatialAssistantError("DRAFT_UNAVAILABLE", "The owned working draft is unavailable.", 404);
   const draft = draftSchema.parse(JSON.parse(working.envelope));
-  await assertSpatialDraftAccess(draft);
+  if (authorizedChecksum !== undefined && working.checksum !== authorizedChecksum)
+    throw new SpatialAssistantError(
+      "STALE_SCENE",
+      "The saved scene changed after access verification. Review its current revision.",
+      409,
+    );
+  if (authorizedChecksum === undefined) await assertSpatialDraftAccess(draft);
   if (working.checksum !== canonicalChecksum(draft))
     throw new SpatialAssistantError(
       "STALE_SCENE",
@@ -79,4 +94,101 @@ export async function prepareSpatialAssistantApplication(
     draft: next,
     admissionId: records[0].id,
   };
+}
+
+/** Commit canonical save/CAS and durable retry metadata together. No provider call.
+ * Replays acknowledge only the unchanged saved result; never overwrite later work. */
+export async function applySpatialAssistant(
+  accountId: string,
+  raw: unknown,
+  store: PrismaClient = db,
+  now = new Date(),
+) {
+  const input = assistantApplicationSchema.parse(raw);
+  const fingerprint = canonicalChecksum(input);
+  // Canonical session/Chronicle authorization uses the ordinary client. Resolve
+  // it before the SQLite transaction, then bind every tx read to this checksum.
+  const owned = await store.reusableAuthoringItem.findFirst({
+    where: { id: input.proposal.definitionId, ownerAccountId: accountId, kind: spatialItemKind, archivedAt: null },
+    include: { versions: { where: { versionNumber: 0 } } },
+  });
+  const authorized = owned?.versions[0];
+  if (!authorized) throw new SpatialAssistantError("DRAFT_UNAVAILABLE", "The owned working draft is unavailable.", 404);
+  const authorizedDraft = draftSchema.parse(JSON.parse(authorized.envelope));
+  if (canonicalChecksum(authorizedDraft) !== authorized.checksum)
+    throw new SpatialAssistantError(
+      "STALE_SCENE",
+      "The saved scene could not be verified. Refresh it before applying changes.",
+      409,
+    );
+  await assertSpatialDraftAccess(authorizedDraft);
+  return store.$transaction(
+    async (tx) => {
+      await lockAIControl(tx);
+      const receipt = await tx.aIUsageLedger.findUnique({
+        where: { accountId_applicationKey: { accountId, applicationKey: input.idempotencyKey } },
+      });
+      if (receipt) {
+        if (receipt.applicationFingerprint !== fingerprint)
+          throw new SpatialAssistantError(
+            "IDEMPOTENCY_CONFLICT",
+            "This apply identity belongs to different reviewed changes.",
+            409,
+          );
+        const item = await tx.reusableAuthoringItem.findFirst({
+          where: { id: receipt.definitionId, ownerAccountId: accountId, kind: spatialItemKind, archivedAt: null },
+          include: { versions: { where: { versionNumber: 0 } } },
+        });
+        const working = item?.versions[0];
+        if (
+          !working ||
+          item!.currentVersionNumber !== receipt.applicationRevision ||
+          working.checksum !== receipt.applicationChecksum ||
+          canonicalChecksum(JSON.parse(working.envelope)) !== receipt.applicationChecksum
+        )
+          throw new SpatialAssistantError(
+            "PROPOSAL_ALREADY_APPLIED",
+            "These changes were saved earlier. Reopen the current scene to preserve later work.",
+            409,
+          );
+        const draft = draftSchema.parse(JSON.parse(working.envelope));
+        await assertCalibrationClaim(accountId, draft, tx);
+        return { status: "SAVED" as const, draft, revision: receipt.applicationRevision! };
+      }
+      const applied = await tx.aIUsageLedger.findFirst({
+        where: {
+          accountId,
+          requestId: input.proposal.requestId,
+          definitionId: input.proposal.definitionId,
+          applicationKey: { not: null },
+        },
+      });
+      if (applied)
+        throw new SpatialAssistantError(
+          "PROPOSAL_ALREADY_APPLIED",
+          "This proposal has already been saved. Request a fresh proposal for further changes.",
+          409,
+        );
+      const prepared = await prepareOwnedApplication(accountId, input, tx, now, authorized.checksum);
+      const revision = await saveSpatialDraftInTransaction(accountId, prepared.draft, prepared.expectedRevision, tx);
+      const claimed = await tx.aIUsageLedger.updateMany({
+        where: { id: prepared.admissionId, accountId, applicationKey: null },
+        data: {
+          applicationKey: input.idempotencyKey,
+          applicationFingerprint: fingerprint,
+          applicationRevision: revision,
+          applicationChecksum: canonicalChecksum(prepared.draft),
+          appliedAt: now,
+        },
+      });
+      if (claimed.count !== 1)
+        throw new SpatialAssistantError(
+          "PROPOSAL_ALREADY_APPLIED",
+          "This proposal has already been saved. Reopen its current scene.",
+          409,
+        );
+      return { status: "SAVED" as const, draft: prepared.draft, revision };
+    },
+    { maxWait: 10000, timeout: 15000 },
+  );
 }

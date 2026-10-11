@@ -51,3 +51,25 @@ The next integration work must reconcile Assistant create/placement with adaptiv
 recipes and calibration invalidation, commit canonical Apply and its retry receipt
 atomically, close the unmetered legacy network path, and mount the accepted host.
 These focused checks do not establish full A1 qualification or physical acceptance.
+
+Mounted integration checkpoint: the accepted-main reconcile is published as
+`a4d469bb`. Canonical AI/ASSISTANT and ASSISTANT_APPLY actions now use the existing
+authenticated Studio route. The port mounts in the accepted floating/docked shell,
+advances a monotonic generation on all canonical mutations and installs one
+already-saved ordinary history change. Atomic canonical save and metadata-only
+ledger retry receipt have durable rollback/restart/concurrency proof. Adaptive
+roots retain canonical recipes, discovery, safety constraints and calibration
+invalidation. Legacy inference cannot bypass accounting. Assistant preview is
+separate from guided composer state; new-object selection preserves the actual
+verified preview. No paid provider, sibling mutation or shared runtime was used.
+
+Focused candidate proof: 271 checks across 19 files, TypeScript/scoped lint and
+both schema validations pass. Full authenticated browser/quotas, motion/viewport
+captures, final ordinary SL/PR/landed qualification and explicit paid/owner gates
+remain pending. Feature catalog does not promote partial A1 capability.
+
+Newest fetched main includes records-only closure `af867c01` (product source
+verified equal to `0327eeb7`) and phone correction PR #712 at `678dd115`. Publish
+this implementation checkpoint, then additively reconcile current accepted main;
+review the canonical browser UUID/local-HTTP correction before browser proof.
+Do not reset the primary/sibling checkout or reuse P3 qualification as A1 evidence.

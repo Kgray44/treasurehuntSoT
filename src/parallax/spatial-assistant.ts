@@ -2,6 +2,7 @@ import { z } from "zod";
 import { draftSchema, editSpatialDraft, type SpatialDraft } from "./authoring";
 import { identityTransform, spatialId } from "./contracts";
 import { validateSpatialAuthoring } from "./studio-validation";
+import { updateAdaptiveContent } from "./adaptive-authoring";
 
 const copy = (maximum: number) => z.string().trim().min(1).max(maximum);
 const position = z.strictObject({
@@ -47,6 +48,15 @@ export const assistantOperationSchema = z.discriminatedUnion("type", [
     scale: z.number().min(0.01).max(10),
   }),
   z.strictObject({ ...common, type: z.literal("PLACEMENT"), entityId: spatialId, placement }),
+  z.strictObject({
+    ...common,
+    type: z.literal("SEMANTIC_PLACEMENT"),
+    entityId: spatialId,
+    surface: z.enum(["FLOOR", "TABLE", "DESK", "SHELF", "WALL", "OPEN_SPACE"]),
+    context: z.enum(["FURNITURE", "ENTRANCE", "WINDOW"]).nullable(),
+    relativePlacement: z.enum(["CENTER", "EDGE", "LEFT", "RIGHT", "NEAR"]),
+    concealment: z.enum(["NONE", "PARTIAL"]).nullable(),
+  }),
   z.strictObject({ ...common, type: z.literal("VISIBILITY"), entityId: spatialId, visible: z.boolean() }),
   z.strictObject({
     ...common,
@@ -131,6 +141,73 @@ function orderedOperations(proposal: AssistantInterpretation, selectedIds?: read
   return result;
 }
 
+/** Edit the canonical recipe without converting or regrouping the rest of the scene. */
+function semanticPlacement(
+  input: SpatialDraft,
+  operation: Extract<AssistantOperation, { type: "SEMANTIC_PLACEMENT" }>,
+) {
+  if (!input.content.adaptive)
+    reject(
+      "ADAPTIVE_SETUP_REQUIRED",
+      "Enable adaptive placement with the guided controls before requesting semantic recipe changes.",
+    );
+  const next = structuredClone(input);
+  const adaptive = next.content.adaptive!;
+  const recipe = adaptive.recipes.find((entry) => entry.entityId === operation.entityId);
+  if (!recipe) reject("SEMANTIC_ROOT_REQUIRED", "Choose the group's root object to change adaptive placement.");
+  if (
+    recipe!.forbiddenSurfaces.includes(operation.surface) ||
+    (operation.context && recipe!.forbiddenContext.includes(operation.context))
+  )
+    reject("PLACEMENT_CONSTRAINT", "The proposed placement conflicts with the object's existing safety constraints.");
+  const changedSurface = !recipe!.preferredSurfaces.includes(operation.surface);
+  recipe!.preferredSurfaces = [operation.surface];
+  recipe!.alternateSurfaces = recipe!.alternateSurfaces.filter((surface) => surface !== operation.surface);
+  recipe!.relativePlacement = operation.relativePlacement;
+  if (operation.context) {
+    recipe!.preferredContext = [operation.context];
+    recipe!.searchRegion = operation.context === "ENTRANCE" ? "ENTRANCE_REGION" : "CURRENT_ROOM";
+  }
+  if (operation.concealment !== null) recipe!.concealment = operation.concealment;
+  if (changedSurface) {
+    const heights =
+      operation.surface === "FLOOR"
+        ? [0, 0.3, 0]
+        : operation.surface === "WALL"
+          ? [0.4, 1.8, 1.2]
+          : operation.surface === "SHELF"
+            ? [0.4, 1.5, 1.1]
+            : [0.4, 1.2, 0.75];
+    [recipe!.minimumHeightMeters, recipe!.maximumHeightMeters, recipe!.preferredHeightMeters] = heights;
+    recipe!.orientation =
+      operation.surface === "WALL" ? "UPRIGHT" : operation.surface === "OPEN_SPACE" ? "PLAYER_FACING" : "SURFACE";
+  }
+  return updateAdaptiveContent(input, adaptive);
+}
+
+function assistantPlacement(input: SpatialDraft, entityId: string, value: "DESK" | "WALL" | "ENTRANCE" | "LOCAL") {
+  if (!input.content.adaptive) return editSpatialDraft(input, { type: "PLACEMENT", entityId, placement: value });
+  const recipe = input.content.adaptive.recipes.find((entry) => entry.entityId === entityId);
+  return semanticPlacement(input, {
+    id: "placement",
+    type: "SEMANTIC_PLACEMENT",
+    entityId,
+    dependsOn: [],
+    explanation: "Reviewed placement",
+    surface:
+      value === "ENTRANCE"
+        ? recipe?.preferredSurfaces[0] === "DEVICE"
+          ? "TABLE"
+          : (recipe?.preferredSurfaces[0] ?? "TABLE")
+        : value === "LOCAL"
+          ? "OPEN_SPACE"
+          : value,
+    context: value === "ENTRANCE" ? "ENTRANCE" : null,
+    relativePlacement: recipe?.relativePlacement ?? "CENTER",
+    concealment: null,
+  });
+}
+
 /** Pure canonical edit materialization; rejects the entire reviewed bundle on any failure. */
 export function materializeAssistantInterpretation(input: SpatialDraft, raw: unknown, selectedIds?: readonly string[]) {
   const proposal = assistantInterpretationSchema.parse(raw);
@@ -173,11 +250,7 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
             sharingScope: "PERSONAL",
           },
         });
-        next = editSpatialDraft(next, {
-          type: "PLACEMENT",
-          entityId: operation.entityId,
-          placement: operation.placement,
-        });
+        next = assistantPlacement(next, operation.entityId, operation.placement);
         next = editSpatialDraft(next, {
           type: "TRANSFORM",
           entityId: operation.entityId,
@@ -197,11 +270,10 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
         break;
       }
       case "PLACEMENT":
-        next = editSpatialDraft(next, {
-          type: "PLACEMENT",
-          entityId: operation.entityId,
-          placement: operation.placement,
-        });
+        next = assistantPlacement(next, operation.entityId, operation.placement);
+        break;
+      case "SEMANTIC_PLACEMENT":
+        next = semanticPlacement(next, operation);
         break;
       case "TRANSFORM": {
         const transform = next.content.entities.find((entity) => entity.id === operation.entityId)!.transform;
@@ -268,18 +340,40 @@ export async function materializeAssistantProposal(
   return materializeAssistantInterpretation(draft, assistantInterpretationSchema.strip().parse(proposal), selectedIds);
 }
 
+function assistantRecipeContext(draft: SpatialDraft, entityId: string) {
+  const recipe = draft.content.adaptive?.recipes.find((entry) => entry.entityId === entityId);
+  if (!recipe) return null;
+  // Only editable intent and the constraints the model must preserve; discovery
+  // text, calibration receipts and full scene recipes stay in canonical storage.
+  return {
+    preferredSurfaces: recipe.preferredSurfaces,
+    forbiddenSurfaces: recipe.forbiddenSurfaces,
+    preferredContext: recipe.preferredContext,
+    forbiddenContext: recipe.forbiddenContext,
+    relativePlacement: recipe.relativePlacement,
+    concealment: recipe.concealment,
+    seatedRequired: recipe.seatedRequired,
+    maximumReachMeters: recipe.maximumReachMeters,
+    minimumVisibility: recipe.minimumVisibility,
+  };
+}
+
 /** Omit secret answers, authored clue text, media, Chronicle content and imported metadata. */
 export function prepareAssistantContext(draft: SpatialDraft, selectedEntityId: string | null) {
   const selected = draft.content.entities.find((entity) => entity.id === selectedEntityId);
   if (selectedEntityId && !selected) reject("ENTITY_MISSING", "Choose an existing object.");
   const entities = selected
-    ? [selected, ...draft.content.entities.filter((entity) => entity.id !== selected.id).slice(0, 7)]
-    : draft.content.entities.slice(0, 16);
-  return {
-    definitionId: draft.content.definitionId,
-    selectedEntityId,
-    totalEntities: draft.content.entities.length,
-    entities: entities.map((entity) => ({
+    ? [selected, ...draft.content.entities.filter((entity) => entity.id !== selected.id).slice(0, 3)]
+    : draft.content.entities.slice(0, 4);
+  const semanticRecipes: NonNullable<ReturnType<typeof assistantRecipeContext>>[] = [];
+  const projectedEntities = entities.map((entity) => {
+    const recipe = assistantRecipeContext(draft, entity.id);
+    let semanticPlacement: number | null = null;
+    if (recipe) {
+      const existing = semanticRecipes.findIndex((entry) => JSON.stringify(entry) === JSON.stringify(recipe));
+      semanticPlacement = existing < 0 ? semanticRecipes.push(recipe) - 1 : existing;
+    }
+    return {
       id: entity.id,
       name: entity.name,
       kind: entity.kind,
@@ -289,10 +383,20 @@ export function prepareAssistantContext(draft: SpatialDraft, selectedEntityId: s
       widthMeters: entity.widthMeters,
       interactions: entity.interactions,
       locked: draft.content.studio?.layers.find((layer) => layer.entityId === entity.id)?.locked ?? false,
-    })),
+      semanticPlacement,
+    };
+  });
+  return {
+    definitionId: draft.content.definitionId,
+    selectedEntityId,
+    totalEntities: draft.content.entities.length,
+    placementPolicy: draft.content.placementPolicy,
+    entities: projectedEntities,
+    semanticRecipes,
     supported: {
       entityKinds: ["PARCHMENT", "TEXT", "MARKER"],
       placements: ["DESK", "WALL", "ENTRANCE", "LOCAL"],
+      semanticSurfaces: ["FLOOR", "TABLE", "DESK", "SHELF", "WALL", "OPEN_SPACE"],
       triggers: ["SCENE_ENTER", "INSPECT", "PICK", "PLACE", "TIMER"],
       actions: ["SHOW", "HIDE", "HIGHLIGHT"],
       materials: false,

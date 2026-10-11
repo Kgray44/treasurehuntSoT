@@ -567,7 +567,7 @@ export function AIQuotaConsole({
               <dt>Legacy adapter</dt>
               <dd>
                 {overview.provider.legacyConfigured
-                  ? "Legacy configuration detected; migration review required"
+                  ? "Legacy configuration detected; network path retired"
                   : "No legacy credential reference"}
               </dd>
             </div>

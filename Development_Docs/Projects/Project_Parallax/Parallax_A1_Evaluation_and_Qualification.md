@@ -93,16 +93,16 @@ or wrong acknowledgements, intervening local edits, account-scope changes, and
 safe quota/reset projections. Its host callback owns the ordinary history and
 marks the acknowledgement already saved. The bounded full-scene acknowledgement
 check includes a supported 32-entity draft larger than the provider response
-budget, without weakening response bounds. The adapter is not mounted, and its
-ASSISTANT/ASSISTANT_APPLY action handlers are not yet installed in the canonical
-route. These checks use mocked HTTP and synthetic host state; they do not prove
+budget, without weakening response bounds. At independent checkpoint `1f5f4b7a`, the adapter was not mounted and its
+ASSISTANT/ASSISTANT_APPLY handlers were not installed. The mounted checkpoint
+below supersedes that implementation status. These checks use mocked HTTP and synthetic host state; they do not prove
 authenticated atomic backend Apply, a real history installation, persistence or
 the full Creator browser journey. Those gates remain pending.
 
-Shared Studio integration, authenticated atomic Apply, legacy network-path
-migration, mounted Assistant browser journeys, motion/viewport package,
+The complete authenticated Assistant browser journey, motion/viewport package,
 ordinary final Sounding Line, PR qualification, live provider canary and owner
-visual review remain pending. The latest verified fetched main is
+visual review remain pending. Canonical integration and atomic Apply now have
+focused source, persistence and mounted DOM proof as recorded below. The latest verified fetched main is
 `0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6` (accepted Phase 3 PR #711, preserving Crossdeck and Pilot); the independent checkpoint still derives
 from `f458bf2dc1176016c2d166180f038f0f15ac9f7c`. No unmerged Phase 3 source was
 imported and no shared development server, account database or real private
@@ -139,3 +139,41 @@ checks across 15 files passed. Documentation and feature validation passed with
 An early check started before generation completed is discarded. Adaptive recipe
 compatibility, atomic Apply, host mounting and the complete browser journey remain
 work to qualify on the integrated candidate. No paid request was made.
+
+### Mounted integration candidate
+
+The accepted-main reconciliation was published in `a4d469bb`. The subsequent
+candidate mounts the Assistant in the existing floating/docked Studio workspace,
+adds its strict actions to the existing authenticated endpoint, retires the
+unmetered legacy network entry, and preserves adaptive recipe/discovery ownership.
+Apply uses the canonical save/CAS implementation and commits a metadata-only
+retry receipt atomically. No additional provider, endpoint, history or content
+store was introduced.
+
+The current focused suite passed 271 checks across 19 files. Six durable Apply
+checks cover a saved revision and receipt, concurrent retries, fresh-server replay,
+receipt-write rollback, changed identities, later Creator work and stale/foreign/
+expired proposals. Ten same-route HTTP checks cover canonical session/CSRF and
+Creator workspace gates, strict parsing, request cancellation, safe allowance/
+configuration output, safe errors and retired legacy actions. Three added mounted
+host checks cover actual adapter/panel integration, preview without writes, one
+acknowledged history installation with no duplicate autosave, byte-identical Undo
+staleness, and locating/selecting a newly proposed object without erasing its preview.
+They use synthetic HTTP/upstream data and isolated SQLite; WebGL is unavailable in
+the DOM test environment, so these checks do not claim rendered 3D pixels.
+
+Both Prisma schemas validate. TypeScript and scoped lint pass. Shared schema
+references and a four-object context bound fit the tested eight-object adaptive
+scene under the unchanged 12,000 conservative input allowance. Full canonical
+scene validation still governs every selected bundle. No paid request occurred.
+The next gates are the complete authenticated built-server Creator journey,
+quota enforcement/browser scenarios, motion/viewport captures and final ordinary
+qualification. Model semantic quality, paid canary and owner visual acceptance
+remain separate from these deterministic checks.
+
+Native fetch subsequently includes closure PR #713 at
+`af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf`, tree
+`2456cb6cf7091048d17d5e5d52b865b97ded9d6e`; direct Git comparison confirms its
+product source matches the Phase 3 product merge. Main has since advanced through
+phone sign-in correction PR #712 as `678dd115`. The next additive reconciliation
+must preserve that accepted correction; no sibling checkout was changed.

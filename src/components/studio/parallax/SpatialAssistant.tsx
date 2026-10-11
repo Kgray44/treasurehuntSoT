@@ -143,6 +143,7 @@ function operationTitle(operation: AssistantOperation) {
     CREATE: "New spatial object",
     CONTENT: "Object details",
     PLACEMENT: "Placement",
+    SEMANTIC_PLACEMENT: "Adaptive placement",
     TRANSFORM: "Position & scale",
     VISIBILITY: "Visibility",
     BEHAVIOR: "Interaction & timing",
@@ -160,6 +161,8 @@ function operationDescription(operation: AssistantOperation, draft: SpatialDraft
       return `${operation.name} · ${operation.placement === "DESK" ? "on a horizontal surface" : operation.placement === "WALL" ? "on a wall" : operation.placement === "ENTRANCE" ? "near the entrance" : "in the local scene"}`;
     case "PLACEMENT":
       return `${name} · ${operation.placement.toLowerCase()}`;
+    case "SEMANTIC_PLACEMENT":
+      return `${name} · ${operation.relativePlacement.toLowerCase()} on ${operation.surface.toLowerCase().replaceAll("_", " ")}${operation.context ? ` near ${operation.context.toLowerCase()}` : ""} · adaptive recipe, calibration review required`;
     case "TRANSFORM":
       return `${name} · position and size adjustment`;
     case "CONTENT":
@@ -273,24 +276,33 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
     ];
   }
   async function showPreview(ids: readonly string[], enabled = true) {
-    if (!proposal) return;
+    if (!proposal) return false;
     try {
       if (enabled) {
+        const base = latest.current;
         const next = await materializeAssistantProposal(
-          latest.current.draft,
-          latest.current.revision,
+          base.draft,
+          base.revision,
           proposal,
           ids,
-          latest.current.editorGeneration,
+          base.editorGeneration,
         );
+        if (
+          latest.current.editorGeneration !== base.editorGeneration ||
+          latest.current.revision !== base.revision ||
+          JSON.stringify(latest.current.draft) !== JSON.stringify(base.draft)
+        )
+          throw new Error("Your scene has changed. Regenerate this proposal to preserve your newer work.");
         latest.current.onPreview(next, affected(ids));
       } else latest.current.onPreview(null, []);
       setPreviewing(enabled);
       setNotice("");
+      return true;
     } catch (cause) {
       latest.current.onPreview(null, []);
       setPreviewing(false);
       setNotice(cause instanceof Error ? cause.message : "Choose a complete set of related changes.");
+      return false;
     }
   }
   async function submit() {
@@ -541,7 +553,15 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                 <p>{operation.explanation}</p>
                 {operation.dependsOn.length > 0 && <small>Includes related changes when applied as a bundle.</small>}
                 {"entityId" in operation && (
-                  <button className={styles.linkButton} onClick={() => props.onSelect(operation.entityId)}>
+                  <button
+                    className={styles.linkButton}
+                    disabled={stale || working || (operation.type === "CREATE" && !selectedIds.includes(operation.id))}
+                    onClick={() =>
+                      void showPreview(selectedIds).then((shown) => {
+                        if (shown) latest.current.onSelect(operation.entityId);
+                      })
+                    }
+                  >
                     Locate object
                   </button>
                 )}

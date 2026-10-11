@@ -8,11 +8,11 @@ last_reviewed: 2026-10-11
 
 # Describe your spatial idea
 
-The A1 Spatial Assistant is an implementation candidate. Its shared Studio
-integration and visual review are pending; this guide describes the candidate
+The A1 Spatial Assistant is an implementation candidate. It is mounted in the candidate Spatial Studio;
+full browser qualification and visual review are pending; this guide describes the candidate
 review experience and does not announce general availability.
 
-Select an object and describe the experience you want. For example: “Move the map
+Open **Ask Parallax** in Spatial Studio, select an object, and describe the experience you want. For example: “Move the map
 near the entrance,” “Add a readable pirate note on the desk,” or “Highlight the
 map one second after someone inspects it.” Send the idea deliberately. Typing,
 selecting another object, and moving around the scene do not send AI requests.
@@ -39,6 +39,11 @@ prepare a new proposal against the current scene.
 Supported proposals create readable text, parchment and markers; adjust object
 details, position, size and placement; configure supported inspect/pick/place
 interactions and timed show/highlight behavior; and improve Guided alternatives.
+In an adaptive scene, proposals can change the preferred surface, nearby entrance,
+furniture or window, relative arrangement and partial concealment. Recipe changes
+require a new calibration review. In a fixed scene, guided controls enable adaptive
+placement when you need those constraints. Ordinary fixed placement stays available.
+
 Physical illumination, particle effects, custom materials and automatic
 recognition need capabilities the Assistant cannot supply. It explains the
 limitation or suggests a supported alternative.
@@ -51,7 +56,8 @@ unconfigured, disabled, temporarily unreachable, or at an allowance limit. You
 can continue editing manually.
 
 Your submitted instruction, up to two relevant previous task turns and bounded
-scene context are sent for interpretation. The submitted instruction is retained
+scene context (up to four objects) are sent for interpretation. Select the relevant
+object when working with a larger scene. The submitted instruction is retained
 with its private proposal for the administrator-configured retention period;
 the default is 30 days. It does not appear in general usage reports or browser
 storage. Existing clue text, private Guided descriptions, media and other
