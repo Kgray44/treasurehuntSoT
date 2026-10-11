@@ -48,7 +48,7 @@ export function pilotLandfall(taleId: string) {
         id: "pilot-course",
         name: "The returning tide",
         model: "FLEXIBLE",
-        waypointIds: places.filter((p) => !p.hidden).map((p) => p.id),
+        waypointIds: ["pilot-desk", "pilot-light", "pilot-landing"],
         geometry: {
           type: "ROUTE_LINE",
           points: places.filter((p) => !p.hidden).map((p) => virtualCoordinate(p.x, p.y)),
@@ -100,7 +100,7 @@ export function pilotChapters(taleId: string): StudioDraftInput["chapters"] {
       "livingChart",
       "Pass the Chart",
       "Carry the course to the lighthouse",
-      "Open the chart, then close its drawer and use Send to… to choose your phone and Continue there. On the phone choose Receive; the chart passes only when it opens there. Explore the same course on the companion. Prefer one screen? Keep the chart here and continue.",
+      "Open the chart, then close its drawer and use Send to… to choose your phone and Control there. On the phone choose Receive; the chart passes only when it opens there. Explore the same course on the companion. Prefer one screen? Keep the chart here and continue.",
     ],
     [
       "bearing",

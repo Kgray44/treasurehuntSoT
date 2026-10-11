@@ -18,6 +18,7 @@ last_reviewed: 2026-10-10
 
 ### Added
 
+- Added the gated synthetic Lost Navigator’s Chart pilot: canonical spatial publication and fictional Living Chart, replay-preserving Voyage provisioning, optional Sextant compass, real Crossdeck controls and one Reach/Pilot owner feedback session. Software qualification and owner/physical acceptance remain separate; see the [pilot record](Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md).
 - Sextant Phase 3 local candidate adds calibrated field semantics, relative pressure/step context, media capability lifecycle, optional bounded BLE/NFC, authenticated peer/ranging contracts, safe magnetic reference controls and Drydock requirements. The [implementation receipt](Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) distinguishes D0/D1 software proof from native/physical/owner and protected-mainline gates.
 - Crossdeck Phase 2 candidate adds durable presentation synchronization, explicit
   manual Send to and destination acknowledgement, focus/custody and companion

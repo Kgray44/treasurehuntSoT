@@ -8,6 +8,8 @@ last_reviewed: 2026-10-10
 
 # Current status
 
+The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) has an isolated synthetic implementation candidate combining accepted spatial/device contracts with one guided Reach/Pilot owner session. Complete automated qualification, protected integration and owner/physical acceptance are separate pending gates.
+
 Reach Phase 1 has an owned implementation candidate for a local camera/synthetic hand laboratory and independent calibration. It is not physically qualified or phase-complete. The [implementation record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md) retains software evidence, the failed live-camera attempt and integration status.
 
 Sextant Phase 2 device context, Crossdeck Phase 1 secure surface participation, and Parallax Phase 1 Chronicle Lens/Guided View are implemented on protected main through PRs #691, #692 and #693. The [boundary correction receipt](../../Device_Lab/Sextant_Parallax_Correction_Receipt.md) tracks the scoped post-mainline repairs. Native camera/tracking availability is capability-dependent; software status does not close physical-device, field or owner acceptance gates.

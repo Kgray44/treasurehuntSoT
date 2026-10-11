@@ -8,6 +8,7 @@ import { closureAccount, authenticateClosure, enterClosureJournal, openClosureMa
 import { STALE_MS } from "../../src/crossdeck/contracts";
 
 test.describe.configure({ mode: "serial", timeout: 300000 });
+test.use({ actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
 const evidence = "artifacts/spatial-pilot/screenshots";
 const ownerId = "spatial-pilot-navigator";
@@ -70,6 +71,7 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       p = await phone.newPage();
     await d.goto("/dev/spatial-pilot");
     await expect(d.getByRole("heading", { name: "The Lost Navigator’s Chart", exact: true })).toBeVisible();
+    await capture(d, "owner-session-unprepared");
     const before = await db.chronicle.count();
     const unauthorized = await outsider.request.post(`${baseURL}/api/dev/spatial-pilot`, {
       data: { action: "provision" },
@@ -82,11 +84,22 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     const other = await closureAccount("Synthetic Pilot unauthorized navigator");
     await authenticateClosure(outsider, other, baseURL!);
     expect((await outsider.request.get(`${baseURL}/dev/spatial-pilot`)).status()).toBe(404);
-    const response = await d.request.post(`${baseURL}/api/dev/spatial-pilot`, {
-      headers: { "x-csrf-token": session.csrfToken },
-      data: { action: "provision" },
-      timeout: 120000,
-    });
+    await d.route("**/api/dev/spatial-pilot", (route) =>
+      route.fulfill({
+        status: 503,
+        contentType: "application/json",
+        body: JSON.stringify({ error: "Simulated temporary preparation failure. Try again." }),
+      }),
+    );
+    await d.getByRole("button", { name: "Prepare the adventure", exact: true }).click();
+    await expect(d.getByRole("status")).toContainText("Simulated temporary preparation failure");
+    await capture(d, "owner-preparation-error-simulated");
+    await d.unroute("**/api/dev/spatial-pilot");
+    const preparedResponse = d.waitForResponse(
+      (r) => r.url().endsWith("/api/dev/spatial-pilot") && r.request().method() === "POST",
+    );
+    await d.getByRole("button", { name: "Prepare the adventure", exact: true }).click();
+    const response = await preparedResponse;
     expect(response.ok(), await response.text()).toBe(true);
     const prepared = await response.json();
     const replay = await d.request.post(`${baseURL}/api/dev/spatial-pilot`, {
@@ -161,7 +174,7 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await d.getByRole("button", { name: "Open Chronicle Lens", exact: true }).first().click();
     const lens = d.getByRole("dialog", { name: "Iona Morrow’s last parchment" });
     await expect(lens.getByText("Guided View", { exact: true })).toBeVisible();
-    await lens.getByRole("button", { name: "Inspect", exact: true }).click();
+    await lens.getByRole("button", { name: "Inspect", exact: true }).first().click();
     await capture(d, "journal-spatial-message");
     await lens.getByRole("button", { name: "Close Chronicle Lens" }).click();
     await continueStory();
@@ -218,6 +231,7 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     if (await closeAgain.isVisible()) await closeAgain.click();
     await continueStory();
     await d.getByText("Morrow’s compass", { exact: true }).click();
+    await capture(d, "compass-capability-state");
     await d.getByRole("button", { name: "Read the compass rose", exact: true }).click();
     await expect(d.getByText(/Beyond the northern light, the returning tide/)).toBeVisible();
     await capture(d, "compass-alternative");
@@ -240,7 +254,17 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await d.getByLabel("Authoring mode").selectOption("DETAILED");
     await capture(d, "studio-detailed-desktop");
     await d.getByLabel("Authoring mode").selectOption("ENGINEERING");
+    await expect(d.getByLabel("Behavior 1 trigger")).toHaveValue("INSPECT");
     await capture(d, "studio-engineering-desktop");
+    await d
+      .getByRole("complementary", { name: "Spatial Library", exact: true })
+      .screenshot({ path: `${evidence}/studio-library.png` });
+    await d
+      .getByRole("region", { name: "Scene graph", exact: true })
+      .screenshot({ path: `${evidence}/studio-scene-graph.png` });
+    await d
+      .getByRole("region", { name: "Behavior timeline", exact: true })
+      .screenshot({ path: `${evidence}/studio-behavior-timeline.png` });
     await d.getByRole("combobox", { name: "Preview", exact: true }).selectOption("PHONE");
     await capture(d, "studio-phone-viewpoint");
     await d.getByRole("combobox", { name: "Preview", exact: true }).selectOption("REMOTE");

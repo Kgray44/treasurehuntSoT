@@ -107,6 +107,36 @@ async function preparePilot(ownerAccountId: string, origin: string, replay: bool
     spatial.content.entities[0].alternativeText =
       "A parchment bearing Iona Morrow’s message. Inspect it in Guided View.";
     spatial.content.fallback.narrative = spatial.content.entities[0].content;
+    const parchment = spatial.content.entities[0];
+    parchment.widthMeters = 0.36;
+    spatial.content.entities.push({
+      ...structuredClone(parchment),
+      id: `${spatial.content.definitionId}:compass`,
+      kind: "MARKER",
+      name: "Morrow’s Brass Compass",
+      widthMeters: 0.18,
+      transform: { ...structuredClone(parchment.transform), position: { x: 0.38, y: 0, z: 0 } },
+      content: "N · The northern light welcomes the returning tide.",
+      alternativeText: "A brass compass rose pointing toward the northern light.",
+    });
+    spatial.content.studio!.layers.push({
+      entityId: spatial.content.entities[1].id,
+      tags: ["bearing"],
+      visible: true,
+      locked: false,
+      selectable: true,
+      audience: "BOTH",
+    });
+    spatial.content.studio!.behaviors = [
+      {
+        id: `${spatial.content.definitionId}:read-bearing`,
+        trigger: "INSPECT",
+        sourceEntityId: parchment.id,
+        delayMs: 0,
+        targetEntityId: spatial.content.entities[1].id,
+        action: "HIGHLIGHT",
+      },
+    ];
     const revision = await saveSpatialDraft(ownerAccountId, spatial, 0);
     const release = await releaseSpatialVersion(ownerAccountId, spatial.content.definitionId, revision);
     const current = await getStudioTale(taleId);

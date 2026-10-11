@@ -97,6 +97,8 @@ export function PilotCompass() {
           fallbackLabel="Read the compass rose"
           onAlternative={() => {
             generation.current++;
+            void release.current?.();
+            release.current = null;
             setRevealed(true);
           }}
           onReady={() => void start()}
