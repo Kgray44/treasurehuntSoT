@@ -81,6 +81,12 @@ exponential backoff with jitter while HTTP reconciliation remains available.
 Hidden/page-exit/offline views close their channel and timers; unmount and session
 replacement abort requests and suppress old callbacks and command results.
 
+Crew display content requests also have their own lifetime and generation guard.
+Selecting a newer presentation aborts the old request; Voyage replacement creates
+a fresh display session and clears the former content. Periodic authorization
+failure aborts pending content. Stale periodic refreshes cannot overwrite a newer
+presentation. These guards preserve the existing crew-only canonical view route.
+
 ## Validation and measurement
 
 Focused development passes include the retained Phase 1/2 service, API, object,
@@ -177,7 +183,7 @@ and the [additional forward measurement](realtime-evidence-20261011/crossdeck.ph
 retain exact source and boundaries. This is Playwright-visible DOM evidence;
 three transfers do not support a meaningful p95/p99 or physical display claim.
 
-Focused development: **67 tests / 11 files**, TypeScript, affected-file lint,
+Initial focused development: **67 tests / 11 files**, TypeScript, affected-file lint,
 privacy scan, documentation/catalog validation and **58 Sounding Line registration
 regressions** pass. A clean-source rerun of the canonical service suites passes
 **29 tests / two files**, including both Phase 1 and both Phase 2 shared Device Lab
@@ -188,6 +194,18 @@ also pass on that clean source. The supplement retains [Phase 2 handoff D1](real
 and [disconnect D1](realtime-evidence-20261011/phase2-crossdeck.phone-disconnect-D1.json)
 receipts on `6f7c5026`, plus checksum-matched [handoff](realtime-evidence-20261011/crossdeck.surface-handoff-D1.png)
 and [disconnect](realtime-evidence-20261011/crossdeck.phone-disconnect-D1.png) screenshots.
+
+After publishing the measurement candidate, two additional race probes fail on
+its unchanged crew-display source: an obsolete asynchronous response overwrites
+a newer view, and the old request has no abort signal on Voyage replacement.
+The scoped display correction keys the session by Voyage and aborts/guards
+content requests and periodic refreshes. Both failing probes pass after repair;
+an additional test covers authorization loss with a pending response. The complete
+Crossdeck suite passes **70 tests / 12 files** with TypeScript and affected-file
+lint passing. Original
+red output remains under `artifacts-crossdeck-display-race-red.log`; no failed
+run is relabeled as passing. Final regression and protected qualification bind
+the corrected head separately from the earlier transport measurements.
 
 ## Protected qualification and integration
 
