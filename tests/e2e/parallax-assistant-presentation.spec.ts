@@ -187,8 +187,12 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
     proposalAccessibility.violations.filter(({ impact }) => ["serious", "critical"].includes(impact ?? "")),
   ).toEqual([]);
   await capture(page, "light-theme-proposal");
-  await submit("Synthetic provider failure for recovery review.");
+  // Known upstream rejection releases its reservation. Consume the allowance
+  // with settled responses, rather than treating an unbilled failure as usage.
+  await submit("Explain an unsupported glowing particle effect.");
+  await submit("Explain an unsupported glowing particle effect.");
   await expect(assistant).toContainText("1 of 5 requests remaining");
+  await expect(assistant).toContainText("You’re nearing this month’s allowance.");
   await capture(page, "creator-quota-warning-light");
   await submit("Explain an unsupported glowing particle effect.");
   await expect(assistant).toContainText("0 of 5 requests remaining");
