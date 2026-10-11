@@ -3,7 +3,7 @@ title: Project Sextant engineering home
 audience: product-engineering
 status: current
 canonical_for: project-sextant-engineering-home
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Project Sextant
@@ -46,7 +46,7 @@ Sextant does **not** own:
 
 ## Current implementation status
 
-**Phases 1-2 are implemented on protected main.** [Phase 3](../../Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) has an isolated local software candidate; protected mainline, native/physical qualification and owner acceptance remain separate. Phases 4-5 remain unimplemented.
+**Phases 1-3 are implemented on protected main.** [Phase 3](../../Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) integrated through protected PR #701, commit `787d406b382f251baa691a536cdaa41446e8e0ac`, with required hosted qualification and landed software smoke. Native/physical qualification and owner acceptance remain separate. Phases 4-5 remain unimplemented at this source baseline.
 
 See the [current implementation and compatibility record](../../Engineering/Sextant/README.md) for capability contracts, provider/permission/lease behavior, Landfall inventory, D0 scenarios and the acceptance boundary. Current consumers retain their accepted behavior. [Phase 2 evidence](../../Engineering/Sextant/Project_Sextant_Phase_2_Implementation_Receipt.md) and the [boundary correction receipt](../../Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) distinguish software qualification from physical/native and owner acceptance.
 

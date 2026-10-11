@@ -5,6 +5,7 @@ import { canonicalChecksum } from "@/drydock/canonical";
 import { validateSpatialMoment } from "./publication";
 import { evaluateSpatialEvidence } from "./evidence";
 import { receiptSchema, spatialId } from "./contracts";
+import { resolutionIdentity } from "./adaptive";
 
 /** Callers authorize Player membership first. Projection is restricted to released passages. */
 export async function loadReleasedSpatialMoment(sessionId: string, actorId: string, blockId: string) {
@@ -34,9 +35,61 @@ export async function loadReleasedSpatialMoment(sessionId: string, actorId: stri
   const block = snapshot.chapters.flatMap((c) => c.blocks).find((b) => b.id === blockId);
   if (!block?.presentation?.spatialMoment) throw new Error("PARALLAX_MOMENT_NOT_FOUND");
   const moment = validateSpatialMoment(block.presentation.spatialMoment, blockId);
+  let decision: { id: string; seed: string } | undefined;
+  if (moment.version.adaptive) {
+    const v = moment.version;
+    const identity = resolutionIdentity(v.placementPolicy, {
+      definitionId: v.definitionId,
+      versionId: v.id,
+      versionChecksum: v.checksum,
+      crewId: sessionId,
+      runId: sessionId,
+      actorId,
+      lifecycleId: v.adaptive!.lifecycle === "DEFINITION" ? v.definitionId : sessionId,
+      variant: v.adaptive!.variant,
+    });
+    const scopeKey = canonicalChecksum(identity.logicalIdentity);
+    decision = await db.parallaxResolutionDecision.upsert({
+      where: { scopeKey },
+      update: {},
+      create: {
+        scopeKey,
+        definitionId: v.definitionId,
+        versionId: v.id,
+        versionChecksum: v.checksum,
+        policy: v.placementPolicy,
+        seed: identity.seed,
+      },
+      select: { id: true, seed: true },
+    });
+  }
   return {
     moment,
-    binding: { sessionId, chronicleVersionId: session.version.id, blockId, actorId, runId: sessionId },
+    ...(moment.version.adaptive
+      ? {
+          fieldObservationId:
+            (
+              await db.parallaxFieldObservation.findFirst({
+                where: {
+                  sessionId,
+                  actorId,
+                  versionId: moment.version.id,
+                  withdrawnAt: null,
+                  expiresAt: { gt: new Date() },
+                },
+                select: { id: true },
+              })
+            )?.id ?? null,
+        }
+      : {}),
+    binding: {
+      sessionId,
+      chronicleVersionId: session.version.id,
+      blockId,
+      actorId,
+      runId: sessionId,
+      ...(decision ? { resolutionSeed: decision.seed, resolutionDecisionId: decision.id } : {}),
+    },
     replayOnly: session.status !== "ACTIVE" || session.currentBlockId !== blockId || released.progress !== "active",
   };
 }

@@ -16,7 +16,7 @@ Current provider evidence: official Responses structured output text.format cont
 
 Owner steering 2026-10-11: local Windows credentials use only server `process.env.OPENAI_API_KEY`, shared from the Windows user environment with no per-worktree credential file. Cloud Personal Vault is separate. The existing Windows user variable is configured but this Codex process requires environment refresh/restart; fresh zero-network child probes passed from three checkout directories against the A1 adapter. Keep paid canary authorization separate from configured credentials. Per-user AI policy controls moved to the existing People account dossier; remove duplicate AI Users search/tab/endpoint. Global policy/spending/provider health remain in AI Usage & Quotas.
 
-Bilateral interface amendment: ACCEPT Phase 3 generation and canonical-save acknowledgement requirements as recorded in `parallax-a1-studio-interface.md`. Shared integration stays HELD until accepted canonical Phase 3 source exists. No chat messaging is authorized solely by coordination relays.
+Bilateral interface amendment: ACCEPT Phase 3 generation and canonical-save acknowledgement requirements as recorded in `parallax-a1-studio-interface.md`. The accepted-source prerequisite was cleared by protected PR #711; canonical integration is now in progress. No chat messaging is authorized solely by coordination relays.
 
 Independent source checkpoint published in draft PR #710: SHA `057c92877e61dd7852ff2c994c8d1d236a684514`, tree `7b3af8d5e944b24dc250226f3cae7001142eab0e`, lock hash `a2f4140400648da7810670a7ef677e04d526628a8f66a98efcc180f5eef74014`, Node 24.18.0/npm 11.9.0. Local focused suite: 177/177, typecheck/lint/docs/catalog PASS. Generic isolated built-server quota/dossier browser PASS; zero paid calls and owned runtime cleanup confirmed. The later global-policy journey extension needs its own receipt. No cloud executor dispatch occurred.
 
@@ -38,3 +38,16 @@ checks (fourteen adapter checks including a bounded full-scene acknowledgement),
 typecheck/lint and docs/catalog validation. Publish it before the original exact
 additive mainline reconciliation. This is A1's owned merge only; the sibling
 checkout remains protected. Final integrated acceptance is still unproven.
+
+The exact additive merge with accepted main `0327eeb7` preserves all 224 accepted
+models and the five independent A1 models in both schemas. Source merged without
+conflicts; four document conflicts retain both accepted main and A1 updates.
+Dependencies and Prisma client were refreshed before validation. The reconciled
+tree passed TypeScript, 233 checks across 15 files, documentation validation and
+feature synchronization/validation (66 entries). Lock SHA-256 is
+`1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373`.
+An early type check started before generated dependencies were ready is discarded.
+The next integration work must reconcile Assistant create/placement with adaptive
+recipes and calibration invalidation, commit canonical Apply and its retry receipt
+atomically, close the unmetered legacy network path, and mount the accepted host.
+These focused checks do not establish full A1 qualification or physical acceptance.

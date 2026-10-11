@@ -111,6 +111,7 @@ describe("Homeport Phase 2 navigation authority", () => {
       ["/player/library", "WORKSPACE_STANDARD"],
       ["/captain/sessions/session-1", "COMPACT"],
       ["/player/playthroughs/voyage-1/journal", "IMMERSIVE"],
+      ["/studio/parallax", "IMMERSIVE"],
       ["/sign-in", "AUTHENTICATION"],
       ["/player/sign-in", "AUTHENTICATION"],
       ["/reset-password", "TOKENIZED"],

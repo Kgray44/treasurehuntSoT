@@ -1,0 +1,41 @@
+{
+  "baselineSha": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+  "currentSha": "6f7c5026df9ee28bd43b573b3ddf0bf6a269a44d",
+  "dirtySource": false,
+  "lockfileSha256": "a2f4140400648da7810670a7ef677e04d526628a8f66a98efcc180f5eef74014",
+  "runtime": "v24.18.0",
+  "cohorts": [],
+  "qualification": "D1_BROWSER_HTTP_TRANSPORT_ONLY_NOT_PHYSICAL",
+  "measurementScope": "ACTIVE_AND_RECOVERY_SUPPLEMENT",
+  "commandRequestToSnapshotMs": {
+    "samples": 20,
+    "p50": 77,
+    "p95": 98,
+    "p99": 105,
+    "scope": "includes command HTTP round-trip, canonical fetch and driver callback; not physical display paint"
+  },
+  "activeChangeLoad": {
+    "commands": 20,
+    "explicitSequenceSnapshotReads": 20,
+    "notificationSnapshotReads": 40,
+    "eventNotifications": 40,
+    "eventConnectionsOpened": 0,
+    "callbackWindowMs": 1743,
+    "backendSampleWindowMs": 3010,
+    "observedSqlQueries": 3582,
+    "cpuMs": 2343,
+    "scope": "actual HTTP commands; authorized sequence fetches plus subscribed fetches; sampled window includes periodic authority checks"
+  },
+  "crossProcessCommandToSnapshotMs": 2045,
+  "networkRestoreToSnapshotMs": 124,
+  "controlledForegroundToSnapshotMs": 121,
+  "lifecycleScope": "D1 controlled visibility events and actual offline network; not OS suspension",
+  "reloadAndReconcileMs": 139,
+  "concurrentFocus": {
+    "statuses": [200, 200],
+    "convergedRevision": 25,
+    "winner": "one canonical per-family focus; no browser-local writer"
+  },
+  "droppedNotificationRecoveryMs": 10012,
+  "revocation": "active event channel ended; canonical snapshot returned 401"
+}

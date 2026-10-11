@@ -3,6 +3,31 @@
   "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "pathMappings": [
     {
+      "path": "src/spatial-pilot/**",
+      "suiteIds": ["unit.spatial-pilot", "browser.spatial-pilot", "browser.reach", "static.core"],
+      "contractIds": ["spatial-pilot.experience", "reach.phase1.foundation"]
+    },
+    {
+      "path": "src/app/dev/spatial-pilot/**",
+      "suiteIds": ["unit.spatial-pilot", "browser.spatial-pilot", "static.core"],
+      "contractIds": ["spatial-pilot.experience"]
+    },
+    {
+      "path": "src/app/api/dev/spatial-pilot/**",
+      "suiteIds": ["unit.spatial-pilot", "browser.spatial-pilot", "static.core"],
+      "contractIds": ["spatial-pilot.experience"]
+    },
+    {
+      "path": "scripts/spatial-pilot/**",
+      "suiteIds": ["unit.spatial-pilot", "browser.spatial-pilot", "static.core"],
+      "contractIds": ["spatial-pilot.experience"]
+    },
+    {
+      "path": "tests/e2e/spatial-chronicle-pilot.spec.ts",
+      "suiteIds": ["browser.spatial-pilot"],
+      "contractIds": ["spatial-pilot.experience"]
+    },
+    {
       "path": "src/watchglass/hand-observation.ts",
       "suiteIds": ["unit.reach", "static.core", "browser.reach"],
       "contractIds": ["reach.phase1.foundation"]
@@ -4943,6 +4968,10 @@
     }
   ],
   "contractMappings": [
+    {
+      "contractId": "spatial-pilot.experience",
+      "suiteIds": ["unit.spatial-pilot", "browser.spatial-pilot"]
+    },
     {
       "contractId": "landfall.device-lab-evidence",
       "suiteIds": ["unit.landfall-device-lab"]

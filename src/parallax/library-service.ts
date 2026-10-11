@@ -7,6 +7,7 @@ import { requireOwnedStudioTale } from "@/chronicle/studio-authorization";
 import { getStudioTale, saveStudioDraft, DraftConflictError } from "@/chronicle/studio-service";
 import type { JsonObject } from "@/chronicle/types";
 import type { SpatialVersion, SpatialMoment } from "./contracts";
+import { assertCalibrationClaim } from "./field-service";
 
 export const spatialItemKind = "PARALLAX_STUDIO";
 export type SpatialLibraryRecord = {
@@ -59,6 +60,7 @@ export async function assertSpatialDraftAccess(draft: SpatialDraft) {
 }
 export async function saveSpatialDraft(ownerAccountId: string, raw: unknown, revision: number): Promise<number> {
   const draft = draftSchema.parse(raw);
+  await assertCalibrationClaim(ownerAccountId, draft);
   await assertSpatialDraftAccess(draft);
   const id = draft.content.definitionId;
   const envelope = JSON.stringify(draft);
@@ -135,6 +137,7 @@ export async function releaseSpatialVersion(ownerAccountId: string, definitionId
   const record = (await listSpatialItems(ownerAccountId)).find((i) => i.id === definitionId);
   if (!record) throw new Error("Spatial item unavailable.");
   await assertSpatialDraftAccess(record.draft);
+  await assertCalibrationClaim(ownerAccountId, record.draft);
   const number = record.releases.length + 1;
   const moment = materializeLibraryMoment(record.draft, ownerAccountId, number);
   await db.$transaction(async (tx) => {

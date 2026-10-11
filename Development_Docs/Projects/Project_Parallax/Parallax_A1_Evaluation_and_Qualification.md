@@ -121,3 +121,21 @@ This is a focused development checkpoint, not the final ordinary Sounding Line o
 At source `7db9e0ed575cec68ab9c73803932bbb790aab1f1`, tree `f91ee26ee0de3aa1105174865d41830bb583aa06`, the same isolated browser journey also changed the global cap from $10 to $8 through exact preview, password assurance and confirmation, verified the durable global policy receipt, and kept assistance disabled. The full expanded journey passed. Runtime receipt SHA-256 is `5f630aec04c224c5aaf3340d9f134a44e9622c90b5b35db8bc0c191d3d3a8386`; the retained mobile capture is `b8f3d61772522f5087980928f795140a9ff05613c97b0b1d08ca24e8cb63a62c`. These files are copied under ignored `tmp/parallax-a1/checkpoint-7db9e0ed` before further validation. Owned ports 63667/63668 have no remaining listeners. No paid call or cloud executor test was dispatched.
 
 The initial candidate's 177 focused checks remain applicable to unchanged implementation modules; the expanded journey and its production build also perform full TypeScript qualification. Later documentation-only commits do not replace the explicit browser-source binding. The final ordinary full-feature gate remains deferred to completed canonical integration.
+
+### Accepted main reconciliation
+
+Protected PR #711 merged as `0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6`,
+tree `36529aefcac815a8a1cef0434624149b9b567e6f`. Its ordinary run `38171123906`
+and job `114563773604` succeeded. This clears the A1 canonical-source prerequisite;
+that Phase 3 receipt is not A1 qualification. The owned additive merge preserves
+all 224 accepted models and all five A1 models in each schema, and retains the
+accepted Studio, route and Library implementations before mounting work begins.
+Four documentation conflicts were resolved by retaining both sets of updates.
+
+After dependency installation and Prisma generation, TypeScript and 233 focused
+checks across 15 files passed. Documentation and feature validation passed with
+66 catalog entries. Lock SHA-256 is
+`1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373`.
+An early check started before generation completed is discarded. Adaptive recipe
+compatibility, atomic Apply, host mounting and the complete browser journey remain
+work to qualify on the integrated candidate. No paid request was made.

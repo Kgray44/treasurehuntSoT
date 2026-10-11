@@ -3,6 +3,7 @@ import type { Prisma, PrismaClient } from "@prisma/client";
 import { CrossdeckError, presence } from "./contracts";
 import { authority, membership, surface, type Actor } from "./service";
 import { resolveCrossdeckObject } from "./objects";
+import { committedChanges } from "./notifications";
 import {
   emptyDeck,
   objectKey,
@@ -32,6 +33,8 @@ export function createCrossdeckSyncService(
   db: PrismaClient,
   clock = () => new Date(),
   resolve: Resolver = resolveCrossdeckObject,
+  notify: (change: { accountId: string; voyageId: string; revision: number }) => void = (change) =>
+    committedChanges.publish(change),
 ) {
   async function transact<T>(fn: (tx: Store) => Promise<T>): Promise<T> {
     try {
@@ -158,12 +161,19 @@ export function createCrossdeckSyncService(
     };
   }
   return {
-    read(actor: Actor, voyageId: string, id: string) {
-      return transact((tx) => snapshot(tx, actor, voyageId, id, clock()));
+    async read(actor: Actor, voyageId: string, id: string) {
+      const next = await transact((tx) => snapshot(tx, actor, voyageId, id, clock()));
+      // Includes committed reconciliation changes. Consumers discard unchanged revisions.
+      try {
+        notify({ accountId: actor.accountId, voyageId, revision: next.revision });
+      } catch {
+        /* Hints recover durably. */
+      }
+      return next;
     },
     async command(actor: Actor, input: SyncCommand) {
       const now = clock();
-      await transact(async (tx) => {
+      const committedRevision = await transact(async (tx) => {
         const { own, row, state } = await load(tx, actor, input.voyageId, input.surfaceId, now);
         if (!active(own, now)) conflict("Return to this device before sending or receiving.");
         await reconcile(tx, actor, input.voyageId, state, now);
@@ -172,7 +182,7 @@ export function createCrossdeckSyncService(
         if (prior) {
           if (prior.digest !== digest || prior.surfaceId !== input.surfaceId)
             conflict("That request was already used.");
-          return;
+          return null;
         }
         if (input.sequence !== (state.sequences[input.surfaceId] ?? 0) + 1)
           conflict("This device needs to reconnect before trying again.");
@@ -325,8 +335,17 @@ export function createCrossdeckSyncService(
         });
         state.messages = state.messages.slice(-128);
         await persist(tx, row, state);
+        return row.revision + 1;
       });
-      return transact((tx) => snapshot(tx, actor, input.voyageId, input.surfaceId, clock()));
+      // Database commit is complete even if the subsequent authorized snapshot fails.
+      if (committedRevision !== null) {
+        try {
+          notify({ accountId: actor.accountId, voyageId: input.voyageId, revision: committedRevision });
+        } catch {
+          /* Snapshot recovery remains authoritative. */
+        }
+      }
+      return this.read(actor, input.voyageId, input.surfaceId);
     },
   };
 }

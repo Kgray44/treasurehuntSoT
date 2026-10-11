@@ -2285,7 +2285,89 @@ Bounded field, media and nearby capability contracts provide local device contex
 
 ---
 
+## FT-B110 - Spatial Chronicle Pilot and Consolidated Owner Sea Trials
+
+**Status:** MAINLINE
+**Program or subsystem:** Spatial Chronicle Pilot
+
+An authorized synthetic adventure connects published One Voyage story progression, a fictional Living Chart, versioned spatial clues, genuine companion handoff and recovery, optional heading, and one Reach/Pilot owner feedback session.
+
+### Important subfeatures
+
+- Ten canonically authored and published story passages with a preserved immutable edition
+- Fictional virtual chart, recorded discoveries and a hidden harbor reveal
+- Creator-owned Spatial Library version with parchment, compass and inspection behavior
+- Same-person desktop/phone pairing, receiver acknowledgement, custody and recovery
+- Consent-based trustworthy heading with a meaning-preserving screen alternative
+- Twelve guided owner activities with local edition-bound feedback and one JSON export
+- Owned persisted preview setup and replay through canonical Captain cancellation
+
+### Primary surfaces
+
+`/dev/spatial-pilot`, `/player/playthroughs/[playthroughId]/journal`, `/studio/parallax`, `/devices/reach`
+
+### Meaningful limitations
+
+- Entry requires the explicit isolated preview environment and exact synthetic owner; it is not a publicly advertised Chronicle.
+- Owner experience acceptance and physical Reach/camera/heading acceptance remain pending.
+- Phone camera and motion require a trusted reachable secure context; network HTTP supports the conventional story and manual transfer path.
+- Desktop/mobile Chromium emulation and synthetic Device Lab evidence do not establish Android/iOS simulator, physical AR, exposure-to-display latency, or field proof.
+- Reach estimates pointing; gesture selection/manipulation, shared adaptive staging and Air Handoff remain outside this pilot.
+
+### Evidence
+
+- commit: `37ac0fc5238b66f3b46608a6de010038056d067b`
+- path: `src/spatial-pilot/service.ts`
+- test: `tests/e2e/spatial-chronicle-pilot.spec.ts`
+- completion-record: `Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md`
+
+---
+
 # Completed Branch Features Not Yet Available on Main
+
+## FT-B111 - Parallax Adaptive Semantic Staging and Discovery
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Parallax Phase 3
+
+Creators author multi-object semantic scenes remotely, preview differing safe arrangements, publish stable version-bound logical placement policies, and provide bounded accessible discovery with optional consented metadata calibration in the refined 3D workstation.
+
+### Important subfeatures
+
+- Typed semantic surfaces, context, safety, accessibility and fallback recipes
+- Deterministic unsafe-first multi-entity staging with bounded scene budgets and conflict diagnostics
+- Sticky, crew, run, variant and calibrated policies with durable logical decisions
+- Provider-independent guided remote authoring and reviewable supported phrase preview
+- Real 3D editing with four workspace layouts, adaptive resizable docks and account-scoped presentation preferences
+- Meaningful search timers, progressive hints, exact reveal and accessible canonical completion paths
+- Optional minimized field metadata with consent, withdrawal, retention, authorized sequential review and immutable calibration releases
+- Separate simulated and self-reported quality summaries with actionable Creator guidance
+- Shared Device Lab runtime and field-service packs plus complete Creator and Player publication/republication browser journeys
+
+### Primary surfaces
+
+`/studio/parallax`, `/player/voyages/[playthroughId]`
+
+### Meaningful limitations
+
+- Physical AR accuracy, actual field reliability, representative-device performance and cross-device physical alignment are not established by synthetic software proof.
+- Native semantic candidate acquisition is unavailable; existing adapters degrade to Guided rather than invent geometry.
+- Physical provenance is self-reported; simulation cannot promote physical maturity and neither establishes certified hardware attestation.
+- Automatic room-image transfer is disabled until certified local person/face screening and the approved protected-media purpose are available.
+- Live AI-provider quality, separately owned Assistant A1 integration and unsupported imported renderers remain unavailable or unqualified.
+
+### Evidence
+
+- commit: `f521aaacf0f285ced5ffa3013d5de387d5b242f3`
+- path: `src/parallax/adaptive.ts`
+- path: `src/parallax/field-service.ts`
+- test: `src/parallax/adaptive.test.ts`
+- test: `src/parallax/field-service.test.ts`
+- test: `tests/e2e/parallax-adaptive.spec.ts`
+- test: `tests/e2e/parallax-workstation.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md`
+
+---
 
 # Deliberately Excluded Until Complete
 

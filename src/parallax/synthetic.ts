@@ -1,6 +1,7 @@
 import { composeTransform } from "./transforms";
 import { identityTransform, type Anchor, type Transform } from "./contracts";
 import type { SpatialRuntimeAdapter, SpatialRuntimeEvent } from "./runtime";
+import type { EnvironmentEvidence } from "./adaptive";
 
 /** Device Lab only. A deterministic pose never becomes native-device evidence. */
 export class SyntheticSpatialAdapter implements SpatialRuntimeAdapter {
@@ -11,7 +12,13 @@ export class SyntheticSpatialAdapter implements SpatialRuntimeAdapter {
   active = false;
   renders = 0;
   private emit: ((event: SpatialRuntimeEvent) => void) | undefined;
-  constructor(private readonly surface: Transform | null = identityTransform()) {}
+  constructor(
+    private readonly surface: Transform | null = identityTransform(),
+    private readonly evidence: EnvironmentEvidence | null = null,
+  ) {}
+  async environmentEvidence() {
+    return this.evidence;
+  }
   async start(c: { signal: AbortSignal; emit: (event: SpatialRuntimeEvent) => void }) {
     if (c.signal.aborted) throw new Error("ABORTED");
     this.active = true;
