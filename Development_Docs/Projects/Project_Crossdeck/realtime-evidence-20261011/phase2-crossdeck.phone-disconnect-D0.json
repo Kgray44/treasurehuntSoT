@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "scenarioId": "crossdeck.phone-disconnect",
+  "scenarioVersion": 1,
+  "owningProject": "CROSSDECK",
+  "scenarioFingerprint": "04642929d70167e5450a47b3c2fb35939cf4fab5a0349f03a50293c7ce063c6f",
+  "source": {
+    "sourceSha": "81452bc6b7b55d1a8d3352999c114eea98d09110",
+    "sourceTree": "607e9e781f10213d6439236e8984cdd68094d57e",
+    "sourceFingerprint": "1b2bd84ae31e4b8aca55f97df676ef1828d50d323614aacd5f45ad868efb6f27",
+    "dirty": false
+  },
+  "baseSha": "7284b0dfaa31037d074d27df0f27b968f3977000",
+  "tier": "D0",
+  "profile": "synthetic",
+  "hostOs": "win32",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": ["surface.synchronization", "surface.surface-session"],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-11T18:45:56.373Z",
+  "completedAt": "2026-10-11T18:45:56.610Z",
+  "assertions": [
+    {
+      "id": "crossdeck.phase2.continuity",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "PROVIDER_SIMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": ["D4_REAL_HARDWARE", "D5_COLOCATED_FIELD", "OWNER_WALKTHROUGH"],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": ["owned-deck-fixture"],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

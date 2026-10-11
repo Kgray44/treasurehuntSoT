@@ -2930,7 +2930,8 @@
         "src/app/account/devices/**",
         "src/app/devices/**",
         "tests/e2e/crossdeck-phase1.spec.ts",
-        "tests/e2e/crossdeck-phase2.spec.ts"
+        "tests/e2e/crossdeck-phase2.spec.ts",
+        "tests/e2e/crossdeck-realtime.spec.ts"
       ],
       "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
