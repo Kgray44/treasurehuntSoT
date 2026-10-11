@@ -79,6 +79,7 @@ async function main() {
       root,
       plan: { ...plan, outputDirectory: "Development_Docs/Testing/Product_Experience/evidence" },
       environment: process.env,
+      validateReplay: false,
     });
     const capture = JSON.parse(await readFile(replay.capturePath, "utf8"));
     await writeFile(path.join(receiptRoot, "capture.json"), JSON.stringify(capture, null, 2) + "\n");
@@ -102,7 +103,7 @@ async function main() {
   const evidenceRoot = path.resolve(options.evidence ?? root);
   const evidencePath = revisionJson(root, baseSha, "testing/contracts.json").experiencePolicy.evidencePath;
   const evidence = JSON.parse(await readFile(path.join(evidenceRoot, evidencePath), "utf8"));
-  validateExperienceEvidence({ root: evidenceRoot, plan, evidence });
+  validateExperienceEvidence({ root: evidenceRoot, baselineRoot: root, plan, evidence });
   if (options.mode === "review") {
     const capture = await loadTrustedExperienceArtifact({
       root,

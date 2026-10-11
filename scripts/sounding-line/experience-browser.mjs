@@ -6,7 +6,13 @@ import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 import { runBrowserAuthority } from "./browser-authority.mjs";
 import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
-import { experienceDigest, planProductExperience, REVIEW_DIMENSIONS } from "./product-experience.mjs";
+import {
+  experienceDigest,
+  planProductExperience,
+  REVIEW_DIMENSIONS,
+  validateExperienceEvidence,
+  revisionJson,
+} from "./product-experience.mjs";
 
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const fail = (code) => {
@@ -416,7 +422,7 @@ async function main() {
     JSON.stringify({ status: "CAPTURED_REVIEW_REQUIRED", captures: evidence.artifacts?.length ?? 0 }) + "\n",
   );
 }
-export async function runTrustedExperienceReplay({ root, plan, environment }) {
+export async function runTrustedExperienceReplay({ root, plan, environment, validateReplay = true }) {
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   const replayPath = path.join(root, "artifacts/sounding-line/product-experience-plan.json");
   await mkdir(path.dirname(replayPath), { recursive: true });
@@ -479,6 +485,12 @@ export async function runTrustedExperienceReplay({ root, plan, environment }) {
     "capture.json",
   );
   await writeFile(capturePath, JSON.stringify(combined, null, 2) + "\n");
+  if (validateReplay) {
+    combined.reviews = plan.evidencePath
+      ? (revisionJson(root, plan.candidateSha, plan.evidencePath, true)?.reviews ?? [])
+      : [];
+    validateExperienceEvidence({ root, plan, evidence: combined, automatedOnly: true });
+  }
   return { status: "PASS", sourceDigest: plan.sourceDigest, profiles, capturePath };
 }
 export function experienceDatabaseUrl(root, candidateSha, profile, now = new Date()) {

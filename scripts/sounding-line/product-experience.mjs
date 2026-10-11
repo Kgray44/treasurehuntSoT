@@ -591,7 +591,15 @@ function artifactBytes({ root, revision, file }) {
   if (!resolved.startsWith(rootPath + path.sep)) fail("ARTIFACT_PATH_INVALID");
   return readFileSync(resolved);
 }
-export function validateExperienceEvidence({ plan, evidence, root, revision, readArtifact = artifactBytes }) {
+export function validateExperienceEvidence({
+  plan,
+  evidence,
+  root,
+  baselineRoot = root,
+  revision,
+  readArtifact = artifactBytes,
+  automatedOnly = false,
+}) {
   if (!plan.applicable) return { status: "NOT_APPLICABLE", classification: plan.classification };
   if (!evidence || evidence.version !== 1) fail("EVIDENCE_MISSING");
   if (
@@ -601,7 +609,7 @@ export function validateExperienceEvidence({ plan, evidence, root, revision, rea
     evidence.contractDigest !== plan.contractDigest
   )
     fail("EVIDENCE_SOURCE_MISMATCH");
-  if (!list(evidence.artifacts) || !list(evidence.reviews) || !list(evidence.journeys))
+  if (!list(evidence.artifacts) || (!automatedOnly && !list(evidence.reviews)) || !list(evidence.journeys))
     fail("VISUAL_EVIDENCE_INCOMPLETE");
   const artifacts = new Map();
   for (const artifact of evidence.artifacts) {
@@ -723,14 +731,16 @@ export function validateExperienceEvidence({ plan, evidence, root, revision, rea
             fail("CROSS_DEVICE_CONTINUITY_FAILED", contract.id);
       }
     if (
-      !review ||
-      !review.builderContext ||
-      !review.reviewerContext ||
-      review.builderContext === review.reviewerContext ||
-      review.independence !== "SEPARATE_CONTEXT" ||
-      review.sourceInspectionOrder !== "EXPERIENCE_BEFORE_SOURCE"
+      !automatedOnly &&
+      (!review ||
+        !review.builderContext ||
+        !review.reviewerContext ||
+        review.builderContext === review.reviewerContext ||
+        review.independence !== "SEPARATE_CONTEXT" ||
+        review.sourceInspectionOrder !== "EXPERIENCE_BEFORE_SOURCE")
     )
       fail("INDEPENDENT_REVIEW_REQUIRED", contract.id);
+    if (automatedOnly) continue;
     if (
       review.packetDigest !==
       experienceDigest({
@@ -784,7 +794,7 @@ export function validateExperienceEvidence({ plan, evidence, root, revision, rea
         )
           fail("BASELINE_DEBT_NOT_EXEMPT", finding.id);
         for (const baseline of debt.baselineArtifacts) {
-          const bytes = readArtifact({ root, revision: plan.baseSha, file: baseline.path });
+          const bytes = readArtifact({ root: baselineRoot, revision: plan.baseSha, file: baseline.path });
           if (createHash("sha256").update(bytes).digest("hex") !== baseline.sha256 || !validScreenshot(bytes))
             fail("BASELINE_EVIDENCE_INVALID", finding.id);
         }
@@ -803,7 +813,7 @@ export function validateExperienceEvidence({ plan, evidence, root, revision, rea
     status: "PASS",
     contractIds: plan.contractIds,
     sourceDigest: plan.sourceDigest,
-    independence: "SEPARATE_CONTEXT_RECORDED",
+    independence: automatedOnly ? "AUTOMATED_REPLAY_ONLY" : "SEPARATE_CONTEXT_RECORDED",
     ownerAcceptance: "NOT_CLAIMED",
   };
 }

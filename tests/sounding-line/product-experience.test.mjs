@@ -555,3 +555,21 @@ test("HTTP endpoint selection distinguishes dynamic sibling endpoints", () => {
     "src/lens/Lens.tsx",
   ]);
 });
+test("fresh automated replay rechecks accessibility, timing and consumer continuity", () => {
+  const fixture = experienceFixture();
+  fixture.evidence.reviews = [];
+  const verify = () =>
+    validateExperienceEvidence({
+      root: "unused",
+      plan: fixture.plan,
+      evidence: fixture.evidence,
+      automatedOnly: true,
+      readArtifact: ({ file }) => fixture.bytes.get(file),
+    });
+  assert.equal(verify().status, "PASS");
+  fixture.evidence.journeys[0].accessibility.overflow = true;
+  assert.throws(verify, /ACCESSIBILITY_OR_RESPONSIVE_DEFECT/u);
+  fixture.evidence.journeys[0].accessibility.overflow = false;
+  fixture.evidence.journeys[0].continuity[0].atOutcomes = ["d".repeat(64)];
+  assert.throws(verify, /CROSS_PROJECT_JOURNEY_FAILED/u);
+});
