@@ -27,9 +27,9 @@ async function capture(page: Page, name: string) {
   await mkdir(artifactRoot, { recursive: true });
   await page.screenshot({ path: `${artifactRoot}/${name}.png`, fullPage: true });
 }
-async function ownedWorking(accountId: string) {
+async function ownedWorking(accountId: string, definitionId: string) {
   const item = await db.reusableAuthoringItem.findFirstOrThrow({
-    where: { ownerAccountId: accountId, kind: spatialItemKind, archivedAt: null },
+    where: { id: definitionId, ownerAccountId: accountId, kind: spatialItemKind, archivedAt: null },
     include: { versions: { where: { versionNumber: 0 } } },
   });
   return { draft: JSON.parse(item.versions[0].envelope) as SpatialDraft, revision: item.currentVersionNumber };
@@ -126,7 +126,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   expect((await signIn).ok()).toBe(true);
   await expect(page.locator(".shell-profile-trigger")).toContainText("Synthetic Spatial Assistant Creator");
   await page.locator(".shell-profile-trigger").click();
-  await page.locator('#shell-account-disclosure a[href="/studio"]').click();
+  await page.getByRole("link", { name: "Creator Studio", exact: true }).click();
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
   await expect(page).toHaveURL(/\/studio\/parallax/);
   await page.goto(`/studio/parallax?chronicle=${tale.id}&block=${blockId}`);
@@ -169,7 +169,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
       "selectedEntityId",
     ].sort(),
   );
-  const base = await ownedWorking(account.id);
+  const base = await ownedWorking(account.id, request.definitionId);
   expect(base.draft.content.entities).toHaveLength(1);
   const expected = await materializeAssistantProposal(
     base.draft,
@@ -184,7 +184,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   const mapButton = canvas.getByRole("button", { name: /^Pirate map\./ });
   await expect(mapButton).toBeVisible();
   await expect(canvas.locator("canvas")).toBeVisible();
-  expect((await ownedWorking(account.id)).revision).toBe(base.revision);
+  expect((await ownedWorking(account.id, request.definitionId)).revision).toBe(base.revision);
   await capture(page, "proposed-canvas");
   await assistant.getByRole("button", { name: "Locate object", exact: true }).click();
   await expect(mapButton).toHaveAttribute("aria-pressed", "true");
@@ -200,7 +200,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   expect(savedResponse.ok(), JSON.stringify(savedBody)).toBe(true);
   expect(savedBody.draft).toEqual(expected);
   await expect(assistant).toContainText("Your changes are saved");
-  const saved = await ownedWorking(account.id);
+  const saved = await ownedWorking(account.id, request.definitionId);
   expect(saved).toEqual({ draft: expected, revision: base.revision + 1 });
   const ledger = await db.aIUsageLedger.findFirstOrThrow({
     where: { accountId: account.id, requestId: request.requestId },
@@ -215,7 +215,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   await assistant.getByRole("button", { name: "Redo", exact: true }).click();
   await expect(mapButton).toBeVisible();
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
-  await expect.poll(async () => (await ownedWorking(account.id)).draft).toEqual(expected);
+  await expect.poll(async () => (await ownedWorking(account.id, request.definitionId)).draft).toEqual(expected);
   await page.reload();
   await expect(canvas.locator('[data-renderer="READY"]')).toBeVisible();
   await expect(mapButton).toBeVisible();
@@ -232,7 +232,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   ]);
   await assistant.getByRole("button", { name: "Apply all changes", exact: true }).click();
   await expect(assistant).toContainText("Your changes are saved");
-  const refined = await ownedWorking(account.id);
+  const refined = await ownedWorking(account.id, request.definitionId);
   expect(refined.draft.content.entities.find((entity) => entity.id === "synthetic-pirate-map")).toEqual({
     ...expected.content.entities[1],
     widthMeters: 0.45,
