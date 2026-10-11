@@ -923,7 +923,7 @@ Audience-separated current documentation, indexed engineering records, and a fra
 **Status:** MAINLINE
 **Program or subsystem:** Sounding Line
 
-A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. Immutable v1.4 evidence receipts safely preserve or rebind unchanged ordinary obligations while a separate manual mode remains exhaustive for releases and explicit full certification.
+A focused protected-main check binds the exact pull-request base, candidate, and trees; it runs repository safety sentinels and structurally affected proof, widening safely when impact is uncertain. Immutable v1.4 evidence receipts safely preserve or rebind unchanged ordinary obligations while a separate manual mode remains exhaustive for releases and explicit full certification. Selective Product Experience Engineering requires meaningful visible outcomes, responsive real-browser capture, separate criticism, bounded repair and source-bound protected capture/review attestation for affected UI.
 
 ### Important subfeatures
 
@@ -932,6 +932,10 @@ A focused protected-main check binds the exact pull-request base, candidate, and
 - Conservative widening when impact is unknown
 - Fail-closed semantic reconciliation of immutable ordinary-evidence receipts
 - Separate exhaustive release certification
+- Automatic UI/projection impact and complete cross-project experience selection
+- Semantic visible-control journeys with keyboard, roles, devices and motion evidence
+- Authenticated protected-workflow screenshot/recording and independent review binding
+- Bounded repair and accountable pre-existing experience debt
 
 ### Primary surfaces
 
@@ -940,6 +944,9 @@ A focused protected-main check binds the exact pull-request base, candidate, and
 ### Meaningful limitations
 
 - Control-plane changes use the explicit owner-authorized manual check rather than ordinary product admission.
+- Initial representative account contract is executable; affected spatial intent contracts require complete task-specific design and do not claim a completed refit.
+- AI/browser review does not grant owner product acceptance or physical-device qualification.
+- Protected experience artifacts expire after 90 days and then require fresh capture/review.
 
 ### Evidence
 
@@ -948,6 +955,9 @@ A focused protected-main check binds the exact pull-request base, candidate, and
 - test: `tests/sounding-line/ordinary.test.mjs`
 - path: `.github/workflows/sounding-line-ordinary.yml`
 - completion-record: `Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md`
+- path: `scripts/sounding-line/product-experience.mjs`
+- test: `tests/sounding-line/experience-browser-fixtures.test.mjs`
+- completion-record: `Development_Docs/Testing/Product_Experience/Campaign_Evidence.md`
 
 ---
 

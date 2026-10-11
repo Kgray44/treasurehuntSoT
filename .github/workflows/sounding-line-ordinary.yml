@@ -23,19 +23,101 @@ on:
         description: Pull request number
         required: true
         type: string
+      experience_mode:
+        description: Ordinary acceptance or preparation within the same authority
+        type: choice
+        default: ordinary
+        options: [ordinary, capture, review, verify]
+      experience_diagnostic:
+        description: Exercise installed experience authority without qualifying a PR
+        type: boolean
+        default: false
+      evidence_ref:
+        description: Evidence-only ref for review or activation verification
+        type: string
+        required: false
 
 permissions:
   contents: read
   pull-requests: read
+  actions: read
 
 concurrency:
   group: sounding-line-ordinary-${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
   cancel-in-progress: false
 
 jobs:
+  experience-preparation:
+    name: Sounding Line / Experience preparation (no mainline decision)
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.experience_mode != 'ordinary' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.base_sha }}
+          path: authority
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.candidate_sha }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        if: inputs.experience_mode != 'capture'
+        with:
+          ref: ${{ inputs.evidence_ref || inputs.candidate_sha }}
+          path: evidence
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: authority/.nvmrc
+          cache: npm
+          cache-dependency-path: candidate/package-lock.json
+      - name: Install isolated browser dependencies
+        if: inputs.experience_mode == 'capture'
+        working-directory: candidate
+        run: |
+          npm ci --ignore-scripts
+          npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+          npx --no-install playwright install --with-deps chromium
+      - name: Prepare through protected-base authority
+        id: experience
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPERIENCE_MODE: ${{ inputs.experience_mode }}
+          BASE_SHA: ${{ inputs.base_sha }}
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          EXPERIENCE_DIAGNOSTIC: ${{ inputs.experience_diagnostic }}
+        run: node authority/scripts/sounding-line/experience-prepare.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --mode "$EXPERIENCE_MODE" --diagnostic "$EXPERIENCE_DIAGNOSTIC" --evidence evidence
+      - uses: actions/upload-artifact@v4
+        if: inputs.experience_mode == 'capture'
+        with:
+          name: product-experience-capture-${{ steps.experience.outputs.source_digest }}
+          path: |
+            candidate/artifacts/sounding-line/product-experience-submission/capture.json
+            candidate/artifacts/sounding-line/product-experience-submission/plan.json
+            candidate/artifacts/sounding-line/product-experience-submission/activation.json
+            candidate/Development_Docs/Testing/Product_Experience/evidence/
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: inputs.experience_mode == 'review'
+        with:
+          name: product-experience-review-${{ steps.experience.outputs.source_digest }}
+          path: candidate/artifacts/sounding-line/product-experience-submission/review.json
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: inputs.experience_mode == 'verify'
+        with:
+          name: product-experience-activation-${{ steps.experience.outputs.source_digest }}
+          path: candidate/artifacts/sounding-line/product-experience-submission/activation.json
+          retention-days: 90
   final-check:
     name: Sounding Line / Mainline Decision
-    if: ${{ github.event_name != 'pull_request_target' || github.event.pull_request.draft == false }}
+    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.experience_mode == 'ordinary') && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -85,6 +167,7 @@ jobs:
               baseSha: process.env.BASE_SHA,
               candidateSha: process.env.CANDIDATE_SHA,
               mode: "ordinary",
+              experienceEvidenceRequired: false,
             });
             if (typeof plan.browserRequired !== "boolean")
               throw new Error("SOUNDING_LINE_BROWSER_PROVISIONING_INDETERMINATE");
@@ -118,6 +201,8 @@ jobs:
       - name: Run the trusted focused verifier against the exact candidate tree
         id: ordinary-verifier
         if: steps.route.outputs.kind == 'ordinary'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: node authority/scripts/sounding-line/ordinary.mjs --mode ordinary --workspace candidate --base ${{ steps.source.outputs.base }} --candidate ${{ steps.source.outputs.candidate }}
       - name: Persist passing reusable ordinary evidence
         if: ${{ always() && steps.route.outputs.kind == 'ordinary' && steps.ordinary-verifier.outcome == 'success' && steps.evidence-cache.outputs.cache-hit != 'true' }}
@@ -140,10 +225,16 @@ jobs:
         if: steps.route.outputs.kind == 'control-plane'
         working-directory: candidate
         run: npm run typecheck
+      - name: Verify rendered experience adversarial fixtures
+        if: steps.route.outputs.kind == 'control-plane'
+        working-directory: candidate
+        run: |
+          npx --no-install playwright install --with-deps chromium
+          npm run experience:test:browser
       - name: Lint the control-plane candidate
         if: steps.route.outputs.kind == 'control-plane'
         working-directory: candidate
-        run: npx --no-install eslint scripts/sounding-line/ordinary.mjs scripts/sounding-line/evidence.mjs tests/sounding-line/ordinary.test.mjs scripts/features
+        run: npx --no-install eslint scripts/sounding-line tests/sounding-line scripts/features
       - name: Scan the control-plane candidate for private content
         if: steps.route.outputs.kind == 'control-plane'
         working-directory: candidate
