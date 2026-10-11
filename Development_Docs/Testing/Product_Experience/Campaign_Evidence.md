@@ -8,15 +8,15 @@ last_reviewed: 2026-10-11
 
 # Campaign evidence
 
-The implementation candidate starts at protected base
+The [implementation PR](https://github.com/Kgray44/treasurehuntSoT/pull/714) starts at protected base
 `678dd1156d39537d288ba3c2e5ce5c6efc2259d0` in an owned worktree.
 Sounding Line remains the sole mainline decision. Global Product Governance,
 Homeport, Brightwork, Deepwater and Lanternwake retain their authority.
 
 ## Executable proof
 
-- Existing and new focused Sounding Line regression: 93 passing tests at the
-  first complete checkpoint, including source/base contract trust, immutable
+- Existing and new focused Sounding Line regression: 102 passing tests at the
+  final code checkpoint, including source/base contract trust, immutable
   evidence identities, honest debt, backend selectivity and bounded repair.
 - Headless Chromium: actual isolated fixtures reject fake role completion (A),
   hidden ordinary workflow (B), API-only realization (C), screenshot-only evidence
@@ -35,6 +35,33 @@ Homeport, Brightwork, Deepwater and Lanternwake retain their authority.
   pages. Eight existing tracing warnings remain. No product runtime was changed.
 
 ## Trust and completion boundaries
+
+The final code checkpoint is `93f1cc80584c5aa2cf15bc857d3476444c04b280`.
+Its runtime/contract inputs bind product digest
+`d5e1f66e0513a06cf247047c27049ff8b4e68225ca40642632f5f9df2daaf15c`.
+The full generic suite provisioned an owned isolation database, seeded synthetic
+data, prepared validation isolation, built the production server, captured the
+desktop/mobile account journey and passed fresh automated obligations.
+[Actual local capture](evidence/local-93f1cc80584c/capture.json) records the
+six state PNGs, two WebM recordings, two traces and observed keyboard/return
+journeys. This local diagnostic uses the candidate policy; it is development
+proof, not a protected-main attestation.
+
+The separate reviewer inspected the frozen media before source and accepted
+the representative journey across all 17 review dimensions. The assembled
+[local review](evidence/local-93f1cc80584c/local-review.json) passes the complete
+evidence validator with actual artifact bytes. Recovery-link discovery and
+action capitalization remain non-blocking feedback. Compressed recordings and
+desktop/mobile emulation do not establish physical-device or live-service
+quality, and the review does not infer PRODUCT_ACCEPTED.
+
+A read-only separate source reviewer inspected and reproduced enforcement bugs
+before the final checkpoint. Repairs closed database-path/profile dispatch,
+candidate-owned orchestration, no-op outcomes, role setup, baseline provenance,
+cross-device/consumer continuity, response timer boundaries, fresh replay
+obligations, dynamic HTTP consumers and artifact-to-contract identity. The final
+source review reported no remaining confirmed P1/P2 findings, and explicitly did
+not claim rendered, hosted or owner acceptance.
 
 Protected ordinary routing selects applicable evidence. The final verifier
 requires exact product/contract identities, actual committed media bytes,
