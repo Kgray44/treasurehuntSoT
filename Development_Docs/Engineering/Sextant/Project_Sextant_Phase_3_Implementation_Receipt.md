@@ -62,7 +62,9 @@ Final source review found that a delayed denial from an old acquisition could ch
 
 `media-capability.ts` now binds synchronous/asynchronous failure handling and track-ended callbacks to the current slot identity before mutating permission, availability or generation. It immediately detaches the returned listener if the source ends during registration. This preserves current grants/leases against old callbacks without changing sharing, consent or source ownership. Reach's separate camera lease should apply the same generation-isolation and registration-cleanup invariants; this task does not edit its implementation.
 
-The resumed aggregate on `be8d70c732e6821e27b1285e89da8a908dab8454` was intentionally stopped for this source correction and is not complete qualification. Its controller and positively identified retained Vitest descendants were cleaned; no sibling/game process was stopped. The parent assigned the heavy slot to Parallax while Sextant performs focused correction checks. No further aggregate begins until the parent grants the slot. Final-head TypeScript and ordinary qualification remain required for the corrected source.
+The correction is committed as `8a196dfa0080b4dc266d540ab7bf94aeaecdfdf0`. All fifty-two Phase 3 tests pass after the correction with one worker (`artifacts-phase3-after-generation-fix.log`); the three before/after regression logs remain preserved. This focused result does not replace the pending corrected-source aggregate decision.
+
+The resumed aggregate on `be8d70c732e6821e27b1285e89da8a908dab8454` was intentionally stopped for this source correction and is not complete qualification. Its controller and positively identified retained Vitest descendants were cleaned; no sibling/game process was stopped. The parent reassigned the heavy slot while Sextant completed focused correction checks. No further aggregate begins until the parent grants the slot. Final-head TypeScript and ordinary qualification remain required for the corrected source.
 
 ## Native task and concurrent integration
 
