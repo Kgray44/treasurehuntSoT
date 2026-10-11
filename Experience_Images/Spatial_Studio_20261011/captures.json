@@ -1,0 +1,148 @@
+{
+  "sourceSha": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+  "fixture": "synthetic-captains-hidden-chart",
+  "captures": [
+    {
+      "file": "01-unsaved-workshop.png",
+      "title": "New workshop and empty owned library (the supported initial state)",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "fullPage": true
+    },
+    {
+      "file": "02-guided-desktop.png",
+      "title": "Guided workspace: populated desk, selected chart, hierarchy, library and declarative timeline",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "fullPage": true
+    },
+    {
+      "file": "03-detailed-desktop.png",
+      "title": "Detailed: layer audience, tags and asset/dependency inspector",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "fullPage": true
+    },
+    {
+      "file": "04-engineering-desktop.png",
+      "title": "Engineering: numeric transforms, coordinate frame and engineering disclosure",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "fullPage": true
+    },
+    {
+      "file": "05-scene-preview.png",
+      "title": "Interaction preview at 2.5 seconds: inspected chart reveals note and highlights bearing",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "fullPage": true
+    },
+    {
+      "file": "06-guided-fallback.png",
+      "title": "Camera-free accessible fallback preserves the three clues",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "fullPage": true
+    },
+    {
+      "file": "07-validation.png",
+      "title": "Drydock findings and synthetic environment checks",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "fullPage": true
+    },
+    {
+      "file": "08-version-library.png",
+      "title": "Immutable version and library publishing workflow; Chronicle attachment requires Chronicle context",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "fullPage": true
+    },
+    {
+      "file": "09-desktop-1440.png",
+      "title": "Responsive Guided workspace 1440 × 900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": true
+    },
+    {
+      "file": "10-tablet.png",
+      "title": "Responsive Guided workspace 768 × 1024",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "fullPage": true
+    },
+    {
+      "file": "11-phone.png",
+      "title": "Responsive Guided workspace 390 × 844",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "fullPage": true
+    },
+    {
+      "file": "14-chronicle-attachment.png",
+      "title": "Pinned immutable scene attached to a real synthetic Chronicle Passage",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": true
+    },
+    {
+      "file": "15-publication-review.png",
+      "title": "Actual Chronicle publication review and its Drydock/Sea Trial prerequisites",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": true
+    },
+    {
+      "file": "12-reusable-library.png",
+      "title": "Reusable library item, five editable presets, taxonomy and immutable version history",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": true
+    },
+    {
+      "file": "13-restricted.png",
+      "title": "Unauthenticated access routes through real Creator authorization",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": true
+    }
+  ],
+  "unsupported": [
+    "Studio has hard-coded dark styling; no light theme control",
+    "Initial workshop contains Desk Map; truly empty scene is unsupported",
+    "External textures/model renderers are unsupported; uses actual PARCHMENT and MARKER primitives",
+    "Loading state is transient, omitted to prioritize fully rendered evidence",
+    "Physical-device and owner acceptance remain pending"
+  ]
+}
