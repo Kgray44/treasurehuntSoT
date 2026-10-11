@@ -54,3 +54,12 @@ Installed Project Launchdeck v0.4.2 and Project Trim skills were read.
 
 Physical sensor accuracy, tactile output, native parity, D4/D5 and owner acceptance
 remain independent gates. Local checks never grant RELEASE_GO or publication.
+
+Continuation checkpoint: clean 7b01ce61 passed 1,501 product tests in 241 files,
+58 runner tests and the source-bound 36-scenario D0/D1 replay. Ordinary FAIL is
+preserved after the owned harness was stopped for Next's fifteen page-data workers.
+Opt-in one-worker Next correction: 81840185; actual capped-build proof is pending.
+Refreshed protected main: 7284b0df (Reach #697), inspected without mutating that run.
+Combined registry must retain 88 scenarios: 71 non-Reach and 17 Reach.
+Slot B was released at 05:25 UTC; no heavy retry until a new coordinator grant.
+See the Phase 3 implementation receipt for exact source, failure and cleanup proof.
