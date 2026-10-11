@@ -11,7 +11,7 @@ const fail = () => {
   throw new CrossdeckError(403, "This device can no longer join this Voyage. Sign in or choose another Voyage.");
 };
 
-async function authority(tx: Store, actor: Actor, now: Date) {
+export async function authority(tx: Store, actor: Actor, now: Date) {
   const session = await tx.accountSession.findFirst({
     where: {
       id: actor.id,
@@ -25,7 +25,7 @@ async function authority(tx: Store, actor: Actor, now: Date) {
   if (!session) return fail();
   return session;
 }
-async function membership(tx: Store, actor: Actor, voyageId: string, now: Date) {
+export async function membership(tx: Store, actor: Actor, voyageId: string, now: Date) {
   const member = await tx.playthroughMembership.findFirst({
     where: {
       playthroughId: voyageId,
@@ -94,7 +94,7 @@ function dto(s: Surface, actor: Actor, now: Date) {
   };
 }
 export type SurfaceDto = ReturnType<typeof dto>;
-async function surface(tx: Store, actor: Actor, id: string, now: Date, ownSession = true) {
+export async function surface(tx: Store, actor: Actor, id: string, now: Date, ownSession = true) {
   const s = await tx.crossdeckSurfaceSession.findFirst({
     where: {
       surfaceId: id,

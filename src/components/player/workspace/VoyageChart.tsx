@@ -48,6 +48,7 @@ export type VoyageChartProps = Readonly<{
   mode: MotionMode;
   /** Phase 1 internal seam: supplied only from the authorized canonical Landfall projection. */
   landfallScene?: LandfallMapScene;
+  onLandfallCameraChange?: (camera: { center: [number, number]; zoom: number; bearing: number }) => void;
   landfallPosition?: LandfallCurrentPosition | null;
   /** Exact progress identity; it never falls back to array or DOM order. */
   progressLocationKey?: PublicMapLocation["key"];
@@ -631,7 +632,10 @@ export function VoyageChart(props: VoyageChartProps) {
   if (props.landfallScene)
     return (
       <section className="physical-section voyage-chart-section" aria-label="Voyage Chart" data-landfall-phase1-preview>
-        <LandfallMapRenderer scene={{ ...props.landfallScene, currentPosition: props.landfallPosition }} />
+        <LandfallMapRenderer
+          scene={{ ...props.landfallScene, currentPosition: props.landfallPosition }}
+          onCameraChange={props.onLandfallCameraChange}
+        />
       </section>
     );
 
