@@ -8,3 +8,4 @@
 6. Use the exhaustive Sounding Line check only for releases or explicit full certification.
 7. Do not create governance or maintenance work during ordinary product objectives.
 8. Preserve unrelated work and never rewrite shared history.
+9. Any task changing user-visible behavior follows [Product Experience Engineering](.agents/product-experience-workflow.md): design, run the actual experience, capture, independently critique, repair, and verify its human outcome before integration.

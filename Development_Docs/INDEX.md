@@ -68,3 +68,5 @@ The [Project Landfall v1.0 governing document](Projects/Project_Landfall/Project
 - [Project Reach](Projects/Project_Reach/README.md) — governing constitution, five phases and qualification plan; not implemented.
 - [Current launch manifest v1.1](Programs/Spatial_Experience/Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.1_Reach.md) — browser-first owner/dependency update.
 - [Registry guide](Spatial_Experience/README.md) — current projections and pending Reach scenario registration.
+
+- [Product Experience Engineering](Testing/Product_Experience/README.md) — automatic design, source-bound real-browser review and protected experience qualification.

@@ -12,6 +12,10 @@ last_reviewed: 2026-10-11
 
 ## Unreleased
 
+### Engineering
+
+- Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.
+
 ### Corrected
 
 - Corrected phone sign-in on the task-owned Spatial Chronicle HTTP preview. Only verified synthetic navigator sessions receive the local preview cookie policy; ordinary production sessions remain HTTPS-only. Pilot browser qualification now exercises the real sign-in form on both surfaces.

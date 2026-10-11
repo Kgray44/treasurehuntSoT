@@ -13,6 +13,8 @@ evidence remain in their governed documentation locations. Each context packet
 retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
+- [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
+
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)
 - [Parallax Phase 3 owned implementation and workstation correction context](parallax-phase3.md)
 

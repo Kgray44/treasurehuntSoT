@@ -20,7 +20,7 @@
     "test": "vitest run",
     "test:changed": "node scripts/sounding-line/ordinary.mjs --mode ordinary",
     "test:release": "node scripts/sounding-line/ordinary.mjs --mode release",
-    "test:sounding-line": "node --test tests/sounding-line/ordinary.test.mjs",
+    "test:sounding-line": "node --test tests/sounding-line/ordinary.test.mjs tests/sounding-line/product-experience.test.mjs tests/sounding-line/experience-attestation.test.mjs",
     "test:watch": "vitest",
     "tideglass:compare": "tsx scripts/tideglass/compare.ts",
     "tideglass:validate": "tsx scripts/tideglass/validate-phase2.ts",
@@ -275,7 +275,11 @@
     "migrate:legacy-companion:verify": "tsx scripts/migrate-legacy-companion.ts --verify",
     "parity:legacy-shadow": "tsx scripts/verify-legacy-shadow-parity.ts",
     "rehearse:one-voyage:mysql": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/rehearse-project-one-voyage-phase2-mysql.ps1",
-    "sextant:device-lab": "node --import tsx scripts/sextant/device-lab.ts"
+    "sextant:device-lab": "node --import tsx scripts/sextant/device-lab.ts",
+    "experience:plan": "node scripts/sounding-line/experience-browser.mjs",
+    "experience:capture": "node scripts/sounding-line/experience-browser.mjs",
+    "experience:test": "node --test tests/sounding-line/product-experience.test.mjs tests/sounding-line/experience-attestation.test.mjs",
+    "experience:test:browser": "node --test tests/sounding-line/experience-browser-fixtures.test.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",
