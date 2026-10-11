@@ -145,8 +145,9 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
     await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
     await expect(page.getByRole("button", { name: /v1.0.0/ })).toBeVisible();
   } finally {
-    await db.chronicle.delete({ where: { id: tale.id } });
-    await db.reusableAuthoringItem.deleteMany({ where: { ownerAccountId: account.id, kind: "PARALLAX_STUDIO" } });
-    await db.userAccount.delete({ where: { id: account.id } });
+    // The guarded generic runner owns this disposable database. Keep immutable
+    // publication and trial evidence together; its bound database is recreated
+    // by the runner, rather than deleting a Chronicle with retained source pins.
+    await db.$disconnect();
   }
 });
