@@ -1,7 +1,7 @@
 ---
 title: Reach Phase 1 implementation and validation record
 audience: product-engineering
-status: implementation-pending-qualification
+status: local-qualified-integration-pending
 canonical_for: reach-phase1-implementation-validation
 last_reviewed: 2026-10-11
 ---
@@ -14,7 +14,7 @@ This owner-directed implementation uses Reach v1.0 Sections 6â€“11, 19, 24, 26â€
 
 Native implementation task `01a12883-5c57-77bd-8a5d-8dd5a9c7103b` was verified as a Codex task with the delivered complete contract. Reconciliation marker: `ld-Sentinel_6845783f9a2481918bfde3e76cc12eca-reach-p1`. The native readback returned projectId null; association with the requested VoyageWright project `fd21b701-3215-417a-a413-0a17e02badbb` could not be confirmed, and the available move operation could not bind this execution host. No native Goal persistence capability was exposed. Prompt delivery is verified separately from those unsupported metadata operations. No duplicate task was dispatched.
 
-Draft [PR #697](https://github.com/Kgray44/treasurehuntSoT/pull/697) contains the implementation and lifecycle corrections. Remote readback confirmed implementation head `b5a1065fc0aeb617b85441583d9753fb9d91868c` before this record update. The native PR attachment was attempted, but the Codex app connection returned `Transport closed`; attachment is unconfirmed. The PR remains draft and has not been qualified or merged.
+[PR #697](https://github.com/Kgray44/treasurehuntSoT/pull/697) contains the implementation and lifecycle corrections. The first native attachment attempt returned `Transport closed`; a subsequent attachment succeeded after the connection recovered. The local-qualified candidate is `512b63da7e4626df9319fc60c75fdd5a49a4fe5f`. This record update follows that qualification, so its eventual commit is distinct from the local-tested source. The ordinary protected-main check must bind the final PR head before integration. No merge is claimed here.
 
 Project Trim was applied through current isolated-source authority, a Phase 1 contract and explicit scope/evidence limits. No token-savings figure is asserted. The shared source checkout and unmerged sibling source were not consumed or edited.
 
@@ -52,7 +52,7 @@ Filtering uses a velocity-adaptive low-pass cutoff of 2 Hz plus gain 12, with ve
 
 Focused development initially found an invalid orientation schema and corrected it; those failures remain failures. A synthetic browser attempt failed held-out validation at 5.02% p95; the gate rejected it. Subsequent corrections fixed the synthetic input fixture and CSS aspect-ratio metric without changing the 3% gate. Worker trials identified the pinned runtime's classic-loader requirement and missing initialization dispatch; those were corrected before the emulated model-inference trial passed. The original browser attempt also exposed a pre-existing Node-only audit import in Next instrumentation. The runtime-specific dynamic import follows the installed Next.js guide, retains the audit safety check for Node, and restores the route. The shared Device Lab source-identity test now uses a file URL for the Windows ESM loader; it retains its original provenance assertions.
 
-Exact candidate, final focused results, required Sounding Line status, PR identity and integration outcome are recorded below after qualification. No protected merge or landed smoke is claimed until it actually occurs.
+The exact local candidate and final local results are recorded below. No protected merge or landed smoke is claimed until it actually occurs.
 
 ## Qualification status
 
@@ -60,9 +60,24 @@ Development evidence: 24 focused Reach/asset/shared Device Lab tests passed befo
 
 Documentation and Feature Catalog validation passed. A light source comparison confirmed all 55 pre-Reach scenario records and all existing suite/contract definitions are unchanged. Private-content staged-diff scanning passed before final light corrections. The ordinary Sounding Line regression had 57 passes and one infrastructure failure when Windows could not start `git init`; this is not recorded as a passing aggregate check. The computer restart interrupted other verification. In-progress typecheck/lint were deliberately stopped to release the parent's shared heavy-testing slot. Source is preserved and only light review/candidate preparation continues until Reach is granted that slot after Sextant, Parallax and Crossdeck.
 
-Light lifecycle review added generation isolation for a late denial and regression cases for stale `ended` callbacks/old lease releases, failed lease construction and a source ending during listener registration. Listener registration cleanup rejects that source without retaining a track or listener. These new tests are pending execution; the five focused files currently declare 30 tests, not 30 verified passes. No interrupted or newly added check is treated as passed. Owner-present physical hand calibration is pending and will not start while the owner is gaming.
+Light lifecycle review added generation isolation for a late denial and regression cases for stale `ended` callbacks/old lease releases, failed lease construction and a source ending during listener registration. Listener registration cleanup rejects that source without retaining a track or listener. These cases passed in the final focused run. Earlier interrupted checks remain interrupted; later passes are separate executions. Owner-present physical hand calibration is pending and will not start while the owner is gaming.
 
-Pending final frozen-candidate qualification, source-bound CLI receipts and ordinary protected-main decision. Physical webcam/held-out calibration and owner acceptance remain open. Feature Catalog is unchanged because Phase 1 acceptance is incomplete.
+### Final local qualification
+
+The parent granted the shared testing slot after a fresh host check. Canonical ordinary qualification ran from 2026-10-11 04:30:16 UTC to 05:03:08 UTC on candidate `512b63da7e4626df9319fc60c75fdd5a49a4fe5f`, tree `6c4668bddb93bb0d7ac07207fa920ac3201bebe4`, against protected main `2e367c372a6d44e4e6a68bb38266196954f8d486`.
+
+- Final focused suite: 30 tests passed across five files.
+- Seven shared Device Lab D0 receipts: PASS, each bound to the exact candidate/tree with `dirty: false`.
+- Canonical format, lint, typecheck and private-content scan: PASS.
+- Selected unit groups: 746 tests across 115 files and 543 tests across 72 files, all passing. The unchanged Landfall provider corpus passed without altering its fixed deadline.
+- Sounding Line registration regression: 58 tests passed, with no skips or failures.
+- SQLite schema validation and both required production-build executions: PASS. Next confirmed one worker for page data and static-page generation.
+- Governed Chromium proof: all four journeys passed on the exact built server, covering synthetic calibration/held-out validation/export/delete, pinned inference on an emulated stream with suspension/restart cleanup, model failure and permission denial/fallback. No real camera was acquired during this qualification.
+- Canonical evidence finalizer: PASS; ten required obligations satisfied by ten fresh receipts, with no remainder or errors. No manual receipt substitution or timeout waiver was used.
+
+The original decision, execution logs and seven D0 receipts are preserved unchanged in task-local `artifacts/reach-qualification-512b63da/`, with original paths and SHA-256 in `preservation-manifest.json`. That manifest is delivery preservation metadata, not a replacement canonical decision. At 05:03:39 UTC the source was clean, no Reach heavy descendants remained, and Reach released its shared slot. No further local heavy run was started.
+
+The ordinary protected-main decision and landed smoke remain pending. Physical webcam/held-out calibration, accuracy, jitter, exposure-to-visible latency, ergonomics and owner acceptance remain open. These D0/D1 results do not qualify human pointing or close Phase 1 acceptance. Feature Catalog is unchanged.
 
 ## Technical basis
 
