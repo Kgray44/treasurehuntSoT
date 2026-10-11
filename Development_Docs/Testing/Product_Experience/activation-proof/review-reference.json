@@ -1,0 +1,20 @@
+{
+  "runId": 38184309355,
+  "reviewArtifactId": 11718683388,
+  "artifactDigest": "sha256:664ac0086b14205a8d388dde7f13e19d9ba6a61e924bff6dac80064526ef3a0d",
+  "artifactName": "product-experience-review-6baba262a7ca0340",
+  "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+  "sourceDigest": "6baba262a7ca0340ceb85e7fd895908d126302966f9111c6bd399b7a48669a12",
+  "contractDigest": "98fbeda9cd33e7a771a42a171e33ae23dff549f00ba5943df130d905769b982e",
+  "captureArtifactId": 11718023011,
+  "submittedBy": "Kgray44",
+  "status": "PROTECTED_WORKFLOW_AUTHENTICATED_SUBMISSION",
+  "independentReview": [
+    {
+      "contractId": "homeport.transition.auth-routes",
+      "status": "ACCEPTED",
+      "packetDigest": "d116aa970e8a9af647ec023dfe7185b692dc88088e373a7ef065a7b1b3d68fe7"
+    }
+  ],
+  "ownerAcceptance": "NOT_CLAIMED"
+}
