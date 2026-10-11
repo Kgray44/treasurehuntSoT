@@ -117,11 +117,11 @@
 }
 .assistant .welcome h3 {
   font-family: var(--font-display);
-  font-size: 31px;
+  font-size: 28px;
   line-height: 1.15;
   font-weight: 400;
   color: var(--text-heading);
-  margin: 15px 0;
+  margin: 12px 0;
 }
 .assistant .welcome > p,
 .assistant .proposal > p {
@@ -132,23 +132,24 @@
 .assistant .suggestions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin: 24px 0 18px;
+  gap: 8px;
+  margin: 14px 0;
 }
 .assistant .suggestions button {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: start;
-  gap: 12px;
-  padding: 15px 12px;
+  gap: 10px;
+  padding: 12px 10px;
   text-align: left;
-  min-height: 132px;
+  min-height: 92px;
   background: var(--surface-overlay);
   transition:
     border-color var(--motion-fast),
     background var(--motion-fast);
 }
 .assistant .suggestions svg {
+  flex-shrink: 0;
   color: var(--focus-color);
   opacity: 0.9;
 }

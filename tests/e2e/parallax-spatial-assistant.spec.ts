@@ -39,7 +39,9 @@ const assistantResponse = (page: Page, kind: string) =>
     (response) =>
       response.url().endsWith("/api/studio/parallax") &&
       response.request().method() === "POST" &&
-      response.request().postDataJSON()?.kind === kind,
+      (kind === "ASSISTANT_APPLY"
+        ? response.request().postDataJSON()?.action === kind
+        : response.request().postDataJSON()?.kind === kind),
   );
 
 test("Creator signs in, reviews actual canvas proposals, saves once and reopens an exact Chronicle pin", async ({
