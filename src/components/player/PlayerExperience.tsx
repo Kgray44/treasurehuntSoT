@@ -1,4 +1,5 @@
 "use client";
+import { createBrowserUuid } from "@/lib/browser-uuid";
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
@@ -235,7 +236,7 @@ const clientUuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a
 function deviceId() {
   let id = localStorage.getItem("forever-device");
   if (!id || !clientUuidPattern.test(id)) {
-    id = crypto.randomUUID();
+    id = createBrowserUuid();
     localStorage.setItem("forever-device", id);
   }
   return id;
@@ -1352,7 +1353,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     const controller = new ProgressionPresentationController(
       {
         createIdentity: (kind, event, source) => {
-          const identity = `${kind}:${source}:${event.id}:${crypto.randomUUID()}`;
+          const identity = `${kind}:${source}:${event.id}:${createBrowserUuid()}`;
           if (kind === "request") stagedRequestIdentity = identity;
           else if (stagedRequestIdentity) {
             presentationPlaybackIdentities.current.set(stagedRequestIdentity, identity);

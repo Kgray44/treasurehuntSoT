@@ -1,4 +1,5 @@
 import type { PresentationReceipt } from "@/animation/core/animation-types";
+import { createBrowserUuid } from "@/lib/browser-uuid";
 import type { ClientProgressEvent } from "@/domain/story";
 import {
   type Phase3PlayerProgressEventType,
@@ -80,7 +81,7 @@ function defaultIdentity(
   event: ClientProgressEvent,
   source: ProgressionPresentationSource,
 ) {
-  return `${kind}:${source}:${event.id}:${crypto.randomUUID()}`;
+  return `${kind}:${source}:${event.id}:${createBrowserUuid()}`;
 }
 
 function bounded(queue: ProgressionPresentationQueue): ProgressionPresentationQueue {

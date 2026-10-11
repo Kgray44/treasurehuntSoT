@@ -2,8 +2,9 @@
 import { test, expect, type Page } from "@playwright/test";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import AxeBuilder from "@axe-core/playwright";
+import { createHash, randomBytes } from "node:crypto";
+import { hash } from "bcryptjs";
 import { db } from "../../src/lib/db";
-import { createAccountSession } from "../../src/wayfarer/accounts";
 import { closureAccount, authenticateClosure, enterClosureJournal, openClosureMap } from "./fixtures/landfall-closure";
 import { STALE_MS } from "../../src/crossdeck/contracts";
 
@@ -21,11 +22,9 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
   baseURL,
 }) => {
   const url = (process.env.DATABASE_URL ?? "").replaceAll("\\", "/");
-  if (
-    !url.startsWith("file:") ||
-    (!url.includes("/artifacts/spatial-pilot/") && !url.includes("/artifacts/sounding-line/"))
-  )
-    throw new Error("PILOT_OWNED_DATABASE_REQUIRED");
+  if (!url.startsWith("file:") || !url.includes("/artifacts/sounding-line/"))
+    throw new Error("PILOT_QUALIFICATION_DATABASE_REQUIRED");
+  const password = randomBytes(32).toString("base64url");
   if (!(await db.userAccount.findUnique({ where: { id: ownerId } }))) {
     const now = new Date();
     await db.userAccount.create({
@@ -54,6 +53,11 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       },
     });
   }
+  await db.accountCredential.upsert({
+    where: { accountId: ownerId },
+    create: { accountId: ownerId, passwordHash: await hash(password, 12) },
+    update: { passwordHash: await hash(password, 12) },
+  });
   const companionURL = new URL(baseURL!);
   companionURL.hostname = companionURL.hostname === "localhost" ? "127.0.0.1" : "localhost";
   const desktop = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: "reduce" });
@@ -65,13 +69,35 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     reducedMotion: "reduce",
   });
   const outsider = await browser.newContext();
+  await phone.addInitScript(() => {
+    Object.defineProperty(globalThis.crypto, "randomUUID", { value: undefined, configurable: true });
+  });
   try {
-    const session = await createAccountSession(ownerId, "Synthetic Pilot desktop");
-    const receiver = await createAccountSession(ownerId, "Synthetic Pilot phone");
-    await desktop.addCookies([{ name: "wayfarer_account", value: session.token, url: baseURL! }]);
-    await phone.addCookies([{ name: "wayfarer_account", value: receiver.token, url: companionURL.origin }]);
     const d = await desktop.newPage(),
       p = await phone.newPage();
+    async function signIn(page: Page, origin: string) {
+      await page.goto(`${origin}/sign-in?returnTo=/dev/spatial-pilot`);
+      await page.locator('input[name="login"]').fill("pilot.browser@example.test");
+      await page.locator('input[name="password"]').fill(password);
+      const result = page.waitForResponse(
+        (response) => response.url().endsWith("/api/auth/sign-in") && response.request().method() === "POST",
+      );
+      await page.getByRole("button", { name: "Sign in", exact: true }).click();
+      const response = await result;
+      expect(response.status()).toBe(200);
+      const session = await response.json();
+      await expect(page).toHaveURL(`${origin}/dev/spatial-pilot`);
+      const cookie = (await page.context().cookies()).find((cookie) => cookie.name === "wayfarer_account");
+      expect(cookie).toBeDefined();
+      const issued = await db.accountSession.findUniqueOrThrow({
+        where: { tokenHash: createHash("sha256").update(cookie!.value).digest("hex") },
+      });
+      expect(issued.accountId).toBe(ownerId);
+      expect(issued.csrfToken).toBe(session.csrfToken);
+      return { ...session, token: cookie!.value, id: issued.id };
+    }
+    const session = await signIn(d, baseURL!);
+    const receiver = await signIn(p, companionURL.origin);
     const entryStart = performance.now();
     await d.goto("/dev/spatial-pilot");
     await expect(d.getByRole("heading", { name: "The Lost Navigator’s Chart", exact: true })).toBeVisible();
@@ -301,15 +327,20 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       .locator("fieldset")
       .filter({ has: d.locator("legend").getByText("Selected spatial object", { exact: true }) })
       .screenshot({ path: `${evidence}/studio-selected-inspector.png` });
+    await d.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
     await d
       .getByRole("complementary", { name: "Spatial Library", exact: true })
       .screenshot({ path: `${evidence}/studio-library.png` });
+    await d.getByRole("tab", { name: "Hierarchy", exact: true }).click();
     await d
       .getByRole("region", { name: "Scene graph", exact: true })
       .screenshot({ path: `${evidence}/studio-scene-graph.png` });
+    const timelineTab = d.getByRole("tab", { name: "Timeline", exact: true });
+    if ((await timelineTab.getAttribute("aria-selected")) !== "true") await timelineTab.click();
     await d
-      .getByRole("region", { name: "Behavior timeline", exact: true })
+      .getByRole("tabpanel", { name: "Timeline", exact: true })
       .screenshot({ path: `${evidence}/studio-behavior-timeline.png` });
+    await d.getByRole("tab", { name: "Saved", exact: true }).click();
     await d.getByLabel("Search Library", { exact: true }).fill("missing-fictional-archive");
     await expect(d.getByText("No saved items match. Create and save a spatial moment to begin.")).toBeVisible();
     await capture(d, "studio-library-empty");

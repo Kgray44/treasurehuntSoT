@@ -2,6 +2,7 @@ import { projectCapabilities, type SurfaceCapabilities } from "./contracts";
 import { webSextantRuntime } from "@/sextant/web-runtime";
 import type { WebSensorTarget } from "@/sextant/web-provider";
 export const storageKey = (voyage: string) => `crossdeck.surface.v1:${voyage}`;
+export { createBrowserUuid as createCrossdeckId } from "@/lib/browser-uuid";
 export function browserProjection(): SurfaceCapabilities {
   const width = window.innerWidth;
   const runtime = webSextantRuntime(window as unknown as WebSensorTarget, navigator);

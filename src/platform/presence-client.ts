@@ -1,4 +1,5 @@
 "use client";
+import { createBrowserUuid } from "@/lib/browser-uuid";
 
 const deviceKey = "platform-membership-presence-device-v1";
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
@@ -8,7 +9,7 @@ const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}
 export function membershipPresenceDeviceId() {
   const current = window.localStorage.getItem(deviceKey);
   if (current && uuidPattern.test(current)) return current;
-  const next = crypto.randomUUID();
+  const next = createBrowserUuid();
   window.localStorage.setItem(deviceKey, next);
   return next;
 }
