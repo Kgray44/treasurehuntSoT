@@ -118,6 +118,10 @@ export function CrossdeckDevices({
     abort.current = controller;
     const tick = async () => {
       try {
+        // Restore the authorized tab-local surface before the first heartbeat.
+        // Navigation marks the previous page disconnected; waiting for the
+        // interval leaves a freshly opened Journal unable to send or receive.
+        if (!own.current || !csrf.current) await refresh(controller.signal);
         if (own.current && csrf.current)
           await crossdeckRequest(
             {

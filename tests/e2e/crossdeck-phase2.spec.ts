@@ -86,8 +86,16 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
           });
           await sending.getByLabel("Send destination").selectOption(phoneSurface.surfaceId);
           await sending.getByLabel("Transfer mode").selectOption("MOVE_CUSTODY");
-          await sending.getByRole("button", { name: "Send view", exact: true }).focus();
-          await sending.getByRole("button", { name: "Send view", exact: true }).press("Enter");
+          const sendButton = sending.getByRole("button", { name: "Send view", exact: true });
+          await expect(sendButton).toBeEnabled();
+          const sentResponse = d.waitForResponse(
+            (response) => response.url().includes("/api/crossdeck/sync?") && response.request().method() === "POST",
+          );
+          await sendButton.focus();
+          await sendButton.press("Enter");
+          const sent = await sentResponse;
+          const sentBody = await sent.json();
+          expect(sent.status(), sentBody.error ?? "Send must produce a durable offer").toBe(200);
           const receiving = p.getByRole("region", { name: "Send to your devices" });
           await expect(receiving.getByRole("button", { name: /^Receive / })).toBeVisible();
           await receiving.getByRole("button", { name: /^Receive / }).click();
