@@ -22,9 +22,9 @@ export function pilotLandfall(taleId: string) {
   map.source = { type: "AUTHORED_VECTOR" };
   const original = source.waypoints[1];
   const places = [
-    { id: "pilot-landing", name: "Lantern Quay", x: 0.18, y: 0.75, hidden: false },
     { id: "pilot-desk", name: "The Navigator’s Loft", x: 0.43, y: 0.52, hidden: false },
     { id: "pilot-light", name: "The Unlit Lighthouse", x: 0.65, y: 0.24, hidden: false },
+    { id: "pilot-landing", name: "Lantern Quay", x: 0.18, y: 0.75, hidden: false },
     { id: "pilot-haven", name: "Haven of the Returning Tide", x: 0.83, y: 0.36, hidden: true },
   ];
   return validateLandfallDefinition({
@@ -72,7 +72,7 @@ export function pilotChapters(taleId: string): StudioDraftInput["chapters"] {
       "livingChart",
       "Open the Living Chart",
       "Three marks on an unfinished sea",
-      "Lantern Quay, the Navigator’s Loft, and the Unlit Lighthouse remain on the chart. Explore their marks and trace the returning tide. The fourth harbor has been rubbed away. Your first objective is the loft, where Morrow kept her last message.",
+      "Lantern Quay, the Navigator’s Loft, and the Unlit Lighthouse remain on the chart. Explore their marks and trace the returning tide. The fourth harbor has been rubbed away. Your first objective is the loft, where Morrow kept her last message. Open the chart and choose Confirm arrival myself to record your discovery in these fictional isles.",
     ],
     [
       "lens",

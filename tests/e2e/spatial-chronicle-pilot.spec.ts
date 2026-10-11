@@ -182,6 +182,13 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await continueStory();
     await capture(d, "journal-chart");
     await openClosureMap(p);
+    await expect(p.getByText("Current objective: The Navigator’s Loft", { exact: true })).toBeVisible();
+    await p.getByRole("button", { name: "Confirm arrival myself", exact: true }).click();
+    await expect
+      .poll(() =>
+        db.taleSessionEvent.count({ where: { sessionId: pilot.voyageId, eventType: "landfallWaypointConfirmed" } }),
+      )
+      .toBe(1);
     await capture(p, "phone-chart-controls");
     await p.getByRole("button", { name: "Close journal tool drawer" }).click();
     await continueStory();
@@ -258,6 +265,8 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await continueStory();
     await continueStory(p);
     for (const surface of [d, p]) {
+      const closeDrawer = surface.getByRole("button", { name: "Close journal tool drawer" });
+      if (await closeDrawer.isVisible()) await closeDrawer.click();
       const returnCurrent = surface.getByRole("button", { name: "Return to Current Objective", exact: true });
       if (await returnCurrent.isVisible()) await returnCurrent.click();
     }

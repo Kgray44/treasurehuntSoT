@@ -14,7 +14,11 @@ This synthetic adventure brings accepted One Voyage, Landfall, Parallax, Crossde
 
 Use an owned checkout and its dependencies. Run `node --import tsx scripts/spatial-pilot/prepare.ts` from that checkout. The default database is `artifacts/spatial-pilot/owner-preview.db`. An optional database argument must resolve beneath this checkout’s `artifacts/spatial-pilot` directory. Preparation refuses an existing database without its ownership receipt and never clears shared data. Its adjacent `.access.private.json` contains the randomly generated local synthetic sign-in; do not publish or upload that file.
 
-The preview requires `DATABASE_URL` pointing at that file, `SPATIAL_PILOT_ENABLED=1`, and `SPATIAL_PILOT_OWNER_ID=spatial-pilot-navigator`. Set `SPATIAL_PILOT_SOURCE_SHA` to the full current commit. Use the production build and an isolated server on a free task-owned port. Sign in through `/sign-in?returnTo=/dev/spatial-pilot`, then choose **Prepare the adventure**. Provisioning saves a canonical Studio draft, creates and attaches an immutable Spatial Library version, runs a current-source Drydock Scenario Suite, publishes through One Voyage, and launches a Captain + Player Voyage. Publication success requires its immutable receipt.
+Run `node --import tsx scripts/spatial-pilot/start.ts` to build and start a foreground, isolated production preview at `http://127.0.0.1:3278/sign-in?returnTo=/dev/spatial-pilot`. The launcher sets the owned database, exact synthetic owner and current source commit. It refuses an occupied port and validates the database's ownership receipt. It changes no shared runtime and stops with Ctrl+C.
+
+For a phone-reachable preview, use `node --import tsx scripts/spatial-pilot/start.ts artifacts/spatial-pilot/owner-preview.db 3278 0.0.0.0` and use this computer's reachable network address on both browsers. A different database or free port can be passed explicitly. The prepared local owner environment for this task uses `artifacts/spatial-pilot/owner-sea-trials.db`; pass that path instead to the launcher.
+
+Sign in with the local access file through the displayed sign-in route, then choose **Prepare the adventure**. Provisioning saves a canonical Studio draft, creates and attaches an immutable Spatial Library version, runs a current-source Drydock Scenario Suite, publishes through One Voyage, and launches a Captain + Player Voyage. Publication success requires its immutable receipt.
 
 The authorized entry is `/dev/spatial-pilot`. Normal deployments and other accounts cannot open it. The existing nonce-bound generic Sounding Line fixture runtime also enables it solely for the exact synthetic navigator, allowing permanent browser regression without broadening ordinary product access.
 
@@ -26,7 +30,7 @@ The phone needs a reachable preview origin; both browsers must use that origin. 
 
 Complete the story, inspect the linked Spatial Studio, then enter `/devices/reach` from the same session. Reach retains its local camera, calibration and held-out validation; it estimates pointing and does not select objects or transfer the chart. Sea Trials gives the physical trial sequence and records activity status, observed/expected behavior and experience notes. Feedback stays in browser storage, keyed to the exact published edition, and exports as one local JSON file. Footage, camera identifiers, pairing material and credentials are not automatically included.
 
-**Start a fresh Voyage** creates another canonical playthrough of the same immutable edition. Earlier runs remain in Player Library. For an independent synthetic environment, prepare a different new task-owned database; no destructive reset is needed.
+**Start a fresh Voyage** cancels the latest unfinished synthetic run through Helm's Captain lifecycle and creates another canonical playthrough of the same immutable edition. It preserves the cancelled record, completed runs and publications. This prevents an abandoned trial from leaving Creator access paused after the new adventure finishes. Finish Player participation before inspecting Studio, as Homeport requires. After exploring or receiving an older map page, **Return to Current Objective** resumes the narrative. For an independent synthetic environment, prepare a different new task-owned database; no destructive reset is needed.
 
 ## Scope and evidence
 
