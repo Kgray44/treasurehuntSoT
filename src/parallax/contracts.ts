@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { studioContentSchema, type StudioContent } from "./studio-contracts";
+import { adaptiveContentSchema, placementPolicies, type AdaptiveContent } from "./adaptive-contracts";
 
 export const spatialId = z
   .string()
@@ -98,7 +99,8 @@ export const versionContentSchema = z
     studio: studioContentSchema.optional(),
     anchors: z.array(anchorSchema).min(1).max(16),
     entities: z.array(entitySchema).min(1).max(32),
-    placementPolicy: z.literal("FIXED"),
+    placementPolicy: z.enum(placementPolicies),
+    adaptive: adaptiveContentSchema.optional(),
     privacyClass: z.literal("LOCAL_EPHEMERAL"),
     fallback: z.strictObject({ mode: z.literal("GUIDED"), narrative: copy(4000), preservesMeaning: z.literal(true) }),
     accessibility: z.strictObject({
@@ -112,6 +114,38 @@ export const versionContentSchema = z
     const fail = (message: string) => ctx.addIssue({ code: "custom", message });
     const anchors = new Map(v.anchors.map((a) => [a.id, a]));
     const entities = new Map(v.entities.map((e) => [e.id, e]));
+    if (v.placementPolicy !== "FIXED" && !v.adaptive) fail("PARALLAX_ADAPTIVE_RECIPE_REQUIRED");
+    if (v.adaptive) {
+      const a = v.adaptive;
+      if (v.placementPolicy === "FIXED") fail("PARALLAX_ADAPTIVE_POLICY_REQUIRED");
+      const scope = { ADAPTIVE_PER_CREW: "CREW", ADAPTIVE_PER_RUN: "RUN", ADAPTIVE_VARIANT: "VARIANT" }[
+        v.placementPolicy as string
+      ];
+      if (scope && a.lifecycle !== scope) fail("PARALLAX_POLICY_SCOPE_CONFLICT");
+      const roots = v.entities.filter((e) => !e.parentEntityId);
+      if (roots.some((e) => !a.recipes.some((r) => r.entityId === e.id))) fail("PARALLAX_ROOT_RECIPE_REQUIRED");
+      if (new Set(roots.map((e) => e.anchorId)).size !== roots.length) fail("PARALLAX_ADAPTIVE_ANCHOR_CONFLICT");
+      for (const r of a.recipes) {
+        if (!entities.has(r.entityId) || entities.get(r.entityId)?.parentEntityId)
+          fail("PARALLAX_RECIPE_ENTITY_INVALID");
+        if (!a.discovery.some((p) => p.entityId === r.entityId)) fail("PARALLAX_DISCOVERY_REQUIRED");
+      }
+      for (const p of a.discovery) if (!entities.has(p.entityId)) fail("PARALLAX_DISCOVERY_ENTITY_MISSING");
+      for (const r of a.relationships)
+        if (!a.recipes.some((x) => x.entityId === r.entityId) || !a.recipes.some((x) => x.entityId === r.otherEntityId))
+          fail("PARALLAX_RELATIONSHIP_ENTITY_MISSING");
+      if (a.revealOrder.some((id) => !entities.has(id))) fail("PARALLAX_REVEAL_ENTITY_MISSING");
+      if (
+        a.relationships.some(
+          (r) =>
+            r.visibility === "SEQUENTIAL" &&
+            (!a.revealOrder.includes(r.entityId) || !a.revealOrder.includes(r.otherEntityId)),
+        )
+      )
+        fail("PARALLAX_REVEAL_ORDER_REQUIRED");
+      if (v.placementPolicy === "CALIBRATED" && !["CALIBRATED", "VERIFIED"].includes(a.calibration.maturity))
+        fail("PARALLAX_CALIBRATED_EVIDENCE_REQUIRED");
+    }
     if (v.studio) {
       const s = v.studio;
       if (new Set(s.layers.map((l) => l.entityId)).size !== s.layers.length) fail("PARALLAX_LAYER_DUPLICATE");
@@ -196,9 +230,10 @@ export type SpatialVersion = {
   checksum: string;
   title: string;
   studio?: StudioContent;
+  adaptive?: AdaptiveContent;
   anchors: Anchor[];
   entities: SpatialEntity[];
-  placementPolicy: "FIXED";
+  placementPolicy: (typeof placementPolicies)[number];
   privacyClass: "LOCAL_EPHEMERAL";
   fallback: { mode: "GUIDED"; narrative: string; preservesMeaning: true };
   accessibility: { seated: true; keyboard: true; reducedMotion: true; soundIndependent: true };
@@ -223,6 +258,11 @@ export const instanceBindingSchema = z.strictObject({
   blockId: spatialId,
   actorId: spatialId,
   runId: spatialId,
+  resolutionSeed: z
+    .string()
+    .regex(/^[a-f0-9]{8}$/)
+    .optional(),
+  resolutionDecisionId: spatialId.optional(),
 });
 export type InstanceBinding = z.infer<typeof instanceBindingSchema>;
 export const receiptSchema = z

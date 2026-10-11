@@ -669,6 +669,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/branch-complete/parallax-phase3.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -7948,6 +7954,24 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/Phase_2_Implementation.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Phase_3_Workspace_Refinement.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Phase_3_Workstation_Review.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

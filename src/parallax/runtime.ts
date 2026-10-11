@@ -14,6 +14,15 @@ import {
 import { composeTransform } from "./transforms";
 import { evaluateSpatialBehavior, type SpatialInput } from "./behavior";
 import type { CapabilityState } from "@/sextant/contracts";
+import {
+  resolveAdaptiveScene,
+  revalidateAdaptiveScene,
+  minimizedResolutionReceipt,
+  resolutionIdentity,
+  type EnvironmentEvidence,
+  type SceneResolution,
+} from "./adaptive";
+import { DiscoveryAssistance, type DiscoveryState, type SearchActivity } from "./discovery";
 
 export type TrackingState =
   | "INITIALIZING"
@@ -26,6 +35,7 @@ export type TrackingState =
   | "INTERRUPTED"
   | "LOST"
   | "UNSUPPORTED";
+const bindingCrew = (binding: InstanceBinding) => binding.sessionId;
 export type RuntimeMode = "GUIDED" | "NATIVE" | "SIMULATED";
 export type SpatialRuntimeEvent =
   | { type: "TRACKING"; state: TrackingState }
@@ -46,12 +56,19 @@ export interface SpatialRuntimeAdapter {
     entities: readonly { id: string; kind: string; content: string; widthMeters: number; transform: Transform }[],
   ): Promise<void>;
   stop(): Promise<void>;
+  environmentEvidence?(): Promise<EnvironmentEvidence | null>;
 }
 export type SpatialContext = {
   camera: CapabilityState;
   worldspace?: { id: string; frameId: string; localFromWorld: Transform };
   replayOnly: boolean;
   environment: "PRODUCTION" | "DEVICE_LAB";
+  decisionStore?: {
+    load: (key: string) => SceneResolution | null;
+    save: (key: string, value: SceneResolution) => void;
+  };
+  searchClock?: () => number;
+  searchTimeStore?: { load: (key: string) => number; save: (key: string, seconds: number) => void };
 };
 export type LensState =
   | "CLOSED"
@@ -73,6 +90,11 @@ export type LensSnapshot = {
   anchors: Readonly<Record<string, ResolvedAnchor>>;
   visibleEntityIds: string[];
   highlightedEntityIds: string[];
+  discovery?: Record<string, DiscoveryState>;
+  resolution?: SceneResolution;
+  resolutionReceipt?: ReturnType<typeof minimizedResolutionReceipt>;
+  activeDiscoveryEntityId?: string;
+  trackingRecovered?: boolean;
 };
 const guidance: Record<TrackingState, string> = {
   INITIALIZING: "Opening the Chronicle Lens…",
@@ -117,6 +139,12 @@ export class ParallaxLensRuntime {
   private spatialInputs: SpatialInput[] = [];
   private timers: ReturnType<typeof setTimeout>[] = [];
   private readonly ledger = new Map<string, InteractionReceipt>();
+  private readonly assistance = new Map<string, DiscoveryAssistance>();
+  private resolution: SceneResolution | null = null;
+  private discovered = new Set<string>();
+  private resolutionKey = "";
+  private trackingInterrupted = false;
+  private searchInRegion = true;
   private snapshot: LensSnapshot = {
     state: "CLOSED",
     mode: "GUIDED",
@@ -146,9 +174,29 @@ export class ParallaxLensRuntime {
     this.binding = Object.freeze(instanceBindingSchema.parse(binding));
     if (this.moment.attachment.storyMomentId !== binding.blockId) throw new Error("PARALLAX_ATTACHMENT_BLOCK_MISMATCH");
     this.instanceId = instanceIdSchema.parse(`instance:${this.moment.attachment.id}:${binding.runId}`);
+    for (const p of this.moment.version.adaptive?.discovery ?? [])
+      this.assistance.set(
+        p.entityId,
+        new DiscoveryAssistance(p, this.context.searchTimeStore?.load(this.searchTimeKey(p.entityId))),
+      );
+  }
+  private searchTimeKey(entityId: string) {
+    return JSON.stringify([this.binding.actorId, this.instanceId, this.moment.version.checksum, entityId]);
+  }
+  private searchNow() {
+    return this.context.searchClock?.() ?? this.now().getTime();
+  }
+  private activeDiscoveryEntityId() {
+    const a = this.moment.version.adaptive;
+    return (
+      a?.revealOrder.find((id) => !this.discovered.has(id)) ??
+      a?.discovery.find((p) => p.mandatory && !this.discovered.has(p.entityId))?.entityId
+    );
   }
   read(): LensSnapshot {
-    return structuredClone(this.snapshot);
+    const snapshot = structuredClone(this.snapshot);
+    if (snapshot.resolution) snapshot.resolutionReceipt = minimizedResolutionReceipt(snapshot.resolution);
+    return snapshot;
   }
   private update(patch: Partial<LensSnapshot>) {
     this.snapshot = { ...this.snapshot, ...patch };
@@ -197,10 +245,62 @@ export class ParallaxLensRuntime {
       });
       if (epoch !== this.epoch) return;
       const anchors: Record<string, ResolvedAnchor> = {};
+      if (this.moment.version.adaptive && this.adapter.mode !== "GUIDED") {
+        const evidence = await this.adapter.environmentEvidence?.();
+        if (!evidence || (evidence.source === "SIMULATED" && this.context.environment !== "DEVICE_LAB")) {
+          await this.useGuidedView();
+          return;
+        }
+        const v = this.moment.version;
+        const identity = resolutionIdentity(v.placementPolicy, {
+          definitionId: v.definitionId,
+          versionId: v.id,
+          versionChecksum: v.checksum,
+          crewId: bindingCrew(this.binding),
+          runId: this.binding.runId,
+          actorId: this.binding.actorId,
+          lifecycleId: v.adaptive!.lifecycle === "DEFINITION" ? v.definitionId : this.binding.runId,
+          variant: v.adaptive!.variant,
+        });
+        const previousKey = this.resolutionKey;
+        this.resolutionKey = JSON.stringify([identity.logicalIdentity, evidence.source, evidence.frameId]);
+        const cached = this.context.decisionStore?.load(this.resolutionKey);
+        const prior = cached ?? (previousKey === this.resolutionKey ? this.resolution : null);
+        const resolved =
+          prior && prior.versionChecksum === v.checksum
+            ? revalidateAdaptiveScene(v, evidence, prior)
+            : resolveAdaptiveScene(v, evidence, this.binding.resolutionSeed ?? identity.seed, v.checksum);
+        if (!resolved) {
+          this.resolution = prior;
+          if (prior)
+            this.update({
+              resolution: {
+                ...prior,
+                status: "GUIDED_FALLBACK",
+                quality: "NO_VALID_PLACEMENT",
+                placements: {},
+                diagnostics: [{ entityId: "scene", constraints: ["CACHED_PLACEMENT_NO_LONGER_VALID"] }],
+              },
+            });
+          await this.useGuidedView();
+          return;
+        }
+        this.resolution = resolved;
+        if (this.resolution.status !== "RESOLVED") {
+          this.update({ resolution: this.resolution });
+          await this.useGuidedView();
+          return;
+        }
+        this.context.decisionStore?.save(this.resolutionKey, this.resolution);
+        this.update({ resolution: this.resolution });
+      }
       for (const a of this.moment.version.anchors) {
         let t: Transform | null;
         if (this.adapter.mode === "GUIDED") t = identityTransform();
-        else if (a.kind === "FIXED_WORLDSPACE") {
+        else if (this.resolution && this.moment.version.adaptive) {
+          const root = this.moment.version.entities.find((e) => e.anchorId === a.id && !e.parentEntityId);
+          t = root ? (this.resolution.placements[root.id]?.transform ?? null) : null;
+        } else if (a.kind === "FIXED_WORLDSPACE") {
           const w = this.context.worldspace;
           t =
             w && w.id === a.worldspaceId && w.frameId === a.frameId
@@ -226,11 +326,27 @@ export class ParallaxLensRuntime {
       });
       await this.draw();
       this.scheduleBehavior();
+      this.updateSearchActivity({
+        lensOpen: true,
+        foreground: true,
+        permission: true,
+        tracking: this.snapshot.state === "READY" || this.snapshot.mode === "GUIDED",
+        inSearchRegion: true,
+      });
     } catch {
       if (epoch === this.epoch) await this.useGuidedView();
     }
   }
   private onEvent(e: SpatialRuntimeEvent) {
+    this.updateSearchActivity({ tracking: false });
+    if (e.type === "ANCHOR_LOST" || (e.type === "TRACKING" && e.state !== "NORMAL")) this.trackingInterrupted = true;
+    if (
+      this.moment.version.adaptive &&
+      (e.type === "ANCHOR_LOST" || (e.type === "TRACKING" && ["LOST", "RELOCALIZING", "INTERRUPTED"].includes(e.state)))
+    ) {
+      void this.useGuidedView();
+      return;
+    }
     if (e.type === "TRACKING" && e.state === "INTERRUPTED") {
       void this.useGuidedView();
       return;
@@ -247,6 +363,10 @@ export class ParallaxLensRuntime {
           tracking: e.state,
           guidance: guidance.NORMAL,
         });
+      if (this.snapshot.state === "READY") {
+        this.updateSearchActivity({ tracking: true });
+        if (this.trackingInterrupted) this.update({ trackingRecovered: true });
+      }
     } else {
       this.normalSamples = 0;
       this.update({
@@ -293,6 +413,35 @@ export class ParallaxLensRuntime {
       anchors,
     });
     await this.draw();
+    this.updateSearchActivity({ lensOpen: true, permission: true, tracking: true, inSearchRegion: true });
+  }
+  updateSearchActivity(activity: Partial<SearchActivity>) {
+    const atMs = this.searchNow();
+    if (activity.inSearchRegion !== undefined) this.searchInRegion = activity.inSearchRegion;
+    const activeEntity = this.activeDiscoveryEntityId();
+    for (const [id, assistance] of this.assistance) {
+      assistance.updateActivity(activity, atMs);
+      assistance.updateActivity({ inSearchRegion: id === activeEntity && this.searchInRegion }, atMs);
+      assistance.setConfidence(
+        this.resolution?.placements[id]?.confidence ?? (this.snapshot.mode === "GUIDED" ? 1 : 0),
+      );
+    }
+    if (this.assistance.size)
+      this.update({
+        activeDiscoveryEntityId: activeEntity,
+        discovery: Object.fromEntries([...this.assistance].map(([id, a]) => [id, a.read()])),
+      });
+  }
+  async tickDiscovery() {
+    const states = Object.fromEntries([...this.assistance].map(([id, a]) => [id, a.tick(this.searchNow())]));
+    for (const [id, state] of Object.entries(states))
+      this.context.searchTimeStore?.save(this.searchTimeKey(id), state.meaningfulSeconds);
+    this.update({ discovery: states });
+    if (Object.values(states).some((s) => s.recovery === "GUIDED") && this.snapshot.mode !== "GUIDED")
+      await this.useGuidedView();
+  }
+  async reveal() {
+    await this.useGuidedView();
   }
   async updateDeviceContext(camera: CapabilityState) {
     this.context.camera = camera;
@@ -304,10 +453,12 @@ export class ParallaxLensRuntime {
       this.spatialInputs,
       this.now().getTime() - this.startedAt,
     );
+    const a = this.moment.version.adaptive;
+    const currentReveal = a?.revealOrder.find((id) => !this.discovered.has(id)) ?? a?.revealOrder.at(-1);
     const visible = this.moment.version.entities.filter((e) =>
       this.snapshot.mode === "GUIDED"
         ? this.moment.version.studio?.layers.find((l) => l.entityId === e.id)?.audience !== "EDITOR_ONLY"
-        : states[e.id].visible,
+        : states[e.id].visible && (!currentReveal || !a?.revealOrder.includes(e.id) || e.id === currentReveal),
     );
     this.update({
       visibleEntityIds: visible.map((e) => e.id),
@@ -385,6 +536,7 @@ export class ParallaxLensRuntime {
     this.update({ state: "INTERACTING" });
     try {
       if (type === "PLACE" && this.adapter.mode !== "GUIDED") {
+        if (this.moment.version.adaptive) throw new Error("PARALLAX_ADAPTIVE_PLACEMENT_STABLE");
         const a = this.moment.version.anchors.find((x) => x.id === entity.anchorId)!;
         if (a.kind !== "SURFACE_RELATIVE") {
           this.update({ state: "READY" });
@@ -412,8 +564,8 @@ export class ParallaxLensRuntime {
       if (epoch !== this.epoch) throw new Error("PARALLAX_INTERACTION_CANCELLED");
       if (this.snapshot.state !== "INTERACTING" && this.snapshot.state !== "READY")
         throw new Error("PARALLAX_TRACKING_UNSTABLE");
-      const { runId: _runId, ...binding } = this.binding;
-      void _runId;
+      const { sessionId, chronicleVersionId, blockId, actorId } = this.binding;
+      const binding = { sessionId, chronicleVersionId, blockId, actorId };
       const r = receiptSchema.parse({
         ...binding,
         schemaVersion: 1,
@@ -433,6 +585,8 @@ export class ParallaxLensRuntime {
         authority: "NONAUTHORITATIVE",
       });
       this.ledger.set(key, r);
+      this.discovered.add(entityId);
+      this.updateSearchActivity({});
       this.spatialInputs.push({ trigger: type, entityId, atMs: this.now().getTime() - this.startedAt });
       await this.draw();
       this.scheduleBehavior();
@@ -449,6 +603,9 @@ export class ParallaxLensRuntime {
     }
   }
   async close() {
+    this.updateSearchActivity({ lensOpen: false, tracking: false });
+    for (const [id, assistance] of this.assistance)
+      this.context.searchTimeStore?.save(this.searchTimeKey(id), assistance.read().meaningfulSeconds);
     const epoch = ++this.epoch;
     this.abort.abort();
     this.timers.forEach(clearTimeout);
