@@ -12,6 +12,32 @@ import { BrowserCameraBroker } from "@/sextant/camera";
 import { BrowserHandAdapter } from "@/watchglass/hand-provider";
 import { syntheticObservation } from "./synthetic";
 describe("Reach Phase 1 owner oracles", () => {
+  it("detaches and rejects a source that ends during listener registration", async () => {
+    let detached = 0,
+      stopped = 0;
+    const track = {
+      readyState: "live",
+      stop() {
+        this.readyState = "ended";
+        stopped++;
+      },
+      addEventListener(_name: string, listener: () => void) {
+        this.readyState = "ended";
+        listener();
+      },
+      removeEventListener() {
+        detached++;
+      },
+    };
+    const broker = new BrowserCameraBroker({
+      getUserMedia: async () => ({ getTracks: () => [track], getVideoTracks: () => [track] }) as unknown as MediaStream,
+    });
+    await expect(broker.acquire(true, true)).rejects.toThrow("CAMERA_SOURCE_ENDED_DURING_ACQUISITION");
+    expect(broker.snapshot()).toMatchObject({ availability: "SUSPENDED", leaseId: null });
+    expect(broker.ownedTracks).toBe(0);
+    expect(detached).toBe(1);
+    expect(stopped).toBe(1);
+  });
   it("releases an acquired stream if lease construction fails", async () => {
     let stopped = 0;
     const track = {

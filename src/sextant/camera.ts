@@ -63,14 +63,18 @@ export class BrowserCameraBroker {
         acquired = null;
         throw new Error("CAMERA_VIDEO_TRACK_REQUIRED");
       }
+      let endedDuringAcquisition = false;
       const ended = () => {
+        if (generation !== this.generation) return;
         if (this.lease?.generation === generation) {
           this.permission = "UNKNOWN";
           this.release("SUSPENDED");
-        }
+        } else endedDuringAcquisition = true;
       };
       stream.getVideoTracks().forEach((t) => t.addEventListener("ended", ended));
       this.detach = () => stream.getVideoTracks().forEach((t) => t.removeEventListener("ended", ended));
+      if (generation !== this.generation || endedDuringAcquisition || stream.getVideoTracks()[0].readyState !== "live")
+        throw new Error("CAMERA_SOURCE_ENDED_DURING_ACQUISITION");
       const lease = {
         id: crypto.randomUUID(),
         generation,
@@ -98,11 +102,13 @@ export class BrowserCameraBroker {
         this.permission = "DENIED";
       if (generation === this.generation)
         this.set(
-          error instanceof DOMException && ["NotAllowedError", "SecurityError"].includes(error.name)
-            ? "PERMISSION_DENIED"
-            : error instanceof DOMException && error.name === "NotReadableError"
-              ? "CAMERA_BUSY"
-              : "ERROR",
+          error instanceof Error && error.message === "CAMERA_SOURCE_ENDED_DURING_ACQUISITION"
+            ? "SUSPENDED"
+            : error instanceof DOMException && ["NotAllowedError", "SecurityError"].includes(error.name)
+              ? "PERMISSION_DENIED"
+              : error instanceof DOMException && error.name === "NotReadableError"
+                ? "CAMERA_BUSY"
+                : "ERROR",
         );
       throw error;
     } finally {
