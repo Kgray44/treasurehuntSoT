@@ -327,15 +327,20 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       .locator("fieldset")
       .filter({ has: d.locator("legend").getByText("Selected spatial object", { exact: true }) })
       .screenshot({ path: `${evidence}/studio-selected-inspector.png` });
+    await d.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
     await d
       .getByRole("complementary", { name: "Spatial Library", exact: true })
       .screenshot({ path: `${evidence}/studio-library.png` });
+    await d.getByRole("tab", { name: "Hierarchy", exact: true }).click();
     await d
       .getByRole("region", { name: "Scene graph", exact: true })
       .screenshot({ path: `${evidence}/studio-scene-graph.png` });
+    const timelineTab = d.getByRole("tab", { name: "Timeline", exact: true });
+    if ((await timelineTab.getAttribute("aria-selected")) !== "true") await timelineTab.click();
     await d
-      .getByRole("region", { name: "Behavior timeline", exact: true })
+      .getByRole("tabpanel", { name: "Timeline", exact: true })
       .screenshot({ path: `${evidence}/studio-behavior-timeline.png` });
+    await d.getByRole("tab", { name: "Saved", exact: true }).click();
     await d.getByLabel("Search Library", { exact: true }).fill("missing-fictional-archive");
     await expect(d.getByText("No saved items match. Create and save a spatial moment to begin.")).toBeVisible();
     await capture(d, "studio-library-empty");
