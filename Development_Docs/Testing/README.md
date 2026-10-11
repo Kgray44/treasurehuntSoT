@@ -1,3 +1,11 @@
+---
+title: Sounding Line testing records
+audience: engineering
+status: current
+canonical_for: sounding-line-testing-records-navigation
+last_reviewed: 2026-10-11
+---
+
 # Project Sounding Line Testing Documentation
 
 **GOVERNING BASELINE COMPLETE — IMPLEMENTATION NOT STARTED**
@@ -17,3 +25,8 @@ This directory defines the testing-system architecture; it does not replace `scr
 - [Implementation roadmap](Sounding_Line_Implementation_Roadmap.md), [integration manifest](Sounding_Line_Integration_Manifest.md), and [validation report](Sounding_Line_Documentation_Validation_Report.md)
 
 The initial machine-readable baseline is in `testing/*.json`. It is representative and conservative, not a claim that every existing test is already migrated.
+
+
+## Current ordinary experience enforcement
+
+[Product Experience Engineering](Product_Experience/README.md) documents executable ordinary experience obligations. The historical governing baseline above remains preserved.

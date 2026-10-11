@@ -227,6 +227,7 @@ function nextServerMode(argumentsList) {
 export async function runBrowserAuthority({
   root,
   browserArguments,
+  browserScriptArguments,
   fixtureArguments = [],
   fixtureProject = "chromium",
   environment = process.env,
@@ -306,15 +307,19 @@ export async function runBrowserAuthority({
         );
     }
     const browserStartedAt = now();
-    browser = launch(process.execPath, ["node_modules/@playwright/test/cli.js", "test", ...browserArguments], {
-      root,
-      env: {
-        ...environment,
-        FOREVER_PLAYWRIGHT_EXTERNAL_SERVER: "1",
-        PLAYWRIGHT_BASE_URL: baseURL,
-        SOUNDING_LINE_BROWSER_AUTHORITY: "1",
+    browser = launch(
+      process.execPath,
+      browserScriptArguments ?? ["node_modules/@playwright/test/cli.js", "test", ...browserArguments],
+      {
+        root,
+        env: {
+          ...environment,
+          FOREVER_PLAYWRIGHT_EXTERNAL_SERVER: "1",
+          PLAYWRIGHT_BASE_URL: baseURL,
+          SOUNDING_LINE_BROWSER_AUTHORITY: "1",
+        },
       },
-    });
+    );
     const browserExit = exited(browser).then((value) => ({ type: "browser", value }));
     const serverExit = exited(server).then((value) => ({ type: "server", value }));
     const completed = await Promise.race([browserExit, serverExit]);

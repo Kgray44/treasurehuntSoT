@@ -24251,5 +24251,20 @@
   },
   "phase": "Phase 2 - Trace the Current",
   "project": "Project Deepwater",
-  "schemaVersion": "1.0.0"
+  "schemaVersion": "1.0.0",
+  "productExperienceEnforcement": {
+    "authority": "SOUNDING_LINE",
+    "contractRegistry": "testing/contracts.json",
+    "operationRecord": "Development_Docs/Testing/Product_Experience/README.md",
+    "baselineLedger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+    "semanticRule": "Persisted roles, API success and DOM presence do not establish the promised accessible user experience.",
+    "spatialIntentContractIds": [
+      "spatial-pilot.experience",
+      "crossdeck.phase2.continuity",
+      "reach.phase1.foundation",
+      "sextant.phase3.field-context"
+    ],
+    "status": "EXECUTABLE_GATE_INTEGRATION_CANDIDATE",
+    "ownerAcceptance": "NOT_CLAIMED"
+  }
 }

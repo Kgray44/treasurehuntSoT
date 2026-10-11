@@ -20,6 +20,10 @@ import {
   resolveBrowserSuiteDispatches,
   suiteBrowserProfileId,
 } from "./browser-suite-profiles.mjs";
+import { planProductExperience, verifyProductExperience } from "./product-experience.mjs";
+import { runTrustedExperienceReplay } from "./experience-browser.mjs";
+import { verifyTrustedExperienceAttestation } from "./experience-attestation.mjs";
+import { revisionJson } from "./product-experience.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
 const productRoots = new Set(["app", "components", "src", "lib", "prisma", "public", "styles"]);
@@ -557,16 +561,27 @@ async function semanticSnapshot(root, candidateSha) {
   const entries = trackedEntries(root, candidateSha);
   const modulePath = fileURLToPath(import.meta.url);
   const evidencePath = path.join(path.dirname(modulePath), "evidence.mjs");
-  const [ordinarySource, evidenceSource] = await Promise.all([
-    readFile(modulePath, "utf8"),
-    readFile(evidencePath, "utf8"),
-  ]);
+  const [ordinarySource, evidenceSource, experienceSource, experienceBrowserSource, experienceAttestationSource] =
+    await Promise.all([
+      readFile(modulePath, "utf8"),
+      readFile(evidencePath, "utf8"),
+      readFile(path.join(path.dirname(modulePath), "product-experience.mjs"), "utf8"),
+      readFile(path.join(path.dirname(modulePath), "experience-browser.mjs"), "utf8"),
+      readFile(path.join(path.dirname(modulePath), "experience-attestation.mjs"), "utf8"),
+    ]);
   return {
     root,
     candidateSha,
     entries,
     byPath: new Map(entries.map((entry) => [entry.path, entry])),
-    authorityIdentity: evidenceDigest({ ordinarySource, evidenceSource, version: EVIDENCE_VERSION }),
+    authorityIdentity: evidenceDigest({
+      ordinarySource,
+      evidenceSource,
+      experienceSource,
+      experienceBrowserSource,
+      experienceAttestationSource,
+      version: EVIDENCE_VERSION,
+    }),
     environmentClass: process.env.GITHUB_ACTIONS === "true" ? "github-actions" : "local",
   };
 }
@@ -769,11 +784,14 @@ function registrationChangesAreValid(root, candidateSha, paths) {
 
 function run(root, command, argumentsList, { env = {}, ...options } = {}) {
   process.stdout.write(`\n> ${command} ${argumentsList.join(" ")}\n`);
+  const candidateEnvironment = { ...process.env, ...env };
+  delete candidateEnvironment.GH_TOKEN;
+  delete candidateEnvironment.GITHUB_TOKEN;
   execFileSync(command, argumentsList, {
     cwd: root,
     stdio: "inherit",
     shell: process.platform === "win32",
-    env: { ...process.env, ...env },
+    env: candidateEnvironment,
     ...options,
   });
 }
@@ -947,7 +965,7 @@ export function requiresBuild({ changedPaths, mode = "ordinary" }) {
   );
 }
 
-export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary" }) {
+export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary", experienceEvidenceRequired = true }) {
   const baseTree = git(root, ["rev-parse", `${baseSha}^{tree}`]);
   const candidateTree = git(root, ["rev-parse", `${candidateSha}^{tree}`]);
   assertBinding({ baseSha, candidateSha, baseTree, candidateTree });
@@ -992,6 +1010,26 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
   );
   const browserTests = tests.filter((file) => e2eFile.test(file));
   const selection = selectAffectedTests({ changedPaths: classification.admissionPaths, unitTests, browserTests, mode });
+  const productExperience = planProductExperience({
+    root,
+    baseSha,
+    candidateSha,
+    changedPaths: classification.admissionPaths,
+  });
+  if (productExperience.applicable) {
+    for (const browserTest of productExperience.browserTests)
+      if (!browserTests.includes(browserTest))
+        throw new Error(`PRODUCT_EXPERIENCE_BROWSER_TEST_MISSING:${browserTest}`);
+    selection.browserTests = [...new Set([...selection.browserTests, ...productExperience.browserTests])].sort();
+    if (experienceEvidenceRequired) {
+      verifyProductExperience(root, candidateSha, productExperience);
+      productExperience.trustedAttestation = await verifyTrustedExperienceAttestation({
+        root,
+        plan: productExperience,
+        evidence: revisionJson(root, candidateSha, productExperience.evidencePath),
+      });
+    }
+  }
   const migrationScripts = classification.admissionPaths.filter((file) =>
     /^scripts\/.*(?:migration|migrate|rehearse).*\.tsx?$/iu.test(file),
   );
@@ -1015,6 +1053,7 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
       (file) => lintableFile.test(file) && existsSync(path.join(root, file)),
     ),
     selected: selection,
+    productExperience,
     browserRequired: browserProvisioningRequired(selection),
     databaseUrl: soundingLineDatabaseUrl(candidateSha),
     migrationScripts,
@@ -1207,6 +1246,12 @@ async function main() {
       decision: "FAIL",
     };
     const verification = await runReconciledVerification(root, plan);
+    result.productExperienceDecision = verifyProductExperience(root, candidateSha, plan.productExperience);
+    result.productExperienceReplay = await runTrustedExperienceReplay({
+      root,
+      plan: plan.productExperience,
+      environment: verificationEnvironment(plan, process.execPath, ["scripts/sounding-line/browser-authority.mjs"]),
+    });
     result.timing.commands = verification.timings;
     result.evidenceReconciliation = {
       evidenceVersion: EVIDENCE_VERSION,

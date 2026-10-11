@@ -223,5 +223,39 @@
       "mobileStrategy": "summary-to-detail",
       "themeApplicability": "LIGHT_AND_DARK"
     }
+  ],
+  "curatedExperienceReferences": [
+    {
+      "family": "Authentication",
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+      "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+      "reason": "The accepted narrow task composition uses one visible objective and a clear recovery/return hierarchy.",
+      "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+    },
+    {
+      "family": "Authentication",
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+      "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+      "reason": "The accepted mobile account ledger keeps fields and recovery actions readable and reachable.",
+      "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+    },
+    {
+      "family": "Gateway / public entry",
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+      "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+      "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+    },
+    {
+      "family": "Gateway / public entry",
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+      "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+      "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+    }
   ]
 }
