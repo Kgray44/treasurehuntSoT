@@ -55,6 +55,25 @@ The configured AI/critique surface retains the existing server AI action and
 proposal validation; local phrase rules clearly disclose their provider-independent
 nature. Assistant A1 can mount a dedicated component here without owning rendering.
 
+Proposed broader Assistant A1 host contract (requires source reconciliation, not
+yet implemented): mount its component immediately after SpatialCanvas, alongside
+the existing PlacementComposer. Inputs are current immutable snapshot draft,
+selectedEntityId, mode, authoritative savedRevision and a local editor-generation
+token incremented by every edit/install/undo/redo. prepareBase() awaits canonical
+persist(), then returns the current draft/revision/generation identity. A1 owns
+strict validation/materialization of its operation bundles against that exact base;
+existing narrow IntentProposal is not a substitute for the broader bundle schema.
+preview({materializedDraft, affectedEntityIds, base}) only changes transient
+placementPreview and renderer highlight inputs. clearPreview() removes it. Host
+applyReviewed({materializedDraft, base}) rejects a changed definition, draft JSON,
+selection or generation before one canonical REPLACE history edit. It never writes
+directly to the library, increments the server CAS revision, bypasses autosave,
+or mutates immutable releases. Async proposal responses must check the same base.
+No new operation types or authoring.ts sections are admitted until A1 and Phase 3
+reconcile their exact additive schemas and history/validation behavior. Quota,
+provider and Admiralty services remain A1-owned. Current preview/history functions
+are an available mount seam; the broader interface above is a proposal only.
+
 No cloud checks have been dispatched by this task. Local focused/browser development
 checks are diagnostic. Final ordinary qualification waits for the frozen final
 candidate. When only waiting for owner or CI, record SHA/tree/lock hash, commands,

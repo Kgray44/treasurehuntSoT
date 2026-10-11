@@ -3,10 +3,12 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Feature status
+
+Parallax Phase 3 adaptive authoring and the owner-required 3D workstation correction are owned implementation candidates. The [workstation review](../../../Projects/Project_Parallax/Phase_3_Workstation_Review.md) separates browser development proof from pending visual approval, final software qualification and protected-main availability. The completed Feature Catalog remains unchanged while the phase is incomplete.
 
 Reach Phase 1's observation/calibration laboratory is an implementation candidate with physical qualification and protected integration pending. See the [phase record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md); no Phase 2 action capability is claimed.
 

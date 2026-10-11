@@ -538,46 +538,49 @@ export function SpatialStudio({
           {dockHandle("library")}
           <h2>Spatial Library</h2>
           <SpatialAssetBrowser busy={busy} onAdd={addPreset} onNew={() => newPreset("Desk Map")} />
-          <label>
-            Search Library
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Title, tag, category or collection"
-            />
-          </label>
-          <select aria-label="Library scope" value={filter} onChange={(e) => setFilter(e.target.value)}>
-            <option value="ALL">Recent / all owned items</option>
-            <option value="MY_LIBRARY">My Spatial Library</option>
-            <option value="FAVORITES">Favorites</option>
-          </select>
-          <h3>Owned items</h3>
-          {!filtered.length && <p>No saved items match. Create and save a spatial moment to begin.</p>}
-          {filtered.map((item) => (
-            <button
-              className={styles.libraryItem}
-              key={item.id}
-              disabled={busy}
-              onClick={() =>
-                void action(async () => {
-                  await persist();
-                  const data = await load();
-                  const refreshed = data.items.find((i) => i.id === item.id)!;
-                  install(refreshed.draft, refreshed.revision, true);
-                })
-              }
-            >
-              <span className={styles.thumbnail} aria-hidden="true">
-                {item.draft.content.entities[0]?.kind === "PARCHMENT" ? "▱" : "◇"}
-              </span>
-              <strong>{item.draft.content.title}</strong>
-              <small>
-                {item.draft.scope === "MY_LIBRARY" ? "My Library" : "Chronicle only"} · {item.releases.length} versions
-                · {item.usageCount} uses
-              </small>
-              <small>{item.draft.category.replaceAll("_", " ")} · Guided compatible · Creator owned</small>
-            </button>
-          ))}
+          <details className={styles.savedLibrary}>
+            <summary>Saved Spatial Library · {filtered.length}</summary>
+            <label>
+              Search Library
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Title, tag, category or collection"
+              />
+            </label>
+            <select aria-label="Library scope" value={filter} onChange={(e) => setFilter(e.target.value)}>
+              <option value="ALL">Recent / all owned items</option>
+              <option value="MY_LIBRARY">My Spatial Library</option>
+              <option value="FAVORITES">Favorites</option>
+            </select>
+            <h3>Owned items</h3>
+            {!filtered.length && <p>No saved items match. Create and save a spatial moment to begin.</p>}
+            {filtered.map((item) => (
+              <button
+                className={styles.libraryItem}
+                key={item.id}
+                disabled={busy}
+                onClick={() =>
+                  void action(async () => {
+                    await persist();
+                    const data = await load();
+                    const refreshed = data.items.find((i) => i.id === item.id)!;
+                    install(refreshed.draft, refreshed.revision, true);
+                  })
+                }
+              >
+                <span className={styles.thumbnail} aria-hidden="true">
+                  {item.draft.content.entities[0]?.kind === "PARCHMENT" ? "▱" : "◇"}
+                </span>
+                <strong>{item.draft.content.title}</strong>
+                <small>
+                  {item.draft.scope === "MY_LIBRARY" ? "My Library" : "Chronicle only"} · {item.releases.length}{" "}
+                  versions · {item.usageCount} uses
+                </small>
+                <small>{item.draft.category.replaceAll("_", " ")} · Guided compatible · Creator owned</small>
+              </button>
+            ))}
+          </details>
           <section className={styles.graph} aria-label="Scene graph">
             <h2>Scene graph</h2>
             <label>
@@ -780,136 +783,6 @@ export function SpatialStudio({
               Spatial state changes only · events are relative to their trigger · Chronicle progression remains One
               Voyage-owned.
             </small>
-            <label>
-              Preview time
-              <input
-                aria-label="Timeline time in milliseconds"
-                type="range"
-                min="0"
-                max="60000"
-                step="100"
-                value={timeMs}
-                onChange={(e) => setTimeMs(Number(e.target.value))}
-              />
-              {(timeMs / 1000).toFixed(1)} seconds
-            </label>
-            <div className={styles.inline}>
-              {["INSPECT", "PICK", "PLACE"].map((trigger) => (
-                <button
-                  key={trigger}
-                  disabled={
-                    !currentEntity || !currentEntity.interactions.includes(trigger as "INSPECT" | "PICK" | "PLACE")
-                  }
-                  onClick={() =>
-                    setInputs([
-                      ...inputs,
-                      { trigger: trigger as SpatialInput["trigger"], entityId: selected!, atMs: timeMs },
-                    ])
-                  }
-                >
-                  Simulate {trigger.toLowerCase()}
-                </button>
-              ))}
-              <button
-                onClick={() => {
-                  setPlaying(false);
-                  setTimeMs(0);
-                  setInputs([
-                    { trigger: "SCENE_ENTER", atMs: 0 },
-                    { trigger: "TIMER", atMs: 0 },
-                  ]);
-                }}
-              >
-                Reset simulation
-              </button>
-            </div>
-            {(draft.content.studio?.behaviors ?? []).map((b, index) => (
-              <div className={styles.behavior} key={b.id}>
-                <select
-                  aria-label={`Behavior ${index + 1} trigger`}
-                  value={b.trigger}
-                  onChange={(e) => {
-                    const next = structuredClone(draft);
-                    const node = next.content.studio!.behaviors[index];
-                    node.trigger = e.target.value as typeof b.trigger;
-                    if (["PICK", "INSPECT", "PLACE"].includes(node.trigger))
-                      node.sourceEntityId = selected ?? undefined;
-                    else delete node.sourceEntityId;
-                    replace(next);
-                  }}
-                >
-                  {["SCENE_ENTER", "TIMER", "INSPECT", "PICK", "PLACE"].map((t) => (
-                    <option key={t}>{t}</option>
-                  ))}
-                </select>
-                <select
-                  aria-label={`Behavior ${index + 1} source`}
-                  value={b.sourceEntityId ?? ""}
-                  disabled={["TIMER", "SCENE_ENTER"].includes(b.trigger)}
-                  onChange={(e) => {
-                    const next = structuredClone(draft);
-                    next.content.studio!.behaviors[index].sourceEntityId = e.target.value;
-                    replace(next);
-                  }}
-                >
-                  <option value="">Scene</option>
-                  {draft.content.entities.map((e) => (
-                    <option key={e.id} value={e.id}>
-                      {e.name}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  aria-label={`Behavior ${index + 1} delay milliseconds`}
-                  type="number"
-                  min="0"
-                  max="60000"
-                  value={b.delayMs}
-                  onChange={(e) => {
-                    const next = structuredClone(draft);
-                    next.content.studio!.behaviors[index].delayMs = Number(e.target.value);
-                    replace(next);
-                  }}
-                />
-                <select
-                  aria-label={`Behavior ${index + 1} action`}
-                  value={b.action}
-                  onChange={(e) => {
-                    const next = structuredClone(draft);
-                    next.content.studio!.behaviors[index].action = e.target.value as typeof b.action;
-                    replace(next);
-                  }}
-                >
-                  {["SHOW", "HIDE", "HIGHLIGHT"].map((a) => (
-                    <option key={a}>{a}</option>
-                  ))}
-                </select>
-                <select
-                  aria-label={`Behavior ${index + 1} target`}
-                  value={b.targetEntityId}
-                  onChange={(e) => {
-                    const next = structuredClone(draft);
-                    next.content.studio!.behaviors[index].targetEntityId = e.target.value;
-                    replace(next);
-                  }}
-                >
-                  {draft.content.entities.map((e) => (
-                    <option key={e.id} value={e.id}>
-                      {e.name}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  onClick={() => {
-                    const next = structuredClone(draft);
-                    next.content.studio!.behaviors.splice(index, 1);
-                    replace(next);
-                  }}
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
             <button
               disabled={!selected || (draft.content.studio?.behaviors.length ?? 0) >= 64}
               onClick={() => {
@@ -927,6 +800,139 @@ export function SpatialStudio({
             >
               Add spatial behavior
             </button>
+            <details className={styles.timelineProperties}>
+              <summary>Sequence properties &amp; simulation</summary>
+              <label>
+                Preview time
+                <input
+                  aria-label="Timeline time in milliseconds"
+                  type="range"
+                  min="0"
+                  max="60000"
+                  step="100"
+                  value={timeMs}
+                  onChange={(e) => setTimeMs(Number(e.target.value))}
+                />
+                {(timeMs / 1000).toFixed(1)} seconds
+              </label>
+              <div className={styles.inline}>
+                {["INSPECT", "PICK", "PLACE"].map((trigger) => (
+                  <button
+                    key={trigger}
+                    disabled={
+                      !currentEntity || !currentEntity.interactions.includes(trigger as "INSPECT" | "PICK" | "PLACE")
+                    }
+                    onClick={() =>
+                      setInputs([
+                        ...inputs,
+                        { trigger: trigger as SpatialInput["trigger"], entityId: selected!, atMs: timeMs },
+                      ])
+                    }
+                  >
+                    Simulate {trigger.toLowerCase()}
+                  </button>
+                ))}
+                <button
+                  onClick={() => {
+                    setPlaying(false);
+                    setTimeMs(0);
+                    setInputs([
+                      { trigger: "SCENE_ENTER", atMs: 0 },
+                      { trigger: "TIMER", atMs: 0 },
+                    ]);
+                  }}
+                >
+                  Reset simulation
+                </button>
+              </div>
+              {(draft.content.studio?.behaviors ?? []).map((b, index) => (
+                <div className={styles.behavior} key={b.id}>
+                  <select
+                    aria-label={`Behavior ${index + 1} trigger`}
+                    value={b.trigger}
+                    onChange={(e) => {
+                      const next = structuredClone(draft);
+                      const node = next.content.studio!.behaviors[index];
+                      node.trigger = e.target.value as typeof b.trigger;
+                      if (["PICK", "INSPECT", "PLACE"].includes(node.trigger))
+                        node.sourceEntityId = selected ?? undefined;
+                      else delete node.sourceEntityId;
+                      replace(next);
+                    }}
+                  >
+                    {["SCENE_ENTER", "TIMER", "INSPECT", "PICK", "PLACE"].map((t) => (
+                      <option key={t}>{t}</option>
+                    ))}
+                  </select>
+                  <select
+                    aria-label={`Behavior ${index + 1} source`}
+                    value={b.sourceEntityId ?? ""}
+                    disabled={["TIMER", "SCENE_ENTER"].includes(b.trigger)}
+                    onChange={(e) => {
+                      const next = structuredClone(draft);
+                      next.content.studio!.behaviors[index].sourceEntityId = e.target.value;
+                      replace(next);
+                    }}
+                  >
+                    <option value="">Scene</option>
+                    {draft.content.entities.map((e) => (
+                      <option key={e.id} value={e.id}>
+                        {e.name}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    aria-label={`Behavior ${index + 1} delay milliseconds`}
+                    type="number"
+                    min="0"
+                    max="60000"
+                    value={b.delayMs}
+                    onChange={(e) => {
+                      const next = structuredClone(draft);
+                      next.content.studio!.behaviors[index].delayMs = Number(e.target.value);
+                      replace(next);
+                    }}
+                  />
+                  <select
+                    aria-label={`Behavior ${index + 1} action`}
+                    value={b.action}
+                    onChange={(e) => {
+                      const next = structuredClone(draft);
+                      next.content.studio!.behaviors[index].action = e.target.value as typeof b.action;
+                      replace(next);
+                    }}
+                  >
+                    {["SHOW", "HIDE", "HIGHLIGHT"].map((a) => (
+                      <option key={a}>{a}</option>
+                    ))}
+                  </select>
+                  <select
+                    aria-label={`Behavior ${index + 1} target`}
+                    value={b.targetEntityId}
+                    onChange={(e) => {
+                      const next = structuredClone(draft);
+                      next.content.studio!.behaviors[index].targetEntityId = e.target.value;
+                      replace(next);
+                    }}
+                  >
+                    {draft.content.entities.map((e) => (
+                      <option key={e.id} value={e.id}>
+                        {e.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={() => {
+                      const next = structuredClone(draft);
+                      next.content.studio!.behaviors.splice(index, 1);
+                      replace(next);
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </details>
           </section>
         </section>
         <aside className={styles.inspector} aria-label="Spatial inspector">

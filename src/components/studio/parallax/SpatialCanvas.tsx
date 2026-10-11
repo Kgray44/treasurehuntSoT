@@ -85,6 +85,9 @@ export function SpatialCanvas(props: {
     recipe.preferredSurfaces = [c.surface];
     recipe.preferredContext = c.context.filter((x) => !["WALKWAY", "STAIRS", "OBSTACLE", "PRIVATE_REGION"].includes(x));
     recipe.searchRegion = c.region;
+    d.content.adaptive!.calibration.maturity = "SEMANTIC";
+    delete d.content.adaptive!.calibration.reviewReceiptId;
+    if (d.content.placementPolicy === "CALIBRATED") d.content.placementPolicy = "ADAPTIVE_STICKY";
     p.onEdit({ type: "REPLACE", draft: d });
     setFeedback(
       `Semantic intent changed to ${c.surface.toLowerCase()} near ${recipe.preferredContext.join(", ").toLowerCase() || "open space"}. Safety constraints still apply.`,
@@ -140,6 +143,7 @@ export function SpatialCanvas(props: {
       overlays: overlays || (Boolean(adaptive) && tool === "translate"),
       adaptive: Boolean(adaptive),
       editable: preview === "EDITOR",
+      inspection: mode === "ENGINEERING",
     });
   });
   const selected = draft.content.entities.find((e) => e.id === selectedId);

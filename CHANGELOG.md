@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Changelog
@@ -13,6 +13,8 @@ last_reviewed: 2026-10-10
 ## Unreleased
 
 ### Corrected
+
+- Parallax's owned Phase 3 candidate reimagines Spatial Studio around a populated synthetic 3D viewport, direct editing gizmos, a visual asset browser, contextual placement preview and behavior tracks. It preserves canonical drafts, validation, immutable versions and Chronicle attachment. The [workstation review](Development_Docs/Projects/Project_Parallax/Phase_3_Workstation_Review.md) records development evidence; owner visual approval and final protected integration remain pending.
 
 - Sextant gesture acquisition refuses incompatible slow delivery before sensor acquisition and cleans all owned leases on failure/abort/interruption. Parallax native scenes use bounded versioned UTF-8 chunks, independent resolved geometry validation and idempotent session-bound termination including Android Back. Existing published checksums, Guided accessibility and One Voyage progression authority are retained. See the [correction receipt](Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for qualification and remaining physical/owner gates.
 

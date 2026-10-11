@@ -23,6 +23,7 @@ export type ViewportState = {
   overlays: boolean;
   adaptive: boolean;
   editable: boolean;
+  inspection: boolean;
 };
 
 /** Creator-only synthetic scene. No camera, device observations, imported media or runtime authority. */
@@ -61,8 +62,9 @@ export function createWorkstation(
   scene.add(transform.getHelper());
   const world = new T.Group(),
     objects = new T.Group(),
-    surfaces = new T.Group();
-  scene.add(world, objects, surfaces);
+    surfaces = new T.Group(),
+    highlights = new T.Group();
+  scene.add(world, objects, surfaces, highlights);
   scene.add(new T.HemisphereLight(0xe3efff, 0x313238, 2));
   const sunlight = new T.DirectionalLight(0xffedd6, 4);
   sunlight.position.set(-3, 7, 4);
@@ -255,6 +257,7 @@ export function createWorkstation(
   const buildObjects = (s: ViewportState) => {
     transform.detach();
     disposeGroup(objects);
+    disposeGroup(highlights);
     for (const { entity: e } of s.objects) {
       const group = new T.Group();
       group.userData.entityId = e.id;
@@ -320,6 +323,10 @@ export function createWorkstation(
         group.add(mesh);
       }
       objects.add(group);
+      const highlight = new T.BoxHelper(group, 0xe8c3ff);
+      highlight.userData.entityId = e.id;
+      highlight.visible = false;
+      highlights.add(highlight);
     }
   };
   const update = (s: ViewportState) => {
@@ -344,6 +351,9 @@ export function createWorkstation(
         obj.quaternion.set(o.world.rotation.x, o.world.rotation.y, o.world.rotation.z, o.world.rotation.w);
         obj.scale.setScalar(o.world.scale);
       }
+      const highlight = highlights.children.find((h) => h.userData.entityId === o.entity.id) as T.BoxHelper;
+      highlight.visible = o.visible && o.highlighted;
+      if (highlight.visible) highlight.setFromObject(obj);
     }
     surfaces.visible = s.overlays;
     const selectedObject = objects.children.find((o) => o.userData.entityId === s.selected);
@@ -459,7 +469,7 @@ export function createWorkstation(
           ? new T.Vector3(0.01, 9, 0.01)
           : view === "front"
             ? new T.Vector3(0, 2, 7)
-            : new T.Vector3(5.2, 4, 6),
+            : new T.Vector3(3.8, 2.9, 4.4),
       );
     controls.update();
     controls.addEventListener("change", invalidate);
@@ -478,6 +488,25 @@ export function createWorkstation(
         if (obj) selection.setFromObject(obj);
       }
       renderer.render(scene, camera);
+      host.dataset.rendered = "true";
+      // Read-only Engineering instruments describe this synthetic viewport, never native tracking.
+      if (state?.inspection) {
+        const project = (point: T.Vector3) => {
+          const p = point.clone().project(camera);
+          return { x: (p.x + 1) / 2, y: (1 - p.y) / 2 };
+        };
+        const handles: Record<string, { x: number; y: number }> = {};
+        const visible = (o: T.Object3D): boolean => o.visible && (!o.parent || visible(o.parent));
+        transform.getHelper().traverse((o) => {
+          if (o instanceof T.Mesh && ["X", "Y", "Z"].includes(o.name) && visible(o) && !handles[o.name])
+            handles[o.name] = project(new T.Box3().setFromObject(o).getCenter(new T.Vector3()));
+        });
+        host.dataset.projectedScene = JSON.stringify({
+          camera: camera.position.toArray(),
+          handles,
+          objects: objects.children.map((o) => ({ id: o.userData.entityId, ...project(o.position) })),
+        });
+      } else delete host.dataset.projectedScene;
       dirty = false;
     }
   };
@@ -498,6 +527,7 @@ export function createWorkstation(
       disposeGroup(world);
       disposeGroup(objects);
       disposeGroup(surfaces);
+      disposeGroup(highlights);
       selection.geometry.dispose();
       (selection.material as T.Material).dispose();
       sunlight.shadow.map?.dispose();

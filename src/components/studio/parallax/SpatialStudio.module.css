@@ -1361,3 +1361,132 @@
     animation: none !important;
   }
 }
+/* Dock headers and spatial tracks remain available while their contents scroll. */
+.studio h2,
+.studio h3,
+.studio h4 {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.library {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 12px;
+}
+.library > h2 {
+  flex: none;
+  margin-bottom: 0;
+}
+.assetBrowser {
+  flex: 1;
+  min-height: 150px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.assetBrowser .panelTitle {
+  position: sticky;
+  top: 0;
+  background: #111b29;
+  padding: 6px 0;
+  z-index: 1;
+}
+.savedLibrary {
+  flex: none;
+  max-height: 35%;
+  overflow: auto;
+  font-size: 10px;
+}
+.savedLibrary summary {
+  color: #b5d0dc;
+  cursor: pointer;
+  padding: 8px 0;
+}
+.savedLibrary[open] {
+  border-top: 1px solid #2d3d50;
+}
+.graph {
+  flex: none;
+  max-height: 230px;
+  margin: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+  padding-top: 12px;
+}
+.graph h2 {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.inspector > h2 {
+  position: sticky;
+  top: -16px;
+  margin: -16px -16px 12px;
+  padding: 16px;
+  background: #131e2bf5;
+  backdrop-filter: blur(10px);
+  z-index: 2;
+}
+.canvas {
+  min-height: 280px;
+}
+.timeline {
+  max-height: 175px;
+}
+.timelineHeader {
+  position: sticky;
+  top: -12px;
+  background: #101723f5;
+  padding: 8px 0;
+  margin: -8px 0 0;
+  z-index: 2;
+}
+.tracks {
+  max-height: 85px;
+  overflow: auto;
+  scrollbar-width: thin;
+  margin: 8px 0;
+}
+.timeline > small {
+  font-size: 8px;
+}
+.timeline > button {
+  min-height: 25px;
+  font-size: 9px;
+  margin: 6px 0 0;
+}
+.timelineProperties {
+  display: inline-block;
+  vertical-align: top;
+  margin: 7px 0 0 10px;
+}
+.timelineProperties summary {
+  color: #b2c9df;
+  font-size: 9px;
+  cursor: pointer;
+  padding: 5px 0;
+}
+.timelineProperties[open] {
+  display: block;
+  margin: 8px 0 0;
+}
+@media (max-width: 700px) {
+  .library {
+    max-height: 700px;
+  }
+  .assetBrowser {
+    flex: none;
+    max-height: 350px;
+  }
+  .graph {
+    max-height: 240px;
+  }
+  .savedLibrary {
+    max-height: 250px;
+  }
+  .timeline {
+    max-height: 280px;
+  }
+  .inspector > h2 {
+    top: -16px;
+  }
+}

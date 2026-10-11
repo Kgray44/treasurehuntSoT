@@ -7,6 +7,7 @@ import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabi
 import { listSpatialItems } from "../../src/parallax/library-service";
 
 test.describe.configure({ mode: "serial", timeout: 180000 });
+test.use({ video: { mode: "on", size: { width: 1280, height: 800 } } });
 test.afterAll(() => db.$disconnect());
 test("Creator edits a populated 3D workstation, previews intent, and retains canonical history", async ({
   page,
@@ -45,8 +46,35 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
     .getByRole("region", { name: "Scene graph" })
     .getByRole("button", { name: "◇ Desk Map", exact: true })
     .click();
+  await page.getByRole("button", { name: "Move tool", exact: true }).click();
+  const engineHost = page.locator('[data-renderer="READY"]');
+  await expect
+    .poll(async () => JSON.parse((await engineHost.getAttribute("data-projected-scene")) ?? "{}").handles?.X)
+    .toBeTruthy();
+  const handle = JSON.parse((await engineHost.getAttribute("data-projected-scene"))!).handles.X as {
+    x: number;
+    y: number;
+  };
+  const handleBounds = (await engineHost.locator("canvas").boundingBox())!;
+  const originalX = await page.getByLabel("Position x", { exact: true }).inputValue();
+  await page.mouse.move(
+    handleBounds.x + handle.x * handleBounds.width,
+    handleBounds.y + handle.y * handleBounds.height,
+  );
+  await page.mouse.down();
+  await page.mouse.move(
+    handleBounds.x + handle.x * handleBounds.width + 45,
+    handleBounds.y + handle.y * handleBounds.height - 15,
+    { steps: 12 },
+  );
+  await page.mouse.up();
+  await expect(page.getByLabel("Position x", { exact: true })).not.toHaveValue(originalX);
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await expect(page.getByLabel("Position x", { exact: true })).toHaveValue(originalX);
   await page.getByRole("button", { name: "Add spatial behavior", exact: true }).click();
+  await page.getByText("Sequence properties & simulation", { exact: true }).click();
   await page.getByLabel("Behavior 1 delay milliseconds").fill("2000");
+  await page.getByText("Sequence properties & simulation", { exact: true }).click();
   await page.getByLabel("Authoring mode").selectOption("GUIDED");
   await page.getByRole("button", { name: "Rotate tool", exact: true }).click();
   await page.screenshot({ path: "artifacts/parallax-phase3/workstation/desktop-primary.png", fullPage: true });
@@ -67,9 +95,11 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   await page.screenshot({ path: "artifacts/parallax-phase3/workstation/surface-overlays.png", fullPage: true });
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
   await expect(page.getByRole("button", { name: "Pause timeline", exact: true })).toBeVisible();
-  await expect(page.getByLabel("Timeline time in milliseconds")).not.toHaveValue("0");
+  await expect(page.getByRole("region", { name: "Behavior timeline" })).not.toContainText("0.0 / 60.0 s");
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
+  await page.getByText("Sequence properties & simulation", { exact: true }).click();
   await page.getByRole("button", { name: "Reset simulation", exact: true }).click();
+  await page.getByText("Sequence properties & simulation", { exact: true }).click();
   await page.getByLabel("Preview", { exact: true }).selectOption("EDITOR");
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Working draft saved");

@@ -286,6 +286,16 @@ export const routeShellDefinitions: readonly RouteShellDefinition[] = [
     activeFamily: "workspace-creator-library",
   },
   {
+    id: "immersive-parallax-workstation",
+    pattern: "/studio/parallax",
+    workspace: "creator",
+    shellMode: "IMMERSIVE",
+    owner: "one-voyage",
+    reason: "Spatial-first Creator workstation with independent visual identity and preserved account navigation.",
+    exitTarget: "/studio/library",
+    activeFamily: "workspace-creator-library",
+  },
+  {
     id: "player-root",
     pattern: "/player",
     workspace: "player",

@@ -55,6 +55,8 @@ Parallax does **not** own:
 
 ## Current implementation status
 
+**Phase 3 is in progress on an owned branch. The owner rejected the previous Spatial Studio visual design.** The [workstation design review](Phase_3_Workstation_Review.md) records the new populated 3D candidate, isolated browser evidence and remaining explicit owner visual-approval gate. It does not supersede protected-main evidence or establish physical qualification.
+
 **Phase 1 — Establish the Frame is implemented. Representative-device owner acceptance remains pending.**
 
 The [Phase 1 implementation and verification record](Phase_1_Implementation.md) documents the published Spatial Moment contract, Chronicle Lens, foreground iOS/Android providers, fixed/local/surface anchors, Guided View, isolated interaction observations, Drydock integration, migrations, and eight executable D0 scenarios in the shared Voyagewright Device Lab.
