@@ -114,9 +114,91 @@ environment; an ordinary skip is not performance acceptance.
 
 The first two development load runs failed during large simultaneous startup;
 their results remain failed. Trace inspection found canonical SQLite 409
-transaction-conflict responses with multi-second queueing. Initial two/five
-surface results are provisional, not full-load qualification. The final measured
-report, exact candidate qualification and protected integration are pending.
+transaction-conflict responses with multi-second queueing. The corrected
+staggered-start run passes with zero startup and steady-state failures at every
+cohort. This does not qualify a simultaneous SQLite reconnect storm or live MySQL.
+
+## Source-bound measured results
+
+The full comparison binds clean `81452bc6b7b55d1a8d3352999c114eea98d09110`,
+tree `607e9e781f10213d6439236e8984cdd68094d57e`, Node 24.18.0 on Windows and
+lockfile SHA-256 `a2f4140400648da7810670a7ef677e04d526628a8f66a98efcc180f5eef74014`.
+Its fresh production build and all five browser cases pass. The [raw measurements](realtime-evidence-20261011/idle-measurements-81452bc6.json)
+and [runtime/cleanup record](realtime-evidence-20261011/runtime-81452bc6.json)
+preserve the original numbers. Each row is a nominal 20-second idle window;
+SQL/CPU boundaries use actual one-second process samples.
+
+| Surfaces | Snapshot GETs, old → new | Reduction | SQL queries, old → new | SQL reduction | Server CPU ms, old → new | Peak RSS MiB, old → new |
+| -------- | ------------------------ | --------- | ---------------------- | ------------- | ------------------------ | ----------------------- |
+| 2        | 75 → 4                   | 94.7%     | 1,847 → 341            | 81.5%         | 2,501 → 391              | 298.3 → 244.0           |
+| 5        | 190 → 9                  | 95.3%     | 4,586 → 863            | 81.2%         | 3,812 → 984              | 342.2 → 342.4           |
+| 20       | 762 → 40                 | 94.8%     | 18,371 → 3,755         | 79.6%         | 11,937 → 2,108           | 458.9 → 484.7           |
+| 32       | 1,221 → 64               | 94.8%     | 29,611 → 5,283         | 82.2%         | 13,625 → 2,906           | 608.0 → 622.9           |
+
+Each updated idle cohort opens one event connection per surface and reports zero
+failures. CPU reductions range from 74.2% to 84.4%; neither total server load nor
+memory improved by 95%. Memory is mixed and rises across the cumulative test
+process; this short run does not prove long-term memory behavior or production
+capacity. Synthetic scopes are 1/1/2/4 respectively, not 32 surfaces attached
+to one person contrary to the existing cap. Browser processes are bounded to seven.
+
+Twenty active changes in the full run have command-request-to-authorized-snapshot
+callback latency p50 **167 ms**, p95 **370 ms**, p99 **455 ms**. This includes
+command HTTP, authorized fetch and test callback, rather than a physical paint
+or an instrumented transaction timestamp. The same run measures independent
+Node-process delivery at **1,215 ms**, network restoration at **144 ms**,
+controlled foreground recovery at **163 ms**, reload plus reconciliation at
+**336 ms**, and deliberately discarded notification recovery at **10,180 ms**.
+Concurrent focus commands both commit and both browsers converge on the durable
+winning revision; progression event cardinality does not change. Active session
+revocation ends event access and subsequent snapshot fetch returns 401.
+
+A separate [active/UI supplement](realtime-evidence-20261011/active-measurements.json)
+binds clean `6f7c5026df9ee28bd43b573b3ddf0bf6a269a44d`, tree
+`ae5a454b29feae83b1e9bf48c8b281e11793d45d`. Only test/measurement tooling changed
+from the comparison; product, Prisma, public assets, lockfile, Next and TypeScript
+configuration are identical. The [runtime record](realtime-evidence-20261011/runtime-6f7c5026.json)
+explicitly declares reuse of that unchanged product build. All three supplemental
+cases pass. It records 20 commands, 20 explicit sequence reads, 40 notification
+fetches, 40 events and no newly opened event connections. The roughly 3.01-second
+sampled server window observes 3,582 SQL statements and 2,343 ms CPU, including
+one-second boundary uncertainty, startup overlap and periodic authority checks;
+these counts are not exclusive per-command costs. Callback latency is p50/p95/p99
+**77/98/105 ms**. Cross-process delivery is **2,045 ms**, network/foreground/reload
+recovery **124/121/139 ms**, and dropped-hint recovery **10,012 ms**. These separate
+runs show local timing variation; no deployed subsecond cross-instance SLA is claimed.
+
+The measurement preload observes the real process bus's first advanced revision
+after transaction resolution, without replacing delivery or writing private
+scope keys. The real Crossdeck UI shows its Receive prompt **194 ms** after that
+hint on desktop → phone, **102 ms** on phone → desktop, and **162 ms** on the
+disconnect scenario's forward transfer. [Two-way measurements](realtime-evidence-20261011/crossdeck.surface-handoff-visible.json)
+and the [additional forward measurement](realtime-evidence-20261011/crossdeck.phone-disconnect-visible.json)
+retain exact source and boundaries. This is Playwright-visible DOM evidence;
+three transfers do not support a meaningful p95/p99 or physical display claim.
+
+Focused development: **67 tests / 11 files**, TypeScript, affected-file lint,
+privacy scan, documentation/catalog validation and **58 Sounding Line registration
+regressions** pass. A clean-source rerun of the canonical service suites passes
+**29 tests / two files**, including both Phase 1 and both Phase 2 shared Device Lab
+D0 cases on `81452bc6`, each with zero remaining resources. Their [original D0
+receipts](realtime-evidence-20261011/) preserve the scenario pack's existing base
+identity rather than relabeling it as this task's base. Phase 1/2 browser scenarios
+also pass on that clean source. The supplement retains [Phase 2 handoff D1](realtime-evidence-20261011/phase2-crossdeck.surface-handoff-D1.json)
+and [disconnect D1](realtime-evidence-20261011/phase2-crossdeck.phone-disconnect-D1.json)
+receipts on `6f7c5026`, plus checksum-matched [handoff](realtime-evidence-20261011/crossdeck.surface-handoff-D1.png)
+and [disconnect](realtime-evidence-20261011/crossdeck.phone-disconnect-D1.png) screenshots.
+
+## Protected qualification and integration
+
+[Transport PR #706](https://github.com/Kgray44/treasurehuntSoT/pull/706) remains a
+candidate pending the required ordinary Sounding Line Mainline Decision. The
+protected base was refreshed and remains `f458bf2dc1176016c2d166180f038f0f15ac9f7c`.
+All measurements above are focused development evidence, not protected acceptance.
+Final ordinary qualification is delegated to the PR's trusted hosted workflow;
+no duplicate local/cloud ordinary run is started. Normal protected merge and
+exact landed smoke remain required. No deployment, release or owner/native/
+physical acceptance is included.
 
 ## Documentation and catalog decision
 
