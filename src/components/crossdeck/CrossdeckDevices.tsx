@@ -116,12 +116,15 @@ export function CrossdeckDevices({
   useEffect(() => {
     const controller = new AbortController();
     abort.current = controller;
+    let leaving = false;
     const tick = async () => {
+      if (leaving || controller.signal.aborted) return;
       try {
         // Restore the authorized tab-local surface before the first heartbeat.
         // Navigation marks the previous page disconnected; waiting for the
         // interval leaves a freshly opened Journal unable to send or receive.
         if (!own.current || !csrf.current) await refresh(controller.signal);
+        if (leaving || controller.signal.aborted) return;
         if (own.current && csrf.current)
           await crossdeckRequest(
             {
@@ -133,7 +136,7 @@ export function CrossdeckDevices({
             csrf.current,
             controller.signal,
           );
-        await refresh(controller.signal);
+        if (!leaving) await refresh(controller.signal);
       } catch (cause) {
         if (!controller.signal.aborted) {
           setMessage(cause instanceof Error ? cause.message : "Connection interrupted.");
@@ -148,6 +151,7 @@ export function CrossdeckDevices({
       void tick();
     };
     const leave = () => {
+      leaving = true;
       if (own.current && csrf.current)
         void crossdeckRequest(
           { action: "heartbeat", surfaceId: own.current, lifecycle: "DISCONNECTED" },
@@ -156,13 +160,21 @@ export function CrossdeckDevices({
           true,
         ).catch(() => {});
     };
+    const returned = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        leaving = false;
+        void tick();
+      }
+    };
     document.addEventListener("visibilitychange", hidden);
     window.addEventListener("pagehide", leave);
+    window.addEventListener("pageshow", returned);
     return () => {
       controller.abort();
       window.clearInterval(timer);
       document.removeEventListener("visibilitychange", hidden);
       window.removeEventListener("pagehide", leave);
+      window.removeEventListener("pageshow", returned);
     };
   }, [refresh]);
   useEffect(() => {

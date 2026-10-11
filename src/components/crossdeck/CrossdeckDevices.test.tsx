@@ -1,5 +1,5 @@
 // @sounding-line-registration owner=project-crossdeck suite=unit.crossdeck contracts=crossdeck.phase1.participation,crossdeck.phase2.continuity
-import { cleanup, render, waitFor } from "@testing-library/react";
+import { act, cleanup, render, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { storageKey } from "@/crossdeck/client";
 import { CrossdeckDevices } from "./CrossdeckDevices";
@@ -49,4 +49,36 @@ it("does not reactivate a saved surface when its account authority ended", async
   render(<CrossdeckDevices initialVoyage="voyage" compact />);
   await waitFor(() => expect(requests).toHaveBeenCalledTimes(2));
   expect(requests.mock.calls.some(([, init]) => init?.method === "POST")).toBe(false);
+});
+
+it("fences background heartbeats after page exit and reactivates a restored browser page", async () => {
+  const requests = vi.fn(async (_url: string, init?: RequestInit) =>
+    Response.json(
+      init?.method === "POST"
+        ? {}
+        : {
+            csrfToken: "account-session-csrf",
+            voyages: [],
+            surfaces: [{ surfaceId: "surface", thisSession: true, presence: "ACTIVE", role: "PRIMARY_STORY" }],
+          },
+    ),
+  );
+  vi.stubGlobal("fetch", requests);
+  render(<CrossdeckDevices initialVoyage="voyage" compact />);
+  const posts = () => requests.mock.calls.filter(([, init]) => init?.method === "POST");
+  await waitFor(() => expect(posts()).toHaveLength(1));
+  await act(async () => {
+    window.dispatchEvent(new Event("pagehide"));
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  expect(posts()).toHaveLength(2);
+  expect(JSON.parse(posts()[1][1]!.body as string).lifecycle).toBe("DISCONNECTED");
+  expect(posts()[1][1]!.keepalive).toBe(true);
+  await act(async () => {
+    const returned = new Event("pageshow");
+    Object.defineProperty(returned, "persisted", { value: true });
+    window.dispatchEvent(returned);
+  });
+  await waitFor(() => expect(posts()).toHaveLength(3));
+  expect(JSON.parse(posts()[2][1]!.body as string).lifecycle).toBe("ACTIVE");
 });

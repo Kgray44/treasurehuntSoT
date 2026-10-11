@@ -16,6 +16,7 @@ import { createCrossdeckPhase2Packs } from "../../src/crossdeck/lab-phase2";
 import { runDeviceLabScenario } from "../../src/device-lab/runner";
 import { loadDeviceLabRegistry } from "../../src/device-lab/registry";
 import { deviceLabSourceIdentity } from "../../scripts/device-lab/source";
+import { STALE_MS } from "../../src/crossdeck/contracts";
 
 test.describe.configure({ mode: "serial", timeout: 240000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
@@ -116,12 +117,23 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
           expect(deck.objects[`MAP:${voyage.activeId}`].custody).toBe(phoneSurface.surfaceId);
           if (scenarioId === "crossdeck.phone-disconnect") {
             await p.goto("about:blank");
+            // Page-exit delivery is best effort. Require the server's canonical
+            // stale presence projection, not an assumed final stored lifecycle.
             await expect
               .poll(
-                async () =>
-                  (await db.crossdeckSurfaceSession.findUniqueOrThrow({ where: { id: phoneSurface.id } })).lifecycle,
+                async () => {
+                  const response = await d.request.get(`${baseURL}/api/crossdeck?voyage=${voyage.id}`);
+                  expect(response.ok()).toBe(true);
+                  const data = await response.json();
+                  return data.surfaces.find(
+                    (surface: { surfaceId: string }) => surface.surfaceId === phoneSurface.surfaceId,
+                  )?.presence;
+                },
+                { timeout: STALE_MS + 15000 },
               )
               .toBe("DISCONNECTED");
+            const closeMap = d.getByRole("button", { name: "Close journal tool drawer", exact: true });
+            if (await closeMap.isVisible()) await closeMap.click();
             await sending.getByRole("button", { name: "Recover view here" }).click();
             await expect(sending.getByText(/Controlled here/)).toBeVisible();
             await openClosureJournal(p, voyage.id, baseURL);
