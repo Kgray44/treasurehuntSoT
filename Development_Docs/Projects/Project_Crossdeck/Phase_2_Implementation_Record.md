@@ -42,6 +42,21 @@ The shared changes are additions to `testing/contracts.json`, `testing/suites.js
 
 ## Qualification and acceptance
 
+Development verification has passed the real service/API seam, both D0 scenarios,
+both desktop/mobile D1 journeys, the transport and approved-view API tests, the
+17-test custody/reconnect regression run and the two selected-map context tests.
+Changed-source lint, the production build, SQLite migration rehearsal,
+documentation validation and catalog validation also passed at their recorded
+development snapshots. These observations are development evidence, not a final
+head Sounding Line acceptance receipt.
+
+After the owner computer restart, workspace and commit `7ce1a6c6` were reconciled
+with a clean working tree. The coordinator assigned Sextant the first shared
+heavy-testing slot; Crossdeck's owned verifier was stopped before dispatching
+heavy checks. Final aggregate/build/browser proof is held until that slot is
+granted. Native application metadata remained unavailable after restart, while
+shell execution resumed successfully. No sibling or game processes were altered.
+
 The permanent evidence directory records the exact software fidelity and source identity. D0 executes deterministic synthetic service/database scenarios. D1 uses two production-route Chromium contexts with mobile emulation. D2 requires an actual task-owned Android virtual device and Android Chrome; `scripts/crossdeck/qualify-d2.ts` validates its platform or emits UNSUPPORTED receipts. It does not label browser emulation as Android evidence.
 
 D2, live MySQL, protected-main integration, the owner walkthrough and physical/field qualification remain distinct gates until their own evidence exists. An unavailable emulator is an environmental qualification blocker, not permission to omit the scenario or declare Phase 2 accepted. Air Handoff, rich Parallax/Storytide choreography, full offline synchronization and physical D4/D5 closure remain their governed later phases.
