@@ -7,8 +7,8 @@
   "program": "Voyagewright Spatial Experience",
   "authority": "Development_Docs/Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md",
   "status": "GOVERNING_MACHINE_READABLE_BASELINE",
-  "implementationClaim": "NONE",
-  "runtimeRegistration": "PENDING_ATOMIC_DEVICE_LAB_OWNER_CATALOG_AND_TEST_EXTENSION",
+  "implementationClaim": "PHASE_1_FOUNDATION_CANDIDATE_PHYSICAL_GATES_OPEN",
+  "runtimeRegistration": "PARTIAL_PHASE_1_D0_OWNER_PACK",
   "acceptedDeviceLabBaseline": "Development_Docs/Spatial_Experience/device-lab-scenario-registry.json",
   "observationProvider": "watchglass.hand-observation",
   "interactionProvider": "reach.spatial-interaction",
@@ -333,5 +333,26 @@
       "assertion": "Measure capture-to-visible latency, unsnapped jitter, camera placement, comfort and field limitations.",
       "physicalQualificationRequired": true
     }
-  ]
+  ],
+  "phase1Registration": {
+    "pack": "src/reach/device-lab.ts",
+    "tests": [
+      "src/reach/foundation.test.ts",
+      "src/reach/device-lab.test.ts",
+      "src/reach/assets.test.ts",
+      "tests/e2e/reach-laboratory.spec.ts"
+    ],
+    "registeredScenarioIds": [
+      "reach.permission-and-lease",
+      "reach.calibration-held-out-validation",
+      "reach.mirror-and-frame-epochs",
+      "reach.calibration-drift",
+      "reach.stale-and-reordered-observations",
+      "reach.background-and-worker-restart",
+      "reach.privacy-persistence-and-cleanup"
+    ],
+    "executableTier": "D0",
+    "physicalGate": "PENDING",
+    "laterPhaseScenarios": "NON_EXECUTABLE"
+  }
 }

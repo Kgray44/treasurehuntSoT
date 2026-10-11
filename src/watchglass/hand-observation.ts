@@ -1,0 +1,48 @@
+import { z } from "zod";
+const score = z.number().finite().min(0).max(1).nullable();
+const landmark = z.strictObject({
+  x: z.number().finite().min(0).max(1),
+  y: z.number().finite().min(0).max(1),
+  z: z.number().finite(),
+  valid: z.boolean(),
+});
+export const handObservationSchema = z.strictObject({
+  observationVersion: z.literal(1),
+  providerId: z.string().min(1),
+  providerVersion: z.string().min(1),
+  modelId: z.string().min(1),
+  modelVersion: z.string().min(1),
+  modelDigest: z.string().regex(/^[a-f0-9]{64}$/),
+  providerGeneration: z.number().int().positive(),
+  observationId: z.string().min(1),
+  sequence: z.number().int().nonnegative(),
+  monotonicCaptureTime: z.number().finite().nonnegative(),
+  monotonicInferenceTime: z.number().finite().nonnegative(),
+  cameraLeaseId: z.string().min(1),
+  cameraFrameVersion: z.number().int().positive(),
+  frameWidth: z.number().int().positive(),
+  frameHeight: z.number().int().positive(),
+  orientation: z.union([z.literal(0), z.literal(90), z.literal(180), z.literal(270)]),
+  mirrorTransform: z.enum(["NONE", "PREVIEW_X"]),
+  evidenceTier: z.enum(["UNQUALIFIED", "D0", "D1", "D4", "D5"]),
+  hands: z
+    .array(
+      z.strictObject({
+        trackId: z.string().min(1),
+        trackGeneration: z.number().int().positive(),
+        handedness: z.enum(["LEFT", "RIGHT", "UNKNOWN"]),
+        handednessConfidence: score,
+        coordinateFrame: z.literal("CAMERA_IMAGE_NORMALIZED"),
+        landmarks: z.array(landmark).length(21),
+        presenceScore: score,
+        trackingScore: score,
+        occluded: z.boolean(),
+        pose: z.enum(["POINT_CANDIDATE", "UNKNOWN"]),
+        uncertainty: z.number().finite().nonnegative().nullable(),
+      }),
+    )
+    .max(2),
+  quality: z.enum(["USABLE", "LOW", "UNKNOWN"]),
+  reason: z.enum(["NONE", "NO_HAND", "MULTIPLE_HANDS", "LOW_VISIBILITY", "MODEL_FAILURE", "INTERRUPTED"]),
+});
+export type HandObservation = z.infer<typeof handObservationSchema>;

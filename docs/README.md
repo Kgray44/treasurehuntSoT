@@ -24,6 +24,8 @@ Voyagewright helps people discover, create, and run shared Chronicle experiences
 
 ## Appearance
 
+[Hand interaction laboratory](user/hand-laboratory.md) explains the local camera/calibration preview and its qualification limits.
+
 [Themes and appearance](user/themes-and-appearance.md).
 
 ## About Voyagewright

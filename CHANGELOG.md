@@ -18,6 +18,8 @@ last_reviewed: 2026-10-10
 
 ### Added
 
+- Reach Phase 1 candidate adds the local camera/synthetic hand laboratory, pinned worker inference, strict observations, coordinate diagnostics, repeated training and independent calibration validation, consented aggregate export and governed Device Lab owner scenarios. Physical webcam accuracy and protected integration remain pending; no selection, manipulation or handoff is included.
+
 - Completed Project Landfall Phase4 source through protected PR #677: origin-bound native companions, signed offline regions, contextual providers and the permanent cross-platform Device Lab preserve One Voyage authority. Exact qualification, scoped native/browser/provider acceptance and landed verification pass; the protected evidence/catalog publication binds formal Project Landfall closure. Physical/RF/field/energy/assistive evidence, signed distribution, production configuration and owner acceptance remain external.
 
 - Apple companion configuration now declares portrait and landscape support

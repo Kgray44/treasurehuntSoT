@@ -18,6 +18,7 @@ const owner = z.enum([
   "DRYDOCK",
   "HARBORLIGHT",
   "SEALED_HOLD",
+  "REACH",
 ]);
 export const deviceLabRegistryEntrySchema = z.strictObject({
   scenarioId: identifier,
