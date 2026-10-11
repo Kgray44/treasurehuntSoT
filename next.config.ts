@@ -11,6 +11,8 @@ if (taskOwnedSoundingLineBuild) {
 const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
   allowedDevOrigins: homeportAllowedDevOrigins(),
+  // Keep opted-in local validation builds within the same one-worker budget as Vitest.
+  ...(process.env.SEALED_HOLD_SINGLE_FORK === "1" ? { experimental: { cpus: 1 } } : {}),
   ...(taskOwnedSoundingLineBuild
     ? {
         env: {
