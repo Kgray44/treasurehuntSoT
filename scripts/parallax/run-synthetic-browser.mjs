@@ -1,9 +1,22 @@
 import path from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
-import { randomUUID } from "node:crypto";
+import { randomUUID, createHash } from "node:crypto";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const root = process.cwd();
 const candidate = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+if (execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" }).trim())
+  throw new Error("PARALLAX_A1_COMMITTED_BROWSER_SOURCE_REQUIRED");
+const artifactRoot = path.resolve(root, "artifacts", "parallax-a1", "browser", candidate.slice(0, 12));
+mkdirSync(artifactRoot, { recursive: true });
+const record = {
+  schemaVersion: 1,
+  candidate,
+  tree: execFileSync("git", ["rev-parse", "HEAD^{tree}"], { encoding: "utf8" }).trim(),
+  packageLockSha256: createHash("sha256").update(readFileSync("package-lock.json")).digest("hex"),
+  provider: "SYNTHETIC_UNPAID",
+  startedAt: new Date().toISOString(),
+};
 const timestamp = new Date().toISOString().replace(/\D/g, "");
 const file = `validation-isolated-${timestamp.slice(0, 8)}-${timestamp.slice(8)}-${randomUUID().replaceAll("-", "")}.db`;
 const database = `file:${path.resolve(root, "artifacts", "sounding-line", `generic-${candidate.slice(0, 12)}`, file).replaceAll("\\", "/")}`;
@@ -31,11 +44,16 @@ const result = spawnSync(
       DATABASE_URL: database,
       SOUNDING_LINE_SUITE_PROFILE: "generic",
       PARALLAX_A1_SYNTHETIC_PROVIDER: "1",
+      PARALLAX_A1_SOURCE_SHA: candidate,
       OPENAI_API_KEY: "parallax-a1-synthetic-provider-only",
       NODE_OPTIONS: `--import=${preload}`,
       NEXT_TELEMETRY_DISABLED: "1",
     },
   },
+);
+writeFileSync(
+  path.join(artifactRoot, "run.json"),
+  JSON.stringify({ ...record, finishedAt: new Date().toISOString(), exitCode: result.status }, null, 2),
 );
 if (result.error) throw result.error;
 process.exitCode = result.status ?? 1;

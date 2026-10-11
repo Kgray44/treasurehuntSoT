@@ -19,10 +19,10 @@
 .assistant * {
   box-sizing: border-box;
 }
-.assistant :is(button, textarea, input) {
+.assistant :is(.header, .context, .body, .footer) :is(button, textarea, input) {
   font: inherit;
 }
-.assistant button,
+.assistant :is(.header, .context, .body, .footer) button,
 .launcher {
   min-height: var(--control-height);
   border: 1px solid var(--border-default);
@@ -45,35 +45,35 @@
   outline: 2px solid var(--focus-color);
   outline-offset: 3px;
 }
-.header {
+.assistant .header {
   display: flex;
   gap: 10px;
   align-items: center;
   padding: 17px 18px 13px;
   background: var(--surface-raised);
 }
-.header h2 {
+.assistant .header h2 {
   font-size: 17px;
   letter-spacing: -0.02em;
   margin: 4px 0 0;
   font-weight: 650;
 }
-.header p {
+.assistant .header p {
   margin: 0;
   font-size: 9px;
   letter-spacing: 0.2em;
   color: var(--accent-primary);
 }
-.header > button {
+.assistant .header > button {
   margin-left: auto;
   min-width: 44px;
   font-size: 22px;
   padding: 2px;
 }
-.emblem {
+.assistant .emblem {
   color: var(--focus-color);
 }
-.context {
+.assistant .context {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -81,28 +81,28 @@
   border-bottom: 1px solid var(--border-subtle);
   font-size: 12px;
 }
-.context > span:nth-child(2) {
+.assistant .context > span:nth-child(2) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.context small {
+.assistant .context small {
   margin-left: auto;
   white-space: nowrap;
   color: var(--text-secondary);
 }
-.context button {
+.assistant .context button {
   font-size: 11px;
   padding: 6px;
 }
-.contextDot {
+.assistant .contextDot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--focus-color);
   flex-shrink: 0;
 }
-.body {
+.assistant .body {
   padding: 22px 20px;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -110,12 +110,12 @@
   min-height: 120px;
   scrollbar-width: thin;
 }
-.kicker {
+.assistant .kicker {
   font-size: 9px;
   letter-spacing: 0.16em;
   color: var(--accent-primary);
 }
-.welcome h3 {
+.assistant .welcome h3 {
   font-family: var(--font-display);
   font-size: 31px;
   line-height: 1.15;
@@ -123,19 +123,19 @@
   color: var(--text-heading);
   margin: 15px 0;
 }
-.welcome > p,
-.proposal > p {
+.assistant .welcome > p,
+.assistant .proposal > p {
   font-size: 13px;
   line-height: 1.65;
   color: var(--text-secondary);
 }
-.suggestions {
+.assistant .suggestions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin: 24px 0 18px;
 }
-.suggestions button {
+.assistant .suggestions button {
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -148,16 +148,16 @@
     border-color var(--motion-fast),
     background var(--motion-fast);
 }
-.suggestions svg {
+.assistant .suggestions svg {
   color: var(--focus-color);
   opacity: 0.9;
 }
-.suggestions strong {
+.assistant .suggestions strong {
   display: block;
   font-size: 12px;
   margin-bottom: 6px;
 }
-.suggestions small {
+.assistant .suggestions small {
   display: block;
   font-size: 10px;
   line-height: 1.5;
@@ -168,7 +168,7 @@
   color: var(--text-muted);
   line-height: 1.6;
 }
-.activity {
+.assistant .activity {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -176,14 +176,14 @@
   padding: 12px 0;
   color: var(--text-secondary);
 }
-.activity > span {
+.assistant .activity > span {
   font-size: 20px;
   color: var(--focus-color);
 }
-.activity[data-working="true"] > span {
+.assistant .activity[data-working="true"] > span {
   animation: turn 1.8s linear infinite;
 }
-.notice {
+.assistant .notice {
   border-left: 2px solid var(--state-info);
   padding: 11px 13px;
   background: var(--surface-raised);
@@ -191,51 +191,51 @@
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
-.notice h4 {
+.assistant .notice h4 {
   font-size: 12px;
   margin-top: 0;
 }
-.proposal {
+.assistant .proposal {
   outline: none;
 }
-.proposal h3 {
+.assistant .proposal h3 {
   font-size: 21px;
   color: var(--text-heading);
   line-height: 1.3;
   margin: 13px 0;
 }
-.changeCard {
+.assistant .changeCard {
   padding: 15px;
   margin: 12px 0;
   background: var(--surface-overlay);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-small);
 }
-.changeCard label {
+.assistant .changeCard label {
   display: flex;
   align-items: start;
   gap: 10px;
   cursor: pointer;
 }
-.changeCard input {
+.assistant .changeCard input {
   width: 18px;
   height: 18px;
   margin: 4px 0;
   flex-shrink: 0;
   accent-color: var(--focus-color);
 }
-.changeCard strong {
+.assistant .changeCard strong {
   display: block;
   font-size: 13px;
   line-height: 1.5;
   margin-top: 4px;
 }
-.changeCard small {
+.assistant .changeCard small {
   font-size: 10px;
   color: var(--text-secondary);
 }
-.changeCard p,
-.proposal li {
+.assistant .changeCard p,
+.assistant .proposal li {
   font-size: 12px;
   color: var(--text-secondary);
   line-height: 1.65;
@@ -259,39 +259,39 @@
   text-decoration: underline;
   text-underline-offset: 4px;
 }
-.clarification {
+.assistant .clarification {
   padding: 16px;
   background: var(--surface-raised);
   border-radius: var(--radius-small);
   border: 1px solid var(--border-emphasis);
 }
-.clarification h4 {
+.assistant .clarification h4 {
   margin: 0;
   font-size: 13px;
 }
-.clarification p,
-.finding {
+.assistant .clarification p,
+.assistant .finding {
   font-size: 12px;
   line-height: 1.6;
 }
-.finding {
+.assistant .finding {
   border-left: 2px solid var(--state-warning);
   padding-left: 11px;
 }
-.previewSwitch {
+.assistant .previewSwitch {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 5px;
   margin: 18px 0 8px;
 }
-.previewSwitch button {
+.assistant .previewSwitch button {
   font-size: 11px;
 }
-.previewSwitch button[aria-pressed="true"] {
+.assistant .previewSwitch button[aria-pressed="true"] {
   border-color: var(--focus-color);
   color: var(--focus-color);
 }
-.applyBar {
+.assistant .applyBar {
   display: flex;
   gap: 8px;
   margin-top: 15px;
@@ -300,25 +300,25 @@
   background: var(--surface-default);
   padding: 12px 0;
 }
-.applyBar > button:first-child {
+.assistant .applyBar > button:first-child {
   flex: 1;
 }
-.assistant .primary {
+.assistant button.primary {
   background: var(--accent-primary);
   color: var(--text-on-accent);
   font-weight: 600;
   border-color: var(--accent-primary);
 }
-.assistant .primary:hover:not(:disabled) {
+.assistant button.primary:hover:not(:disabled) {
   background: var(--accent-hover);
   color: var(--text-on-accent);
 }
-.footer {
+.assistant .footer {
   padding: 14px 16px 12px;
   border-top: 1px solid var(--border-default);
   background: var(--surface-raised);
 }
-.footer form {
+.assistant .footer form {
   background: var(--surface-overlay);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-small);
@@ -327,11 +327,11 @@
     box-shadow var(--motion-fast),
     border-color var(--motion-fast);
 }
-.footer form:focus-within {
+.assistant .footer form:focus-within {
   border-color: var(--focus-color);
   box-shadow: 0 0 0 1px var(--focus-color);
 }
-.footer textarea {
+.assistant .footer textarea {
   resize: vertical;
   width: 100%;
   min-height: 68px;
@@ -344,10 +344,10 @@
   outline: none;
   padding: 0;
 }
-.footer textarea::placeholder {
+.assistant .footer textarea::placeholder {
   color: var(--text-muted);
 }
-.composerActions {
+.assistant .composerActions {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -355,41 +355,41 @@
   gap: 8px;
   margin-top: 10px;
 }
-.composerActions small {
+.assistant .composerActions small {
   font-size: 9px;
   line-height: 1.7;
   color: var(--text-secondary);
 }
-.composerActions button {
+.assistant .composerActions button {
   font-size: 12px;
   white-space: nowrap;
 }
-.usage {
+.assistant .usage {
   display: flex;
   justify-content: space-between;
   align-items: start;
   gap: 8px;
   padding-top: 12px;
 }
-.usage summary {
+.assistant .usage summary {
   font-size: 10px;
 }
-.usage label {
+.assistant .usage label {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 10px;
 }
-.usage input {
+.assistant .usage input {
   accent-color: var(--focus-color);
 }
-.history {
+.assistant .history {
   display: flex;
   justify-content: end;
   gap: 8px;
   padding-top: 10px;
 }
-.history button {
+.assistant .history button {
   font-size: 11px;
   min-height: 36px;
   padding: 5px 12px;
@@ -406,7 +406,7 @@
   color: var(--text-secondary);
   font-size: 11px;
 }
-.srOnly {
+.assistant .srOnly {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -451,13 +451,13 @@
     resize: none;
     border-radius: var(--radius-medium) var(--radius-medium) 0 0;
   }
-  .body {
+  .assistant .body {
     padding: 18px 16px;
   }
-  .footer {
+  .assistant .footer {
     padding-bottom: max(12px, env(safe-area-inset-bottom));
   }
-  .applyBar {
+  .assistant .applyBar {
     bottom: -18px;
   }
   .launcher span {
@@ -468,16 +468,16 @@
   .assistant {
     height: calc(100dvh - 48px);
   }
-  .header {
+  .assistant .header {
     padding: 8px 14px;
   }
-  .context {
+  .assistant .context {
     padding: 7px 14px;
   }
-  .footer textarea {
+  .assistant .footer textarea {
     min-height: 36px;
   }
-  .history {
+  .assistant .history {
     display: none;
   }
 }

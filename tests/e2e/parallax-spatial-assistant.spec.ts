@@ -19,7 +19,7 @@ import type { SpatialDraft } from "../../src/parallax/authoring";
 test.describe.configure({ mode: "serial", timeout: 300000 });
 test.use({ actionTimeout: 30000, viewport: { width: 1440, height: 1000 }, video: "on" });
 test.afterAll(() => db.$disconnect());
-const artifactRoot = "artifacts/parallax-a1/browser";
+const artifactRoot = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
 const createRequest = "Create a pirate map on a desk with a readable clue and a guided alternative.";
 const refineRequest = "Make that pirate map wider, keeping its clue and placement unchanged.";
 
@@ -162,6 +162,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
       "idempotencyKey",
       "kind",
       "mode",
+      "previousRequestId",
       "request",
       "requestId",
       "revision",

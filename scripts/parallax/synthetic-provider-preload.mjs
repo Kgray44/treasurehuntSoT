@@ -3,10 +3,12 @@ import path from "node:path";
 
 // Explicit, disposable browser instrumentation. Never loaded by application code.
 const database = (process.env.DATABASE_URL ?? "").replaceAll("\\", "/");
-const root = path.resolve(process.cwd(), "artifacts", "parallax-a1", "browser");
+const source = process.env.PARALLAX_A1_SOURCE_SHA ?? "";
+const root = path.resolve(process.cwd(), "artifacts", "parallax-a1", "browser", source.slice(0, 12));
 const databaseRelative = path.relative(path.resolve(process.cwd(), "artifacts", "sounding-line"), database.slice(5));
 if (
   process.env.PARALLAX_A1_SYNTHETIC_PROVIDER !== "1" ||
+  !/^[a-f0-9]{40}$/.test(source) ||
   process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic" ||
   process.env.OPENAI_API_KEY !== "parallax-a1-synthetic-provider-only" ||
   !/^file:(?:[A-Za-z]:\/|\/)/.test(database) ||

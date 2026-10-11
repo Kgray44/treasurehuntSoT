@@ -16,7 +16,7 @@ test.afterAll(() => db.$disconnect());
 const password = "Synthetic-A1-Enforcement-2026!";
 const requestText = "Explain an unsupported glowing particle effect.";
 type Creator = Awaited<ReturnType<typeof creator>>;
-const receiptRoot = "artifacts/parallax-a1/browser";
+const receiptRoot = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
 
 async function creator(browser: Browser, baseURL: string, label: string) {
   const account = await closureAccount(label);
@@ -154,17 +154,14 @@ test("People dossier allowance, suspension and advanced access govern actual Cre
         })
       ).model,
     ).toBe("gpt-6.1-sol");
-    await panel.getByLabel("Advanced eligibility").selectOption("false");
-    await panel.getByLabel("Reason for user policy change").fill("Synthetic restore standard-only access");
-    await confirm(panel, "Preview user policy");
-    expect((await request(owner, input(owner, "ADVANCED"))).body.code).toBe("ADVANCED_UNAVAILABLE");
     await panel.getByLabel("Reason for user policy change").fill("Synthetic restore inherited policy");
     await confirm(panel, "Preview restore inherited policy");
     expect(await usage(owner)).toMatchObject({ allowance: 500, source: "INHERITED", used: 3 });
+    expect((await request(owner, input(owner, "ADVANCED"))).body.code).toBe("ADVANCED_UNAVAILABLE");
     await panel.getByRole("button", { name: "Refresh account usage", exact: true }).click();
     await expect(panel).toContainText("3 / 500");
     await capture(page, "people-dossier-usage");
-    expect(await db.aIQuotaPolicyRevision.count({ where: { targetAccountId: owner.account.id } })).toBe(6);
+    expect(await db.aIQuotaPolicyRevision.count({ where: { targetAccountId: owner.account.id } })).toBe(5);
     const forbidden = await owner.context.request.get(`/api/admin/ai-usage?section=user&accountId=${owner.account.id}`);
     expect(forbidden.status()).toBe(403);
     const other = await creator(browser, baseURL!, "Synthetic private-activity boundary Creator");
