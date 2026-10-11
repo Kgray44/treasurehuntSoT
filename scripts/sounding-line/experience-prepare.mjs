@@ -19,7 +19,7 @@ export function activationPlan({ root, baseSha, candidateSha }) {
     root,
     baseSha,
     candidateSha,
-    changedPaths: ["src/components/wayfarer/AccountFlow.tsx"],
+    changedPaths: ["src/app/sign-in/page.tsx"],
   });
   assert.equal(plan.applicable, true);
   assert.throws(() => validateExperienceEvidence({ root, plan, evidence: null }), /EVIDENCE_MISSING/u);
