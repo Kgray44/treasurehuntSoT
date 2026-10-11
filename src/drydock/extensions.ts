@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createDrydockIssue, type DrydockIssue, type DrydockSemanticLocation } from "@/drydock/issues";
+import { sextantAuthoringSchema } from "./sextant-capabilities";
 
 export type DrydockExtensionActivation = "ACTIVE" | "PRESERVE_INACTIVE";
 
@@ -12,6 +13,13 @@ export type DrydockExtensionRegistration = {
 };
 
 const registrations = [
+  {
+    namespace: "voyagewright.sextant",
+    version: 1,
+    owner: "Project Sextant",
+    activation: "ACTIVE",
+    payloadSchema: sextantAuthoringSchema,
+  },
   {
     namespace: "voyagewright.compatibility",
     version: 1,

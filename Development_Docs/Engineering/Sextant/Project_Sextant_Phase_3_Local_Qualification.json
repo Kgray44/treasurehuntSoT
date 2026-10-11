@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "authority": "SOUNDING_LINE",
+  "scope": "Sextant v1.0 section 55.3 software plateau",
+  "baseSha": "589d3f8ed43070d647cd5f905b3a93cc574a9fee",
+  "candidateSha": "dc94fca909262993f96ec2831068f2c48b54255b",
+  "decision": "PASS",
+  "completedAtUtc": "2026-10-11T08:11:54.355Z",
+  "productUnitTests": 1648,
+  "productUnitFiles": 266,
+  "requiredViewportTests": 78,
+  "requiredObligations": 10,
+  "freshObligations": 7,
+  "reboundObligations": 3,
+  "remainder": 0,
+  "deviceLab": {
+    "sourceSha": "0907cd953a1e5de89b1a9458e22ef17c213897ad",
+    "dirty": false,
+    "passed": 36,
+    "tiers": {
+      "D0": 21,
+      "D1": 15
+    },
+    "remainingOwnedResources": 0
+  },
+  "host": {
+    "checkedAtUtc": "2026-10-11T08:01:06.571Z",
+    "platform": "win32",
+    "androidSdkConfigured": false,
+    "adbAvailable": false,
+    "emulatorAvailable": false,
+    "appleRuntimeConfigured": false
+  },
+  "limits": [
+    "D0/D1 are synthetic/emulated and do not establish real hardware, native parity, tactile output or field safety.",
+    "The optional inherited Companion performance benchmark remains byte-identical to main and fails before valid canonical measurements; no production duration certification is claimed.",
+    "The required ordinary decision is distinct from protected integration, landed smoke and owner acceptance."
+  ]
+}

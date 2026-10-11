@@ -1,0 +1,61 @@
+{
+  "id": "FT-B103",
+  "title": "Sextant Read the Field Capability Contracts",
+  "summary": "Bounded field, media and nearby capability contracts provide local device context with explicit quality, privacy and lifecycle states, safe magnetic-reference guidance and accessible fallbacks.",
+  "status": "BRANCH_COMPLETE_NOT_MERGED",
+  "program": "Project Sextant Phase 3",
+  "surfaces": [
+    "src/sextant/advanced-web.ts",
+    "src/sextant/MagneticHuntControls.tsx",
+    "src/drydock/sextant-capabilities.ts"
+  ],
+  "subfeatures": [
+    "Calibration-aware magnetic baseline, disturbance, anomaly and trend semantics",
+    "Short-lived relative pressure/elevation and supported OS/accessory pedometer contexts",
+    "Purpose-bound compatible camera/microphone declaration leases with capture owned by existing consumers",
+    "Actual-API-gated bounded BLE/NFC sessions and authenticated local ranging/secure-peer contracts",
+    "Safe magnetic-reference guidance with consent, dwell, pause, timeout and screen-clue fallback",
+    "Strict Creator requirements and registered immutable Drydock capability validation",
+    "Source-bound D0/D1 privacy, threat, unsupported-state and cleanup scenarios"
+  ],
+  "evidence": [
+    {
+      "kind": "path",
+      "value": "src/sextant/field-context.ts"
+    },
+    {
+      "kind": "path",
+      "value": "src/sextant/media-capability.ts"
+    },
+    {
+      "kind": "path",
+      "value": "src/sextant/nearby.ts"
+    },
+    {
+      "kind": "test",
+      "value": "src/sextant/phase3.test.ts"
+    },
+    {
+      "kind": "test",
+      "value": "src/sextant/MagneticHuntControls.test.tsx"
+    },
+    {
+      "kind": "test",
+      "value": "src/drydock/sextant-capabilities.test.ts"
+    },
+    {
+      "kind": "completion-record",
+      "value": "Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md"
+    }
+  ],
+  "branch": "sextant/phase-3-read-the-field",
+  "commit": "dc94fca909262993f96ec2831068f2c48b54255b",
+  "limitations": [
+    "Web support depends on actual secure-context APIs; unsupported devices retain fallbacks, and browser magnetic calibration cannot satisfy a calibrated hunt.",
+    "OS/accessory and secure native ranging adapters retain trusted provenance/authentication responsibilities; native transport parity remains Phase 4.",
+    "D2 execution is unavailable locally; D0/D1 simulation does not establish D4 sensor accuracy, tactile output or D5 field safety.",
+    "Surface owners place controls, provide existing media factories and authenticate peers; local guidance never writes progression.",
+    "Physical, field and owner/product acceptance remain separate; protected-main integration and landed smoke are required before mainline promotion."
+  ],
+  "catalogVersion": 1
+}

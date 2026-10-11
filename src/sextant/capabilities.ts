@@ -2,6 +2,7 @@ import { z } from "zod";
 import baseline from "../../Development_Docs/Spatial_Experience/device-capability-registry.json";
 import ownership from "../../Development_Docs/Spatial_Experience/spatial-capability-ownership.json";
 import type { CapabilityDefinition, ReferenceFrame } from "./contracts";
+import { magneticContextSchema, elevationContextSchema, stepEvidenceSchema } from "./field-context";
 const vector = z.strictObject({ x: z.number().finite(), y: z.number().finite(), z: z.number().finite() });
 const quaternion = z
   .strictObject({ x: z.number().finite(), y: z.number().finite(), z: z.number().finite(), w: z.number().finite() })
@@ -45,6 +46,10 @@ const specs: Spec[] = [
   ["gesture.rotation-count", "gyroscope", "count", ["LOCAL_ARBITRARY"], z.number().int().nonnegative()],
   ["magnetic.field", "magnetic-field", "microtesla", ["DEVICE"], vector],
   ["magnetic.anomaly", "magnetic-field", "microtesla", ["DEVICE"], z.number().finite()],
+  ["magnetic.context", "magnetic-field", "context", ["DEVICE"], magneticContextSchema],
+  ["pressure.observation", "relative-pressure-elevation", "hPa", ["NONE"], z.number().finite().min(300).max(1100)],
+  ["elevation.context", "relative-pressure-elevation", "context", ["LOCAL_ARBITRARY"], elevationContextSchema],
+  ["motion.pedometer", "accelerometer", "step-evidence", ["DEVICE"], stepEvidenceSchema],
   ["elevation.relative", "relative-pressure-elevation", "meters", ["LOCAL_ARBITRARY"], z.number().finite()],
   ["elevation.absolute-hint", "relative-pressure-elevation", "meters", ["WGS84"], z.number().finite()],
   ["environment.context", "proximity-light-environment", "capability", ["NONE"], declaration],
@@ -94,8 +99,12 @@ export class SextantCapabilityRegistry {
         fallback: row.defaultFallback,
         valueSchema,
         implementation:
-          ["heading", "orientation", "accelerometer", "gyroscope", "fused-pose", "haptics"].includes(hardwareId) &&
+          (["heading", "orientation", "accelerometer", "gyroscope", "fused-pose", "haptics"].includes(hardwareId) ||
+            ["media.camera", "media.microphone", "nearby.ble.connect", "nearby.nfc.read", "magnetic.field"].includes(
+              suffix,
+            )) &&
           !suffix.includes("rich") &&
+          suffix !== "motion.pedometer" &&
           !suffix.startsWith("gesture.")
             ? "WEB_AVAILABLE"
             : "FOUNDATION_ONLY",

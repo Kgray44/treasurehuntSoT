@@ -3403,6 +3403,13 @@
       "authority": "reach",
       "owners": ["reach", "project-sextant", "watchglass"],
       "critical": true
+    },
+    {
+      "id": "sextant.phase3.field-context",
+      "name": "Sextant Phase 3 field semantics, nearby security, media lifecycle and authored fallback",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true
     }
   ]
 }

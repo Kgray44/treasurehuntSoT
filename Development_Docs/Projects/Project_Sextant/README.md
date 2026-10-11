@@ -46,7 +46,7 @@ Sextant does **not** own:
 
 ## Current implementation status
 
-**Phases 1–2 are implemented on protected main; Phases 3–5 remain unimplemented.**
+**Phases 1-2 are implemented on protected main.** [Phase 3](../../Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) has an isolated local software candidate; protected mainline, native/physical qualification and owner acceptance remain separate. Phases 4-5 remain unimplemented.
 
 See the [current implementation and compatibility record](../../Engineering/Sextant/README.md) for capability contracts, provider/permission/lease behavior, Landfall inventory, D0 scenarios and the acceptance boundary. Current consumers retain their accepted behavior. [Phase 2 evidence](../../Engineering/Sextant/Project_Sextant_Phase_2_Implementation_Receipt.md) and the [boundary correction receipt](../../Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) distinguish software qualification from physical/native and owner acceptance.
 

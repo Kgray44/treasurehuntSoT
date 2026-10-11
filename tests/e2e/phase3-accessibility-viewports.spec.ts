@@ -326,9 +326,13 @@ async function openReadableJournal(page: Page, slug: string, returning: boolean,
     )
     .not.toBe("pending");
   if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") {
-    // The control remains intentionally animated while the ceremony is active;
-    // force is appropriate once its visibility has established user reachability.
-    await skip.click({ force: true });
+    try {
+      await skip.click({ timeout: 2_500 });
+    } catch (error) {
+      // Completion may replace the control during actionability checks. Only
+      // the same ready destination can satisfy that race; occlusion must fail.
+      if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") throw error;
+    }
   }
   await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY", { timeout: 20_000 });
   // The canonical Journal renders the authorized event as its readable current
@@ -582,19 +586,25 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
           const replay = page.getByRole("button", { name: "Replay full opening" });
           await expect(replay).toBeVisible();
           await replay.click();
-          // In WebKit the full-opening completion can replace the transient
-          // skip control between the visibility probe and its actionability
-          // check. Treat that replacement as a completed presentation, then
-          // require the same semantic Journal-ready destination below.
-          for (let attempt = 0; attempt < 2; attempt += 1) {
-            const skip = page.getByRole("button", { name: /Reveal readable result|Skip ceremony/ }).first();
-            if (!(await skip.isVisible().catch(() => false))) break;
+          const shell = page.locator(".chronicle-journal-shell");
+          const skip = page.getByRole("button", { name: /Reveal readable result|Skip ceremony/ }).first();
+          // Await the asynchronous mount instead of a same-tick visibility
+          // probe. Poll and click share the previous two-click five-second
+          // budget; the required Journal-ready assertion remains unchanged.
+          await expect
+            .poll(
+              async () => {
+                if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return "ready";
+                return (await skip.isVisible().catch(() => false)) ? "skip" : "pending";
+              },
+              { timeout: 2_500 },
+            )
+            .not.toBe("pending");
+          if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") {
             try {
-              await skip.click({ force: true, timeout: 2_500 });
-              break;
-            } catch {
-              // The opening may have completed while this click was being
-              // dispatched. Re-query once before relying on Journal-ready.
+              await skip.click({ timeout: 2_500 });
+            } catch (error) {
+              if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") throw error;
             }
           }
           await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY");

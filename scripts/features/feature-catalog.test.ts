@@ -23,7 +23,10 @@ const entry = (overrides: Partial<FeatureCatalogEntry> = {}): FeatureCatalogEntr
 describe("Feature Catalog", () => {
   it("loads the audited catalog with stable ordering", () => {
     const { entries } = loadFeatureCatalog();
-    expect(entries).toHaveLength(63);
+    expect(entries).toHaveLength(64);
+    expect(entries).toContainEqual(
+      expect.objectContaining({ id: "FT-B103", title: "Sextant Read the Field Capability Contracts" }),
+    );
     expect(sortedEntries(entries).map((item) => item.id)).toEqual(
       [...sortedEntries(entries).map((item) => item.id)].sort((a, b) =>
         a.localeCompare(b, undefined, { numeric: true }),
