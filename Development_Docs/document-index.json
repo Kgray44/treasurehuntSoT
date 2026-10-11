@@ -9093,6 +9093,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/activation-proof/activation.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/activation-proof/capture-activation.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -9142,6 +9148,12 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/activation-proof/review-reference.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/activation-proof/verification-reference.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

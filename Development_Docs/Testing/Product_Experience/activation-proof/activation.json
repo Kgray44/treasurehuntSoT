@@ -1,0 +1,13 @@
+{
+  "sourceSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+  "diagnostic": true,
+  "missingEvidenceRejected": true,
+  "backendOnlyExempt": true,
+  "decision": {
+    "status": "PASS",
+    "captureArtifactId": 11718023011,
+    "reviewArtifactId": 11718683388,
+    "provenance": "PROTECTED_WORKFLOW_AUTHENTICATED_SUBMISSION",
+    "ownerAcceptance": "NOT_CLAIMED"
+  }
+}

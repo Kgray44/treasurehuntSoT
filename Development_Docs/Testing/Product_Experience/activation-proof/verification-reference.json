@@ -1,0 +1,11 @@
+{
+  "runId": 38184457949,
+  "sourceSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+  "activationArtifactId": 11719171730,
+  "artifactName": "product-experience-activation-6baba262a7ca0340",
+  "artifactDigest": "sha256:6e282dcbe981e31cdb1b084b4de881fd73190d70009f37216a89038982896372",
+  "status": "PASS",
+  "provenance": "PROTECTED_WORKFLOW_AUTHENTICATED_SUBMISSION",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "scope": "INSTALLED_PROTECTED_MAIN_ACTIVATION_DIAGNOSTIC"
+}
