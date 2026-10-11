@@ -50,8 +50,10 @@ Inspector accordions, resizable/collapsible bottom tabs, compact/floating/docked
 assistance, four coherent layouts, account-scoped presentation preferences and
 real browser evidence at all six requested sizes. New refinement captures use
 `artifacts/parallax-phase3/workstation-refinement/`; preserve the approved baseline.
-The owner must review the resulting refinement separately. Full Phase 3 remains
-required and ordinary acceptance waits for a finished frozen candidate.
+The separate refinement decision is satisfied: "Approve the refined workstation"
+at `592217e3edb214bab76373dc64cbe4b954ba3703`, tree
+`36cb8d072caa7c17519d6398bd994c26c4c4a05f`, on 2026-10-11.
+Full Phase 3 remains required; ordinary acceptance uses the final frozen candidate.
 
 ## Shared implementation seams
 
@@ -140,3 +142,22 @@ owned receipts and exact resume condition; do not repeat unchanged polls.
 Completion authority: focused checks → frozen candidate → ordinary product PR →
 normal Sounding Line PASS → protected merge → landed smoke. Software, integration,
 physical-device proof and owner experience acceptance remain distinct.
+
+## Final local readiness checkpoint
+
+Phase 3 source and requirement reconciliation are complete in
+`Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md`.
+Latest accepted protected main `efa689f20d2a9dead852135302dd6961c9f0f0d2`
+is merged here, including Crossdeck PR #708 evidence; no sibling source imported.
+Final affected field/runtime/shared Device Lab check: 24 tests PASS. Final
+Parallax/Studio/catalog subsystem: 171 tests PASS. TypeScript, affected ESLint,
+changed-file Prettier, documentation index/validation and feature sync/validation
+PASS. The additional registry/catalog regression check passed 20 tests.
+Catalog FT-B111 is branch-complete only; FT-B092 mainline Phase 2 is preserved.
+
+Next: freeze this source, open one ordinary product PR, obtain the exact
+candidate/base/tree Sounding Line decision, protected merge and landed smoke.
+The loopback owner-review process at port 62619 remains on approved `592217e3`;
+do not overwrite its `.next` build or reset its synthetic database. Hosted
+ordinary qualification avoids that shared local build. No physical qualification,
+deployment, A1 mount or Phase 4 work is claimed or authorized.
