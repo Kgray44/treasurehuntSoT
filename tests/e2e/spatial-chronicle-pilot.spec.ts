@@ -69,8 +69,11 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await phone.addCookies([{ name: "wayfarer_account", value: receiver.token, url: baseURL! }]);
     const d = await desktop.newPage(),
       p = await phone.newPage();
+    const entryStart = performance.now();
     await d.goto("/dev/spatial-pilot");
     await expect(d.getByRole("heading", { name: "The Lost Navigator’s Chart", exact: true })).toBeVisible();
+    const entryMs = performance.now() - entryStart;
+    const progressionMs: number[] = [];
     await capture(d, "owner-session-unprepared");
     const before = await db.chronicle.count();
     const unauthorized = await outsider.request.post(`${baseURL}/api/dev/spatial-pilot`, {
@@ -156,20 +159,28 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await p.getByLabel("Device name").fill("Navigator phone");
     await p.getByRole("button", { name: "Join this Voyage", exact: true }).click();
     await expect(p.getByText("This device is connected as Chronicle Lens companion.")).toBeVisible();
+    await p.goto(pilot.journalHref);
+    await enterClosureJournal(p);
+    await capture(p, "phone-journal-opening");
     await d.goto(pilot.journalHref);
     await enterClosureJournal(d);
     await capture(d, "journal-opening");
-    async function continueStory() {
-      const button = d.getByRole("button", { name: "Continue Voyage", exact: true });
+    async function continueStory(surface: Page = d) {
+      const started = performance.now();
+      const button = surface.getByRole("button", { name: "Continue Voyage", exact: true });
       await expect(button).toBeEnabled();
       const current = await db.taleSession.findUniqueOrThrow({ where: { id: pilot.voyageId } });
       await button.click();
       await expect
         .poll(async () => (await db.taleSession.findUniqueOrThrow({ where: { id: pilot.voyageId } })).currentBlockId)
         .not.toBe(current.currentBlockId);
+      progressionMs.push(performance.now() - started);
     }
     await continueStory();
     await capture(d, "journal-chart");
+    await openClosureMap(p);
+    await capture(p, "phone-chart-controls");
+    await p.getByRole("button", { name: "Close journal tool drawer" }).click();
     await continueStory();
     await d.getByRole("button", { name: "Open Chronicle Lens", exact: true }).first().click();
     const lens = d.getByRole("dialog", { name: "Iona Morrow’s last parchment" });
@@ -177,6 +188,11 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await lens.getByRole("button", { name: "Inspect", exact: true }).first().click();
     await capture(d, "journal-spatial-message");
     await lens.getByRole("button", { name: "Close Chronicle Lens" }).click();
+    await p.getByRole("button", { name: "Open Chronicle Lens", exact: true }).first().click();
+    const phoneLens = p.getByRole("dialog", { name: "Iona Morrow’s last parchment" });
+    await phoneLens.getByRole("button", { name: "Inspect", exact: true }).first().click();
+    await capture(p, "phone-spatial-message");
+    await phoneLens.getByRole("button", { name: "Close Chronicle Lens" }).click();
     await continueStory();
     await continueStory();
     await continueStory();
@@ -237,12 +253,13 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await capture(d, "compass-alternative");
     await continueStory();
     await continueStory();
-    await continueStory();
-    await d.getByRole("button", { name: "Continue Voyage", exact: true }).click();
+    await continueStory(p);
+    await p.getByRole("button", { name: "Continue Voyage", exact: true }).click();
     await expect
       .poll(async () => (await db.taleSession.findUniqueOrThrow({ where: { id: pilot.voyageId } })).status)
       .toBe("COMPLETED");
     await capture(d, "journal-ending");
+    await capture(p, "phone-journal-ending");
     await d.reload();
     await enterClosureJournal(d);
     expect((await db.taleSession.findUniqueOrThrow({ where: { id: pilot.voyageId } })).publishedVersionId).toBe(
@@ -257,6 +274,13 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await expect(d.getByLabel("Behavior 1 trigger")).toHaveValue("INSPECT");
     await capture(d, "studio-engineering-desktop");
     await d
+      .getByRole("region", { name: "Spatial canvas", exact: true })
+      .screenshot({ path: `${evidence}/studio-active-canvas.png` });
+    await d
+      .locator("fieldset")
+      .filter({ has: d.locator("legend").getByText("Selected spatial object", { exact: true }) })
+      .screenshot({ path: `${evidence}/studio-selected-inspector.png` });
+    await d
       .getByRole("complementary", { name: "Spatial Library", exact: true })
       .screenshot({ path: `${evidence}/studio-library.png` });
     await d
@@ -265,6 +289,24 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await d
       .getByRole("region", { name: "Behavior timeline", exact: true })
       .screenshot({ path: `${evidence}/studio-behavior-timeline.png` });
+    await d.getByLabel("Search Library", { exact: true }).fill("missing-fictional-archive");
+    await expect(d.getByText("No saved items match. Create and save a spatial moment to begin.")).toBeVisible();
+    await capture(d, "studio-library-empty");
+    await d.getByLabel("Search Library", { exact: true }).fill("");
+    const canvasFrameIntervals = await d.evaluate(
+      () =>
+        new Promise<number[]>((resolve) => {
+          const intervals: number[] = [];
+          let previous: number | null = null;
+          const frame = (now: number) => {
+            if (previous !== null) intervals.push(now - previous);
+            previous = now;
+            if (intervals.length === 60) resolve(intervals);
+            else requestAnimationFrame(frame);
+          };
+          requestAnimationFrame(frame);
+        }),
+    );
     await d.getByRole("combobox", { name: "Preview", exact: true }).selectOption("PHONE");
     await capture(d, "studio-phone-viewpoint");
     await d.getByRole("combobox", { name: "Preview", exact: true }).selectOption("REMOTE");
@@ -280,6 +322,14 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       JSON.stringify(
         {
           fidelity: "D1 desktop/mobile Chromium emulation; manual controls; synthetic accounts and fictional content",
+          sourceCommit: process.env.SPATIAL_PILOT_SOURCE_SHA ?? "UNAVAILABLE",
+          entryMs,
+          progressionMs,
+          routeTimingBoundary:
+            "Browser navigation to visible entry; Continue invocation to observed durable block change, including automation/polling overhead",
+          canvasFrameIntervals,
+          canvasTimingBoundary:
+            "60 requestAnimationFrame intervals while Engineering canvas is visible; browser scheduling only, not native AR or device frame-rate certification",
           handoffMs,
           handoffBoundary:
             "Send button invocation to observed durable receiver ACKNOWLEDGED (includes automated click and polling overhead)",
