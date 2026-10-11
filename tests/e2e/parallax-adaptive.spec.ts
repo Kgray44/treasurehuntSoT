@@ -112,7 +112,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await expect(page.getByRole("region", { name: "Spatial canvas" })).toContainText("Living room");
     await page.screenshot({ path: "artifacts/parallax-phase3/browser/living-room.png", fullPage: true });
     await page.getByLabel("Environment", { exact: true }).selectOption("empty");
-    await expect(page.getByRole("region", { name: "Spatial canvas" })).toContainText("camera free");
+    await expect(page.getByRole("region", { name: "Spatial canvas" })).toContainText("CAMERA FREE");
     await page.screenshot({ path: "artifacts/parallax-phase3/browser/no-safe-staging.png", fullPage: true });
     await page.getByLabel("Environment", { exact: true }).selectOption("bedroom");
     await page

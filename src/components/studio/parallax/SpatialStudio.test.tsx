@@ -47,7 +47,9 @@ it("opens Guided mode with canvas/library/timeline and keeps mode changes out of
   expect(calls).toHaveLength(before);
   fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "GUIDED" } });
   expect(screen.queryByLabelText("Position x")).toBeNull();
-  expect(screen.getByText(/AI provider unavailable/)).toBeVisible();
+  expect(
+    within(screen.getByRole("region", { name: "Contextual spatial assistance" })).getByText(/AI provider unavailable/),
+  ).toBeVisible();
 });
 it("records manual transforms as reversible edits and serializes autosave", async () => {
   render(<SpatialStudio chronicleId="chronicle" definitionId="owned" />);
@@ -71,7 +73,7 @@ it("presents truthful fallback and all ten synthetic environment results", async
   expect(
     within(screen.getByRole("region", { name: "Spatial canvas" })).getByText(/Read and inspect the same clue here/),
   ).toBeVisible();
-  expect(screen.getByText(/Synthetic previews and physical\/owner acceptance/)).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: "Test in 10 environments" }));
+  expect(screen.getByText(/Synthetic previews and physical\/owner acceptance/)).toBeVisible();
   expect(screen.getByRole("button", { name: /Outdoor trail.*GUIDED FALLBACK/ })).toBeVisible();
 });

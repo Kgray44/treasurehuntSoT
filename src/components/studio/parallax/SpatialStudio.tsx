@@ -1,12 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import {
   changeHistory,
   createSpatialDraft,
   draftSchema,
   forkSpatialDraft,
-  presetNames,
   previewModes,
   redo,
   undo,
@@ -29,6 +28,10 @@ import { SpatialCanvas } from "./SpatialCanvas";
 import { SpatialDependencies } from "./SpatialDependencies";
 import { AdaptivePlacement } from "./AdaptivePlacement";
 import { SpatialFieldQuality } from "./SpatialFieldQuality";
+import { SpatialAssetBrowser } from "./SpatialAssetBrowser";
+import { PlacementComposer } from "./PlacementComposer";
+import { BehaviorTracks } from "./BehaviorTracks";
+import { insertSpatialPreset } from "@/parallax/editor-assets";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import { resolveAdaptiveScene } from "@/parallax/adaptive";
 import type { SpatialInput } from "@/parallax/behavior";
@@ -89,6 +92,67 @@ export function SpatialStudio({
   const proposalBinding = useRef<string | null>(null);
   const proposalTarget = useRef<string | null>(null);
   const draft = history?.present;
+  const [placementPreview, setPlacementPreview] = useState<SpatialDraft | null>(null);
+  const [libraryOpen, setLibraryOpen] = useState(true),
+    [inspectorOpen, setInspectorOpen] = useState(true);
+  const [libraryWidth, setLibraryWidth] = useState(240),
+    [inspectorWidth, setInspectorWidth] = useState(300);
+  const [playing, setPlaying] = useState(false);
+  const [validationOpen, setValidationOpen] = useState(false);
+  useEffect(() => {
+    queueMicrotask(() => setPlacementPreview(null));
+  }, [draft, selected]);
+  const dockDrag = useRef<{ side: "library" | "inspector"; x: number; width: number } | null>(null);
+  const dockHandle = (side: "library" | "inspector") => (
+    <div
+      className={styles.dockHandle}
+      role="separator"
+      aria-label={`Resize ${side} panel`}
+      aria-orientation="vertical"
+      aria-valuenow={side === "library" ? libraryWidth : inspectorWidth}
+      aria-valuemin={210}
+      aria-valuemax={420}
+      tabIndex={0}
+      onPointerDown={(event) => {
+        dockDrag.current = { side, x: event.clientX, width: side === "library" ? libraryWidth : inspectorWidth };
+        event.currentTarget.setPointerCapture(event.pointerId);
+      }}
+      onPointerMove={(event) => {
+        const drag = dockDrag.current;
+        if (drag?.side === side) {
+          const value = Math.max(
+            210,
+            Math.min(420, drag.width + (event.clientX - drag.x) * (side === "library" ? 1 : -1)),
+          );
+          (side === "library" ? setLibraryWidth : setInspectorWidth)(value);
+        }
+      }}
+      onPointerUp={() => {
+        dockDrag.current = null;
+      }}
+      onPointerCancel={() => {
+        dockDrag.current = null;
+      }}
+      onKeyDown={(event) => {
+        if (["ArrowLeft", "ArrowRight"].includes(event.key)) {
+          event.preventDefault();
+          const update = side === "library" ? setLibraryWidth : setInspectorWidth;
+          update((w) => Math.max(210, Math.min(420, w + (event.key === "ArrowRight" ? 16 : -16))));
+        }
+      }}
+    />
+  );
+  useEffect(() => {
+    if (!playing) return;
+    const interval = setInterval(() => {
+      if (!document.hidden)
+        setTimeMs((t) => {
+          if (t >= 59900) return 60000;
+          return t + 100;
+        });
+    }, 100);
+    return () => clearInterval(interval);
+  }, [playing]);
   const adaptiveResolution = draft?.content.adaptive
     ? resolveAdaptiveScene(
         draft.content,
@@ -229,6 +293,16 @@ export function SpatialStudio({
     }
   };
   const replace = (next: SpatialDraft) => edit({ type: "REPLACE", draft: next });
+  const addPreset = (name: string) => {
+    if (!draft) return;
+    try {
+      const next = insertSpatialPreset(draft, name, crypto.randomUUID());
+      replace(next);
+      setSelected(next.content.entities[draft.content.entities.length].id);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Asset could not be added.");
+    }
+  };
   const action = async (run: () => Promise<void>) => {
     setBusy(true);
     setError("");
@@ -318,7 +392,7 @@ export function SpatialStudio({
       </main>
     );
   return (
-    <main className={styles.studio}>
+    <main className={styles.studio} data-mode={mode}>
       <header className={styles.header}>
         <div>
           <Link
@@ -392,6 +466,7 @@ export function SpatialStudio({
               void action(async () => {
                 const result = await api({ action: "VALIDATE", draft });
                 setFindings(result.findings);
+                setValidationOpen(true);
                 setStatus("Drydock spatial checks complete — simulations are synthetic");
               })
             }
@@ -410,6 +485,7 @@ export function SpatialStudio({
                 });
                 revision.current = result.revision;
                 setReleaseId(result.version.id);
+                setValidationOpen(false);
                 await load();
                 setStatus("Immutable version created. Attach it to a Chronicle to publish.");
               })
@@ -435,9 +511,33 @@ export function SpatialStudio({
           </button>
         </div>
       )}
-      <div className={styles.workspace}>
+      <nav className={styles.workstationNavigation} aria-label="Workstation panels">
+        <div>
+          <strong className={styles.workstationBrand}>◈ PARALLAX</strong>
+          <span>SPATIAL WORKSTATION</span>
+        </div>
+        <div>
+          <button aria-pressed={libraryOpen} onClick={() => setLibraryOpen(!libraryOpen)}>
+            Library &amp; hierarchy
+          </button>
+          <button aria-pressed={inspectorOpen} onClick={() => setInspectorOpen(!inspectorOpen)}>
+            Inspector
+          </button>
+          <button aria-expanded={validationOpen} onClick={() => setValidationOpen(!validationOpen)}>
+            Diagnostics {localFindings.length ? `· ${localFindings.length}` : "· clear"}
+          </button>
+        </div>
+      </nav>
+      <div
+        className={styles.workspace}
+        data-library={libraryOpen ? "open" : "closed"}
+        data-inspector={inspectorOpen ? "open" : "closed"}
+        style={{ "--library-width": `${libraryWidth}px`, "--inspector-width": `${inspectorWidth}px` } as CSSProperties}
+      >
         <aside className={styles.library} aria-label="Spatial Library">
+          {dockHandle("library")}
           <h2>Spatial Library</h2>
+          <SpatialAssetBrowser busy={busy} onAdd={addPreset} onNew={() => newPreset("Desk Map")} />
           <label>
             Search Library
             <input
@@ -451,19 +551,6 @@ export function SpatialStudio({
             <option value="MY_LIBRARY">My Spatial Library</option>
             <option value="FAVORITES">Favorites</option>
           </select>
-          <h3>First-party presets</h3>
-          <p>Drag a preset onto the canvas or choose it here.</p>
-          {presetNames.map((name) => (
-            <button
-              key={name}
-              draggable
-              onDragStart={(e) => e.dataTransfer.setData("application/parallax-preset", name)}
-              disabled={busy}
-              onClick={() => newPreset(name)}
-            >
-              {name}
-            </button>
-          ))}
           <h3>Owned items</h3>
           {!filtered.length && <p>No saved items match. Create and save a spatial moment to begin.</p>}
           {filtered.map((item) => (
@@ -491,52 +578,6 @@ export function SpatialStudio({
               <small>{item.draft.category.replaceAll("_", " ")} · Guided compatible · Creator owned</small>
             </button>
           ))}
-        </aside>
-        <section className={styles.center}>
-          <div className={styles.previewControls}>
-            <label>
-              Preview
-              <select value={preview} onChange={(e) => setPreview(e.target.value)}>
-                {previewModes.map((p) => (
-                  <option key={p}>{p}</option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Environment
-              <select value={environment} onChange={(e) => setEnvironment(e.target.value)}>
-                {simulationEnvironments.map((e) => (
-                  <option key={e.id} value={e.id}>
-                    {e.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button onClick={() => setFindings(validateSpatialAuthoring(draft.content))}>
-              Test in 10 environments
-            </button>
-          </div>
-          <SpatialCanvas
-            draft={draft}
-            selectedId={selected}
-            onSelect={setSelected}
-            onEdit={edit}
-            onPreset={newPreset}
-            mode={mode}
-            preview={preview}
-            environmentId={environment}
-            timeMs={timeMs}
-            inputs={inputs}
-          />
-          {preview === "PERFORMANCE" && (
-            <p className={styles.notice}>Estimate only: {JSON.stringify(spatialPerformanceEstimate(draft.content))}</p>
-          )}
-          {preview === "REMOTE" && (
-            <p className={styles.notice}>
-              Compare the same intent across synthetic rooms. Placements, safety rejections and fallbacks change with
-              available evidence. Physical qualification remains pending.
-            </p>
-          )}
           <section className={styles.graph} aria-label="Scene graph">
             <h2>Scene graph</h2>
             <label>
@@ -581,9 +622,164 @@ export function SpatialStudio({
                 })}
             </ul>
           </section>
+        </aside>
+        <section className={styles.center}>
+          <div className={styles.previewControls}>
+            <label>
+              Preview
+              <select aria-label="Preview" value={preview} onChange={(e) => setPreview(e.target.value)}>
+                {previewModes.map((p) => (
+                  <option key={p}>{p}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Environment
+              <select aria-label="Environment" value={environment} onChange={(e) => setEnvironment(e.target.value)}>
+                {simulationEnvironments.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button
+              onClick={() => {
+                setFindings(validateSpatialAuthoring(draft.content));
+                setValidationOpen(true);
+              }}
+            >
+              Test in 10 environments
+            </button>
+          </div>
+          <SpatialCanvas
+            draft={placementPreview ?? draft}
+            selectedId={selected}
+            onSelect={setSelected}
+            onEdit={
+              placementPreview
+                ? () => setError("Approve or discard the proposal preview before editing objects.")
+                : edit
+            }
+            onPreset={addPreset}
+            mode={mode}
+            preview={preview}
+            environmentId={environment}
+            timeMs={timeMs}
+            inputs={inputs}
+          />
+          <PlacementComposer
+            draft={draft}
+            selectedId={selected}
+            aiAvailable={loaded.aiAvailable}
+            onPreview={setPlacementPreview}
+            onApply={replace}
+          />
+          <details className={styles.assistantDetails}>
+            <summary>Configured AI assistance / critique</summary>
+            <p>
+              {loaded.aiAvailable
+                ? "Review the proposed configuration before accepting. AI critique is advisory; Drydock governs validation."
+                : "AI provider unavailable. Configure a trusted authoring provider to enable intent and critique."}
+            </p>
+            <label>
+              Intent
+              <textarea
+                value={request}
+                onChange={(e) => setRequest(e.target.value)}
+                placeholder="Put a folded letter near the entrance, on a table."
+              />
+            </label>
+            <div className={styles.inline}>
+              {["INTENT", "CRITIQUE"].map((kind) => (
+                <button
+                  key={kind}
+                  disabled={!loaded.aiAvailable || !request || busy || !selected}
+                  onClick={() =>
+                    void action(async () => {
+                      const binding = JSON.stringify(draftRef.current);
+                      const target = selected;
+                      const result = await api({ action: "AI", kind, request, draft: draftRef.current });
+                      if (result.status !== "PROPOSED") throw new Error(result.message);
+                      if (kind === "INTENT") {
+                        proposalBinding.current = binding;
+                        proposalTarget.current = target;
+                        setProposal(result.proposal);
+                      } else setCritique(result.critique.findings);
+                    })
+                  }
+                >
+                  {kind === "INTENT" ? "Propose intent" : "Critique scene"}
+                </button>
+              ))}
+            </div>
+            {proposal && (
+              <div>
+                <p>{proposal.explanation}</p>
+                <pre>{JSON.stringify(proposal, null, 2)}</pre>
+                <button
+                  onClick={() => {
+                    if (proposalBinding.current !== JSON.stringify(draft) || proposalTarget.current !== selected) {
+                      setError("The scene or selected object changed. Request a fresh AI proposal.");
+                      return;
+                    }
+                    try {
+                      replace(materializeIntent(draft, selected!, proposal));
+                      setProposal(null);
+                    } catch (cause) {
+                      setError(cause instanceof Error ? cause.message : "The proposal cannot edit this object.");
+                    }
+                  }}
+                >
+                  Accept as reversible edit
+                </button>
+                <button onClick={() => setProposal(null)}>Discard</button>
+              </div>
+            )}
+            {critique.map((f, i) => (
+              <p key={i}>
+                <strong>{f.topic}:</strong> {f.message}
+              </p>
+            ))}
+          </details>
+          {preview === "PERFORMANCE" && (
+            <p className={styles.notice}>Estimate only: {JSON.stringify(spatialPerformanceEstimate(draft.content))}</p>
+          )}
+          {preview === "REMOTE" && (
+            <p className={styles.notice}>
+              Compare the same intent across synthetic rooms. Placements, safety rejections and fallbacks change with
+              available evidence. Physical qualification remains pending.
+            </p>
+          )}
           <section className={styles.timeline} aria-label="Behavior timeline">
-            <h2>Behavior timeline</h2>
-            <p>Spatial state changes only. Chronicle progression remains One Voyage-owned.</p>
+            <div className={styles.timelineHeader}>
+              <h2>Behavior timeline</h2>
+              <div>
+                <button
+                  aria-pressed={playing}
+                  disabled={timeMs >= 60000 && !playing}
+                  onClick={() => {
+                    setPlaying(!playing);
+                    setPreview("LENS");
+                  }}
+                >
+                  {playing ? "Pause timeline" : "Play timeline"}
+                </button>
+                <span>{(timeMs / 1000).toFixed(1)} / 60.0 s</span>
+              </div>
+            </div>
+            <BehaviorTracks
+              draft={draft}
+              timeMs={timeMs}
+              selected={selected}
+              onSelect={setSelected}
+              onTime={setTimeMs}
+              onChange={replace}
+            />
+            <small>
+              Spatial state changes only · events are relative to their trigger · Chronicle progression remains One
+              Voyage-owned.
+            </small>
             <label>
               Preview time
               <input
@@ -616,6 +812,7 @@ export function SpatialStudio({
               ))}
               <button
                 onClick={() => {
+                  setPlaying(false);
                   setTimeMs(0);
                   setInputs([
                     { trigger: "SCENE_ENTER", atMs: 0 },
@@ -733,6 +930,7 @@ export function SpatialStudio({
           </section>
         </section>
         <aside className={styles.inspector} aria-label="Spatial inspector">
+          {dockHandle("inspector")}
           <h2>{currentEntity?.name ?? "Select an entity"}</h2>
           <AdaptivePlacement
             draft={draft}
@@ -1041,73 +1239,6 @@ export function SpatialStudio({
             <SpatialDependencies draft={draft} entityId={currentEntity.id} onChange={replace} />
           )}
           <section>
-            <h3>AI authoring assistance</h3>
-            <p>
-              {loaded.aiAvailable
-                ? "Review the proposed configuration before accepting. AI critique is advisory; Drydock governs validation."
-                : "AI provider unavailable. Configure a trusted authoring provider to enable intent and critique."}
-            </p>
-            <label>
-              Intent
-              <textarea
-                value={request}
-                onChange={(e) => setRequest(e.target.value)}
-                placeholder="Put a folded letter near the entrance, on a table."
-              />
-            </label>
-            <div className={styles.inline}>
-              {["INTENT", "CRITIQUE"].map((kind) => (
-                <button
-                  key={kind}
-                  disabled={!loaded.aiAvailable || !request || busy || !selected}
-                  onClick={() =>
-                    void action(async () => {
-                      const binding = JSON.stringify(draftRef.current);
-                      const target = selected;
-                      const result = await api({ action: "AI", kind, request, draft: draftRef.current });
-                      if (result.status !== "PROPOSED") throw new Error(result.message);
-                      if (kind === "INTENT") {
-                        proposalBinding.current = binding;
-                        proposalTarget.current = target;
-                        setProposal(result.proposal);
-                      } else setCritique(result.critique.findings);
-                    })
-                  }
-                >
-                  {kind === "INTENT" ? "Propose intent" : "Critique scene"}
-                </button>
-              ))}
-            </div>
-            {proposal && (
-              <div>
-                <p>{proposal.explanation}</p>
-                <pre>{JSON.stringify(proposal, null, 2)}</pre>
-                <button
-                  onClick={() => {
-                    if (proposalBinding.current !== JSON.stringify(draft) || proposalTarget.current !== selected) {
-                      setError("The scene or selected object changed. Request a fresh AI proposal.");
-                      return;
-                    }
-                    try {
-                      replace(materializeIntent(draft, selected!, proposal));
-                      setProposal(null);
-                    } catch (cause) {
-                      setError(cause instanceof Error ? cause.message : "The proposal cannot edit this object.");
-                    }
-                  }}
-                >
-                  Accept as reversible edit
-                </button>
-                <button onClick={() => setProposal(null)}>Discard</button>
-              </div>
-            )}
-            {critique.map((f, i) => (
-              <p key={i}>
-                <strong>{f.topic}:</strong> {f.message}
-              </p>
-            ))}
-          </section>
-          <section>
             <h3>Versions and attachment</h3>
             {!releases.length && <p>Create an immutable version after validation.</p>}
             {releases.map((v) => (
@@ -1219,7 +1350,7 @@ export function SpatialStudio({
           </section>
         </aside>
       </div>
-      <section className={styles.validation} aria-label="Drydock spatial validation">
+      <section className={styles.validation} data-open={validationOpen} aria-label="Drydock spatial validation">
         <h2>Validation and environment previews</h2>
         {localFindings.length ? (
           localFindings.map((finding, i) => (
