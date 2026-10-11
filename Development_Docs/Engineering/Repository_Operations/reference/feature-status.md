@@ -3,14 +3,14 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Feature status
 
-Reach Phase 1's observation/calibration laboratory is an implementation candidate with physical qualification and protected integration pending. See the [phase record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md); no Phase 2 action capability is claimed.
+Reach Phase 1's observation/calibration laboratory is an integrated foundation preview through protected PR #697; physical qualification remains pending. See the [phase record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md); no Phase 2 action capability is claimed.
 
-Sextant Phase 2 device context, Crossdeck Phase 1 secure surface participation, and Parallax Phase 1 Chronicle Lens/Guided View are implemented on protected main through PRs #691, #692 and #693. The [boundary correction receipt](../../Device_Lab/Sextant_Parallax_Correction_Receipt.md) tracks the scoped post-mainline repairs. Native camera/tracking availability is capability-dependent; software status does not close physical-device, field or owner acceptance gates.
+Sextant Phase 3 field/media/nearby context, Crossdeck Phase 2 durable presentation/manual handoff and Parallax Phase 2 Spatial Studio are implemented on protected main through PRs #701, #699 and #698. The [boundary correction receipt](../../Device_Lab/Sextant_Parallax_Correction_Receipt.md) tracks scoped compatibility repairs. Native camera/tracking availability is capability-dependent; software status does not close physical-device, field or owner acceptance gates. The event-transport correction preserves existing Crossdeck capability and One Voyage ownership; its [validation record](../../../Projects/Project_Crossdeck/Realtime_Transport_20261011.md) records integration separately.
 
 Landfall Phase 4 source is available on protected main through [PR #677](https://github.com/Kgray44/treasurehuntSoT/pull/677), product merge `707b98ee97163df4e30fad388883db910e0c40ec`. Exact local/required hosted qualification and isolated landed verification pass. The [accepted capsule](../../../Projects/Project_Landfall/Project_Landfall_Phase_4_Accepted_Capsule.md) and [completion receipt](../../../Projects/Project_Landfall/Project_Landfall_Phase_4_Completion_Receipt.md) become authoritative with their protected evidence/catalog publication. Physical devices/RF/field/energy, assistive technology, signed distribution, production origin/MySQL, licensed providers and owner acceptance remain separate external gates.
 

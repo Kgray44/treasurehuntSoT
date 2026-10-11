@@ -115,6 +115,31 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
           expect(deck.handoffs[0].context.worldspaceId).toBeDefined();
           expect(deck.handoffs[0].context.mapId).toBeDefined();
           expect(deck.objects[`MAP:${voyage.activeId}`].custody).toBe(phoneSurface.surfaceId);
+          if (scenarioId === "crossdeck.surface-handoff") {
+            // Exercise the same canonical UI journey in the reverse direction.
+            await p.getByRole("button", { name: "Close journal tool drawer", exact: true }).click();
+            await receiving.locator("summary").click();
+            const desktopSurface = await db.crossdeckSurfaceSession.findFirstOrThrow({
+              where: { accountSession: { accountId: account.id }, surfaceId: { not: phoneSurface.surfaceId } },
+            });
+            await receiving.getByLabel("Send destination").selectOption(desktopSurface.surfaceId);
+            await receiving.getByLabel("Transfer mode").selectOption("MOVE_CUSTODY");
+            await receiving.getByRole("button", { name: "Send view", exact: true }).click();
+            await expect(sending.getByRole("button", { name: /^Receive / })).toBeVisible();
+            await sending.getByRole("button", { name: /^Receive / }).click();
+            await expect(d.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible();
+            await expect
+              .poll(async () => {
+                const current = await db.crossdeckDeck.findUniqueOrThrow({ where: { id: row.id } });
+                const state = JSON.parse(current.state);
+                return {
+                  custody: state.objects[`MAP:${voyage.activeId}`].custody,
+                  acknowledged: state.handoffs.every((offer: { state: string }) => offer.state === "ACKNOWLEDGED"),
+                };
+              })
+              .toEqual({ custody: desktopSurface.surfaceId, acknowledged: true });
+            await d.getByRole("button", { name: "Close journal tool drawer", exact: true }).click();
+          }
           if (scenarioId === "crossdeck.phone-disconnect") {
             await p.goto("about:blank");
             // Page-exit delivery is best effort. Require the server's canonical

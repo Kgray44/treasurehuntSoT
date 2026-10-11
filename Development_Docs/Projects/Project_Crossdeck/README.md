@@ -3,7 +3,7 @@ title: Project Crossdeck engineering home
 audience: product-engineering
 status: governing-baseline
 canonical_for: project-crossdeck-engineering-home
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Project Crossdeck
@@ -91,6 +91,11 @@ The [Phase 1 implementation record](Phase_1_Implementation_Record.md) documents 
 Phase 1 implements secure pairing and surface participation. The [Phase 2 implementation record](Phase_2_Implementation_Record.md) documents durable synchronization, manual handoff, focus/custody, map/note/artifact continuity, recovery and the restricted shared-display route, integrated through [PR #699](https://github.com/Kgray44/treasurehuntSoT/pull/699) as `d4f67cb8` after the required Sounding Line check passed. Landed proof passed 24 focused tests, both browser journeys and both D0/D1 scenarios. D2 remains UNSUPPORTED; live MySQL, the owner walkthrough and physical/device/field acceptance remain open. Phase 2 is not claimed complete in the Feature Catalog. Air Handoff and rich Parallax choreography remain later work.
 
 The current repository already contains canonical Wayfarer/Homeport account sessions with safe device labels and revocation. Crossdeck must consume those foundations rather than create a competing login or device-authentication system.
+
+The [committed-change transport correction](Realtime_Transport_20261011.md) records
+SSE invalidation, active reconciliation, recovery/security proof and measured
+load separately from the historical Phase 2 acceptance receipt. Its protected
+integration status remains explicitly recorded there.
 
 ## Six-phase program
 

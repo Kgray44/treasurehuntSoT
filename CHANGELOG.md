@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Changelog
@@ -13,6 +13,16 @@ last_reviewed: 2026-10-10
 ## Unreleased
 
 ### Corrected
+
+- Crossdeck replaces 500 ms snapshot polling with authorized committed-change
+  notifications and nominal 10-second active reconciliation. Reconnect and
+  foreground recovery fetch canonical state, revocation clears presentation,
+  and transfer/progression authority is preserved. The [transport record](Development_Docs/Projects/Project_Crossdeck/Realtime_Transport_20261011.md)
+  records qualification, measured load and remaining deployment/physical gates.
+- Current spatial summaries now reflect protected Sextant Phase 3, Parallax
+  Phase 2, Crossdeck Phase 2 and the Reach Phase 1 foundation preview. Historical
+  candidate receipts remain preserved; software integration does not grant
+  owner design acceptance or physical-device qualification.
 
 - Sextant gesture acquisition refuses incompatible slow delivery before sensor acquisition and cleans all owned leases on failure/abort/interruption. Parallax native scenes use bounded versioned UTF-8 chunks, independent resolved geometry validation and idempotent session-bound termination including Android Back. Existing published checksums, Guided accessibility and One Voyage progression authority are retained. See the [correction receipt](Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for qualification and remaining physical/owner gates.
 

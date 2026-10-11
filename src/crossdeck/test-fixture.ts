@@ -8,18 +8,20 @@ import { createCrossdeckService } from "./service";
 import { projectCapabilities } from "./contracts";
 export async function crossdeckFixture() {
   const directory = await mkdtemp(join(tmpdir(), "crossdeck-phase1-"));
-  const url = `file:${join(directory, "fixture.db")}`;
+  const url = `file:${join(directory, "fixture.db").replaceAll("\\", "/")}`;
   try {
     execFileSync(
       process.execPath,
-      [
-        resolve("node_modules/prisma/build/index.js"),
-        "db",
-        "push",
-        "--schema",
-        "prisma/schema.sqlite.prisma",
-        "--skip-generate",
-      ],
+      process.platform === "win32"
+        ? [resolve("scripts/sounding-line/sqlite-bootstrap.mjs"), "--database-url", url]
+        : [
+            resolve("node_modules/prisma/build/index.js"),
+            "db",
+            "push",
+            "--schema",
+            "prisma/schema.sqlite.prisma",
+            "--skip-generate",
+          ],
       { env: { ...process.env, DATABASE_URL: url }, stdio: "pipe", timeout: 90_000 },
     );
   } catch (cause) {
