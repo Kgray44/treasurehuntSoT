@@ -24,7 +24,7 @@ import { creatorFieldQuality, reviewCalibration } from "@/parallax/field-service
 import { calibrationReviewInputSchema } from "@/parallax/field-contracts";
 
 const inputSchema = z.discriminatedUnion("action", [
-  z.strictObject({ action: z.literal("FIELD_QUALITY"), definitionId: spatialId }),
+  z.strictObject({ action: z.literal("FIELD_QUALITY"), definitionId: spatialId, draft: draftSchema.optional() }),
   z.strictObject({ action: z.literal("CALIBRATION_REVIEW"), review: calibrationReviewInputSchema, draft: draftSchema }),
   z.strictObject({ action: z.literal("SAVE"), draft: draftSchema, revision: z.number().int().min(0) }),
   z.strictObject({ action: z.literal("RELEASE"), definitionId: spatialId, revision: z.number().int().min(1) }),
@@ -75,6 +75,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         csrfToken: session.csrfToken,
+        layoutScope: session.accountId,
         items: await listSpatialItems(session.accountId),
         chronicle,
         aiAvailable: Boolean(process.env.PARALLAX_AUTHORING_AI_URL && process.env.PARALLAX_AUTHORING_AI_TOKEN),
@@ -96,10 +97,12 @@ export async function POST(request: Request) {
     if (Buffer.byteLength(body, "utf8") > 256 * 1024)
       return NextResponse.json({ error: "Spatial request exceeds 256 KiB." }, { status: 413, headers });
     const input = inputSchema.parse(JSON.parse(body));
-    if ("draft" in input) await assertSpatialDraftAccess(input.draft);
+    if ("draft" in input && input.draft) await assertSpatialDraftAccess(input.draft);
     switch (input.action) {
       case "FIELD_QUALITY":
-        return NextResponse.json(await creatorFieldQuality(session.accountId, input.definitionId), { headers });
+        return NextResponse.json(await creatorFieldQuality(session.accountId, input.definitionId, input.draft), {
+          headers,
+        });
       case "CALIBRATION_REVIEW":
         return NextResponse.json(await reviewCalibration(session.accountId, input.review, input.draft), { headers });
       case "SAVE":

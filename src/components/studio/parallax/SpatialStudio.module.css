@@ -1490,3 +1490,558 @@
     top: -16px;
   }
 }
+
+/* Adaptive docks are presentation only. Their released area belongs to the existing renderer. */
+.sceneActions {
+  position: relative;
+  flex: none;
+}
+.sceneActions > summary {
+  cursor: pointer;
+  padding: 7px 9px;
+  color: #b2c3d7;
+  font-size: 10px;
+  border: 1px solid #34485a;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.sceneActions > div {
+  position: fixed;
+  top: calc(var(--studio-top, 76px) + 48px);
+  right: 20px;
+  z-index: 20;
+  display: grid;
+  gap: 7px;
+  width: 210px;
+  padding: 10px;
+  background: #132031;
+  border: 1px solid #40556a;
+  border-radius: 6px;
+  box-shadow: 0 12px 36px #0009;
+}
+.adaptiveWorkspace .toolbar {
+  overflow: visible;
+}
+.adaptiveWorkspace {
+  height: calc(100dvh - var(--studio-top, 76px));
+  min-height: 0;
+  padding: 8px 10px 6px;
+  overflow: hidden;
+  position: relative;
+}
+.adaptiveWorkspace [hidden] {
+  display: none !important;
+}
+.adaptiveWorkspace .header {
+  padding: 0 4px 5px;
+  gap: 12px;
+}
+.adaptiveWorkspace .header h1 {
+  font-size: 16px;
+  margin: 1px 0;
+}
+.adaptiveWorkspace .header a {
+  font-size: 9px;
+}
+.adaptiveWorkspace .toolbar {
+  max-width: 76%;
+}
+.adaptiveWorkspace .toolbar button {
+  min-height: 30px;
+  padding: 5px 8px;
+  font-size: 10px;
+}
+.adaptiveWorkspace .workstationNavigation {
+  padding: 5px 3px;
+  gap: 8px;
+}
+.adaptiveWorkspace .workstationNavigation > div {
+  gap: 5px;
+}
+.adaptiveWorkspace .workstationNavigation select {
+  width: auto;
+  max-width: 170px;
+  margin: 0;
+  min-height: 28px;
+  padding: 4px 6px;
+  font-size: 10px;
+}
+.adaptiveWorkspace .workstationNavigation button {
+  padding: 4px 7px;
+  font-size: 9px;
+}
+.adaptiveWorkspace .dockedWorkspace,
+.adaptiveWorkspace .dockedWorkspace[data-library],
+.adaptiveWorkspace .dockedWorkspace[data-inspector],
+.adaptiveWorkspace .dockedWorkspace[data-library][data-inspector] {
+  grid-template-columns: 38px var(--left-space) minmax(0, 1fr) var(--right-space) 30px;
+  gap: 4px;
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+.dockRail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+  grid-column: 1;
+}
+.adaptiveWorkspace .dockRail button {
+  width: 30px;
+  min-height: 32px;
+  padding: 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #99b3cd;
+  font-size: 19px;
+}
+.adaptiveWorkspace .dockRail button[aria-pressed="true"] {
+  background: #163032;
+  color: #b7f4e1;
+  border-color: #395b5c;
+}
+.adaptiveWorkspace .rightRail {
+  grid-column: 5;
+}
+.adaptiveWorkspace .library {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 9px;
+  max-height: none;
+}
+.adaptiveWorkspace .inspector {
+  grid-column: 4;
+  padding: 10px 12px;
+  max-height: none;
+}
+.adaptiveWorkspace .center {
+  grid-column: 3;
+  overflow: hidden;
+  position: relative;
+  gap: 5px;
+}
+.dockTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  padding-bottom: 8px;
+}
+.adaptiveWorkspace .dockTitle h2 {
+  font-size: 11px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  overflow-wrap: anywhere;
+}
+.adaptiveWorkspace .dockTitle button {
+  min-height: 25px;
+  padding: 3px 6px;
+  background: transparent;
+  border-color: #293949;
+}
+.dockTabs {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  flex: none;
+}
+.adaptiveWorkspace .dockTabs button {
+  min-height: 27px;
+  padding: 4px 7px;
+  font-size: 10px;
+  background: transparent;
+  border: 0;
+  color: #adbed0;
+}
+.adaptiveWorkspace .dockTabs button[aria-selected="true"] {
+  background: #1c343c;
+  color: #b5eddf;
+  box-shadow: inset 0 -2px #76c8b4;
+}
+.leftPane {
+  overflow: auto;
+  scrollbar-width: thin;
+  min-height: 0;
+  flex: 1;
+  padding: 6px 2px;
+}
+.adaptiveWorkspace .assetBrowser {
+  max-height: none;
+  overflow: visible;
+}
+.adaptiveWorkspace .assetBrowser > small {
+  font-size: 8px;
+  margin-top: 8px;
+}
+.adaptiveWorkspace .assetGrid {
+  gap: 4px;
+}
+.adaptiveWorkspace .assetArt {
+  max-height: 78px;
+}
+.adaptiveWorkspace .graph {
+  max-height: none;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  overflow: visible;
+}
+.adaptiveWorkspace .inspector > .dockTitle {
+  position: sticky;
+  top: -10px;
+  background: #111b28;
+  z-index: 2;
+  margin: -10px -12px 0;
+  padding: 10px 12px;
+}
+.adaptiveWorkspace .inspector fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.inspectorSection {
+  border-bottom: 1px solid #273444;
+  padding: 0 0 4px;
+}
+.inspectorSection > summary {
+  cursor: pointer;
+  font-size: 10px;
+  color: #bdcfe0;
+  padding: 10px 1px;
+}
+.inspectorSection[open] > summary {
+  color: #a4e4d6;
+}
+.adaptiveWorkspace .inspector label {
+  font-size: 10px;
+  margin: 7px 0;
+}
+.adaptiveWorkspace .inspector input:not([type="checkbox"]),
+.adaptiveWorkspace .inspector select {
+  min-height: 29px;
+  padding: 5px 7px;
+  margin-top: 3px;
+  font-size: 11px;
+}
+.adaptiveWorkspace .inspector textarea {
+  min-height: 60px;
+  font-size: 11px;
+}
+.adaptiveWorkspace .inspector .inline button {
+  font-size: 9px;
+  min-height: 28px;
+}
+.adaptiveWorkspace .canvas {
+  min-height: 0;
+  width: 100%;
+  flex: 1;
+}
+.adaptiveWorkspace .guidedPreview {
+  min-height: 0;
+}
+.adaptiveWorkspace .phone {
+  max-width: 420px;
+}
+.adaptiveWorkspace .previewControls {
+  min-height: 29px;
+  padding: 0 5px;
+  gap: 6px;
+}
+.adaptiveWorkspace .previewControls label {
+  font-size: 9px;
+}
+.adaptiveWorkspace .previewControls select {
+  font-size: 10px;
+  min-height: 27px;
+}
+.adaptiveWorkspace .previewControls button {
+  min-height: 27px;
+  padding: 4px 6px;
+  font-size: 9px;
+}
+.commandBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  min-height: 32px;
+  padding: 1px 5px;
+}
+.adaptiveWorkspace .commandBar > button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 0;
+  padding: 4px 0;
+  background: transparent;
+  min-height: 29px;
+  color: #b2e4d9;
+  text-align: left;
+}
+.commandBar small {
+  font-size: 10px;
+  color: #a2afc0;
+}
+.commandBar > span {
+  margin-left: auto;
+  font-size: 8px;
+  color: #a4b7cd;
+  white-space: nowrap;
+}
+.assistantWorkspace {
+  position: absolute;
+  z-index: 8;
+  bottom: 80px;
+  left: 50px;
+  width: min(560px, calc(100% - 70px));
+  max-height: calc(100% - 120px);
+  overflow: auto;
+  padding: 12px;
+  background: #101d2cf5;
+  backdrop-filter: blur(14px);
+  border: 1px solid #3a5c69;
+  border-radius: 8px;
+  box-shadow: 0 16px 48px #0009;
+}
+.assistantWorkspace[data-docked="true"] {
+  position: relative;
+  width: 100%;
+  max-height: 240px;
+  min-height: 100px;
+  flex: none;
+  left: auto;
+  bottom: auto;
+}
+.adaptiveWorkspace .assistantWorkspace .composer {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+.bottomDock {
+  position: relative;
+  flex: none;
+  background: #0f1722;
+  border-top: 1px solid #293c4d;
+  min-height: 36px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+.adaptiveWorkspace .bottomDock .timelineHeader {
+  flex: none;
+  padding: 3px 2px;
+  margin: 0;
+  position: static;
+  background: transparent;
+  height: 35px;
+}
+.adaptiveWorkspace .bottomDock .timelineHeader > div {
+  gap: 5px;
+}
+.adaptiveWorkspace .bottomDock .timelineHeader span {
+  font-size: 9px;
+  white-space: nowrap;
+}
+.adaptiveWorkspace .bottomDock .timelineHeader button {
+  min-height: 26px;
+  padding: 3px 6px;
+  font-size: 9px;
+}
+.bottomHandle {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  right: 0;
+  height: 7px;
+  cursor: row-resize;
+  z-index: 4;
+  touch-action: none;
+}
+.bottomHandle:hover {
+  background: #80c6b45e;
+}
+.bottomContent {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  scrollbar-width: thin;
+  padding: 8px;
+}
+.adaptiveWorkspace .timeline {
+  max-height: none;
+  overflow: visible;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.adaptiveWorkspace .tracks {
+  max-height: none;
+  overflow: visible;
+}
+.diagnosticPane h2,
+.simulationPane h2,
+.eventsPane h2 {
+  font-size: 12px;
+}
+.diagnosticPane > button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 5px 0;
+}
+.eventsPane ol {
+  padding-left: 20px;
+  font-size: 11px;
+  color: #b6c5d6;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.adaptiveWorkspace .selectionInstrument {
+  bottom: 82px;
+  padding: 8px 12px;
+  min-width: 140px;
+  gap: 3px;
+  pointer-events: auto;
+}
+.adaptiveWorkspace .selectionInstrument button {
+  padding: 3px 0;
+  border: 0;
+  min-height: 22px;
+  font-size: 9px;
+  background: transparent;
+  color: #a6e1d7;
+  text-align: left;
+}
+@media (max-width: 1099px) {
+  .adaptiveWorkspace .dockedWorkspace[data-library][data-inspector] {
+    grid-template-columns: 34px 0 minmax(0, 1fr) 0 28px;
+  }
+  .adaptiveWorkspace .library,
+  .adaptiveWorkspace .inspector {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: min(360px, calc(100% - 70px));
+    z-index: 12;
+    box-shadow: 0 8px 30px #000a;
+  }
+  .adaptiveWorkspace .library {
+    left: 38px;
+  }
+  .adaptiveWorkspace .inspector {
+    right: 32px;
+  }
+  .adaptiveWorkspace .dockHandle {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .adaptiveWorkspace {
+    padding: 4px;
+  }
+  .adaptiveWorkspace .header {
+    flex-wrap: nowrap;
+    gap: 4px;
+  }
+  .adaptiveWorkspace .header > div:first-child {
+    min-width: 85px;
+    width: auto;
+    max-width: 32%;
+  }
+  .adaptiveWorkspace .header h1 {
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .adaptiveWorkspace .header [role="status"] {
+    font-size: 8px;
+  }
+  .adaptiveWorkspace .toolbar {
+    max-width: 68%;
+    width: auto;
+    padding: 1px;
+    overflow-x: auto;
+  }
+  .adaptiveWorkspace .toolbar label {
+    min-width: 94px;
+  }
+  .adaptiveWorkspace .toolbar > button {
+    font-size: 9px;
+  }
+  .adaptiveWorkspace .workstationNavigation {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  .adaptiveWorkspace .workstationBrand {
+    display: none;
+  }
+  .adaptiveWorkspace .workstationNavigation > div {
+    flex: none;
+  }
+  .adaptiveWorkspace .workspace > .center {
+    order: initial;
+  }
+  .adaptiveWorkspace .previewControls {
+    flex-wrap: wrap;
+    min-height: 28px;
+  }
+  .adaptiveWorkspace .previewControls label {
+    gap: 3px;
+  }
+  .adaptiveWorkspace .previewControls select {
+    max-width: 112px;
+    font-size: 9px;
+  }
+  .adaptiveWorkspace .previewControls > button {
+    width: auto;
+    margin-left: 0;
+  }
+  .adaptiveWorkspace .commandBar small,
+  .commandBar > span {
+    display: none;
+  }
+  .adaptiveWorkspace .commandBar {
+    min-height: 30px;
+  }
+  .adaptiveWorkspace .bottomDock .timelineHeader {
+    height: auto;
+    min-height: 36px;
+    flex-wrap: nowrap;
+  }
+  .adaptiveWorkspace .bottomDock .timelineHeader > .dockTabs {
+    min-width: 0;
+    flex: 1;
+    overflow-x: auto;
+  }
+  .adaptiveWorkspace .bottomDock .timelineHeader > .dockTabs button {
+    flex: none;
+  }
+  .adaptiveWorkspace .bottomDock .timelineHeader button {
+    padding: 3px 4px;
+    font-size: 8px;
+  }
+  .adaptiveWorkspace .bottomDock .timelineHeader span {
+    display: none;
+  }
+  .assistantWorkspace {
+    left: 5px;
+    width: calc(100% - 10px);
+    max-height: calc(100% - 80px);
+  }
+  .adaptiveWorkspace .selectionInstrument {
+    right: 8px;
+    max-width: 65%;
+  }
+}

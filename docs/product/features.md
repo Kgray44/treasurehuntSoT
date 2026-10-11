@@ -8,7 +8,7 @@ last_reviewed: 2026-10-11
 
 # Voyagewright features
 
-Parallax Phase 3 has an owned adaptive-authoring and 3D workstation candidate. The [workstation review](../../Development_Docs/Projects/Project_Parallax/Phase_3_Workstation_Review.md) records populated browser evidence and the mandatory owner visual-approval gate after rejection of the previous design. This candidate is not yet protected-main availability or physical qualification.
+Parallax Phase 3 has an owned adaptive-authoring and 3D workstation candidate. The [workstation review](../../Development_Docs/Projects/Project_Parallax/Phase_3_Workstation_Review.md) records populated browser evidence and explicit owner visual approval on 2026-10-11 for the corrected design. This candidate is not yet protected-main availability or physical qualification.
 
 The [Find the Hand laboratory](../user/hand-laboratory.md) provides a local camera/synthetic observation and calibration preview. Physical accuracy and Phase 1 acceptance remain pending; selection, manipulation and handoff are outside this preview.
 

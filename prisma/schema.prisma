@@ -4214,6 +4214,7 @@ model ParallaxFieldObservation {
   createdAt DateTime @default(now())
   @@unique([sessionId, actorId, idempotencyKey])
   @@index([definitionId, expiresAt])
+  @@unique([sessionId, actorId, versionId])
 }
 
 model ParallaxCalibrationReview {
@@ -4225,8 +4226,10 @@ model ParallaxCalibrationReview {
   recipeDigest String
   maturity String
   revision Int @default(1)
+  reviewSequence Int
   createdAt DateTime @default(now())
   @@index([definitionId, ownerAccountId])
+  @@unique([definitionId, ownerAccountId, reviewSequence], map: "ParallaxCalibrationReview_sequence_key")
 }
 
 model ParallaxFieldAudit {

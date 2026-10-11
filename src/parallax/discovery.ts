@@ -33,7 +33,14 @@ export class DiscoveryAssistance {
   private confidence = 1;
   private sectors = new Set<number>();
   private nearMisses = 0;
-  constructor(readonly policy: DiscoveryPolicy) {}
+  constructor(
+    readonly policy: DiscoveryPolicy,
+    retainedSeconds = 0,
+  ) {
+    this.elapsedMs = Number.isFinite(retainedSeconds)
+      ? Math.min(policy.maximumUnguidedSeconds, Math.max(0, retainedSeconds)) * 1000
+      : 0;
+  }
   updateActivity(activity: Partial<SearchActivity>, atMs: number) {
     this.tick(atMs);
     this.activity = { ...this.activity, ...activity };
@@ -54,7 +61,8 @@ export class DiscoveryAssistance {
   tick(atMs: number) {
     if (!Number.isFinite(atMs)) throw new Error("PARALLAX_DISCOVERY_CLOCK_INVALID");
     if (this.lastAt !== null && this.active()) this.elapsedMs += Math.max(0, Math.min(5000, atMs - this.lastAt));
-    this.lastAt = atMs;
+    // A backwards clock sample must not cause the same interval to be counted twice.
+    this.lastAt = this.lastAt === null ? atMs : Math.max(this.lastAt, atMs);
     this.elapsedMs = Math.min(this.elapsedMs, this.policy.maximumUnguidedSeconds * 1000);
     return this.read();
   }

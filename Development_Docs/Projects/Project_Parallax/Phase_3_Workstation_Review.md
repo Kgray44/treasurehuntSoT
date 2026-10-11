@@ -1,7 +1,7 @@
 ---
 title: Parallax Phase 3 workstation design review
 audience: product-engineering
-status: implementation-in-progress-owner-review-required
+status: owner-visual-approved-phase-3-in-progress
 canonical_for: parallax-phase-3-workstation-review
 last_reviewed: 2026-10-11
 ---
@@ -27,10 +27,12 @@ The isolated production browser run for the initial candidate passed both journe
 
 Original log: `parallax-workstation-browser-abacc30d.log`. Owned runtime receipts remain under `artifacts/sounding-line/generic-abacc30d564b/`. Captures are under `artifacts/parallax-phase3/workstation/`; pre-change comparison captures remain under `artifacts/parallax-phase3/baseline/`. The earlier `bd198185` run passed retained Studio/Lens cases but its new adaptive case failed an incorrect environment locator; original evidence remains under `artifacts/parallax-phase3/first-browser-failure/`.
 
-Capture review identified scrolling dock headers and a timeline that could show property forms instead of tracks. The next candidate separates dock scrolling, makes sequence properties expandable, moves this route onto the existing immersive shell, adjusts scene framing and adds an actual pointer-gizmo/Undo browser check. Those revisions require their own browser evidence before acceptance.
+Capture review identified scrolling dock headers and a timeline that could show property forms instead of tracks. Candidate `01de94c67ed82d0812db6f884389e0b0fc52d274`, tree `ad973669b87803647932745f194e33be25a5670a`, separates dock scrolling, makes sequence properties expandable, uses the immersive shell and improves scene framing. Its isolated production workstation journey passed in 9.4 seconds: dragging the rendered X gizmo changed the inspector transform, and Undo restored it. Camera navigation, timeline playback, transient preview, dock collapse, modes and desktop/constrained accessibility checks passed. Log: `parallax-workstation-browser-01de94c6.log`; receipts: `artifacts/sounding-line/generic-01de94c67ed8/`. The actual interaction video is `artifacts/parallax-phase3/workstation/interaction-walkthrough.webm`.
 
-## Acceptance remains open
+## Owner visual approval received; Phase 3 closure remains open
 
-This is an owned implementation candidate, not protected-main integration or a visually accepted product. No ordinary final Sounding Line receipt, protected merge, landed smoke, deployment or physical qualification is claimed. The complete Phase 3 implementation and software closeout remain in progress. Explicit owner approval of the implemented workstation appearance is mandatory before declaring the Spatial Studio experience complete.
+On 2026-10-11 the owner answered **"Approve this workstation experience"** after viewing the populated desktop and constrained captures for candidate `01de94c6` and its verified interactions. This satisfies the updated objective's visual approval gate for the shown experience. Captures: `artifacts/parallax-phase3/workstation/desktop-primary.png` and `constrained-viewport.png`.
 
-Documentation classification: this file is current engineering evidence under `Development_Docs`; the Creator guide is human product guidance; `.agents/parallax-phase3.md` is active automation context. The completed-feature catalog remains unchanged while this phase and owner acceptance are incomplete.
+The complete Phase 3 software closeout remains in progress. No ordinary final Sounding Line receipt, protected merge, landed smoke, deployment, Assistant A1 approval or physical qualification is claimed. Preserve the approved design while completing these distinct requirements.
+
+Documentation classification: this file is current engineering evidence under `Development_Docs`; the Creator guide is human product guidance; `.agents/parallax-phase3.md` is active automation context. The completed-feature catalog remains unchanged while Phase 3 implementation and qualification are incomplete.

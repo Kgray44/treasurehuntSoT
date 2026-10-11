@@ -15,12 +15,14 @@ CREATE TABLE "ParallaxFieldObservation" (
 );
 CREATE UNIQUE INDEX "ParallaxFieldObservation_sessionId_actorId_idempotencyKey_key" ON "ParallaxFieldObservation"("sessionId", "actorId", "idempotencyKey");
 CREATE INDEX "ParallaxFieldObservation_definitionId_expiresAt_idx" ON "ParallaxFieldObservation"("definitionId", "expiresAt");
+CREATE UNIQUE INDEX "ParallaxFieldObservation_sessionId_actorId_versionId_key" ON "ParallaxFieldObservation"("sessionId", "actorId", "versionId");
 CREATE TABLE "ParallaxCalibrationReview" (
   "id" TEXT NOT NULL PRIMARY KEY, "definitionId" TEXT NOT NULL, "versionId" TEXT NOT NULL,
   "ownerAccountId" TEXT NOT NULL, "evidenceId" TEXT NOT NULL, "recipeDigest" TEXT NOT NULL,
-  "maturity" TEXT NOT NULL, "revision" INTEGER NOT NULL DEFAULT 1, "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  "maturity" TEXT NOT NULL, "revision" INTEGER NOT NULL DEFAULT 1, "reviewSequence" INTEGER NOT NULL, "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX "ParallaxCalibrationReview_definitionId_ownerAccountId_idx" ON "ParallaxCalibrationReview"("definitionId", "ownerAccountId");
+CREATE UNIQUE INDEX "ParallaxCalibrationReview_sequence_key" ON "ParallaxCalibrationReview"("definitionId", "ownerAccountId", "reviewSequence");
 CREATE TABLE "ParallaxFieldAudit" (
   "id" TEXT NOT NULL PRIMARY KEY, "recordId" TEXT NOT NULL, "actorId" TEXT NOT NULL,
   "action" TEXT NOT NULL, "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP

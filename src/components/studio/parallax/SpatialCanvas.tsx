@@ -14,6 +14,7 @@ export function SpatialCanvas(props: {
   draft: SpatialDraft;
   selectedId: string | null;
   onSelect: (id: string) => void;
+  onInspect?: () => void;
   onEdit: (edit: Edit) => void;
   onPreset: (name: string) => void;
   mode: string;
@@ -252,6 +253,7 @@ export function SpatialCanvas(props: {
           <div className={styles.selectionInstrument}>
             <span>{selected ? "SELECTED OBJECT" : "SCENE"}</span>
             <strong>{selected?.name ?? draft.content.title}</strong>
+            {selected && props.onInspect && <button onClick={props.onInspect}>Edit selected object</button>}
             <small>{adaptive ? adaptive.quality.replaceAll("_", " ") : "Fixed authored placement"}</small>
             {mode === "ENGINEERING" && selected && (
               <code>

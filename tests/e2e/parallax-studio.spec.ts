@@ -73,6 +73,7 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
     await page.goto(`/studio/parallax?chronicle=${tale.id}&block=${blockId}`);
     await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
     await expect(page.getByLabel("Authoring mode")).toHaveValue("GUIDED");
+    await page.getByText("Library, reuse & publication", { exact: true }).click();
     await page.getByLabel("Experience title").fill("Captain's reusable map");
     await page.getByLabel("Clue or message").fill("The northern harbor is your next bearing.");
     await page.getByRole("button", { name: "Save to Spatial Library", exact: true }).click();
@@ -82,8 +83,10 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
     await expect(page.getByRole("region", { name: "Spatial canvas" })).toContainText(
       "The northern harbor is your next bearing.",
     );
+    await page.getByText("Scene actions", { exact: true }).click();
     await page.getByRole("button", { name: "Validate in Drydock" }).click();
     await expect(page.getByRole("status")).toContainText("Drydock spatial checks complete");
+    await page.getByText("Scene actions", { exact: true }).click();
     await page.getByRole("button", { name: "Create immutable version" }).click();
     await expect(page.getByRole("status")).toContainText("Immutable version created");
     await page.getByRole("button", { name: "Attach exact version" }).click();

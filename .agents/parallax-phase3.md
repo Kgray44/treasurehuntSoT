@@ -37,6 +37,22 @@ canonical draft/history, versions and attachment architecture. Obtain explicit
 owner visual approval after actual populated desktop/constrained browser captures;
 software checks alone cannot establish visual acceptance.
 
+Owner visual approval received on 2026-10-11: "Approve this workstation experience".
+It binds candidate `01de94c67ed82d0812db6f884389e0b0fc52d274`, tree
+`ad973669b87803647932745f194e33be25a5670a`, the populated desktop/constrained
+captures and actual pointer-gizmo/Undo evidence. Preserve this accepted design.
+It does not approve Assistant A1, hardware or full Phase 3 integration.
+
+The newer owner objective `58adf25c-0159-49e2-bd21-c0dc37c95330/goal-objective.md`
+adds mandatory workspace ergonomics refinement. Preserve the approved visual
+direction; implement viewport dominance, shared left-dock tabs, contextual
+Inspector accordions, resizable/collapsible bottom tabs, compact/floating/docked
+assistance, four coherent layouts, account-scoped presentation preferences and
+real browser evidence at all six requested sizes. New refinement captures use
+`artifacts/parallax-phase3/workstation-refinement/`; preserve the approved baseline.
+The owner must review the resulting refinement separately. Full Phase 3 remains
+required and ordinary acceptance waits for a finished frozen candidate.
+
 ## Shared implementation seams
 
 Phase 3 owns SpatialStudio.tsx shell/editor/history, SpatialCanvas.tsx,
@@ -73,6 +89,38 @@ No new operation types or authoring.ts sections are admitted until A1 and Phase 
 reconcile their exact additive schemas and history/validation behavior. Quota,
 provider and Admiralty services remain A1-owned. Current preview/history functions
 are an available mount seam; the broader interface above is a proposal only.
+
+### A1 interface decision: ACCEPT WITH AMENDMENTS; integration HELD
+
+Reviewed the sibling owner's `.agents/parallax-a1-studio-interface.md`. Accept
+its saved-snapshot request port, authenticated exact proposal binding,
+dependency-closed operation selection, transient preview, affected-ID highlights,
+canonical selection/history and shell-owned close/focus callbacks. Amend apply:
+
+- The host returns saved draft/revision/local editor generation after serialized
+  persist drains. Recheck all three after async dispatch; a digest alone cannot
+  detect an intervening edit followed by Undo.
+- Authenticated atomic apply returns the canonical saved draft and new revision.
+  Install that acknowledgement with one canonical history replacement and mark
+  it already saved. Do not issue another autosave CAS against the old revision.
+  Rejects leave history unchanged. An uncertain network result retries the same
+  idempotency identity before installing a result. Acknowledgement precedes success.
+- Preview can select a proposed identity without changing canonical history or
+  progression. Base changes, Undo and Redo clear preview/review, even when the
+  draft becomes byte-identical again.
+- Keep narrow IntentProposal separate from broader A1 schemas. Reconcile exact
+  additive CREATE/CONTENT/BEHAVIOR/FALLBACK authoring sections and both Prisma
+  schemas/migrations. Phase 3 owns resolution/field/calibration tables; A1 owns
+  proposal/quota/usage tables. No whole-file imports.
+
+This is a concrete decision, not an implemented adapter or mutual agreement.
+A1 must acknowledge these amendments before shared integration. No sibling
+source or worktree was changed.
+
+The refined assistance host is `#parallax-assistance`, controlled by shell-owned
+floating/docked presentation and close/focus state. The command bar opens it.
+A1 must mount inside this host and use the agreed draft/revision/generation
+callbacks without replacing dock state, canonical history or the renderer.
 
 No cloud checks have been dispatched by this task. Local focused/browser development
 checks are diagnostic. Final ordinary qualification waits for the frozen final

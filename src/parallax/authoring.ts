@@ -322,6 +322,14 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
       break;
     }
   }
+  if (
+    next.content.adaptive &&
+    JSON.stringify(next.content.adaptive.recipes) !== JSON.stringify(input.content.adaptive?.recipes)
+  ) {
+    next.content.adaptive.calibration.maturity = "SEMANTIC";
+    delete next.content.adaptive.calibration.reviewReceiptId;
+    if (next.content.placementPolicy === "CALIBRATED") next.content.placementPolicy = "ADAPTIVE_STICKY";
+  }
   return draftSchema.parse(next);
 }
 

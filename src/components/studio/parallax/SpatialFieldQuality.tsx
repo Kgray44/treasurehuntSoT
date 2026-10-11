@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { SpatialDraft } from "@/parallax/authoring";
 import type { creatorFieldQuality } from "@/parallax/field-service";
 import styles from "./SpatialStudio.module.css";
@@ -18,9 +18,13 @@ export function SpatialFieldQuality({
     [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false);
   const a = draft.content.adaptive;
+  const latestDraft = useRef(draft);
+  useEffect(() => {
+    latestDraft.current = draft;
+  }, [draft]);
   if (!a) return null;
   const load = async () => {
-    const data = await api({ action: "FIELD_QUALITY", definitionId: draft.content.definitionId });
+    const data = await api({ action: "FIELD_QUALITY", definitionId: draft.content.definitionId, draft });
     setQuality(data);
     return data;
   };
@@ -33,11 +37,13 @@ export function SpatialFieldQuality({
   };
   const row = quality?.observations.find((r) => r.id === selected);
   const next =
-    quality?.review?.maturity === "CREATOR_REVIEWED"
-      ? "CALIBRATED"
-      : quality?.review?.maturity === "CALIBRATED"
-        ? "VERIFIED"
-        : "CREATOR_REVIEWED";
+    quality?.review?.matchesDraftRecipes === false
+      ? "CREATOR_REVIEWED"
+      : quality?.review?.maturity === "CREATOR_REVIEWED"
+        ? "CALIBRATED"
+        : quality?.review?.maturity === "CALIBRATED"
+          ? "VERIFIED"
+          : "CREATOR_REVIEWED";
   return (
     <details className={styles.fieldQuality}>
       <summary>Field quality and Creator calibration review</summary>
@@ -114,11 +120,12 @@ export function SpatialFieldQuality({
               busy ||
               !row ||
               row.metadata.provenance !== "PLAYER_REPORTED_PHYSICAL" ||
-              quality.review?.maturity === "VERIFIED"
+              (quality.review?.maturity === "VERIFIED" && quality.review.matchesDraftRecipes !== false)
             }
             onClick={() =>
               action(async () => {
                 if (!row) return;
+                const reviewBase = JSON.stringify(draft);
                 const review = await api({
                   action: "CALIBRATION_REVIEW",
                   draft,
@@ -131,6 +138,13 @@ export function SpatialFieldQuality({
                     expectedRevision: quality.review?.revision ?? 0,
                   },
                 });
+                if (JSON.stringify(latestDraft.current) !== reviewBase) {
+                  setQuality(null);
+                  setMessage(
+                    "The review was recorded for its original recipe. Your draft changed; load field quality again before applying evidence.",
+                  );
+                  return;
+                }
                 replace({
                   ...draft,
                   content: {

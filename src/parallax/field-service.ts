@@ -30,52 +30,62 @@ export async function contributeFieldObservation(sessionId: string, actorId: str
   const digest = canonicalChecksum(input),
     now = new Date();
   await purgeExpiredFieldEvidence(now);
-  return db.$transaction(async (tx) => {
-    const current = await tx.taleSession.findUnique({
-      where: { id: sessionId },
-      select: { status: true, currentBlockId: true, publishedVersionId: true },
-    });
-    const member = await tx.playthroughMembership.findFirst({
-      where: {
-        playthroughId: sessionId,
-        playerProfileId: actorId,
-        status: { in: ["ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"] },
-      },
-    });
-    if (
-      !member ||
-      current?.status !== "ACTIVE" ||
-      current.currentBlockId !== input.blockId ||
-      current.publishedVersionId !== bound.binding.chronicleVersionId
-    )
-      throw new Error("PARALLAX_FIELD_SCOPE_CHANGED");
-    const key = { sessionId_actorId_idempotencyKey: { sessionId, actorId, idempotencyKey: input.idempotencyKey } };
-    const prior = await tx.parallaxFieldObservation.findUnique({ where: key });
-    if (prior) {
+  return db
+    .$transaction(async (tx) => {
+      const current = await tx.taleSession.findUnique({
+        where: { id: sessionId },
+        select: { status: true, currentBlockId: true, publishedVersionId: true },
+      });
+      const member = await tx.playthroughMembership.findFirst({
+        where: {
+          playthroughId: sessionId,
+          playerProfileId: actorId,
+          status: { in: ["ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"] },
+        },
+      });
+      if (
+        !member ||
+        current?.status !== "ACTIVE" ||
+        current.currentBlockId !== input.blockId ||
+        current.publishedVersionId !== bound.binding.chronicleVersionId
+      )
+        throw new Error("PARALLAX_FIELD_SCOPE_CHANGED");
+      const key = { sessionId_actorId_idempotencyKey: { sessionId, actorId, idempotencyKey: input.idempotencyKey } };
+      const prior = await tx.parallaxFieldObservation.findUnique({ where: key });
+      if (prior) {
+        if (prior.digest !== digest) throw new Error("PARALLAX_FIELD_IDEMPOTENCY_CONFLICT");
+        return { observationId: prior.id, progressionChanged: false };
+      }
+      // One contribution per actor/version/run prevents inflated encounter counts.
+      if (await tx.parallaxFieldObservation.findFirst({ where: { sessionId, actorId, versionId: v.id } }))
+        throw new Error("PARALLAX_FIELD_ALREADY_CONTRIBUTED");
+      const row = await tx.parallaxFieldObservation.create({
+        data: {
+          definitionId: v.definitionId,
+          versionId: v.id,
+          versionChecksum: v.checksum,
+          sessionId,
+          actorId,
+          blockId: input.blockId,
+          idempotencyKey: input.idempotencyKey,
+          digest,
+          metadata: JSON.stringify(input.metadata),
+          provenance: input.metadata.provenance,
+          expiresAt: new Date(now.getTime() + v.adaptive!.calibration.retentionDays * 86400000),
+        },
+      });
+      await tx.parallaxFieldAudit.create({ data: { recordId: row.id, actorId, action: "CONSENTED_CONTRIBUTION_V1" } });
+      return { observationId: row.id, progressionChanged: false };
+    })
+    .catch(async (error: unknown) => {
+      if (!(error && typeof error === "object" && "code" in error && error.code === "P2002")) throw error;
+      const prior = await db.parallaxFieldObservation.findUnique({
+        where: { sessionId_actorId_idempotencyKey: { sessionId, actorId, idempotencyKey: input.idempotencyKey } },
+      });
+      if (!prior) throw new Error("PARALLAX_FIELD_ALREADY_CONTRIBUTED");
       if (prior.digest !== digest) throw new Error("PARALLAX_FIELD_IDEMPOTENCY_CONFLICT");
       return { observationId: prior.id, progressionChanged: false };
-    }
-    // One contribution per actor/version/run prevents inflated encounter counts.
-    if (await tx.parallaxFieldObservation.findFirst({ where: { sessionId, actorId, versionId: v.id } }))
-      throw new Error("PARALLAX_FIELD_ALREADY_CONTRIBUTED");
-    const row = await tx.parallaxFieldObservation.create({
-      data: {
-        definitionId: v.definitionId,
-        versionId: v.id,
-        versionChecksum: v.checksum,
-        sessionId,
-        actorId,
-        blockId: input.blockId,
-        idempotencyKey: input.idempotencyKey,
-        digest,
-        metadata: JSON.stringify(input.metadata),
-        provenance: input.metadata.provenance,
-        expiresAt: new Date(now.getTime() + v.adaptive!.calibration.retentionDays * 86400000),
-      },
     });
-    await tx.parallaxFieldAudit.create({ data: { recordId: row.id, actorId, action: "CONSENTED_CONTRIBUTION_V1" } });
-    return { observationId: row.id, progressionChanged: false };
-  });
 }
 export async function withdrawFieldObservation(actorId: string, observationId: string) {
   await db.$transaction(async (tx) => {
@@ -94,8 +104,9 @@ async function ownedItem(ownerAccountId: string, definitionId: string) {
   if (!row) throw new Error("PARALLAX_FIELD_CREATOR_FORBIDDEN");
   return row;
 }
-export async function creatorFieldQuality(ownerAccountId: string, definitionId: string) {
+export async function creatorFieldQuality(ownerAccountId: string, definitionId: string, draft?: SpatialDraft) {
   await ownedItem(ownerAccountId, definitionId);
+  if (draft && draft.content.definitionId !== definitionId) throw new Error("PARALLAX_CALIBRATION_DEFINITION_MISMATCH");
   await purgeExpiredFieldEvidence();
   const rows = await db.parallaxFieldObservation.findMany({
     where: { definitionId, expiresAt: { gt: new Date() }, withdrawnAt: null },
@@ -107,7 +118,7 @@ export async function creatorFieldQuality(ownerAccountId: string, definitionId: 
   });
   const review = await db.parallaxCalibrationReview.findFirst({
     where: { definitionId, ownerAccountId },
-    orderBy: { createdAt: "desc" },
+    orderBy: { reviewSequence: "desc" },
   });
   return {
     quality: summarizeFieldQuality(rows.map((r) => fieldMetadataSchema.parse(JSON.parse(r.metadata)))),
@@ -119,7 +130,16 @@ export async function creatorFieldQuality(ownerAccountId: string, definitionId: 
       )
         ? "OBSERVED"
         : "SEMANTIC"),
-    review: review ? { id: review.id, revision: review.revision, maturity: review.maturity } : null,
+    review: review
+      ? {
+          id: review.id,
+          revision: review.revision,
+          maturity: review.maturity,
+          matchesDraftRecipes: draft?.content.adaptive
+            ? review.recipeDigest === canonicalChecksum(draft.content.adaptive.recipes)
+            : undefined,
+        }
+      : null,
     observations: rows.map((r) => ({
       id: r.id,
       versionId: r.versionId,
@@ -137,77 +157,90 @@ export async function reviewCalibration(ownerAccountId: string, raw: unknown, ra
   const capsule = validateSpatialMoment(JSON.parse(released.envelope));
   const a = draft.content.adaptive;
   if (!a || !capsule.version.adaptive) throw new Error("PARALLAX_CALIBRATION_RECIPE_REQUIRED");
-  return db.$transaction(async (tx) => {
-    const evidence = await tx.parallaxFieldObservation.findFirst({
-      where: {
-        id: input.evidenceId,
-        definitionId: item.id,
-        versionId: input.versionId,
-        versionChecksum: capsule.version.checksum,
-        provenance: "PLAYER_REPORTED_PHYSICAL",
-        expiresAt: { gt: new Date() },
-        withdrawnAt: null,
-      },
-    });
-    if (!evidence) throw new Error("PARALLAX_CALIBRATION_FIELD_EVIDENCE_REQUIRED");
-    const metadata = fieldMetadataSchema.parse(JSON.parse(evidence.metadata));
-    if (!metadata.resolved || !["HIGH", "ACCEPTABLE"].includes(metadata.confidence))
-      throw new Error("PARALLAX_CALIBRATION_QUALITY_INSUFFICIENT");
-    const prior = await tx.parallaxCalibrationReview.findFirst({
-      where: { definitionId: item.id, ownerAccountId },
-      orderBy: { createdAt: "desc" },
-    });
-    if ((prior?.id ?? null) !== input.expectedReviewId || (prior?.revision ?? 0) !== input.expectedRevision)
-      throw new Error("PARALLAX_CALIBRATION_CONCURRENT_UPDATE");
-    const order = ["CREATOR_REVIEWED", "CALIBRATED", "VERIFIED"];
-    if (order.indexOf(input.maturity) !== (prior ? order.indexOf(prior.maturity) + 1 : 0))
-      throw new Error("PARALLAX_CALIBRATION_TRANSITION_INVALID");
-    if (prior) {
-      const claim = await tx.parallaxCalibrationReview.updateMany({
-        where: { id: prior.id, revision: input.expectedRevision },
-        data: { revision: { increment: 1 } },
-      });
-      if (!claim.count) throw new Error("PARALLAX_CALIBRATION_CONCURRENT_UPDATE");
-    }
-    if (input.maturity === "VERIFIED") {
-      if (
-        !prior ||
-        capsule.version.adaptive?.calibration.reviewReceiptId !== prior.id ||
-        canonicalChecksum(a.recipes) !== prior.recipeDigest
-      )
-        throw new Error("PARALLAX_CALIBRATION_REVIEWED_VERSION_REQUIRED");
-      const later = await tx.parallaxFieldObservation.findMany({
+  return db
+    .$transaction(async (tx) => {
+      const evidence = await tx.parallaxFieldObservation.findFirst({
         where: {
+          id: input.evidenceId,
           definitionId: item.id,
-          versionId: capsule.version.id,
+          versionId: input.versionId,
+          versionChecksum: capsule.version.checksum,
           provenance: "PLAYER_REPORTED_PHYSICAL",
           expiresAt: { gt: new Date() },
-          createdAt: { gt: prior.createdAt },
           withdrawnAt: null,
         },
       });
-      const valid = later.filter((r) => {
-        const m = fieldMetadataSchema.parse(JSON.parse(r.metadata));
-        return m.resolved && m.confidence === "HIGH" && m.placementQuality === "BELIEVABLE";
+      if (!evidence) throw new Error("PARALLAX_CALIBRATION_FIELD_EVIDENCE_REQUIRED");
+      const metadata = fieldMetadataSchema.parse(JSON.parse(evidence.metadata));
+      if (
+        !metadata.resolved ||
+        !["HIGH", "ACCEPTABLE"].includes(metadata.confidence) ||
+        metadata.placementQuality !== "BELIEVABLE"
+      )
+        throw new Error("PARALLAX_CALIBRATION_QUALITY_INSUFFICIENT");
+      const prior = await tx.parallaxCalibrationReview.findFirst({
+        where: { definitionId: item.id, ownerAccountId },
+        orderBy: { reviewSequence: "desc" },
       });
-      if (new Set(valid.map((r) => r.actorId)).size < 2 || new Set(valid.map((r) => r.sessionId)).size < 2)
-        throw new Error("PARALLAX_CALIBRATION_INDEPENDENT_VERIFICATION_REQUIRED");
-    }
-    const review = await tx.parallaxCalibrationReview.create({
-      data: {
-        definitionId: item.id,
-        versionId: capsule.version.id,
-        ownerAccountId,
-        evidenceId: evidence.id,
-        recipeDigest: canonicalChecksum(a.recipes),
-        maturity: input.maturity,
-      },
+      if ((prior?.id ?? null) !== input.expectedReviewId || (prior?.revision ?? 0) !== input.expectedRevision)
+        throw new Error("PARALLAX_CALIBRATION_CONCURRENT_UPDATE");
+      const order = ["CREATOR_REVIEWED", "CALIBRATED", "VERIFIED"];
+      const changedRecipes = prior && prior.recipeDigest !== canonicalChecksum(a.recipes);
+      if (order.indexOf(input.maturity) !== (prior && !changedRecipes ? order.indexOf(prior.maturity) + 1 : 0))
+        throw new Error("PARALLAX_CALIBRATION_TRANSITION_INVALID");
+      if (prior) {
+        const claim = await tx.parallaxCalibrationReview.updateMany({
+          where: { id: prior.id, revision: input.expectedRevision },
+          data: { revision: { increment: 1 } },
+        });
+        if (!claim.count) throw new Error("PARALLAX_CALIBRATION_CONCURRENT_UPDATE");
+      }
+      if (input.maturity === "VERIFIED") {
+        if (
+          !prior ||
+          capsule.version.adaptive?.calibration.reviewReceiptId !== prior.id ||
+          canonicalChecksum(a.recipes) !== prior.recipeDigest
+        )
+          throw new Error("PARALLAX_CALIBRATION_REVIEWED_VERSION_REQUIRED");
+        const later = await tx.parallaxFieldObservation.findMany({
+          where: {
+            definitionId: item.id,
+            versionId: capsule.version.id,
+            versionChecksum: capsule.version.checksum,
+            provenance: "PLAYER_REPORTED_PHYSICAL",
+            expiresAt: { gt: new Date() },
+            createdAt: { gt: prior.createdAt },
+            withdrawnAt: null,
+          },
+        });
+        const valid = later.filter((r) => {
+          const m = fieldMetadataSchema.parse(JSON.parse(r.metadata));
+          return m.resolved && m.confidence === "HIGH" && m.placementQuality === "BELIEVABLE";
+        });
+        if (new Set(valid.map((r) => r.actorId)).size < 2 || new Set(valid.map((r) => r.sessionId)).size < 2)
+          throw new Error("PARALLAX_CALIBRATION_INDEPENDENT_VERIFICATION_REQUIRED");
+      }
+      const review = await tx.parallaxCalibrationReview.create({
+        data: {
+          definitionId: item.id,
+          versionId: capsule.version.id,
+          ownerAccountId,
+          evidenceId: evidence.id,
+          recipeDigest: canonicalChecksum(a.recipes),
+          maturity: input.maturity,
+          reviewSequence: (prior?.reviewSequence ?? 0) + 1,
+        },
+      });
+      await tx.parallaxFieldAudit.create({
+        data: { recordId: review.id, actorId: ownerAccountId, action: `CALIBRATION_${input.maturity}` },
+      });
+      return { reviewReceiptId: review.id, maturity: input.maturity, physicalQualification: "NOT_ESTABLISHED" };
+    })
+    .catch((error: unknown) => {
+      if (error && typeof error === "object" && "code" in error && error.code === "P2002")
+        throw new Error("PARALLAX_CALIBRATION_CONCURRENT_UPDATE");
+      throw error;
     });
-    await tx.parallaxFieldAudit.create({
-      data: { recordId: review.id, actorId: ownerAccountId, action: `CALIBRATION_${input.maturity}` },
-    });
-    return { reviewReceiptId: review.id, maturity: input.maturity, physicalQualification: "NOT_ESTABLISHED" };
-  });
 }
 export async function assertCalibrationClaim(ownerAccountId: string, draft: SpatialDraft) {
   const a = draft.content.adaptive;

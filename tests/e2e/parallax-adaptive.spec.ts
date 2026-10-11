@@ -80,6 +80,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
     await expect(page.getByLabel("Authoring mode")).toHaveValue("GUIDED");
     await mkdir("artifacts/parallax-phase3/browser", { recursive: true });
+    await page.getByText("Spatial Placement & grouping", { exact: true }).click();
     await page.getByRole("button", { name: "Author remotely", exact: true }).click();
     await page
       .getByLabel("Semantic placement goal")
@@ -89,6 +90,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await page.getByRole("button", { name: "Apply reviewed recipe" }).click();
     await page.getByLabel("Placement policy").selectOption("ADAPTIVE_PER_RUN");
     await page.getByRole("button", { name: "Duplicate", exact: true }).click();
+    await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
     await page
       .getByRole("region", { name: "Scene graph" })
       .getByRole("button", { name: "◇ Desk Map copy", exact: true })
@@ -108,6 +110,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
       await page.screenshot({ path: `artifacts/parallax-phase3/browser/studio-desktop-${mode}.png`, fullPage: true });
     }
     await page.getByLabel("Authoring mode").selectOption("GUIDED");
+    await page.getByText("Spatial Placement & grouping", { exact: true }).click();
     await page.getByLabel("Environment", { exact: true }).selectOption("living-room");
     await expect(page.getByRole("region", { name: "Spatial canvas" })).toContainText("Living room");
     await page.screenshot({ path: "artifacts/parallax-phase3/browser/living-room.png", fullPage: true });
@@ -125,6 +128,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await page.getByLabel("Maximum unguided seconds").fill("3");
     await page.getByText("Calibration and field quality", { exact: true }).click();
     await page.getByLabel("Offer optional metadata field observations").check();
+    await page.getByText("Library, reuse & publication", { exact: true }).click();
     await page.getByLabel("Experience title").fill("Captain's reusable map");
     await page.getByLabel("Clue or message").fill("The northern harbor is your next bearing.");
     await page.getByRole("button", { name: "Save to Spatial Library", exact: true }).click();
@@ -134,8 +138,10 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await expect(page.getByRole("region", { name: "Spatial canvas" })).toContainText(
       "The northern harbor is your next bearing.",
     );
+    await page.getByText("Scene actions", { exact: true }).click();
     await page.getByRole("button", { name: "Validate in Drydock" }).click();
     await expect(page.getByRole("status")).toContainText("Drydock spatial checks complete");
+    await page.getByText("Scene actions", { exact: true }).click();
     await page.getByRole("button", { name: "Create immutable version" }).click();
     await expect(page.getByRole("status")).toContainText("Immutable version created");
     await page.getByRole("button", { name: "Attach exact version" }).click();

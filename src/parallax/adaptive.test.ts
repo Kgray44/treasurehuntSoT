@@ -1,7 +1,21 @@
 import { describe, it, expect } from "vitest";
 import { createSpatialDraft } from "./authoring";
-import { enableAdaptiveAuthoring, interpretPlacementPhrase, syntheticEnvironmentEvidence } from "./adaptive-authoring";
-import { resolveAdaptiveScene, resolutionIdentity, AdaptiveDecisionCache } from "./adaptive";
+import {
+  enableAdaptiveAuthoring,
+  interpretPlacementPhrase,
+  syntheticEnvironmentEvidence,
+  updateAdaptiveContent,
+} from "./adaptive-authoring";
+import {
+  resolveAdaptiveScene,
+  resolutionIdentity,
+  AdaptiveDecisionCache,
+  evaluateCandidate,
+  revalidateAdaptiveScene,
+  minimizedResolutionReceipt,
+} from "./adaptive";
+import { composeTransform } from "./transforms";
+import { identityTransform } from "./contracts";
 import { simulationEnvironments } from "./studio-validation";
 import { DiscoveryAssistance, type SearchActivity } from "./discovery";
 import { versionContentSchema } from "./contracts";
@@ -19,6 +33,80 @@ const scope = {
   variant: 0,
 };
 describe("adaptive semantic staging", () => {
+  it("orients the authored face and relative offsets on arbitrary wall normals", () => {
+    const recipe = {
+      ...draft().content.adaptive!.recipes[0],
+      preferredSurfaces: ["WALL" as const],
+      alternateSurfaces: [],
+      relativePlacement: "RIGHT" as const,
+    };
+    const candidate = {
+      ...syntheticEnvironmentEvidence(room).candidates[0],
+      surface: "WALL" as const,
+      normal: { x: 1, y: 0, z: 0 },
+    };
+    const result = evaluateCandidate(recipe, candidate, 0.25, true);
+    expect(result.accepted).toBe(true);
+    const face = composeTransform(
+      { ...identityTransform(), rotation: result.transform.rotation },
+      { ...identityTransform(), position: { x: 0, y: 0, z: 1 } },
+    ).position;
+    expect(face.x).toBeCloseTo(1);
+    expect(face.y).toBeCloseTo(0);
+    expect(face.z).toBeCloseTo(0);
+    expect(result.transform.position.x).toBeCloseTo(candidate.position.x + 0.01);
+    expect(result.transform.position.z).toBeLessThan(candidate.position.z);
+  });
+  it("requires an actual viewer context for player-facing placement", () => {
+    const recipe = { ...draft().content.adaptive!.recipes[0], orientation: "PLAYER_FACING" as const };
+    const candidate = syntheticEnvironmentEvidence(room).candidates[0];
+    expect(evaluateCandidate(recipe, candidate, 0.25, true).constraints).toContain("VIEWER_CONTEXT_REQUIRED");
+    expect(evaluateCandidate(recipe, candidate, 0.25, true, { x: 4, y: 1, z: 2 }).accepted).toBe(true);
+  });
+  it("revalidates retained decisions without rerolling on unsafe evidence or changed frames", () => {
+    const content = draft().content,
+      evidence = syntheticEnvironmentEvidence(room);
+    const prior = resolveAdaptiveScene(content, evidence, "seed");
+    const candidateId = Object.values(prior.placements)[0].candidateId;
+    expect(
+      revalidateAdaptiveScene(content, { ...evidence, candidates: [...evidence.candidates].reverse() }, prior),
+    ).toEqual(prior);
+    for (const patch of [
+      { safe: false },
+      { reachMeters: 100 },
+      { confidence: 0.1 },
+      { visibility: 0 },
+      { position: { x: 9, y: 0.75, z: 9 } },
+      { normal: { x: 0, y: 0, z: 1 } },
+    ]) {
+      expect(
+        revalidateAdaptiveScene(
+          content,
+          { ...evidence, candidates: evidence.candidates.map((c) => (c.id === candidateId ? { ...c, ...patch } : c)) },
+          prior,
+        ),
+      ).toBeNull();
+    }
+    expect(revalidateAdaptiveScene(content, { ...evidence, frameId: "other-frame" }, prior)).toBeNull();
+    const receipt = JSON.stringify(minimizedResolutionReceipt(prior));
+    expect(receipt).not.toMatch(/candidateId|position|rotation|frameId|confidence|table-left/);
+    expect(receipt).toContain("NOT_ESTABLISHED");
+  });
+  it("invalidates calibrated claims before parsing revised semantic placement", () => {
+    const d = draft();
+    d.content.placementPolicy = "CALIBRATED";
+    d.content.adaptive!.calibration = {
+      ...d.content.adaptive!.calibration,
+      maturity: "CALIBRATED",
+      reviewReceiptId: "receipt",
+    };
+    const adaptive = structuredClone(d.content.adaptive!);
+    adaptive.recipes[0].relativePlacement = "RIGHT";
+    const next = updateAdaptiveContent(d, adaptive);
+    expect(next.content.placementPolicy).toBe("ADAPTIVE_STICKY");
+    expect(next.content.adaptive!.calibration.maturity).toBe("SEMANTIC");
+    expect(next.content.adaptive!.calibration.reviewReceiptId).toBeUndefined();
+  });
   it("keeps all candidate permutations deterministic and rejects unsafe candidates first", () => {
     const content = draft().content,
       evidence = syntheticEnvironmentEvidence(room);
@@ -132,6 +220,17 @@ describe("adaptive semantic staging", () => {
   });
 });
 describe("meaningful discovery time and terminal recovery", () => {
+  it("retains only bounded numeric elapsed time and ignores backwards samples", () => {
+    const policy = draft().content.adaptive!.discovery[0];
+    const assistance = new DiscoveryAssistance(policy, 4);
+    assistance.updateActivity(active, 1000);
+    assistance.tick(2000);
+    assistance.tick(0);
+    assistance.tick(2000);
+    expect(assistance.read().meaningfulSeconds).toBe(5);
+    expect(new DiscoveryAssistance(policy, 999999).read().meaningfulSeconds).toBe(90);
+    expect(new DiscoveryAssistance(policy, Number.NaN).read().meaningfulSeconds).toBe(0);
+  });
   const active: SearchActivity = {
     foreground: true,
     unlocked: true,

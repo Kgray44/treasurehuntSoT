@@ -7,6 +7,7 @@ import {
   type placementPolicies,
 } from "./adaptive-contracts";
 import type { Transform } from "./contracts";
+import { composeTransform } from "./transforms";
 
 const point = z.strictObject({
   x: z.number().finite().min(-100).max(100),
@@ -36,6 +37,7 @@ export const environmentEvidenceSchema = z
     frameId: z.string().regex(/^[A-Za-z0-9._:-]{1,96}$/),
     source: z.enum(["SIMULATED", "NATIVE_MEASURED"]),
     reliableTracking: z.boolean(),
+    viewerPosition: point.optional(),
     candidates: z.array(candidateSchema).max(128),
   })
   .superRefine((e, c) => {
@@ -110,24 +112,47 @@ export type Evaluation = {
   constraints: string[];
   transform: Transform;
 };
-function candidateTransform(recipe: SemanticRecipe, c: Candidate, width: number): Transform {
+function candidateTransform(
+  recipe: SemanticRecipe,
+  c: Candidate,
+  width: number,
+  viewer?: Candidate["position"],
+): Transform {
   const p = { ...c.position };
+  // Rotate the authored +Z face onto the actual surface normal, including vertical walls.
+  const n = c.normal,
+    raw = n.z < -0.999999 ? { x: 0, y: 1, z: 0, w: 0 } : { x: -n.y, y: n.x, z: 0, w: 1 + n.z };
+  const length = Math.hypot(raw.x, raw.y, raw.z, raw.w);
+  const surfaceRotation = { x: raw.x / length, y: raw.y / length, z: raw.z / length, w: raw.w / length };
+  const basis = (x: number, y: number) =>
+    composeTransform(
+      { position: { x: 0, y: 0, z: 0 }, rotation: surfaceRotation, scale: 1 },
+      { position: { x, y, z: 0 }, rotation: { x: 0, y: 0, z: 0, w: 1 }, scale: 1 },
+    ).position;
+  const right = basis(1, 0),
+    near = basis(0, -1);
+  const offset = (v: Candidate["position"], amount: number) => {
+    p.x += v.x * amount;
+    p.y += v.y * amount;
+    p.z += v.z * amount;
+  };
   const inset = Math.max(0, c.widthMeters / 2 - width / 2 - recipe.minimumClearanceMeters);
   if (["LEFT", "RIGHT", "EDGE"].includes(recipe.relativePlacement))
-    p.x += (recipe.relativePlacement === "LEFT" ? -1 : 1) * inset;
+    offset(right, (recipe.relativePlacement === "LEFT" ? -1 : 1) * inset);
   if (recipe.relativePlacement === "NEAR")
-    p.z += Math.max(0, c.depthMeters / 2 - width / 2 - recipe.minimumClearanceMeters);
+    offset(near, Math.max(0, c.depthMeters / 2 - width / 2 - recipe.minimumClearanceMeters));
   p.x += c.normal.x * 0.01;
   p.y += c.normal.y * 0.01;
   p.z += c.normal.z * 0.01;
-  const horizontal = c.normal.y > 0.9;
+  const yaw =
+    recipe.orientation === "PLAYER_FACING" && viewer
+      ? Math.atan2(viewer.x - p.x, viewer.z - p.z)
+      : Math.atan2(n.x, n.z);
   return {
     position: p,
     scale: 1,
     rotation:
-      recipe.orientation === "SURFACE" && horizontal
-        ? { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 }
-        : { x: 0, y: 0, z: 0, w: 1 },
+      recipe.orientation === "SURFACE" ? surfaceRotation : { x: 0, y: Math.sin(yaw / 2), z: 0, w: Math.cos(yaw / 2) },
   };
 }
 export function evaluateCandidate(
@@ -135,6 +160,7 @@ export function evaluateCandidate(
   c: Candidate,
   width: number,
   reliableTracking: boolean,
+  viewer?: Candidate["position"],
 ): Evaluation {
   const constraints: string[] = [];
   if (!c.safe || c.context.some((x) => ["WALKWAY", "STAIRS", "OBSTACLE", "PRIVATE_REGION"].includes(x)))
@@ -164,6 +190,11 @@ export function evaluateCandidate(
   )
     constraints.push("ORIENTATION_INVALID");
   if (!reliableTracking || c.confidence < recipe.confidenceThreshold) constraints.push("LOW_CONFIDENCE");
+  if (
+    recipe.orientation === "PLAYER_FACING" &&
+    (!viewer || Math.hypot(viewer.x - c.position.x, viewer.z - c.position.z) < 0.001)
+  )
+    constraints.push("VIEWER_CONTEXT_REQUIRED");
   const context = recipe.preferredContext.length
     ? recipe.preferredContext.filter((x) => c.context.includes(x)).length / recipe.preferredContext.length
     : 1;
@@ -189,11 +220,13 @@ export function evaluateCandidate(
         ? "LOW_CONFIDENCE_FALLBACK"
         : "NO_VALID_PLACEMENT",
     constraints,
-    transform: candidateTransform(recipe, c, width),
+    transform: candidateTransform(recipe, c, width, viewer),
   };
 }
 export type SceneResolution = {
   schemaVersion: 1;
+  evidenceFrameId: string;
+  evidenceSource: EnvironmentEvidence["source"];
   seed: string;
   policy: PlacementPolicy;
   versionId: string;
@@ -230,13 +263,40 @@ export function resolveAdaptiveScene(
   const a = content.adaptive;
   if (!a) throw new Error("PARALLAX_SEMANTIC_RECIPE_REQUIRED");
   const evidence = environmentEvidenceSchema.parse(rawEvidence);
+  const sequential = new Set(a.revealOrder);
+  if (
+    content.entities.filter((e) => !sequential.has(e.id)).length + (sequential.size ? 1 : 0) >
+    a.budget.maximumVisibleEntities
+  )
+    return {
+      schemaVersion: 1,
+      evidenceFrameId: evidence.frameId,
+      evidenceSource: evidence.source,
+      seed,
+      policy: content.placementPolicy,
+      versionId: content.id,
+      versionChecksum: checksum,
+      status: "GUIDED_FALLBACK",
+      quality: "NO_VALID_PLACEMENT",
+      placements: {},
+      diagnostics: [{ entityId: "scene", constraints: ["PARALLAX_VISIBLE_BUDGET_EXCEEDED"] }],
+      nodesVisited: 0,
+      exhausted: false,
+      physicalQualification: "NOT_ESTABLISHED",
+    };
   const diagnostics: SceneResolution["diagnostics"] = [];
   const ranked = a.recipes
     .map((recipe) => {
       const entity = content.entities.find((e) => e.id === recipe.entityId);
       if (!entity) throw new Error("PARALLAX_RECIPE_ENTITY_MISSING");
       const evaluations = evidence.candidates.map((c) =>
-        evaluateCandidate(recipe, c, entity.widthMeters * entity.transform.scale, evidence.reliableTracking),
+        evaluateCandidate(
+          recipe,
+          c,
+          entity.widthMeters * entity.transform.scale,
+          evidence.reliableTracking,
+          evidence.viewerPosition,
+        ),
       );
       for (const r of evaluations.filter((x) => !x.accepted))
         diagnostics.push({ entityId: recipe.entityId, candidateId: r.candidate.id, constraints: r.constraints });
@@ -324,6 +384,8 @@ export function resolveAdaptiveScene(
     diagnostics.some((d) => d.constraints.includes("LOW_CONFIDENCE")) && ranked.some((r) => !r.valid.length);
   return {
     schemaVersion: 1,
+    evidenceFrameId: evidence.frameId,
+    evidenceSource: evidence.source,
     seed,
     policy: content.placementPolicy,
     versionId: content.id,
@@ -347,6 +409,83 @@ export function resolveAdaptiveScene(
     nodesVisited: Math.min(nodesVisited, a.budget.maximumNodes),
     exhausted,
     physicalQualification: "NOT_ESTABLISHED",
+  };
+}
+/** Reuse only the same safe physical decision. Changed geometry falls back rather than rerolling. */
+export function revalidateAdaptiveScene(
+  content: Parameters<typeof resolveAdaptiveScene>[0],
+  rawEvidence: unknown,
+  prior: SceneResolution,
+): SceneResolution | null {
+  const evidence = environmentEvidenceSchema.parse(rawEvidence);
+  if (
+    !content.adaptive ||
+    prior.status !== "RESOLVED" ||
+    prior.versionId !== content.id ||
+    prior.evidenceFrameId !== evidence.frameId ||
+    prior.evidenceSource !== evidence.source
+  )
+    return null;
+  const next = structuredClone(prior);
+  for (const recipe of content.adaptive.recipes) {
+    const p = prior.placements[recipe.entityId],
+      entity = content.entities.find((e) => e.id === recipe.entityId);
+    const candidate = evidence.candidates.find((c) => c.id === p?.candidateId);
+    if (!p || !entity || !candidate) return null;
+    const evaluated = evaluateCandidate(
+      recipe,
+      candidate,
+      entity.widthMeters * entity.transform.scale,
+      evidence.reliableTracking,
+      evidence.viewerPosition,
+    );
+    if (!evaluated.accepted) return null;
+    const position = evaluated.transform.position,
+      rotation = evaluated.transform.rotation;
+    if (
+      Math.hypot(
+        position.x - p.transform.position.x,
+        position.y - p.transform.position.y,
+        position.z - p.transform.position.z,
+      ) > 0.001 ||
+      Math.abs(
+        rotation.x * p.transform.rotation.x +
+          rotation.y * p.transform.rotation.y +
+          rotation.z * p.transform.rotation.z +
+          rotation.w * p.transform.rotation.w,
+      ) < 0.999999
+    )
+      return null;
+    next.placements[recipe.entityId] = {
+      ...p,
+      score: evaluated.score,
+      confidence: candidate.confidence,
+      quality: evaluated.quality,
+    };
+  }
+  next.quality = Object.values(next.placements).every((p) => p.quality === "HIGH_MATCH")
+    ? "HIGH_MATCH"
+    : "ACCEPTABLE_SUBSTITUTE";
+  return next;
+}
+/** Safe to retain as logical evidence: excludes physical poses, room/frame IDs and candidate identifiers. */
+export function minimizedResolutionReceipt(resolution: SceneResolution) {
+  return {
+    schemaVersion: 1 as const,
+    seed: resolution.seed,
+    policy: resolution.policy,
+    versionId: resolution.versionId,
+    versionChecksum: resolution.versionChecksum,
+    status: resolution.status,
+    quality: resolution.quality,
+    entities: Object.entries(resolution.placements).map(([entityId, p]) => ({
+      entityId,
+      surface: p.surface,
+      quality: p.quality,
+    })),
+    constraints: [...new Set(resolution.diagnostics.flatMap((d) => d.constraints))].sort(),
+    exhausted: resolution.exhausted,
+    physicalQualification: resolution.physicalQualification,
   };
 }
 /** Durable decisions are version/scope-bound. New evidence cannot silently reroll a scope. */

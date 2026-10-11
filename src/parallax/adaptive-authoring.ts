@@ -55,7 +55,22 @@ export function enableAdaptiveAuthoring(input: SpatialDraft): SpatialDraft {
   return draftSchema.parse(draft);
 }
 export function updateAdaptiveContent(draft: SpatialDraft, adaptive: AdaptiveContent): SpatialDraft {
-  return draftSchema.parse({ ...draft, content: { ...draft.content, adaptive } });
+  const next = structuredClone({ ...draft, content: { ...draft.content, adaptive } });
+  if (JSON.stringify(draft.content.adaptive?.recipes) !== JSON.stringify(adaptive.recipes))
+    invalidateAdaptiveCalibration(next);
+  if (
+    next.content.placementPolicy === "CALIBRATED" &&
+    !["CALIBRATED", "VERIFIED"].includes(next.content.adaptive.calibration.maturity)
+  )
+    next.content.placementPolicy = "ADAPTIVE_STICKY";
+  return draftSchema.parse(next);
+}
+/** Mutates an owned draft copy; changed placement intent needs a new evidence review. */
+export function invalidateAdaptiveCalibration(draft: SpatialDraft) {
+  if (!draft.content.adaptive) return;
+  draft.content.adaptive.calibration.maturity = "SEMANTIC";
+  delete draft.content.adaptive.calibration.reviewReceiptId;
+  if (draft.content.placementPolicy === "CALIBRATED") draft.content.placementPolicy = "ADAPTIVE_STICKY";
 }
 /** Explicit, bounded phrase grammar; never presented as an unconfigured language model. */
 export function interpretPlacementPhrase(
@@ -175,6 +190,7 @@ export function syntheticEnvironmentEvidence(room: {
     frameId: `synthetic-${room.id}`,
     source: "SIMULATED",
     reliableTracking: room.tracking,
+    viewerPosition: { x: 0, y: 1.2, z: room.depth * 0.35 },
     candidates,
   };
 }

@@ -181,7 +181,31 @@ export function ChronicleLens({
         const lens = new ParallaxLensRuntime(
           bound.moment,
           bound.binding,
-          { camera: unknownState(), replayOnly: bound.replayOnly, environment: "PRODUCTION" },
+          {
+            camera: unknownState(),
+            replayOnly: bound.replayOnly,
+            environment: "PRODUCTION",
+            searchClock: () => performance.now(),
+            searchTimeStore:
+              loadBinding && !bound.replayOnly
+                ? {
+                    load: (key) => {
+                      try {
+                        return Number(sessionStorage.getItem(`parallax-search:${key}`) ?? 0);
+                      } catch {
+                        return 0;
+                      }
+                    },
+                    save: (key, seconds) => {
+                      try {
+                        sessionStorage.setItem(`parallax-search:${key}`, String(seconds));
+                      } catch {
+                        /* Numeric session retention is optional when browser storage is unavailable. */
+                      }
+                    },
+                  }
+                : undefined,
+          },
           () => new Date(),
           (s) => {
             if (active) setState(s);
@@ -352,7 +376,9 @@ export function ChronicleLens({
         {activeMoment.version.adaptive && (
           <section aria-label="Discovery assistance">
             <p aria-live="polite">
-              {Object.values(state?.discovery ?? {})[0]?.message ?? "Show me is always available."}
+              {(state?.activeDiscoveryEntityId
+                ? state.discovery?.[state.activeDiscoveryEntityId]?.message
+                : undefined) ?? "Show me is always available."}
             </p>
             <button type="button" onClick={() => void runtime.current?.reveal()}>
               Show me
@@ -457,7 +483,7 @@ export function ChronicleLens({
                         meaningfulSearchSeconds: search?.meaningfulSeconds ?? 0,
                         hintStage: search?.stage ?? 0,
                         exactReveal: state?.mode === "GUIDED",
-                        trackingRecovered: false,
+                        trackingRecovered: state?.trackingRecovered ?? false,
                         fallback: state?.mode === "GUIDED",
                         capabilityLimitation: state?.mode === "GUIDED" ? "SURFACE_CONTEXT" : "NONE",
                         placementQuality: fieldQuality,

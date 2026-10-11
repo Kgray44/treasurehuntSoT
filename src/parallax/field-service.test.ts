@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createSpatialDraft } from "./authoring";
 import { enableAdaptiveAuthoring } from "./adaptive-authoring";
 import { materializeLibraryMoment } from "./library-service";
+import { canonicalChecksum } from "@/drydock/canonical";
 import {
   fieldMetadataSchema,
   fieldContributionSchema,
@@ -51,6 +52,7 @@ import {
   creatorFieldQuality,
   reviewCalibration,
   assertCalibrationClaim,
+  purgeExpiredFieldEvidence,
 } from "./field-service";
 function draft() {
   const d = enableAdaptiveAuthoring(createSpatialDraft("field-note"));
@@ -80,6 +82,123 @@ beforeEach(() => {
   m.create.mockResolvedValue({ id: "observation" });
 });
 describe("consented field calibration boundary", () => {
+  it("expires original records by deletion and excludes expired data from Creator reads", async () => {
+    const now = new Date("2026-10-11T16:00:00Z");
+    await purgeExpiredFieldEvidence(now);
+    expect(m.purge).toHaveBeenCalledWith({
+      where: { OR: [{ expiresAt: { lte: now } }, { withdrawnAt: { not: null } }] },
+    });
+    m.owned.mockResolvedValue({ id: "field-note" });
+    m.list.mockResolvedValue([]);
+    await creatorFieldQuality("creator", "field-note");
+    expect(m.list.mock.calls[0][0]).toMatchObject({
+      where: { expiresAt: { gt: expect.any(Date) }, withdrawnAt: null },
+      take: 200,
+    });
+  });
+  it("completes review, calibration and independent later verification on a pinned released refinement", async () => {
+    const d = draft(),
+      first = materializeLibraryMoment(d, "creator", 1);
+    const item = {
+      id: d.content.definitionId,
+      versions: [{ id: first.version.id, versionNumber: 1, envelope: JSON.stringify(first) }],
+    };
+    m.owned.mockResolvedValue(item);
+    m.evidence.mockResolvedValue({ id: "evidence", metadata: JSON.stringify(metadata) });
+    const input = {
+      definitionId: item.id,
+      versionId: first.version.id,
+      evidenceId: "evidence",
+      maturity: "CREATOR_REVIEWED",
+      expectedReviewId: null,
+      expectedRevision: 0,
+    };
+    await expect(reviewCalibration("creator", input, d)).resolves.toMatchObject({ maturity: "CREATOR_REVIEWED" });
+    expect(m.reviewCreate.mock.calls[0][0].data.reviewSequence).toBe(1);
+    const reviewed = {
+      id: "reviewed",
+      revision: 1,
+      reviewSequence: 1,
+      maturity: "CREATOR_REVIEWED",
+      recipeDigest: canonicalChecksum(d.content.adaptive!.recipes),
+      createdAt: new Date("2026-10-10T10:00:00Z"),
+    };
+    m.reviews.mockResolvedValue(reviewed);
+    await expect(
+      reviewCalibration(
+        "creator",
+        { ...input, maturity: "CALIBRATED", expectedReviewId: "reviewed", expectedRevision: 1 },
+        d,
+      ),
+    ).resolves.toMatchObject({ maturity: "CALIBRATED" });
+    expect(m.reviewCreate.mock.calls[1][0].data.reviewSequence).toBe(2);
+    const calibrated = { ...reviewed, id: "calibrated", reviewSequence: 2, maturity: "CALIBRATED" };
+    d.content.adaptive!.calibration = {
+      ...d.content.adaptive!.calibration,
+      maturity: "CALIBRATED",
+      reviewReceiptId: "calibrated",
+    };
+    const release = materializeLibraryMoment(d, "creator", 2);
+    item.versions.push({ id: release.version.id, versionNumber: 2, envelope: JSON.stringify(release) });
+    m.reviews.mockResolvedValue(calibrated);
+    const verify = {
+      ...input,
+      versionId: release.version.id,
+      maturity: "VERIFIED",
+      expectedReviewId: "calibrated",
+      expectedRevision: 1,
+    };
+    m.list.mockResolvedValue([{ actorId: "one", sessionId: "run-one", metadata: JSON.stringify(metadata) }]);
+    await expect(reviewCalibration("creator", verify, d)).rejects.toThrow("INDEPENDENT_VERIFICATION_REQUIRED");
+    m.list.mockResolvedValue(
+      ["one", "two"].map((id) => ({ actorId: id, sessionId: `run-${id}`, metadata: JSON.stringify(metadata) })),
+    );
+    await expect(reviewCalibration("creator", verify, d)).resolves.toMatchObject({
+      maturity: "VERIFIED",
+      physicalQualification: "NOT_ESTABLISHED",
+    });
+    expect(m.list.mock.calls.at(-1)![0].where).toMatchObject({
+      versionId: release.version.id,
+      versionChecksum: release.version.checksum,
+      createdAt: { gt: calibrated.createdAt },
+    });
+    const stale = { ...verify, versionId: first.version.id };
+    await expect(reviewCalibration("creator", stale, d)).rejects.toThrow("REVIEWED_VERSION_REQUIRED");
+  });
+  it("requires a new Creator review when recipe intent changes and rejects first-review races", async () => {
+    const d = draft(),
+      capsule = materializeLibraryMoment(d, "creator", 1);
+    m.owned.mockResolvedValue({
+      id: d.content.definitionId,
+      versions: [{ id: capsule.version.id, versionNumber: 1, envelope: JSON.stringify(capsule) }],
+    });
+    m.evidence.mockResolvedValue({ id: "evidence", metadata: JSON.stringify(metadata) });
+    m.reviews.mockResolvedValue({
+      id: "prior",
+      revision: 1,
+      reviewSequence: 3,
+      maturity: "VERIFIED",
+      recipeDigest: "old-recipe",
+    });
+    const input = {
+      definitionId: d.content.definitionId,
+      versionId: capsule.version.id,
+      evidenceId: "evidence",
+      maturity: "CREATOR_REVIEWED",
+      expectedReviewId: "prior",
+      expectedRevision: 1,
+    };
+    await expect(reviewCalibration("creator", { ...input, maturity: "CALIBRATED" }, d)).rejects.toThrow(
+      "TRANSITION_INVALID",
+    );
+    await expect(reviewCalibration("creator", input, d)).resolves.toMatchObject({ maturity: "CREATOR_REVIEWED" });
+    expect(m.reviewCreate.mock.calls.at(-1)![0].data.reviewSequence).toBe(4);
+    m.reviews.mockResolvedValue(null);
+    m.reviewCreate.mockRejectedValue({ code: "P2002" });
+    await expect(
+      reviewCalibration("creator", { ...input, expectedReviewId: null, expectedRevision: 0 }, d),
+    ).rejects.toThrow("CONCURRENT_UPDATE");
+  });
   it("never accepts imagery, raw geometry, extra identifiers or absent consent", () => {
     const capsule = materializeLibraryMoment(draft(), "creator", 1);
     const raw = {

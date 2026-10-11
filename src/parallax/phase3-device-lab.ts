@@ -198,11 +198,12 @@ export function createParallaxPhase3ScenarioPacks() {
                 });
                 await runtime.open(suffix === "phase3-permission-denial" ? undefined : adapter);
                 if (suffix === "phase3-tracking-interruption") {
-                  const positions = JSON.stringify(runtime.read().anchors);
+                  const decision = runtime.read().resolution?.seed;
                   adapter.push({ type: "TRACKING", state: "LOST" });
-                  check(runtime.read().state === "DEGRADED");
-                  for (let i = 0; i < 3; i++) adapter.push({ type: "TRACKING", state: "NORMAL" });
-                  check(JSON.stringify(runtime.read().anchors) === positions);
+                  for (let turn = 0; turn < 20 && runtime.read().state !== "GUIDED_FALLBACK"; turn++)
+                    await Promise.resolve();
+                  check(runtime.read().state === "GUIDED_FALLBACK");
+                  check(runtime.read().resolution?.seed === decision);
                 } else {
                   await runtime.reveal();
                   check(runtime.read().mode === "GUIDED");

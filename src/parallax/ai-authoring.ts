@@ -2,7 +2,7 @@ import { z } from "zod";
 import { editSpatialDraft, type SpatialDraft } from "./authoring";
 import { validateSpatialAuthoring } from "./studio-validation";
 import { semanticRecipeSchema } from "./adaptive-contracts";
-import { enableAdaptiveAuthoring } from "./adaptive-authoring";
+import { enableAdaptiveAuthoring, invalidateAdaptiveCalibration } from "./adaptive-authoring";
 
 export const intentProposalSchema = z.strictObject({
   placement: z.enum(["DESK", "WALL", "ENTRANCE", "LOCAL"]),
@@ -22,11 +22,7 @@ export function materializeIntent(draft: SpatialDraft, entityId: string, raw: un
     next.content.adaptive!.recipes = next.content.adaptive!.recipes.map((r) =>
       r.entityId === entityId ? proposal.semanticRecipe! : r,
     );
-    next.content.adaptive!.calibration = {
-      ...next.content.adaptive!.calibration,
-      maturity: "SEMANTIC",
-      reviewReceiptId: undefined,
-    };
+    invalidateAdaptiveCalibration(next);
   }
   const entity = next.content.entities.find((e) => e.id === entityId)!;
   entity.content = proposal.content;

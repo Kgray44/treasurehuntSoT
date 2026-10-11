@@ -1,6 +1,10 @@
 "use client";
 import { useState } from "react";
-import { enableAdaptiveAuthoring, interpretPlacementPhrase } from "@/parallax/adaptive-authoring";
+import {
+  enableAdaptiveAuthoring,
+  interpretPlacementPhrase,
+  invalidateAdaptiveCalibration,
+} from "@/parallax/adaptive-authoring";
 import { draftSchema, type SpatialDraft } from "@/parallax/authoring";
 import styles from "./SpatialStudio.module.css";
 
@@ -62,6 +66,7 @@ export function PlacementComposer({
             const next = enableAdaptiveAuthoring(draft);
             const index = next.content.adaptive!.recipes.findIndex((r) => r.entityId === selectedId);
             next.content.adaptive!.recipes[index] = result.recipe;
+            invalidateAdaptiveCalibration(next);
             const parsed = draftSchema.parse(next);
             setProposal({
               draft: parsed,

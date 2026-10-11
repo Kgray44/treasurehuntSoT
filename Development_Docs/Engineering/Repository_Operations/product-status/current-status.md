@@ -8,7 +8,7 @@ last_reviewed: 2026-10-11
 
 # Current status
 
-Parallax Phase 3 remains in progress on an owned branch. The owner rejected the previous Spatial Studio appearance; the [3D workstation correction review](../../../Projects/Project_Parallax/Phase_3_Workstation_Review.md) records isolated browser evidence and outstanding explicit visual approval. Final ordinary qualification, protected integration, landed smoke and physical qualification are not established for this phase.
+Parallax Phase 3 remains in progress on an owned branch. The owner rejected the previous Spatial Studio appearance; the [3D workstation correction review](../../../Projects/Project_Parallax/Phase_3_Workstation_Review.md) records isolated browser evidence and explicit owner visual approval on 2026-10-11. Final ordinary qualification, protected integration, landed smoke and physical qualification are not established for this phase.
 
 Reach Phase 1 has an owned implementation candidate for a local camera/synthetic hand laboratory and independent calibration. It is not physically qualified or phase-complete. The [implementation record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md) retains software evidence, the failed live-camera attempt and integration status.
 

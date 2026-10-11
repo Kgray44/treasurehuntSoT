@@ -55,7 +55,9 @@ Parallax does **not** own:
 
 ## Current implementation status
 
-**Phase 3 is in progress on an owned branch. The owner rejected the previous Spatial Studio visual design.** The [workstation design review](Phase_3_Workstation_Review.md) records the new populated 3D candidate, isolated browser evidence and remaining explicit owner visual-approval gate. It does not supersede protected-main evidence or establish physical qualification.
+**Phase 3 is in progress on an owned branch. The owner rejected the previous Spatial Studio visual design.** The [workstation design review](Phase_3_Workstation_Review.md) records the populated 3D candidate, isolated browser evidence and explicit owner visual approval on 2026-10-11. It does not supersede protected-main evidence or establish physical qualification.
+
+The owner subsequently required a [workspace ergonomics refinement](Phase_3_Workspace_Refinement.md): the viewport must reclaim space from shared dock tabs, contextual accordions, bottom tools and compact assistance. This additional refinement needs its own browser evidence and owner visual review.
 
 **Phase 1 — Establish the Frame is implemented. Representative-device owner acceptance remains pending.**
 
