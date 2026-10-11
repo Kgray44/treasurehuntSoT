@@ -1,0 +1,25 @@
+{
+  "originalReceiptFieldsUnmodified": true,
+  "images": [
+    {
+      "receipt": "landed-phase1-crossdeck.desktop-phone-pair-D1.json",
+      "publishedImage": "landed-phase1-crossdeck.desktop-phone-pair-D1.png",
+      "sha256": "660aa7437fdf660782b3bcf583717f69eccc1f9bc15d521ebb16d5f3d47266b5"
+    },
+    {
+      "receipt": "landed-phase1-crossdeck.phone-disconnect-D1.json",
+      "publishedImage": "landed-phase1-crossdeck.phone-disconnect-D1.png",
+      "sha256": "8d2c4c52505b8fa0792483f5443cd1db0945a95e9bced984364771b82515b0a2"
+    },
+    {
+      "receipt": "landed-phase2-crossdeck.phone-disconnect-D1.json",
+      "publishedImage": "landed-phase2-crossdeck.phone-disconnect-D1.png",
+      "sha256": "5205c48379b3ef7ba36d8a8319eb707e5103ae0bcf2c77de8a79d30f746499bc"
+    },
+    {
+      "receipt": "landed-phase2-crossdeck.surface-handoff-D1.json",
+      "publishedImage": "landed-phase2-crossdeck.surface-handoff-D1.png",
+      "sha256": "19106ca6a2a209529ee7e72a9652b7ef6a5f3da7e1d27d2bf8e0084c6fd02dd2"
+    }
+  ]
+}

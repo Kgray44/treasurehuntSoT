@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "scenarioId": "crossdeck.desktop-phone-pair",
+  "scenarioVersion": 1,
+  "owningProject": "CROSSDECK",
+  "scenarioFingerprint": "8d445bae2d68b2be0b2117759614a763176066e285ea6374be4e0dc41dae3efe",
+  "source": {
+    "sourceSha": "e4c5f19e1e5936a059ebaeb17e1179f10490418c",
+    "sourceTree": "e8014786eaa12767c0891641a81f2250a26497d3",
+    "sourceFingerprint": "0635532309afd165cc53553800c49d76422f5e6e5676ed6f7b117ab033e944b0",
+    "dirty": false
+  },
+  "baseSha": "e4c5f19e1e5936a059ebaeb17e1179f10490418c",
+  "tier": "D1",
+  "profile": "chromium-mobile",
+  "hostOs": "win32",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": ["surface.pairing", "surface.surface-session"],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-11T19:30:16.062Z",
+  "completedAt": "2026-10-11T19:30:34.915Z",
+  "assertions": [
+    {
+      "id": "crossdeck.phase1.participation",
+      "state": "PASS"
+    },
+    {
+      "id": "one-player-one-voyage",
+      "state": "PASS"
+    },
+    {
+      "id": "keyboard-mobile-accessibility",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "BROWSER_EMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": ["D4_REAL_DEVICE_PAIRING", "D5_COLOCATED_FIELD_TRIAL", "PHASE2_SYNC_AND_HANDOFF"],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\kkids\\Documents\\treasurehunt-spatial-visual-crossdeck-realtime-20261011\\test-results\\crossdeck-phase1-crossdeck-desktop-phone-pair-chromium\\connected-mobile.png",
+      "sha256": "660aa7437fdf660782b3bcf583717f69eccc1f9bc15d521ebb16d5f3d47266b5",
+      "kind": "SCREENSHOT"
+    }
+  ],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": ["desktop-context", "phone-context", "synthetic-account", "synthetic-voyage"],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}
