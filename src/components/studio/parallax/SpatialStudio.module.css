@@ -2038,7 +2038,7 @@
   padding: 4px 10px;
 }
 .adaptiveWorkspace .viewport {
-  bottom: 28px;
+  bottom: 0;
 }
 .adaptiveWorkspace .selectionInstrument button {
   padding: 3px 0;

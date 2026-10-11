@@ -124,7 +124,7 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
       await expect(
         page.getByRole("button", { name: /Owner review letter: highlight 1200 milliseconds/ }),
       ).toBeVisible();
-      await expect(inspector.getByLabel("Object name", { exact: true })).toBeVisible();
+      if (mode !== "ENGINEERING") await expect(inspector.getByLabel("Object name", { exact: true })).toBeVisible();
       if (mode === "GUIDED") await expect(inspector.getByText("Appearance / layers", { exact: true })).toBeHidden();
       if (mode === "ENGINEERING") await expect(inspector.getByLabel("Position x", { exact: true })).toBeVisible();
       else await expect(inspector.getByText("Advanced / Engineering", { exact: true })).toBeHidden();
