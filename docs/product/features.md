@@ -8,7 +8,7 @@ last_reviewed: 2026-10-11
 
 # Voyagewright features
 
-Parallax Phase 3 is locally implemented: semantic multi-object placement, stable logical policies, remote authoring, optional minimized field calibration and bounded discovery recovery. The [implementation record](../../Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md) binds source and browser journeys. The [refined workstation](../../Development_Docs/Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) received final owner visual approval at `592217e3` on 2026-10-11. Ordinary protected integration remains pending; synthetic proof does not establish physical AR qualification.
+Parallax Phase 3 is software-qualified on protected main through PR #711: semantic multi-object placement, stable logical policies, remote authoring, optional minimized field calibration and bounded discovery recovery. The [implementation record](../../Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md) binds the exact protected decision, four browser journeys and clean landed smoke. The [refined workstation](../../Development_Docs/Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) received final owner visual approval at `592217e3` on 2026-10-11. Physical AR accuracy and field reliability remain unqualified.
 
 The authorized internal [Spatial Chronicle Pilot](../../Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md) combines a fictional published adventure with a guided device, Spatial Studio and Reach owner session. Its source is in qualification; complete automated and physical/owner acceptance remain separate. It is gated to a task-owned synthetic environment.
 
