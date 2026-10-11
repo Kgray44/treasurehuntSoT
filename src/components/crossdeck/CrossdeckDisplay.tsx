@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CrossdeckHandoff } from "./CrossdeckHandoff";
 import { storageKey } from "@/crossdeck/client";
@@ -7,6 +7,12 @@ import type { ObjectRef, Continuity } from "@/crossdeck/sync-contracts";
 import { LandfallMapRenderer } from "@/landfall/map-renderer";
 import type { LandfallMapScene } from "@/landfall/map-projection";
 export function CrossdeckDisplay({ voyageId }: { voyageId: string }) {
+  return <CrossdeckDisplaySession key={voyageId} voyageId={voyageId} />;
+}
+function CrossdeckDisplaySession({ voyageId }: { voyageId: string }) {
+  const pendingView = useRef<AbortController | null>(null);
+  const generation = useRef(0);
+  const requestedObject = useRef<ObjectRef | null>(null);
   const [csrf, setCsrf] = useState("");
   const [viewObject, setViewObject] = useState<ObjectRef | null>(null);
   const [view, setView] = useState<{
@@ -16,15 +22,24 @@ export function CrossdeckDisplay({ voyageId }: { voyageId: string }) {
     scene?: LandfallMapScene;
   } | null>(null);
   const [error, setError] = useState("");
+  useEffect(
+    () => () => {
+      pendingView.current?.abort();
+    },
+    [],
+  );
   useEffect(() => {
     const controller = new AbortController();
     const tick = async () => {
+      const observedGeneration = generation.current;
+      const live = () => !controller.signal.aborted && generation.current === observedGeneration;
       try {
         const r = await fetch(`/api/crossdeck?voyage=${encodeURIComponent(voyageId)}`, {
           cache: "no-store",
           signal: controller.signal,
         });
         const data = await r.json();
+        if (controller.signal.aborted) return;
         const own = data.surfaces?.find(
           (s: { surfaceId: string; role: string }) => s.surfaceId === sessionStorage.getItem(storageKey(voyageId)),
         );
@@ -32,7 +47,7 @@ export function CrossdeckDisplay({ voyageId }: { voyageId: string }) {
           throw new Error("Connect this device as a crew display first.");
         setCsrf(data.csrfToken);
         setError("");
-        if (viewObject) {
+        if (viewObject && JSON.stringify(viewObject) === JSON.stringify(requestedObject.current) && live()) {
           const params = new URLSearchParams({
             voyage: voyageId,
             surface: own.surfaceId,
@@ -45,13 +60,22 @@ export function CrossdeckDisplay({ voyageId }: { voyageId: string }) {
             signal: controller.signal,
           });
           if (!refreshed.ok) {
-            setView(null);
-            setViewObject(null);
-          } else if (!controller.signal.aborted) setView(await refreshed.json());
+            if (live()) {
+              setView(null);
+              setViewObject(null);
+            }
+          } else {
+            const currentView = await refreshed.json();
+            if (live()) setView(currentView);
+          }
         }
       } catch (cause) {
         if (!controller.signal.aborted) {
+          generation.current++;
+          pendingView.current?.abort();
+          requestedObject.current = null;
           setView(null);
+          setViewObject(null);
           setCsrf("");
           setError(cause instanceof Error ? cause.message : "Connection interrupted.");
         }
@@ -65,6 +89,11 @@ export function CrossdeckDisplay({ voyageId }: { voyageId: string }) {
     };
   }, [voyageId, viewObject]);
   const resume = async (object: ObjectRef) => {
+    pendingView.current?.abort();
+    const controller = new AbortController();
+    pendingView.current = controller;
+    requestedObject.current = object;
+    generation.current++;
     const params = new URLSearchParams({
       voyage: voyageId,
       surface: sessionStorage.getItem(storageKey(voyageId)) ?? "",
@@ -72,12 +101,15 @@ export function CrossdeckDisplay({ voyageId }: { voyageId: string }) {
       version: object.version,
       family: object.family,
     });
-    const r = await fetch(`/api/crossdeck/view?${params}`, { cache: "no-store" });
+    const r = await fetch(`/api/crossdeck/view?${params}`, { cache: "no-store", signal: controller.signal });
+    if (controller.signal.aborted || pendingView.current !== controller) throw new Error("Crew view request ended.");
     if (!r.ok) {
       setView(null);
       throw new Error("This crew view is unavailable.");
     }
-    setView(await r.json());
+    const currentView = await r.json();
+    if (controller.signal.aborted || pendingView.current !== controller) throw new Error("Crew view request ended.");
+    setView(currentView);
     setViewObject(object);
   };
   return (

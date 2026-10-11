@@ -3,6 +3,53 @@
   "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "suites": [
     {
+      "id": "unit.spatial-pilot",
+      "name": "Spatial Pilot authored contracts and authorization boundaries",
+      "tier": 2,
+      "owner": "spatial-pilot",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 5000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": ["spatial-pilot.experience"],
+      "affectedPaths": [
+        "src/spatial-pilot/**",
+        "src/app/dev/spatial-pilot/**",
+        "src/app/api/dev/spatial-pilot/**",
+        "scripts/spatial-pilot/**"
+      ],
+      "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-family",
+      "adapter": "vitest-family"
+    },
+    {
+      "id": "browser.spatial-pilot",
+      "name": "Complete Spatial Chronicle desktop and phone journey",
+      "tier": 4,
+      "owner": "spatial-pilot",
+      "command": "registry-selected Playwright cases",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 180000,
+      "hardBudgetMs": 600000,
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["unit.spatial-pilot"],
+      "contracts": ["spatial-pilot.experience"],
+      "affectedPaths": [
+        "src/spatial-pilot/**",
+        "src/app/dev/spatial-pilot/**",
+        "src/app/api/dev/spatial-pilot/**",
+        "scripts/spatial-pilot/**",
+        "tests/e2e/spatial-chronicle-pilot.spec.ts"
+      ],
+      "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-browser-family",
+      "adapter": "playwright-family"
+    },
+    {
       "id": "browser.access-sentinel",
       "name": "Fast access browser sentinel",
       "tier": 4,
@@ -2883,7 +2930,8 @@
         "src/app/account/devices/**",
         "src/app/devices/**",
         "tests/e2e/crossdeck-phase1.spec.ts",
-        "tests/e2e/crossdeck-phase2.spec.ts"
+        "tests/e2e/crossdeck-phase2.spec.ts",
+        "tests/e2e/crossdeck-realtime.spec.ts"
       ],
       "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",

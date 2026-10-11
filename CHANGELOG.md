@@ -16,10 +16,21 @@ last_reviewed: 2026-10-11
 
 - Parallax's owned Phase 3 candidate reimagines Spatial Studio around a populated synthetic 3D viewport, direct editing gizmos, a visual asset browser, contextual placement preview and behavior tracks. It preserves canonical drafts, validation, immutable versions and Chronicle attachment. The [workstation review](Development_Docs/Projects/Project_Parallax/Phase_3_Workstation_Review.md) records development evidence; owner visual approval was received on 2026-10-11; final protected integration remains pending.
 
+- Crossdeck replaces 500 ms snapshot polling with authorized committed-change
+  notifications and nominal 10-second active reconciliation. Reconnect and
+  foreground recovery fetch canonical state, revocation clears presentation,
+  and transfer/progression authority is preserved. The [transport record](Development_Docs/Projects/Project_Crossdeck/Realtime_Transport_20261011.md)
+  records qualification, measured load and remaining deployment/physical gates.
+- Current spatial summaries now reflect protected Sextant Phase 3, Parallax
+  Phase 2, Crossdeck Phase 2 and the Reach Phase 1 foundation preview. Historical
+  candidate receipts remain preserved; software integration does not grant
+  owner design acceptance or physical-device qualification.
+
 - Sextant gesture acquisition refuses incompatible slow delivery before sensor acquisition and cleans all owned leases on failure/abort/interruption. Parallax native scenes use bounded versioned UTF-8 chunks, independent resolved geometry validation and idempotent session-bound termination including Android Back. Existing published checksums, Guided accessibility and One Voyage progression authority are retained. See the [correction receipt](Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for qualification and remaining physical/owner gates.
 
 ### Added
 
+- Added the gated synthetic Lost Navigator’s Chart pilot: canonical spatial publication and fictional Living Chart, replay-preserving Voyage provisioning, optional Sextant compass, real Crossdeck controls and one Reach/Pilot owner feedback session. Software qualification and owner/physical acceptance remain separate; see the [pilot record](Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md).
 - Sextant Phase 3 local candidate adds calibrated field semantics, relative pressure/step context, media capability lifecycle, optional bounded BLE/NFC, authenticated peer/ranging contracts, safe magnetic reference controls and Drydock requirements. The [implementation receipt](Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) distinguishes D0/D1 software proof from native/physical/owner and protected-mainline gates.
 - Crossdeck Phase 2 candidate adds durable presentation synchronization, explicit
   manual Send to and destination acknowledgement, focus/custody and companion
