@@ -131,6 +131,9 @@ test("reviewed artifact metadata and journey claims must match trusted capture",
   evidence.artifacts[0].state = "ERROR";
   await assert.rejects(verify(), /TRUSTED_CAPTURE_OR_REVIEW_MISMATCH/u);
   evidence.artifacts[0].state = "READY";
+  evidence.artifacts[0].contractId = "another-contract";
+  await assert.rejects(verify(), /TRUSTED_CAPTURE_OR_REVIEW_MISMATCH/u);
+  delete evidence.artifacts[0].contractId;
   evidence.reviews[0].reviewerContext = "fabricated-reviewer";
   await assert.rejects(verify(), /TRUSTED_CAPTURE_OR_REVIEW_MISMATCH/u);
 });

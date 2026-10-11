@@ -573,3 +573,16 @@ test("fresh automated replay rechecks accessibility, timing and consumer continu
   fixture.evidence.journeys[0].continuity[0].atOutcomes = ["d".repeat(64)];
   assert.throws(verify, /CROSS_PROJECT_JOURNEY_FAILED/u);
 });
+test("dynamic HTTP actions select plausible static endpoints without unrelated suffix widening", () => {
+  const snapshot = {
+    contents: new Map([
+      ["src/app/api/invitations/accept/route.ts", "export const POST=true"],
+      ["src/app/api/invitations/decline/route.ts", "export const POST=true"],
+      ["src/ceremony/InvitationCeremony.tsx", "fetch(`/api/invitations/${action}`);"],
+    ]),
+  };
+  for (const action of ["accept", "decline"])
+    assert.deepEqual(affectedConsumers([`src/app/api/invitations/${action}/route.ts`], [snapshot]).surfaces, [
+      "src/ceremony/InvitationCeremony.tsx",
+    ]);
+});

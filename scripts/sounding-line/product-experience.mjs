@@ -209,7 +209,22 @@ export function affectedConsumers(changedPaths, snapshots) {
             "$",
           "u",
         );
-        if (apiUrls.some((apiUrl) => pattern.test(apiUrl))) {
+        if (
+          apiUrls.some((apiUrl) => {
+            const clientPattern = new RegExp(
+              "^" +
+                apiUrl
+                  .split("/")
+                  .map((segment) =>
+                    segment === "parameter" ? "[^/]+" : segment.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"),
+                  )
+                  .join("/") +
+                "$",
+              "u",
+            );
+            return pattern.test(apiUrl) || clientPattern.test(url.replace(/\[[^\]]+\]/gu, "parameter"));
+          })
+        ) {
           if (!reverse.has(endpoint)) reverse.set(endpoint, new Set());
           reverse.get(endpoint).add(file);
         }

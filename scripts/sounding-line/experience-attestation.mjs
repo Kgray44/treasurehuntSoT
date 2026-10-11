@@ -126,10 +126,11 @@ export async function verifyTrustedExperienceAttestation({
     policy: plan.attestationPolicy,
   });
   const identities = (artifacts) =>
-    artifacts.map(({ id, sha256, type, state, device, role, motionMode }) => ({
+    artifacts.map(({ id, sha256, type, contractId, state, device, role, motionMode }) => ({
       id,
       sha256,
       type,
+      contractId,
       state,
       device,
       role,
