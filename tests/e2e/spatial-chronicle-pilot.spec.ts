@@ -54,8 +54,11 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       },
     });
   }
+  const companionURL = new URL(baseURL!);
+  companionURL.hostname = companionURL.hostname === "localhost" ? "127.0.0.1" : "localhost";
   const desktop = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: "reduce" });
   const phone = await browser.newContext({
+    baseURL: companionURL.origin,
     viewport: { width: 390, height: 844 },
     isMobile: true,
     hasTouch: true,
@@ -66,7 +69,7 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     const session = await createAccountSession(ownerId, "Synthetic Pilot desktop");
     const receiver = await createAccountSession(ownerId, "Synthetic Pilot phone");
     await desktop.addCookies([{ name: "wayfarer_account", value: session.token, url: baseURL! }]);
-    await phone.addCookies([{ name: "wayfarer_account", value: receiver.token, url: baseURL! }]);
+    await phone.addCookies([{ name: "wayfarer_account", value: receiver.token, url: companionURL.origin }]);
     const d = await desktop.newPage(),
       p = await phone.newPage();
     const entryStart = performance.now();
@@ -340,6 +343,8 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       JSON.stringify(
         {
           fidelity: "D1 desktop/mobile Chromium emulation; manual controls; synthetic accounts and fictional content",
+          originBoundary:
+            "Computer and companion use distinct loopback hostnames and independently authenticated browser cookies; same canonical person and Voyage",
           sourceCommit: process.env.SPATIAL_PILOT_SOURCE_SHA ?? "UNAVAILABLE",
           entryMs,
           progressionMs,

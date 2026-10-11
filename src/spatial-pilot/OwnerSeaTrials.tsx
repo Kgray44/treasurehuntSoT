@@ -148,9 +148,11 @@ export function OwnerSeaTrials({ initialPilot, csrfToken }: { initialPilot: Pilo
           account.
         </p>
         <p>
-          A phone on the same network needs the preview’s reachable origin. Camera and motion APIs require a trusted
-          secure context; plain network HTTP can still exercise story, chart and manual handoff. Use the screen clue for
-          unavailable sensors. A webcam and representative operator are required for physical Reach trials.
+          On the computer, use the preview’s localhost address so Reach can request the webcam. On the phone, use this
+          computer’s reachable network address and sign into the same navigator. Pair using the displayed code when the
+          pairing link points to localhost. Plain network HTTP supports the story, chart and manual handoff; phone
+          camera and motion require a trusted secure context. Use the screen clue for unavailable sensors. A webcam and
+          representative operator are required for physical Reach trials.
         </p>
         <p className={styles.pending}>OWNER_ACCEPTANCE_PENDING · OWNER_PHYSICAL_ACCEPTANCE_PENDING</p>
         <p>

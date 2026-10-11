@@ -41,6 +41,10 @@ async function main() {
   console.log(
     `Pilot preview: http://${host === "0.0.0.0" ? "<this-computer-network-address>" : host}:${port}/sign-in?returnTo=/dev/spatial-pilot`,
   );
+  if (host === "0.0.0.0")
+    console.log(
+      `Computer webcam entry: http://localhost:${port}/sign-in?returnTo=/dev/spatial-pilot. Phone: use the computer's network address and the manual pairing code.`,
+    );
   console.log(
     "Sign-in details stay in the adjacent .access.private.json file. Stop this foreground preview with Ctrl+C.",
   );
