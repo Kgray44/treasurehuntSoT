@@ -14,6 +14,8 @@ This owner-directed implementation uses Reach v1.0 Sections 6â€“11, 19, 24, 26â€
 
 Native implementation task `01a12883-5c57-77bd-8a5d-8dd5a9c7103b` was verified as a Codex task with the delivered complete contract. Reconciliation marker: `ld-Sentinel_6845783f9a2481918bfde3e76cc12eca-reach-p1`. The native readback returned projectId null; association with the requested VoyageWright project `fd21b701-3215-417a-a413-0a17e02badbb` could not be confirmed, and the available move operation could not bind this execution host. No native Goal persistence capability was exposed. Prompt delivery is verified separately from those unsupported metadata operations. No duplicate task was dispatched.
 
+Draft [PR #697](https://github.com/Kgray44/treasurehuntSoT/pull/697) contains the implementation and lifecycle corrections. Remote readback confirmed implementation head `b5a1065fc0aeb617b85441583d9753fb9d91868c` before this record update. The native PR attachment was attempted, but the Codex app connection returned `Transport closed`; attachment is unconfirmed. The PR remains draft and has not been qualified or merged.
+
 Project Trim was applied through current isolated-source authority, a Phase 1 contract and explicit scope/evidence limits. No token-savings figure is asserted. The shared source checkout and unmerged sibling source were not consumed or edited.
 
 ## Scope and boundaries
@@ -58,7 +60,7 @@ Development evidence: 24 focused Reach/asset/shared Device Lab tests passed befo
 
 Documentation and Feature Catalog validation passed. A light source comparison confirmed all 55 pre-Reach scenario records and all existing suite/contract definitions are unchanged. Private-content staged-diff scanning passed before final light corrections. The ordinary Sounding Line regression had 57 passes and one infrastructure failure when Windows could not start `git init`; this is not recorded as a passing aggregate check. The computer restart interrupted other verification. In-progress typecheck/lint were deliberately stopped to release the parent's shared heavy-testing slot. Source is preserved and only light review/candidate preparation continues until Reach is granted that slot after Sextant, Parallax and Crossdeck.
 
-Light lifecycle review added generation isolation for a late denial and regression cases for stale `ended` callbacks/old lease releases. These new tests are pending execution. No interrupted or newly added check is treated as passed. Owner-present physical hand calibration is pending and will not start while the owner is gaming.
+Light lifecycle review added generation isolation for a late denial and regression cases for stale `ended` callbacks/old lease releases, failed lease construction and a source ending during listener registration. Listener registration cleanup rejects that source without retaining a track or listener. These new tests are pending execution; the five focused files currently declare 30 tests, not 30 verified passes. No interrupted or newly added check is treated as passed. Owner-present physical hand calibration is pending and will not start while the owner is gaming.
 
 Pending final frozen-candidate qualification, source-bound CLI receipts and ordinary protected-main decision. Physical webcam/held-out calibration and owner acceptance remain open. Feature Catalog is unchanged because Phase 1 acceptance is incomplete.
 
