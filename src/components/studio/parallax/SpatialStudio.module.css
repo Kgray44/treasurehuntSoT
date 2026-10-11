@@ -2210,3 +2210,22 @@
   --studio-shadow: #27497426;
   color-scheme: light;
 }
+:global(html[data-voyage-theme="high-contrast"]) .studio,
+:global(html[data-voyage-contrast="high"]) .studio {
+  --studio-background: #000000;
+  --studio-panel: #000000;
+  --studio-raised: #111111;
+  --studio-hover: #202020;
+  --studio-overlay: #000000;
+  --studio-border: #ffffff;
+  --studio-border-strong: #ffffff;
+  --studio-text: #ffffff;
+  --studio-muted: #ffffff;
+  --studio-accent: #b3d5ff;
+  --studio-selected: #153354;
+  --studio-focus: #b3d5ff;
+  --studio-primary: #b3d5ff;
+  --studio-primary-hover: #ffffff;
+  --studio-on-accent: #000000;
+  color-scheme: dark;
+}

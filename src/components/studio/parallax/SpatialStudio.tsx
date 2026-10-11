@@ -615,6 +615,7 @@ export function SpatialStudio({
       className={`${styles.studio} ${styles.adaptiveWorkspace}`}
       data-mode={mode}
       data-layout={layout.preset}
+      data-account-id={loaded.layoutScope}
     >
       <header className={styles.header}>
         <div>

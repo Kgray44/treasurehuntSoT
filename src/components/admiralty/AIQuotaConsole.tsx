@@ -160,7 +160,7 @@ export function AIQuotaConsole({
   const today = overview.daily.at(-1);
   const elapsedDays = Math.max(1, overview.daily.length);
   return (
-    <div className={styles.console}>
+    <div className={styles.console} data-period={overview.period}>
       <nav className={styles.tabs} aria-label="AI usage views">
         {["Overview", "Global Policy", "Usage History", "Provider Health"].map((name) => (
           <button
