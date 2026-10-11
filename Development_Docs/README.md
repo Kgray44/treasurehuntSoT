@@ -14,6 +14,7 @@ Use [INDEX.md](INDEX.md) for the current taxonomy and [document-index.json](docu
 
 ## Current project homes
 
+- [Spatial Chronicle Pilot](Projects/Spatial_Chronicle_Pilot/README.md) — fictional adventure, safe provisioning and consolidated Owner Sea Trials.
 - [Project Homeport](Projects/Project_Homeport/README.md) — product-reality and convergence records.
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md) — current owner-directed experience-redesign control area.
 - [Project Tideglass](Projects/Project_Tideglass/README.md) — semantic-edition intelligence; its Phase 4 record is accepted on protected main.

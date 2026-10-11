@@ -795,6 +795,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/catalog/spatial-chronicle-pilot.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/catalog/studio.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -8008,6 +8014,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Program_Closeout_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

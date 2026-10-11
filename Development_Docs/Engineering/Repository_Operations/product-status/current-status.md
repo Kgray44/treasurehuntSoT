@@ -3,10 +3,12 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Current status
+
+The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) has an isolated synthetic implementation candidate combining accepted spatial/device contracts with one guided Reach/Pilot owner session. Complete automated qualification, protected integration and owner/physical acceptance are separate pending gates.
 
 Reach Phase 1 has an owned implementation candidate for a local camera/synthetic hand laboratory and independent calibration. It is not physically qualified or phase-complete. The [implementation record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md) retains software evidence, the failed live-camera attempt and integration status.
 
