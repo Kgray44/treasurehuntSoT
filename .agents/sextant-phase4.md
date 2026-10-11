@@ -58,9 +58,15 @@ core D4 bring-up; virtual evidence cannot waive it.
 Source under development contains native generic acquisition/hardware/power and
 position ownership, shared companion transport, ordinary Devices controls, 17
 additional D0 scenarios, and registered `unit.sextant` / `browser.sextant` coverage.
-The reconciled 284-test focused boundary regression passes. Full root units and E2E have NOT
-STARTED locally; they are explicitly deferred to isolated hosted/coordinator
-capacity. Do not launch duplicates without assigning the owner/check first.
+The reconciled 284-test focused boundary regression passes. Owned hosted run
+38170318327 passed the unfiltered root (3205 tests/526 files) and retained desktop/
+mobile screenshots for exact source0f8ac197. The formerly unclaimed root contract
+is consumed; do not duplicate it. Ordinary38169764018 also passed that source.
+Android primary38169456020 and profiles38169916074 passed all20 registered cases
+per profile; native consumer38169900062 passed real WebView/OS controls and cleanup.
+Keep original receipt source identities and failed historical results intact.
+Visual/control follow-up requires fresh ordinary/browser and native consumer
+qualification; it does not justify repeating unchanged native profile matrices.
 
 Candidate identity is resolved from the published branch HEAD/tree and recorded
 in the native turn and ignored `artifacts/sextant-phase4-checkpoint.json` after

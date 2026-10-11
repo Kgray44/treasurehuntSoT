@@ -3,13 +3,29 @@ import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/re
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { WebSextantRuntime } from "./web-runtime";
 import { emulatedWebSensors } from "./web-fixture";
-import { DeviceCapabilitiesPanel } from "./DeviceCapabilitiesPanel";
+import { DeviceCapabilitiesPanel, deviceCapabilityCopy } from "./DeviceCapabilitiesPanel";
+import { unknownState } from "./contracts";
 const selected = vi.hoisted(() => ({ runtime: null as WebSextantRuntime | null }));
 vi.mock("./web-runtime", async (original) => ({
   ...(await original<typeof import("./web-runtime")>()),
   webSextantRuntime: () => selected.runtime,
 }));
 let reduced = false;
+it.each([
+  [{ calibration: "CALIBRATING" }, "Finding a reliable reading; keep the device steady"],
+  [{ calibration: "DISTURBED" }, "Input is affected by interference; move away or use screen controls"],
+  [{ freshness: "STALE" }, "The reading is out of date; resume input or use screen controls"],
+] as const)("explains actionable quality state %j", (state, message) => {
+  expect(
+    deviceCapabilityCopy({
+      ...unknownState(),
+      support: "SUPPORTED",
+      permission: "GRANTED",
+      availability: "AVAILABLE",
+      ...state,
+    }),
+  ).toBe(message);
+});
 beforeEach(() => {
   vi.stubGlobal("matchMedia", () => ({ matches: reduced, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
 });

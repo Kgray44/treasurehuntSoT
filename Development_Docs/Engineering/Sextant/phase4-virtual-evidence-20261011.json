@@ -1,0 +1,682 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_MACHINE_READABLE",
+  "status": "PARTIAL_VIRTUAL_QUALIFICATION_NOT_PHASE_ACCEPTANCE",
+  "generatedAt": "2026-10-11T20:14:42.711Z",
+  "sourcePolicy": "Every result preserves its original source and tested input fingerprint. Later UI changes do not relabel these receipts.",
+  "ordinary": {
+    "runId": "38169764018",
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169764018",
+    "candidateSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+    "candidateTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+    "baseSha": "efa689f20d2a9dead852135302dd6961c9f0f0d2",
+    "decision": "PASS",
+    "selectedUnits": 316,
+    "selectedBrowsers": ["tests/e2e/landfall-native-nearby.spec.ts", "tests/e2e/sextant-phase4.spec.ts"],
+    "finalization": {
+      "authority": "SOUNDING_LINE_EVIDENCE_FINALIZER",
+      "requiredObligations": 10,
+      "closure": [
+        {
+          "obligationId": "preflight.640e4530f717230bfdaa89ea",
+          "receiptId": "sl14-7efcca18343bf8eb2cde53da728085bb",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.095f00f3300c06f2979015ce",
+          "receiptId": "sl14-481e77dad8be37d8d0e68f24b243f158",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.b6afec1badc6d034b0aaa5a0",
+          "receiptId": "sl14-c4a8ef832958ec5ad37242f61187f7e7",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.06bb2802ffe5ab9677efa486",
+          "receiptId": "sl14-008ce89f925336cc1d1780d1563b3674",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.bda79721781de0679d88e863",
+          "receiptId": "sl14-09951b0a21c93b12dfbfe82680f53e5f",
+          "satisfied": true
+        },
+        {
+          "obligationId": "unit.dd40ac15a999fd53e20f7625",
+          "receiptId": "sl14-1137b91b88ada991e84e7c800f1b772a",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.626397032f8030d2781f7950",
+          "receiptId": "sl14-0434ac3445a12ee975dbfa21cc09f9ff",
+          "satisfied": true
+        },
+        {
+          "obligationId": "migration.881c319da844d6391aac0892",
+          "receiptId": "sl14-f370e4a91d198df4b5574f273090fa59",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.c4b855894796fe28f107fbee",
+          "receiptId": "sl14-7eee044c4ad9495409f3833fd883333b",
+          "satisfied": true
+        },
+        {
+          "obligationId": "browser.50e0161cb8ac97096a469763",
+          "receiptId": "sl14-91f280259d9e35decd9d7f32192a78a3",
+          "satisfied": true
+        }
+      ],
+      "remainder": [],
+      "counts": {
+        "FRESH": 5,
+        "PRESERVED": 0,
+        "REBOUND": 0,
+        "INVALIDATED": 5,
+        "CONSERVATIVE_FALLBACK": 0
+      },
+      "errors": [],
+      "decision": "PASS"
+    }
+  },
+  "results": {
+    "primary": {
+      "runId": "38169456020",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169456020",
+      "sourceSha": "a54cabc334a3574cbef55e4f9718175c286fbccf",
+      "transportSha": "31042b6197471ef40aa9ed6533ac548b77b8676b",
+      "result": "success",
+      "artifactCount": 269,
+      "transportCleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-a54cabc334a3-1791748008839"],
+        "remainingResources": []
+      },
+      "retainedHostedReceiptSha256": "245529f71763d4ef7053a2ad800bc48624a823da7a26a7497fa5f33e84fc38d4",
+      "scenarioSummaries": [
+        {
+          "version": 1,
+          "sourceSha": "a54cabc334a3574cbef55e4f9718175c286fbccf",
+          "sourceTree": "79b1c0b70feb01ae888b75d90cef81f82d660a76",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 20,
+          "passed": 20,
+          "failed": 0,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T195131621Z-3513"
+        }
+      ],
+      "nativeInstrumentation": [
+        {
+          "version": 1,
+          "sourceSha": "a54cabc334a3574cbef55e4f9718175c286fbccf",
+          "sourceTree": "79b1c0b70feb01ae888b75d90cef81f82d660a76",
+          "dirty": false,
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "sourceUnchanged": true,
+          "sourceBinding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
+          "evidenceClass": "EMULATOR_PROVEN",
+          "result": "PASS",
+          "failure": null,
+          "canonicalProgressionEvents": null,
+          "androidVersion": "16",
+          "appSha256": "39c4a9c5774c9fe77452129372080f4a5d3214bcf2e5e4597ce4cb250c4bb6bd",
+          "testApkSha256": "63133d5f90314832bd2f764bbc7c61c49ed041fb99567fa453af2dfebdedaa74",
+          "sensorPerformanceSha256": "46d1eedd86341f508c98a07886312fe51b2941b0fa147896f1f77ff539afbccf",
+          "cleanup": {
+            "result": "PASS"
+          },
+          "instrumentation": "OK (19 tests)"
+        }
+      ],
+      "sensorPerformance": [
+        {
+          "version": 1,
+          "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+          "api": 36,
+          "sampleCount": 3,
+          "physicalEnergyProven": false,
+          "budgets": {
+            "activeCpuMsPerTwoSecondInterval": 1000,
+            "processPssKiB": 262144,
+            "incrementalPssKiB": 32768
+          },
+          "samples": [
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 56538,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 18,
+              "activePssKiB": 56520,
+              "pssDeltaKiB": -18,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 1,
+              "baselinePssKiB": 56358,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 12,
+              "activePssKiB": 56230,
+              "pssDeltaKiB": -128,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1001,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 55698,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 16,
+              "activePssKiB": 43319,
+              "pssDeltaKiB": -12379,
+              "callbacks": 48,
+              "stopVerified": true
+            }
+          ]
+        }
+      ]
+    },
+    "profiles": {
+      "runId": "38169916074",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169916074",
+      "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+      "transportSha": "91d7dbc043818d988cef275f40fa63877ab441d0",
+      "result": "success",
+      "artifactCount": 807,
+      "transportCleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791748410523"],
+        "remainingResources": []
+      },
+      "retainedHostedReceiptSha256": "ed4909acef637ccb5275046f985e2861865c142714af951bbab659cc7c861db6",
+      "scenarioSummaries": [
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 20,
+          "passed": 20,
+          "failed": 0,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T195910158Z-3806"
+        },
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 20,
+          "passed": 20,
+          "failed": 0,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T195829100Z-3437"
+        },
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 20,
+          "passed": 20,
+          "failed": 0,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T195827660Z-3436"
+        }
+      ],
+      "nativeInstrumentation": [
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "dirty": false,
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "sourceUnchanged": true,
+          "sourceBinding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
+          "evidenceClass": "EMULATOR_PROVEN",
+          "result": "PASS",
+          "failure": null,
+          "canonicalProgressionEvents": null,
+          "androidVersion": "15",
+          "appSha256": "37d6c486cff7b9aa7ea213bf96f59e073e63e494060f32312d814f2421b01b7d",
+          "testApkSha256": "7e08b752640866ad6da0e6507168e240bda18b664c84e1eb3dd2b393b658c144",
+          "sensorPerformanceSha256": "776d0c1a1ff20245326209c9c1cc3ce63552f9ba21445b51d50c33dd32520b95",
+          "cleanup": {
+            "result": "PASS"
+          },
+          "instrumentation": "OK (19 tests)"
+        },
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "dirty": false,
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "sourceUnchanged": true,
+          "sourceBinding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
+          "evidenceClass": "EMULATOR_PROVEN",
+          "result": "PASS",
+          "failure": null,
+          "canonicalProgressionEvents": null,
+          "androidVersion": "16",
+          "appSha256": "5d1218a42c957873eb2c4673c891e69efb4d7e11d05e12b56df347acc7606024",
+          "testApkSha256": "ec47758fe537e826e6a5a92432957cb1493c35cf86a4ed2a11507061e6ab5eaa",
+          "sensorPerformanceSha256": "b085c4887666687abb2cb26722bf505012483e4e587104580d3dcef1dbcd5104",
+          "cleanup": {
+            "result": "PASS"
+          },
+          "instrumentation": "OK (19 tests)"
+        },
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "dirty": false,
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "sourceUnchanged": true,
+          "sourceBinding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
+          "evidenceClass": "EMULATOR_PROVEN",
+          "result": "PASS",
+          "failure": null,
+          "canonicalProgressionEvents": null,
+          "androidVersion": "16",
+          "appSha256": "641ee7e3ba8a7a5fdbf7205e26a1ca0523e61cd265fe9250e4eeac3a36970989",
+          "testApkSha256": "57e276876d1b46a90dbeb9d7382ba8c7a541a7ab64125b60a8d8e3dc0e87116e",
+          "sensorPerformanceSha256": "c052d3dead3bb1baebddd9b8c13579466cbec3bba200d971a86f248e938c39ae",
+          "cleanup": {
+            "result": "PASS"
+          },
+          "instrumentation": "OK (19 tests)"
+        }
+      ],
+      "sensorPerformance": [
+        {
+          "version": 1,
+          "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+          "api": 35,
+          "sampleCount": 3,
+          "physicalEnergyProven": false,
+          "budgets": {
+            "activeCpuMsPerTwoSecondInterval": 1000,
+            "processPssKiB": 262144,
+            "incrementalPssKiB": 32768
+          },
+          "samples": [
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 1,
+              "baselinePssKiB": 52123,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 27,
+              "activePssKiB": 52257,
+              "pssDeltaKiB": 134,
+              "callbacks": 50,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 52268,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 10,
+              "activePssKiB": 52325,
+              "pssDeltaKiB": 57,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 52167,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 15,
+              "activePssKiB": 52320,
+              "pssDeltaKiB": 153,
+              "callbacks": 48,
+              "stopVerified": true
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+          "api": 36,
+          "sampleCount": 3,
+          "physicalEnergyProven": false,
+          "budgets": {
+            "activeCpuMsPerTwoSecondInterval": 1000,
+            "processPssKiB": 262144,
+            "incrementalPssKiB": 32768
+          },
+          "samples": [
+            {
+              "baselineElapsedMs": 1001,
+              "baselineCpuMs": 1,
+              "baselinePssKiB": 35313,
+              "activeElapsedMs": 2001,
+              "activeCpuMs": 32,
+              "activePssKiB": 31665,
+              "pssDeltaKiB": -3648,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1006,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 29646,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 12,
+              "activePssKiB": 28604,
+              "pssDeltaKiB": -1042,
+              "callbacks": 50,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 28591,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 17,
+              "activePssKiB": 28465,
+              "pssDeltaKiB": -126,
+              "callbacks": 48,
+              "stopVerified": true
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+          "api": 36,
+          "sampleCount": 3,
+          "physicalEnergyProven": false,
+          "budgets": {
+            "activeCpuMsPerTwoSecondInterval": 1000,
+            "processPssKiB": 262144,
+            "incrementalPssKiB": 32768
+          },
+          "samples": [
+            {
+              "baselineElapsedMs": 1001,
+              "baselineCpuMs": 1,
+              "baselinePssKiB": 55995,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 16,
+              "activePssKiB": 56126,
+              "pssDeltaKiB": 131,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1001,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 55951,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 10,
+              "activePssKiB": 55501,
+              "pssDeltaKiB": -450,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 55485,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 22,
+              "activePssKiB": 55653,
+              "pssDeltaKiB": 168,
+              "callbacks": 48,
+              "stopVerified": true
+            }
+          ]
+        }
+      ]
+    },
+    "nativeConsumer": {
+      "runId": "38169900062",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169900062",
+      "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+      "transportSha": "b1a8eacf034cb8b5372479614244d90a3a4f67fa",
+      "result": "success",
+      "artifactCount": 49,
+      "transportCleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791748395754"],
+        "remainingResources": []
+      },
+      "retainedHostedReceiptSha256": "a74ca5142201639966e36f4035bf912509b8886d9c2ec59c4cff69e5e1a46a12",
+      "scenarioSummaries": [],
+      "nativeInstrumentation": [],
+      "sensorPerformance": [],
+      "nativeConsumerReceipt": {
+        "version": 1,
+        "deviceProfile": "primary-phone",
+        "configurations": [
+          {
+            "platform": "ANDROID",
+            "virtual": true,
+            "api": 36,
+            "model": "sdk_gphone64_x86_64",
+            "memoryKiB": 3048392,
+            "widthPixels": 1080,
+            "heightPixels": 2400,
+            "densityDpi": 420
+          },
+          {
+            "platform": "ANDROID",
+            "virtual": true,
+            "api": 36,
+            "model": "sdk_gphone64_x86_64",
+            "memoryKiB": 3048392,
+            "widthPixels": 1080,
+            "heightPixels": 2400,
+            "densityDpi": 420
+          }
+        ],
+        "source": {
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "dirty": false,
+          "sourceFingerprint": "e42faf1a14fca7aba99b75a5008ec01e5e595e12c68075b8ba79a3e804e984be"
+        },
+        "sourceUnchanged": true,
+        "evidenceClass": "EMULATOR_PROVEN",
+        "nativeBridge": "REAL_ANDROID_OS",
+        "firstPartyApi": "REAL_OPTIMIZED_APPLICATION",
+        "validatedReportsObservedOnBoth": true,
+        "nativeStopObserved": true,
+        "peerVerified": false,
+        "canComplete": false,
+        "uncertainty": "UNKNOWN",
+        "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+        "canonicalProgressionEvents": 0,
+        "result": "PASS",
+        "failedStage": null,
+        "failedDeviceIndex": null,
+        "journalResponseStatus": 200,
+        "failureKind": null,
+        "failureTool": null,
+        "failureChecks": null,
+        "nativePageErrors": [],
+        "failedFirstPartyRequests": 7,
+        "nearbyHttp": [
+          {
+            "deviceIndex": 0,
+            "operation": "STATUS",
+            "status": 200,
+            "failure": null
+          },
+          {
+            "deviceIndex": 0,
+            "operation": "CREATE",
+            "status": 200,
+            "failure": null,
+            "leaseClockBand": "BEYOND_CLIENT_45S"
+          },
+          {
+            "deviceIndex": 1,
+            "operation": "STATUS",
+            "status": 200,
+            "failure": null
+          },
+          {
+            "deviceIndex": 1,
+            "operation": "JOIN",
+            "status": 200,
+            "failure": null,
+            "leaseClockBand": "WITHIN_CLIENT_45S"
+          },
+          {
+            "deviceIndex": 0,
+            "operation": "READ",
+            "status": 200,
+            "failure": null,
+            "leaseClockBand": "WITHIN_CLIENT_45S"
+          },
+          {
+            "deviceIndex": 0,
+            "operation": "STOP",
+            "status": 200,
+            "failure": null
+          },
+          {
+            "deviceIndex": 1,
+            "operation": "STOP",
+            "status": 200,
+            "failure": null
+          }
+        ],
+        "failedPageState": null,
+        "journalStates": [
+          {
+            "deviceIndex": 0,
+            "status": 200,
+            "shellVisible": true,
+            "nativeBridgeAvailable": true,
+            "authRedirect": false
+          },
+          {
+            "deviceIndex": 1,
+            "status": 200,
+            "shellVisible": true,
+            "nativeBridgeAvailable": true,
+            "authRedirect": false
+          }
+        ],
+        "pairingDiagnostics": [],
+        "nativePreparationDiagnostics": [
+          {
+            "deviceIndex": 0,
+            "category": "CAPABILITIES_READY"
+          },
+          {
+            "deviceIndex": 1,
+            "category": "CAPABILITIES_READY"
+          }
+        ],
+        "openingGeometryDiagnostic": null,
+        "systemUiWaitInteractions": 0,
+        "interactionForeground": [
+          {
+            "phase": "CREATE",
+            "deviceIndex": 0,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          },
+          {
+            "phase": "JOIN",
+            "deviceIndex": 1,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          },
+          {
+            "phase": "START",
+            "deviceIndex": 0,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          },
+          {
+            "phase": "STOP",
+            "deviceIndex": 1,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          }
+        ],
+        "openingControl": "OBSERVED_DOM_AND_NATIVE_BOUNDS_OS_TOUCH",
+        "externalRequirements": ["REAL_DEVICE_REQUIRED:RF"],
+        "cleanup": {
+          "result": "PASS",
+          "remainingResources": []
+        }
+      }
+    },
+    "rootBrowser": {
+      "runId": "38170318327",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170318327",
+      "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+      "transportSha": "ab0512d4ab7ae2586656eb7e764c2291dc93ee35",
+      "result": "success",
+      "artifactCount": 14,
+      "transportCleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791748776379"],
+        "remainingResources": []
+      },
+      "retainedHostedReceiptSha256": "813b2141a5a1cddd59ea49019e306f63280b239ff45db514dd4614c3c2917043",
+      "scenarioSummaries": [],
+      "nativeInstrumentation": [],
+      "sensorPerformance": [],
+      "root": {
+        "files": 526,
+        "totalTests": 3205,
+        "passed": 3205,
+        "failed": 0,
+        "pending": 0,
+        "todo": 0,
+        "success": true,
+        "node": "v24.19.0",
+        "npm": "11.17.0",
+        "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+        "trackedSourceClean": true
+      },
+      "screenshots": [
+        {
+          "path": "artifacts/landfall-browser-0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68/test-results/sextant-phase4-optional-in-8e041--fallback-and-accessibility-chromium/devices-1280.png",
+          "sha256": "ed0ef35eefda42c5f1dc6291babc93e63a620799590dfc4fc9122904a79b44e0"
+        },
+        {
+          "path": "artifacts/landfall-browser-0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68/test-results/sextant-phase4-optional-in-a7e39--fallback-and-accessibility-chromium/devices-390.png",
+          "sha256": "8829d44214939f7d527ff2f30037a1ef02987aec898f119fd0e0e5d3ba18fbf5"
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Original source receipts only; UI/control follow-up requires fresh ordinary/browser/native consumer qualification",
+    "Native OS and explicitly injected provider assertions remain separate",
+    "Emulator performance does not establish physical power/thermal behavior or long-duration leak freedom",
+    "Remote D4 core bring-up lacks authorized provider/project access and signing configuration",
+    "No formal Phase 4 acceptance, protected merge, release or Phase 5 authority"
+  ]
+}

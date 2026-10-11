@@ -15,7 +15,9 @@ for a local preview lasting up to ten seconds. **Pause device input** stops the
 preview; **Continue with screen controls** keeps the interaction accessible.
 Leaving the page or backgrounding the companion ends its input. Resume explicitly
 after returning. Declined permissions, unavailable hardware and limited readings
-retain screen controls. Vibration is optional, respects reduced sensory preferences,
+retain screen controls. Calibration, interference and out-of-date readings show
+guidance on Devices; you can keep using screen controls while input is uncertain.
+Vibration is optional, respects reduced sensory preferences,
 and always has an on-screen confirmation. Native availability depends on the
 configured companion; physical-device qualification remains pending.
 

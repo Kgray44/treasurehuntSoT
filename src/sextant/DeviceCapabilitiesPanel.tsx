@@ -4,6 +4,7 @@ import { webSextantRuntime, type WebSextantRuntime } from "./web-runtime";
 import type { WebSensorTarget } from "./web-provider";
 import type { CapabilityState } from "./contracts";
 import { DeviceContextControls } from "./DeviceContextControls";
+import styles from "./DeviceCapabilitiesPanel.module.css";
 const capabilities = [
   ["sextant.orientation.relative", "Orientation"],
   ["sextant.motion.stability", "Motion"],
@@ -17,14 +18,17 @@ const capabilities = [
   ["sextant.nearby.uwb.range", "Nearby ranging"],
 ] as const;
 export function deviceCapabilityCopy(state: CapabilityState) {
-  if (state.lifecycle === "SUSPENDED") return "Paused while this screen is inactive";
   if (state.support === "UNSUPPORTED") return "Unavailable on this device";
+  if (state.lifecycle === "SUSPENDED") return "Device input is paused; resume when you are ready";
   if (state.permission === "DENIED" || state.permission === "RESTRICTED")
     return "Permission is unavailable; use screen controls";
   if (state.support === "UNKNOWN") return "Availability has not been confirmed";
   if (state.availability === "BUSY") return "Currently in use";
   if (state.permission === "PROMPT") return "Permission is needed for this optional input";
   if (state.availability === "TEMPORARILY_UNAVAILABLE") return "Temporarily unavailable";
+  if (state.calibration === "CALIBRATING") return "Finding a reliable reading; keep the device steady";
+  if (state.calibration === "DISTURBED") return "Input is affected by interference; move away or use screen controls";
+  if (state.freshness === "STALE") return "The reading is out of date; resume input or use screen controls";
   if (state.quality === "LOW" || state.availability === "DEGRADED")
     return "Limited input; screen controls remain available";
   return "Available for optional use";
@@ -53,6 +57,7 @@ export function DeviceCapabilitiesPanel() {
     setEnabled(current.haptics.status().enabled);
     setReduced(current.haptics.status().reducedSensory);
     const detach = current.onStatusChange(refresh);
+    const refreshTimer = setInterval(refresh, 1000);
     refresh();
     void current.ready.then(refresh).catch(() => {
       if (mounted.current) setMessage("Device availability could not be checked. Screen controls remain available.");
@@ -71,6 +76,7 @@ export function DeviceCapabilitiesPanel() {
       mounted.current = false;
       preview.current?.abort();
       sensory.removeEventListener("change", syncSensory);
+      clearInterval(refreshTimer);
       detach();
       void current.leases.cancelConsumer(consumerId);
       current.haptics.cancelConsumer(consumerId);
@@ -120,10 +126,10 @@ export function DeviceCapabilitiesPanel() {
     }
   }
   return (
-    <section aria-label="Optional device input" className="mt-6 rounded-xl border border-amber-200/20 p-4">
+    <section aria-label="Optional device input" className={`harbor-panel ${styles.panel}`}>
       <h2>Optional device input</h2>
       <p>Choose whether to use this device&apos;s input. You can continue with screen controls at any time.</p>
-      <dl className="my-4 grid gap-3 sm:grid-cols-2">
+      <dl className={styles.capabilities}>
         {capabilities.map(([capability, label]) => (
           <div key={capability}>
             <dt className="font-semibold">{label}</dt>
@@ -145,7 +151,7 @@ export function DeviceCapabilitiesPanel() {
           onAlternative={() => setMessage("Screen controls are ready. Device input is optional.")}
         />
       )}
-      <div className="mt-4 flex flex-wrap gap-3">
+      <div className={styles.feedback}>
         <label>
           <input
             type="checkbox"

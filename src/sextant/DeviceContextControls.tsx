@@ -87,7 +87,7 @@ export function DeviceContextControls({
     >
       <p>{purpose.purpose}</p>
       <p role="status" aria-live="polite">
-        {message || explanation}
+        {status.paused ? explanation : message || explanation}
       </p>
       <label htmlFor={id} className="mt-3 flex items-center gap-2">
         <input

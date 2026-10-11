@@ -481,8 +481,13 @@ test("real native Journal pairing returns untrusted hints and background clears 
           ]),
         );
         await testInfo.attach("native-device-controls", { path: capabilityShot, contentType: "image/png" });
+        const capabilityBoundary = testInfo.outputPath("native-device-controls-boundary.json");
+        await writeFile(
+          capabilityBoundary,
+          JSON.stringify({ version: 1, source, deviceProfile: profile, ...capabilityControls }, null, 2),
+        );
         await testInfo.attach("native-device-controls-boundary", {
-          body: Buffer.from(JSON.stringify(capabilityControls)),
+          path: capabilityBoundary,
           contentType: "application/json",
         });
         passed = true;

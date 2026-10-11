@@ -198,6 +198,79 @@ qualified Phase 4. Sounding Line and owner/product gates remain independent.
 
 ## Coordination boundary
 
+### Hosted qualification checkpoint, 11 October
+
+The [machine-readable virtual evidence](phase4-virtual-evidence-20261011.json)
+preserves original source identities, scenario totals, native instrumentation and
+sensor performance receipts, screenshot checksums and cleanup results. It is
+engineering evidence, not a completed-feature declaration.
+
+Review source `0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68`, tree
+`4902cf7164cd00e1c49d5c10f00b2fae25bfa073`, passed ordinary Sounding Line
+[38169764018](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169764018)
+against accepted base `efa689f20d2a9dead852135302dd6961c9f0f0d2`.
+All ten required obligations were satisfied; 316 unit files and the registered
+browser boundary were selected. The native Journal case is qualified separately.
+
+The isolated, unfiltered Vitest root run
+[38170318327](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170318327)
+passed 3205 tests in 526 files, with zero failures, skips or pending tests.
+Its retained JSON, complete log, exact SHA/tree, lock checksum and clean final
+tracked-source state bind this result to `0f8ac197`. Observed hosted toolchain:
+Node24.19.0/npm11.17.0. A unique synthetic SQLite database and task-owned runner
+were used. The same transport retained passing desktop1280/mobile390 screenshots
+from the existing isolated generic browser wrapper. These are browser/transport-
+double permission and accessibility journeys, not native hardware evidence.
+All 14 artifact files were checksummed and the temporary transport branch removed.
+
+Android primary run
+[38169456020](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169456020)
+passed all 20 registered scenarios and native instrumentation on Android16/API36.
+It binds the original native source `a54cabc334a3574cbef55e4f9718175c286fbccf`,
+tree `79b1c0b70feb01ae888b75d90cef81f82d660a76` and fingerprint
+`c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45`.
+The original receipt is not relabelled as the later documentation candidate.
+Three two-second native sensor instrumentation samples used 18/12/16ms process
+CPU, observed 48 callbacks each and verified stop. Process PSS stayed below the
+preliminary 256MiB budget. These short emulator samples do not establish physical
+energy consumption, thermal behavior or long-duration leak freedom.
+All 269 artifact files and successful app/transport cleanup are retained.
+
+Android profile run
+[38169916074](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169916074)
+passed native instrumentation plus all 20 scenarios on each compatibility phone
+(Android15/API35), low-resource phone (Android16/API36, 1536MiB) and tablet
+(Android16/API36). These receipts bind `0f8ac197` and the same unchanged lab
+fingerprint. All 807 artifact files were checksummed; transport cleanup passed.
+
+Actual native Journal/Devices run
+[38169900062](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169900062)
+passed on two owned Android16/API36 emulators. The optimized application used its
+real WebView/native bridge and synthetic One Voyage SQLite authority. The added
+Devices journey asserted passive discovery, explicitly consented OS motion,
+scoped stop, pause and screen-control fallback. It retained actual native viewport
+and full-page screenshots. The enclosing native receipt records zero canonical
+progression events and successful cleanup; 49 artifact files were checksummed.
+The pairing result explicitly preserves unknown proximity, no completion authority
+and the external RF requirement. No RF physics is inferred from this PASS.
+
+Visual review found crowded preferences and missing panel spacing in those
+screenshots. The follow-up uses scoped CSS with the existing Harbor panel,
+responsive capability cards, 44px controls and spaced preferences. It supplies
+actionable calibration/interference/stale explanations, periodic display refresh
+without acquisition, and truthful paused copy instead of a previous ready message.
+Eight focused control tests pass. The native boundary JSON now persists as a file
+so its OS observation count is retained even without an inline-attachment reporter.
+These UI/evidence changes require fresh ordinary/browser and native consumer
+qualification. Prior receipts retain their original source identities; no fresh
+PASS is claimed from this local feedback.
+
+Remaining task-owned hosted checks are primary iOS38169460273, Android radio
+38170875594, Android signed background-return38170904429, Apple compatibility/
+tablet38170962062 and Apple accessibility/presentation38170965786. Each dispatch
+records its exact immutable source and transport. Pending jobs are not passing
+evidence. Required D4 access/signing remains the external formal-acceptance gate.
+
 This branch owns generic native acquisition, native companion lifecycle/power,
 semantic transport/provider integration, shared coordinated sensor fixtures,
 native instrumentation and the Sextant phase record. Studio/Lens placement and
@@ -205,15 +278,14 @@ editor visuals remain with their owning work. No editor redesign, Assistant
 model/provider integration or shared authoring/progression rewrite is included.
 Native capability seams are additive to the accepted transport.
 
-Full-suite and E2E execution have **not started locally** and remain deferred
-pending the coordinator's isolated cloud capacity handoff. Focused checks here
-are implementation feedback, not duplicate full-suite qualification. Native
-Android/iOS source compilation and instrumentation require fresh candidate-bound
-hosted execution; the accepted-base runs above do not qualify this source.
+Full-root regression and browser qualification executed on the owned hosted lab;
+the former unclaimed cloud contract is consumed and must not be dispatched again.
+Focused local checks remain implementation feedback. Native Android and iOS proof
+retains the exact source and tested input scope of each receipt; accepted-base runs
+never qualify later source merely because the same scenario names were used.
 
-Next: new candidate-bound native runs, compatibility/low-resource/tablet profiles,
-actual capability UI screenshots, clean ordinary Sounding Line, and full isolated
-unit regression on coordinator-assigned capacity. D0/D1 CLI receipts bind the
+Next: harvest remaining hosted profiles/lifecycle/radio results, qualify the
+visual/control correction and retain final exact-head Sounding Line. D0/D1 CLI receipts bind the
 frozen candidate/tree/fingerprint. Physical haptics, RF/magnetics, energy/thermal
 performance, physical accessibility and required D4 core bring-up remain separate.
 
