@@ -9,12 +9,23 @@ it("rejects arbitrary logs, native payloads and session data from startup diagno
 });
 
 it("accepts bounded Apple delivery counters and rejects native payloads and uncontrolled diagnostics", () => {
-  expect(deviceLabAppleLifecycleDeliverySchema.parse({ foregroundQueued: 2, foregroundFailed: 1 })).toEqual({
+  expect(
+    deviceLabAppleLifecycleDeliverySchema.parse({
+      foregroundQueued: 2,
+      foregroundFailed: 1,
+      foregroundNotifications: 3,
+      foregroundRejected: 1,
+    }),
+  ).toEqual({
     foregroundQueued: 2,
     foregroundFailed: 1,
+    foregroundNotifications: 3,
+    foregroundRejected: 1,
   });
   for (const value of [
     { foregroundDelivered: 129 },
+    { foregroundNotifications: 129 },
+    { backgroundRejected: -1 },
     { backgroundQueued: -1 },
     { foregroundQueued: 1.5 },
     { pendingHints: [] },

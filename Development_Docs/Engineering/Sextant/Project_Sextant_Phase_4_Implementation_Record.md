@@ -464,3 +464,37 @@ completed PASS for the original `4f3e3a42` candidate against accepted base
 2173 tests across 322 selected files passed, and both desktop/mobile D1 product
 cases passed. Two opt-in native cases were skipped. This receipt does not prove
 Swift compilation or execution, and is not relabeled for the corrected source.
+
+### Corrected native build and retained geofence failure
+
+[Run 38178875138](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38178875138)
+qualifies candidate `df8d73b12d93e21deade813cc71aa497a31a33b9`, tree
+`e6301193426cf5b5ac051a6443a51bb05212e950`, against its original base `678dd115`.
+Its corrected Apple build passed 29 native tests with one expected unconfigured
+canonical-test skip. Actual iPhone 17e/iOS 26.5 execution used Xcode 26.6 build
+17F113. The collector preserved 6035 files, and native/transport cleanup passed.
+
+Lost-response scenario version 3 passed all ten steps with one real canonical
+progression event and owned cleanup. Its published synthetic retry window retained
+the original timestamps; physical GPS and radio-network behavior are not proven.
+Geofence registration, background transition and actual OS location inputs passed,
+but foreground client acknowledgement timed out. Actual lifecycle XCTest passed
+one test with no failures/skips; client diagnostics ended at background. Native
+delivery counters were unavailable, so neither termination nor failed delivery is
+established as the cause. This failed receipt remains a failure.
+
+The independent normal Devices journey did not execute: an unterminated quote in
+the owned transport's nonce command failed shell parsing before creating its
+synthetic runtime. The corrected generated script passes an actual local Bash
+syntax check and produces the required isolation nonce. The next primary Mac
+scope retains geofence and this unexecuted journey; lost-response is not repeated
+for a transport/diagnostic correction. Notification/rejected-event counters and
+categorical collection failures add no payloads or qualification. A bounded
+30-second container lookup changes only diagnostic extraction, leaving native
+observation and client acknowledgement deadlines intact.
+
+Accepted Parallax A1 main `ee8caa83e79b6b5802f8773689e802705c5154d3` is reconciled
+through owned merge `43c89fd80679d809e7fadb150eb3b739b38b0314`. Both projects'
+documentation entries are retained. Its Prisma and shared consumer changes need
+fresh combined qualification; historical source/tree/base receipts stay bound to
+their original inputs. Formal D4 and Apple product qualification remain open.

@@ -68,6 +68,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         UNUserNotificationCenter.current().delegate=self
         observers.append(NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in self?.pause() })
         observers.append(NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.recordLifecycleDelivery("foregroundNotifications")
             self?.foreground = true
             if let self=self { for region in self.location.monitoredRegions where !self.hints.active(handle:region.identifier) {self.location.stopMonitoring(for:region)} }
             self?.event(["type": "lifecycle", "state": "FOREGROUND", "pendingHints": self?.hints.read() ?? []])
@@ -373,11 +374,11 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         event(["type":"power", "power":power.snapshot()])
     }
     private func stopSensors() { sextant?.stopLegacy() }
-    private func pause() { spatial?.stop();spatial=nil; event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); sextant?.stopAll("BACKGROUND"); sextantPosition?.stopAll("BACKGROUND"); sextantHaptics.stopAll(); stopSensors(); hardware?.stop(); nearby?.stop() }
+    private func pause() { recordLifecycleDelivery("backgroundNotifications"); spatial?.stop();spatial=nil; event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); sextant?.stopAll("BACKGROUND"); sextantPosition?.stopAll("BACKGROUND"); sextantHaptics.stopAll(); stopSensors(); hardware?.stop(); nearby?.stop() }
     private func recordLifecycleDelivery(_ key:String) {
         #if DEBUG
         guard origin?.scheme == "http",origin?.host == "127.0.0.1",origin?.port != nil,
-              ["foregroundQueued","backgroundQueued","foregroundDelivered","backgroundDelivered","foregroundFailed","backgroundFailed","contentProcessTerminations"].contains(key) else {return}
+              ["foregroundNotifications","backgroundNotifications","foregroundQueued","backgroundQueued","foregroundDelivered","backgroundDelivered","foregroundFailed","backgroundFailed","foregroundRejected","backgroundRejected","contentProcessTerminations"].contains(key) else {return}
         lifecycleDiagnostics[key]=min(128,(lifecycleDiagnostics[key] ?? 0)+1)
         let file=FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("landfall-lifecycle-debug.json")
         if let data=try? JSONSerialization.data(withJSONObject:lifecycleDiagnostics) {
@@ -388,9 +389,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     }
     func webViewWebContentProcessDidTerminate(_ webView:WKWebView) {recordLifecycleDelivery("contentProcessTerminations")}
     private func event(_ payload: [String: Any]) {
-        guard foreground, let web=web, accepts(web.url), JSONSerialization.isValidJSONObject(payload), let data=try? JSONSerialization.data(withJSONObject: payload, options: [.fragmentsAllowed]), let json=String(data: data, encoding: .utf8) else { return }
         let lifecycle=payload["type"] as? String == "lifecycle" ? payload["state"] as? String : nil
         let prefix=lifecycle == "FOREGROUND" ? "foreground" : lifecycle == "BACKGROUND" ? "background" : nil
+        guard foreground, let web=web, accepts(web.url), JSONSerialization.isValidJSONObject(payload), let data=try? JSONSerialization.data(withJSONObject: payload, options: [.fragmentsAllowed]), let json=String(data: data, encoding: .utf8) else { if let prefix=prefix {recordLifecycleDelivery(prefix+"Rejected")}; return }
         if let prefix=prefix {recordLifecycleDelivery(prefix+"Queued")}
         DispatchQueue.main.async { [weak self] in
             guard let self=self, self.accepts(web.url), self.foreground || payload["type"] as? String == "lifecycle" else { return }

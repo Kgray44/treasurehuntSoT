@@ -24,12 +24,16 @@ export type DeviceLabStartupStage = z.infer<typeof deviceLabStartupStageSchema>[
 const lifecycleCounter = z.number().int().min(0).max(128).optional();
 /** Only bounded categorical delivery counters can leave the owned native app. */
 export const deviceLabAppleLifecycleDeliverySchema = z.strictObject({
+  foregroundNotifications: lifecycleCounter,
+  backgroundNotifications: lifecycleCounter,
   foregroundQueued: lifecycleCounter,
   backgroundQueued: lifecycleCounter,
   foregroundDelivered: lifecycleCounter,
   backgroundDelivered: lifecycleCounter,
   foregroundFailed: lifecycleCounter,
   backgroundFailed: lifecycleCounter,
+  foregroundRejected: lifecycleCounter,
+  backgroundRejected: lifecycleCounter,
   contentProcessTerminations: lifecycleCounter,
 });
 

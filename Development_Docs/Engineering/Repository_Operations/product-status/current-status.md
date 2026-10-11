@@ -21,6 +21,14 @@ and scoped Apple qualification changes require fresh receipts. Required D4 core 
 bring-up and formal acceptance remain open. See the
 [Phase 4 record](../../Sextant/Project_Sextant_Phase_4_Implementation_Record.md).
 
+Apple source `df8d73b1` passed 29 native tests with one expected skip and the
+versioned lost-response canonical journey with one progression event. Geofence
+foreground client acknowledgement still failed despite actual OS return; delivery
+diagnostics were unavailable. Normal Apple Devices UX did not execute because of
+an owned transport shell-quote error. The retained receipts and corrected bounded
+follow-up remain separate from acceptance. Accepted Parallax A1 main `ee8caa83`
+is reconciled; its schema/shared inputs need fresh combined qualification.
+
 Parallax A1 has an integrated implementation candidate for reviewed Spatial Assistant proposals, bounded owner/draft-scoped clarification and follow-up context, a server-side OpenAI adapter and durable Admiralty AI controls. Per-user controls use the existing People account dossier. Atomic saved Apply, adaptive recipe preservation and ordinary history pass five production-browser journeys. Six authorized live calls returned validated structured responses and settled usage; the evaluation record preserves two fixture-ID false negatives. Final ordinary software qualification and owner visual review remain pending; see the [A1 qualification record](../../../Projects/Project_Parallax/Parallax_A1_Evaluation_and_Qualification.md).
 
 Parallax Phase 3 is software-qualified on protected main through PR #711 at `0327eeb7`. The [implementation record](../../../Projects/Project_Parallax/Phase_3_Implementation.md) binds all nine ordinary Sounding Line obligations, 1,739 tests, four product browser journeys, 79 landed smoke tests and 26 fresh landed D0 scenarios. Both workstation visual decisions are satisfied; [final refinement approval](../../../Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) binds `592217e3` on 2026-10-11. Physical AR accuracy, actual field reliability and cross-device physical alignment are not established.

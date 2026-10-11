@@ -20,6 +20,12 @@ passed. Normal Apple Devices UX and the scoped diagnostic/retry changes still ne
 actual source-bound receipts. Required core D4 bring-up and formal integration remain open.
 See the [Phase 4 record](../../Sextant/Project_Sextant_Phase_4_Implementation_Record.md).
 
+At Apple source `df8d73b1`, native baseline and versioned lost-response execution
+passed. Geofence foreground acknowledgement remains failed and normal Devices UX
+was not executed because of an owned transport quoting error. Required physical
+bring-up and formal acceptance remain open. Accepted A1 schema/shared inputs are
+reconciled and require fresh combined qualification.
+
 Parallax A1 has an integrated implementation candidate for reviewed Spatial Assistant proposals, bounded owner/draft-scoped clarification and follow-up context, a server-side OpenAI adapter and durable Admiralty AI controls. Per-user controls use the existing People account dossier. Atomic saved Apply, adaptive recipe preservation and ordinary history pass five production-browser journeys. Six authorized live calls returned validated structured responses and settled usage; the evaluation record preserves two fixture-ID false negatives. Final ordinary software qualification and owner visual review remain pending; see the [A1 qualification record](../../../Projects/Project_Parallax/Parallax_A1_Evaluation_and_Qualification.md).
 
 Parallax Phase 3 is software-qualified and integrated through protected PR #711 at `0327eeb7`. Semantic staging, scoped logical decisions, optional metadata calibration, discovery recovery and the refined 3D workstation passed ordinary Sounding Line and landed smoke. The [implementation record](../../../Projects/Project_Parallax/Phase_3_Implementation.md) reconciles requirements and evidence; [final refinement approval](../../../Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) binds `592217e3` on 2026-10-11. Catalog FT-B111 records mainline availability. Physical accuracy, shared physical alignment and live AI-provider quality remain separate gates.

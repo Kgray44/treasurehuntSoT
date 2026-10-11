@@ -1992,5 +1992,169 @@
     "correction": "First matching actual static-text element with bounded waitForExistence; same refusal requirement, no weakened test",
     "retry": "ONE_DISTINCT_CORRECTED_SOURCE_PRIMARY_MAC_CONTRACT",
     "phaseAcceptance": false
+  },
+  "appleGeofenceAndProductFollowup": {
+    "recordedAt": "2026-10-11T22:45:42.511Z",
+    "sourceSha": "df8d73b12d93e21deade813cc71aa497a31a33b9",
+    "sourceTree": "e6301193426cf5b5ac051a6443a51bb05212e950",
+    "originalBaseSha": "678dd1156d39537d288ba3c2e5ce5c6efc2259d0",
+    "runId": "38178875138",
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38178875138",
+    "transportSha": "ae5dc1526c6850d769ed4efbdcd2855c3d2ebff8",
+    "receiptFile": "artifacts/landfall-device-lab/hosted-df8d73b12d93-1791756203870/run-38178875138/hosted-receipt.json",
+    "receiptSha256": "39a06081ed62c6298087b6c1e202eeafa96656c3a7a698504fc496b5a571c691",
+    "artifactFiles": 6035,
+    "nativeBaseline": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 1,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["F64201C8-90B9-430D-BC1D-C8767F5CDC10"],
+        "remainingResources": []
+      }
+    },
+    "lostResponse": {
+      "result": "PASS",
+      "scenarioVersion": 3,
+      "publishedFixture": "landfall-device-lab-lost-response-v2",
+      "canonicalProgressionEvents": 1,
+      "steps": 10,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["loopback-native-lab-server", "62E42966-71D6-4482-929F-CDCFBFE487BD"],
+        "remainingResources": []
+      },
+      "rerun": "NOT_REQUIRED_FOR_TRANSPORT_OR_DIAGNOSTIC_CORRECTION"
+    },
+    "geofence": {
+      "result": "FAIL",
+      "failedStep": {
+        "index": 4,
+        "action": "LIFECYCLE",
+        "state": "FAIL",
+        "reason": "LANDFALL_NATIVE_CLIENT_TIMEOUT",
+        "translation": {
+          "method": "OS_LIFECYCLE",
+          "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+        }
+      },
+      "canonicalProgressionEvents": 0,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["loopback-native-lab-server", "4F636626-BCFF-48FB-938F-764E184BE403"],
+        "remainingResources": []
+      },
+      "actualXCTest": {
+        "version": 1,
+        "toolExit": "PASS",
+        "finalizationDeadlineMs": 240000,
+        "finalizationTimedOut": false,
+        "finalizationElapsedMs": 58391,
+        "testCounts": {
+          "result": "PASS",
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      "clientStages": [
+        {
+          "stage": "ENTRY",
+          "elapsedMs": 320310
+        },
+        {
+          "stage": "RESTORE_LEASE",
+          "elapsedMs": 320338
+        },
+        {
+          "stage": "LEASE_RESTORED",
+          "elapsedMs": 320340
+        },
+        {
+          "stage": "REGISTER_WORKER",
+          "elapsedMs": 320346
+        },
+        {
+          "stage": "WAITING_WORKER",
+          "elapsedMs": 320376
+        },
+        {
+          "stage": "WAITING_CONTROL",
+          "elapsedMs": 320476
+        },
+        {
+          "stage": "WORKER_CONTROLLED",
+          "elapsedMs": 320481
+        },
+        {
+          "stage": "PERMISSION_READ",
+          "elapsedMs": 320577
+        },
+        {
+          "stage": "SCENARIO_RECEIVED",
+          "elapsedMs": 320592
+        },
+        {
+          "stage": "PASSIVE_PERMISSION",
+          "elapsedMs": 320592
+        },
+        {
+          "stage": "READY_POST",
+          "elapsedMs": 320603
+        },
+        {
+          "stage": "CONTROL_STEP_RECEIVED",
+          "elapsedMs": 320725
+        },
+        {
+          "stage": "CONTROL_RESULT_PREPARED",
+          "elapsedMs": 325647
+        },
+        {
+          "stage": "CONTROL_STEP_RECEIVED",
+          "elapsedMs": 326504
+        },
+        {
+          "stage": "CONTROL_RESULT_PREPARED",
+          "elapsedMs": 326553
+        },
+        {
+          "stage": "LIFECYCLE_BACKGROUND",
+          "elapsedMs": 330036
+        }
+      ],
+      "delivery": {
+        "version": 1,
+        "state": "UNAVAILABLE",
+        "delivery": null
+      },
+      "cause": "UNESTABLISHED_NO_FOREGROUND_CLIENT_ACK_AND_DELIVERY_DIAGNOSTICS_UNAVAILABLE"
+    },
+    "product": {
+      "result": "NOT_EXECUTED_TRANSPORT_SHELL_PARSE_FAILURE",
+      "nativeTestExecuted": false,
+      "syntheticRuntimeCreated": false,
+      "reason": "Missing closing single quote in owned nonce-generation shell command",
+      "correctedShellPreflight": {
+        "result": "PASS",
+        "syntax": "ACTUAL_GENERATED_SHELL_BASH_N",
+        "nonce": "ACTUAL_NODE_NONCE_ACCEPTED_FORMAT",
+        "executedCleanup": false,
+        "createdAt": "2026-10-11T22:43:08.691Z"
+      }
+    },
+    "transportCleanup": {
+      "result": "PASS",
+      "ownedResources": ["refs/heads/codex/landfall-lab-df8d73b12d93-1791756203870"],
+      "remainingResources": []
+    },
+    "nextScope": "ONE_PRIMARY_MAC_GEOFENCE_DIAGNOSTICS_AND_UNEXECUTED_NORMAL_DEVICES_JOURNEY",
+    "acceptedMainReconciliation": {
+      "baseSha": "ee8caa83e79b6b5802f8773689e802705c5154d3",
+      "ownedMerge": "43c89fd80679d809e7fadb150eb3b739b38b0314",
+      "changes": "Accepted Parallax A1 and Prisma schema; preserve owning source/docs, fresh combined qualification required"
+    },
+    "phaseAccepted": false
   }
 }

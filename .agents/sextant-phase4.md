@@ -165,3 +165,20 @@ Ending that turn does not complete this goal or accept Phase4. On resume, verify
 current branch/PR identities and receipts before further action. D4 access/signing
 remains externally unavailable; all attainable source/virtual qualification and
 reviewable PR publication must finish before closeout.
+
+Run38178875138 is terminal FAIL_HARVESTED at source df8d73b1/tree e6301193:
+native29 PASS/1 expected SKIP; lost-response v3 ten steps PASS/one canonical event;
+geofence foreground client TIMEOUT despite actual XCTest1 PASS; normal Devices
+NOT EXECUTED because the owned nonce shell quote was unterminated. Preserve6035
+files and verified native/transport cleanup. Generated corrected shell syntax and
+nonce now pass local preflight. Do not repeat the passing lost-response case for
+this transport/diagnostic change. Next bounded primary Mac scope is geofence plus
+unexecuted normal Devices. Missing delivery counters do not prove event absence;
+new bounded notification/rejection and categorical extraction diagnostics are
+diagnostics, not a repair. Product observation deadlines remain unchanged.
+
+Accepted main ee8caa83 (Parallax A1 and Prisma schema) is reconciled through owned
+merge43c89fd8. Both project doc entries are preserved. Regenerate only the owned
+Prisma client and qualify the new shared inputs; old ordinary/root/SDK receipts
+remain original-source proof. No owner credentials, runtime or sibling checkout
+was changed.

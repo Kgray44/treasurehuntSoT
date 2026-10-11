@@ -1562,28 +1562,53 @@ export async function executeLandfallOsScenario(
     const controlFile = path.join(destination, "native-location-controls.json");
     if (target === "ios-simulator" && ownedDevice) {
       let delivery: ReturnType<typeof deviceLabAppleLifecycleDeliverySchema.parse> | null = null;
+      let collectionStage: "APP_CONTAINER" | "READ" | "VALIDATE" = "APP_CONTAINER";
+      let unavailableReason:
+        | "APP_CONTAINER_TIMEOUT"
+        | "APP_CONTAINER_LOOKUP_FAILED"
+        | "FILE_ABSENT"
+        | "FILE_READ_FAILED"
+        | "INVALID_DIAGNOSTICS"
+        | null = null;
       try {
         const container = (
           await labTool(
             "xcrun",
             ["simctl", "get_app_container", ownedDevice, "com.voyagewright.landfall", "data"],
-            5000,
+            30000,
           )
         ).trim();
         if (!path.isAbsolute(container) || container.includes("\n")) throw new Error("OWNED_APP_CONTAINER_REQUIRED");
+        collectionStage = "READ";
         const raw = await readFile(
           path.join(container, "Library", "Application Support", "landfall-lifecycle-debug.json"),
           "utf8",
         );
+        collectionStage = "VALIDATE";
         if (raw.length > 2048) throw new Error("OWNED_LIFECYCLE_DIAGNOSTIC_TOO_LARGE");
         delivery = deviceLabAppleLifecycleDeliverySchema.parse(JSON.parse(raw));
-      } catch {
+      } catch (error) {
+        const failure = (error ?? {}) as { code?: unknown; killed?: unknown };
+        unavailableReason =
+          collectionStage === "APP_CONTAINER"
+            ? failure.killed === true
+              ? "APP_CONTAINER_TIMEOUT"
+              : "APP_CONTAINER_LOOKUP_FAILED"
+            : collectionStage === "READ"
+              ? failure.code === "ENOENT"
+                ? "FILE_ABSENT"
+                : "FILE_READ_FAILED"
+              : "INVALID_DIAGNOSTICS";
         /* Missing diagnostics remain unproven; they cannot turn a failed step into PASS. */
       }
       const file = path.join(destination, "native-apple-lifecycle-delivery.json");
       await writeFile(
         file,
-        JSON.stringify({ version: 1, state: delivery ? "OBSERVED" : "UNAVAILABLE", delivery }, null, 2),
+        JSON.stringify(
+          { version: 1, state: delivery ? "OBSERVED" : "UNAVAILABLE", delivery, unavailableReason },
+          null,
+          2,
+        ),
       );
       artifacts.push({
         path: file,
