@@ -81,3 +81,12 @@ failures. Canonical FAIL and traces retained. No assertions/time limits waived.
 Clean candidate replay: all 36 source-bound D0/D1 CLI scenarios and cleanup PASS.
 Slot B released 06:40 UTC; zero owned-path Node processes/controller remain.
 Feature Catalog BLOCKED; no software acceptance or publication claim.
+
+Parent resumed local qualification and reassigned B. Minimal clean protected-main
+comparison reproduces all three Lanternwake signatures (3 FAIL; fixture PASS).
+Owned baseline worktree uses copied locked dependencies and task-local worker caps;
+source remains unchanged. CSS modal stacking/wrapping plus normal actionable replay
+control waiting are isolated repairs; no renderer/Crossdeck edits or time expansion.
+Clean repaired e892a139 passes the same 3 viewport cases, with all assertions kept.
+Next frozen ordinary candidate is pending; preserve red/green comparison directories
+under artifacts/sounding-line. B remains assigned; publication is still unauthorized.
