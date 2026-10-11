@@ -198,6 +198,58 @@ qualified Phase 4. Sounding Line and owner/product gates remain independent.
 
 ## Coordination boundary
 
+### Follow-up execution and prerequisite correction
+
+Candidate `e03ffe37a45cc12dad7598c7b8c878f0cd466811`, tree
+`f566397a7998a05c9063df8e5ac5dc2cb901a396`, passed exact-head ordinary
+[38171494446](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38171494446)
+with all ten obligations satisfied. Its corrected desktop/mobile browser journeys
+also passed and retained reviewed screenshots. Actual native consumer run
+[38171499881](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38171499881)
+passed with ten OS motion observations, passive discovery, scoped stop and fallback,
+zero progression events and successful cleanup. Its boundary JSON is now retained
+as a file, alongside the reviewed native screenshots; 51 files were checksummed.
+These receipts qualify their original source, not later lab corrections.
+
+Additional Android OS lifecycle run
+[38171250062](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38171250062)
+passed all four screen-lock, process-kill, activity-recreation and resume scenarios
+at `0f8ac197`, with 59 checksummed artifacts and successful cleanup.
+Radio run [38170875594](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170875594)
+passed primary BLE3 and low-resource radio4 cases, but failed primary UWB preparation:
+the second emulator's native API returned `CAPABILITIES_ABSENT`. This strict refusal
+and its 42 files remain retained. A narrow fresh primary UWB run
+[38171814218](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38171814218)
+passed at `e03ffe37`; 12 files were checksummed and cleanup passed. This does not
+erase the earlier platform-capability failure or qualify physical ranging accuracy.
+
+Apple presentation run
+[38170965786](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170965786)
+passed 31 tests with zero failures and one expected canonical-driver skip at
+`0f8ac197`. The iPhone17e/iOS26.5 simulator exercised the nine native Sextant
+sensor/position tests, actual Home transition, UIKit unconfigured-shell large-text/
+rotation fallback and a separately observed OS Reduce Motion setting. Its 4732
+files and simulator/transport cleanup are retained. The shell screenshot does not
+prove normal Devices-page Apple UX or actual unavailable sensor/haptic/RF hardware.
+Primary and compatibility/tablet canonical Apple scenario jobs remain pending.
+
+Android signed background-return run
+[38170904429](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170904429)
+failed at first-party region registration: Google geofencing reported `NOT_AVAILABLE`.
+Signed server registration succeeded, but there was no notice, reboot or return proof.
+Its settings inspection saw Location services, then stopped after two snapshots
+without observing the Location Accuracy entry. The existing owned public-settings
+probe now waits up to twenty seconds for that named entry; it still requires an
+observed unique switch and verified enabled state. It neither guesses coordinates
+nor changes undocumented settings. Two focused race/absence tests and the existing
+bounded location/lifecycle tests pass (nine total), and TypeScript/lint pass.
+A fresh background-return run must establish whether the prerequisite correction
+resolves the execution failure. All four failed artifacts and cleanup are retained.
+Google's [geofence status reference](https://developers.google.com/android/reference/com/google/android/gms/location/GeofenceStatusCodes)
+and [geofencing guide](https://developer.android.com/develop/sensors-and-location/location/geofencing)
+support checking service/location prerequisites; their existence does not prove
+that a simulator service is available or that this correction has passed natively.
+
 ### Hosted qualification checkpoint, 11 October
 
 The [machine-readable virtual evidence](phase4-virtual-evidence-20261011.json)

@@ -62,7 +62,16 @@ export async function inspectOwnedAndroidLocationAccuracy(adb: (args: string[], 
       await tap(service);
       nodes = await snapshot();
     }
-    const entry = nodes.find((node) => ["Google Location Accuracy", "Location Accuracy"].includes(node.text));
+    const accuracyEntry = () =>
+      nodes.find((node) => ["Google Location Accuracy", "Location Accuracy"].includes(node.text));
+    // The Location services list can still be loading after the observed tap.
+    // Wait for the named public entry; never guess coordinates or infer enablement.
+    const entryDeadline = Date.now() + 20000;
+    while (service && !accuracyEntry() && Date.now() < entryDeadline) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      nodes = await snapshot();
+    }
+    const entry = accuracyEntry();
     if (entry) {
       observed.accuracyEntryObserved = true;
       await tap(entry);
