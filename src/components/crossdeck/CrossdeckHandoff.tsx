@@ -70,17 +70,21 @@ export function CrossdeckHandoff({
     const applied = resumed.current;
     const versions = lastApplied.current;
     let stopped = false;
+    let hadFailure = false;
     const unsubscribe = sync.subscribe(
       (next) => {
         if (stopped || (current.current && next.revision < current.current.revision)) return;
         const unchanged =
+          !hadFailure &&
           current.current &&
           JSON.stringify({ ...current.current, observedAt: "" }) === JSON.stringify({ ...next, observedAt: "" });
         current.current = next;
+        hadFailure = false;
         if (!unchanged) setSnapshot(next);
         setOnline(true);
       },
       (error) => {
+        hadFailure = true;
         setOnline(false);
         setMessage(
           error instanceof SyncTransportError && [401, 403].includes(error.status)
