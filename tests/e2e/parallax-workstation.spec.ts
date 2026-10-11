@@ -59,6 +59,12 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
     await page.getByRole("separator", { name: "Resize inspector panel" }).press("ArrowLeft");
   }
   await expect(page.getByLabel("Position x", { exact: true })).toHaveValue(editedX);
+  await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Open asset Library", exact: true })).toBeFocused();
+  await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
+  await page.getByRole("button", { name: "Collapse Inspector", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Open contextual Inspector", exact: true })).toBeFocused();
+  await page.getByRole("button", { name: "Open contextual Inspector", exact: true }).click();
   await page.screenshot({ path: `${root}/construction-layout.png`, fullPage: true });
   await page.getByLabel("Workspace layout").selectOption("BEHAVIOR");
   await page.getByRole("button", { name: "Add spatial behavior", exact: true }).click();
@@ -86,6 +92,8 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
       await page.getByLabel("Workspace layout").selectOption(layout);
       await expect(canvas).toBeVisible();
       const bounds = (await canvas.boundingBox())!;
+      expect(bounds.width).toBeGreaterThan(viewport.width < 700 ? 250 : 500);
+      expect(bounds.height).toBeGreaterThan(viewport.width < 700 ? 300 : 350);
       measures.push({
         viewport,
         layout,
@@ -102,7 +110,7 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   expect(focus.canvas.height).toBeGreaterThan(750);
   await writeFile(
     `${root}/viewport-measurements.json`,
-    JSON.stringify({ source: process.env.SOUNDING_LINE_CANDIDATE_SHA ?? null, measures }, null, 2),
+    JSON.stringify({ artifactRoot: process.env.VALIDATION_ARTIFACTS, measures }, null, 2),
   );
   await page.setViewportSize({ width: 1366, height: 768 });
   await page.getByLabel("Workspace layout").selectOption("SPATIAL");
@@ -196,6 +204,8 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   );
   await page.mouse.up();
   await expect(page.getByLabel("Position x", { exact: true })).not.toHaveValue(originalX);
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await page.getByRole("button", { name: "Redo", exact: true }).click();
   await page.getByRole("button", { name: "Undo", exact: true }).click();
   await expect(page.getByLabel("Position x", { exact: true })).toHaveValue(originalX);
   await page.getByRole("tab", { name: "Timeline", exact: true }).click();

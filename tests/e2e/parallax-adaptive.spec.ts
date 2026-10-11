@@ -204,6 +204,8 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
       `/studio/parallax?chronicle=${tale.id}&definition=${capsule.definition.id}&entity=${capsule.version.entities[0].id}&block=${blockId}`,
     );
     await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
+    await page.getByRole("button", { name: "Open contextual Inspector" }).click();
+    await page.getByText("Library, reuse & publication", { exact: true }).click();
     await expect(page.getByRole("button", { name: /v1.0.0/ })).toBeVisible();
     const play = await startTaleSession(source.tale.slug, {
       accountId: account.id,
@@ -253,6 +255,96 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     expect(after.currentSequence).toBe(before.currentSequence);
     expect(after.currentBlockId).toBe(before.currentBlockId);
     expect(await db.parallaxResolutionDecision.count({ where: { versionId: capsule.version.id } })).toBe(1);
+    // Exercise the self-report/review product contract with an invented attestation.
+    // This fixture is software workflow proof, never physical AR qualification.
+    await page.getByRole("button", { name: "Open Chronicle Lens", exact: true }).click();
+    await lens.getByText("Optional field feedback", { exact: true }).click();
+    await lens.getByLabel("I agree to share these categories").check();
+    await lens.getByLabel("I personally tested the placement in a physical environment").check();
+    await lens.getByLabel("The intended placement worked in my physical test").check();
+    await lens.getByLabel("Confidence in your report").selectOption("HIGH");
+    await lens.getByLabel("Observed surface").selectOption("TABLE");
+    await lens.getByRole("button", { name: "Share optional feedback" }).click();
+    await expect(lens.getByText("Optional feedback shared. Chronicle completion is unaffected.")).toBeVisible();
+    const fixtureReport = await db.parallaxFieldObservation.findFirstOrThrow({ where: { sessionId: play.sessionId } });
+    expect(fixtureReport.provenance).toBe("PLAYER_REPORTED_PHYSICAL");
+    await lens.getByRole("button", { name: "Close Chronicle Lens", exact: true }).click();
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`/studio/parallax?chronicle=${tale.id}&definition=${capsule.definition.id}&block=${blockId}`);
+    await page.getByLabel("Workspace layout").selectOption("SPATIAL");
+    await page.getByText("Spatial Placement & grouping", { exact: true }).click();
+    await page.getByLabel("Nearby context").selectOption("ANY");
+    await page.getByText("Field quality and Creator calibration review", { exact: true }).click();
+    await page.getByRole("button", { name: "Load field quality", exact: true }).click();
+    await page.getByLabel("Consented observation").selectOption(fixtureReport.id);
+    await page.getByRole("button", { name: "Approve Creator review", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Approve calibration refinement", exact: true })).toBeEnabled();
+    await page.getByRole("button", { name: "Approve calibration refinement", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Verify independent later encounters", exact: true })).toBeEnabled();
+    await page.screenshot({ path: "artifacts/parallax-phase3/browser/creator-field-refinement.png", fullPage: true });
+    await page.getByRole("button", { name: "Save draft", exact: true }).click();
+    await expect(page.getByRole("status")).toHaveText("Working draft saved");
+    await page.getByText("Scene actions", { exact: true }).click();
+    await page.getByRole("button", { name: "Create immutable version", exact: true }).click();
+    await expect(page.getByRole("status")).toContainText("Immutable version created");
+    await page.getByText("Library, reuse & publication", { exact: true }).click();
+    await page.getByLabel("Attach to Passage").selectOption(blockId);
+    await page.getByRole("button", { name: "Attach exact version", exact: true }).click();
+    await expect(page.getByRole("status")).toContainText("Pinned spatial version attached");
+    const refined = await getStudioTale(tale.id);
+    const refinedCapsule = validateSpatialMoment(
+      refined.draft.chapters[0].blocks[0].presentation.spatialMoment,
+      blockId,
+    );
+    expect(refinedCapsule.version.id).not.toBe(capsule.version.id);
+    expect(refinedCapsule.version.adaptive?.calibration.maturity).toBe("CALIBRATED");
+    const retainedPublication = await db.publishedTaleVersion.findUniqueOrThrow({ where: { id: published.id } });
+    expect(retainedPublication.contentSnapshot).toBe(published.contentSnapshot);
+    expect(
+      validateSpatialMoment(
+        JSON.parse(retainedPublication.contentSnapshot).chapters[0].blocks[0].presentation.spatialMoment,
+        blockId,
+      ).version.checksum,
+    ).toBe(capsule.version.checksum);
+    await page.reload();
+    await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
+    await page.getByText("Spatial Placement & grouping", { exact: true }).click();
+    await expect(page.getByLabel("Authoring approach")).toHaveValue("EVIDENCE_CALIBRATED");
+    await page.goto(`/studio/tales/${tale.id}`);
+    await page.getByRole("button", { name: "Validate Chronicle", exact: true }).click();
+    await expect(page.locator(".save-state")).toContainText("Draft validation passed");
+    await page.goto(`/studio/tales/${tale.id}/trials`);
+    await page.getByLabel("Scenario title").fill("Synthetic calibrated refinement publication");
+    await page.getByRole("checkbox", { name: /Baseline successful path/i }).check();
+    await page.getByRole("button", { name: "Add Continue", exact: true }).click();
+    await page.getByRole("button", { name: "Add Continue", exact: true }).click();
+    await page.getByRole("button", { name: "Save and run Sea Trial" }).click();
+    await expect(page.getByRole("region", { name: "Sea Trial receipt" })).toContainText("COMPLETED");
+    await page.getByRole("button", { name: "Save current revisions as Suite" }).click();
+    await page.getByRole("button", { name: "Run Suite", exact: true }).click();
+    await page.reload();
+    await expect(page.getByText("VERIFIED", { exact: true })).toBeVisible();
+    await page.goto(`/studio/tales/${tale.id}/versions#publication-review`);
+    await page
+      .getByLabel("Creator release notes")
+      .fill("Invented self-report fixture: Creator-reviewed refinement; no physical certification.");
+    await page.getByRole("checkbox", { name: /publishing creates an immutable Version/i }).check();
+    await page.getByRole("button", { name: "Publish immutable Version" }).click();
+    await expect(page.getByRole("heading", { name: "Immutable publication committed" })).toBeVisible();
+    const republished = await db.publishedTaleVersion.findFirstOrThrow({
+      where: { taleId: tale.id },
+      orderBy: { versionNumber: "desc" },
+    });
+    expect(republished.versionNumber).toBe(published.versionNumber + 1);
+    expect(
+      validateSpatialMoment(
+        JSON.parse(republished.contentSnapshot).chapters[0].blocks[0].presentation.spatialMoment,
+        blockId,
+      ).version.checksum,
+    ).toBe(refinedCapsule.version.checksum);
+    expect((await db.publishedTaleVersion.findUniqueOrThrow({ where: { id: published.id } })).contentSnapshot).toBe(
+      published.contentSnapshot,
+    );
   } finally {
     // The guarded generic runner owns this disposable database. Keep immutable
     // publication and trial evidence together; its bound database is recreated

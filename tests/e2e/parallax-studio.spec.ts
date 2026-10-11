@@ -146,6 +146,8 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
       `/studio/parallax?chronicle=${tale.id}&definition=${capsule.definition.id}&entity=${capsule.version.entities[0].id}&block=${blockId}`,
     );
     await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
+    await page.getByRole("button", { name: "Open contextual Inspector" }).click();
+    await page.getByText("Library, reuse & publication", { exact: true }).click();
     await expect(page.getByRole("button", { name: /v1.0.0/ })).toBeVisible();
   } finally {
     // The guarded generic runner owns this disposable database. Keep immutable

@@ -482,6 +482,8 @@ export function minimizedResolutionReceipt(resolution: SceneResolution) {
       entityId,
       surface: p.surface,
       quality: p.quality,
+      confidenceBand: p.confidence >= 0.8 ? "HIGH" : p.confidence >= 0.5 ? "MODERATE" : "LOW",
+      scoreBand: p.score >= 0.8 ? "HIGH_MATCH" : p.score >= 0.5 ? "ACCEPTABLE" : "WEAK",
     })),
     constraints: [...new Set(resolution.diagnostics.flatMap((d) => d.constraints))].sort(),
     exhausted: resolution.exhausted,

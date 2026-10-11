@@ -717,7 +717,13 @@ export function SpatialStudio({
           {dockHandle("library")}
           <div className={styles.dockTitle}>
             <h2>Assets &amp; scene</h2>
-            <button aria-label="Collapse left dock" onClick={() => setLibraryOpen(false)}>
+            <button
+              aria-label="Collapse left dock"
+              onClick={() => {
+                studioElement.current?.querySelector<HTMLButtonElement>('[aria-label="Open asset Library"]')?.focus();
+                setLibraryOpen(false);
+              }}
+            >
               ‹
             </button>
           </div>
@@ -1407,7 +1413,15 @@ export function SpatialStudio({
           {dockHandle("inspector")}
           <div className={styles.dockTitle}>
             <h2>{currentEntity?.name ?? "Select an entity"}</h2>
-            <button aria-label="Collapse Inspector" onClick={() => setInspectorOpen(false)}>
+            <button
+              aria-label="Collapse Inspector"
+              onClick={() => {
+                studioElement.current
+                  ?.querySelector<HTMLButtonElement>('[aria-label="Open contextual Inspector"]')
+                  ?.focus();
+                setInspectorOpen(false);
+              }}
+            >
               ›
             </button>
           </div>

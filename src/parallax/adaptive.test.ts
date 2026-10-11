@@ -89,7 +89,9 @@ describe("adaptive semantic staging", () => {
     }
     expect(revalidateAdaptiveScene(content, { ...evidence, frameId: "other-frame" }, prior)).toBeNull();
     const receipt = JSON.stringify(minimizedResolutionReceipt(prior));
-    expect(receipt).not.toMatch(/candidateId|position|rotation|frameId|confidence|table-left/);
+    expect(receipt).not.toMatch(/candidateId|position|rotation|frameId|"confidence":|"score":|table-left/);
+    expect(receipt).toContain("confidenceBand");
+    expect(receipt).toContain("scoreBand");
     expect(receipt).toContain("NOT_ESTABLISHED");
   });
   it("invalidates calibrated claims before parsing revised semantic placement", () => {

@@ -113,9 +113,12 @@ canonical selection/history and shell-owned close/focus callbacks. Amend apply:
   schemas/migrations. Phase 3 owns resolution/field/calibration tables; A1 owns
   proposal/quota/usage tables. No whole-file imports.
 
-This is a concrete decision, not an implemented adapter or mutual agreement.
-A1 must acknowledge these amendments before shared integration. No sibling
-source or worktree was changed.
+The native coordinator readback confirms A1 explicitly accepted every amendment,
+including monotonic editor generation, serialized persistence, atomic saved Apply,
+one already-saved history installation, same-key retry and exact additive schema
+ownership. Bilateral interface acknowledgement is established. Mounted integration
+remains HELD until the newest canonical refinement receives owner acceptance.
+No sibling source or worktree was changed.
 
 The refined assistance host is `#parallax-assistance`, controlled by shell-owned
 floating/docked presentation and close/focus state. The command bar opens it.
