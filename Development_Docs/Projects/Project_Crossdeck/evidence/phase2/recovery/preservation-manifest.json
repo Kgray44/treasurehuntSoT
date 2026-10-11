@@ -119,19 +119,22 @@
       "path": "migration-rehearsal-43812da1.log",
       "sourcePath": "artifacts/crossdeck/phase2/migration-rehearsal-43812da1.log",
       "originalSha256": "611a8674bcfaaf9f2e1fb27d74aec6aeaab3dd39c870b32fc618019f7da5aa09",
-      "sha256": "611a8674bcfaaf9f2e1fb27d74aec6aeaab3dd39c870b32fc618019f7da5aa09"
+      "sha256": "f81998ea98d3c8af1e34b93520f4998df96e177edb6f467b00893197a7402ab3",
+      "normalization": "LF_AND_SINGLE_FINAL_NEWLINE"
     },
     {
       "path": "mysql-schema-43812da1.log",
       "sourcePath": "artifacts/crossdeck/phase2/mysql-schema-43812da1.log",
       "originalSha256": "885d574c01fa12c9efd441d7491c305f9627fbdd0e1fc0c6e73344df10cbf176",
-      "sha256": "885d574c01fa12c9efd441d7491c305f9627fbdd0e1fc0c6e73344df10cbf176"
+      "sha256": "cd23cdc6e58cae90a9b509c07e7369eda652f97eab09804462f7cae29cc9b48d",
+      "normalization": "LF_AND_SINGLE_FINAL_NEWLINE"
     },
     {
       "path": "final-status-focused.log",
       "sourcePath": "artifacts/crossdeck/phase2/final-status-focused.log",
       "originalSha256": "95e8815b1aabef5b47bdea274188356ce31f32df650e4b753794d01fde8c2b4b",
-      "sha256": "95e8815b1aabef5b47bdea274188356ce31f32df650e4b753794d01fde8c2b4b"
+      "sha256": "d68441b751b4a4f113a346ba0c5e369291793a61b985357f1fd7fb73b678aefd",
+      "normalization": "LF_AND_SINGLE_FINAL_NEWLINE"
     }
   ]
 }

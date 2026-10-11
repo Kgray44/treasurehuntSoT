@@ -369,6 +369,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/document-index.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -406,18 +412,6 @@
     },
     {
       "path": "Development_Docs/Engineering/Documentation/User_Guide_Template.md",
-      "record_type": "engineering-record",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Engineering/Repository_Operations/README.md",
-      "record_type": "engineering-record",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Engineering/Repository_Operations/Repository_Cleanup_Audit_2026-09-21.md",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
@@ -495,12 +489,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Engineering/Repository_Operations/developer/animation/README.md",
-      "record_type": "engineering-record",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Engineering/Repository_Operations/developer/animation/architecture.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -520,6 +508,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Repository_Operations/developer/animation/performance.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/developer/animation/README.md",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
@@ -597,6 +591,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Repository_Operations/README.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Repository_Operations/reference/commands.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -616,6 +616,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Repository_Operations/reference/routes.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/Repository_Cleanup_Audit_2026-09-21.md",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
@@ -648,30 +654,6 @@
       "path": "Development_Docs/Engineering/Sextant/README.md",
       "record_type": "engineering-record",
       "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Features/FEATURE_CATALOG.md",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Features/FEATURE_CATALOG_SCHEMA.md",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Features/Feature_Catalog_Mainline_Reconciliation_Receipt.md",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Features/README.md",
-      "record_type": "archive-index",
-      "status": "preserved",
       "canonical_for": null
     },
     {
@@ -807,6 +789,30 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/Feature_Catalog_Mainline_Reconciliation_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/FEATURE_CATALOG_SCHEMA.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/FEATURE_CATALOG.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/README.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governance/Voyagewright_Global_Product_Governance_Standard.md",
       "record_type": "governing-record",
       "status": "current",
@@ -820,6 +826,12 @@
     },
     {
       "path": "Development_Docs/Governing/Phase_1_Cross_Project_Convergence_Design_Record.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/phase_b_implementation_roadmap_v1_0.pdf",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -993,6 +1005,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/Project_Sounding_Line_Part_I_Governing_Document_v1.2_Amendment_Edition.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sounding_Line_Part_II_Governing_Document_v1.2_Amendment_Edition.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Project_Sounding_Line_Part_III_Governing_Document_v1.2_Amendment_Edition.pdf",
       "record_type": "governing-record",
       "status": "preserved",
@@ -1011,13 +1035,7 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Governing/Project_Sounding_Line_Part_II_Governing_Document_v1.2_Amendment_Edition.pdf",
-      "record_type": "governing-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Governing/Project_Sounding_Line_Part_I_Governing_Document_v1.2_Amendment_Edition.pdf",
+      "path": "Development_Docs/Governing/Project_Sounding_Line_v1.4_Performance_and_Efficiency_Governing_Addendum.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -1030,12 +1048,6 @@
     },
     {
       "path": "Development_Docs/Governing/Project_Sounding_Line_Voyagewright_Device_Lab_Governing_Annex_v1.1_Reach_Qualification.md",
-      "record_type": "governing-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Governing/Project_Sounding_Line_v1.4_Performance_and_Efficiency_Governing_Addendum.md",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -1083,6 +1095,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Governing/vision_waypoint_external_ar_governing_specification_v1_0.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf",
       "record_type": "governing-record",
       "status": "current",
@@ -1120,18 +1138,6 @@
     },
     {
       "path": "Development_Docs/Governing/Voyagewright_User_Facing_Copy_Inventory.csv",
-      "record_type": "governing-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Governing/phase_b_implementation_roadmap_v1_0.pdf",
-      "record_type": "governing-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Governing/vision_waypoint_external_ar_governing_specification_v1_0.pdf",
       "record_type": "governing-record",
       "status": "preserved",
       "canonical_for": null
@@ -1413,24 +1419,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Deepwater/Project_Deepwater_Program_Completion_Receipt.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Programs/Deepwater/Project_Homeport_True_North_Navigation_Focus_Impact_Declaration.json",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Programs/Deepwater/README.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Programs/Deepwater/capability-realization-ledger.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -1503,6 +1491,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/evidence/Project_Deepwater_Phase_1_Evidence_Index.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -1516,12 +1510,6 @@
     },
     {
       "path": "Development_Docs/Programs/Deepwater/evidence/Project_Deepwater_Phase_3_Evidence_Index.json",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Programs/Deepwater/evidence/phase4/Project_Deepwater_Phase_4_Runtime_Evidence.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -1611,6 +1599,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/Project_Deepwater_Program_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/Project_Homeport_True_North_Navigation_Focus_Impact_Declaration.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/remediation/deepwater-phase3-slices.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -1683,6 +1689,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_to_Phase_3_Delta_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_Trace_Queue.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -1690,12 +1702,6 @@
     },
     {
       "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_Trace_Report.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_2_to_Phase_3_Delta_Report.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -1719,13 +1725,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Utilization_Report.md",
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_to_Phase_4_Delta_Report.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_to_Phase_4_Delta_Report.md",
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_3_Utilization_Report.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -3117,25 +3123,25 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Validation_Record.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Validation_and_Integration_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Codex_Enforcement.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Validation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Codex_Enforcement_Design.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Codex_Enforcement.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -3153,13 +3159,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Durable_Execution_Recovery_and_Resume.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Durable_Execution_and_Recovery_Contracts.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Durable_Execution_and_Recovery_Contracts.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Durable_Execution_Recovery_and_Resume.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -3177,13 +3183,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Evidence_Freshness_Reuse_and_Invalidation.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Evidence_Freshness_and_Invalidation.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Evidence_Freshness_and_Invalidation.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Evidence_Freshness_Reuse_and_Invalidation.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -3207,13 +3213,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Impact_Planning_Architecture.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Impact_Planning_and_Explanations.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Impact_Planning_and_Explanations.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Impact_Planning_Architecture.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -3297,13 +3303,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Rerun_Architecture.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Rerun_and_Evidence_Reuse_Policy.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Rerun_and_Evidence_Reuse_Policy.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Rerun_Architecture.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -3321,19 +3327,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Security_and_Privacy.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Security_and_Privacy_Threat_Model.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Test_Plan.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Security_and_Privacy.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -3345,13 +3345,19 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Validation_Record.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Test_Plan.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_to_Phase_4_Handoff_Matrix.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Validation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -3537,18 +3543,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4.1_Maintenance_Correction_Design_Record.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4.1_Proof_Input_Authority_Correction_Record.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4_Corrective_Authority_Activation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -3615,7 +3609,49 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4.1_Maintenance_Correction_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_v1.4.1_Proof_Input_Authority_Correction_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_Root_Maintenance_Impact_Declaration.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Acceptance_Unblock_Impact_Declaration.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Active_Authority_Lineage_Maintenance_Repair.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Bounded_Mixed_Browser_Batching_Repair_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Bridgewatch_Ordinary_Candidate_Classification_Repair_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Product_Verification_Registration_Admission_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -3652,36 +3688,6 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.3_Root_Maintenance_Lane_Record.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Acceptance_Unblock_Impact_Declaration.json",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Active_Authority_Lineage_Maintenance_Repair.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Bounded_Mixed_Browser_Batching_Repair_Plan.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Bridgewatch_Ordinary_Candidate_Classification_Repair_Plan.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4_Product_Verification_Registration_Admission_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -4755,30 +4761,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Crossdeck/Phase_1_Implementation_Record.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Crossdeck/Phase_2_Implementation_Record.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Crossdeck/README.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/phase2/README.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/phase2/development/crossdeck.phone-disconnect-D0.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -4822,6 +4804,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/phase2/development/preservation-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/phase2/README.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -4888,6 +4876,24 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/phase2/recovery/preservation-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Phase_1_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Phase_2_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/README.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -5085,6 +5091,1314 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase0/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase1/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase2/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase3/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase3/Project_Homeport_Phase_3_Visual_Review.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase3/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase4/Project_Homeport_Phase_4_Evidence_Metadata.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase4/Project_Homeport_Phase_4_Visual_Review.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase4/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/Project_Homeport_Phase_5_Reachability_Review.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-accessibility.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-data.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-linked-identities.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-notifications.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-personal-information.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-preferences.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-privacy.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-profile.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-roles.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-security.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-sessions.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-invitations.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-library.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-sessions-sessionid.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-sign-in.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-tales-taleid.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-voyages-playthroughid-player-preview.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-artifacts.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-audio.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-chronicles.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-collections-slug.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-collections.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-creators-handle.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-creators.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-featured.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-guides-slug.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-guides.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-maps.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-moderation-id.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-moderation.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-slug.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-templates.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs-consent.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs-media.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs-owner-id.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs-owner.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs-slug.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-forgot-password.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-artifacts-[artifactId].json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-artifacts.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-history-[recordId].json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-history.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-memories.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-saved.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-play-taleslug-history.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-play-taleslug-session-sessionid.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-play-taleslug.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-invitation-expired.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-invitation-revoked.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-invitation-valid.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-library.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-playthroughs-playthroughid-archive.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-playthroughs-playthroughid-journal.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-playthroughs-playthroughid.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-sign-in.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-profile-handle.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-quartermaster-workspace.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-quartermaster.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-register.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-reset-password-consumed.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-reset-password-expired.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-reset-password-invalid.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-reset-password-valid.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-root.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-sign-in.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-exchange.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-library.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-private-content.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-sign-in.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-new.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid-artifacts.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid-assets.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid-locations.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid-settings.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid-versions.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-tale-campaignslug.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-tales.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-verify-email-expired.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-verify-email-valid.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/Project_Homeport_Phase_6_Evidence_Metadata.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/Project_Homeport_Phase_6_Visual_Review.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-A-CHRONICLE-PREVIEW.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-AA-REDUCED-MOTION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-AB-MOBILE-WORKSPACES.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-AC-MOBILE-HARBOR-SEARCH.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-AD-MOBILE-PERSONAL-HARBOR.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-AE-CORRECTION-FULL-REGRESSION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-B-SIGNED-IN-NAME.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-C-CHRONICLE-ALIAS-EDIT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-D-ALL-WORKSPACES.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-E-ACTIVE-CHRONICLE-LOCK.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-F-PUBLIC-PROFILE-DESTINATION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-G-ACCOUNT-CLAIMED.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-H-VERIFIED-EMAIL.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-I-EMAIL-CHANGE.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-J-LINKED-IDENTITIES.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-K-DATA-EXPORT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-L-DEACTIVATION-WARNING.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-M-DELETION-DANGER.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-N-PERSONAL-HARBOR-NAV.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-O-SIGN-OUT-ENTRY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-P-PUBLIC-PROFILE-EDITOR.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-Q-FAST-NO-LOADING-FLASH.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-R-DELAYED-LOADING.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-S-PAGE-TRANSITION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-T-ACCOUNT-MENU-MOTION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-U-COMMUNITY-COMPACT-SEARCH.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-V-COMMUNITY-FULL-SEARCH.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-W-COMMUNITY-REVIEW-COMPOSER.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-X-COMMUNITY-REVIEW-LIST.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-Y-HOME-FIRST-PAINT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-Z-HOME-AMBIENT-MOTION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/Project_Homeport_Phase_7_Correction_Round_1_Visual_Review.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/source-bound-test-receipt.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/experience-images-manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AA-MOBILE-PROFILE-SETUP.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AB-REDUCED-MOTION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AC-EXPERIENCE-IMAGES-INDEX.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AD-EXPERIENCE-IMAGES-CONTACT-SHEET.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-B-ROLE-CARDS-HOVER.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING-motion.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-D-LANTERN-NEUTRAL-motion.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-D-LANTERN-NEUTRAL.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-E-LANTERN-LEFT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-F-LANTERN-RIGHT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-G-STAR-TWINKLE.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-H-FOG-DRIFT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-J-LIGHT-GATEWAY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-K-LIGHT-COMMUNITY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-L-LIGHT-PERSONAL-HARBOR.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-M-SERA-WORKSPACES.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-N-COMMUNITY-FAST-READY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-P-COMMUNITY-REAL-ERROR.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-R-PUBLIC-PROFILE-SETUP.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-S-SAVE-COUNT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-T-RATING-SUMMARY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-U-COMPLETION-VERIFIED-REVIEW.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-V-CHRONICLE-PREVIEW-EXPANDED.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-X-PERSONAL-HARBOR-CONTRAST.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-Y-COMMUNITY-CONTRAST.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-Z-MOBILE-COMMUNITY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/Project_Homeport_Phase_7_Correction_Round_2_Visual_Review.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/source-bound-test-receipt.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/experience-images-manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-A-AVATAR-SELECTED.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-AA-MOBILE-WORKSPACES.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-AB-ZOOM-CROP-EDITOR.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-AC-REDUCED-MOTION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-B-AVATAR-CROP.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-C-AVATAR-INLINE-PREVIEW.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-D-BANNER-CROP.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-E-BANNER-INLINE-PREVIEW.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-G-ACCOUNT-TRIGGER-AVATAR.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-H-ACCOUNT-MENU-AVATAR.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-I-PROFILE-HANDLE-PROMPT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-J-REGISTRATION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-K-VERIFICATION-CODE.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-L-VERIFICATION-INVALID.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-M-VERIFICATION-SUCCESS.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-N-KGTESTING-WORKSPACES.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-O-CAPTAIN-EMPTY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-P-CREATOR-EMPTY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-Q-ACTIVE-CHRONICLE-LOCK.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE-motion.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE-motion.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE-motion.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING-motion.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-W-ACCOUNT-MENU-CLOSING-motion.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-X-DARK-FIRST-PAINT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-Y-MOBILE-AVATAR-CROP.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-Z-MOBILE-VERIFICATION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/Project_Homeport_Phase_7_Correction_Round_3_Visual_Review.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/source-bound-test-receipt.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/Project_Homeport_Phase_7_Evidence_Metadata.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/Project_Homeport_Phase_7_Visual_Review.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Homeport_Authentication_and_Session_Inventory.json",
       "record_type": "program-record",
       "status": "current",
@@ -5175,13 +6489,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Chronicle_Preview_Expansion_Contract.md",
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Chronicle_Preview_and_Player_Alias_Contract.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Chronicle_Preview_and_Player_Alias_Contract.md",
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Chronicle_Preview_Expansion_Contract.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -6021,1310 +7335,20 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase0/README.md",
-      "record_type": "validation-evidence",
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round1/README.md",
+      "record_type": "program-record",
       "status": "current",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase1/README.md",
-      "record_type": "validation-evidence",
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round2/README.md",
+      "record_type": "program-record",
       "status": "current",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase2/README.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase3/Project_Homeport_Phase_3_Visual_Review.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase3/README.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase3/manifest.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase4/Project_Homeport_Phase_4_Evidence_Metadata.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase4/Project_Homeport_Phase_4_Visual_Review.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase4/README.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/Project_Homeport_Phase_5_Reachability_Review.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/README.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/manifest.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-accessibility.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-data.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-linked-identities.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-notifications.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-personal-information.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-preferences.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-privacy.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-profile.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-roles.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-security.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account-sessions.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-account.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-invitations.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-library.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-sessions-sessionid.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-sign-in.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-tales-taleid.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain-voyages-playthroughid-player-preview.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-captain.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-artifacts.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-audio.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-chronicles.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-collections-slug.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-collections.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-creators-handle.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-creators.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-featured.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-guides-slug.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-guides.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-maps.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-moderation-id.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-moderation.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-slug.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-templates.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs-consent.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs-media.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs-owner-id.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs-owner.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs-slug.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community-voyage-logs.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-community.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-forgot-password.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-artifacts-[artifactId].json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-artifacts.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-history-[recordId].json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-history.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-memories.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport-saved.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-passport.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-play-taleslug-history.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-play-taleslug-session-sessionid.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-play-taleslug.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-invitation-expired.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-invitation-revoked.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-invitation-valid.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-library.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-playthroughs-playthroughid-archive.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-playthroughs-playthroughid-journal.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-playthroughs-playthroughid.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player-sign-in.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-player.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-profile-handle.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-quartermaster-workspace.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-quartermaster.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-register.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-reset-password-consumed.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-reset-password-expired.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-reset-password-invalid.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-reset-password-valid.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-root.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-sign-in.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-exchange.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-library.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-private-content.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-sign-in.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-new.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid-artifacts.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid-assets.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid-locations.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid-settings.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid-versions.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio-tales-taleid.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-studio.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-tale-campaignslug.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-tales.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-verify-email-expired.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase5/route-receipts/route-page-verify-email-valid.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/Project_Homeport_Phase_6_Evidence_Metadata.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/Project_Homeport_Phase_6_Visual_Review.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/README.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/manifest.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/Project_Homeport_Phase_7_Correction_Round_1_Visual_Review.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/README.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/manifest.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-A-CHRONICLE-PREVIEW.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-AA-REDUCED-MOTION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-AB-MOBILE-WORKSPACES.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-AC-MOBILE-HARBOR-SEARCH.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-AD-MOBILE-PERSONAL-HARBOR.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-AE-CORRECTION-FULL-REGRESSION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-B-SIGNED-IN-NAME.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-C-CHRONICLE-ALIAS-EDIT.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-D-ALL-WORKSPACES.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-E-ACTIVE-CHRONICLE-LOCK.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-F-PUBLIC-PROFILE-DESTINATION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-G-ACCOUNT-CLAIMED.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-H-VERIFIED-EMAIL.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-I-EMAIL-CHANGE.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-J-LINKED-IDENTITIES.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-K-DATA-EXPORT.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-L-DEACTIVATION-WARNING.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-M-DELETION-DANGER.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-N-PERSONAL-HARBOR-NAV.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-O-SIGN-OUT-ENTRY.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-P-PUBLIC-PROFILE-EDITOR.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-Q-FAST-NO-LOADING-FLASH.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-R-DELAYED-LOADING.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-S-PAGE-TRANSITION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-T-ACCOUNT-MENU-MOTION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-U-COMMUNITY-COMPACT-SEARCH.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-V-COMMUNITY-FULL-SEARCH.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-W-COMMUNITY-REVIEW-COMPOSER.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-X-COMMUNITY-REVIEW-LIST.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-Y-HOME-FIRST-PAINT.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/metadata/HP-OWCR1-EV-Z-HOME-AMBIENT-MOTION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round1/source-bound-test-receipt.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/Project_Homeport_Phase_7_Correction_Round_2_Visual_Review.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/README.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/experience-images-manifest.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/manifest.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AA-MOBILE-PROFILE-SETUP.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AB-REDUCED-MOTION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AC-EXPERIENCE-IMAGES-INDEX.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AD-EXPERIENCE-IMAGES-CONTACT-SHEET.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-B-ROLE-CARDS-HOVER.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING-motion.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-D-LANTERN-NEUTRAL-motion.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-D-LANTERN-NEUTRAL.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-E-LANTERN-LEFT.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-F-LANTERN-RIGHT.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-G-STAR-TWINKLE.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-H-FOG-DRIFT.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-J-LIGHT-GATEWAY.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-K-LIGHT-COMMUNITY.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-L-LIGHT-PERSONAL-HARBOR.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-M-SERA-WORKSPACES.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-N-COMMUNITY-FAST-READY.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-P-COMMUNITY-REAL-ERROR.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-R-PUBLIC-PROFILE-SETUP.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-S-SAVE-COUNT.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-T-RATING-SUMMARY.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-U-COMPLETION-VERIFIED-REVIEW.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-V-CHRONICLE-PREVIEW-EXPANDED.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-X-PERSONAL-HARBOR-CONTRAST.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-Y-COMMUNITY-CONTRAST.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-Z-MOBILE-COMMUNITY.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/source-bound-test-receipt.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/Project_Homeport_Phase_7_Correction_Round_3_Visual_Review.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/README.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/experience-images-manifest.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/manifest.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-A-AVATAR-SELECTED.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-AA-MOBILE-WORKSPACES.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-AB-ZOOM-CROP-EDITOR.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-AC-REDUCED-MOTION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-B-AVATAR-CROP.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-C-AVATAR-INLINE-PREVIEW.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-D-BANNER-CROP.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-E-BANNER-INLINE-PREVIEW.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-G-ACCOUNT-TRIGGER-AVATAR.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-H-ACCOUNT-MENU-AVATAR.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-I-PROFILE-HANDLE-PROMPT.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-J-REGISTRATION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-K-VERIFICATION-CODE.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-L-VERIFICATION-INVALID.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-M-VERIFICATION-SUCCESS.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-N-KGTESTING-WORKSPACES.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-O-CAPTAIN-EMPTY.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-P-CREATOR-EMPTY.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-Q-ACTIVE-CHRONICLE-LOCK.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE-motion.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE-motion.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE-motion.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING-motion.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-W-ACCOUNT-MENU-CLOSING-motion.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-X-DARK-FIRST-PAINT.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-Y-MOBILE-AVATAR-CROP.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/metadata/HP-OWCR3-EV-Z-MOBILE-VERIFICATION.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/source-bound-test-receipt.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/Project_Homeport_Phase_7_Evidence_Metadata.json",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/Project_Homeport_Phase_7_Visual_Review.md",
-      "record_type": "validation-evidence",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/README.md",
-      "record_type": "validation-evidence",
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round3/README.md",
+      "record_type": "program-record",
       "status": "current",
       "canonical_for": null
     },
@@ -7371,13 +7395,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/START_HERE.md",
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Screenshot_Index.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Screenshot_Index.md",
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/START_HERE.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -7390,24 +7414,6 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Visual_Comparison_Notes.md",
-      "record_type": "program-record",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round1/README.md",
-      "record_type": "program-record",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round2/README.md",
-      "record_type": "program-record",
-      "status": "current",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round3/README.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -7521,13 +7527,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_Validation_Record.md",
+      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md",
+      "path": "Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_Validation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -7599,6 +7605,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -7606,12 +7618,6 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A2_Live_Control_Plane_Implementation_Record.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A_Implementation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -7887,6 +7893,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Wakebook/evidence/phase1/manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Wakebook/evidence/phase1/Project_Wakebook_Phase_1_Visual_Review.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Wakebook/evidence/phase1/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf",
       "record_type": "program-record",
       "status": "current",
@@ -7936,24 +7960,6 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Program_Closeout_Record.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Wakebook/evidence/phase1/Project_Wakebook_Phase_1_Visual_Review.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Wakebook/evidence/phase1/README.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Wakebook/evidence/phase1/manifest.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -8157,12 +8163,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/README.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Projects/Voyagewright_Refit_V1/muster/accepted-reference/fixture-matrix.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8223,6 +8223,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Voyagewright_Refit_V1/refit-registry.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8253,12 +8259,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Spatial_Experience/README.md",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Spatial_Experience/device-capability-registry.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -8272,6 +8272,12 @@
     },
     {
       "path": "Development_Docs/Spatial_Experience/reach-interaction-registry.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Spatial_Experience/README.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
@@ -8421,6 +8427,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Validation/legacy-retirement-manifest.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Validation/Phase_1_Cross_Project_Conflict_Ledger.csv",
       "record_type": "validation-evidence",
       "status": "preserved",
@@ -8447,18 +8459,6 @@
     {
       "path": "Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md",
       "record_type": "validation-evidence",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Validation/legacy-retirement-manifest.json",
-      "record_type": "validation-evidence",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/document-index.json",
-      "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
     }
