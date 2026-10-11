@@ -1,13 +1,96 @@
+// @sounding-line-registration owner=project-sextant suite=unit.sextant contracts=sextant.phase4.native-context
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { WebSextantRuntime } from "./web-runtime";
 import { nativeSensorFamilies, type SextantNativeOperation, type SextantNativeTransport } from "./native-provider";
 import { emulatedWebSensors } from "./web-fixture";
 import { unknownState } from "./contracts";
 import type { LeaseEvent, LeaseRequest } from "./leases";
+import { SextantPermissionBroker } from "./permissions";
 
 afterEach(() => vi.useRealTimers());
 /** D0 transport double, not native execution or a platform/hardware receipt. */
 describe("production runtime selection over companion transport", () => {
+  it("releases a late native start acknowledgement after the consumer scope is cancelled", async () => {
+    let acknowledge: ((value: unknown) => void) | undefined;
+    const request = vi.fn(async (operation: SextantNativeOperation): Promise<unknown> => {
+      if (operation === "SEXTANT_STATE")
+        return {
+          version: 1,
+          background: "FOREGROUND_ONLY",
+          states: {
+            "sextant.magnetic.field": {
+              ...unknownState(),
+              support: "SUPPORTED",
+              availability: "AVAILABLE",
+              permission: "NOT_REQUIRED",
+            },
+          },
+        };
+      if (operation === "SEXTANT_PERMISSION") return { state: "NOT_REQUIRED" };
+      if (operation === "SEXTANT_START")
+        return new Promise((resolve) => {
+          acknowledge = resolve;
+        });
+      return { accepted: true };
+    });
+    const scope = new AbortController(),
+      runtime = new WebSextantRuntime(emulatedWebSensors().target, null, () => 10000, {
+        nativeTransport: { platform: "ANDROID", request, subscribe: () => () => {} },
+      });
+    await runtime.ready;
+    const acquisition = runtime.acquire(
+      {
+        consumerId: "preview",
+        surfaceId: "phone",
+        purpose: "Optional preview",
+        consent: true,
+        userInitiated: true,
+        capabilityId: "sextant.magnetic.field",
+        updateClass: "INTERACTIVE",
+        minimumQuality: "MEDIUM",
+        maxAgeMs: 500,
+        expiresAt: 20000,
+        frames: ["DEVICE"],
+        retentionClass: "EPHEMERAL",
+        foregroundRequirement: true,
+      },
+      vi.fn(),
+      { signal: scope.signal },
+    );
+    const result = expect(acquisition).rejects.toThrow("SEXTANT_ACQUISITION_CANCELLED");
+    await vi.waitFor(() => expect(acknowledge).toBeDefined());
+    scope.abort();
+    acknowledge!({ accepted: true, generation: crypto.randomUUID(), nativeMonotonicMs: 10000 });
+    await result;
+    expect(request.mock.calls.some(([operation]) => operation === "SEXTANT_STOP")).toBe(true);
+    await runtime.dispose();
+  });
+  it("rechecks a different native permission within a shared motion permission group", async () => {
+    const platform = vi.fn(async (_key: string, purpose: { capabilityId?: string }) =>
+      purpose.capabilityId === "sextant.motion.pedometer" ? ("DENIED" as const) : ("NOT_REQUIRED" as const),
+    );
+    const broker = new SextantPermissionBroker(platform, true),
+      purpose = {
+        consumerId: "lens",
+        surfaceId: "phone",
+        purpose: "Optional motion with alternative",
+        consent: true,
+        userInitiated: true,
+      };
+    expect(
+      await broker.authorize("MOTION_PERMISSION_PLATFORM_DEPENDENT", {
+        ...purpose,
+        capabilityId: "sextant.motion.gravity",
+      }),
+    ).toBe("NOT_REQUIRED");
+    expect(
+      await broker.authorize("MOTION_PERMISSION_PLATFORM_DEPENDENT", {
+        ...purpose,
+        capabilityId: "sextant.motion.pedometer",
+      }),
+    ).toBe("DENIED");
+    expect(platform).toHaveBeenCalledTimes(2);
+  });
   it("shares native magnetic acquisition across consumers, ignores browser streams, and releases the final owner", async () => {
     vi.useFakeTimers();
     let clock = 10000;
@@ -117,7 +200,7 @@ describe("production runtime selection over companion transport", () => {
     expect(active.size).toBe(0);
   });
   it("does not prompt or start when the consumer declines purpose consent", async () => {
-    const request = vi.fn(async (_operation: SextantNativeOperation) => ({
+    const request = vi.fn<(operation: SextantNativeOperation) => Promise<unknown>>(async () => ({
       version: 1,
       background: "FOREGROUND_ONLY",
       states: {},

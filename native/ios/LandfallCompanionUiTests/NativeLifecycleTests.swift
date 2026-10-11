@@ -16,8 +16,18 @@ final class NativeLifecycleTests: XCTestCase {
         app.launch()
         let shell = app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "Landfall companion is not configured")).firstMatch
         XCTAssertTrue(shell.waitForExistence(timeout: 10), "LANDFALL_INITIAL_SHELL_UNAVAILABLE")
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10), "LANDFALL_INITIAL_FOREGROUND_UNOBSERVED")
         XCUIDevice.shared.press(.home)
-        XCTAssertTrue(observedBackground(app), "LANDFALL_HOME_BACKGROUND_UNOBSERVED")
+        // Some hosted simulator images do not deliver the first synthetic Home
+        // press. Activate the actual SpringBoard once, then still require a real
+        // background state; termination or a guessed state never counts.
+        var background=observedBackground(app)
+        if !background {
+            let springboard=XCUIApplication(bundleIdentifier:"com.apple.springboard")
+            keepNoticeUi(springboard,"First Home press did not background companion")
+            springboard.activate();background=observedBackground(app)
+        }
+        XCTAssertTrue(background, "LANDFALL_HOME_BACKGROUND_UNOBSERVED")
         app.activate()
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10), "LANDFALL_FOREGROUND_RETURN_UNOBSERVED")
         XCTAssertTrue(shell.waitForExistence(timeout: 10), "LANDFALL_RETURNED_SHELL_UNAVAILABLE")

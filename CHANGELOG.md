@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Changelog
@@ -17,6 +17,13 @@ last_reviewed: 2026-10-10
 - Sextant gesture acquisition refuses incompatible slow delivery before sensor acquisition and cleans all owned leases on failure/abort/interruption. Parallax native scenes use bounded versioned UTF-8 chunks, independent resolved geometry validation and idempotent session-bound termination including Android Back. Existing published checksums, Guided accessibility and One Voyage progression authority are retained. See the [correction receipt](Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for qualification and remaining physical/owner gates.
 
 ### Added
+
+- Sextant Phase 4 candidate adds canonical Android/iOS motion and position leases,
+  native hardware/radio/power ownership, acknowledged native haptics, coordinated
+  sensor/fault scenarios and consented optional-input controls on Devices.
+  The [implementation record](Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Implementation_Record.md)
+  retains failed native runs and outstanding software, physical D4 and owner gates;
+  this is not formal Phase 4 acceptance or protected integration.
 
 - Sextant Phase 3 local candidate adds calibrated field semantics, relative pressure/step context, media capability lifecycle, optional bounded BLE/NFC, authenticated peer/ranging contracts, safe magnetic reference controls and Drydock requirements. The [implementation receipt](Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) distinguishes D0/D1 software proof from native/physical/owner and protected-mainline gates.
 - Crossdeck Phase 2 candidate adds durable presentation synchronization, explicit

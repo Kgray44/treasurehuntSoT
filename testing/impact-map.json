@@ -4811,8 +4811,8 @@
     },
     {
       "path": "native/**",
-      "suiteIds": ["unit.landfall-device-lab", "static.core"],
-      "contractIds": ["landfall.device-lab-evidence"]
+      "suiteIds": ["unit.landfall-device-lab", "static.core", "unit.sextant"],
+      "contractIds": ["landfall.device-lab-evidence", "sextant.phase4.native-context"]
     },
     {
       "path": "src/landfall/**",
@@ -4856,13 +4856,14 @@
     },
     {
       "path": "src/sextant/**",
-      "suiteIds": ["unit.sextant", "unit.device-lab", "unit.landfall-device-lab", "static.core"],
+      "suiteIds": ["unit.sextant", "unit.device-lab", "unit.landfall-device-lab", "static.core", "browser.sextant"],
       "contractIds": [
         "sextant.phase1.foundation",
         "device-lab.shared-infrastructure",
         "landfall.device-lab-evidence",
         "sextant.phase2.web-context",
-        "sextant.phase3.field-context"
+        "sextant.phase3.field-context",
+        "sextant.phase4.native-context"
       ]
     },
     {
@@ -4873,7 +4874,8 @@
         "device-lab.shared-infrastructure",
         "landfall.device-lab-evidence",
         "sextant.phase2.web-context",
-        "sextant.phase3.field-context"
+        "sextant.phase3.field-context",
+        "sextant.phase4.native-context"
       ]
     },
     {
@@ -4913,8 +4915,8 @@
     },
     {
       "path": "src/app/account/devices/**",
-      "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core"],
-      "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity"]
+      "suiteIds": ["unit.crossdeck", "browser.crossdeck", "static.core", "browser.sextant"],
+      "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity", "sextant.phase4.native-context"]
     },
     {
       "path": "src/app/devices/**",
@@ -6817,6 +6819,10 @@
     {
       "contractId": "crossdeck.phase2.continuity",
       "suiteIds": ["unit.crossdeck", "browser.crossdeck"]
+    },
+    {
+      "contractId": "sextant.phase4.native-context",
+      "suiteIds": ["unit.sextant", "browser.sextant"]
     }
   ],
   "impactClasses": [

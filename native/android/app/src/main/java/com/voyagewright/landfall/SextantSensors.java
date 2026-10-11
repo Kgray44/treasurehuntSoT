@@ -37,6 +37,8 @@ final class SextantSensors implements SensorEventListener {
     TYPES.put("orientation.absolute",Sensor.TYPE_ROTATION_VECTOR);
     TYPES.put("heading.estimate",Sensor.TYPE_ROTATION_VECTOR);
     TYPES.put("magnetic.field",Sensor.TYPE_MAGNETIC_FIELD);
+    TYPES.put("magnetic.uncalibrated-field",Sensor.TYPE_MAGNETIC_FIELD_UNCALIBRATED);
+    TYPES.put("magnetic.bias",Sensor.TYPE_MAGNETIC_FIELD_UNCALIBRATED);
     TYPES.put("pressure.observation",Sensor.TYPE_PRESSURE);
     TYPES.put("motion.pedometer",Sensor.TYPE_STEP_COUNTER);
   }
@@ -143,6 +145,9 @@ final class SextantSensors implements SensorEventListener {
         if(cap.endsWith("orientation.relative")){if(lease.reference==null)lease.reference=new double[]{x,y,z,w};double[] a=lease.reference;double bx=x,by=y,bz=z,bw=w;x=a[3]*bx-a[0]*bw-a[1]*bz+a[2]*by;y=a[3]*by+a[0]*bz-a[1]*bw-a[2]*bx;z=a[3]*bz-a[0]*by+a[1]*bx-a[2]*bw;w=a[3]*bw+a[0]*bx+a[1]*by+a[2]*bz;}
         value=new JSONObject().put("x",x).put("y",y).put("z",z).put("w",w);
       }
+    }else if(type==Sensor.TYPE_MAGNETIC_FIELD_UNCALIBRATED){
+      int offset=cap.endsWith("magnetic.bias")?3:0;if(values.length<offset+3)return null;
+      value=new JSONObject().put("x",values[offset]).put("y",values[offset+1]).put("z",values[offset+2]);units="microtesla";calibration="UNKNOWN";quality="LOW";warnings.put(cap.endsWith("magnetic.bias")?"PLATFORM_BIAS_ESTIMATE_UNQUALIFIED":"UNCALIBRATED_MAGNETIC_FIELD");
     }else if(type==Sensor.TYPE_PRESSURE){if(values[0]<300 || values[0]>1100)return null;value=(double)values[0];frame="NONE";units="hPa";calibration="GOOD";quality="MEDIUM";warnings.put("ENVIRONMENTAL_DRIFT_POSSIBLE");}
     else if(type==Sensor.TYPE_STEP_COUNTER){double count=values[0];if(count<0 || count!=Math.floor(count))return null;long delta=lease.steps<0 || count<lease.steps?0:(long)(count-lease.steps);
       if(delta>10000 || (lease.steps>=0 && delta>Math.max(10,(at-lease.stepAt)*0.006)))return null;lease.steps=count;lease.stepAt=at;value=new JSONObject().put("stepDelta",delta).put("cadenceClass","UNKNOWN").put("method","OS_PEDOMETER");units="step-evidence";warnings.put("STEP_DISTANCE_UNQUALIFIED");
@@ -151,6 +156,7 @@ final class SextantSensors implements SensorEventListener {
       else if(cap.endsWith("motion.stability")){boolean enough=stability.size()>=5 && at-stability.peekFirst()[0]>=800;value=enough?(stability.stream().allMatch(s->s[1]<0.5)?"STABLE":"MOVING"):"UNKNOWN";units="classification";}
       else{value=new JSONObject().put("x",values[0]).put("y",values[1]).put("z",values[2]);if(type==Sensor.TYPE_GYROSCOPE)units="rad/s";if(type==Sensor.TYPE_MAGNETIC_FIELD){units="microtesla";if(magnitude<5 || magnitude>200){calibration="DISTURBED";quality="LOW";warnings.put("MAGNETIC_DISTURBANCE");}}}
     }
+    if(powerFloorMs>=1000){quality="LOW";warnings.put("POWER_CADENCE_THROTTLED");}
     JSONObject result=new JSONObject().put("capabilityId",cap).put("value",value).put("units",units).put("referenceFrame",frame).put("calibrationState",calibration).put("qualityClass",quality).put("confidence",JSONObject.NULL).put("warnings",warnings);
     if(cap.endsWith("heading.estimate"))result.put("uncertainty",values.length>=5 && values[4]>=0?Math.min(180,Math.toDegrees(values[4])):180);return result;
   }

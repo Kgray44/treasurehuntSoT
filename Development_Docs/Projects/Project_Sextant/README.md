@@ -3,7 +3,7 @@ title: Project Sextant engineering home
 audience: product-engineering
 status: current
 canonical_for: project-sextant-engineering-home
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Project Sextant

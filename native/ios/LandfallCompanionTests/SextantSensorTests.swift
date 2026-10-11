@@ -5,12 +5,39 @@ import CoreMotion
 private final class InjectedSextantSource:SextantSensorSource {
     let fidelity="INJECTED"
     var allowed=true,active=Set<String>(),interval=0,stopped=false,emit:((SextantNativeSample)->Void)?
-    func supports(_ id:String)->Bool{id != "sextant.motion.pedometer"}
+    var unsupported=Set(["sextant.motion.pedometer"])
+    func supports(_ id:String)->Bool{!unsupported.contains(id)}
     func permission(_ id:String)->String{allowed ? "NOT_REQUIRED":"DENIED"}
     func configure(_ caps:Set<String>,intervalMs:Int,emit:@escaping(SextantNativeSample)->Void,fail:@escaping(String)->Void)->Bool{active=caps;interval=intervalMs;self.emit=emit;return true}
     func stop(){active.removeAll();stopped=true;emit=nil}
 }
 final class SextantSensorTests:XCTestCase {
+    func testConstrainedCadenceIsLowQualityAndUnsupportedBiasStaysUnavailable() {
+        let source=InjectedSextantSource();var clock=1000.0,events=[[String:Any]]()
+        let sensors=SextantSensors(source:source,now:{clock},emit:{events.append($0)}),cap="sextant.magnetic.field"
+        XCTAssertEqual(sensors.start(["leaseId":UUID().uuidString,"capabilities":[cap],"intervalMs":100,"durationMs":60000],foreground:true)["accepted"] as? Bool,true)
+        sensors.setConstrained(true);XCTAssertEqual(source.interval,1000)
+        func send(){source.emit?(SextantNativeSample(capability:cap,value:["x":20.0,"y":0.0,"z":-45.0],units:"microtesla",frame:"DEVICE",at:clock))}
+        send();clock=1200;send();XCTAssertEqual(events.count,1)
+        clock=2000;send();XCTAssertEqual(events.count,2)
+        let sample=events.last?["sample"] as? [String:Any]
+        XCTAssertEqual(sample?["qualityClass"] as? String,"LOW")
+        XCTAssertTrue((sample?["warnings"] as? [String])?.contains("POWER_CADENCE_THROTTLED") == true)
+        XCTAssertFalse(CoreMotionSextantSource().supports("sextant.magnetic.bias"))
+        sensors.stopAll("SLEEP");XCTAssertEqual(sensors.activeLeaseCount,0)
+    }
+    func testImpossibleStepCadenceCannotBecomeStepEvidence() {
+        let source=InjectedSextantSource();source.unsupported=[]
+        var clock=1000.0,events=[[String:Any]]()
+        let sensors=SextantSensors(source:source,now:{clock},emit:{events.append($0)}),cap="sextant.motion.pedometer"
+        XCTAssertEqual(sensors.start(["leaseId":UUID().uuidString,"capabilities":[cap],"intervalMs":100,"durationMs":60000],foreground:true)["accepted"] as? Bool,true)
+        func send(_ total:Int){source.emit?(SextantNativeSample(capability:cap,value:["stepDelta":total,"cadenceClass":"UNKNOWN","method":"OS_PEDOMETER"],units:"step-evidence",frame:"DEVICE",at:clock))}
+        send(100);clock=1200;send(200);XCTAssertEqual(events.count,1)
+        clock=1400;send(201)
+        let sample=events.last?["sample"] as? [String:Any],value=sample?["value"] as? [String:Any]
+        XCTAssertEqual(value?["stepDelta"] as? Int,0)
+        sensors.stopAll("END")
+    }
     func testHapticsNeverClaimPhysicalOutputAndRespectLifecycleAndPreferences() {
         let haptics=SextantHaptics(),valid:[String:Any]=["leaseId":UUID().uuidString,"enabled":true,"reducedSensory":false,"pattern":[15]]
         XCTAssertEqual(haptics.execute(valid,foreground:false,critical:false)["accepted"] as? Bool,false)

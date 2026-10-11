@@ -38,7 +38,7 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
         case "motion.linear-acceleration", "motion.gravity", "motion.stability", "motion.moving", "orientation.relative", "orientation.attitude": return motion.isDeviceMotionAvailable
         case "orientation.absolute": return motion.isDeviceMotionAvailable && CMMotionManager.availableAttitudeReferenceFrames().contains(.xMagneticNorthZVertical)
         case "heading.estimate": return CLLocationManager.headingAvailable()
-        case "magnetic.field": return motion.isMagnetometerAvailable
+        case "magnetic.field", "magnetic.uncalibrated-field": return motion.isMagnetometerAvailable
         case "pressure.observation": return CMAltimeter.isRelativeAltitudeAvailable()
         case "motion.pedometer": return CMPedometer.isStepCountingAvailable()
         default: return false
@@ -97,11 +97,12 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
                 guard let self=self else{return};if error != nil {self.fail?("sextant.motion.angular-velocity");return};if let v=value {self.publish("motion.angular-velocity",self.vector(v.rotationRate.x,v.rotationRate.y,v.rotationRate.z),"rad/s","DEVICE",v.timestamp)}
             } }
         } else {motion.stopGyroUpdates()}
-        if requested.contains("sextant.magnetic.field") && motion.isMagnetometerAvailable && !motion.isDeviceMotionAvailable {
+        if (requested.contains("sextant.magnetic.uncalibrated-field") || (requested.contains("sextant.magnetic.field") && !motion.isDeviceMotionAvailable)) && motion.isMagnetometerAvailable {
             if !motion.isMagnetometerActive {motion.startMagnetometerUpdates(to:.main) { [weak self] value,error in
                 guard let self=self else{return};if error != nil {self.fail?("sextant.magnetic.field");return};if let v=value {
                     // Raw CMMagnetometerData has no calibration-quality field.
-                    self.publish("magnetic.field",self.vector(v.magneticField.x,v.magneticField.y,v.magneticField.z),"microtesla","DEVICE",v.timestamp,quality:"LOW")
+                    if !self.motion.isDeviceMotionAvailable {self.publish("magnetic.field",self.vector(v.magneticField.x,v.magneticField.y,v.magneticField.z),"microtesla","DEVICE",v.timestamp,quality:"LOW")}
+                    self.publish("magnetic.uncalibrated-field",self.vector(v.magneticField.x,v.magneticField.y,v.magneticField.z),"microtesla","DEVICE",v.timestamp,quality:"LOW")
                 }
             } }
         } else {motion.stopMagnetometerUpdates()}
@@ -163,7 +164,7 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
 }
 
 final class SextantSensors {
-    static let capabilities = ["motion.acceleration-including-gravity","motion.linear-acceleration","motion.gravity","motion.angular-velocity","motion.stability","motion.moving","orientation.relative","orientation.attitude","orientation.absolute","heading.estimate","magnetic.field","pressure.observation","motion.pedometer"].map{"sextant.\($0)"}
+    static let capabilities = ["motion.acceleration-including-gravity","motion.linear-acceleration","motion.gravity","motion.angular-velocity","motion.stability","motion.moving","orientation.relative","orientation.attitude","orientation.absolute","heading.estimate","magnetic.field","magnetic.uncalibrated-field","magnetic.bias","pressure.observation","motion.pedometer"].map{"sextant.\($0)"}
     private final class Lease {
         let id:String,generation=UUID().uuidString,caps:Set<String>
         var interval:Int,sequence=0,last=[String:Double](),expiry:DispatchWorkItem?,steps:Int?,reference:[String:Double]?
@@ -202,15 +203,19 @@ final class SextantSensors {
         let age=now()-raw.at;guard age.isFinite,age>=0,age<=1000,JSONSerialization.isValidJSONObject(["value":raw.value]) else{return}
         for lease in Array(leases.values) where lease.caps.contains(raw.capability){
             guard !["DENIED","RESTRICTED"].contains(source.permission(raw.capability)) else{end(lease.id,reason:"PERMISSION");continue}
-            if let last=lease.last[raw.capability],raw.at-last<Double(max(constrained ? 1000:16,lease.interval)){continue};lease.last[raw.capability]=raw.at
+            let previousAt=lease.last[raw.capability]
+            if let last=previousAt,raw.at-last<Double(max(constrained ? 1000:16,lease.interval)){continue}
             var value=raw.value
             if raw.capability=="sextant.orientation.relative",let q=raw.value as? [String:Double] {
                 if lease.reference==nil{lease.reference=q};guard let ref=lease.reference,let relative=Self.relativeAttitude(ref,q) else{continue};value=relative
             }
             if raw.capability=="sextant.motion.pedometer",var steps=raw.value as? [String:Any],let total=steps["stepDelta"] as? Int {
-                let delta=lease.steps.map{total >= $0 ? total-$0:0} ?? 0;guard delta<=10000 else{continue};lease.steps=total;steps["stepDelta"]=delta;value=steps
+                let delta=lease.steps.map{total >= $0 ? total-$0:0} ?? 0
+                if let previous=previousAt,delta>10000 || Double(delta)/((raw.at-previous)/1000)>5 {lease.steps=nil;continue}
+                lease.steps=total;steps["stepDelta"]=delta;value=steps
             }
-            var sample:[String:Any]=["capabilityId":raw.capability,"value":value,"units":raw.units,"referenceFrame":raw.frame,"qualityClass":raw.quality,"calibrationState":raw.calibration,"confidence":NSNull(),"warnings":raw.warnings]
+            lease.last[raw.capability]=raw.at
+            var sample:[String:Any]=["capabilityId":raw.capability,"value":value,"units":raw.units,"referenceFrame":raw.frame,"qualityClass":constrained ? "LOW":raw.quality,"calibrationState":raw.calibration,"confidence":NSNull(),"warnings":raw.warnings+(constrained ? ["POWER_CADENCE_THROTTLED"]:[])]
             if let uncertainty=raw.uncertainty{sample["uncertainty"]=uncertainty}
             emit(["type":"sextant-sample","version":1,"leaseId":lease.id,"generation":lease.generation,"sequence":lease.sequence,"emittedAtWallMs":Int(Date().timeIntervalSince1970*1000),"captureMonotonicMs":raw.at,"captureAgeMs":age,"fidelity":source.fidelity,"sample":sample]);lease.sequence+=1
             if lease.id==legacy && source.fidelity=="OS"{legacyProjection(raw)}

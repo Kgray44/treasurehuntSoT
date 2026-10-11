@@ -3410,6 +3410,13 @@
       "authority": "project-sextant",
       "owners": ["project-sextant"],
       "critical": true
+    },
+    {
+      "id": "sextant.phase4.native-context",
+      "name": "Sextant Phase 4 native semantic acquisition, lifecycle and coordinated sensor qualification",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true
     }
   ]
 }

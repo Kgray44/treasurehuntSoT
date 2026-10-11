@@ -49,3 +49,56 @@ Completion: all technically attainable engineering and isolated checks, faithful
 receipts with injection/OS/physical distinctions and cleanup, normal Sounding Line
 qualification and clean reviewable PR. Formal Phase 4 acceptance/merge requires
 core D4 bring-up; virtual evidence cannot waive it.
+
+## Qualification handoff
+
+Source under development contains native generic acquisition/hardware/power and
+position ownership, shared companion transport, ordinary Devices controls, 17
+additional D0 scenarios, and registered `unit.sextant` / `browser.sextant` coverage.
+The 273-test focused boundary regression passes. Full root units and E2E have NOT
+STARTED locally; they are explicitly deferred to isolated hosted/coordinator
+capacity. Do not launch duplicates without assigning the owner/check first.
+
+Candidate identity is resolved from the published branch HEAD/tree and recorded
+in the native turn and ignored `artifacts/sextant-phase4-checkpoint.json` after
+publication. The first published source `d53b3d8876fee85b20875071848fd1a5f0820b5a`
+has Android PASS run38164052885 and iOS FAIL run38164057697. These qualify only
+that source. New location/hardware/consumer changes require fresh native receipts.
+
+Preparation: Node24.19.0, npm11.x, locked `npm ci --ignore-scripts`, then
+`npx --no-install prisma generate --schema prisma/schema.sqlite.prisma`.
+Local feedback used Node24.18.0/npm11.9.0. Hosted formal qualification must use
+the pinned Node24.19.0; local feedback does not prove that exact toolchain.
+Lock SHA256: `a2f4140400648da7810670a7ef677e04d526628a8f66a98efcc180f5eef74014`.
+Use a clean owned checkout, synthetic fixtures, no inherited production DB/token
+configuration. Full root command is `npx --no-install vitest run`; ordinary
+qualification uses trusted protected-main `scripts/sounding-line/ordinary.mjs`
+against exact base/candidate, or the existing hosted Sounding Line workflow.
+
+Registered browser proof must run through the existing generic profile wrapper,
+which owns the absolute nonce-bound SQLite clone, HTTP port, build and Chromium.
+Do not call the browser test directly against shared runtime. The new D1 route is
+`tests/e2e/sextant-phase4.spec.ts`; its native transport double is never D3 proof.
+Actual Android Devices UI runs in the existing owned native Journal pair harness,
+with real WebView/bridge/OS observations, pause/fallback, unchanged progression and
+both viewport/native screenshots. Preserve its original pairing/radio checks.
+
+Native dispatch: `node --import tsx scripts/landfall/device-lab/hosted.ts <sha>`
+followed by target/tier/scenario/profile. Development primary jobs use Android
+`android development motion-walk primary-phone` and Apple
+`ios development permission-denied-native primary-phone`. Broader profile and
+native Journal/presentation runs are intentional candidate/closure checks once
+primary compilation succeeds. Harvest with `scripts/landfall/device-lab/harvest-hosted.ts`
+and the exact run ID + dispatch.json; cleanup is mandatory and failure is retained.
+
+Other active owners: Parallax Studio/Lens visuals and placement; Pilot narrative
+acceptance; A1 Assistant proposals/provider/quota/Admiralty. Do not change shared
+editor, Lens, authoring or Prisma seams without the recorded bilateral contract.
+This branch adds only canonical device seams and its ordinary Devices panel.
+
+When only hosted/external results remain, preserve exact HEAD/tree/dirty state,
+run IDs, completed checks, ownership and resume triggers; end the native turn.
+Ending that turn does not complete this goal or accept Phase4. On resume, verify
+current branch/PR identities and receipts before further action. D4 access/signing
+remains externally unavailable; all attainable source/virtual qualification and
+reviewable PR publication must finish before closeout.

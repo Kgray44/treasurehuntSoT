@@ -1,3 +1,4 @@
+// @sounding-line-registration owner=sounding-line suite=unit.device-lab contracts=device-lab.shared-infrastructure
 import { describe, expect, it } from "vitest";
 import { coordinatedSensorBaseline as base, coordinatedSensorSeries, sensorFaultKinds } from "./coordinated-sensors";
 

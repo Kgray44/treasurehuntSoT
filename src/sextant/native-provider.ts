@@ -22,9 +22,10 @@ export const nativeSensorFamilies = {
   ],
   orientation: ["sextant.orientation.relative", "sextant.orientation.absolute", "sextant.orientation.attitude"],
   heading: ["sextant.heading.estimate"],
-  magnetic: ["sextant.magnetic.field"],
+  magnetic: ["sextant.magnetic.field", "sextant.magnetic.uncalibrated-field", "sextant.magnetic.bias"],
   pressure: ["sextant.pressure.observation"],
   pedometer: ["sextant.motion.pedometer"],
+  position: ["sextant.position.observation"],
 } as const;
 export type NativeSensorFamily = keyof typeof nativeSensorFamilies;
 export type SextantNativeOperation =
@@ -55,7 +56,15 @@ export const nativeSensorEventSchema = z.strictObject({
     capabilityId: z.string().max(80),
     value: z.unknown(),
     units: z.string().max(32),
-    referenceFrame: z.enum(["DEVICE", "NONE", "LOCAL_ARBITRARY", "EARTH_MAGNETIC", "EARTH_TRUE", "GRAVITY_ALIGNED"]),
+    referenceFrame: z.enum([
+      "DEVICE",
+      "NONE",
+      "LOCAL_ARBITRARY",
+      "EARTH_MAGNETIC",
+      "EARTH_TRUE",
+      "GRAVITY_ALIGNED",
+      "WGS84",
+    ]),
     qualityClass: stateSchema.shape.quality,
     calibrationState: stateSchema.shape.calibration,
     confidence: z.number().finite().min(0).max(1).nullable(),
@@ -70,10 +79,11 @@ export const nativeSensorEventSchema = z.strictObject({
       .max(8),
   }),
 });
-const snapshotSchema = z.strictObject({
+export const nativeCapabilitySnapshotSchema = z.strictObject({
   version: z.literal(1),
   states: z.record(z.string().max(80), stateSchema),
   background: z.literal("FOREGROUND_ONLY"),
+  hapticTier: z.enum(["NONE", "BASIC", "RICH"]).optional(),
 });
 const startSchema = z.strictObject({
   accepted: z.boolean(),
@@ -116,14 +126,14 @@ export class NativeSensorProvider implements SextantProvider {
       lifecycleConstraints: "FOREGROUND_ONLY",
       qualityMetadata: "PER_OBSERVATION",
       referenceFrames: [...new Set(capabilities.flatMap((c) => registry.get(c).frames))],
-      samplingBounds: { minimumIntervalMs: 16, maximumIntervalMs: 5000 },
+      samplingBounds: { minimumIntervalMs: family === "position" ? 1000 : 16, maximumIntervalMs: 5000 },
       powerClass: "VARIABLE",
       privacyClass: "LOCAL_EPHEMERAL",
       simulationSupport: Boolean(simulationIdentity),
     };
   }
   async refresh() {
-    const reply = snapshotSchema.parse(await this.transport.request("SEXTANT_STATE"));
+    const reply = nativeCapabilitySnapshotSchema.parse(await this.transport.request("SEXTANT_STATE"));
     const states: Record<string, CapabilityState> = {};
     for (const capability of this.definition.capabilities)
       states[capability] = reply.states[capability] ?? { ...unknownState(), support: "UNSUPPORTED" };
@@ -222,7 +232,7 @@ export class NativeSensorProvider implements SextantProvider {
         await this.transport.request("SEXTANT_START", {
           leaseId,
           capabilities: this.definition.capabilities,
-          intervalMs: updateInterval[context.updateClass],
+          intervalMs: Math.max(this.definition.samplingBounds.minimumIntervalMs, updateInterval[context.updateClass]),
           durationMs: 60000,
         }),
       );
@@ -255,7 +265,10 @@ export class NativeSensorProvider implements SextantProvider {
   setUpdateClass(updateClass: UpdateClass) {
     if (this.leaseId)
       void this.transport
-        .request("SEXTANT_UPDATE", { leaseId: this.leaseId, intervalMs: updateInterval[updateClass] })
+        .request("SEXTANT_UPDATE", {
+          leaseId: this.leaseId,
+          intervalMs: Math.max(this.definition.samplingBounds.minimumIntervalMs, updateInterval[updateClass]),
+        })
         .then((r) => {
           if ((r as { accepted?: unknown })?.accepted !== true) this.fail?.();
         })

@@ -24,8 +24,10 @@ export type HapticResult = {
 };
 /** Native providers implement this same bounded contract. A successful call does not prove physical sensation. */
 export interface SemanticHapticAdapter {
-  tier: "BASIC" | "RICH";
+  tier: "BASIC" | "RICH" | "NONE";
   execute(pattern: readonly number[]): boolean;
+  executeAsync?(pattern: readonly number[]): Promise<boolean>;
+  cleanupFailed?: boolean;
   cancel(): void;
 }
 const patterns: Record<HapticRequest["cue"], number[]> = {
@@ -49,11 +51,12 @@ export class SextantHaptics {
   private windowStart = -Infinity;
   private totalOnMs = 0;
   private timer: ReturnType<typeof setTimeout> | undefined;
+  private epoch = 0;
   constructor(
     private readonly adapter: SemanticHapticAdapter | null,
     private readonly now: () => number = () => performance.now(),
   ) {}
-  request(input: HapticRequest): HapticResult {
+  private prepare(input: HapticRequest) {
     const request = hapticRequestSchema.parse(input);
     const fallback = (reason: string): HapticResult => ({
       state: "FALLBACK",
@@ -61,26 +64,33 @@ export class SextantHaptics {
       fallback: request.fallback,
       tier: this.adapter?.tier ?? "NONE",
     });
-    if (this.cleanupFailed) return fallback("OUTPUT_CLEANUP_FAILED");
+    if (this.cleanupFailed || this.adapter?.cleanupFailed) return { result: fallback("OUTPUT_CLEANUP_FAILED") };
     if (this.disposed || !this.foreground || !this.enabled || this.reducedSensory)
-      return fallback("OUTPUT_PAUSED_OR_DISABLED");
-    if (!this.adapter) return fallback("OUTPUT_UNSUPPORTED");
+      return { result: fallback("OUTPUT_PAUSED_OR_DISABLED") };
+    if (!this.adapter || this.adapter.tier === "NONE") return { result: fallback("OUTPUT_UNSUPPORTED") };
     const pattern = request.cue === "CUSTOM" ? request.pattern : patterns[request.cue];
     if (!pattern || !pattern.length || (request.cue !== "CUSTOM" && request.pattern))
-      return fallback("PATTERN_INVALID");
+      return { result: fallback("PATTERN_INVALID") };
     const duration = pattern.reduce((a, b) => a + b, 0),
       onMs = pattern.filter((_, i) => i % 2 === 0).reduce((a, b) => a + b, 0),
       at = this.now();
-    if (duration > 1500 || onMs > 600 || onMs === 0) return fallback("PATTERN_BUDGET_EXCEEDED");
+    if (duration > 1500 || onMs > 600 || onMs === 0) return { result: fallback("PATTERN_BUDGET_EXCEEDED") };
     if (!Number.isFinite(at) || at < this.last || at - this.last < 500 || this.owner)
-      return fallback("OUTPUT_RATE_LIMITED_OR_BUSY");
+      return { result: fallback("OUTPUT_RATE_LIMITED_OR_BUSY") };
     if (at - this.windowStart >= 60000) {
       this.windowStart = at;
       this.totalOnMs = 0;
     }
-    if (this.totalOnMs + onMs > 3000) return fallback("OUTPUT_FATIGUE_LIMIT");
+    if (this.totalOnMs + onMs > 3000) return { result: fallback("OUTPUT_FATIGUE_LIMIT") };
+    return { request, pattern, duration, onMs, at, fallback };
+  }
+  request(input: HapticRequest): HapticResult {
+    const prepared = this.prepare(input);
+    if (prepared.result) return prepared.result;
+    const { request, pattern, duration, onMs, at, fallback } = prepared;
+    if (this.adapter?.executeAsync) return fallback("ASYNC_NATIVE_ACK_REQUIRED");
     try {
-      if (!this.adapter.execute([...pattern])) return fallback("PLATFORM_REJECTED_OR_DISABLED");
+      if (!this.adapter!.execute([...pattern])) return fallback("PLATFORM_REJECTED_OR_DISABLED");
     } catch {
       this.cancel();
       return fallback("PLATFORM_FAILED");
@@ -93,13 +103,44 @@ export class SextantHaptics {
       state: "REQUESTED",
       reason: "PHYSICAL_OUTPUT_UNCONFIRMED",
       fallback: request.fallback,
-      tier: this.adapter.tier,
+      tier: this.adapter!.tier,
     };
+  }
+  /** Native transport must acknowledge before a cue is reported as requested.
+   * The output slot is reserved while pending; cancellation invalidates late ACKs. */
+  async requestAsync(input: HapticRequest): Promise<HapticResult> {
+    if (!this.adapter?.executeAsync) return this.request(input);
+    const prepared = this.prepare(input);
+    if (prepared.result) return prepared.result;
+    const { request, pattern, duration, onMs, at, fallback } = prepared,
+      epoch = this.epoch;
+    this.owner = request.consumerId;
+    this.last = at;
+    this.totalOnMs += onMs;
+    try {
+      const accepted = await this.adapter.executeAsync([...pattern]);
+      if (epoch !== this.epoch) return fallback("OUTPUT_PAUSED_OR_DISABLED");
+      if (!accepted) {
+        this.cancel();
+        return fallback("PLATFORM_REJECTED_OR_DISABLED");
+      }
+      this.timer = setTimeout(() => this.cancel(), duration);
+      return {
+        state: "REQUESTED",
+        reason: "PHYSICAL_OUTPUT_UNCONFIRMED",
+        fallback: request.fallback,
+        tier: this.adapter.tier,
+      };
+    } catch {
+      this.cancel();
+      return fallback("PLATFORM_FAILED");
+    }
   }
   cancelConsumer(consumerId: string) {
     if (this.owner === consumerId) this.cancel();
   }
   cancel() {
+    this.epoch++;
     clearTimeout(this.timer);
     this.timer = undefined;
     if (this.owner) {
@@ -131,7 +172,7 @@ export class SextantHaptics {
       foreground: this.foreground,
       tier: this.adapter?.tier ?? "NONE",
       active: this.owner !== null,
-      cleanupFailed: this.cleanupFailed,
+      cleanupFailed: this.cleanupFailed || Boolean(this.adapter?.cleanupFailed),
     };
   }
 }

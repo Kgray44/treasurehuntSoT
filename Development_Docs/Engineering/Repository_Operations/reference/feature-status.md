@@ -3,10 +3,17 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Feature status
+
+Sextant Phase 4 remains an unaccepted implementation candidate. Native providers,
+canonical leases, shared coherent sensor scenarios and optional Devices controls
+are under qualification. Source-bound Android execution has passed an earlier
+candidate; iOS built but failed one lifecycle UI check. Subsequent changes require
+fresh native receipts. Required core D4 bring-up and formal integration remain open.
+See the [Phase 4 record](../../Sextant/Project_Sextant_Phase_4_Implementation_Record.md).
 
 Reach Phase 1's observation/calibration laboratory is an implementation candidate with physical qualification and protected integration pending. See the [phase record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md); no Phase 2 action capability is claimed.
 

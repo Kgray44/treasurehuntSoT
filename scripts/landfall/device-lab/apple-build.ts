@@ -1,4 +1,4 @@
-import { mkdir, writeFile, stat, readFile } from "node:fs/promises";
+import { mkdir, writeFile, stat, readFile, readdir } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { discoverDeviceLabHost, labTool } from "./host";
@@ -12,6 +12,21 @@ async function main() {
   const scope = process.argv[2] ?? "all";
   if (!["all", "companion-only"].includes(scope)) throw new Error("LANDFALL_APPLE_BUILD_SCOPE_INVALID");
   const presentationRequired = scope === "all";
+  // Bind the required inventory to this checkout, including added provider tests.
+  // Exactly one scenario-driver skip is allowed without its separately started endpoint.
+  let sourceTestCount = 0;
+  for (const directory of ["LandfallCompanionTests", "LandfallCompanionUiTests"]) {
+    for (const file of await readdir(path.join(root, "native", "ios", directory))) {
+      if (!file.endsWith("Tests.swift")) continue;
+      sourceTestCount += [
+        ...(await readFile(path.join(root, "native", "ios", directory, file), "utf8")).matchAll(
+          /\bfunc\s+test\w+\s*\(/g,
+        ),
+      ].length;
+    }
+  }
+  if (sourceTestCount < 22) throw new Error("LANDFALL_APPLE_SOURCE_TEST_INVENTORY_INCOMPLETE");
+  const requiredPassingTests = sourceTestCount - 1 - (presentationRequired ? 0 : 2);
   const profile = deviceLabProfileSchema.parse(process.env.LANDFALL_LAB_PROFILE ?? "primary-phone");
   const destination = path.join(root, "artifacts", "landfall-device-lab", "apple-build");
   await mkdir(destination, { recursive: true });
@@ -25,7 +40,8 @@ async function main() {
     JSON.stringify(
       {
         scope: presentationRequired ? "COMPANION_AND_PRESENTATION" : "COMPANION_ONLY",
-        requiredPassingTests: presentationRequired ? 19 : 17,
+        requiredPassingTests,
+        sourceTestCount,
         excludedPresentationTests: presentationRequired ? [] : presentationTests,
         independentPresentationReceiptRequired: !presentationRequired,
         presentationAcceptance: false,
@@ -225,6 +241,10 @@ async function main() {
       resultPath,
     ]);
     await writeFile(path.join(destination, "native-test-summary.json"), testSummary);
+    await writeFile(
+      path.join(destination, "native-test-details.json"),
+      await labTool("xcrun", ["xcresulttool", "get", "test-results", "tests", "--path", resultPath]),
+    );
     const nativeTests = JSON.parse(testSummary);
     // Export the first bundle before the independent Motion test so a later
     // failure preserves actual XXXL screenshots as well as the raw xcresult.
@@ -284,7 +304,7 @@ async function main() {
       await writeFile(path.join(destination, "reduced-motion-test-summary.json"), motionSummary);
       const motionTests = JSON.parse(motionSummary);
       if (
-        nativeTests.passedTests !== 18 ||
+        nativeTests.passedTests !== requiredPassingTests - 1 ||
         nativeTests.failedTests !== 0 ||
         motionTests.passedTests !== 1 ||
         motionTests.failedTests !== 0 ||
@@ -308,11 +328,11 @@ async function main() {
     // The only expected package-build skip is the canonical scenario driver,
     // which requires its separately started endpoint. The companion-only job
     // excludes exactly two presentation tests; their independent closure job
-    // still requires all19 passes and cannot be substituted by this receipt.
+    // still requires the complete source-bound inventory and cannot be substituted by this receipt.
     if (
       ![nativeTests.failedTests, nativeTests.passedTests, nativeTests.skippedTests].every(Number.isInteger) ||
       nativeTests.failedTests !== 0 ||
-      nativeTests.passedTests < (presentationRequired ? 19 : 17) ||
+      nativeTests.passedTests < requiredPassingTests ||
       nativeTests.skippedTests < 0 ||
       nativeTests.skippedTests > 1
     )
@@ -364,6 +384,12 @@ async function main() {
         )
       : "XCRESULT_NOT_CREATED";
     if (hasResult) {
+      await writeFile(
+        path.join(destination, "native-test-details.json"),
+        await labTool("xcrun", ["xcresulttool", "get", "test-results", "tests", "--path", resultPath]).catch(
+          () => "XCRESULT_TEST_DETAILS_UNAVAILABLE",
+        ),
+      );
       // Failed UI runs need their actual settings/screenshots too. Preserve
       // raw xcresult and the original failure if export itself is unavailable.
       await labTool(

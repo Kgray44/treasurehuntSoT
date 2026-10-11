@@ -3,7 +3,7 @@ title: Sextant implementation and consumer integration
 audience: product-engineering
 status: current
 canonical_for: sextant-phase1-implementation
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Sextant — Device Context
@@ -16,11 +16,11 @@ New consumers use `webSextantRuntime(window, navigator)` once per active surface
 
 Relative/absolute reference, quaternion normalization, separate gravity/linear/including-gravity observations, gyro rad/s axes, stability dwell/hysteresis, semantic freshness and interruption reset are enforced before device intent. All example gestures require a nonempty alternative. `beginGesture()` uses one shared acquisition contract and deterministically refuses LOW_RATE/PASSIVE before sensors start. INTERACTIVE or an explicitly bounded burst is required; no battery/lifetime escalation is automatic. It coordinates required semantic leases and cleans every lease on partial failure, abort or an ended channel. It returns an explicit release function; consumers release on unmount. Surface owners dispose on session end/sign-out.
 
-`runtime.haptics.request()` executes bounded semantic cues with a mandatory visual/text alternative. `setHapticPreferences()` supplies user and reduced-sensory policy. Basic vibration support and API acceptance do not guarantee a physical sensation. Important information always has another presentation path.
+`runtime.haptics.requestAsync()` executes bounded semantic cues with a mandatory visual/text alternative. `setHapticPreferences()` supplies user and reduced-sensory policy. Basic vibration support and API acceptance do not guarantee a physical sensation. Important information always has another presentation path.
 
 The [post-mainline correction receipt](../Device_Lab/Sextant_Parallax_Correction_Receipt.md) records the shared six-gesture acquisition policy, refusal boundaries and cleanup/continuity regressions separately from the retained phase evidence.
 
-The shared CLI now executes all 36 Sextant D0/D1 scenarios. Select one with `npm run sextant:device-lab -- --scenario sextant.web-heading-wrap`. Emulated browser events are D1, synthetic semantics are D0, and neither is physical qualification. Optional Generic Sensor providers are not necessary for the event-family plateau and are not claimed.
+The shared CLI now executes all 53 Sextant D0/D1 scenarios. Select one with `npm run sextant:device-lab -- --scenario sextant.web-heading-wrap`. Emulated browser events are D1, synthetic semantics are D0, and neither is physical qualification. Optional Generic Sensor providers are not necessary for the event-family plateau and are not claimed.
 
 Landfall's existing foreground context API remains compatible; generic acquisition lives in Sextant and shares its listener hub. Landfall still owns navigation/context meaning. New consumer code does not import raw Device Orientation/Motion or Vibration APIs.
 

@@ -3,10 +3,21 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Player guide
+
+The Sextant Phase 4 candidate adds **Optional device input** to **Devices**.
+Opening it checks availability without starting sensors or requesting permission.
+Choose **Allow device motion for this interaction**, then **Enable device input**
+for a local preview lasting up to ten seconds. **Pause device input** stops the
+preview; **Continue with screen controls** keeps the interaction accessible.
+Leaving the page or backgrounding the companion ends its input. Resume explicitly
+after returning. Declined permissions, unavailable hardware and limited readings
+retain screen controls. Vibration is optional, respects reduced sensory preferences,
+and always has an on-screen confirmation. Native availability depends on the
+configured companion; physical-device qualification remains pending.
 
 In the Crossdeck Phase 2 candidate, connect your screens through **Devices** using
 the same account and Voyage. The Journal's **Send to...** lets you choose another

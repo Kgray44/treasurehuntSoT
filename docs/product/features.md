@@ -3,10 +3,17 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Voyagewright features
+
+The Sextant Phase 4 implementation candidate adds native capability projection,
+shared foreground motion/position acquisition, bounded native vibration feedback
+and optional input controls on the ordinary Devices page. Discovery does not start
+sensors. Screen alternatives remain available. The [Phase 4 record](../../Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Implementation_Record.md)
+separates source qualification, virtual native execution and the required physical
+core bring-up gate. Phase 4 is not formally accepted or integrated.
 
 The [Find the Hand laboratory](../user/hand-laboratory.md) provides a local camera/synthetic observation and calibration preview. Physical accuracy and Phase 1 acceptance remain pending; selection, manipulation and handoff are outside this preview.
 

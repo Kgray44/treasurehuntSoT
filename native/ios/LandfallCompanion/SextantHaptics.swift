@@ -15,7 +15,7 @@ final class SextantHaptics {
     func execute(_ payload:[String:Any],foreground:Bool,critical:Bool)->[String:Any]{
         func result(_ accepted:Bool,_ tier:String)->[String:Any]{["accepted":accepted,"tier":tier,"physicalOutputConfirmed":false]}
         let now=ProcessInfo.processInfo.systemUptime
-        guard foreground,!critical,payload["enabled"] as? Bool==true,payload["reducedSensory"] as? Bool==false,let id=payload["leaseId"] as? String,UUID(uuidString:id) != nil,owner==nil,tier != "NONE",let pattern=payload["pattern"] as? [Int],!pattern.isEmpty,pattern.count<=15,pattern.allSatisfy({(0...200).contains($0)}),now-last>=0.5 else{return result(false,tier)}
+        guard foreground,!critical,!UIAccessibility.isReduceMotionEnabled,payload["enabled"] as? Bool==true,payload["reducedSensory"] as? Bool==false,let id=payload["leaseId"] as? String,UUID(uuidString:id) != nil,owner==nil,tier != "NONE",let pattern=payload["pattern"] as? [Int],!pattern.isEmpty,pattern.count<=15,pattern.allSatisfy({(0...200).contains($0)}),now-last>=0.5 else{return result(false,tier)}
         let duration=pattern.reduce(0,+),on=pattern.enumerated().filter{$0.offset%2==0}.reduce(0){$0+$1.element}
         guard duration<=1500,on>0,on<=600 else{return result(false,tier)};if now-windowStart>=60{windowStart=now;totalOn=0};guard totalOn+on<=3000 else{return result(false,tier)}
         var acceptedTier=tier

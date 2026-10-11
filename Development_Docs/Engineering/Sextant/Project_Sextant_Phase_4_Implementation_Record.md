@@ -38,6 +38,44 @@ compatible simulator through the accepted executor. No personal Mac is required.
 
 ## Source under development
 
+The first source candidate is `d53b3d8876fee85b20875071848fd1a5f0820b5a`,
+tree `7858d59f08ce77402d580f9d880f51ca6bb33383`:
+
+| Platform | Execution                                                                          | Result                                                                                                                                                                                                              |
+| -------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Android  | [38164052885](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38164052885) | PASS: actual API 36 instrumentation, new Sextant tests and motion-walk; 20 artifacts harvested; native/transport cleanup PASS.                                                                                      |
+| iOS      | [38164057697](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38164057697) | FAIL: Swift builds; 24 passing tests, one failure and one expected skip. Home/background observation failed; permission-denied-native did not execute. 4,629 artifacts harvested; simulator/transport cleanup PASS. |
+
+The failed Home transition now has one bounded SpringBoard activation fallback,
+with screenshots/hierarchy before retry. It still requires observed background
+or suspension and never uses termination to satisfy the assertion. Later source
+changes require fresh native receipts.
+
+Native `SextantPosition` now owns shared foreground LocationManager/Core Location
+acquisition for canonical leases and the accepted navigation projection. WGS84
+output has accuracy, uncertainty and bounded cadence. Android retains OS elapsed
+capture time; iOS capture-clock alignment stays explicitly uncertain and LOW.
+Position is context, not arrival proof. Landfall retains Worldspace/geofence policy.
+
+Hardware, power, BLE/NFC and version-gated UWB/NI APIs delegate to single Sextant
+owners through accepted compatibility APIs. Generic BLE GATT connection remains
+UNKNOWN, not a GATT data service. iOS raw magnetic field is uncalibrated/LOW; a
+separate OS bias estimate is UNSUPPORTED. Native haptic acknowledgements retain
+rich/basic/NONE, bounded cadence/fatigue, preferences, timeout and cleanup gates.
+No acknowledgement proves physical sensation.
+
+The ordinary Devices page adds passive discovery, consented ten-second motion
+preview, permission/status/pause/fallback controls and native-aware haptics.
+Abort scopes release late acquisition when a page leaves. System reduced sensory
+preference retains screen alternatives. Crossdeck receives categorical state,
+without coordinates, raw streams or stable hardware identifiers.
+
+Seventeen Phase 4 D0 scenarios join the existing 36 shared-runner scenarios:
+coherent rotation/field and acceleration/position/pressure, fault refusal,
+receding disturbance, threshold chatter, transient spikes, persistent interference,
+restart recovery, authenticated simulated ranging reconnect and capability
+negotiation. These do not measure RF or replace Crossdeck synchronization.
+
 `src/device-lab/coordinated-sensors.ts` adds shared seeded time-series inputs:
 ENU world coordinates, portrait device coordinates, unit quaternions mapping
 device to world, metres/seconds, radians/second, microtesla and hPa. Position and
@@ -68,9 +106,10 @@ iOS receipt-time heading and pedometer samples remain low quality with an explic
 capture-uncertainty warning. Reliable capture-time qualification is still required
 before those samples can satisfy quality-sensitive interactions.
 
-Focused local checks pass 137 tests across seven boundary, coordinated-input,
-web, permission-control and accepted Landfall regression suites, plus two native
-runtime transport-double tests. TypeScript checking passes. This does not prove native compilation, OS motion
+Focused local checks now pass 273 tests in 19 Sextant/shared Device Lab,
+native-location and Crossdeck UI files. TypeScript checking passes. Registered
+ordinary desktop/mobile browser and actual owned Android WebView capability-control
+journeys await execution. This does not prove native compilation, OS motion
 on a simulator, physical sensor accuracy, tactile output, RF behavior or energy.
 
 ## Remote physical qualification investigation
@@ -110,3 +149,16 @@ pending the coordinator's isolated cloud capacity handoff. Focused checks here
 are implementation feedback, not duplicate full-suite qualification. Native
 Android/iOS source compilation and instrumentation require fresh candidate-bound
 hosted execution; the accepted-base runs above do not qualify this source.
+
+Next: new candidate-bound native runs, compatibility/low-resource/tablet profiles,
+actual capability UI screenshots, clean ordinary Sounding Line, and full isolated
+unit regression on coordinator-assigned capacity. D0/D1 CLI receipts bind the
+frozen candidate/tree/fingerprint. Physical haptics, RF/magnetics, energy/thermal
+performance, physical accessibility and required D4 core bring-up remain separate.
+
+Document classification: this record and the project/engineering homes are current
+product-engineering; current status is product status; feature status is reference;
+features and Player guide are human product guidance; changelog is product/engineering
+history. Active execution material belongs in `.agents/sextant-phase4.md`. Scenario
+and contract JSON is machine-readable registration. The completed Feature Catalog
+stays unchanged while this phase is under qualification and unaccepted.

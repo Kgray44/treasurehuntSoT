@@ -15,6 +15,7 @@ export class SextantPermissionBroker {
   private readonly listeners = new Set<(key: string) => void>();
   constructor(
     private readonly requestPlatform: (key: string, purpose: PermissionPurpose) => Promise<PermissionState>,
+    private readonly revalidateExplicitNativeAction = false,
   ) {}
   private record(key: string) {
     let r = this.records.get(key);
@@ -65,7 +66,12 @@ export class SextantPermissionBroker {
       throw new Error("SEXTANT_PURPOSE_REQUIRED");
     const r = this.record(key);
     if (!r.enabled || !purpose.consent) return "DENIED";
-    if (r.state === "GRANTED" || r.state === "NOT_REQUIRED" || r.state === "RESTRICTED") return r.state;
+    if (r.state === "RESTRICTED") return r.state;
+    if (
+      (r.state === "GRANTED" || r.state === "NOT_REQUIRED") &&
+      !(this.revalidateExplicitNativeAction && purpose.userInitiated && key !== "NOT_REQUIRED")
+    )
+      return r.state;
     if (r.state === "DENIED" && !(purpose.retry && purpose.userInitiated)) return "DENIED";
     if (!purpose.userInitiated) return r.state;
     if (r.pending) return r.pending;

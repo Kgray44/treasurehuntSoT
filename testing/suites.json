@@ -2828,7 +2828,12 @@
       "parallelSafe": true,
       "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": [],
-      "contracts": ["sextant.phase1.foundation", "sextant.phase2.web-context", "sextant.phase3.field-context"],
+      "contracts": [
+        "sextant.phase1.foundation",
+        "sextant.phase2.web-context",
+        "sextant.phase3.field-context",
+        "sextant.phase4.native-context"
+      ],
       "affectedPaths": [
         "src/sextant/**",
         "scripts/sextant/**",
@@ -2937,6 +2942,24 @@
         "public/reach/**",
         "src/watchglass/hand-observation.ts"
       ],
+      "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
+      "currentImplementationState": "owned-browser-family",
+      "adapter": "playwright-family"
+    },
+    {
+      "id": "browser.sextant",
+      "name": "Sextant optional device input discovery, refusal, fallback and accessible desktop/mobile controls",
+      "tier": 4,
+      "owner": "project-sextant",
+      "command": "registry-selected Playwright cases",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 120000,
+      "hardBudgetMs": 360000,
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["unit.sextant"],
+      "contracts": ["sextant.phase4.native-context"],
+      "affectedPaths": ["src/sextant/**", "src/app/account/devices/**", "tests/e2e/sextant-phase4.spec.ts"],
       "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"

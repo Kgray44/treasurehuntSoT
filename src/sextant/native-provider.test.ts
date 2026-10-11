@@ -1,12 +1,19 @@
+// @sounding-line-registration owner=project-sextant suite=unit.sextant contracts=sextant.phase4.native-context
 import { describe, expect, it, vi } from "vitest";
-import { NativeSensorProvider, type SextantNativeTransport, type SextantNativeOperation } from "./native-provider";
+import {
+  NativeSensorProvider,
+  type SextantNativeTransport,
+  type SextantNativeOperation,
+  type NativeSensorFamily,
+} from "./native-provider";
 import { unknownState, type ProviderSample } from "./contracts";
 import { SextantCapabilityRegistry } from "./capabilities";
 import { normalizeObservation } from "./observations";
 import { SextantProviderRegistry } from "./providers";
 import { coordinatedSensorBaseline, coordinatedSensorSeries } from "@/device-lab/coordinated-sensors";
 
-function fixture(simulated = false) {
+function fixture(simulated = false, family: NativeSensorFamily = "magnetic") {
+  const capabilityId = family === "position" ? "sextant.position.observation" : "sextant.magnetic.field";
   let listener: (input: unknown) => void = () => {},
     leaseId = "",
     localNow = 10000;
@@ -18,7 +25,7 @@ function fixture(simulated = false) {
           version: 1,
           background: "FOREGROUND_ONLY",
           states: {
-            "sextant.magnetic.field": {
+            [capabilityId]: {
               ...unknownState(),
               support: "SUPPORTED",
               availability: "AVAILABLE",
@@ -45,7 +52,7 @@ function fixture(simulated = false) {
   };
   const provider = new NativeSensorProvider(
     transport,
-    "magnetic",
+    family,
     () => localNow,
     () => 100000,
     simulated ? "native-d0-test" : undefined,
@@ -64,10 +71,10 @@ function fixture(simulated = false) {
     captureAgeMs: 10,
     fidelity: simulated ? "INJECTED" : "OS",
     sample: {
-      capabilityId: "sextant.magnetic.field",
-      value: { x: 20, y: 0, z: -45 },
-      units: "microtesla",
-      referenceFrame: "DEVICE",
+      capabilityId,
+      value: family === "position" ? { latitude: 1, longitude: 2, accuracyMeters: 5 } : { x: 20, y: 0, z: -45 },
+      units: family === "position" ? "degrees/meters" : "microtesla",
+      referenceFrame: family === "position" ? "WGS84" : "DEVICE",
       calibrationState: "GOOD",
       qualityClass: "MEDIUM",
       confidence: null,
@@ -90,6 +97,31 @@ function fixture(simulated = false) {
   };
 }
 describe("native semantic provider boundary (D0 transport doubles)", () => {
+  it("normalizes native position with an explicit WGS84 frame and bounded acquisition cadence", async () => {
+    const f = fixture(false, "position");
+    await f.start();
+    expect(f.request).toHaveBeenCalledWith(
+      "SEXTANT_START",
+      expect.objectContaining({ capabilities: ["sextant.position.observation"], intervalMs: 1000 }),
+    );
+    f.send(f.event());
+    expect(f.emit.mock.calls[0][0]).toMatchObject({
+      referenceFrame: "WGS84",
+      units: "degrees/meters",
+      value: { latitude: 1, longitude: 2, accuracyMeters: 5 },
+    });
+    f.send(
+      f.event({
+        sequence: 2,
+        captureMonotonicMs: 991,
+        captureAgeMs: 9,
+        sample: { ...f.event().sample, value: { latitude: 100, longitude: 2, accuracyMeters: 5 } },
+      }),
+    );
+    expect(f.emit).toHaveBeenCalledTimes(1);
+    expect(f.fail).toHaveBeenCalled();
+    await f.provider.stop();
+  });
   it("discovers without acquisition and scopes starts/stops to one short native lease", async () => {
     const f = fixture();
     await f.provider.refresh();

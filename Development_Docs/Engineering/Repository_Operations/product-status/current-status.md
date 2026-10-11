@@ -3,10 +3,18 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Current status
+
+Sextant Phase 4 is an implementation candidate with native ownership, canonical
+transport, coordinated shared-lab scenarios and ordinary Devices controls under
+qualification. The first source-bound Android run passed; the first iOS run built
+and passed 24 tests but failed the Home/background UI check. Repairs and later
+source changes require fresh receipts. Required D4 core real-device bring-up,
+final software qualification and owner review remain open. See the
+[Phase 4 record](../../Sextant/Project_Sextant_Phase_4_Implementation_Record.md).
 
 Reach Phase 1 has an owned implementation candidate for a local camera/synthetic hand laboratory and independent calibration. It is not physically qualified or phase-complete. The [implementation record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md) retains software evidence, the failed live-camera attempt and integration status.
 

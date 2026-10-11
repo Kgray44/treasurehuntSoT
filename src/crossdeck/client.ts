@@ -1,12 +1,18 @@
 import { projectCapabilities, type SurfaceCapabilities } from "./contracts";
+import { webSextantRuntime } from "@/sextant/web-runtime";
+import type { WebSensorTarget } from "@/sextant/web-provider";
 export const storageKey = (voyage: string) => `crossdeck.surface.v1:${voyage}`;
 export function browserProjection(): SurfaceCapabilities {
   const width = window.innerWidth;
-  return projectCapabilities({
-    formFactor: "UNKNOWN",
-    viewportClass: width < 600 ? "COMPACT" : width < 1000 ? "MEDIUM" : "WIDE",
-    reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  });
+  const runtime = webSextantRuntime(window as unknown as WebSensorTarget, navigator);
+  return projectCapabilities(
+    {
+      formFactor: "UNKNOWN",
+      viewportClass: width < 600 ? "COMPACT" : width < 1000 ? "MEDIUM" : "WIDE",
+      reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    },
+    (id) => runtime.projectCapability(id),
+  );
 }
 export async function crossdeckRequest(body: unknown, csrfToken: string, signal?: AbortSignal, keepalive = false) {
   const response = await fetch("/api/crossdeck", {
