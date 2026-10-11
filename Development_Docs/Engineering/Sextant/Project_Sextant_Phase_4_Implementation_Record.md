@@ -151,8 +151,12 @@ The iOS run [38168558978](https://github.com/Kgray44/treasurehuntSoT/actions/run
 completed successfully: native Swift/XCTest/XCUITest and the actual simulator
 permission-denied scenario executed. Its source fingerprint is
 `c14adb70a81e5f2a2bbf252b347465410225695b66210efb7206a15317db5f22`.
-Artifact harvest/cleanup is underway; named test counts and simulator metadata
-will be recorded from retained receipts. This success qualifies only `e4b2bee3`.
+Retained native receipts show 29 passed tests, zero failures and one expected
+canonical-driver skip on iPhone 17e / iOS Simulator 26.5 (23F77). The nine named
+Sextant sensor/position tests and Home/background lifecycle test passed. All 4775
+artifact files are harvested and checksummed; transport cleanup passed. The
+receipt's Core Location main-thread availability warning is retained and does not
+establish real-device responsiveness. This success qualifies only `e4b2bee3`.
 The later conversion/kernel, Android validator and accepted-main reconciliation
 require fresh native execution.
 
@@ -162,6 +166,14 @@ PR #708, were reconciled additively from protected main
 candidate statements and accepted mainline status; transport, pairing, narrative
 and authoring ownership remain intact. Post-reconciliation focused checks passed
 284 tests in 23 files, including Crossdeck controls and Pilot story/authorization.
+Candidate `a54cabc334a3574cbef55e4f9718175c286fbccf` passed all 53 D0/D1 CLI
+scenarios and launched full primary Android/iOS scenario sets (runs 38169456020
+and 38169460273). Ordinary run38169432378 failed its format preflight because
+the additive changelog merge retained an extra blank line. Its failed decision is
+preserved; formatting is corrected before fresh ordinary qualification. This
+documentation-only correction does not change native lab fingerprint inputs,
+but the original native receipt SHA is retained without relabelling it as a
+later documentation candidate.
 
 Firebase Test Lab supports Android instrumentation and iOS XCTest on hosted real
 devices. Its current [quota documentation](https://firebase.google.com/docs/test-lab/usage-quotas-pricing)
