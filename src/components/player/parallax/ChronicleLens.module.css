@@ -149,6 +149,24 @@
   line-height: 1.5;
   font-size: 0.9rem;
 }
+.lens footer details {
+  margin: 1rem 0;
+}
+.lens footer summary {
+  cursor: pointer;
+  color: #ebce93;
+}
+.lens footer label {
+  display: block;
+  margin: 0.8rem 0;
+  font-size: 0.9rem;
+}
+.lens footer select {
+  max-width: 100%;
+  background: #15303b;
+  color: #edf2ed;
+  padding: 0.5rem;
+}
 .lens footer p + p {
   color: #b8c9cc;
   font-size: 0.8rem;

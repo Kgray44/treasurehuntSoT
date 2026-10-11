@@ -8,6 +8,8 @@ last_reviewed: 2026-10-11
 
 # Current status
 
+Parallax Phase 3 is locally implemented on the owned branch. The [implementation record](../../../Projects/Project_Parallax/Phase_3_Implementation.md) covers semantic staging, durable logical policies, remote authoring, optional metadata calibration, discovery recovery and complete browser publication/republication. Both workstation visual decisions are satisfied; [final refinement approval](../../../Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) binds `592217e3` on 2026-10-11. Ordinary protected qualification, integration and landed smoke remain pending. Physical field qualification is not established.
+
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is integrated on protected main through PR #707, combining accepted spatial/device contracts with one guided synthetic Reach/Pilot session. Its source and automated qualification do not close owner or physical acceptance gates.
 
 Reach Phase 1's local camera/synthetic hand laboratory and independent calibration are an integrated foundation preview on protected main through PR #697. It is not physically qualified or phase-complete. The [implementation record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md) retains software evidence, the failed live-camera attempt and integration status.

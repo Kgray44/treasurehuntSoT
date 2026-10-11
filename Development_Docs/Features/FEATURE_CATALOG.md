@@ -2325,6 +2325,50 @@ An authorized synthetic adventure connects published One Voyage story progressio
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-B111 - Parallax Adaptive Semantic Staging and Discovery
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Parallax Phase 3
+
+Creators author multi-object semantic scenes remotely, preview differing safe arrangements, publish stable version-bound logical placement policies, and provide bounded accessible discovery with optional consented metadata calibration in the refined 3D workstation.
+
+### Important subfeatures
+
+- Typed semantic surfaces, context, safety, accessibility and fallback recipes
+- Deterministic unsafe-first multi-entity staging with bounded scene budgets and conflict diagnostics
+- Sticky, crew, run, variant and calibrated policies with durable logical decisions
+- Provider-independent guided remote authoring and reviewable supported phrase preview
+- Real 3D editing with four workspace layouts, adaptive resizable docks and account-scoped presentation preferences
+- Meaningful search timers, progressive hints, exact reveal and accessible canonical completion paths
+- Optional minimized field metadata with consent, withdrawal, retention, authorized sequential review and immutable calibration releases
+- Separate simulated and self-reported quality summaries with actionable Creator guidance
+- Shared Device Lab runtime and field-service packs plus complete Creator and Player publication/republication browser journeys
+
+### Primary surfaces
+
+`/studio/parallax`, `/player/voyages/[playthroughId]`
+
+### Meaningful limitations
+
+- Physical AR accuracy, actual field reliability, representative-device performance and cross-device physical alignment are not established by synthetic software proof.
+- Native semantic candidate acquisition is unavailable; existing adapters degrade to Guided rather than invent geometry.
+- Physical provenance is self-reported; simulation cannot promote physical maturity and neither establishes certified hardware attestation.
+- Automatic room-image transfer is disabled until certified local person/face screening and the approved protected-media purpose are available.
+- Live AI-provider quality, separately owned Assistant A1 integration and unsupported imported renderers remain unavailable or unqualified.
+
+### Evidence
+
+- commit: `f521aaacf0f285ced5ffa3013d5de387d5b242f3`
+- path: `src/parallax/adaptive.ts`
+- path: `src/parallax/field-service.ts`
+- test: `src/parallax/adaptive.test.ts`
+- test: `src/parallax/field-service.test.ts`
+- test: `tests/e2e/parallax-adaptive.spec.ts`
+- test: `tests/e2e/parallax-workstation.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
