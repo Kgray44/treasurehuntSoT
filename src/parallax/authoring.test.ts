@@ -49,6 +49,17 @@ describe("Parallax creator authoring", () => {
     expect(() => editSpatialDraft(grouped, { type: "PARENT", entityId: id, parentId: "child" })).toThrow(/itself/);
     expect(draft.content.entities[1].parentEntityId).toBeUndefined();
   });
+  it("rejects grouping independently resolved anchor frames without moving either entity", () => {
+    let draft = createSpatialDraft("independent");
+    const parentId = draft.content.entities[0].id;
+    draft = editSpatialDraft(draft, { type: "DUPLICATE", entityId: parentId, newId: "wall-child" });
+    draft = editSpatialDraft(draft, { type: "PLACEMENT", entityId: "wall-child", placement: "WALL" });
+    const before = structuredClone(draft);
+    expect(() => editSpatialDraft(draft, { type: "PARENT", entityId: "wall-child", parentId })).toThrow(
+      /same anchor frame/,
+    );
+    expect(draft).toEqual(before);
+  });
   it("applies constrained edits, locks, atomic AI acceptance and undo/redo", () => {
     const draft = createSpatialDraft("owned");
     const entityId = draft.content.entities[0].id;

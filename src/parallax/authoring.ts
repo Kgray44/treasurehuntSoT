@@ -194,6 +194,8 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
       const world = worldTransform(next.content, entity.id);
       const parent = next.content.entities.find((e) => e.id === edit.parentId);
       if (edit.parentId && (!parent || parent.id === entity.id)) throw new Error("Choose a different parent.");
+      if (parent && parent.anchorId !== entity.anchorId)
+        throw new Error("Group entities in the same anchor frame. Duplicate an entity there to add a child.");
       let ancestor = parent;
       while (ancestor) {
         if (ancestor.id === entity.id) throw new Error("A group cannot contain itself.");
