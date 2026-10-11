@@ -1,17 +1,29 @@
 import { z } from "zod";
 import { editSpatialDraft, type SpatialDraft } from "./authoring";
 import { validateSpatialAuthoring } from "./studio-validation";
+import { semanticRecipeSchema } from "./adaptive-contracts";
+import { enableAdaptiveAuthoring, invalidateAdaptiveCalibration } from "./adaptive-authoring";
 
 export const intentProposalSchema = z.strictObject({
   placement: z.enum(["DESK", "WALL", "ENTRANCE", "LOCAL"]),
   content: z.string().trim().min(1).max(2000),
   alternativeText: z.string().trim().min(1).max(2000),
   explanation: z.string().trim().min(1).max(2000),
+  semanticRecipe: semanticRecipeSchema.optional(),
 });
 export type IntentProposal = z.infer<typeof intentProposalSchema>;
 export function materializeIntent(draft: SpatialDraft, entityId: string, raw: unknown): SpatialDraft {
   const proposal = intentProposalSchema.parse(raw);
-  const next = editSpatialDraft(draft, { type: "PLACEMENT", entityId, placement: proposal.placement });
+  const next = proposal.semanticRecipe
+    ? enableAdaptiveAuthoring(draft)
+    : editSpatialDraft(draft, { type: "PLACEMENT", entityId, placement: proposal.placement });
+  if (proposal.semanticRecipe) {
+    if (proposal.semanticRecipe.entityId !== entityId) throw new Error("PARALLAX_AI_RECIPE_TARGET_MISMATCH");
+    next.content.adaptive!.recipes = next.content.adaptive!.recipes.map((r) =>
+      r.entityId === entityId ? proposal.semanticRecipe! : r,
+    );
+    invalidateAdaptiveCalibration(next);
+  }
   const entity = next.content.entities.find((e) => e.id === entityId)!;
   entity.content = proposal.content;
   entity.alternativeText = proposal.alternativeText;
@@ -59,7 +71,8 @@ export async function requestSpatialAI(
       maximumEntities: 32,
       noExecutableContent: true,
       advisoryOnly: true,
-      fixedAuthoringOnly: true,
+      semanticRecipes: true,
+      reviewRequired: true,
     },
     scene: {
       entityCount: draft.content.entities.length,

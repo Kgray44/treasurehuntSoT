@@ -10,11 +10,16 @@ last_reviewed: 2026-10-11
 
 Sextant Phase 4 is an implementation candidate with native ownership, canonical
 transport, coordinated shared-lab scenarios and ordinary Devices controls under
-qualification. The first source-bound Android run passed; the first iOS run built
-and passed 24 tests but failed the Home/background UI check. Repairs and later
-source changes require fresh receipts. Required D4 core real-device bring-up,
-final software qualification and owner review remain open. See the
+qualification. Four Android virtual profiles passed their registered scenarios;
+actual native Devices controls and OS lifecycle checks passed. Apple native tests,
+including the corrected Home transition, passed; broader iOS scenarios remain in
+execution. Android registered background return failed and its observed public
+settings prerequisite has a bounded correction awaiting execution. Reconciled
+mainline changes require fresh software qualification. Required D4 core real-device
+bring-up and formal acceptance remain open. See the
 [Phase 4 record](../../Sextant/Project_Sextant_Phase_4_Implementation_Record.md).
+
+Parallax Phase 3 is software-qualified on protected main through PR #711 at `0327eeb7`. The [implementation record](../../../Projects/Project_Parallax/Phase_3_Implementation.md) binds all nine ordinary Sounding Line obligations, 1,739 tests, four product browser journeys, 79 landed smoke tests and 26 fresh landed D0 scenarios. Both workstation visual decisions are satisfied; [final refinement approval](../../../Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) binds `592217e3` on 2026-10-11. Physical AR accuracy, actual field reliability and cross-device physical alignment are not established.
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is integrated on protected main through PR #707, combining accepted spatial/device contracts with one guided synthetic Reach/Pilot session. Its source and automated qualification do not close owner or physical acceptance gates.
 

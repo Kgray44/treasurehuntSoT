@@ -1,0 +1,271 @@
+{
+  "version": 1,
+  "classification": "SOURCE_BOUND_ORIGINAL_SOFTWARE_RECEIPTS",
+  "receipts": [
+    {
+      "readable": "frozen-parallax.adaptive-floor-map.json",
+      "original": "frozen-parallax.adaptive-floor-map.original-receipt",
+      "originalSha256": "92e2b6e12d712691d3105fab99cbc3dfd2faa17eb8e93c4b3c6de4710a96c182"
+    },
+    {
+      "readable": "frozen-parallax.adaptive-per-run-variation.json",
+      "original": "frozen-parallax.adaptive-per-run-variation.original-receipt",
+      "originalSha256": "8790336482af4be9cecb4d443d3e0021eb9e561ca6b34873c98d5d0fdaa8aad4"
+    },
+    {
+      "readable": "frozen-parallax.discovery-hint-escalation.json",
+      "original": "frozen-parallax.discovery-hint-escalation.original-receipt",
+      "originalSha256": "1aa6c8d1dfac532d3f5fb719677c0feedfca8967295246cf55445262cfa7aaf9"
+    },
+    {
+      "readable": "frozen-parallax.fixed-worldspace-fallback.json",
+      "original": "frozen-parallax.fixed-worldspace-fallback.original-receipt",
+      "originalSha256": "af749c3beca4bf359366ebf572950e603533b90021904ec55a31319f2d66310e"
+    },
+    {
+      "readable": "frozen-parallax.guided-fallback.json",
+      "original": "frozen-parallax.guided-fallback.original-receipt",
+      "originalSha256": "01c546f41296b167986555e9110efe0a2c6c083f41a34bac877e2c71713a37db"
+    },
+    {
+      "readable": "frozen-parallax.local-frame.json",
+      "original": "frozen-parallax.local-frame.original-receipt",
+      "originalSha256": "5108ba02e1df82be6f068d749b5cc5222763ab45583cc5f97309c3134ed0f1d5"
+    },
+    {
+      "readable": "frozen-parallax.native-unavailable.json",
+      "original": "frozen-parallax.native-unavailable.original-receipt",
+      "originalSha256": "31e30cd591b0f8dc5ef15a00df8ac44517b609276bf2d89eb88e8cf337304b29"
+    },
+    {
+      "readable": "frozen-parallax.phase3-accessible-direct.json",
+      "original": "frozen-parallax.phase3-accessible-direct.original-receipt",
+      "originalSha256": "31634dec1d00b9c7dc4b388d9c621528851a1eda494fef4c14366a59b99c4269"
+    },
+    {
+      "readable": "frozen-parallax.phase3-background-resume.json",
+      "original": "frozen-parallax.phase3-background-resume.original-receipt",
+      "originalSha256": "1015137b5a350c4f413113922e4f55381a4ec4c2a30f197ed9bba685815decd3"
+    },
+    {
+      "readable": "frozen-parallax.phase3-consent-decline.json",
+      "original": "frozen-parallax.phase3-consent-decline.original-receipt",
+      "originalSha256": "cb6f1529aaf3a690f9ee4fa1961690123ba9ded1ef4436252e35d7016ffe499f"
+    },
+    {
+      "readable": "frozen-parallax.phase3-determinism.json",
+      "original": "frozen-parallax.phase3-determinism.original-receipt",
+      "originalSha256": "65dad111bad7680eb89f58f6b1a3c8666eabac06a1a9103292435e8bec3f62dd"
+    },
+    {
+      "readable": "frozen-parallax.phase3-image-upload-disabled.json",
+      "original": "frozen-parallax.phase3-image-upload-disabled.original-receipt",
+      "originalSha256": "99c5200313d4330b567be131314ebc976b8162e2c0a47b7388291a9cfff48127"
+    },
+    {
+      "readable": "frozen-parallax.phase3-long-search.json",
+      "original": "frozen-parallax.phase3-long-search.original-receipt",
+      "originalSha256": "ccbbfb9818548b15dde1595c456449535b5cb7ac0a290e5f8fdb93ea78410dbe"
+    },
+    {
+      "readable": "frozen-parallax.phase3-low-confidence.json",
+      "original": "frozen-parallax.phase3-low-confidence.original-receipt",
+      "originalSha256": "78d158997383987d30b594a50f85726cf2cc65b3ec06769cb56bb4f767c1c79f"
+    },
+    {
+      "readable": "frozen-parallax.phase3-multi-room.json",
+      "original": "frozen-parallax.phase3-multi-room.original-receipt",
+      "originalSha256": "244855de837f4071b5139769b37a7561c174444cfd467b1e655b0712f0c644d1"
+    },
+    {
+      "readable": "frozen-parallax.phase3-no-surface.json",
+      "original": "frozen-parallax.phase3-no-surface.original-receipt",
+      "originalSha256": "22565daecbe73b8d244808dc16ee111e5b372e66603aa95d8cde0bc9d1c18e25"
+    },
+    {
+      "readable": "frozen-parallax.phase3-permission-denial.json",
+      "original": "frozen-parallax.phase3-permission-denial.original-receipt",
+      "originalSha256": "30c409f521e9c7ab31fe9eac1e0ec67a44fdc18e902e210cb654f37499e23459"
+    },
+    {
+      "readable": "frozen-parallax.phase3-scene-conflict.json",
+      "original": "frozen-parallax.phase3-scene-conflict.original-receipt",
+      "originalSha256": "49f02124f094f1c0118a790474147a56cef4e8fed3ba79cedfd2085d2c520d1f"
+    },
+    {
+      "readable": "frozen-parallax.phase3-scoped-stability.json",
+      "original": "frozen-parallax.phase3-scoped-stability.original-receipt",
+      "originalSha256": "8a2afba57fe88f64891ebd7615759bcc68aad2b468aa9f725373c4ff1cdbd294"
+    },
+    {
+      "readable": "frozen-parallax.phase3-stale-version.json",
+      "original": "frozen-parallax.phase3-stale-version.original-receipt",
+      "originalSha256": "53c9ee8a67f6d0c007df5392aa2ab26399873f752b02f47e6c551d846cef5e42"
+    },
+    {
+      "readable": "frozen-parallax.phase3-tracking-interruption.json",
+      "original": "frozen-parallax.phase3-tracking-interruption.original-receipt",
+      "originalSha256": "e7117513589bc2139a219cca6f5d50cbd87e0734df53c97d2c5cfec5a169dda9"
+    },
+    {
+      "readable": "frozen-parallax.phase3-unsafe-candidate.json",
+      "original": "frozen-parallax.phase3-unsafe-candidate.original-receipt",
+      "originalSha256": "69cf2613ff180fd405f9ef308fc8db94d26011bcb928c1e204e293f9f494a104"
+    },
+    {
+      "readable": "frozen-parallax.receipt-isolation.json",
+      "original": "frozen-parallax.receipt-isolation.original-receipt",
+      "originalSha256": "be3615fcc59371976feadcedfac877c373e66868a6dce575c0832f7d6a935e3b"
+    },
+    {
+      "readable": "frozen-parallax.surface-placement.json",
+      "original": "frozen-parallax.surface-placement.original-receipt",
+      "originalSha256": "d6168372b7c3a2f5a0157f97e55c7c7ed4287d26c7eeb1a6e30776785cc6751e"
+    },
+    {
+      "readable": "frozen-parallax.tracking-recovery.json",
+      "original": "frozen-parallax.tracking-recovery.original-receipt",
+      "originalSha256": "4ffa66b70344c20ab5d117105c9e2bf30659dbe149634519e0f63ff8ea3b785f"
+    },
+    {
+      "readable": "frozen-parallax.version-pin.json",
+      "original": "frozen-parallax.version-pin.original-receipt",
+      "originalSha256": "f1092e7580da40885a84e9bbcf17a8aef09d17dbd743c5ea5f78e65e5a76fab9"
+    },
+    {
+      "readable": "landed-parallax.adaptive-floor-map.json",
+      "original": "landed-parallax.adaptive-floor-map.original-receipt",
+      "originalSha256": "e9a1c9d8cafd29ed683eaab2f54f8abbb38819a986ef42986c64765fa6c30533"
+    },
+    {
+      "readable": "landed-parallax.adaptive-per-run-variation.json",
+      "original": "landed-parallax.adaptive-per-run-variation.original-receipt",
+      "originalSha256": "219aba225449e00b31208d130aed9f12dab4b517b7b4175b74419e7781d1b0dc"
+    },
+    {
+      "readable": "landed-parallax.discovery-hint-escalation.json",
+      "original": "landed-parallax.discovery-hint-escalation.original-receipt",
+      "originalSha256": "5978692956cb7cf5357dee6d8940317221c33d5ea7d8f50c47e0482a9e95ab01"
+    },
+    {
+      "readable": "landed-parallax.fixed-worldspace-fallback.json",
+      "original": "landed-parallax.fixed-worldspace-fallback.original-receipt",
+      "originalSha256": "f4eb3f2854d9dc38198f31a297bb50d4c5b0d0b0f81c56b7900b1b115d175ca8"
+    },
+    {
+      "readable": "landed-parallax.guided-fallback.json",
+      "original": "landed-parallax.guided-fallback.original-receipt",
+      "originalSha256": "80b635f033948bdaea8770c9adc4e72326871b521f83eb1a17929cf25ee0025b"
+    },
+    {
+      "readable": "landed-parallax.local-frame.json",
+      "original": "landed-parallax.local-frame.original-receipt",
+      "originalSha256": "11e7aef0a31a42d47442870b9d75a519cd158b0c2b4f82a1a85179f93829eb7c"
+    },
+    {
+      "readable": "landed-parallax.native-unavailable.json",
+      "original": "landed-parallax.native-unavailable.original-receipt",
+      "originalSha256": "cd2239347fda71988822e38a7720cf04e0660caec2240ad919a4d0769883b2e0"
+    },
+    {
+      "readable": "landed-parallax.phase3-accessible-direct.json",
+      "original": "landed-parallax.phase3-accessible-direct.original-receipt",
+      "originalSha256": "7408a4fe13bc382d74f534c38d6d3aefeaa176784716e7ff36d31f032ff477e2"
+    },
+    {
+      "readable": "landed-parallax.phase3-background-resume.json",
+      "original": "landed-parallax.phase3-background-resume.original-receipt",
+      "originalSha256": "09f570610ab8ff4c95887c656fad5e5eb6d1582e72c23d680989756b11abcb3b"
+    },
+    {
+      "readable": "landed-parallax.phase3-consent-decline.json",
+      "original": "landed-parallax.phase3-consent-decline.original-receipt",
+      "originalSha256": "f71a92b6589835b4e98d95a61d0aaecf2b6c2cfa1c446f57756a8f64ef8f086c"
+    },
+    {
+      "readable": "landed-parallax.phase3-determinism.json",
+      "original": "landed-parallax.phase3-determinism.original-receipt",
+      "originalSha256": "14ca9779d3296b08b27052e0350e0afea7595aa437d3539ec4cc78227f16135d"
+    },
+    {
+      "readable": "landed-parallax.phase3-image-upload-disabled.json",
+      "original": "landed-parallax.phase3-image-upload-disabled.original-receipt",
+      "originalSha256": "5442012f4a08a03a09e71e60e911cee578bb8348e6eaf691066ddb0cf31f81ba"
+    },
+    {
+      "readable": "landed-parallax.phase3-long-search.json",
+      "original": "landed-parallax.phase3-long-search.original-receipt",
+      "originalSha256": "4e5d67af56258502601fad6d8220d51560b2df92370611cba103a5c1a00e3bef"
+    },
+    {
+      "readable": "landed-parallax.phase3-low-confidence.json",
+      "original": "landed-parallax.phase3-low-confidence.original-receipt",
+      "originalSha256": "ba89988e3475a7d3243ee212a5dd564c693f170b0119cec858b0492de09acd14"
+    },
+    {
+      "readable": "landed-parallax.phase3-multi-room.json",
+      "original": "landed-parallax.phase3-multi-room.original-receipt",
+      "originalSha256": "e2f2a40b042c88e60ead9c1e469fcd2025fbfab18d4839baa9b5aedd00bb034f"
+    },
+    {
+      "readable": "landed-parallax.phase3-no-surface.json",
+      "original": "landed-parallax.phase3-no-surface.original-receipt",
+      "originalSha256": "d3cacc6c401a110d2a0b8198afdfceae3a922078e6af628280fc378aabd050b2"
+    },
+    {
+      "readable": "landed-parallax.phase3-permission-denial.json",
+      "original": "landed-parallax.phase3-permission-denial.original-receipt",
+      "originalSha256": "248786b423f696ede473b33816a11c4ace54232ca264968e83403ae4fcde000e"
+    },
+    {
+      "readable": "landed-parallax.phase3-scene-conflict.json",
+      "original": "landed-parallax.phase3-scene-conflict.original-receipt",
+      "originalSha256": "aeac599a6a93e9fc850649f4ba2640d443403d17e512fd49cda3161d2ce12d40"
+    },
+    {
+      "readable": "landed-parallax.phase3-scoped-stability.json",
+      "original": "landed-parallax.phase3-scoped-stability.original-receipt",
+      "originalSha256": "ab13ac000b0bdb6b06e7bb0794e5affb7be2ea584a27e796995ce1922933df79"
+    },
+    {
+      "readable": "landed-parallax.phase3-stale-version.json",
+      "original": "landed-parallax.phase3-stale-version.original-receipt",
+      "originalSha256": "277a235043f591933ccaaae6a6fd0be4f7235f5426239f0ee74eebb65e48594f"
+    },
+    {
+      "readable": "landed-parallax.phase3-tracking-interruption.json",
+      "original": "landed-parallax.phase3-tracking-interruption.original-receipt",
+      "originalSha256": "608069cd3626923c5770ec780875bf324ee567262812f8d90252997d1c8b73be"
+    },
+    {
+      "readable": "landed-parallax.phase3-unsafe-candidate.json",
+      "original": "landed-parallax.phase3-unsafe-candidate.original-receipt",
+      "originalSha256": "888f76caa03b5052581f7ac5a9214a454bcdf9e94daec1253584ee533544990c"
+    },
+    {
+      "readable": "landed-parallax.receipt-isolation.json",
+      "original": "landed-parallax.receipt-isolation.original-receipt",
+      "originalSha256": "a2d225335408dbff0e98bc0a030f0b8be16f11d61a69e2ed5e69eb6ffaf5b315"
+    },
+    {
+      "readable": "landed-parallax.surface-placement.json",
+      "original": "landed-parallax.surface-placement.original-receipt",
+      "originalSha256": "9c1f10262a3223aa8d8481d2c156a1f4b2dfb48d84df97a8023f6ba95b860b82"
+    },
+    {
+      "readable": "landed-parallax.tracking-recovery.json",
+      "original": "landed-parallax.tracking-recovery.original-receipt",
+      "originalSha256": "ccdb5cbcfe2abf5011e202becd6db658388d0023f0737667da01387367ee4fee"
+    },
+    {
+      "readable": "landed-parallax.version-pin.json",
+      "original": "landed-parallax.version-pin.original-receipt",
+      "originalSha256": "4f8b5660350e19ebe2fb44347a51544976453800c92dda740411f28b00863f48"
+    },
+    {
+      "readable": "ordinary-pass-e40cd35d.json",
+      "original": "ordinary-pass-e40cd35d.original-receipt",
+      "originalSha256": "95a84e7b97d461080221b2e0df966468b8a2d458cc48f568a36a5e49f49f81c2"
+    }
+  ]
+}

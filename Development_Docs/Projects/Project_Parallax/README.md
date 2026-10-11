@@ -1,7 +1,7 @@
 ---
 title: Project Parallax engineering home
 audience: product-engineering
-status: phase-2-implemented-owner-acceptance-pending
+status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
 last_reviewed: 2026-10-11
 ---
@@ -55,13 +55,17 @@ Parallax does **not** own:
 
 ## Current implementation status
 
+**Phase 3 is software-qualified and integrated on protected main through PR #711 at `0327eeb7`.** The [implementation and requirement reconciliation](Phase_3_Implementation.md) records semantic placement, bounded multi-entity staging, durable logical policies, remote authoring, optional metadata calibration and bounded discovery recovery. Ordinary Sounding Line passed all nine obligations, 1,739 tests and four product browser journeys. The clean landed tree passed 79 smoke tests and 26 fresh D0 scenarios. The [workstation design review](Phase_3_Workstation_Review.md) retains the first populated 3D approval.
+
+The owner also approved the [workspace ergonomics refinement](Phase_3_Workspace_Refinement.md) at `592217e3` on 2026-10-11. Four layouts, shared dock tabs, contextual accordions, resizable bottom tools and floating/docked assistance reclaim real viewport area. Software integration and both visual approvals are established; physical qualification remains separate.
+
 **Phase 1 — Establish the Frame is implemented. Representative-device owner acceptance remains pending.**
 
 The [Phase 1 implementation and verification record](Phase_1_Implementation.md) documents the published Spatial Moment contract, Chronicle Lens, foreground iOS/Android providers, fixed/local/surface anchors, Guided View, isolated interaction observations, Drydock integration, migrations, and eight executable D0 scenarios in the shared Voyagewright Device Lab.
 
 **Phase 2 - Open the Spatial Studio is software-qualified and integrated on protected main through PR #698.** [Spatial Studio and Spatial Library](Phase_2_Implementation.md), [Creator instructions](Spatial_Studio_Guide.md) and the [source-bound context packet](Phase_2_Context_Packet.md) describe its contracts and evidence. Current-base ordinary Sounding Line passed all nine obligations and 1,629 tests, the complete Creator publication/reopen journey and production build. The actual landed tree passed 52 focused smoke tests and eight fresh deterministic D0 scenarios. Feature Catalog FT-B092 records the capability as mainline; representative-device owner acceptance and physical qualification remain open.
 
-Software integration does not certify real-world placement accuracy. D4 hardware qualification and the actual representative-device owner walkthrough remain explicit product acceptance gates. Phase 3-6 adaptive staging, persistence, shared anchors and rich artifacts remain future work.
+Software integration does not certify real-world placement accuracy. D4/D5 hardware and field qualification remain explicit gates. Phase 3 provides adaptive staging and durable logical decisions; distributed shared physical anchors and richer artifacts remain governed by Phases 4–6.
 
 Crossdeck Phase 1 can proceed independently: this implementation adds no pairing, surface-identity, shared-scene transport, or cross-device synchronization authority.
 

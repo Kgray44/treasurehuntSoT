@@ -4184,6 +4184,63 @@ model ParallaxObservation {
   @@index([sessionId, blockId, createdAt])
 }
 
+model ParallaxResolutionDecision {
+  id String @id @default(cuid())
+  scopeKey String @unique
+  definitionId String
+  versionId String
+  versionChecksum String
+  policy String
+  seed String
+  createdAt DateTime @default(now())
+  @@index([definitionId, versionId])
+}
+
+model ParallaxFieldObservation {
+  id String @id @default(cuid())
+  definitionId String
+  versionId String
+  versionChecksum String
+  sessionId String
+  blockId String
+  actorId String
+  idempotencyKey String
+  digest String
+  metadata String @db.LongText
+  provenance String
+  consentRevision Int @default(1)
+  expiresAt DateTime
+  withdrawnAt DateTime?
+  createdAt DateTime @default(now())
+  @@unique([sessionId, actorId, idempotencyKey])
+  @@index([definitionId, expiresAt])
+  @@unique([sessionId, actorId, versionId])
+}
+
+model ParallaxCalibrationReview {
+  id String @id @default(cuid())
+  definitionId String
+  versionId String
+  ownerAccountId String
+  evidenceId String
+  recipeDigest String
+  maturity String
+  revision Int @default(1)
+  reviewSequence Int
+  createdAt DateTime @default(now())
+  @@index([definitionId, ownerAccountId])
+  @@unique([definitionId, ownerAccountId, reviewSequence], map: "ParallaxCalibrationReview_sequence_key")
+}
+
+model ParallaxFieldAudit {
+  id String @id @default(cuid())
+  recordId String
+  actorId String
+  action String
+  createdAt DateTime @default(now())
+  @@index([recordId, createdAt])
+}
+
 // Crossdeck participation is derived from Wayfarer authentication and One Voyage membership.
 model CrossdeckSurfaceSession {
   id               String                      @id @default(cuid())

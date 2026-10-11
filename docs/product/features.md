@@ -15,6 +15,8 @@ sensors. Screen alternatives remain available. The [Phase 4 record](../../Develo
 separates source qualification, virtual native execution and the required physical
 core bring-up gate. Phase 4 is not formally accepted or integrated.
 
+Parallax Phase 3 is software-qualified on protected main through PR #711: semantic multi-object placement, stable logical policies, remote authoring, optional minimized field calibration and bounded discovery recovery. The [implementation record](../../Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md) binds the exact protected decision, four browser journeys and clean landed smoke. The [refined workstation](../../Development_Docs/Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) received final owner visual approval at `592217e3` on 2026-10-11. Physical AR accuracy and field reliability remain unqualified.
+
 The authorized internal [Spatial Chronicle Pilot](../../Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md) combines a fictional published adventure with a guided device, Spatial Studio and Reach owner session. Its source is in qualification; complete automated and physical/owner acceptance remain separate. It is gated to a task-owned synthetic environment.
 
 The [Find the Hand laboratory](../user/hand-laboratory.md) provides a local camera/synthetic observation and calibration preview. Physical accuracy and Phase 1 acceptance remain pending; selection, manipulation and handoff are outside this preview.

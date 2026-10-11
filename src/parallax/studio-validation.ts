@@ -1,5 +1,7 @@
 import { versionContentSchema, type SpatialVersion } from "./contracts";
 import { type DraftContent, worldTransform, previewEntityTransform } from "./authoring";
+import { resolveAdaptiveScene } from "./adaptive";
+import { syntheticEnvironmentEvidence } from "./adaptive-authoring";
 
 export type SpatialFinding = {
   code: string;
@@ -26,6 +28,30 @@ export function validateSpatialAuthoring(input: DraftContent | SpatialVersion): 
       field: i.path.join("."),
     }));
   const content = parsed.data;
+  if (content.adaptive) {
+    const a = content.adaptive;
+    if (!a.revealOrder.length && content.entities.length > a.budget.maximumVisibleEntities)
+      findings.push({
+        code: "PARALLAX_STAGING_PERFORMANCE_BUDGET",
+        severity: "ERROR",
+        message: "Use sequential reveal or reduce simultaneous entities to the authored rendering budget.",
+        field: "adaptive.budget",
+      });
+    for (const e of content.entities) {
+      if (
+        e.parentEntityId ||
+        Math.hypot(e.transform.position.x, e.transform.position.y, e.transform.position.z) > 0.001
+      )
+        findings.push({
+          code: "PARALLAX_ADAPTIVE_OFFSET_UNSAFE",
+          severity: "ERROR",
+          message:
+            "Adaptive roots use reviewed semantic positions. Remove arbitrary offsets or use fixed on-site placement; group relationships belong in scene staging.",
+          entityId: e.id,
+          field: "transform.position",
+        });
+    }
+  }
   for (const entity of content.entities) {
     const transform = worldTransform(content, entity.id);
     const width = transform.scale * entity.widthMeters;
@@ -49,7 +75,8 @@ export function validateSpatialAuthoring(input: DraftContent | SpatialVersion): 
     if (
       layer &&
       !layer.visible &&
-      !content.studio?.behaviors.some((b) => b.targetEntityId === entity.id && b.action === "SHOW")
+      !content.studio?.behaviors.some((b) => b.targetEntityId === entity.id && b.action === "SHOW") &&
+      !content.adaptive?.discovery.some((p) => p.entityId === entity.id && p.exactReveal)
     )
       findings.push({
         code: "PARALLAX_HIDDEN_UNREACHABLE",
@@ -228,6 +255,28 @@ export const simulationEnvironments = [
 export function simulateSpatialEnvironments(content: DraftContent) {
   const issues = validateSpatialAuthoring(content);
   return simulationEnvironments.map((environment) => {
+    if (content.adaptive) {
+      const resolution = resolveAdaptiveScene(
+        content,
+        syntheticEnvironmentEvidence(environment),
+        `studio-preview-${content.adaptive.variant}`,
+      );
+      return {
+        ...environment,
+        status: issues.some((i) => i.severity === "ERROR")
+          ? "INVALID"
+          : resolution.status === "RESOLVED"
+            ? "VALID_PREVIEW"
+            : "GUIDED_FALLBACK",
+        reason: `${resolution.quality.replaceAll("_", " ")}; ${
+          Object.values(resolution.placements)
+            .map((p) => p.surface.toLowerCase())
+            .join(", ") || "use accessible Guided View"
+        }`,
+        physicalQualification: "NOT_ESTABLISHED" as const,
+        resolution,
+      };
+    }
     const noSurface = content.anchors.some(
       (a) =>
         a.kind === "SURFACE_RELATIVE" &&

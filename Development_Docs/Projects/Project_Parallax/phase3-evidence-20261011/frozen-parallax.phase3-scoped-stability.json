@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "scenarioId": "parallax.phase3-scoped-stability",
+  "scenarioVersion": 1,
+  "owningProject": "PARALLAX",
+  "scenarioFingerprint": "3c6cd45a8bffbd25d035ee9d4bc5203fd2f4ec1b323751cce0e3d45cf1c226cf",
+  "source": {
+    "sourceSha": "e40cd35d78089a2472473cadd2b7abae46b9aaae",
+    "sourceTree": "36529aefcac815a8a1cef0434624149b9b567e6f",
+    "sourceFingerprint": "930bcac1678187021eeb3f5af24a32cbf1612f40e96ea326b51abc1bd6ca5027",
+    "dirty": false
+  },
+  "baseSha": "efa689f20d2a9dead852135302dd6961c9f0f0d2",
+  "tier": "D0",
+  "profile": "synthetic",
+  "hostOs": "win32 10.0.26300",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": ["spatial.adaptive-placement", "spatial.discovery-assistance"],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-11T20:11:22.653Z",
+  "completedAt": "2026-10-11T20:11:22.654Z",
+  "assertions": [
+    {
+      "id": "parallax.phase3.phase3-scoped-stability",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "PROVIDER_SIMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D4_REAL_HARDWARE_AR_REQUIRED",
+    "D5_PHYSICAL_FIELD_REQUIRED",
+    "OWNER_VISUAL_ACCEPTANCE_REQUIRED"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": ["parallax-phase3-synthetic-runtime"],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

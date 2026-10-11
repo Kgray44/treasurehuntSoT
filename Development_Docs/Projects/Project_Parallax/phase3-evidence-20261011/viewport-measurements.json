@@ -1,0 +1,221 @@
+{
+  "measures": [
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 1270,
+        "height": 754,
+        "area": 957580
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 1570,
+        "height": 754,
+        "area": 1183780
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1814,
+        "height": 754,
+        "area": 1367756
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 790,
+        "height": 574,
+        "area": 453460
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 1090,
+        "height": 574,
+        "area": 625660
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1334,
+        "height": 574,
+        "area": 765716
+      }
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 716,
+        "height": 442,
+        "area": 316472
+      }
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 1016,
+        "height": 442,
+        "area": 449072
+      }
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1260,
+        "height": 442,
+        "area": 556920
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 630,
+        "height": 474,
+        "area": 298620
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 930,
+        "height": 474,
+        "area": 440820
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1174,
+        "height": 474,
+        "area": 556476
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 924,
+        "height": 442,
+        "area": 408408
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 924,
+        "height": 442,
+        "area": 408408
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 924,
+        "height": 442,
+        "area": 408408
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 302,
+        "height": 504,
+        "area": 152208
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 302,
+        "height": 504,
+        "area": 152208
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 302,
+        "height": 504,
+        "area": 152208
+      }
+    }
+  ],
+  "sourceSha": "26e895c42247104bb5ffb9b2f21c199244893005"
+}

@@ -16,6 +16,8 @@ not authorize restarting a completed phase.
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)
 - [Sextant Phase 4 owned implementation context](sextant-phase4.md)
 
+- [Parallax Phase 3 owned implementation and workstation correction context](parallax-phase3.md)
+
 - [Spatial baseline review and Crossdeck realtime context](spatial-review-crossdeck-realtime.md)
 - [Landfall Phase 4 closure context](landfall-phase4.md)
 - [Landfall hosted Device Lab transport template](landfall-device-lab-hosted.yml)

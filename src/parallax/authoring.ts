@@ -238,6 +238,22 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
       clone.name += " copy";
       clone.transform.position.x += 0.2;
       next.content.entities.push(clone);
+      if (next.content.adaptive && !clone.parentEntityId) {
+        const adaptive = next.content.adaptive;
+        const recipe = adaptive.recipes.find((r) => r.entityId === entity.id)!;
+        const discovery = adaptive.discovery.find((p) => p.entityId === entity.id)!;
+        clone.anchorId = `${clone.id}:semantic`;
+        clone.transform.position = { x: 0, y: 0, z: 0 };
+        next.content.anchors.push({
+          id: clone.anchorId,
+          kind: "LOCAL_WORLD",
+          frameId: "semantic-local-frame",
+          transform: identityTransform(),
+        });
+        adaptive.recipes.push({ ...structuredClone(recipe), entityId: clone.id });
+        adaptive.discovery.push({ ...structuredClone(discovery), entityId: clone.id });
+        if (adaptive.revealOrder.length) adaptive.revealOrder.push(clone.id);
+      }
       studio.layers.push({
         ...(layer ?? { tags: [], visible: true, locked: false, selectable: true, audience: "BOTH" }),
         entityId: clone.id,
@@ -255,6 +271,16 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
       );
       studio.assets = studio.assets.filter((a) => a.entityId !== entity.id);
       studio.visionReferences = studio.visionReferences.filter((a) => a.entityId !== entity.id);
+      if (next.content.adaptive) {
+        const adaptive = next.content.adaptive;
+        adaptive.recipes = adaptive.recipes.filter((r) => r.entityId !== entity.id);
+        adaptive.discovery = adaptive.discovery.filter((p) => p.entityId !== entity.id);
+        adaptive.relationships = adaptive.relationships.filter(
+          (r) => r.entityId !== entity.id && r.otherEntityId !== entity.id,
+        );
+        adaptive.revealOrder = adaptive.revealOrder.filter((id) => id !== entity.id);
+      }
+      next.content.anchors = next.content.anchors.filter((a) => next.content.entities.some((e) => e.anchorId === a.id));
       break;
     }
     case "REORDER": {
@@ -295,6 +321,14 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
       next.content.anchors = next.content.anchors.filter((a) => next.content.entities.some((e) => e.anchorId === a.id));
       break;
     }
+  }
+  if (
+    next.content.adaptive &&
+    JSON.stringify(next.content.adaptive.recipes) !== JSON.stringify(input.content.adaptive?.recipes)
+  ) {
+    next.content.adaptive.calibration.maturity = "SEMANTIC";
+    delete next.content.adaptive.calibration.reviewReceiptId;
+    if (next.content.placementPolicy === "CALIBRATED") next.content.placementPolicy = "ADAPTIVE_STICKY";
   }
   return draftSchema.parse(next);
 }
