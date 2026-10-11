@@ -1,9 +1,9 @@
 ---
 title: Project Parallax engineering home
 audience: product-engineering
-status: phase-1-implemented-owner-acceptance-pending
+status: phase-2-software-qualified-branch-owner-acceptance-pending
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Project Parallax
@@ -59,7 +59,9 @@ Parallax does **not** own:
 
 The [Phase 1 implementation and verification record](Phase_1_Implementation.md) documents the published Spatial Moment contract, Chronicle Lens, foreground iOS/Android providers, fixed/local/surface anchors, Guided View, isolated interaction observations, Drydock integration, migrations, and eight executable D0 scenarios in the shared Voyagewright Device Lab.
 
-Software integration does not certify real-world placement accuracy. D4 hardware qualification and the actual representative-device owner walkthrough remain explicit product acceptance gates. Phase 2–6 authoring, adaptive staging, persistence, shared anchors, Spatial Library, and rich artifacts remain future work.
+The owned Phase 2 branch implements [Spatial Studio and Spatial Library](Phase_2_Implementation.md), with [Creator instructions](Spatial_Studio_Guide.md) and a [source-bound context packet](Phase_2_Context_Packet.md). Its clean implementation candidate passed ordinary Sounding Line, the complete Creator publication/reopen journey and eight deterministic D0 scenarios. Feature Catalog FT-B092 records it as branch complete; protected-main integration remains separately authorized.
+
+Software integration does not certify real-world placement accuracy. D4 hardware qualification and the actual representative-device owner walkthrough remain explicit product acceptance gates. Phase 3-6 adaptive staging, persistence, shared anchors and rich artifacts remain future work.
 
 Crossdeck Phase 1 can proceed independently: this implementation adds no pairing, surface-identity, shared-scene transport, or cross-device synchronization authority.
 

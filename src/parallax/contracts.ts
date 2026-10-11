@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { studioContentSchema, type StudioContent } from "./studio-contracts";
 
 export const spatialId = z
   .string()
@@ -85,7 +86,7 @@ export const definitionSchema = z.strictObject({
   id: spatialId,
   ownerPersonId: spatialId,
   title: copy(240),
-  libraryScope: z.literal("CHRONICLE_ONLY"),
+  libraryScope: z.enum(["CHRONICLE_ONLY", "MY_LIBRARY"]),
 });
 export const versionContentSchema = z
   .strictObject({
@@ -94,6 +95,7 @@ export const versionContentSchema = z
     semanticVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
     schemaVersion: z.literal(1),
     title: copy(240),
+    studio: studioContentSchema.optional(),
     anchors: z.array(anchorSchema).min(1).max(16),
     entities: z.array(entitySchema).min(1).max(32),
     placementPolicy: z.literal("FIXED"),
@@ -110,6 +112,27 @@ export const versionContentSchema = z
     const fail = (message: string) => ctx.addIssue({ code: "custom", message });
     const anchors = new Map(v.anchors.map((a) => [a.id, a]));
     const entities = new Map(v.entities.map((e) => [e.id, e]));
+    if (v.studio) {
+      const s = v.studio;
+      if (new Set(s.layers.map((l) => l.entityId)).size !== s.layers.length) fail("PARALLAX_LAYER_DUPLICATE");
+      if (new Set(s.behaviors.map((b) => b.id)).size !== s.behaviors.length) fail("PARALLAX_BEHAVIOR_DUPLICATE");
+      for (const l of s.layers) if (!entities.has(l.entityId)) fail("PARALLAX_LAYER_ENTITY_MISSING");
+      for (const b of s.behaviors) {
+        if (!entities.has(b.targetEntityId) || (b.sourceEntityId && !entities.has(b.sourceEntityId)))
+          fail("PARALLAX_BEHAVIOR_ENTITY_MISSING");
+        if (["PICK", "PLACE", "INSPECT"].includes(b.trigger) && !b.sourceEntityId)
+          fail("PARALLAX_BEHAVIOR_SOURCE_MISSING");
+        if (
+          b.sourceEntityId &&
+          ["PICK", "PLACE", "INSPECT"].includes(b.trigger) &&
+          !entities.get(b.sourceEntityId)?.interactions.includes(b.trigger as "PICK" | "PLACE" | "INSPECT")
+        )
+          fail("PARALLAX_BEHAVIOR_INTERACTION_MISSING");
+      }
+      for (const a of [...s.assets, ...s.visionReferences])
+        if (!entities.has(a.entityId)) fail("PARALLAX_DEPENDENCY_ENTITY_MISSING");
+      if (new Set(s.assets.map((a) => a.id)).size !== s.assets.length) fail("PARALLAX_ASSET_DUPLICATE");
+    }
     if (anchors.size !== v.anchors.length || entities.size !== v.entities.length) fail("PARALLAX_DUPLICATE_ID");
     for (const e of v.entities) {
       const a = anchors.get(e.anchorId);
@@ -172,6 +195,7 @@ export type SpatialVersion = {
   schemaVersion: 1;
   checksum: string;
   title: string;
+  studio?: StudioContent;
   anchors: Anchor[];
   entities: SpatialEntity[];
   placementPolicy: "FIXED";
@@ -181,7 +205,7 @@ export type SpatialVersion = {
 };
 export type SpatialMoment = {
   schemaVersion: 1;
-  definition: { id: string; ownerPersonId: string; title: string; libraryScope: "CHRONICLE_ONLY" };
+  definition: { id: string; ownerPersonId: string; title: string; libraryScope: "CHRONICLE_ONLY" | "MY_LIBRARY" };
   version: SpatialVersion;
   attachment: {
     id: string;

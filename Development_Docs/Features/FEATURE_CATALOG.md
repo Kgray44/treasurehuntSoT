@@ -2203,6 +2203,49 @@ Project Wakebook Phase 6 gives an owner a printable, private Voyage Book built o
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-B092 - Parallax Spatial Studio and Versioned Spatial Library
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Parallax
+
+Creators build, preview, validate and version spatial scenes in a dedicated Studio, attach exact immutable versions to Chronicles, and publish/reopen them through the existing One Voyage flow.
+
+### Important subfeatures
+
+- Spatial canvas with direct and keyboard manipulation
+- Scene hierarchy, layers, visibility, locking and object inspection
+- Declarative behavior timeline with deterministic runtime evaluation
+- Guided, Detailed and Engineering authoring modes
+- Creator-owned library scopes, immutable versions, forks and provenance
+- Five editable first-party presets and ten synthetic reference environments
+- Reviewed AI intent and critique adapters with deterministic edits and undo/redo
+- Checksum-pinned Chronicle attachments with reversible attachment history
+- Selected-object Drydock links and asset, scale and performance validation
+
+### Primary surfaces
+
+`/studio/parallax`, `/studio/tales/[taleId]`
+
+### Meaningful limitations
+
+- Local software qualification does not establish representative-device owner acceptance or D4 physical AR evidence.
+- AI authoring requires an owner-configured HTTPS provider; live provider quality and operations remain an environment gate.
+- Synthetic previews and complexity estimates do not establish measured device frame rates or shared-anchor synchronization.
+- Unsupported imported renderer assets block release; richer rendering, adaptive placement, recognition and Reach manipulation remain governed by their owning later phases.
+
+### Evidence
+
+- commit: `44af7decfec7c375002567a76a2ca3d4beb42a7c`
+- branch: `codex/parallax-phase2-spatial-studio`
+- path: `src/components/studio/parallax/SpatialStudio.tsx`
+- path: `src/parallax/library-service.ts`
+- test: `src/parallax/authoring.test.ts`
+- test: `src/parallax/library-service.test.ts`
+- test: `tests/e2e/parallax-studio.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Parallax/Phase_2_Implementation.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.

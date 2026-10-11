@@ -80,6 +80,7 @@ export type StudioDraftInput = {
 };
 
 export type ValidationIssue = {
+  spatialStudioHref?: string;
   severity: "error" | "warning";
   code: string;
   message: string;

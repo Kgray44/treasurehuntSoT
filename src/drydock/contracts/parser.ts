@@ -1,4 +1,6 @@
 import { validateSpatialMoment } from "@/parallax/publication";
+import { spatialMomentSchema } from "@/parallax/contracts";
+import { validateSpatialAuthoring, spatialStudioHref } from "@/parallax/studio-validation";
 import type { z } from "zod";
 import type { JsonObject } from "@/chronicle/types";
 import { canonicalJson, canonicalizeValue } from "@/drydock/canonical";
@@ -309,8 +311,29 @@ export function parseDrydockBlock(input: DrydockAuthoredBlockInput): DrydockBloc
   };
   if (block.presentation.spatialMoment !== undefined) {
     try {
-      validateSpatialMoment(block.presentation.spatialMoment, block.id);
+      const moment = validateSpatialMoment(block.presentation.spatialMoment, block.id);
+      for (const finding of validateSpatialAuthoring(moment.version))
+        issues.push(
+          createDrydockIssue({
+            code: finding.code,
+            category: "CONTENT",
+            severity: finding.severity,
+            ruleVersion: 1,
+            location: { blockId: block.id, fieldPath: `presentation.spatialMoment.version.${finding.field}` },
+            message: finding.message,
+            remediation: "Open the selected object in Parallax Spatial Studio.",
+            metadata: {
+              spatialDefinitionId: moment.definition.id,
+              spatialEntityId: finding.entityId ?? null,
+              spatialStudioHref: spatialStudioHref(moment.definition.id, finding.entityId),
+            },
+          }),
+        );
     } catch {
+      const identity = spatialMomentSchema.safeParse(block.presentation.spatialMoment);
+      const entityId = identity.success
+        ? validateSpatialAuthoring(identity.data.version).find((i) => i.entityId)?.entityId
+        : undefined;
       issues.push(
         createDrydockIssue({
           code: "DRYDOCK_SPATIAL_ATTACHMENT_INVALID",
@@ -320,6 +343,9 @@ export function parseDrydockBlock(input: DrydockAuthoredBlockInput): DrydockBloc
           location: { blockId: block.id, fieldPath: "presentation.spatialMoment" },
           message: "Spatial Moment must be valid, checksum-pinned, and attached to this passage.",
           remediation: "Materialize an immutable spatial version and reattach it to this passage.",
+          ...(identity.success
+            ? { metadata: { spatialStudioHref: spatialStudioHref(identity.data.definition.id, entityId) } }
+            : {}),
         }),
       );
     }
