@@ -152,24 +152,23 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
     kind: "ASSISTANT",
     request: createRequest,
     mode: "STANDARD",
-    sceneRevision: 1,
+    revision: 1,
   });
   expect(Object.keys(request).sort()).toEqual(
     [
       "action",
-      "definitionId",
+      "draft",
       "editorGeneration",
       "idempotencyKey",
       "kind",
       "mode",
       "request",
       "requestId",
-      "sceneDigest",
-      "sceneRevision",
+      "revision",
       "selectedEntityId",
     ].sort(),
   );
-  const base = await ownedWorking(account.id, request.definitionId);
+  const base = await ownedWorking(account.id, request.draft.content.definitionId);
   expect(base.draft.content.entities).toHaveLength(1);
   const expected = await materializeAssistantProposal(
     base.draft,
@@ -184,7 +183,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   const mapButton = canvas.getByRole("button", { name: /^Pirate map\./ });
   await expect(mapButton).toBeVisible();
   await expect(canvas.locator("canvas")).toBeVisible();
-  expect((await ownedWorking(account.id, request.definitionId)).revision).toBe(base.revision);
+  expect((await ownedWorking(account.id, request.draft.content.definitionId)).revision).toBe(base.revision);
   await capture(page, "proposed-canvas");
   await assistant.getByRole("button", { name: "Locate object", exact: true }).click();
   await expect(mapButton).toHaveAttribute("aria-pressed", "true");
@@ -200,7 +199,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   expect(savedResponse.ok(), JSON.stringify(savedBody)).toBe(true);
   expect(savedBody.draft).toEqual(expected);
   await expect(assistant).toContainText("Your changes are saved");
-  const saved = await ownedWorking(account.id, request.definitionId);
+  const saved = await ownedWorking(account.id, request.draft.content.definitionId);
   expect(saved).toEqual({ draft: expected, revision: base.revision + 1 });
   const ledger = await db.aIUsageLedger.findFirstOrThrow({
     where: { accountId: account.id, requestId: request.requestId },
@@ -215,7 +214,9 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   await assistant.getByRole("button", { name: "Redo", exact: true }).click();
   await expect(mapButton).toBeVisible();
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
-  await expect.poll(async () => (await ownedWorking(account.id, request.definitionId)).draft).toEqual(expected);
+  await expect
+    .poll(async () => (await ownedWorking(account.id, request.draft.content.definitionId)).draft)
+    .toEqual(expected);
   await page.reload();
   await expect(canvas.locator('[data-renderer="READY"]')).toBeVisible();
   await expect(mapButton).toBeVisible();
@@ -232,7 +233,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   ]);
   await assistant.getByRole("button", { name: "Apply all changes", exact: true }).click();
   await expect(assistant).toContainText("Your changes are saved");
-  const refined = await ownedWorking(account.id, request.definitionId);
+  const refined = await ownedWorking(account.id, request.draft.content.definitionId);
   expect(refined.draft.content.entities.find((entity) => entity.id === "synthetic-pirate-map")).toEqual({
     ...expected.content.entities[1],
     widthMeters: 0.45,
