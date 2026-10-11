@@ -30,8 +30,11 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
   await authenticateClosure(context, account, baseURL!);
   await db.aIQuotaControl.upsert({
     where: { id: AI_CONTROL_ID },
-    create: { id: AI_CONTROL_ID, policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
-    update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+    create: {
+      id: AI_CONTROL_ID,
+      policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, defaultUserRequests: 5 }),
+    },
+    update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, defaultUserRequests: 5 }) },
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/parallax");
@@ -82,6 +85,16 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
             };
           }, name),
         );
+        const composer = assistant.getByLabel("Describe your spatial idea");
+        await composer.scrollIntoViewIfNeeded();
+        await composer.click();
+        await expect(composer).toBeFocused();
+        const reachable = await composer.evaluate((element) => {
+          const rect = element.getBoundingClientRect();
+          return element.contains(document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2));
+        });
+        expect(reachable, `${name} composer is reachable through the panel scroll`).toBe(true);
+        await capture(page, `${name}-composer`);
       }
     }
   }
@@ -99,8 +112,11 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
       (button) => getComputedStyle(button).transitionDuration,
     ),
   }));
+  await writeFile(`${artifactRoot}/reduced-motion.json`, JSON.stringify(reduced, null, 2) + "\n");
   expect(reduced.animation).toBe("none");
-  expect(reduced.transitions.every((duration) => duration === "0s")).toBe(true);
+  expect(
+    reduced.transitions.every((duration) => duration.split(",").every((part) => Number.parseFloat(part) === 0)),
+  ).toBe(true);
   await capture(page, "reduced-motion-welcome");
   const accessibility = await new AxeBuilder({ page }).include("#parallax-assistance").analyze();
   const serious = accessibility.violations.filter((violation) =>
@@ -125,4 +141,54 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
     ) + "\n",
   );
   expect(serious).toEqual([]);
+  const loaded = await (await context.request.get("/api/studio/parallax")).json();
+  const preferences = await (await context.request.get("/api/passport/preferences")).json();
+  const theme = await context.request.put("/api/passport/preferences", {
+    headers: { "x-csrf-token": loaded.csrfToken },
+    data: {
+      preferences: {
+        ...preferences.preferences,
+        experience: { ...preferences.preferences.experience, theme: "LIGHT", motion: "REDUCED" },
+      },
+    },
+  });
+  expect(theme.ok(), await theme.text()).toBe(true);
+  await page.reload();
+  await page.getByRole("button", { name: /Ask Parallax/ }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
+  await capture(page, "light-theme-welcome");
+  async function submit(request: string) {
+    await assistant.getByLabel("Describe your spatial idea").fill(request);
+    const response = page.waitForResponse(
+      (response) =>
+        response.url().endsWith("/api/studio/parallax") && response.request().postDataJSON()?.kind === "ASSISTANT",
+    );
+    await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
+    const returned = await response;
+    await expect(assistant.getByRole("button", { name: "Send idea", exact: true })).toBeVisible();
+    return returned;
+  }
+  await submit("Synthetic provider failure for recovery review.");
+  await expect(assistant).toContainText(/unchanged|could not|unavailable/i);
+  await capture(page, "provider-failure-light");
+  await submit("Explain an unsupported glowing particle effect.");
+  await expect(assistant.getByRole("heading", { name: "A supported alternative to particles" })).toBeVisible();
+  await capture(page, "unsupported-capability-light");
+  await submit("Create a pirate map on a desk with a readable clue and a guided alternative.");
+  await expect(assistant.getByRole("region", { name: "Review spatial proposal" })).toBeFocused();
+  const proposalAccessibility = await new AxeBuilder({ page }).include("#parallax-assistance").analyze();
+  expect(
+    proposalAccessibility.violations.filter(({ impact }) => ["serious", "critical"].includes(impact ?? "")),
+  ).toEqual([]);
+  await capture(page, "light-theme-proposal");
+  await submit("Synthetic provider failure for recovery review.");
+  await expect(assistant).toContainText("1 of 5 requests remaining");
+  await capture(page, "creator-quota-warning-light");
+  await submit("Explain an unsupported glowing particle effect.");
+  await expect(assistant).toContainText("0 of 5 requests remaining");
+  await capture(page, "creator-quota-exhausted-light");
+  await page.getByRole("button", { name: "Close assistance", exact: true }).click();
+  await page.getByRole("button", { name: /Ask Parallax/ }).click();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("button", { name: /Ask Parallax/ })).toBeFocused();
 });

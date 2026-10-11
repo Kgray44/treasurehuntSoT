@@ -2085,9 +2085,24 @@
     display: none;
   }
   .assistantWorkspace {
-    left: 5px;
-    width: calc(100% - 10px);
-    max-height: calc(100% - 80px);
+    position: fixed;
+    top: calc(var(--studio-top, 76px) + 4px);
+    bottom: 8px;
+    left: 8px;
+    width: calc(100% - 16px);
+    max-height: none;
+  }
+  .assistantWorkspace[data-docked="true"] {
+    position: fixed;
+    left: 8px;
+    bottom: 8px;
+    width: calc(100% - 16px);
+    max-height: none;
+  }
+  .assistantWorkspace > aside,
+  .assistantWorkspace[data-docked="true"] > aside {
+    height: calc(100dvh - var(--studio-top, 76px) - 76px);
+    min-height: 0;
   }
   .adaptiveWorkspace .selectionInstrument {
     right: 8px;
