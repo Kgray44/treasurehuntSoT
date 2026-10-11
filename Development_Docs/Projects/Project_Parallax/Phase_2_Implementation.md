@@ -54,6 +54,12 @@ The corrected Preview browser query still needs the complete Creator publication
 
 The frozen source candidate after light review is `a571347e47971bb048b57c8ad3c55207ccf6586b` on `codex/parallax-phase2-spatial-studio`. No new ordinary run is active. Resume qualification only after the parent assigns Parallax the shared testing slot; use the existing ordinary runner with the repository-supported single-fork option. Feature Catalog admission is deferred because this candidate's local acceptance has not passed.
 
+## Resumed qualification and recoverable defect
+
+The parent reassigned the slot to Parallax. At clean candidate `eb583a6f50599ec30e7c31065314c7847479f656`, the single-worker focused suite passed **112 tests across 11 files**, including all four queued regressions (`artifacts/parallax-phase2/focused-eb583a6f.json`). Production compilation and TypeScript passed; the two Guided Lens desktop/mobile browser tests passed. The Creator workflow completed save, validation, immutable release, attachment and attachment undo/redo, then failed its unchanged accessibility assertion: shared platform text styles produced insufficient contrast on the cream fallback preview. No publication/reopen pass is claimed.
+
+Parallax released the heavy-testing slot while correcting the scoped preview text and focus colors. Original screenshot, trace, videos, error context and runtime/profile receipts are preserved under `artifacts/parallax-phase2/development-fallback-contrast-eb583a6f`; earlier D0 receipts were archived under `artifacts/parallax-phase2/development-d0-before-final`. The corrected browser workflow, fresh D0 receipt run and ordinary final-head decision still await the next slot. Next's supported `CIRCLE_NODE_TOTAL=2` environment setting yields one page-data/static worker for subsequent builds, alongside the supported single-fork unit setting and existing one-worker browser configuration; no required checks are removed.
+
 ## Explicit limits and remaining gates
 
 The native renderer continues to support the accepted P1 plane/text kinds. Import manifests validate portable type, checksum, units, scale, complexity and provenance, but arbitrary model/texture/audio rendering is unavailable and blocks release. Complexity and synthetic fit estimates are not measured device frame rates. Crew preview is a second synthetic viewpoint, not Crossdeck synchronization. Remote comparison is fixed-scene comparison, not P3 adaptive resolution or calibration. Vision references preserve typed contracts without claiming Watchglass recognition.

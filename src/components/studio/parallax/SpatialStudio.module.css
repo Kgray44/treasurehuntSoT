@@ -223,11 +223,21 @@
   background: #e9dfc6;
   color: #213941;
 }
+.studio .guidedPreview h2,
+.studio .guidedPreview p {
+  color: #213941;
+}
+.studio .guidedPreview .eyebrow {
+  color: #695328;
+}
+.studio .guidedPreview :focus-visible {
+  outline-color: #213941;
+}
 .guidedPreview article {
   border-top: 1px solid #b3ab97;
   padding: 16px 0;
 }
-.guidedPreview small {
+.studio .guidedPreview small {
   color: #35545b;
 }
 .graph,
