@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-10",
+  "generated_at": "2026-10-11",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -2494,6 +2494,18 @@
     },
     {
       "path": "Development_Docs/Programs/Project_Launchdeck/Project_Launchdeck_Implementation_and_Verification.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Launchdeck/Project_Launchdeck_Skill_Integration_Acceptance.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Launchdeck/Project_Launchdeck_Skill_Package_Verification.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

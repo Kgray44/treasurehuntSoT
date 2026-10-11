@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-10-08
+last_reviewed: 2026-10-10
 ---
 
 # Engineering-record index
@@ -44,6 +44,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 ## Current project references
 
 - [Project Homeport](Projects/Project_Homeport/README.md)
+- [Project Launchdeck Skill acceptance](Programs/Project_Launchdeck/Project_Launchdeck_Skill_Integration_Acceptance.md)
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md)
 - [Project Tideglass](Projects/Project_Tideglass/README.md)
 - [Project Bridgewatch completion receipt](Programs/Bridgewatch/Project_Bridgewatch_Completion_Receipt.md)

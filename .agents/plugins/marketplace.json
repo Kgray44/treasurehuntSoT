@@ -4,7 +4,7 @@
   "plugins": [
     {
       "name": "project-launchdeck",
-      "source": { "source": "local", "path": "./.agents/plugins/project-launchdeck" },
+      "source": { "source": "local", "path": "./.agents/plugins/generated/0.4.2/project-launchdeck" },
       "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
       "category": "Productivity"
     }

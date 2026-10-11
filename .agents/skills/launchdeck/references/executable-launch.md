@@ -1,5 +1,10 @@
 # Executable desktop launcher
 
+Optional preserved v0.4.0 adapter. Default v0.4.1 packaging excludes its MCP configurations
+and server; `--include-adapter` exports a development artifact with the same blocked gate.
+The canonical Skill can use supported host-native delegation independently. Historical
+component evidence below does not establish current installed-plugin acceptance.
+
 This is a development candidate, not the installed private v0.3.1. Its `launch_codex_task` owns app-server creation, assignment, naming, Goal, turn start and durable recovery components. Normal launches stop before creation: live tests showed that desktop membership required the host's `set_thread_title` operation before assignment was recognized. App-server naming/assignment alone left native membership null. `action:status` plus `request_key` reads a receipt without dispatching. Installation and ordinary-Chat invocation remain unverified.
 
 Local MCP uses Python 3 and the owner's installed Codex runtime. It reuses Codex's existing authorized account/configuration without reading or copying credentials. Setup requires an owner-local `CODEX_HOME/launchdeck-state/native-binding.json` (default `~/.codex/launchdeck-state/`) containing `codexBinary`, `workspaceRoot`, `desktopProjectId`, and `appServerProjectId`. Normal launch additionally requires both `desktopAssociationVerified:true` and `pluginOnlyAssociationVerified:true`; the latter is currently false. Never set it from a host-assisted test. On 2026-10-10, assignment to app-server VoyageWright `01a11764-14e9-7de3-9f5d-913e839c7c37` was observed in existing desktop project `fd21b701-3215-417a-a413-0a17e02badbb` only after host title registration. Merely setting cwd, using app-server naming, or assigning its project was insufficient. Binding files and journals stay outside the distributable plugin.

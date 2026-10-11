@@ -1,5 +1,10 @@
 # Native integration and recovery
 
+Historical v0.2–v0.4.0 findings are retained below. Current behavior is defined by
+the canonical [Launchdeck Skill](../SKILL.md) and [host capability contract](host-capabilities.md).
+The new owner request permits supported host-required handoffs; older exclusions below
+are historical and do not forbid the current assisted route. No old test passes a new caller gate.
+
 ## Availability
 
 Installed/private v0.3.1 evidence below is historical. The unpublished source candidate adds a local MCP component adapter, but normal launches remain blocked: live tests needed the desktop host title operation before app-server assignment appeared in the native project. App-server naming/assignment alone failed. See the [executable component contract](executable-launch.md); neither this adapter nor host-assisted tests prove ordinary-Chat acceptance.

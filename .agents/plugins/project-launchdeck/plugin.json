@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "project-launchdeck",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "description": "Repository-owned VoyageWright Codex launches with full project/GitHub context, Project Trim contracts, standard titles, retry receipts, and safe fallback.",
   "author": {
     "name": "Project Launchdeck"
@@ -12,7 +12,7 @@
       "interface": {
         "displayName": "Project Launchdeck",
         "shortDescription": "VoyageWright task launching",
-        "longDescription": "Development candidate with Project Trim, planning and retry receipts plus tested local MCP Goal/execution components. Normal launches are blocked: desktop project registration still requires a separate host operation. Ordinary Chat acceptance is unverified. Private installed v0.3.1 is unchanged; no continuation or relay fallback.",
+        "longDescription": "One canonical Launchdeck Skill for task preparation and supported native delegation across Codex Desktop, Gibbs, ChatGPT and Work. Host capabilities and required approvals determine launch availability. The optional executable adapter remains blocked and is excluded from this Skill-only release. End-to-end acceptance is reported separately per surface.",
         "developerName": "Project Launchdeck",
         "category": "Productivity",
         "logo": "./assets/logo.svg",

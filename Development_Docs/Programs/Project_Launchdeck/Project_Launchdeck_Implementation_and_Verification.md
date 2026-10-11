@@ -8,7 +8,7 @@ last_reviewed: 2026-10-10
 
 # Project Launchdeck
 
-Project Launchdeck is an owner-requested private workflow plugin for creating agreed implementation Work chats from a regular ChatGPT Chat inside the same desktop app. Its source of truth is `.agents/plugins/project-launchdeck`, with the project-local entrypoint `.agents/skills/project-launchdeck/SKILL.md`. v0.3.1 uses each invoking surface's actual context, GitHub and native tools, with requires_local_executor:false in both manifests. It gathers necessary context and directly creates a separate native Work chat while preserving the source Chat. Continuing the source in Work, migration and preparation/executor relays are excluded by the owner's clarified requirement. Source Chat reported native creation and executable skill exposure unavailable; installation cannot grant those missing operations. No browser or external bridge is part of this workflow.
+Current workflow source is `.agents/skills/launchdeck/SKILL.md`; `.agents/plugins/project-launchdeck` supplies packaging, Project Trim and the preserved optional adapter. The [Skill integration acceptance record](Project_Launchdeck_Skill_Integration_Acceptance.md) covers the current owner request, supported host-required handoffs, exact distribution and per-caller evidence. The earlier findings below remain historical: previous requests excluded handoffs, whereas the current request permits supported assisted delegation. Installation still cannot grant missing native APIs.
 
 ## Focused native integration experiments, 2026-10-10
 

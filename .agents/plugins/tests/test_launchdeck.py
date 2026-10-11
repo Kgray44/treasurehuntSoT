@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from concurrent.futures import ThreadPoolExecutor
 
-SCRIPT = Path(__file__).resolve().parents[1] / "project-launchdeck/skills/launch-task/scripts/launchdeck.py"
+SCRIPT = Path(__file__).resolve().parents[2] / "skills/launchdeck/scripts/launchdeck.py"
 spec = importlib.util.spec_from_file_location("launchdeck", SCRIPT)
 ld = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(ld)
@@ -35,6 +35,23 @@ class LaunchdeckTests(unittest.TestCase):
         self.data["projects"] = self.data["projects"][1:]
         with self.assertRaises(ValueError):
             ld.plan(self.data)
+
+    def test_verified_route_cannot_fall_back_to_same_name(self):
+        self.data["preferred_project_id"] = "missing-verified-project"
+        with self.assertRaisesRegex(ValueError, "do not substitute"):
+            ld.plan(self.data)
+
+    def test_dependencies_reach_prompt_and_contract(self):
+        self.data["request"]["dependencies"] = ["Parallax Phase 1 accepted source abc123"]
+        result = ld.plan(self.data)
+        self.assertIn(self.data["request"]["dependencies"][0], result["prompt"])
+        self.assertEqual(result["task_contract"]["dependencies"], self.data["request"]["dependencies"])
+
+    def test_successive_collisions_reach_v3(self):
+        base = ld.plan(self.data)["title"]
+        self.data["threads"] = [{"kind": "codex", "projectId": "real-codex", "title": t}
+                                for t in (base, base + " V2")]
+        self.assertEqual(ld.plan(self.data)["title"], base + " V3")
 
     def test_ambiguous_route_stops(self):
         self.data["projects"].append({"projectId": "second", "label": "VoyageWright", "projectKind": "local"})
@@ -253,7 +270,7 @@ class LaunchdeckTests(unittest.TestCase):
                                  "no_side_effect_proven": True}, self.journal)
 
     def test_adapter_blocks_before_any_reservation_or_native_call(self):
-        adapter_path = SCRIPT.parents[3] / "server/launchdeck_mcp.py"
+        adapter_path = Path(__file__).resolve().parents[1] / "project-launchdeck/server/launchdeck_mcp.py"
         adapter_spec = importlib.util.spec_from_file_location("launchdeck_adapter", adapter_path)
         adapter = importlib.util.module_from_spec(adapter_spec)
         adapter_spec.loader.exec_module(adapter)

@@ -11,7 +11,10 @@ import threading
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location("launchdeck_planner", ROOT / "skills/launch-task/scripts/launchdeck.py")
+SKILL = ROOT / "skills/launchdeck"
+if not SKILL.exists():
+    SKILL = ROOT.parents[1] / "skills/launchdeck"
+spec = importlib.util.spec_from_file_location("launchdeck_planner", SKILL / "scripts/launchdeck.py")
 planner = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(planner)
 STATE = Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex"))) / "launchdeck-state"

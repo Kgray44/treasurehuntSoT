@@ -1,44 +1,9 @@
 ---
 name: launch-task
-description: Create a separate VoyageWright Work chat directly from regular ChatGPT Chat, Work, or Codex using exposed native tools, current conversation and GitHub context, Project Trim, standard titles, and retry receipts.
+description: Compatibility alias for an explicitly requested Launchdeck task launch or continuation. Load the canonical launchdeck Skill; this alias has no independent workflow.
 ---
 
-# Project Launchdeck
-
-The development candidate exposes `launch_codex_task` through a local MCP server. Native creation, app-server project assignment, title, Goal, execution and retry components were tested, but native desktop registration still needs a host operation. Normal launches stop before creation until plugin-only desktop association is independently proved. Read the [executable contract](references/executable-launch.md) before invoking it. Ordinary Chat invocation is a separate live acceptance gate; calls made by the chat to other host tools do not prove it.
-
-Turn the user's agreed project or phase into one implementation chat. A request to draft a prompt alone does not authorize creation. Carry forward settled decisions without asking again. Ask only for missing information that changes the objective, route, or authorization.
-
-The intended entrypoint includes a regular ChatGPT **Chat inside this same desktop app**, creating a native **Work chat** in VoyageWright. Regular Chat, Work and Codex are first-class surfaces. Read the compact [surface contract](references/surfaces.md) and use each surface's exposed context, GitHub and native actions. Local execution is required only for actions that need it. No browser, website, standalone API session, or external Chat-to-Work bridge is part of this workflow.
-
-## Route and prepare
-
-- “VoyageWright project” means the **VoyageWright Codex project**, unless the human explicitly says otherwise. It never means the current ChatGPT project. Resolve it using exposed native project-discovery tools (`list_projects` in the verified Work host); the verified routing hint is in [native integration](references/native-integration.md). Never substitute Date Nights or a cloud project.
-- Invoke the plugin's executable tool to create a **separate** implementation Work chat directly, while the source Chat remains intact. Read [direct creation history](references/native-integration.md#direct-creation-contract) only for a specific legacy-host uncertainty. Do not ask to continue the source Chat in Work, migrate it, or create an executor/preparation relay as a substitute. Missing local MCP invocation is a capability gap, not a reason to request a mode switch.
-- The plugin belongs to `Kgray44/treasurehuntSoT` at `.agents/plugins/project-launchdeck`. It may use **all task-relevant accessible content** in the VoyageWright Codex project and that GitHub repository, without a file/folder allowlist. Read [full project and repository access](references/project-access.md) when gathering context. Project Trim limits initial loading, never access or necessary expansion.
-- Gather the accepted objective, initiative names, phase if applicable, scope, acceptance criteria, source references, and explicit gates. Do not perform the implementation in the launching chat. Load only relevant source passages; do not copy a whole conversation or governing document.
-- Apply the bundled [Project Trim](../project-trim/SKILL.md) to the prompt. Preserve facts, exact paths and identifiers, exclusions, and approval gates. Include references the target can actually access. A local worktree cannot automatically access ChatGPT uploads or synced mirrors; transfer only requested, necessary context using available file tools, or include the essential source excerpts.
-
-## Name and deduplicate
-
-- Phase title: `<Initiative> Phase <number>: <Phase Name>` from current governance. Otherwise use `<Initiative(s)>: <Purpose>`, e.g. `Crossdeck + Parallax: Corrections`. Never put VoyageWright in a new title. Preserve meaningful initiative names and phase numbers.
-- Match titles case-insensitively after whitespace normalization. Use the base title if free, otherwise append ` V2`, then the lowest available ` V3`, etc. Check both active and archived chats in the destination project. Do not rename existing owner chats.
-- Freeze the trimmed request before dispatch using the structured fields in the [helper contract](references/helper-contract.md). The executable tool invokes `scripts/launchdeck.py` and owns reservations in the single owner-local journal outside this plugin and synced files; do not reserve separately before invoking it. The fingerprint preserves exact accepted text, including case-sensitive identifiers, and covers route and scope, not just the title. Reuse the frozen request for retries; reconcile its returned ID before rebuilding a changed request. An explicit new run gets a new human-authorized `new_run` value.
-- A matching active request is reused without dispatching again. For an idle verified task, an explicit repeat/resume request authorizes native continuation in that same chat with its original scope. Read its initial turn to verify the marker, route, and requirements before sending the concise continuation. Do not restart an accepted/completed phase merely because its title matches. A pending or uncertain reservation must be reconciled before any retry. A title match alone is not proof of a duplicate.
-- Journal reservations serialize launches through this helper. Native creation has no transaction or idempotency parameter: inspect again immediately before creation, then verify the returned title. Incomplete inventories or independent launchers limit global guarantees; report them accurately.
-
-## Dispatch, verify, finish
-
-Call `launch_codex_task` with `request` containing the settled objective, initiatives, phase/name or purpose, acceptance, task-relevant sources and constraints. Preserve explicit worktree authorization and gates. The result distinguishes accepted execution from live observation, actual native Goal status, app-server project identity and the verified desktop binding. Retry the identical request to reuse/repair the same chat; use `action:status` with its request_key for a read. Independently inspect the returned native chat when host tools are available. Never invent a link when the tool returns null.
-
-The legacy native-host steps below apply only to explicitly authorized diagnostic experiments or host-side launches. They are not a substitute for the required plugin-owned operation. Do not run them after an executable tool has already returned a native ID.
-
-1. Prepare a concrete prompt and reserve before one native project-creation call (`create_thread` in the verified Work host). Map actual native Chat equivalents by their runtime schema; require correct Codex routing, initial task/start, title and result verification. Use the verified project ID, selected title, and full prompt. The owner's parallel-launch addendum authorizes independent worktrees for simultaneous implementation launches; require separate task resources and inspect real phase dependencies. For other launches use the requested environment. Omit model, effort, and starting branch unless requested. Do not create relay chats as a convenience.
-2. Prepend `Launchdeck request: <request_key>` to the prompt. When a Goal is requested (the usual launch), instruct the target: “Create a native Goal for the objective below before implementation; omit token_budget unless the human specified one. If unavailable, report Goal unavailable and proceed with the authorized task.” Never claim Goal creation just because the prompt requests it.
-3. Record returned IDs immediately. A `clientThreadId` is pending setup, never a ready `threadId`. Resolve setup using the returned operation and native status tools. Wait for initial target progress; verify actual project, title, marker, and native Goal evidence. Repair only this newly created chat's title if the host rewrites it or a race causes a collision. Never dispatch a second chat to repair the first.
-4. Leave the source discussion, implementation chat, existing chats, and worktrees intact. New launches create no preparation or handoff relay. Only clean up a historically created, explicitly tracked disposable relay after durable target verification and settled relay work. Cleanup failure does not justify relaunching.
-5. Report a short status with the exact title, destination, ready/pending/reused state, Goal evidence, and any remaining limitation. Emit the host's created-thread directive for each newly created ready or pending chat when supported. Creation is not implementation completion.
-
-If direct native dispatch, routing, source access, or safe reservation/reconciliation is unavailable, deliver a **READY TO LAUNCH — AUTOMATIC CREATION UNAVAILABLE** title, route, and complete prompt in one copyable block. Name the exact missing operation. Preparation does not fulfill the automatic-launch request. Do not ask to continue in Work, invent endpoints, launch a wrong-project substitute, modify global permissions, start a server, or create a relay/API session. No launch is authorized merely by installing this plugin.
-
-For acceptance or integration testing, read [acceptance contract](references/acceptance.md). Keep source-conversation, installed-plugin, native-host, creation, Goal, naming, parallel-resource, and end-to-end results separate. A ready prompt, app-server/API session, or a call made by another host is not proof of a ChatGPT-to-native-project launch.
+Load `../launchdeck/SKILL.md` in the distributed plugin, or
+`.agents/skills/launchdeck/SKILL.md` in the repository. Apply that Skill's routing,
+naming, Project Trim, authorization, host delegation, and verification rules.
+This retained alias does not add native capabilities.
