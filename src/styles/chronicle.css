@@ -1250,6 +1250,12 @@ html[data-voyage-theme="light"]
   min-width: 0;
   max-width: 100%;
 }
+/* An owned opening dialog must be the pointer target above the persistent
+   shell. Route motion otherwise traps it in a sibling stacking context. */
+.product-route-layer:has(.chronicle-opening[aria-modal="true"], .journal-opening-status[aria-modal="true"]) {
+  position: relative;
+  z-index: calc(var(--z-navigation) + 1);
+}
 .chronicle-session-header {
   display: flex;
   position: relative;
@@ -1817,16 +1823,23 @@ html[data-motion-level="reduced"]
   box-shadow: var(--shadow-deep);
 }
 .journal-opening-status {
-  /* This dialog is rendered inside the animated route layer. The persistent
-     shell header is a sibling stacking context, so the dialog must begin
-     below its reserved space rather than visually and interactively competing
-     with navigation. */
+  /* Keep compact controls near the top of the opening surface. Its owned
+     modal route supplies the stacking boundary above shell navigation. */
   top: calc(var(--shell-header-height) + 1rem);
   left: 50%;
   transform: translateX(-50%);
 }
 .journal-opening-status:not([role="dialog"]) {
   pointer-events: none;
+}
+.journal-opening-status[role="dialog"] {
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100svh - var(--shell-header-height) - 2rem);
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow-y: auto;
 }
 
 .journal-degradation-note {
