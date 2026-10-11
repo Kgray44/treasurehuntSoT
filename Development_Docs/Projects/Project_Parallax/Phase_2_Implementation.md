@@ -42,13 +42,13 @@ The optional `studio` extension adds no default fields to P1 releases. Existing 
 - Browser screenshots and receipts are kept under this clone's ignored `artifacts` directories. No production account, Chronicle, database or publication is used.
 - Final-head proof and exact local candidate are recorded at closeout; protected-main acceptance requires the normal repository route after separate publication authorization.
 
-## Explicit limits and remaining gates
-
 ## Restart and coordinated qualification hold
 
 After the owner's computer restart, the independent clone was reconciled at `df379ae36125261b6018f6d12a90ad407d6802fd` on `codex/parallax-phase2-spatial-studio` with a clean working tree. The eight D0 receipts and preserved development browser failure trace survived. No completed ordinary final-head decision exists. The earlier aggregate attempt was interrupted; it is not passing evidence.
 
 The parent assigned the shared heavy-testing slot to Sextant first. Parallax stopped its own unfinished ordinary aggregate and holds new compiler, production build, browser and aggregate runs until the parent grants the slot. Light review corrected the global-workspace default scope to My Library while preserving Chronicle-only creation inside a Chronicle; its regression is queued for final qualification. No OS priorities, security settings, sibling processes or game processes were changed.
+
+Light placement review also separated surface-relative authored offsets from the synthetic room's preview frame. Desk and wall presets and semantic placement now retain a one-centimeter surface-normal offset; preview and direct manipulation compose a fixed reference frame without storing its room position in a released anchor. Selected-surface placement and preview-to-local movement regressions are queued with the scope regression. This is fixed authoring-frame math, with no adaptive placement or physical-acceptance claim.
 
 The corrected Preview browser query still needs the complete Creator publication/reopen gate. Branch-complete catalog admission waits for that local acceptance and final ordinary Sounding Line. Representative-device/physical acceptance remains separate.
 

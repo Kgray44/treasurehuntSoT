@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { versionContentSchema, identityTransform, type SpatialEntity, type Transform } from "./contracts";
+import { versionContentSchema, identityTransform, type Anchor, type SpatialEntity, type Transform } from "./contracts";
 import { emptyStudioContent, type StudioContent } from "./studio-contracts";
 import { composeTransform, inverseTransform } from "./transforms";
 
@@ -110,7 +110,11 @@ export function createSpatialDraft(
         {
           id: anchorId,
           frameId: `${id}:frame`,
-          transform: { ...identityTransform(), position: { x: 0, y: wall ? 1.4 : trail ? 0 : 0.75, z: -1 } },
+          transform: {
+            ...identityTransform(),
+            position:
+              preset === "Floating Compass" || trail ? { x: 0, y: trail ? 0 : 0.75, z: -1 } : { x: 0, y: 0, z: 0.01 },
+          },
           ...(preset === "Floating Compass" || trail
             ? { kind: "LOCAL_WORLD" }
             : { kind: "SURFACE_RELATIVE", alignment: wall ? "VERTICAL" : "HORIZONTAL" }),
@@ -139,6 +143,26 @@ export function worldTransform(content: DraftContent, entityId: string): Transfo
       : content.anchors.find((a) => a.id === entity.anchorId)!.transform,
     entity.transform,
   );
+}
+
+/** Synthetic room frames are preview-only; surface offsets remain relative to the selected native surface. */
+export function referenceSurfaceFrame(anchor: Anchor): Transform {
+  if (anchor.kind !== "SURFACE_RELATIVE") return identityTransform();
+  return {
+    ...identityTransform(),
+    position: { x: 0, y: anchor.alignment === "HORIZONTAL" ? 0.75 : 1.4, z: -1 },
+    rotation:
+      anchor.alignment === "HORIZONTAL"
+        ? { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 }
+        : identityTransform().rotation,
+  };
+}
+
+export function previewEntityTransform(content: DraftContent, entityId: string): Transform {
+  const entity = content.entities.find((e) => e.id === entityId);
+  if (!entity) throw new Error("Choose an existing spatial entity.");
+  const anchor = content.anchors.find((a) => a.id === entity.anchorId)!;
+  return composeTransform(referenceSurfaceFrame(anchor), worldTransform(content, entityId));
 }
 
 export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft {
@@ -245,11 +269,10 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
         frameId: `${id}:frame`,
         transform: {
           ...identityTransform(),
-          position: {
-            x: edit.placement === "ENTRANCE" ? -1 : 0,
-            y: edit.placement === "WALL" ? 1.4 : edit.placement === "DESK" ? 0.75 : 0,
-            z: -1,
-          },
+          position:
+            edit.placement === "DESK" || edit.placement === "WALL"
+              ? { x: 0, y: 0, z: 0.01 }
+              : { x: edit.placement === "ENTRANCE" ? -1 : 0, y: 0, z: -1 },
         },
         ...(edit.placement === "DESK" || edit.placement === "WALL"
           ? { kind: "SURFACE_RELATIVE", alignment: edit.placement === "WALL" ? "VERTICAL" : "HORIZONTAL" }

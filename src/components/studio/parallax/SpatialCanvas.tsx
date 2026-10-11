@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
-import { worldTransform, type SpatialDraft, type Edit } from "@/parallax/authoring";
+import { previewEntityTransform, referenceSurfaceFrame, type SpatialDraft, type Edit } from "@/parallax/authoring";
 import { composeTransform, inverseTransform } from "@/parallax/transforms";
 import { identityTransform } from "@/parallax/contracts";
 import { evaluateSpatialBehavior, type SpatialInput } from "@/parallax/behavior";
@@ -34,7 +34,12 @@ export function SpatialCanvas({
     [zoom, setZoom] = useState(1);
   const [pitch, setPitch] = useState(0.4);
   const [dragOffset, setDragOffset] = useState<{ id: string; x: number; y: number } | null>(null);
-  const drag = useRef<{ id: string; x: number; y: number; transform: ReturnType<typeof worldTransform> } | null>(null);
+  const drag = useRef<{
+    id: string;
+    x: number;
+    y: number;
+    transform: ReturnType<typeof previewEntityTransform>;
+  } | null>(null);
   const environment = simulationEnvironments.find((e) => e.id === environmentId) ?? simulationEnvironments[0];
   const scale = 115 * zoom;
   const project = (x: number, y: number, z: number) => ({
@@ -54,10 +59,11 @@ export function SpatialCanvas({
     .join(" ");
   const moveWorld = (id: string, dx: number, dy: number) => {
     const entity = draft.content.entities.find((e) => e.id === id)!;
-    const original = worldTransform(draft.content, id);
+    const original = previewEntityTransform(draft.content, id);
+    const anchor = draft.content.anchors.find((a) => a.id === entity.anchorId)!;
     const parent = entity.parentEntityId
-      ? worldTransform(draft.content, entity.parentEntityId)
-      : draft.content.anchors.find((a) => a.id === entity.anchorId)!.transform;
+      ? previewEntityTransform(draft.content, entity.parentEntityId)
+      : composeTransform(referenceSurfaceFrame(anchor), anchor.transform);
     const world = {
       ...original,
       position: {
@@ -75,7 +81,7 @@ export function SpatialCanvas({
         ? draft.content.studio?.layers.find((l) => l.entityId === e.id)?.audience !== "EDITOR_ONLY"
         : states[e.id].visible,
     )
-    .map((e) => ({ entity: e, world: worldTransform(draft.content, e.id) }))
+    .map((e) => ({ entity: e, world: previewEntityTransform(draft.content, e.id) }))
     .sort((a, b) => b.world.position.z - a.world.position.z);
   return (
     <section

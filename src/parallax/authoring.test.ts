@@ -3,6 +3,8 @@ import {
   createSpatialDraft,
   editSpatialDraft,
   worldTransform,
+  previewEntityTransform,
+  referenceSurfaceFrame,
   changeHistory,
   undo,
   redo,
@@ -17,6 +19,7 @@ import { evaluateSpatialBehavior } from "./behavior";
 import { syntheticSpatialMoment, syntheticBinding, guidedContext } from "./fixtures";
 import { ParallaxLensRuntime } from "./runtime";
 import { SyntheticSpatialAdapter } from "./synthetic";
+import { composeTransform, inverseTransform } from "./transforms";
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.useRealTimers();
@@ -167,6 +170,47 @@ describe("Parallax creator authoring", () => {
   it("creates reusable items in the global workspace and private items inside a Chronicle", () => {
     expect(createSpatialDraft("global").scope).toBe("MY_LIBRARY");
     expect(createSpatialDraft("contextual", "Desk Map", "chronicle").scope).toBe("CHRONICLE_ONLY");
+  });
+  it("keeps surface preset offsets near the selected surface and confines room positions to preview", () => {
+    for (const preset of ["Desk Map", "Peeking Letter", "Hidden Wall Message"]) {
+      const draft = createSpatialDraft("surface", preset);
+      const anchor = draft.content.anchors[0];
+      expect(anchor.transform.position).toEqual({ x: 0, y: 0, z: 0.01 });
+      const selectedSurface = {
+        ...anchor.transform,
+        position: { x: 2, y: 3, z: 4 },
+      };
+      const nativePose = composeTransform(selectedSurface, worldTransform(draft.content, draft.content.entities[0].id));
+      expect(nativePose.position).toEqual({ x: 2, y: 3, z: 4.01 });
+      const preview = previewEntityTransform(draft.content, draft.content.entities[0].id);
+      expect(preview.position.y).toBeCloseTo(preset === "Hidden Wall Message" ? 1.4 : 0.76);
+      expect(preview.position.z).toBeCloseTo(preset === "Hidden Wall Message" ? -0.99 : -1);
+      expect(anchor.transform.position).toEqual({ x: 0, y: 0, z: 0.01 });
+    }
+    const local = createSpatialDraft("local", "Floating Compass");
+    expect(previewEntityTransform(local.content, local.content.entities[0].id)).toEqual(
+      worldTransform(local.content, local.content.entities[0].id),
+    );
+  });
+  it("materializes semantic surface placement and converts preview movement back to relative coordinates", () => {
+    const draft = createSpatialDraft("placement", "Floating Compass");
+    const entityId = draft.content.entities[0].id;
+    for (const placement of ["DESK", "WALL"] as const) {
+      const placed = editSpatialDraft(draft, { type: "PLACEMENT", entityId, placement });
+      const anchor = placed.content.anchors[0];
+      expect(anchor.transform.position).toEqual({ x: 0, y: 0, z: 0.01 });
+      const original = previewEntityTransform(placed.content, entityId);
+      const moved = { ...original, position: { ...original.position, x: original.position.x + 0.2 } };
+      const parent = composeTransform(referenceSurfaceFrame(anchor), anchor.transform);
+      const edited = editSpatialDraft(placed, {
+        type: "TRANSFORM",
+        entityId,
+        transform: composeTransform(inverseTransform(parent), moved),
+      });
+      expect(edited.content.entities[0].transform.position.x).toBeCloseTo(0.2);
+      expect(previewEntityTransform(edited.content, entityId).position.x).toBeCloseTo(0.2);
+      expect(edited.content.anchors[0].transform).toEqual(anchor.transform);
+    }
   });
   it("keeps historical Phase 1 checksum material unchanged", () => {
     const moment = syntheticSpatialMoment();

@@ -1,5 +1,5 @@
 import { versionContentSchema, type SpatialVersion } from "./contracts";
-import { type DraftContent, worldTransform } from "./authoring";
+import { type DraftContent, worldTransform, previewEntityTransform } from "./authoring";
 
 export type SpatialFinding = {
   code: string;
@@ -234,7 +234,7 @@ export function simulateSpatialEnvironments(content: DraftContent) {
         !(a.alignment === "HORIZONTAL" ? environment.horizontal : environment.vertical),
     );
     const outside = content.entities.some((e) => {
-      const p = worldTransform(content, e.id).position;
+      const p = previewEntityTransform(content, e.id).position;
       return Math.abs(p.x) > environment.width / 2 || Math.abs(p.z) > environment.depth / 2;
     });
     const status = issues.some((i) => i.severity === "ERROR")
