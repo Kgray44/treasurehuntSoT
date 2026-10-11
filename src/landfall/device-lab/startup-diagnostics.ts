@@ -26,6 +26,8 @@ const lifecycleCounter = z.number().int().min(0).max(128).optional();
 export const deviceLabAppleLifecycleDeliverySchema = z.strictObject({
   foregroundNotifications: lifecycleCounter,
   backgroundNotifications: lifecycleCounter,
+  sceneForegroundNotifications: lifecycleCounter,
+  sceneBackgroundNotifications: lifecycleCounter,
   foregroundQueued: lifecycleCounter,
   backgroundQueued: lifecycleCounter,
   foregroundDelivered: lifecycleCounter,

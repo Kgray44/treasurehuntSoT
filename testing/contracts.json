@@ -7,7 +7,35 @@
       "name": "Synthetic Spatial Chronicle publication, multi-device adventure and gated owner trials",
       "authority": "one-voyage",
       "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
-      "critical": true
+      "critical": true,
+      "experienceIntent": {
+        "objective": "Create a spatial clue and understand the experience a Player will receive",
+        "visibleOutcome": "Published scenes reach a representative Player Lens with truthful capability tiers and accessible fallback",
+        "integrationOwner": "Parallax Creator-to-Player experience integration",
+        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
+        "sourcePaths": [
+          "src/parallax",
+          "src/components/studio/parallax",
+          "src/components/player/parallax",
+          "src/spatial-pilot"
+        ],
+        "persona": "A Creator or Player completing the named human objective",
+        "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
+        "devices": ["DESKTOP", "MOBILE"],
+        "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
+        "baselineDebt": [
+          {
+            "id": "PE-DEBT-PARALLAX-PLAYER",
+            "fingerprint": "94e3716d8ae26d5986e855cd4996b36d0edfbce1a2778937ba23548cc3506834",
+            "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+            "repairOwner": "Spatial Experience Refit",
+            "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+            "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+            "deficiency": "Creator preview and Player entity controls do not by themselves establish one coherent spatial clue experience."
+          }
+        ],
+        "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      }
     },
     {
       "id": "invitation-acceptance",
@@ -3003,7 +3031,117 @@
       "name": "Project Homeport Auth Route Transition Lifecycle",
       "authority": "project-homeport",
       "owners": ["project-homeport"],
-      "critical": true
+      "critical": true,
+      "experience": {
+        "persona": "An anonymous person who needs account access or recovery",
+        "objective": "Discover sign-in from the product gateway, find account recovery, and return without losing context",
+        "visibleOutcome": "A usable canonical sign-in form and distinct password recovery screen with visible return actions",
+        "integrationOwner": "Project Homeport account experience integration",
+        "systems": ["project-homeport"],
+        "sourcePaths": [
+          "src/components/wayfarer/AccountFlow.tsx",
+          "src/app/sign-in",
+          "src/app/forgot-password",
+          "src/homeport/return-to.ts"
+        ],
+        "projectionPaths": ["src/app/api/auth", "src/wayfarer/password-policy.ts"],
+        "entryPoint": "/",
+        "states": ["SIGN_IN_READY", "RECOVERY_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ANONYMOUS"],
+        "accessibility": "Tab navigation reaches every account action; visible focus and reduced-motion presentation preserve meaning.",
+        "fallback": "Unconfigured identity providers explain availability while email/password and recovery remain usable.",
+        "navigation": "Gateway account control opens sign-in; Forgot Password opens recovery; Return to Sign In restores the parent task.",
+        "designTarget": "A narrow task-first ledger, distinct account/recovery headings, grouped fields, one primary action and contextual links.",
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "The accepted narrow task composition uses one visible objective and a clear recovery/return hierarchy.",
+            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "The accepted mobile account ledger keeps fields and recovery actions readable and reachable.",
+            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-sign-in", "screen-page-forgot-password"],
+        "homeportJourneyIds": ["C"],
+        "browserTests": ["tests/e2e/homeport-phase2.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "This representative anonymous journey does not establish live mail delivery, OAuth provider acceptance or physical assistive-technology proof."
+        ],
+        "journeys": [
+          {
+            "id": "account-recovery",
+            "roles": ["ANONYMOUS"],
+            "outcome": "A person reaches canonical account recovery through visible gateway controls and returns to sign-in",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Account"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Sign In"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "path": "/sign-in",
+                "text": "One Voyagewright account",
+                "meaning": "The gateway action opens a usable canonical account task rather than persisting a role",
+                "state": "SIGN_IN_READY"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Forgot Password"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "path": "/forgot-password",
+                "text": "Send reset instructions",
+                "meaning": "The recovery destination provides the advertised email-based reset task",
+                "state": "RECOVERY_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Sign In"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in",
+                "path": "/sign-in",
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "homeport.transition.interruption",
@@ -3402,21 +3540,90 @@
       "name": "Crossdeck ordered durable handoff, acknowledgment, custody, continuity and shared-display privacy",
       "authority": "project-crossdeck",
       "owners": ["project-crossdeck", "wayfarer", "player-journal"],
-      "critical": true
+      "critical": true,
+      "experienceIntent": {
+        "objective": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
+        "visibleOutcome": "A contextual pairing flow reaches a role-appropriate Lens with the same identity, Voyage and safe return",
+        "integrationOwner": "Crossdeck and Parallax experience integration",
+        "systems": ["project-crossdeck", "project-parallax", "one-voyage"],
+        "sourcePaths": ["src/crossdeck", "src/components/crossdeck"],
+        "persona": "A Creator or Player completing the named human objective",
+        "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
+        "devices": ["DESKTOP", "MOBILE"],
+        "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
+        "baselineDebt": [
+          {
+            "id": "PE-DEBT-CROSSDECK-LENS",
+            "fingerprint": "96ec2717127c177a4afa98b8a9c5cbbf974d57eb1dd56e46b09bb323b7fcd2e9",
+            "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+            "repairOwner": "Spatial Experience Refit",
+            "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+            "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+            "deficiency": "Role persistence and account-level device setup do not establish a contextual Chronicle Lens experience."
+          }
+        ],
+        "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      }
     },
     {
       "id": "reach.phase1.foundation",
       "name": "Reach Phase 1 observation, calibration and laboratory foundation",
       "authority": "reach",
       "owners": ["reach", "project-sextant", "watchglass"],
-      "critical": true
+      "critical": true,
+      "experienceIntent": {
+        "objective": "Point at calibration targets using my real hand and understand whether I can act",
+        "visibleOutcome": "Detected hand, tracking quality, gesture classification and calibration eligibility remain visibly distinct",
+        "integrationOwner": "Reach calibration experience integration",
+        "systems": ["reach", "project-sextant", "watchglass"],
+        "sourcePaths": ["src/reach", "src/components/reach"],
+        "persona": "A Creator or Player completing the named human objective",
+        "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
+        "devices": ["DESKTOP", "MOBILE"],
+        "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
+        "baselineDebt": [
+          {
+            "id": "PE-DEBT-REACH-STAGES",
+            "fingerprint": "0047d89ebcb6a5b9c253bdfd004f7659a55b15b3b4e11cf0dff6bd8642db3902",
+            "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+            "repairOwner": "Spatial Experience Refit",
+            "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+            "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+            "deficiency": "Hand detection can be confused with action eligibility, producing misleading calibration feedback."
+          }
+        ],
+        "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      }
     },
     {
       "id": "sextant.phase3.field-context",
       "name": "Sextant Phase 3 field semantics, nearby security, media lifecycle and authored fallback",
       "authority": "project-sextant",
       "owners": ["project-sextant"],
-      "critical": true
+      "critical": true,
+      "experienceIntent": {
+        "objective": "Use an instrument in my Voyage and understand supported sensing or fallback",
+        "visibleOutcome": "Instrument choice produces its corresponding task, truthful capability state and useful return/recovery",
+        "integrationOwner": "Sextant instrument experience integration",
+        "systems": ["project-sextant", "landfall"],
+        "sourcePaths": ["src/sextant", "src/components/sextant"],
+        "persona": "A Creator or Player completing the named human objective",
+        "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
+        "devices": ["DESKTOP", "MOBILE"],
+        "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
+        "baselineDebt": [
+          {
+            "id": "PE-DEBT-SEXTANT-INSTRUMENT",
+            "fingerprint": "038b28f51a1bcef32daf224e3ff91b40fb7007bded88314234a1dfd566feebd4",
+            "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+            "repairOwner": "Spatial Experience Refit",
+            "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+            "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+            "deficiency": "Selectable instruments need meaningful outcomes, contextual hierarchy and truthful unsupported states."
+          }
+        ],
+        "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      }
     },
     {
       "id": "sextant.phase4.native-context",
@@ -3425,5 +3632,21 @@
       "owners": ["project-sextant"],
       "critical": true
     }
-  ]
+  ],
+  "experiencePolicy": {
+    "version": 1,
+    "authority": "SOUNDING_LINE",
+    "productAuthority": "GLOBAL_PRODUCT_GOVERNANCE",
+    "evidencePath": "Development_Docs/Testing/Product_Experience/candidate-review.json",
+    "screenRegistry": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_Screen_Acceptance_Registry.json",
+    "journeyRegistry": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Integrated_Journey_Registry.json",
+    "referenceRegistry": "Development_Docs/Projects/Voyagewright_Brightwork/Brightwork_Stage_8_Wave_2_Visual_Family_Registry.json",
+    "realizationRegistry": "Development_Docs/Programs/Deepwater/capability-realization-ledger.json",
+    "baselineLedger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+    "attestationPolicy": {
+      "required": true,
+      "trustedReviewActors": ["Kgray44"],
+      "workflow": ".github/workflows/sounding-line-ordinary.yml"
+    }
+  }
 }

@@ -182,3 +182,32 @@ merge43c89fd8. Both project doc entries are preserved. Regenerate only the owned
 Prisma client and qualify the new shared inputs; old ordinary/root/SDK receipts
 remain original-source proof. No owner credentials, runtime or sibling checkout
 was changed.
+
+Run38181812723 is FAIL_HARVESTED at b6bc6c22/tree d870ef5c/base ee8caa83:
+native29 PASS/1 expected SKIP; geofence foreground client TIMEOUT despite actual
+XCTest1 PASS. Delivery diagnostics are OBSERVED: foreground notification/queued/
+delivered each1; background notification/queued/delivered each1. The web client
+records only background. Aggregate counts do not establish event order or cause.
+Preserve6073 files, original partial observation and verified native/authority/
+transport cleanup. Product Devices did not execute because the Next build worker
+exhausted its approximately2GiB Node heap; synthetic DB cleanup passed. A4GiB
+budget is prepared only in the owned product-step transport and remains unverified.
+
+One Mac inspection run38184322782 exports existing lifecycle XCTest activities
+from source run38181812723/artifact11718599033. It creates no native build,
+simulator or new D3 qualification. Inspect chronology before a native repair.
+Do not repeat lost-response or a completed matrix for this inspection.
+
+Accepted main6d13c357 adds Product Experience Engineering and Parallax A1 records.
+Retain all488 protected contracts/experience metadata plus the native contract;
+follow the accepted experience capture/independent critique workflow before final
+qualification. Keep physical D4/formal acceptance separate; do not start Phase5.
+
+Inspection38184322782 is SUCCESS_HARVESTED,8 files,transport cleanup PASS,no new
+native executions. Original XCTest records activation23:10:43.637UTC and the
+foreground wait23:10:45.314UTC before termination23:11:20.539UTC. Source now
+routes owning UIKit scene activation/background and application notifications
+through idempotent transitions. Require actual active owning scene; another
+scene cannot resume this WebView. Scene counters are bounded categorical only.
+This source repair needs real scoped Apple compilation/geofence/product proof;
+do not declare diagnosis or acceptance from aggregate counters alone.

@@ -66,12 +66,27 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         location.delegate = self
         sextantPosition=SextantPosition(source:CoreLocationSextantSource(location)){[weak self] value in self?.event(value)}
         UNUserNotificationCenter.current().delegate=self
-        observers.append(NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in self?.pause() })
+        observers.append(NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.recordLifecycleDelivery("backgroundNotifications")
+            self?.pause()
+        })
         observers.append(NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
             self?.recordLifecycleDelivery("foregroundNotifications")
-            self?.foreground = true
-            if let self=self { for region in self.location.monitoredRegions where !self.hints.active(handle:region.identifier) {self.location.stopMonitoring(for:region)} }
-            self?.event(["type": "lifecycle", "state": "FOREGROUND", "pendingHints": self?.hints.read() ?? []])
+            self?.resumeForeground()
+        })
+        // SwiftUI owns a scene. Its activation must belong to this WebView;
+        // another window becoming active cannot resume this companion's leases.
+        observers.append(NotificationCenter.default.addObserver(forName: UIScene.didActivateNotification, object: nil, queue: .main) { [weak self] notification in
+            guard let self=self,let scene=notification.object as? UIWindowScene,
+                  scene === self.web?.window?.windowScene,scene.activationState == .foregroundActive else {return}
+            self.recordLifecycleDelivery("sceneForegroundNotifications")
+            self.resumeForeground()
+        })
+        observers.append(NotificationCenter.default.addObserver(forName: UIScene.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] notification in
+            guard let self=self,let scene=notification.object as? UIWindowScene,
+                  scene === self.web?.window?.windowScene,scene.activationState == .background else {return}
+            self.recordLifecycleDelivery("sceneBackgroundNotifications")
+            self.pause()
         })
         sextant = SextantSensors { [weak self] event in self?.event(event) }
         hardware = LandfallHardware { [weak self] event in self?.event(event) }
@@ -374,11 +389,20 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         event(["type":"power", "power":power.snapshot()])
     }
     private func stopSensors() { sextant?.stopLegacy() }
-    private func pause() { recordLifecycleDelivery("backgroundNotifications"); spatial?.stop();spatial=nil; event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); sextant?.stopAll("BACKGROUND"); sextantPosition?.stopAll("BACKGROUND"); sextantHaptics.stopAll(); stopSensors(); hardware?.stop(); nearby?.stop() }
+    private func resumeForeground() {
+        let observedActive:Bool
+        if let scene=web?.window?.windowScene {observedActive=scene.activationState == .foregroundActive}
+        else {observedActive=UIApplication.shared.applicationState == .active}
+        guard !foreground,observedActive else {return}
+        foreground=true
+        for region in location.monitoredRegions where !hints.active(handle:region.identifier) {location.stopMonitoring(for:region)}
+        event(["type":"lifecycle","state":"FOREGROUND","pendingHints":hints.read()])
+    }
+    private func pause() { guard foreground else {return}; spatial?.stop();spatial=nil; event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); sextant?.stopAll("BACKGROUND"); sextantPosition?.stopAll("BACKGROUND"); sextantHaptics.stopAll(); stopSensors(); hardware?.stop(); nearby?.stop() }
     private func recordLifecycleDelivery(_ key:String) {
         #if DEBUG
         guard origin?.scheme == "http",origin?.host == "127.0.0.1",origin?.port != nil,
-              ["foregroundNotifications","backgroundNotifications","foregroundQueued","backgroundQueued","foregroundDelivered","backgroundDelivered","foregroundFailed","backgroundFailed","foregroundRejected","backgroundRejected","contentProcessTerminations"].contains(key) else {return}
+              ["foregroundNotifications","backgroundNotifications","sceneForegroundNotifications","sceneBackgroundNotifications","foregroundQueued","backgroundQueued","foregroundDelivered","backgroundDelivered","foregroundFailed","backgroundFailed","foregroundRejected","backgroundRejected","contentProcessTerminations"].contains(key) else {return}
         lifecycleDiagnostics[key]=min(128,(lifecycleDiagnostics[key] ?? 0)+1)
         let file=FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("landfall-lifecycle-debug.json")
         if let data=try? JSONSerialization.data(withJSONObject:lifecycleDiagnostics) {

@@ -4,6 +4,8 @@ import { spawnSync } from "node:child_process";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { browserSuiteProfiles, isolatedBrowserFixtureCredentials } from "./browser-suite-profiles.mjs";
 
 const separator = process.argv.indexOf("--");
@@ -19,7 +21,12 @@ const root = path.resolve(options.workspace ?? process.cwd());
 const candidateSha = options.candidate;
 const databaseUrl = options["database-url"];
 
-if (!profile || !/^[a-f0-9]{40}$/u.test(candidateSha ?? "") || !databaseUrl || !browserTests.length)
+if (
+  !profile ||
+  !/^[a-f0-9]{40}$/u.test(candidateSha ?? "") ||
+  !databaseUrl ||
+  (!browserTests.length && !options["experience-plan"])
+)
   throw new Error("SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:INVALID_PROFILE_INVOCATION");
 
 const artifactRoot = path.join(root, "artifacts", "sounding-line");
@@ -47,20 +54,37 @@ try {
   if (profile.seed) run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "prisma/seed.ts"], environment);
   for (const preparer of profile.preparers ?? []) run(process.execPath, preparerArguments(preparer), environment);
   ensureProductionBuild();
-  run(
-    process.execPath,
-    [
-      "scripts/sounding-line/browser-authority.mjs",
-      ...profile.fixtureArguments.flatMap((argument) => ["--fixture", argument]),
-      ...(profile.fixtureProject ? ["--fixture-project", profile.fixtureProject] : []),
-      "--",
-      ...browserTests,
-      ...(profile.browserArguments ?? []),
-      "--project",
-      profile.browserProject ?? "chromium",
-    ],
-    environment,
-  );
+  if (options["experience-plan"]) {
+    if (!options["experience-runner"]) throw new Error("PRODUCT_EXPERIENCE_TRUSTED_RUNNER_REQUIRED");
+    // Candidate build/setup must not mutate either the checked-out product or
+    // the separately checked-out protected helper before evidence execution.
+    execFileSync("git", ["diff", "--exit-code", "HEAD", "--"], { cwd: root, stdio: "inherit" });
+    const authorityRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+    execFileSync("git", ["diff", "--exit-code", "HEAD", "--", "scripts/sounding-line"], {
+      cwd: authorityRoot,
+      stdio: "inherit",
+    });
+    run(
+      process.execPath,
+      [options["experience-runner"], "--workspace", root, "--run-server", options["experience-plan"]],
+      environment,
+    );
+  } else {
+    run(
+      process.execPath,
+      [
+        "scripts/sounding-line/browser-authority.mjs",
+        ...profile.fixtureArguments.flatMap((argument) => ["--fixture", argument]),
+        ...(profile.fixtureProject ? ["--fixture-project", profile.fixtureProject] : []),
+        "--",
+        ...browserTests,
+        ...(profile.browserArguments ?? []),
+        "--project",
+        profile.browserProject ?? "chromium",
+      ],
+      environment,
+    );
+  }
   await writeReceipt({ status: "PASS", failureCategory: null });
 } catch (error) {
   const runtimeReceipt = await readBrowserReceipt();

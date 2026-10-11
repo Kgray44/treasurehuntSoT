@@ -1,16 +1,15 @@
 ---
 title: Spatial Assistant Creator guide
 audience: creator
-status: implementation-candidate
+status: current
 canonical_for: spatial-assistant-creator-guide
 last_reviewed: 2026-10-11
 ---
 
 # Describe your spatial idea
 
-The A1 Spatial Assistant is an implementation candidate. It is mounted in the candidate Spatial Studio;
-production-browser checks pass; final software qualification and visual review are pending. This guide describes the candidate
-review experience and does not announce general availability.
+The Spatial Assistant is available in Spatial Studio when your administrator
+has configured and enabled assistance for your account. Manual editing stays available.
 
 Open **Ask Parallax** in Spatial Studio, select an object, and describe the experience you want. For example: “Move the map
 near the entrance,” “Add a readable pirate note on the desk,” or “Highlight the

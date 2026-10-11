@@ -1,7 +1,7 @@
 ---
 title: Parallax A1 local OpenAI configuration
 audience: developer-operator
-status: implementation-in-progress
+status: current
 canonical_for: parallax-a1-local-openai-configuration
 last_reviewed: 2026-10-11
 ---

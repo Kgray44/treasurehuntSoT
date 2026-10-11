@@ -15,17 +15,23 @@ it("accepts bounded Apple delivery counters and rejects native payloads and unco
       foregroundFailed: 1,
       foregroundNotifications: 3,
       foregroundRejected: 1,
+      sceneForegroundNotifications: 2,
+      sceneBackgroundNotifications: 2,
     }),
   ).toEqual({
     foregroundQueued: 2,
     foregroundFailed: 1,
     foregroundNotifications: 3,
     foregroundRejected: 1,
+    sceneForegroundNotifications: 2,
+    sceneBackgroundNotifications: 2,
   });
   for (const value of [
     { foregroundDelivered: 129 },
     { foregroundNotifications: 129 },
     { backgroundRejected: -1 },
+    { sceneForegroundNotifications: 129 },
+    { sceneBackgroundNotifications: -1 },
     { backgroundQueued: -1 },
     { foregroundQueued: 1.5 },
     { pendingHints: [] },

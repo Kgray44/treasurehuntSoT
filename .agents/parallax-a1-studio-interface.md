@@ -82,4 +82,11 @@ Canonical mutations, draft switches, close and Escape clear it. Preview rechecks
 local generation after async materialization. This source/DOM proof does not
 establish WebGL pixels, mobile layout, motion captures or owner visual acceptance.
 The complete authenticated browser journey, final ordinary qualification and
-explicit paid canary gates remain pending.
+explicit paid canary gates remained pending at that earlier checkpoint.
+
+Current qualification: the five owned production-browser journeys passed at
+`6cc62ef9`, six authorized real calls validated and settled, and protected PR #710
+merged after ordinary PASS at exact candidate `a2d2ef82`. Landed `ee8caa83` has
+the identical qualified tree and 118 passing smoke checks. Owner visual acceptance
+remains pending. The implementation record supersedes the earlier held checks;
+no sibling source or shared runtime was mutated.

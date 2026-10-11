@@ -498,3 +498,52 @@ through owned merge `43c89fd80679d809e7fadb150eb3b739b38b0314`. Both projects'
 documentation entries are retained. Its Prisma and shared consumer changes need
 fresh combined qualification; historical source/tree/base receipts stay bound to
 their original inputs. Formal D4 and Apple product qualification remain open.
+
+### Observed Apple lifecycle counters and product-build failure
+
+[Run 38181812723](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38181812723)
+retains source `b6bc6c2205fc39780c9e72be84e661ce88b69ad6`, tree
+`d870ef5cad78d00c3b6350a5b2dcf41a5d67cefe`, and original base `ee8caa83`.
+The native baseline passed 29 tests with one expected skip. Geofence registration,
+background and actual OS coordinate inputs passed, but foreground client
+acknowledgement failed again with zero canonical progression. Actual lifecycle
+XCTest passed one test. Native diagnostics are now observed: one foreground
+notification/queued/delivered event and one background notification/queued/delivered
+event. The web client records background without foreground. These aggregate
+counters do not establish event order or the cause; retained XCTest operations
+are being exported without rebuilding or rerunning a scenario.
+
+The normal Devices journey did not execute: its isolated production-build worker
+exhausted the approximately 2 GiB default Node heap. Compilation completed before
+the build worker failed, so no sign-in, product XCTest or product screenshot is
+claimed. A 4 GiB heap budget is prepared only for that owned validation step and
+is not yet verified. Synthetic database cleanup passed. The terminal collection
+retained 6073 files, verified every reused native file hash and recovered the small
+product artifact without downloading the native bundle twice. Native, authority
+and unchanged owned transport cleanup passed; original partial evidence remains.
+
+Accepted main `6d13c357be93514c94e7f36db1a8c930265e65e2` adds Product Experience
+Engineering validation and the Parallax A1 qualification record. Reconciliation
+retains all 488 protected contracts and experience metadata plus the native Sextant
+contract. Fresh final combined software and independently reviewed experience
+qualification remain required. Historical passing lost-response evidence remains
+bound to `df8d73b1`; this diagnostic run did not repeat it. Physical D4, normal Apple
+product qualification and formal Phase 4 acceptance remain open.
+
+The recorded-operations inspection completed successfully in
+[run 38184322782](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38184322782).
+Its eight retained files come from the original XCTest bundle; no app was built,
+no simulator was started and no new D3 execution occurred. The log records app
+activation at 23:10:43.637 UTC and the foreground-state wait at 23:10:45.314 UTC,
+before termination at 23:11:20.539 UTC. Its owned transport cleanup passed.
+
+The next source candidate handles the WebView's own UIKit scene activation and
+background notifications alongside application notifications, through one
+idempotent foreground/background transition. Another scene cannot resume this
+WebView. Resume requires an observed active owning scene; it does not invent a
+foreground state, hint or provider sample. Apple's [scene activation notification](https://developer.apple.com/documentation/uikit/uiscene/didactivatenotification)
+and [active scene state](https://developer.apple.com/documentation/uikit/uiscene/activationstate-swift.enum/foregroundactive)
+define those OS inputs. Duplicate signals cannot restart stopped leases or emit
+duplicate transitions. Only bounded categorical scene counters join diagnostics.
+This repair is unqualified until the actual new-source Apple build and scoped
+geofence/product journeys execute; no source-only pass is claimed.

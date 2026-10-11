@@ -2156,5 +2156,194 @@
       "changes": "Accepted Parallax A1 and Prisma schema; preserve owning source/docs, fresh combined qualification required"
     },
     "phaseAccepted": false
+  },
+  "appleObservedLifecycleAndProductBuildFollowup": {
+    "recordedAt": "2026-10-11T23:29:43.935Z",
+    "sourceSha": "b6bc6c2205fc39780c9e72be84e661ce88b69ad6",
+    "sourceTree": "d870ef5cad78d00c3b6350a5b2dcf41a5d67cefe",
+    "originalBaseSha": "ee8caa83e79b6b5802f8773689e802705c5154d3",
+    "runId": "38181812723",
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38181812723",
+    "transportSha": "21b76def04dd12623306897fa933651f8f817063",
+    "receiptFile": "artifacts/landfall-device-lab/hosted-b6bc6c2205fc-1791758848826/run-38181812723/hosted-receipt.json",
+    "receiptSha256": "0f638837075dc3a8813c24199e2b607c4a1416169c413eb5c4137d99d8b15d61",
+    "artifactFiles": 6073,
+    "nativeObservationReuse": {
+      "artifactId": 11718599033,
+      "source": "artifacts/landfall-device-lab/hosted-b6bc6c2205fc-1791758848826/native-observation-11718599033",
+      "completedDownloadCertificate": "artifacts/landfall-device-lab/hosted-b6bc6c2205fc-1791758848826/native-download-complete.json",
+      "allCopiedNativeChecksumsMatch": true
+    },
+    "nativeBaseline": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 1,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["513DFA7F-7714-4BBD-8F49-74F37E3708FF"],
+        "remainingResources": []
+      }
+    },
+    "geofence": {
+      "result": "FAIL",
+      "failedStep": {
+        "index": 4,
+        "action": "LIFECYCLE",
+        "state": "FAIL",
+        "reason": "LANDFALL_NATIVE_CLIENT_TIMEOUT",
+        "translation": {
+          "method": "OS_LIFECYCLE",
+          "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+        }
+      },
+      "canonicalProgressionEvents": 0,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["loopback-native-lab-server", "E4C77095-7EF0-4015-9F2C-5B51C3C6D862"],
+        "remainingResources": []
+      },
+      "actualXCTest": {
+        "version": 1,
+        "toolExit": "PASS",
+        "finalizationDeadlineMs": 240000,
+        "finalizationTimedOut": false,
+        "finalizationElapsedMs": 43497,
+        "testCounts": {
+          "result": "PASS",
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      "clientStages": [
+        {
+          "stage": "ENTRY",
+          "elapsedMs": 247549
+        },
+        {
+          "stage": "RESTORE_LEASE",
+          "elapsedMs": 247563
+        },
+        {
+          "stage": "LEASE_RESTORED",
+          "elapsedMs": 247638
+        },
+        {
+          "stage": "REGISTER_WORKER",
+          "elapsedMs": 247641
+        },
+        {
+          "stage": "WAITING_WORKER",
+          "elapsedMs": 247727
+        },
+        {
+          "stage": "WAITING_CONTROL",
+          "elapsedMs": 247818
+        },
+        {
+          "stage": "WORKER_CONTROLLED",
+          "elapsedMs": 247851
+        },
+        {
+          "stage": "SCENARIO_RECEIVED",
+          "elapsedMs": 248019
+        },
+        {
+          "stage": "PASSIVE_PERMISSION",
+          "elapsedMs": 248020
+        },
+        {
+          "stage": "PERMISSION_READ",
+          "elapsedMs": 248020
+        },
+        {
+          "stage": "READY_POST",
+          "elapsedMs": 248042
+        },
+        {
+          "stage": "CONTROL_STEP_RECEIVED",
+          "elapsedMs": 248173
+        },
+        {
+          "stage": "CONTROL_RESULT_PREPARED",
+          "elapsedMs": 253532
+        },
+        {
+          "stage": "CONTROL_STEP_RECEIVED",
+          "elapsedMs": 254482
+        },
+        {
+          "stage": "CONTROL_RESULT_PREPARED",
+          "elapsedMs": 254586
+        },
+        {
+          "stage": "LIFECYCLE_BACKGROUND",
+          "elapsedMs": 257224
+        }
+      ],
+      "delivery": {
+        "version": 1,
+        "state": "OBSERVED",
+        "delivery": {
+          "foregroundNotifications": 1,
+          "backgroundNotifications": 1,
+          "foregroundQueued": 1,
+          "backgroundQueued": 1,
+          "foregroundDelivered": 1,
+          "backgroundDelivered": 1
+        },
+        "unavailableReason": null
+      },
+      "cause": "UNESTABLISHED_COUNTERS_DO_NOT_ESTABLISH_FOREGROUND_EVENT_CHRONOLOGY"
+    },
+    "product": {
+      "result": "NOT_EXECUTED_NEXT_BUILD_NODE_HEAP_OOM",
+      "nativeTestExecuted": false,
+      "reason": "Production-build worker exhausted its approximately 2 GiB default Node heap before the browser/XCTest journey",
+      "databaseCleanup": {
+        "result": "PASS",
+        "scope": "owned-synthetic-SQLite",
+        "databaseRetained": false
+      },
+      "nextBuildBudget": "PREPARED_TASK_STEP_ONLY_4096_MIB_UNVERIFIED"
+    },
+    "transportCleanup": {
+      "result": "PASS",
+      "ownedResources": ["refs/heads/codex/landfall-lab-b6bc6c2205fc-1791758848826"],
+      "remainingResources": []
+    },
+    "recordedActivitiesInspection": {
+      "runId": "38184322782",
+      "sourceRunId": "38181812723",
+      "sourceCandidate": "b6bc6c2205fc39780c9e72be84e661ce88b69ad6",
+      "scope": "READ_EXISTING_XCTEST_ACTIVITIES_NO_BUILD_NO_SIMULATOR_NO_NEW_D3",
+      "status": "SUCCESS_HARVESTED",
+      "artifactFiles": 8,
+      "receiptFile": "artifacts/landfall-device-lab/hosted-b6bc6c2205fc-1791761220894/run-38184322782/hosted-receipt.json",
+      "receiptSha256": "a46fe197a846c15d0665aef566dd5a4c0dbaa59a0f85b09ca4c93ec9885b4ee2",
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-b6bc6c2205fc-1791761220894"],
+        "remainingResources": []
+      },
+      "appActivateUtc": "2026-10-11T23:10:43.637Z",
+      "waitRunningForegroundUtc": "2026-10-11T23:10:45.314Z",
+      "appTerminateUtc": "2026-10-11T23:11:20.539Z",
+      "nativeNotificationChronology": "NOT_ESTABLISHED_BY_AGGREGATE_COUNTERS",
+      "nextSourceRepair": {
+        "scope": "OWN_WEBVIEW_SCENE_ACTIVE_AND_BACKGROUND_NOTIFICATIONS_SHARE_IDEMPOTENT_TRANSITIONS_WITH_APPLICATION_NOTIFICATIONS",
+        "nativeCompilation": "UNVERIFIED_PENDING_NEW_SOURCE_D3",
+        "references": [
+          "https://developer.apple.com/documentation/uikit/uiscene/didactivatenotification",
+          "https://developer.apple.com/documentation/uikit/uiscene/activationstate-swift.enum/foregroundactive"
+        ]
+      }
+    },
+    "latestAcceptedBaseReconciliation": {
+      "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+      "changes": "Accepted Product Experience Engineering validation and Parallax A1 qualification; preserve all 488 protected contracts plus added native contract",
+      "finalCombinedAndExperienceQualification": "REQUIRED_AFTER_COHERENT_SOURCE"
+    },
+    "phaseAccepted": false
   }
 }
