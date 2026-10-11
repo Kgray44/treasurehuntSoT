@@ -1834,6 +1834,23 @@
 .assistantWorkspace[data-docked="true"] > aside {
   height: min(500px, 45dvh);
 }
+@media (max-height: 520px) {
+  .assistantWorkspace,
+  .assistantWorkspace[data-docked="true"] {
+    position: fixed;
+    top: calc(var(--studio-top, 76px) + 4px);
+    bottom: 8px;
+    left: 8px;
+    width: min(560px, calc(100% - 16px));
+    max-height: none;
+    min-height: 0;
+  }
+  .assistantWorkspace > aside,
+  .assistantWorkspace[data-docked="true"] > aside {
+    height: calc(100dvh - var(--studio-top, 76px) - 76px);
+    min-height: 0;
+  }
+}
 .adaptiveWorkspace .assistantWorkspace .composer {
   margin: 0;
   padding: 0;

@@ -85,9 +85,13 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
       }
     }
   }
+  await writeFile(`${artifactRoot}/viewport-observations.json`, JSON.stringify(observations, null, 2) + "\n");
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "Float assistance", exact: true }).click();
   await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect.poll(() => page.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches)).toBe(true);
+  await page.reload();
+  await page.getByRole("button", { name: /Ask Parallax/ }).click();
   await expect(assistant).toHaveAttribute("data-motion", /reduced|off/);
   const reduced = await assistant.evaluate((element) => ({
     animation: getComputedStyle(element).animationName,

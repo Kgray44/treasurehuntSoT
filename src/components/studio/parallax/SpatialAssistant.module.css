@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   resize: horizontal;
-  overflow: hidden;
+  overflow: auto;
   color: var(--text-primary);
   background: var(--surface-default);
   border: 1px solid var(--border-default);
@@ -47,6 +47,7 @@
 }
 .assistant .header {
   display: flex;
+  flex-shrink: 0;
   gap: 10px;
   align-items: center;
   padding: 17px 18px 13px;
@@ -75,6 +76,7 @@
 }
 .assistant .context {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: 8px;
   padding: 12px 18px;
@@ -315,6 +317,7 @@
   color: var(--text-on-accent);
 }
 .assistant .footer {
+  flex-shrink: 0;
   padding: 14px 16px 12px;
   border-top: 1px solid var(--border-default);
   background: var(--surface-raised);
