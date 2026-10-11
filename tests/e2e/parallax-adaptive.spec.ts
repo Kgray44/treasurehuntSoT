@@ -204,8 +204,9 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
       `/studio/parallax?chronicle=${tale.id}&definition=${capsule.definition.id}&entity=${capsule.version.entities[0].id}&block=${blockId}`,
     );
     await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
-    await page.getByRole("button", { name: "Open contextual Inspector" }).click();
-    await page.getByText("Library, reuse & publication", { exact: true }).click();
+    await page.getByLabel("Workspace layout").selectOption("SPATIAL");
+    const publicationSection = page.getByText("Library, reuse & publication", { exact: true });
+    if ((await publicationSection.locator("..").getAttribute("open")) === null) await publicationSection.click();
     await expect(page.getByRole("button", { name: /v1.0.0/ })).toBeVisible();
     const play = await startTaleSession(source.tale.slug, {
       accountId: account.id,
@@ -308,7 +309,8 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     ).toBe(capsule.version.checksum);
     await page.reload();
     await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
-    await page.getByText("Spatial Placement & grouping", { exact: true }).click();
+    const placementSection = page.getByText("Spatial Placement & grouping", { exact: true });
+    if ((await placementSection.locator("..").getAttribute("open")) === null) await placementSection.click();
     await expect(page.getByLabel("Authoring approach")).toHaveValue("EVIDENCE_CALIBRATED");
     await page.goto(`/studio/tales/${tale.id}`);
     await page.getByRole("button", { name: "Validate Chronicle", exact: true }).click();
