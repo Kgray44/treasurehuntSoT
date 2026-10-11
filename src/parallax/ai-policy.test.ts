@@ -1,0 +1,86 @@
+// @vitest-environment node
+import { describe, it, expect } from "vitest";
+import {
+  defaultAIGlobalPolicy,
+  effectiveAIUserPolicy,
+  aiUTCPeriod,
+  aiPricing,
+  aiUsageCostNano,
+  aiMaximumExposureNano,
+  chooseAIModel,
+  aiGlobalPolicySchema,
+  type AIUserPolicy,
+} from "./ai-policy";
+const override: AIUserPolicy = {
+  monthlyRequests: 900,
+  monthlySpendNano: 20_000_000_000,
+  advancedEnabled: true,
+  requestsPerMinute: 80,
+  suspended: false,
+  expiresAt: null,
+};
+describe("AI policy and versioned integer pricing", () => {
+  it("inherits defaults and retains global ceilings", () => {
+    expect(effectiveAIUserPolicy(defaultAIGlobalPolicy, null).monthlyRequests).toBe(500);
+    const policy = effectiveAIUserPolicy(defaultAIGlobalPolicy, override);
+    expect(policy.monthlySpendNano).toBe(10_000_000_000);
+    expect(policy.requestsPerMinute).toBe(10);
+    expect(policy.advancedEnabled).toBe(false);
+  });
+  it("expires exceptions without deleting historical policy", () => {
+    expect(
+      effectiveAIUserPolicy(
+        defaultAIGlobalPolicy,
+        { ...override, expiresAt: "2026-10-01T00:00:00Z" },
+        new Date("2026-10-11T00:00:00Z"),
+      ).source,
+    ).toBe("INHERITED");
+  });
+  it("uses exact UTC calendar months across year and leap-year rollover", () => {
+    expect(aiUTCPeriod(new Date("2026-12-31T23:59:59.999Z")).reset.toISOString()).toBe("2027-01-01T00:00:00.000Z");
+    expect(aiUTCPeriod(new Date("2028-02-29T23:59:59.999Z")).id).toBe("2028-02");
+    expect(aiUTCPeriod(new Date("2026-11-01T00:00:00Z")).id).toBe("2026-11");
+  });
+  it("prices cached input, cache writes and reasoning without floating-point money", () => {
+    expect(
+      aiUsageCostNano(aiPricing["gpt-6-luna"], {
+        inputTokens: 1000,
+        cachedInputTokens: 200,
+        cacheWriteTokens: 100,
+        outputTokens: 500,
+        reasoningTokens: 300,
+      }),
+    ).toBe(BigInt(344500));
+    expect(aiMaximumExposureNano(aiPricing["gpt-6.1-sol"], 8000, 4000)).toBe(BigInt(76000000));
+  });
+  it("rejects inconsistent usage", () => {
+    expect(() =>
+      aiUsageCostNano(aiPricing["gpt-6-luna"], {
+        inputTokens: 100,
+        cachedInputTokens: 101,
+        cacheWriteTokens: 0,
+        outputTokens: 0,
+        reasoningTokens: 0,
+      }),
+    ).toThrow();
+  });
+  it("requires explicit policy and advanced eligibility", () => {
+    expect(() =>
+      chooseAIModel(defaultAIGlobalPolicy, effectiveAIUserPolicy(defaultAIGlobalPolicy, null), "STANDARD"),
+    ).toThrow(/disabled/);
+    const global = { ...defaultAIGlobalPolicy, enabled: true, advancedEnabled: true };
+    expect(() => chooseAIModel(global, effectiveAIUserPolicy(global, null), "ADVANCED")).toThrow(/unavailable/);
+    expect(chooseAIModel(global, effectiveAIUserPolicy(global, override), "ADVANCED")).toBe("gpt-6.1-sol");
+    expect(chooseAIModel(global, effectiveAIUserPolicy(global, override), "STANDARD")).toBe("gpt-6-luna");
+  });
+  it("range-checks administrator policy and rejects allowlist bypass", () => {
+    expect(aiGlobalPolicySchema.safeParse(defaultAIGlobalPolicy).success).toBe(true);
+    expect(
+      aiGlobalPolicySchema.safeParse({ ...defaultAIGlobalPolicy, allowedModels: ["arbitrary-model"] }).success,
+    ).toBe(false);
+    expect(aiGlobalPolicySchema.safeParse({ ...defaultAIGlobalPolicy, monthlySpendNano: -1 }).success).toBe(false);
+    expect(
+      aiGlobalPolicySchema.safeParse({ ...defaultAIGlobalPolicy, userConcurrency: 3, globalConcurrency: 1 }).success,
+    ).toBe(false);
+  });
+});

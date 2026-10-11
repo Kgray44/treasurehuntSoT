@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import type { Prisma } from "@prisma/client";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { draftSchema, type SpatialDraft } from "./authoring";
 import { materializeSpatialVersion, validateSpatialMoment } from "./publication";
@@ -60,42 +61,51 @@ export async function assertSpatialDraftAccess(draft: SpatialDraft) {
 }
 export async function saveSpatialDraft(ownerAccountId: string, raw: unknown, revision: number): Promise<number> {
   const draft = draftSchema.parse(raw);
-  await assertCalibrationClaim(ownerAccountId, draft);
   await assertSpatialDraftAccess(draft);
+  return db.$transaction((tx) => saveSpatialDraftInTransaction(ownerAccountId, draft, revision, tx));
+}
+/** Canonical save/CAS for manual autosave and reviewed Apply. Callers authorize
+ * the exact draft before opening the transaction; use only tx queries here. */
+export async function saveSpatialDraftInTransaction(
+  ownerAccountId: string,
+  raw: unknown,
+  revision: number,
+  tx: Prisma.TransactionClient,
+): Promise<number> {
+  const draft = draftSchema.parse(raw);
+  await assertCalibrationClaim(ownerAccountId, draft, tx);
   const id = draft.content.definitionId;
   const envelope = JSON.stringify(draft);
   const checksum = canonicalChecksum(draft);
-  return db.$transaction(async (tx) => {
-    const item = await tx.reusableAuthoringItem.findUnique({ where: { id } });
-    if (!item) {
-      if (revision !== 0) throw new DraftConflictError(0);
-      await tx.reusableAuthoringItem.create({
-        data: {
-          id,
-          ownerAccountId,
-          kind: spatialItemKind,
-          name: draft.content.title,
-          tags: JSON.stringify(draft.tags),
-          currentVersionNumber: 1,
-          versions: { create: { id: `${id}:working`, versionNumber: 0, envelope, checksum } },
-        },
-      });
-      return 1;
-    }
-    if (item.ownerAccountId !== ownerAccountId || item.kind !== spatialItemKind || item.archivedAt)
-      throw new Error("Spatial item unavailable.");
-    const claimed = await tx.reusableAuthoringItem.updateMany({
-      where: { id, ownerAccountId, currentVersionNumber: revision },
-      data: { name: draft.content.title, tags: JSON.stringify(draft.tags), currentVersionNumber: { increment: 1 } },
+  const item = await tx.reusableAuthoringItem.findUnique({ where: { id } });
+  if (!item) {
+    if (revision !== 0) throw new DraftConflictError(0);
+    await tx.reusableAuthoringItem.create({
+      data: {
+        id,
+        ownerAccountId,
+        kind: spatialItemKind,
+        name: draft.content.title,
+        tags: JSON.stringify(draft.tags),
+        currentVersionNumber: 1,
+        versions: { create: { id: `${id}:working`, versionNumber: 0, envelope, checksum } },
+      },
     });
-    if (!claimed.count) throw new DraftConflictError(item.currentVersionNumber);
-    // Only version zero is a mutable working copy. Every released version is append-only.
-    await tx.reusableAuthoringItemVersion.update({
-      where: { itemId_versionNumber: { itemId: id, versionNumber: 0 } },
-      data: { envelope, checksum },
-    });
-    return revision + 1;
+    return 1;
+  }
+  if (item.ownerAccountId !== ownerAccountId || item.kind !== spatialItemKind || item.archivedAt)
+    throw new Error("Spatial item unavailable.");
+  const claimed = await tx.reusableAuthoringItem.updateMany({
+    where: { id, ownerAccountId, currentVersionNumber: revision },
+    data: { name: draft.content.title, tags: JSON.stringify(draft.tags), currentVersionNumber: { increment: 1 } },
   });
+  if (!claimed.count) throw new DraftConflictError(item.currentVersionNumber);
+  // Only version zero is a mutable working copy. Every released version is append-only.
+  await tx.reusableAuthoringItemVersion.update({
+    where: { itemId_versionNumber: { itemId: id, versionNumber: 0 } },
+    data: { envelope, checksum },
+  });
+  return revision + 1;
 }
 export function materializeLibraryMoment(
   draft: SpatialDraft,

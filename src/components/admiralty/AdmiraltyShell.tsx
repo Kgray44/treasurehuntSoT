@@ -51,6 +51,13 @@ const navigation: readonly (AdminNavItem & { any: readonly AdmiraltyCapabilityId
     any: ["CONFIG_OBSERVE"],
   },
   { href: "/admin/releases", label: "Releases", shortLabel: "Releases", group: "Operations", any: ["RELEASE_OBSERVE"] },
+  {
+    href: "/admin/ai-usage",
+    label: "AI Usage & Quotas",
+    shortLabel: "AI quotas",
+    group: "Operations",
+    any: ["CONFIG_OBSERVE"],
+  },
   { href: "/admin/audit", label: "Audit", shortLabel: "Audit", group: "Investigation", any: ["AUDIT_OBSERVE"] },
   {
     href: "/admin/investigate",

@@ -13,7 +13,9 @@ import {
   type History,
   type SpatialDraft,
 } from "@/parallax/authoring";
-import { materializeIntent, type IntentProposal } from "@/parallax/ai-authoring";
+import { SpatialAssistant, type SpatialAssistantBase, type SpatialAssistantPort } from "./SpatialAssistant";
+import { createSpatialAssistantPort } from "./spatial-assistant-port";
+import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
 import type { SpatialMoment, SpatialVersion } from "@/parallax/contracts";
 import { emptyStudioContent } from "@/parallax/studio-contracts";
@@ -51,9 +53,19 @@ type Loaded = {
   items: SpatialLibraryRecord[];
   chronicle: Chronicle | null;
   aiAvailable: boolean;
+  aiConfigured: boolean;
+  aiUsage: Awaited<ReturnType<typeof creatorAIUsage>>;
 };
 type AttachmentChange = { blockId: string; before: SpatialMoment | null; after: SpatialMoment };
 const fresh = (chronicleId?: string) => createSpatialDraft(crypto.randomUUID(), "Desk Map", chronicleId ?? null);
+function bindSavedSceneUrl(definitionId: string) {
+  const url = new URL(window.location.href);
+  if (url.pathname !== "/studio/parallax" || url.searchParams.get("definition") === definitionId) return;
+  url.searchParams.set("definition", definitionId);
+  // Preserve Chronicle/Passage context and Next's history state without a route
+  // navigation that would remount the editor and discard ordinary Undo history.
+  window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+}
 export function SpatialStudio({
   chronicleId,
   definitionId,
@@ -66,7 +78,9 @@ export function SpatialStudio({
   blockId?: string;
 }) {
   const [loaded, setLoaded] = useState<Loaded | null>(null),
-    [history, setHistory] = useState<History | null>(null);
+    [history, setHistoryState] = useState<History | null>(null);
+  const [editorGeneration, setEditorGeneration] = useState(0),
+    [savedRevision, setSavedRevision] = useState(0);
   const [attachmentPast, setAttachmentPast] = useState<AttachmentChange[]>([]),
     [attachmentFuture, setAttachmentFuture] = useState<AttachmentChange[]>([]);
   const [selected, setSelected] = useState<string | null>(entityId ?? null),
@@ -78,10 +92,7 @@ export function SpatialStudio({
     [filter, setFilter] = useState("ALL"),
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
-  const [busy, setBusy] = useState(false),
-    [request, setRequest] = useState(""),
-    [proposal, setProposal] = useState<IntentProposal | null>(null),
-    [critique, setCritique] = useState<{ topic: string; message: string }[]>([]);
+  const [busy, setBusy] = useState(false);
   const [findings, setFindings] = useState<SpatialFinding[] | null>(null),
     [releaseId, setReleaseId] = useState(""),
     [targetBlock, setTargetBlock] = useState(blockId ?? ""),
@@ -97,10 +108,22 @@ export function SpatialStudio({
     saving = useRef<Promise<void> | null>(null),
     csrf = useRef(""),
     initialized = useRef(false);
-  const proposalBinding = useRef<string | null>(null);
-  const proposalTarget = useRef<string | null>(null);
-  const draft = history?.present;
+  const historyRef = useRef<History | null>(null),
+    generation = useRef(0),
+    accountScope = useRef("");
   const [placementPreview, setPlacementPreview] = useState<SpatialDraft | null>(null);
+  const [assistantScenePreview, setAssistantScenePreview] = useState<SpatialDraft | null>(null);
+  const [assistantHighlights, setAssistantHighlights] = useState<readonly string[]>([]);
+  const writeHistory = useCallback((next: History) => {
+    historyRef.current = next;
+    draftRef.current = next.present;
+    generation.current += 1;
+    setEditorGeneration(generation.current);
+    setHistoryState(next);
+    setAssistantScenePreview(null);
+    setAssistantHighlights([]);
+  }, []);
+  const draft = history?.present;
   const { layout, setLayout, reset: resetWorkspace, choose: chooseWorkspace } = useWorkspaceLayout(loaded?.layoutScope);
   const { libraryOpen, inspectorOpen, libraryWidth, inspectorWidth, bottomOpen, bottomHeight, leftTab, bottomTab } =
     layout;
@@ -239,9 +262,6 @@ export function SpatialStudio({
         `studio-preview-${draft.content.adaptive.variant}`,
       )
     : null;
-  useEffect(() => {
-    draftRef.current = draft ?? null;
-  }, [draft]);
   const api = useCallback(async (body: unknown) => {
     const response = await fetch("/api/studio/parallax", {
       method: "POST",
@@ -261,7 +281,10 @@ export function SpatialStudio({
         setStatus("Saving working draft…");
         const result = await api({ action: "SAVE", draft: snapshot, revision: revision.current });
         revision.current = result.revision;
+        setSavedRevision(result.revision);
         savedJson.current = JSON.stringify(snapshot);
+        if (draftRef.current?.content.definitionId === snapshot.content.definitionId)
+          bindSavedSceneUrl(snapshot.content.definitionId);
       }
       setStatus("Working draft saved");
     };
@@ -270,14 +293,88 @@ export function SpatialStudio({
     });
     return saving.current;
   }, [api]);
+  const [assistantPortSession, setAssistantPortSession] = useState<{
+    accountId: string;
+    definitionId: string;
+    port: SpatialAssistantPort;
+  } | null>(null);
+  useEffect(() => {
+    const definitionId = draft?.content.definitionId,
+      accountId = loaded?.layoutScope;
+    if (!definitionId || !accountId) return;
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      const readBase = (): SpatialAssistantBase => {
+        if (!draftRef.current) throw new Error("Open a working scene before requesting assistance.");
+        return { draft: draftRef.current, revision: revision.current, editorGeneration: generation.current };
+      };
+      const port = createSpatialAssistantPort({
+        scope: () => ({ accountId: accountScope.current, definitionId: draftRef.current?.content.definitionId ?? "" }),
+        csrfToken: () => csrf.current,
+        readBase,
+        prepareBase: async () => {
+          await persist();
+          return readBase();
+        },
+        installSaved: (saved) => {
+          const current = historyRef.current;
+          if (!current) throw new Error("The working scene is unavailable.");
+          revision.current = saved.revision;
+          setSavedRevision(saved.revision);
+          savedJson.current = JSON.stringify(saved.draft);
+          bindSavedSceneUrl(saved.draft.content.definitionId);
+          writeHistory(changeHistory(current, { type: "REPLACE", draft: saved.draft }));
+          setFindings(null);
+          setStatus("Reviewed Assistant changes saved");
+        },
+      });
+      const mountedPort: SpatialAssistantPort = {
+        ...port,
+        apply: async (...input: Parameters<typeof port.apply>) => {
+          await persist();
+          setBusy(true);
+          const application = port.apply(...input);
+          const queued = application.then(() => {});
+          void queued.catch(() => {});
+          saving.current = queued;
+          try {
+            return await application;
+          } finally {
+            if (saving.current === queued) saving.current = null;
+            setBusy(false);
+          }
+        },
+      };
+      setAssistantPortSession({ accountId, definitionId, port: mountedPort });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [draft?.content.definitionId, loaded?.layoutScope, persist, writeHistory]);
+  const assistantPort =
+    assistantPortSession?.accountId === loaded?.layoutScope &&
+    assistantPortSession?.definitionId === draft?.content.definitionId
+      ? assistantPortSession?.port
+      : null;
+  const assistantPreview = useCallback((next: SpatialDraft | null, affected: readonly string[]) => {
+    setAssistantScenePreview(next);
+    setAssistantHighlights(affected);
+  }, []);
+  const closeAssistant = () => {
+    setAssistantOpen(false);
+    assistantPreview(null, []);
+    setPlacementPreview(null);
+  };
   const install = useCallback(
     (next: SpatialDraft, nextRevision: number, saved: boolean) => {
       draftRef.current = next;
       revision.current = nextRevision;
+      setSavedRevision(nextRevision);
       savedJson.current = saved ? JSON.stringify(next) : "";
-      setHistory({ past: [], present: next, future: [] });
+      if (saved) bindSavedSceneUrl(next.content.definitionId);
+      writeHistory({ past: [], present: next, future: [] });
       setSelected(next.content.entities.some((e) => e.id === entityId) ? entityId! : next.content.entities[0].id);
-      setProposal(null);
       setFindings(null);
       setReleaseId("");
       setError("");
@@ -287,7 +384,7 @@ export function SpatialStudio({
         { trigger: "TIMER", atMs: 0 },
       ]);
     },
-    [entityId],
+    [entityId, writeHistory],
   );
   const load = useCallback(async () => {
     const response = await fetch(
@@ -297,6 +394,7 @@ export function SpatialStudio({
     const data = (await response.json()) as Loaded & { error?: string };
     if (!response.ok) throw new Error(data.error ?? "Spatial Studio is unavailable.");
     csrf.current = data.csrfToken;
+    accountScope.current = data.layoutScope ?? "";
     setLoaded(data);
     return data;
   }, [chronicleId]);
@@ -362,9 +460,8 @@ export function SpatialStudio({
   }, []);
   const edit = (change: Edit) => {
     try {
-      if (history) setHistory(changeHistory(history, change));
+      if (historyRef.current) writeHistory(changeHistory(historyRef.current, change));
       setFindings(null);
-      setProposal(null);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The edit could not be applied.");
     }
@@ -457,6 +554,9 @@ export function SpatialStudio({
       if (event.key === "Escape") {
         if (assistantOpen) {
           setAssistantOpen(false);
+          setAssistantScenePreview(null);
+          setAssistantHighlights([]);
+          setPlacementPreview(null);
           queueMicrotask(() =>
             document.querySelector<HTMLButtonElement>('[aria-controls="parallax-assistance"]')?.focus(),
           );
@@ -472,9 +572,7 @@ export function SpatialStudio({
       if (event.key === "/" && !event.ctrlKey && !event.metaKey) {
         event.preventDefault();
         setAssistantOpen(true);
-        queueMicrotask(() =>
-          document.querySelector<HTMLInputElement>('[aria-label="Spatial placement instruction"]')?.focus(),
-        );
+        queueMicrotask(() => document.querySelector<HTMLTextAreaElement>("#parallax-assistance textarea")?.focus());
       }
       if ((event.ctrlKey || event.metaKey) && event.key === "\\") {
         event.preventDefault();
@@ -482,7 +580,9 @@ export function SpatialStudio({
       }
       if (history && !busy && (event.ctrlKey || event.metaKey) && ["z", "y"].includes(event.key.toLowerCase())) {
         event.preventDefault();
-        setHistory(event.key.toLowerCase() === "y" || event.shiftKey ? redo(history) : undo(history));
+        writeHistory(
+          event.key.toLowerCase() === "y" || event.shiftKey ? redo(historyRef.current!) : undo(historyRef.current!),
+        );
         setFindings(null);
         setPlacementPreview(null);
       }
@@ -566,7 +666,7 @@ export function SpatialStudio({
           <button
             disabled={!history.past.length || busy}
             onClick={() => {
-              setHistory(undo(history));
+              writeHistory(undo(historyRef.current!));
               setFindings(null);
             }}
           >
@@ -575,7 +675,7 @@ export function SpatialStudio({
           <button
             disabled={!history.future.length || busy}
             onClick={() => {
-              setHistory(redo(history));
+              writeHistory(redo(historyRef.current!));
               setFindings(null);
             }}
           >
@@ -624,6 +724,7 @@ export function SpatialStudio({
                       revision: revision.current,
                     });
                     revision.current = result.revision;
+                    setSavedRevision(result.revision);
                     setReleaseId(result.version.id);
                     setValidationOpen(false);
                     await load();
@@ -888,12 +989,13 @@ export function SpatialStudio({
             </button>
           </div>
           <SpatialCanvas
-            draft={placementPreview ?? draft}
+            highlightedEntityIds={assistantHighlights}
+            draft={assistantScenePreview ?? placementPreview ?? draft}
             selectedId={selected}
             onSelect={setSelected}
             onInspect={() => setInspectorOpen(true)}
             onEdit={
-              placementPreview
+              assistantScenePreview || placementPreview
                 ? () => setError("Approve or discard the proposal preview before editing objects.")
                 : edit
             }
@@ -912,7 +1014,9 @@ export function SpatialStudio({
             >
               <span>✦ Ask Parallax</span>
               <small>
-                {placementPreview ? "Review placement preview" : "Place a folded letter on a table near the entrance…"}
+                {assistantScenePreview || placementPreview
+                  ? "Review placement preview"
+                  : "Place a folded letter on a table near the entrance…"}
               </small>
             </button>
             <span>{loaded.aiAvailable ? "Provider configured" : "AI unavailable · phrase rules"}</span>
@@ -933,84 +1037,48 @@ export function SpatialStudio({
                 >
                   {layout.assistantDocked ? "Float assistance" : "Dock assistance"}
                 </button>
-                <button aria-label="Close assistance" onClick={() => setAssistantOpen(false)}>
+                <button aria-label="Close assistance" onClick={closeAssistant}>
                   ×
                 </button>
               </div>
             </div>
-            <PlacementComposer
-              draft={draft}
-              selectedId={selected}
-              aiAvailable={loaded.aiAvailable}
-              onPreview={setPlacementPreview}
-              onApply={replace}
-            />
+            {assistantPort && loaded.aiUsage && loaded.layoutScope && (
+              <SpatialAssistant
+                draft={draft}
+                revision={savedRevision}
+                editorGeneration={editorGeneration}
+                selectedEntityId={draft.content.entities.some((entity) => entity.id === selected) ? selected : null}
+                accountId={loaded.layoutScope}
+                usage={loaded.aiUsage}
+                port={assistantPort}
+                onPreview={assistantPreview}
+                onSelect={setSelected}
+                onUndo={() => {
+                  if (historyRef.current && !busy) writeHistory(undo(historyRef.current));
+                }}
+                onRedo={() => {
+                  if (historyRef.current && !busy) writeHistory(redo(historyRef.current));
+                }}
+                canUndo={!!history.past.length && !busy}
+                canRedo={!!history.future.length && !busy}
+                onClose={closeAssistant}
+                onCanvasView={() => {
+                  setAssistantOpen(false);
+                  queueMicrotask(() =>
+                    document.querySelector<HTMLButtonElement>('[aria-controls="parallax-assistance"]')?.focus(),
+                  );
+                }}
+              />
+            )}
             <details className={styles.assistantDetails}>
-              <summary>Configured AI assistance / critique</summary>
-              <p>
-                {loaded.aiAvailable
-                  ? "Review the proposed configuration before accepting. AI critique is advisory; Drydock governs validation."
-                  : "AI provider unavailable. Configure a trusted authoring provider to enable intent and critique."}
-              </p>
-              <label>
-                Intent
-                <textarea
-                  value={request}
-                  onChange={(e) => setRequest(e.target.value)}
-                  placeholder="Put a folded letter near the entrance, on a table."
-                />
-              </label>
-              <div className={styles.inline}>
-                {["INTENT", "CRITIQUE"].map((kind) => (
-                  <button
-                    key={kind}
-                    disabled={!loaded.aiAvailable || !request || busy || !selected}
-                    onClick={() =>
-                      void action(async () => {
-                        const binding = JSON.stringify(draftRef.current);
-                        const target = selected;
-                        const result = await api({ action: "AI", kind, request, draft: draftRef.current });
-                        if (result.status !== "PROPOSED") throw new Error(result.message);
-                        if (kind === "INTENT") {
-                          proposalBinding.current = binding;
-                          proposalTarget.current = target;
-                          setProposal(result.proposal);
-                        } else setCritique(result.critique.findings);
-                      })
-                    }
-                  >
-                    {kind === "INTENT" ? "Propose intent" : "Critique scene"}
-                  </button>
-                ))}
-              </div>
-              {proposal && (
-                <div>
-                  <p>{proposal.explanation}</p>
-                  <pre>{JSON.stringify(proposal, null, 2)}</pre>
-                  <button
-                    onClick={() => {
-                      if (proposalBinding.current !== JSON.stringify(draft) || proposalTarget.current !== selected) {
-                        setError("The scene or selected object changed. Request a fresh AI proposal.");
-                        return;
-                      }
-                      try {
-                        replace(materializeIntent(draft, selected!, proposal));
-                        setProposal(null);
-                      } catch (cause) {
-                        setError(cause instanceof Error ? cause.message : "The proposal cannot edit this object.");
-                      }
-                    }}
-                  >
-                    Accept as reversible edit
-                  </button>
-                  <button onClick={() => setProposal(null)}>Discard</button>
-                </div>
-              )}
-              {critique.map((f, i) => (
-                <p key={i}>
-                  <strong>{f.topic}:</strong> {f.message}
-                </p>
-              ))}
+              <summary>Guided placement controls</summary>
+              <PlacementComposer
+                draft={draft}
+                selectedId={selected}
+                aiAvailable={loaded.aiAvailable}
+                onPreview={setPlacementPreview}
+                onApply={replace}
+              />
             </details>
           </section>
           {preview === "PERFORMANCE" && (

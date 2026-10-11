@@ -7,6 +7,100 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model AIQuotaCommandPreview {
+  id                 String   @id
+  actorAccountId     String
+  accountSessionId   String
+  fingerprint        String
+  targetAccountId    String?
+  expectedRevision   Int
+  expiresAt          DateTime
+  usedAt             DateTime?
+  createdAt          DateTime @default(now())
+
+  @@index([expiresAt])
+}
+
+model AIQuotaControl {
+  id                 String   @id
+  revision           Int      @default(0)
+  lockVersion        Int      @default(0)
+  policy             String
+  lastSuccessAt      DateTime?
+  lastFailureCode    String?
+  lastFailureAt      DateTime?
+  updatedAt          DateTime @updatedAt
+}
+
+model AIQuotaUserPolicy {
+  accountId          String   @id
+  revision           Int      @default(0)
+  policy             String
+  updatedAt          DateTime @updatedAt
+}
+
+model AIQuotaPolicyRevision {
+  id                 String   @id
+  targetAccountId    String?
+  actorAccountId     String
+  idempotencyKey     String   @unique
+  fingerprint        String
+  previousRevision   Int
+  resultingRevision  Int
+  beforeState        String
+  afterState         String
+  reason             String
+  createdAt          DateTime @default(now())
+
+  @@index([targetAccountId, createdAt])
+}
+
+model AIUsageLedger {
+  id                 String   @id
+  accountId          String
+  requestId          String
+  idempotencyKey     String
+  fingerprint        String
+  definitionId       String
+  operationCategory  String
+  period             String
+  provider           String
+  model              String
+  mode               String
+  pricingRevision    String
+  pricing            String
+  policyRevision     Int
+  status             String
+  reservationNano    BigInt
+  exposureNano       BigInt
+  settledCostNano    BigInt?
+  inputTokens        Int?
+  cachedInputTokens  Int?
+  cacheWriteTokens   Int?
+  outputTokens       Int?
+  reasoningTokens    Int?
+  providerResponseId String?
+  failureCode        String?
+  createdAt          DateTime @default(now())
+  dispatchedAt       DateTime?
+  settledAt          DateTime?
+  leaseExpiresAt     DateTime
+  result             String?
+  resultExpiresAt    DateTime?
+  timings            String?
+  applicationKey         String?
+  applicationFingerprint String?
+  applicationRevision    Int?
+  applicationChecksum    String?
+  appliedAt              DateTime?
+
+  @@unique([accountId, idempotencyKey])
+  @@unique([accountId, applicationKey])
+  @@index([period, accountId, status])
+  @@index([createdAt, status])
+  @@index([leaseExpiresAt, status])
+}
+
 model Campaign {
   id                 String              @id @default(cuid())
   slug               String              @unique
