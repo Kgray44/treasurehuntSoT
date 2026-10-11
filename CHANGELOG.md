@@ -14,6 +14,8 @@ last_reviewed: 2026-10-11
 
 ### Corrected
 
+- Corrected phone sign-in on the task-owned Spatial Chronicle HTTP preview. Only verified synthetic navigator sessions receive the local preview cookie policy; ordinary production sessions remain HTTPS-only. Pilot browser qualification now exercises the real sign-in form on both surfaces.
+
 - Crossdeck replaces 500 ms snapshot polling with authorized committed-change
   notifications and nominal 10-second active reconciliation. Reconnect and
   foreground recovery fetch canonical state, revocation clears presentation,
