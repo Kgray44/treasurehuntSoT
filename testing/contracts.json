@@ -3389,6 +3389,13 @@
       "authority": "project-crossdeck",
       "owners": ["project-crossdeck", "wayfarer"],
       "critical": true
+    },
+    {
+      "id": "reach.phase1.foundation",
+      "name": "Reach Phase 1 observation, calibration and laboratory foundation",
+      "authority": "reach",
+      "owners": ["reach", "project-sextant", "watchglass"],
+      "critical": true
     }
   ]
 }
