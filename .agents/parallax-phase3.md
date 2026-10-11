@@ -1,7 +1,7 @@
 ---
 title: Parallax Phase 3 owned implementation context
 audience: automation
-status: active
+status: closed-software-mainline-external-qualification-open
 canonical_for: parallax-phase3-owned-context
 last_reviewed: 2026-10-11
 ---
@@ -143,7 +143,7 @@ Completion authority: focused checks → frozen candidate → ordinary product P
 normal Sounding Line PASS → protected merge → landed smoke. Software, integration,
 physical-device proof and owner experience acceptance remain distinct.
 
-## Final local readiness checkpoint
+## Historical final local readiness checkpoint
 
 Phase 3 source and requirement reconciliation are complete in
 `Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md`.
@@ -161,3 +161,37 @@ The loopback owner-review process at port 62619 remains on approved `592217e3`;
 do not overwrite its `.next` build or reset its synthetic database. Hosted
 ordinary qualification avoids that shared local build. No physical qualification,
 deployment, A1 mount or Phase 4 work is claimed or authorized.
+
+## Protected closure and canonical A1 handoff
+
+Product PR #711 merged at 2026-10-11T20:21:22Z through existing protections:
+`0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6`, tree
+`36529aefcac815a8a1cef0434624149b9b567e6f`. This exactly equals the qualified
+candidate `e40cd35d78089a2472473cadd2b7abae46b9aaae`, based on accepted
+`efa689f20d2a9dead852135302dd6961c9f0f0d2`. Ordinary run 38171123906 passed
+all nine obligations, 1,739 tests across 277 files and four product browser
+journeys; only the opt-in historical capture was skipped. Zero errors/remainder.
+The clean actual merge passed 79 focused smoke tests and 26 new D0 receipts.
+
+The newest owner visual approval remains `592217e3` / tree `36cb8d07`:
+"Approve the refined workstation". UI/navigation code has no diff to the
+qualified candidate. Field/Device Lab additions are independently covered by
+the accepted software decision, not silently included in the visual receipt.
+Original source-bound receipts/captures and complete requirement reconciliation
+are under the Parallax Phase 3 implementation record and `phase3-evidence-20261011`.
+
+**Canonical A1 integration readiness: READY against protected `0327eeb7` / tree
+`36529aef`.** Both visual gates and Phase 3 software/integration gates are closed.
+A1 may reconcile its mounted feature against this accepted source, preserving
+the acknowledged saved draft/revision/editorGeneration, serialized persistence,
+atomic saved Apply acknowledgement, one already-saved canonical history install,
+same-key retry and additive authoring/Prisma ownership amendments above. This
+phase did not import, mount, qualify or modify sibling A1 work.
+
+Owned review runtime remains on approved `592217e3`, port 62619, source-bound
+synthetic database and ordinary sign-in. Preserve it during owner inspection;
+do not overwrite its `.next` build. Physical/field reliability, imagery screening,
+live providers, deployment and Phase 4 remain separate. Do not restart Phase 3
+or advance a phase from this closed context. This closeout publishes the accepted
+evidence and mainline catalog. Further product implementation requires a separate
+owner instruction.

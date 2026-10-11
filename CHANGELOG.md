@@ -14,7 +14,7 @@ last_reviewed: 2026-10-11
 
 ### Corrected
 
-- Parallax Phase 3 adds semantic multi-object staging, scoped durable logical placement, remote recipes, optional consented metadata calibration, bounded discovery recovery and a refined 3D workstation with four layouts and adaptive docks. Canonical drafts, Undo/Redo, Drydock, immutable spatial versions and Chronicle publication remain authoritative. The [implementation record](Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md) preserves executable/browser proof and physical limits; final workstation visual approval binds `592217e3` on 2026-10-11. Protected integration remains pending.
+- Parallax Phase 3 adds semantic multi-object staging, scoped durable logical placement, remote recipes, optional consented metadata calibration, bounded discovery recovery and a refined 3D workstation with four layouts and adaptive docks. Canonical drafts, Undo/Redo, Drydock, immutable spatial versions and Chronicle publication remain authoritative. Protected PR #711 integrated at `0327eeb7` after ordinary Sounding Line; clean landed smoke passed. The [implementation record](Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md) preserves exact executable/browser proof and physical limits; final workstation visual approval binds `592217e3` on 2026-10-11.
 
 - Crossdeck replaces 500 ms snapshot polling with authorized committed-change
   notifications and nominal 10-second active reconciliation. Reconnect and

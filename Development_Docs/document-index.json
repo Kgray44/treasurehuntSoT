@@ -669,12 +669,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Features/branch-complete/parallax-phase3.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -7972,6 +7966,354 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/Phase_3_Workstation_Review.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.adaptive-floor-map.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.adaptive-per-run-variation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.discovery-hint-escalation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.fixed-worldspace-fallback.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.guided-fallback.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.local-frame.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.native-unavailable.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-accessible-direct.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-background-resume.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-consent-decline.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-determinism.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-image-upload-disabled.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-long-search.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-low-confidence.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-multi-room.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-no-surface.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-permission-denial.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-scene-conflict.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-scoped-stability.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-stale-version.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-tracking-interruption.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.phase3-unsafe-candidate.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.receipt-isolation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.surface-placement.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.tracking-recovery.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/frozen-parallax.version-pin.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.adaptive-floor-map.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.adaptive-per-run-variation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.discovery-hint-escalation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.fixed-worldspace-fallback.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.guided-fallback.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.local-frame.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.native-unavailable.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-accessible-direct.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-background-resume.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-consent-decline.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-determinism.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-image-upload-disabled.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-long-search.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-low-confidence.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-multi-room.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-no-surface.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-permission-denial.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-scene-conflict.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-scoped-stability.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-stale-version.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-tracking-interruption.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.phase3-unsafe-candidate.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.receipt-isolation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.surface-placement.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.tracking-recovery.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-parallax.version-pin.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/landed-smoke.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/ordinary-pass-e40cd35d.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/original-receipts.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/owner-acceptance.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/screenshots.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/phase3-evidence-20261011/viewport-measurements.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
