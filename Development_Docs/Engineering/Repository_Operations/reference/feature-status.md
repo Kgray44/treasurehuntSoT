@@ -72,5 +72,4 @@ Correction Round 3 includes governed Profile imagery/cropping and identity propa
 
 Patch A is integrated on main and locally exact-source validated. A later protected-staging origin correction passes anonymous and synthetic-authenticated desktop journeys but still requires the owner's physical-phone run. It is not deployed, and Round 3 remains `PENDING_OWNER_DECISION`.
 
-
 Sounding Line FT-033 includes selective Product Experience Engineering: visible semantic outcomes, real-browser responsive/keyboard evidence, bounded independent review, immutable protected-workflow capture/review attestation and baseline-debt discipline. See [operations](../../../Testing/Product_Experience/README.md). This does not complete Spatial Experience Refit.
