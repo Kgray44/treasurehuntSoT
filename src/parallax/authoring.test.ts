@@ -164,6 +164,10 @@ describe("Parallax creator authoring", () => {
     );
     expect(spatialStudioHref("scene:1", entityId, "chronicle", "block")).toContain("definition=scene%3A1");
   });
+  it("creates reusable items in the global workspace and private items inside a Chronicle", () => {
+    expect(createSpatialDraft("global").scope).toBe("MY_LIBRARY");
+    expect(createSpatialDraft("contextual", "Desk Map", "chronicle").scope).toBe("CHRONICLE_ONLY");
+  });
   it("keeps historical Phase 1 checksum material unchanged", () => {
     const moment = syntheticSpatialMoment();
     expect(validateSpatialMoment(JSON.parse(JSON.stringify(moment)))).toEqual(moment);

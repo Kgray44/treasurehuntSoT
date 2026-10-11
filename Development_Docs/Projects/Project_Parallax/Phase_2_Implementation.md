@@ -44,6 +44,16 @@ The optional `studio` extension adds no default fields to P1 releases. Existing 
 
 ## Explicit limits and remaining gates
 
+## Restart and coordinated qualification hold
+
+After the owner's computer restart, the independent clone was reconciled at `df379ae36125261b6018f6d12a90ad407d6802fd` on `codex/parallax-phase2-spatial-studio` with a clean working tree. The eight D0 receipts and preserved development browser failure trace survived. No completed ordinary final-head decision exists. The earlier aggregate attempt was interrupted; it is not passing evidence.
+
+The parent assigned the shared heavy-testing slot to Sextant first. Parallax stopped its own unfinished ordinary aggregate and holds new compiler, production build, browser and aggregate runs until the parent grants the slot. Light review corrected the global-workspace default scope to My Library while preserving Chronicle-only creation inside a Chronicle; its regression is queued for final qualification. No OS priorities, security settings, sibling processes or game processes were changed.
+
+The corrected Preview browser query still needs the complete Creator publication/reopen gate. Branch-complete catalog admission waits for that local acceptance and final ordinary Sounding Line. Representative-device/physical acceptance remains separate.
+
+## Explicit limits and remaining gates
+
 The native renderer continues to support the accepted P1 plane/text kinds. Import manifests validate portable type, checksum, units, scale, complexity and provenance, but arbitrary model/texture/audio rendering is unavailable and blocks release. Complexity and synthetic fit estimates are not measured device frame rates. Crew preview is a second synthetic viewpoint, not Crossdeck synchronization. Remote comparison is fixed-scene comparison, not P3 adaptive resolution or calibration. Vision references preserve typed contracts without claiming Watchglass recognition.
 
 AI authoring requires owner-configured `PARALLAX_AUTHORING_AI_URL` and `PARALLAX_AUTHORING_AI_TOKEN`. No live provider is available in this task; schema/materialization/unavailable behavior is software-tested, while live model quality and provider operations remain an environment qualification gate. The provider must return the strict requested JSON shape. Tokens remain server-side and model output cannot mutate content without Creator review.

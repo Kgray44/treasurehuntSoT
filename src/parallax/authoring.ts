@@ -93,7 +93,7 @@ export function createSpatialDraft(
   }));
   studio.provenance.origin = "PRESET";
   return draftSchema.parse({
-    scope: "CHRONICLE_ONLY",
+    scope: chronicleId ? "CHRONICLE_ONLY" : "MY_LIBRARY",
     chronicleId,
     category: trail ? "SCENE_TEMPLATE" : "MOMENT",
     tags: [],
