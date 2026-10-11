@@ -101,3 +101,9 @@ Accepted Crossdeck and Parallax main 589d3f8e are reconciled; clean 0907cd9 pass
 Normal protected publication/merge is explicitly authorized and the parent hold
 is cleared. Freeze the next documentation/catalog candidate for final ordinary
 qualification; never use physical/owner acceptance or deployment as implied scope.
+Reconciled dc94fca ordinary PASS at 08:11:54 UTC: 1,648 tests/266 files, 78
+required viewport cases, ten obligations closed, seven fresh/three rebound,
+zero remainder. FT-B103 branch-complete entry is source-bound to that acceptance.
+Include generated inventory row, freeze clean final head, rerun ordinary/36 CLI,
+then publish one implementation PR and integrate normally. Follow integration
+with landed smoke and required mainline catalog promotion; preserve physical gates.

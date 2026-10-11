@@ -2245,6 +2245,47 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-B103 - Sextant Read the Field Capability Contracts
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Sextant Phase 3
+
+Bounded field, media and nearby capability contracts provide local device context with explicit quality, privacy and lifecycle states, safe magnetic-reference guidance and accessible fallbacks.
+
+### Important subfeatures
+
+- Calibration-aware magnetic baseline, disturbance, anomaly and trend semantics
+- Short-lived relative pressure/elevation and supported OS/accessory pedometer contexts
+- Purpose-bound compatible camera/microphone declaration leases with capture owned by existing consumers
+- Actual-API-gated bounded BLE/NFC sessions and authenticated local ranging/secure-peer contracts
+- Safe magnetic-reference guidance with consent, dwell, pause, timeout and screen-clue fallback
+- Strict Creator requirements and registered immutable Drydock capability validation
+- Source-bound D0/D1 privacy, threat, unsupported-state and cleanup scenarios
+
+### Primary surfaces
+
+`src/sextant/advanced-web.ts`, `src/sextant/MagneticHuntControls.tsx`, `src/drydock/sextant-capabilities.ts`
+
+### Meaningful limitations
+
+- Web support depends on actual secure-context APIs; unsupported devices retain fallbacks, and browser magnetic calibration cannot satisfy a calibrated hunt.
+- OS/accessory and secure native ranging adapters retain trusted provenance/authentication responsibilities; native transport parity remains Phase 4.
+- D2 execution is unavailable locally; D0/D1 simulation does not establish D4 sensor accuracy, tactile output or D5 field safety.
+- Surface owners place controls, provide existing media factories and authenticate peers; local guidance never writes progression.
+- Physical, field and owner/product acceptance remain separate; protected-main integration and landed smoke are required before mainline promotion.
+
+### Evidence
+
+- path: `src/sextant/field-context.ts`
+- path: `src/sextant/media-capability.ts`
+- path: `src/sextant/nearby.ts`
+- test: `src/sextant/phase3.test.ts`
+- test: `src/sextant/MagneticHuntControls.test.tsx`
+- test: `src/drydock/sextant-capabilities.test.ts`
+- completion-record: `Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.

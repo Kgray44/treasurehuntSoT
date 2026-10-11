@@ -187,3 +187,23 @@ outside scope. The reconciled final-head ordinary decision is still required.
 - Surface owners place reference controls, supply existing media factories/authentication, requalify local guidance, and accept their product integrations. This phase supplies reusable software contracts rather than implementing Reach, Watchglass, Crossdeck pairing or Parallax tracking.
 - Owner/product acceptance and deployment remain separate; deployment and physical owner sessions are unauthorized here.
 - Reconciled final-head ordinary qualification, protected publication/integration and landed smoke remain pending at this checkpoint. The earlier failed decisions and historical performance limitation are preserved above.
+
+## Reconciled ordinary acceptance
+
+The ordinary decision on `dc94fca909262993f96ec2831068f2c48b54255b`, against
+accepted main `589d3f8ed43070d647cd5f905b3a93cc574a9fee`, is PASS at
+`2026-10-11T08:11:54.355Z`. It passes 1,648 product tests in 266 files and all
+78 required viewport cases. Ten obligations are closed with zero remainder;
+seven ran fresh and three were legitimately rebound by the canonical finalizer.
+The decision is retained as `artifacts/sounding-line/sextant-final-reconciled-decision.json`.
+[Compact qualification evidence](Project_Sextant_Phase_3_Local_Qualification.json)
+preserves exact source, counts, tier and host limits without private raw evidence.
+
+The generated Ledgerlight inventory row was pending during that run; product
+source did not change. Catalog entry FT-B103 is now eligible for branch-complete
+status, bound to this actual accepted local candidate. A complete clean-head
+ordinary check follows the documentation/catalog commit before publication.
+The optional inherited Companion benchmark remains outside this required
+canonical decision and is not represented as a pass. Physical/native/field and
+owner/product gates remain open; normal protected integration and landed smoke
+are authorized and still required before mainline catalog promotion.
