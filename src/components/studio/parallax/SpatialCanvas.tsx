@@ -5,6 +5,8 @@ import { composeTransform, inverseTransform } from "@/parallax/transforms";
 import { identityTransform } from "@/parallax/contracts";
 import { evaluateSpatialBehavior, type SpatialInput } from "@/parallax/behavior";
 import { simulationEnvironments } from "@/parallax/studio-validation";
+import { resolveAdaptiveScene } from "@/parallax/adaptive";
+import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import styles from "./SpatialStudio.module.css";
 
 export function SpatialCanvas({
@@ -41,13 +43,27 @@ export function SpatialCanvas({
     transform: ReturnType<typeof previewEntityTransform>;
   } | null>(null);
   const environment = simulationEnvironments.find((e) => e.id === environmentId) ?? simulationEnvironments[0];
+  const evidence = syntheticEnvironmentEvidence(environment);
+  const adaptive = draft.content.adaptive
+    ? resolveAdaptiveScene(draft.content, evidence, `studio-preview-${draft.content.adaptive.variant}`)
+    : null;
+  const resolvedWorld = (id: string): ReturnType<typeof previewEntityTransform> => {
+    const e = draft.content.entities.find((e) => e.id === id)!;
+    const placement = adaptive?.placements[id];
+    return placement
+      ? composeTransform(placement.transform, e.transform)
+      : e.parentEntityId && adaptive?.status === "RESOLVED"
+        ? composeTransform(resolvedWorld(e.parentEntityId), e.transform)
+        : previewEntityTransform(draft.content, id);
+  };
   const scale = 115 * zoom;
   const project = (x: number, y: number, z: number) => ({
     x: 400 + (x * Math.cos(yaw) + z * Math.sin(yaw)) * scale,
     y: 310 - y * scale + (z * Math.cos(yaw) - x * Math.sin(yaw)) * scale * pitch,
   });
   const states = evaluateSpatialBehavior(draft.content, inputs, timeMs, preview === "EDITOR");
-  const fallback = ["FALLBACK", "ACCESSIBILITY", "LOW_CAPABILITY"].includes(preview);
+  const fallback =
+    ["FALLBACK", "ACCESSIBILITY", "LOW_CAPABILITY"].includes(preview) || adaptive?.status === "GUIDED_FALLBACK";
   const points = [
     [-environment.width / 2, 0, -environment.depth / 2],
     [environment.width / 2, 0, -environment.depth / 2],
@@ -58,6 +74,7 @@ export function SpatialCanvas({
     .map((p) => `${p.x},${p.y}`)
     .join(" ");
   const moveWorld = (id: string, dx: number, dy: number) => {
+    if (draft.content.adaptive) return;
     const entity = draft.content.entities.find((e) => e.id === id)!;
     const original = previewEntityTransform(draft.content, id);
     const anchor = draft.content.anchors.find((a) => a.id === entity.anchorId)!;
@@ -81,7 +98,7 @@ export function SpatialCanvas({
         ? draft.content.studio?.layers.find((l) => l.entityId === e.id)?.audience !== "EDITOR_ONLY"
         : states[e.id].visible,
     )
-    .map((e) => ({ entity: e, world: previewEntityTransform(draft.content, e.id) }))
+    .map((e) => ({ entity: e, world: resolvedWorld(e.id) }))
     .sort((a, b) => b.world.position.z - a.world.position.z);
   return (
     <section
@@ -197,6 +214,30 @@ export function SpatialCanvas({
           </defs>
           <rect width="800" height="500" fill="url(#parallax-room)" />
           <polygon points={points} fill="#25414a" stroke="#6d8784" strokeWidth="1" />
+          {adaptive &&
+            evidence.candidates.map((c) => {
+              const p = project(c.position.x, c.position.y, c.position.z);
+              return (
+                <g
+                  key={c.id}
+                  aria-label={`${c.surface.toLowerCase()} ${c.safe ? "candidate" : "unsafe rejected region"}`}
+                >
+                  <rect
+                    x={p.x - 30}
+                    y={p.y - 12}
+                    width="60"
+                    height="24"
+                    rx="3"
+                    fill={c.safe ? "#335b60" : "#633a35"}
+                    stroke={c.safe ? "#abc6bf" : "#f7a99a"}
+                    opacity="0.75"
+                  />
+                  <text x={p.x} y={p.y + 24} fill="#d9e5dd" fontSize="11" textAnchor="middle">
+                    {c.surface.toLowerCase()}
+                  </text>
+                </g>
+              );
+            })}
           {Array.from({ length: 9 }, (_, i) => {
             const a = project(-environment.width / 2, 0, -environment.depth / 2 + (i * environment.depth) / 8);
             const b = project(environment.width / 2, 0, -environment.depth / 2 + (i * environment.depth) / 8);
@@ -224,7 +265,8 @@ export function SpatialCanvas({
             {environment.name} / {preview.replaceAll("_", " ")}
           </text>
           <text x="24" y="464" fill="#adc3c0" fontSize="13">
-            Synthetic reference · fixed authored positions · physical qualification not established
+            Synthetic reference · {adaptive ? adaptive.quality.replaceAll("_", " ") : "fixed authored positions"} · no
+            physical qualification
           </text>
           {objects.map(({ entity, world }) => {
             const p = project(world.position.x, world.position.y, world.position.z);

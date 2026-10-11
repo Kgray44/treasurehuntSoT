@@ -6,6 +6,7 @@ import type { InstanceBinding, SpatialMoment } from "@/parallax/contracts";
 import { NativeSpatialAdapter } from "@/parallax/native";
 import { landfallNativeHost } from "@/landfall/native-bridge";
 import styles from "./ChronicleLens.module.css";
+import { fieldConsentDisclosure, type FieldMetadata } from "@/parallax/field-contracts";
 
 function LensMark() {
   return (
@@ -99,6 +100,23 @@ export function ChronicleLensEntry({
               : undefined
           }
           onClose={() => setOpen(false)}
+          field={
+            voyage
+              ? async (body) => {
+                  const response = await fetch(
+                    `/api/player/playthroughs/${encodeURIComponent(voyage.sessionId)}/parallax/field`,
+                    {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json", "x-csrf-token": voyage.csrfToken },
+                      body: JSON.stringify(body),
+                    },
+                  );
+                  const data = await response.json();
+                  if (!response.ok) throw new Error(data.error ?? "Feedback was not retained.");
+                  return data;
+                }
+              : undefined
+          }
         />
       )}
     </div>
@@ -111,13 +129,20 @@ export function ChronicleLens({
   loadBinding,
   record,
   onClose,
+  field,
 }: {
   moment: SpatialMoment;
   binding: InstanceBinding;
   replayOnly: boolean;
-  loadBinding?: () => Promise<{ moment: SpatialMoment; binding: InstanceBinding; replayOnly: boolean }>;
+  loadBinding?: () => Promise<{
+    moment: SpatialMoment;
+    binding: InstanceBinding;
+    replayOnly: boolean;
+    fieldObservationId?: string | null;
+  }>;
   record?: (receipt: unknown) => Promise<void>;
   onClose: () => void;
+  field?: (body: unknown) => Promise<{ observationId?: string; withdrawn?: boolean }>;
 }) {
   const dialog = useRef<HTMLDialogElement>(null),
     runtime = useRef<ParallaxLensRuntime | null>(null);
@@ -131,6 +156,16 @@ export function ChronicleLens({
   const [nativeAvailable, setNativeAvailable] = useState(false);
   const [replay, setReplay] = useState(replayOnly);
   const [pending, setPending] = useState<Awaited<ReturnType<ParallaxLensRuntime["interact"]>> | null>(null);
+  const [consent, setConsent] = useState(false),
+    [physicalReport, setPhysicalReport] = useState(false),
+    [fieldQuality, setFieldQuality] = useState<FieldMetadata["placementQuality"]>("BELIEVABLE"),
+    [fieldId, setFieldId] = useState(""),
+    [fieldStatus, setFieldStatus] = useState(""),
+    [reading, setReading] = useState(false);
+  const fieldKey = useRef(crypto.randomUUID());
+  const [manualConfidence, setManualConfidence] = useState<FieldMetadata["confidence"]>("ACCEPTABLE");
+  const [manualResolved, setManualResolved] = useState(false),
+    [manualSurface, setManualSurface] = useState<FieldMetadata["surface"]>("TABLE");
   useEffect(() => {
     let active = true;
     const previous = document.activeElement as HTMLElement | null;
@@ -138,10 +173,11 @@ export function ChronicleLens({
     view?.showModal();
     async function initialize() {
       try {
-        const bound = loadBinding ? await loadBinding() : { moment, binding, replayOnly };
+        const bound = loadBinding ? await loadBinding() : { moment, binding, replayOnly, fieldObservationId: null };
         if (!active) return;
         setReplay(bound.replayOnly);
         setActiveMoment(bound.moment);
+        setFieldId(bound.fieldObservationId ?? "");
         const lens = new ParallaxLensRuntime(
           bound.moment,
           bound.binding,
@@ -171,13 +207,24 @@ export function ChronicleLens({
     }
     void initialize();
     const pause = () => {
+      runtime.current?.updateSearchActivity({ foreground: document.visibilityState !== "hidden" });
       // Native presentation can hide its WebView while the app remains foreground.
       // The companion's canonical lifecycle event owns camera shutdown in that case.
       if (document.visibilityState === "hidden" && !landfallNativeHost()) void runtime.current?.useGuidedView();
     };
     document.addEventListener("visibilitychange", pause);
+    const lock = () => runtime.current?.updateSearchActivity({ unlocked: false });
+    const unlock = () => runtime.current?.updateSearchActivity({ unlocked: true });
+    window.addEventListener("blur", lock);
+    window.addEventListener("focus", unlock);
+    const discoveryTick = setInterval(() => {
+      void runtime.current?.tickDiscovery();
+    }, 1000);
     return () => {
       active = false;
+      clearInterval(discoveryTick);
+      window.removeEventListener("blur", lock);
+      window.removeEventListener("focus", unlock);
       document.removeEventListener("visibilitychange", pause);
       void runtime.current?.close();
       runtime.current = null;
@@ -302,6 +349,154 @@ export function ChronicleLens({
         </div>
       </div>
       <footer>
+        {activeMoment.version.adaptive && (
+          <section aria-label="Discovery assistance">
+            <p aria-live="polite">
+              {Object.values(state?.discovery ?? {})[0]?.message ?? "Show me is always available."}
+            </p>
+            <button type="button" onClick={() => void runtime.current?.reveal()}>
+              Show me
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setReading(!reading);
+                runtime.current?.updateSearchActivity({ storyReading: !reading });
+              }}
+            >
+              {reading ? "Resume searching" : "Pause search while reading"}
+            </button>
+          </section>
+        )}
+        {field && activeMoment.version.adaptive?.calibration.enabled && (
+          <details>
+            <summary>Optional field feedback</summary>
+            <p>{fieldConsentDisclosure(activeMoment.version.adaptive.calibration.retentionDays)}</p>
+            {!fieldId && !replay && (
+              <>
+                <label>
+                  <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} /> I agree to
+                  share these categories
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={physicalReport}
+                    onChange={(e) => setPhysicalReport(e.target.checked)}
+                  />{" "}
+                  I personally tested the placement in a physical environment
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={manualResolved}
+                    onChange={(e) => setManualResolved(e.target.checked)}
+                  />{" "}
+                  The intended placement worked in my physical test
+                </label>
+                <label>
+                  Confidence in your report
+                  <select
+                    value={manualConfidence}
+                    onChange={(e) => setManualConfidence(e.target.value as FieldMetadata["confidence"])}
+                  >
+                    <option>HIGH</option>
+                    <option>ACCEPTABLE</option>
+                    <option>LOW</option>
+                    <option>NONE</option>
+                  </select>
+                </label>
+                <label>
+                  Observed surface
+                  <select
+                    value={manualSurface ?? "TABLE"}
+                    onChange={(e) => setManualSurface(e.target.value as FieldMetadata["surface"])}
+                  >
+                    {["FLOOR", "TABLE", "DESK", "SHELF", "WALL", "OPEN_SPACE", "DEVICE"].map((s) => (
+                      <option key={s}>{s}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Placement quality
+                  <select value={fieldQuality} onChange={(e) => setFieldQuality(e.target.value as typeof fieldQuality)}>
+                    <option value="BELIEVABLE">Believable</option>
+                    <option value="ADJUSTMENT_NEEDED">Needs adjustment</option>
+                    <option value="UNUSABLE">Unusable</option>
+                  </select>
+                </label>
+                <button
+                  type="button"
+                  disabled={!consent || busy}
+                  onClick={() => {
+                    setBusy(true);
+                    const resolution = state?.resolution;
+                    const p = Object.values(resolution?.placements ?? {})[0];
+                    const search = Object.values(state?.discovery ?? {})[0];
+                    void field({
+                      action: "CONTRIBUTE",
+                      blockId: activeMoment.attachment.storyMomentId,
+                      versionId: activeMoment.version.id,
+                      versionChecksum: activeMoment.version.checksum,
+                      idempotencyKey: fieldKey.current,
+                      consent: true,
+                      disclosureVersion: 1,
+                      metadata: {
+                        schemaVersion: 1,
+                        provenance: physicalReport ? "PLAYER_REPORTED_PHYSICAL" : "SIMULATED",
+                        resolved: physicalReport ? manualResolved : resolution?.status === "RESOLVED",
+                        surface: physicalReport ? manualSurface : (p?.surface ?? null),
+                        confidence:
+                          physicalReport && manualResolved
+                            ? manualConfidence
+                            : p?.quality === "HIGH_MATCH"
+                              ? "HIGH"
+                              : p
+                                ? "ACCEPTABLE"
+                                : "NONE",
+                        meaningfulSearchSeconds: search?.meaningfulSeconds ?? 0,
+                        hintStage: search?.stage ?? 0,
+                        exactReveal: state?.mode === "GUIDED",
+                        trackingRecovered: false,
+                        fallback: state?.mode === "GUIDED",
+                        capabilityLimitation: state?.mode === "GUIDED" ? "SURFACE_CONTEXT" : "NONE",
+                        placementQuality: fieldQuality,
+                      },
+                    })
+                      .then((result) => {
+                        setFieldId(result.observationId ?? "");
+                        setFieldStatus("Optional feedback shared. Chronicle completion is unaffected.");
+                      })
+                      .catch((e) => setFieldStatus(e.message))
+                      .finally(() => setBusy(false));
+                  }}
+                >
+                  Share optional feedback
+                </button>
+              </>
+            )}
+            {fieldId && (
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => {
+                  setBusy(true);
+                  void field({ action: "WITHDRAW", observationId: fieldId })
+                    .then(() => {
+                      setFieldId("");
+                      setConsent(false);
+                      setFieldStatus("Feedback withdrawn and deleted.");
+                    })
+                    .catch((e) => setFieldStatus(e.message))
+                    .finally(() => setBusy(false));
+                }}
+              >
+                Withdraw feedback
+              </button>
+            )}
+            <p aria-live="polite">{fieldStatus}</p>
+          </details>
+        )}
         {nativeAvailable && (
           <button type="button" disabled={busy} onClick={() => void openNative()}>
             Use camera for local placement

@@ -20,8 +20,12 @@ import {
   spatialPerformanceEstimate,
 } from "@/parallax/studio-validation";
 import { requestSpatialAI } from "@/parallax/ai-authoring";
+import { creatorFieldQuality, reviewCalibration } from "@/parallax/field-service";
+import { calibrationReviewInputSchema } from "@/parallax/field-contracts";
 
 const inputSchema = z.discriminatedUnion("action", [
+  z.strictObject({ action: z.literal("FIELD_QUALITY"), definitionId: spatialId }),
+  z.strictObject({ action: z.literal("CALIBRATION_REVIEW"), review: calibrationReviewInputSchema, draft: draftSchema }),
   z.strictObject({ action: z.literal("SAVE"), draft: draftSchema, revision: z.number().int().min(0) }),
   z.strictObject({ action: z.literal("RELEASE"), definitionId: spatialId, revision: z.number().int().min(1) }),
   z.strictObject({ action: z.literal("VALIDATE"), draft: draftSchema }),
@@ -94,6 +98,10 @@ export async function POST(request: Request) {
     const input = inputSchema.parse(JSON.parse(body));
     if ("draft" in input) await assertSpatialDraftAccess(input.draft);
     switch (input.action) {
+      case "FIELD_QUALITY":
+        return NextResponse.json(await creatorFieldQuality(session.accountId, input.definitionId), { headers });
+      case "CALIBRATION_REVIEW":
+        return NextResponse.json(await reviewCalibration(session.accountId, input.review, input.draft), { headers });
       case "SAVE":
         return NextResponse.json(
           { revision: await saveSpatialDraft(session.accountId, input.draft, input.revision) },

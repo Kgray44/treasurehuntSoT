@@ -9,6 +9,44 @@
   padding: 24px;
   font-family: var(--font-body, sans-serif);
 }
+.adaptive {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 16px;
+}
+.adaptive details {
+  margin: 12px 0;
+}
+.adaptive summary {
+  cursor: pointer;
+  color: var(--gold);
+  line-height: 1.5;
+}
+.recipe {
+  max-height: 360px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.fieldQuality {
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+}
+.fieldQuality summary {
+  cursor: pointer;
+  color: var(--gold);
+}
+.fieldQuality table {
+  width: 100%;
+  font-size: 11px;
+  border-collapse: collapse;
+}
+.fieldQuality th,
+.fieldQuality td {
+  padding: 5px 2px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
 .studio * {
   box-sizing: border-box;
 }

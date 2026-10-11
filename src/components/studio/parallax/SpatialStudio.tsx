@@ -27,6 +27,10 @@ import {
 } from "@/parallax/studio-validation";
 import { SpatialCanvas } from "./SpatialCanvas";
 import { SpatialDependencies } from "./SpatialDependencies";
+import { AdaptivePlacement } from "./AdaptivePlacement";
+import { SpatialFieldQuality } from "./SpatialFieldQuality";
+import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
+import { resolveAdaptiveScene } from "@/parallax/adaptive";
 import type { SpatialInput } from "@/parallax/behavior";
 import styles from "./SpatialStudio.module.css";
 
@@ -85,6 +89,15 @@ export function SpatialStudio({
   const proposalBinding = useRef<string | null>(null);
   const proposalTarget = useRef<string | null>(null);
   const draft = history?.present;
+  const adaptiveResolution = draft?.content.adaptive
+    ? resolveAdaptiveScene(
+        draft.content,
+        syntheticEnvironmentEvidence(
+          simulationEnvironments.find((e) => e.id === environment) ?? simulationEnvironments[0],
+        ),
+        `studio-preview-${draft.content.adaptive.variant}`,
+      )
+    : null;
   useEffect(() => {
     draftRef.current = draft ?? null;
   }, [draft]);
@@ -520,8 +533,8 @@ export function SpatialStudio({
           )}
           {preview === "REMOTE" && (
             <p className={styles.notice}>
-              Compare fixed authored placement across reference rooms. Adaptive semantic resolution is governed by Phase
-              3.
+              Compare the same intent across synthetic rooms. Placements, safety rejections and fallbacks change with
+              available evidence. Physical qualification remains pending.
             </p>
           )}
           <section className={styles.graph} aria-label="Scene graph">
@@ -721,6 +734,14 @@ export function SpatialStudio({
         </section>
         <aside className={styles.inspector} aria-label="Spatial inspector">
           <h2>{currentEntity?.name ?? "Select an entity"}</h2>
+          <AdaptivePlacement
+            draft={draft}
+            selectedId={selected}
+            mode={mode}
+            replace={replace}
+            resolution={adaptiveResolution}
+          />
+          <SpatialFieldQuality key={draft.content.definitionId} draft={draft} api={api} replace={replace} />
           <label>
             Experience title
             <input
@@ -750,6 +771,7 @@ export function SpatialStudio({
                 Where should this appear?
                 <select
                   aria-label="Semantic placement"
+                  disabled={Boolean(draft.content.adaptive)}
                   value=""
                   onChange={(e) =>
                     edit({
@@ -768,7 +790,11 @@ export function SpatialStudio({
                   <option value="LOCAL">In the local scene</option>
                 </select>
               </label>
-              <small>Authored fixed placement. Surface-relative placement asks the Player to choose a surface.</small>
+              <small>
+                {draft.content.adaptive
+                  ? "Use semantic surface and scene relationships above to place adaptive objects."
+                  : "Authored fixed placement. Surface-relative placement asks the Player to choose a surface."}
+              </small>
               <div className={styles.inline}>
                 <button onClick={() => edit({ type: "DUPLICATE", entityId: selected!, newId: crypto.randomUUID() })}>
                   Duplicate
@@ -786,6 +812,7 @@ export function SpatialStudio({
                 Group / parent
                 <select
                   value={currentEntity.parentEntityId ?? ""}
+                  disabled={Boolean(draft.content.adaptive)}
                   onChange={(e) => edit({ type: "PARENT", entityId: selected!, parentId: e.target.value || null })}
                 >
                   <option value="">Scene root</option>
