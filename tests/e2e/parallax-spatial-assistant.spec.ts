@@ -118,7 +118,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   });
   await page.goto("/");
   await page.locator(".shell-profile-trigger").click();
-  await page.getByRole("link", { name: "Sign in", exact: true }).click();
+  await page.getByRole("link", { name: "Sign In", exact: true }).click();
   await page.getByLabel("Email or Player name").fill(email.normalizedEmail);
   await page.getByLabel("Password", { exact: true }).fill(password);
   const signIn = page.waitForResponse((response) => response.url().endsWith("/api/auth/sign-in"));
