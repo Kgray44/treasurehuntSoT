@@ -21,6 +21,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
   if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("PARALLAX_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
   const account = await closureAccount("Synthetic Parallax Creator");
+  const player = await closureAccount("Synthetic Parallax field Player");
   await activateWorkspaceCapability(account.id, "CREATOR");
   const tale = await createStudioTale({
     title: "Synthetic Spatial Studio Chronicle",
@@ -209,10 +210,11 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     if ((await publicationSection.locator("..").getAttribute("open")) === null) await publicationSection.click();
     await expect(page.getByRole("button", { name: /v1.0.0/ })).toBeVisible();
     const play = await startTaleSession(source.tale.slug, {
-      accountId: account.id,
-      profileId: account.profileId,
-      canonicalDisplayName: "Synthetic Parallax Creator",
+      accountId: player.id,
+      profileId: player.profileId,
+      canonicalDisplayName: "Synthetic Parallax field Player",
     });
+    await authenticateClosure(context, player, baseURL!);
     const before = await db.taleSession.findUniqueOrThrow({ where: { id: play.sessionId } });
     await openClosureJournal(page, play.sessionId, baseURL);
     await page.getByRole("button", { name: "Open Chronicle Lens", exact: true }).click();
@@ -271,6 +273,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     expect(fixtureReport.provenance).toBe("PLAYER_REPORTED_PHYSICAL");
     await lens.getByRole("button", { name: "Close Chronicle Lens", exact: true }).click();
     await page.setViewportSize({ width: 1440, height: 900 });
+    await authenticateClosure(context, account, baseURL!);
     await page.goto(`/studio/parallax?chronicle=${tale.id}&definition=${capsule.definition.id}&block=${blockId}`);
     await page.getByLabel("Workspace layout").selectOption("SPATIAL");
     await page.getByText("Spatial Placement & grouping", { exact: true }).click();
