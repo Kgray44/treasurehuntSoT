@@ -12,10 +12,12 @@ Sextant Phase 4 is an implementation candidate with native ownership, canonical
 transport, coordinated shared-lab scenarios and ordinary Devices controls under
 qualification. Four Android virtual profiles passed their registered scenarios;
 actual native Devices controls and OS lifecycle checks passed. Apple native tests,
-including the corrected Home transition, passed; broader iOS scenarios remain in
-execution. Android registered background return failed and its observed public
-settings prerequisite has a bounded correction awaiting execution. Reconciled
-mainline changes require fresh software qualification. Required D4 core real-device
+including the corrected Home transition, passed. Broader Apple execution retained
+geofence foreground-acknowledgement and lost-response failures; the normal Apple
+Devices journey still requires actual proof. Corrected Android registered background
+return, reboot and revoked return passed with zero progression and cleanup. Combined
+root/ordinary software checks passed at c21c8cd9; the subsequent phone correction
+and scoped Apple qualification changes require fresh receipts. Required D4 core real-device
 bring-up and formal acceptance remain open. See the
 [Phase 4 record](../../Sextant/Project_Sextant_Phase_4_Implementation_Record.md).
 

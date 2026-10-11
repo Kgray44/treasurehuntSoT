@@ -14,9 +14,10 @@ Sextant Phase 4 remains an unaccepted implementation candidate. Native providers
 canonical leases, shared coherent sensor scenarios and optional Devices controls
 are under qualification. Source-bound Android profiles, actual Devices controls
 and OS lifecycle checks passed. Corrected Apple native tests passed; broader iOS
-scenarios are still executing. Android registered background return failed; the
-bounded observed-settings correction and mainline reconciliation require fresh
-receipts. Required core D4 bring-up and formal integration remain open.
+scenarios retained geofence foreground-acknowledgement and lost-response failures.
+Corrected Android signed background return, reboot registration and revoked return
+passed. Normal Apple Devices UX and the scoped diagnostic/retry changes still need
+actual source-bound receipts. Required core D4 bring-up and formal integration remain open.
 See the [Phase 4 record](../../Sextant/Project_Sextant_Phase_4_Implementation_Record.md).
 
 Parallax Phase 3 is software-qualified and integrated through protected PR #711 at `0327eeb7`. Semantic staging, scoped logical decisions, optional metadata calibration, discovery recovery and the refined 3D workstation passed ordinary Sounding Line and landed smoke. The [implementation record](../../../Projects/Project_Parallax/Phase_3_Implementation.md) reconciles requirements and evidence; [final refinement approval](../../../Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) binds `592217e3` on 2026-10-11. Catalog FT-B111 records mainline availability. Physical accuracy, shared physical alignment and live AI-provider quality remain separate gates.

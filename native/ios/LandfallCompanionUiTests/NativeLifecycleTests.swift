@@ -3,6 +3,69 @@ import Foundation
 import UIKit
 
 final class NativeLifecycleTests: XCTestCase {
+    @MainActor private func tapProductElement(_ element:XCUIElement,_ web:XCUIElement) throws {
+        guard element.waitForExistence(timeout:30) else {throw NSError(domain:"SextantProductUi",code:1)}
+        for _ in 0..<12 {if element.isHittable {element.tap();return};web.swipeUp()}
+        XCTFail("SEXTANT_PRODUCT_CONTROL_NOT_HITTABLE: \(element.label)")
+        throw NSError(domain:"SextantProductUi",code:2)
+    }
+    /** Normal first-party page in the real WKWebView; no injected JS bridge or sensor observations. */
+    @MainActor func testOwnedProductDevices() throws {
+        let environment=ProcessInfo.processInfo.environment
+        guard let raw=environment["SEXTANT_PRODUCT_ORIGIN"],let origin=URL(string:raw),
+              origin.scheme=="http",origin.host=="127.0.0.1",origin.port != nil,
+              origin.user==nil,origin.password==nil,origin.path.isEmpty,origin.query==nil,origin.fragment==nil,
+              let login=environment["SEXTANT_PRODUCT_LOGIN"],login.hasSuffix("@example.test"),
+              let password=environment["SEXTANT_PRODUCT_PASSWORD"],password.count >= 16
+        else {throw XCTSkip("Owned first-party product runtime is not configured.")}
+        let app=XCUIApplication();app.launchArguments=["--landfall-lab-origin=\(raw)"];app.launch()
+        defer {XCUIDevice.shared.orientation = .portrait;app.terminate()}
+        let web=app.webViews.firstMatch
+        XCTAssertTrue(web.waitForExistence(timeout:30),"SEXTANT_PRODUCT_WEBVIEW_REQUIRED")
+        try tapProductElement(web.links["Continue to account sign-in"].firstMatch,web)
+        let email=web.textFields["Email or Player name"].firstMatch
+        try tapProductElement(email,web);email.typeText(login)
+        let secret=web.secureTextFields["Password"].firstMatch
+        try tapProductElement(secret,web);secret.typeText(password)
+        try tapProductElement(web.buttons["Sign in"].firstMatch,web)
+        let account=web.buttons["Synthetic Apple navigator"].firstMatch
+        try tapProductElement(account,web)
+        try tapProductElement(web.links["Personal Harbor"].firstMatch,web)
+        let sections=web.descendants(matching:.any).matching(NSPredicate(format:"label == %@","Personal Harbor sections")).firstMatch
+        try tapProductElement(sections,web)
+        try tapProductElement(web.links["Sessions & Devices"].firstMatch,web)
+        try tapProductElement(web.links["Connect your Voyage devices"].firstMatch,web)
+        let heading=web.staticTexts["Optional device input"].firstMatch
+        XCTAssertTrue(heading.waitForExistence(timeout:30),"SEXTANT_NORMAL_DEVICES_PANEL_REQUIRED")
+        let fallback=web.buttons["Continue with screen controls"].firstMatch
+        try tapProductElement(fallback,web)
+        let ready=web.staticTexts["Screen controls are ready. Device input is optional."].firstMatch
+        XCTAssertTrue(ready.waitForExistence(timeout:10),"SEXTANT_SCREEN_FALLBACK_REQUIRED")
+        let enable=web.buttons["Resume device input"].firstMatch
+        XCTAssertTrue(enable.exists && !enable.isEnabled,"SEXTANT_SIMULATOR_MOTION_MUST_NOT_BE_FABRICATED")
+        let unavailable=web.staticTexts["Unavailable on this device"]
+        XCTAssertGreaterThan(unavailable.count,0,"SEXTANT_NATIVE_CAPABILITY_REFUSAL_REQUIRED")
+        for orientation in [UIDeviceOrientation.portrait,.landscapeLeft] {
+            XCUIDevice.shared.orientation=orientation
+            let landscape=orientation == .landscapeLeft
+            let geometry=NSPredicate {_,_ in let frame=app.windows.firstMatch.frame;return frame.width>0 && (landscape ? frame.width>frame.height : frame.height>frame.width)}
+            XCTAssertEqual(XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:geometry,object:app)],timeout:15),.completed)
+            try tapProductElement(fallback,web)
+            XCTAssertTrue(ready.exists && ready.isHittable,"SEXTANT_LARGE_TEXT_FALLBACK_UNREADABLE")
+            XCTAssertGreaterThanOrEqual(fallback.frame.height,44,"SEXTANT_TOUCH_TARGET_TOO_SMALL")
+            let attachment=XCTAttachment(screenshot:app.screenshot());attachment.name=landscape ? "Sextant product Devices landscape large text" : "Sextant product Devices portrait large text";attachment.lifetime = .keepAlways;add(attachment)
+        }
+        XCUIDevice.shared.press(.home)
+        var background=observedBackground(app)
+        if !background {XCUIApplication(bundleIdentifier:"com.apple.springboard").activate();background=observedBackground(app)}
+        XCTAssertTrue(background,"SEXTANT_PRODUCT_BACKGROUND_UNOBSERVED")
+        app.activate()
+        XCTAssertTrue(app.wait(for:.runningForeground,timeout:15),"SEXTANT_PRODUCT_RETURN_UNOBSERVED")
+        try tapProductElement(fallback,web)
+        XCTAssertTrue(ready.waitForExistence(timeout:10),"SEXTANT_PRODUCT_RETURN_FALLBACK_REQUIRED")
+        let boundary:[String:Any]=["version":1,"nativeBridge":"ACTUAL_IOS_WKWEBVIEW","normalProductRoute":"/account/devices","ordinarySignIn":true,"screenFallback":true,"largeTextAndRotation":true,"backgroundAndReturn":true,"motionHardwareProven":false,"physicalHapticOutput":false,"injectedBridge":false]
+        let proof=XCTAttachment(data:try JSONSerialization.data(withJSONObject:boundary),uniformTypeIdentifier:"public.json");proof.name="Sextant native product proof boundary";proof.lifetime = .keepAlways;add(proof)
+    }
     @MainActor private func keepNoticeUi(_ springboard:XCUIApplication,_ name:String) {
         let screenshot=XCTAttachment(screenshot:springboard.screenshot());screenshot.name=name;screenshot.lifetime = .keepAlways;add(screenshot)
         let hierarchy=XCTAttachment(string:springboard.debugDescription);hierarchy.name=name+" hierarchy";hierarchy.lifetime = .keepAlways;add(hierarchy)

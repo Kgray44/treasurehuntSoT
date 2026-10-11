@@ -3007,7 +3007,12 @@
       "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": ["unit.sextant"],
       "contracts": ["sextant.phase4.native-context"],
-      "affectedPaths": ["src/sextant/**", "src/app/account/devices/**", "tests/e2e/sextant-phase4.spec.ts"],
+      "affectedPaths": [
+        "src/sextant/**",
+        "src/app/account/devices/**",
+        "tests/e2e/sextant-phase4.spec.ts",
+        "tests/e2e/sextant-native-apple-devices.spec.ts"
+      ],
       "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"

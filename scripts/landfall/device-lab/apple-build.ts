@@ -26,7 +26,10 @@ async function main() {
     }
   }
   if (sourceTestCount < 22) throw new Error("LANDFALL_APPLE_SOURCE_TEST_INVENTORY_INCOMPLETE");
-  const requiredPassingTests = sourceTestCount - 1 - (presentationRequired ? 0 : 2);
+  // The normal Devices journey needs its separately owned first-party server
+  // and synthetic sign-in. Exclude it here, then require its distinct receipt.
+  const productTest = "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedProductDevices";
+  const requiredPassingTests = sourceTestCount - 2 - (presentationRequired ? 0 : 2);
   const profile = deviceLabProfileSchema.parse(process.env.LANDFALL_LAB_PROFILE ?? "primary-phone");
   const destination = path.join(root, "artifacts", "landfall-device-lab", "apple-build");
   await mkdir(destination, { recursive: true });
@@ -43,6 +46,8 @@ async function main() {
         requiredPassingTests,
         sourceTestCount,
         excludedPresentationTests: presentationRequired ? [] : presentationTests,
+        excludedProductTests: [productTest],
+        independentProductReceiptRequired: true,
         independentPresentationReceiptRequired: !presentationRequired,
         presentationAcceptance: false,
       },
@@ -213,6 +218,7 @@ async function main() {
         "CODE_SIGNING_ALLOWED=YES",
         "CODE_SIGN_IDENTITY=-",
         "LANDFALL_LAB_PRESENTATION=1",
+        `-skip-testing:${productTest}`,
         ...(presentationRequired
           ? [`-skip-testing:${presentationTests[1]}`]
           : presentationTests.map((test) => `-skip-testing:${test}`)),

@@ -231,7 +231,7 @@ sensor/position tests, actual Home transition, UIKit unconfigured-shell large-te
 rotation fallback and a separately observed OS Reduce Motion setting. Its 4732
 files and simulator/transport cleanup are retained. The shell screenshot does not
 prove normal Devices-page Apple UX or actual unavailable sensor/haptic/RF hardware.
-Primary and compatibility/tablet canonical Apple scenario jobs remain pending.
+The later terminal assessments below retain primary and compatibility/tablet failures.
 
 Android signed background-return run
 [38170904429](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170904429)
@@ -243,8 +243,8 @@ probe now waits up to twenty seconds for that named entry; it still requires an
 observed unique switch and verified enabled state. It neither guesses coordinates
 nor changes undocumented settings. Two focused race/absence tests and the existing
 bounded location/lifecycle tests pass (nine total), and TypeScript/lint pass.
-A fresh background-return run must establish whether the prerequisite correction
-resolves the execution failure. All four failed artifacts and cleanup are retained.
+The later source-bound run 38173731438 passed the corrected prerequisite and full
+return path, as recorded below. All four failed artifacts and cleanup are retained.
 Google's [geofence status reference](https://developers.google.com/android/reference/com/google/android/gms/location/GeofenceStatusCodes)
 and [geofencing guide](https://developer.android.com/develop/sensors-and-location/location/geofencing)
 support checking service/location prerequisites; their existence does not prove
@@ -361,10 +361,10 @@ catalog entry remain intact. No sibling worktree or owner-review runtime changed
 | 3. Semantic conformance     | Shared contracts, coordinate/time/quality interpretation, malformed input, permission and lease/refusal tests; no injected production authority.                                                                                                                  |
 | 4. Shared lab adapters      | Existing Android/iOS executors, hosted profiles and lifecycle/UI controls extended; receipt tiers and source identities retained.                                                                                                                                 |
 | 5. Coordinated sensors      | Deterministic ENU trajectory and coupled transforms/noise; independent oracle and 53 total D0/D1 scenarios pass at their recorded sources.                                                                                                                        |
-| 6. Faults/lifecycle         | Dropout, stale/time/bias, permission, background/restart, power/thermal and concurrent consumers; actual Android OS lock/kill/recreation/resume pass. Android registered background return needs its corrected prerequisite rerun.                                |
+| 6. Faults/lifecycle         | Dropout, stale/time/bias, permission, background/restart, power/thermal and concurrent consumers; actual Android OS lock/kill/recreation/resume pass. Corrected Android signed return/reboot/revoked return passed with zero progression.                         |
 | 7. Nearby/fallback          | Native capability/refusal tests, BLE lifecycle and supported Android UWB emulation; failed primary capability preparation retained alongside narrow passing rerun. Unimplemented BLE GATT connection stays unknown; RF/NFC/UWB hardware accuracy is not inferred. |
 | 8. D2 receipts              | Four Android profiles, native instrumentation, actual WebView consumer/OS controls and cleanup retained with immutable source/checksums.                                                                                                                          |
-| 9. D3 receipts              | Native Apple tests, Home transition and OS Reduce Motion executed; hardware-absent injection is labelled. Primary and compatibility/tablet canonical journeys still need terminal assessment.                                                                     |
+| 9. D3 receipts              | Native Apple tests, Home transition and OS Reduce Motion executed; hardware-absent injection is labelled. Canonical Apple failures are assessed below; actual normal Devices UX remains unproven.                                                                 |
 | 10. Remote D4               | Services investigated; no authorized configured provider/project access or signing configuration found. No billing, account or personal-device dependency introduced. Required core bring-up remains blocked externally.                                          |
 | 11. Consumers               | Canonical Landfall/Parallax/Crossdeck/Watchglass/Reach/Storytide/Drydock/One Voyage boundaries retained; combined accepted-main regression and ordinary qualification required.                                                                                   |
 | 12. Product experience      | Ordinary Devices consent, paused/quality/calibration/refusal and screen fallback controls; reviewed desktop/mobile and actual Android native screenshots. Apple shell accessibility captures do not prove normal Devices-page Apple UX.                           |
@@ -385,3 +385,62 @@ features and Player guide are human product guidance; changelog is product/engin
 history. Active execution material belongs in `.agents/sextant-phase4.md`. Scenario
 and contract JSON is machine-readable registration. The completed Feature Catalog
 stays unchanged while this phase is under qualification and unaccepted.
+
+### Combined software proof and terminal native follow-up
+
+At candidate `c21c8cd9ce58e01c4aa74681c25d65f4f2061eff`, tree
+`7cdd23d0847e47ee00ea01de576ca5d1bef650a6`, accepted base `af867c01`, the
+[combined root/browser run 38173786484](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38173786484)
+passed 3268 tests/533 files, with zero failing, skipped, pending or todo tests;
+desktop/mobile journeys and owned runtime/database cleanup passed. Its execution
+contract is consumed. The [ordinary run 38173726401](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38173726401)
+passed all ten obligations, 2163 selected tests/318 files and two browser journeys.
+These receipts retain their original candidate and do not qualify subsequent changes.
+
+[Android background return 38173731438](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38173731438)
+at that candidate passed actual signed first-party registration, documented mock
+location delivered through the emulator's fused provider, a real OS notification
+tap and active return. An actual guest reboot preserved registration and delivered
+another notice; revoked return was refused. The public Location Accuracy switch
+was observed disabled, enabled through its actual UI and verified enabled. Canonical
+progression stayed zero; native, emulator and transport cleanup passed. Four
+checksummed files preserve the receipt. Android 16/API36 emulator behavior is not
+physical GPS, OEM suspension, battery or radio evidence.
+
+[Apple compatibility/tablet 38170962062](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170962062)
+at `0f8ac197` produced 14964 files. Both compiled and passed 29 native tests with
+one expected canonical-driver skip. Compatibility passed eight/nine scenarios;
+tablet passed seven/nine. Both geofence cases failed the foreground WebView
+acknowledgement (`LANDFALL_NATIVE_CLIENT_TIMEOUT`) after XCTest proved actual OS
+return. Tablet's lost-response case timed out during OS location input. All 18
+scenario cleanup receipts and transport cleanup passed; the failures stay failures.
+
+[Narrow Apple 38174199753](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38174199753)
+at `c21c8cd9` retained 6115 files and two failed scenarios with cleanup. Actual OS
+location delivery now passed for lost response, but the real authority rejected
+submission as `LANDFALL_EVIDENCE_STALE`; no canonical progression was invented.
+Geofence return again passed XCTest and timed out waiting for the WebView client.
+The shared published synthetic fixture now gives lost-response retries the same
+explicit ten-minute evidence window as restart acceptance. This tests durable
+retry with original timestamps through slow native transport. Scenario version 3
+names published fixture `landfall-device-lab-lost-response-v2`. Product defaults,
+unrelated scenarios and explicit stale-evidence tests keep their existing policy;
+the extended fixture still rejects evidence after its authored window.
+
+The next candidate reconciles accepted phone sign-in/local-HTTP correction PR #712,
+main `678dd1156d39537d288ba3c2e5ce5c6efc2259d0`, through owned merge `18f3515c`.
+It adds a separate actual iOS normal Devices journey: normal account sign-in,
+Personal Harbor navigation, native hardware refusal, screen fallback, XXXL text,
+rotation, background/return, screenshots, zero progression and owned cleanup.
+It uses the existing debug loopback companion and generic first-party browser
+runtime. Baseline native tests explicitly exclude this independent journey; only
+its actual XCTest receipt can prove it. Apple product UX remains unproven until
+that journey passes. Bounded categorical native lifecycle-delivery counters and
+client stages distinguish queued/delivered/failed events from stalled control;
+they are debug-loopback diagnostics and cannot change any scenario outcome.
+
+Task-owned native artifacts moved to a dedicated D: store after C: filled. The
+original worktree path is a junction; all 40154 pre-transfer files were retained,
+and 21 historical hosted receipts/39882 artifact hashes verified. New harvested
+receipts preserve their original source identities. This storage recovery is not
+native qualification. Required D4 access/signing and formal acceptance remain open.

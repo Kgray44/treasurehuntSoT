@@ -38,6 +38,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private let power = LandfallPower()
     private var requestedIntervalMs = 5000
     private var requestedPrecise = true
+    #if DEBUG
+    private var lifecycleDiagnostics:[String:Int]=[:]
+    #endif
 
     static func allowedOrigin(_ raw: String) -> URL? {
         guard let url = URL(string: raw), let parts = URLComponents(url: url, resolvingAgainstBaseURL: false), parts.scheme == "https", parts.host != nil, parts.user == nil, parts.password == nil, parts.query == nil, parts.fragment == nil, (parts.path.isEmpty || parts.path == "/") else { return nil }
@@ -371,11 +374,29 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     }
     private func stopSensors() { sextant?.stopLegacy() }
     private func pause() { spatial?.stop();spatial=nil; event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); sextant?.stopAll("BACKGROUND"); sextantPosition?.stopAll("BACKGROUND"); sextantHaptics.stopAll(); stopSensors(); hardware?.stop(); nearby?.stop() }
+    private func recordLifecycleDelivery(_ key:String) {
+        #if DEBUG
+        guard origin?.scheme == "http",origin?.host == "127.0.0.1",origin?.port != nil,
+              ["foregroundQueued","backgroundQueued","foregroundDelivered","backgroundDelivered","foregroundFailed","backgroundFailed","contentProcessTerminations"].contains(key) else {return}
+        lifecycleDiagnostics[key]=min(128,(lifecycleDiagnostics[key] ?? 0)+1)
+        let file=FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("landfall-lifecycle-debug.json")
+        if let data=try? JSONSerialization.data(withJSONObject:lifecycleDiagnostics) {
+            try? FileManager.default.createDirectory(at:file.deletingLastPathComponent(),withIntermediateDirectories:true)
+            try? data.write(to:file,options:[.atomic,.completeFileProtectionUntilFirstUserAuthentication])
+        }
+        #endif
+    }
+    func webViewWebContentProcessDidTerminate(_ webView:WKWebView) {recordLifecycleDelivery("contentProcessTerminations")}
     private func event(_ payload: [String: Any]) {
         guard foreground, let web=web, accepts(web.url), JSONSerialization.isValidJSONObject(payload), let data=try? JSONSerialization.data(withJSONObject: payload, options: [.fragmentsAllowed]), let json=String(data: data, encoding: .utf8) else { return }
+        let lifecycle=payload["type"] as? String == "lifecycle" ? payload["state"] as? String : nil
+        let prefix=lifecycle == "FOREGROUND" ? "foreground" : lifecycle == "BACKGROUND" ? "background" : nil
+        if let prefix=prefix {recordLifecycleDelivery(prefix+"Queued")}
         DispatchQueue.main.async { [weak self] in
             guard let self=self, self.accepts(web.url), self.foreground || payload["type"] as? String == "lifecycle" else { return }
-            web.evaluateJavaScript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:\(json)}))", completionHandler: nil)
+            web.evaluateJavaScript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:\(json)}))") { [weak self] _,error in
+                if let prefix=prefix {self?.recordLifecycleDelivery(prefix+(error == nil ? "Delivered" : "Failed"))}
+            }
         }
     }
 }

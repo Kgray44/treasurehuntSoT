@@ -19,7 +19,9 @@ its records-only closeout are also reconciled from protected main
 `af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf`, tree
 `2456cb6cf7091048d17d5e5d52b865b97ded9d6e`. Preserve its approved workstation,
 field schema and all scenario declarations. New combined qualification binds this
-base and the exact candidate from the latest checkpoint.
+base and the exact candidate from the latest checkpoint. Phone sign-in/local-HTTP
+PR #712 is additionally reconciled from `678dd1156d39537d288ba3c2e5ce5c6efc2259d0`
+through owned merge `18f3515c`; normal native sign-in proof must include it.
 Owned branch: `codex/sextant-phase4-take-it-afield`. Phase 3 product #701 merged
 as `787d406b382f251baa691a536cdaa41446e8e0ac`; evidence #702 merged as
 `508ee106d8bc8cacbebaf169372dda75d15f2f18`. Actual GitHub merge readback and
@@ -120,9 +122,34 @@ Apple presentation38170965786 passed31 tests/one expected skip; its UIKit
 unconfigured-shell screenshot is not normal Devices-page Apple UX proof.
 Android background38170904429 failed Google geofence registration NOT_AVAILABLE.
 The public Location Accuracy entry probe has a bounded observed-entry wait with
-race/absence tests; a fresh source-bound native run must qualify that correction.
-Retain the earlier failure. Primary iOS38169460273 and compatibility/tablet
-38170962062 remain owned; inspect terminal artifacts before diagnosing or rerunning.
+race/absence tests. Source-bound Android38173731438 passed full signed notice
+return, actual reboot/registration, revoked return, zero progression and cleanup.
+Retain the earlier failure. Primary iOS38169460273 ended at its hosted limit;
+compatibility/tablet38170962062 ended with eight/seven passing canonical cases.
+All18 completed scenario cleanup receipts passed. Narrow38174199753 ended FAIL:
+lost-response location input passed but authority rejected stale evidence; geofence
+foreground XCTest passed but the WebView client timed out. Both cases cleaned up.
+Do not repeat completed matrices or relabel old receipts. Lost-response synthetic
+policy now uses the same authored ten-minute retry window as native restart, with
+original timestamps and expiration/stale regression tests; product defaults stay.
+Bounded debug-loopback lifecycle delivery counters and client stages are diagnostic,
+not a geofence fix or a qualification pass. Obtain their actual source-bound proof.
+
+The independently selected `sextant-native-apple-devices.spec.ts` invokes an actual
+normal sign-in/Personal Harbor/Devices XCTest using the existing generic isolated
+runtime. Require actual screenshot/test/cleanup receipts before Apple UX claims.
+Baseline apple-build explicitly excludes this independent product journey.
+One owned primary Mac job can compile native source, run only the two failed
+canonical scenarios and execute the separate product journey; do not create a
+second Device Lab or duplicate the consumed root runs. At c21c8cd9, combined root
+38173786484 passed3268/533 and ordinary38173726401 passed all10 obligations.
+
+Native artifacts are stored at
+`D:\Codex_Task_Artifacts\Sextant_Phase4_01a12c17_20261011\landfall-device-lab`;
+the original ignored worktree artifact path is a junction. Relocation retained
+40154 files and verified21 historical receipts/39882 hashes. Preserve all result
+bundles, screenshots, failed transfers and receipt identities. New collectors use
+the original paths and append; do not delete historical proof to recover space.
 
 When only hosted/external results remain, preserve exact HEAD/tree/dirty state,
 run IDs, completed checks, ownership and resume triggers; end the native turn.

@@ -13,6 +13,7 @@ import { inspectOwnedAndroidLocationAccuracy } from "./android-location-settings
 import { startOwnedAndroidFusedInput } from "./android-fused-input";
 import {
   deviceLabStartupStageSchema,
+  deviceLabAppleLifecycleDeliverySchema,
   type DeviceLabStartupStage,
 } from "../../../src/landfall/device-lab/startup-diagnostics";
 import { playerLandfallEvidenceSchema } from "../../../src/landfall/player-evidence-contract";
@@ -1559,6 +1560,39 @@ export async function executeLandfallOsScenario(
       kind: "TEST_RESULT",
     });
     const controlFile = path.join(destination, "native-location-controls.json");
+    if (target === "ios-simulator" && ownedDevice) {
+      let delivery: ReturnType<typeof deviceLabAppleLifecycleDeliverySchema.parse> | null = null;
+      try {
+        const container = (
+          await labTool(
+            "xcrun",
+            ["simctl", "get_app_container", ownedDevice, "com.voyagewright.landfall", "data"],
+            5000,
+          )
+        ).trim();
+        if (!path.isAbsolute(container) || container.includes("\n")) throw new Error("OWNED_APP_CONTAINER_REQUIRED");
+        const raw = await readFile(
+          path.join(container, "Library", "Application Support", "landfall-lifecycle-debug.json"),
+          "utf8",
+        );
+        if (raw.length > 2048) throw new Error("OWNED_LIFECYCLE_DIAGNOSTIC_TOO_LARGE");
+        delivery = deviceLabAppleLifecycleDeliverySchema.parse(JSON.parse(raw));
+      } catch {
+        /* Missing diagnostics remain unproven; they cannot turn a failed step into PASS. */
+      }
+      const file = path.join(destination, "native-apple-lifecycle-delivery.json");
+      await writeFile(
+        file,
+        JSON.stringify({ version: 1, state: delivery ? "OBSERVED" : "UNAVAILABLE", delivery }, null, 2),
+      );
+      artifacts.push({
+        path: file,
+        sha256: createHash("sha256")
+          .update(await readFile(file))
+          .digest("hex"),
+        kind: "TEST_RESULT",
+      });
+    }
     const appleInputFile = path.join(destination, "native-apple-input-diagnostics.json");
     await writeFile(appleInputFile, JSON.stringify(appleInputDiagnostics, null, 2));
     artifacts.push({

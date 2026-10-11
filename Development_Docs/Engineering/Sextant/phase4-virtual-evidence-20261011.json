@@ -1634,7 +1634,7 @@
     "Remote D4 core bring-up lacks authorized provider/project access and signing configuration",
     "No formal Phase 4 acceptance, protected merge, release or Phase 5 authority"
   ],
-  "updatedAt": "2026-10-11T20:47:26.804Z",
+  "updatedAt": "2026-10-11T21:40:34.421Z",
   "acceptedMainReconciliation": {
     "baseSha": "af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf",
     "baseTree": "2456cb6cf7091048d17d5e5d52b865b97ded9d6e",
@@ -1656,5 +1656,210 @@
     },
     "freshHostedCombinedSourceQualification": "REQUIRED",
     "olderReceiptPolicy": "Original source SHA, lock, tree and fingerprint retained; no whole-source equivalence claimed after accepted package/schema/spatial changes."
+  },
+  "terminalFollowup": {
+    "at": "2026-10-11T21:40:34.420Z",
+    "status": "PARTIAL_NOT_PHASE_ACCEPTANCE",
+    "predecessorSoftware": {
+      "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+      "sourceTree": "7cdd23d0847e47ee00ea01de576ca5d1bef650a6",
+      "baseSha": "af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf",
+      "ordinary": {
+        "focusedConsumerRegression": 913,
+        "files": 112,
+        "D0D1": 53,
+        "source": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+        "ordinaryRun": 38173726401,
+        "ordinary": "PASS_EXACT_CANDIDATE_BASE_TREE",
+        "rootBrowserRun": 38173786484,
+        "rootBrowser": "PASS_HARVESTED",
+        "backgroundRun": 38173731438,
+        "background": "PASS_HARVESTED",
+        "ordinaryUnitFiles": 318,
+        "ordinaryTests": 2163,
+        "ordinaryObligations": 10,
+        "ordinaryBrowser": {
+          "passed": 2,
+          "skippedNativeCase": 1,
+          "nativeProvenByThisRun": false
+        }
+      },
+      "combinedRoot": {
+        "status": "PASS_HARVESTED_CONTRACT_CONSUMED",
+        "runId": 38173786484,
+        "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+        "baseSha": "af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf",
+        "contract": "artifacts/sextant-combined-root-c21c8cd9ce58-contract.json",
+        "dispatch": "artifacts/landfall-device-lab/hosted-c21c8cd9ce58-1791751739262/dispatch.json",
+        "reason": "Accepted main changed package/Prisma/spatial inputs; previous root remains consumed and retained.",
+        "cleanup": "PASS",
+        "tests": 3268,
+        "files": 533,
+        "failed": 0,
+        "pending": 0,
+        "artifacts": 14,
+        "toolchain": {
+          "node": "24.19.0",
+          "npm": "11.17.0"
+        },
+        "databaseCleanup": "PASS_DATABASE_REMOVED",
+        "browser": {
+          "cases": 2,
+          "result": "PASS",
+          "desktop": 1280,
+          "mobile": 390,
+          "visuallyReviewed": true,
+          "scope": "Generic browser/native-transport double; not D2/D3 hardware",
+          "runtimeCleanupMs": 27
+        }
+      }
+    },
+    "results": {
+      "androidSignedBackgroundReturn": {
+        "runId": 38173731438,
+        "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38173731438",
+        "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+        "transportSha": "e19e7191d56873719700c988dbe4a0effb70fcfe",
+        "conclusion": "success",
+        "files": 4,
+        "transportCleanup": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-c21c8cd9ce58-1791751690537"],
+          "remainingResources": []
+        },
+        "receiptFile": "artifacts/landfall-device-lab/hosted-c21c8cd9ce58-1791751690537/run-38173731438/hosted-receipt.json",
+        "receiptSha256": "b266a1f6371608717d8b9d557e31e40d0b2c212a0c0b06b4bfde5cd83fbadfed",
+        "native": {
+          "result": "PASS",
+          "source": {
+            "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+            "sourceTree": "7cdd23d0847e47ee00ea01de576ca5d1bef650a6",
+            "dirty": false,
+            "sourceFingerprint": "7a94936a2f7113dd5489d44a80a7fe5e9f8ba89594ecadf3d38870b14a989187"
+          },
+          "settings": {
+            "screens": 4,
+            "serviceEntryObserved": true,
+            "accuracyEntryObserved": true,
+            "accuracySwitchBefore": "DISABLED",
+            "accuracySwitchAfter": "ENABLED",
+            "changed": true,
+            "accuracyControlObserved": true
+          },
+          "signedRegistration": true,
+          "entryMode": "ACTUAL_OS_NOTICE",
+          "geofenceInput": "DOCUMENTED_FLP_MOCK_LOCATION",
+          "reboot": {
+            "bootIdentityChanged": true,
+            "avdIdentityPreserved": true,
+            "elapsedMs": 33291
+          },
+          "bootRegistration": true,
+          "activeReturn": true,
+          "revokedReturn": true,
+          "canonicalProgressionEvents": 0,
+          "cleanup": {
+            "result": "PASS",
+            "remainingResources": []
+          },
+          "physicalTimingProven": false
+        }
+      },
+      "appleCompatibilityTablet": {
+        "runId": 38170962062,
+        "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170962062",
+        "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+        "transportSha": "dbb4d260157c7915e6bd83a4580e8d59c2fa3117",
+        "conclusion": "failure",
+        "files": 14964,
+        "transportCleanup": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791749323559"],
+          "remainingResources": []
+        },
+        "receiptFile": "artifacts/landfall-device-lab/hosted-0f8ac1974da2-1791749323559/run-38170962062/hosted-receipt.json",
+        "receiptSha256": "3bf526f4b0c23f3d87de12d6ac3a63694a27f0f20d52092e6ea117a56573aba4",
+        "summary": [
+          {
+            "version": 1,
+            "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+            "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+            "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+            "dirty": false,
+            "target": "ios-simulator",
+            "total": 9,
+            "passed": 8,
+            "failed": 1,
+            "unsupported": 0,
+            "notConfigured": 0,
+            "artifactDirectory": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T201625161Z-19964"
+          },
+          {
+            "version": 1,
+            "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+            "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+            "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+            "dirty": false,
+            "target": "ios-simulator",
+            "total": 9,
+            "passed": 7,
+            "failed": 2,
+            "unsupported": 0,
+            "notConfigured": 0,
+            "artifactDirectory": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T201943731Z-17789"
+          }
+        ],
+        "failures": [
+          "compatibility geofence: foreground client timeout despite XCTest PASS",
+          "tablet geofence: foreground client timeout despite XCTest PASS",
+          "tablet lost response: OS location tool timeout"
+        ]
+      },
+      "appleNarrowFailure": {
+        "runId": 38174199753,
+        "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38174199753",
+        "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+        "transportSha": "7cda58f6b8c7c274ffc1da967d7a749d4418ecc1",
+        "conclusion": "failure",
+        "files": 6115,
+        "transportCleanup": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-c21c8cd9ce58-1791752105048"],
+          "remainingResources": []
+        },
+        "receiptFile": "artifacts/landfall-device-lab/hosted-c21c8cd9ce58-1791752105048/run-38174199753/hosted-receipt.json",
+        "receiptSha256": "e8016061c75537d0895fd51e6783cb289e7bf8cf1c35b1631868f103b615b576",
+        "summary": [
+          {
+            "version": 1,
+            "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+            "sourceTree": "7cdd23d0847e47ee00ea01de576ca5d1bef650a6",
+            "sourceFingerprint": "c514603d1952c402a0b21a7a39fc1b90c5f28fc62584faf0ac88de27bde755c4",
+            "dirty": false,
+            "target": "ios-simulator",
+            "total": 2,
+            "passed": 0,
+            "failed": 2,
+            "unsupported": 0,
+            "notConfigured": 0,
+            "artifactDirectory": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T210320156Z-17977"
+          }
+        ],
+        "failures": [
+          "offline-lost-response-canonical-reconcile: authority LANDFALL_EVIDENCE_STALE after actual location delivery",
+          "geofence-native-background-wake: actual XCTest foreground PASS, WebView LANDFALL_NATIVE_CLIENT_TIMEOUT"
+        ]
+      }
+    },
+    "acceptedPhoneCorrection": {
+      "mainSha": "678dd1156d39537d288ba3c2e5ce5c6efc2259d0",
+      "ownedMerge": "18f3515c423c5f7557d74ba1e16713e655b18d1b"
+    },
+    "nextQualification": {
+      "appleNormalProductUi": "IMPLEMENTED_AWAITING_ACTUAL_EXECUTION",
+      "geofenceDiagnostics": "BOUNDED_DEBUG_COUNTERS_NOT_A_REPAIR",
+      "lostResponsePolicy": "EXPLICIT_SYNTHETIC_TEN_MINUTE_PUBLISHED_WINDOW; original timestamps; product defaults and stale cases preserved"
+    },
+    "formalD4": "NOT_PROVEN_NO_AUTHORIZED_PROVIDER_SIGNING"
   }
 }

@@ -13,9 +13,25 @@ export const deviceLabStartupStageSchema = z.strictObject({
     "PASSIVE_PERMISSION",
     "PERMISSION_READ",
     "READY_POST",
+    "LIFECYCLE_BACKGROUND",
+    "LIFECYCLE_FOREGROUND",
+    "CONTROL_STEP_RECEIVED",
+    "CONTROL_RESULT_PREPARED",
   ]),
 });
 export type DeviceLabStartupStage = z.infer<typeof deviceLabStartupStageSchema>["stage"];
+
+const lifecycleCounter = z.number().int().min(0).max(128).optional();
+/** Only bounded categorical delivery counters can leave the owned native app. */
+export const deviceLabAppleLifecycleDeliverySchema = z.strictObject({
+  foregroundQueued: lifecycleCounter,
+  backgroundQueued: lifecycleCounter,
+  foregroundDelivered: lifecycleCounter,
+  backgroundDelivered: lifecycleCounter,
+  foregroundFailed: lifecycleCounter,
+  backgroundFailed: lifecycleCounter,
+  contentProcessTerminations: lifecycleCounter,
+});
 
 /** Diagnostic delivery cannot change readiness or retain native/session data. */
 export function reportDeviceLabStartupStage(stage: DeviceLabStartupStage) {

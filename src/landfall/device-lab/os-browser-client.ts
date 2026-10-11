@@ -220,6 +220,7 @@ async function main() {
   powerProfile = projectPower(await readNativeLandfallPower());
   const controlPoll = new DeviceLabLifecycleControlPoll();
   const unsubscribeLifecycle = subscribeLandfallNativeLifecycle((state) => {
+    reportDeviceLabStartupStage(state === "BACKGROUND" ? "LIFECYCLE_BACKGROUND" : "LIFECYCLE_FOREGROUND");
     controlPoll.lifecycle(state);
     if (state === "BACKGROUND") {
       runtime.pause();
@@ -260,6 +261,7 @@ async function main() {
       break;
     }
     const action = deviceLabActionSchema.parse(step.action);
+    reportDeviceLabStartupStage("CONTROL_STEP_RECEIVED");
     let state: "PASS" | "FAIL" | "UNSUPPORTED" = "PASS";
     let reason: string | undefined;
     let locationDiagnostic: ReturnType<DeviceLabLocationDiagnostics["snapshot"]> | undefined;
@@ -647,6 +649,7 @@ async function main() {
     }
     // Only categorical counters/outcomes leave the virtual device. No raw fix or coordinate trace.
     await queued;
+    reportDeviceLabStartupStage("CONTROL_RESULT_PREPARED");
     await fetch("/lab/result", {
       method: "POST",
       body: JSON.stringify({
