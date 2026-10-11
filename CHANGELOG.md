@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Changelog
