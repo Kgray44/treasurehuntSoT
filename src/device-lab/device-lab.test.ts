@@ -292,7 +292,7 @@ describe("Landfall compatibility preserves historical contracts", () => {
           (
             await invoke(process.execPath, [
               "--import",
-              path.resolve("node_modules/tsx/dist/loader.mjs"),
+              pathToFileURL(path.resolve("node_modules/tsx/dist/loader.mjs")).href,
               "--input-type=module",
               "--eval",
               code,
