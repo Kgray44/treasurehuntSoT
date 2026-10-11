@@ -48,6 +48,25 @@ it("replays locally without submitting evidence or changing progression", async 
   await screen.findByText("Revisited. Your Voyage progress stays the same.");
   expect(record).not.toHaveBeenCalled();
 });
+it("opens and records Guided View when local HTTP lacks randomUUID", async () => {
+  vi.stubGlobal("crypto", { getRandomValues: crypto.getRandomValues.bind(crypto) });
+  const record = vi.fn().mockResolvedValue(undefined);
+  render(
+    <ChronicleLens
+      moment={syntheticSpatialMoment()}
+      binding={syntheticBinding}
+      replayOnly={false}
+      record={record}
+      onClose={() => {}}
+    />,
+  );
+  await screen.findByText("This device uses Guided View for this spatial moment.");
+  fireEvent.click(screen.getByRole("button", { name: "Inspect" }));
+  await waitFor(() => expect(record).toHaveBeenCalledTimes(1));
+  expect(record.mock.calls[0][0].interactionId).toMatch(
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+  );
+});
 it("retries the same receipt after failure rather than issuing a fresh interaction", async () => {
   const record = vi.fn().mockRejectedValueOnce(new Error("Waiting for connection")).mockResolvedValue(undefined);
   render(
@@ -71,6 +90,7 @@ afterEach(() => {
   cleanup();
   delete window.LandfallNative;
   vi.restoreAllMocks();
+  vi.unstubAllGlobals();
 });
 it("keeps native presentation active when its WebView hides, and stops on actual app background", async () => {
   const request = vi.fn(async (message: string) => {

@@ -163,7 +163,7 @@ export function ChronicleLens({
     [fieldId, setFieldId] = useState(""),
     [fieldStatus, setFieldStatus] = useState(""),
     [reading, setReading] = useState(false);
-  const fieldKey = useRef(crypto.randomUUID());
+  const fieldKey = useRef(createBrowserUuid());
   const [manualConfidence, setManualConfidence] = useState<FieldMetadata["confidence"]>("ACCEPTABLE");
   const [manualResolved, setManualResolved] = useState(false),
     [manualSurface, setManualSurface] = useState<FieldMetadata["surface"]>("TABLE");
