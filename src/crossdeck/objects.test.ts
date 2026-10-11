@@ -1,13 +1,14 @@
 // @sounding-line-registration owner=project-crossdeck suite=unit.crossdeck contracts=crossdeck.phase2.continuity
 import { describe, expect, it, vi } from "vitest";
 import type { Prisma } from "@prisma/client";
+import { landfallFixture } from "@/landfall/fixtures";
 vi.mock("@/landfall/player-bootstrap", () => ({
   projectPlayerLandfallBootstrap: () => ({
-    scene: { mapId: "chart", worldspaceId: "world", features: [{ id: "place" }] },
+    scene: { mapId: "chart", worldspaceId: "town", features: [{ id: "place" }] },
     availableMaps: [
       {
         id: "other-chart",
-        scene: { mapId: "other-chart", worldspaceId: "other-world", features: [{ id: "other-place" }] },
+        scene: { mapId: "other-chart", worldspaceId: "isles", features: [{ id: "other-place" }] },
       },
     ],
     runtimeDefinition: { routes: [] },
@@ -33,7 +34,7 @@ const snapshot = {
       ],
     },
   ],
-  landfall: { worldspaces: [{ id: "world" }, { id: "other-world" }] },
+  landfall: landfallFixture,
 };
 const tx = {
   taleSession: {
@@ -54,12 +55,12 @@ describe("Crossdeck continuity constrained by Landfall's released projection", (
   it("preserves only the selected released chart's worldspace and marker", async () => {
     const result = await resolveCrossdeckObject(tx, actor, "voyage", ref, {
       mapId: "chart",
-      worldspaceId: "world",
+      worldspaceId: "town",
       selectedMarkerId: "place",
     });
     expect(result.scene?.mapId).toBe("chart");
     await expect(
-      resolveCrossdeckObject(tx, actor, "voyage", ref, { mapId: "chart", worldspaceId: "other-world" }),
+      resolveCrossdeckObject(tx, actor, "voyage", ref, { mapId: "chart", worldspaceId: "isles" }),
     ).rejects.toThrow(/Refresh/);
     await expect(
       resolveCrossdeckObject(tx, actor, "voyage", ref, { mapId: "chart", selectedMarkerId: "other-place" }),
