@@ -2243,11 +2243,9 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
-
 ## FT-B103 - Sextant Read the Field Capability Contracts
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Project Sextant Phase 3
 
 Bounded field, media and nearby capability contracts provide local device context with explicit quality, privacy and lifecycle states, safe magnetic-reference guidance and accessible fallbacks.
@@ -2272,7 +2270,7 @@ Bounded field, media and nearby capability contracts provide local device contex
 - OS/accessory and secure native ranging adapters retain trusted provenance/authentication responsibilities; native transport parity remains Phase 4.
 - D2 execution is unavailable locally; D0/D1 simulation does not establish D4 sensor accuracy, tactile output or D5 field safety.
 - Surface owners place controls, provide existing media factories and authenticate peers; local guidance never writes progression.
-- Physical, field and owner/product acceptance remain separate; protected-main integration and landed smoke are required before mainline promotion.
+- Physical, field and owner/product acceptance remain separate from software-qualified protected integration and synthetic/emulated landed smoke.
 
 ### Evidence
 
@@ -2283,8 +2281,11 @@ Bounded field, media and nearby capability contracts provide local device contex
 - test: `src/sextant/MagneticHuntControls.test.tsx`
 - test: `src/drydock/sextant-capabilities.test.ts`
 - completion-record: `Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md`
+- commit: `787d406b382f251baa691a536cdaa41446e8e0ac`
 
 ---
+
+# Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
 

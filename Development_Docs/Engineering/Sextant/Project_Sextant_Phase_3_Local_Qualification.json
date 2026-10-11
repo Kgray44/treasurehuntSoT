@@ -35,5 +35,27 @@
     "D0/D1 are synthetic/emulated and do not establish real hardware, native parity, tactile output or field safety.",
     "The optional inherited Companion performance benchmark remains byte-identical to main and fails before valid canonical measurements; no production duration certification is claimed.",
     "The required ordinary decision is distinct from protected integration, landed smoke and owner acceptance."
-  ]
+  ],
+  "protectedIntegration": {
+    "pullRequest": "https://github.com/Kgray44/treasurehuntSoT/pull/701",
+    "candidateSha": "2a40cdb41e19464923f9a7b764528165e9666f1f",
+    "mergeSha": "787d406b382f251baa691a536cdaa41446e8e0ac",
+    "mergedAtUtc": "2026-10-11T08:45:32Z",
+    "runId": 38125259629,
+    "decision": "PASS",
+    "requiredObligations": 10,
+    "freshObligations": 10,
+    "remainder": 0
+  },
+  "landedSmoke": {
+    "sourceSha": "787d406b382f251baa691a536cdaa41446e8e0ac",
+    "dirty": false,
+    "tests": 125,
+    "files": 8,
+    "deviceLabPassed": 36,
+    "D0": 21,
+    "D1": 15,
+    "remainingOwnedResources": 0,
+    "physicalQualified": false
+  }
 }

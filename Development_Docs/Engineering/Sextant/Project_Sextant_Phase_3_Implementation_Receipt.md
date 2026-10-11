@@ -1,7 +1,7 @@
 ---
 title: Project Sextant Phase 3 implementation receipt
 audience: product-engineering
-status: local-candidate-qualification
+status: software-qualified-mainline
 canonical_for: sextant-phase3-implementation-receipt
 last_reviewed: 2026-10-11
 ---
@@ -180,7 +180,7 @@ publication, protected merge and landed smoke. The parent cleared the merge hold
 after Parallax landed. Deployment, later phases and physical owner sessions remain
 outside scope. The reconciled final-head ordinary decision is still required.
 
-## Remaining acceptance gates
+## Acceptance gates at the recovery checkpoint
 
 - D2 Android execution requires an actual configured emulator/bridge. D3 native iOS and native transport parity remain Phase 4.
 - D4 actual sensor/RF/camera/microphone/accessory accuracy, calibration, drift, interruption, power/thermal behavior and tactile output; D5 venue/weather/accessibility/field safety and weak-prop trials require physical evidence.
@@ -226,3 +226,47 @@ metadata and privacy assertions. Changing that test source forces fresh affected
 unit proof. No Sounding Line engine, workflow, selection rule or unrelated
 maintenance work is added; the data-dependency/reuse limitation is reported for
 parent coordination. Renewed exact-head local and protected checks are required.
+
+## Protected integration and landed acceptance
+
+Corrected clean candidate `2a40cdb41e19464923f9a7b764528165e9666f1f` passes renewed
+ordinary qualification at `2026-10-11T08:33:45.164Z`: all 1,648 selected product
+tests ran fresh, all 78 required viewport cases pass, ten obligations close with
+zero remainder (seven fresh executions, three canonical rebounds). All 36 D0/D1
+CLI scenarios bind that clean source with zero remaining resources. The protected
+GitHub run `38125259629` then passes at `2026-10-11T08:44:30.485Z`, closing all ten
+obligations fresh with zero remainder. Its exact-source decision is retained in
+`artifacts/sounding-line/pr701-corrected-hosted-decision`.
+
+[Implementation PR #701](https://github.com/Kgray44/treasurehuntSoT/pull/701) merged
+normally at `2026-10-11T08:45:32Z`, integration commit
+`787d406b382f251baa691a536cdaa41446e8e0ac`. No admin bypass, deployment or later-phase
+work occurred. The actual fetched clean landed tree passes 125 focused smoke
+tests in eight files, including field/media/privacy, magnetic fallback controls,
+Drydock, accepted Parallax, shared Device Lab source binding and the nine catalog
+tests. All 36 source-bound D0/D1 CLI scenarios pass on that same landed source;
+cleanup reports zero remaining owned resources. Logs:
+`artifacts-sextant-landed-smoke.log` and `artifacts-sextant-landed-device-lab.log`.
+
+FT-B103 is promoted to its MAINLINE owner fragment, preserving the stable ID and
+using the actual integration commit as evidence; its branch-complete copy is
+removed and the generated catalog/index is regenerated. The protected
+metadata-only closeout follows this commit. This completes the phase's software
+plateau and applicable governing proof; it does not close native parity,
+physical/field safety or owner/product acceptance. The inherited historical
+Companion benchmark remains explicitly unqualified above and is not a claim of
+full production performance certification. Native Goal and durable sidebar
+membership readback are unavailable; these metadata limits do not block the
+implemented and protected software result.
+
+The metadata promotion candidate `236c24953007b3a3c00a877f6f731f424e17933f`
+passes ordinary qualification at `2026-10-11T08:54:37.939Z`, closing six obligations
+with zero remainder. Its selected shared-contract coverage passes 2,266 tests
+in 389 files; the promoted catalog also passes all nine tests in an independent
+fresh run. A stale generated migration-inventory branch-path row was identified
+and regenerated after the catalog rename was committed. Final clean metadata
+qualification and protected closeout follow; product source remains the accepted
+integration above. Current outstanding acceptance is D2 where an actual runtime
+becomes available, Phase 4 native parity, D4 physical evidence, D5 field safety and
+owner/product acceptance, plus the explicitly unqualified historical performance
+benchmark. None is represented by synthetic software qualification.
