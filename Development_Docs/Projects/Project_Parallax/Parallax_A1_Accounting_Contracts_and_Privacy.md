@@ -1,14 +1,14 @@
 ---
 title: Parallax A1 accounting contracts and privacy
 audience: engineering
-status: implementation-candidate
+status: current
 canonical_for: parallax-a1-accounting-contracts-privacy
 last_reviewed: 2026-10-11
 ---
 
 # Server and deterministic authority
 
-The implementation candidate has one pure typed interpretation schema and a
+The implementation has one pure typed interpretation schema and a
 separate owner-bound proposal envelope. Supported operations are CREATE, CONTENT,
 TRANSFORM, PLACEMENT, SEMANTIC_PLACEMENT, VISIBILITY, BEHAVIOR and FALLBACK. Model output remains
 advisory. Dependency-closed bundles materialize atomically through canonical

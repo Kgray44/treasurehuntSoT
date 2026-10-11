@@ -131,12 +131,14 @@ Later phases require their own explicit implementation scope; Phase 1 does not s
 
 Read the preserved authority above with the [current Reach integration amendment](../../Governing/Project_Parallax_Governing_Amendment_v1.1_Reach_Manipulation_Intent.md). The [effective spatial authority index](../../Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) resolves the complete additive chain. Reach owns calibrated target/gesture intent; this project retains its domain authority. The amendment is governance only and does not claim new implementation or reopen accepted closure.
 
-## A1 candidate records
+## A1 implementation records
 
 - [Accounting, API contracts and privacy](Parallax_A1_Accounting_Contracts_and_Privacy.md)
 - [Admiralty AI quota operator guide](Parallax_A1_Quota_Operator_Guide.md)
 - [Evaluation and qualification](Parallax_A1_Evaluation_and_Qualification.md)
+- [Mainline implementation and software qualification](Parallax_A1_Implementation_and_Qualification.md)
 - [Spatial Assistant Creator guide](../../../docs/user/spatial-assistant.md)
 
-A1 remains an independent implementation candidate. Canonical Studio integration,
-ordinary final qualification, live-provider canary and owner visual review are pending.
+A1 is software-qualified and integrated through protected PR #710, with landed
+smoke and a bounded live-provider canary. Owner visual review remains pending;
+the implementation record preserves that boundary and physical limitations.

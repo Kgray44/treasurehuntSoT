@@ -2,6 +2,14 @@
 
 Profile: product-phase / UNATTENDED_CONTINUATION. Native goal: Project Parallax Spatial Assistant. This is the already-dispatched implementation task; no duplicate chat or phase dispatch is authorized.
 
+Current software authority: PR #710 merged as `ee8caa83`, exact tree
+`0d8e8a489a74346e30788a91ecff106d5ed6a433`, after ordinary PASS run
+`38180553577` for candidate `a2d2ef82` against base `678dd115`. Clean landed
+smoke passes 118 checks. The mainline implementation record and owning Feature
+Catalog describe software availability; owner visual acceptance remains pending.
+This current summary supersedes the historical checkpoint holds below. Keep the
+native goal active until owner review resolves; no further paid calls are authorized.
+
 Owner brief: `C:/Users/kkids/.codex/attachments/45c276b1-cfc3-4fcc-bdaf-72c370b75467/pasted-text-1.txt`, read in full. Scope and acceptance remain that brief plus the additive A1 amendment.
 
 Baseline: protected `origin/main` `f458bf2dc1176016c2d166180f038f0f15ac9f7c`, fetched 2026-10-11. Owned branch: `codex/parallax-a1-spatial-assistant`. Owned worktree: `C:/Users/kkids/.codex/worktrees/parallax-a1-spatial-assistant/Codex_TreasureHunt`.

@@ -2227,7 +2227,7 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 ### Meaningful limitations
 
 - Local software qualification does not establish representative-device owner acceptance or D4 physical AR evidence.
-- AI authoring requires an owner-configured HTTPS provider; live provider quality and operations remain an environment gate.
+- Spatial Assistant requires server-side OpenAI configuration and enabled administrator policy; full live-corpus quality and owner presentation review remain separate gates.
 - Synthetic previews and complexity estimates do not establish measured device frame rates or shared-anchor synchronization.
 - Unsupported imported renderer assets block release; richer rendering, recognition, shared physical anchors and Reach manipulation remain governed by their owning phases.
 
@@ -2352,7 +2352,7 @@ Creators author multi-object semantic scenes remotely, preview differing safe ar
 - Native semantic candidate acquisition is unavailable; existing adapters degrade to Guided rather than invent geometry.
 - Physical provenance is self-reported; simulation cannot promote physical maturity and neither establishes certified hardware attestation.
 - Automatic room-image transfer is disabled until certified local person/face screening and the approved protected-media purpose are available.
-- Live AI-provider quality, separately owned Assistant A1 integration and unsupported imported renderers remain unavailable or unqualified.
+- Full live AI-provider corpus quality and unsupported imported renderers remain unqualified; Assistant A1 is integrated through its own software qualification.
 
 ### Evidence
 
@@ -2364,6 +2364,49 @@ Creators author multi-object semantic scenes remotely, preview differing safe ar
 - test: `tests/e2e/parallax-adaptive.spec.ts`
 - test: `tests/e2e/parallax-workstation.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md`
+
+---
+
+## FT-B112 - Parallax Spatial Assistant and AI Resource Controls
+
+**Status:** MAINLINE
+**Program or subsystem:** Parallax A1
+
+Creators describe spatial ideas, inspect validated proposals in the real canvas and explicitly apply canonical saved edits, while administrators govern durable usage and spending through existing Admiralty account and policy controls.
+
+### Important subfeatures
+
+- Deliberate natural-language requests with standard Luna and authorized advanced Sol assistance
+- Strict typed supported operations, dependency-closed review and deterministic scene validation
+- Actual current/proposed canvas preview, affected-object feedback and accessible Guided alternatives
+- Atomic canonical saved Apply with durable replay, ordinary history and stale-scene protection
+- Bounded owner-scoped clarification and follow-up context with private scene exclusions
+- Durable user/global allowances, conservative reservations, usage settlement and concurrent admission control
+- Global Admiralty overview, reviewed policy, history and safe provider diagnostics
+- Per-user usage and reviewed overrides in the existing People account dossier
+- Shared Windows user environment configuration across independent local worktrees
+- Responsive floating/docked review, preserved phone canvas switching and reduced motion
+
+### Primary surfaces
+
+`/studio/parallax`, `/admin/ai-usage`, `/admin/people/[accountId]`
+
+### Meaningful limitations
+
+- Assistance and advanced access start disabled and require administrator activation plus server configuration.
+- Owner visual acceptance remains pending; browser viewport proof does not establish physical phone keyboard or touch comfort.
+- Six bounded live calls validate transport, structured interpretation and settlement; corrected corpus matching has deterministic proof and full live-corpus quality is not established.
+- Independent databases enforce their own local quotas; shared credentials do not create a shared cross-worktree ledger.
+- Physical illumination, particles, custom materials, recognition and certified physical AR quality are outside supported Assistant operations.
+
+### Evidence
+
+- commit: `ee8caa83e79b6b5802f8773689e802705c5154d3`
+- path: `src/components/studio/parallax/SpatialAssistant.tsx`
+- path: `src/parallax/spatial-assistant-service.ts`
+- test: `tests/e2e/parallax-spatial-assistant.spec.ts`
+- test: `tests/e2e/parallax-ai-enforcement.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md`
 
 ---
 

@@ -1,17 +1,17 @@
 ---
 title: Parallax A1 AI quota operator guide
 audience: administrator
-status: implementation-candidate
+status: current
 canonical_for: parallax-a1-quota-operator-guide
 last_reviewed: 2026-10-11
 ---
 
 # AI resource control
 
-The A1 candidate adds **AI Usage & Quotas** to Admiralty. Deploying its additive
+Parallax A1 adds **AI Usage & Quotas** to Admiralty. Deploying its additive
 database migrations is required before those views can query their new tables.
-Integrated browser checks pass; final ordinary qualification and owner review
-remain pending.
+Integrated browser, ordinary software qualification and landed smoke pass.
+Owner visual review remains pending.
 
 Use **Overview** to inspect monthly accounted spending, settled spending,
 remaining global budget, requests, active Creators, daily spending and outcomes.
