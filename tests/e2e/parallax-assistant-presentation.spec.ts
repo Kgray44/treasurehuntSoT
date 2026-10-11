@@ -40,7 +40,7 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
   await page.goto("/studio/parallax");
   await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
-  const assistant = page.getByRole("complementary", { name: "Spatial Assistant", exact: true });
+  const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   await expect(assistant).toBeVisible();
   const observations: unknown[] = [];
   for (const viewport of [

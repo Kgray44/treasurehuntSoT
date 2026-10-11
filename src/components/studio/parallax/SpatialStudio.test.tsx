@@ -191,11 +191,9 @@ it("opens Guided mode with canvas/library/timeline and keeps mode changes out of
   expect(screen.queryByLabelText("Position x")).toBeNull();
   expect(screen.getByText(/AI unavailable · phrase rules/)).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
-  expect(screen.getByRole("complementary", { name: "Spatial Assistant" })).toBeVisible();
+  expect(screen.getByRole("region", { name: "Spatial Assistant" })).toBeVisible();
   expect(
-    within(screen.getByRole("complementary", { name: "Spatial Assistant" })).getByText(
-      /Spatial Assistant is unavailable/,
-    ),
+    within(screen.getByRole("region", { name: "Spatial Assistant" })).getByText(/Spatial Assistant is unavailable/),
   ).toBeVisible();
   fireEvent.click(screen.getByText("Guided placement controls"));
   expect(screen.getByRole("region", { name: "Contextual spatial assistance" })).toBeVisible();
@@ -274,7 +272,7 @@ it("mounts the real port, previews without saving, installs one acknowledged his
   await screen.findByRole("heading", { name: "Desk Map", level: 1 });
   fireEvent.click(screen.getByText("Transform", { exact: true }));
   fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
-  const panel = within(screen.getByRole("complementary", { name: "Spatial Assistant" }));
+  const panel = within(screen.getByRole("region", { name: "Spatial Assistant" }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), {
     target: { value: "Make the map smaller without changing its clue." },
   });
@@ -306,7 +304,7 @@ it("rejects a mounted late response after a manual edit and byte-identical undo"
   await screen.findByRole("heading", { name: "Desk Map", level: 1 });
   fireEvent.click(screen.getByText("Transform", { exact: true }));
   fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
-  const panel = within(screen.getByRole("complementary", { name: "Spatial Assistant" }));
+  const panel = within(screen.getByRole("region", { name: "Spatial Assistant" }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Make the map smaller." } });
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
   await waitFor(() => expect(calls.some((call) => call.action === "AI")).toBe(true));
@@ -330,7 +328,7 @@ it("locates a proposed object in the real preview without erasing it on selectio
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Desk Map", level: 1 });
   fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
-  const panel = within(screen.getByRole("complementary", { name: "Spatial Assistant" }));
+  const panel = within(screen.getByRole("region", { name: "Spatial Assistant" }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Add a readable note." } });
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
   await panel.findByRole("button", { name: "Apply all changes" });

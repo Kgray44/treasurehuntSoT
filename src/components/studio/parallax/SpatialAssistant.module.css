@@ -461,6 +461,12 @@
   .assistant .footer {
     padding-bottom: max(12px, env(safe-area-inset-bottom));
   }
+  .assistant .composerActions small {
+    flex-basis: 100%;
+  }
+  .assistant .composerActions button {
+    flex: 1;
+  }
   .assistant .applyBar {
     bottom: -18px;
   }

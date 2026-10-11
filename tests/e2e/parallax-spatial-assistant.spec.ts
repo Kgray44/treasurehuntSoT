@@ -139,7 +139,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   await expect(canvas.locator('[data-renderer="READY"]')).toBeVisible();
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
-  const assistant = page.getByRole("complementary", { name: "Spatial Assistant", exact: true });
+  const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   await expect(assistant.getByRole("heading", { name: /What would you like/ })).toBeVisible();
   await capture(page, "welcome-guided-desktop");
   await assistant.getByLabel("Describe your spatial idea").fill(createRequest);

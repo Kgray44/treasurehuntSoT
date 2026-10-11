@@ -58,14 +58,16 @@ const resultRoot = path.resolve(root, "test-results");
 if (existsSync(resultRoot)) {
   for (const directory of readdirSync(resultRoot, { withFileTypes: true })) {
     if (!directory.isDirectory() || !directory.name.startsWith("parallax-")) continue;
-    const file = path.join(resultRoot, directory.name, "video.webm");
-    if (!existsSync(file)) continue;
-    const destination = path.join(artifactRoot, `${directory.name}.webm`);
-    copyFileSync(file, destination);
-    recordings.push({
-      file: path.basename(destination),
-      sha256: createHash("sha256").update(readFileSync(destination)).digest("hex"),
-    });
+    for (const recording of readdirSync(path.join(resultRoot, directory.name))) {
+      if (!/^video(?:-\d+)?\.webm$/.test(recording)) continue;
+      const file = path.join(resultRoot, directory.name, recording);
+      const destination = path.join(artifactRoot, `${directory.name}-${recording}`);
+      copyFileSync(file, destination);
+      recordings.push({
+        file: path.basename(destination),
+        sha256: createHash("sha256").update(readFileSync(destination)).digest("hex"),
+      });
+    }
   }
 }
 writeFileSync(

@@ -129,7 +129,7 @@ test("People dossier allowance, suspension and advanced access govern actual Cre
     const creatorPage = await owner.context.newPage();
     await creatorPage.goto(`/studio/parallax?definition=${owner.draft.content.definitionId}`);
     await creatorPage.getByRole("button", { name: /Ask Parallax/ }).click();
-    await expect(creatorPage.getByRole("complementary", { name: "Spatial Assistant", exact: true })).toContainText(
+    await expect(creatorPage.getByRole("region", { name: "Spatial Assistant", exact: true })).toContainText(
       "Monthly allowance reached. Manual editing remains available.",
     );
     await capture(creatorPage, "quota-exhausted");

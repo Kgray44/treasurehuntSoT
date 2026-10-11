@@ -202,6 +202,9 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
   useLayoutEffect(() => {
     latest.current = props;
   }, [props]);
+  useEffect(() => {
+    if (proposal) review.current?.focus();
+  }, [proposal]);
   const usage = usageReply?.base === props.usage ? usageReply.value : props.usage;
   const working = ["PREPARING", "INTERPRETING", "RECEIVING", "VALIDATING", "APPLYING"].includes(stage);
   const selected = props.draft.content.entities.find((entity) => entity.id === props.selectedEntityId);
@@ -382,7 +385,6 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         );
       } catch {}
       setRestored(false);
-      review.current?.focus();
     } catch (cause) {
       if (!mounted.current || generation !== requestGeneration.current) return;
       setStage(abort.signal.aborted ? "IDLE" : "FAILED");
@@ -438,7 +440,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
       </button>
     );
   return (
-    <aside className={styles.assistant} data-motion={motionMode} aria-label="Spatial Assistant">
+    <aside role="region" className={styles.assistant} data-motion={motionMode} aria-label="Spatial Assistant">
       <header className={styles.header}>
         <div className={styles.emblem}>
           <SuggestionIcon kind="spark" />

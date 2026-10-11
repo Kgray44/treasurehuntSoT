@@ -97,6 +97,7 @@ describe("Spatial Assistant deliberate, accessible proposal review", () => {
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "Move a map" } });
     fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
     await screen.findByText("Which map should move?");
+    expect(screen.getByRole("region", { name: "Review spatial proposal" })).toHaveFocus();
     fireEvent.click(screen.getByRole("button", { name: "Refine this proposal" }));
     expect(screen.getByRole("textbox")).toHaveValue("");
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "The selected map" } });
