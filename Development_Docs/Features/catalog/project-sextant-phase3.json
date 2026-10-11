@@ -2,7 +2,7 @@
   "id": "FT-B103",
   "title": "Sextant Read the Field Capability Contracts",
   "summary": "Bounded field, media and nearby capability contracts provide local device context with explicit quality, privacy and lifecycle states, safe magnetic-reference guidance and accessible fallbacks.",
-  "status": "BRANCH_COMPLETE_NOT_MERGED",
+  "status": "MAINLINE",
   "program": "Project Sextant Phase 3",
   "surfaces": [
     "src/sextant/advanced-web.ts",
@@ -46,16 +46,18 @@
     {
       "kind": "completion-record",
       "value": "Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md"
+    },
+    {
+      "kind": "commit",
+      "value": "787d406b382f251baa691a536cdaa41446e8e0ac"
     }
   ],
-  "branch": "sextant/phase-3-read-the-field",
-  "commit": "dc94fca909262993f96ec2831068f2c48b54255b",
   "limitations": [
     "Web support depends on actual secure-context APIs; unsupported devices retain fallbacks, and browser magnetic calibration cannot satisfy a calibrated hunt.",
     "OS/accessory and secure native ranging adapters retain trusted provenance/authentication responsibilities; native transport parity remains Phase 4.",
     "D2 execution is unavailable locally; D0/D1 simulation does not establish D4 sensor accuracy, tactile output or D5 field safety.",
     "Surface owners place controls, provide existing media factories and authenticate peers; local guidance never writes progression.",
-    "Physical, field and owner/product acceptance remain separate; protected-main integration and landed smoke are required before mainline promotion."
+    "Physical, field and owner/product acceptance remain separate from software-qualified protected integration and synthetic/emulated landed smoke."
   ],
   "catalogVersion": 1
 }

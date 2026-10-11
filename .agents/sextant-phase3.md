@@ -107,3 +107,11 @@ zero remainder. FT-B103 branch-complete entry is source-bound to that acceptance
 Include generated inventory row, freeze clean final head, rerun ordinary/36 CLI,
 then publish one implementation PR and integrate normally. Follow integration
 with landed smoke and required mainline catalog promotion; preserve physical gates.
+Final implementation candidate 2a40cdb: fresh 1,648-unit/78-viewport ordinary PASS;
+36 clean D0/D1 CLI scenarios PASS. Corrected protected run 38125259629 closes
+10/10 obligations fresh. PR701 merged normally at 787d406 on 08:45:32 UTC.
+Actual clean landed source passes 125 smoke tests/8 files and all 36 CLI scenarios.
+Catalog FT-B103 is promoted to MAINLINE with actual merge evidence; metadata
+closeout requires ordinary/protected checks. No native/physical/field/owner or
+full historical performance certification is implied. Earlier catalog CI failure
+and local data-dependency reuse gap remain preserved; no engine redesign was added.
