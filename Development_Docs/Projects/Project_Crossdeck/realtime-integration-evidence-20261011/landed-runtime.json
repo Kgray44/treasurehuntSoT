@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "sourceSha": "e4c5f19e1e5936a059ebaeb17e1179f10490418c",
+  "buildSourceSha": "e4c5f19e1e5936a059ebaeb17e1179f10490418c",
+  "reusedProductBuild": false,
+  "sourceTree": "e8014786eaa12767c0891641a81f2250a26497d3",
+  "dirtySource": false,
+  "lockfileSha256": "a2f4140400648da7810670a7ef677e04d526628a8f66a98efcc180f5eef74014",
+  "port": 51536,
+  "ownedPid": 1696,
+  "secondaryPort": 51537,
+  "secondaryPid": 49936,
+  "cleanup": "owned server exited",
+  "qualification": "FOCUSED_DEVELOPMENT_ONLY"
+}
