@@ -7,6 +7,7 @@ import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-iso
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
 import { createStudioTale, getStudioTale, saveStudioDraft } from "../../src/chronicle/studio-service";
 import { validateSpatialMoment } from "../../src/parallax/publication";
+import { getBlockDefinition } from "../../src/chronicle/block-registry";
 test.describe.configure({ mode: "serial", timeout: 300000 });
 test.use({ actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
@@ -40,7 +41,11 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
               id: blockId,
               blockType: "narrative",
               title: "Spatial passage",
-              configuration: { heading: "A clue between worlds", body: "Inspect the map, then continue." },
+              configuration: {
+                ...getBlockDefinition("narrative")!.defaultConfiguration,
+                heading: "A clue between worlds",
+                body: "Inspect the map, then continue.",
+              },
               presentation: {},
               completion: { mode: "playerConfirmation" },
               nextBlockId: finaleId,
@@ -49,7 +54,11 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
               id: finaleId,
               blockType: "taleComplete",
               title: "Voyage Complete",
-              configuration: { heading: "You found the clue", body: "The voyage is complete." },
+              configuration: {
+                ...getBlockDefinition("taleComplete")!.defaultConfiguration,
+                finaleHeading: "You found the clue",
+                finaleContent: "The voyage is complete.",
+              },
               presentation: {},
               completion: { mode: "playerConfirmation" },
             },
@@ -95,7 +104,16 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.screenshot({ path: "artifacts/screenshots/parallax-studio-desktop.png", fullPage: true });
     await page.goto(`/studio/tales/${tale.id}`);
-    await page.getByRole("button", { name: "Validate Chronicle", exact: true }).click();
+    const [validationResponse] = await Promise.all([
+      page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/studio/tales/${tale.id}/validate`) && response.request().method() === "POST",
+      ),
+      page.getByRole("button", { name: "Validate Chronicle", exact: true }).click(),
+    ]);
+    const validationResult = await validationResponse.json();
+    expect(validationResponse.ok(), JSON.stringify(validationResult)).toBe(true);
+    expect(validationResult.valid).toBe(true);
     await expect(page.locator(".save-state")).toContainText("Draft validation passed");
     await page.goto(`/studio/tales/${tale.id}/trials`);
     await page.getByLabel("Scenario title").fill("Spatial Studio pinned publication path");
