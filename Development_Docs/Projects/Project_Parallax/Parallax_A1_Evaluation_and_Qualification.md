@@ -1,12 +1,17 @@
 ---
 title: Parallax A1 evaluation and qualification
 audience: engineering
-status: qualification-in-progress
+status: software-accepted-owner-review-pending
 canonical_for: parallax-a1-evaluation-qualification
 last_reviewed: 2026-10-11
 ---
 
 # Evidence boundaries
+
+The [mainline implementation record](Parallax_A1_Implementation_and_Qualification.md)
+supersedes the earlier checkpoint holds below: protected PR #710, ordinary PASS
+and clean landed smoke establish software acceptance. Owner visual acceptance
+remains pending. Historical reports and their source identities remain unchanged.
 
 The versioned corpus `parallax-spatial-assistant-2026-10-11-v2` defines 60 distinct
 instructions across object creation, placement, relative positioning, editing,

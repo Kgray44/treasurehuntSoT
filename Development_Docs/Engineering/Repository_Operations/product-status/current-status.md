@@ -8,7 +8,7 @@ last_reviewed: 2026-10-11
 
 # Current status
 
-Parallax A1 has an integrated implementation candidate for reviewed Spatial Assistant proposals, bounded owner/draft-scoped clarification and follow-up context, a server-side OpenAI adapter and durable Admiralty AI controls. Per-user controls use the existing People account dossier. Atomic saved Apply, adaptive recipe preservation and ordinary history pass five production-browser journeys. Six authorized live calls returned validated structured responses and settled usage; the evaluation record preserves two fixture-ID false negatives. Final ordinary software qualification and owner visual review remain pending; see the [A1 qualification record](../../../Projects/Project_Parallax/Parallax_A1_Evaluation_and_Qualification.md).
+Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. Owner visual review and full live-corpus/physical quality remain separate gates; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
 Parallax Phase 3 is software-qualified on protected main through PR #711 at `0327eeb7`. The [implementation record](../../../Projects/Project_Parallax/Phase_3_Implementation.md) binds all nine ordinary Sounding Line obligations, 1,739 tests, four product browser journeys, 79 landed smoke tests and 26 fresh landed D0 scenarios. Both workstation visual decisions are satisfied; [final refinement approval](../../../Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) binds `592217e3` on 2026-10-11. Physical AR accuracy, actual field reliability and cross-device physical alignment are not established.
 
@@ -283,6 +283,5 @@ account bootstrap, menus, route transitions, Sign In/Register/Forgot Password
 inputs, Chronicle Passport, Personal Harbor, and workspace navigation were
 observed. A physical-phone run is still mandatory, so staging desktop evidence
 does not establish owner acceptance or deployment.
-
 
 Product Experience Engineering extends ordinary Sounding Line with selective experience contracts, task-owned browser captures, separate criticism and authenticated review evidence. [Operations and campaign proof](../../../Testing/Product_Experience/README.md) distinguish installed enforcement, technical acceptance and owner acceptance; spatial refit remains pending.
