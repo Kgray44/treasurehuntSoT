@@ -113,6 +113,7 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     const pilot = await replay.json();
     expect(pilot.versionId).toBe(prepared.versionId);
     expect(pilot.voyageId).not.toBe(prepared.voyageId);
+    expect((await db.taleSession.findUniqueOrThrow({ where: { id: prepared.voyageId } })).status).toBe("CANCELLED");
     expect(pilot.versionId).toBeTruthy();
     const published = await db.publishedTaleVersion.findUniqueOrThrow({ where: { id: pilot.versionId } });
     const snapshot = JSON.parse(published.contentSnapshot);
@@ -167,6 +168,8 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await capture(d, "journal-opening");
     async function continueStory(surface: Page = d) {
       const started = performance.now();
+      const returnCurrent = surface.getByRole("button", { name: "Return to Current Objective", exact: true });
+      if (await returnCurrent.isVisible()) await returnCurrent.click();
       const button = surface.getByRole("button", { name: "Continue Voyage", exact: true });
       await expect(button).toBeEnabled();
       const current = await db.taleSession.findUniqueOrThrow({ where: { id: pilot.voyageId } });
@@ -254,6 +257,12 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await continueStory();
     await continueStory();
     await continueStory(p);
+    for (const surface of [d, p]) {
+      const returnCurrent = surface.getByRole("button", { name: "Return to Current Objective", exact: true });
+      if (await returnCurrent.isVisible()) await returnCurrent.click();
+    }
+    await expect(p.getByText("A light left burning", { exact: true }).first()).toBeVisible();
+    await capture(p, "phone-story-finale");
     await p.getByRole("button", { name: "Continue Voyage", exact: true }).click();
     await expect
       .poll(async () => (await db.taleSession.findUniqueOrThrow({ where: { id: pilot.voyageId } })).status)

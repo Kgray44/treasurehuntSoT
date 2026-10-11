@@ -5,6 +5,7 @@ import { snapshotFromStudio, publishedSourceChecksum } from "@/chronicle/snapsho
 import { publishTale } from "@/chronicle/publishing";
 import { launchTalePlaythrough } from "@/chronicle/progression";
 import { createPlaythroughAndInvitations } from "@/platform/invitations";
+import { cancelVoyage } from "@/helm/lifecycle";
 import { createSpatialDraft } from "@/parallax/authoring";
 import { saveSpatialDraft, releaseSpatialVersion, attachSpatialVersion } from "@/parallax/library-service";
 import { saveDrydockScenario } from "@/drydock/scenario-store";
@@ -32,9 +33,8 @@ export async function readPilot(ownerAccountId: string) {
     where: { taleId: tale.id, captainAccountId: ownerAccountId, previewMode: false },
     orderBy: { startedAt: "desc" },
   });
-  const version = tale.latestPublishedVersionId
-    ? await db.publishedTaleVersion.findUnique({ where: { id: tale.latestPublishedVersionId } })
-    : null;
+  const versionId = voyage?.publishedVersionId ?? tale.latestPublishedVersionId;
+  const version = versionId ? await db.publishedTaleVersion.findUnique({ where: { id: versionId } }) : null;
   const source = await getStudioTale(tale.id);
   const lens = source.draft.chapters.flatMap((c) => c.blocks).find((b) => b.id === `${tale.id}:lens`);
   const moment = lens?.presentation.spatialMoment as { definition?: { id?: string } } | undefined;
@@ -195,6 +195,14 @@ async function preparePilot(ownerAccountId: string, origin: string, replay: bool
     existing = (await readPilot(ownerAccountId))!;
   }
   if (existing.voyageId && !replay) return existing;
+  if (replay && existing.voyageId && !["COMPLETED", "CANCELLED", "ARCHIVED"].includes(existing.status)) {
+    const previous = await db.taleSession.findUniqueOrThrow({ where: { id: existing.voyageId } });
+    await cancelVoyage({
+      voyageId: previous.id,
+      actor: { accountId: ownerAccountId, legacyGameMasterId: null },
+      expectedVersion: previous.concurrencyVersion,
+    });
+  }
   const voyage = await createPlaythroughAndInvitations(
     {
       taleId,

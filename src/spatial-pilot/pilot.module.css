@@ -186,6 +186,10 @@
 }
 .ribbon p {
   line-height: 1.6;
+  color: #f5e6c9;
+}
+.ribbon :global(.journal-prose) {
+  color: #f5e6c9;
 }
 .ribbon :global(.pilot-rose) {
   display: flex;

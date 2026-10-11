@@ -153,6 +153,11 @@ export function OwnerSeaTrials({ initialPilot, csrfToken }: { initialPilot: Pilo
           unavailable sensors. A webcam and representative operator are required for physical Reach trials.
         </p>
         <p className={styles.pending}>OWNER_ACCEPTANCE_PENDING · OWNER_PHYSICAL_ACCEPTANCE_PENDING</p>
+        <p>
+          Finish the adventure before opening Spatial Studio; Creator access pauses during active Player participation.
+          Starting a fresh Voyage cancels your unfinished pilot run through Captain controls and preserves its record
+          and publication.
+        </p>
         {pilot && (
           <p className={styles.provenance}>
             Edition {pilot.versionLabel ?? "unpublished"} · Voyage {pilot.status} · source {pilot.sourceCommit}
