@@ -1,0 +1,48 @@
+{
+  "version": 2,
+  "scenarioId": "parallax.native-unavailable",
+  "scenarioVersion": 1,
+  "owningProject": "PARALLAX",
+  "scenarioFingerprint": "108a0ad4afbd4de4c509245443cb4f3e69eb59376bc6ec4f7afda89a80d7bd47",
+  "source": {
+    "sourceSha": "0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6",
+    "sourceTree": "36529aefcac815a8a1cef0434624149b9b567e6f",
+    "sourceFingerprint": "930bcac1678187021eeb3f5af24a32cbf1612f40e96ea326b51abc1bd6ca5027",
+    "dirty": false
+  },
+  "baseSha": "0327eeb7bbe74a5fd7e7dba30dc64aaf22953dd6",
+  "tier": "D0",
+  "profile": "synthetic",
+  "hostOs": "win32 10.0.26300",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": [
+    "spatial.entity",
+    "spatial.anchor"
+  ],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-11T20:21:59.784Z",
+  "completedAt": "2026-10-11T20:21:59.785Z",
+  "assertions": [
+    {
+      "id": "parallax.phase1.native-unavailable",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "PROVIDER_SIMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D3_NATIVE_IOS_BUILD_REQUIRED",
+    "D4_REAL_HARDWARE_AR_REQUIRED",
+    "OWNER_DEVICE_WALKTHROUGH_REQUIRED"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": [
+      "parallax-synthetic-session"
+    ],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

@@ -1,4 +1,5 @@
 "use client";
+import { createBrowserUuid } from "@/lib/browser-uuid";
 
 import Link from "next/link";
 import { ParallaxJournalProvider, ChronicleLensEntry } from "@/components/player/parallax/ChronicleLens";
@@ -950,7 +951,7 @@ function ChronicleJournalSessionIdentity({
 
   async function act(action: "continue" | "confirm" | "answer" | "choice" | "timer", extra: JsonObject = {}) {
     if (!state || state.journal.mode === "historical") return;
-    const idempotencyKey = crypto.randomUUID();
+    const idempotencyKey = createBrowserUuid();
     setBusy(true);
     setError("");
     const request = trackedRequest();

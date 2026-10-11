@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import QRCode from "qrcode";
 import { CHALLENGE_MS, HEARTBEAT_MS, roles, type SurfaceRole } from "@/crossdeck/contracts";
 import type { SurfaceDto } from "@/crossdeck/service";
-import { browserProjection, crossdeckRequest, storageKey } from "@/crossdeck/client";
+import { browserProjection, createCrossdeckId, crossdeckRequest, storageKey } from "@/crossdeck/client";
 import { signInHref } from "@/homeport/return-to";
 import styles from "./CrossdeckDevices.module.css";
 const roleNames: Record<SurfaceRole, string> = {
@@ -296,7 +296,7 @@ export function CrossdeckDevices({
                 void act(
                   {
                     action: "register",
-                    surfaceId: crypto.randomUUID(),
+                    surfaceId: createCrossdeckId(),
                     voyageId: voyage,
                     label,
                     capabilities: browserProjection(),
@@ -313,7 +313,7 @@ export function CrossdeckDevices({
             onSubmit={(e) => {
               e.preventDefault();
               void act(
-                { action: "claim", surfaceId: crypto.randomUUID(), code, label, capabilities: browserProjection() },
+                { action: "claim", surfaceId: createCrossdeckId(), code, label, capabilities: browserProjection() },
                 "Joined this Voyage. Your other screen stays connected.",
               );
             }}

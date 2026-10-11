@@ -1,7 +1,7 @@
 ---
 title: Parallax Phase 3 workspace ergonomics refinement
 audience: product-engineering
-status: owner-approved-software-candidate-in-qualification
+status: owner-approved-software-qualified-mainline
 canonical_for: parallax-phase-3-workspace-refinement
 last_reviewed: 2026-10-11
 ---
@@ -49,6 +49,6 @@ At 1920 × 1080 the Spatial Editing canvas occupies 81.8% of browser width, and 
 
 The owner-reviewed application is available at `http://localhost:62619/studio/parallax?definition=2146f777-4394-4661-bfbe-03c89a9c3d6f` while its task-owned runtime remains running. It uses a disposable synthetic database cloned from the populated workstation fixture, ordinary password sign-in, no configured external providers and loopback binding. Runtime ownership, source/tree/lock hash and synthetic login proof are retained in `artifacts/parallax-phase3/owner-review/`. The process/port belong to this task; preserve them during owner inspection. A running process is not physical-device proof.
 
-New evidence belongs under `artifacts/parallax-phase3/workstation-refinement/`. Earlier owner-approved captures remain under `artifacts/parallax-phase3/workstation/`; they are preserved as the visual baseline. No ordinary final Sounding Line, protected integration, landed smoke, deployment or physical qualification is claimed by this record.
+New local evidence remains under `artifacts/parallax-phase3/workstation-refinement/`. Earlier owner-approved captures remain under `artifacts/parallax-phase3/workstation/`; they are preserved as the visual baseline. The [Phase 3 implementation record](Phase_3_Implementation.md) now establishes ordinary Sounding Line, protected PR #711 integration and landed smoke, and preserves source-bound captures and measurements in the engineering evidence directory. Deployment and physical qualification remain unperformed.
 
 Documentation classification: current engineering evidence under `Development_Docs`; the Creator guide remains human product guidance and `.agents/parallax-phase3.md` remains active automation context. The [full Phase 3 implementation record](Phase_3_Implementation.md) reconciles the completed local capability and remaining ordinary protected qualification.

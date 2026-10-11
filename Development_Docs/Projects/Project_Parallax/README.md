@@ -1,7 +1,7 @@
 ---
 title: Project Parallax engineering home
 audience: product-engineering
-status: phase-3-branch-complete-protected-qualification-pending
+status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
 last_reviewed: 2026-10-11
 ---
@@ -59,9 +59,9 @@ Parallax does **not** own:
 
 ## Current implementation status
 
-**Phase 3 is implemented on the owned branch and awaiting ordinary protected qualification.** The [implementation and requirement reconciliation](Phase_3_Implementation.md) records semantic placement, bounded multi-entity staging, durable logical policies, remote authoring, optional metadata calibration and bounded discovery recovery. The [workstation design review](Phase_3_Workstation_Review.md) retains the first populated 3D approval.
+**Phase 3 is software-qualified and integrated on protected main through PR #711 at `0327eeb7`.** The [implementation and requirement reconciliation](Phase_3_Implementation.md) records semantic placement, bounded multi-entity staging, durable logical policies, remote authoring, optional metadata calibration and bounded discovery recovery. Ordinary Sounding Line passed all nine obligations, 1,739 tests and four product browser journeys. The clean landed tree passed 79 smoke tests and 26 fresh D0 scenarios. The [workstation design review](Phase_3_Workstation_Review.md) retains the first populated 3D approval.
 
-The owner also approved the [workspace ergonomics refinement](Phase_3_Workspace_Refinement.md) at `592217e3` on 2026-10-11. Four layouts, shared dock tabs, contextual accordions, resizable bottom tools and floating/docked assistance reclaim real viewport area. Browser software proof and both visual approvals are separate from protected integration and physical qualification.
+The owner also approved the [workspace ergonomics refinement](Phase_3_Workspace_Refinement.md) at `592217e3` on 2026-10-11. Four layouts, shared dock tabs, contextual accordions, resizable bottom tools and floating/docked assistance reclaim real viewport area. Software integration and both visual approvals are established; physical qualification remains separate.
 
 **Phase 1 — Establish the Frame is implemented. Representative-device owner acceptance remains pending.**
 

@@ -1,5 +1,6 @@
 import { projectCapabilities, type SurfaceCapabilities } from "./contracts";
 export const storageKey = (voyage: string) => `crossdeck.surface.v1:${voyage}`;
+export { createBrowserUuid as createCrossdeckId } from "@/lib/browser-uuid";
 export function browserProjection(): SurfaceCapabilities {
   const width = window.innerWidth;
   return projectCapabilities({

@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { auditAllowsLocalPublicOrigin } from "@/audit/host";
 import { safeEqual } from "@/lib/security";
 import { currentAccount } from "@/wayfarer/accounts";
+import { pilotLocalHttpEnabled } from "@/spatial-pilot/local-http";
 
 export const WAYFARER_COOKIE = "wayfarer_account";
 
@@ -51,7 +52,11 @@ export async function requireWayfarerVerification(request?: Request) {
 
 export async function setWayfarerCookie(token: string) {
   const jar = await cookies();
-  jar.set(WAYFARER_COOKIE, token, wayfarerCookieOptions);
+  const previewSession = pilotLocalHttpEnabled() ? await currentAccount(token) : null;
+  jar.set(WAYFARER_COOKIE, token, {
+    ...wayfarerCookieOptions,
+    secure: wayfarerCookieOptions.secure && previewSession?.accountId !== "spatial-pilot-navigator",
+  });
   jar.delete("forever_gm");
   jar.delete("chronicle_player");
 }
