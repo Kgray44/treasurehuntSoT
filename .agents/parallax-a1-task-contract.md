@@ -1,0 +1,19 @@
+# Parallax A1 owned task contract
+
+Profile: product-phase / UNATTENDED_CONTINUATION. Native goal: Project Parallax Spatial Assistant. This is the already-dispatched implementation task; no duplicate chat or phase dispatch is authorized.
+
+Owner brief: `C:/Users/kkids/.codex/attachments/45c276b1-cfc3-4fcc-bdaf-72c370b75467/pasted-text-1.txt`, read in full. Scope and acceptance remain that brief plus the additive A1 amendment.
+
+Baseline: protected `origin/main` `f458bf2dc1176016c2d166180f038f0f15ac9f7c`, fetched 2026-10-11. Owned branch: `codex/parallax-a1-spatial-assistant`. Owned worktree: `C:/Users/kkids/.codex/worktrees/parallax-a1-spatial-assistant/Codex_TreasureHunt`.
+
+Preserve dirty primary and `parallax-phase3` worktrees; Phase 3 observed at `bd198185a2f4603b969407dd55991d29d29802de`, with package files modified. Read-only inspection does not authorize mutation or borrowing unmerged work. Final reconciliation uses accepted main; maintain a reviewable candidate/PR if Phase 3 integration is pending. No unrelated phase, deployment, automatic paid canary or visual owner-acceptance claim.
+
+Minimum sufficient context is a labeled source-bound adaptation of Project Trim, not fabricated packet-v2/helper output. Current sources: AGENTS.md; .agents/README.md and repository safety/validation/documentation authorities; Parallax constitution sections 54–55 and 91; Phase_2_Context_Packet.md and Phase_2_Implementation.md; authoring.ts/contracts.ts/studio-contracts.ts/studio-validation.ts/ai-authoring.ts/library-service.ts; SpatialStudio/SpatialCanvas; existing Studio route/authorization; Admiralty capability/command/configuration/HTTP ports; Community operational policy transaction/audit pattern; both Prisma schemas and migrations; Sounding_Line_Effective_Authority.md and ordinary.mjs. Confidence EXACT for read baseline source; mainline delta must refresh before integration/qualification. Helpers and CONTEXT_WORKFLOW are absent; expand autonomously to relevant contracts.
+
+Implementation sequence: independent proposal/provider/quota modules and meaningful deterministic tests; durable migrations and governed Admiralty management; isolated polished assistant; final canonical Studio integration; API/browser/race/60-case qualification; source-bound visual package and docs/status/catalog review; exact-candidate ordinary Sounding Line and branch/PR publication. Preserve all locally attainable requirements until qualified. Live canary and visual owner review remain explicit external gates.
+
+Current provider evidence: official Responses structured output text.format contract fetched 2026-10-11; official pricing lists standard short-context Luna input/cache/cache-write/output $0.10/$0.01/$0.125/$0.50 per million and Sol $2/$0.10/$2.50/$10. SDK absent in baseline package.json. Paid request authorization absent. Do not transmit credential values in tooling output.
+
+Owner steering 2026-10-11: local Windows credentials use only server `process.env.OPENAI_API_KEY`, shared from the Windows user environment with no per-worktree credential file. Cloud Personal Vault is separate. The existing Windows user variable is configured but this Codex process requires environment refresh/restart; fresh zero-network child probes passed from three checkout directories against the A1 adapter. Keep paid canary authorization separate from configured credentials. Per-user AI policy controls moved to the existing People account dossier; remove duplicate AI Users search/tab/endpoint. Global policy/spending/provider health remain in AI Usage & Quotas.
+
+Bilateral interface amendment: ACCEPT Phase 3 generation and canonical-save acknowledgement requirements as recorded in `parallax-a1-studio-interface.md`. Shared integration stays HELD until accepted canonical Phase 3 source exists. No chat messaging is authorized solely by coordination relays.

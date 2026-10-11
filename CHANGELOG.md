@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Changelog
@@ -17,6 +17,8 @@ last_reviewed: 2026-10-10
 - Sextant gesture acquisition refuses incompatible slow delivery before sensor acquisition and cleans all owned leases on failure/abort/interruption. Parallax native scenes use bounded versioned UTF-8 chunks, independent resolved geometry validation and idempotent session-bound termination including Android Back. Existing published checksums, Guided accessibility and One Voyage progression authority are retained. See the [correction receipt](Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for qualification and remaining physical/owner gates.
 
 ### Added
+
+- Parallax A1 implementation candidate adds typed reviewed Assistant proposals, shared local server-side `OPENAI_API_KEY` support, durable quota/accounting controls and per-user AI policy inside the existing Admiralty People dossier. Shared Studio integration, final qualification, paid provider canary and visual owner review remain pending; see the [candidate record](Development_Docs/Projects/Project_Parallax/Parallax_A1_Evaluation_and_Qualification.md).
 
 - Sextant Phase 3 local candidate adds calibrated field semantics, relative pressure/step context, media capability lifecycle, optional bounded BLE/NFC, authenticated peer/ranging contracts, safe magnetic reference controls and Drydock requirements. The [implementation receipt](Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) distinguishes D0/D1 software proof from native/physical/owner and protected-mainline gates.
 - Crossdeck Phase 2 candidate adds durable presentation synchronization, explicit

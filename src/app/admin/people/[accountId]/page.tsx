@@ -14,6 +14,8 @@ import {
 } from "@/components/admiralty/AdminPrimitives";
 import { DossierSupportPanel } from "@/components/admiralty/DossierSupportPanel";
 import { AccountLifecycleActionPanel } from "@/components/admiralty/AccountLifecycleActionPanel";
+import { AIQuotaUserPanel } from "@/components/admiralty/AIQuotaUserPanel";
+import { aiQuotaUserDetail } from "@/parallax/ai-quota-projections";
 import { SessionActionPanel } from "@/components/admiralty/SessionActionPanel";
 
 export default async function AccountDossierPage({ params }: { params: Promise<{ accountId: string }> }) {
@@ -22,6 +24,7 @@ export default async function AccountDossierPage({ params }: { params: Promise<{
   const dossier = await getAccountDossier(operator, accountId);
   if (!dossier?.data) notFound();
   const account = dossier.data;
+  const aiUsage = operator.capabilities.includes("CONFIG_OBSERVE") ? await aiQuotaUserDetail(accountId) : null;
   const observedAt = new Date(dossier.evidence.observedAt).getTime();
   const activeGrant = account.supportRequestsTargeted.find(
     (request) =>
@@ -184,6 +187,16 @@ export default async function AccountDossierPage({ params }: { params: Promise<{
           enabled={operator.capabilities.includes("SECURITY_OPERATE")}
         />
       </Panel>
+      {aiUsage && (
+        <Panel title="AI usage & quotas" kicker="Account allowance, inherited policy, and reviewed exceptions">
+          <AIQuotaUserPanel
+            key={account.id}
+            initial={aiUsage}
+            csrfToken={operator.csrfToken}
+            canManage={operator.capabilities.includes("CONFIG_OPERATE")}
+          />
+        </Panel>
+      )}
       <Panel title="Account lifecycle" kicker="Critical command with stale-state protection and explicit confirmation">
         <AccountLifecycleActionPanel
           targetAccountId={account.id}

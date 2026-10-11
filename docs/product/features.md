@@ -3,10 +3,12 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Voyagewright features
+
+Parallax A1 has an independent implementation candidate for reviewed Spatial Assistant proposals, a server-side OpenAI adapter and durable Admiralty AI controls. Per-user controls use the existing People account dossier. Shared Studio integration, final software qualification, paid provider canary and owner visual review remain pending; see the [A1 qualification record](../../Development_Docs/Projects/Project_Parallax/Parallax_A1_Evaluation_and_Qualification.md).
 
 The [Find the Hand laboratory](../user/hand-laboratory.md) provides a local camera/synthetic observation and calibration preview. Physical accuracy and Phase 1 acceptance remain pending; selection, manipulation and handoff are outside this preview.
 

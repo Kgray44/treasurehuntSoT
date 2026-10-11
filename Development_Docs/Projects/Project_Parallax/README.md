@@ -18,6 +18,10 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 ## Governing authority
 
+- [A1 local OpenAI configuration](Parallax_A1_Local_OpenAI_Configuration.md) describes the shared Windows user credential, safe diagnostics and account-dossier quota controls.
+
+- [Supplemental A1 Spatial Assistant amendment](../../Governing/Project_Parallax_A1_Spatial_Assistant_Governing_Amendment.md) adds reviewed natural-language authoring, OpenAI integration and Admiralty-controlled durable AI quotas. Implementation and qualification are in progress in a dedicated worktree; live canary and owner visual acceptance remain pending.
+
 1. [Voyagewright Spatial Experience Architecture v1.0](../../Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md) establishes the cross-project spatial ownership boundary.
 2. [Project Parallax Governing Document v1.0](../../Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md) is the canonical Parallax product and engineering baseline.
 3. [Project Sextant Governing Document v1.0](../../Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md) owns generic device capability and semantic hardware context consumed by Parallax.
@@ -121,3 +125,13 @@ Later phases require their own explicit implementation scope; Phase 1 does not s
 ## Reach-era effective integration
 
 Read the preserved authority above with the [current Reach integration amendment](../../Governing/Project_Parallax_Governing_Amendment_v1.1_Reach_Manipulation_Intent.md). The [effective spatial authority index](../../Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) resolves the complete additive chain. Reach owns calibrated target/gesture intent; this project retains its domain authority. The amendment is governance only and does not claim new implementation or reopen accepted closure.
+
+## A1 candidate records
+
+- [Accounting, API contracts and privacy](Parallax_A1_Accounting_Contracts_and_Privacy.md)
+- [Admiralty AI quota operator guide](Parallax_A1_Quota_Operator_Guide.md)
+- [Evaluation and qualification](Parallax_A1_Evaluation_and_Qualification.md)
+- [Spatial Assistant Creator guide](../../../docs/user/spatial-assistant.md)
+
+A1 remains an independent implementation candidate. Canonical Studio integration,
+ordinary final qualification, live-provider canary and owner visual review are pending.

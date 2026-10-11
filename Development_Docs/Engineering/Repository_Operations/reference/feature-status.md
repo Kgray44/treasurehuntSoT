@@ -3,10 +3,12 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-11
 ---
 
 # Feature status
+
+Parallax A1 has an independent implementation candidate for reviewed Spatial Assistant proposals, a server-side OpenAI adapter and durable Admiralty AI controls. Per-user controls use the existing People account dossier. Shared Studio integration, final software qualification, paid provider canary and owner visual review remain pending; see the [A1 qualification record](../../../Projects/Project_Parallax/Parallax_A1_Evaluation_and_Qualification.md).
 
 Reach Phase 1's observation/calibration laboratory is an implementation candidate with physical qualification and protected integration pending. See the [phase record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md); no Phase 2 action capability is claimed.
 

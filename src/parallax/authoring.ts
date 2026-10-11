@@ -36,6 +36,14 @@ export const draftSchema = z.strictObject({
 export type SpatialDraft = z.infer<typeof draftSchema>;
 export type DraftContent = SpatialDraft["content"];
 export type Edit =
+  | { type: "CREATE"; entity: SpatialEntity }
+  | {
+      type: "CONTENT";
+      entityId: string;
+      patch: Partial<Pick<SpatialEntity, "name" | "content" | "alternativeText" | "widthMeters" | "interactions">>;
+    }
+  | { type: "BEHAVIOR"; behavior: StudioContent["behaviors"][number] }
+  | { type: "FALLBACK"; narrative: string }
   | { type: "TRANSFORM"; entityId: string; transform: Transform }
   | { type: "PARENT"; entityId: string; parentId: string | null }
   | { type: "DUPLICATE"; entityId: string; newId: string }
@@ -168,12 +176,43 @@ export function previewEntityTransform(content: DraftContent, entityId: string):
 export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft {
   if (edit.type === "REPLACE") return draftSchema.parse(structuredClone(edit.draft));
   const next = structuredClone(input);
+  const studio = (next.content.studio ??= emptyStudioContent());
+  if (edit.type === "CREATE") {
+    if (next.content.entities.some((entity) => entity.id === edit.entity.id))
+      throw new Error("Entity identity already exists.");
+    next.content.entities.push(structuredClone(edit.entity));
+    studio.layers.push({
+      entityId: edit.entity.id,
+      tags: [],
+      visible: true,
+      locked: false,
+      selectable: true,
+      audience: "BOTH",
+    });
+    return draftSchema.parse(next);
+  }
+  if (edit.type === "FALLBACK") {
+    next.content.fallback = { mode: "GUIDED", narrative: edit.narrative, preservesMeaning: true };
+    return draftSchema.parse(next);
+  }
+  if (edit.type === "BEHAVIOR") {
+    for (const id of [edit.behavior.targetEntityId, edit.behavior.sourceEntityId].filter(Boolean)) {
+      if (studio.layers.some((layer) => layer.entityId === id && layer.locked))
+        throw new Error("Unlock this entity before editing it.");
+    }
+    const index = studio.behaviors.findIndex((behavior) => behavior.id === edit.behavior.id);
+    if (index < 0) studio.behaviors.push(structuredClone(edit.behavior));
+    else studio.behaviors[index] = structuredClone(edit.behavior);
+    return draftSchema.parse(next);
+  }
   const entity = next.content.entities.find((e) => e.id === edit.entityId);
   if (!entity) throw new Error("Choose an existing spatial entity.");
-  const studio = (next.content.studio ??= emptyStudioContent());
   const layer = studio.layers.find((l) => l.entityId === entity.id);
   if (layer?.locked && edit.type !== "LAYER") throw new Error("Unlock this entity before editing it.");
   switch (edit.type) {
+    case "CONTENT":
+      Object.assign(entity, edit.patch);
+      break;
     case "TRANSFORM":
       entity.transform = edit.transform;
       break;

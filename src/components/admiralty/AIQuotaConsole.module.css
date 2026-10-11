@@ -1,0 +1,306 @@
+.console {
+  display: grid;
+  gap: 20px;
+  color: var(--text-primary);
+  font-family: var(--font-interface);
+  min-width: 0;
+}
+.console :is(button, input, select, textarea) {
+  font: inherit;
+  min-height: var(--control-height);
+}
+.console button,
+.console select,
+.console input,
+.console textarea {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-small);
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+  padding: 10px 12px;
+  max-width: 100%;
+}
+.console button {
+  cursor: pointer;
+}
+.console button:hover:not(:disabled) {
+  border-color: var(--accent-primary);
+  background: var(--surface-hover);
+}
+.console button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.console :is(button, input, select, textarea, a):focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 3px;
+}
+.tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border-default);
+  padding-bottom: 14px;
+}
+.tabs button[aria-current] {
+  color: var(--accent-hover);
+  border-color: var(--accent-primary);
+  background: var(--surface-raised);
+}
+.period,
+.actions,
+.search,
+.switches {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.period {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.period button {
+  margin-left: auto;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.metrics article,
+.card,
+.review {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-medium);
+  padding: 22px;
+  min-width: 0;
+}
+.metrics article {
+  display: grid;
+  gap: 12px;
+  border-top: 2px solid var(--accent-primary);
+}
+.metrics strong {
+  font-size: clamp(24px, 3vw, 34px);
+  font-family: var(--font-display);
+  color: var(--text-heading);
+}
+.console small {
+  display: block;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+.card h2,
+.review h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  color: var(--text-heading);
+}
+.card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.card p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.card > label {
+  display: grid;
+  gap: 8px;
+}
+.console progress {
+  width: 100%;
+  height: 12px;
+  accent-color: var(--focus-color);
+  margin: 14px 0;
+}
+.columns,
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.fields {
+  margin: 20px 0;
+}
+.fields label,
+.search label,
+.review label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.switches label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.switches {
+  border: none;
+  padding: 0;
+}
+.switches legend {
+  margin-bottom: 12px;
+}
+.console input[type="checkbox"] {
+  width: 18px;
+  min-height: 18px;
+  accent-color: var(--accent-primary);
+}
+.console textarea {
+  width: 100%;
+  min-height: 90px;
+  resize: vertical;
+}
+.console form {
+  display: grid;
+  gap: 20px;
+}
+.console .search {
+  display: flex;
+}
+.search label:first-child {
+  flex: 1;
+  min-width: 220px;
+}
+.actions {
+  margin-top: 16px;
+}
+.notice {
+  margin: 0;
+  border-left: 3px solid var(--state-info);
+  background: var(--surface-overlay);
+  padding: 14px 18px;
+  line-height: 1.6;
+}
+.review {
+  border-color: var(--border-emphasis);
+  box-shadow: var(--shadow-card);
+}
+.review pre {
+  font-size: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--surface-overlay);
+  border-radius: var(--radius-small);
+  padding: 16px;
+  max-height: 360px;
+  overflow: auto;
+}
+.review li {
+  line-height: 1.7;
+}
+.scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.console table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+.console th {
+  color: var(--text-secondary);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.console :is(th, td) {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+}
+.console dl {
+  display: grid;
+  gap: 14px;
+}
+.console dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 12px;
+}
+.console dt {
+  color: var(--text-secondary);
+}
+.console dd {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.chart {
+  height: 160px;
+  display: flex;
+  align-items: end;
+  gap: 7px;
+  margin: 30px 0;
+}
+.chart > div {
+  display: grid;
+  grid-template-rows: 1fr 20px;
+  align-items: end;
+  height: 100%;
+  flex: 1;
+  min-width: 3px;
+  text-align: center;
+}
+.chart span {
+  display: block;
+  min-height: 2px;
+  background: var(--focus-color);
+  border-radius: 4px 4px 0 0;
+}
+.chart small {
+  font-size: 10px;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+@media (max-width: 1050px) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 650px) {
+  .columns,
+  .fields {
+    grid-template-columns: 1fr;
+  }
+  .card,
+  .review,
+  .metrics article {
+    padding: 16px;
+  }
+  .tabs button {
+    flex: 1 1 130px;
+  }
+  .metrics {
+    gap: 10px;
+  }
+  .period button {
+    margin-left: 0;
+  }
+  .chart {
+    gap: 3px;
+  }
+  .chart small {
+    font-size: 8px;
+  }
+  .actions > button {
+    flex: 1 1 160px;
+  }
+}
