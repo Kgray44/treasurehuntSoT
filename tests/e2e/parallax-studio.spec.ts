@@ -8,6 +8,7 @@ import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabi
 import { createStudioTale, getStudioTale, saveStudioDraft } from "../../src/chronicle/studio-service";
 import { validateSpatialMoment } from "../../src/parallax/publication";
 test.describe.configure({ mode: "serial", timeout: 300000 });
+test.use({ actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
 test("Creator builds, versions, attaches, publishes and reopens a spatial moment in Guided mode", async ({
   page,
@@ -68,7 +69,7 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
     await page.getByRole("button", { name: "Save to Spatial Library", exact: true }).click();
     await page.getByRole("button", { name: "Save draft", exact: true }).click();
     await expect(page.getByRole("status")).toHaveText("Working draft saved");
-    await page.getByLabel("Preview", { exact: true }).selectOption("FALLBACK");
+    await page.getByRole("combobox", { name: "Preview", exact: true }).selectOption("FALLBACK");
     await expect(page.getByRole("region", { name: "Spatial canvas" })).toContainText(
       "The northern harbor is your next bearing.",
     );
