@@ -1634,5 +1634,27 @@
     "Remote D4 core bring-up lacks authorized provider/project access and signing configuration",
     "No formal Phase 4 acceptance, protected merge, release or Phase 5 authority"
   ],
-  "updatedAt": "2026-10-11T20:35:14.744Z"
+  "updatedAt": "2026-10-11T20:47:26.804Z",
+  "acceptedMainReconciliation": {
+    "baseSha": "af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf",
+    "baseTree": "2456cb6cf7091048d17d5e5d52b865b97ded9d6e",
+    "ownedMergeSha": "6130b7a7539697425f06965ab005c14dae97ab5c",
+    "ownedMergeTree": "2728c26d3d1aecf5336d301eabb2cc21331a14d6",
+    "lockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+    "nativeSourceChangedFromPreviousCandidate": false,
+    "sharedRegistryDeclarations": 125,
+    "localFeedback": {
+      "node": "24.18.0",
+      "npm": "11.9.0",
+      "tests": 913,
+      "files": 112,
+      "result": "PASS",
+      "report": "artifacts/sextant-integration-6130b7a7-vitest.json",
+      "typecheck": "PASS",
+      "docs": "PASS",
+      "catalog": "PASS_66_ACCEPTED_ENTRIES_NO_SEXTANT_PHASE4_PROMOTION"
+    },
+    "freshHostedCombinedSourceQualification": "REQUIRED",
+    "olderReceiptPolicy": "Original source SHA, lock, tree and fingerprint retained; no whole-source equivalence claimed after accepted package/schema/spatial changes."
+  }
 }

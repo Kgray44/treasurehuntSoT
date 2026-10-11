@@ -14,8 +14,12 @@ packet-v2 receipt or a release decision.
 
 Base: `f458bf2dc1176016c2d166180f038f0f15ac9f7c`, fetched protected main.
 Accepted main `efa689f2` (Crossdeck #706/#708 and synthetic Pilot #707) was
-reconciled additively after the second candidate. Use the exact refreshed main
-SHA/tree from the latest checkpoint for fresh ordinary qualification.
+reconciled additively after the second candidate. Accepted Parallax Phase 3 and
+its records-only closeout are also reconciled from protected main
+`af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf`, tree
+`2456cb6cf7091048d17d5e5d52b865b97ded9d6e`. Preserve its approved workstation,
+field schema and all scenario declarations. New combined qualification binds this
+base and the exact candidate from the latest checkpoint.
 Owned branch: `codex/sextant-phase4-take-it-afield`. Phase 3 product #701 merged
 as `787d406b382f251baa691a536cdaa41446e8e0ac`; evidence #702 merged as
 `508ee106d8bc8cacbebaf169372dda75d15f2f18`. Actual GitHub merge readback and
@@ -78,7 +82,11 @@ Preparation: Node24.19.0, npm11.x, locked `npm ci --ignore-scripts`, then
 `npx --no-install prisma generate --schema prisma/schema.sqlite.prisma`.
 Local feedback used Node24.18.0/npm11.9.0. Hosted formal qualification must use
 the pinned Node24.19.0; local feedback does not prove that exact toolchain.
-Lock SHA256: `a2f4140400648da7810670a7ef677e04d526628a8f66a98efcc180f5eef74014`.
+Current reconciled lock SHA256:
+`1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373`.
+Earlier receipts retain their original lock checksum. Accepted main changed package
+and Prisma inputs; one fresh combined root/browser run is intentional. Preserve
+the old consumed root contract and bind a distinct new dispatch to the new source.
 Use a clean owned checkout, synthetic fixtures, no inherited production DB/token
 configuration. Full root command is `npx --no-install vitest run`; ordinary
 qualification uses trusted protected-main `scripts/sounding-line/ordinary.mjs`
@@ -104,6 +112,17 @@ Other active owners: Parallax Studio/Lens visuals and placement; Pilot narrative
 acceptance; A1 Assistant proposals/provider/quota/Admiralty. Do not change shared
 editor, Lens, authoring or Prisma seams without the recorded bilateral contract.
 This branch adds only canonical device seams and its ordinary Devices panel.
+
+Follow-up evidence: e03ffe37 ordinary38171494446, corrected browser38171503151,
+actual native Devices38171499881 (ten OS samples, no progression) and primary
+UWB38171814218 passed. Android OS lifecycle38171250062 passed at0f8ac197.
+Apple presentation38170965786 passed31 tests/one expected skip; its UIKit
+unconfigured-shell screenshot is not normal Devices-page Apple UX proof.
+Android background38170904429 failed Google geofence registration NOT_AVAILABLE.
+The public Location Accuracy entry probe has a bounded observed-entry wait with
+race/absence tests; a fresh source-bound native run must qualify that correction.
+Retain the earlier failure. Primary iOS38169460273 and compatibility/tablet
+38170962062 remain owned; inspect terminal artifacts before diagnosing or rerunning.
 
 When only hosted/external results remain, preserve exact HEAD/tree/dirty state,
 run IDs, completed checks, ownership and resume triggers; end the native turn.

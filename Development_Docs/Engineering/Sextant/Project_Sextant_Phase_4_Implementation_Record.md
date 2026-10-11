@@ -250,7 +250,7 @@ and [geofencing guide](https://developer.android.com/develop/sensors-and-locatio
 support checking service/location prerequisites; their existence does not prove
 that a simulator service is available or that this correction has passed natively.
 
-### Hosted qualification checkpoint, 11 October
+### Historical hosted checkpoint before the follow-up
 
 The [machine-readable virtual evidence](phase4-virtual-evidence-20261011.json)
 preserves original source identities, scenario totals, native instrumentation and
@@ -317,7 +317,7 @@ These UI/evidence changes require fresh ordinary/browser and native consumer
 qualification. Prior receipts retain their original source identities; no fresh
 PASS is claimed from this local feedback.
 
-Remaining task-owned hosted checks are primary iOS38169460273, Android radio
+At this earlier checkpoint, remaining task-owned checks were primary iOS38169460273, Android radio
 38170875594, Android signed background-return38170904429, Apple compatibility/
 tablet38170962062 and Apple accessibility/presentation38170965786. Each dispatch
 records its exact immutable source and transport. Pending jobs are not passing
@@ -336,10 +336,48 @@ Focused local checks remain implementation feedback. Native Android and iOS proo
 retains the exact source and tested input scope of each receipt; accepted-base runs
 never qualify later source merely because the same scenario names were used.
 
-Next: harvest remaining hosted profiles/lifecycle/radio results, qualify the
-visual/control correction and retain final exact-head Sounding Line. D0/D1 CLI receipts bind the
-frozen candidate/tree/fingerprint. Physical haptics, RF/magnetics, energy/thermal
-performance, physical accessibility and required D4 core bring-up remain separate.
+The follow-up above supersedes those pending classifications. D0/D1 CLI receipts
+retain their frozen candidate/tree/fingerprint. Physical haptics, RF/magnetics,
+energy/thermal performance, physical accessibility and required D4 core bring-up
+remain separate.
+
+### Accepted-main reconciliation and deliverable assessment
+
+The owned merge `6130b7a7539697425f06965ab005c14dae97ab5c` reconciles accepted
+Parallax Phase 3 product PR #711 and records-only PR #713 from protected main
+`af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf`, tree
+`2456cb6cf7091048d17d5e5d52b865b97ded9d6e`. Both status paragraphs and all
+125 shared registry declarations are preserved: 57 Sextant, 34 Parallax and
+17 Reach declarations. No accepted native source changed. Accepted package,
+Prisma and shared spatial inputs did change; the newly combined source needs
+fresh software qualification rather than relabelling earlier fingerprints.
+The accepted workstation, field-calibration tables, logical scene policies and
+catalog entry remain intact. No sibling worktree or owner-review runtime changed.
+
+| Required deliverable        | Implemented/proven scope and remaining gate                                                                                                                                                                                                                       |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Android native providers | Real SensorManager/LocationManager, hardware, power, haptic and supported nearby APIs; native D2 tests and four profiles executed. Core physical qualification remains open.                                                                                      |
+| 2. Apple native providers   | Core Motion/Location/Haptics, NFC and Nearby Interaction seams build; real XCTest and injected-native conformance pass. Broader canonical simulator journeys remain in execution.                                                                                 |
+| 3. Semantic conformance     | Shared contracts, coordinate/time/quality interpretation, malformed input, permission and lease/refusal tests; no injected production authority.                                                                                                                  |
+| 4. Shared lab adapters      | Existing Android/iOS executors, hosted profiles and lifecycle/UI controls extended; receipt tiers and source identities retained.                                                                                                                                 |
+| 5. Coordinated sensors      | Deterministic ENU trajectory and coupled transforms/noise; independent oracle and 53 total D0/D1 scenarios pass at their recorded sources.                                                                                                                        |
+| 6. Faults/lifecycle         | Dropout, stale/time/bias, permission, background/restart, power/thermal and concurrent consumers; actual Android OS lock/kill/recreation/resume pass. Android registered background return needs its corrected prerequisite rerun.                                |
+| 7. Nearby/fallback          | Native capability/refusal tests, BLE lifecycle and supported Android UWB emulation; failed primary capability preparation retained alongside narrow passing rerun. Unimplemented BLE GATT connection stays unknown; RF/NFC/UWB hardware accuracy is not inferred. |
+| 8. D2 receipts              | Four Android profiles, native instrumentation, actual WebView consumer/OS controls and cleanup retained with immutable source/checksums.                                                                                                                          |
+| 9. D3 receipts              | Native Apple tests, Home transition and OS Reduce Motion executed; hardware-absent injection is labelled. Primary and compatibility/tablet canonical journeys still need terminal assessment.                                                                     |
+| 10. Remote D4               | Services investigated; no authorized configured provider/project access or signing configuration found. No billing, account or personal-device dependency introduced. Required core bring-up remains blocked externally.                                          |
+| 11. Consumers               | Canonical Landfall/Parallax/Crossdeck/Watchglass/Reach/Storytide/Drydock/One Voyage boundaries retained; combined accepted-main regression and ordinary qualification required.                                                                                   |
+| 12. Product experience      | Ordinary Devices consent, paused/quality/calibration/refusal and screen fallback controls; reviewed desktop/mobile and actual Android native screenshots. Apple shell accessibility captures do not prove normal Devices-page Apple UX.                           |
+| 13. Performance/privacy     | Bounded native leases, cancellation/stop/concurrency, transient raw samples, provenance and no progression tests; short actual Android CPU/PSS observations. Long-duration physical energy/thermal/leak and assistive qualification are not established.          |
+| 14. Records                 | This current engineering record, machine-readable virtual receipts, preserved failures, hashes and owned cleanup/checkpoints.                                                                                                                                     |
+| 15. Status/catalog          | Current status, feature status, guides and changelog reviewed; accepted Parallax catalog preserved. No completed Sextant Phase 4 fragment is promoted while acceptance is open.                                                                                   |
+| 16. Reviewable PR           | Draft PR #709 contains owned implementation and exact evidence; refreshed combined software/native-prerequisite checks remain to finish.                                                                                                                          |
+| 17. Protected acceptance    | No merge or formal Phase 4 acceptance without required core D4 bring-up. No Phase 5 work.                                                                                                                                                                         |
+
+The fresh qualification checkpoint records exact source/tree/base/lock, command
+results and the distinct new root/background/ordinary run ownership. The earlier
+unfiltered root contract remains consumed. Historical passes qualify their original
+inputs; historical failures remain failures.
 
 Document classification: this record and the project/engineering homes are current
 product-engineering; current status is product status; feature status is reference;
