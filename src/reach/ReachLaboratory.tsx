@@ -516,7 +516,7 @@ export function ReachLaboratory({
     // Opening a target may wait through the existing short-loss grace. Actual
     // sampling still requires a fresh eligible observation; no stale sample is used.
     const recentPoint =
-      readiness.condition === "STALE" &&
+      readiness.condition === "READY" &&
       readiness.hand &&
       age >= 0 &&
       age <= 300 &&
