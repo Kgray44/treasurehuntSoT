@@ -185,9 +185,6 @@
   font-size: 20px;
   color: var(--focus-color);
 }
-.assistant .activity[data-working="true"] > span {
-  animation: turn 1.8s linear infinite;
-}
 .assistant .notice {
   border-left: 2px solid var(--state-info);
   padding: 11px 13px;

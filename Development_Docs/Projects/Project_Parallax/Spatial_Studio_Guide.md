@@ -48,6 +48,14 @@ The canonical publication and library workflow remains:
 
 Undo and redo apply to ordinary editing and accepted AI proposals. When configured, AI intent and critique are advisory: review the proposed placement, content and alternative text before applying it. If you edit the draft after requesting a proposal, request a fresh proposal before applying. Manual editing remains available when AI is unconfigured.
 
+After Apply, the Assistant distinguishes saved changes from the canvas check.
+The check waits for a render of that exact saved scene. It reports whether each
+affected object is in view, hidden as authored, outside the view, occluded or too
+small to read. **Locate … in canvas** selects an object for the existing Frame
+selection and Isolate controls. A missing or failed renderer keeps confirmation
+pending rather than claiming the object appeared. State transitions follow your
+Full, Gentle or Reduced motion preference without delaying saving or inference.
+
 If a save conflicts with another revision, preserve your work as a new fork or reload the authoritative item. An immutable version is never overwritten. Synthetic previews are authoring aids; representative-device acceptance and physical tracking qualification remain separate.
 
 ## Author an adaptive scene remotely

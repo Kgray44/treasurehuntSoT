@@ -185,7 +185,9 @@ export function SpatialStudio({
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [renderedEntities, setRenderedEntities] = useState<Record<string, RendererReceipt["status"]>>({});
-  const recordRenderedEntities = useCallback((receipts: RendererReceipt[]) => {
+  const [renderedSceneVersion, setRenderedSceneVersion] = useState<string | undefined>();
+  const recordRenderedEntities = useCallback((receipts: RendererReceipt[], sceneVersion?: string) => {
+    setRenderedSceneVersion(sceneVersion);
     const next = Object.fromEntries(receipts.map((r) => [r.id, r.status]));
     setRenderedEntities((previous) => (JSON.stringify(previous) === JSON.stringify(next) ? previous : next));
   }, []);
@@ -1304,6 +1306,8 @@ export function SpatialStudio({
                 selectedEntityId={draft.content.entities.some((entity) => entity.id === selected) ? selected : null}
                 accountId={loaded.layoutScope}
                 usage={loaded.aiUsage}
+                renderedSceneVersion={renderedSceneVersion}
+                renderedEntities={renderedEntities}
                 port={assistantPort}
                 onPreview={assistantPreview}
                 onSelect={setSelected}

@@ -205,6 +205,10 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   expect(savedResponse.ok(), JSON.stringify(savedBody)).toBe(true);
   expect(savedBody.draft).toEqual(expected);
   await expect(assistant).toContainText("Your changes are saved");
+  const canvasCheck = assistant.getByRole("region", { name: "Saved scene canvas check", exact: true });
+  await expect(canvasCheck).toBeVisible();
+  await expect(canvasCheck).not.toContainText("Canvas confirmation is pending");
+  await expect(canvasCheck).toContainText(/rendered in the current view|saved, but|saved hidden as authored/);
   const saved = await ownedWorking(account.id, request.draft.content.definitionId);
   expect(saved).toEqual({ draft: expected, revision: base.revision + 1 });
   const ledger = await db.aIUsageLedger.findFirstOrThrow({

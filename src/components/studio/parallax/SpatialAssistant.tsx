@@ -1,6 +1,10 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { motion } from "motion/react";
+import { resolvePlatformMotionToken, platformMotionEasing } from "@/animation/platform/motion-tokens";
+import { evaluateSpatialScene } from "@/parallax/behavior";
+import type { RendererReceipt } from "./spatial-workstation";
 import type { SpatialDraft } from "@/parallax/authoring";
 import { spatialId } from "@/parallax/contracts";
 import {
@@ -48,6 +52,8 @@ export type SpatialAssistantProps = {
   canRedo: boolean;
   onClose?: () => void;
   onCanvasView?: () => void;
+  renderedSceneVersion?: string;
+  renderedEntities?: Record<string, RendererReceipt["status"]>;
 };
 type Stage =
   | "IDLE"
@@ -188,6 +194,11 @@ export function SpatialAssistant(props: SpatialAssistantProps) {
 }
 function SpatialAssistantSession(props: SpatialAssistantProps) {
   const { mode: motionMode } = useMotionMode();
+  const stateMotion = resolvePlatformMotionToken("state", motionMode);
+  const [savedRenderReview, setSavedRenderReview] = useState<{
+    sceneVersion: string;
+    entities: { id: string; name: string; visible: boolean }[];
+  } | null>(null);
   const [collapsed, setCollapsed] = useState(false),
     [composer, setComposer] = useState(""),
     [stage, setStage] = useState<Stage>("IDLE"),
@@ -434,6 +445,18 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         throw new Error(
           "The canonical save acknowledgement could not be verified. Retry this reviewed change before installing it.",
         );
+      const ids = affected(selectedIds);
+      const states = evaluateSpatialScene(saved.draft.content, [], 0, true).states;
+      setSavedRenderReview({
+        sceneVersion: JSON.stringify(saved.draft),
+        entities: saved.draft.content.entities
+          .filter((entity) => ids.includes(entity.id))
+          .map((entity) => ({
+            id: entity.id,
+            name: entity.name,
+            visible: states[entity.id].visible,
+          })),
+      });
       latest.current.onPreview(null, []);
       setPreviewing(false);
       setProposal(null);
@@ -516,9 +539,57 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
           </section>
         )}
         <p className={styles.activity} role="status" aria-live="polite" data-working={working}>
-          <span aria-hidden="true">{working ? "◌" : stage === "ACCEPTED" ? "✓" : "✦"}</span>
+          <motion.span
+            key={stage}
+            aria-hidden="true"
+            initial={
+              motionMode === "reduced"
+                ? false
+                : { opacity: 0.35, scale: 1 - stateMotion.scaleDelta * 4, rotate: working ? -30 : 0 }
+            }
+            animate={{ opacity: 1, scale: 1, rotate: working && motionMode !== "reduced" ? 30 : 0 }}
+            transition={{ duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") }}
+          >
+            {working ? "◌" : stage === "ACCEPTED" ? "✓" : "✦"}
+          </motion.span>
           {stageText[stage]}
         </p>
+        {stage === "ACCEPTED" && savedRenderReview && (
+          <section aria-label="Saved scene canvas check" className={styles.notice}>
+            {props.renderedSceneVersion !== savedRenderReview.sceneVersion ? (
+              <p>The changes are saved. Canvas confirmation is pending; open the canvas to inspect this scene.</p>
+            ) : savedRenderReview.entities.length === 0 ? (
+              <p>The saved scene has rendered. These changes do not add or move a visible object.</p>
+            ) : (
+              savedRenderReview.entities.map((entity) => {
+                const status = props.renderedEntities?.[entity.id];
+                const visible = status === "IN_VIEW";
+                const authoredHidden = status === "HIDDEN" && !entity.visible;
+                return (
+                  <p key={entity.id}>
+                    <strong>{entity.name}</strong>:{" "}
+                    {visible
+                      ? "rendered in the current view."
+                      : authoredHidden
+                        ? "saved hidden as authored. Preview its reveal in the timeline."
+                        : `saved, but ${status === "OUTSIDE_VIEW" ? "outside the current view" : status === "OCCLUDED" ? "occluded in this view" : status === "TOO_SMALL" ? "too small to read in this view" : status === "HIDDEN" ? "hidden in the current preview" : "its geometry is not confirmed"}.`}
+                    {!visible && !authoredHidden && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          props.onSelect(entity.id);
+                          props.onCanvasView?.();
+                        }}
+                      >
+                        Locate {entity.name} in canvas
+                      </button>
+                    )}
+                  </p>
+                );
+              })
+            )}
+          </section>
+        )}
         {shownNotice && (
           <p className={styles.notice} role="status">
             {shownNotice}

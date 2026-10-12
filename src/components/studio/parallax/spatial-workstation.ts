@@ -15,6 +15,7 @@ export type ViewportObject = {
   highlighted: boolean;
 };
 export type ViewportState = {
+  sceneVersion?: string;
   theme?: "light" | "dark";
   objects: ViewportObject[];
   candidates: Candidate[];
@@ -61,7 +62,7 @@ export function createWorkstation(
     transform: (id: string, world: Transform) => void;
     candidate: (candidate: Candidate, position: Transform["position"]) => void;
     failure: () => void;
-    rendered?: (receipts: RendererReceipt[]) => void;
+    rendered?: (receipts: RendererReceipt[], sceneVersion?: string) => void;
   },
 ) {
   const renderer = new T.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "low-power" });
@@ -71,7 +72,7 @@ export function createWorkstation(
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.25;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = T.PCFSoftShadowMap;
+  renderer.shadowMap.type = T.PCFShadowMap;
   renderer.domElement.setAttribute("aria-label", "Interactive synthetic 3D environment");
   renderer.domElement.setAttribute("tabindex", "0");
   host.appendChild(renderer.domElement);
@@ -665,11 +666,12 @@ export function createWorkstation(
         bounds: { min: bounds.min.toArray(), max: bounds.max.toArray() },
       };
     });
-    const key = JSON.stringify(receipts);
-    host.dataset.sceneReceipt = key;
+    const serialized = JSON.stringify(receipts);
+    const key = `${state?.sceneVersion ?? ""}:${serialized}`;
+    host.dataset.sceneReceipt = serialized;
     if (key !== receiptKey) {
       receiptKey = key;
-      callbacks.rendered?.(receipts);
+      callbacks.rendered?.(receipts, state?.sceneVersion);
     }
   };
   const animate = () => {

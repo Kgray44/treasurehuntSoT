@@ -25,7 +25,7 @@ export function SpatialCanvas(props: {
   timeMs: number;
   inputs: SpatialInput[];
   onPreviewChange?: (preview: string) => void;
-  onRendererReceipt?: (receipts: RendererReceipt[]) => void;
+  onRendererReceipt?: (receipts: RendererReceipt[], sceneVersion?: string) => void;
 }) {
   const { draft, selectedId, onSelect, onPreset, mode, preview, environmentId, timeMs, inputs } = props;
   const host = useRef<HTMLDivElement>(null),
@@ -212,10 +212,11 @@ export function SpatialCanvas(props: {
             failure: () => {
               recoveryCamera.current = engine.current?.cameraSnapshot() ?? null;
               setRendererState("UNAVAILABLE");
+              latest.current.onRendererReceipt?.([]);
             },
-            rendered: (next) => {
+            rendered: (next, sceneVersion) => {
               setReceipts(next);
-              latest.current.onRendererReceipt?.(next);
+              latest.current.onRendererReceipt?.(next, sceneVersion);
             },
           });
           setRendererState("READY");
@@ -230,11 +231,13 @@ export function SpatialCanvas(props: {
       cancelled = true;
       engine.current?.dispose();
       engine.current = null;
+      latest.current.onRendererReceipt?.([]);
     };
   }, [fallback, rendererAttempt]);
   useEffect(() => {
     if (rendererState !== "READY") return;
     engine.current?.update({
+      sceneVersion: JSON.stringify(draft),
       theme,
       objects: draft.content.entities.map((entity) => ({
         entity,

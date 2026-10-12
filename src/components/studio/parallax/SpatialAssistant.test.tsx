@@ -80,6 +80,43 @@ async function proposal(): Promise<AssistantProposal> {
   };
 }
 describe("Spatial Assistant deliberate, accessible proposal review", () => {
+  it("waits for the exact saved render and exposes location recovery instead of confirming an offscreen object", async () => {
+    const input = props(),
+      checked = await proposal();
+    input.port.request = vi.fn(async () => ({ status: "PROPOSED", proposal: checked }));
+    input.onCanvasView = vi.fn();
+    input.renderedSceneVersion = JSON.stringify(draft);
+    input.renderedEntities = { [draft.content.entities[0].id]: "IN_VIEW" };
+    const view = render(<SpatialAssistant {...input} />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Move the map" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    fireEvent.click(await screen.findByRole("button", { name: "Apply all changes" }));
+    await screen.findByText(/Canvas confirmation is pending/);
+    const saved = await materializeAssistantProposal(draft, 1, checked, ["move"], 0);
+    view.rerender(
+      <SpatialAssistant
+        {...input}
+        renderedSceneVersion={JSON.stringify(saved)}
+        renderedEntities={{ [draft.content.entities[0].id]: "OUTSIDE_VIEW" }}
+      />,
+    );
+    await screen.findByText(/outside the current view/);
+    fireEvent.click(screen.getByRole("button", { name: `Locate ${draft.content.entities[0].name} in canvas` }));
+    expect(input.onSelect).toHaveBeenCalledWith(draft.content.entities[0].id);
+    expect(input.onCanvasView).toHaveBeenCalled();
+    view.rerender(
+      <SpatialAssistant
+        {...input}
+        renderedSceneVersion={JSON.stringify(saved)}
+        renderedEntities={{ [draft.content.entities[0].id]: "IN_VIEW" }}
+      />,
+    );
+    await screen.findByText(/rendered in the current view/);
+    expect(screen.queryByText(/Canvas confirmation is pending/)).not.toBeInTheDocument();
+    view.rerender(<SpatialAssistant {...input} renderedSceneVersion={undefined} renderedEntities={{}} />);
+    await screen.findByText(/Canvas confirmation is pending/);
+    expect(screen.queryByText(/rendered in the current view/)).not.toBeInTheDocument();
+  });
   it("carries the retained request identity into a deliberate clarification answer", async () => {
     const input = props(),
       checked = {

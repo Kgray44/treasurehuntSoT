@@ -274,3 +274,42 @@ images, scanner and intercepted OpenAI prove workflow rather than live vision,
 real scanning, production provider readiness, native calibration, physical
 correctness, complete overhaul or owner acceptance. Subsequent preview/opening
 changes require their own capture and review.
+
+### Actual room preview and wall opening: verified desktop development loop
+
+The independent reviewer inspected all five actual PNGs and the complete
+11.36-second recording at `13ba3ef6bf155cdda7078d4474610c2a11df63dc`, tree
+`af25b3a0710bf1eaf946cf64807461bfcac9a458`, before frozen source.
+The retained manifest declares VALID / DEVELOPMENT / SYNTHETIC_UNPAID / exit 0.
+Recording SHA256 is
+`5adc51b19aece8ad6c66154f6fa502afa59180b446482e285a1e73340c5ba26b`.
+Disposition: VERIFY_FINAL_EVIDENCE for this bounded journey.
+
+At 4.4–4.8 seconds the proposed back-wall window, room, desk and clue render
+before saving. Return restores the original bedroom at approximately 5 seconds;
+the second Preview restores proposed geometry. Saved Apply at approximately 6
+seconds adopts that room. Refinement moves the same desk/clue, individual photo
+withdrawals complete visibly, and the final reload retains the refined room
+with zero permission controls. Full draft equality and real renderer receipts
+corroborate visible continuity; both permissions are absent after final reload.
+
+The preceding seventeen dimensions remain explicitly bounded. Composition,
+hierarchy, controls, feedback, states, continuity and role outcome now include
+actual pre-Apply geometry review, safe Return and completed final withdrawal
+through reload. Typography/spacing/contrast are readable desktop dark mode;
+keyboard focus, phone/light-theme photo workflow, non-reduced motion, provider
+failure/cancel/clarification and stress density remain unqualified. The saved
+Environment selector still names Bedroom during proposal preview while the
+canvas and explicit status identify proposed geometry. Reset view is used for
+the useful retained framing; automatic framing in every state is not inferred.
+
+The visible framed window has segmented wall geometry around it. Pure checks
+also establish rotated openings, floor-edge doors, detached/perpendicular
+rejection and overlapping subtraction. Opaque stylized glass and this single
+desktop view do not visually qualify see-through apertures, operable doors,
+all rotated-hole placements or physical architecture. The full protected-photo
+contract, live perception/scanning, production private-provider readiness and
+owner acceptance remain open. Failed engineering packets `74612f1a432f`,
+`03f13fb72c80` and `34f2eb31264c` retain their exit-1 manifests and actual
+recordings; the first two stopped on receipt setup/preview-frame issues and the
+third completed preview/refinement before a transient reload receipt read.

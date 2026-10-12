@@ -200,3 +200,22 @@ directory. It records `DEVELOPMENT` and `SYNTHETIC_UNPAID` explicitly. Productio
 room-correction captures continue through the normal browser authority and
 exercise configuration-unavailable photo fallback. Neither packet establishes
 real scanning or live image-perception quality.
+
+The bounded development photo journey now includes actual proposed geometry
+preview, return to the original scene, saved Apply, shared-desk refinement,
+individual withdrawal and final reload with no permissions. Its independent
+receipt is recorded in the room/library/simulation review. Editable-room doors
+and windows derive coplanar wall openings consumed by the same renderer and
+surface discovery; the wall retains one identity and placement excludes voids.
+Detached or perpendicular features do not cut a wall. This is generic modeled
+geometry rather than measured architectural or operable-window qualification.
+
+The Assistant's saving acknowledgement remains distinct from a canvas check
+bound to the exact saved draft rendered by the workstation. Pending or failed
+renderers cannot confirm appearance. Each affected entity reports its actual
+view status, and offscreen/occluded/unreadable objects offer the existing
+selection and canvas recovery controls. Authored-hidden objects remain hidden.
+Real request/review/save state transitions use Lanternwake's state timing and
+motion preferences with finite visual changes, without synthetic progress,
+artificial delay or a perpetual state spinner. This source change still needs
+its rendered execution/presentation regression and independent review.
