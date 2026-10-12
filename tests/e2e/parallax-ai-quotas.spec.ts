@@ -83,6 +83,30 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   expect(bounds).not.toBeNull();
   expect(bounds!.x).toBeGreaterThanOrEqual(0);
   expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(391);
+  const historyRegion = panel.getByRole("region", { name: "Account AI request history" });
+  await historyRegion.focus();
+  await expect(historyRegion).toBeFocused();
+  const historyScrolls = await historyRegion.evaluate((element) => element.scrollWidth > element.clientWidth);
+  if (historyScrolls) {
+    await page.keyboard.press("ArrowRight");
+    await expect.poll(() => historyRegion.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  }
+  const mobileAccessibility = await new AxeBuilder({ page }).include("[data-parallax-ai-quota-fixture]").analyze();
+  expect(
+    mobileAccessibility.violations.filter((finding) => ["serious", "critical"].includes(finding.impact ?? "")),
+  ).toEqual([]);
+  await test.info().attach("mobile-account-ai-history-access", {
+    body: JSON.stringify({
+      keyboardFocused: true,
+      horizontalScrollVerified: historyScrolls,
+      violations: mobileAccessibility.violations.map(({ id, impact, nodes }) => ({
+        id,
+        impact,
+        targets: nodes.map(({ target }) => target),
+      })),
+    }),
+    contentType: "application/json",
+  });
   await panel.screenshot({ path: test.info().outputPath("account-ai-quotas-mobile.png") });
   await page.screenshot({ path: `${captureRoot}/owner-people-ai-dossier-mobile.png`, fullPage: true });
   await page.goto("/admin/ai-usage");
