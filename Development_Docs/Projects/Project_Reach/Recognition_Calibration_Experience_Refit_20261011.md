@@ -1,7 +1,7 @@
 ---
 title: Reach recognition, calibration and experience refit
 audience: product-engineering
-status: implemented-in-qualification
+status: implemented-and-reviewed
 canonical_for: reach-recognition-calibration-experience-refit
 last_reviewed: 2026-10-11
 ---
@@ -48,9 +48,15 @@ Production Chromium journeys cover laptop 1280×800 and mobile 390×844, both mo
 
 The full photographic-worker journey collects nine actual-landmark absolute holds and five independent checks, asserting either the unchanged accuracy gate or an honest refusal. It then collects the separate relative setup and independent cursor check. Smooth image translation and pixel noise feed model inference rather than injected landmarks. Its consented aggregate output records the actual fixture error, jitter, acquisition and software timing boundaries.
 
-The executable experience contract on `reach.phase1.foundation` preserves protected `PE-DEBT-REACH-STAGES` history while requiring visibly separate detection, posture and eligibility, desktop/mobile, normal/reduced motion, adverse recovery and natural entry/return. Independent rendered review, bounded repairs and authenticated capture/review artifacts are recorded in [candidate-review.json](../../Testing/Product_Experience/candidate-review.json). Final source-bound qualification and integration results will be recorded here after those operations succeed. No acceptance result is inferred from this paragraph.
+The executable experience contract on `reach.phase1.foundation` preserves protected `PE-DEBT-REACH-STAGES` history while requiring visibly separate detection, posture and eligibility, desktop/mobile, normal/reduced motion, adverse recovery and natural entry/return. Independent rendered review, bounded repairs and authenticated capture/review artifacts are recorded in [candidate-review.json](../../Testing/Product_Experience/candidate-review.json).
+
+All ten production-browser journeys passed at clean product candidate `632e1895a6fcd8ba4c82f1752f6b671131598a33` in two focused runs. The photographic journey completed all twenty-four training/check holds across both modes, with raw held-out error p95 of 0.53% for absolute and 0.56% for relative; physical qualification remains unclaimed. Its [supplementary manifest](../../Testing/Product_Experience/evidence/reach-d1-632e1895/manifest.json) preserves screenshots, measurements, browser logs and exact source identity separately from the trusted capture manifest.
+
+[Protected capture 38198691260](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38198691260) passed twelve desktop/mobile, normal/reduced-motion journeys and issued immutable artifact `11724538509`. Its product source digest is `c64ecc9728c26d2532a0c26ee23d511a65e91255d710219398f79c7d16398874`; all 108 referenced artifacts were hash verified. The separate rendered-first reviewer accepted all seventeen dimensions, with the six initial findings resolved and no unresolved blocking finding. Ordinary qualification, the final qualified head and protected integration are traced on [PR 716](https://github.com/Kgray44/treasurehuntSoT/pull/716); capture and review preparation do not issue that mainline decision. Neither software qualification nor this implementation record grants real-person D4 or owner acceptance.
 
 ## Owner walkthrough and remaining physical proof
+
+Before numerical physical trials, freeze and record source identity, webcam/resolution, display geometry and scale, browser/backend, provider/model, mirroring, viewing distance and camera placement. This refit has not qualified a physical reference configuration.
 
 1. Open Devices → Reach on an ordinary laptop and phone/tablet. Confirm that purpose, explicit permission, tracking guidance, mode choice, target progress and return are understandable without this document.
 2. Enable a real camera; try relaxed left and right pointing hands at representative distances and rotations, near edges, in ordinary/dim/bright lighting, with modest flexion and partial nonessential occlusion. Detection must remain visible when eligibility abstains.
