@@ -111,6 +111,20 @@ confirmation. These invented rooms are editable authoring aids. Photograph
 analysis is not yet available in the candidate. Save and reload retain the
 edited room and ordinary Undo/Redo can restore earlier edits.
 
+**Add room features** creates a generic furnishing of the chosen type. A
+classification change edits its label; **Rebuild generic feature shape** changes
+its actual model while retaining its name, dimensions and position. **Remove
+room feature** removes an unbound feature. Move attached clues to another
+support before removing or rebuilding their supporting feature. The whole floor
+stays a single feature. Generic doors and windows do not cut wall openings.
+
+Under **Scale room from a known measurement**, choose the selected feature's
+width, height or depth and enter its measured metres. Apply scales the room and
+its furnishings together and retains that reference. Other dimensions remain
+estimates. Authored clue sizes keep their metres and follow their supports.
+Use Reset view to frame a substantially resized room. Editing the reference
+dimension later clears the obsolete scale reference.
+
 ## Reuse an object or a complete scene (overhaul candidate)
 
 Select an object and open **Library, reuse & publication**. Enter its asset name,

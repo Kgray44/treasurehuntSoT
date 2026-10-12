@@ -143,3 +143,45 @@ establish full-condition graphs, material/light/effect animation, complete
 cross-device operation or physical interaction. These are not substituted by
 the successful numeric clock or event assertions. Protected experience planning
 still requires the affected Crossdeck continuity design; no exemption is claimed.
+
+## Parametric correction review: repair required
+
+Reviewer `/root/studio_foundation_review` inspected all 51 PNGs and three complete
+recordings at `03a11dd9aabe1d1b029a9dc889f760418e4a388c`, tree
+`46bef4d63a5e3dbbe0ee9a11bf7640a3b4329ef8`, before frozen source. There are six
+parametric stills, five room-feature stills and forty preset stills. The VALID
+unpaid manifest and recording digests are retained in the evidence directory.
+All three journeys pass, but rendered qualification is REPAIR_AND_RECAPTURE:
+
+- PX-PARAM-01: bound desk Remove is visibly rejected; the contract also requires
+  Rebuild rejection, which was not exercised. Add that ordinary action and
+  demonstrate unchanged desk geometry and bound clue with readable guidance.
+- PX-PARAM-02: the invalid room width preserves geometry, but the error guidance
+  remains outside the captured Inspector viewport. Scroll the real alert into
+  view before retaining its screenshot and recording.
+
+| Dimension    | Observation and limit                                                                                                                                   |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Composition  | Usable desktop loop and restored room. Immediate known-scale view clips its upper room until Reset view; phone canvas controls overlap its upper strip. |
+| Hierarchy    | Three correction disclosures distinguish tasks; invalid error needs readable recapture.                                                                 |
+| Typography   | Full-resolution names, values and limitations readable; small video status text weaker.                                                                 |
+| Spacing      | Phone contextual Inspector retains full width; long forms require scrolling.                                                                            |
+| Controls     | Add, classification, Rebuild, unbound Remove, history, scale, Save/reload and phone rename observed. Bound Rebuild still pending.                       |
+| Contrast     | All ten presets readable in desktop/phone dark/light captures. Correction workflow itself captured only in dark.                                        |
+| Consistency  | Canonical feature selector, history and Save; label/model difference corresponds to actual geometry.                                                    |
+| States       | Chair, relabel, sofa, remove/restore, protected Remove, scale and reload visible. Both evidence repairs pending.                                        |
+| Responsive   | Actual 390×844 feature rename/save and separate phone position edit usable. Phone Add/Rebuild/scale and landscape unverified.                           |
+| Keyboard     | Input blur/Tab exercised; complete keyboard-only journey unverified.                                                                                    |
+| Focus        | Visible edited-field focus; full order/return and screen reader unverified.                                                                             |
+| Feedback     | Add/model limitations, bound Remove warning and measurement reference readable; invalid limits require recapture.                                       |
+| Motion       | Actual geometry appears, rebuilds and changes through history. Physical performance and touch feel unverified.                                          |
+| Continuity   | Room, scale reference, bound clue and phone name survive reload; Undo/Redo restores sofa.                                                               |
+| Complexity   | Disclosed tasks and approximation explanations support this single-room correction loop. No photo or gesture reconstruction inferred.                   |
+| Role outcome | Synthetic Creator loop substantially observed, awaiting two recaptures; owner and other roles unverified.                                               |
+| Fallback     | Bound Remove recovery observed; bound Rebuild and invalid recovery need recapture. Budget exhaustion and physical survey unverified.                    |
+
+Every named preset has distinct visible geometry on both tested devices/themes.
+Trail reports the selected Desk Map occluded; environment presence does not
+establish that every clue is visible. Generic openings do not cut walls and one
+known measurement does not make the room a survey. Prior library/simulation and
+foundation receipts remain bounded prior results, not reruns in this packet.

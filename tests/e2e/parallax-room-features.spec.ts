@@ -67,6 +67,7 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await editor.getByLabel("Room width (m)", { exact: true }).fill("-1");
   await editor.getByLabel("Room width (m)", { exact: true }).press("Tab");
   await expect(editor.getByRole("alert")).toBeVisible();
+  await editor.getByRole("alert").scrollIntoViewIfNeeded();
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/room-feature-invalid.png` });
   await expect.poll(center).toBeCloseTo(0.6);

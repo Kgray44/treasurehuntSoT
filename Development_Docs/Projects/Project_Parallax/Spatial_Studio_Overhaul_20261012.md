@@ -146,3 +146,18 @@ show the real rebuilt geometry, bound-support rejection, scaled clue/desk,
 history, desktop reload and phone edit/reload. Doors and windows in this
 checkpoint remain generic visible forms; real wall openings and photo
 perception are still separate work.
+
+## Photo observation foundation (not yet an available workflow)
+
+Bounded Watchglass observation data now maps deterministically to the same
+Parallax room features: one complete floor, four inferred walls, a ceiling and
+generic classified furnishings. The mapper rejects geometry beyond the room,
+unknown or duplicate feature matches and uncertain same-room alignment. An
+additional view must identify an existing shared feature; matching features
+retain their geometry/support identities, and Creator corrections and known
+measurements take precedence. Eleven focused tests cover these boundaries and
+actual bound-clue correspondence after refinement.
+
+This pure foundation does not ingest photographs, dispatch inference, authorize
+protected media or expose a Creator workflow. Those integrations remain pending;
+the room editor still describes photograph analysis as unavailable.
