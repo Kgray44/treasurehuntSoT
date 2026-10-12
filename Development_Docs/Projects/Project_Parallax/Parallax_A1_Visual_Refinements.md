@@ -121,9 +121,37 @@ session when gaming-resource restrictions resumed. Compilation and TypeScript
 completed; page-data collection was interrupted. This supplies no passing build
 or browser receipt. No descendant candidate runner was found in the subsequent
 read-only process check. Heavy local checks, evidence publication transfers and
-remote qualification are deferred while only light work is permitted.
+remote qualification were deferred while only light work was permitted.
 
-Authenticated review submission, the final local receipt, catalog closeout,
-ordinary Sounding Line acceptance, protected merge and landed-source smoke
-remain required. PR #717 remains a draft. This record does not claim current
-integration or physical-device acceptance.
+The owner subsequently directed continuation until completion. The fresh
+committed-source run at `b5f6ce0e9412e3a11b50e3bf813bd4d898b963c8`, tree
+`876c4964547eff23d5a8f79d0c462237a862b6ca`, passed all seven isolated
+production-browser journeys in 1.7 minutes. Its
+[exact receipt](evidence/owner-refinements/final-local-browser-run.json)
+identifies the unpaid synthetic provider and hashed recordings. The local
+source-bound gallery is `artifacts/parallax-a1/browser/b5f6ce0e9412/review.html`.
+It covers populated complete light/dark themes, overlay scene dimensions,
+working mode-dependent sections, empty/nonzero chart choices, account-history keyboard focus/scroll,
+the canonical People override workflow and saved Creator Apply/reopen continuity.
+Later documentation and numeric capture-ID corrections preserve product source.
+
+The [fresh independent supplement](evidence/owner-refinements/current-local-supplement-review.json)
+verified all 99 gallery manifest hashes, inspected 34 targeted screenshots and
+four principal recordings, and found no new blocker. It confirms current
+populated themes/docks, account-history focus/scroll and exact Creator continuity.
+Dedicated daily-table horizontal keyboard movement is not demonstrated and
+remains an explicit evidence limit; it is not credited from account-history proof.
+
+Authenticated review [38198372908](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38198372908)
+passed on protected main for documentation successor
+`bd682b4174d138092e53be94ce6cda5474466769`. Immutable review artifact
+`11724152413` has ZIP SHA-256
+`61f0b10b8de3d1bdfdb4948c3305fe76116725bbc13edbec7747eaf205e9103b`.
+Its [authenticated report](evidence/owner-refinements/authenticated-experience-review.json)
+matches the two independent contributions and numeric capture ID exactly.
+The final candidate report contains both immutable artifact IDs. Preparation
+supplies no required mainline decision.
+
+Ordinary Sounding Line acceptance, protected merge and landed-source smoke
+remain required. PR #717 remains a draft until final preparation is complete.
+This record does not claim current integration or physical-device acceptance.

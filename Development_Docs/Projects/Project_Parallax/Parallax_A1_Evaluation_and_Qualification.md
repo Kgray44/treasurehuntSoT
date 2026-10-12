@@ -1,7 +1,7 @@
 ---
 title: Parallax A1 evaluation and qualification
 audience: engineering
-status: software-accepted-owner-review-pending
+status: software-accepted-owner-presentation-accepted
 canonical_for: parallax-a1-evaluation-qualification
 last_reviewed: 2026-10-11
 ---
@@ -41,7 +41,7 @@ schema-validated interpretations, safe failure status and request IDs so outcome
 can be independently assessed; headers, credentials and arbitrary raw envelopes
 remain excluded. Reviewed engineering evidence is published under
 `Development_Docs`. The [model and prompt study](Parallax_A1_Model_and_Prompt_Comparison.md)
-preserves the additional authorization, all thirteen rounds and their actual
+preserves the additional authorization, all fifteen rounds and their actual
 limitations. Version-two historical reports remain unchanged.
 
 After owner authorization, a small sample can be invoked with:

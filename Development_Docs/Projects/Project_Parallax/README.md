@@ -142,5 +142,7 @@ Read the preserved authority above with the [current Reach integration amendment
 - [Spatial Assistant Creator guide](../../../docs/user/spatial-assistant.md)
 
 A1 is software-qualified and integrated through protected PR #710, with landed
-smoke and a bounded live-provider canary. Owner visual review remains pending;
-the implementation record preserves that boundary and physical limitations.
+smoke and a bounded live-provider canary. The owner accepted the revised
+presentation at `fe5c5438`; its correction qualification is tracked separately.
+The model study preserves expanded synthetic testing and its finite quality
+limits; physical-device and AR evidence remain separate.
