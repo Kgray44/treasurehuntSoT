@@ -2435,6 +2435,14 @@
 .surfacePicker summary {
   cursor: pointer;
   font-weight: 700;
+  padding-right: 2rem;
+}
+.surfacePickerClose {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  min-width: 2rem;
+  min-height: 2rem;
 }
 .surfacePicker small {
   display: block;
@@ -2447,6 +2455,23 @@
 }
 
 /* Short viewports keep an editable scene; the document scrolls instead of crushing its tools. */
+@media (max-width: 700px), (max-height: 520px) {
+  .surfacePicker {
+    position: fixed;
+    top: auto;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-height: 45dvh;
+    z-index: 25;
+    overflow: hidden;
+  }
+  .surfacePicker > div {
+    max-height: calc(45dvh - 96px);
+    overflow: auto;
+  }
+}
 @media (max-height: 520px) {
   .adaptiveWorkspace {
     height: auto;
@@ -2460,8 +2485,5 @@
   .adaptiveWorkspace .canvas {
     min-height: 380px;
     flex: none;
-  }
-  .surfacePicker {
-    max-height: calc(100% - 100px);
   }
 }

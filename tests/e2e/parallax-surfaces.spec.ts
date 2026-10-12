@@ -78,6 +78,7 @@ test("Creator snaps a clue to both walls, table and entire floor with orientatio
     await page.setViewportSize(size);
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
+    await page.screenshot({ path: `${root}/surface-picker-${size.width}x${size.height}.png`, fullPage: true });
     await canvas.getByRole("button", { name: "wall left", exact: true }).click();
     await expect(canvas).toContainText("snapped and aligned to wall left");
     const rendered = canvas.locator('[data-renderer="READY"] canvas');
@@ -85,7 +86,9 @@ test("Creator snaps a clue to both walls, table and entire floor with orientatio
     expect((await rendered.boundingBox())!.height).toBeGreaterThan(240);
     await page.screenshot({ path: `${root}/surfaces-${size.width}x${size.height}.png` });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
-    await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
+    const toggle = page.getByRole("button", { name: "Toggle spatial overlays", exact: true });
+    if ((await toggle.getAttribute("aria-pressed")) === "true")
+      await page.getByRole("button", { name: "Close room surfaces", exact: true }).click();
   }
   const axe = await new AxeBuilder({ page }).include("main").analyze();
   expect(axe.violations.filter((v) => ["critical", "serious"].includes(v.impact ?? ""))).toEqual([]);

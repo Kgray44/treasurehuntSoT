@@ -134,6 +134,7 @@ export function SpatialCanvas(props: {
         return;
       }
       p.onEdit({ type: "REPLACE", draft: snapSpatialEntity(p.draft, entity.id, placed, c, p.environmentId) });
+      if (window.matchMedia("(max-width: 700px), (max-height: 520px)").matches) setOverlays(false);
       setFeedback(
         `${entity.name}: snapped and aligned to ${c.id.replaceAll("-", " ")}. Manual placement · Undo is available.`,
       );
@@ -158,6 +159,7 @@ export function SpatialCanvas(props: {
     delete d.content.adaptive!.calibration.reviewReceiptId;
     if (d.content.placementPolicy === "CALIBRATED") d.content.placementPolicy = "ADAPTIVE_STICKY";
     p.onEdit({ type: "REPLACE", draft: d });
+    if (window.matchMedia("(max-width: 700px), (max-height: 520px)").matches) setOverlays(false);
     setFeedback(
       `Semantic intent changed to ${c.surface.toLowerCase()} near ${recipe.preferredContext.join(", ").toLowerCase() || "open space"}. Safety constraints still apply.`,
     );
@@ -300,6 +302,13 @@ export function SpatialCanvas(props: {
             Room surfaces ·{" "}
             {evidence.candidates.filter((c) => c.surface !== "OPEN_SPACE" && c.id !== "unsafe-walkway").length}
           </summary>
+          <button
+            className={styles.surfacePickerClose}
+            onClick={() => setOverlays(false)}
+            aria-label="Close room surfaces"
+          >
+            ×
+          </button>
           <small>
             {adaptive
               ? "Automatic placement: choose a surface preference; the room resolver finds a safe position."

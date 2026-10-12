@@ -70,9 +70,23 @@ if (existsSync(resultRoot)) {
     }
   }
 }
+const sourceUnchanged =
+  execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim() === candidate &&
+  !execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" }).trim();
 writeFileSync(
   path.join(artifactRoot, "run.json"),
-  JSON.stringify({ ...record, finishedAt: new Date().toISOString(), exitCode: result.status, recordings }, null, 2),
+  JSON.stringify(
+    {
+      ...record,
+      finishedAt: new Date().toISOString(),
+      exitCode: result.status,
+      sourceBinding: sourceUnchanged ? "VALID" : "INVALIDATED",
+      recordings,
+    },
+    null,
+    2,
+  ),
 );
 if (result.error) throw result.error;
+if (!sourceUnchanged) throw new Error("PARALLAX_A1_BROWSER_SOURCE_CHANGED_DURING_CAPTURE");
 process.exitCode = result.status ?? 1;
