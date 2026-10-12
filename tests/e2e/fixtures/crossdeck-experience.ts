@@ -3,6 +3,7 @@ import { hash } from "bcryptjs";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import type { PublishedTaleSnapshot } from "../../../src/chronicle/types";
+import { emptyJournalReadingState, type PlayerJournalReadingState } from "../../../src/chronicle/journal-contract";
 import { validateLandfallDefinition } from "../../../src/landfall/definition";
 import { landfallFixture } from "../../../src/landfall/fixtures";
 import { syntheticSpatialMoment } from "../../../src/parallax/fixtures";
@@ -198,6 +199,19 @@ export async function prepareCrossdeckExperienceFixture(store: PrismaClient) {
             normalizedDisplayName: "crossdeck synthetic navigator",
             status: "ACTIVE",
             claimedAt: timestamp,
+            // This sequence-4 Voyage has already opened its canonical Journal.
+            // Future account contexts read the same persisted returning state.
+            preferences: JSON.stringify({
+              journals: {
+                [STATIC_VOYAGE_ID]: {
+                  ...emptyJournalReadingState,
+                  pageId: `block:${activeId}:primary`,
+                  hasOpened: true,
+                  lastEventSequence: 4,
+                  updatedAt: timestamp.toISOString(),
+                } satisfies PlayerJournalReadingState,
+              },
+            }),
           },
         },
         emails: {

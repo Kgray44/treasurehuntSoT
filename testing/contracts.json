@@ -280,7 +280,8 @@
           "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
           "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
           "This focused consumer contract delivers an already published synthetic Creator-authored clue. Creator Studio authoring and publication retain their existing qualification scope; no new authoring or native camera acceptance is claimed.",
-          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage."
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+          "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context."
         ],
         "objective": "Read and inspect the actual published spatial clue while keeping the same Voyage",
         "visibleOutcome": "A released Creator-authored spatial moment opens its canonical Guided Lens, meaningful inspection and a direct return to the same published Voyage",
@@ -308,12 +309,17 @@
                 "action": "click",
                 "role": "button",
                 "name": "Sign in"
+              },
+              {
+                "action": "wait",
+                "role": "navigation",
+                "name": "Journal tools"
               }
             ],
             "witness": {
-              "role": "dialog",
-              "name": "Open the voyage journal",
-              "text": "Open the journal"
+              "role": "region",
+              "name": "Voyage context",
+              "text": "Synthetic Crossdeck refit Voyage"
             }
           }
         },
@@ -324,17 +330,19 @@
             "outcome": "The published spatial attachment reaches canonical Guided Lens, offers actual Inspect interaction and returns to the same authorized edition",
             "steps": [
               {
-                "action": "click",
-                "role": "button",
-                "name": "Open the journal"
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "text": "chapters",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "state": "JOURNAL_READY"
               },
               {
                 "action": "assert",
                 "role": "main",
                 "name": "",
                 "text": "Synthetic Crossdeck refit Voyage",
-                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
-                "state": "JOURNAL_READY"
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal"
               },
               {
                 "action": "click",
@@ -4183,7 +4191,8 @@
         "limitations": [
           "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
           "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
-          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage."
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+          "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context."
         ],
         "objective": "Connect another device from the active Chronicle without losing my place",
         "visibleOutcome": "The active Journal opens a contextual private phone connection with QR/code guidance and returns directly to the same Chronicle",
@@ -4211,12 +4220,17 @@
                 "action": "click",
                 "role": "button",
                 "name": "Sign in"
+              },
+              {
+                "action": "wait",
+                "role": "navigation",
+                "name": "Journal tools"
               }
             ],
             "witness": {
-              "role": "dialog",
-              "name": "Open the voyage journal",
-              "text": "Open the journal"
+              "role": "region",
+              "name": "Voyage context",
+              "text": "Synthetic Crossdeck refit Voyage"
             }
           }
         },
@@ -4227,17 +4241,19 @@
             "outcome": "A Player finds contextual phone connection from the active Journal and returns to the same released reading task",
             "steps": [
               {
-                "action": "click",
-                "role": "button",
-                "name": "Open the journal"
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "text": "chapters",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "state": "JOURNAL_READY"
               },
               {
                 "action": "assert",
                 "role": "main",
                 "name": "",
                 "text": "Synthetic Crossdeck refit Voyage",
-                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
-                "state": "JOURNAL_READY"
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal"
               },
               {
                 "action": "click",
@@ -4572,13 +4588,14 @@
           "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
           "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
           "The existing canonical profile control supplies a rendered person witness; authenticated API/session checks bind it to the actual synthetic account. The final exact Voyage path proves contextual re-entry. Ordinary anonymous account-recovery obligations remain unchanged in their existing contract.",
-          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage."
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+          "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context."
         ],
         "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
         "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
         "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
         "states": ["COMPANION_READY", "LIBRARY_READY", "RETURNED"],
-        "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure and Open the journal restore the same current Voyage.",
+        "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure restores the same current Voyage.",
         "designTarget": "Keep the companion immersive, preserve compact account/context controls, and make the safe library exit and re-entry readable on desktop and phone.",
         "roleSetup": {
           "PLAYER": {
@@ -4685,9 +4702,9 @@
                 "name": "Continue Adventure"
               },
               {
-                "action": "click",
+                "action": "assert",
                 "role": "button",
-                "name": "Open the journal"
+                "name": "Replay full opening"
               },
               {
                 "action": "assert",
@@ -4781,7 +4798,8 @@
         "limitations": [
           "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
           "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
-          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage."
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+          "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context."
         ],
         "objective": "Use my connected screen as a meaningful Lens, Chart, Journal or artifact companion for the same Chronicle",
         "visibleOutcome": "Changing companion purpose opens the canonical released clue, actual Voyage chart, readable full passage or released artifact and returns to the same immutable Chronicle",
@@ -4952,9 +4970,9 @@
                 "name": "Return to Chronicle"
               },
               {
-                "action": "click",
+                "action": "assert",
                 "role": "button",
-                "name": "Open the journal"
+                "name": "Replay full opening"
               },
               {
                 "action": "assert",

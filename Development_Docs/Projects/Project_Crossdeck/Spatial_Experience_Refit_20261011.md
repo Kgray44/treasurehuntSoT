@@ -121,26 +121,45 @@ ordinary protected qualification retains its exact-candidate authority.
 The real unchanged-helper capture at
 `f8527d3988d17284a898cbd0f27265c8a2d2ea4c` reached actual primary sign-in,
 Journal and Lens, then failed because the active Lens and background Journal
-both exposed **Voyage context**. Active context ownership is being repaired in
-the component. That failed capture remains failed; a successful replay is
-required before final contract evidence or acceptance is claimed.
+both exposed **Voyage context**. The active-context ownership repair progressed
+past that failure at the next measured checkpoint. The earlier failed capture
+remains failed; a successful replay is required before final contract evidence
+or acceptance is claimed.
 Its guarded seed and nonce-identity stages passed, as preserved by the
 [local-stage receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/f8527d39-local-stage-receipt.json).
 
-| Evidence boundary                                        | Current result                                                                                                                                                      |
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                              |
-| Focused source tests                                     | Earlier reported batch: 16 files / 159 tests passed in 154.66 s. Purpose-race and review repairs have focused passes; final source binding remains pending.         |
-| Production build                                         | At `f8527d39`, passed in 50.482 s. The preceding `839fc784` build failed in 52.624 s on a test DTO type, corrected before `f8527d39`.                               |
-| Actual two-context refit journey                         | Three affected browser cases passed at `f8527d39` in 89.945 s. Earlier `105ec0d8` passed all 24 refit/Homeport cases; final repaired-source replay remains pending. |
-| Frozen candidate capture                                 | At `f8527d39`, failed in 5.282 s on duplicate active/background Voyage context. Final component repair and unchanged-helper recapture pending.                      |
-| Independent 17-dimension rendered criticism              | Cycle 2 identified one open Chart placeholder contrast defect. Repair is implemented; final cycle 3 current contract packets/re-review remain pending.              |
-| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                              |
-| Landed smoke                                             | Pending integration.                                                                                                                                                |
-| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                               |
+The latest measured checkpoint is source
+`0c4246878bbd3b1d0c5f0d0db9dde20e2746eb80`, tree
+`245d2522a4787e40b3b40f0ac2bb59136825cba1`, against accepted base
+`81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb`. Its production build and three
+affected browser cases passed. Canonical capture then failed after the published
+Lens contexts: a subsequent PRIMARY setup expected the first-opening dialog even
+though the canonical Journal's `hasOpened` state persisted. The
+[checkpoint receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0c424687-local-stage-receipt.json)
+and [log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0c424687-local-stage.log)
+retain this failed local diagnostic and its partial capture evidence.
 
-Final candidate, base/tree, capture packet, reviewer identity, protected run and
-landed proof will be recorded only when available. The
+The next scoped fixture/consumer repairs align setup with the settled active
+Journal and canonical return/replay controls, initialize the already-active
+shared-display fixture's Journal preference once, and route the Continue Voyage
+DTO to the canonical identity Journal. Their final replay and review remain
+pending; these repairs do not establish acceptance.
+
+| Evidence boundary                                        | Current result                                                                                                                                                                                                |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                                                                        |
+| Focused source tests                                     | Earlier reported batch: 16 files / 159 tests passed in 154.66 s. Purpose-race and review repairs have focused passes; final source binding remains pending.                                                   |
+| Production build                                         | At `0c424687`, passed in 77.276 s. Earlier `f8527d39` passed in 50.482 s; preceding `839fc784` failed in 52.624 s on a test DTO type.                                                                         |
+| Actual two-context refit journey                         | Three affected browser cases passed at `0c424687` in 101.511 s: runtime 99.983 s, readiness 1,392 ms, cleanup 31 ms. Final repaired-source replay remains pending.                                            |
+| Frozen candidate capture                                 | At `0c424687`, failed in 47.572 s on the first-opening dialog assumption after persisted Journal opening. The prior duplicate-context failure was resolved; final unchanged-helper recapture remains pending. |
+| Independent 17-dimension rendered criticism              | Cycle 2 identified one open Chart placeholder contrast defect. Repair is implemented; final cycle 3 current contract packets/re-review remain pending.                                                        |
+| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                                                                        |
+| Landed smoke                                             | Pending integration.                                                                                                                                                                                          |
+| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                                                                         |
+
+The measured checkpoint above is not the final accepted candidate. Final
+candidate/base/tree, capture packet, reviewer identity, protected run and landed
+proof will be recorded only when available. The
 [efficiency ledger](Spatial_Experience_Refit_Efficiency_20261011.md) records actual
 measurements and unavailable counters without billing estimates.
 
@@ -156,11 +175,11 @@ all 45 original PNGs and six actual WebM recordings, including 92 sampled frames
 Two-second sampling does not establish sub-two-second animation quality or
 physical/native/assistive-technology acceptance.
 
-| Cycle | Source and observed result                                                                                                                                                                         | Current boundary                                                                                                                                      |
-| ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1     | `105ec0d8450e4809642da255627aae361a28c019`: confirmed `PE-REFIT-CYCLE1-OFFLINE-STATUS` and `PE-REFIT-CYCLE1-PARCHMENT-CONTRAST`; minor `PE-REFIT-CYCLE1-READONLY-ARRIVAL-COPY`.                    | Cycle 2 observed these repairs in source `67ec3f0c`; final contract artifact IDs remain pending.                                                      |
-| 2     | `67ec3f0c71e9cc7ed96e4683fe11d26bcb0bcfb9`: `PE-REFIT-CYCLE2-CHART-PLACEHOLDER-CONTRAST`, `ACCESSIBILITY_DEFECT`. Settled/loading Chart placeholder instructions remained near-white on parchment. | Repair was made at `839fc784a59d86557ad16fe4ac30fb092e3c2450`; exact final-source normal/reduced return evidence and separate acceptance are pending. |
-| 3     | Pending final source and current canonical contract packets.                                                                                                                                       | Record actual reviewer, packet digest, artifact IDs, all 17 dimensions and finding dispositions before claiming acceptance.                           |
+| Cycle       | Source and observed result                                                                                                                                                                         | Current boundary                                                                                                                                      |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1           | `105ec0d8450e4809642da255627aae361a28c019`: confirmed `PE-REFIT-CYCLE1-OFFLINE-STATUS` and `PE-REFIT-CYCLE1-PARCHMENT-CONTRAST`; minor `PE-REFIT-CYCLE1-READONLY-ARRIVAL-COPY`.                    | Cycle 2 observed these repairs in source `67ec3f0c`; final contract artifact IDs remain pending.                                                      |
+| 2           | `67ec3f0c71e9cc7ed96e4683fe11d26bcb0bcfb9`: `PE-REFIT-CYCLE2-CHART-PLACEHOLDER-CONTRAST`, `ACCESSIBILITY_DEFECT`. Settled/loading Chart placeholder instructions remained near-white on parchment. | Repair was made at `839fc784a59d86557ad16fe4ac30fb092e3c2450`; exact final-source normal/reduced return evidence and separate acceptance are pending. |
+| 3 (planned) | Pending final source and current canonical contract packets; no third review has occurred.                                                                                                         | Record actual reviewer, packet digest, artifact IDs, all 17 dimensions and finding dispositions before claiming acceptance.                           |
 
 The cycle 2 review remains
 `BLOCKED_PENDING_FOCUSED_PLACEHOLDER_CONTRAST_REPAIR_AND_CURRENT_CANONICAL_PACKETS`.
@@ -172,7 +191,8 @@ acceptance exist. The exact-byte historical export preserves the
 [cycle 2 review](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle2-67ec3f0c-observations.raw.txt),
 selected original failure PNGs, the
 [839 failed-build receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/839fc784-failed-build-receipt.json)
-and the f852 local-stage receipt. The
+and the f852 and 0c424 local-stage receipts/logs. Exactly two independent review
+cycles have occurred; cycle 3 awaits the trusted final packet. The
 [export manifest](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/manifest.json)
 records their hashes and sizes. These historical raw identities are not current
 trusted capture artifact IDs; all original task-local evidence is preserved.

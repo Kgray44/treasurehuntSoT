@@ -24,6 +24,11 @@
       "bytes": 1845
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0c424687-local-stage-receipt.json",
+      "sha256": "f5d3c343a3be724b1e667f408691c4c9f107d3f29a16c7bd5f00705245d9df5a",
+      "bytes": 1847
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/839fc784-failed-build.log",
       "sha256": "52756290182743eaaa4d69218e1e90048a4a6a3ea6f0433bbd9030b989417f36",
       "bytes": 15164
@@ -32,6 +37,11 @@
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/f8527d39-local-stage.log",
       "sha256": "200ac97e37b27eaa380c691fa44d4cebf9e390873050dfeee996078dee15b4a7",
       "bytes": 36809
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0c424687-local-stage.log",
+      "sha256": "4991406dbc9fc463fba0407cbbc57bb201a71a3d13563b62e2513a66988299a4",
+      "bytes": 35827
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle1-105ec0d8-normal-11-offline.png",

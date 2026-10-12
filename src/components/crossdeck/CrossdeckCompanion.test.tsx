@@ -237,6 +237,24 @@ it("renders the complete selected released passage and keeps reading controls lo
   );
 });
 
+it("returns the primary purpose to the same canonical authenticated Journal without a role or reading mutation", () => {
+  const current = connection("PRIMARY_STORY");
+  const currentProps = props(current);
+  currentProps.state.session.id = "voyage/with spaces";
+  current.voyage = currentProps.state.session.id;
+  current.here!.voyageId = currentProps.state.session.id;
+  render(<CrossdeckCompanion {...currentProps} />);
+  for (const name of ["Return to Chronicle", "Open Chronicle"]) {
+    expect(screen.getByRole("link", { name })).toHaveAttribute(
+      "href",
+      "/player/playthroughs/voyage%2Fwith%20spaces/journal",
+    );
+  }
+  expect(current.act).not.toHaveBeenCalled();
+  expect(currentProps.onRefresh).not.toHaveBeenCalled();
+  expect(currentProps.state.journal.currentBlockId).toBe(note.id);
+});
+
 it("switches purpose through server participation and waits for the authorized role before replacing content", async () => {
   const current = connection();
   const view = render(<CrossdeckCompanion {...props(current)} />);

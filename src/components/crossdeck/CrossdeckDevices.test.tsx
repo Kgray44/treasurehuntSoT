@@ -116,6 +116,38 @@ it("reactivates an authorized saved surface on Journal mount before the periodic
   expect(heartbeat.headers).toMatchObject({ "x-csrf-token": "account-session-csrf" });
 });
 
+it("distinguishes the current tab from other surfaces in the same account sign-in", async () => {
+  const peer = { ...savedSurface, surfaceId: "other-tab", surfaceSessionId: "other-tab-session" };
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (_url: string, init?: RequestInit) =>
+      Response.json(
+        init?.method === "POST"
+          ? {}
+          : {
+              csrfToken: "account-session-csrf",
+              voyages: [{ id: "voyage", title: "Northern Light" }],
+              surfaces: [peer, savedSurface],
+            },
+      ),
+    ),
+  );
+  render(<CrossdeckDevices initialVoyage="voyage" />);
+  const currentHeading = await screen.findByRole("heading", { name: "This computer · This screen" });
+  const peerHeading = screen.getByRole("heading", { name: "This computer" });
+  const currentDevice = currentHeading.closest("li")!;
+  const peerDevice = peerHeading.closest("li")!;
+  expect(peerDevice).not.toBe(currentDevice);
+  expect(peerDevice).toBeVisible();
+  expect(within(peerDevice).queryByRole("link", { name: "Open on this device" })).toBeNull();
+  expect(within(currentDevice).getByRole("link", { name: "Open on this device" })).toHaveAttribute(
+    "href",
+    "/devices/companion?voyage=voyage",
+  );
+  expect(screen.getAllByRole("link", { name: "Open on this device" })).toHaveLength(1);
+  expect(sessionStorage.getItem(storageKey("voyage"))).toBe(savedSurface.surfaceId);
+});
+
 it("does not reactivate a saved surface when its account authority ended", async () => {
   const requests = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>(async () =>
     Response.json({ error: "Sign in again" }, { status: 401 }),

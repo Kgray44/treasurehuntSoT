@@ -18,8 +18,15 @@ import { parsePublishedSnapshot } from "@/chronicle/types";
 import { projectPlayerBlock } from "@/chronicle/journal-contract";
 import { projectPlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import { landfallFixture } from "@/landfall/fixtures";
+import { getPlayerJournalReadingState } from "@/platform/libraries";
 
-afterEach(() => vi.unstubAllEnvs());
+const readingDatabase = vi.hoisted(() => ({ playthroughMembership: { findFirst: vi.fn() } }));
+vi.mock("@/lib/db", () => ({ db: readingDatabase }));
+
+afterEach(() => {
+  vi.unstubAllEnvs();
+  readingDatabase.playthroughMembership.findFirst.mockReset();
+});
 
 const filename = `validation-isolated-20261011-123456789-${"a".repeat(32)}.db`;
 function ownedEnvironment() {
@@ -107,6 +114,25 @@ describe("deterministic Crossdeck experience seed", () => {
     });
     expect(account.claimedAt).toBeInstanceOf(Date);
     expect(account.ordinaryWorkspaceEntryAt).toBeInstanceOf(Date);
+    const preferences = account.profile!.create!.preferences;
+    if (typeof preferences !== "string") throw new Error("The seeded profile must persist its Journal state.");
+    readingDatabase.playthroughMembership.findFirst.mockResolvedValue({ player: { preferences } });
+    expect(await getPlayerJournalReadingState(STATIC_PROFILE_ID, STATIC_VOYAGE_ID)).toEqual({
+      pageId: `block:${identity.activeId}:primary`,
+      openDrawer: null,
+      hasOpened: true,
+      lastEventSequence: 4,
+      textScale: 1,
+      updatedAt: "2026-10-11T12:00:00.000Z",
+    });
+    expect(readingDatabase.playthroughMembership.findFirst).toHaveBeenCalledWith({
+      where: {
+        playerProfileId: STATIC_PROFILE_ID,
+        playthroughId: STATIC_VOYAGE_ID,
+        status: { in: ["INVITED", "ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"] },
+      },
+      include: { player: { select: { preferences: true } } },
+    });
     const passwordHash = account.credential!.create!.passwordHash;
     expect(passwordHash).not.toBe(CROSSDECK_EXPERIENCE_PASSWORD);
     expect(await compare(CROSSDECK_EXPERIENCE_PASSWORD, passwordHash)).toBe(true);
@@ -196,13 +222,25 @@ describe("deterministic Crossdeck experience seed", () => {
     expect(landfallFixture).toEqual(originalDefinition);
   });
 
-  it("preserves an existing static Voyage and its UI-created sessions on repeated ensure seeds", async () => {
+  it("preserves an existing static Voyage, updated reading preferences, and UI-created sessions on repeated ensure seeds", async () => {
     ownedEnvironment();
+    const returningState = {
+      pageId: "block:00000000-0000-4000-8000-00000000cd18:primary",
+      openDrawer: "messages",
+      hasOpened: true,
+      lastEventSequence: 7,
+      textScale: 1.2,
+      updatedAt: "2026-10-12T07:00:00.000Z",
+    };
+    readingDatabase.playthroughMembership.findFirst.mockResolvedValue({
+      player: { preferences: JSON.stringify({ journals: { [STATIC_VOYAGE_ID]: returningState } }) },
+    });
     const { store, findUnique, transaction } = fixtureStore(true);
     const identity = await prepareCrossdeckExperienceFixture(store);
     expect(identity.voyageId).toBe(STATIC_VOYAGE_ID);
     expect(findUnique).toHaveBeenCalledWith({ where: { id: STATIC_VOYAGE_ID } });
     expect(transaction).not.toHaveBeenCalled();
+    expect(await getPlayerJournalReadingState(STATIC_PROFILE_ID, STATIC_VOYAGE_ID)).toEqual(returningState);
   });
 
   it("publishes the same immutable snapshot and static IDs in each fresh owned seed", async () => {
