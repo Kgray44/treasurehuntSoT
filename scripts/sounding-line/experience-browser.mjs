@@ -21,6 +21,32 @@ const fail = (code) => {
 const relative = (root, file) => path.relative(root, file).replaceAll("\\", "/");
 export const EXPERIENCE_VIEWPORTS = { DESKTOP: { width: 1440, height: 900 }, MOBILE: { width: 390, height: 844 } };
 
+function experienceDiagnostic(startedAt, event, context, { stepIndex, actionKind } = {}) {
+  try {
+    const safeId = (value) =>
+      typeof value === "string" && value.length <= 160 && /^[A-Za-z0-9_.-]+$/u.test(value) ? value : null;
+    const record = {
+      namespace: "SOUNDING_LINE_DIAGNOSTIC",
+      version: 1,
+      component: "experience-browser",
+      event,
+      utc: new Date().toISOString(),
+      elapsedMs: Number(Math.max(0, performance.now() - startedAt).toFixed(3)),
+      contractId: safeId(context.contractId),
+      journeyId: safeId(context.journeyId),
+      device: safeId(context.device),
+      role: safeId(context.role),
+      motionMode: safeId(context.motionMode),
+    };
+    if (Number.isSafeInteger(stepIndex) && stepIndex >= 0) record.stepIndex = stepIndex;
+    if (actionKind) record.actionKind = actionKind;
+    // Never include setup values, labels, URLs, storage state or error text.
+    console.error(JSON.stringify(record));
+  } catch {
+    // Diagnostics cannot replace or change capture/evidence behavior.
+  }
+}
+
 // Use semantic visible controls. API setup may provision identities/data; it
 // cannot replace entry, action, destination, or return-path proof.
 export async function runExperienceJourney({
@@ -214,6 +240,7 @@ export async function runExperienceJourney({
 
 export async function captureProductExperience({ root, plan, baseURL, outputDirectory, storageState }) {
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
+  const diagnosticStartedAt = performance.now();
   const url = new URL(baseURL);
   if (!new Set(["127.0.0.1", "localhost", "[::1]"]).has(url.hostname)) fail("TASK_OWNED_LOOPBACK_REQUIRED");
   const require = createRequire(path.join(root, "package.json"));
@@ -240,6 +267,10 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
         for (const journey of contract.experience.journeys) {
           for (const role of journey.roles)
             for (const motionMode of contract.experience.motion ? ["NORMAL", "REDUCED"] : ["REDUCED"]) {
+              const diagnosticContext = { contractId: contract.id, journeyId: journey.id, device, role, motionMode };
+              const progress = (event, operation) =>
+                experienceDiagnostic(diagnosticStartedAt, event, diagnosticContext, operation);
+              progress("context.start");
               const context = await browser.newContext({
                 baseURL,
                 viewport: EXPERIENCE_VIEWPORTS[device],
@@ -255,20 +286,37 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
                   const setup = contract.experience.roleSetup?.[role];
                   if (!setup?.witness || (!storageState && !setup.steps?.length))
                     fail("ISOLATED_ROLE_FIXTURE_REQUIRED");
+                  progress("operation.start", { actionKind: "navigate-setup-entry" });
                   await page.goto(setup.entryPoint ?? contract.experience.entryPoint);
+                  progress("operation.result", { actionKind: "navigate-setup-entry" });
+                  let stepIndex = 0;
                   for (const step of setup.steps ?? []) {
                     const target = page.getByRole(step.role, { name: step.name, exact: true });
-                    if (step.action === "fill")
+                    if (step.action === "fill") {
+                      progress("operation.start", { stepIndex, actionKind: "fill" });
                       await target.fill(step.valueFrom ? process.env[step.valueFrom] : step.value);
-                    else if (step.action === "click") await target.click();
-                    else await target.waitFor({ state: "visible" });
+                      progress("operation.result", { stepIndex, actionKind: "fill" });
+                    } else if (step.action === "click") {
+                      progress("operation.start", { stepIndex, actionKind: "click" });
+                      await target.click();
+                      progress("operation.result", { stepIndex, actionKind: "click" });
+                    } else {
+                      progress("operation.start", { stepIndex, actionKind: "wait" });
+                      await target.waitFor({ state: "visible" });
+                      progress("operation.result", { stepIndex, actionKind: "wait" });
+                    }
+                    stepIndex += 1;
                   }
+                  progress("operation.start", { actionKind: "witness" });
                   await page
                     .getByRole(setup.witness.role, { name: setup.witness.name, exact: true })
                     .filter({ hasText: setup.witness.text })
                     .waitFor({ state: "visible" });
+                  progress("operation.result", { actionKind: "witness" });
                 }
+                progress("operation.start", { actionKind: "navigate-journey-entry" });
                 await page.goto(contract.experience.entryPoint);
+                progress("operation.result", { actionKind: "navigate-journey-entry" });
                 const observed = await runExperienceJourney({
                   page,
                   contract,
@@ -333,6 +381,7 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
               } finally {
                 await context.close();
               }
+              progress("context.result");
             }
         }
       }
