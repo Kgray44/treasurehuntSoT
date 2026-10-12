@@ -1111,10 +1111,7 @@ export function ReachLaboratory({
                   </button>
                 ) : (
                   calibration && (
-                    <button
-                      className={styles.primary}
-                      onClick={() => begin("VALIDATION")}
-                    >
+                    <button className={styles.primary} onClick={() => begin("VALIDATION")}>
                       {calibration.status === "FAILED" ? "Retry independent check" : "Check five new targets"}
                     </button>
                   )
