@@ -109,7 +109,7 @@ export function createPresetConstruction(input: PresetInput): RoomEnvironment {
   const wallArt = (id: string, x: number, y: number, width: number, h: number, color: number) => {
     custom(id, "OTHER", [width, h, 0.07], x, y, -d / 2 + 0.099, [
       part(`${id}-frame`, [1, 1, 1], [0, 0, 0], 0x8a755c, "ROUNDED_BOX"),
-      part(id, [0.88, 0.89, 0.12], [0, 0, 0.44], color),
+      part(id, [0.88, 0.89, 0.12], [0, 0, 0.44], color, id === "whiteboard" ? "BOX" : "PICTURE"),
     ]);
     mount(id);
   };
@@ -138,7 +138,7 @@ export function createPresetConstruction(input: PresetInput): RoomEnvironment {
     desk("table-left", -w * 0.3, d * 0.38, 1.1, 0.9, 0.55, "TABLE");
     const bed = f("bed", "BED", [1.3, 0.85, 2.05], -w * 0.29, -0.05);
     bed.parts.find((p) => p.id === "bed")!.id = "bed";
-    f("wardrobe", "WARDROBE", [0.65, 1.9, 1], w * 0.37, 0.4);
+    f("wardrobe", "WARDROBE", [1, 1.9, 0.6], w * 0.4, -d * 0.31, 0, -90);
     chair("desk-chair", w * 0.16, -d * 0.33 + 0.7);
     custom("bedside-lamp", "OTHER", [0.18, 0.34, 0.18], -w * 0.3 - 0.4, 0.72, d * 0.38 + 0.3, [
       part("bedside-lamp-base", [0.7, 0.08, 0.7], [0, -0.46, 0], 0x75674f, "CYLINDER"),
@@ -189,6 +189,7 @@ export function createPresetConstruction(input: PresetInput): RoomEnvironment {
       }
     const clock = f("classroom-clock", "OTHER", [0.4, 0.4, 0.05], -w * 0.4, -d / 2 + 0.089, 2);
     clock.parts[0].color = 0xdaca9b;
+    clock.parts[0].shape = "CLOCK";
     mount(clock.id);
   } else if (kind === "gallery") {
     for (let i = 0; i < 3; i++) {

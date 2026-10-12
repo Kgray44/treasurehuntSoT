@@ -43,7 +43,7 @@ export function trailTerrainGeometry(width: number, height: number, depth: numbe
   geometry.computeVertexNormals();
   return geometry;
 }
-type Family = "PLAIN" | "WOOD" | "FABRIC" | "GROUND" | "PATH";
+type Family = "PLAIN" | "WOOD" | "FABRIC" | "GROUND" | "PATH" | "ART" | "CLOCK";
 
 /** Workstation-owned mesh/texture pools. Rebuilding a room reuses unit geometry;
  * shutdown disposes it once. No external texture/model dependencies.
@@ -64,7 +64,9 @@ export function createRoomMeshLibrary() {
             ? new T.ConeGeometry(0.5, 1, 12)
             : shape === "ELLIPSOID"
               ? new T.SphereGeometry(0.5, 16, 12)
-              : new T.BoxGeometry(1, 1, 1);
+              : shape === "DIAL"
+                ? new T.CircleGeometry(0.5, 32)
+                : new T.BoxGeometry(1, 1, 1);
     found.userData.roomShared = true;
     geometries.set(shape, found);
     return found;
@@ -80,7 +82,7 @@ export function createRoomMeshLibrary() {
       for (let x = 0; x < 128; x++) {
         const grain =
           family === "WOOD"
-            ? Math.sin(y * 0.53 + Math.sin(x * 0.047) * 2) * 11
+            ? Math.sin(y * 0.53 + Math.sin(x * 0.047) * 2) * 3
             : family === "FABRIC"
               ? x % 4 === 0 || y % 4 === 0
                 ? -13
@@ -92,10 +94,58 @@ export function createRoomMeshLibrary() {
         pixels.data[i + 3] = 255;
       }
     context.putImageData(pixels, 0, 0);
+    if (family === "ART") {
+      context.fillStyle = "#eadcc4";
+      context.fillRect(0, 0, 128, 128);
+      context.fillStyle = "#667b78";
+      context.beginPath();
+      context.arc(84, 37, 28, 0, Math.PI * 2);
+      context.fill();
+      context.fillStyle = "#ac7764";
+      context.beginPath();
+      context.moveTo(0, 106);
+      context.bezierCurveTo(40, 22, 82, 128, 128, 58);
+      context.lineTo(128, 128);
+      context.lineTo(0, 128);
+      context.fill();
+      context.strokeStyle = "#534d47";
+      context.lineWidth = 3;
+      context.beginPath();
+      context.moveTo(21, 105);
+      context.lineTo(38, 28);
+      context.lineTo(101, 93);
+      context.stroke();
+    } else if (family === "CLOCK") {
+      context.fillStyle = "#f5f0dc";
+      context.fillRect(0, 0, 128, 128);
+      context.strokeStyle = "#394857";
+      for (let i = 0; i < 12; i++) {
+        const a = (i * Math.PI) / 6;
+        context.lineWidth = i % 3 === 0 ? 4 : 2;
+        context.beginPath();
+        context.moveTo(64 + Math.sin(a) * 47, 64 - Math.cos(a) * 47);
+        context.lineTo(64 + Math.sin(a) * 53, 64 - Math.cos(a) * 53);
+        context.stroke();
+      }
+      context.lineWidth = 4;
+      context.beginPath();
+      context.moveTo(40, 53);
+      context.lineTo(64, 64);
+      context.lineTo(87, 31);
+      context.stroke();
+      context.fillStyle = "#b77b52";
+      context.beginPath();
+      context.arc(64, 64, 4, 0, Math.PI * 2);
+      context.fill();
+    }
     found = new T.CanvasTexture(canvas);
     found.colorSpace = T.SRGBColorSpace;
     found.wrapS = found.wrapT = T.RepeatWrapping;
     found.repeat.set(family === "WOOD" ? 2 : 5, family === "WOOD" ? 5 : 5);
+    if (family === "ART" || family === "CLOCK") {
+      found.wrapS = found.wrapT = T.ClampToEdgeWrapping;
+      found.repeat.set(1, 1);
+    }
     textures.set(family, found);
     return found;
   };
@@ -145,18 +195,25 @@ export function createRoomMeshLibrary() {
     build(group: T.Group, g: RoomGeometry, color: number) {
       const [w, h, d] = g.size;
       const family: Family =
-        g.shape === "PATH"
-          ? "PATH"
-          : g.shape === "TERRAIN"
-            ? "GROUND"
-            : g.classification === "FLOOR"
-              ? "WOOD"
-              : ["SOFA", "CHAIR", "BED"].includes(g.classification ?? "") && g.surface !== null
-                ? "FABRIC"
-                : ["TABLE", "DESK", "CABINET", "WARDROBE", "SHELF", "DOOR"].includes(g.classification ?? "")
+        g.shape === "PICTURE"
+          ? "ART"
+          : g.shape === "CLOCK"
+            ? "CLOCK"
+            : g.shape === "PATH"
+              ? "PATH"
+              : g.shape === "TERRAIN"
+                ? "GROUND"
+                : g.classification === "FLOOR"
                   ? "WOOD"
-                  : "PLAIN";
-      if (g.shape === "TREE") {
+                  : ["SOFA", "CHAIR", "BED"].includes(g.classification ?? "") && g.surface !== null
+                    ? "FABRIC"
+                    : ["TABLE", "DESK", "CABINET", "WARDROBE", "SHELF", "DOOR"].includes(g.classification ?? "")
+                      ? "WOOD"
+                      : "PLAIN";
+      if (g.shape === "CLOCK") {
+        group.add(mesh("ELLIPSOID", g.size, [0, 0, 0], color));
+        group.add(mesh("DIAL", [w * 0.9, h * 0.9, 1], [0, 0, d / 2], 0xffffff, "CLOCK"));
+      } else if (g.shape === "TREE") {
         const r = Math.min(w, d);
         group.add(mesh("CYLINDER", [r * 0.2, h * 0.6, r * 0.2], [0, -h * 0.2, 0], 0x766047, "WOOD"));
         for (let i = 0; i < 3; i++)

@@ -54,7 +54,18 @@ export const roomFeatureSchema = z.strictObject({
           .array(z.enum(["FURNITURE", "WINDOW", "ENTRANCE", "WALKWAY", "STAIRS", "OBSTACLE", "PRIVATE_REGION"]))
           .max(7),
         face: z.enum(["TOP", "FRONT", "RIGHT"]),
-        shape: z.enum(["BOX", "ROUNDED_BOX", "CYLINDER", "ELLIPSOID", "TREE", "WINDOW", "TERRAIN", "PATH"]),
+        shape: z.enum([
+          "BOX",
+          "ROUNDED_BOX",
+          "CYLINDER",
+          "ELLIPSOID",
+          "TREE",
+          "WINDOW",
+          "TERRAIN",
+          "PATH",
+          "PICTURE",
+          "CLOCK",
+        ]),
         color: z.number().int().min(0).max(0xffffff),
       }),
     )

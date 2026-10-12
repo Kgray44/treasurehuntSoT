@@ -72,6 +72,10 @@ test("Creator explores ten furnished environments in both appearances without ch
         samples.push(JSON.parse((await host.getAttribute("data-render-costs"))!));
       }
       const bounds = JSON.parse((await host.getAttribute("data-room-receipt"))!);
+      if (room.id === "bedroom")
+        await expect
+          .poll(async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0].status)
+          .toBe("IN_VIEW");
       expect(new Set(bounds.map((part: { id: string }) => part.id)).size).toBe(spec.features.length);
       for (const cost of samples as { calls: number; geometries: number; triangles: number }[]) {
         expect(cost.calls).toBeLessThan(120);

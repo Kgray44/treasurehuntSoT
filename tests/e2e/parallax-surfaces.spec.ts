@@ -40,7 +40,13 @@ test("Creator snaps a clue to both walls, table and entire floor with orientatio
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   await expect(canvas.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
-  await expect(canvas.getByText(/Room surfaces/)).toContainText("8");
+  await expect(canvas.getByText(/Room surfaces/)).toContainText(
+    String(
+      syntheticEnvironmentEvidence(simulationEnvironments[0]).candidates.filter(
+        (c) => c.surface !== "OPEN_SPACE" && c.id !== "unsafe-walkway",
+      ).length,
+    ),
+  );
   await expect(canvas.getByRole("button", { name: "bed · blocked", exact: true })).toBeDisabled();
   await mkdir(root, { recursive: true });
   for (const [label, axis] of [

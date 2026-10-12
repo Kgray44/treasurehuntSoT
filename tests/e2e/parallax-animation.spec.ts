@@ -125,7 +125,9 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
   await page.getByLabel("Timeline visible duration").selectOption("10000");
   await page.screenshot({ path: `${root}/animation-reloaded-zoom.png` });
   await page.setViewportSize({ width: 390, height: 844 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  await expect
+    .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), { timeout: 3000 })
+    .toBe(true);
   expect((await host.locator("canvas").boundingBox())!.height).toBeGreaterThanOrEqual(370);
   const selectionCard = page.getByRole("button", { name: "Isolate selected object", exact: true }).locator("..");
   expect((await selectionCard.boundingBox())!.height).toBeLessThan(90);

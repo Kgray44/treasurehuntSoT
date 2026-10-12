@@ -106,3 +106,23 @@ After construction changes, capture all ten at comparable normal working sizes
 and review actual recordings, selection, semantic queries, clamping, timeline,
 simulation, persistence and measured rendering costs. Protected qualification,
 native/physical readiness and owner acceptance remain separate gates.
+
+## First production capture and repair
+
+Candidate `d2db60f190bc0043b5cc459e7be6b4cede14f0ec` produced a source-valid
+isolated production run. All forty room views and the ordinary delayed simulation
+journey passed. Actual desktop counters were 21–107 render calls and 488–24,884
+triangles, including renderer passes. The three-sample reset measurements retain
+backing dimensions, memory counts and CPU submission time. These are bounded
+software-renderer observations, not representative-device GPU performance.
+
+The run was not wholly successful: two old browser assertions assumed the
+legacy desk X=0.25 and eight surfaces, and the animation journey observed transient
+phone overflow immediately after resizing. Those failures and all captures remain
+in [the first construction packet](../../Testing/Product_Experience/evidence/parallax-construction-20261012/d2db60f190bc/run.json).
+The repair derives fixture positions/counts from the canonical reference, waits
+for the bounded viewport resize and caps canvas CSS width. No controls were
+removed. Bedroom storage moves behind the primary work area to improve its actual
+initial clue sightline; subtler wood grain and original gallery art/clock textures
+add recognition without mesh proliferation. Recapture is required for the changed
+source. Independent visual acceptance has not been assigned to this first packet.
