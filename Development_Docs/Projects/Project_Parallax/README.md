@@ -145,6 +145,7 @@ Read the preserved authority above with the [current Reach integration amendment
 - [Model and prompt comparison](Parallax_A1_Model_and_Prompt_Comparison.md)
 - [Mainline implementation and software qualification](Parallax_A1_Implementation_and_Qualification.md)
 - [Floating assistance controls correction](Spatial_Assistant_Floating_Controls.md)
+- [Editable room, reusable library and simulation review](Spatial_Studio_Room_Library_Simulation_Review_20261012.md)
 - [Spatial Assistant Creator guide](../../../docs/user/spatial-assistant.md)
 
 A1 is software-qualified and integrated through protected PR #710, with landed

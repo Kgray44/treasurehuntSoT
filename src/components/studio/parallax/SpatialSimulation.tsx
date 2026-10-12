@@ -77,6 +77,7 @@ export function SpatialSimulation(
         </strong>{" "}
         · {inputs.length} of {maximumSpatialInputs} inputs
       </p>
+      {feedback && <p aria-live="polite">{feedback}</p>}
       <p>
         {preview === "EDITOR"
           ? "Editing view shows the authored pose. Run or trigger simulation to preview Player scene state."
@@ -120,7 +121,6 @@ export function SpatialSimulation(
             : "This object has no interaction behaviors. Its available interactions can be tested, but they will not change another object until you author a behavior in Timeline."}
         </p>
       )}
-      {feedback && <p aria-live="polite">{feedback}</p>}
       <h3>Evaluated objects</h3>
       <ul className={styles.simulationObjects}>
         {draft.content.entities.map((object) => {

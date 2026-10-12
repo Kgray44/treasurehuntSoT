@@ -72,3 +72,6 @@ REPAIR_AND_RECAPTURE for the missing classification evidence, with numeric
 formatting recorded as minor polish. Phone room editing and invalid-input states
 also needed capture. The next candidate extends those journeys; no acceptance
 for them is implied by this historical review.
+
+The subsequent phone-width repair and independent bounded room acceptance at
+`35823d95` are recorded in the [room/library/simulation follow-up](Spatial_Studio_Room_Library_Simulation_Review_20261012.md).

@@ -43,6 +43,7 @@ test("Creator authors a delayed interaction, sees matching and unmatched outcome
   await expect(simulation).toContainText("has no matching behavior");
   await expect.poll(async () => (await receipt())[0].status).toBe("IN_VIEW");
   await mkdir(root, { recursive: true });
+  await simulation.locator('[aria-live="polite"]').scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/simulation-no-effect.png` });
   await page.getByRole("tab", { name: "Timeline", exact: true }).click();
   await page.getByRole("button", { name: "Add spatial behavior", exact: true }).click();
@@ -56,10 +57,22 @@ test("Creator authors a delayed interaction, sees matching and unmatched outcome
   await expect(simulation).toContainText("waiting 1.0 s");
   await expect.poll(async () => (await receipt())[0].status).toBe("IN_VIEW");
   await page.screenshot({ path: `${root}/simulation-delayed-action.png` });
+  await simulation
+    .locator("li")
+    .filter({ hasText: /Hide Floating Compass at 1\.0 s/ })
+    .last()
+    .scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/simulation-delayed-evidence.png` });
   await simulation.getByRole("button", { name: "Preview next delayed action", exact: true }).click();
   await expect.poll(async () => (await receipt())[0].status).toBe("HIDDEN");
   await expect(simulation).toContainText("evaluated · renderer: hidden");
   await page.screenshot({ path: `${root}/simulation-hidden-result.png` });
+  await simulation
+    .locator("li")
+    .filter({ hasText: /Hide Floating Compass at 1\.0 s/ })
+    .last()
+    .scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/simulation-hidden-evidence.png` });
   await simulation.getByRole("button", { name: "Reset simulation", exact: true }).click();
   await expect.poll(async () => (await receipt())[0].status).toBe("IN_VIEW");
   await page.screenshot({ path: `${root}/simulation-reset.png` });
@@ -70,6 +83,9 @@ test("Creator authors a delayed interaction, sees matching and unmatched outcome
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
+  await canvas.getByRole("button", { name: "Isolate selected object", exact: true }).click();
+  await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
+  await expect.poll(async () => (await receipt())[0].status).toBe("IN_VIEW");
   if (await simulation.isHidden()) await page.getByRole("tab", { name: "Simulation", exact: true }).click();
   await simulation.getByRole("button", { name: "Simulate inspect", exact: true }).click();
   await simulation.getByRole("button", { name: "Run simulation", exact: true }).click();
@@ -79,6 +95,8 @@ test("Creator authors a delayed interaction, sees matching and unmatched outcome
   await simulation.getByRole("button", { name: "Reset simulation", exact: true }).click();
   await expect.poll(async () => (await receipt())[0].status).not.toBe("HIDDEN");
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
-  await expect(simulation).toContainText("local position");
+  const coordinates = simulation.getByText(/local position/);
+  await coordinates.scrollIntoViewIfNeeded();
+  await expect(coordinates).toBeVisible();
   await page.screenshot({ path: `${root}/simulation-engineering-replay.png` });
 });

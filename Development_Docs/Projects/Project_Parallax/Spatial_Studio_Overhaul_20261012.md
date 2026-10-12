@@ -99,8 +99,11 @@ Imported model rendering and photo reconstruction remain unavailable. Manual
 placement is required for reusable object/assembly export and insertion.
 
 414 focused Parallax tests, changed ESLint and typecheck support this candidate.
-The new reusable-library production-browser journey and independent rendered
-acceptance are pending; no full library or overhaul acceptance is claimed here.
+The production-browser library and simulation journeys now pass at `1973a912`;
+their new independent rendered review is pending. The
+[bounded review record](Spatial_Studio_Room_Library_Simulation_Review_20261012.md)
+retains room acceptance, library return-camera repair, failed test captures and
+exact run evidence. No full library or overhaul acceptance is claimed here.
 
 ## Simulation experience design
 

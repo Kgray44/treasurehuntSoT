@@ -15,7 +15,9 @@ last_reviewed: 2026-10-12
 - Spatial Studio overhaul candidate adds entity keyframes, actual pose playback,
   scrub/pause/restart/stop, render visibility diagnostics and recovery, matching
   middle/Ctrl camera pan, separate surface clamping and sole left-rail navigation.
-  Full photo/semantic/library/asset/Assistant acceptance remains in progress;
+  Editable semantic room features, independent versioned object/assembly copies,
+  whole-scene reuse and explicit simulation effects extend this candidate.
+  Full photo/asset/Assistant and cross-device acceptance remains in progress;
   see the [implementation checkpoint](Development_Docs/Projects/Project_Parallax/Spatial_Studio_Overhaul_20261012.md).
 
 - Parallax: ten named environments have distinct furnishings and layouts, geometry-driven surfaces, safe floor placement and automatic camera framing.

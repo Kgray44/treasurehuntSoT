@@ -96,3 +96,60 @@ the reference room and other objects; Show room restores them. Reveal in editor
 returns to static editing and exposes a hidden layer. A renderer error keeps the
 draft and offers **Retry 3D renderer**. These candidate changes await complete
 rendered qualification of the broader overhaul.
+
+## Edit room features (overhaul candidate)
+
+Choose a named environment, then **Edit room features** to make its geometry
+part of the saved scene. Select a feature to change its name, classification,
+position, width, height, depth or rotation around the floor. This changes the
+actual room in the canvas. A clue bound to an edited desk follows that desk.
+Resizing the whole room moves feature positions proportionally; furniture keeps
+its own dimensions. Invalid measurements show an error and preserve the room.
+
+Feature descriptions distinguish simulated geometry, inference and Creator
+confirmation. These invented rooms are editable authoring aids. Photograph
+analysis is not yet available in the candidate. Save and reload retain the
+edited room and ordinary Undo/Redo can restore earlier edits.
+
+## Reuse an object or a complete scene (overhaul candidate)
+
+Select an object and open **Library, reuse & publication**. Enter its asset name,
+description and classification, then choose **Save selected object as reusable
+asset**. A group includes its children and saves as a reusable assembly. This
+creates a separate definition and an immutable version; the source scene stays
+unchanged. Dependencies on objects outside the group or on protected media must
+be resolved before export. Export and insertion require manual placement.
+
+Open **Saved** from the left rail. Filter by scenes, reusable objects, assemblies,
+templates or recent items; search by name, description, classification or tag.
+The preview is a labeled schematic of authored bounds. **Add to current scene**
+copies the latest released asset into the current scene. Edit and save that
+instance with the ordinary Inspector; those edits affect only this scene.
+**Open** edits the original definition. Create another immutable version when
+you want later insertions to use definition changes. Earlier copies retain their
+stored data and version origin.
+
+**Create new scene from this** copies an entire scene, including room geometry,
+behaviors and animation. **Archive** removes another definition from Saved
+discovery while existing scene copies remain intact. Switch away from a
+definition before archiving it. Imported-model rendering remains unavailable.
+
+## Inspect simulation outcomes (overhaul candidate)
+
+Open **Simulation** in the bottom dock. Select an object, then use its available
+Inspect, Pick or Place action. If no authored behavior matches, the panel explains
+how to add one in Timeline. A matching behavior shows its target, action and due
+time. **Preview next delayed action** seeks to the next scheduled action;
+**Run simulation** plays the shared clock and **Pause simulation** holds it.
+
+Evaluated objects show visible/hidden, highlighted and animated state beside the
+renderer's current visibility diagnosis. For an object outside the view or
+occluded, select it and use Frame selection or Isolate in the canvas. Interaction
+results distinguish waiting delays, evaluated actions and objects excluded from
+Player preview by their layer audience. Engineering adds local coordinates.
+
+**Reset simulation** clears transient interactions, returns to time zero and
+shows the initial Player preview. Switching scenes stops playback. Saving
+retains authored behaviors and keyframes; reload starts a fresh simulation.
+The input limit is 128; reset before adding more interactions. Studio simulation
+does not advance Chronicle progression or establish physical AR qualification.

@@ -8967,6 +8967,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/Spatial_Studio_Room_Library_Simulation_Review_20261012.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/Surface_Snapping_Correction.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -9790,6 +9796,60 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-foundation-20261012/e8f96bcd436a/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/1973a912240d/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/35823d95704c/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/52444f43ae07/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/67adfab5e0d2/library-failed-inspector-context.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/67adfab5e0d2/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/78caeb961899/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/caa62c0a3356/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/caa62c0a3356/simulation-failed-reload-tab-context.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/f4a1dac871de/run.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
