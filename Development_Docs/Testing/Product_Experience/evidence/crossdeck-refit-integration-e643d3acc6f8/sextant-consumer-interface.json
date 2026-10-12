@@ -50,5 +50,30 @@
     "crossdeckLimit": 3,
     "counterReset": false
   },
-  "ownerAcceptance": "NOT_CLAIMED"
+  "ownerAcceptance": "NOT_CLAIMED",
+  "incomingIntegration": {
+    "sourceInspected": "27c33ad9",
+    "crossdeckPendingHead": "a1e8cb43",
+    "acceptedHandoffAvailable": false,
+    "decision": "CONDITIONAL_UI_HANDOFF_WITH_EXACT_LANDMARK_CONTRACT_BLOCKER",
+    "devicesUiBlob": "20f6e0bf439ff50f1bc4befe2bd438ef09f56b1f",
+    "devicesTestBlob": "a5810ae16ba63c70611f6434fff9026929eec459",
+    "journalBlob": "e73f20c8af996be13765041597ec13508e9ca796",
+    "nativeControls": "Sextant DeviceCapabilitiesPanel remains separate; no duplicate Crossdeck controls",
+    "additiveAttrs": "Preserve Voyage/edition and opening context; descriptions/glyph attributes cannot mutate state or progression",
+    "blocker": {
+      "proposedChange": "main aria-label=Voyage Journal",
+      "affectedExactContractIds": ["crossdeck.phase2.continuity", "crossdeck.refit.published-lens"],
+      "existingSelector": {
+        "role": "main",
+        "name": ""
+      },
+      "protectedHelperPredicate": "getByRole(step.role, { name: step.name, exact: true })",
+      "conformingBoundary": "Keep current landmark name, or obtain explicit affected-journey owner amendment and requalification; no implicit contract replacement"
+    },
+    "sextantContractId": "sextant.crossdeck.consumer-continuity",
+    "contractPreservation": "Retain complete accepted Crossdeck contract; preserve Sextant unmerged history/equivalent natural journeys under separate ID",
+    "lensInkSelector": ".object .objectKind",
+    "productEditsByAgreement": false
+  }
 }

@@ -120,3 +120,31 @@ The source-bound agreement is recorded in
 No missing Helm approval or active Helm task is invented. The separately
 reported 141 consumer-coverage gaps remain outside this bounded agreement;
 their named owners and actual journey receipts remain required.
+
+Sextant's later incoming-source handoff is conditional on protected acceptance
+of this refit. Use Crossdeck's complete Devices UI and test blobs
+`20f6e0bf439ff50f1bc4befe2bd438ef09f56b1f` /
+`a5810ae16ba63c70611f6434fff9026929eec459`, preserving legitimate rows and
+current-device role routing. Keep Sextant native controls in its separate
+`DeviceCapabilitiesPanel`; no duplicate controls or UI repair is required here.
+Preserve both existing Voyage/edition attributes and first-opening context.
+Opening description/glyph attributes are presentation-only additive seams;
+they may not change lifecycle, reading-state or progression.
+
+One exact source blocker prevents unconditional acceptance of all proposed
+Journal additions: Sextant commit `27c33ad9` adds
+`aria-label="Voyage Journal"` to the `main`. Frozen
+`crossdeck.phase2.continuity` and `crossdeck.refit.published-lens` each assert
+`role: main, name: ""`; the protected helper uses
+`getByRole(step.role, { name: step.name, exact: true })`. Renaming that landmark
+cannot be called mechanical preservation of these exact contracts.
+Keep the current landmark name for the bounded consumer integration, or obtain
+an explicit source-bound owner contract for changing/requalifying the affected
+journeys. Do not silently blend or weaken either contract. A separate
+`sextant.crossdeck.consumer-continuity` ID may preserve Sextant's historical
+unmerged qualification and equivalent new natural journeys; it cannot replace
+the accepted Crossdeck obligations.
+
+Retain the previously agreed `.object .objectKind` Lens ink selector while
+consuming the other accepted Crossdeck Lens styles after protected acceptance.
+No Journal, Lens, Devices or wrapper source was changed by this agreement.
