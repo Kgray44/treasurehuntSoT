@@ -1950,6 +1950,11 @@
 .assistantMove span {
   margin-right: 5px;
 }
+.assistantFeedback {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--studio-muted);
+}
 .adaptiveWorkspace .assistantWorkspace > .assistantResize {
   min-width: 0;
   position: absolute;

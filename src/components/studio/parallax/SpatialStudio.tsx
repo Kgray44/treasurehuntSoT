@@ -174,6 +174,7 @@ export function SpatialStudio({
   const bottomDrag = useRef<{ y: number; height: number } | null>(null);
   const studioElement = useRef<HTMLElement | null>(null);
   const [floatingBounds, setFloatingBounds] = useState<FloatingBounds | null>(null);
+  const [floatingFeedback, setFloatingFeedback] = useState("");
   const assistantGesture = useRef<{ kind: FloatingGesture; x: number; y: number; panel: FloatingPanel } | null>(null);
   useEffect(() => {
     if (!loaded) return;
@@ -226,7 +227,16 @@ export function SpatialStudio({
         event.clientY - gesture.y,
         floatingBounds,
       );
+      if (
+        floatingPanel &&
+        panel.x === floatingPanel.x &&
+        panel.y === floatingPanel.y &&
+        panel.width === floatingPanel.width &&
+        panel.height === floatingPanel.height
+      )
+        return;
       setLayout((previous) => ({ ...previous, assistantWindow: panel }));
+      setFloatingFeedback(gesture.kind === "move" ? "Moved" : "Resized");
     },
     onPointerUp: () => {
       assistantGesture.current = null;
@@ -249,7 +259,15 @@ export function SpatialStudio({
         event.key === "ArrowUp" ? -step : event.key === "ArrowDown" ? step : 0,
         floatingBounds,
       );
+      if (
+        panel.x === floatingPanel.x &&
+        panel.y === floatingPanel.y &&
+        panel.width === floatingPanel.width &&
+        panel.height === floatingPanel.height
+      )
+        return;
       setLayout((previous) => ({ ...previous, assistantWindow: panel }));
+      setFloatingFeedback(kind === "move" ? "Moved" : "Resized");
     },
   };
   useEffect(() => {
@@ -1151,6 +1169,9 @@ export function SpatialStudio({
                   {...floatingGestureProps}
                 >
                   <span aria-hidden="true">⠿</span> Ask Parallax
+                  <small className={styles.assistantFeedback} aria-live="polite">
+                    {floatingFeedback && ` · ${floatingFeedback}`}
+                  </small>
                 </button>
               )}
               <div>

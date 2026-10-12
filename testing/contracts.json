@@ -249,26 +249,6 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Move floating Spatial Assistant"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowRight"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Ask Parallax workspace",
-                "text": "Dock assistance",
-                "path": "/studio/parallax",
-                "state": "ASSISTANT_MOVED",
-                "kind": "outcome",
-                "meaning": "The title handle accepts keyboard movement while the composer and docking action remain reachable.",
-                "feedbackBoundary": true
-              },
-              {
-                "action": "click",
-                "role": "button",
                 "name": "Resize floating Spatial Assistant bottom right"
               },
               {
@@ -279,11 +259,31 @@
                 "action": "assert",
                 "role": "region",
                 "name": "Ask Parallax workspace",
-                "text": "Dock assistance",
+                "text": "Resized",
                 "path": "/studio/parallax",
                 "state": "ASSISTANT_RESIZED",
                 "kind": "outcome",
-                "meaning": "The corner handle accepts keyboard resizing while assistance remains usable over the scene.",
+                "meaning": "The corner handle visibly acknowledges keyboard resizing while assistance remains usable over the scene.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move floating Spatial Assistant"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowRight"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Ask Parallax workspace",
+                "text": "Moved",
+                "path": "/studio/parallax",
+                "state": "ASSISTANT_MOVED",
+                "kind": "outcome",
+                "meaning": "After reducing the floating width, the title handle visibly acknowledges keyboard movement while the composer remains reachable.",
                 "feedbackBoundary": true
               },
               {
