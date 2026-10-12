@@ -155,3 +155,14 @@ supplies no required mainline decision.
 Ordinary Sounding Line acceptance, protected merge and landed-source smoke
 remain required. PR #717 remains a draft until final preparation is complete.
 This record does not claim current integration or physical-device acceptance.
+
+Ordinary run [38198713672](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38198713672)
+rejected `f1822d52`: authenticated experience provenance passed, while one of
+797 selected checks found a bounded adaptive context above the default input
+allowance. The [original decision](evidence/owner-refinements/ordinary-f1822d52-failure.json)
+is preserved. The [focused repair](evidence/owner-refinements/input-budget-repair.json)
+removes duplicated enum metadata from context while retaining it in the strict
+response schema. All 163 focused provider/service/corpus checks pass; no budget,
+instruction or response-schema weakening and no paid rerun occurred. Current
+browser recapture and source-bound re-review are required before a new frozen
+candidate is submitted.

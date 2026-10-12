@@ -129,3 +129,11 @@ can still ask an unnecessary follow-up or vary explanatory wording. Explicit
 Creator review and deterministic validation remain mandatory. Current source
 qualification, the revised visual package and independent reviews are tracked in
 the [owner-refinement record](Parallax_A1_Visual_Refinements.md).
+
+Final software qualification subsequently found that a bounded adaptive scene
+exceeded the unchanged conservative input allowance by 113 bytes. Server context
+now omits duplicate capability enum lists already present in the strict response
+schema; saved state, capability limits, response schema and tested instructions
+are unchanged. The repaired example is 11,799 bytes including framing under the
+12,000-byte allowance, and 163 focused checks pass. This payload compaction was
+not retested with paid calls; the live reports retain their original payloads.

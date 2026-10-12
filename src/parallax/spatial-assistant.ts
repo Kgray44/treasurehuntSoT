@@ -409,11 +409,8 @@ export function prepareAssistantContext(draft: SpatialDraft, selectedEntityId: s
     entities: projectedEntities,
     semanticRecipes,
     supported: {
-      entityKinds: ["PARCHMENT", "TEXT", "MARKER"],
-      placements: ["DESK", "WALL", "ENTRANCE", "LOCAL"],
-      semanticSurfaces: ["FLOOR", "TABLE", "DESK", "SHELF", "WALL", "OPEN_SPACE"],
-      triggers: ["SCENE_ENTER", "INSPECT", "PICK", "PLACE", "TIMER"],
-      actions: ["SHOW", "HIDE", "HIGHLIGHT"],
+      // The strict response schema already supplies the supported enum values.
+      // Keep scene context for saved state and limits, rather than repeating them.
       materials: false,
       physicalGlow: false,
       arbitraryMedia: false,
