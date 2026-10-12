@@ -1,10 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 import { hash } from "bcryptjs";
 import path from "node:path";
-import { createHash } from "node:crypto";
-import { updatePlayerJournalReadingState } from "../../../src/platform/libraries";
-import { closureVoyage } from "./landfall-closure";
-import { syntheticSpatialMoment } from "../../../src/parallax/fixtures";
 
 /** Public synthetic identities for the existing task-owned browser fixture only. */
 export async function prepareParallaxExperienceAccounts(store: PrismaClient) {
@@ -26,7 +22,6 @@ export async function prepareParallaxExperienceAccounts(store: PrismaClient) {
     ["a102", "Operator", "ADMINISTRATOR", "operator"],
     ["a103", "Floating Creator", "CREATOR", "floating-creator"],
     ["a104", "Rooms Creator", "CREATOR", "rooms-creator"],
-    ["a105", "Lens Player", "PLAYER", "lens-player"],
   ] as const) {
     const id = `00000000-0000-4000-8000-00000000${suffix}`;
     if (await store.userAccount.findUnique({ where: { id } })) continue;
@@ -57,37 +52,5 @@ export async function prepareParallaxExperienceAccounts(store: PrismaClient) {
         roles: { create: { role, scopeType: "GLOBAL" } },
       },
     });
-  }
-
-  const voyageId = "00000000-0000-4000-8000-00000000c101";
-  if (!(await store.taleSession.findUnique({ where: { id: voyageId } }))) {
-    const account = await store.userAccount.findUniqueOrThrow({
-      where: { id: "00000000-0000-4000-8000-00000000a105" },
-      include: { profile: true },
-    });
-    const persona = { id: account.id, profileId: account.profile!.id, token: "" };
-    const voyage = await closureVoyage(persona, persona, "narrative", { virtual: true });
-    const published = await store.publishedTaleVersion.findUniqueOrThrow({ where: { id: voyage.versionId } });
-    const snapshot = JSON.parse(published.contentSnapshot);
-    snapshot.tale.title = "Synthetic Spatial Continuity Voyage";
-    const block = snapshot.chapters
-      .flatMap((c: { blocks: { id: string }[] }) => c.blocks)
-      .find((b: { id: string }) => b.id === voyage.activeId);
-    block.configuration = {
-      heading: "A clue between worlds",
-      body: "Inspect the released spatial note, then continue.",
-    };
-    block.presentation.spatialMoment = syntheticSpatialMoment(voyage.activeId);
-    const contentSnapshot = JSON.stringify(snapshot);
-    await store.publishedTaleVersion.update({
-      where: { id: voyage.versionId },
-      data: {
-        contentSnapshot,
-        checksum: createHash("sha256").update(contentSnapshot).digest("hex"),
-      },
-    });
-    await store.chronicle.update({ where: { id: voyage.taleId }, data: { title: snapshot.tale.title } });
-    await store.taleSession.update({ where: { id: voyage.id }, data: { id: voyageId } });
-    await updatePlayerJournalReadingState(account.profile!.id, voyageId, { hasOpened: true });
   }
 }

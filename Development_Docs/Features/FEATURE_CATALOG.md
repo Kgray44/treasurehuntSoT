@@ -2225,11 +2225,10 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 - Declarative behavior timeline with deterministic runtime evaluation
 - Guided, Detailed and Engineering authoring modes
 - Creator-owned library scopes, immutable versions, forks and provenance
-- Five editable first-party presets and ten distinct furnished synthetic reference environments
+- Five editable first-party presets and ten synthetic reference environments
 - Reviewed AI intent and critique adapters with deterministic edits and undo/redo
 - Checksum-pinned Chronicle attachments with reversible attachment history
 - Selected-object Drydock links and asset, scale and performance validation
-- Geometry-derived full-floor, wall and furniture planes with aligned manual snapping and automatic placement
 
 ### Primary surfaces
 
@@ -2241,7 +2240,6 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 - Spatial Assistant requires server-side OpenAI configuration and enabled administrator policy; its bounded model study and accepted owner presentation are documented in A1, while representative-device and universal live quality remain unqualified.
 - Synthetic previews and complexity estimates do not establish measured device frame rates or shared-anchor synchronization.
 - Unsupported imported renderer assets block release; richer rendering, recognition, shared physical anchors and Reach manipulation remain governed by their owning phases.
-- Room previews are invented geometry; photo-to-room reconstruction and curved surface detection are not implemented.
 
 ### Evidence
 
@@ -2252,9 +2250,6 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 - test: `src/parallax/library-service.test.ts`
 - test: `tests/e2e/parallax-studio.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Parallax/Phase_2_Implementation.md`
-- test: `tests/e2e/parallax-rooms.spec.ts`
-- test: `tests/e2e/parallax-surfaces.spec.ts`
-- completion-record: `Development_Docs/Projects/Project_Parallax/Surface_Snapping_Correction.md`
 
 ---
 

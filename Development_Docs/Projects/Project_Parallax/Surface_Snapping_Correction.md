@@ -1,7 +1,7 @@
 ---
 title: Parallax named rooms, surfaces and orientation
 audience: product-engineering
-status: implementation-validation
+status: focused-validation-integration-blocked
 canonical_for: parallax-room-surfaces-correction
 last_reviewed: 2026-10-12
 ---
@@ -13,10 +13,9 @@ substitute to lie on that table. Manual placement must be distinct from automati
 room resolution, and the Surfaces view must describe current room geometry.
 
 The renderer and discovery share `room-geometry.ts`. The floor is one complete
-plane, each modeled wall is one complete plane, and desk/table/shelf/sofa planes
+plane, each modeled wall is one complete plane, and desk/table/shelf/furniture planes
 use their actual dimensions and positions. Changing, adding or removing geometry
-changes discovered faces without registering a separate placement patch. The
-sofa is shown as blocked; free-space and walkway regions are not presented as
+changes discovered faces without registering a separate placement patch. Soft seating, beds, storage and clutter are shown as blocked; free-space and walkway regions are not presented as
 physical surfaces. The synthetic floor has a separate safe furniture-side
 staging offset; its outline still covers the whole floor.
 
@@ -69,6 +68,24 @@ surface detection, or physical AR qualification. The owner explicitly selected
 existing-room correction first on 2026-10-12. Future room reconstruction must
 provide actual geometry and measured evidence through the existing domain seam.
 
-Feature Catalog decision: the named-environment expansion materially improves the
-existing synthetic simulation capability. FT-B092 records distinct furnished
-reference environments and shared geometry-driven surface discovery.
+Feature Catalog decision: the named-environment expansion is meaningful, but
+protected integration remains blocked. The existing mainline FT-B092 fragment
+is preserved until the expansion completes its required acceptance workflow.
+
+## Protected integration blocker
+
+The protected experience plan selects downstream product consumers because
+published Chronicle parsing calls shared Spatial Authoring validation. It
+requires a complete `crossdeck.phase2.continuity` experience design; the current
+protected registry supplies only an intent and owner-reported baseline debt.
+An exploratory complete design also exposed unregistered downstream account,
+Player, Captain, community, Passport, Landfall and publishing screens. The
+exploratory Crossdeck fixture and contract were removed; this room correction
+does not introduce a partial Player refit or expand its completion claims.
+
+The plan fails with
+`PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.
+No protected capture, review attestation, ordinary acceptance or merge is claimed.
+The owned draft PR retains the implementation for review. Registering and
+qualifying the affected downstream experiences is required before integration;
+changing the protected authority or declaring false coverage is not a remedy.
