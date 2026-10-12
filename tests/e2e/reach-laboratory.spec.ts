@@ -94,7 +94,7 @@ test("relative movement uses separate setup, check and cursor claims", async ({ 
   await targets(page, 5);
   await page.getByRole("button", { name: "Check five new targets" }).click();
   await targets(page, 5);
-  await expect(page.getByText("Held-out cursor error", { exact: true })).toBeVisible();
+  await expect(page.getByText("Cursor error on new targets", { exact: true })).toBeVisible();
   await expect(
     page.getByText("This checks movement control. It does not measure where you physically point.", { exact: true }),
   ).toHaveCount(0); // demo has its own stronger simulation disclosure

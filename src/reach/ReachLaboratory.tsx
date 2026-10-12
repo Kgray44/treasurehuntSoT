@@ -546,7 +546,7 @@ export function ReachLaboratory({
     advance(stage);
     setMessage(
       stage === "VALIDATION"
-        ? "Check five new positions. Hold at each target; the fit stays unchanged."
+        ? "Check five new positions. Hold at each target; your setup stays unchanged."
         : pointingMode === "ABSOLUTE"
           ? "Point naturally at each lit target, then hold comfortably."
           : relativeLayout.instructions[0],
@@ -1026,7 +1026,9 @@ export function ReachLaboratory({
                     setTarget(null);
                     setAcquisition(null);
                     advance(calibrationRef.current ? "RESULTS" : "PREPARE");
-                    setMessage("Calibration cancelled. Your camera stays available.");
+                    setMessage(
+                      `${step === "VALIDATION" ? "Check" : "Calibration"} cancelled. Your camera stays available.`,
+                    );
                   }}
                 >
                   {step === "VALIDATION" ? "Cancel check" : "Cancel calibration"}
@@ -1038,21 +1040,23 @@ export function ReachLaboratory({
             <>
               <dl className={styles.results}>
                 <div>
-                  <dt>{pointingMode === "ABSOLUTE" ? "Held-out pointing error" : "Held-out cursor error"}</dt>
+                  <dt>
+                    {pointingMode === "ABSOLUTE" ? "Pointing error on new targets" : "Cursor error on new targets"}
+                  </dt>
                   <dd>
                     {percent(calibration?.validationP95)}
                     <small>of this area’s diagonal</small>
                   </dd>
                 </div>
                 <div>
-                  <dt>Raw held-out jitter</dt>
+                  <dt>Movement during steady holds</dt>
                   <dd>
                     {percent(calibration?.validationJitterP95)}
                     <small>during target holds</small>
                   </dd>
                 </div>
                 <div>
-                  <dt>Coverage</dt>
+                  <dt>Supported area</dt>
                   <dd>
                     {calibration ? "Central 80%" : "Not established"}
                     <small>estimates stop outside the tested range</small>
