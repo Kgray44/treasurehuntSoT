@@ -3717,11 +3717,11 @@
               {
                 "action": "click",
                 "role": "radio",
-                "name": "Absolute pointing"
+                "name": "Relative movement"
               },
               {
                 "action": "keyboard",
-                "key": "Space"
+                "key": "ArrowDown"
               },
               {
                 "action": "click",
