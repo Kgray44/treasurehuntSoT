@@ -1,4 +1,6 @@
 .assistant {
+  container-name: spatial-assistant;
+  container-type: size;
   width: 390px;
   min-width: min(300px, 100%);
   max-width: min(540px, 100%);
@@ -501,5 +503,52 @@
   }
   .assistant .history {
     display: none;
+  }
+}
+@container spatial-assistant (max-height: 420px) {
+  .assistant .header {
+    padding: 6px 12px;
+  }
+  .assistant .header p,
+  .assistant .emblem {
+    display: none;
+  }
+  .assistant .header h2 {
+    font-size: 14px;
+    margin: 0;
+  }
+  .assistant .header > button {
+    min-height: 28px;
+    min-width: 28px;
+    font-size: 16px;
+  }
+  .assistant .context {
+    padding: 4px 12px;
+  }
+  .assistant .context button {
+    min-height: 28px;
+    padding: 4px;
+  }
+  .assistant .body {
+    padding: 8px 12px;
+  }
+  .assistant .footer {
+    padding: 6px 10px;
+  }
+  .assistant .footer form {
+    padding: 8px;
+    margin-top: 6px;
+  }
+  .assistant .footer textarea {
+    height: 36px;
+    min-height: 36px;
+  }
+  .assistant .composerActions {
+    margin-top: 6px;
+    gap: 6px;
+  }
+  .assistant .composerActions button {
+    min-height: 32px;
+    padding: 6px 10px;
   }
 }

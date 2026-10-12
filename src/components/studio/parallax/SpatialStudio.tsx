@@ -178,13 +178,10 @@ export function SpatialStudio({
   useEffect(() => {
     if (!loaded) return;
     const fit = () => {
-      const top =
-        innerHeight <= 520
-          ? 8
-          : Math.min(
-              Math.max(8, studioElement.current?.getBoundingClientRect().top ?? 8),
-              Math.max(8, innerHeight - 200),
-            );
+      const top = Math.min(
+        Math.max(8, studioElement.current?.getBoundingClientRect().top ?? 8),
+        Math.max(8, innerHeight - 200),
+      );
       setFloatingBounds({
         x: 8,
         y: top,

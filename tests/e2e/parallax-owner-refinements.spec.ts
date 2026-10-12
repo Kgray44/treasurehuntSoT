@@ -195,6 +195,8 @@ test("floating assistance moves, resizes, restores and keeps its composer at the
   await page.goto("/studio/parallax");
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   await expect(canvas.locator('[data-renderer="READY"] canvas')).toBeVisible();
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("status", { name: "", exact: true })).toContainText("Working draft saved");
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
   const host = page.locator("#parallax-assistance");
   await expect(host).toHaveAttribute("data-floating-placed", "true");
