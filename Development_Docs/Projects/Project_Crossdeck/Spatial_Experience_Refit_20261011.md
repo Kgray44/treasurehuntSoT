@@ -78,6 +78,23 @@ other accepted incoming declarations compare exactly in the prospective tree.
 This changes no actual branch/index/product files and supplies no acceptance.
 No new capture, build/test, helper implementation or independent review occurred.
 
+The diagnostic prerequisite is now independently verified as protected accepted:
+[PR #723](https://github.com/Kgray44/treasurehuntSoT/pull/723), qualified head
+`353cf202`, merge/base `602f83ef`, required ordinary run `38301134402` SUCCESS,
+qualified/landed tree `0fa1e78e`. Mechanical merge `5da389b7` retains accepted
+Reach PR #716 and the exact accepted helper blobs, resolving only the additive
+changelog conflict. The [fresh dependency readback](../../Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/accepted-helper-readback.json)
+and [fresh actual plan](../../Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/plan.json)
+preserve original failure identities and fresh source bindings.
+
+The fresh plan has seven mandatory contracts / 32 contexts: unchanged Crossdeck
+six / 20 plus protected Reach foundation / 12. Source digest `ca3941201375` and
+combined contract digest `8c8d5ddbc67e` are new; the six complete Crossdeck
+objects remain exact. This is accepted dependency integration and verification,
+not a new product/fixture repair or evidence acceptance. One required hosted
+capture is reserved. Final third review, truthful-history validation, ordinary
+qualification, merge, landed smoke and owner acceptance remain pending.
+
 The [repair ledger](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json)
 retrospectively records **10 completed repair-to-recapture attempts** since
 review 1: seven product repairs and three fixture/contract repairs. All ten

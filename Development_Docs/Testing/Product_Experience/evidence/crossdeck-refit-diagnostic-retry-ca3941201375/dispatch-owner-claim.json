@@ -1,0 +1,60 @@
+{
+  "classification": "Task-local exclusive capture claim; waiting for protected accepted diagnostics",
+  "requestKey": "crossdeck-observability-accepted-retry-20261012-r1",
+  "threadId": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+  "branch": "codex/crossdeck-experience-refit",
+  "pr": 721,
+  "claim": "EXACTLY_ONE_DISPATCH_OWNER",
+  "allowedAdditionalCaptureDispatches": 1,
+  "additionalCaptureDispatchesUsed": 0,
+  "claimState": "PROTECTED_ACCEPTED_DIAGNOSTICS_VERIFIED_PREPARING_SINGLE_DISPATCH",
+  "originalFailedRun": 38277482404,
+  "acceptedDiagnosticHandoff": {
+    "pr": 723,
+    "merge": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+    "qualifiedHead": "353cf20229fb34e9cad5553d98a4f04e54798ffd",
+    "run": 38301134402,
+    "job": 114984065592
+  },
+  "futureCandidateTuple": {
+    "classification": "Fresh source-bound candidate after accepted product/diagnostic reconciliation; not capture acceptance",
+    "requestKey": "crossdeck-observability-accepted-retry-20261012-r1",
+    "candidate": "5da389b732e4690e5b959bad0c42eabbd138d3d9",
+    "tree": "08165a953d09eb828b56eaffe45f9753ce1e735f",
+    "base": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+    "sourceDigest": "ca394120137516159d6b2c45cb178f9b047e996cd33ac05ab7d3dfa62d0a774c",
+    "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+    "contractIds": [
+      "crossdeck.phase2.continuity",
+      "crossdeck.refit.companion",
+      "crossdeck.refit.published-lens",
+      "homeport.shell.crossdeck-access-recovery",
+      "homeport.shell.crossdeck-companion",
+      "homeport.shell.crossdeck-companion-mobile",
+      "reach.phase1.foundation"
+    ],
+    "contexts": 32,
+    "frozenCrossdeckContractIds": [
+      "crossdeck.phase2.continuity",
+      "crossdeck.refit.companion",
+      "crossdeck.refit.published-lens",
+      "homeport.shell.crossdeck-access-recovery",
+      "homeport.shell.crossdeck-companion",
+      "homeport.shell.crossdeck-companion-mobile"
+    ],
+    "frozenCrossdeckContexts": 20,
+    "additionalProtectedObligation": {
+      "id": "reach.phase1.foundation",
+      "contexts": 12
+    },
+    "mechanicalMerge": "5da389b732e4690e5b959bad0c42eabbd138d3d9",
+    "helperPr": 723,
+    "helperMerge": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+    "helperRun": 38301134402,
+    "repairIterations": 10,
+    "repairLimit": 3,
+    "finalThirdReview": "UNUSED",
+    "recordedUtc": "2026-10-12T20:09:56.773Z"
+  },
+  "freshCaptureRunId": null
+}

@@ -9717,6 +9717,36 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/accepted-helper-handoff.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/accepted-helper-readback.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/dispatch-owner-claim.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/plan.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/source-freeze.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-e24115b41749/plan.json",
       "record_type": "archive-index",
       "status": "preserved",

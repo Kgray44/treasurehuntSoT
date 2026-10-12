@@ -58,6 +58,18 @@ capture dispatches, dependency installations, builds/tests or reviews occurred.
 The [conditional contract](../../Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/observability-retry-contract.json)
 does not reset ten repairs against three or consume the final third review.
 
+After the accepted diagnostic handoff, one protected-main fetch verified PR #723
+and one actual mechanical merge retained PR #716 plus both diagnostic blobs,
+with one additive changelog conflict. A local planning assertion incorrectly
+expected only the previous six contracts; inspection of the actual protected
+plan identified the accepted Reach foundation addition. That planning failure
+caused one additional read-only plan calculation, not a product/fixture repair.
+The resulting plan requires seven contracts / 32 contexts and fresh source
+`ca3941201375`. No local product build, browser test, dependency installation,
+capture or independent review was repeated during this integration. The single
+authorized hosted dispatch will own its required build and full capture matrix;
+the earlier cancelled run and 10/3 repair history remain unchanged.
+
 Measurements in the following table describe the earlier local stages. They do
 not qualify the reconciled source or supersede the terminal hosted result above.
 

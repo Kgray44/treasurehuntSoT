@@ -10,30 +10,43 @@ last_reviewed: 2026-10-12
 
 The owned branch is `codex/crossdeck-experience-refit` at
 `C:\Users\kkids\.codex\worktrees\crossdeck-experience-refit\Codex_TreasureHunt`.
-The reconciled application candidate is `76e24ae5024f982a691c1a4e0ebfafc3e9634902`,
-tree `c15aaf3aba0cbdcefbcfe5408dc5347aeb7e8f92`, protected base
-`5e72620cef879685540bb968a9b836d1eb2fdec6`. Draft PR #721 remains unmerged.
+The accepted-diagnostic mechanical merge is `5da389b732e4690e5b959bad0c42eabbd138d3d9`,
+tree `08165a953d09eb828b56eaffe45f9753ce1e735f`, protected base
+`602f83efdb16b7ea75980f07fa3a3d976c496860`. Draft PR #721 remains unmerged.
+Subsequent record-only publication HEAD/tree and exact dispatched tuple are
+reported at dispatch. Original failed-capture identities below remain immutable.
 
 ## Current conditional diagnostic retry contract
 
 Request `crossdeck-observability-accepted-retry-20261012-r1` is acknowledged.
 This existing Crossdeck owner, `01a12d5e-eb9a-7a72-aecb-adfa3c59a89a`, is the
 **sole capture dispatch owner**, reserved for exactly one additional capture
-after the protected diagnostic handoff. Zero retries have been dispatched.
-Recovery reports KG's explicit 17:26 UTC approval of the separate prerequisite;
+after the protected diagnostic handoff. Zero retries have been dispatched at
+this pre-dispatch checkpoint. Recovery reports KG's explicit 17:26 UTC approval of the separate prerequisite;
 the source-bound
 [conditional contract](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/observability-retry-contract.json)
 records the received authority and exact gates. Reach alone owns the two trusted
-diagnostic files; Crossdeck makes no duplicate helper or product changes.
+diagnostic files; Crossdeck made no duplicate helper or product changes.
 
-Wait for Reach's actual protected-accepted diagnostic PR, qualified commit,
-merge commit and passing qualification run identities. Then inspect protected
-main once, mechanically preserve accepted PR #716 and those diagnostics, resolve
-only additive contracts/changelog/docs/index conflicts, and freeze the actual
-combined HEAD/tree/base/source/contract identities before the single required
-capture. A substantive source/product conflict needs an exact bounded decision.
-Check for an already active owned job before dispatch. No repeated install,
-build/test or opaque capture is authorized while waiting.
+Reach's protected diagnostic gate is verified: PR #723 is merged at `602f83ef`,
+qualified head `353cf202`, tree `0fa1e78e`, required ordinary run `38301134402` /
+job `114984065592` SUCCESS. The accepted/current helper blobs are exactly
+`295b67e1` (authority) and `483b225c` (experience). One protected-main fetch
+verified both PR #716 and #723 ancestry. The actual mechanical merge resolved
+only the additive changelog conflict; six frozen Crossdeck objects and all 488
+other incoming declarations, accepted helpers and catalog-count amendment remain
+preserved. The [accepted handoff readback](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/accepted-helper-readback.json)
+and [actual source plan](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/plan.json)
+bind this verification. Check for an active owned job before the single dispatch.
+
+The new protected plan selects seven contracts / 32 contexts: the exact six
+Crossdeck objects / 20 contexts plus the accepted Reach foundation / 12 contexts.
+Its source digest is `ca394120137516159d6b2c45cb178f9b047e996cd33ac05ab7d3dfa62d0a774c`;
+combined contract digest `8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d`.
+An initial local count assertion assumed the old six-contract selection and
+stopped planning; complete-object comparison proved no frozen obligation changed.
+Use the actual protected selection; never drop Reach to retain the old digest.
+No local product build/test or browser recapture was run during reconciliation.
 
 The
 [prospective Reach #716 preflight](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/reach716-prospective-preflight.json)
@@ -41,7 +54,8 @@ is source-only and changes no branch, index or worktree product. Its only confli
 is `CHANGELOG.md`; all six frozen Crossdeck objects and accepted incoming
 obligations are compared before any actual integration. Both trusted helpers
 remain unchanged from PR #720 in that accepted source. This prospective tree is
-not a newly frozen or qualified candidate; diagnostics are still pending.
+not a newly frozen or qualified candidate; it precedes the verified diagnostic
+handoff and actual merge above.
 
 Preserve the original cancelled/no-artifact capture and ten repairs against
 three. The final third independent review remains unused until a trusted current
@@ -49,7 +63,9 @@ packet returns. A retry failure or actual truthful-history rejection is retained
 verbatim and stops further repair/retry for a conforming bounded decision. The
 received contract does not waive counts, change acceptance or authorize a fourth
 review, new product repairs, D4/owner acceptance or duplicate Sextant changes.
-Checkpoint and end while the diagnostic handoff is external; no repeated polls.
+After dispatch, checkpoint/end if only the hosted job remains. Resume on its
+terminal result and actual trusted artifact identity, using the safe diagnostics
+to classify incomplete stages. No repeated unchanged polling or duplicate job.
 
 ## Historical local proof before reconciliation
 
