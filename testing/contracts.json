@@ -208,7 +208,115 @@
                 "returnPath": true
               }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "parallax.floating-controls.experience",
+      "name": "Floating Spatial Assistant controls and Creator continuity",
+      "authority": "one-voyage",
+      "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+        "objective": "Move and resize floating assistance while retaining a full-sized spatial scene and reachable bottom composer",
+        "visibleOutcome": "A Creator moves and resizes floating assistance, sees confirmed window feedback, docks it and returns to the same Creator Library",
+        "integrationOwner": "Parallax floating assistance experience integration",
+        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
+        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "projectionPaths": ["src/parallax"],
+        "entryPoint": "/studio/library",
+        "states": [
+          "EDITOR_READY",
+          "ASSISTANT_READY",
+          "ASSISTANT_RESIZED",
+          "ASSISTANT_MOVED",
+          "ASSISTANT_DOCKED",
+          "RETURNED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning. Floating title and all edge/corner handles support arrow keys, with Shift for larger steps.",
+        "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+        "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
           },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": [
+          "tests/e2e/parallax-owner-refinements.spec.ts",
+          "tests/e2e/parallax-assistant-presentation.spec.ts",
+          "tests/e2e/parallax-spatial-assistant.spec.ts",
+          "tests/e2e/parallax-workstation.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-floating-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Floating Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
           {
             "id": "creator-floating-window-controls-and-return",
             "roles": ["CREATOR"],
