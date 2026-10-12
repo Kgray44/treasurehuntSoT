@@ -3,10 +3,20 @@ title: Sextant implementation and consumer integration
 audience: product-engineering
 status: current
 canonical_for: sextant-phase1-implementation
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Sextant — Device Context
+
+The [bounded Phase 4 follow-up ledger](phase4-acceptance-followup-r1-ledger.json)
+preserves the exhausted original campaign and records the separately authorized
+R1 budget. Its first fixture repair passed the
+[isolated canonical-writer check](phase4-followup-r1-fixture-verification.json).
+The [Journal route boundary](phase4-journal-route-boundary-r1.json) and
+[shared consumer designs](phase4-shared-consumer-design-r1.json) remain proposals,
+with no shared route edit, registered new experience contract or new capture.
+Required coverage, independent review, ordinary qualification and D4 acceptance
+remain open; these preparation records do not discharge them.
 
 [Phase 3 - Read the Field](Project_Sextant_Phase_3_Implementation_Receipt.md) is integrated on protected main for rich magnetic/pressure/step semantics, media declarations, bounded optional BLE/NFC, secure ranging contracts, safe magnetic reference controls and versioned Drydock requirements. Its D0/D1 software evidence is distinct from native parity, D4/D5 and owner acceptance. Reuse the existing runtime's `advanced` context; media factories and authenticated peer meaning remain with their consumers.
 

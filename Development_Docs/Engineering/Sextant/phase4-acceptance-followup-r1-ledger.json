@@ -96,12 +96,23 @@
         "acceptedAssistantAndFloatingContracts": "PRESERVED_EXACTLY",
         "newProductRepair": false,
         "newRecapture": false
+      },
+      {
+        "type": "PROTECTED_HELPER_RECONCILIATION",
+        "sourceSha": "ac536fda03f12decd213aa012c440523492be275",
+        "acceptedBaseSha": "5e72620cef879685540bb968a9b836d1eb2fdec6",
+        "protectedRun": "38276081116",
+        "runConclusion": "SUCCESS",
+        "mergePr": 720,
+        "newProductRepair": false,
+        "newRecapture": false,
+        "duplicateHelperTests": false
       }
     ],
     "iterations": [
       {
         "number": 1,
-        "state": "COHERENT_INITIAL_REPAIR_PREPARATION_NO_RECAPTURE_YET",
+        "state": "FIXTURE_REPAIR_FOCUSED_PASS_SHARED_OWNER_HANDOFFS_PENDING_NO_RECAPTURE",
         "repairStartedAt": "2026-10-12T16:20:57.840Z",
         "startingSource": "9352dcdf29b63cce07833493a863108a3334b027",
         "findings": [
@@ -119,7 +130,23 @@
             "repair": "Keep published snapshot, canonical draft writer and persisted Chronicle slug consistent; verify canonical saved result"
           }
         ],
-        "recaptureRuns": 0
+        "recaptureRuns": 0,
+        "focusedVerification": {
+          "path": "Development_Docs/Engineering/Sextant/phase4-followup-r1-fixture-verification.json",
+          "sourceSha": "ac536fda03f12decd213aa012c440523492be275",
+          "result": "PASS",
+          "cleanup": "PASS_EXACT_OWNED_DATABASE_REMOVED_PREVIOUS_PLAN_RESTORED"
+        },
+        "sharedConsumerDesign": {
+          "path": "Development_Docs/Engineering/Sextant/phase4-shared-consumer-design-r1.json",
+          "affectedCount": 170,
+          "uncoveredCount": 141,
+          "families": 13,
+          "proposedNaturalJourneys": 11,
+          "registeredNewContracts": 0,
+          "capturedNewJourneys": 0,
+          "scope": "PREPARATION_ONLY_NO_EXEMPTIONS"
+        }
       }
     ]
   },
@@ -140,7 +167,8 @@
       "scripts/sounding-line/experience-browser.mjs",
       "tests/sounding-line/experience-browser-fixtures.test.mjs"
     ],
-    "lens": "PRESERVE_EXISTING_BILATERAL_INK_DELTA_NO_DUPLICATE_REPAIR"
+    "lens": "PRESERVE_EXISTING_BILATERAL_INK_DELTA_NO_DUPLICATE_REPAIR",
+    "journalBoundaryProposal": "Development_Docs/Engineering/Sextant/phase4-journal-route-boundary-r1.json"
   },
   "requiredFindings": [
     "SEXTANT-FINAL-001",
@@ -159,9 +187,10 @@
     "New frozen native contract with one owner claim before registered scoped D2/D3 work"
   ],
   "dependencies": {
-    "reachHelper": "WAIT_FOR_PROTECTED_ACCEPTED_OWNER_HANDOFF",
+    "reachHelper": "PROTECTED_ACCEPTED_5e72620c_CONSUMED",
     "journalSharedContract": "WAIT_FOR_RECORDED_CANONICAL_OWNER_CONTRACT",
-    "crossdeckReconciliation": "OWNER_ONE_TIME_PREFLIGHT_ON_MAIN858"
+    "crossdeckReconciliation": "OWNER_AUTHORIZED_MECHANICAL_MAIN719_720_RECONCILIATION",
+    "reachSemanticSelectors": "WAIT_FOR_RECORDED_OWNER_HANDOFF_SCOPE_LABEL_SYNTHETIC_CREDENTIAL"
   },
   "goal": {
     "nativePresent": true,
@@ -196,5 +225,6 @@
     "titleRepairAttempt": "NOT_PERFORMED",
     "limitation": "Helper rejected recording existing title because it requires the complete generated phase-name title. Native existing identity/project/title independently read back; no new dispatch or rename. Stored existing ID to prevent duplication.",
     "newThreadCreated": false
-  }
+  },
+  "coordinationLimitation": "Coordinator native send failed AbsolutePathBuf without base path even after independently verified durable host; failed sends not claimed delivered. Crossdeck and Reach received their scoped requests."
 }

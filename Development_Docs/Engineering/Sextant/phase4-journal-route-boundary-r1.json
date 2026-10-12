@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "requestMarker": "sextant-phase4-acceptance-followup-20261012-r1",
+  "classification": "REVIEWABLE_PER_FILE_BOUNDARY_PROPOSAL_NOT_APPLIED_NOT_AUTHORIZED_AS_SHARED_EDIT",
+  "finding": "SEXTANT-FINAL-001",
+  "sourceSha": "ac536fda03f12decd213aa012c440523492be275",
+  "protectedBaseSha": "5e72620cef879685540bb968a9b836d1eb2fdec6",
+  "proposedEditor": "Existing Sextant owner01a12c17-115a-7f92-b319-32f3666a5b2d",
+  "canonicalOwner": "project-helm registry; named canonical-owner/shared agreement pending",
+  "file": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+  "originalBlob": "5bc669aaed1aca1d2f68beb5a5a06cb012710804",
+  "before": "import { ChronicleJournalSession } from \"@/components/player/journal/ChronicleJournalSession\";\nexport const dynamic = \"force-dynamic\";\nexport default async function SessionPage({ params }: { params: Promise<{ sessionId: string }> }) {\n  return <ChronicleJournalSession sessionId={(await params).sessionId} />;\n}",
+  "proposedSource": "import { ChronicleJournalSession } from \"@/components/player/journal/ChronicleJournalSession\";\nimport { authorizeTaleSessionPlayer } from \"@/platform/auth\";\nexport const dynamic = \"force-dynamic\";\nexport default async function SessionPage({ params }: { params: Promise<{ sessionId: string }> }) {\n  const { sessionId } = await params;\n  const authorization = await authorizeTaleSessionPlayer(sessionId);\n  return <ChronicleJournalSession sessionId={sessionId} identitySession={authorization?.kind === \"identity\"} />;\n}\n",
+  "contract": {
+    "canonicalAuthorization": "Existing authorizeTaleSessionPlayer preserves active canonical identity membership and legacy Tale cookie authorization",
+    "identity": "Only kindidentity selects existing canonical Journal APIs and persisted reader state",
+    "legacy": "Legacy or unauthenticated compatibility remains identitySessionfalse; no login redirect or new legacy state writer",
+    "unchangedFiles": [
+      "src/platform/auth.ts",
+      "src/platform/libraries.ts",
+      "src/components/player/journal/ChronicleJournalSession.tsx",
+      "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
+      "src/crossdeck/service.ts",
+      "src/components/crossdeck/CrossdeckDevices.tsx"
+    ],
+    "progression": "No progression mutation, cookie injection or hidden reader-state preparation",
+    "verificationRequired": [
+      "Ordinary first opening on Player route → Devices → identity compatibility continuation with no second first-opening gate",
+      "Same canonical Voyage and Lens → close/return on desktop/mobile NORMAL/REDUCED",
+      "Legacy cookie continuation retains legacy/local reader behavior",
+      "Non-member authenticated identity never selects canonical identity mode"
+    ],
+    "agreement": "NOT_RECORDED_NO_SOURCE_EDIT"
+  }
+}

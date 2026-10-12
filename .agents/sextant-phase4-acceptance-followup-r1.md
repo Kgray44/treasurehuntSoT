@@ -33,11 +33,37 @@ helper and fixture test; consume its protected-accepted handoff, never its pendi
 proposal. Any further selector/helper change needs its exact file boundary and
 owner recorded first. Preserve the existing bilateral Lens ink repair.
 
-Current protected main advanced to `85853cdbc167addb4e4f15a31265bbe8dfd3fdab`.
+The initial follow-up protected base was `85853cdbc167addb4e4f15a31265bbe8dfd3fdab`.
 Its accepted `parallax.floating-controls.experience` and separate Floating Creator
 fixture must remain unchanged during additive reconciliation. No A1 restart or
 new paid AI call is authorized. Expand all affected shared-consumer experience
 contracts; no broad exemption or hidden progression/reader-state setup.
+
+Protected PR720 subsequently landed as `5e72620cef879685540bb968a9b836d1eb2fdec6`
+after ordinary run `38276081116` succeeded. Sextant consumed that accepted helper
+additively at `ac536fda03f12decd213aa012c440523492be275`, without duplicate helper
+tests or a capture. The first R1 fixture repair is `c758d541`; its isolated
+[canonical-writer check](../Development_Docs/Engineering/Sextant/phase4-followup-r1-fixture-verification.json)
+passed on `ac536fda`, preserving the same persisted and published Tale slug.
+The exact nonce database was removed and the previous plan restored.
+
+The [shared-consumer design preparation](../Development_Docs/Engineering/Sextant/phase4-shared-consumer-design-r1.json)
+maps all 141 currently uncovered surfaces to 13 explicit families and contains
+11 proposed natural account journeys. These are not registered or captured;
+mapping does not discharge any coverage obligation. Preserve all seven selected
+existing contracts. No broad source exemption is authorized.
+
+The [Journal boundary proposal](../Development_Docs/Engineering/Sextant/phase4-journal-route-boundary-r1.json)
+changes only the compatibility route's choice of the existing identity mode,
+using canonical authorization. It is not applied. Wait for the named canonical
+owner/shared per-file agreement. Reach retains capture-helper ownership; further
+semantic scope, labelled-password and isolated-credential support require its
+protected handoff. Both owners received scoped coordination. Native sends to the
+coordinator failed with an AbsolutePathBuf/no-base-path error; do not claim those
+failed requests were delivered or create a replacement chat.
+
+R1 remains iteration **1/3**, one pre-review repair pass and **zero recaptures**.
+No new build, server, native dispatch or independent review has started.
 
 ## Required proof and gates
 
