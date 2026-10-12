@@ -249,24 +249,53 @@ The bounded contract correction checks the objective in **Chart companion**,
 then separately asserts the canonical **Voyage Chart** region and **Virtual
 Landfall chart** image. It adds one assertion per context while preserving all
 20 contexts and visible outcomes. The unit mock is corrected to the real
-composition; no application change follows the `0e1074c1` binary. The next focused
-four-context diagnostic reuses that verified unchanged binary and claims no new
-build pass. A protected fresh build and full 20-context capture remain mandatory
-before final third review. Normal-motion local timings were QR 447 ms, claim
+composition; no application change follows the `0e1074c1` binary. The subsequent focused
+four-context diagnostic described below reused that verified unchanged binary
+and claims no new build pass. Normal-motion local timings were QR 447 ms, claim
 413 ms, send offer 192 ms and rendered acknowledgement 457 ms. These local
 measurements close no protected, debt, feature or owner-acceptance boundary.
 
-| Evidence boundary                                        | Current result                                                                                                                                                                                                                                               |
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                                                                                                                       |
-| Focused source tests                                     | 15 Companion tests passed in 2.74 s for realistic canonical composition; lint/format passed. Earlier 13 disclosure tests and 16-file / 159-test batch remain historical; overlapping populations are not added. Final source binding remains pending.        |
-| Production build                                         | At `0e1074c1`, fresh build passed in 51.385 s. Earlier `737fc735` passed in 50.304 s; the next focused diagnostic reuses the verified unchanged `0e1074c1` binary and claims no new build pass.                                                              |
-| Actual two-context refit journey                         | Three browser cases passed at `0e1074c1` in 91.260 s: execution 89.843 s, readiness 1,292 ms, cleanup 34 ms. Final protected qualification remains pending.                                                                                                  |
-| Canonical capture                                        | At `0e1074c1`, full capture failed in 110.368 s after 16 passed contexts. Chart/objective were visible; the objective check assumed incorrect inner-region containment. Corrected focused replay and protected fresh full 20-context capture remain pending. |
-| Independent 17-dimension rendered criticism              | Cycle 2 identified one open Chart placeholder contrast defect. Repair is implemented; final cycle 3 current contract packets/re-review remain pending.                                                                                                       |
-| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                                                                                                                       |
-| Landed smoke                                             | Pending integration.                                                                                                                                                                                                                                         |
-| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                                                                                                                        |
+The latest focused diagnostic passed all four companion contexts in 37.966 s
+at source `001de655be19b91a16ea4732f00705145eedd7f1`, tree
+`2db82a7260cf3c9ddd580febe9f1544139e57bf6`: desktop/mobile, normal/reduced motion.
+The [receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/001de655-focused-companion-receipt.raw.txt)
+and [log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/001de655-focused-companion.log)
+verify the unchanged application binary from `0e1074c1`; this is a local subset
+pass, not a new production build or full qualification. The omitted 16 contexts
+remain `NOT_CLAIMED` and are not combined with earlier passes to assert a full
+20-context result.
+
+The four-context result is a semantic capture-process pass, not accessibility
+acceptance. Its `ARTIFACT_READY` records contain color-contrast `axeSerious`
+observations in desktop and mobile NORMAL contexts; REDUCED contexts are clear.
+Exact-node diagnosis and repair remain pending. This known blocking observation
+holds draft PR creation and trusted dispatch; no PR has been created, and the
+current packet is not claimed fully accessible or ready for qualification.
+
+The receipt binds source digest
+`f646bc0ed84c4032858989963d705e64f89fb39d79a3071c952618a0b9e64f68`,
+selected four-context contract digest
+`3a3eae467fcc16a9d9044c4290f8764c4ab84e8d27389b8730b3e9d8a478b59d`
+and required full contract digest
+`4c90c6ab9b4cb7f946454b6af2e13964b6ae89f149ee7098b71da319b3e42393`.
+The six required contract IDs and all 20 contexts/outcomes remain. The next steps
+are one draft PR, trusted fresh full capture, third independent rendered review
+and authenticated review submission, ordinary protected Sounding Line,
+protected integration and landed smoke. Readiness, debt closure, feature
+acceptance and owner acceptance remain unclaimed.
+
+| Evidence boundary                                        | Current result                                                                                                                                                                                                                                                           |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                                                                                                                                   |
+| Focused source tests                                     | 15 Companion tests passed in 2.74 s for realistic canonical composition; lint/format passed. Earlier 13 disclosure tests and 16-file / 159-test batch remain historical; overlapping populations are not added. Final source binding remains pending.                    |
+| Production build                                         | At `0e1074c1`, fresh build passed in 51.385 s. The `001de655` focused diagnostic reused that verified unchanged binary; no new production build pass is claimed.                                                                                                         |
+| Actual two-context refit journey                         | Three browser cases passed at `0e1074c1` in 91.260 s: execution 89.843 s, readiness 1,292 ms, cleanup 34 ms. Final protected qualification remains pending.                                                                                                              |
+| Canonical capture                                        | Full capture at `0e1074c1` failed in 110.368 s after 16 passed contexts; that failed run remains failed. Trusted fresh full 20-context capture remains pending.                                                                                                          |
+| Focused companion diagnostic                             | At `001de655`, 4/4 semantic capture contexts completed in 37.966 s using the unchanged `0e1074c1` binary. NORMAL desktop/mobile color-contrast `axeSerious` observations block accessibility acceptance and dispatch; omitted 16-context qualification is `NOT_CLAIMED`. |
+| Independent 17-dimension rendered criticism              | Cycle 2 identified one open Chart placeholder contrast defect. Repair is implemented; final cycle 3 current contract packets/re-review remain pending.                                                                                                                   |
+| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                                                                                                                                   |
+| Landed smoke                                             | Pending integration.                                                                                                                                                                                                                                                     |
+| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                                                                                                                                    |
 
 The measured checkpoint above is not the final accepted candidate. Final
 candidate/base/tree, capture packet, reviewer identity, protected run and landed
@@ -302,10 +331,10 @@ acceptance exist. The exact-byte historical export preserves the
 [cycle 2 review](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle2-67ec3f0c-observations.raw.txt),
 selected original failure PNGs, the
 [839 failed-build receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/839fc784-failed-build-receipt.json)
-and the f852, 0c424, 4b8c, c8c646, 737fc735, fb7cc2a2 and 0e1074c1 diagnostic receipts/logs. Exactly two independent review
+and the f852, 0c424, 4b8c, c8c646, 737fc735, fb7cc2a2, 0e1074c1 and 001de655 diagnostic receipts/logs. Exactly two independent review
 cycles have occurred; cycle 3 awaits the trusted final packet. The
 [export manifest](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/manifest.json)
-records hashes and sizes for 26 exact-byte files totaling 1,952,326 bytes. These historical raw identities are not current
+records hashes and sizes for 28 exact-byte files totaling 1,957,498 bytes. These historical raw identities are not current
 trusted capture artifact IDs; all original task-local evidence is preserved.
 
 The current Homeport route inventory and both screen catalogs now record
