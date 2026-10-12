@@ -17,6 +17,12 @@ last_reviewed: 2026-10-12
   middle/Ctrl camera pan, separate surface clamping and sole left-rail navigation.
   Editable semantic room features, independent versioned object/assembly copies,
   whole-scene reuse and explicit simulation effects extend this candidate.
+  Protected photo proposals now support actual geometry preview, shared-feature
+  refinement, saved Apply and individual permission withdrawal. Editable walls
+  derive door/window openings through shared geometry and placement exclusions.
+  Assistant canvas checks bind to the saved render and provide view recovery;
+  finite state motion follows Lanternwake preferences. Synthetic development
+  photo evidence does not establish live vision or production scanner readiness.
   Full photo/asset/Assistant and cross-device acceptance remains in progress;
   see the [implementation checkpoint](Development_Docs/Projects/Project_Parallax/Spatial_Studio_Overhaul_20261012.md).
 

@@ -313,3 +313,45 @@ owner acceptance remain open. Failed engineering packets `74612f1a432f`,
 `03f13fb72c80` and `34f2eb31264c` retain their exit-1 manifests and actual
 recordings; the first two stopped on receipt setup/preview-frame issues and the
 third completed preview/refinement before a transient reload receipt read.
+
+### Production presets and saved-canvas feedback: laptop repair required
+
+The independent reviewer inspected all 80 actual PNGs and all six recordings
+for `df4c4b9cb1cd0c7deeba948795b75f98e9e2180a`, tree
+`53b31bedaf2ee40ff6aa047b6ed474c4b729348a`, before frozen source.
+The retained run is VALID / SYNTHETIC_UNPAID / exit 0. Three substantive
+recordings show presentation (23.12 seconds), presets (27.48 seconds) and
+Creator/Chronicle continuity (15 seconds); three blank auxiliary recordings
+provide no journey proof. Preset distinctness and desktop request/review/apply
+continuity receive bounded VERIFY_FINAL_EVIDENCE judgments. Presentation
+receives REPAIR_AND_RECAPTURE for PX-ASSIST-01.
+
+At 1280×800, docked welcome and focused-composer captures clip Send idea below
+the host. The old check compared controls only with the Assistant rectangle,
+which itself exceeded its clipping ancestor. The smallest repair constrains
+the docked host and flexes its inner panel, preserving the footer. The browser
+check now intersects viewport and every clipping ancestor, tests Send's actual
+hit target without scrolling, and submits a synthetic failure/recovery request
+at that laptop size. This repair requires its own capture and independent review.
+
+All ten presets have distinct furniture and compositions in dark/light desktop
+and phone captures. Saved Apply visibly distinguishes canonical saving from
+the exact saved draft's actual IN_VIEW renderer confirmation. Undo/Redo, reload,
+refinement and exact immutable Chronicle pin reopening remain visible and
+data-bound. Other post-save view/recovery states are source-tested rather than
+visually qualified here.
+
+The seventeen dimensions record: useful overlay composition except laptop
+dock clipping; clear review/apply/result hierarchy; readable typography; grouped
+spacing except that footer; meaningful labeled controls except clipped Send;
+readable dark/light contrast; consistent authoring modes; actual pending,
+proposal, accepted, failure, unsupported and quota states; desktop/phone/short
+viewport coverage with laptop dock failure; composer/review focus and Escape
+return but no full keyboard traversal; visible focus rings; truthful saved and
+failure feedback; real finite transitions and reduced-motion welcome; actual
+Undo/Redo/reload/Chronicle continuity; accessible small-fixture complexity;
+successful synthetic Creator outcome with no Player qualification; and honest
+provider/quota/manual/View canvas fallbacks. Non-desktop advanced modes,
+complete motion matrix, screen readers, all post-save renderer recoveries,
+stress density, live provider, physical/native quality and owner acceptance
+remain unqualified. This does not accept the full overhaul or A–P matrix.

@@ -60,31 +60,56 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
             .click();
         const name = `${viewport.name}-${mode.toLowerCase()}-${docked ? "docked" : "floating"}`;
         await capture(page, name);
-        observations.push(
-          await assistant.evaluate((element, name) => {
+        const observation = await assistant.evaluate((element, name) => {
+          const rect = element.getBoundingClientRect();
+          const visible = { top: 0, left: 0, right: innerWidth, bottom: innerHeight };
+          for (let ancestor: Element | null = element; ancestor; ancestor = ancestor.parentElement) {
+            const style = getComputedStyle(ancestor);
+            const bounds = ancestor.getBoundingClientRect();
+            if (/hidden|auto|scroll|clip/.test(style.overflowX)) {
+              visible.left = Math.max(visible.left, bounds.left + ancestor.clientLeft);
+              visible.right = Math.min(visible.right, bounds.left + ancestor.clientLeft + ancestor.clientWidth);
+            }
+            if (/hidden|auto|scroll|clip/.test(style.overflowY)) {
+              visible.top = Math.max(visible.top, bounds.top + ancestor.clientTop);
+              visible.bottom = Math.min(visible.bottom, bounds.top + ancestor.clientTop + ancestor.clientHeight);
+            }
+          }
+          const controls = Array.from(element.querySelectorAll("textarea,button")).filter(
+            (item) => !item.closest("details:not([open])"),
+          );
+          const footer = element.querySelector("footer")!;
+          return {
+            name,
+            panel: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+            scrollHeight: element.scrollHeight,
+            clientHeight: element.clientHeight,
+            visible,
+            footer: { y: footer.getBoundingClientRect().y, height: footer.getBoundingClientRect().height },
+            clippedControls: controls
+              .filter((item) => {
+                const control = item.getBoundingClientRect();
+                return (
+                  item.closest("footer") &&
+                  (control.bottom > visible.bottom + 1 ||
+                    control.top < visible.top - 1 ||
+                    control.left < visible.left - 1 ||
+                    control.right > visible.right + 1)
+                );
+              })
+              .map((item) => item.getAttribute("aria-label") ?? item.textContent?.trim()),
+          };
+        }, name);
+        observations.push(observation);
+        await writeFile(`${artifactRoot}/viewport-observations.json`, JSON.stringify(observations, null, 2) + "\n");
+        expect(observation.clippedControls, `${name} footer fits the viewport and every clipping ancestor`).toEqual([]);
+        const sendReachable = await assistant
+          .getByRole("button", { name: "Send idea", exact: true })
+          .evaluate((element) => {
             const rect = element.getBoundingClientRect();
-            const controls = Array.from(element.querySelectorAll("textarea,button")).filter(
-              (item) => !item.closest("details:not([open])"),
-            );
-            const footer = element.querySelector("footer")!;
-            return {
-              name,
-              panel: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
-              scrollHeight: element.scrollHeight,
-              clientHeight: element.clientHeight,
-              footer: { y: footer.getBoundingClientRect().y, height: footer.getBoundingClientRect().height },
-              clippedControls: controls
-                .filter((item) => {
-                  const control = item.getBoundingClientRect();
-                  return (
-                    item.closest("footer") &&
-                    (control.bottom > rect.bottom + 1 || control.left < rect.left - 1 || control.right > rect.right + 1)
-                  );
-                })
-                .map((item) => item.getAttribute("aria-label") ?? item.textContent?.trim()),
-            };
-          }, name),
-        );
+            return element.contains(document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2));
+          });
+        expect(sendReachable, `${name} Send idea is reachable without scrolling`).toBe(true);
         const composer = assistant.getByLabel("Describe your spatial idea");
         await composer.scrollIntoViewIfNeeded();
         await composer.click();
@@ -95,6 +120,20 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
         });
         expect(reachable, `${name} composer is reachable through the panel scroll`).toBe(true);
         await capture(page, `${name}-composer`);
+        if (viewport.name === "laptop" && docked) {
+          await composer.fill("Synthetic provider failure for recovery review.");
+          const response = page.waitForResponse(
+            (response) =>
+              response.url().endsWith("/api/studio/parallax") &&
+              response.request().postDataJSON()?.kind === "ASSISTANT",
+          );
+          await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
+          await response;
+          await expect(assistant).toContainText(/unchanged|could not|unavailable/i);
+          await capture(page, "laptop-guided-docked-send-recovery");
+          await assistant.getByRole("button", { name: "Start new task", exact: true }).click();
+          await expect(assistant.getByRole("heading", { name: /What would you like/ })).toBeVisible();
+        }
       }
     }
   }

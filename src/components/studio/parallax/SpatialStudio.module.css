@@ -1941,7 +1941,12 @@
 .assistantWorkspace[data-docked="true"] {
   position: absolute;
   width: min(440px, calc(100% - 32px));
+  height: min(720px, calc(100% - 70px));
   max-height: calc(100% - 70px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   min-height: 0;
   flex: none;
   left: auto;
@@ -1960,8 +1965,15 @@
   resize: none;
 }
 .assistantWorkspace[data-docked="true"] > aside {
-  height: min(650px, calc(100dvh - 270px));
+  flex: 1;
+  height: auto;
   min-height: 0;
+  overflow: hidden;
+}
+.assistantWorkspace[data-docked="true"] > details {
+  flex: none;
+  max-height: 30%;
+  overflow: auto;
 }
 .assistantWorkspace[data-floating-placed="true"] {
   position: fixed;
@@ -2095,10 +2107,12 @@
     width: min(560px, calc(100% - 16px));
     max-height: none;
     min-height: 0;
+    height: auto;
   }
   .assistantWorkspace > aside,
   .assistantWorkspace[data-docked="true"] > aside {
-    height: calc(100dvh - var(--studio-top, 76px) - 76px);
+    flex: 1;
+    height: auto;
     min-height: 0;
   }
 }
@@ -2416,10 +2430,12 @@
     bottom: 8px;
     width: calc(100% - 16px);
     max-height: none;
+    height: auto;
   }
   .assistantWorkspace > aside,
   .assistantWorkspace[data-docked="true"] > aside {
-    height: calc(100dvh - var(--studio-top, 76px) - 76px);
+    flex: 1;
+    height: auto;
     min-height: 0;
   }
   .adaptiveWorkspace .selectionInstrument {
