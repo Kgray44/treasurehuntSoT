@@ -115,16 +115,71 @@ it("clears offers during a failed refresh and restores an unchanged authoritativ
       },
     ],
   };
-  render(<CrossdeckHandoff voyageId="voyage" csrfToken="csrf" object={null} context={{}} resume={vi.fn()} />);
+  const connectionChanged = vi.fn();
+  render(
+    <CrossdeckHandoff
+      voyageId="voyage"
+      csrfToken="csrf"
+      object={null}
+      context={{}}
+      resume={vi.fn()}
+      onConnectionChange={connectionChanged}
+    />,
+  );
+  expect(connectionChanged).toHaveBeenLastCalledWith("connecting");
   await act(async () => mocks.next!(snapshot));
+  expect(connectionChanged).toHaveBeenLastCalledWith("live");
   expect(screen.getByRole("button", { name: "Receive Private note" })).toBeEnabled();
   await act(async () => mocks.failed!(new Error("Network interrupted")));
+  expect(connectionChanged).toHaveBeenLastCalledWith("reconnecting");
   expect(screen.queryByRole("button", { name: "Receive Private note" })).not.toBeInTheDocument();
   await act(async () => mocks.next!({ ...snapshot, observedAt: new Date().toISOString() }));
+  expect(connectionChanged).toHaveBeenLastCalledWith("live");
   expect(screen.getByRole("button", { name: "Receive Private note" })).toBeEnabled();
   expect(screen.getByRole("status")).toHaveTextContent("Connection restored");
   cleanup();
   expect(mocks.unsubscribe).toHaveBeenCalledOnce();
+});
+
+it("projects browser offline immediately and requires an authoritative snapshot after connectivity returns", async () => {
+  const browserOnline = vi.spyOn(navigator, "onLine", "get").mockReturnValue(true);
+  const connectionChanged = vi.fn();
+  const snapshot: SyncSnapshot = {
+    revision: 2,
+    nextSequence: 1,
+    surfaceId: "surface",
+    voyageId: "voyage",
+    observedAt: new Date().toISOString(),
+    focus: {},
+    presentations: [],
+    handoffs: [],
+  };
+  try {
+    render(
+      <CrossdeckHandoff
+        voyageId="voyage"
+        csrfToken="csrf"
+        object={null}
+        context={{}}
+        resume={vi.fn()}
+        onConnectionChange={connectionChanged}
+      />,
+    );
+    await act(async () => mocks.next!(snapshot));
+    expect(connectionChanged).toHaveBeenLastCalledWith("live");
+    browserOnline.mockReturnValue(false);
+    await act(async () => mocks.failed!(new Error("Connection interrupted")));
+    expect(connectionChanged).toHaveBeenLastCalledWith("offline");
+    await act(async () => mocks.next!(snapshot));
+    expect(connectionChanged).toHaveBeenLastCalledWith("offline");
+    browserOnline.mockReturnValue(true);
+    await act(async () => window.dispatchEvent(new Event("online")));
+    expect(connectionChanged).toHaveBeenLastCalledWith("offline");
+    await act(async () => mocks.next!({ ...snapshot, observedAt: new Date().toISOString() }));
+    expect(connectionChanged).toHaveBeenLastCalledWith("live");
+  } finally {
+    browserOnline.mockRestore();
+  }
 });
 
 it("starts the canonical transport when contextual pairing registers this mounted screen", async () => {

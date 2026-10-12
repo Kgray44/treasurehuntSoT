@@ -1096,7 +1096,11 @@ export function LandfallJournalChart({
         <p>
           Fallback:{" "}
           {activeWaypoint.fallback.mode === "PLAYER"
-            ? "Use Confirm arrival myself when you have checked the objective."
+            ? isHistorical
+              ? "Historical Charts are read-only. Use the current Chart on the controlling device to check arrival."
+              : presentationOnly
+                ? "Confirm arrival on the controlling device when you have checked the objective."
+                : "Use Confirm arrival myself when you have checked the objective."
             : activeWaypoint.fallback.mode === "CAPTAIN"
               ? "Ask your Captain to verify arrival using the configured Captain action."
               : "Use the alternate waypoint provided by your Captain."}

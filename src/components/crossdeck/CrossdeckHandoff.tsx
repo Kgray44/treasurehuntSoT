@@ -25,6 +25,7 @@ const modeNames: Record<TransferMode, string> = {
   PIN_TO_SURFACE: "Keep on that device",
   SEND_VIEW: "Send read-only view",
 };
+export type CrossdeckSyncConnection = "connecting" | "live" | "reconnecting" | "offline" | "revoked";
 type HandoffProps = {
   voyageId: string;
   csrfToken: string;
@@ -33,6 +34,8 @@ type HandoffProps = {
   captureContext?: () => Continuity;
   /** A companion purpose follows only its own background views; accepted arrivals still open explicitly. */
   followingFamily?: ObjectRef["family"] | null;
+  /** Projects this transport's verified state without opening another synchronization channel. */
+  onConnectionChange?: (connection: CrossdeckSyncConnection) => void;
   resume: (
     object: ObjectRef,
     context: Continuity,
@@ -49,6 +52,7 @@ function CrossdeckHandoffSession({
   context,
   captureContext,
   followingFamily,
+  onConnectionChange,
   resume,
 }: HandoffProps) {
   const [snapshot, setSnapshot] = useState<SyncSnapshot | null>(null);
@@ -74,6 +78,7 @@ function CrossdeckHandoffSession({
   const bridge = useCrossdeckContinuity();
   const resumeRef = useRef(resume);
   const followingFamilyRef = useRef(followingFamily);
+  const connectionRef = useRef(onConnectionChange);
   const synchronize = useRef<() => void>(() => {});
   useEffect(() => {
     resumeRef.current = resume;
@@ -82,12 +87,16 @@ function CrossdeckHandoffSession({
     followingFamilyRef.current = followingFamily;
   }, [followingFamily]);
   useEffect(() => {
+    connectionRef.current = onConnectionChange;
+  }, [onConnectionChange]);
+  useEffect(() => {
     const changed = () => setOwnId(sessionStorage.getItem(storageKey(voyageId)));
     changed();
     window.addEventListener("crossdeck-surface-changed", changed);
     return () => window.removeEventListener("crossdeck-surface-changed", changed);
   }, [voyageId]);
   useEffect(() => {
+    connectionRef.current?.("connecting");
     const id = ownId;
     if (!id) return;
     const sync = createHttpSyncTransport(voyageId, id, csrfToken);
@@ -109,13 +118,22 @@ function CrossdeckHandoffSession({
         current.current = next;
         hadFailure = false;
         if (!unchanged) setSnapshot(next);
-        setOnline(true);
+        const connectedNow = navigator.onLine !== false;
+        setOnline(connectedNow);
+        connectionRef.current?.(connectedNow ? "live" : "offline");
         if (restored) setMessage("Connection restored. Check your current view status above.");
       },
       (error) => {
         if (stopped) return;
         hadFailure = true;
         setOnline(false);
+        connectionRef.current?.(
+          error instanceof SyncTransportError && [401, 403].includes(error.status)
+            ? "revoked"
+            : navigator.onLine === false
+              ? "offline"
+              : "reconnecting",
+        );
         setMessage(
           error instanceof SyncTransportError && [401, 403].includes(error.status)
             ? "This device’s access ended. Connect it again to continue."
@@ -201,7 +219,9 @@ function CrossdeckHandoffSession({
         if (current.current && next.revision < current.current.revision) return current.current;
         current.current = next;
         setSnapshot(next);
-        setOnline(true);
+        const connectedNow = navigator.onLine !== false;
+        setOnline(connectedNow);
+        connectionRef.current?.(connectedNow ? "live" : "offline");
         setMessage(
           payload.action === "send" ? "Ready to receive on your other screen." : "Your devices are up to date.",
         );

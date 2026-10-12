@@ -12,7 +12,7 @@ import { ChronicleJournalPageContent, type JournalAsset } from "@/components/pla
 import { LandfallJournalChart, LandfallJournalProvider } from "@/components/player/journal/LandfallJournalChart";
 import { ChronicleLensEntry, ParallaxJournalProvider } from "@/components/player/parallax/ChronicleLens";
 import { useCrossdeckContinuity } from "./CrossdeckContinuity";
-import { CrossdeckHandoff } from "./CrossdeckHandoff";
+import { CrossdeckHandoff, type CrossdeckSyncConnection } from "./CrossdeckHandoff";
 import type { CrossdeckConnection } from "./useCrossdeckSession";
 import styles from "./CrossdeckCompanion.module.css";
 
@@ -73,6 +73,7 @@ export function CrossdeckCompanion({
   const [chartAvailable, setChartAvailable] = useState(false);
   const [textScale, setTextScale] = useState(1);
   const [purposeFocus, setPurposeFocus] = useState<SurfaceRole | null>(null);
+  const [syncConnection, setSyncConnection] = useState<CrossdeckSyncConnection>("connecting");
   const root = useRef<HTMLElement>(null);
   const purposes = useRef<HTMLDetailsElement>(null);
   const morePurposes = useRef<HTMLDetailsElement>(null);
@@ -206,7 +207,9 @@ export function CrossdeckCompanion({
           ? item.journalKind === "map"
           : true,
   );
-  const connected = liveConnection === "live" || liveConnection === "archived";
+  const connected = (liveConnection === "live" || liveConnection === "archived") && syncConnection === "live";
+  const offline = liveConnection === "offline" || syncConnection === "offline";
+  const accessEnded = liveConnection === "revoked" || syncConnection === "revoked";
 
   return (
     <LandfallJournalProvider
@@ -251,13 +254,15 @@ export function CrossdeckCompanion({
         <div className={styles.status} role="status" aria-live="polite">
           <span className={connected ? styles.connected : styles.reconnecting} aria-hidden="true" />
           <span>
-            {historical
-              ? "Preserved Voyage · released passages"
-              : connected
-                ? "Same Voyage · in sync"
-                : liveConnection === "offline"
-                  ? "Offline · showing your released view"
-                  : "Reconnecting to your Voyage"}
+            {accessEnded
+              ? "This device’s access ended. Reconnect to your Voyage."
+              : offline
+                ? "Offline · showing your released view"
+                : historical
+                  ? "Preserved Voyage · released passages"
+                  : connected
+                    ? "Same Voyage · in sync"
+                    : "Reconnecting to your Voyage"}
           </span>
           {!connected && (
             <button type="button" onClick={onRefresh}>
@@ -422,6 +427,7 @@ export function CrossdeckCompanion({
             object={object}
             context={context}
             captureContext={captureContext}
+            onConnectionChange={setSyncConnection}
             followingFamily={
               role === "CHART" ? "MAP" : role === "ARTIFACT_VIEWER" ? "ARTIFACT" : role === "JOURNAL" ? "NOTE" : null
             }

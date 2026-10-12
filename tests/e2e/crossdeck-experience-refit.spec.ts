@@ -85,6 +85,10 @@ for (const motion of ["no-preference", "reduce"] as const)
       };
       const primaryPath = new URL(d.url()).pathname;
       await capture(d, "01-chronicle");
+      const primaryAccessibility = await new AxeBuilder({ page: d }).include("main").analyze();
+      expect(primaryAccessibility.violations.filter((v) => ["critical", "serious"].includes(v.impact ?? ""))).toEqual(
+        [],
+      );
       const started = Date.now();
       await d.getByRole("button", { name: "Connect another device", exact: true }).click();
       const connect = d
@@ -193,9 +197,12 @@ for (const motion of ["no-preference", "reduce"] as const)
       await expect(p.getByText(/Offline|Reconnect|interrupted/, { exact: false }).first()).toBeVisible({
         timeout: 20000,
       });
+      await expect(p.getByText("Offline · showing your released view", { exact: true })).toBeVisible();
+      await expect(p.getByText("Same Voyage · in sync", { exact: true })).toHaveCount(0);
       await capture(p, "11-offline");
       await phone.setOffline(false);
       await expect(p.getByRole("heading", { name: "Voyage Chart", exact: true })).toBeVisible({ timeout: 20000 });
+      await expect(p.getByText("Same Voyage · in sync", { exact: true })).toBeVisible({ timeout: 20000 });
       await capture(p, "12-reconnected");
       await phone.setOffline(true);
       await db.crossdeckSurfaceSession.update({
@@ -214,6 +221,10 @@ for (const motion of ["no-preference", "reduce"] as const)
       await d.getByRole("button", { name: "Close journal tool drawer", exact: true }).click();
       await d.setViewportSize({ width: 820, height: 1180 });
       await capture(d, "14-medium-chronicle");
+      const mediumAccessibility = await new AxeBuilder({ page: d }).include("main").analyze();
+      expect(mediumAccessibility.violations.filter((v) => ["critical", "serious"].includes(v.impact ?? ""))).toEqual(
+        [],
+      );
       await p.setViewportSize({ width: 844, height: 390 });
       await capture(p, "15-phone-landscape");
       expect(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -229,6 +240,10 @@ for (const motion of ["no-preference", "reduce"] as const)
       await expect(p.getByRole("heading", { name: "Open your Chronicle Library", exact: true })).toBeVisible();
       await expect(p.getByText("The brass compass", { exact: true })).toHaveCount(0);
       await capture(p, "17-access-ended");
+      const recoveryAccessibility = await new AxeBuilder({ page: p }).include("main").analyze();
+      expect(recoveryAccessibility.violations.filter((v) => ["critical", "serious"].includes(v.impact ?? ""))).toEqual(
+        [],
+      );
       expect(await db.playerProfile.count()).toBe(before.personCount);
       expect(await db.playthroughMembership.count()).toBe(before.membershipCount);
       expect((await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } })).currentSequence).toBe(

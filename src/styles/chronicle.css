@@ -1412,6 +1412,18 @@ html[data-voyage-theme="light"]
   min-width: 0;
   overflow-wrap: anywhere;
 }
+/* The canonical Chart can sit on a paper leaf while its map and device
+   details keep their own dark surfaces. Match ink to each material. */
+.chronicle-leaf .landfall-journal-chart :is(h3, h4, p, strong, blockquote, span, li, label, dt, dd) {
+  color: var(--text-ink);
+}
+.landfall-journal-chart button {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+.landfall-journal-chart button:hover:not(:disabled) {
+  background: var(--surface-overlay);
+}
 .landfall-journal-chart button,
 .landfall-offline-journal button {
   min-height: 48px;
@@ -1422,6 +1434,24 @@ html[data-voyage-theme="light"]
 .landfall-journal-chart .voyage-chart-section {
   min-width: 0;
   padding: 0;
+  color: var(--parchment-50);
+}
+.landfall-journal-chart .voyage-chart-section :is(h3, h4, p, strong, blockquote, span, li, label, dt, dd),
+.chronicle-leaf
+  .landfall-journal-chart
+  .voyage-chart-section
+  :is(h3, h4, p, strong, blockquote, span, li, label, dt, dd) {
+  color: var(--parchment-50);
+}
+.landfall-journal-chart .landfall-chart-details {
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+}
+.chronicle-leaf
+  .landfall-journal-chart
+  .landfall-chart-details
+  :is(h3, h4, p, strong, blockquote, span, li, label, dt, dd) {
+  color: var(--text-primary);
 }
 .landfall-place-search {
   display: grid;

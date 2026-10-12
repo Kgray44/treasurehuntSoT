@@ -7,6 +7,7 @@ import type { SessionState } from "@/components/player/journal/ChronicleJournalS
 import type { Continuity, ObjectRef, TransferMode } from "@/crossdeck/sync-contracts";
 import { syntheticBinding, syntheticSpatialMoment } from "@/parallax/fixtures";
 import type { CrossdeckConnection } from "./useCrossdeckSession";
+import type { CrossdeckSyncConnection } from "./CrossdeckHandoff";
 import { CrossdeckCompanion } from "./CrossdeckCompanion";
 
 type Resume = (
@@ -22,6 +23,8 @@ const harness = vi.hoisted(() => ({
   bridge: { current: null as null | { capture: () => Continuity; resume: (context: Continuity) => void } },
   chart: {} as { compact?: boolean; presentationOnly?: boolean; readOnly?: boolean },
   resume: undefined as Resume | undefined,
+  syncConnection: "live" as CrossdeckSyncConnection,
+  onConnectionChange: undefined as undefined | ((connection: CrossdeckSyncConnection) => void),
 }));
 vi.mock("next/link", async () => {
   const React = await import("react");
@@ -31,12 +34,23 @@ vi.mock("next/link", async () => {
   };
 });
 vi.mock("./CrossdeckContinuity", () => ({ useCrossdeckContinuity: () => harness.bridge }));
-vi.mock("./CrossdeckHandoff", () => ({
-  CrossdeckHandoff: ({ resume }: { resume: Resume }) => {
-    harness.resume = resume;
-    return null;
-  },
-}));
+vi.mock("./CrossdeckHandoff", async () => {
+  const React = await import("react");
+  return {
+    CrossdeckHandoff: ({
+      resume,
+      onConnectionChange,
+    }: {
+      resume: Resume;
+      onConnectionChange?: (connection: CrossdeckSyncConnection) => void;
+    }) => {
+      harness.resume = resume;
+      harness.onConnectionChange = onConnectionChange;
+      React.useEffect(() => onConnectionChange?.(harness.syncConnection), [onConnectionChange]);
+      return null;
+    },
+  };
+});
 vi.mock("@/components/player/journal/LandfallJournalChart", async () => {
   const React = await import("react");
   return {
@@ -167,6 +181,8 @@ beforeEach(() => {
   harness.bridgeReady = true;
   harness.bridge.current = null;
   harness.resume = undefined;
+  harness.syncConnection = "live";
+  harness.onConnectionChange = undefined;
   Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
     configurable: true,
     value: function (this: HTMLDialogElement) {
@@ -408,4 +424,28 @@ it("offers a truthful offline retry while preserving the already released view",
   expect(screen.getByText("The complete third bearing.")).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: "Retry" }));
   expect(currentProps.onRefresh).toHaveBeenCalledOnce();
+});
+
+it("reports Crossdeck interruption even while Journal remains live and waits for verified recovery", async () => {
+  render(<CrossdeckCompanion {...props()} />);
+  expect(screen.getByText("Same Voyage · in sync")).toBeVisible();
+  await act(async () => harness.onConnectionChange!("offline"));
+  expect(screen.getByText("Offline · showing your released view")).toBeVisible();
+  expect(screen.queryByText("Same Voyage · in sync")).toBeNull();
+  expect(screen.getByText("The complete third bearing.")).toBeVisible();
+  await act(async () => window.dispatchEvent(new Event("online")));
+  expect(screen.getByText("Offline · showing your released view")).toBeVisible();
+  await act(async () => harness.onConnectionChange!("reconnecting"));
+  expect(screen.getByText("Reconnecting to your Voyage")).toBeVisible();
+  expect(screen.queryByText("Same Voyage · in sync")).toBeNull();
+  await act(async () => harness.onConnectionChange!("live"));
+  expect(screen.getByText("Same Voyage · in sync")).toBeVisible();
+  expect(screen.queryByText("Offline · showing your released view")).toBeNull();
+});
+
+it("does not claim to be in sync before the Crossdeck transport verifies the connection", () => {
+  harness.syncConnection = "connecting";
+  render(<CrossdeckCompanion {...props()} />);
+  expect(screen.getByText("Reconnecting to your Voyage")).toBeVisible();
+  expect(screen.queryByText("Same Voyage · in sync")).toBeNull();
 });

@@ -97,6 +97,10 @@ it("compact passive presentation keeps the current objective while excluding acq
   expect(screen.queryByText(/Historical Landfall chart/)).toBeNull();
   expect(screen.queryByRole("button", { name: "Use my location" })).toBeNull();
   expect(screen.queryByRole("button", { name: "Confirm arrival myself" })).toBeNull();
+  expect(
+    screen.getByText("Fallback: Confirm arrival on the controlling device when you have checked the objective."),
+  ).toBeVisible();
+  expect(screen.queryByText(/Use Confirm arrival myself/)).toBeNull();
   expect(watch).not.toHaveBeenCalled();
   view.unmount();
 });
