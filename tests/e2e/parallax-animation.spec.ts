@@ -69,6 +69,14 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
   const host = page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
   await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+  await page
+    .getByRole("region", { name: "Spatial canvas", exact: true })
+    .getByRole("button", { name: "Isolate selected object", exact: true })
+    .click();
+  await page
+    .getByRole("region", { name: "Spatial canvas", exact: true })
+    .getByRole("button", { name: "Frame selection", exact: true })
+    .click();
   await page.getByRole("tab", { name: "Timeline", exact: true }).click();
   const editor = page.getByRole("region", { name: "Object animation editor" });
   await expect(editor).toBeVisible();
@@ -110,6 +118,9 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
   await page.getByRole("tab", { name: "Timeline", exact: true }).click();
   await page.getByLabel("Timeline visible duration").selectOption("10000");
   await page.screenshot({ path: `${root}/animation-reloaded-zoom.png` });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  await page.screenshot({ path: `${root}/animation-phone.png` });
 });
 
 test("Middle and Ctrl drag use the same camera pan and renderer recovery retains the draft", async ({
@@ -125,7 +136,7 @@ test("Middle and Ctrl drag use the same camera pan and renderer recovery retains
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByLabel("Authoring mode", { exact: true }).selectOption("ENGINEERING");
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true }),
     host = canvas.locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
