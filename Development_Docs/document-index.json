@@ -1029,6 +1029,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/phase4-acceptance-followup-r1-ledger.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/phase4-virtual-evidence-20261011.json",
       "record_type": "engineering-record",
       "status": "current",

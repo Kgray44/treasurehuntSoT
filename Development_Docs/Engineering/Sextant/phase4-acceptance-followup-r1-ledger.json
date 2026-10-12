@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "requestMarker": "sextant-phase4-acceptance-followup-20261012-r1",
+  "launchdeckRequestKey": "ld-59f568a50dab9ad8e1393fd9cb9691a7a292393a9a8105bee1cf7f20c8261497",
+  "profile": "BOUNDED_PRODUCT_PHASE_UNATTENDED_CONTINUATION",
+  "contextClassification": "LAUNCHDECK_PROJECT_TRIM_ADAPTATION_NOT_CANONICAL_PACKET_V2",
+  "ownerThread": "01a12c17-115a-7f92-b319-32f3666a5b2d",
+  "nativeProjectId": "fd21b701-3215-417a-a413-0a17e02badbb",
+  "ownerHost": "LIMITNOTFOUND",
+  "branch": "codex/sextant-phase4-take-it-afield",
+  "initialCandidateSha": "abed9b892aae271f52b0f99a428a2603002e8dea",
+  "initialCandidateTree": "6bddbf39fcc7d7a1a8fe521e6f5df4ef152ae9e8",
+  "protectedBaseSha": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+  "protectedBaseTree": "ef7c2996093a8af3ac3898a58db3c9dbe87ad03c",
+  "sourceBindings": [
+    {
+      "path": "AGENTS.md",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "4b9e4081874d732a41cbd41c69e3b0bf346b25b7",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": ".agents/product-experience-workflow.md",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "b71ce2d7f53c7cf11a31d9452f95d2b05e04cef7",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": ".agents/sextant-phase4.md",
+      "commit": "abed9b892aae271f52b0f99a428a2603002e8dea",
+      "blob": "c10a3e3d0e462849ea7867b1599c5afc1fcd9064",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "a578cd284d90c98a9df9f08e6066b31994f1b320",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sextant_Governing_Amendment_v1.1_Reach_Camera_and_Device_Gesture_Boundaries.md",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "bda583591f6c46fd400eb9699c6a9090f991a902",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/820178bf/independent-review.json",
+      "commit": "abed9b892aae271f52b0f99a428a2603002e8dea",
+      "blob": "9225fc5a7dd0242ef9e2d7bd9625d4301249447e",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": "testing/ownership.json",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "ca2a481b4823ff2846c8342a1826b05d6bb75cf3",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": "testing/contracts.json",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "7e28cf378028f1ceb287ff20ed8d9ee1793e9edc",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    }
+  ],
+  "priorCampaigns": {
+    "sextant": {
+      "actualRepairRecaptureIterations": 3,
+      "maximum": 3,
+      "state": "EXHAUSTED_UNCHANGED",
+      "review": "Development_Docs/Engineering/Sextant/evidence/820178bf/independent-review.json"
+    },
+    "crossdeck": {
+      "actualIterations": 10,
+      "maximum": 3,
+      "state": "PRESERVED_NOT_RESET_BY_HANDOFF"
+    }
+  },
+  "followup": {
+    "authorizedMaximumActualIterations": 3,
+    "actualRepairRecaptureIterations": 0,
+    "preReviewRepairPasses": 0,
+    "stopEarlierWithoutMaterialProgress": true,
+    "events": []
+  },
+  "ownership": {
+    "sextantOwned": [
+      ".agents/scripts/sextant-experience-fixture.ts",
+      "testing/contracts.json#sextant.phase4.native-context.experience",
+      "testing/contracts.json#sextant.phase3.field-context.experience",
+      "testing/contracts.json#crossdeck.phase2.continuity.experience (bilateral consumer qualification only)"
+    ],
+    "crossdeckOwned": ["src/crossdeck/service.ts", "src/components/crossdeck/CrossdeckDevices.tsx"],
+    "journalSharedPendingContract": [
+      "src/components/player/journal/ChronicleJournalSession.tsx",
+      "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
+      "src/app/play/[taleSlug]/session/[sessionId]/page.tsx"
+    ],
+    "reachOwned": [
+      "scripts/sounding-line/experience-browser.mjs",
+      "tests/sounding-line/experience-browser-fixtures.test.mjs"
+    ],
+    "lens": "PRESERVE_EXISTING_BILATERAL_INK_DELTA_NO_DUPLICATE_REPAIR"
+  },
+  "requiredFindings": [
+    "SEXTANT-FINAL-001",
+    "SEXTANT-FINAL-002",
+    "SEXTANT-FINAL-003",
+    "SEXTANT-FINAL-004",
+    "SEXTANT-FINAL-005"
+  ],
+  "successProof": [
+    "Complete desktop/mobile NORMAL/REDUCED visible consumer journeys and measured feedback",
+    "Role-scoped legitimate multi-device continuation and exact canonical Voyage identity",
+    "Actual instrument fallback and rendered Lens read/interaction/close/return",
+    "Actual Creator title edit/save/ordinary reopening/restoration and unchanged pinned Player clue",
+    "Fresh independent acceptance in separate supported context",
+    "Expanded affected shared-consumer contracts and exact-source ordinary Sounding Line qualification",
+    "New frozen native contract with one owner claim before registered scoped D2/D3 work"
+  ],
+  "dependencies": {
+    "reachHelper": "WAIT_FOR_PROTECTED_ACCEPTED_OWNER_HANDOFF",
+    "journalSharedContract": "WAIT_FOR_RECORDED_CANONICAL_OWNER_CONTRACT",
+    "crossdeckReconciliation": "OWNER_ONE_TIME_PREFLIGHT_ON_MAIN858"
+  },
+  "goal": {
+    "nativePresent": true,
+    "status": "paused",
+    "resumeOperationExposed": false,
+    "newGoalCreated": false,
+    "capabilityGap": "EXISTING_UNFINISHED_GOAL_HAS_NO_EXPOSED_RESUME_OPERATION",
+    "manualExecution": "AUTHORIZED_CONTINUATION"
+  },
+  "nativeDispatch": {
+    "stale035And820": "HELD_UNUSABLE",
+    "newSource": "REQUIRES_NEW_FROZEN_CONTRACT_AND_ONE_OWNER_CLAIM",
+    "repeatPassingRootProfileLostResponse": false
+  },
+  "physicalGate": {
+    "D4": "REQUIRED_FOR_FORMAL_PHASE4_ACCEPTANCE",
+    "accessSigning": "UNAVAILABLE_NO_BYPASS",
+    "mergeAuthorizedWithoutD4": false
+  },
+  "accounting": {
+    "actualFollowupUsage": null,
+    "confidence": "UNAVAILABLE",
+    "goalPausedCounters": "HISTORICAL_NOT_FOLLOWUP_USAGE"
+  },
+  "createdAt": "2026-10-12T16:17:07.816Z",
+  "launchdeckReceipt": {
+    "state": "uncertain",
+    "observedThreadId": "01a12c17-115a-7f92-b319-32f3666a5b2d",
+    "projectVerified": true,
+    "actualTitle": "Sextant Phase 4",
+    "taskKind": "codex",
+    "titleRepairAttempt": "NOT_PERFORMED",
+    "limitation": "Helper rejected recording existing title because it requires the complete generated phase-name title. Native existing identity/project/title independently read back; no new dispatch or rename. Stored existing ID to prevent duplication.",
+    "newThreadCreated": false
+  }
+}
