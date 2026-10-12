@@ -218,6 +218,16 @@ describe("Spatial Assistant deliberate, accessible proposal review", () => {
     );
     await screen.findByText("Synthetic provider unavailable");
   });
+  it("replaces welcome content with recovery feedback while preserving the submitted request", async () => {
+    const input = props();
+    render(<SpatialAssistant {...input} />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Move the map" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    await screen.findByText("Synthetic provider unavailable");
+    expect(screen.queryByRole("heading", { name: /What would you like/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("textbox")).toHaveValue("Move the map");
+    expect(screen.getByRole("button", { name: /Send idea/ })).toBeEnabled();
+  });
   it("requires preview and explicit apply before calling the canonical edit port", async () => {
     const input = props(),
       checked = await proposal();

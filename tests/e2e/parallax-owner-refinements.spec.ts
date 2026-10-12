@@ -146,6 +146,17 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
       await page.screenshot({ path: `${root}/owner-${theme.toLowerCase()}-${tab.toLowerCase()}.png`, fullPage: true });
     }
     await selectBottom("Timeline");
+    await page.getByLabel("Authoring mode").selectOption("DETAILED");
+    for (const title of ["Appearance / layers", "Interactions", "Accessibility & Fallback"]) {
+      const summary = inspector.getByText(title, { exact: true });
+      if (!(await summary.evaluate((element) => element.parentElement?.hasAttribute("open")))) await summary.click();
+    }
+    await page.getByRole("tab", { name: "Library", exact: true }).click();
+    await page.screenshot({ path: `${root}/owner-library-and-inspector-${theme.toLowerCase()}.png`, fullPage: true });
+    await page.getByRole("tab", { name: "Saved", exact: true }).click();
+    await expect(page.getByRole("tabpanel", { name: "Saved", exact: true })).toContainText("Owned items");
+    await page.screenshot({ path: `${root}/owner-saved-library-${theme.toLowerCase()}.png`, fullPage: true });
+    await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
     const axes = await new AxeBuilder({ page }).include("[data-mode]").analyze();
     accessibility.push({ theme, violations: axes.violations });
     expect(axes.violations.filter((item) => ["serious", "critical"].includes(item.impact ?? ""))).toEqual([]);
@@ -226,6 +237,17 @@ test("Admiralty daily chart selects actual request and cost projections with emp
   await page.getByText("Read daily requests and costs as a table", { exact: true }).click();
   await expect(page.getByRole("columnheader", { name: "Reserved / unresolved" })).toBeVisible();
   await page.screenshot({ path: `${root}/owner-daily-table.png`, fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const [value, label] of [
+    ["requests", "Requests per day"],
+    ["settled", "Settled cost per day"],
+    ["accounted", "Accounted spending per day"],
+  ] as const) {
+    await page.getByLabel("Chart shows").selectOption(value);
+    await page.getByRole("figure", { name: `${label} by UTC day`, exact: true }).scrollIntoViewIfNeeded();
+    await page.screenshot({ path: `${root}/owner-daily-mobile-${value}.png`, fullPage: true });
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   const accessibility = await new AxeBuilder({ page }).analyze();
   expect(accessibility.violations.filter((item) => ["serious", "critical"].includes(item.impact ?? ""))).toEqual([]);
 });

@@ -4,9 +4,10 @@ import AxeBuilder from "@axe-core/playwright";
 import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
+import { mkdir } from "node:fs/promises";
 
 test.describe.configure({ mode: "serial", timeout: 300000 });
-test.use({ actionTimeout: 30000 });
+test.use({ actionTimeout: 30000, video: "on" });
 test.afterAll(() => db.$disconnect());
 test("Admiralty changes an AI allowance through the existing People dossier", async ({ page, context, baseURL }) => {
   if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("PARALLAX_QUOTA_OWNED_BROWSER_REQUIRED");
@@ -26,6 +27,13 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   const overview = await (await page.request.get("/api/admin/ai-usage")).json();
   expect(overview.provider).not.toHaveProperty("key");
   expect(overview.provider).not.toHaveProperty("OPENAI_API_KEY");
+  const captureRoot = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
+  await mkdir(captureRoot, { recursive: true });
+  if (overview.daily.every((day: { requests: number }) => day.requests === 0)) {
+    await page.getByRole("button", { name: "Overview", exact: true }).click();
+    await expect(page.getByRole("figure", { name: "Requests per day by UTC day", exact: true })).toBeVisible();
+    await page.screenshot({ path: `${captureRoot}/owner-daily-empty.png`, fullPage: true });
+  }
   const unauthorized = await page.request.post("/api/admin/commands/ai-quota-policy/preview", { data: {} });
   expect(unauthorized.status()).toBe(403);
   await page.goto("/admin/people");
@@ -36,6 +44,7 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
     .locator("section.chartroom-panel")
     .filter({ has: page.getByRole("heading", { name: "AI usage & quotas", exact: true }) });
   await expect(panel.getByText("0 / 500", { exact: true })).toBeVisible();
+  await page.screenshot({ path: `${captureRoot}/owner-people-ai-dossier-desktop.png`, fullPage: true });
   await panel.getByLabel("Monthly request allowance (blank inherits)").fill("250");
   await panel.getByLabel("Reason for user policy change").fill("Synthetic browser allowance exception");
   await panel.getByRole("button", { name: "Preview user policy", exact: true }).click();
@@ -75,6 +84,7 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   expect(bounds!.x).toBeGreaterThanOrEqual(0);
   expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(391);
   await panel.screenshot({ path: test.info().outputPath("account-ai-quotas-mobile.png") });
+  await page.screenshot({ path: `${captureRoot}/owner-people-ai-dossier-mobile.png`, fullPage: true });
   await page.goto("/admin/ai-usage");
   await page.getByRole("button", { name: "Global Policy", exact: true }).click();
   await page.getByLabel("Global spending cap (USD)", { exact: true }).fill("8");

@@ -1,14 +1,17 @@
 import { assistantSystemInstructions } from "../../src/parallax/openai-provider";
+import { conciseAssistantInstructions } from "../../src/parallax/assistant-instructions";
 
 // Evaluation-only alternatives. They are never selected by browser input or
 // runtime environment variables, and cannot change provider/auth/quota policy.
 export const instructionExperiments = {
+  CANDIDATE: conciseAssistantInstructions,
   CURRENT: assistantSystemInstructions,
   PRECISE:
     assistantSystemInstructions +
     "\n" +
     [
       "Make the smallest complete change that fulfills the request. Preserve unrelated properties, interactions, constraints and Guided content; use null for every unchanged CONTENT field. Quoted new text must match exactly.",
+      "A request to change what Guided View tells the reader uses FALLBACK.narrative, not a new spatial text object. Mentioned landmarks may be narrative instructions; do not invent missing scene entities or progression rules.",
       "Classify CREATE for new objects; ACCESSIBILITY for accessible descriptions, Guided text or removal of required gestures; INTERACTION for behavior/interaction changes; EDIT for other changes. Consequential ambiguity or contradictions require CLARIFICATION, one question and no operations.",
       "Be brief: one-sentence summary and one-sentence explanation per operation; avoid repeating review/validation boilerplate in every field. Empty arrays mean no relevant assumptions, warnings or limitations. Mention only limitations that affect this request.",
     ].join("\n"),
