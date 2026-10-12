@@ -102,4 +102,13 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   ).toBeGreaterThan(250);
   expect((await editor.getByLabel("Feature name", { exact: true }).boundingBox())!.width).toBeGreaterThan(200);
   await page.screenshot({ path: `${root}/room-feature-phone.png` });
+  await editor.getByLabel("Feature x (m)", { exact: true }).fill("0.65");
+  await editor.getByLabel("Feature x (m)", { exact: true }).press("Tab");
+  await expect.poll(center).toBeCloseTo(0.65);
+  await expect.poll(entityX).toBeCloseTo(0.65);
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  await page.getByRole("button", { name: "Collapse Inspector", exact: true }).click();
+  await host.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/room-feature-phone-edited.png` });
 });
