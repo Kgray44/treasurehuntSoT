@@ -777,6 +777,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/catalog/reach.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/catalog/sealed-hold.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -8895,6 +8901,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Sextant/README.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -9987,6 +9999,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-review-packet.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-review-packet.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -10012,6 +10030,18 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/local-93f1cc80584c/local-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-d1-632e1895/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-d1-632e1895/worker-performance.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

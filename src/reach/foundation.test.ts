@@ -131,7 +131,11 @@ describe("Reach Phase 1 owner oracles", () => {
     });
     expect(estimatedPoint(c, o, binding, 1300)).toBeNull();
     expect(estimatedPoint(c, { ...o, providerGeneration: 2 }, binding, 1101)).toBeNull();
-    expect(estimatedPoint(c, { ...o, quality: "LOW" }, binding, 1101)).toBeNull();
+    // Coarse legacy quality no longer overrides valid per-hand feature evidence.
+    expect(estimatedPoint(c, { ...o, quality: "LOW" }, binding, 1101)).not.toBeNull();
+    const partial = structuredClone(o);
+    partial.hands[0].landmarks[8].valid = false;
+    expect(estimatedPoint(c, partial, binding, 1101)).toBeNull();
   });
   it("stops late streams and reserves one acquisition across consumers", async () => {
     let resolve!: (stream: MediaStream) => void;
@@ -172,7 +176,7 @@ describe("Reach Phase 1 owner oracles", () => {
     expect(stableSamples(groups[0])).toBe(false);
     expect(() => fitCalibration(groups, syntheticBinding, 1000)).toThrow();
   });
-  it("preserves missing scores and creates new identity after disappearance", () => {
+  it("preserves missing scores, tolerates a short spatially continuous gap and expires long gaps", () => {
     const adapter = new BrowserHandAdapter(
       { providerGeneration: 1, cameraLeaseId: "synthetic-no-camera", cameraFrameVersion: 1, mirrorTransform: "NONE" },
       "D1",
@@ -182,6 +186,8 @@ describe("Reach Phase 1 owner oracles", () => {
     expect(sampleGate().accept(a, 111).hands[0].trackingScore).toBeNull();
     adapter.envelope({ landmarks: [], handedness: [] }, 120, 130, 640, 480);
     const b = adapter.envelope({ landmarks, handedness: [] }, 140, 150, 640, 480);
-    expect(b.hands[0].trackGeneration).toBeGreaterThan(a.hands[0].trackGeneration);
+    expect(b.hands[0].trackGeneration).toBe(a.hands[0].trackGeneration);
+    const c = adapter.envelope({ landmarks, handedness: [] }, 500, 510, 640, 480);
+    expect(c.hands[0].trackGeneration).toBeGreaterThan(a.hands[0].trackGeneration);
   });
 });

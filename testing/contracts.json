@@ -4346,6 +4346,682 @@
           }
         ],
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      },
+      "experience": {
+        "persona": "A Creator, Player or owner exploring local hand interaction with an ordinary webcam",
+        "objective": "Enable a camera, see honest tracking, calibrate and independently check pointing, practice, recover and return naturally",
+        "visibleOutcome": "A coherent staged camera and pointing workspace with visible acquisition, distinct recognition stages, safe recovery and independent results",
+        "integrationOwner": "Reach calibration experience integration",
+        "systems": ["reach", "project-sextant", "watchglass"],
+        "sourcePaths": ["src/reach", "src/app/devices/reach", "src/app/devices/pair/page.tsx"],
+        "projectionPaths": [
+          "src/watchglass/hand-observation.ts",
+          "src/watchglass/hand-provider.ts",
+          "src/watchglass/hand-posture.ts",
+          "src/sextant/camera.ts",
+          "public/reach"
+        ],
+        "entryPoint": "/devices/pair",
+        "states": [
+          "WELCOME",
+          "TRACKING",
+          "TRAINING",
+          "PAUSED",
+          "FIT_READY",
+          "VALIDATION",
+          "RESULTS",
+          "PLAYGROUND",
+          "MULTIPLE_HANDS",
+          "DETECTED_INELIGIBLE",
+          "RELATIVE_TRAINING",
+          "RELATIVE_VALIDATION",
+          "RELATIVE_RESULTS",
+          "CAMERA_UNAVAILABLE",
+          "RETURNED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ANONYMOUS"],
+        "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. A disclosed guided demo explains the full flow without a camera.",
+        "fallback": "Camera failure gives a plain-language explanation, retry and a guided conventional demonstration. All Voyagewright navigation remains conventional.",
+        "navigation": "Existing device connections link opens Reach; the visible return clears owned camera resources and restores device connections; safe contextual return is accepted.",
+        "designTarget": "One continuous instrument workspace with a large registered camera stage, restrained brass and sea-green hierarchy, staged target plane, contextual guidance, visible progress and deliberately disclosed diagnostics. Mobile preparation prioritizes the camera and calibration prioritizes the target.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": [],
+        "homeportJourneyIds": [],
+        "browserTests": ["tests/e2e/reach-laboratory.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "motion": {
+          "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
+          "feedbackBudgetMs": 5000
+        },
+        "continuity": {
+          "objective": "Maintain the existing Voyagewright origin and navigation destination before, during and after local camera/observation/calibration work; no pairing or progression authority moves into Reach.",
+          "checks": [
+            {
+              "id": "voyagewright-home-origin",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ]
+        },
+        "limitations": [
+          "D0 and photographic D1 replay do not establish real-person webcam accuracy, field ergonomics or owner acceptance.",
+          "Absolute empirical RGB pointing is experimental and must pass held-out validation for the current setup; relative cursor control has distinct setup and claims.",
+          "Camera movement can be undetectable. Calibration is session-only and must be repeated after placement, identity or geometry changes.",
+          "Phase 2 target selection, Phase 3 manipulation and Crossdeck Air Handoff are not implemented by this laboratory."
+        ],
+        "resolvedDebtIds": ["PE-DEBT-REACH-STAGES"],
+        "journeys": [
+          {
+            "id": "absolute-calibration-and-recovery",
+            "roles": ["ANONYMOUS"],
+            "outcome": "A person enters naturally, understands tracking, completes nine training and five independent targets, practices, sees detected ineligible hands and safely returns",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Find the Hand interaction laboratory"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Find your point.",
+                "text": "Find your point.",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "The visible device link opens the Reach workspace without pairing or camera access.",
+                "state": "WELCOME"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Explore guided demo"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "Reach status",
+                "text": "Your hand is ready",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "The user sees a clearly disclosed simulated hand, distinct detection and posture readiness.",
+                "state": "TRACKING",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "radio",
+                "name": "Relative movement"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Begin nine-point calibration"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 1 of 9",
+                "state": "TRAINING"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Pause calibration"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Resume calibration",
+                "state": "PAUSED"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Resume calibration"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 2 of 9"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 3 of 9"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 4 of 9"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 5 of 9"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 6 of 9"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 7 of 9"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 8 of 9"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 9 of 9"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Check five new targets",
+                "text": "Check five new targets",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "All nine training targets complete but the user is required to run an independent check.",
+                "state": "FIT_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Check five new targets"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 1 of 5",
+                "state": "VALIDATION"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 2 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 3 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 4 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 5 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Independent check passed",
+                "text": "Independent check passed",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "Five independent targets establish a session-specific simulated result, separately from training.",
+                "state": "RESULTS"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open pointing playground"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Follow your movement.",
+                "text": "Follow your movement.",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "The user reaches a separate practice surface with a fresh filtered pointer and no domain activation.",
+                "state": "PLAYGROUND"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Show a practice target"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Demo tracking condition"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "Reach status",
+                "text": "2 detected",
+                "state": "MULTIPLE_HANDS"
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Demo tracking condition"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "Reach status",
+                "text": "Move your hand slightly toward the center",
+                "state": "DETECTED_INELIGIBLE"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Device connections"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Find the Hand interaction laboratory",
+                "text": "Find the Hand interaction laboratory",
+                "path": "/devices/pair",
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          },
+          {
+            "id": "relative-movement-and-check",
+            "roles": ["ANONYMOUS"],
+            "outcome": "A person uses a comfortable movement setup, independently checks cursor control and practices without an absolute-accuracy claim",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Find the Hand interaction laboratory"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Find your point.",
+                "text": "Find your point.",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "The visible device link opens the Reach workspace without pairing or camera access.",
+                "state": "WELCOME"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Explore guided demo"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "Reach status",
+                "text": "Your hand is ready",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "The user sees a clearly disclosed simulated hand, distinct detection and posture readiness.",
+                "state": "TRACKING",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Set up relative movement"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 1 of 5",
+                "state": "RELATIVE_TRAINING"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 2 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 3 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 4 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 5 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Check five new targets",
+                "text": "Check five new targets",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "Comfortable center and four directions establish a separate movement-control mapping."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Check five new targets"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 1 of 5",
+                "state": "RELATIVE_VALIDATION"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 2 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 3 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 4 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Target 5 of 5"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move demo hand to target"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Independent check passed",
+                "text": "Independent check passed",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "Independent cursor-control targets pass without claiming physically accurate absolute pointing.",
+                "state": "RELATIVE_RESULTS"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open pointing playground"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Follow your movement.",
+                "text": "Follow your movement.",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "The movement mode reaches its own cursor playground with explicit relative instructions."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Device connections"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Find the Hand interaction laboratory",
+                "text": "Find the Hand interaction laboratory",
+                "path": "/devices/pair",
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          },
+          {
+            "id": "camera-unavailability-and-conventional-recovery",
+            "roles": ["ANONYMOUS"],
+            "outcome": "A person understands an unavailable camera and completes a useful conventional demonstration before returning",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Find the Hand interaction laboratory"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Find your point.",
+                "text": "Find your point.",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "The visible device link opens the Reach workspace without pairing or camera access.",
+                "state": "WELCOME"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Enable live camera"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Retry live camera",
+                "text": "Retry live camera",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "An unavailable camera explains its actual condition and exposes explicit retry and a guided conventional alternative.",
+                "state": "CAMERA_UNAVAILABLE"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Explore guided demo"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "Reach status",
+                "text": "Your hand is ready",
+                "path": "/devices/reach",
+                "kind": "outcome",
+                "meaning": "The user sees a clearly disclosed simulated hand, distinct detection and posture readiness.",
+                "state": "TRACKING",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Device connections"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Find the Hand interaction laboratory",
+                "text": "Find the Hand interaction laboratory",
+                "path": "/devices/pair",
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ]
       }
     },
     {

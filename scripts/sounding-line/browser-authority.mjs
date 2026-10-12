@@ -11,6 +11,58 @@ const readinessIntervalMs = 250;
 const readinessTimeoutMs = 120_000;
 const shutdownTimeoutMs = 5_000;
 
+const diagnosticFailureCodes = new Set([
+  "SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:PRODUCTION_BROWSER_AUTHORITY_REQUIRES_NEXT_START",
+  "SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:BUILT_OUTPUT_MISMATCH",
+  "SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:PRODUCTION_AND_DEVELOPMENT_OUTPUT_COLLISION",
+  "SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:SERVER_EXITED",
+  "SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:SERVER_NOT_READY",
+  "SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:TASK_OWNED_HTTP_PROXY",
+  "SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:SERVER_EXITED",
+  "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_FIXTURE_EXITED",
+  "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+]);
+
+function authorityDiagnostic(
+  startedAt,
+  event,
+  { child, exit, failureCategory, failureCode, childCleanup, proxyCleanup, proxy } = {},
+) {
+  // Diagnostic boundaries are best effort stderr records, never acceptance
+  // receipts. Select metadata explicitly; error text, URLs and launch inputs
+  // can contain credentials and must not enter these records.
+  try {
+    const record = {
+      namespace: "SOUNDING_LINE_DIAGNOSTIC",
+      version: 1,
+      component: "browser-authority",
+      event,
+      utc: new Date().toISOString(),
+      elapsedMs: Number(Math.max(0, performance.now() - startedAt).toFixed(3)),
+    };
+    if (Number.isSafeInteger(child?.pid) && child.pid > 0) record.pid = child.pid;
+    const observedExit = exit ?? (childCleanup && child ? { code: child.exitCode, signal: child.signalCode } : null);
+    if (observedExit) {
+      record.exitCode = Number.isInteger(observedExit.code) ? observedExit.code : null;
+      record.signal = /^SIG[A-Z0-9]{1,12}$/u.test(observedExit.signal ?? "") ? observedExit.signal : null;
+    }
+    if (failureCategory !== undefined) {
+      record.failureCategory = failureCategory;
+      record.failureCode = diagnosticFailureCodes.has(failureCode) ? failureCode : null;
+    }
+    if (childCleanup)
+      record.outcome = !child
+        ? "NOT_STARTED"
+        : child.exitCode !== null || child.signalCode !== null
+          ? "EXITED"
+          : "EXIT_NOT_OBSERVED";
+    if (proxyCleanup) record.outcome = !proxy ? "NOT_STARTED" : !proxy.listening ? "CLOSED" : "CLOSE_NOT_OBSERVED";
+    console.error(JSON.stringify(record));
+  } catch {
+    // Observability must not change an existing result or cleanup path.
+  }
+}
+
 export function assertBrowserAuthorityTopology({
   requiresProductionBuild = true,
   serverMode,
@@ -238,6 +290,8 @@ export async function runBrowserAuthority({
   ready = isReady,
   serverArguments: configuredServerArguments,
 }) {
+  const diagnosticStartedAt = performance.now();
+  const progress = (event, fields) => authorityDiagnostic(diagnosticStartedAt, event, fields);
   const useTaskOwnedCookieAdapter = taskOwnedCookieAdapterRequired(environment);
   const browserPort = port ?? (await availablePort());
   const serverPort = useTaskOwnedCookieAdapter ? await availablePort() : browserPort;
@@ -276,16 +330,23 @@ export async function runBrowserAuthority({
       env: { ...environment, PLAYWRIGHT_BASE_URL: baseURL, NEXT_TELEMETRY_DISABLED: "1" },
     });
     timings.serverPreparationMs = now() - serverStartedAt;
+    progress("readiness.backend.start", { child: server });
     timings.serverReadinessMs = await waitForReadiness({ baseURL: serverBaseURL, server, now, sleep, ready });
+    progress("readiness.backend.result", { child: server });
     if (useTaskOwnedCookieAdapter) {
       try {
+        progress("proxy.start");
         proxy = await startTaskOwnedHttpProxy({ port: browserPort, backendPort: serverPort });
+        progress("proxy.result");
       } catch {
         throw new Error("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:TASK_OWNED_HTTP_PROXY");
       }
+      progress("readiness.proxy.start", { child: server });
       timings.serverReadinessMs += await waitForReadiness({ baseURL, server, now, sleep, ready });
+      progress("readiness.proxy.result", { child: server });
     }
     if (fixtureArguments.length) {
+      progress("fixture.start");
       const fixture = launch(
         process.execPath,
         ["node_modules/@playwright/test/cli.js", "test", ...fixtureArguments, "--project", fixtureProject],
@@ -300,13 +361,16 @@ export async function runBrowserAuthority({
           },
         },
       );
+      progress("fixture.launched", { child: fixture });
       const fixtureResult = await exited(fixture);
+      progress("fixture.exit", { child: fixture, exit: fixtureResult });
       if (fixtureResult.code !== 0)
         throw new Error(
           `SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_FIXTURE_EXITED:${fixtureResult.code ?? "UNKNOWN"}`,
         );
     }
     const browserStartedAt = now();
+    progress("capture-child.start");
     browser = launch(
       process.execPath,
       browserScriptArguments ?? ["node_modules/@playwright/test/cli.js", "test", ...browserArguments],
@@ -320,13 +384,23 @@ export async function runBrowserAuthority({
         },
       },
     );
-    const browserExit = exited(browser).then((value) => ({ type: "browser", value }));
+    progress("capture-child.launched", { child: browser });
+    const browserExit = exited(browser).then((value) => {
+      progress("capture-child.exit", { child: browser, exit: value });
+      return { type: "browser", value };
+    });
     const serverExit = exited(server).then((value) => ({ type: "server", value }));
     const completed = await Promise.race([browserExit, serverExit]);
     timings.browserExecutionMs = now() - browserStartedAt;
     if (completed.type === "server") {
       const failureDetectedAt = now();
+      progress("authority.failure", {
+        failureCategory: "INFRASTRUCTURE_RUNTIME_FAILURE",
+        failureCode: "SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:SERVER_EXITED",
+      });
+      progress("cleanup.browser.start", { child: browser });
       await stop(browser);
+      progress("cleanup.browser.result", { child: browser, childCleanup: true });
       timings.infrastructureFailureWaitMs = now() - failureDetectedAt;
       throw new Error(
         `SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:SERVER_EXITED:${completed.value.code ?? completed.value.signal ?? "UNKNOWN"}`,
@@ -337,14 +411,23 @@ export async function runBrowserAuthority({
   } catch (error) {
     failureCategory = infrastructureFailureCategory(error);
     failureCodeValue = failureCode(error);
+    progress("authority.failure", { failureCategory, failureCode: failureCodeValue });
   } finally {
     const cleanupStartedAt = now();
+    progress("cleanup.browser.start", { child: browser });
     await stop(browser);
+    progress("cleanup.browser.result", { child: browser, childCleanup: true });
+    progress("cleanup.proxy.start");
     await stopProxy(proxy);
+    progress("cleanup.proxy.result", { proxy, proxyCleanup: true });
+    progress("cleanup.server.start", { child: server });
     await stop(server);
+    progress("cleanup.server.result", { child: server, childCleanup: true });
     timings.cleanupMs = now() - cleanupStartedAt;
   }
-  return browserRuntimeReceipt({ timings, failureCategory, failureCode: failureCodeValue, baseURL });
+  const receipt = browserRuntimeReceipt({ timings, failureCategory, failureCode: failureCodeValue, baseURL });
+  progress("authority.result", { failureCategory, failureCode: failureCodeValue });
+  return receipt;
 }
 
 async function main() {
