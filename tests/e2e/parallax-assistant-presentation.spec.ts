@@ -74,6 +74,9 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
               visible.top = Math.max(visible.top, bounds.top + ancestor.clientTop);
               visible.bottom = Math.min(visible.bottom, bounds.top + ancestor.clientTop + ancestor.clientHeight);
             }
+            // A fixed window escapes overflow on the Studio's ordinary ancestors.
+            // Its own clipping and viewport still constrain every footer control.
+            if (style.position === "fixed") break;
           }
           const controls = Array.from(element.querySelectorAll("textarea,button")).filter(
             (item) => !item.closest("details:not([open])"),
@@ -98,11 +101,21 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
                 );
               })
               .map((item) => item.getAttribute("aria-label") ?? item.textContent?.trim()),
+            obscuredFooterControls: controls
+              .filter((item) => {
+                if (!item.closest("footer")) return false;
+                const control = item.getBoundingClientRect();
+                return !item.contains(
+                  document.elementFromPoint(control.x + control.width / 2, control.y + control.height / 2),
+                );
+              })
+              .map((item) => item.getAttribute("aria-label") ?? item.textContent?.trim()),
           };
         }, name);
         observations.push(observation);
         await writeFile(`${artifactRoot}/viewport-observations.json`, JSON.stringify(observations, null, 2) + "\n");
         expect(observation.clippedControls, `${name} footer fits the viewport and every clipping ancestor`).toEqual([]);
+        expect(observation.obscuredFooterControls, `${name} footer controls have actual hit targets`).toEqual([]);
         const sendReachable = await assistant
           .getByRole("button", { name: "Send idea", exact: true })
           .evaluate((element) => {

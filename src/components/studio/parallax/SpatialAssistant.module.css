@@ -502,7 +502,7 @@
     display: none;
   }
 }
-@container spatial-assistant (max-height: 420px) {
+@container spatial-assistant (max-height: 480px) {
   .assistant .header {
     padding: 6px 12px;
   }

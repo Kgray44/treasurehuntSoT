@@ -355,3 +355,13 @@ provider/quota/manual/View canvas fallbacks. Non-desktop advanced modes,
 complete motion matrix, screen readers, all post-save renderer recoveries,
 stress density, live provider, physical/native quality and owner acceptance
 remain unqualified. This does not accept the full overhaul or A–P matrix.
+
+The first repair run `f663ef857069` retains its VALID, exit-1 receipt and actual
+captures. Laptop docked Send visibly returns and submits the synthetic failure
+request. The stronger test then incorrectly applied the ordinary center's
+overflow clipping to a fixed phone window that escapes that ancestor; the
+native capture shows its footer. The corrected check stops at the fixed host
+and additionally hit-tests every footer control. Compact container spacing now
+starts at 480 px to prevent fixed header/context/footer demand from overflowing
+a short dock. This engineering failure is retained rather than treated as
+visual acceptance.
