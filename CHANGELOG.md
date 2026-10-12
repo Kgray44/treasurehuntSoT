@@ -34,6 +34,7 @@ last_reviewed: 2026-10-12
   return/connection descriptions retained. Fresh native and consumer experience
   qualification remains required; this candidate is not formal Phase 4 acceptance.
 
+- Reach refits hand interpretation, active-hand continuity, dropout-tolerant acquisition and the staged responsive laboratory. Relative movement has separate setup and held-out cursor checks; experimental absolute pointing retains independent raw accuracy gating. [The refit record](Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) preserves rendered/software proof and remaining physical/owner gates.
 - Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.
 
 - Parallax owner refinements apply light appearance to the entire Spatial Studio and preview environment, use blue assistance, preserve scene dimensions when docking and expose populated mode-dependent workspace sections. Admiralty adds selectable daily request/cost charts and exact UTC tables. Authorized synthetic comparisons refine server instructions while retaining Luna low as the standard, explicit review and shared Windows credential support. [Refinement evidence](Development_Docs/Projects/Project_Parallax/Parallax_A1_Visual_Refinements.md) keeps software qualification and owner visual acceptance separate.

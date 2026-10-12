@@ -11,6 +11,7 @@ export function aggregateCalibrationExport(c: Calibration | null, consent: boole
         trainingResidualP95DiagonalFraction: percentile(c.trainingResiduals, 0.95),
         validationCount: c.validationErrors.length,
         rawValidationP95DiagonalFraction: c.validationP95,
+        rawValidationJitterP95DiagonalFraction: c.validationJitterP95,
         edgeValidationP95DiagonalFraction: percentile(c.validationEdgeErrors, 0.95),
         trainingResidualMedianDiagonalFraction: percentile(c.trainingResiduals, 0.5),
         rawValidationMedianDiagonalFraction: percentile(c.validationErrors, 0.5),
