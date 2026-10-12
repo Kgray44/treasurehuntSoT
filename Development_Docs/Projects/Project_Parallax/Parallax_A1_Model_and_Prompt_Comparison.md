@@ -1,7 +1,7 @@
 ---
 title: Parallax A1 model and prompt comparison
 audience: engineering
-status: qualification-in-progress
+status: software-qualified
 canonical_for: parallax-a1-model-and-prompt-comparison
 last_reviewed: 2026-10-11
 ---
@@ -137,3 +137,5 @@ schema; saved state, capability limits, response schema and tested instructions
 are unchanged. The repaired example is 11,799 bytes including framing under the
 12,000-byte allowance, and 163 focused checks pass. This payload compaction was
 not retested with paid calls; the live reports retain their original payloads.
+
+The instruction and adapter correction is software-qualified and integrated through PR #717 at `b078f823f197e2fa175c6525a7e190b45e680a7c`, after ordinary PASS run 38200759321 and 121 landed smoke tests. [Exact integration](evidence/owner-refinements/integration-b078f823.json) preserves the finite paid-study boundaries; software qualification does not recategorize any strict mismatch or claim a paid rerun of context compaction.
