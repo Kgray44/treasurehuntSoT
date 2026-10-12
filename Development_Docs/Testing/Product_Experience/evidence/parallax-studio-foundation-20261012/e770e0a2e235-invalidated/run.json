@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "candidate": "e770e0a2e235cc95a87e4d6fe4ef518b3fe28ce2",
+  "tree": "a579c98b9df89f70243e638a5a41fe308994a4f2",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-12T20:56:36.045Z",
+  "finishedAt": "2026-10-12T20:58:04.719Z",
+  "exitCode": 1,
+  "recordings": [
+    {
+      "file": "parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "sha256": "d4a1d18a89c5b7540954449ed3885b59dcb2e8a374eb0b3cf2e332261c952af2"
+    },
+    {
+      "file": "parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "sha256": "87763a1d63c3df2dd6325c64832c3fb22adfbf3d95722ca58cef3deb80d91f9b"
+    },
+    {
+      "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video.webm",
+      "sha256": "e9ac3b16ae176eff7de1ac3c8c1256f489b6bf3de0d7a4e02b2709f080b47119"
+    }
+  ]
+}

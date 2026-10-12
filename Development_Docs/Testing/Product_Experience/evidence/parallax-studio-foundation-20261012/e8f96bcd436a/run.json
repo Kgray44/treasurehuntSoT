@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "candidate": "e8f96bcd436afed3ff2d2c0f700d688eb21ba85a",
+  "tree": "5bf97457f20da5321a7adccc89efc55e3dcf0626",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-12T21:04:42.100Z",
+  "finishedAt": "2026-10-12T21:05:38.990Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "sha256": "32701b530e4411c357709e90f069f09a933d0cc2fa7e93d431e9a165b381298a"
+    },
+    {
+      "file": "parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "sha256": "05e1e7dcf5fc90c4d98c3a43b56054017c70c788a38e20eef6f72e36c2afc1f0"
+    },
+    {
+      "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video-1.webm",
+      "sha256": "923c813b285a630e030afb10e2b1f0f199d3406bb0ab1f85eb43429ce00ce456"
+    },
+    {
+      "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video.webm",
+      "sha256": "a245bfcae8bd94af742f4452ba26be4d9a58d16a471b8b0c6d8b95e436babfa8"
+    },
+    {
+      "file": "parallax-surfaces-Hidden-W-84986-igns-when-switched-to-table-chromium-video.webm",
+      "sha256": "63c96d85735fcf9d578f3970e99ef094b87720d84310f725dd65acf20d9bc128"
+    }
+  ]
+}
