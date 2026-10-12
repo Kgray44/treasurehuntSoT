@@ -56,11 +56,22 @@ objects. Changing environment resets the camera to frame that scene.
 
 ## Verification boundary
 
-Focused geometry, orientation, anchor, history and canonical domain tests precede
-the isolated production-browser journey. The current contract retains the
-floating-window journey and adds a rendered surface-picker/snapping outcome.
-Protected capture, independent visual review, ordinary Sounding Line and landed
-smoke remain required before integration. Owner acceptance is not claimed.
+The focused Parallax suite passes 377 tests across 27 files, including geometry,
+orientation, anchors, history and canonical compatibility. A fresh TypeScript
+check passes. The original floating-window contract is preserved; a separate
+rooms-and-surfaces experience contract records the new visible journeys.
+The isolated production-browser run at `c4dc6659` passes four journeys with an
+unpaid synthetic provider. Its [receipt](evidence/rooms-surfaces/c4dc66598e25/run.json)
+and [browser log](evidence/rooms-surfaces/c4dc66598e25/browser.log) preserve exact
+source identity. All ten presets have desktop and phone captures in both themes
+(40 room screenshots), alongside manual wall/table/floor orientation, automatic
+wall-to-table orientation, saved restoration and Assistant presentation checks.
+The [independent local re-review](evidence/rooms-surfaces/c4dc66598e25/independent-local-review.json)
+accepts the focused presentation across all 17 dimensions after direct inspection
+of 47 screenshots and three hash-verified recordings. All five prior findings
+are resolved. This is local review, not protected qualification. Protected capture, review attestation, ordinary
+Sounding Line and landed smoke remain required before integration. Owner
+acceptance is not claimed.
 
 This correction covers existing synthetic rooms. It does not implement
 photo-to-room reconstruction, arbitrary imported mesh reconstruction, curved
@@ -89,3 +100,39 @@ No protected capture, review attestation, ordinary acceptance or merge is claime
 The owned draft PR retains the implementation for review. Registering and
 qualifying the affected downstream experiences is required before integration;
 changing the protected authority or declaring false coverage is not a remedy.
+
+The current product-status and feature-status documents were reviewed. Their
+mainline availability claims remain unchanged while this draft correction is
+blocked. The Spatial Studio and Assistant guides and Unreleased changelog
+describe the branch behavior and its reconstruction boundary.
+
+## Rendered repair evidence
+
+The first independent review found landscape editing collapsed to a thin strip,
+occupied tabletop placement, an obscured wall result and clipped room edges.
+The `9d3a4e0d` [independent review](evidence/rooms-surfaces/9d3a4e0d01ad/independent-local-review.json)
+confirms those four issues repaired, but identifies a new phone visibility
+blocker: fixed fog hid the trail and severely faded the classroom when the
+camera backed out to frame larger geometry. Four passing browser journeys did
+not override that rendered finding.
+
+The `c4dc6659` repair keeps finite rooms visible at every framing distance,
+scales the camera clipping range and captures every named environment on
+phones in both themes. The only subsequent product source cleanup removes an
+unused import; screenshots and recordings remain bound to the actual built
+candidate, rather than being claimed as a capture of a documentation successor.
+
+A final read-only refresh found protected main at
+`5117092984142ccdb96aeff5db90ea2e77a59357` (Reach PR #716). That delta changes
+no Parallax domain or Studio component source. Its Crossdeck registry still
+contains only the intent and baseline debt, without the required complete
+experience design. The captured candidate remains on its frozen `5e72620c`
+base; this check does not imply capture, qualification or integration of the
+new mainline tree.
+
+The final independent review has no blocking findings. Nonblocking observations
+remain explicit: the phone surface picker covers part of the scene while open,
+the internal floor-furniture identifier differs from the visible Entire floor
+label, and peripheral phone overlays overlap small parts of large rooms. The
+picker can be closed for editing and inspection; these observations do not
+conceal missing room geometry. New owner acceptance remains unclaimed.

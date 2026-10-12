@@ -3,12 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { previewEntityTransform, previewReferenceFrame, type SpatialDraft, type Edit } from "@/parallax/authoring";
 import { composeTransform, inverseTransform } from "@/parallax/transforms";
 import { identityTransform, type Transform } from "@/parallax/contracts";
-import {
-  findSurfacePlacement,
-  placeOnSurface,
-  snapSpatialEntity,
-  surfacePointIsClear,
-} from "@/parallax/surface-placement";
+import { findSurfacePlacement, snapSpatialEntity, surfacePointIsClear } from "@/parallax/surface-placement";
 import { evaluateSpatialBehavior, type SpatialInput } from "@/parallax/behavior";
 import { simulationEnvironments } from "@/parallax/studio-validation";
 import { resolveAdaptiveScene, type Candidate } from "@/parallax/adaptive";
