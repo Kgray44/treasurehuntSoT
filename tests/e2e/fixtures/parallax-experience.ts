@@ -21,6 +21,7 @@ export async function prepareParallaxExperienceAccounts(store: PrismaClient) {
     ["a101", "Creator", "CREATOR", "creator"],
     ["a102", "Operator", "ADMINISTRATOR", "operator"],
     ["a103", "Floating Creator", "CREATOR", "floating-creator"],
+    ["a104", "Rooms Creator", "CREATOR", "rooms-creator"],
   ] as const) {
     const id = `00000000-0000-4000-8000-00000000${suffix}`;
     if (await store.userAccount.findUnique({ where: { id } })) continue;
