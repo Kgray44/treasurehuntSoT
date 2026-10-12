@@ -16,10 +16,10 @@ export const relativeLayout = {
   version: 1,
   training: [
     { x: 0.5, y: 0.5 },
-    { x: 0.2, y: 0.5 },
-    { x: 0.8, y: 0.5 },
-    { x: 0.5, y: 0.2 },
-    { x: 0.5, y: 0.8 },
+    { x: 0.1, y: 0.5 },
+    { x: 0.9, y: 0.5 },
+    { x: 0.5, y: 0.1 },
+    { x: 0.5, y: 0.9 },
   ],
   instructions: [
     "Rest your hand comfortably in the center.",
@@ -235,8 +235,8 @@ export function fitRelativeCalibration(
     mean(groups[4], 2) - centerY < 0.015
   )
     throw new Error("RELATIVE_MOVEMENT_TOO_SMALL");
-  const gainX = 0.6 / horizontalSpan,
-    gainY = 0.6 / verticalSpan;
+  const gainX = (relativeLayout.training[2].x - relativeLayout.training[1].x) / horizontalSpan,
+    gainY = (relativeLayout.training[4].y - relativeLayout.training[3].y) / verticalSpan;
   const samples = groups.flat();
   const c: Calibration = {
     version: 1,
