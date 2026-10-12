@@ -173,10 +173,7 @@
       "y": 235,
       "height": 135
     },
-    "clippedControls": [
-      "Undo",
-      "Redo"
-    ]
+    "clippedControls": ["Undo", "Redo"]
   },
   {
     "name": "landscape-guided-docked",
@@ -192,9 +189,6 @@
       "y": 245,
       "height": 135
     },
-    "clippedControls": [
-      "Undo",
-      "Redo"
-    ]
+    "clippedControls": ["Undo", "Redo"]
   }
 ]
