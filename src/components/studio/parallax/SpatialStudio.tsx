@@ -236,7 +236,7 @@ export function SpatialStudio({
       )
         return;
       setLayout((previous) => ({ ...previous, assistantWindow: panel }));
-      setFloatingFeedback(gesture.kind === "move" ? "Moved" : "Resized");
+      setFloatingFeedback(gesture.kind === "move" ? "Window moved" : "Window resized");
     },
     onPointerUp: () => {
       assistantGesture.current = null;
@@ -267,7 +267,7 @@ export function SpatialStudio({
       )
         return;
       setLayout((previous) => ({ ...previous, assistantWindow: panel }));
-      setFloatingFeedback(kind === "move" ? "Moved" : "Resized");
+      setFloatingFeedback(kind === "move" ? "Window moved" : "Window resized");
     },
   };
   useEffect(() => {
