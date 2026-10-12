@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-11",
+  "generated_at": "2026-10-12",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -634,6 +634,24 @@
     },
     {
       "path": "Development_Docs/Engineering/Repository_Operations/templates/operator-runbook-template.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/geofence-foreground-hierarchy.txt",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/independent-failed-experience-review.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/native-apple-lifecycle-trace.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

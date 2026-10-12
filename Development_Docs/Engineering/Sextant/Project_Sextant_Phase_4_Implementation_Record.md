@@ -659,3 +659,69 @@ startup privacy/order validation and the existing Apple location-input adapter,
 TypeScript, affected-file lint, documentation validation and the 67-entry
 Feature Catalog. The preceding clean `2c318e3e` D0/D1 execution passed all 53
 scenarios; its byte-verified archive preserves that original source identity.
+
+## Ordered Apple result and bounded experience repair
+
+[Run 38189267999](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38189267999)
+tested source `71b46a0beabad3e95e5380dba88016add5c4bd89`, tree
+`36f0015d57849a8182b18dccf7b733325731b7ea`. It is terminal failed, with
+7,588 original checksummed files retained. The native baseline passed 29 tests
+with one expected unconfigured skip. Geofence acknowledgement failed. Its
+untruncated 19-event trace records actual background delivery, followed by
+will-enter notifications but no owning-scene activation or foreground dispatch.
+The committed document epoch remains one. This narrows the failed return to
+native activation; it does not prove a WebView listener or document-replacement
+failure. JavaScript dispatch results remain distinct from client acknowledgement.
+
+[Read-only export 38194847503](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38194847503)
+successfully exported the retained foreground screenshots and activities, with
+12 checksummed files and verified transport cleanup. It performed zero new
+native executions. The actual returned companion screen is covered by a Motion
+& Fitness permission prompt. The separate normal product XCTest also failed
+(zero passed, one failed, zero skipped) with that prompt over sign-in. Its
+hierarchy contains the email and password fields under uppercase native labels;
+the exact mixed-case test query was incorrect. These observations establish
+the interruption and selector mismatch, without proving which API triggered
+the permission prompt or that the Devices journey passed.
+
+The [original returned screen](evidence/71b46a0b/geofence-foreground-permission.png),
+[native trace](evidence/71b46a0b/native-apple-lifecycle-trace.json),
+[returned hierarchy](evidence/71b46a0b/geofence-foreground-hierarchy.txt) and
+[independent failed-experience review](evidence/71b46a0b/independent-failed-experience-review.json)
+are retained byte-for-byte as engineering evidence. The review's ignored local
+packet and original recordings remain diagnostic dependencies, not a committed
+significant-experience acceptance package.
+
+The bounded repair defers altimeter and pedometer creation until explicit use
+and stops only existing active services or a pending permission probe. Empty
+lease lifecycle and power cleanup must not touch unused fitness APIs. A native
+factory test covers discovery and repeated empty cleanup; the ordinary product
+test refuses any system alert before optional input and uses case-insensitive
+exact label matching. Actual Apple compilation and execution remain required.
+The active-scene guard and explicit reacquisition boundary are preserved.
+
+The source-bound local capture at `71b46a0b` passed ordinary synthetic sign-in,
+but all three desktop consumer journeys failed before their first action: their
+continuity lookup waited for an inert Devices link behind the first-open Journal
+dialog. Task-owned server and SQLite cleanup passed. A separate context-free
+review inspected the retained recordings, native screenshots and accessibility
+hierarchies across all 17 dimensions. It confirmed the opening-step and native
+selector mismatches; its verdict is `BLOCKED_INCOMPLETE_JOURNEY_EVIDENCE`.
+Later Creator, Lens, fallback and return outcomes remain unverified.
+
+The repaired designs include ordinary Journal opening and readiness at initial
+entry and after each Voyage return. Continuity observes the named Journal
+landmark's actual canonical Voyage, and the Lens return requires its dialog to
+close. The opening action retains its visible Begin Voyage/Return description;
+the Devices action retains its visible connected count as an accessible
+description. These minor accessibility corrections require fresh actual
+desktop/mobile, normal/reduced-motion capture and independent re-review.
+No global consumer obligation, protected authentication requirement, baseline
+debt or physical-device acceptance gate is waived.
+
+The bounded Journal/Devices correction passed 31 focused tests across the existing
+Journal lifecycle/accessibility and Crossdeck Devices suites. Affected-file lint,
+contract schema and four original evidence hashes passed. Documentation indexes
+classify the retained trace, hierarchy and independent failed-experience review
+as engineering records; documentation and the 67-entry Feature Catalog validate.
+These are development checks, without native or rendered journey acceptance.

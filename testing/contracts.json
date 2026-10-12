@@ -91,8 +91,8 @@
           "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role.",
           "The Creator capture saves a working draft while reading the already pinned published edition. It does not claim publication of those new draft changes; canonical publishing remains separately tested."
         ],
-        "navigation": "The contextual Journal Devices action opens the existing account task; Continue Voyage restores the same released Journal.",
-        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end.",
+        "navigation": "Open the Journal through its visible first-open action, use contextual Devices, and reopen the same Voyage after Continue Voyage. The readable Journal landmark retains the canonical Voyage through the opening and Lens states.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Keep the first-open action and its Begin Voyage or Return to your place description visible; observe Journal readiness before using its header. Preserve the visible connected count as the Devices action description.",
         "objective": "Create a spatial clue and understand the experience a Player will receive",
         "visibleOutcome": "Published scenes reach a representative Player Lens with truthful capability tiers and accessible fallback",
         "integrationOwner": "Parallax Creator-to-Player experience integration",
@@ -104,6 +104,7 @@
           "src/spatial-pilot"
         ],
         "states": [
+          "JOURNAL_READY",
           "DEVICE_JOINED",
           "CREATOR_DRAFT_READY",
           "CREATOR_DRAFT_SAVED",
@@ -116,8 +117,8 @@
           "checks": [
             {
               "id": "canonical-voyage",
-              "role": "link",
-              "name": "Devices",
+              "role": "main",
+              "name": "Voyage Journal",
               "attribute": "data-voyage-id",
               "destination": {
                 "role": "dialog",
@@ -133,6 +134,17 @@
             "roles": ["PLAYER"],
             "outcome": "The connected screen opens the published clue in the actual accessible Chronicle Lens and returns to its Journal",
             "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY"
+              },
               {
                 "action": "click",
                 "role": "link",
@@ -157,6 +169,17 @@
               {
                 "action": "click",
                 "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
                 "name": "Open Chronicle Lens"
               },
               {
@@ -176,11 +199,16 @@
               },
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Devices",
+                "role": "main",
+                "name": "Voyage Journal",
                 "path": "/player/playthroughs/sextant-experience-voyage/journal",
                 "returnPath": true,
-                "state": "RETURNED_TO_VOYAGE"
+                "state": "RETURNED_TO_VOYAGE",
+                "text": "The Captain’s note",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "A message between worlds"
+                }
               }
             ]
           },
@@ -189,6 +217,17 @@
             "roles": ["CREATOR"],
             "outcome": "The Creator saves an editable spatial clue and compares it with the actual immutable Player Lens, then returns to the same Voyage",
             "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY"
+              },
               {
                 "action": "click",
                 "role": "button",
@@ -250,6 +289,17 @@
               {
                 "action": "click",
                 "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
                 "name": "Open Chronicle Lens"
               },
               {
@@ -269,11 +319,16 @@
               },
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Devices",
+                "role": "main",
+                "name": "Voyage Journal",
                 "path": "/player/playthroughs/sextant-experience-voyage/journal",
                 "returnPath": true,
-                "state": "RETURNED_TO_VOYAGE"
+                "state": "RETURNED_TO_VOYAGE",
+                "text": "The Captain’s note",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "A message between worlds"
+                }
               }
             ]
           }
@@ -3851,14 +3906,14 @@
           "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
           "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role."
         ],
-        "navigation": "The contextual Journal Devices action opens the existing account task; Continue Voyage restores the same released Journal.",
-        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end.",
+        "navigation": "Open the Journal through its visible first-open action, use contextual Devices, and reopen the same Voyage after Continue Voyage. The readable Journal landmark retains the canonical Voyage through the opening and Lens states.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Keep the first-open action and its Begin Voyage or Return to your place description visible; observe Journal readiness before using its header. Preserve the visible connected count as the Devices action description.",
         "objective": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
         "visibleOutcome": "A contextual pairing flow reaches a role-appropriate Lens with the same identity, Voyage and safe return",
         "integrationOwner": "Crossdeck and Parallax experience integration",
         "systems": ["project-crossdeck", "project-parallax", "one-voyage"],
         "sourcePaths": ["src/crossdeck", "src/components/crossdeck"],
-        "states": ["DEVICE_JOINED", "GUIDED_CLUE_READY", "RETURNED_TO_VOYAGE"],
+        "states": ["JOURNAL_READY", "DEVICE_JOINED", "GUIDED_CLUE_READY", "RETURNED_TO_VOYAGE"],
         "browserTests": [
           "tests/e2e/crossdeck-phase2.spec.ts",
           "tests/e2e/landfall-native-nearby.spec.ts",
@@ -3869,8 +3924,8 @@
           "checks": [
             {
               "id": "canonical-voyage",
-              "role": "link",
-              "name": "Devices",
+              "role": "main",
+              "name": "Voyage Journal",
               "attribute": "data-voyage-id",
               "destination": {
                 "role": "dialog",
@@ -3886,6 +3941,17 @@
             "roles": ["PLAYER"],
             "outcome": "The connected screen opens the published clue in the actual accessible Chronicle Lens and returns to its Journal",
             "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY"
+              },
               {
                 "action": "click",
                 "role": "link",
@@ -3910,6 +3976,17 @@
               {
                 "action": "click",
                 "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
                 "name": "Open Chronicle Lens"
               },
               {
@@ -3929,11 +4006,16 @@
               },
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Devices",
+                "role": "main",
+                "name": "Voyage Journal",
                 "path": "/player/playthroughs/sextant-experience-voyage/journal",
                 "returnPath": true,
-                "state": "RETURNED_TO_VOYAGE"
+                "state": "RETURNED_TO_VOYAGE",
+                "text": "The Captain’s note",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "A message between worlds"
+                }
               }
             ]
           }
@@ -4043,22 +4125,22 @@
           "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
           "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role."
         ],
-        "navigation": "The contextual Journal Devices action opens the existing account task; Continue Voyage restores the same released Journal.",
-        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end.",
+        "navigation": "Open the Journal through its visible first-open action, use contextual Devices, and reopen the same Voyage after Continue Voyage. The readable Journal landmark retains the canonical Voyage through the opening and Lens states.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Keep the first-open action and its Begin Voyage or Return to your place description visible; observe Journal readiness before using its header. Preserve the visible connected count as the Devices action description.",
         "objective": "Use an instrument in my Voyage and understand supported sensing or fallback",
         "visibleOutcome": "Instrument choice produces its corresponding task, truthful capability state and useful return/recovery",
         "integrationOwner": "Sextant instrument experience integration",
         "systems": ["project-sextant", "landfall"],
         "sourcePaths": ["src/sextant", "src/components/sextant"],
-        "states": ["DEVICE_CAPABILITIES_READY", "SCREEN_FALLBACK_READY", "RETURNED_TO_VOYAGE"],
+        "states": ["JOURNAL_READY", "DEVICE_CAPABILITIES_READY", "SCREEN_FALLBACK_READY", "RETURNED_TO_VOYAGE"],
         "browserTests": ["tests/e2e/sextant-phase4.spec.ts", "tests/e2e/sextant-native-apple-devices.spec.ts"],
         "continuity": {
           "objective": "Keep the canonical authorized Voyage bound through device fallback and return",
           "checks": [
             {
               "id": "canonical-voyage",
-              "role": "link",
-              "name": "Devices",
+              "role": "main",
+              "name": "Voyage Journal",
               "attribute": "data-voyage-id",
               "destination": {
                 "role": "region",
@@ -4074,6 +4156,17 @@
             "roles": ["PLAYER"],
             "outcome": "The Player chooses screen controls from the ordinary Devices page and returns to the same released clue",
             "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY"
+              },
               {
                 "action": "click",
                 "role": "link",
@@ -4116,12 +4209,24 @@
                 "name": "Continue Voyage"
               },
               {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
                 "action": "assert",
                 "role": "link",
                 "name": "Devices",
+                "state": "JOURNAL_READY"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "Voyage Journal",
                 "path": "/player/playthroughs/sextant-experience-voyage/journal",
                 "returnPath": true,
-                "state": "RETURNED_TO_VOYAGE"
+                "state": "RETURNED_TO_VOYAGE",
+                "text": "The Captain’s note"
               }
             ]
           }

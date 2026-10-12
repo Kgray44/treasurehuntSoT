@@ -28,9 +28,16 @@ final class NativeLifecycleTests: XCTestCase {
         let web=app.webViews.firstMatch
         XCTAssertTrue(web.waitForExistence(timeout:30),"SEXTANT_PRODUCT_WEBVIEW_REQUIRED")
         try tapProductElement(web.links["Continue to account sign-in"].firstMatch,web)
-        let email=web.textFields["Email or Player name"].firstMatch
+        let system=XCUIApplication(bundleIdentifier:"com.apple.springboard")
+        guard !system.alerts.firstMatch.exists else {
+            keepNoticeUi(system,"Unexpected permission before optional input")
+            XCTFail("SEXTANT_SIGN_IN_MUST_NOT_REQUEST_OPTIONAL_SENSING")
+            throw NSError(domain:"SextantProductUi",code:3)
+        }
+        // WebKit exposes the rendered uppercase labels in the native AX tree.
+        let email=web.textFields.matching(NSPredicate(format:"label ==[c] %@","Email or Player name")).firstMatch
         try tapProductElement(email,web);email.typeText(login)
-        let secret=web.secureTextFields["Password"].firstMatch
+        let secret=web.secureTextFields.matching(NSPredicate(format:"label ==[c] %@","Password")).firstMatch
         try tapProductElement(secret,web);secret.typeText(password)
         try tapProductElement(web.buttons["Sign in"].firstMatch,web)
         let account=web.buttons["Synthetic Apple navigator"].firstMatch

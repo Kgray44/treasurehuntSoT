@@ -12,6 +12,20 @@ private final class InjectedSextantSource:SextantSensorSource {
     func stop(){active.removeAll();stopped=true;emit=nil}
 }
 final class SextantSensorTests:XCTestCase {
+    @MainActor func testEmptyDiscoveryAndLifecycleDoNotCreateFitnessServices() {
+        var altimeters=0,pedometers=0
+        let source=CoreMotionSextantSource(makeAltimeter:{altimeters+=1;return CMAltimeter()},makePedometer:{pedometers+=1;return CMPedometer()})
+        _=source.supports("sextant.pressure.observation")
+        _=source.supports("sextant.motion.pedometer")
+        _=source.permission("sextant.pressure.observation")
+        _=source.permission("sextant.motion.pedometer")
+        XCTAssertTrue(source.configure([],intervalMs:250,emit:{_ in XCTFail("Empty discovery emitted a sample")},fail:{_ in XCTFail("Empty discovery started a service")}))
+        source.stop();source.stop()
+        let sensors=SextantSensors(source:source,now:{1000},emit:{_ in})
+        sensors.setConstrained(true);sensors.stopAll("BACKGROUND")
+        XCTAssertEqual(altimeters,0,"Discovery or empty-lease cleanup initialized an altimeter")
+        XCTAssertEqual(pedometers,0,"Discovery or empty-lease cleanup initialized a pedometer")
+    }
     func testConstrainedCadenceIsLowQualityAndUnsupportedBiasStaysUnavailable() {
         let source=InjectedSextantSource();var clock=1000.0,events=[[String:Any]]()
         let sensors=SextantSensors(source:source,now:{clock},emit:{events.append($0)}),cap="sextant.magnetic.field"

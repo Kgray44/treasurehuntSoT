@@ -240,3 +240,21 @@ Capture actual companion/SpringBoard UI on return and missing product control.
 Product navigation allowed/cancelled and committed-document observations diagnose
 the separate account-entry failure without URLs, extra taps or longer deadlines.
 Keep truncation/unavailable trace explicit and preserve original counter receipts.
+
+Run38189267999 source71b46a0b is FAIL_HARVESTED,7588 original files.
+Its19 ordered native events show background delivery then will-enter only:
+no owned active scene, no resume, no foreground dispatch; document epoch1.
+Read-only export38194847503 succeeded,12 files,transport cleanup PASS,no new
+native execution. Retained return screenshot shows Motion & Fitness prompt.
+Normal product also shows that prompt over actual uppercase sign-in fields.
+Repair unused fitness-service initialization/cleanup and exact-case native
+selectors; preserve active-scene requirement and explicit optional acquisition.
+Require actual no-unsolicited-permission/geofence/product proof on coherent source.
+
+Source71 local3consumer capture ordinarySignIn PASS,all journeys failed waiting
+for inert Devices behind first-open Journal; runtime/SQLite cleanup PASS.
+Context-free independent review confirms missing opening steps and selector case,
+BLOCKED_INCOMPLETE_JOURNEY_EVIDENCE. Include actual visible opening/readiness at
+entry and after Voyage returns; retain connected status in visible/AX description.
+Recapture desktop/mobile normal/reduced and re-review; no global waiver or owner
+acceptance. Preserve original failed records and stop repair after3/no progress.

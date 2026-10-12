@@ -23,13 +23,20 @@ extension SextantSensorSource {
  * use main-queue ownership and capture uptime, not Date for motion integration. */
 final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationManagerDelegate {
     let fidelity = "OS"
-    private let motion = CMMotionManager(), altitude = CMAltimeter(), steps = CMPedometer(), heading = CLLocationManager()
+    private let motion = CMMotionManager(), heading = CLLocationManager()
+    private let makeAltimeter:()->CMAltimeter, makePedometer:()->CMPedometer
+    private var altitudeResource:CMAltimeter?, stepsResource:CMPedometer?
+    private var altitude:CMAltimeter {if altitudeResource == nil {altitudeResource=makeAltimeter()};return altitudeResource!}
+    private var steps:CMPedometer {if stepsResource == nil {stepsResource=makePedometer()};return stepsResource!}
     private var emit: ((SextantNativeSample) -> Void)?, fail: ((String) -> Void)?
     private var caps = Set<String>(), altitudeActive = false, stepsActive = false, headingActive = false, magneticFrame = false
     private var interval = 0.25
     private var stability = [(at:Double,magnitude:Double)]()
-    private var permissionGeneration:UUID?,permissionReply:((String)->Void)?,permissionTimeout:DispatchWorkItem?
-    override init() { super.init(); heading.delegate = self }
+    private var permissionGeneration:UUID?,permissionReply:((String)->Void)?,permissionTimeout:DispatchWorkItem?,altitudePermissionProbe=false
+    init(makeAltimeter:@escaping()->CMAltimeter={CMAltimeter()},makePedometer:@escaping()->CMPedometer={CMPedometer()}) {
+        self.makeAltimeter=makeAltimeter;self.makePedometer=makePedometer
+        super.init(); heading.delegate = self
+    }
     private func suffix(_ id: String) -> String { String(id.dropFirst("sextant.".count)) }
     func supports(_ id: String) -> Bool {
         switch suffix(id) {
@@ -59,7 +66,10 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
         let finish:()->Void = {[weak self] in
             guard let self=self,self.permissionGeneration == generation else{return}
             self.permissionTimeout?.cancel();self.permissionTimeout=nil;self.permissionGeneration=nil
-            if id == "sextant.pressure.observation" && !self.altitudeActive {self.altitude.stopRelativeAltitudeUpdates()}
+            if id == "sextant.pressure.observation" {
+                if !self.altitudeActive && self.altitudePermissionProbe {self.altitudeResource?.stopRelativeAltitudeUpdates()}
+                self.altitudePermissionProbe=false
+            }
             let callback=self.permissionReply;self.permissionReply=nil;callback?(self.permission(id))
         }
         let timeout=DispatchWorkItem(block:finish);permissionTimeout=timeout;DispatchQueue.main.asyncAfter(deadline:.now()+15,execute:timeout)
@@ -68,6 +78,7 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
             steps.queryPedometerData(from:Date(),to:Date()){_,_ in DispatchQueue.main.async(execute:finish)}
         }else{
             guard !altitudeActive else{finish();return}
+            altitudePermissionProbe=true
             altitude.startRelativeAltitudeUpdates(to:.main){_,_ in finish()}
         }
     }
@@ -92,12 +103,12 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
                 // specific force uses the Android/W3C stationary +up sign.
                 self.publish("motion.acceleration-including-gravity",Self.canonicalAcceleration(value.acceleration),"m/s^2","DEVICE",value.timestamp)
             } }
-        } else { motion.stopAccelerometerUpdates() }
+        } else if motion.isAccelerometerActive { motion.stopAccelerometerUpdates() }
         if requested.contains("sextant.motion.angular-velocity") && motion.isGyroAvailable {
             if !motion.isGyroActive {motion.startGyroUpdates(to:.main) { [weak self] value,error in
                 guard let self=self else{return};if error != nil {self.fail?("sextant.motion.angular-velocity");return};if let v=value {self.publish("motion.angular-velocity",self.vector(v.rotationRate.x,v.rotationRate.y,v.rotationRate.z),"rad/s","DEVICE",v.timestamp)}
             } }
-        } else {motion.stopGyroUpdates()}
+        } else if motion.isGyroActive {motion.stopGyroUpdates()}
         if (requested.contains("sextant.magnetic.uncalibrated-field") || (requested.contains("sextant.magnetic.field") && !motion.isDeviceMotionAvailable)) && motion.isMagnetometerAvailable {
             if !motion.isMagnetometerActive {motion.startMagnetometerUpdates(to:.main) { [weak self] value,error in
                 guard let self=self else{return};if error != nil {self.fail?("sextant.magnetic.field");return};if let v=value {
@@ -106,7 +117,7 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
                     self.publish("magnetic.uncalibrated-field",self.vector(v.magneticField.x,v.magneticField.y,v.magneticField.z),"microtesla","DEVICE",v.timestamp,quality:"LOW")
                 }
             } }
-        } else {motion.stopMagnetometerUpdates()}
+        } else if motion.isMagnetometerActive {motion.stopMagnetometerUpdates()}
         if device && motion.isDeviceMotionAvailable {
             if !motion.isDeviceMotionActive {
                 magneticFrame=absolute
@@ -132,17 +143,17 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
                     self.publish("motion.stability",enough ? (self.stability.allSatisfy{$0.magnitude<0.5} ? "STABLE":"MOVING"):"UNKNOWN","classification","DEVICE",v.timestamp)
                 }
             }
-        } else {motion.stopDeviceMotionUpdates()}
+        } else if motion.isDeviceMotionActive {motion.stopDeviceMotionUpdates()}
         if requested.contains("sextant.pressure.observation") && CMAltimeter.isRelativeAltitudeAvailable() && !altitudeActive {
             altitudeActive=true;altitude.startRelativeAltitudeUpdates(to:.main) { [weak self] value,error in
                 guard let self=self else{return};if error != nil {self.fail?("sextant.pressure.observation");return};if let v=value {self.publish("pressure.observation",v.pressure.doubleValue*10,"hPa","NONE",v.timestamp,calibration:"GOOD")}
             }
-        } else if !requested.contains("sextant.pressure.observation") {altitude.stopRelativeAltitudeUpdates();altitudeActive=false}
+        } else if !requested.contains("sextant.pressure.observation") && altitudeActive {altitudeResource?.stopRelativeAltitudeUpdates();altitudeActive=false}
         if requested.contains("sextant.motion.pedometer") && CMPedometer.isStepCountingAvailable() && !stepsActive {
             stepsActive=true;steps.startUpdates(from:Date()) { [weak self] value,error in DispatchQueue.main.async {
                 guard let self=self else{return};if error != nil {self.fail?("sextant.motion.pedometer");return};if let v=value {self.publish("motion.pedometer",["stepDelta":v.numberOfSteps.intValue,"cadenceClass":"UNKNOWN","method":"OS_PEDOMETER"],"step-evidence","DEVICE",ProcessInfo.processInfo.systemUptime,receiptTime:true)}
             } }
-        } else if !requested.contains("sextant.motion.pedometer") {steps.stopUpdates();stepsActive=false}
+        } else if !requested.contains("sextant.motion.pedometer") && stepsActive {stepsResource?.stopUpdates();stepsActive=false}
         if requested.contains("sextant.heading.estimate") && CLLocationManager.headingAvailable() && ["GRANTED","NOT_REQUIRED"].contains(permission("sextant.heading.estimate")) {heading.headingFilter=1;heading.startUpdatingHeading();headingActive=true}
         else if headingActive {heading.stopUpdatingHeading();headingActive=false}
         return true
@@ -160,7 +171,20 @@ final class CoreMotionSextantSource: NSObject, SextantSensorSource, CLLocationMa
         publish("heading.estimate",value.magneticHeading,"degrees","EARTH_MAGNETIC",ProcessInfo.processInfo.systemUptime,calibration:"GOOD",uncertainty:value.headingAccuracy,receiptTime:true)
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {fail?("sextant.heading.estimate")}
-    func stop(){caps.removeAll();stability.removeAll();permissionTimeout?.cancel();permissionTimeout=nil;permissionGeneration=nil;let pending=permissionReply;permissionReply=nil;pending?("RESTRICTED");motion.stopAccelerometerUpdates();motion.stopGyroUpdates();motion.stopMagnetometerUpdates();motion.stopDeviceMotionUpdates();altitude.stopRelativeAltitudeUpdates();steps.stopUpdates();heading.stopUpdatingHeading();altitudeActive=false;stepsActive=false;headingActive=false;emit=nil;fail=nil}
+    func stop(){
+        caps.removeAll();stability.removeAll();permissionTimeout?.cancel();permissionTimeout=nil;permissionGeneration=nil
+        let pending=permissionReply;permissionReply=nil;pending?("RESTRICTED")
+        // Empty-lease power/lifecycle cleanup must not initialize or call an
+        // unused fitness service. Authorization remains an explicit request.
+        if motion.isAccelerometerActive {motion.stopAccelerometerUpdates()}
+        if motion.isGyroActive {motion.stopGyroUpdates()}
+        if motion.isMagnetometerActive {motion.stopMagnetometerUpdates()}
+        if motion.isDeviceMotionActive {motion.stopDeviceMotionUpdates()}
+        if altitudeActive || altitudePermissionProbe {altitudeResource?.stopRelativeAltitudeUpdates()}
+        if stepsActive {stepsResource?.stopUpdates()}
+        if headingActive {heading.stopUpdatingHeading()}
+        altitudeActive=false;altitudePermissionProbe=false;stepsActive=false;headingActive=false;emit=nil;fail=nil
+    }
     deinit {stop()}
 }
 

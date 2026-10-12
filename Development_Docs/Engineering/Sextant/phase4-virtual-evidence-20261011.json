@@ -2451,5 +2451,83 @@
     },
     "physicalD4": false,
     "phaseAccepted": false
+  },
+  "orderedAppleDiscriminator71": {
+    "candidateSha": "71b46a0beabad3e95e5380dba88016add5c4bd89",
+    "candidateTree": "36f0015d57849a8182b18dccf7b733325731b7ea",
+    "runId": 38189267999,
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38189267999",
+    "result": "FAIL_HARVESTED",
+    "originalFiles": 7588,
+    "nativeBaseline": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 1
+    },
+    "product": {
+      "result": "FAIL",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "canonicalProgressionDelta": 0,
+      "cleanup": {
+        "result": "PASS",
+        "remainingResources": []
+      }
+    },
+    "geofence": {
+      "result": "FAIL",
+      "orderedEvents": 19,
+      "afterBackground": "WILL_ENTER_WITHOUT_SCENE_ACTIVE_OR_FOREGROUND_DISPATCH",
+      "documentEpoch": 1,
+      "visibleInterruption": "MOTION_FITNESS_PERMISSION_PROMPT",
+      "trigger": "UNPROVEN_PENDING_ACTUAL_REPAIRED_EXECUTION"
+    },
+    "inspection": {
+      "runId": 38194847503,
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38194847503",
+      "result": "SUCCESS_HARVESTED",
+      "originalFiles": 12,
+      "newNativeExecutions": 0,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-71b46a0beaba-1791771115064"],
+        "remainingResources": []
+      }
+    },
+    "transportCleanup": {
+      "result": "PASS",
+      "ownedResources": ["refs/heads/codex/landfall-lab-71b46a0beaba-1791765957197"],
+      "remainingResources": []
+    },
+    "retainedEvidence": [
+      {
+        "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/native-apple-lifecycle-trace.json",
+        "sha256": "ace73c29a71ac0e05f242f340bc26ec6db500f4c42aaf6d61556eb2a9c58e85d"
+      },
+      {
+        "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/geofence-foreground-permission.png",
+        "sha256": "0102a7cd080e8f6f57e7cc8f5c80d5e5080d3a3662e6bf0ff93fd2841842ad0b"
+      },
+      {
+        "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/geofence-foreground-hierarchy.txt",
+        "sha256": "342ca4a0e77f7c869863094b4d8597b759c00e12e23a81ba1f5f94f922917bac"
+      },
+      {
+        "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/independent-failed-experience-review.json",
+        "sha256": "884c073108330b2f2a9cec1260591ea228fa2733c9d139c0a435a9cbe3fc06ac"
+      }
+    ],
+    "phaseAcceptance": false,
+    "physicalProof": false
+  },
+  "localExperience71": {
+    "sourceSha": "71b46a0beabad3e95e5380dba88016add5c4bd89",
+    "ordinarySignIn": "PASS",
+    "journeys": "THREE_FAILED_BEFORE_FIRST_ACTION",
+    "cause": "MISSING_VISIBLE_JOURNAL_OPENING_BEFORE_INERT_DEVICES_CONTINUITY",
+    "cleanup": "PASS",
+    "independentReview": "BLOCKED_INCOMPLETE_JOURNEY_EVIDENCE",
+    "required": "REPAIR_RECAPTURE_REVIEW_NOT_ACCEPTANCE"
   }
 }
