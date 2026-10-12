@@ -2237,7 +2237,7 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 ### Meaningful limitations
 
 - Local software qualification does not establish representative-device owner acceptance or D4 physical AR evidence.
-- Spatial Assistant requires server-side OpenAI configuration and enabled administrator policy; full live-corpus quality and owner presentation review remain separate gates.
+- Spatial Assistant requires server-side OpenAI configuration and enabled administrator policy; its bounded model study and accepted owner presentation are documented in A1, while representative-device and universal live quality remain unqualified.
 - Synthetic previews and complexity estimates do not establish measured device frame rates or shared-anchor synchronization.
 - Unsupported imported renderer assets block release; richer rendering, recognition, shared physical anchors and Reach manipulation remain governed by their owning phases.
 
@@ -2422,7 +2422,7 @@ Creators describe spatial ideas, inspect validated proposals in the real canvas 
 - test: `tests/e2e/parallax-owner-refinements.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Parallax/Parallax_A1_Visual_Refinements.md`
 - completion-record: `Development_Docs/Projects/Project_Parallax/Parallax_A1_Model_and_Prompt_Comparison.md`
-- commit: `b5f6ce0e9412e3a11b50e3bf813bd4d898b963c8`
+- commit: `901538cb043cae510d5a92c1cf5430be539cfde0`
 
 ---
 

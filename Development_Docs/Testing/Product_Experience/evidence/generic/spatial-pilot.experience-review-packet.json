@@ -203,7 +203,7 @@
       ]
     }
   },
-  "sourceDigest": "5889192e361f930f9757ccdd32c750fc56c97424de2b8aeabff4d08a8d03ddb6",
+  "sourceDigest": "8102b782bad8dab20b665832d5f1b939c0bbe9bab9a0b54b53cf963610791c74",
   "artifacts": [
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
@@ -220,7 +220,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3.png",
-      "sha256": "0c7af908039a310f2bdc02b16c6d8fbef80b0d847053c05b553bee482076ebb5",
+      "sha256": "1a0068d90ae46c758f9bfcf0143c9c2d05bbd97750de409af042179478c6ad91",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -232,7 +232,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5.png",
-      "sha256": "8c271dcfe1968720ecbfa6432b6b5ebc0ee475f3f26abf090b7e7f4b6ee05c4a",
+      "sha256": "4653e8ff95f5124fc18ba86255b64d9b968b565b8bc82af33e930561cd5f5f98",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -256,7 +256,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL.trace.zip",
-      "sha256": "eb8fc7f777e27260b242c6104c203c52fe87b2e42903b3dfa97e16bc7c7e28bb",
+      "sha256": "73c44f4792c513088b008df6dc8e48c4da68644f2004a2638b8ae608e44acb49",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -266,8 +266,8 @@
     },
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/aa9bf1aefbff7deb7bdfedd8fba5b764.webm",
-      "sha256": "3b8d994b16317ebe0516acc9521684ebef0c3ad22c76596b69057c3046c18dae",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c11fe928044245ecb73f19d231d2eb8b.webm",
+      "sha256": "f93e53c685731fd71d5beca8e5720cfcf26cdc7c6f83cb49c8a02d515747fcdc",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -326,7 +326,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED.trace.zip",
-      "sha256": "89804c80b960bcb8a816381bd2f579f95a1f7268d45aa1f294d5104b2baebe5e",
+      "sha256": "faf52cb89288fc8563183f75655ff44fe7634b1233fa1845e041c4afbfa8052a",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -336,8 +336,8 @@
     },
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/e284b73854454ca8e38b0e6e96d3f671.webm",
-      "sha256": "45f1bf9dae0e4c4ced0c88bf39e192903e6d4dcdf5f2f26965ab0452a54d9d71",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/411f7bcd519bbc56f6fb252c25712715.webm",
+      "sha256": "3c371bd6a75df8f98fc4e52872f9a4d4565fd592fb7d4e7870578056c9fcef58",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -360,7 +360,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3.png",
-      "sha256": "da13123e7032602ffe737527c6f6fb3d350fd447a56d0684a9dfb61f77aba00d",
+      "sha256": "58d41dc197a5e1004b598879279786264138bb3f02340fba2d2f1a931a30f234",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -372,7 +372,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-5.png",
-      "sha256": "b7a2a39ef153f960e17c5cfddf1c14c02b1ad4768e575fc0c979c628639321c5",
+      "sha256": "309d2b375f038166181eca81e1c4aca55a9a305ad1f26146755645190a00a0d6",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -396,7 +396,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL.trace.zip",
-      "sha256": "e7e36fd44cd20c7cf224428bf846b7c268357f23f8d4f2b965c1f3665ff525ac",
+      "sha256": "8ac6182d09ac092e99b8b003b60ef9f3237347fcfe75daa3641aae0496be9aca",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -406,8 +406,8 @@
     },
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/072298f543ff5431dd67c0024350415b.webm",
-      "sha256": "859018941296c9ee9d92f7ea2dd5f12ec63a0928f3a4ba841faa48fca217edcf",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7dcb15824d4b94b6213497ffa51512cc.webm",
+      "sha256": "e4a322c5b4b7b028d3c5bf425ca6b76fe78f8ca988df76d6dacbbd46f25ddb1c",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -466,7 +466,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED.trace.zip",
-      "sha256": "a30282aff192e1958ddb89fd22fca914ba1f05ce3b555c6696da944bffe7d5f4",
+      "sha256": "ae558d655e2db5bd92b529ae98e41e5f5a6f3fdab560bcb462854b1e31ce7af8",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -476,8 +476,8 @@
     },
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/478637e7379a578d62d9c2f523168075.webm",
-      "sha256": "7c68f3596dd00d4e0610625182f32a7392ef1924774ed385a2c828ba260cffd3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/169c5e63dea922943af2014591d4c586.webm",
+      "sha256": "18a8ee2f09d6ae7de9441eea2f92c06fab295c72b5dafd5f225cfc816964411c",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -486,7 +486,7 @@
       "motionMode": "REDUCED"
     }
   ],
-  "packetDigest": "0f487289c5e2ae65c67c82b849b6ccacdeff6b0366b3e036444642c9c39e2bfa",
+  "packetDigest": "a92a8c59e068c1f78f9df470d512ba595b4a710b4465d2c168cf1dd4a5ce928a",
   "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
   "reviewDimensions": [
     "composition",
