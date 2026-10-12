@@ -3210,11 +3210,14 @@
           "src/components/wayfarer/AccountFlow.tsx",
           "src/app/sign-in",
           "src/app/forgot-password",
-          "src/homeport/return-to.ts"
+          "src/homeport/return-to.ts",
+          "src/components/platform/PlayerSignIn.tsx",
+          "src/components/platform/PlayerSignIn.module.css",
+          "src/app/player/sign-in"
         ],
         "projectionPaths": ["src/app/api/auth", "src/wayfarer/password-policy.ts"],
         "entryPoint": "/",
-        "states": ["SIGN_IN_READY", "RECOVERY_READY", "RETURNED"],
+        "states": ["SIGN_IN_READY", "RECOVERY_READY", "RETURNED", "PLAYER_ENTRY_READY"],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["ANONYMOUS"],
         "accessibility": "Tab navigation reaches every account action; visible focus and reduced-motion presentation preserve meaning.",
@@ -3239,9 +3242,9 @@
             "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
           }
         ],
-        "homeportScreenIds": ["screen-page-sign-in", "screen-page-forgot-password"],
+        "homeportScreenIds": ["screen-page-sign-in", "screen-page-forgot-password", "screen-page-player-sign-in"],
         "homeportJourneyIds": ["C"],
-        "browserTests": ["tests/e2e/homeport-phase2.spec.ts"],
+        "browserTests": ["tests/e2e/homeport-phase2.spec.ts", "tests/e2e/crossdeck-experience-refit.spec.ts"],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
@@ -3307,8 +3310,96 @@
                 "state": "RETURNED"
               }
             ]
+          },
+          {
+            "id": "player-entry-account-recovery",
+            "roles": ["ANONYMOUS"],
+            "outcome": "A signed-out Player reads the contextual account entry, reaches canonical sign-in and recovery, and returns to the account task",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Enter as Player"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "path": "/player/sign-in",
+                "text": "Open your Chronicle Library",
+                "meaning": "The Player entry explains one canonical account and exposes readable account and recovery actions",
+                "state": "PLAYER_ENTRY_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Create Account"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Forgot Password"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue to account sign-in"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "path": "/sign-in",
+                "text": "One Voyagewright account",
+                "meaning": "The gateway action opens a usable canonical account task rather than persisting a role",
+                "state": "SIGN_IN_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Forgot Password"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "path": "/forgot-password",
+                "text": "Send reset instructions",
+                "meaning": "The recovery destination provides the advertised email-based reset task",
+                "state": "RECOVERY_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Sign In"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in",
+                "path": "/sign-in",
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
           }
-        ]
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible Player entry, canonical account task or recovery destination",
+          "feedbackBudgetMs": 5000,
+          "justification": "Observe the existing canonical entry and recovery transition in normal and reduced motion within five seconds, without claiming physical-device performance."
+        }
       }
     },
     {
