@@ -27,19 +27,30 @@ function LensMark() {
   );
 }
 
-const context = createContext<{ sessionId: string; csrfToken: string; voyageContext?: VoyageContextData } | null>(null);
+const context = createContext<{
+  sessionId: string;
+  csrfToken: string;
+  voyageContext?: VoyageContextData;
+  onLensPresentationChange?: (open: boolean) => void;
+} | null>(null);
 export function ParallaxJournalProvider({
   sessionId,
   csrfToken,
   children,
   voyageContext,
+  onLensPresentationChange,
 }: {
   sessionId: string;
   csrfToken: string;
   children: ReactNode;
   voyageContext?: VoyageContextData;
+  onLensPresentationChange?: (open: boolean) => void;
 }) {
-  return <context.Provider value={{ sessionId, csrfToken, voyageContext }}>{children}</context.Provider>;
+  return (
+    <context.Provider value={{ sessionId, csrfToken, voyageContext, onLensPresentationChange }}>
+      {children}
+    </context.Provider>
+  );
 }
 export function ChronicleLensEntry({
   moment,
@@ -78,6 +89,7 @@ export function ChronicleLensEntry({
           }}
           replayOnly={replayOnly || !voyage}
           voyageContext={voyage?.voyageContext?.voyageId === voyage?.sessionId ? voyage?.voyageContext : undefined}
+          onPresentationChange={voyage?.onLensPresentationChange}
           loadBinding={
             voyage
               ? async () => {
@@ -138,6 +150,7 @@ export function ChronicleLens({
   onClose,
   field,
   voyageContext,
+  onPresentationChange,
 }: {
   moment: SpatialMoment;
   binding: InstanceBinding;
@@ -152,6 +165,7 @@ export function ChronicleLens({
   onClose: () => void;
   field?: (body: unknown) => Promise<{ observationId?: string; withdrawn?: boolean }>;
   voyageContext?: VoyageContextData;
+  onPresentationChange?: (open: boolean) => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null),
     runtime = useRef<ParallaxLensRuntime | null>(null);
@@ -180,6 +194,7 @@ export function ChronicleLens({
     const previous = document.activeElement as HTMLElement | null;
     const view = dialog.current;
     view?.showModal();
+    onPresentationChange?.(true);
     async function initialize() {
       try {
         const bound = loadBinding ? await loadBinding() : { moment, binding, replayOnly, fieldObservationId: null };
@@ -262,6 +277,7 @@ export function ChronicleLens({
       void runtime.current?.close();
       runtime.current = null;
       view?.close();
+      onPresentationChange?.(false);
       previous?.focus();
     };
     // A Lens opening binds one immutable passage until it closes.

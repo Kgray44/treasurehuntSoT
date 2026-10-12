@@ -1,0 +1,57 @@
+{
+  "classification": "Engineering historical evidence",
+  "authority": "Historical local diagnostics and separate-context observations, not current protected qualification",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "files": [
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle1-105ec0d8-observations.json",
+      "sha256": "5ff68bbae6520e0c6bfeec4c6ea0f3dd3d8f120108b760d2f2faa8306cdbd444",
+      "bytes": 5268
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle2-67ec3f0c-observations.raw.txt",
+      "sha256": "12817899e30aabeebdd7283995c032a8e3b56db25844c18863825ed5ce0a0d54",
+      "bytes": 12064
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/839fc784-failed-build-receipt.json",
+      "sha256": "3fc2e2529a3bc5e293155559a7805032f5893291bbc12386ba5b94c95baff477",
+      "bytes": 1591
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/f8527d39-local-stage-receipt.json",
+      "sha256": "38240d374c1136b49528bf56f8d78b444acce8ddf101c8eb9182c4267decbab3",
+      "bytes": 1845
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/839fc784-failed-build.log",
+      "sha256": "52756290182743eaaa4d69218e1e90048a4a6a3ea6f0433bbd9030b989417f36",
+      "bytes": 15164
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/f8527d39-local-stage.log",
+      "sha256": "200ac97e37b27eaa380c691fa44d4cebf9e390873050dfeee996078dee15b4a7",
+      "bytes": 36809
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle1-105ec0d8-normal-11-offline.png",
+      "sha256": "902e7d036cac3dadb82673ddbced5467b0bd9112526001ca31e1d5dd3dd35535",
+      "bytes": 123155
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle1-105ec0d8-normal-17-access-ended.png",
+      "sha256": "5ba4278d91152c88258831f18b91c05d50250b9f0fde0d46c18aeecbc39cc399",
+      "bytes": 208307
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle2-67ec3f0c-normal-16-return.png",
+      "sha256": "4753dc61c6fdca520dd2963009f8f6b15f7ccb8f7f68d39991ff86d01ec12021",
+      "bytes": 424449
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle2-67ec3f0c-reduced-16-return.png",
+      "sha256": "88e4245403d54a76e4497183d1e40bbdfed5cbf7f6d111dcfb41a08e79fcff67",
+      "bytes": 396210
+    }
+  ]
+}

@@ -281,6 +281,8 @@ function ChronicleJournalSessionIdentity({
   const [pendingEvent, setPendingEvent] = useState<ProgressionEvent | null>(null);
   const [newContent, setNewContent] = useState(false);
   const [liveNotice, setLiveNotice] = useState("");
+  const [lensPresented, setLensPresented] = useState(false);
+  const [connectionPresented, setConnectionPresented] = useState(false);
   const [answer, setAnswer] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -1148,13 +1150,23 @@ function ChronicleJournalSessionIdentity({
           aria-hidden={openingActive}
           inert={openingActive ? true : undefined}
         >
-          <div>
+          <div
+            aria-hidden={lensPresented || connectionPresented}
+            inert={lensPresented || connectionPresented ? true : undefined}
+          >
             <Link href="/player/library">← {platformCopy.chronicleLibrary.value}</Link>
             <p className="eyebrow">{historical ? "Voyage Record" : (state.chapter?.title ?? "Active Voyage")}</p>
             <VoyageContext voyage={voyageContext} heading />
           </div>
           <div className="journal-session-tools">
-            {state.csrfToken && <CrossdeckDevices initialVoyage={sessionId} compact voyageContext={voyageContext} />}
+            {state.csrfToken && (
+              <CrossdeckDevices
+                initialVoyage={sessionId}
+                compact
+                voyageContext={voyageContext}
+                onPresentationChange={setConnectionPresented}
+              />
+            )}
             {state.csrfToken && (
               <CrossdeckHandoff
                 voyageId={sessionId}
@@ -1519,6 +1531,7 @@ function ChronicleJournalSessionIdentity({
             sessionId={sessionId}
             csrfToken={state.csrfToken ?? ""}
             voyageContext={voyageContext}
+            onLensPresentationChange={setLensPresented}
           >
             <section aria-label="Spatial moments in your released passages">
               {spatialBlocks.map((block) => (

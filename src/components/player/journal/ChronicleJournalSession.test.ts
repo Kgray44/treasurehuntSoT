@@ -5,6 +5,7 @@ import type { JournalPhaseOutcome } from "@/animation/core/animation-types";
 import type { JournalOpeningPhase } from "@/animation/journal/opening-machine";
 import { syntheticBinding, syntheticSpatialMoment } from "@/parallax/fixtures";
 import type { CrossdeckConnection } from "@/components/crossdeck/useCrossdeckSession";
+import { storageKey } from "@/crossdeck/client";
 import {
   journalOpeningAllowsPersistence,
   runJournalOpeningPhases,
@@ -378,6 +379,7 @@ describe("ChronicleJournalSession opening outcome consumer", () => {
 describe("ChronicleJournalSession mounted synchronous teardown", () => {
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
     motionTestDouble.mode = "reduced";
     ControlledEventSource.reset();
     openingTestDouble.waitForPhase.mockReset();
@@ -423,6 +425,7 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
     localStorage.clear();
+    sessionStorage.clear();
     ControlledEventSource.reset();
   });
 
@@ -610,6 +613,7 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
     await act(flushMicrotasks);
     const entry = screen.getByRole("button", { name: "Open Chronicle Lens" });
+    const headerContext = screen.getByRole("region", { name: "Voyage context" });
     expect(entry.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
     fireEvent.click(entry);
     await act(flushMicrotasks);
@@ -618,11 +622,103 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     expect(dialog.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
     expect(screen.getByText(/The next bearing is written in the stars/)).toBeVisible();
     const context = within(dialog).getByRole("region", { name: "Voyage context" });
+    expect(screen.getAllByRole("region", { name: "Voyage context" })).toEqual([context]);
+    expect(headerContext.closest('[aria-hidden="true"][inert]')).not.toBeNull();
     expect(context).toHaveTextContent(state.tale.title);
     expect(context).toHaveAttribute("data-experience-voyage", state.session.id);
     expect(context).toHaveAttribute("data-experience-version", state.session.versionId);
     fireEvent.click(within(dialog).getByRole("button", { name: "Close Chronicle Lens" }));
     expect(screen.getAllByRole("region", { name: "Voyage context" })).toHaveLength(1);
+    expect(screen.getByRole("region", { name: "Voyage context" })).toBe(headerContext);
+    expect(headerContext.closest('[aria-hidden="true"],[inert]')).toBeNull();
+    view.unmount();
+  });
+
+  it("keeps the connection dialog's Voyage context active while its nested header identity is inactive", async () => {
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn(() => ({ matches: false })),
+    );
+    const originalShowModal = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "showModal");
+    const originalClose = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "close");
+    Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
+      configurable: true,
+      value: function (this: HTMLDialogElement) {
+        this.setAttribute("open", "");
+      },
+    });
+    Object.defineProperty(HTMLDialogElement.prototype, "close", {
+      configurable: true,
+      value: function (this: HTMLDialogElement) {
+        this.removeAttribute("open");
+      },
+    });
+    onTestFinished(() => {
+      if (originalShowModal) Object.defineProperty(HTMLDialogElement.prototype, "showModal", originalShowModal);
+      else Reflect.deleteProperty(HTMLDialogElement.prototype, "showModal");
+      if (originalClose) Object.defineProperty(HTMLDialogElement.prototype, "close", originalClose);
+      else Reflect.deleteProperty(HTMLDialogElement.prototype, "close");
+    });
+    sessionStorage.setItem(storageKey("connection"), "source");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input).startsWith("/api/crossdeck") && init?.method === "POST") {
+          const body = JSON.parse(String(init.body));
+          return Response.json(
+            body.action === "register"
+              ? {
+                  surface: {
+                    surfaceId: body.surfaceId,
+                    voyageId: "connection",
+                    thisSession: true,
+                    presence: "ACTIVE",
+                    role: "PRIMARY_STORY",
+                    label: "Desktop",
+                  },
+                }
+              : { code: "ABCD-1234", expiresAt: new Date(Date.now() + 60_000).toISOString() },
+          );
+        }
+        if (String(input).startsWith("/api/crossdeck"))
+          return Response.json(
+            init?.method === "POST"
+              ? { code: "ABCD-1234", expiresAt: new Date(Date.now() + 60_000).toISOString() }
+              : {
+                  csrfToken: "csrf",
+                  voyages: [],
+                  surfaces: [
+                    {
+                      surfaceId: "source",
+                      voyageId: "connection",
+                      thisSession: true,
+                      presence: "ACTIVE",
+                      role: "PRIMARY_STORY",
+                      label: "Desktop",
+                    },
+                  ],
+                },
+          );
+        return jsonResponse(sessionState("connection"));
+      }),
+    );
+    const view = render(createElement(ChronicleJournalSession, { sessionId: "connection" }));
+    await act(flushMicrotasks);
+    fireEvent.click(screen.getByRole("button", { name: "Open the journal" }));
+    await act(flushMicrotasks);
+    const headerContext = screen.getByRole("region", { name: "Voyage context" });
+    fireEvent.click(screen.getByRole("button", { name: "Connect another device" }));
+    await act(flushMicrotasks);
+    const dialog = screen.getByRole("dialog", { name: "Bring your phone aboard" });
+    const context = within(dialog).getByRole("region", { name: "Voyage context" });
+    expect(screen.getAllByRole("region", { name: "Voyage context" })).toEqual([context]);
+    expect(context).toHaveAttribute("data-experience-voyage", "connection");
+    expect(context).toHaveAttribute("data-experience-version", "version-connection");
+    expect(context.closest('[aria-hidden="true"],[inert]')).toBeNull();
+    expect(headerContext.closest('[aria-hidden="true"][inert]')).not.toBeNull();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue the Chronicle" }));
+    expect(screen.getAllByRole("region", { name: "Voyage context" })).toEqual([headerContext]);
+    expect(headerContext.closest('[aria-hidden="true"],[inert]')).toBeNull();
     view.unmount();
   });
 

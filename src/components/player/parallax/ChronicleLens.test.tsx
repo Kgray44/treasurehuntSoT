@@ -34,6 +34,7 @@ it("opens camera-free Guided View with readable meaning and keyboard controls", 
   expect(close).toHaveBeenCalled();
 });
 it("carries the authorized immutable Voyage context into the actual released Lens instead of its preview binding", async () => {
+  const presentation = vi.fn();
   const moment = syntheticSpatialMoment();
   const request = vi.fn(async () => Response.json({ moment, binding: syntheticBinding, replayOnly: false }));
   vi.stubGlobal("fetch", request);
@@ -41,6 +42,7 @@ it("carries the authorized immutable Voyage context into the actual released Len
     <ParallaxJournalProvider
       sessionId={syntheticBinding.sessionId}
       csrfToken="synthetic-csrf"
+      onLensPresentationChange={presentation}
       voyageContext={{
         voyageId: syntheticBinding.sessionId,
         versionId: syntheticBinding.chronicleVersionId,
@@ -53,6 +55,7 @@ it("carries the authorized immutable Voyage context into the actual released Len
   expect(screen.queryByRole("region", { name: "Voyage context" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Open Chronicle Lens" }));
   await screen.findByText("This device uses Guided View for this spatial moment.");
+  expect(presentation).toHaveBeenLastCalledWith(true);
   const dialog = screen.getByRole("dialog", { name: "A message between worlds" });
   const context = within(dialog).getByRole("region", { name: "Voyage context" });
   expect(context).toHaveTextContent("Voyage");
@@ -65,6 +68,8 @@ it("carries the authorized immutable Voyage context into the actual released Len
     `/api/player/playthroughs/${syntheticBinding.sessionId}/parallax?block=${syntheticBinding.blockId}`,
     { cache: "no-store" },
   );
+  fireEvent.click(within(dialog).getByRole("button", { name: "Close Chronicle Lens" }));
+  expect(presentation).toHaveBeenLastCalledWith(false);
 });
 
 it("omits another Voyage's private title when the Lens provider has a different authorized session", async () => {

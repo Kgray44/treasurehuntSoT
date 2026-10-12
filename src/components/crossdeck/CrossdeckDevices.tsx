@@ -43,11 +43,13 @@ export function CrossdeckDevices({
   compact = false,
   pairing = false,
   voyageContext,
+  onPresentationChange,
 }: {
   initialVoyage?: string;
   compact?: boolean;
   pairing?: boolean;
   voyageContext?: VoyageContextData;
+  onPresentationChange?: (open: boolean) => void;
 }) {
   const router = useRouter();
   const dialogTitle = useId();
@@ -86,6 +88,12 @@ export function CrossdeckDevices({
   const companions = surfaces.filter(
     (s) => s.surfaceId !== here?.surfaceId && s.voyageId === voyage && s.presence === "ACTIVE",
   );
+
+  useEffect(() => {
+    if (!compact) return;
+    if (dialog.current?.open) onPresentationChange?.(true);
+    return () => onPresentationChange?.(false);
+  }, [compact, onPresentationChange]);
 
   useEffect(() => {
     if (!pairing) return;
@@ -189,6 +197,7 @@ export function CrossdeckDevices({
   async function openConnection() {
     setDialogOpen(true);
     dialog.current?.showModal();
+    onPresentationChange?.(true);
     if (!ready || signedOut) return;
     setOpening(true);
     try {
@@ -216,6 +225,7 @@ export function CrossdeckDevices({
     setChallenge(null);
     dialog.current?.close();
     setDialogOpen(false);
+    onPresentationChange?.(false);
     trigger.current?.focus();
   }
   async function join() {
@@ -325,6 +335,7 @@ export function CrossdeckDevices({
             pairGeneration.current++;
             setChallenge(null);
             setDialogOpen(false);
+            onPresentationChange?.(false);
           }}
         >
           <div className={styles.dialogHeading}>

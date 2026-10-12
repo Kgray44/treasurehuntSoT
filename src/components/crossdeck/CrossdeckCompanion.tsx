@@ -74,6 +74,7 @@ export function CrossdeckCompanion({
   const [chartAvailable, setChartAvailable] = useState(false);
   const [textScale, setTextScale] = useState(1);
   const [purposeFocus, setPurposeFocus] = useState<SurfaceRole | null>(null);
+  const [lensPresented, setLensPresented] = useState(false);
   const [syncConnection, setSyncConnection] = useState<CrossdeckSyncConnection>("connecting");
   const root = useRef<HTMLElement>(null);
   const purposes = useRef<HTMLDetailsElement>(null);
@@ -236,7 +237,7 @@ export function CrossdeckCompanion({
         data-motion-mode={mode}
       >
         <header className={styles.header}>
-          <div className={styles.identity}>
+          <div className={styles.identity} aria-hidden={lensPresented} inert={lensPresented ? true : undefined}>
             <span className={styles.mark} aria-hidden="true">
               ✦
             </span>
@@ -348,6 +349,7 @@ export function CrossdeckCompanion({
                   <ParallaxJournalProvider
                     sessionId={state.session.id}
                     csrfToken={state.csrfToken ?? connection.csrf}
+                    onLensPresentationChange={setLensPresented}
                     voyageContext={{
                       voyageId: state.session.id,
                       versionId: state.session.versionId,

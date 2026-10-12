@@ -1,8 +1,10 @@
 // @sounding-line-registration owner=project-crossdeck suite=unit.crossdeck contracts=crossdeck.phase1.participation,crossdeck.phase2.continuity
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { useState } from "react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { storageKey } from "@/crossdeck/client";
 import { CrossdeckDevices } from "./CrossdeckDevices";
+import { VoyageContext } from "./VoyageContext";
 
 const router = vi.hoisted(() => ({ push: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => router }));
@@ -205,6 +207,51 @@ it("connects directly from the open Chronicle and restores the reader's focus wh
   expect(screen.queryByRole("dialog")).toBeNull();
   expect(screen.queryByRole("region", { name: "Voyage context" })).toBeNull();
   expect(trigger).toHaveFocus();
+});
+
+it("restores a still-mounted parent identity when the open compact connection is removed", async () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
+      if (init?.method === "POST") {
+        const body = JSON.parse(String(init.body));
+        return Response.json(
+          body.action === "register"
+            ? { surface: { ...savedSurface, surfaceId: body.surfaceId } }
+            : { code: "ABCD-1234", expiresAt: new Date(Date.now() + 60_000).toISOString() },
+        );
+      }
+      return Response.json({ csrfToken: "csrf", voyages: [], surfaces: [savedSurface] });
+    }),
+  );
+  const voyage = { voyageId: "voyage", versionId: "edition", title: "Northern Light" };
+  function Parent({ showConnection }: { showConnection: boolean }) {
+    const [presented, setPresented] = useState(false);
+    return (
+      <>
+        <div aria-hidden={presented} inert={presented ? true : undefined}>
+          <VoyageContext voyage={voyage} heading />
+        </div>
+        {showConnection && (
+          <CrossdeckDevices initialVoyage="voyage" compact voyageContext={voyage} onPresentationChange={setPresented} />
+        )}
+      </>
+    );
+  }
+  const view = render(<Parent showConnection />);
+  const identity = screen.getByRole("region", { name: "Voyage context" });
+  const trigger = screen.getByRole("button", { name: "Connect another device" });
+  await waitFor(() => expect(trigger).toBeEnabled());
+  fireEvent.click(trigger);
+  const dialog = screen.getByRole("dialog", { name: "Bring your phone aboard" });
+  expect(screen.getAllByRole("region", { name: "Voyage context" })).toEqual([
+    within(dialog).getByRole("region", { name: "Voyage context" }),
+  ]);
+  expect(identity.closest('[aria-hidden="true"][inert]')).not.toBeNull();
+  view.rerender(<Parent showConnection={false} />);
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(screen.getAllByRole("region", { name: "Voyage context" })).toEqual([identity]);
+  expect(identity.closest('[aria-hidden="true"],[inert]')).toBeNull();
 });
 
 it.each([

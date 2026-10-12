@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Changelog
@@ -24,7 +24,8 @@ last_reviewed: 2026-10-11
   Account security remains in Personal Harbor; transfer acknowledgement and
   One Voyage progression retain their existing authority. The
   [refit record](Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_20261011.md)
-  records pending rendered/protected qualification and separate owner acceptance.
+  preserves failed capture/review findings and pending final source-bound replay,
+  independent re-review, protected qualification and separate owner acceptance.
 
 - Parallax owner refinements apply light appearance to the entire Spatial Studio and preview environment, use blue assistance, preserve scene dimensions when docking and expose populated mode-dependent workspace sections. Admiralty adds selectable daily request/cost charts and exact UTC tables. Authorized synthetic comparisons refine server instructions while retaining Luna low as the standard, explicit review and shared Windows credential support. [Refinement evidence](Development_Docs/Projects/Project_Parallax/Parallax_A1_Visual_Refinements.md) keeps software qualification and owner visual acceptance separate.
 

@@ -3,7 +3,7 @@ title: Project Crossdeck engineering home
 audience: product-engineering
 status: governing-baseline
 canonical_for: project-crossdeck-engineering-home
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Project Crossdeck
@@ -87,7 +87,7 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 The [spatial experience refit](Spatial_Experience_Refit_20261011.md) is a current
 local candidate: contextual connection from the Chronicle and real Lens, Chart,
 Journal and artifact companion presentations. Its baseline findings, domain
-ownership, trusted-helper prerequisite and outstanding qualification/owner gates
+ownership, canonical UI replay and outstanding qualification/owner gates
 remain explicit. The [task efficiency ledger](Spatial_Experience_Refit_Efficiency_20261011.md)
 records observed counters separately from acceptance.
 

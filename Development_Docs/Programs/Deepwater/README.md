@@ -3,15 +3,15 @@ title: Project Deepwater Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-deepwater-repository-index
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Project Deepwater
 
 The [Crossdeck experience refit](../../Projects/Project_Crossdeck/Spatial_Experience_Refit_20261011.md)
 records current human-outcome loss points and canonical companion realization.
-Its local candidate, incomplete baseline observations, protected-helper
-prerequisite and owner `NOT_CLAIMED` boundary remain explicit. This navigation
+Its local candidate, incomplete baseline observations, pending source-bound
+replay/qualification and owner `NOT_CLAIMED` boundary remain explicit. This navigation
 link preserves the accepted Deepwater phase receipts and does not reopen them.
 
 ## Phase 5 current governance baseline

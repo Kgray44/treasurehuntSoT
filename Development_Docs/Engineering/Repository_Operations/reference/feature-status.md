@@ -3,7 +3,7 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
@@ -12,8 +12,8 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 The [Crossdeck experience refit](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_20261011.md)
 is a local candidate with contextual connection and real Lens, Chart, Journal
-and artifact presentations. Final browser/capture criticism, protected-helper
-availability, ordinary qualification and integration remain pending. The refit
+and artifact presentations. Final source-bound seeded replay, independent
+criticism, ordinary qualification and integration remain pending. The refit
 does not complete Crossdeck Phase 2, add Air Handoff or imply physical/native
 or owner acceptance.
 

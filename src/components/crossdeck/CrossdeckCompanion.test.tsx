@@ -342,6 +342,7 @@ it("opens the canonical Lens automatically with meaningful camera-free content a
   vi.stubGlobal("fetch", requests);
   const current = connection();
   const view = render(<CrossdeckCompanion {...props(current)} />);
+  const headerContext = screen.getByRole("region", { name: "Voyage context" });
   fireEvent.click(screen.getByText("Change companion purpose"));
   fireEvent.click(screen.getByRole("button", { name: "Chronicle Lens" }));
   await waitFor(() => expect(current.act).toHaveBeenCalled());
@@ -349,6 +350,8 @@ it("opens the canonical Lens automatically with meaningful camera-free content a
   view.rerender(<CrossdeckCompanion {...props(current)} />);
   const dialog = await screen.findByRole("dialog", { name: "A message between worlds" });
   const context = within(dialog).getByRole("region", { name: "Voyage context" });
+  expect(screen.getAllByRole("region", { name: "Voyage context" })).toEqual([context]);
+  expect(headerContext.closest('[aria-hidden="true"][inert]')).not.toBeNull();
   expect(context).toHaveTextContent("The Northern Light");
   expect(context).toHaveAttribute("data-experience-voyage", syntheticBinding.sessionId);
   expect(context).toHaveAttribute("data-experience-version", syntheticBinding.chronicleVersionId);
@@ -366,6 +369,8 @@ it("opens the canonical Lens automatically with meaningful camera-free content a
   expect(JSON.parse(String(receipt.body))).toMatchObject({ authority: "NONAUTHORITATIVE", mode: "GUIDED" });
   fireEvent.click(within(dialog).getByRole("button", { name: "Close Chronicle Lens" }));
   expect(screen.getAllByRole("region", { name: "Voyage context" })).toHaveLength(1);
+  expect(screen.getByRole("region", { name: "Voyage context" })).toBe(headerContext);
+  expect(headerContext.closest('[aria-hidden="true"],[inert]')).toBeNull();
   expect(screen.getByRole("region", { name: "Voyage context" })).toHaveAttribute(
     "data-experience-version",
     syntheticBinding.chronicleVersionId,
