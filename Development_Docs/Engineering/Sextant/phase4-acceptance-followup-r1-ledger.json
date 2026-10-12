@@ -155,12 +155,32 @@
         "sourceInstalled": false,
         "newRepair": false,
         "newRecapture": false
+      },
+      {
+        "type": "PASSWORD_ASSUMPTION_CORRECTION",
+        "sourceThreadId": "01a130d8-1db8-76d1-860d-ddaa43fb202f",
+        "sourceSha": "6f29b9945a4f41d32edd8d573108368580e60dab",
+        "proof": "Development_Docs/Engineering/Sextant/phase4-password-selector-correction-r1.json",
+        "earlierAssumption": "WITHDRAWN_NOT_ERASED",
+        "newHelperRepair": false,
+        "newHelperTests": false,
+        "newRecapture": false
+      },
+      {
+        "type": "APPROVED_DIAGNOSTICS_DEPENDENCY_ACK",
+        "sourceThreadId": "01a130d8-1db8-76d1-860d-ddaa43fb202f",
+        "diagnosticsRequest": "reach-capture-observability-predecessor-20261012-r1",
+        "scope": "Reach-only observability predecessor, no unsupported password-role blocker or patch",
+        "acceptedSourceInstalled": false,
+        "newTests": false,
+        "newBuild": false,
+        "newRecapture": false
       }
     ],
     "iterations": [
       {
         "number": 1,
-        "state": "FIXTURE_AND_AGREED_WRAPPER_REPAIRED_FOCUSED_CHECKS_PASS_NO_RECAPTURE",
+        "state": "COHERENT_INITIAL_REPAIR_AND_COMPLETE_MAPPING_TWO_NEW_DECLARATIONS_NO_RECAPTURE_WAITING_ACCEPTED_HANDOFFS",
         "repairStartedAt": "2026-10-12T16:20:57.840Z",
         "startingSource": "9352dcdf29b63cce07833493a863108a3334b027",
         "findings": [
@@ -195,6 +215,21 @@
             "finding": "SEXTANT-FINAL-005",
             "repair": "Bind the guarded synthetic ordinary persona to a public fixture-only credential; accepted static auth setup needs no arbitrary environment credential resolver",
             "classification": "ADDITIONAL_COHERENT_INITIAL_PREPARATION_BEFORE_CANDIDATE_FREEZE_NOT_POST_CAPTURE_REPAIR"
+          },
+          {
+            "path": "testing/contracts.json",
+            "finding": "SEXTANT-FINAL-005",
+            "repair": "Declare ordinary own persona sign-in with existing accepted role matcher; register explicit Personal Harbor consumer journeys without claiming qualification",
+            "newContractId": "sextant.shared-consumers.personal-harbor",
+            "registeredJourneys": 11,
+            "qualification": "PENDING_CAPTURE_REVIEW"
+          },
+          {
+            "path": "testing/contracts.json",
+            "finding": "SEXTANT-FINAL-005",
+            "newContractId": "sextant.shared-consumers.shell-identity",
+            "repair": "Declare actual preference feedback/sign-out/anonymous gateway journey using existing controls and own fixture",
+            "qualification": "NOT_CAPTURED_NOT_ACCEPTED"
           }
         ],
         "recaptureRuns": 0,
@@ -206,13 +241,17 @@
         },
         "sharedConsumerDesign": {
           "path": "Development_Docs/Engineering/Sextant/phase4-shared-consumer-design-r1.json",
-          "affectedCount": 170,
-          "uncoveredCount": 141,
+          "originalSurfaceObligations": 141,
           "families": 13,
-          "proposedNaturalJourneys": 11,
-          "registeredNewContracts": 0,
-          "capturedNewJourneys": 0,
-          "scope": "PREPARATION_ONLY_NO_EXEMPTIONS"
+          "registeredNewContracts": 2,
+          "registeredNewJourneys": 12,
+          "surfacesWithNewRelevantDeclaration": 22,
+          "remainingUnregisteredBaselineSurfaces": 119,
+          "capturedSurfaces": 0,
+          "acceptedSurfaces": 0,
+          "classification": "COMPLETE_OWNERSHIP_CONTRACT_FIXTURE_ENTRY_OUTCOME_RETURN_MAPPING_NOT_QUALIFICATION",
+          "proposedRemainingFamilyContracts": 11,
+          "passwordRoleBlocker": "REFUTED_BY_LOCKED_INSTALLED_1_56_1_SOURCE"
         },
         "sharedJournalRegression": {
           "path": "Development_Docs/Engineering/Sextant/phase4-followup-r1-journal-regression.json",
@@ -231,15 +270,18 @@
         },
         "coherentInitialRepairAccounting": {
           "candidateFrozen": false,
-          "sourceEdits": "Fixture slug, canonical wrapper API consumption, guarded synthetic credential; all recorded before first candidate freeze/recapture",
+          "sourceEdits": "Fixture slug, agreed canonical wrapper consumption, guarded synthetic credential, ordinary own persona sign-in declarations and two supported consumer contracts; all before first coherent candidate freeze/recapture",
           "focusedChecks": [
             "canonical writer slug at ac536fda",
             "28 unchanged shared Journal regression checks for wrapper working tree",
             "canonical writer slug and synthetic credential at99c60ff4"
           ],
           "postCaptureRepairs": 0,
-          "actualRecaptures": 0
-        }
+          "actualRecaptures": 0,
+          "newHelperRepairs": 0,
+          "newHelperTests": 0
+        },
+        "independentNextAction": "Validate and publish current ownership/contract/fixture/entry/outcome/return mapping and supported declarations; after actual protected handoffs, consume once, resolve named data/entry support gaps and freeze one coherent capture candidate"
       }
     ]
   },
@@ -279,8 +321,25 @@
   "dependencies": {
     "reachHelper": "PROTECTED_ACCEPTED_5e72620c_CONSUMED",
     "journalSharedContract": "FROZEN_COORDINATOR_BOUNDARY_AND_CROSSDECK_ACK_RECORDED_BEFORE_EDIT",
-    "crossdeckReconciliation": "CONDITIONAL_ADDITIVE_BOUNDARY_RECORDED_WAITING_PROTECTED_ACCEPTANCE",
-    "reachSemanticSelectors": "WAIT_FOR_PROTECTED_LABELLED_PASSWORD_HANDOFF_ONLY_NO_SCOPE_OR_CREDENTIAL_SCHEMA_EXPANSION"
+    "crossdeckReconciliation": {
+      "requestMarker": "crossdeck-observability-accepted-retry-20261012-r1",
+      "ownerThread": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+      "state": "CONDITIONAL_ONE_OWNER_RETRY_REFIT_NOT_ACCEPTED",
+      "cancelledCapture": "38277482404_NO_ARTIFACT",
+      "install": "PROHIBITED_UNTIL_ACTUAL_PROTECTED_ACCEPTANCE"
+    },
+    "reachSemanticSelectors": "REMOVED_UNPROVEN_PASSWORD_ROLE_BLOCKER_USE_ACCEPTED_HELPER_1_56_1",
+    "captureDiagnostics": {
+      "requestMarker": "reach-capture-observability-predecessor-20261012-r1",
+      "ownerThread": "01a12d61-295b-7271-a179-d5b1575f4a69",
+      "approval": "KG_APPROVED_2026_10_12_17_26_UTC",
+      "state": "APPROVED_NOT_PROTECTED_ACCEPTED_NO_PATCH_INSTALLED",
+      "scope": "Observability only; no password/row selector repair",
+      "files": [
+        "scripts/sounding-line/experience-browser.mjs",
+        "tests/sounding-line/experience-browser-fixtures.test.mjs"
+      ]
+    }
   },
   "goal": {
     "nativePresent": true,
@@ -318,5 +377,12 @@
     "newThreadCreated": false
   },
   "coordinationLimitation": "Coordinator native send failed AbsolutePathBuf without base path even after independently verified durable host; failed sends not claimed delivered. Crossdeck and Reach received their scoped requests.",
-  "featureCatalogDecision": "NO_CHANGE_REQUIRED_ORDINARY_CORRECTIONS_AND_UNACCEPTED_PREPARATION"
+  "featureCatalogDecision": "NO_CHANGE_REQUIRED_ORDINARY_CORRECTIONS_AND_UNACCEPTED_PREPARATION",
+  "resumeTriggers": [
+    "Actual protected-accepted Reach diagnostics commit/PR/run handoff, not approval or pending source",
+    "Actual protected-accepted Crossdeck refit plus frozen UI/test/contract interface; install once with agreed additive boundary",
+    "Complete remaining canonical domain synthetic data and supported natural-entry requirements before one coherent candidate freeze/capture",
+    "Fresh independent review only after actual final-source evidence; exact-source ordinary qualification thereafter",
+    "New frozen native contract and one owner claim; D4/signing/provider gates remain external"
+  ]
 }

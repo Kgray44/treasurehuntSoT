@@ -17,7 +17,14 @@ delegates only the compatibility Journal wrapper to Sextant; canonical auth,
 reader-state and progression owners remain unchanged. The shared Journal's 28
 existing regression checks pass, while actual route continuity remains unproven.
 [Shared consumer preparation](phase4-shared-consumer-design-r1.json) maps 141
-uncovered surfaces to 13 families without exempting or accepting any of them.
+uncovered surfaces to 13 families with per-surface canonical ownership, contract,
+fixture support, natural entry, promised outcome, return and concrete gaps.
+Two new declarations register 12 journeys across 22 paths; 119 paths remain
+unregistered and all 141 lack new captured acceptance. The
+[locked selector evidence](phase4-password-selector-correction-r1.json) refutes
+the earlier password-role assumption. No password helper patch is needed or
+installed. The approved Reach observability predecessor and conditional Crossdeck
+retry require actual protected-accepted handoffs before consumption.
 No new native dispatch, formal qualification or D4 acceptance is granted here.
 
 This work starts at protected-main `f458bf2dc1176016c2d166180f038f0f15ac9f7c`.

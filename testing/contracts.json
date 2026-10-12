@@ -4172,9 +4172,27 @@
         "roles": ["PLAYER"],
         "roleSetup": {
           "PLAYER": {
-            "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
-            "steps": [],
-            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role. Returning-reader preparation must complete the actual visible first opening before capture, without setting reader preferences or progression through an API or database.",
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2Fsextant-experience-voyage%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "authentication": "Ordinary sign-in uses the guarded public synthetic persona and the locked Playwright textbox/Password matcher. This declaration is not rendered sign-in proof. Returning-reader preparation must still complete its actual visible first opening with retained evidence, without hidden reader-state or progression injection.",
             "witness": {
               "role": "button",
               "name": "Synthetic Sextant Navigator",
@@ -4404,9 +4422,27 @@
         "roles": ["PLAYER"],
         "roleSetup": {
           "PLAYER": {
-            "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
-            "steps": [],
-            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role. Returning-reader preparation must complete the actual visible first opening before capture, without setting reader preferences or progression through an API or database.",
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2Fsextant-experience-voyage%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "authentication": "Ordinary sign-in uses the guarded public synthetic persona and the locked Playwright textbox/Password matcher. This declaration is not rendered sign-in proof. Returning-reader preparation must still complete its actual visible first opening with retained evidence, without hidden reader-state or progression injection.",
             "witness": {
               "role": "button",
               "name": "Synthetic Sextant Navigator",
@@ -4575,9 +4611,27 @@
         "roles": ["CREATOR", "PLAYER"],
         "roleSetup": {
           "CREATOR": {
-            "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
-            "steps": [],
-            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role. Returning-reader preparation must complete the actual visible first opening before capture, without setting reader preferences or progression through an API or database.",
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2Fsextant-experience-voyage%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "authentication": "Ordinary sign-in uses the guarded public synthetic persona and the locked Playwright textbox/Password matcher. This declaration is not rendered sign-in proof. Returning-reader preparation must still complete its actual visible first opening with retained evidence, without hidden reader-state or progression injection.",
             "witness": {
               "role": "button",
               "name": "Synthetic Sextant Navigator",
@@ -4585,9 +4639,27 @@
             }
           },
           "PLAYER": {
-            "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
-            "steps": [],
-            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role. Returning-reader preparation must complete the actual visible first opening before capture, without setting reader preferences or progression through an API or database.",
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2Fsextant-experience-voyage%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "authentication": "Ordinary sign-in uses the guarded public synthetic persona and the locked Playwright textbox/Password matcher. This declaration is not rendered sign-in proof. Returning-reader preparation must still complete its actual visible first opening with retained evidence, without hidden reader-state or progression injection.",
             "witness": {
               "role": "button",
               "name": "Synthetic Sextant Navigator",
@@ -4966,6 +5038,905 @@
         "motion": {
           "measurement": "Keyboard activation to readable Journal readiness and visible consumer feedback, including the authored 8250 ms full opening; measure normal and reduced motion separately",
           "feedbackBudgetMs": 11000
+        }
+      }
+    },
+    {
+      "id": "sextant.shared-consumers.personal-harbor",
+      "name": "Sextant shared native-context projection through Personal Harbor",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true,
+      "experience": {
+        "persona": "An authenticated synthetic Player reviewing account presentation and capability preferences",
+        "objective": "Reach each affected Personal Harbor task through its ordinary visible control and return to the same authenticated Overview",
+        "visibleOutcome": "Readable account sections retain correct identity and ordinary return; saving preferences produces confirmed feedback followed by ordinary reopening of the readable preference task",
+        "integrationOwner": "Sextant R1 shared-consumer qualification; canonical domain ownership retained",
+        "systems": ["project-sextant", "project-homeport", "wayfarer", "one-voyage"],
+        "sourcePaths": [
+          "src/app/account/accessibility/page.tsx",
+          "src/app/account/data/page.tsx",
+          "src/app/account/linked-identities/page.tsx",
+          "src/app/account/notifications/page.tsx",
+          "src/app/account/page.tsx",
+          "src/app/account/personal-information/page.tsx",
+          "src/app/account/preferences/page.tsx",
+          "src/app/account/privacy/page.tsx",
+          "src/app/account/profile/page.tsx",
+          "src/app/account/security/page.tsx",
+          "src/app/account/sessions/page.tsx",
+          "src/app/account/support-access/page.tsx",
+          "src/components/homeport/AccountSurfaces.tsx",
+          "src/components/homeport/AuthenticatedHarborPage.tsx",
+          "src/components/homeport/PersonalHarborLayout.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["SECTION_READY", "PREFERENCES_SAVED", "RETURNED", "PREFERENCES_REOPENED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Personal Harbor",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-011-account-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
+            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
+          },
+          {
+            "family": "Personal Harbor",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-012-account-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
+            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Visible keyboard activation, truthful account controls and equivalent constrained/reduced-motion navigation preserve the same task.",
+        "fallback": "Optional native context and denied device permissions do not prevent ordinary account preferences, accessible screen controls or safe return.",
+        "navigation": "Overview cards open each task; Return to Home and the ordinary account menu restore the same authenticated Personal Harbor.",
+        "designTarget": "Preserve accepted account typography, task-first headings, readable controls, truthful capability messages and grouped personal versus account actions.",
+        "browserTests": ["tests/e2e/homeport-phase3.spec.ts"],
+        "limitations": [
+          "Ordinary role setup uses the installed Playwright1.56.1 textbox/Password matcher and public nonce-guarded synthetic credential. Registered declarations remain unqualified until real capture/review; no new helper, selector scope or credential schema is required.",
+          "No reader state, active Voyage progression, real private account or paid service is altered."
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to distinct visible section/save feedback on each device and motion mode",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "account-profile-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Public Profile, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit Public Profile"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Public Profile content",
+                "path": "/account/profile",
+                "text": "Edit public Profile",
+                "kind": "outcome",
+                "meaning": "The visible Public Profile action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-personal-information-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Personal Information, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Profile Personal Information"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Personal Information content",
+                "path": "/account/personal-information",
+                "text": "Personal Information",
+                "kind": "outcome",
+                "meaning": "The visible Personal Information action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-preferences-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Preferences, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Preferences"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Preferences content",
+                "path": "/account/preferences",
+                "text": "Experience preferences",
+                "kind": "outcome",
+                "meaning": "The visible Preferences action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save preferences"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Preferences saved and applied.",
+                "path": "/account/preferences",
+                "state": "PREFERENCES_SAVED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Preferences"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Preferences content",
+                "path": "/account/preferences",
+                "text": "Experience preferences",
+                "state": "PREFERENCES_REOPENED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-accessibility-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Accessibility, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Accessibility"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Accessibility content",
+                "path": "/account/accessibility",
+                "text": "Accessibility preferences",
+                "kind": "outcome",
+                "meaning": "The visible Accessibility action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save preferences"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Preferences saved and applied.",
+                "path": "/account/accessibility",
+                "state": "PREFERENCES_SAVED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Accessibility"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Accessibility content",
+                "path": "/account/accessibility",
+                "text": "Accessibility preferences",
+                "state": "PREFERENCES_REOPENED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-notifications-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Notifications, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Notifications"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Notifications content",
+                "path": "/account/notifications",
+                "text": "Notifications",
+                "kind": "outcome",
+                "meaning": "The visible Notifications action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-privacy-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Privacy & Safety, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Privacy & connections Privacy & Safety"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Privacy & Safety content",
+                "path": "/account/privacy",
+                "text": "Profile privacy rules",
+                "kind": "outcome",
+                "meaning": "The visible Privacy & Safety action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-linked-identities-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Linked Identities, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Privacy & connections Linked Identities"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Linked Identities content",
+                "path": "/account/linked-identities",
+                "text": "Connected identities",
+                "kind": "outcome",
+                "meaning": "The visible Linked Identities action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-security-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Security, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Account Security"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Security content",
+                "path": "/account/security",
+                "text": "Password & recovery",
+                "kind": "outcome",
+                "meaning": "The visible Security action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-sessions-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Sessions & Devices, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Account Sessions & Devices"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Sessions & Devices content",
+                "path": "/account/sessions",
+                "text": "Current session",
+                "kind": "outcome",
+                "meaning": "The visible Sessions & Devices action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-support-access-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Support Access, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Account Support Access"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Support Access content",
+                "path": "/account/support-access",
+                "text": "You stay in control",
+                "kind": "outcome",
+                "meaning": "The visible Support Access action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-data-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Data & Account, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Account Data & Account"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Data & Account content",
+                "path": "/account/data",
+                "text": "Export my data",
+                "kind": "outcome",
+                "meaning": "The visible Data & Account action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ],
+        "continuity": {
+          "objective": "The same authenticated synthetic identity survives account section entry, confirmed preferences feedback and ordinary return.",
+          "checks": [
+            {
+              "id": "account-identity",
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "attribute": "aria-label"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sextant.shared-consumers.shell-identity",
+      "name": "Sextant shared native-context identity and preference shell continuity",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true,
+      "experience": {
+        "persona": "An authenticated synthetic Player saving presentation preferences and ending the account session through ordinary product controls",
+        "objective": "Keep a readable shared shell through preference saving and ordinary sign-out, then return to the anonymous product gateway",
+        "visibleOutcome": "Preference feedback is visible, ordinary sign-out replaces private account navigation with real anonymous account access and restores the public gateway",
+        "integrationOwner": "Sextant R1 shared shell qualification; platform, Homeport and One Voyage retain canonical identity authority",
+        "systems": ["project-sextant", "platform-foundation", "project-homeport", "one-voyage"],
+        "sourcePaths": [
+          "src/app/layout.tsx",
+          "src/app/page.tsx",
+          "src/components/auth/CurrentUserProvider.tsx",
+          "src/components/auth/SignOutButton.tsx",
+          "src/components/homeport/PreferenceRuntimeBridge.tsx",
+          "src/components/landing/HarborLanding.tsx",
+          "src/components/shell/ProductShell.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["PREFERENCES_READY", "PREFERENCES_SAVED", "ANONYMOUS_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Personal Harbor",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-011-account-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
+            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
+          },
+          {
+            "family": "Personal Harbor",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-012-account-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
+            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Visible keyboard activation, truthful account controls and equivalent constrained/reduced-motion navigation preserve the same task.",
+        "fallback": "Optional native context and denied device permissions do not prevent ordinary account preferences, accessible screen controls or safe return.",
+        "navigation": "Personal Harbor opens Preferences; save feedback precedes ordinary Home return and account-menu sign-out; anonymous account access is inspected before closing the menu at the gateway.",
+        "designTarget": "Preserve readable page identity, grouped account controls and ordinary safe return; anonymous navigation must reflect the ended session instead of exposing the old private workspace.",
+        "browserTests": ["tests/e2e/homeport-phase7-owner-correction-round3.spec.ts"],
+        "limitations": [
+          "This declaration proves no native lease cleanup or physical sensor behavior; those remain separately source-qualified.",
+          "Registration is not rendered sign-out, accessibility or owner acceptance."
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to distinct visible section/save feedback on each device and motion mode",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "preferences-confirmation-sign-out-and-gateway",
+            "roles": ["PLAYER"],
+            "outcome": "The Player saves ordinary preferences, ends the account session and sees usable anonymous account access before returning to the product gateway",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Preferences"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Preferences content",
+                "path": "/account/preferences",
+                "text": "Experience preferences",
+                "state": "PREFERENCES_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save preferences"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Preferences saved and applied.",
+                "path": "/account/preferences",
+                "state": "PREFERENCES_SAVED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign out"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Account",
+                "path": "/",
+                "absentRole": {
+                  "role": "button",
+                  "name": "Synthetic Sextant Navigator"
+                }
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Account"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Account navigation",
+                "path": "/",
+                "text": "Create Account",
+                "kind": "outcome",
+                "meaning": "Ordinary sign-out ends the old private account navigation and exposes actual anonymous account entry, rather than only changing a stored role label.",
+                "state": "ANONYMOUS_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "keyboard",
+                "key": "Escape"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Explore Chronicles",
+                "path": "/",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "Account navigation"
+                },
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ],
+        "continuity": {
+          "objective": "Preserve the canonical gateway destination while the account session ends through its real user action; private identity persistence is intentionally not asserted after sign-out.",
+          "checks": [
+            {
+              "id": "canonical-gateway",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ]
         }
       }
     }

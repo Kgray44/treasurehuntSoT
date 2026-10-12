@@ -53,13 +53,20 @@ environment credential resolver. The
 [changed-fixture check](../Development_Docs/Engineering/Sextant/phase4-followup-r1-credential-verification.json)
 passed at `99c60ff4`, verifying both the persisted slug and canonical password hash.
 Retain the earlier slug receipt at its original source; neither check claims
-rendered sign-in. Reach's labelled-password handoff remains required.
+rendered sign-in. The earlier password-selector blocker is refuted by the
+[locked/installed Playwright source](../Development_Docs/Engineering/Sextant/phase4-password-selector-correction-r1.json):
+1.56.1 maps password input to textbox through its INPUT fallback. Use the accepted
+helper; no password or credential-resolution patch is required or installed.
 
 The [shared-consumer design preparation](../Development_Docs/Engineering/Sextant/phase4-shared-consumer-design-r1.json)
-maps all 141 currently uncovered surfaces to 13 explicit families and contains
-11 proposed natural account journeys. These are not registered or captured;
-mapping does not discharge any coverage obligation. Preserve all seven selected
-existing contracts. No broad source exemption is authorized.
+maps all 141 original uncovered surfaces to 13 explicit families, with per-surface
+owner, contract, fixture support, natural entry, visible outcome, return and actual
+support gaps. Two new contracts register 11 Personal Harbor journeys and one
+shared-shell preference/sign-out journey covering 22 of those paths. The remaining
+119 paths lack registered coverage; all 141 still lack new capture/acceptance.
+Registration does not discharge qualification. Preserve all seven selected
+existing contract obligations and both complete accepted Parallax contracts.
+No broad source exemption is authorized.
 
 The [Journal boundary proposal](../Development_Docs/Engineering/Sextant/phase4-journal-route-boundary-r1.json)
 changes only the compatibility route's choice of the existing identity mode,
@@ -67,10 +74,16 @@ using canonical authorization. The coordinator's exact boundary and Crossdeck's
 consumer acknowledgment were recorded before that one wrapper edit. Helm retains
 canonical ownership; the auth, libraries, shared Journal and Player route were not
 edited. The shared Journal's 28 existing regression checks pass; they do not prove
-the wrapper's rendered journey. Reach retains capture-helper ownership; labelled
-password preparation still requires its protected handoff. The accepted Crossdeck
+the wrapper's rendered journey. Reach retains capture-helper ownership. KG approved
+`reach-capture-observability-predecessor-20261012-r1` on October 12 at 1:26 p.m. EDT
+(17:26 UTC):
+only the capture helper and its fixture test, observability only. Consume its actual
+protected-accepted commit/PR/run handoff; approval is not an accepted patch.
+The password-role claim is refuted and creates no selector dependency. The Crossdeck
 refit's unique current-device control removes the need for a blanket selector
 extension for that action; consume it only after protected acceptance.
+`crossdeck-observability-accepted-retry-20261012-r1` is a conditional one-owner retry;
+capture `38277482404` was cancelled with no artifact. Its refit remains unaccepted.
 Both owners received scoped coordination. Native sends to the
 coordinator failed with an AbsolutePathBuf/no-base-path error; do not claim those
 failed requests were delivered or create a replacement chat.
@@ -79,6 +92,23 @@ R1 remains iteration **1/3**, one pre-review repair pass and **zero recaptures**
 No new build, server, native dispatch or independent review has started. Preserve
 the [shared Journal regression receipt](../Development_Docs/Engineering/Sextant/phase4-followup-r1-journal-regression.json)
 without promoting it to route or browser acceptance.
+
+## Supported resumption
+
+Record the actual protected-accepted Reach diagnostics commit, PR and successful
+run before consuming that observability handoff. Record the actual protected
+Crossdeck acceptance and exact UI/test/contracts interface before installing its
+refit once. Keep its unnamed main and canonical Voyage/edition attributes; adapt
+only Sextant's own consumer selectors. Its companion returns to the Player
+Journal, while the agreed compatibility wrapper requires its separate deep-link
+continuity proof.
+
+Use the per-family fixture and entry-support gaps in the engineering map to
+complete the remaining declarations and canonical synthetic data. Then freeze one
+coherent source before actual capture, fresh independent review and ordinary
+qualification. No new password/row helper or broad shared-runtime design is
+authorized. Mapping, registration and source-only selector inspection qualify no
+rendered surface. R1 remains 1/3 and zero recaptures; preserve prior 3/3 and 10/3.
 
 ## Required proof and gates
 

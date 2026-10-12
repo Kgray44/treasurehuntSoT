@@ -17,7 +17,13 @@ agreement before the one delegated wrapper edit. The
 [shared Journal regression](phase4-followup-r1-journal-regression.json) passed 28
 checks without claiming rendered route proof. The
 [shared consumer designs](phase4-shared-consumer-design-r1.json) remain proposals,
-with no registered new experience contract or new capture.
+with complete ownership/fixture/entry/outcome/return mapping for 141 surfaces.
+Two new declarations register 12 journeys on 22 paths; 119 paths still lack a
+registered declaration and all 141 lack new captured acceptance. The
+[installed selector correction](phase4-password-selector-correction-r1.json)
+refutes the earlier password-role blocker without changing the helper. Reach's
+approved observability predecessor and Crossdeck's conditional retry remain
+unaccepted dependencies.
 Required coverage, independent review, ordinary qualification and D4 acceptance
 remain open; these preparation records do not discharge them.
 

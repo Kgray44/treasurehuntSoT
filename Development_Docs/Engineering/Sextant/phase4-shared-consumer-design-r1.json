@@ -16,22 +16,19 @@
     "sextant.phase4.native-context",
     "spatial-pilot.experience"
   ],
-  "registeredNewContracts": 0,
+  "registeredNewContracts": 2,
   "capturedNewJourneys": 0,
-  "remainingCoverageObligation": "Every listed surface still requires a registered relevant real journey and source-bound capture/review; mapping alone satisfies none.",
+  "remainingCoverageObligation": "All original141 surfaces still require real relevant capture/review. One Personal Harbor declaration is registered; registration alone qualifies none.",
   "prerequisites": [
     {
       "owner": "Canonical Helm/Journal owner with Sextant",
-      "state": "RECORDED_PER_FILE_AGREEMENT_REQUIRED",
+      "state": "COORDINATOR_BOUNDARY_AND_CROSSDECK_ACK_RECORDED_WRAPPER_APPLIED_RENDERED_PROOF_PENDING",
       "file": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx"
     },
     {
-      "owner": "Reach",
-      "state": "PROTECTED_LABELLED_PASSWORD_HANDOFF_REQUIRED_NO_SCOPE_OR_CREDENTIAL_SCHEMA_EXPANSION",
-      "files": [
-        "scripts/sounding-line/experience-browser.mjs",
-        "tests/sounding-line/experience-browser-fixtures.test.mjs"
-      ]
+      "owner": "Sextant",
+      "state": "USE_ACCEPTED_PASSWORD_ROLE_MATCHER_NO_NEW_HELPER_REQUIRED",
+      "proof": "Development_Docs/Engineering/Sextant/phase4-password-selector-correction-r1.json"
     },
     {
       "owner": "Sextant",
@@ -65,9 +62,739 @@
         "Read account/device capability projection without changing the active Voyage"
       ],
       "browserTests": ["tests/e2e/homeport-phase3.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "PARTIAL_OR_FULL_REGISTERED_DECLARATION_NO_CAPTURE",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "project-homeport",
+        "declaredOwnerPresent": true,
+        "existingAuthorityContractIds": [
+          "homeport.route-inventory.complete",
+          "homeport.session-inventory.complete",
+          "homeport.screen-catalog.complete",
+          "homeport.journey-catalog.complete",
+          "homeport.evidence-manifest.complete",
+          "homeport.nonconformity-ledger.complete",
+          "homeport.personal-harbor.ia",
+          "homeport.personal-harbor.section-registry",
+          "homeport.personal-harbor.mobile-parity",
+          "homeport.personal-harbor.deep-links",
+          "homeport.personal-harbor.unsaved-changes",
+          "homeport.personal-harbor.mutation-feedback",
+          "homeport.personal-harbor.stale-conflict",
+          "homeport.profile.overview",
+          "homeport.profile.public-projection",
+          "homeport.profile.owner-edit",
+          "homeport.profile.media-state",
+          "homeport.profile.no-private-leak",
+          "homeport.preferences.typed",
+          "homeport.accessibility.preference-consumption",
+          "homeport.notifications.feedback",
+          "homeport.privacy.server-enforced",
+          "homeport.linked-identities.safe",
+          "homeport.linked-identities.no-lockout",
+          "homeport.passport.product-surface",
+          "homeport.passport.no-test-controls",
+          "homeport.passport.session-regression",
+          "homeport.history.owner-only",
+          "homeport.history.version-pinned",
+          "homeport.history.empty-state",
+          "homeport.memories.owner-authorized",
+          "homeport.keepsake.consent",
+          "homeport.artifacts.owner-only",
+          "homeport.artifacts.provenance",
+          "homeport.artifacts.empty-state",
+          "homeport.saved-content.owner-only",
+          "homeport.saved-content.cross-surface",
+          "homeport.security.sensitive-reauth",
+          "homeport.sessions.list-safe",
+          "homeport.sessions.revoke",
+          "homeport.sessions.signout-all",
+          "homeport.account-data.truthful-availability",
+          "homeport.personal-harbor.phase1-regression",
+          "homeport.personal-harbor.phase2-regression",
+          "homeport.personal-harbor.artifact-idempotency",
+          "homeport.community.harbor-home",
+          "homeport.community.content-first-default",
+          "homeport.community.default-not-no-results",
+          "homeport.community.district-registry",
+          "homeport.community.district-navigation",
+          "homeport.community.mobile-district-parity",
+          "homeport.community.public-projection",
+          "homeport.community.no-private-leak",
+          "homeport.community.lifecycle-eligibility",
+          "homeport.community.quarantine",
+          "homeport.community.card-base",
+          "homeport.community.card-destinations",
+          "homeport.community.card-fallback",
+          "homeport.community.card-accessibility",
+          "homeport.community.shelf-strategy",
+          "homeport.community.editorial-labeling",
+          "homeport.community.search",
+          "homeport.community.search-url-state",
+          "homeport.community.search-stale-request",
+          "homeport.community.compact-filters",
+          "homeport.community.advanced-filters",
+          "homeport.community.no-results",
+          "homeport.community.empty-state",
+          "homeport.community.dependency-unavailable",
+          "homeport.community.partial-media-failure",
+          "homeport.community.chronicles",
+          "homeport.community.artifacts",
+          "homeport.community.templates",
+          "homeport.community.maps",
+          "homeport.community.audio",
+          "homeport.community.creators",
+          "homeport.community.creator-profile",
+          "homeport.community.collections",
+          "homeport.community.guides",
+          "homeport.community.voyage-logs",
+          "homeport.community.saved-state",
+          "homeport.community.saved-cross-surface",
+          "homeport.community.follow-state",
+          "homeport.community.social-auth-return",
+          "homeport.community.detail",
+          "homeport.community.detail-parent",
+          "homeport.community.open-install-remix",
+          "homeport.community.mutation-feedback",
+          "homeport.community.restricted-account",
+          "homeport.community.keyboard",
+          "homeport.community.zoom",
+          "homeport.community.reduced-motion",
+          "homeport.community.phase1-regression",
+          "homeport.community.phase2-regression",
+          "homeport.community.phase3-regression",
+          "homeport.community.artifact-idempotency",
+          "homeport.route.inventory-complete",
+          "homeport.route.source-parity",
+          "homeport.route.classification-exclusive",
+          "homeport.route.reachability-graph",
+          "homeport.route.user-navigable-entry",
+          "homeport.route.dynamic-source",
+          "homeport.route.dynamic-invalid-id",
+          "homeport.route.dynamic-private-denial",
+          "homeport.route.tokenized-safe",
+          "homeport.route.tokenized-not-navigation",
+          "homeport.route.compatibility-disposition",
+          "homeport.route.compatibility-no-competing-ui",
+          "homeport.route.redirect-no-loop",
+          "homeport.route.redirect-target-valid",
+          "homeport.route.redirect-query-safe",
+          "homeport.route.parent-complete",
+          "homeport.route.parent-cycle-free",
+          "homeport.route.no-dead-end",
+          "homeport.route.empty-onward",
+          "homeport.route.error-recovery",
+          "homeport.route.permission-recovery",
+          "homeport.route.desktop-mobile-parity",
+          "homeport.route.no-pointer-only-entry",
+          "homeport.route.keyboard-reachability",
+          "homeport.route.compact-exit",
+          "homeport.route.immersive-exit",
+          "homeport.route.deep-link-after-natural",
+          "homeport.route.no-direct-url-only",
+          "homeport.route.placeholder-target-rejected",
+          "homeport.route.deprecated-disposition",
+          "homeport.route.development-exclusion",
+          "homeport.route.active-label-consistency",
+          "homeport.route.graph-idempotency",
+          "homeport.route.inventory-drift",
+          "homeport.route.browser-receipt-complete",
+          "homeport.route.source-bound-evidence",
+          "homeport.route.phase1-regression",
+          "homeport.route.phase2-regression",
+          "homeport.route.phase3-regression",
+          "homeport.route.phase4-regression"
+        ],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "homeport.route-inventory.complete",
+          "homeport.session-inventory.complete",
+          "homeport.screen-catalog.complete",
+          "homeport.journey-catalog.complete",
+          "homeport.evidence-manifest.complete",
+          "homeport.nonconformity-ledger.complete",
+          "homeport.community.harbor-home",
+          "homeport.community.content-first-default",
+          "homeport.community.default-not-no-results",
+          "homeport.community.district-registry",
+          "homeport.community.district-navigation",
+          "homeport.community.mobile-district-parity",
+          "homeport.community.public-projection",
+          "homeport.community.no-private-leak",
+          "homeport.community.lifecycle-eligibility",
+          "homeport.community.quarantine",
+          "homeport.community.card-base",
+          "homeport.community.card-destinations",
+          "homeport.community.card-fallback",
+          "homeport.community.card-accessibility",
+          "homeport.community.shelf-strategy",
+          "homeport.community.editorial-labeling",
+          "homeport.community.search",
+          "homeport.community.search-url-state",
+          "homeport.community.search-stale-request",
+          "homeport.community.compact-filters",
+          "homeport.community.advanced-filters",
+          "homeport.community.no-results",
+          "homeport.community.empty-state",
+          "homeport.community.dependency-unavailable",
+          "homeport.community.partial-media-failure",
+          "homeport.community.chronicles",
+          "homeport.community.artifacts",
+          "homeport.community.templates",
+          "homeport.community.maps",
+          "homeport.community.audio",
+          "homeport.community.creators",
+          "homeport.community.creator-profile",
+          "homeport.community.collections",
+          "homeport.community.guides",
+          "homeport.community.voyage-logs",
+          "homeport.community.saved-state",
+          "homeport.community.saved-cross-surface",
+          "homeport.community.follow-state",
+          "homeport.community.social-auth-return",
+          "homeport.community.detail",
+          "homeport.community.detail-parent",
+          "homeport.community.open-install-remix",
+          "homeport.community.mutation-feedback",
+          "homeport.community.restricted-account",
+          "homeport.community.keyboard",
+          "homeport.community.zoom",
+          "homeport.community.reduced-motion",
+          "homeport.community.phase1-regression",
+          "homeport.community.phase2-regression",
+          "homeport.community.phase3-regression",
+          "homeport.community.artifact-idempotency",
+          "homeport.route.inventory-complete",
+          "homeport.route.source-parity",
+          "homeport.route.classification-exclusive",
+          "homeport.route.reachability-graph",
+          "homeport.route.user-navigable-entry",
+          "homeport.route.dynamic-source",
+          "homeport.route.dynamic-invalid-id",
+          "homeport.route.dynamic-private-denial",
+          "homeport.route.tokenized-safe",
+          "homeport.route.tokenized-not-navigation",
+          "homeport.route.compatibility-disposition",
+          "homeport.route.compatibility-no-competing-ui",
+          "homeport.route.redirect-no-loop",
+          "homeport.route.redirect-target-valid",
+          "homeport.route.redirect-query-safe",
+          "homeport.route.parent-complete",
+          "homeport.route.parent-cycle-free",
+          "homeport.route.no-dead-end",
+          "homeport.route.empty-onward",
+          "homeport.route.error-recovery",
+          "homeport.route.permission-recovery",
+          "homeport.route.desktop-mobile-parity",
+          "homeport.route.no-pointer-only-entry",
+          "homeport.route.keyboard-reachability",
+          "homeport.route.compact-exit",
+          "homeport.route.immersive-exit",
+          "homeport.route.deep-link-after-natural",
+          "homeport.route.no-direct-url-only",
+          "homeport.route.placeholder-target-rejected",
+          "homeport.route.deprecated-disposition",
+          "homeport.route.development-exclusion",
+          "homeport.route.active-label-consistency",
+          "homeport.route.graph-idempotency",
+          "homeport.route.inventory-drift",
+          "homeport.route.browser-receipt-complete",
+          "homeport.route.source-bound-evidence",
+          "homeport.route.phase1-regression",
+          "homeport.route.phase2-regression",
+          "homeport.route.phase3-regression",
+          "homeport.route.phase4-regression",
+          "homeport.surface.catalog-complete",
+          "homeport.surface.source-parity",
+          "homeport.surface.criticality",
+          "homeport.surface.visual-maturity",
+          "homeport.surface.critical-desktop-evidence",
+          "homeport.surface.critical-mobile-evidence",
+          "homeport.surface.zoom-evidence",
+          "homeport.surface.human-visual-review",
+          "homeport.surface.source-bound-evidence",
+          "homeport.surface.raw-implementation-prohibited",
+          "homeport.surface.component-family-consistency",
+          "homeport.state.applicability",
+          "homeport.state.loading-truthful",
+          "homeport.state.empty-truthful",
+          "homeport.state.no-results-truthful",
+          "homeport.state.error-recovery",
+          "homeport.state.dependency-unavailable",
+          "homeport.state.offline-degraded",
+          "homeport.state.permission-explicit",
+          "homeport.state.session-expired",
+          "homeport.state.account-restricted",
+          "homeport.state.mutation-pending",
+          "homeport.state.mutation-success",
+          "homeport.state.mutation-failure",
+          "homeport.state.stale-conflict",
+          "homeport.state.archived-removed",
+          "homeport.state.tokenized",
+          "homeport.responsive.desktop",
+          "homeport.responsive.tablet",
+          "homeport.responsive.mobile",
+          "homeport.responsive.narrow-mobile",
+          "homeport.responsive.zoom",
+          "homeport.responsive.no-horizontal-overflow",
+          "homeport.accessibility.semantic",
+          "homeport.accessibility.keyboard",
+          "homeport.accessibility.touch",
+          "homeport.accessibility.focus",
+          "homeport.accessibility.live-region",
+          "homeport.accessibility.automated-scan",
+          "homeport.motion.authority",
+          "homeport.motion.reduced-motion",
+          "homeport.motion.route-lifecycle",
+          "homeport.motion.no-false-success",
+          "homeport.media.fallback",
+          "homeport.media.scan-state",
+          "homeport.media.no-object-key",
+          "homeport.mutation.feedback",
+          "homeport.mutation.no-duplicate",
+          "homeport.mutation.authoritative-result",
+          "homeport.surface.phase1-regression",
+          "homeport.surface.phase2-regression",
+          "homeport.surface.phase3-regression",
+          "homeport.surface.phase4-regression",
+          "homeport.surface.phase5-regression",
+          "homeport.surface.artifact-idempotency",
+          "homeport.phase7.fixture.integrated",
+          "homeport.phase7.fixture.immutable-seed",
+          "homeport.phase7.fixture.clone-isolation",
+          "homeport.phase7.fixture.credential-boundary",
+          "homeport.phase7.fixture.reset",
+          "homeport.phase7.journey-a",
+          "homeport.phase7.journey-b",
+          "homeport.phase7.journey-c",
+          "homeport.phase7.journey-d",
+          "homeport.phase7.journey-e",
+          "homeport.phase7.journey-f",
+          "homeport.phase7.journey-g",
+          "homeport.phase7.journey-h",
+          "homeport.phase7.journey-i",
+          "homeport.phase7.journey-j",
+          "homeport.phase7.journey-k",
+          "homeport.phase7.journey-l",
+          "homeport.phase7.journey-m",
+          "homeport.phase7.journey-n",
+          "homeport.phase7.journey-o",
+          "homeport.phase7.evidence-source-binding",
+          "homeport.phase7.evidence-complete",
+          "homeport.phase7.evidence-checksum",
+          "homeport.phase7.evidence-human-visual-review",
+          "homeport.phase7.viewport.desktop",
+          "homeport.phase7.viewport.mobile",
+          "homeport.phase7.motion.reduced",
+          "homeport.phase7.accessibility.keyboard-focus",
+          "homeport.phase7.account.canonical-lifecycle",
+          "homeport.phase7.account.cross-workspace-session",
+          "homeport.phase7.profile.persistence",
+          "homeport.phase7.passport.private-authorization",
+          "homeport.phase7.community.saved-reconciliation",
+          "homeport.phase7.recovery.tokens",
+          "homeport.phase7.session.expiry",
+          "homeport.phase7.permission.explicit",
+          "homeport.phase7.mobile.parity",
+          "homeport.phase7.multitab.invalidation",
+          "homeport.phase7.dependency.failure-recovery",
+          "homeport.phase7.rehearsal.final",
+          "homeport.phase7.walkthrough.package",
+          "homeport.phase7.walkthrough.runtime-health",
+          "homeport.phase7.owner-decision.pending",
+          "homeport.phase7.control-plane.updated",
+          "homeport.phase7.feature-catalog.ft-b007",
+          "homeport.phase7.privacy.synthetic-only",
+          "homeport.phase7.database.canonical-invariant",
+          "homeport.phase7.git.branch-parity",
+          "homeport.owner-correction.round1.feedback-ledger",
+          "homeport.owner-correction.round1.chronicle-preview",
+          "homeport.owner-correction.round1.preview-no-start-mutation",
+          "homeport.owner-correction.round1.player-name-default",
+          "homeport.owner-correction.round1.chronicle-alias",
+          "homeport.owner-correction.round1.workspaces",
+          "homeport.owner-correction.round1.capability-unification",
+          "homeport.owner-correction.round1.active-chronicle-lock",
+          "homeport.owner-correction.round1.profile-destination",
+          "homeport.owner-correction.round1.claiming",
+          "homeport.owner-correction.round1.email-registration",
+          "homeport.owner-correction.round1.email-verification",
+          "homeport.owner-correction.round1.email-change",
+          "homeport.owner-correction.round1.email-recovery",
+          "homeport.owner-correction.round1.linked-identities",
+          "homeport.owner-correction.round1.provider-security",
+          "homeport.owner-correction.round1.export",
+          "homeport.owner-correction.round1.deactivation",
+          "homeport.owner-correction.round1.deletion",
+          "homeport.owner-correction.round1.signout-navigation",
+          "homeport.owner-correction.round1.display-name-authority",
+          "homeport.owner-correction.round1.personal-harbor-hierarchy",
+          "homeport.owner-correction.round1.no-current-area-banner",
+          "homeport.owner-correction.round1.preference-effects",
+          "homeport.owner-correction.round1.delayed-loading",
+          "homeport.owner-correction.round1.route-transitions",
+          "homeport.owner-correction.round1.account-menu-motion",
+          "homeport.owner-correction.round1.community-compact-search",
+          "homeport.owner-correction.round1.community-full-search",
+          "homeport.owner-correction.round1.community-reviews",
+          "homeport.owner-correction.round1.home-motion",
+          "homeport.owner-correction.round1.role-card-first-paint",
+          "homeport.owner-correction.round1.mobile",
+          "homeport.owner-correction.round1.security",
+          "homeport.owner-correction.round1.privacy",
+          "homeport.owner-correction.round1.phase1-regression",
+          "homeport.owner-correction.round1.phase2-regression",
+          "homeport.owner-correction.round1.phase3-regression",
+          "homeport.owner-correction.round1.phase4-regression",
+          "homeport.owner-correction.round1.phase5-regression",
+          "homeport.owner-correction.round1.phase6-regression",
+          "homeport.owner-correction.round1.phase7-a-o-regression",
+          "homeport.owner-correction.round1.artifact-idempotency",
+          "homeport.personal-harbor.ia",
+          "homeport.personal-harbor.section-registry",
+          "homeport.personal-harbor.mobile-parity",
+          "homeport.personal-harbor.deep-links",
+          "homeport.personal-harbor.unsaved-changes",
+          "homeport.personal-harbor.mutation-feedback",
+          "homeport.personal-harbor.stale-conflict",
+          "homeport.profile.overview",
+          "homeport.profile.public-projection",
+          "homeport.profile.owner-edit",
+          "homeport.profile.media-state",
+          "homeport.profile.no-private-leak",
+          "homeport.preferences.typed",
+          "homeport.accessibility.preference-consumption",
+          "homeport.notifications.feedback",
+          "homeport.privacy.server-enforced",
+          "homeport.linked-identities.safe",
+          "homeport.linked-identities.no-lockout",
+          "homeport.passport.product-surface",
+          "homeport.passport.no-test-controls",
+          "homeport.passport.session-regression",
+          "homeport.history.owner-only",
+          "homeport.history.version-pinned",
+          "homeport.history.empty-state",
+          "homeport.memories.owner-authorized",
+          "homeport.keepsake.consent",
+          "homeport.artifacts.owner-only",
+          "homeport.artifacts.provenance",
+          "homeport.artifacts.empty-state",
+          "homeport.saved-content.owner-only",
+          "homeport.saved-content.cross-surface",
+          "homeport.security.sensitive-reauth",
+          "homeport.sessions.list-safe",
+          "homeport.sessions.revoke",
+          "homeport.sessions.signout-all",
+          "homeport.account-data.truthful-availability",
+          "homeport.personal-harbor.phase1-regression",
+          "homeport.personal-harbor.phase2-regression",
+          "homeport.personal-harbor.artifact-idempotency",
+          "homeport.owner-correction.round2.feedback-ledger",
+          "homeport.owner-correction.round2.runtime-fixture-parity",
+          "homeport.owner-correction.round2.sera-capabilities",
+          "homeport.owner-correction.round2.role-card-position",
+          "homeport.owner-correction.round2.account-menu-motion",
+          "homeport.owner-correction.round2.lantern-pivot",
+          "homeport.owner-correction.round2.lantern-symmetry",
+          "homeport.owner-correction.round2.star-twinkle-visible",
+          "homeport.owner-correction.round2.fog-motion",
+          "homeport.owner-correction.round2.dark-theme-restored",
+          "homeport.owner-correction.round2.light-theme-complete",
+          "homeport.owner-correction.round2.system-theme",
+          "homeport.owner-correction.round2.theme-no-flash",
+          "homeport.owner-correction.round2.theme-cross-tab",
+          "homeport.owner-correction.round2.text-contrast",
+          "homeport.owner-correction.round2.no-empty-current-area",
+          "homeport.owner-correction.round2.community-loading-fast",
+          "homeport.owner-correction.round2.community-loading-delayed",
+          "homeport.owner-correction.round2.community-error-real",
+          "homeport.owner-correction.round2.community-retry",
+          "homeport.owner-correction.round2.public-profile-community-identity",
+          "homeport.owner-correction.round2.review-profile-setup-return",
+          "homeport.owner-correction.round2.save-aggregate",
+          "homeport.owner-correction.round2.rating-aggregate",
+          "homeport.owner-correction.round2.review-completion-eligibility",
+          "homeport.owner-correction.round2.review-passport-entry",
+          "homeport.owner-correction.round2.chronicle-preview-expanded",
+          "homeport.owner-correction.round2.synthetic-email-truth",
+          "homeport.owner-correction.round2.experience-images-complete",
+          "homeport.owner-correction.round2.experience-images-source-bound",
+          "homeport.owner-correction.round2.experience-images-private-safe",
+          "homeport.owner-correction.round2.mobile",
+          "homeport.owner-correction.round2.accessibility",
+          "homeport.owner-correction.round2.phase1-regression",
+          "homeport.owner-correction.round2.phase2-regression",
+          "homeport.owner-correction.round2.phase3-regression",
+          "homeport.owner-correction.round2.phase4-regression",
+          "homeport.owner-correction.round2.phase5-regression",
+          "homeport.owner-correction.round2.phase6-regression",
+          "homeport.owner-correction.round2.phase7-regression",
+          "homeport.owner-correction.round2.round1-regression",
+          "homeport.owner-correction.round2.artifact-idempotency",
+          "homeport.owner-correction.round3.feedback-ledger",
+          "homeport.owner-correction.round3.profile-image-selection",
+          "homeport.owner-correction.round3.avatar-crop",
+          "homeport.owner-correction.round3.banner-crop",
+          "homeport.owner-correction.round3.crop-keyboard",
+          "homeport.owner-correction.round3.crop-touch",
+          "homeport.owner-correction.round3.media-validation",
+          "homeport.owner-correction.round3.media-atomic-replacement",
+          "homeport.owner-correction.round3.profile-image-propagation",
+          "homeport.owner-correction.round3.account-trigger-avatar",
+          "homeport.owner-correction.round3.profile-overview-identity",
+          "homeport.owner-correction.round3.profile-prompt-not-score",
+          "homeport.owner-correction.round3.registration-verification-screen",
+          "homeport.owner-correction.round3.verification-code-security",
+          "homeport.owner-correction.round3.verification-resend",
+          "homeport.owner-correction.round3.email-provider-contract",
+          "homeport.owner-correction.round3.resend-adapter",
+          "homeport.owner-correction.round3.postmark-webhooks",
+          "homeport.owner-correction.round3.synthetic-email",
+          "homeport.owner-correction.round3.email-live-evidence",
+          "homeport.owner-correction.round3.dark-default",
+          "homeport.owner-correction.round3.no-theme-flash",
+          "homeport.owner-correction.round3.light-deferred",
+          "homeport.owner-correction.round3.workspace-entry",
+          "homeport.owner-correction.round3.new-account-capabilities",
+          "homeport.owner-correction.round3.existing-account-reconciliation",
+          "homeport.owner-correction.round3.resource-authority-separated",
+          "homeport.owner-correction.round3.active-chronicle-lock",
+          "homeport.owner-correction.round3.no-false-chronicle-lock",
+          "homeport.owner-correction.round3.captain-empty",
+          "homeport.owner-correction.round3.creator-empty",
+          "homeport.owner-correction.round3.route-crossfade",
+          "homeport.owner-correction.round3.no-background-blink",
+          "homeport.owner-correction.round3.route-layer-interaction",
+          "homeport.owner-correction.round3.loading-threshold",
+          "homeport.owner-correction.round3.account-menu-visible-motion",
+          "homeport.owner-correction.round3.account-menu-focus",
+          "homeport.owner-correction.round3.mobile",
+          "homeport.owner-correction.round3.zoom",
+          "homeport.owner-correction.round3.accessibility",
+          "homeport.owner-correction.round3.phase1-regression",
+          "homeport.owner-correction.round3.phase2-regression",
+          "homeport.owner-correction.round3.phase3-regression",
+          "homeport.owner-correction.round3.phase4-regression",
+          "homeport.owner-correction.round3.phase5-regression",
+          "homeport.owner-correction.round3.phase6-regression",
+          "homeport.owner-correction.round3.phase7-regression",
+          "homeport.owner-correction.round3.round1-regression",
+          "homeport.owner-correction.round3.round2-regression",
+          "homeport.owner-correction.round3.artifact-idempotency",
+          "homeport.auth.identifier.username",
+          "homeport.auth.identifier.email",
+          "homeport.auth.unverified-signin",
+          "homeport.auth.registration.atomic",
+          "homeport.auth.registration.username-conflict",
+          "homeport.auth.registration.email-handoff",
+          "homeport.auth.password-strength",
+          "homeport.auth.password-confirmation",
+          "homeport.auth.registration-verification",
+          "homeport.auth.resend-delivery",
+          "homeport.auth.partial-account-repair",
+          "homeport.transition.navigation-generation",
+          "homeport.transition.delayed-loading-cancel",
+          "homeport.transition.no-late-spinner",
+          "homeport.transition.no-route-resurrection",
+          "homeport.transition.direct-crossfade",
+          "homeport.transition.auth-routes",
+          "homeport.transition.interruption",
+          "homeport.transition.back-forward",
+          "homeport.transition.reduced-motion",
+          "wakebook.navigation.reachability"
+        ]
+      },
+      "naturalEntry": {
+        "path": "/account",
+        "roles": ["PLAYER"],
+        "visibleControls": [
+          "Overview card with its exact grouped task label",
+          "Save preferences where present",
+          "Return to Home → account menu → Personal Harbor"
+        ]
+      },
+      "promisedVisibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+      "returnPath": "/account",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Existing guarded active Synthetic Sextant Navigator account and its canonical profile/preferences; no additional data injected.",
+        "state": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS"
+      },
+      "supportGaps": [
+        "Actual capture/review remains absent.",
+        "Profile image upload/cropping, lifecycle mutations and live identity providers are not claimed by this account-task qualification."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+      "registeredExperienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/account/accessibility/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/data/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/linked-identities/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/notifications/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/personal-information/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/preferences/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/privacy/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/profile/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/security/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/sessions/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/support-access/page.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/homeport/AccountSurfaces.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/homeport/AuthenticatedHarborPage.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/homeport/PersonalHarborLayout.tsx",
+          "canonicalOwner": "project-homeport",
+          "experienceContractIds": ["sextant.shared-consumers.personal-harbor"],
+          "fixture": "REGISTERED_11_JOURNEYS_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Each real account task loads; ordinary preference saving acknowledges success and its task reopens before the same authenticated Overview return.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "account-access-recovery",
@@ -90,9 +817,215 @@
         "Ordinary Player/Captain sign-in preserves destination"
       ],
       "browserTests": ["tests/e2e/wayfarer-phase3.spec.ts", "tests/e2e/homeport-phase2.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "EXPLICIT_MAPPING_FIXTURE_OR_ENTRY_SUPPORT_GAPS_NO_REGISTRATION",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "wayfarer",
+        "declaredOwnerPresent": true,
+        "existingAuthorityContractIds": [
+          "wayfarer-history-projection",
+          "artifact-grant-projection",
+          "public-privacy-projection"
+        ],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "invitation-acceptance",
+          "drydock-scenario-authorization",
+          "wayfarer-history-projection",
+          "artifact-grant-projection",
+          "community-public-projection",
+          "sealed-hold-private-delivery",
+          "tideglass-safe-projection",
+          "tideglass-read-only-invariance",
+          "public-privacy-projection",
+          "homeport.session-inventory.complete",
+          "homeport.personal-harbor.ia",
+          "homeport.personal-harbor.section-registry",
+          "homeport.personal-harbor.mobile-parity",
+          "homeport.personal-harbor.deep-links",
+          "homeport.personal-harbor.unsaved-changes",
+          "homeport.personal-harbor.mutation-feedback",
+          "homeport.personal-harbor.stale-conflict",
+          "homeport.profile.overview",
+          "homeport.profile.public-projection",
+          "homeport.profile.owner-edit",
+          "homeport.profile.media-state",
+          "homeport.profile.no-private-leak",
+          "homeport.preferences.typed",
+          "homeport.accessibility.preference-consumption",
+          "homeport.notifications.feedback",
+          "homeport.privacy.server-enforced",
+          "homeport.linked-identities.safe",
+          "homeport.linked-identities.no-lockout",
+          "homeport.passport.product-surface",
+          "homeport.passport.no-test-controls",
+          "homeport.passport.session-regression",
+          "homeport.history.owner-only",
+          "homeport.history.version-pinned",
+          "homeport.history.empty-state",
+          "homeport.memories.owner-authorized",
+          "homeport.keepsake.consent",
+          "homeport.artifacts.owner-only",
+          "homeport.artifacts.provenance",
+          "homeport.artifacts.empty-state",
+          "homeport.saved-content.owner-only",
+          "homeport.saved-content.cross-surface",
+          "homeport.security.sensitive-reauth",
+          "homeport.sessions.list-safe",
+          "homeport.sessions.revoke",
+          "homeport.sessions.signout-all",
+          "homeport.account-data.truthful-availability",
+          "homeport.personal-harbor.phase1-regression",
+          "homeport.personal-harbor.phase2-regression",
+          "homeport.personal-harbor.artifact-idempotency",
+          "wakebook.history.version-pinning",
+          "wakebook.history.owner-privacy",
+          "wakebook.history.historical-stability",
+          "wakebook.timing.quality",
+          "wakebook.artifact-context",
+          "wakebook.archive.invitation-separation",
+          "wakebook.archive.partial-history",
+          "wakebook.archive.summary-redaction",
+          "crossdeck.phase1.participation",
+          "crossdeck.phase2.continuity"
+        ]
+      },
+      "naturalEntry": {
+        "path": "/",
+        "roles": ["ANONYMOUS", "PLAYER"],
+        "visibleControls": [
+          "Account → Sign In / Create Account",
+          "Forgot Password and ordinary canonical recovery/token actions",
+          "Return to Sign In / Return to Voyagewright"
+        ]
+      },
+      "promisedVisibleOutcome": "Canonical access/recovery explains valid, expired or unavailable states and exposes an actual safe return without assuming a workspace role.",
+      "returnPath": "/sign-in or / as promised by the specific account flow",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Existing generic isolated synthetic outbox/runtime can support canonical account flows; the Sextant active account supports ordinary sign-in only.",
+        "state": "ACTIVE_SIGN_IN_SUPPORTED_TOKEN_LIFECYCLE_PERSONAS_MISSING"
+      },
+      "supportGaps": [
+        "Claim, merge, email-change, cancellation and reactivation require canonical nonce-owned token/lifecycle fixtures; none is supplied by the current Sextant fixture.",
+        "Synthetic outbox delivery and ordinary token entry must be bound to real flow-specific data before registration; no live mail/provider call is authorized."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.account-access-recovery"],
+      "registeredExperienceContractIds": [],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/account/cancel-deletion/page.tsx",
+          "canonicalOwner": "wayfarer",
+          "experienceContractIds": [],
+          "fixture": "ACTIVE_SIGN_IN_SUPPORTED_TOKEN_LIFECYCLE_PERSONAS_MISSING",
+          "naturalEntry": "/",
+          "visibleOutcome": "Canonical access/recovery explains valid, expired or unavailable states and exposes an actual safe return without assuming a workspace role.",
+          "returnPath": "/sign-in or / as promised by the specific account flow",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/claim/page.tsx",
+          "canonicalOwner": "wayfarer",
+          "experienceContractIds": [],
+          "fixture": "ACTIVE_SIGN_IN_SUPPORTED_TOKEN_LIFECYCLE_PERSONAS_MISSING",
+          "naturalEntry": "/",
+          "visibleOutcome": "Canonical access/recovery explains valid, expired or unavailable states and exposes an actual safe return without assuming a workspace role.",
+          "returnPath": "/sign-in or / as promised by the specific account flow",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/email-change/page.tsx",
+          "canonicalOwner": "wayfarer",
+          "experienceContractIds": [],
+          "fixture": "ACTIVE_SIGN_IN_SUPPORTED_TOKEN_LIFECYCLE_PERSONAS_MISSING",
+          "naturalEntry": "/",
+          "visibleOutcome": "Canonical access/recovery explains valid, expired or unavailable states and exposes an actual safe return without assuming a workspace role.",
+          "returnPath": "/sign-in or / as promised by the specific account flow",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/merge/page.tsx",
+          "canonicalOwner": "wayfarer",
+          "experienceContractIds": [],
+          "fixture": "ACTIVE_SIGN_IN_SUPPORTED_TOKEN_LIFECYCLE_PERSONAS_MISSING",
+          "naturalEntry": "/",
+          "visibleOutcome": "Canonical access/recovery explains valid, expired or unavailable states and exposes an actual safe return without assuming a workspace role.",
+          "returnPath": "/sign-in or / as promised by the specific account flow",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/account/reactivate/page.tsx",
+          "canonicalOwner": "wayfarer",
+          "experienceContractIds": [],
+          "fixture": "ACTIVE_SIGN_IN_SUPPORTED_TOKEN_LIFECYCLE_PERSONAS_MISSING",
+          "naturalEntry": "/",
+          "visibleOutcome": "Canonical access/recovery explains valid, expired or unavailable states and exposes an actual safe return without assuming a workspace role.",
+          "returnPath": "/sign-in or / as promised by the specific account flow",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/register/page.tsx",
+          "canonicalOwner": "wayfarer",
+          "experienceContractIds": [],
+          "fixture": "ACTIVE_SIGN_IN_SUPPORTED_TOKEN_LIFECYCLE_PERSONAS_MISSING",
+          "naturalEntry": "/",
+          "visibleOutcome": "Canonical access/recovery explains valid, expired or unavailable states and exposes an actual safe return without assuming a workspace role.",
+          "returnPath": "/sign-in or / as promised by the specific account flow",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/reset-password/page.tsx",
+          "canonicalOwner": "wayfarer",
+          "experienceContractIds": [],
+          "fixture": "ACTIVE_SIGN_IN_SUPPORTED_TOKEN_LIFECYCLE_PERSONAS_MISSING",
+          "naturalEntry": "/",
+          "visibleOutcome": "Canonical access/recovery explains valid, expired or unavailable states and exposes an actual safe return without assuming a workspace role.",
+          "returnPath": "/sign-in or / as promised by the specific account flow",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/verify-email/page.tsx",
+          "canonicalOwner": "wayfarer",
+          "experienceContractIds": [],
+          "fixture": "ACTIVE_SIGN_IN_SUPPORTED_TOKEN_LIFECYCLE_PERSONAS_MISSING",
+          "naturalEntry": "/",
+          "visibleOutcome": "Canonical access/recovery explains valid, expired or unavailable states and exposes an actual safe return without assuming a workspace role.",
+          "returnPath": "/sign-in or / as promised by the specific account flow",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/platform/PlayerSignIn.tsx",
+          "canonicalOwner": "wayfarer",
+          "experienceContractIds": [],
+          "fixture": "ACTIVE_SIGN_IN_SUPPORTED_TOKEN_LIFECYCLE_PERSONAS_MISSING",
+          "naturalEntry": "/",
+          "visibleOutcome": "Canonical access/recovery explains valid, expired or unavailable states and exposes an actual safe return without assuming a workspace role.",
+          "returnPath": "/sign-in or / as promised by the specific account flow",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/platform/StaffSignIn.tsx",
+          "canonicalOwner": "wayfarer",
+          "experienceContractIds": [],
+          "fixture": "ACTIVE_SIGN_IN_SUPPORTED_TOKEN_LIFECYCLE_PERSONAS_MISSING",
+          "naturalEntry": "/",
+          "visibleOutcome": "Canonical access/recovery explains valid, expired or unavailable states and exposes an actual safe return without assuming a workspace role.",
+          "returnPath": "/sign-in or / as promised by the specific account flow",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "workspace-capabilities",
@@ -103,9 +1036,83 @@
         "Account menu → All Workspaces → truthful capability state → selected accessible workspace → account return"
       ],
       "browserTests": ["tests/e2e/project-helm-phase1.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "EXPLICIT_MAPPING_FIXTURE_OR_ENTRY_SUPPORT_GAPS_NO_REGISTRATION",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "project-helm",
+        "declaredOwnerPresent": true,
+        "existingAuthorityContractIds": [
+          "helm.authority-membership.independent",
+          "helm.creation.default-captain-only",
+          "helm.participation.lifecycle",
+          "helm.player-projection.firewall",
+          "helm.history.membership-derived",
+          "helm.artifacts.event-time-membership",
+          "helm.security.resource-authorization",
+          "helm.accessibility.responsive",
+          "helm.member-presence-synchronization"
+        ],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "helm.authority-membership.independent",
+          "helm.creation.default-captain-only",
+          "helm.participation.lifecycle",
+          "helm.player-projection.firewall",
+          "helm.history.membership-derived",
+          "helm.artifacts.event-time-membership",
+          "helm.security.resource-authorization",
+          "helm.accessibility.responsive",
+          "helm.member-presence-synchronization"
+        ]
+      },
+      "naturalEntry": {
+        "path": "/account",
+        "roles": ["PLAYER", "CREATOR"],
+        "visibleControls": [
+          "Account menu → All Workspaces",
+          "Actual Player or Creator destination",
+          "Account menu → Personal Harbor"
+        ]
+      },
+      "promisedVisibleOutcome": "The same identity sees truthful capability availability and reaches its real owned Player or Creator resource; a role enum is not the outcome.",
+      "returnPath": "/account",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Current account has PLAYER/CREATOR assignments, exact active Voyage membership and creator ownership of the mirrored canonical draft.",
+        "state": "PLAYER_CREATOR_RESOURCE_FIXTURE_PRESENT_CAPTAIN_RESOURCE_MISSING"
+      },
+      "supportGaps": [
+        "Current closureVoyage call does not set captain:true; captainAccountId is absent for this fixture.",
+        "Captain/privileged workspaces need their own canonical resource authority and ordinary visible outcome, not added labels."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.workspace-capabilities"],
+      "registeredExperienceContractIds": [],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/account/roles/page.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "PLAYER_CREATOR_RESOURCE_FIXTURE_PRESENT_CAPTAIN_RESOURCE_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "The same identity sees truthful capability availability and reaches its real owned Player or Creator resource; a role enum is not the outcome.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/homeport/WorkspaceCapabilityDashboard.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "PLAYER_CREATOR_RESOURCE_FIXTURE_PRESENT_CAPTAIN_RESOURCE_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "The same identity sees truthful capability availability and reaches its real owned Player or Creator resource; a role enum is not the outcome.",
+          "returnPath": "/account",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "passport-archive",
@@ -138,9 +1145,276 @@
         "Owner-granted synthetic Artifact → personalization/provenance → same cabinet"
       ],
       "browserTests": ["tests/e2e/homeport-phase3.spec.ts", "tests/e2e/wakebook-phase2.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "EXPLICIT_MAPPING_FIXTURE_OR_ENTRY_SUPPORT_GAPS_NO_REGISTRATION",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "project-wakebook",
+        "declaredOwnerPresent": true,
+        "existingAuthorityContractIds": [
+          "wakebook.history.version-pinning",
+          "wakebook.history.owner-privacy",
+          "wakebook.history.historical-stability",
+          "wakebook.timing.quality",
+          "wakebook.artifact-context",
+          "wakebook.navigation.reachability",
+          "wakebook.archive.pagination",
+          "wakebook.archive.year-grouping",
+          "wakebook.archive.filters",
+          "wakebook.archive.invitation-separation",
+          "wakebook.archive.partial-history",
+          "wakebook.archive.summary-redaction"
+        ],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "wakebook.history.version-pinning",
+          "wakebook.history.owner-privacy",
+          "wakebook.history.historical-stability",
+          "wakebook.timing.quality",
+          "wakebook.artifact-context",
+          "wakebook.navigation.reachability",
+          "wakebook.archive.pagination",
+          "wakebook.archive.year-grouping",
+          "wakebook.archive.filters",
+          "wakebook.archive.invitation-separation",
+          "wakebook.archive.partial-history",
+          "wakebook.archive.summary-redaction"
+        ]
+      },
+      "naturalEntry": {
+        "path": "/account",
+        "roles": ["PLAYER"],
+        "visibleControls": [
+          "Open Chronicle Passport",
+          "Exact private archive section / Open record / Open artifact",
+          "Contextual history or cabinet return → Passport"
+        ]
+      },
+      "promisedVisibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+      "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Existing account supports ordinary private archive entry. Current active narrative Voyage supplies no completed historical record, Memory or owner-granted Artifact fixture.",
+        "state": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING"
+      },
+      "supportGaps": [
+        "History detail/book/replay and artifact detail require separate synthetic canonical historical/grant data.",
+        "No completion, reader-state or progress may be secretly written to the active Sextant Voyage to populate these views."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.passport-archive"],
+      "registeredExperienceContractIds": [],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/passport/artifacts/[artifactId]/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/artifacts/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/atlas/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/history/[recordId]/book/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/history/[recordId]/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/history/[recordId]/replay/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/history/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/memories/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/people/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/saved/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/statistics/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/passport/timeline/page.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/homeport/PassportSurfaces.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/wakebook/AuthenticatedPassportPage.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/wakebook/PassportLayout.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/wakebook/WakebookVoyageBook.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/wakebook/WakebookVoyageDetail.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/wayfarer/ChroniclePassport.tsx",
+          "canonicalOwner": "project-wakebook",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_ARCHIVE_ENTRY_SUPPORTED_POPULATED_PINNED_DATA_MISSING",
+          "naturalEntry": "/account",
+          "visibleOutcome": "Private archive displays truthful empty or populated data; a selected record retains its pinned edition and authorized artifact provenance through detail/book/replay and return.",
+          "returnPath": "/passport; detail returns first to its exact history record or cabinet",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "community-discovery",
@@ -172,9 +1446,307 @@
         "Search → no matches → clear search recovery; no private records used as filler"
       ],
       "browserTests": ["tests/e2e/homeport-phase4.spec.ts", "tests/e2e/harborlight-phase3.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "EXPLICIT_MAPPING_FIXTURE_OR_ENTRY_SUPPORT_GAPS_NO_REGISTRATION",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "harborlight",
+        "declaredOwnerPresent": true,
+        "existingAuthorityContractIds": [
+          "community-public-projection",
+          "artifact-grant-projection",
+          "community-moderation-integrity",
+          "community-trusted-scan-receipt",
+          "community-operational-leases",
+          "community-migration-integrity"
+        ],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "artifact-grant-projection",
+          "community-public-projection",
+          "tideglass-read-only-invariance",
+          "public-privacy-projection",
+          "community-moderation-integrity",
+          "community-trusted-scan-receipt",
+          "community-operational-leases",
+          "community-migration-integrity",
+          "homeport.community.harbor-home",
+          "homeport.community.content-first-default",
+          "homeport.community.default-not-no-results",
+          "homeport.community.district-registry",
+          "homeport.community.district-navigation",
+          "homeport.community.mobile-district-parity",
+          "homeport.community.public-projection",
+          "homeport.community.no-private-leak",
+          "homeport.community.lifecycle-eligibility",
+          "homeport.community.quarantine",
+          "homeport.community.card-base",
+          "homeport.community.card-destinations",
+          "homeport.community.card-fallback",
+          "homeport.community.card-accessibility",
+          "homeport.community.shelf-strategy",
+          "homeport.community.editorial-labeling",
+          "homeport.community.search",
+          "homeport.community.search-url-state",
+          "homeport.community.search-stale-request",
+          "homeport.community.compact-filters",
+          "homeport.community.advanced-filters",
+          "homeport.community.no-results",
+          "homeport.community.empty-state",
+          "homeport.community.dependency-unavailable",
+          "homeport.community.partial-media-failure",
+          "homeport.community.chronicles",
+          "homeport.community.artifacts",
+          "homeport.community.templates",
+          "homeport.community.maps",
+          "homeport.community.audio",
+          "homeport.community.creators",
+          "homeport.community.creator-profile",
+          "homeport.community.collections",
+          "homeport.community.guides",
+          "homeport.community.voyage-logs",
+          "homeport.community.saved-state",
+          "homeport.community.saved-cross-surface",
+          "homeport.community.follow-state",
+          "homeport.community.social-auth-return",
+          "homeport.community.detail",
+          "homeport.community.detail-parent",
+          "homeport.community.open-install-remix",
+          "homeport.community.mutation-feedback",
+          "homeport.community.restricted-account",
+          "homeport.community.keyboard",
+          "homeport.community.zoom",
+          "homeport.community.reduced-motion",
+          "homeport.community.phase1-regression",
+          "homeport.community.phase2-regression",
+          "homeport.community.phase3-regression",
+          "homeport.community.artifact-idempotency"
+        ]
+      },
+      "naturalEntry": {
+        "path": "/community",
+        "roles": ["ANONYMOUS", "CREATOR", "PLAYER"],
+        "visibleControls": [
+          "Visible Community Harbor district control",
+          "Search public Community Harbor → Search Community Harbor → clear recovery",
+          "Contextual public parent or ordinary product gateway return"
+        ]
+      },
+      "promisedVisibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+      "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Current isolated database permits honest empty public districts. Sextant Chronicle is PRIVATE; its published version is not an eligible public Community listing.",
+        "state": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING"
+      },
+      "supportGaps": [
+        "Published listing, collection, public Creator, guide and consented Voyage Log data must use existing canonical eligibility/privacy seams.",
+        "Harbor Home appears in both the hero and district navigator; exact unscoped role/name is ambiguous. Each affected action needs a real unique control or an explicitly agreed named-ancestor support boundary; no selector patch is inferred.",
+        "Search control is role searchbox/name Search public Community Harbor, not a guessed textbox."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.community-discovery"],
+      "registeredExperienceContractIds": [],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/community/[slug]/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/artifacts/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/audio/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/chronicles/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/collections/[slug]/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/collections/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/creators/[handle]/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/creators/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/featured/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/guides/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/maps/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/templates/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/community/voyage-logs/page.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/community/CommunityCardGrid.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/community/CommunityCommentThread.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/community/CommunityDiscoveryBrowser.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/community/PublicCommunitySection.tsx",
+          "canonicalOwner": "harborlight",
+          "experienceContractIds": [],
+          "fixture": "EMPTY_PUBLIC_DATA_SUPPORTED_PUBLIC_LISTING_CARD_DETAIL_FIXTURES_MISSING",
+          "naturalEntry": "/community",
+          "visibleOutcome": "Every public district distinguishes honest emptiness, eligible published work and no-match recovery; detail/card actions never expose private records as filler.",
+          "returnPath": "/community or the specific public parent; explicit gateway return / where declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "captain-crew",
@@ -201,9 +1773,215 @@
         "Captain player-safe preview preserves pinned synthetic edition and return"
       ],
       "browserTests": ["tests/e2e/project-helm-phase1.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "EXPLICIT_MAPPING_FIXTURE_OR_ENTRY_SUPPORT_GAPS_NO_REGISTRATION",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "project-helm",
+        "declaredOwnerPresent": true,
+        "existingAuthorityContractIds": [
+          "helm.authority-membership.independent",
+          "helm.creation.default-captain-only",
+          "helm.participation.lifecycle",
+          "helm.player-projection.firewall",
+          "helm.history.membership-derived",
+          "helm.artifacts.event-time-membership",
+          "helm.security.resource-authorization",
+          "helm.accessibility.responsive",
+          "helm.member-presence-synchronization"
+        ],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "helm.authority-membership.independent",
+          "helm.creation.default-captain-only",
+          "helm.participation.lifecycle",
+          "helm.player-projection.firewall",
+          "helm.history.membership-derived",
+          "helm.artifacts.event-time-membership",
+          "helm.security.resource-authorization",
+          "helm.accessibility.responsive",
+          "helm.member-presence-synchronization"
+        ]
+      },
+      "naturalEntry": {
+        "path": "/captain/library",
+        "roles": ["CAPTAIN"],
+        "visibleControls": [
+          "Owned Captain Library item → actual session/Voyage",
+          "Crew/Muster or Player-safe preview action",
+          "Contextual Captain Library return"
+        ]
+      },
+      "promisedVisibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+      "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Current account owns the Chronicle as Creator; current fixture has no captainAccountId and no dedicated Captain/crew fixture.",
+        "state": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING"
+      },
+      "supportGaps": [
+        "Use existing closureVoyage captain option or domain fixtures with a separate authorized synthetic persona; do not treat CREATOR assignment as Captain authority.",
+        "Crew chat/operational recovery needs synthetic members and real published passage context."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.captain-crew"],
+      "registeredExperienceContractIds": [],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/captain/library/page.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/captain/sessions/[sessionId]/page.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/captain/tales/[taleId]/page.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/captain/CaptainCommandConsole.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/captain/CaptainDashboard.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/captain/CaptainMusterRoom.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/captain/CaptainOperationalPanel.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/captain/CaptainSessionControl.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/gm/Quartermaster.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/muster/CrewChat.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/muster/MusterRoom.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/platform/CaptainLibrary.tsx",
+          "canonicalOwner": "project-helm",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_CAPTAIN_AND_CREW_RESOURCE_FIXTURES_MISSING",
+          "naturalEntry": "/captain/library",
+          "visibleOutcome": "An authorized Captain controls the actual synthetic owned resource, sees truthful Crew state and a Player-safe immutable edition view, then returns without an alternate progression writer.",
+          "returnPath": "/captain/library; nested views retain exact playthrough/session identifiers",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "player-entry",
@@ -233,9 +2011,239 @@
         "Compatibility continuation preserves identity reader state or honest legacy-local state"
       ],
       "browserTests": ["tests/e2e/chronicle-platform.spec.ts", "tests/e2e/lanternwake-journal.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "EXPLICIT_MAPPING_FIXTURE_OR_ENTRY_SUPPORT_GAPS_NO_REGISTRATION",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "one-voyage",
+        "declaredOwnerPresent": true,
+        "existingAuthorityContractIds": ["invitation-acceptance", "player-session-restoration", "drydock-progression"],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "spatial-pilot.experience",
+          "parallax.floating-controls.experience",
+          "invitation-acceptance",
+          "player-session-restoration",
+          "drydock-progression",
+          "drydock-authoring-contracts",
+          "drydock-scenario-contract",
+          "drydock-virtual-time",
+          "drydock-trace-privacy",
+          "drydock-runtime-adapter",
+          "drydock-runtime-differential",
+          "drydock-no-live-mutation",
+          "drydock-phase4-launch-readiness",
+          "wayfarer-history-projection",
+          "lanternwake-presentation-receipt",
+          "tideglass-exact-edition-pair",
+          "tideglass-semantic-determinism",
+          "tideglass-read-only-invariance",
+          "completion-provider",
+          "wakebook.history.version-pinning"
+        ]
+      },
+      "naturalEntry": {
+        "path": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+        "roles": ["PLAYER"],
+        "visibleControls": [
+          "Continue Adventure / actual invitation or Chronicle entry",
+          "Ordinary first opening and explicit Replay full opening",
+          "Contextual Player Library or exact readable Voyage return"
+        ]
+      },
+      "promisedVisibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+      "returnPath": "/player/library or the exact entered Voyage route as declared",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Current canonical active membership, pinned version, exact stable slug and mirrored draft are present; the one compatibility wrapper consumes unchanged canonical authorization.",
+        "state": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING"
+      },
+      "supportGaps": [
+        "Returning-reader preparation must complete the visible first opening and retain its recording. Current trusted replay loop creates fresh role contexts and the helper does not accept undocumented conditional setup steps.",
+        "Invitation/revoked states, legacy cookie continuation, edition comparison and completed-history returns require separate canonical synthetic data or ordinary flow preparation.",
+        "Actual compatibility route continuity is not inferred from companion return: frozen Crossdeck Return to Chronicle goes to /player/playthroughs/<id>/journal."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.player-entry"],
+      "registeredExperienceContractIds": [],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/chronicles/[taleSlug]/compare/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/chronicles/[taleSlug]/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/play/[taleSlug]/history/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/play/[taleSlug]/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/player/invitation/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/player/playthroughs/[playthroughId]/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/player/sign-in/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/tales/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/platform/InvitationCeremony.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/platform/PlayerLibrary.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/platform/PlayerSafePreview.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/platform/PlayerVoyageRoom.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/tales/TaleCatalog.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/tales/TaleStart.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/tideglass/TideglassPassage.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_VOYAGE_PRESENT_ORDINARY_FIRST_ENTRY_AND_LEGACY_PERSONA_PROOF_PENDING",
+          "naturalEntry": "/player/library or a preserved /play/<slug>/session/<id> deep link",
+          "visibleOutcome": "The exact authorized released Voyage opens readably, identity reader state survives its compatibility deep link, and legacy access retains its own honest mode.",
+          "returnPath": "/player/library or the exact entered Voyage route as declared",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "landfall-player-recovery",
@@ -266,9 +2274,199 @@
         "tests/e2e/landfall-native-background.spec.ts",
         "tests/e2e/landfall-offline-region.spec.ts"
       ],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "EXPLICIT_MAPPING_FIXTURE_OR_ENTRY_SUPPORT_GAPS_NO_REGISTRATION",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "landfall",
+        "declaredOwnerPresent": true,
+        "existingAuthorityContractIds": ["completion-provider"],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "completion-provider",
+          "landfall.device-lab-evidence",
+          "landfall.player-live-position"
+        ]
+      },
+      "naturalEntry": {
+        "path": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+        "roles": ["PLAYER"],
+        "visibleControls": [
+          "Released Living Chart / installation / nearby or offline capability action",
+          "Explicit screen fallback or reconnect/reacquisition",
+          "Return to the same readable Journal"
+        ]
+      },
+      "promisedVisibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+      "returnPath": "Exact entered Player Journal",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Current native/Sextant scenario infrastructure is retained; current narrative-only browser fixture does not publish a Living Chart or installable/offline region.",
+        "state": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING"
+      },
+      "supportGaps": [
+        "Reuse existing Landfall closure/native/offline-region fixtures with fictional coordinates and canonical evidence bounds.",
+        "No browser or injected observation may be promoted to native or D4 hardware proof; no active-Voyage progress is injected."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.landfall-player-recovery"],
+      "registeredExperienceContractIds": [],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/player/landfall-return/page.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/player/offline-landfall/page.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/LandfallBackgroundPanel.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/LandfallBlePanel.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/LandfallContextGuidance.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/LandfallInstallationPanel.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/LandfallJournalChart.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/LandfallLandmarkPanel.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/LandfallNearbyPanel.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/LandfallOfflineRegionPanel.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/LandfallOnlineDataPanel.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/LandfallPlaceSearch.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/LandfallPresentation.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/player/journal/OfflineLandfallJournal.tsx",
+          "canonicalOwner": "landfall",
+          "experienceContractIds": [],
+          "fixture": "PUBLISHED_LANDFALL_PANEL_OFFLINE_INSTALLATION_FIXTURES_MISSING",
+          "naturalEntry": "/player/playthroughs/<synthetic-landfall-voyage>/journal",
+          "visibleOutcome": "Real panels distinguish unavailable, denied, offline and recovered states while keeping the same pinned Voyage and canonical progression authority.",
+          "returnPath": "Exact entered Player Journal",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "creator-source-consumers",
@@ -301,9 +2499,272 @@
         "Drydock/Shipwright/field rehearsal show truthful provider limits without publishing or paid calls"
       ],
       "browserTests": ["tests/e2e/landfall-phase3-creator.spec.ts", "tests/e2e/shipwright-phase5.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "EXPLICIT_MAPPING_FIXTURE_OR_ENTRY_SUPPORT_GAPS_NO_REGISTRATION",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "one-voyage",
+        "declaredOwnerPresent": true,
+        "existingAuthorityContractIds": ["invitation-acceptance", "player-session-restoration", "drydock-progression"],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "spatial-pilot.experience",
+          "parallax.floating-controls.experience",
+          "invitation-acceptance",
+          "player-session-restoration",
+          "drydock-progression",
+          "drydock-authoring-contracts",
+          "drydock-scenario-contract",
+          "drydock-virtual-time",
+          "drydock-trace-privacy",
+          "drydock-runtime-adapter",
+          "drydock-runtime-differential",
+          "drydock-no-live-mutation",
+          "drydock-phase4-launch-readiness",
+          "wayfarer-history-projection",
+          "lanternwake-presentation-receipt",
+          "tideglass-exact-edition-pair",
+          "tideglass-semantic-determinism",
+          "tideglass-read-only-invariance",
+          "completion-provider",
+          "wakebook.history.version-pinning"
+        ]
+      },
+      "naturalEntry": {
+        "path": "/studio/library",
+        "roles": ["CREATOR"],
+        "visibleControls": [
+          "Edit Chronicle → actual ordinary workspace tab",
+          "Working spatial title edit → Save draft → ordinary reopening → restoration",
+          "Creator Library return and independent pinned Player comparison"
+        ]
+      },
+      "promisedVisibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+      "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Current Creator ownership, canonical saved draft mirror and released spatial note are present. Accepted Parallax/Floating Creator fixtures and contracts remain unchanged.",
+        "state": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING"
+      },
+      "supportGaps": [
+        "Assets/artifacts, trials, versions, location/installation, private-content and Drydock/Shipwright states need real synthetic domain data or an explicit honest-empty contract.",
+        "Title persistence/comparison must use the actual save/reopen path; no new edition publication, paid AI call or A1 restart is claimed.",
+        "File/media workflows exceed static fill/click if an observed upload is required; use existing domain tooling/evidence under a recorded supported boundary."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.creator-source-consumers"],
+      "registeredExperienceContractIds": [],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/studio/private-content/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/studio/tales/[taleId]/artifacts/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/studio/tales/[taleId]/assets/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/studio/tales/[taleId]/landfall/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/studio/tales/[taleId]/locations/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/studio/tales/[taleId]/settings/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/studio/tales/[taleId]/trials/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/studio/tales/[taleId]/versions/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/studio/tales/new/page.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/studio/DrydockCompatibilityPanel.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/studio/DrydockLaunchGate.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/studio/DrydockScenarioLab.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/studio/LandfallFieldTestPanel.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/studio/LandfallInstallationPanel.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/studio/LandfallOnlinePlacePanel.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/studio/LandfallWorkspace.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/studio/NewTaleForm.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/studio/PrivateContentConsole.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/studio/ShipwrightPublishingReview.tsx",
+          "canonicalOwner": "one-voyage",
+          "experienceContractIds": [],
+          "fixture": "CANONICAL_DRAFT_AND_PINNED_CLUE_PRESENT_OTHER_WORKSPACE_DATA_MISSING",
+          "naturalEntry": "/studio/library",
+          "visibleOutcome": "The owned working draft remains distinct from the unchanged pinned edition; affected workspace panels show truthful provider/content/release limits and ordinary return.",
+          "returnPath": "/studio/library, with exact Chronicle/draft identity retained",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "crossdeck-surfaces",
@@ -314,9 +2775,69 @@
         "Contextual Devices → legitimate additional screen/pair/display → exact same Voyage; visible disconnect/return"
       ],
       "browserTests": ["tests/e2e/crossdeck-phase2.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "EXPLICIT_MAPPING_FIXTURE_OR_ENTRY_SUPPORT_GAPS_NO_REGISTRATION",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "project-crossdeck",
+        "declaredOwnerPresent": false,
+        "existingAuthorityContractIds": [],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "spatial-pilot.experience",
+          "parallax.floating-controls.experience",
+          "crossdeck.phase1.participation",
+          "crossdeck.phase2.continuity"
+        ]
+      },
+      "naturalEntry": {
+        "path": "Contextual Journal connection; /account/devices; actual private pairing URL",
+        "roles": ["PLAYER"],
+        "visibleControls": [
+          "Connect another device / Use this device",
+          "Unique Open on this device for current local row",
+          "Actual companion Return to Chronicle or display recovery"
+        ]
+      },
+      "promisedVisibleOutcome": "Legitimate device rows remain present, the actual registered purpose is shown, and the same authorized Voyage/edition returns through a real companion/display outcome.",
+      "returnPath": "/player/playthroughs/<encoded-voyage-id>/journal for frozen companion return",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Current synthetic canonical Voyage exists. New Devices UI/test, two-device scenario evidence and interface blobs remain conditional on Crossdeck protected acceptance.",
+        "state": "CONDITIONAL_PROTECTED_CROSSDECK_HANDOFF_NOT_INSTALLED"
+      },
+      "supportGaps": [
+        "Consume exact accepted UI/test and preserve its complete contracts only after actual protected acceptance.",
+        "Pairing requires a real private challenge from the actual flow; existing static journey fill cannot silently read or manufacture an observed random code. Use the domain-supported two-device boundary and receipts.",
+        "Keep the accepted unnamed main plus Voyage/edition attributes; update own selectors instead of breaking frozen exact-name obligations."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.crossdeck-surfaces"],
+      "registeredExperienceContractIds": [],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/devices/display/page.tsx",
+          "canonicalOwner": "project-crossdeck",
+          "experienceContractIds": [],
+          "fixture": "CONDITIONAL_PROTECTED_CROSSDECK_HANDOFF_NOT_INSTALLED",
+          "naturalEntry": "Contextual Journal connection; /account/devices; actual private pairing URL",
+          "visibleOutcome": "Legitimate device rows remain present, the actual registered purpose is shown, and the same authorized Voyage/edition returns through a real companion/display outcome.",
+          "returnPath": "/player/playthroughs/<encoded-voyage-id>/journal for frozen companion return",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/devices/pair/page.tsx",
+          "canonicalOwner": "project-crossdeck",
+          "experienceContractIds": [],
+          "fixture": "CONDITIONAL_PROTECTED_CROSSDECK_HANDOFF_NOT_INSTALLED",
+          "naturalEntry": "Contextual Journal connection; /account/devices; actual private pairing URL",
+          "visibleOutcome": "Legitimate device rows remain present, the actual registered purpose is shown, and the same authorized Voyage/edition returns through a real companion/display outcome.",
+          "returnPath": "/player/playthroughs/<encoded-voyage-id>/journal for frozen companion return",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "admiralty-shell",
@@ -332,9 +2853,119 @@
         "Authorized synthetic Admiralty identity → least-privilege dossier/operations → same console; denied role retains safe return"
       ],
       "browserTests": ["tests/e2e/admiralty-phase2.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "EXPLICIT_MAPPING_FIXTURE_OR_ENTRY_SUPPORT_GAPS_NO_REGISTRATION",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "project-admiralty",
+        "declaredOwnerPresent": true,
+        "existingAuthorityContractIds": [
+          "admiralty.phase1.identity",
+          "admiralty.phase1.authorization",
+          "admiralty.phase1.assurance",
+          "admiralty.phase1.support-access",
+          "admiralty.phase1.audit",
+          "admiralty.phase1.registry",
+          "admiralty.phase1.migration",
+          "admiralty.phase1.responsive-consent",
+          "admiralty.phase2.authorization-partition",
+          "admiralty.phase2.read-projection-redaction",
+          "admiralty.phase2.account-dossier-support",
+          "admiralty.phase2.chronicle-voyage-inspection",
+          "admiralty.phase2.community-operations-providers",
+          "admiralty.phase2.audit-investigation",
+          "admiralty.phase2.registry-activation",
+          "admiralty.phase2.responsive-accessibility"
+        ],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "admiralty.phase1.identity",
+          "admiralty.phase1.authorization",
+          "admiralty.phase1.assurance",
+          "admiralty.phase1.support-access",
+          "admiralty.phase1.audit",
+          "admiralty.phase1.registry",
+          "admiralty.phase1.migration",
+          "admiralty.phase1.responsive-consent",
+          "admiralty.phase2.authorization-partition",
+          "admiralty.phase2.read-projection-redaction",
+          "admiralty.phase2.account-dossier-support",
+          "admiralty.phase2.chronicle-voyage-inspection",
+          "admiralty.phase2.community-operations-providers",
+          "admiralty.phase2.audit-investigation",
+          "admiralty.phase2.registry-activation",
+          "admiralty.phase2.responsive-accessibility"
+        ]
+      },
+      "naturalEntry": {
+        "path": "/admin/ai-usage and authorized real console/dossier destinations",
+        "roles": ["ADMINISTRATOR"],
+        "visibleControls": [
+          "Ordinary sign-in and canonical assurance where required",
+          "Authorized dossier/operations action or truthful denial",
+          "Same console or public safe return"
+        ]
+      },
+      "promisedVisibleOutcome": "Least-privilege synthetic operators see permitted redacted tasks and denied/recovery states without assuming assurance or exposing private content.",
+      "returnPath": "Exact authorized console parent; denied role uses its canonical safe return",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Existing accepted admiralty.phase1.registry uses generic parallax-review-operator@example.test with its actual AI Usage & Quotas witness. Current Sextant fixture does not grant administrator/assurance authority.",
+        "state": "EXISTING_ACCEPTED_OPERATOR_BINDING_PRESENT_FULL_DOSSIER_DATA_ASSURANCE_NOT_SUPPLIED_BY_SEXTANT"
+      },
+      "supportGaps": [
+        "Retain the accepted operator contract unchanged and verify its existing synthetic producer binding.",
+        "Additional Shell/dossier/support cases require canonical scoped grants, assurance and synthetic subjects/consent; no security relaxation or privileged enum-only witness."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.admiralty-shell"],
+      "registeredExperienceContractIds": [],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/admin/layout.tsx",
+          "canonicalOwner": "project-admiralty",
+          "experienceContractIds": [],
+          "fixture": "EXISTING_ACCEPTED_OPERATOR_BINDING_PRESENT_FULL_DOSSIER_DATA_ASSURANCE_NOT_SUPPLIED_BY_SEXTANT",
+          "naturalEntry": "/admin/ai-usage and authorized real console/dossier destinations",
+          "visibleOutcome": "Least-privilege synthetic operators see permitted redacted tasks and denied/recovery states without assuming assurance or exposing private content.",
+          "returnPath": "Exact authorized console parent; denied role uses its canonical safe return",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/admiralty/AdmiraltyConsole.tsx",
+          "canonicalOwner": "project-admiralty",
+          "experienceContractIds": [],
+          "fixture": "EXISTING_ACCEPTED_OPERATOR_BINDING_PRESENT_FULL_DOSSIER_DATA_ASSURANCE_NOT_SUPPLIED_BY_SEXTANT",
+          "naturalEntry": "/admin/ai-usage and authorized real console/dossier destinations",
+          "visibleOutcome": "Least-privilege synthetic operators see permitted redacted tasks and denied/recovery states without assuming assurance or exposing private content.",
+          "returnPath": "Exact authorized console parent; denied role uses its canonical safe return",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/admiralty/AdmiraltyShell.tsx",
+          "canonicalOwner": "project-admiralty",
+          "experienceContractIds": [],
+          "fixture": "EXISTING_ACCEPTED_OPERATOR_BINDING_PRESENT_FULL_DOSSIER_DATA_ASSURANCE_NOT_SUPPLIED_BY_SEXTANT",
+          "naturalEntry": "/admin/ai-usage and authorized real console/dossier destinations",
+          "visibleOutcome": "Least-privilege synthetic operators see permitted redacted tasks and denied/recovery states without assuming assurance or exposing private content.",
+          "returnPath": "Exact authorized console parent; denied role uses its canonical safe return",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/admiralty/DossierSupportPanel.tsx",
+          "canonicalOwner": "project-admiralty",
+          "experienceContractIds": [],
+          "fixture": "EXISTING_ACCEPTED_OPERATOR_BINDING_PRESENT_FULL_DOSSIER_DATA_ASSURANCE_NOT_SUPPLIED_BY_SEXTANT",
+          "naturalEntry": "/admin/ai-usage and authorized real console/dossier destinations",
+          "visibleOutcome": "Least-privilege synthetic operators see permitted redacted tasks and denied/recovery states without assuming assurance or exposing private content.",
+          "returnPath": "Exact authorized console parent; denied role uses its canonical safe return",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "shared-shell-runtime",
@@ -354,9 +2985,124 @@
         "Cross-route identity/preferences projection checked in every affected family rather than exempting shared providers"
       ],
       "browserTests": ["tests/e2e/homeport-phase7-owner-correction-round3.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "PARTIAL_OR_FULL_REGISTERED_DECLARATION_NO_CAPTURE",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "platform-foundation",
+        "declaredOwnerPresent": true,
+        "existingAuthorityContractIds": ["authentication-authorization", "migration-parity"],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": [
+          "authentication-authorization",
+          "deepwater.capability-realization-integrity",
+          "migration-parity",
+          "community-migration-integrity",
+          "helm.member-presence-synchronization"
+        ]
+      },
+      "naturalEntry": {
+        "path": "/account",
+        "roles": ["PLAYER"],
+        "visibleControls": [
+          "Experience Preferences → Save preferences",
+          "Return to Home → authenticated account menu → Sign out",
+          "Anonymous Account → Create Account witness → Escape → gateway"
+        ]
+      },
+      "promisedVisibleOutcome": "The real shared shell exposes confirmed preference feedback, ends private navigation through ordinary sign-out and returns with actual anonymous account access.",
+      "returnPath": "/",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Current active synthetic account and canonical ordinary sign-out endpoint support the declared journey; no privileged or external provider data required.",
+        "state": "REGISTERED_1_JOURNEY_EXISTING_TRUSTED_FIELDS"
+      },
+      "supportGaps": [
+        "No rendered sign-out or preference capture is available yet.",
+        "Canonical gateway href continuity does not claim persistence of the deliberately ended identity or native sensor cleanup."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.shell-identity"],
+      "registeredExperienceContractIds": ["sextant.shared-consumers.shell-identity"],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/layout.tsx",
+          "canonicalOwner": "platform-foundation",
+          "experienceContractIds": ["sextant.shared-consumers.shell-identity"],
+          "fixture": "REGISTERED_1_JOURNEY_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "The real shared shell exposes confirmed preference feedback, ends private navigation through ordinary sign-out and returns with actual anonymous account access.",
+          "returnPath": "/",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/app/page.tsx",
+          "canonicalOwner": "platform-foundation",
+          "experienceContractIds": ["sextant.shared-consumers.shell-identity"],
+          "fixture": "REGISTERED_1_JOURNEY_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "The real shared shell exposes confirmed preference feedback, ends private navigation through ordinary sign-out and returns with actual anonymous account access.",
+          "returnPath": "/",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/auth/CurrentUserProvider.tsx",
+          "canonicalOwner": "platform-foundation",
+          "experienceContractIds": ["sextant.shared-consumers.shell-identity"],
+          "fixture": "REGISTERED_1_JOURNEY_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "The real shared shell exposes confirmed preference feedback, ends private navigation through ordinary sign-out and returns with actual anonymous account access.",
+          "returnPath": "/",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/auth/SignOutButton.tsx",
+          "canonicalOwner": "platform-foundation",
+          "experienceContractIds": ["sextant.shared-consumers.shell-identity"],
+          "fixture": "REGISTERED_1_JOURNEY_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "The real shared shell exposes confirmed preference feedback, ends private navigation through ordinary sign-out and returns with actual anonymous account access.",
+          "returnPath": "/",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/homeport/PreferenceRuntimeBridge.tsx",
+          "canonicalOwner": "platform-foundation",
+          "experienceContractIds": ["sextant.shared-consumers.shell-identity"],
+          "fixture": "REGISTERED_1_JOURNEY_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "The real shared shell exposes confirmed preference feedback, ends private navigation through ordinary sign-out and returns with actual anonymous account access.",
+          "returnPath": "/",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/landing/HarborLanding.tsx",
+          "canonicalOwner": "platform-foundation",
+          "experienceContractIds": ["sextant.shared-consumers.shell-identity"],
+          "fixture": "REGISTERED_1_JOURNEY_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "The real shared shell exposes confirmed preference feedback, ends private navigation through ordinary sign-out and returns with actual anonymous account access.",
+          "returnPath": "/",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        },
+        {
+          "path": "src/components/shell/ProductShell.tsx",
+          "canonicalOwner": "platform-foundation",
+          "experienceContractIds": ["sextant.shared-consumers.shell-identity"],
+          "fixture": "REGISTERED_1_JOURNEY_EXISTING_TRUSTED_FIELDS",
+          "naturalEntry": "/account",
+          "visibleOutcome": "The real shared shell exposes confirmed preference feedback, ends private navigation through ordinary sign-out and returns with actual anonymous account access.",
+          "returnPath": "/",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     },
     {
       "id": "development-synthetic-pilot",
@@ -367,9 +3113,50 @@
         "Authorized synthetic development pilot entry → truthful tool boundary → ordinary product return; never substitutes for Player outcome"
       ],
       "browserTests": ["tests/e2e/spatial-chronicle-pilot.spec.ts"],
-      "designState": "PREPARATION_NOT_REGISTERED_NOT_CAPTURED",
+      "designState": "EXPLICIT_MAPPING_FIXTURE_OR_ENTRY_SUPPORT_GAPS_NO_REGISTRATION",
       "devices": ["DESKTOP", "MOBILE"],
-      "motionModes": ["NORMAL", "REDUCED"]
+      "motionModes": ["NORMAL", "REDUCED"],
+      "ownershipBinding": {
+        "registry": "testing/ownership.json",
+        "owner": "project-parallax",
+        "declaredOwnerPresent": false,
+        "existingAuthorityContractIds": [],
+        "scope": "Canonical data/presentation/progression owner retained; Sextant owns qualification integration only",
+        "additionalContractAuthorityIds": []
+      },
+      "naturalEntry": {
+        "path": "Authorized synthetic /dev/spatial-pilot tool route",
+        "roles": ["CREATOR"],
+        "visibleControls": [
+          "Actual gated pilot authorization and visible synthetic tool action",
+          "Ordinary tool/product return"
+        ]
+      },
+      "promisedVisibleOutcome": "Authorized development tooling shows its synthetic boundary and safe return; it never substitutes for the ordinary published Player clue.",
+      "returnPath": "Ordinary Creator Library or declared product gateway",
+      "fixtureSupport": {
+        "producer": ".agents/scripts/sextant-experience-fixture.ts plus specifically named existing domain producer when required",
+        "currentSupport": "Current persona is an ordinary Creator; no pilot-specific owner grant/configuration is asserted.",
+        "state": "EXISTING_PILOT_AUTHORIZATION_FIXTURE_BINDING_REQUIRED"
+      },
+      "supportGaps": [
+        "Use existing spatial-pilot fixture/owner authorization; do not enable a debug route, bypass its gate or present it as production consumer acceptance."
+      ],
+      "plannedExperienceContractIds": ["sextant.shared-consumers.development-synthetic-pilot"],
+      "registeredExperienceContractIds": [],
+      "perSurfaceObligations": [
+        {
+          "path": "src/app/dev/spatial-pilot/page.tsx",
+          "canonicalOwner": "project-parallax",
+          "experienceContractIds": [],
+          "fixture": "EXISTING_PILOT_AUTHORIZATION_FIXTURE_BINDING_REQUIRED",
+          "naturalEntry": "Authorized synthetic /dev/spatial-pilot tool route",
+          "visibleOutcome": "Authorized development tooling shows its synthetic boundary and safe return; it never substitutes for the ordinary published Player clue.",
+          "returnPath": "Ordinary Creator Library or declared product gateway",
+          "capture": "NOT_CAPTURED",
+          "acceptance": "NOT_ACCEPTED"
+        }
+      ]
     }
   ],
   "proposedContracts": [
@@ -382,7 +3169,7 @@
       "experience": {
         "persona": "An authenticated synthetic Player reviewing account presentation and capability preferences",
         "objective": "Reach each affected Personal Harbor task through its ordinary visible control and return to the same authenticated Overview",
-        "visibleOutcome": "Readable account sections retain correct identity and ordinary return; saving preferences produces confirmed feedback and survives ordinary reopening",
+        "visibleOutcome": "Readable account sections retain correct identity and ordinary return; saving preferences produces confirmed feedback followed by ordinary reopening of the readable preference task",
         "integrationOwner": "Sextant R1 shared-consumer qualification; canonical domain ownership retained",
         "systems": ["project-sextant", "project-homeport", "wayfarer", "one-voyage"],
         "sourcePaths": [
@@ -403,7 +3190,7 @@
           "src/components/homeport/PersonalHarborLayout.tsx"
         ],
         "entryPoint": "/account",
-        "states": ["SECTION_READY", "PREFERENCES_SAVED", "RETURNED"],
+        "states": ["SECTION_READY", "PREFERENCES_SAVED", "RETURNED", "PREFERENCES_REOPENED"],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["PLAYER"],
         "roleSetup": {
@@ -420,7 +3207,6 @@
                 "action": "fill",
                 "role": "textbox",
                 "name": "Password",
-                "label": "Password",
                 "value": "Synthetic-Sextant-Review-2026!"
               },
               {
@@ -438,20 +3224,20 @@
         },
         "references": [
           {
-            "family": "Authentication",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "family": "Personal Harbor",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-011-account-standard-desktop.png",
             "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
             "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "The accepted narrow task composition uses one visible objective and a clear recovery/return hierarchy.",
-            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
+            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
           },
           {
-            "family": "Authentication",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "family": "Personal Harbor",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-012-account-modern-mobile.png",
             "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
             "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "The accepted mobile account ledger keeps fields and recovery actions readable and reachable.",
-            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
+            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
           }
         ],
         "fixtureProfile": "generic",
@@ -463,7 +3249,7 @@
         "designTarget": "Preserve accepted account typography, task-first headings, readable controls, truthful capability messages and grouped personal versus account actions.",
         "browserTests": ["tests/e2e/homeport-phase3.spec.ts"],
         "limitations": [
-          "Preparation only: correctly labelled password resolution requires a protected owner handoff before registration/replay. The ordinary synthetic persona credential is a public fixture value behind nonce-owned database guards; no dynamic credential schema or blanket selector scope is required.",
+          "Ordinary role setup uses the installed Playwright1.56.1 textbox/Password matcher and public nonce-guarded synthetic credential. Registered declarations remain unqualified until real capture/review; no new helper, selector scope or credential schema is required.",
           "No reader state, active Voyage progression, real private account or paid service is altered."
         ],
         "motion": {
@@ -614,6 +3400,35 @@
                 "name": "Personal Harbor"
               },
               {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Preferences"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Preferences content",
+                "path": "/account/preferences",
+                "text": "Experience preferences",
+                "state": "PREFERENCES_REOPENED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
                 "action": "assert",
                 "role": "heading",
                 "name": "Overview",
@@ -656,6 +3471,35 @@
                 "text": "Preferences saved and applied.",
                 "path": "/account/accessibility",
                 "state": "PREFERENCES_SAVED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Accessibility"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Accessibility content",
+                "path": "/account/accessibility",
+                "text": "Accessibility preferences",
+                "state": "PREFERENCES_REOPENED",
                 "feedbackBoundary": true
               },
               {
@@ -1017,7 +3861,205 @@
             }
           ]
         }
-      }
+      },
+      "designState": "REGISTERED_DECLARATION_NOT_CAPTURED_OR_ACCEPTED"
+    },
+    {
+      "id": "sextant.shared-consumers.shell-identity",
+      "name": "Sextant shared native-context identity and preference shell continuity",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true,
+      "experience": {
+        "persona": "An authenticated synthetic Player saving presentation preferences and ending the account session through ordinary product controls",
+        "objective": "Keep a readable shared shell through preference saving and ordinary sign-out, then return to the anonymous product gateway",
+        "visibleOutcome": "Preference feedback is visible, ordinary sign-out replaces private account navigation with real anonymous account access and restores the public gateway",
+        "integrationOwner": "Sextant R1 shared shell qualification; platform, Homeport and One Voyage retain canonical identity authority",
+        "systems": ["project-sextant", "platform-foundation", "project-homeport", "one-voyage"],
+        "sourcePaths": [
+          "src/app/layout.tsx",
+          "src/app/page.tsx",
+          "src/components/auth/CurrentUserProvider.tsx",
+          "src/components/auth/SignOutButton.tsx",
+          "src/components/homeport/PreferenceRuntimeBridge.tsx",
+          "src/components/landing/HarborLanding.tsx",
+          "src/components/shell/ProductShell.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["PREFERENCES_READY", "PREFERENCES_SAVED", "ANONYMOUS_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Personal Harbor",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-011-account-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
+            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
+          },
+          {
+            "family": "Personal Harbor",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-012-account-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
+            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Visible keyboard activation, truthful account controls and equivalent constrained/reduced-motion navigation preserve the same task.",
+        "fallback": "Optional native context and denied device permissions do not prevent ordinary account preferences, accessible screen controls or safe return.",
+        "navigation": "Personal Harbor opens Preferences; save feedback precedes ordinary Home return and account-menu sign-out; anonymous account access is inspected before closing the menu at the gateway.",
+        "designTarget": "Preserve readable page identity, grouped account controls and ordinary safe return; anonymous navigation must reflect the ended session instead of exposing the old private workspace.",
+        "browserTests": ["tests/e2e/homeport-phase7-owner-correction-round3.spec.ts"],
+        "limitations": [
+          "This declaration proves no native lease cleanup or physical sensor behavior; those remain separately source-qualified.",
+          "Registration is not rendered sign-out, accessibility or owner acceptance."
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to distinct visible section/save feedback on each device and motion mode",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "preferences-confirmation-sign-out-and-gateway",
+            "roles": ["PLAYER"],
+            "outcome": "The Player saves ordinary preferences, ends the account session and sees usable anonymous account access before returning to the product gateway",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Preferences"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Preferences content",
+                "path": "/account/preferences",
+                "text": "Experience preferences",
+                "state": "PREFERENCES_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save preferences"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Preferences saved and applied.",
+                "path": "/account/preferences",
+                "state": "PREFERENCES_SAVED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign out"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Account",
+                "path": "/",
+                "absentRole": {
+                  "role": "button",
+                  "name": "Synthetic Sextant Navigator"
+                }
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Account"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Account navigation",
+                "path": "/",
+                "text": "Create Account",
+                "kind": "outcome",
+                "meaning": "Ordinary sign-out ends the old private account navigation and exposes actual anonymous account entry, rather than only changing a stored role label.",
+                "state": "ANONYMOUS_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "keyboard",
+                "key": "Escape"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Explore Chronicles",
+                "path": "/",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "Account navigation"
+                },
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ],
+        "continuity": {
+          "objective": "Preserve the canonical gateway destination while the account session ends through its real user action; private identity persistence is intentionally not asserted after sign-out.",
+          "checks": [
+            {
+              "id": "canonical-gateway",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ]
+        }
+      },
+      "designState": "REGISTERED_DECLARATION_NOT_CAPTURED_OR_ACCEPTED"
     }
   ],
   "sourceBindings": [
@@ -1051,5 +4093,37 @@
       "commit": "ac536fda03f12decd213aa012c440523492be275",
       "blob": "58f766ef8028b24e0e06a08db032f818705716d1"
     }
-  ]
+  ],
+  "registrationQualification": "DECLARATIONS_ONLY_ZERO_CAPTURED_OR_ACCEPTED",
+  "currentPreparationBase": "6f29b9945a4f41d32edd8d573108368580e60dab",
+  "registrationSummary": {
+    "originalSurfaceObligations": 141,
+    "families": 13,
+    "registeredNewContracts": 2,
+    "registeredNewJourneys": 12,
+    "surfacesWithNewRelevantDeclaration": 22,
+    "remainingUnregisteredBaselineSurfaces": 119,
+    "capturedSurfaces": 0,
+    "acceptedSurfaces": 0
+  },
+  "acceptanceDependencies": {
+    "diagnostics": {
+      "requestMarker": "reach-capture-observability-predecessor-20261012-r1",
+      "ownerThread": "01a12d61-295b-7271-a179-d5b1575f4a69",
+      "approval": "KG_APPROVED_2026_10_12_17_26_UTC",
+      "state": "APPROVED_NOT_PROTECTED_ACCEPTED_NO_PATCH_INSTALLED",
+      "scope": "Observability only; no password/row selector repair",
+      "files": [
+        "scripts/sounding-line/experience-browser.mjs",
+        "tests/sounding-line/experience-browser-fixtures.test.mjs"
+      ]
+    },
+    "crossdeck": {
+      "requestMarker": "crossdeck-observability-accepted-retry-20261012-r1",
+      "ownerThread": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+      "state": "CONDITIONAL_ONE_OWNER_RETRY_REFIT_NOT_ACCEPTED",
+      "cancelledCapture": "38277482404_NO_ARTIFACT",
+      "install": "PROHIBITED_UNTIL_ACTUAL_PROTECTED_ACCEPTANCE"
+    }
+  }
 }

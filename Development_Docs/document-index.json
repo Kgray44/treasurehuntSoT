@@ -1059,6 +1059,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/phase4-password-selector-correction-r1.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/phase4-shared-consumer-design-r1.json",
       "record_type": "engineering-record",
       "status": "current",
