@@ -1,5 +1,5 @@
 // @sounding-line-registration owner=project-crossdeck suite=unit.crossdeck contracts=crossdeck.phase2.continuity
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { CrossdeckHandoff } from "./CrossdeckHandoff";
 import { storageKey } from "@/crossdeck/client";
@@ -30,6 +30,8 @@ vi.mock("@/crossdeck/transport", () => ({
 }));
 beforeEach(() => {
   vi.clearAllMocks();
+  mocks.next = null;
+  mocks.failed = null;
   sessionStorage.setItem(storageKey("voyage"), "surface");
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ surfaces: [] }))));
 });
@@ -123,4 +125,125 @@ it("clears offers during a failed refresh and restores an unchanged authoritativ
   expect(screen.getByRole("status")).toHaveTextContent("Connection restored");
   cleanup();
   expect(mocks.unsubscribe).toHaveBeenCalledOnce();
+});
+
+it("starts the canonical transport when contextual pairing registers this mounted screen", async () => {
+  sessionStorage.removeItem(storageKey("voyage"));
+  render(<CrossdeckHandoff voyageId="voyage" csrfToken="csrf" object={null} context={{}} resume={vi.fn()} />);
+  expect(mocks.next).toBeNull();
+  await act(async () => {
+    sessionStorage.setItem(storageKey("voyage"), "surface");
+    window.dispatchEvent(new Event("crossdeck-surface-changed"));
+  });
+  expect(mocks.next).toBeTypeOf("function");
+});
+
+it("does not acknowledge until the version-bound receiver presentation and rendered frame settle", async () => {
+  let presented!: () => void;
+  const resume = vi.fn(
+    () =>
+      new Promise<void>((resolve) => {
+        presented = resolve;
+      }),
+  );
+  const object = { family: "NOTE" as const, objectId: "note", version: "published" };
+  const snapshot: SyncSnapshot = {
+    revision: 5,
+    nextSequence: 2,
+    surfaceId: "surface",
+    voyageId: "voyage",
+    observedAt: new Date().toISOString(),
+    focus: {},
+    presentations: [
+      {
+        object,
+        title: "Released letter",
+        visibility: "PRIVATE",
+        custody: "other",
+        focus: "surface",
+        context: { blockId: "note" },
+        views: { other: "MOVE_CUSTODY", surface: "SEND_VIEW" },
+        revision: 5,
+      },
+    ],
+    handoffs: [
+      {
+        id: "accepted",
+        sourceId: "other",
+        targetId: "surface",
+        object,
+        context: { blockId: "note" },
+        mode: "SEND_VIEW",
+        title: "Released letter",
+        visibility: "PRIVATE",
+        state: "COMMITTED",
+        requestedAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 120000).toISOString(),
+      },
+    ],
+  };
+  mocks.send.mockResolvedValue({
+    ...snapshot,
+    revision: 6,
+    handoffs: [{ ...snapshot.handoffs[0], state: "ACKNOWLEDGED" }],
+  });
+  render(<CrossdeckHandoff voyageId="voyage" csrfToken="csrf" object={null} context={{}} resume={resume} />);
+  await act(async () => mocks.next!(snapshot));
+  expect(resume).toHaveBeenCalledWith(object, { blockId: "note" }, { mode: "SEND_VIEW", readOnly: true });
+  expect(mocks.send).not.toHaveBeenCalled();
+  await act(async () => presented());
+  await waitFor(() => expect(mocks.send).toHaveBeenCalledOnce());
+  expect(mocks.send.mock.calls[0][0].payload).toEqual({ action: "acknowledge", handoffId: "accepted" });
+});
+
+it("keeps an explicit Journal purpose when an older artifact view remains recoverable", async () => {
+  const resume = vi.fn();
+  const object = { family: "ARTIFACT" as const, objectId: "compass", version: "published" };
+  const snapshot: SyncSnapshot = {
+    revision: 5,
+    nextSequence: 2,
+    surfaceId: "surface",
+    voyageId: "voyage",
+    observedAt: new Date().toISOString(),
+    focus: {},
+    presentations: [
+      {
+        object,
+        title: "Compass",
+        visibility: "PRIVATE",
+        custody: "other",
+        focus: "surface",
+        context: {},
+        views: { other: "MOVE_CUSTODY", surface: "SEND_VIEW" },
+        revision: 5,
+      },
+    ],
+    handoffs: [],
+  };
+  const view = render(
+    <CrossdeckHandoff
+      voyageId="voyage"
+      csrfToken="csrf"
+      object={null}
+      context={{}}
+      followingFamily="NOTE"
+      resume={resume}
+    />,
+  );
+  await act(async () => mocks.next!(snapshot));
+  expect(resume).not.toHaveBeenCalled();
+  expect(screen.getByText("Compass · Read-only companion view")).toBeInTheDocument();
+  view.rerender(
+    <CrossdeckHandoff
+      voyageId="voyage"
+      csrfToken="csrf"
+      object={null}
+      context={{}}
+      followingFamily="ARTIFACT"
+      resume={resume}
+    />,
+  );
+  await act(async () => mocks.next!({ ...snapshot, revision: 6 }));
+  await waitFor(() => expect(resume).toHaveBeenCalledWith(object, {}, { mode: "SEND_VIEW", readOnly: true }));
+  expect(mocks.send).not.toHaveBeenCalled();
 });

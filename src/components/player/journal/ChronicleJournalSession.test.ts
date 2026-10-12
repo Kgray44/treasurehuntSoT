@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 
 import type { JournalPhaseOutcome } from "@/animation/core/animation-types";
 import type { JournalOpeningPhase } from "@/animation/journal/opening-machine";
 import { syntheticBinding, syntheticSpatialMoment } from "@/parallax/fixtures";
+import type { CrossdeckConnection } from "@/components/crossdeck/useCrossdeckSession";
 import {
   journalOpeningAllowsPersistence,
   runJournalOpeningPhases,
@@ -28,6 +29,20 @@ vi.mock("next/link", async () => {
   return {
     default: ({ href, children }: { href: string; children: React.ReactNode }) =>
       React.createElement("a", { href }, children),
+  };
+});
+
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
+
+vi.mock("@/components/crossdeck/CrossdeckCompanion", async () => {
+  const React = await import("react");
+  return {
+    CrossdeckCompanion: ({ state }: { state: { session: { id: string; currentSequence: number } } }) =>
+      React.createElement(
+        "main",
+        { "data-testid": "companion-controller" },
+        `${state.session.id}:${state.session.currentSequence}`,
+      ),
   };
 });
 
@@ -403,6 +418,50 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     ControlledEventSource.reset();
   });
 
+  it("shares the companion live controller without book readiness or primary reading-state requests", async () => {
+    let sequence = 1;
+    const fetchMock = vi.fn<(input: RequestInfo | URL) => Promise<Response>>(() =>
+      Promise.resolve(
+        jsonResponse({
+          ...sessionState("companion"),
+          session: { ...sessionState("companion").session, currentSequence: sequence },
+        }),
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const companion = { voyage: "companion", here: { surfaceId: "phone", role: "JOURNAL" } } as CrossdeckConnection;
+    const view = render(
+      createElement(ChronicleJournalSession, { sessionId: "companion", identitySession: true, companion }),
+    );
+    await act(flushMicrotasks);
+    expect(screen.getByTestId("companion-controller")).toHaveTextContent("companion:1");
+    expect(screen.queryByTestId("physical-journal-book")).toBeNull();
+    expect(pageFlipTestDouble.readiness).not.toHaveBeenCalled();
+    expect(openingTestDouble.waitForPhase).not.toHaveBeenCalled();
+    expect(ControlledEventSource.activeStreams).toBe(1);
+
+    sequence = 2;
+    await act(async () => {
+      ControlledEventSource.instances.at(-1)!.dispatchEvent(
+        new MessageEvent("progression", {
+          data: JSON.stringify({ id: "next", eventType: "BLOCK_RELEASED", sequence: 2 }),
+        }),
+      );
+      await flushMicrotasks();
+    });
+    expect(screen.getByTestId("companion-controller")).toHaveTextContent("companion:2");
+    expect(fetchMock.mock.calls.some(([input]) => String(input).includes("/journal-state"))).toBe(false);
+    expect(localStorage.getItem("chronicle-journal:companion")).toBeNull();
+
+    await act(async () => {
+      ControlledEventSource.instances.at(-1)!.dispatchEvent(new Event("access-revoked"));
+    });
+    expect(screen.queryByTestId("companion-controller")).toBeNull();
+    expect(screen.getByText("Voyage access ended")).toBeVisible();
+    expect(ControlledEventSource.activeStreams).toBe(0);
+    view.unmount();
+  });
+
   it("opens the released Chronicle Lens from a live control outside imperative book pages", async () => {
     const moment = syntheticSpatialMoment();
     const block = {
@@ -635,7 +694,11 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     const view = render(createElement(ChronicleJournalSession, { sessionId: "fulfilled" }));
     await act(flushMicrotasks);
     // The opening dialog makes the Journal tools inert until opened; the scoped entry is still prepared.
-    expect(view.container.querySelector('a[href="/account/devices?voyage=fulfilled"]')).toHaveTextContent("Devices");
+    expect(
+      Array.from(view.container.querySelectorAll("button")).find((button) =>
+        button.textContent?.includes("Connect another device"),
+      ),
+    ).toBeDefined();
     expect(fulfilledSignal?.aborted).toBe(false);
     expect(ControlledEventSource.activeStreams).toBe(1);
     const journalIntervals = setIntervalSpy.mock.results

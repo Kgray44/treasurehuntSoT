@@ -8,6 +8,14 @@ last_reviewed: 2026-10-11
 
 # Current status
 
+The [Crossdeck spatial experience refit](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_20261011.md)
+is a local candidate for contextual Chronicle connection and canonical Lens,
+Chart, Journal and artifact companion views. Existing Crossdeck domain and
+One Voyage authority are preserved. Final capture, independent rendered review,
+protected qualification and integration remain pending; the protected helper
+must first support isolated authenticated fixture setup. Owner acceptance is
+`NOT_CLAIMED`.
+
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. Owner visual review and full live-corpus/physical quality remain separate gates; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
 Parallax Phase 3 is software-qualified on protected main through PR #711 at `0327eeb7`. The [implementation record](../../../Projects/Project_Parallax/Phase_3_Implementation.md) binds all nine ordinary Sounding Line obligations, 1,739 tests, four product browser journeys, 79 landed smoke tests and 26 fresh landed D0 scenarios. Both workstation visual decisions are satisfied; [final refinement approval](../../../Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) binds `592217e3` on 2026-10-11. Physical AR accuracy, actual field reliability and cross-device physical alignment are not established.

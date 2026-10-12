@@ -1,6 +1,5 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createCrossdeckId, storageKey } from "@/crossdeck/client";
 import { createHttpSyncTransport, type SurfaceSyncTransport, SyncTransportError } from "@/crossdeck/transport";
 import {
@@ -16,6 +15,7 @@ import {
 import type { SurfaceDto } from "@/crossdeck/service";
 import { useCrossdeckContinuity } from "./CrossdeckContinuity";
 import styles from "./CrossdeckDevices.module.css";
+import { roleNames } from "@/crossdeck/experiences";
 
 const modeNames: Record<TransferMode, string> = {
   MOVE_FOCUS: "Continue there",
@@ -31,16 +31,34 @@ type HandoffProps = {
   object: ObjectRef | null;
   context: Continuity;
   captureContext?: () => Continuity;
-  resume: (object: ObjectRef, context: Continuity) => void | Promise<void>;
+  /** A companion purpose follows only its own background views; accepted arrivals still open explicitly. */
+  followingFamily?: ObjectRef["family"] | null;
+  resume: (
+    object: ObjectRef,
+    context: Continuity,
+    policy?: { mode: TransferMode; readOnly: boolean },
+  ) => void | Promise<void>;
 };
 export function CrossdeckHandoff(props: HandoffProps) {
   return <CrossdeckHandoffSession key={`${props.voyageId}:${props.csrfToken}`} {...props} />;
 }
-function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, captureContext, resume }: HandoffProps) {
+function CrossdeckHandoffSession({
+  voyageId,
+  csrfToken,
+  object,
+  context,
+  captureContext,
+  followingFamily,
+  resume,
+}: HandoffProps) {
   const [snapshot, setSnapshot] = useState<SyncSnapshot | null>(null);
   const [surfaces, setSurfaces] = useState<SurfaceDto[]>([]);
   const [target, setTarget] = useState("");
-  const [mode, setMode] = useState<TransferMode>("MOVE_FOCUS");
+  const [mode, setMode] = useState<TransferMode>("OPEN_COMPANION");
+  const [ownId, setOwnId] = useState<string | null>(null);
+  const picker = useRef<HTMLDialogElement>(null);
+  const pickerTitle = useId();
+  const sendTrigger = useRef<HTMLButtonElement>(null);
   const [confirmation, setConfirmation] = useState("");
   const [message, setMessage] = useState("");
   const [online, setOnline] = useState(false);
@@ -55,12 +73,22 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
   const lastApplied = useRef(new Map<string, number>());
   const bridge = useCrossdeckContinuity();
   const resumeRef = useRef(resume);
+  const followingFamilyRef = useRef(followingFamily);
   const synchronize = useRef<() => void>(() => {});
   useEffect(() => {
     resumeRef.current = resume;
   }, [resume]);
   useEffect(() => {
-    const id = sessionStorage.getItem(storageKey(voyageId));
+    followingFamilyRef.current = followingFamily;
+  }, [followingFamily]);
+  useEffect(() => {
+    const changed = () => setOwnId(sessionStorage.getItem(storageKey(voyageId)));
+    changed();
+    window.addEventListener("crossdeck-surface-changed", changed);
+    return () => window.removeEventListener("crossdeck-surface-changed", changed);
+  }, [voyageId]);
+  useEffect(() => {
+    const id = ownId;
     if (!id) return;
     const sync = createHttpSyncTransport(voyageId, id, csrfToken);
     transport.current = sync;
@@ -90,7 +118,7 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
         setOnline(false);
         setMessage(
           error instanceof SyncTransportError && [401, 403].includes(error.status)
-            ? "Device access ended. Reconnect from Devices."
+            ? "This device’s access ended. Connect it again to continue."
             : "Connection interrupted. Your item stays recoverable. Reconnect to check its receipt.",
         );
         // Clear private presentation and offers on every failed authority/network refresh.
@@ -135,14 +163,20 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
       applied.clear();
       versions.clear();
     };
-  }, [voyageId, csrfToken]);
+  }, [voyageId, csrfToken, ownId]);
 
   const command = useCallback(
     async (payload: SyncCommand["payload"], retry = false) => {
       if (lock.current || !transport.current || !current.current) return;
       lock.current = true;
       setBusy(true);
-      setMessage("Passing it over...");
+      setMessage(
+        payload.action === "send"
+          ? "Preparing the view for your other screen…"
+          : payload.action === "accept"
+            ? "Opening your view…"
+            : "Updating your connected screens…",
+      );
       const input =
         retry && pending.current
           ? pending.current
@@ -169,9 +203,7 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
         setSnapshot(next);
         setOnline(true);
         setMessage(
-          payload.action === "send"
-            ? "View requested. Its current transfer status appears above."
-            : "Your devices are up to date.",
+          payload.action === "send" ? "Ready to receive on your other screen." : "Your devices are up to date.",
         );
         return next;
       } catch (error) {
@@ -195,8 +227,8 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
   useEffect(() => {
     if (!snapshot || !online || busy) return;
     let cancelled = false;
-    const open = async (object: ObjectRef, context: Continuity) => {
-      await resumeRef.current(object, context);
+    const open = async (object: ObjectRef, context: Continuity, mode: TransferMode, readOnly: boolean) => {
+      await resumeRef.current(object, context, { mode, readOnly });
       if (object.family === "MAP" && bridge) {
         const started = Date.now();
         while (!bridge.current && !cancelled && Date.now() - started < 8000)
@@ -211,7 +243,8 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
         if (h.targetId !== snapshot.surfaceId || h.state !== "COMMITTED" || resumed.current.has(h.id)) continue;
         resumed.current.add(h.id);
         try {
-          await open(h.object, h.context);
+          const committed = snapshot.presentations.find((p) => objectKey(p.object) === objectKey(h.object));
+          await open(h.object, h.context, h.mode, committed?.custody !== snapshot.surfaceId);
           if (cancelled) {
             resumed.current.delete(h.id);
             return;
@@ -229,10 +262,11 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
       }
       for (const p of snapshot.presentations) {
         if (cancelled) return;
+        if (followingFamilyRef.current !== undefined && followingFamilyRef.current !== p.object.family) continue;
         const previous = lastApplied.current.get(objectKey(p.object));
         if ((p.custody === snapshot.surfaceId && previous !== undefined) || previous === p.revision) continue;
         try {
-          await open(p.object, p.context);
+          await open(p.object, p.context, p.views[snapshot.surfaceId] ?? "SEND_VIEW", p.custody !== snapshot.surfaceId);
           if (!cancelled) lastApplied.current.set(objectKey(p.object), p.revision);
         } catch {
           setMessage("This view could not open. Refresh the Voyage to recover it.");
@@ -247,7 +281,10 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
 
   const destinations = surfaces.filter((s) => s.surfaceId !== snapshot?.surfaceId && s.presence === "ACTIVE");
   const preferred = object ? snapshot?.focus[object.family] : undefined;
-  const selectedTarget = target || (destinations.some((s) => s.surfaceId === preferred) ? preferred : "") || "";
+  const selectedTarget =
+    (destinations.some((s) => s.surfaceId === target) ? target : "") ||
+    (destinations.some((s) => s.surfaceId === preferred) ? preferred : "") ||
+    (destinations.length === 1 ? destinations[0].surfaceId : "");
   const confirmationKey = object ? `${objectKey(object)}:${object.version}:${selectedTarget}` : "";
   const confirmed = Boolean(confirmationKey && confirmation === confirmationKey);
   const presentation = object && snapshot?.presentations.find((p) => objectKey(p.object) === objectKey(object));
@@ -259,7 +296,9 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
     ...(object?.family === "MAP" ? (bridge?.current?.capture() ?? {}) : {}),
   });
   const send = () => {
-    if (object && selectedTarget)
+    if (object && selectedTarget) {
+      picker.current?.close();
+      sendTrigger.current?.focus();
       void command({
         action: "send",
         targetId: selectedTarget,
@@ -268,6 +307,7 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
         mode,
         privateConfirmed: confirmed,
       });
+    }
   };
   const syncView = (p: Presentation) =>
     void command({ action: "update", object: p.object, context: captured(), expectedRevision: p.revision });
@@ -305,158 +345,222 @@ function CrossdeckHandoffSession({ voyageId, csrfToken, object, context, capture
   }, [bridge]);
   return (
     <section className={styles.handoff} aria-label="Send to your devices">
-      <details>
-        <summary>Send to...</summary>
-        {!snapshot && (
-          <p>
-            <Link href={`/account/devices?voyage=${encodeURIComponent(voyageId)}`}>Connect this device</Link> to send
-            and receive your Voyage views.
-          </p>
-        )}
-        {object && snapshot && (
+      <button
+        ref={sendTrigger}
+        className={styles.sendTrigger}
+        type="button"
+        onClick={() => picker.current?.showModal()}
+      >
+        {destinations.length === 1 ? `Send to ${destinations[0].label}` : "Send to another screen"}
+      </button>
+      <dialog
+        ref={picker}
+        className={styles.sendDialog}
+        aria-labelledby={pickerTitle}
+        onCancel={() => sendTrigger.current?.focus()}
+      >
+        <div className={styles.dialogHeading}>
+          <div>
+            <p className={styles.eyebrow}>Continue together</p>
+            <h2 id={pickerTitle}>Send this view</h2>
+          </div>
+          <button
+            className={styles.close}
+            type="button"
+            aria-label="Close send options"
+            onClick={() => {
+              picker.current?.close();
+              sendTrigger.current?.focus();
+            }}
+          >
+            ×
+          </button>
+        </div>
+        {!snapshot ? (
+          <p>Connect this screen using “Connect another device” in your Chronicle to send and receive views.</p>
+        ) : !object ? (
+          <p>Open a Chart, released Journal passage, note or artifact to send it.</p>
+        ) : (
           <>
-            <label>
-              Destination
-              <select
-                aria-label="Send destination"
-                value={selectedTarget}
-                onChange={(e) => setTarget(e.target.value)}
-                disabled={busy || !online}
-              >
-                <option value="">Choose your other device</option>
-                {destinations.map((s) => (
-                  <option key={s.surfaceId} value={s.surfaceId}>
-                    {s.label}
-                    {s.role === "SHARED_CREW_DISPLAY" ? " (crew display)" : ""}
-                  </option>
+            <p>Choose where to open it. Your current place stays here.</p>
+            {destinations.length === 0 ? (
+              <p>No other screen is available. Reopen your companion to reconnect.</p>
+            ) : (
+              <fieldset className={styles.destinations}>
+                <legend>Your connected screens</legend>
+                {destinations.map((surface) => (
+                  <label
+                    key={surface.surfaceId}
+                    className={selectedTarget === surface.surfaceId ? styles.selectedDevice : styles.destination}
+                  >
+                    <input
+                      type="radio"
+                      name="sendDestination"
+                      value={surface.surfaceId}
+                      checked={selectedTarget === surface.surfaceId}
+                      onChange={() => setTarget(surface.surfaceId)}
+                      disabled={busy || !online}
+                    />
+                    <span>
+                      <strong>{surface.label}</strong>
+                      <small>{roleNames[surface.role as keyof typeof roleNames]}</small>
+                    </span>
+                  </label>
                 ))}
-              </select>
-            </label>
-            <label>
-              How to open
-              <select
-                aria-label="Transfer mode"
-                value={mode}
-                onChange={(e) => setMode(e.target.value as TransferMode)}
-                disabled={busy}
-              >
-                {modes.map((m) => (
-                  <option key={m} value={m}>
-                    {modeNames[m]}
-                  </option>
-                ))}
-              </select>
-            </label>
+              </fieldset>
+            )}
             {object.family === "NOTE" && (
-              <label>
+              <label className={styles.privateConfirmation}>
                 <input
                   type="checkbox"
                   checked={confirmed}
-                  onChange={(e) => setConfirmation(e.target.checked ? confirmationKey : "")}
-                />{" "}
+                  onChange={(event) => setConfirmation(event.target.checked ? confirmationKey : "")}
+                />
                 Send this private note to my selected device
               </label>
             )}
+            <details className={styles.advanced}>
+              <summary>More ways to open</summary>
+              <label>
+                How this screen participates
+                <select
+                  aria-label="Transfer mode"
+                  value={mode}
+                  onChange={(event) => setMode(event.target.value as TransferMode)}
+                  disabled={busy}
+                >
+                  {modes.map((value) => (
+                    <option key={value} value={value}>
+                      {modeNames[value]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <p className={styles.muted}>
+                {mode === "MOVE_CUSTODY"
+                  ? "Your other screen controls this view. You can recover it here."
+                  : mode === "MIRROR"
+                    ? "Follow the controlling screen’s view as it changes."
+                    : mode === "SEND_VIEW"
+                      ? "Share a read-only view of this moment."
+                      : mode === "PIN_TO_SURFACE"
+                        ? "Keep this moment on your selected screen."
+                        : "Open alongside your Chronicle without moving its story."}
+              </p>
+              {presentation && presentation.custody === snapshot.surfaceId && (
+                <button type="button" disabled={busy || !online} onClick={() => syncView(presentation)}>
+                  Update companion views
+                </button>
+              )}
+              <button
+                type="button"
+                disabled={busy || !online || !selectedTarget}
+                onClick={() => void command({ action: "focus", family: object.family, targetId: selectedTarget })}
+              >
+                Use this screen next time
+              </button>
+            </details>
             <button
+              className={styles.primary}
               type="button"
               disabled={busy || !online || !selectedTarget || (object.family === "NOTE" && !confirmed)}
               onClick={send}
             >
               Send view
             </button>
-            {presentation && presentation.custody === snapshot.surfaceId && (
-              <button type="button" disabled={busy || !online} onClick={() => syncView(presentation)}>
-                Update companion views
-              </button>
-            )}
-            <button
-              type="button"
-              disabled={busy || !online || !selectedTarget}
-              onClick={() => void command({ action: "focus", family: object.family, targetId: selectedTarget })}
-            >
-              Prefer this device for {object.family.toLowerCase()} views
-            </button>
           </>
         )}
-        {outgoing.slice(-3).map((h) => (
-          <p key={h.id}>
-            {h.state === "ACKNOWLEDGED"
-              ? `${h.title} is open on your other device.`
-              : h.state === "COMMITTED"
-                ? `${h.title} arrived. Waiting for that device to open it.`
-                : h.state === "OFFERED"
-                  ? `${h.title} is ready to receive. It stays here until opened there.`
-                  : "That transfer ended. The item stayed recoverable."}
-            {h.state === "OFFERED" && (
-              <button
-                type="button"
-                disabled={busy || !online}
-                onClick={() => void command({ action: "cancel", handoffId: h.id })}
-              >
-                Cancel send
-              </button>
-            )}
-            {["COMMITTED", "ACKNOWLEDGED"].includes(h.state) &&
-              !snapshot?.presentations.some((p) => objectKey(p.object) === objectKey(h.object)) && (
-                <button
-                  type="button"
-                  disabled={busy || !online}
-                  onClick={() => void command({ action: "recover", object: h.object })}
-                >
-                  Recover {h.title} here
-                </button>
-              )}
-          </p>
-        ))}
-        {snapshot?.presentations.map((p) => (
-          <div key={objectKey(p.object)}>
-            <p>
-              {p.title} — {p.custody === snapshot.surfaceId ? "Controlled here" : "Read-only companion view"}
-            </p>
-            {p.custody !== snapshot.surfaceId && (
-              <button
-                type="button"
-                disabled={busy || !online}
-                onClick={() => void command({ action: "recover", object: p.object })}
-              >
-                Recover view here
-              </button>
-            )}
-            <button
-              type="button"
-              disabled={busy || !online}
-              onClick={() => void command({ action: "close", object: p.object })}
-            >
-              Close companion view
-            </button>
+      </dialog>
+      {incoming.map((handoff) => (
+        <div className={styles.arrival} key={handoff.id}>
+          <div>
+            <small>From your other screen</small>
+            <p>{handoff.title} is ready to open.</p>
           </div>
-        ))}
-      </details>
-      {incoming.map((h) => (
-        <div key={h.id}>
-          <p>{h.title} is ready from your other device.</p>
           <button
             type="button"
             disabled={busy || !online}
-            onClick={() => void command({ action: "accept", handoffId: h.id })}
+            onClick={() => void command({ action: "accept", handoffId: handoff.id })}
           >
-            Receive {h.title}
+            Receive {handoff.title}
           </button>
           <button
             type="button"
             disabled={busy || !online}
-            onClick={() => void command({ action: "cancel", handoffId: h.id })}
+            onClick={() => void command({ action: "cancel", handoffId: handoff.id })}
           >
             Decline
           </button>
         </div>
       ))}
+      {outgoing.slice(-1).map((handoff) => (
+        <div className={styles.receipt} key={handoff.id}>
+          <p>
+            {handoff.state === "ACKNOWLEDGED"
+              ? `${handoff.title} is open on your other device.`
+              : handoff.state === "COMMITTED"
+                ? `${handoff.title} arrived. Waiting for that device to open it.`
+                : handoff.state === "OFFERED"
+                  ? `${handoff.title} is ready to receive. It stays here until opened there.`
+                  : handoff.state === "EXPIRED"
+                    ? "The invitation expired. Your view remains recoverable."
+                    : "That transfer ended. Your view remains recoverable."}
+          </p>
+          {handoff.state === "OFFERED" && (
+            <button
+              type="button"
+              disabled={busy || !online}
+              onClick={() => void command({ action: "cancel", handoffId: handoff.id })}
+            >
+              Cancel send
+            </button>
+          )}
+          {["COMMITTED", "ACKNOWLEDGED"].includes(handoff.state) &&
+            !snapshot?.presentations.some((p) => objectKey(p.object) === objectKey(handoff.object)) && (
+              <button
+                type="button"
+                disabled={busy || !online}
+                onClick={() => void command({ action: "recover", object: handoff.object })}
+              >
+                Recover {handoff.title} here
+              </button>
+            )}
+        </div>
+      ))}
+      {snapshot?.presentations.length ? (
+        <details className={styles.viewOptions}>
+          <summary>Connected view options</summary>
+          {snapshot.presentations.map((p) => (
+            <div key={objectKey(p.object)}>
+              <p>
+                {p.title} · {p.custody === snapshot.surfaceId ? "Controlled here" : "Read-only companion view"}
+              </p>
+              {p.custody !== snapshot.surfaceId && (
+                <button
+                  type="button"
+                  disabled={busy || !online}
+                  onClick={() => void command({ action: "recover", object: p.object })}
+                >
+                  Recover view here
+                </button>
+              )}
+              <button
+                type="button"
+                disabled={busy || !online}
+                onClick={() => void command({ action: "close", object: p.object })}
+              >
+                Close companion view
+              </button>
+            </div>
+          ))}
+        </details>
+      ) : null}
       {retryPayload && !busy && (
         <button type="button" disabled={!online} onClick={() => void command(retryPayload, true)}>
           Check and retry transfer
         </button>
       )}
-      <p role="status" aria-live="polite">
+      <p className={styles.status} role="status" aria-live="polite">
         {message}
       </p>
     </section>

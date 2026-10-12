@@ -18,6 +18,14 @@ last_reviewed: 2026-10-11
 
 ### Corrected
 
+- The Crossdeck refit candidate moves ordinary phone connection into the active
+  Chronicle and gives authorized companions canonical Lens, Chart, Journal and
+  released-artifact views with contextual purpose changes and a direct return.
+  Account security remains in Personal Harbor; transfer acknowledgement and
+  One Voyage progression retain their existing authority. The
+  [refit record](Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_20261011.md)
+  records pending rendered/protected qualification and separate owner acceptance.
+
 - Corrected phone sign-in on the task-owned Spatial Chronicle HTTP preview. Only verified synthetic navigator sessions receive the local preview cookie policy; ordinary production sessions remain HTTPS-only. Pilot browser qualification now exercises the real sign-in form on both surfaces.
 - Manual device pairing, handoff, Journal progression, chart confirmation and Guided Lens interaction generate cryptographic identifiers on local HTTP when the secure-context UUID convenience API is unavailable. Missing cryptographic randomness still fails closed.
 - Parallax Phase 3 adds semantic multi-object staging, scoped durable logical placement, remote recipes, optional consented metadata calibration, bounded discovery recovery and a refined 3D workstation with four layouts and adaptive docks. Canonical drafts, Undo/Redo, Drydock, immutable spatial versions and Chronicle publication remain authoritative. Protected PR #711 integrated at `0327eeb7` after ordinary Sounding Line; clean landed smoke passed. The [implementation record](Development_Docs/Projects/Project_Parallax/Phase_3_Implementation.md) preserves exact executable/browser proof and physical limits; final workstation visual approval binds `592217e3` on 2026-10-11.

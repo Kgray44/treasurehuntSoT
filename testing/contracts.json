@@ -35,6 +35,174 @@
           }
         ],
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      },
+      "experience": {
+        "persona": "An authorized Player receiving a Creator-published spatial clue in a persisted private Voyage",
+        "integrationOwner": "Parallax published-clue delivery with Crossdeck continuity",
+        "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
+        "sourcePaths": [
+          "src/components/player/parallax",
+          "src/components/player/journal",
+          "src/app/player/playthroughs/[playthroughId]/journal",
+          "src/app/play/[taleSlug]/session/[sessionId]",
+          "src/app/player/offline-landfall"
+        ],
+        "projectionPaths": [
+          "src/app/api/crossdeck",
+          "src/app/api/play/sessions",
+          "src/app/api/player/playthroughs",
+          "src/app/api/player/sessions"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "continuity": {
+          "objective": "Keep the same authorized Voyage and immutable edition through connection, purpose changes and return without inventing progression authority.",
+          "checks": [
+            {
+              "id": "same-voyage",
+              "role": "main",
+              "name": "",
+              "attribute": "data-experience-voyage"
+            },
+            {
+              "id": "same-edition",
+              "role": "main",
+              "name": "",
+              "attribute": "data-experience-version"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        },
+        "limitations": [
+          "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture begins with an authorized fixture surface.",
+          "The isolated fixture adapter must exist in the protected experience helper before protected capture/replay can qualify these contracts.",
+          "This focused consumer contract delivers an already published synthetic Creator-authored clue. Creator Studio authoring and publication retain their existing qualification scope; no new authoring or native camera acceptance is claimed."
+        ],
+        "objective": "Read and inspect the actual published spatial clue while keeping the same Voyage",
+        "visibleOutcome": "A released Creator-authored spatial moment opens its canonical Guided Lens, meaningful inspection and a direct return to the same published Voyage",
+        "entryPoint": "/player/playthroughs/{voyageId}/journal",
+        "states": ["JOURNAL_READY", "LENS_READY", "INSPECTED", "RETURNED"],
+        "navigation": "Open the active Journal, open its released Chronicle Lens, inspect the actual clue, then close Lens and return to the same Journal.",
+        "designTarget": "Preserve the published clue and readable Guided hierarchy, with truthful camera availability, keyboard inspection and an immediate contextual close/return.",
+        "roleSetup": {
+          "PLAYER": {
+            "isolatedFixture": {
+              "id": "crossdeck-refit",
+              "surface": "PRIMARY"
+            },
+            "witness": {
+              "role": "dialog",
+              "name": "Open the voyage journal",
+              "text": "Open the journal"
+            }
+          }
+        },
+        "journeys": [
+          {
+            "id": "published-clue-inspect-return",
+            "roles": ["PLAYER"],
+            "outcome": "The published spatial attachment reaches canonical Guided Lens, offers actual Inspect interaction and returns to the same authorized edition",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Synthetic Crossdeck refit Voyage",
+                "path": "/player/playthroughs/{voyageId}/journal",
+                "state": "JOURNAL_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "text": "The next bearing is written in the stars. Look for the northern light.",
+                "path": "/player/playthroughs/{voyageId}/journal",
+                "meaning": "The canonical published spatial attachment presents its actual released clue without substituting a role label or service result.",
+                "state": "LENS_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "text": "Guided View"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "article",
+                "name": "A parchment note bearing the Captain’s next clue.",
+                "text": "You are inspecting The Captain’s note.",
+                "path": "/player/playthroughs/{voyageId}/journal",
+                "meaning": "Inspection changes the visible canonical entity state and records a meaningful Lens interaction independently from Voyage progression.",
+                "state": "INSPECTED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "path": "/player/playthroughs/{voyageId}/journal",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "A message between worlds"
+                },
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -3144,6 +3312,162 @@
       }
     },
     {
+      "id": "homeport.shell.crossdeck-companion",
+      "name": "Homeport immersive companion contextual exit and same-Voyage re-entry",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "project-crossdeck", "one-voyage"],
+      "critical": true,
+      "experience": {
+        "persona": "An authorized Player leaving a companion purpose and returning to the same active Voyage",
+        "integrationOwner": "Homeport immersive companion shell with Crossdeck continuity",
+        "systems": ["project-homeport", "project-crossdeck", "one-voyage"],
+        "sourcePaths": [
+          "src/navigation",
+          "src/components/shell",
+          "src/app/layout.tsx",
+          "src/app/devices/companion",
+          "src/app/devices/display"
+        ],
+        "projectionPaths": ["src/app/api/auth/context", "src/app/api/player/library", "src/app/api/play/sessions"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+        "browserTests": [
+          "tests/e2e/homeport-phase2.spec.ts",
+          "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "tests/e2e/crossdeck-refit-recovery.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "continuity": {
+          "objective": "Keep the same canonical signed-in person through immersive companion, ordinary library and the same-Voyage Journal return.",
+          "checks": [
+            {
+              "id": "same-authorized-person",
+              "role": "button",
+              "name": "Crossdeck synthetic navigator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        },
+        "limitations": [
+          "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture begins with an authorized fixture surface.",
+          "The isolated fixture adapter must exist in the protected experience helper before protected capture/replay can qualify these contracts.",
+          "The existing canonical profile control supplies a rendered person witness; authenticated API/session checks bind it to the actual synthetic account. The final exact Voyage path proves contextual re-entry. Ordinary anonymous account-recovery obligations remain unchanged in their existing contract."
+        ],
+        "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
+        "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
+        "entryPoint": "/devices/companion?voyage={voyageId}",
+        "states": ["COMPANION_READY", "LIBRARY_READY", "RETURNED"],
+        "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure and Open the journal restore the same current Voyage.",
+        "designTarget": "Keep the companion immersive, preserve compact account/context controls, and make the safe library exit and re-entry readable on desktop and phone.",
+        "roleSetup": {
+          "PLAYER": {
+            "isolatedFixture": {
+              "id": "crossdeck-refit",
+              "surface": "COMPANION"
+            },
+            "witness": {
+              "role": "main",
+              "name": "",
+              "text": "Synthetic Crossdeck refit Voyage"
+            }
+          }
+        },
+        "journeys": [
+          {
+            "id": "companion-context-exit-return",
+            "roles": ["PLAYER"],
+            "outcome": "An authorized Player exits immersive companion presentation through visible Homeport context controls, finds the current adventure and returns to the same Voyage",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Journal companion",
+                "text": "The harbour falls quiet behind you.",
+                "state": "COMPANION_READY"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Contextual navigation",
+                "text": "Exit to My Voyages",
+                "absentRole": {
+                  "role": "navigation",
+                  "name": "Global navigation"
+                }
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Exit to My Voyages"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "text": "Synthetic Crossdeck refit Voyage",
+                "path": "/player/library",
+                "meaning": "The companion context exit opens the authorized Chronicle Library with the same current adventure, rather than leaving a trapped or generic account task.",
+                "state": "LIBRARY_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "My Chronicle Library"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Adventure"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "path": "/player/playthroughs/{voyageId}/journal",
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "homeport.transition.interruption",
       "name": "Project Homeport Interrupted Navigation Final Route",
       "authority": "project-homeport",
@@ -3541,6 +3865,155 @@
       "authority": "project-crossdeck",
       "owners": ["project-crossdeck", "wayfarer", "player-journal"],
       "critical": true,
+      "experience": {
+        "persona": "An authorized Player continuing a persisted private synthetic Voyage across personal screens",
+        "integrationOwner": "Crossdeck experience refit integration",
+        "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
+        "sourcePaths": [
+          "src/crossdeck",
+          "src/components/crossdeck",
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/app/devices",
+          "src/app/account/devices",
+          "src/components/player/journal",
+          "src/app/player/playthroughs/[playthroughId]/journal",
+          "src/app/play/[taleSlug]/session/[sessionId]",
+          "src/app/player/offline-landfall"
+        ],
+        "projectionPaths": [
+          "src/app/api/crossdeck",
+          "src/app/api/play/sessions",
+          "src/app/api/player/playthroughs",
+          "src/app/api/player/sessions"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "continuity": {
+          "objective": "Keep the same authorized Voyage and immutable edition through connection, purpose changes and return without inventing progression authority.",
+          "checks": [
+            {
+              "id": "same-voyage",
+              "role": "main",
+              "name": "",
+              "attribute": "data-experience-voyage"
+            },
+            {
+              "id": "same-edition",
+              "role": "main",
+              "name": "",
+              "attribute": "data-experience-version"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        },
+        "limitations": [
+          "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture begins with an authorized fixture surface.",
+          "The isolated fixture adapter must exist in the protected experience helper before protected capture/replay can qualify these contracts."
+        ],
+        "objective": "Connect another device from the active Chronicle without losing my place",
+        "visibleOutcome": "The active Journal opens a contextual private phone connection with QR/code guidance and returns directly to the same Chronicle",
+        "entryPoint": "/player/playthroughs/{voyageId}/journal",
+        "states": ["JOURNAL_READY", "CONNECT_READY", "RETURNED"],
+        "navigation": "Open the Journal, use Connect another device, inspect contextual pairing instructions, then Continue the Chronicle in the same Voyage.",
+        "designTarget": "Keep the book and its primary reading task dominant; use one quiet contextual connection control, a focused phone dialog with scan-first guidance and a direct return.",
+        "roleSetup": {
+          "PLAYER": {
+            "isolatedFixture": {
+              "id": "crossdeck-refit",
+              "surface": "PRIMARY"
+            },
+            "witness": {
+              "role": "dialog",
+              "name": "Open the voyage journal",
+              "text": "Open the journal"
+            }
+          }
+        },
+        "journeys": [
+          {
+            "id": "contextual-connect-return",
+            "roles": ["PLAYER"],
+            "outcome": "A Player finds contextual phone connection from the active Journal and returns to the same released reading task",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Synthetic Crossdeck refit Voyage",
+                "path": "/player/playthroughs/{voyageId}/journal",
+                "state": "JOURNAL_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Connect another device"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Bring your phone aboard",
+                "kind": "outcome",
+                "text": "Sign in with the same Voyagewright account.",
+                "path": "/player/playthroughs/{voyageId}/journal",
+                "meaning": "The contextual control produces private phone joining guidance for this Voyage while retaining the active book.",
+                "state": "CONNECT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Continue the Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "path": "/player/playthroughs/{voyageId}/journal",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "Bring your phone aboard"
+                },
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ]
+      },
       "experienceIntent": {
         "objective": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
         "visibleOutcome": "A contextual pairing flow reaches a role-appropriate Lens with the same identity, Voyage and safe return",
@@ -3563,6 +4036,230 @@
           }
         ],
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion",
+      "name": "Crossdeck canonical companion Lens, Chart, Journal, artifact and return experience",
+      "authority": "project-crossdeck",
+      "owners": ["project-crossdeck", "project-parallax", "landfall", "player-journal"],
+      "critical": true,
+      "experience": {
+        "persona": "An authorized Player continuing a persisted private synthetic Voyage across personal screens",
+        "integrationOwner": "Crossdeck experience refit integration",
+        "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
+        "sourcePaths": [
+          "src/crossdeck",
+          "src/components/crossdeck",
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/app/devices",
+          "src/app/account/devices",
+          "src/components/player/journal",
+          "src/app/player/playthroughs/[playthroughId]/journal",
+          "src/app/play/[taleSlug]/session/[sessionId]",
+          "src/app/player/offline-landfall"
+        ],
+        "projectionPaths": [
+          "src/app/api/crossdeck",
+          "src/app/api/play/sessions",
+          "src/app/api/player/playthroughs",
+          "src/app/api/player/sessions"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "continuity": {
+          "objective": "Keep the same authorized Voyage and immutable edition through connection, purpose changes and return without inventing progression authority.",
+          "checks": [
+            {
+              "id": "same-voyage",
+              "role": "main",
+              "name": "",
+              "attribute": "data-experience-voyage"
+            },
+            {
+              "id": "same-edition",
+              "role": "main",
+              "name": "",
+              "attribute": "data-experience-version"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        },
+        "limitations": [
+          "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture begins with an authorized fixture surface.",
+          "The isolated fixture adapter must exist in the protected experience helper before protected capture/replay can qualify these contracts."
+        ],
+        "objective": "Use my connected screen as a meaningful Lens, Chart, Journal or artifact companion for the same Chronicle",
+        "visibleOutcome": "Changing companion purpose opens the canonical released clue, actual Voyage chart, readable full passage or released artifact and returns to the same immutable Chronicle",
+        "entryPoint": "/devices/companion?voyage={voyageId}",
+        "states": ["JOURNAL_READY", "LENS_READY", "CHART_READY", "ARTIFACT_READY", "JOURNAL_RESTORED", "RETURNED"],
+        "navigation": "Begin on the authorized paired companion; Change companion purpose reaches Lens, Chart, Journal and Artifact viewer; Return to Chronicle opens the original Journal.",
+        "designTarget": "Give each purpose its own full readable workspace beneath one Chronicle identity and connection status; make purpose change secondary and the return persistent, with camera-free meaningful Lens and actual map objectives.",
+        "roleSetup": {
+          "PLAYER": {
+            "isolatedFixture": {
+              "id": "crossdeck-refit",
+              "surface": "COMPANION"
+            },
+            "witness": {
+              "role": "main",
+              "name": "",
+              "text": "Synthetic Crossdeck refit Voyage"
+            }
+          }
+        },
+        "journeys": [
+          {
+            "id": "companion-purpose-return",
+            "roles": ["PLAYER"],
+            "outcome": "A Player experiences released Lens content, the actual current Chart and complete Journal/artifact content before safely returning to the same Chronicle",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Journal companion",
+                "text": "The harbour falls quiet behind you.",
+                "state": "JOURNAL_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "kind": "outcome",
+                "text": "The next bearing is written in the stars. Look for the northern light.",
+                "path": "/devices/companion",
+                "meaning": "Purpose selection opens the canonical guided spatial moment and its released clue, rather than retaining a role label.",
+                "state": "LENS_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close Chronicle Lens"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Voyage Chart"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Voyage Chart",
+                "kind": "outcome",
+                "text": "Current objective: Secret Isle",
+                "path": "/devices/companion",
+                "meaning": "The Chart purpose renders the canonical released virtual map and its current authored objective for this Voyage.",
+                "state": "CHART_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Virtual Landfall chart"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "More purposes"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Artifact viewer"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Artifact viewer",
+                "kind": "outcome",
+                "text": "A small compass worn smooth by a hundred voyages.",
+                "path": "/devices/companion",
+                "meaning": "The artifact purpose renders the actual released keepsake and its readable description for the same immutable edition.",
+                "state": "ARTIFACT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Journal companion"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Journal companion",
+                "kind": "outcome",
+                "text": "The harbour falls quiet behind you.",
+                "path": "/devices/companion",
+                "meaning": "Returning to Journal restores full readable released passage content while the primary screen keeps its reading state.",
+                "state": "JOURNAL_RESTORED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use larger reading size"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Chronicle"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "path": "/player/playthroughs/{voyageId}/journal",
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ]
       }
     },
     {

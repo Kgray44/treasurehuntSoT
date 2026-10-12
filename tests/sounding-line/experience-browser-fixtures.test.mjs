@@ -5,8 +5,52 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { chromium } from "playwright";
-import { runExperienceJourney, captureProductExperience } from "../../scripts/sounding-line/experience-browser.mjs";
+import {
+  runExperienceJourney,
+  captureProductExperience,
+  assertIsolatedExperienceFixtureEnvironment,
+  resolveExperienceFixturePath,
+} from "../../scripts/sounding-line/experience-browser.mjs";
 import { experienceDigest, validateExperienceEvidence } from "../../scripts/sounding-line/product-experience.mjs";
+
+test("authenticated experience fixtures refuse shared databases, profiles and missing isolation", () => {
+  const root = path.resolve("artifacts/experience-fixture-guard");
+  const database = path.join(
+    root,
+    "artifacts/sounding-line/generic-0123456789ab",
+    `validation-isolated-20261011-123456789-${"a".repeat(32)}.db`,
+  );
+  const environment = {
+    SOUNDING_LINE_SUITE_PROFILE: "generic",
+    FOREVER_VALIDATION_ISOLATION: "1",
+    SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+    FOREVER_VALIDATION_NONCE_HASH: "b".repeat(64),
+    DATABASE_URL: `file:${database}`,
+  };
+  assert.equal(assertIsolatedExperienceFixtureEnvironment(root, environment).databasePath, database);
+  for (const changes of [
+    { SOUNDING_LINE_SUITE_PROFILE: "homeport-phase3" },
+    { FOREVER_VALIDATION_ISOLATION: "0" },
+    { SOUNDING_LINE_TASK_OWNED_HTTP: "0" },
+    { FOREVER_VALIDATION_NONCE_HASH: "" },
+    { DATABASE_URL: "file:prisma/dev.db" },
+    { DATABASE_URL: `file:${path.resolve(root, "prisma/dev.db")}` },
+    { DATABASE_URL: `file:${path.resolve(root, "../shared.db")}` },
+  ])
+    assert.throws(
+      () => assertIsolatedExperienceFixtureEnvironment(root, { ...environment, ...changes }),
+      /ISOLATED_ROLE_FIXTURE_REFUSED/u,
+    );
+  assert.equal(
+    resolveExperienceFixturePath("/devices/companion?voyage={voyageId}", { voyageId: "one/voyage" }),
+    "/devices/companion?voyage=one%2Fvoyage",
+  );
+  assert.equal(resolveExperienceFixturePath("/sign-in"), "/sign-in");
+  assert.throws(
+    () => resolveExperienceFixturePath("/player/playthroughs/{voyageId}/journal"),
+    /ISOLATED_ROLE_FIXTURE_REQUIRED/u,
+  );
+});
 
 // Deliberately deficient, task-owned rendered fixtures. Never edit production UI.
 const shell = (body) =>
@@ -112,6 +156,50 @@ test("real browser rejects A–G deficient outcomes and captures a valid journey
       await assert.rejects(
         runExperienceJourney({ page, contract, journey: noOp, device: "DESKTOP", artifactRoot: root, root }),
         /JOURNEY_DESTINATION_FAILED|ACTION_OUTCOME_NOT_OBSERVED/u,
+      );
+      await context.close();
+    });
+    await t.test("native modal outcomes preserve actual inert Voyage continuity", async () => {
+      const context = await browser.newContext({ baseURL });
+      const page = await context.newPage();
+      await page.goto("/voyage");
+      await page.setContent(
+        shell(
+          "<h1>Current Voyage</h1><button onclick=\"document.querySelector('dialog').showModal()\">Use phone as Lens</button>",
+        )
+          .replace("<main>", '<main data-voyage="persisted-voyage">')
+          .replace(
+            "</main>",
+            '</main><dialog aria-label="Chronicle Lens"><p>Released clue: the blue compass</p><button onclick="this.closest(\'dialog\').close()">Return to Voyage</button></dialog>',
+          ),
+      );
+      const modalContract = structuredClone(contract);
+      modalContract.experience.continuity = {
+        checks: [{ id: "same-voyage", role: "main", name: "", attribute: "data-voyage" }],
+      };
+      const modalJourney = structuredClone(journey);
+      modalJourney.steps[0].role = "button";
+      modalJourney.steps[1].role = "dialog";
+      modalJourney.steps[1].name = "Chronicle Lens";
+      modalJourney.steps[1].path = "/voyage";
+      modalJourney.steps[2].role = "button";
+      modalJourney.steps[3].role = "main";
+      modalJourney.steps[3].name = "";
+      modalJourney.steps[3].absentRole = { role: "dialog", name: "Chronicle Lens" };
+      const observed = await runExperienceJourney({
+        page,
+        contract: modalContract,
+        journey: modalJourney,
+        device: "DESKTOP",
+        artifactRoot: root,
+        root,
+      });
+      assert.equal(observed.result.status, "PASS");
+      assert.equal(observed.result.continuity.length, 1);
+      assert.ok(
+        observed.result.continuity.every(
+          (value) => value.before === value.after && value.atOutcomes.every((outcome) => outcome === value.before),
+        ),
       );
       await context.close();
     });

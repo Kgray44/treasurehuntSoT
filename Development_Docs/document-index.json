@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-11",
+  "generated_at": "2026-10-12",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -5205,6 +5205,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_20261011.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Efficiency_20261011.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Amendment_A2_Design_Record.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -9082,6 +9094,12 @@
     },
     {
       "path": "Development_Docs/Testing/Parallel_Execution_and_Resource_Isolation.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/Activation_Closure.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

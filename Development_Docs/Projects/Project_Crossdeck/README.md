@@ -84,6 +84,13 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 
 ## Current implementation status
 
+The [spatial experience refit](Spatial_Experience_Refit_20261011.md) is a current
+local candidate: contextual connection from the Chronicle and real Lens, Chart,
+Journal and artifact companion presentations. Its baseline findings, domain
+ownership, trusted-helper prerequisite and outstanding qualification/owner gates
+remain explicit. The [task efficiency ledger](Spatial_Experience_Refit_Efficiency_20261011.md)
+records observed counters separately from acceptance.
+
 **Phase 1 implementation: Lay the Gangway.**
 
 The [Phase 1 implementation record](Phase_1_Implementation_Record.md) documents secure pairing, canonical surface participation, roles, capability projection, lifecycle, removal, software tests and shared Device Lab D0/D1 evidence. Protected-main qualification and owner product acceptance are separate recorded gates.

@@ -42,13 +42,15 @@ export function ChronicleLensEntry({
   moment,
   blockId,
   replayOnly,
+  initiallyOpen = false,
 }: {
   moment: SpatialMoment;
   blockId: string;
   replayOnly: boolean;
+  initiallyOpen?: boolean;
 }) {
   const voyage = useContext(context);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(initiallyOpen);
   return (
     <div className={styles.entry}>
       <span aria-hidden="true" className={styles.mark}>

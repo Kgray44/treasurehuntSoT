@@ -9779,6 +9779,134 @@
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
       }
+    },
+    {
+      "screenId": "screen-page-devices-companion",
+      "routeIds": ["route-page-devices-companion"],
+      "productArea": "Player",
+      "owner": "project-crossdeck",
+      "shellMode": "IMMERSIVE",
+      "primaryUserGoal": "Use an authorized personal companion purpose in the active Voyage and return to the Chronicle.",
+      "logicalParent": "route-page-player-library",
+      "visibleEntryPoints": ["crossdeck-open-personal-companion"],
+      "authentication": "AUTHENTICATED_PLAYER_REQUIRED",
+      "capabilities": ["PLAYER"],
+      "primaryHeading": "Canonical released passage title or selected companion purpose",
+      "primaryAction": "Change companion purpose",
+      "secondaryActions": ["Return to Chronicle", "Exit to My Voyages"],
+      "dataProjection": "Own AccountSession Crossdeck surface plus authorized canonical Journal, Parallax Lens and Landfall Chart projections",
+      "currentResponsiveComposition": "Immersive Player shell with bounded purpose workspace, visible account access and contextual library exit; final desktop/mobile rendered review pending.",
+      "currentKeyboardOrder": "ProductShell skip link, account/exit controls, presentation actions and receiving controls in DOM order.",
+      "currentFocusBehavior": "Existing Homeport account-menu focus contract; canonical Lens dialog focus restoration; route-specific final evidence pending.",
+      "currentMotionOwner": "ProductShell RouteMotionBoundary and canonical Journal/Lens/Chart consumers",
+      "currentReducedMotionBehavior": "Existing canonical reduced-motion projection; receiving acknowledgement requires the actual rendered view in either motion mode.",
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_POPULATED",
+        "READY_EMPTY",
+        "AUTH_REQUIRED",
+        "SESSION_REVOKED_OR_INVALID",
+        "PERMISSION_RESTRICTED",
+        "OFFLINE_OR_DEGRADED",
+        "RECOVERABLE_ERROR",
+        "MUTATION_PENDING",
+        "MUTATION_FAILURE"
+      ],
+      "currentVisualMaturity": "BLOCKED_WITH_GOVERNED_REASON",
+      "missingStates": ["FINAL_EXACT_SOURCE_RENDERED_STATE_EVIDENCE"],
+      "knownDefects": [
+        "Final exact-source desktop/mobile, normal/reduced motion and independent review evidence remains pending; historical Homeport acceptance does not accept this refit."
+      ],
+      "screenshotIds": [],
+      "journeyIds": [],
+      "targetHomeportPhase": "POST_PHASE_7_GOVERNED_EXTENSION",
+      "acceptanceContract": "homeport.shell.crossdeck-companion;crossdeck.refit.companion;crossdeck.phase2.continuity",
+      "status": "IMPLEMENTED_PENDING_EXPERIENCE_VALIDATION",
+      "crossdeckRefitReconciliation": {
+        "state": "IMPLEMENTED_PENDING_EXACT_SOURCE_EXPERIENCE_VALIDATION",
+        "reviewedAt": "2026-10-11",
+        "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+        "routePatterns": ["/devices/companion", "/devices/display"],
+        "integrationOwner": "project-homeport",
+        "specialistOwner": "project-crossdeck",
+        "sourceAuthority": "src/navigation/route-classification.ts",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "candidateSource": "UNCOMMITTED_REFIT_DRAFT",
+        "evidenceIds": [],
+        "ownerAcceptance": "NOT_CLAIMED"
+      },
+      "phase5Implementation": {
+        "state": "SOURCE_RECONCILED",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-player-library",
+        "entryEdgeIds": ["crossdeck-open-personal-companion"],
+        "exitEdgeIds": ["context-player-exit"],
+        "scope": "Post-Phase-7 owned extension; source metadata only, not historical Phase 5 browser acceptance."
+      }
+    },
+    {
+      "screenId": "screen-page-devices-display",
+      "routeIds": ["route-page-devices-display"],
+      "productArea": "Player",
+      "owner": "project-crossdeck",
+      "shellMode": "IMMERSIVE",
+      "primaryUserGoal": "Receive an explicitly crew-shared view without exposing private Journal content.",
+      "logicalParent": "route-page-player-library",
+      "visibleEntryPoints": ["crossdeck-open-crew-display"],
+      "authentication": "AUTHENTICATED_PLAYER_REQUIRED",
+      "capabilities": ["PLAYER"],
+      "primaryHeading": "Crew display",
+      "primaryAction": "Receive shared view",
+      "secondaryActions": ["Manage this display", "Use my Journal companion", "Exit to My Voyages"],
+      "dataProjection": "Own AccountSession SHARED_CREW_DISPLAY surface plus server-restricted crew-shared view projection",
+      "currentResponsiveComposition": "Immersive Player shell with bounded purpose workspace, visible account access and contextual library exit; final desktop/mobile rendered review pending.",
+      "currentKeyboardOrder": "ProductShell skip link, account/exit controls, presentation actions and receiving controls in DOM order.",
+      "currentFocusBehavior": "Existing Homeport account-menu focus contract; canonical Lens dialog focus restoration; route-specific final evidence pending.",
+      "currentMotionOwner": "ProductShell RouteMotionBoundary and canonical Journal/Lens/Chart consumers",
+      "currentReducedMotionBehavior": "Existing canonical reduced-motion projection; receiving acknowledgement requires the actual rendered view in either motion mode.",
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_POPULATED",
+        "READY_EMPTY",
+        "AUTH_REQUIRED",
+        "SESSION_REVOKED_OR_INVALID",
+        "PERMISSION_RESTRICTED",
+        "OFFLINE_OR_DEGRADED",
+        "RECOVERABLE_ERROR",
+        "MUTATION_PENDING",
+        "MUTATION_FAILURE"
+      ],
+      "currentVisualMaturity": "BLOCKED_WITH_GOVERNED_REASON",
+      "missingStates": ["FINAL_EXACT_SOURCE_RENDERED_STATE_EVIDENCE"],
+      "knownDefects": [
+        "Final exact-source desktop/mobile, normal/reduced motion and independent review evidence remains pending; historical Homeport acceptance does not accept this refit."
+      ],
+      "screenshotIds": [],
+      "journeyIds": [],
+      "targetHomeportPhase": "POST_PHASE_7_GOVERNED_EXTENSION",
+      "acceptanceContract": "homeport.shell.crossdeck-companion;crossdeck.refit.companion;crossdeck.phase2.continuity",
+      "status": "IMPLEMENTED_PENDING_EXPERIENCE_VALIDATION",
+      "crossdeckRefitReconciliation": {
+        "state": "IMPLEMENTED_PENDING_EXACT_SOURCE_EXPERIENCE_VALIDATION",
+        "reviewedAt": "2026-10-11",
+        "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+        "routePatterns": ["/devices/companion", "/devices/display"],
+        "integrationOwner": "project-homeport",
+        "specialistOwner": "project-crossdeck",
+        "sourceAuthority": "src/navigation/route-classification.ts",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "candidateSource": "UNCOMMITTED_REFIT_DRAFT",
+        "evidenceIds": [],
+        "ownerAcceptance": "NOT_CLAIMED"
+      },
+      "phase5Implementation": {
+        "state": "SOURCE_RECONCILED",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-player-library",
+        "entryEdgeIds": ["crossdeck-open-crew-display"],
+        "exitEdgeIds": ["context-player-exit"],
+        "scope": "Post-Phase-7 owned extension; source metadata only, not historical Phase 5 browser acceptance."
+      }
     }
   ],
   "phase1Implementation": {
@@ -10022,5 +10150,32 @@
       "Postmark live delivery is blocked by external configuration",
       "Production MySQL and physical assistive-technology validation remain external"
     ]
+  },
+  "crossdeckRefitReconciliation": {
+    "state": "IMPLEMENTED_PENDING_EXACT_SOURCE_EXPERIENCE_VALIDATION",
+    "reviewedAt": "2026-10-11",
+    "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+    "routePatterns": ["/devices/companion", "/devices/display"],
+    "integrationOwner": "project-homeport",
+    "specialistOwner": "project-crossdeck",
+    "sourceAuthority": "src/navigation/route-classification.ts",
+    "navigationAuthority": "src/navigation/registry.ts",
+    "candidateSource": "UNCOMMITTED_REFIT_DRAFT",
+    "evidenceIds": [],
+    "ownerAcceptance": "NOT_CLAIMED",
+    "currentSourceCensus": {
+      "sourceCount": 443,
+      "counts": {
+        "page": 128,
+        "route": 306,
+        "layout": 7,
+        "not-found": 0,
+        "error": 2
+      },
+      "humanRouteCount": 128,
+      "serviceRouteCount": 306
+    },
+    "historicalSourceIdentityPreserved": true,
+    "scope": "Only the two owned device routes/screens are reconciled. Historical discovered totals and phase records remain source-bound; broader pre-existing source-census omissions are not claimed resolved."
   }
 }

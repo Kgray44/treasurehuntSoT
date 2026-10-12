@@ -45,6 +45,62 @@ beforeEach(() => {
   );
 });
 
+it("compact presentation places the canonical map beside its objective with offline tools progressively disclosed", async () => {
+  const view = render(
+    <LandfallJournalProvider
+      sessionId={bootstrap.sessionId}
+      publishedVersionId="version-1"
+      revision={4}
+      mode="reduced"
+      historical={false}
+      csrfToken="synthetic-csrf"
+      enabled
+      loadEnabled
+      onProgress={() => {}}
+    >
+      <LandfallJournalChart compact />
+    </LandfallJournalProvider>,
+  );
+  const map = await screen.findByText("Released map");
+  const objective = screen.getByText(/^Current objective:/);
+  const offline = screen.getByText(/^Offline chart:/);
+  expect(objective.compareDocumentPosition(map) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(map.compareDocumentPosition(offline) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(offline).not.toBeVisible();
+  fireEvent.click(screen.getByText("Offline chart and device options"));
+  expect(offline).toBeVisible();
+  expect(watch).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "Use my location" }));
+  expect(watch).toHaveBeenCalledOnce();
+  view.unmount();
+  expect(clear).toHaveBeenCalledWith(17);
+});
+
+it("compact passive presentation keeps the current objective while excluding acquisition controls", async () => {
+  const view = render(
+    <LandfallJournalProvider
+      sessionId={bootstrap.sessionId}
+      publishedVersionId="version-1"
+      revision={4}
+      mode="reduced"
+      historical={false}
+      csrfToken="synthetic-csrf"
+      enabled={false}
+      loadEnabled
+      onProgress={() => {}}
+    >
+      <LandfallJournalChart compact presentationOnly />
+    </LandfallJournalProvider>,
+  );
+  await screen.findByText("Released map");
+  expect(screen.getByText(/^Current objective:/)).toBeVisible();
+  expect(screen.queryByText(/Historical Landfall chart/)).toBeNull();
+  expect(screen.queryByRole("button", { name: "Use my location" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Confirm arrival myself" })).toBeNull();
+  expect(watch).not.toHaveBeenCalled();
+  view.unmount();
+});
+
 it("native background pauses the shared chart while document visibility remains visible and never resumes automatically", async () => {
   const definition = structuredClone(landfallFixture);
   definition.worldspaces[0].observationPolicy.allowedSources.push("NATIVE_LOCATION");
