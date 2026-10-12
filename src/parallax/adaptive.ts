@@ -8,7 +8,7 @@ import {
 } from "./adaptive-contracts";
 import type { Transform } from "./contracts";
 import { composeTransform } from "./transforms";
-
+import { surfaceRotation as rotationForSurface } from "./surface-placement";
 const point = z.strictObject({
   x: z.number().finite().min(-100).max(100),
   y: z.number().finite().min(-10).max(20),
@@ -20,6 +20,7 @@ export const candidateSchema = z.strictObject({
   context: z.array(contextClassSchema).max(7),
   region: z.enum(["CURRENT_ROOM", "ENTRANCE_REGION"]),
   position: point,
+  placementOffset: point.optional(),
   normal: point,
   widthMeters: z.number().finite().positive().max(100),
   depthMeters: z.number().finite().positive().max(100),
@@ -119,11 +120,14 @@ function candidateTransform(
   viewer?: Candidate["position"],
 ): Transform {
   const p = { ...c.position };
+  if (c.placementOffset && recipe.relativePlacement === "CENTER") {
+    p.x += c.placementOffset.x;
+    p.y += c.placementOffset.y;
+    p.z += c.placementOffset.z;
+  }
   // Rotate the authored +Z face onto the actual surface normal, including vertical walls.
-  const n = c.normal,
-    raw = n.z < -0.999999 ? { x: 0, y: 1, z: 0, w: 0 } : { x: -n.y, y: n.x, z: 0, w: 1 + n.z };
-  const length = Math.hypot(raw.x, raw.y, raw.z, raw.w);
-  const surfaceRotation = { x: raw.x / length, y: raw.y / length, z: raw.z / length, w: raw.w / length };
+  const n = c.normal;
+  const surfaceRotation = rotationForSurface(n);
   const basis = (x: number, y: number) =>
     composeTransform(
       { position: { x: 0, y: 0, z: 0 }, rotation: surfaceRotation, scale: 1 },
@@ -152,7 +156,10 @@ function candidateTransform(
     position: p,
     scale: 1,
     rotation:
-      recipe.orientation === "SURFACE" ? surfaceRotation : { x: 0, y: Math.sin(yaw / 2), z: 0, w: Math.cos(yaw / 2) },
+      recipe.orientation === "SURFACE" ||
+      (recipe.orientation === "UPRIGHT" && recipe.preferredSurfaces.includes("WALL") && c.surface !== "WALL")
+        ? surfaceRotation
+        : { x: 0, y: Math.sin(yaw / 2), z: 0, w: Math.cos(yaw / 2) },
   };
 }
 export function evaluateCandidate(

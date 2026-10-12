@@ -226,14 +226,16 @@
           "ASSISTANT_RESIZED",
           "ASSISTANT_MOVED",
           "ASSISTANT_DOCKED",
-          "RETURNED"
+          "RETURNED",
+          "SURFACES_READY",
+          "SURFACE_SNAPPED"
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["CREATOR"],
         "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning. Floating title and all edge/corner handles support arrow keys, with Shift for larger steps.",
         "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
         "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
-        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content.",
+        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content. The Surfaces control outlines complete current room planes and offers a compact accessible picker. Selecting a wall or furniture aligns the object to its normal, with clear manual/automatic placement language and ordinary Undo.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -258,7 +260,8 @@
           "tests/e2e/parallax-owner-refinements.spec.ts",
           "tests/e2e/parallax-assistant-presentation.spec.ts",
           "tests/e2e/parallax-spatial-assistant.spec.ts",
-          "tests/e2e/parallax-workstation.spec.ts"
+          "tests/e2e/parallax-workstation.spec.ts",
+          "tests/e2e/parallax-surfaces.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
@@ -407,6 +410,43 @@
                 "action": "click",
                 "role": "button",
                 "name": "Close assistance"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Toggle spatial overlays"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Room surfaces",
+                "path": "/studio/parallax",
+                "state": "SURFACES_READY",
+                "kind": "outcome",
+                "meaning": "Full room surfaces and a keyboard-accessible picker are available without an AI call.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "wall left"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "snapped and aligned to wall left",
+                "path": "/studio/parallax",
+                "state": "SURFACE_SNAPPED",
+                "kind": "outcome",
+                "meaning": "The selected object snaps and aligns to the side wall through the visible manual placement control.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Toggle spatial overlays"
               },
               {
                 "action": "click",

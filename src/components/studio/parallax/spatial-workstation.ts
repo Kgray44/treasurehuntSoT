@@ -3,7 +3,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import type { Transform, SpatialEntity } from "@/parallax/contracts";
 import type { Candidate } from "@/parallax/adaptive";
-
+import { syntheticRoomGeometry } from "@/parallax/room-geometry";
+import { snapToNearestSurface, placeOnSurface } from "@/parallax/surface-placement";
 export type ViewportObject = {
   entity: SpatialEntity;
   world: Transform;
@@ -26,14 +27,13 @@ export type ViewportState = {
   editable: boolean;
   inspection: boolean;
 };
-
 /** Creator-only synthetic scene. No camera, device observations, imported media or runtime authority. */
 export function createWorkstation(
   host: HTMLElement,
   callbacks: {
     select: (id: string) => void;
     transform: (id: string, world: Transform) => void;
-    candidate: (candidate: Candidate) => void;
+    candidate: (candidate: Candidate, position: Transform["position"]) => void;
     failure: () => void;
   },
 ) {
@@ -119,7 +119,21 @@ export function createWorkstation(
     disposeGroup(surfaces);
     const { width: w, depth: d } = s.environment;
     const light = s.theme === "light";
-    box(world, [w, 0.12, d], [0, -0.07, 0], light ? 0xdce5ef : 0x363940);
+    for (const g of syntheticRoomGeometry(s.environment)) {
+      const color =
+        g.surface === "FLOOR"
+          ? light
+            ? 0xdce5ef
+            : 0x363940
+          : g.surface === "WALL"
+            ? light
+              ? 0xe3eaf4
+              : 0x454b53
+            : g.surface === "SHELF"
+              ? 0x7e8e9c
+              : 0x947d62;
+      box(world, g.size, g.position, color);
+    }
     for (let i = 0; i <= w * 4; i++)
       box(world, [0.012, 0.002, d], [-w / 2 + i / 4, 0.001, 0], light ? 0xc0cfdf : 0x222630);
     const grid = new T.GridHelper(
@@ -131,8 +145,6 @@ export function createWorkstation(
     grid.position.y = 0.008;
     world.add(grid);
     if (s.environment.vertical) {
-      box(world, [w, 2.8, 0.12], [0, 1.4, -d / 2], light ? 0xe3eaf4 : 0x454b53);
-      box(world, [0.12, 2.8, d], [-w / 2, 1.4, 0], light ? 0xd3dfed : 0x505259);
       // Invented architectural window: a bounded emissive panel, no captured imagery.
       box(world, [w * 0.32, 1.4, 0.08], [-w * 0.13, 1.7, -d / 2 + 0.1], light ? 0x738ba7 : 0x0b1423);
       const glass = box(world, [w * 0.3, 1.3, 0.02], [-w * 0.13, 1.7, -d / 2 + 0.16], 0xb2d9e3);
@@ -145,22 +157,17 @@ export function createWorkstation(
     }
     if (s.environment.horizontal) {
       // The reference desk used by accepted fixed surface-relative drafts.
-      box(world, [1.5, 0.06, 1], [0, 0.72, -1], 0x947d62);
       for (const x of [-0.62, 0.62])
-        for (const z of [-1.4, -0.6]) box(world, [0.06, 0.7, 0.06], [x, 0.35, z], 0x222b35);
-      for (const c of s.candidates.filter((c) => ["TABLE", "DESK", "SHELF"].includes(c.surface))) {
-        box(
-          world,
-          [c.widthMeters, 0.05, c.depthMeters],
-          [c.position.x, c.position.y - 0.04, c.position.z],
-          c.surface === "SHELF" ? 0x7e8e9c : 0x867660,
-        );
+        for (const z of [-d * 0.25 - 0.4, -d * 0.25 + 0.4]) box(world, [0.06, 0.7, 0.06], [x, 0.35, z], 0x222b35);
+      for (const g of syntheticRoomGeometry(s.environment).filter(
+        (g) => ["TABLE", "DESK", "SHELF"].includes(g.surface) && g.id !== "sofa-seat" && g.id !== "reference-desk",
+      )) {
         for (const x of [-0.45, 0.45])
           for (const z of [-0.45, 0.45])
             box(
               world,
-              [0.045, c.position.y, 0.045],
-              [c.position.x + x, c.position.y / 2 - 0.05, c.position.z + z],
+              [0.045, g.position[1], 0.045],
+              [g.position[0] + x, g.position[1] / 2, g.position[2] + z],
               0x242e3a,
             );
       }
@@ -168,7 +175,6 @@ export function createWorkstation(
         sofaX = w / 2 - 1.25;
       box(world, [1.8, 0.35, 0.7], [sofaX, 0.3, sofaZ], 0x394b5b);
       box(world, [1.8, 0.55, 0.18], [sofaX, 0.65, sofaZ - 0.32], 0x43586a);
-      for (const x of [-0.48, 0.48]) box(world, [0.86, 0.13, 0.65], [sofaX + x, 0.52, sofaZ + 0.05], 0x587084);
       for (const x of [-0.9, 0.9]) box(world, [0.15, 0.45, 0.75], [sofaX + x, 0.53, sofaZ], 0x43586a);
       const pot = new T.Mesh(new T.CylinderGeometry(0.16, 0.12, 0.3, 16), material(0xb5b2ab));
       pot.position.set(-w / 2 + 0.45, 0.15, -d / 2 + 0.6);
@@ -183,7 +189,7 @@ export function createWorkstation(
         world.add(leaf);
       }
     }
-    for (const c of s.candidates) {
+    for (const c of s.candidates.filter((c) => c.surface !== "OPEN_SPACE" && c.id !== "unsafe-walkway")) {
       const mesh = new T.Mesh(
         new T.PlaneGeometry(c.widthMeters, c.depthMeters),
         new T.MeshBasicMaterial({
@@ -194,7 +200,11 @@ export function createWorkstation(
           depthWrite: false,
         }),
       );
-      mesh.position.set(c.position.x, c.position.y + 0.015, c.position.z);
+      mesh.position.set(
+        c.position.x + c.normal.x * 0.018,
+        c.position.y + c.normal.y * 0.018,
+        c.position.z + c.normal.z * 0.018,
+      );
       mesh.quaternion.setFromUnitVectors(new T.Vector3(0, 0, 1), new T.Vector3(c.normal.x, c.normal.y, c.normal.z));
       mesh.userData.candidate = c;
       const border = new T.LineSegments(
@@ -411,11 +421,33 @@ export function createWorkstation(
     const changedScale = [obj.scale.x, obj.scale.y, obj.scale.z].sort(
       (a, b) => Math.abs(b - old.world.scale) - Math.abs(a - old.world.scale),
     )[0];
-    callbacks.transform(obj.userData.entityId, {
+    const world = {
       position: { x: obj.position.x, y: obj.position.y, z: obj.position.z },
       rotation: { x: obj.quaternion.x, y: obj.quaternion.y, z: obj.quaternion.z, w: obj.quaternion.w },
       scale: Math.max(0.1, Math.min(5, changedScale)),
-    });
+    };
+    const snapped =
+      state.snap && state.tool === "translate" && !state.adaptive
+        ? snapToNearestSurface(world, state.candidates, old.entity.widthMeters)
+        : world;
+    if (snapped !== world) {
+      const match = state.candidates.find((c) => {
+        const placed = placeOnSurface(world, c, old.entity.widthMeters, 0.18);
+        return (
+          placed &&
+          Math.hypot(
+            placed.position.x - snapped.position.x,
+            placed.position.y - snapped.position.y,
+            placed.position.z - snapped.position.z,
+          ) < 0.00001
+        );
+      });
+      if (match) {
+        callbacks.candidate(match, snapped.position);
+        return;
+      }
+    }
+    callbacks.transform(obj.userData.entityId, world);
   });
   const pointDown = (e: PointerEvent) => {
     down = { x: e.clientX, y: e.clientY };
@@ -437,9 +469,14 @@ export function createWorkstation(
         callbacks.select(root.userData.entityId);
       return;
     }
-    if (state.overlays && state.adaptive && state.editable && state.tool === "translate") {
+    if (state.overlays && state.editable && state.selected && (state.tool === "translate" || state.tool === "select")) {
       const surface = raycaster.intersectObjects(surfaces.children).find((h) => h.object.userData.candidate?.safe);
-      if (surface) callbacks.candidate(surface.object.userData.candidate);
+      if (surface)
+        callbacks.candidate(surface.object.userData.candidate, {
+          x: surface.point.x,
+          y: surface.point.y,
+          z: surface.point.z,
+        });
     }
   };
   renderer.domElement.addEventListener("pointerdown", pointDown);

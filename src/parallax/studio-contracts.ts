@@ -43,6 +43,30 @@ export const studioContentSchema = z.strictObject({
   layers: z.array(studioLayerSchema).max(32),
   behaviors: z.array(behaviorSchema).max(64),
   assets: z.array(spatialAssetSchema).max(32),
+  // Synthetic editor reference frames never replace measured native plane frames.
+  surfacePreviewFrames: z
+    .array(
+      z.strictObject({
+        anchorId: id,
+        environmentId: id,
+        surfaceId: id,
+        position: z.strictObject({
+          x: z.number().finite().min(-100).max(100),
+          y: z.number().finite().min(-10).max(20),
+          z: z.number().finite().min(-100).max(100),
+        }),
+        rotation: z
+          .strictObject({
+            x: z.number().finite(),
+            y: z.number().finite(),
+            z: z.number().finite(),
+            w: z.number().finite(),
+          })
+          .refine((q) => Math.abs(Math.hypot(q.x, q.y, q.z, q.w) - 1) < 1e-5),
+      }),
+    )
+    .max(16)
+    .optional(),
   visionReferences: z
     .array(
       z.strictObject({

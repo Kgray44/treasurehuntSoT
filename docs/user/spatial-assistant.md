@@ -8,6 +8,13 @@ last_reviewed: 2026-10-12
 
 # Describe your spatial idea
 
+For precise manual placement, **Surfaces** lets you snap a selected clue to the
+room's floor, walls or furniture and aligns it to the chosen plane. The Placement
+section explicitly names manual or automatic placement. Automatic placement
+chooses a safe position from your preferences; snapping, Undo and Redo consume no
+AI requests. Current reference rooms are synthetic; photo reconstruction is not
+available.
+
 The Spatial Assistant is available in Spatial Studio when your administrator
 has configured and enabled assistance for your account. Manual editing stays available.
 

@@ -166,6 +166,9 @@ describe("adaptive semantic staging", () => {
   });
   it("changes geometry across rooms without fabricating physical qualification", () => {
     const content = draft().content;
+    // A fixed reference desk exists in every room; use room-dependent tables for this variation assertion.
+    content.adaptive!.recipes[0].preferredSurfaces = ["TABLE"];
+    content.adaptive!.recipes[0].alternateSurfaces = [];
     const results = simulationEnvironments.map((r) =>
       resolveAdaptiveScene(content, syntheticEnvironmentEvidence(r), "same"),
     );

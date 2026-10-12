@@ -114,6 +114,12 @@ export const versionContentSchema = z
     const fail = (message: string) => ctx.addIssue({ code: "custom", message });
     const anchors = new Map(v.anchors.map((a) => [a.id, a]));
     const entities = new Map(v.entities.map((e) => [e.id, e]));
+    const previewFrames = v.studio?.surfacePreviewFrames ?? [];
+    if (
+      new Set(previewFrames.map((f) => f.anchorId)).size !== previewFrames.length ||
+      previewFrames.some((f) => anchors.get(f.anchorId)?.kind !== "SURFACE_RELATIVE")
+    )
+      fail("PARALLAX_PREVIEW_SURFACE_INVALID");
     if (v.placementPolicy !== "FIXED" && !v.adaptive) fail("PARALLAX_ADAPTIVE_RECIPE_REQUIRED");
     if (v.adaptive) {
       const a = v.adaptive;

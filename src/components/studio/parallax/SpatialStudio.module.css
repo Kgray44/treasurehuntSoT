@@ -1529,7 +1529,6 @@
     top: -16px;
   }
 }
-
 /* Adaptive docks are presentation only. Their released area belongs to the existing renderer. */
 .sceneActions {
   position: relative;
@@ -2308,7 +2307,6 @@
     max-width: 65%;
   }
 }
-
 :global(html[data-voyage-theme="light"]) .studio {
   --studio-background: #edf3fa;
   --studio-panel: #ffffff;
@@ -2350,4 +2348,30 @@
   --studio-primary-hover: #ffffff;
   --studio-on-accent: #000000;
   color-scheme: dark;
+}
+.surfacePicker {
+  position: absolute;
+  z-index: 4;
+  top: 5rem;
+  right: 0.75rem;
+  width: min(18rem, calc(100% - 5rem));
+  max-height: 45%;
+  overflow: auto;
+  padding: 0.65rem;
+  border: 1px solid var(--studio-border);
+  border-radius: 0.6rem;
+  background: var(--studio-panel);
+}
+.surfacePicker summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.surfacePicker small {
+  display: block;
+  margin: 0.5rem 0;
+}
+.surfacePicker > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
 }

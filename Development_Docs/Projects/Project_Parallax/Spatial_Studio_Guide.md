@@ -8,6 +8,20 @@ last_reviewed: 2026-10-12
 
 # Build a spatial experience
 
+**Surfaces** outlines the whole floor, each modeled wall and the furniture planes
+in the current reference room. Select an object, then click a clear part of a
+surface or choose it from the surface picker. In manual placement, the object
+snaps there and rotates to face that surface. With **Snap** enabled, moving within
+18 cm of a fitting plane also aligns it. Blocked furniture cannot receive a clue;
+a clue that does not fit stays unchanged. Undo and Redo restore these edits.
+
+The Placement section names the current method. **Manual placement** gives you
+the exact position; **Author remotely** enables **Automatic placement**, where
+surface choices become preferences and the room resolver chooses a safe point.
+Automatic wall presets retain their wall preference; a safe tabletop substitute
+lies flat on the table. Rotate and Scale remain available for deliberate edits.
+The reference rooms are synthetic. Photo-to-room reconstruction is not available.
+
 Open **Spatial Studio** from Creator Studio, or select **Add Spatial Moment** on a Chronicle passage. Guided mode starts with a Desk Map and keeps the canvas at the center of the workspace.
 
 The [Phase 3 implementation](Phase_3_Implementation.md) and [refined workstation](Phase_3_Workspace_Refinement.md) are software-qualified on protected main through PR #711 and received explicit owner visual approval on 2026-10-11. The editing workflow is:

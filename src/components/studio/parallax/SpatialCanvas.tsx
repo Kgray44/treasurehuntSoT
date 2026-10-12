@@ -1,15 +1,15 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { previewEntityTransform, referenceSurfaceFrame, type SpatialDraft, type Edit } from "@/parallax/authoring";
+import { previewEntityTransform, previewReferenceFrame, type SpatialDraft, type Edit } from "@/parallax/authoring";
 import { composeTransform, inverseTransform } from "@/parallax/transforms";
-import type { Transform } from "@/parallax/contracts";
+import { identityTransform, type Transform } from "@/parallax/contracts";
+import { placeOnSurface, snapSpatialEntity, surfacePointIsClear } from "@/parallax/surface-placement";
 import { evaluateSpatialBehavior, type SpatialInput } from "@/parallax/behavior";
 import { simulationEnvironments } from "@/parallax/studio-validation";
 import { resolveAdaptiveScene, type Candidate } from "@/parallax/adaptive";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import type { createWorkstation, ViewportState } from "./spatial-workstation";
 import styles from "./SpatialStudio.module.css";
-
 export function SpatialCanvas(props: {
   draft: SpatialDraft;
   selectedId: string | null;
@@ -61,7 +61,7 @@ export function SpatialCanvas(props: {
       ? composeTransform(placement.transform, e.transform)
       : e.parentEntityId && adaptive?.status === "RESOLVED"
         ? composeTransform(resolvedWorld(e.parentEntityId), e.transform)
-        : previewEntityTransform(draft.content, id);
+        : previewEntityTransform(draft.content, id, environmentId, environment.depth);
   };
   const states = evaluateSpatialBehavior(draft.content, inputs, timeMs, preview === "EDITOR");
   const commitWorld = (id: string, world: Transform) => {
@@ -79,8 +79,8 @@ export function SpatialCanvas(props: {
     const parent =
       placement?.transform ??
       (e.parentEntityId
-        ? previewEntityTransform(p.draft.content, e.parentEntityId)
-        : composeTransform(referenceSurfaceFrame(a), a.transform));
+        ? previewEntityTransform(p.draft.content, e.parentEntityId, p.environmentId, room.depth)
+        : composeTransform(previewReferenceFrame(p.draft.content, a, p.environmentId, room.depth), a.transform));
     const local = composeTransform(inverseTransform(parent), world);
     if (p.draft.content.adaptive) local.position = { x: 0, y: 0, z: 0 };
     p.onEdit({ type: "TRANSFORM", entityId: id, transform: local });
@@ -88,11 +88,55 @@ export function SpatialCanvas(props: {
       `${e.name}: ${p.draft.content.adaptive ? "orientation / scale" : "transform"} edited. Undo is available.`,
     );
   };
-  const chooseCandidate = (c: Candidate) => {
+  const chooseCandidate = (c: Candidate, position?: Transform["position"]) => {
     const p = latest.current,
       d = structuredClone(p.draft),
       recipe = d.content.adaptive?.recipes.find((r) => r.entityId === p.selectedId);
-    if (!recipe || !c.safe || d.content.studio?.layers.find((l) => l.entityId === p.selectedId)?.locked) return;
+    const entity = d.content.entities.find((e) => e.id === p.selectedId);
+    if (
+      !entity ||
+      p.preview !== "EDITOR" ||
+      !c.safe ||
+      d.content.studio?.layers.find((l) => l.entityId === p.selectedId)?.locked
+    )
+      return;
+    if (!d.content.adaptive) {
+      const world = previewEntityTransform(d.content, entity.id, p.environmentId);
+      const target = position ?? {
+        x: c.position.x + (c.placementOffset?.x ?? 0),
+        y: c.position.y + (c.placementOffset?.y ?? 0),
+        z: c.position.z + (c.placementOffset?.z ?? 0),
+      };
+      const room = simulationEnvironments.find((r) => r.id === p.environmentId) ?? simulationEnvironments[0];
+      const placed = surfacePointIsClear(
+        target,
+        syntheticEnvironmentEvidence(room).candidates,
+        entity.widthMeters * world.scale,
+      )
+        ? placeOnSurface({ ...world, position: target }, c, entity.widthMeters)
+        : null;
+      if (!placed) {
+        setFeedback("This object does not fit here. Choose a larger clear part of the surface.");
+        return;
+      }
+      p.onEdit({ type: "REPLACE", draft: snapSpatialEntity(p.draft, entity.id, placed, c, p.environmentId) });
+      setFeedback(
+        `${entity.name}: snapped and aligned to ${c.id.replaceAll("-", " ")}. Manual placement · Undo is available.`,
+      );
+      return;
+    }
+    if (!recipe || recipe.forbiddenSurfaces.includes(c.surface)) {
+      setFeedback("This surface is excluded by the object's placement constraints.");
+      return;
+    }
+    recipe.orientation = "SURFACE";
+    entity.transform.rotation = identityTransform().rotation;
+    recipe.minimumHeightMeters = c.surface === "FLOOR" ? 0 : 0.4;
+    recipe.maximumHeightMeters = c.surface === "FLOOR" ? 0.3 : 1.8;
+    recipe.preferredHeightMeters = Math.max(
+      recipe.minimumHeightMeters,
+      Math.min(recipe.maximumHeightMeters, c.position.y),
+    );
     recipe.preferredSurfaces = [c.surface];
     recipe.preferredContext = c.context.filter((x) => !["WALKWAY", "STAIRS", "OBSTACLE", "PRIVATE_REGION"].includes(x));
     recipe.searchRegion = c.region;
@@ -121,7 +165,7 @@ export function SpatialCanvas(props: {
         engine.current = createWorkstation(host.current, {
           select: (id) => latest.current.onSelect(id),
           transform: (id, pose) => callbacks.current.commitWorld(id, pose),
-          candidate: (c) => callbacks.current.chooseCandidate(c),
+          candidate: (c, point) => callbacks.current.chooseCandidate(c, point),
           failure: () => setRendererState("UNAVAILABLE"),
         });
         setRendererState("READY");
@@ -193,13 +237,51 @@ export function SpatialCanvas(props: {
             <small>{label}</small>
           </button>
         ))}
-        <button aria-label="Toggle snapping" aria-pressed={snap} onClick={() => setSnap(!snap)}>
+        <button
+          aria-label="Toggle snapping"
+          title="Snap movement to the grid and align to nearby surfaces"
+          aria-pressed={snap}
+          onClick={() => setSnap(!snap)}
+        >
           ⌗<small>Snap</small>
         </button>
         <button aria-label="Toggle spatial overlays" aria-pressed={overlays} onClick={() => setOverlays(!overlays)}>
           ◈<small>Surfaces</small>
         </button>
       </div>
+      {overlays && !fallback && (
+        <details className={styles.surfacePicker} open>
+          <summary>
+            Room surfaces ·{" "}
+            {evidence.candidates.filter((c) => c.surface !== "OPEN_SPACE" && c.id !== "unsafe-walkway").length}
+          </summary>
+          <small>
+            {adaptive
+              ? "Automatic placement: choose a surface preference; the room resolver finds a safe position."
+              : "Manual placement: select an object, then a surface to snap and align it."}
+          </small>
+          <div>
+            {evidence.candidates
+              .filter((c) => c.surface !== "OPEN_SPACE" && c.id !== "unsafe-walkway")
+              .map((c) => (
+                <button
+                  key={c.id}
+                  disabled={
+                    !selected ||
+                    !c.safe ||
+                    preview !== "EDITOR" ||
+                    draft.content.studio?.layers.find((l) => l.entityId === selectedId)?.locked
+                  }
+                  onClick={() => chooseCandidate(c)}
+                  title={`${c.widthMeters.toFixed(2)} × ${c.depthMeters.toFixed(2)} m${c.safe ? "" : " · obstructed"}`}
+                >
+                  {c.surface === "FLOOR" ? "Entire floor" : c.id.replaceAll("-", " ")}
+                  {c.safe ? "" : " · blocked"}
+                </button>
+              ))}
+          </div>
+        </details>
+      )}
       <div className={styles.viewInstrument}>
         <select
           aria-label="Camera perspective"
@@ -290,8 +372,8 @@ export function SpatialCanvas(props: {
       </div>
       <p className={styles.canvasHint}>
         {adaptive && tool === "translate"
-          ? "Choose a highlighted safe surface to edit semantic intent. Exact positions remain resolver-owned."
-          : "Drag empty space to orbit · Shift-drag to pan · Scroll to zoom · Choose a gizmo to edit."}{" "}
+          ? "Automatic placement · choose a highlighted surface preference. The resolver chooses a safe position and orientation."
+          : "Manual placement · Drag empty space to orbit · Shift-drag to pan · Scroll to zoom · Choose a gizmo to edit."}{" "}
         <span>{feedback}</span>
       </p>
       <div className={styles.keyboardObjects} aria-label="Keyboard spatial selection">

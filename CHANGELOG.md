@@ -12,6 +12,8 @@ last_reviewed: 2026-10-12
 
 ## Unreleased
 
+- Spatial Studio now snaps and aligns clues to wall, furniture and floor planes. The Surfaces overlay derives full planes from current reference-room geometry, wall presets retain their automatic placement preference, and the editor explains manual versus automatic placement. See the [correction record](Development_Docs/Projects/Project_Parallax/Surface_Snapping_Correction.md) for proof and the photo-reconstruction boundary.
+
 ### Engineering
 
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.

@@ -155,11 +155,15 @@ export function worldTransform(content: DraftContent, entityId: string): Transfo
 }
 
 /** Synthetic room frames are preview-only; surface offsets remain relative to the selected native surface. */
-export function referenceSurfaceFrame(anchor: Anchor): Transform {
+export function referenceSurfaceFrame(anchor: Anchor, roomDepth = 4): Transform {
   if (anchor.kind !== "SURFACE_RELATIVE") return identityTransform();
   return {
     ...identityTransform(),
-    position: { x: 0, y: anchor.alignment === "HORIZONTAL" ? 0.75 : 1.4, z: -1 },
+    position: {
+      x: 0,
+      y: anchor.alignment === "HORIZONTAL" ? 0.75 : 1.4,
+      z: anchor.alignment === "HORIZONTAL" ? -roomDepth * 0.25 : -roomDepth / 2 + 0.06,
+    },
     rotation:
       anchor.alignment === "HORIZONTAL"
         ? { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 }
@@ -167,11 +171,33 @@ export function referenceSurfaceFrame(anchor: Anchor): Transform {
   };
 }
 
-export function previewEntityTransform(content: DraftContent, entityId: string): Transform {
+export function previewReferenceFrame(
+  content: DraftContent,
+  anchor: Anchor,
+  environmentId?: string,
+  roomDepth = 4,
+): Transform {
+  const frame = content.studio?.surfacePreviewFrames?.find(
+    (f) => f.anchorId === anchor.id && (!environmentId || f.environmentId === environmentId),
+  );
+  return frame
+    ? { position: frame.position, rotation: frame.rotation, scale: 1 }
+    : referenceSurfaceFrame(anchor, roomDepth);
+}
+
+export function previewEntityTransform(
+  content: DraftContent,
+  entityId: string,
+  environmentId?: string,
+  roomDepth = 4,
+): Transform {
   const entity = content.entities.find((e) => e.id === entityId);
   if (!entity) throw new Error("Choose an existing spatial entity.");
   const anchor = content.anchors.find((a) => a.id === entity.anchorId)!;
-  return composeTransform(referenceSurfaceFrame(anchor), worldTransform(content, entityId));
+  return composeTransform(
+    previewReferenceFrame(content, anchor, environmentId, roomDepth),
+    worldTransform(content, entityId),
+  );
 }
 
 export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft {
@@ -393,6 +419,12 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
     delete next.content.adaptive.calibration.reviewReceiptId;
     if (next.content.placementPolicy === "CALIBRATED") next.content.placementPolicy = "ADAPTIVE_STICKY";
   }
+  if (studio.surfacePreviewFrames)
+    studio.surfacePreviewFrames = studio.surfacePreviewFrames.filter(
+      (f) =>
+        next.content.anchors.some((a) => a.id === f.anchorId) &&
+        !(edit.type === "PLACEMENT" && f.anchorId === entity.anchorId),
+    );
   return draftSchema.parse(next);
 }
 
