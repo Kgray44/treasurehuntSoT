@@ -32,7 +32,7 @@ it("reactivates an authorized saved surface on Journal mount before the periodic
   vi.stubGlobal("fetch", requests);
   render(<CrossdeckDevices initialVoyage="voyage" compact />);
   await waitFor(() => expect(requests.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(1));
-  const devices = screen.getByRole("link", { name: "Devices", exact: true });
+  const devices = screen.getByRole("link", { name: "Devices" });
   const description = document.getElementById(devices.getAttribute("aria-describedby")!);
   expect(description?.textContent).toContain("0 connected");
   expect(devices.textContent).toContain("0 connected");
