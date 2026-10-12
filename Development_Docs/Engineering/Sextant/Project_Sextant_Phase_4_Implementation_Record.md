@@ -794,3 +794,35 @@ This is the third bounded experience-review cycle. After recapture and independe
 review, any unresolved finding must be reported without further repeated repair,
 contract weakening or acceptance claims. New native dispatch remains on hold
 until the coherent source and scoped handoff are frozen.
+
+## Third bounded review: blocked with retained evidence
+
+Candidate `820178bf043e1ffd3c366eaa5037d5d148653e51`, tree
+`e5dfae89a2e4c66330e888b0298ac5ef628ca082`, completed the production build,
+TypeScript, 54 focused tests and all 53 D0/D1 scenarios with cleanup. These remain
+bound to that source. Actual ordinary sign-in and first opening were recorded;
+the one desktop/normal first opening measured 9136.7706ms. Replay and the screen
+fallback were visibly reached, without native or physical input injection.
+
+All three consumer journeys still failed. The final independent reviewer verified
+12 assets and all 17 dimensions, returning `BLOCK_WITH_EVIDENCE`. Crossdeck's
+compatibility Journal reads local storage while the identity Journal uses persisted
+authenticated reading state: the ordinary return showed the first-open action
+again. Multiple legitimate device rows made the global Continue Voyage selector
+ambiguous, and the actual synthetic route slug differed from the asserted slug.
+The Lens was not reached in this final capture, so its local ink repair remains
+visually unverified. Mobile/reduced-motion, Creator save/reopen, complete return
+continuity and the 141 uncovered shared consumers remain qualification gaps.
+
+The [original packet, final review and byte-identical asset map](evidence/820178bf/retained-artifact-map.json)
+retain the failed result, twelve actual screenshots/recordings and 53 actual
+D0/D1 receipts as engineering evidence. Their original source identities and
+hashes are unchanged; this records-only publication does not rerun or rebind proof.
+The existing protected capture helper was not changed. No significant experience,
+owner acceptance or formal Phase 4 acceptance is granted.
+
+The three-iteration experience repair cap is reached. The coordinator explicitly
+holds both Apple and Android handoffs; prepared transports grant no dispatch
+permission. Continue only after specific authorization for an additional bounded
+repair or an explicit frozen native-handoff release, preserving the independent
+findings. Required D4 provider/project access and signing remain unavailable.

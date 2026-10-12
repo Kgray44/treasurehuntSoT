@@ -153,7 +153,7 @@ for the same bounded primary Mac scope. Ordinary38177846432 completed PASS for
 opt-in native SKIP. Never relabel it or duplicate it to debug the Swift test.
 
 Native artifacts are stored at
-`D:\Codex_Task_Artifacts\Sextant_Phase4_01a12c17_20261011\landfall-device-lab`;
+`D:\Codex_Task_Artifacts\Sextant_Phase 4_01a12c17_20261011\landfall-device-lab`;
 the original ignored worktree artifact path is a junction. Relocation retained
 40154 files and verified21 historical receipts/39882 hashes. Preserve all result
 bundles, screenshots, failed transfers and receipt identities. New collectors use
@@ -161,7 +161,7 @@ the original paths and append; do not delete historical proof to recover space.
 
 When only hosted/external results remain, preserve exact HEAD/tree/dirty state,
 run IDs, completed checks, ownership and resume triggers; end the native turn.
-Ending that turn does not complete this goal or accept Phase4. On resume, verify
+Ending that turn does not complete this goal or accept Phase 4. On resume, verify
 current branch/PR identities and receipts before further action. D4 access/signing
 remains externally unavailable; all attainable source/virtual qualification and
 reviewable PR publication must finish before closeout.
@@ -289,7 +289,22 @@ route, and measures visible Replay full opening after actual first-entry persona
 preparation. Automatic returns await readable Devices without an obsolete entry
 action. No reader-state or progression is injected to prepare that persona.
 Retain separate first-entry evidence; full replay is not a first-entry claim.
-Protected role setup and the141 uncovered shared consumer surfaces remain open.
+Protected role setup and the 141 uncovered shared consumer surfaces remain open.
 The next independent review is the third bounded review cycle; stop after it or
 no material progress, preserving unresolved findings without weakening contracts.
 Native dispatch remains parent HOLD until an explicit frozen handoff.
+
+## Final bounded review checkpoint
+
+Source 820 completed build, first-entry preparation and 53 D0/D1 checks with
+cleanup. All three consumer journeys failed; independent review is
+BLOCK_WITH_EVIDENCE at the third iteration. Original 12 assets, packet, review,
+receipt mapping and 53 D0/D1 receipts are retained byte-identically under
+Development_Docs/Engineering/Sextant/evidence/820178bf. The records-only closeout
+must not relabel their source or claim rendered Lens/mobile/reduced/Creator proof.
+No fourth repair/capture follows the general overnight continuation instruction.
+Parent explicitly holds both native handoffs, including prepared 820 transports.
+Resume triggers: specific authorization for an additional bounded consumer
+repair; or explicit frozen native-handoff release with exact current source,
+owner claim, scope and duplicate checks. D4 access/signing is a separate external
+gate. Preserve owned output/junctions; no unapproved cleanup deletion/migration.

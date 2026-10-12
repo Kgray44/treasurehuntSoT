@@ -1,0 +1,48 @@
+{
+  "version": 2,
+  "scenarioId": "sextant.walking-spin-rejection",
+  "scenarioVersion": 1,
+  "owningProject": "SEXTANT",
+  "scenarioFingerprint": "34dbb08bc07f458c4c8294bd704306714c4c45de3ef0c740e01232d24d2c1bd0",
+  "source": {
+    "sourceSha": "820178bf043e1ffd3c366eaa5037d5d148653e51",
+    "sourceTree": "e5dfae89a2e4c66330e888b0298ac5ef628ca082",
+    "sourceFingerprint": "c2bc73cb7daa8a7f1c416ca2ae88a6787e4a95356989fca301fcfe1aca237cdd",
+    "dirty": false
+  },
+  "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+  "tier": "D0",
+  "profile": "synthetic",
+  "hostOs": "win32 10.0.26300",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": [
+    "device.motion"
+  ],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-12T07:00:54.777Z",
+  "completedAt": "2026-10-12T07:00:54.778Z",
+  "assertions": [
+    {
+      "id": "sextant.phase2.walking-spin-rejection",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "PROVIDER_SIMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D4_REAL_DEVICE_REQUIRED_FOR_PHYSICAL_CLAIMS",
+    "D5_FIELD_REQUIRED_FOR_FIELD_CLAIMS"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": [
+      "emulated-browser-event-listeners",
+      "ephemeral-leases",
+      "owned-haptic-output"
+    ],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

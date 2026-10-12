@@ -1,0 +1,50 @@
+{
+  "version": 2,
+  "scenarioId": "sextant.coordinated-clock-fallback",
+  "scenarioVersion": 1,
+  "owningProject": "SEXTANT",
+  "scenarioFingerprint": "cca43ced0d88cff2956bbaf6320eea9b669354b65c3b81640e276a99afdb5f9a",
+  "source": {
+    "sourceSha": "820178bf043e1ffd3c366eaa5037d5d148653e51",
+    "sourceTree": "e5dfae89a2e4c66330e888b0298ac5ef628ca082",
+    "sourceFingerprint": "c2bc73cb7daa8a7f1c416ca2ae88a6787e4a95356989fca301fcfe1aca237cdd",
+    "dirty": false
+  },
+  "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+  "tier": "D0",
+  "profile": "synthetic",
+  "hostOs": "win32 10.0.26300",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": [
+    "device.motion",
+    "device.magnetic-field"
+  ],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-12T07:00:54.853Z",
+  "completedAt": "2026-10-12T07:00:54.857Z",
+  "assertions": [
+    {
+      "id": "sextant.phase4.coordinated-clock-fallback",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "PROVIDER_SIMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D4_CORE_NATIVE_BRINGUP_REQUIRED",
+    "D4_REAL_DEVICE_REQUIRED_FOR_PHYSICAL_CLAIMS",
+    "D5_FIELD_REQUIRED_FOR_FIELD_CLAIMS",
+    "OWNER_ACCEPTANCE_REQUIRED"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": [
+      "bounded-synthetic-series",
+      "ephemeral-field-model"
+    ],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

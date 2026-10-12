@@ -2573,5 +2573,78 @@
     "nativeProof": false,
     "physicalProof": false,
     "phaseAcceptance": false
+  },
+  "finalBoundedExperience820": {
+    "sourceSha": "820178bf043e1ffd3c366eaa5037d5d148653e51",
+    "sourceTree": "e5dfae89a2e4c66330e888b0298ac5ef628ca082",
+    "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+    "productionBuild": "PASS",
+    "buildId": "CjiqpAQjo6qitM5uDHdau",
+    "typeScript": "PASS",
+    "focusedTests": {
+      "tests": 54,
+      "files": 5,
+      "result": "PASS"
+    },
+    "D0D1": {
+      "scenarios": 53,
+      "result": "PASS",
+      "cleanup": "PASS_ALL_53",
+      "fingerprint": "c2bc73cb7daa8a7f1c416ca2ae88a6787e4a95356989fca301fcfe1aca237cdd"
+    },
+    "ordinarySignIn": "PASS",
+    "firstEntry": {
+      "device": "DESKTOP",
+      "motionMode": "NORMAL",
+      "milliseconds": 9136.7706,
+      "preparation": "ACTUAL_VISIBLE_FIRST_OPEN_NO_STATE_INJECTION"
+    },
+    "consumerJourneys": "THREE_FAILED_ACTUAL_JOURNEY",
+    "screenFallback": "OBSERVED_DESKTOP_NORMAL",
+    "runtimeAndSQLiteCleanup": "PASS",
+    "independentReview": "BLOCKED_WITH_EVIDENCE_AT_THIRD_ITERATION",
+    "repairDisposition": "BLOCK_WITH_EVIDENCE",
+    "reviewCycle": 3,
+    "confirmedFindings": [
+      {
+        "id": "SEXTANT-FINAL-001",
+        "classification": "CONFIRMED_PRODUCT_CONSUMER_READING_CONTINUITY_DEFECT"
+      },
+      {
+        "id": "SEXTANT-FINAL-002",
+        "classification": "CONFIRMED_FIXTURE_AND_JOURNEY_SELECTOR_MISMATCH"
+      },
+      {
+        "id": "SEXTANT-FINAL-003",
+        "classification": "CONFIRMED_FIXTURE_ROUTE_IDENTITY_MISMATCH_LATENT_OUTCOME_FAILURE"
+      },
+      {
+        "id": "SEXTANT-FINAL-004",
+        "classification": "PREVIOUS_CONFIRMED_READABILITY_DEFECT_RENDERED_REPAIR_UNVERIFIED"
+      },
+      {
+        "id": "SEXTANT-FINAL-005",
+        "classification": "UNOBSERVED_REQUIRED_COVERAGE_AND_CAPTURE_AMBIGUITY"
+      }
+    ],
+    "planner": {
+      "status": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
+      "uncoveredConsumers": 141
+    },
+    "retainedEvidence": {
+      "root": "Development_Docs/Engineering/Sextant/evidence/820178bf",
+      "map": "Development_Docs/Engineering/Sextant/evidence/820178bf/retained-artifact-map.json",
+      "mappingSha256": "9e484086e5137db83180375ae17e3a92a69737713721ac62a7402c92143c3cda",
+      "review": "Development_Docs/Engineering/Sextant/evidence/820178bf/independent-review.json",
+      "reviewSha256": "9b48d309b4bbec2d6f533d7f5b38f972b5f948f864e1ad00607bdf482b36d84d",
+      "packet": "Development_Docs/Engineering/Sextant/evidence/820178bf/original-review-packet.json",
+      "originalPacketDigest": "5c3ffbbb03f35231bf522b99bf3c1a4e0a149db9e4e3010e162866d5f2c65ee1",
+      "assets": 12,
+      "allByteIdentical": true
+    },
+    "nativeDispatch": "PARENT_HOLD_NOT_AUTHORIZED_BY_PREPARATION",
+    "nativeProof": "NOT_EXECUTED_CURRENT_SOURCE",
+    "physicalProof": false,
+    "phaseAcceptance": false
   }
 }
