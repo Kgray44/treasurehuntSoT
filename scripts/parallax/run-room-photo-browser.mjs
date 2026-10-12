@@ -1,7 +1,17 @@
 // Bounded development-only photo journey. This is not protected production browser qualification.
 import { execFileSync, spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
-import { mkdirSync, readFileSync, readdirSync, copyFileSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  copyFileSync,
+  writeFileSync,
+  mkdtempSync,
+  rmSync,
+  existsSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
 import { createServer } from "node:net";
 import path from "node:path";
 const root = process.cwd();
@@ -23,6 +33,7 @@ const port = await new Promise((resolve, reject) => {
   });
 });
 const baseURL = `http://127.0.0.1:${port}`;
+const privateRoot = mkdtempSync(path.join(tmpdir(), "voyagewright-photo-browser-"));
 const env = {
   ...process.env,
   DATABASE_URL: database,
@@ -39,7 +50,7 @@ const env = {
   PARALLAX_A1_SYNTHETIC_PROVIDER: "1",
   PARALLAX_ROOM_PHOTO_RUNTIME: "SYNTHETIC_DEVELOPMENT",
   OPENAI_API_KEY: "parallax-a1-synthetic-provider-only",
-  PRIVATE_CONTENT_PROVIDER_ROOT: path.join(isolatedRoot, "photo-private", randomUUID()),
+  PRIVATE_CONTENT_PROVIDER_ROOT: privateRoot,
   PRIVATE_CONTENT_LOCAL_MASTER_KEY: "1".repeat(64),
   PRIVATE_CONTENT_SCANNER_PROVIDER: "synthetic",
   NODE_OPTIONS: `--import=${new URL("./synthetic-provider-preload.mjs", import.meta.url).href}`,
@@ -82,8 +93,13 @@ try {
   if (process.platform === "win32")
     execFileSync("taskkill", ["/PID", String(server.pid), "/T", "/F"], { windowsHide: true, stdio: "ignore" });
   else server.kill("SIGTERM");
+  if (!path.resolve(privateRoot).startsWith(path.resolve(tmpdir()) + path.sep))
+    throw new Error("Unsafe private fixture cleanup");
+  rmSync(privateRoot, { recursive: true });
   const recordings = [];
-  for (const directory of readdirSync(path.join(root, "test-results"), { withFileTypes: true })) {
+  for (const directory of existsSync(path.join(root, "test-results"))
+    ? readdirSync(path.join(root, "test-results"), { withFileTypes: true })
+    : []) {
     if (!directory.isDirectory() || !directory.name.startsWith("parallax-room-photo-")) continue;
     for (const file of readdirSync(path.join(root, "test-results", directory.name))) {
       if (!/^video(?:-\d+)?\.webm$/.test(file)) continue;

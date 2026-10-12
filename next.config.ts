@@ -9,6 +9,8 @@ if (taskOwnedSoundingLineBuild) {
 }
 
 const nextConfig: NextConfig = {
+  // Preserve the frozen source of the separate synthetic photo development journey.
+  ...(process.env.PARALLAX_ROOM_PHOTO_RUNTIME === "SYNTHETIC_DEVELOPMENT" ? { agentRules: false } : {}),
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
   allowedDevOrigins: homeportAllowedDevOrigins(),
   // Keep opted-in local validation builds within the same one-worker budget as Vitest.
