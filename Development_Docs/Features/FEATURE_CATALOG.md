@@ -2237,7 +2237,7 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 ### Meaningful limitations
 
 - Local software qualification does not establish representative-device owner acceptance or D4 physical AR evidence.
-- Spatial Assistant requires server-side OpenAI configuration and enabled administrator policy; full live-corpus quality and owner presentation review remain separate gates.
+- Spatial Assistant requires server-side OpenAI configuration and enabled administrator policy; its bounded model study and accepted owner presentation are documented in A1, while representative-device and universal live quality remain unqualified.
 - Synthetic previews and complexity estimates do not establish measured device frame rates or shared-anchor synchronization.
 - Unsupported imported renderer assets block release; richer rendering, recognition, shared physical anchors and Reach manipulation remain governed by their owning phases.
 
@@ -2396,6 +2396,8 @@ Creators describe spatial ideas, inspect validated proposals in the real canvas 
 - Per-user usage and reviewed overrides in the existing People account dossier
 - Shared Windows user environment configuration across independent local worktrees
 - Responsive floating/docked review, preserved phone canvas switching and reduced motion
+- Daily UTC requests, settled costs and accounted spending with selectable charts and accessible detailed tables
+- Coherent account light/dark Studio appearance with blue overlay assistance and populated mode-dependent authoring sections
 
 ### Primary surfaces
 
@@ -2404,8 +2406,8 @@ Creators describe spatial ideas, inspect validated proposals in the real canvas 
 ### Meaningful limitations
 
 - Assistance and advanced access start disabled and require administrator activation plus server configuration.
-- Owner visual acceptance remains pending; browser viewport proof does not establish physical phone keyboard or touch comfort.
-- Six bounded live calls validate transport, structured interpretation and settlement; corrected corpus matching has deterministic proof and full live-corpus quality is not established.
+- Owner accepted the revised presentation at fe5c5438; browser viewport proof does not establish physical phone keyboard or touch comfort.
+- Fifteen additional synthetic rounds made 484 settled calls; final Luna low passed 83/90 strict cases with independent semantic review. Finite one-attempt comparisons do not establish universal or repeat-run model reliability.
 - Independent databases enforce their own local quotas; shared credentials do not create a shared cross-worktree ledger.
 - Physical illumination, particles, custom materials, recognition and certified physical AR quality are outside supported Assistant operations.
 
@@ -2417,6 +2419,10 @@ Creators describe spatial ideas, inspect validated proposals in the real canvas 
 - test: `tests/e2e/parallax-spatial-assistant.spec.ts`
 - test: `tests/e2e/parallax-ai-enforcement.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md`
+- test: `tests/e2e/parallax-owner-refinements.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Parallax/Parallax_A1_Visual_Refinements.md`
+- completion-record: `Development_Docs/Projects/Project_Parallax/Parallax_A1_Model_and_Prompt_Comparison.md`
+- commit: `b078f823f197e2fa175c6525a7e190b45e680a7c`
 
 ---
 

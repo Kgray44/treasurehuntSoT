@@ -1,0 +1,2052 @@
+{
+  "version": 1,
+  "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+  "sourceDigest": "8102b782bad8dab20b665832d5f1b939c0bbe9bab9a0b54b53cf963610791c74",
+  "contractDigest": "32c07f576ea1f68642f7671f14609087d242b7949d7dba9a53f124f46a666b73",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "artifacts": [
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1.png",
+      "sha256": "86fa7178a6a6c53f82bb62c11c079d3c44f243a83499762efb83f8f3fe3a373b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "EDITOR_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3.png",
+      "sha256": "1a0068d90ae46c758f9bfcf0143c9c2d05bbd97750de409af042179478c6ad91",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5.png",
+      "sha256": "4653e8ff95f5124fc18ba86255b64d9b968b565b8bc82af33e930561cd5f5f98",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_DOCKED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8.png",
+      "sha256": "611c2aa4d2d9e55f07f7c8e68edc9b57956ea89d3c460d869361c06f615cb2bb",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL.trace.zip",
+      "sha256": "73c44f4792c513088b008df6dc8e48c4da68644f2004a2638b8ae608e44acb49",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c11fe928044245ecb73f19d231d2eb8b.webm",
+      "sha256": "f93e53c685731fd71d5beca8e5720cfcf26cdc7c6f83cb49c8a02d515747fcdc",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1.png",
+      "sha256": "6ac040841138e3fd843ae28c6ab050ca8b0429a5883c2d3b0508c5164022e122",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "EDITOR_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3.png",
+      "sha256": "21857f1c3b389ab65131c64909f1aae0c0b138f4960f2260b6a60544ebd996de",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5.png",
+      "sha256": "7b77db5efcbf76e143aac28bd55cd92af56269c673de0a95bbe92c5b58a28e97",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_DOCKED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8.png",
+      "sha256": "611c2aa4d2d9e55f07f7c8e68edc9b57956ea89d3c460d869361c06f615cb2bb",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "faf52cb89288fc8563183f75655ff44fe7634b1233fa1845e041c4afbfa8052a",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/411f7bcd519bbc56f6fb252c25712715.webm",
+      "sha256": "3c371bd6a75df8f98fc4e52872f9a4d4565fd592fb7d4e7870578056c9fcef58",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-EDITOR_READY-1.png",
+      "sha256": "2befba903d0936272dd3a40f7bd4fd51dfe130399f3493dca90d9fc7c16759bb",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "EDITOR_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3.png",
+      "sha256": "58d41dc197a5e1004b598879279786264138bb3f02340fba2d2f1a931a30f234",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-5.png",
+      "sha256": "309d2b375f038166181eca81e1c4aca55a9a305ad1f26146755645190a00a0d6",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_DOCKED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-RETURNED-8.png",
+      "sha256": "9135cfcb3d05d6bcd08be7337c8fd71e9c35465eaf9bbec7862d3f2c7d80328d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL.trace.zip",
+      "sha256": "8ac6182d09ac092e99b8b003b60ef9f3237347fcfe75daa3641aae0496be9aca",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7dcb15824d4b94b6213497ffa51512cc.webm",
+      "sha256": "e4a322c5b4b7b028d3c5bf425ca6b76fe78f8ca988df76d6dacbbd46f25ddb1c",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-EDITOR_READY-1.png",
+      "sha256": "061b2e8c2af4cdf3604192ce9f09d96bc3341ee8492a79b5548fe7c65d8bd845",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "EDITOR_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_READY-3.png",
+      "sha256": "b745eeed390fb9c3862c604b6fa253b4c8c97204adc05c243b4af51eade61314",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_DOCKED-5.png",
+      "sha256": "f07425284741999b25bbe5852b7488f35e14cd0ec768c6bf040a14488325ce40",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_DOCKED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-RETURNED-8.png",
+      "sha256": "9135cfcb3d05d6bcd08be7337c8fd71e9c35465eaf9bbec7862d3f2c7d80328d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "ae558d655e2db5bd92b529ae98e41e5f5a6f3fdab560bcb462854b1e31ce7af8",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/169c5e63dea922943af2014591d4c586.webm",
+      "sha256": "18a8ee2f09d6ae7de9441eea2f92c06fab295c72b5dafd5f225cfc816964411c",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-SETTLED_CHART-4.png",
+      "sha256": "3ddccf415ac32957189b6cbae3acb25ee1b9bc1e9d9680f0edbd9598c5e5a811",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "state": "SETTLED_CHART",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8.png",
+      "sha256": "d66f76dbc4e92e30898e006b268c68e42a22ddb0c36e2aa5b092267b3fdcf0e9",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "state": "ACCOUNTED_CHART",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-RETURNED-12",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-RETURNED-12.png",
+      "sha256": "7bffb228851ddb18283114dc04445ce298fe93759f52ac44d3ce83d4221922bb",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "b9f4e2afc9f6044f6671e937fe323c9202b5e5391fbd0d29cde3cc49a719c2af",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c32d04f031bfa6b86a0fb6de85f63a83.webm",
+      "sha256": "f722eaa889bf626ca6cf28af78e6e9d8bb9cb74977518e1a2e886653c9887b7f",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-DOSSIER_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-DOSSIER_READY-4.png",
+      "sha256": "6565128668033fbe17255eb1781cebec4cb563ad9882b32bb5e667ba29403941",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "state": "DOSSIER_READY",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6.png",
+      "sha256": "3b3616605495193f7c73f49a16540668d8d842bb6cb607665b6eceb2c3756cfd",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "state": "PEOPLE_RETURNED",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "30eac463333f6f6b9d1ba15745c55cdf544db9d580a93ed94814f1903723af60",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/4d2260c15d3a91fad35f56979450ee75.webm",
+      "sha256": "2356b8c04a40182486aeffc064227a86ac986cdb5e59fec83df39791e7cbe78f",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-SETTLED_CHART-4.png",
+      "sha256": "43a3ec5b474bfa42e6483b58bc960065ef77c72a12b7bc2eeeb7b66379044ae8",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "state": "SETTLED_CHART",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8.png",
+      "sha256": "a1e5a38274314e5fb15ad3c42b4087dc705156fb855124060e71c33029a418ae",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "state": "ACCOUNTED_CHART",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-RETURNED-12",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-RETURNED-12.png",
+      "sha256": "8758a7b0457b9568c6c7f97153e104dd6592fdb8f4cac733d6e5de7903621ddf",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "b3e30ffaef9ee04ad99663445641240ec2e0d7dad10935cfbd4153c0f46fb6f1",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a74d64e3a92497bf7689295ad64c51f4.webm",
+      "sha256": "f809a10316e23a4bf0c8a499729cf33ad542f4f7b85c4e3c2db6c0b49e1acbf4",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4.png",
+      "sha256": "30f059ee651dfffb6cc7a4e9e14bce07346ce5aede97ef07dc7b72290104d57f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "state": "DOSSIER_READY",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6.png",
+      "sha256": "12074768af192203ee5f58ea3c070e603e912f3da7860ea9f80293b0e76d9748",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "state": "PEOPLE_RETURNED",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "371c4b89a0841cf7f24fcd14fbfbe03de3c7e9d402537a434c117a102fd27d5f",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/abd716992b019b2add672923f1362043.webm",
+      "sha256": "eaf015491731bd367d045cf2e9acb073d6b6e9cf6f2ada9f639ea4f14cb5ad0b",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase1.registry",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "journeys": [
+    {
+      "id": "creator-assistance-and-return",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator enters the actual editor, opens and docks contextual assistance, and returns to the same Creator library",
+      "observations": [
+        {
+          "step": 1,
+          "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+          "role": "main",
+          "name": "",
+          "text": "Ask Parallax"
+        },
+        {
+          "step": 3,
+          "meaning": "The assistance action opens a usable contextual idea composer and review area alongside the actual scene.",
+          "role": "region",
+          "name": "Spatial Assistant",
+          "text": "Spatial Assistant"
+        },
+        {
+          "step": 5,
+          "meaning": "Docking attaches contextual assistance over the existing scene while exposing an explicit return to floating assistance.",
+          "role": "region",
+          "name": "Ask Parallax workspace",
+          "text": "Float assistance"
+        }
+      ],
+      "visibleActions": 5,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [
+        {
+          "id": "creator-identity",
+          "before": "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+          "atOutcomes": [
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d"
+          ],
+          "after": "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d"
+        }
+      ],
+      "feedbackMs": 938.9970639999997,
+      "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": false,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "EDITOR_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "ASSISTANT_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "ASSISTANT_DOCKED",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "creator-assistance-and-return",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator enters the actual editor, opens and docks contextual assistance, and returns to the same Creator library",
+      "observations": [
+        {
+          "step": 1,
+          "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+          "role": "main",
+          "name": "",
+          "text": "Ask Parallax"
+        },
+        {
+          "step": 3,
+          "meaning": "The assistance action opens a usable contextual idea composer and review area alongside the actual scene.",
+          "role": "region",
+          "name": "Spatial Assistant",
+          "text": "Spatial Assistant"
+        },
+        {
+          "step": 5,
+          "meaning": "Docking attaches contextual assistance over the existing scene while exposing an explicit return to floating assistance.",
+          "role": "region",
+          "name": "Ask Parallax workspace",
+          "text": "Float assistance"
+        }
+      ],
+      "visibleActions": 5,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [
+        {
+          "id": "creator-identity",
+          "before": "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+          "atOutcomes": [
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d"
+          ],
+          "after": "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d"
+        }
+      ],
+      "feedbackMs": 915.6307699999998,
+      "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "EDITOR_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "ASSISTANT_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "ASSISTANT_DOCKED",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "creator-assistance-and-return",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator enters the actual editor, opens and docks contextual assistance, and returns to the same Creator library",
+      "observations": [
+        {
+          "step": 1,
+          "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+          "role": "main",
+          "name": "",
+          "text": "Ask Parallax"
+        },
+        {
+          "step": 3,
+          "meaning": "The assistance action opens a usable contextual idea composer and review area alongside the actual scene.",
+          "role": "region",
+          "name": "Spatial Assistant",
+          "text": "Spatial Assistant"
+        },
+        {
+          "step": 5,
+          "meaning": "Docking attaches contextual assistance over the existing scene while exposing an explicit return to floating assistance.",
+          "role": "region",
+          "name": "Ask Parallax workspace",
+          "text": "Float assistance"
+        }
+      ],
+      "visibleActions": 5,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [
+        {
+          "id": "creator-identity",
+          "before": "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+          "atOutcomes": [
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d"
+          ],
+          "after": "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d"
+        }
+      ],
+      "feedbackMs": 743.9745829999993,
+      "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": false,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "EDITOR_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "ASSISTANT_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "ASSISTANT_DOCKED",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "creator-assistance-and-return",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator enters the actual editor, opens and docks contextual assistance, and returns to the same Creator library",
+      "observations": [
+        {
+          "step": 1,
+          "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+          "role": "main",
+          "name": "",
+          "text": "Ask Parallax"
+        },
+        {
+          "step": 3,
+          "meaning": "The assistance action opens a usable contextual idea composer and review area alongside the actual scene.",
+          "role": "region",
+          "name": "Spatial Assistant",
+          "text": "Spatial Assistant"
+        },
+        {
+          "step": 5,
+          "meaning": "Docking attaches contextual assistance over the existing scene while exposing an explicit return to floating assistance.",
+          "role": "region",
+          "name": "Ask Parallax workspace",
+          "text": "Float assistance"
+        }
+      ],
+      "visibleActions": 5,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [
+        {
+          "id": "creator-identity",
+          "before": "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+          "atOutcomes": [
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d",
+            "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d"
+          ],
+          "after": "33057b75959f0832e195d2267ccf95891f3c0812eaa543d51e981fd509bc3a1d"
+        }
+      ],
+      "feedbackMs": 626.5033159999948,
+      "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "EDITOR_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "ASSISTANT_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "ASSISTANT_DOCKED",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "daily-chart-metrics",
+      "contractId": "admiralty.phase1.registry",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED",
+      "entryPoint": "/admin/ai-usage",
+      "outcome": "An operator compares daily requests with settled and accounted costs, then restores the request chart without policy mutation",
+      "observations": [
+        {
+          "step": 4,
+          "meaning": "Choosing settled cost changes the displayed daily monetary metric while keeping exact canonical request-day accounting available.",
+          "role": "figure",
+          "name": "Settled cost per day by UTC day",
+          "text": "Settled cost per day"
+        },
+        {
+          "step": 8,
+          "meaning": "Choosing accounted spending distinguishes pending reservations and unresolved usage from settled costs.",
+          "role": "figure",
+          "name": "Accounted spending per day by UTC day",
+          "text": "Accounted spending per day"
+        }
+      ],
+      "visibleActions": 3,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 0,
+      "measurement": null,
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "SETTLED_CHART",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "ACCOUNTED_CHART",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "canonical-people-allowance",
+      "contractId": "admiralty.phase1.registry",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED",
+      "entryPoint": "/admin/ai-usage",
+      "outcome": "The ordinary People search opens the existing account allowance controls and returns without adding a separate AI user search",
+      "observations": [
+        {
+          "step": 4,
+          "meaning": "The selected canonical account dossier contains its real inherited AI allowance and governed per-user override controls.",
+          "role": "main",
+          "name": "",
+          "text": "AI usage & quotas"
+        }
+      ],
+      "visibleActions": 4,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 0,
+      "measurement": null,
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "DOSSIER_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "PEOPLE_RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "daily-chart-metrics",
+      "contractId": "admiralty.phase1.registry",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED",
+      "entryPoint": "/admin/ai-usage",
+      "outcome": "An operator compares daily requests with settled and accounted costs, then restores the request chart without policy mutation",
+      "observations": [
+        {
+          "step": 4,
+          "meaning": "Choosing settled cost changes the displayed daily monetary metric while keeping exact canonical request-day accounting available.",
+          "role": "figure",
+          "name": "Settled cost per day by UTC day",
+          "text": "Settled cost per day"
+        },
+        {
+          "step": 8,
+          "meaning": "Choosing accounted spending distinguishes pending reservations and unresolved usage from settled costs.",
+          "role": "figure",
+          "name": "Accounted spending per day by UTC day",
+          "text": "Accounted spending per day"
+        }
+      ],
+      "visibleActions": 3,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 0,
+      "measurement": null,
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "SETTLED_CHART",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "ACCOUNTED_CHART",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "canonical-people-allowance",
+      "contractId": "admiralty.phase1.registry",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED",
+      "entryPoint": "/admin/ai-usage",
+      "outcome": "The ordinary People search opens the existing account allowance controls and returns without adding a separate AI user search",
+      "observations": [
+        {
+          "step": 4,
+          "meaning": "The selected canonical account dossier contains its real inherited AI allowance and governed per-user override controls.",
+          "role": "main",
+          "name": "",
+          "text": "AI usage & quotas"
+        }
+      ],
+      "visibleActions": 4,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 0,
+      "measurement": null,
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "DOSSIER_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "PEOPLE_RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    }
+  ],
+  "reviews": [
+    {
+      "contractId": "admiralty.phase1.registry",
+      "builderContext": "root/main",
+      "reviewerContext": "owner_experience_review",
+      "independence": "SEPARATE_CONTEXT",
+      "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+      "packetDigest": "ecbd6f855ca6f8b5089ec1dae88da1647356c4dc2222115f492ad00befe05a1e",
+      "status": "ACCEPTED",
+      "iterations": 3,
+      "dimensions": {
+        "composition": {
+          "observation": "Daily activity remains a distinct card below monthly budget watch in the current desktop/mobile Admiralty images. The canonical account dossier includes its existing allowance panel. Fresh local nonzero daily screenshots supplement protected zero-ledger states on this exact source.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-RETURNED-12",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-DOSSIER_READY-4",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "hierarchy": {
+          "observation": "AI Usage & Quotas leads to monthly totals, budget watch, daily activity, outcomes and provider status. Chart shows separates requests, settled cost and accounted spending with UTC explanations. The selected account identity precedes its existing AI quota fields within canonical People dossier context.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-RETURNED-12",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-DOSSIER_READY-4",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "typography": {
+          "observation": "Cream serif page/card headings and readable sans-serif values separate titles from labels and explanations. Mobile cost values remain readable at full resolution. The long account dossier wraps the synthetic account name instead of crowding its heading.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "spacing": {
+          "observation": "Daily chart title, selector, explanatory sentence and four metrics retain separate rows on mobile. Allowance inputs have separate labels and adequate vertical spacing. The narrow request-history table uses a contained horizontal region rather than widening the page.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "controls": {
+          "observation": "The actual recorded keyboard journey changes Chart shows to settled cost, then accounted spending and back to requests. People search uses the canonical Search input/button and selected account link. The dossier exposes inherited monthly allowance, spending, rate, eligibility and expiry inputs; current capture does not mutate policy.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-RETURNED-12",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-DOSSIER_READY-4",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "contrast": {
+          "observation": "Light cream headings, pale body text and a bright cyan focus ring are distinguishable against the dark green cards. Empty charts explicitly say there are no settled costs or requests, so absence of bars is not interpreted through color alone.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "consistency": {
+          "observation": "The account header and gold/green Admiralty navigation remain in the gateway shell family. Daily metric descriptions use the same UTC day admission convention. Canonical People search and dossier reuse the account authority instead of adding a separate AI account finder.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "states": {
+          "observation": "Current protected captures establish settled chart, accounted chart, request-chart return, canonical dossier and People return on desktop/mobile. Fresh local images additionally distinguish honest explicit empty state from populated initial state, with7requests,$0.1008settled and$0.3008accounted.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-RETURNED-12",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-DOSSIER_READY-4",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "responsive": {
+          "observation": "At 390px the monthly metrics and allowance fields wrap inside the card; daily metrics become a two-column group. The history table has more columns than visible width and stays contained. Full-resolution mobile crops show no page-wide overflow; current recorded accessibility checks agree.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "keyboard": {
+          "observation": "Protected actual journeys keyboard-activate metric selection and canonical People navigation. Current mobile trace has tabindex0, role region and name Account AI request history on its overflow wrapper. Fresh local dossier screenshot shows focus and shifted columns; passing exact journey asserts focus and conditional ArrowRight/scrollLeft>0. Dedicated daily-table ArrowRight is not demonstrated.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-recording"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "focus": {
+          "observation": "Current protected mobile settled-chart image visibly outlines Chart shows and People return focuses its heading. Fresh local account-history image visibly outlines the horizontal region. After experience inspection, source confirms tabIndex0 plus shared scroll:focus-visible2px outline. Current protected serious axe results are empty, including dossier.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "feedback": {
+          "observation": "Selecting a metric changes the figure title and cost explanation and preserves displayed totals. Search opens the named synthetic account dossier, and return clears back to Start with a known clue. Current capture supplies no timed feedback boundary for Admiralty, so no independent latency claim is made.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-RETURNED-12",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-DOSSIER_READY-4",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "motion": {
+          "observation": "The reduced-motion desktop and mobile recordings preserve metric meaning and return navigation without relying on animation. Capture metadata confirms the requested reduced-motion preference. Sampled recording frames support transition meaning, not continuous playback smoothness or physical-device timing.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-recording"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "continuity": {
+          "observation": "Administrator identity remains visible through AI Usage, canonical People, account dossier and return. The recordings and capture receipt verify authorized Administrator role and return paths. Canonical dossier identity is Synthetic Parallax Creator; the session itself remains the operator.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-recording"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "complexity": {
+          "observation": "A single Chart shows selector exposes the three daily metrics; an optional exact table supplements the chart. Existing People search supplies a bounded account result and an existing dossier, limiting parallel navigation. The long dossier remains complex existing account context rather than a new AI-only administrative surface.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "role-outcomes": {
+          "observation": "The authorized Administrator compares daily metric representations and reaches selected inherited account allowance through ordinary People search, then returns. Fresh local nonzero chart and exact table provide current spending distinctions; canonical allowance preview/apply/restore are passing test assertions, not production policy or invoice proof.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-recording",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-recording"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        "fallbacks": {
+          "observation": "Current no-activity states disclose zero costs and no requests; provider status states that OpenAI credential is not configured. Blank per-account allowance fields visibly inherit policy, and the UI explains export metadata excludes retained prompts/proposals. No production invoice or real private account evidence is claimed.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "id": "E1",
+          "contractId": "admiralty.phase1.registry",
+          "classification": "EVIDENCE_INSUFFICIENT",
+          "observation": "Initial f6 packet did not retain the required canonical People allowance journey; this was missing proof, not proof of a nonfunctional account workflow.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6"
+          ],
+          "disposition": "RESOLVED",
+          "repairEvidenceIds": [
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4",
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6"
+          ],
+          "resolution": "Current protected desktop/mobile recordings and actual dossier/People-return images establish canonical People search, selected inherited allowance controls and return. Fresh current local dossier supplements policy-control appearance; no separate account finder or real-policy acceptance is claimed.",
+          "currentRepairSupplementPaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        {
+          "id": "E2",
+          "contractId": "admiralty.phase1.registry",
+          "classification": "EVIDENCE_INSUFFICIENT",
+          "observation": "Initial f6 daily choices and exact-table captures were desktop only, leaving the mobile outcome unsupported.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-RETURNED-12"
+          ],
+          "disposition": "RESOLVED",
+          "repairEvidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-RETURNED-12"
+          ],
+          "resolution": "Current protected mobile metric/return screenshots and fresh source-bound local mobile requests/settled/accounted images include the expanded nonzero exact table within its card. This supplies missing mobile presentation evidence; dedicated daily-table ArrowRight movement remains a separately stated limitation.",
+          "currentRepairSupplementPaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        {
+          "id": "E3",
+          "contractId": "admiralty.phase1.registry",
+          "classification": "EVIDENCE_INSUFFICIENT",
+          "observation": "Initial f6 described a populated five-request image as an initial empty state, which did not substantiate an honest empty daily chart.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-RETURNED-12"
+          ],
+          "disposition": "RESOLVED",
+          "repairEvidenceIds": [
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
+            "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-RETURNED-12"
+          ],
+          "resolution": "Current protected zero-ledger screenshots and fresh local owner-daily-empty.png explicitly show0requests,$0.00cost and no-activity text. The current initial screenshot is visibly populated and is retained as populated evidence rather than mislabeled empty.",
+          "currentRepairSupplementPaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-empty.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-initial.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-table.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-requests.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-settled.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-daily-mobile-accounted.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-desktop.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        },
+        {
+          "id": "F2",
+          "contractId": "admiralty.phase1.registry",
+          "classification": "ACCESSIBILITY_DEFECT",
+          "observation": "Fe5 protected mobile dossier exposed serious scrollable-region-focusable on the account request-history overflow wrapper; narrow exact source confirmed no focusable wrapper. This was in the canonical quota journey and was not waived as unrelated baseline debt.",
+          "evidenceIds": [
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4"
+          ],
+          "disposition": "RESOLVED",
+          "repairEvidenceIds": [
+            "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4"
+          ],
+          "resolution": "Current actual protected mobile trace has Account AI request history tabindex0/region semantics and current dossier serious axe results are empty. Fresh current local mobile dossier visibly outlines the table and shows shifted columns. Post-experience narrow source and passing journey assert focus and conditional ArrowRight/positive scrollLeft when overflow exists. No baseline-debt waiver is used.",
+          "currentRepairSupplementPaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-people-ai-dossier-mobile.png"
+          ]
+        }
+      ],
+      "baselineDebt": [],
+      "limitations": [
+        "Acceptance applies to the bounded Creator/Admiralty correction, with ownerAcceptance NOT_CLAIMED.",
+        "All26 protected screenshots and8 protected recordings were reviewed, plus34 targeted current local images and4 principal current local recordings; no continuous playback/physical timing acceptance.",
+        "Current account-history focus and conditional ArrowRight are supported by screenshot/test evidence; dedicated daily-table ArrowRight movement and exact retained numeric scroll offsets are not demonstrated.",
+        "Current full-Light and populated/adverse images are fresh source-bound synthetic unpaid captures; no new paid model semantic run or camera/readability qualification is credited.",
+        "Player Lens refit, physical touch/AR, production invoice/privacy qualification and owner product acceptance remain outside the bounded proof."
+      ],
+      "verificationAfterThirdVisualRepair": true
+    },
+    {
+      "contractId": "spatial-pilot.experience",
+      "builderContext": "root/main",
+      "reviewerContext": "owner_experience_review",
+      "independence": "SEPARATE_CONTEXT",
+      "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+      "packetDigest": "a92a8c59e068c1f78f9df470d512ba595b4a710b4465d2c168cf1dd4a5ce928a",
+      "status": "ACCEPTED",
+      "iterations": 3,
+      "dimensions": {
+        "composition": {
+          "observation": "Current dark protected preview is framed by tool rail, inspector and bottom timeline; blue floating/docked Assistant overlays the scene. Fresh current full-Light populated screenshots have pale blue/white left hierarchy, right inspector, bottom timeline and light walls/floor, beneath the retained cream account shell.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "hierarchy": {
+          "observation": "Desk Map and draft status occupy separate header lines. Guided exposes identity and closed groups; Detailed expands transform, interaction/layer and fallback controls; Engineering adds coordinate frame, anchor and raw coordinate inputs. Assistant separates selected-object context, narrative, composer and unavailable-state explanation.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "typography": {
+          "observation": "Current screenshots distinguish Desk Map, Spatial Assistant and the returned library title by scale and weight. Full-resolution current Light rendering keeps dark helper labels and blue action text legible on pale surfaces. Protected mobile invitation, composer helper and unavailable feedback retain their readable hierarchy.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "spacing": {
+          "observation": "Current populated Light header separates title/status from tool selectors. Left hierarchy rows and library assets are spaced distinctly. Transform/layer/interaction/fallback sections have their own labels. Composer field/actions retain separate rows; narrow landscape relies on internal scrolling rather than increased scene bounds.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "controls": {
+          "observation": "Actual keyboard recordings open Ask Parallax, activate Dock assistance with an explicit Float assistance return, close assistance and follow Creator Studio back to the library. View canvas and ordinary editor controls remain visible. Current unavailable-state message explicitly keeps manual editing available.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "contrast": {
+          "observation": "Blue controls and pale text stand apart from navy panes and scene walls. Focused controls have a bright cyan outline. The unavailable-state message is text, independent of icon/color; current full light appearance shows corresponding blue controls and dark labels on pale authoring surfaces.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "consistency": {
+          "observation": "Assistant border/action blue repeats inspector selections and the dark room palette. The Creator account header and returned library preserve the accepted gateway navigation family. Gateway references were inspected as shell references only and do not supply Studio design acceptance.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "states": {
+          "observation": "Current protected desktop/mobile normal/reduced captures establish ready editor, ready Assistant, docked Assistant and library return, with unavailable-assistance recovery text. Fresh local provider-failure Light image visibly explains that the request could not finish and local scene is unchanged beside the retained request.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "responsive": {
+          "observation": "Current four-size receipt has exactly equal canvas bounds before/open/docked at1440x1000,1280x800,390x844 and844x390. Portrait Assistant occupies most of the scene but keeps View canvas and Close reachable. Short landscape preserves67.5px scene height and requires panel scrolling; preserved bounds are not physical ergonomic acceptance.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "keyboard": {
+          "observation": "Current actual protected actions tab to and activate Studio entry, Ask Parallax, Dock assistance, Close and Creator Studio return. Capture receipt reports keyboard operation for all four device/motion combinations. No touch, AR or physical keyboard ergonomic acceptance is inferred.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-recording"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "focus": {
+          "observation": "Current editor-ready screenshots focus Desk Map; ready/docked images show focus around the activated assistance control. Returned headings identify the destination. The repaired proposal-focus test now waits for the existing passive focus effect; that harness-only change does not introduce a new rendered behavior claim.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "feedback": {
+          "observation": "Current protected measured visible-action feedback ranges626.50–939.00ms against3000ms budget. These are retained capture measurements, not independent stopwatch results or paid-provider latency. Fresh adverse Light image exposes failure recovery beside retained request without concealing it below welcome.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "motion": {
+          "observation": "Normal and reduced recordings both retain editor-entry, overlay/dock and return meaning; reduced preference is verified by capture receipt. Four sampled moments per recording were visually inspected. This does not qualify continuous animation smoothness or a physical mobile device.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-recording"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "continuity": {
+          "observation": "All four protected Studio journeys preserve the same hashed Creator identity before, at outcomes and after return. Current frames show the same synthetic account header, Desk Map context and canonical Voyagewright Studio library. Opening assistance does not remove the scene or change Creator role.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-recording"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "complexity": {
+          "observation": "Actual current left Library contains asset thumbnails, Hierarchy contains Desk Map and Owner review letter, and Saved contains persisted Desk Map. Bottom Timeline has a letter highlight, Simulation has inspect/pick/place/reset/comparison, Diagnostics shows valid synthetic previews versus guided fallback, and Events contains concrete timestamps. Mode-dependent inspector content is populated rather than placeholder labeling.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "role-outcomes": {
+          "observation": "The authenticated Creator enters from the canonical library, reviews usable contextual assistance over the actual editor, docks/closes it and returns to the same library. This bounded authoring correction is supported; it does not complete Creator-to-Player publication, Player Lens refit or physical scene quality.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-recording",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-recording"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        },
+        "fallbacks": {
+          "observation": "Current protected unavailable message preserves ordinary manual editing and guided placement. Fresh source-bound synthetic failure image keeps request text and states the scene is unchanged. Physical qualification remains pending in preview footer; no physical touch/AR, actual paid-model camera or Player Lens completion is inferred.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+            "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8"
+          ],
+          "supplementaryEvidencePaths": [
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-guided.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-detailed.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-populated-light-engineering.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-assistant-blue-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-library-and-inspector-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-saved-library-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-simulation.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-diagnostics.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-light-events.png",
+            "artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1440x1000.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-1280x800.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-390x844.png",
+            "artifacts/parallax-a1/browser/901538cb043c/owner-overlay-844x390.png"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "id": "F1",
+          "contractId": "spatial-pilot.experience",
+          "classification": "INTERACTION_DEFECT",
+          "observation": "Initial f6 provider failure put its explanation below the welcome area outside the visible panel, hiding sighted recovery feedback.",
+          "evidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_DOCKED-5"
+          ],
+          "disposition": "RESOLVED",
+          "repairEvidenceIds": [
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_READY-3",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+            "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_DOCKED-5"
+          ],
+          "resolution": "Fresh current source-bound provider-failure-light.png visibly exposes Assistance is unavailable and the request-could-not-finish/scene-unchanged explanation beside retained composer text. Current protected ready/docked mobile images additionally expose safe unavailable/manual-edit fallback. Original concealed failure feedback is resolved with current actual evidence.",
+          "currentRepairSupplementPaths": ["artifacts/parallax-a1/browser/901538cb043c/provider-failure-light.png"]
+        }
+      ],
+      "baselineDebt": [
+        {
+          "id": "PE-DEBT-PARALLAX-PLAYER",
+          "fingerprint": "94e3716d8ae26d5986e855cd4996b36d0edfbce1a2778937ba23548cc3506834",
+          "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+          "repairOwner": "Spatial Experience Refit",
+          "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+          "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+          "deficiency": "Creator preview and Player entity controls do not by themselves establish one coherent spatial clue experience."
+        }
+      ],
+      "limitations": [
+        "Acceptance applies to the bounded Creator/Admiralty correction, with ownerAcceptance NOT_CLAIMED.",
+        "All26 protected screenshots and8 protected recordings were reviewed, plus34 targeted current local images and4 principal current local recordings; no continuous playback/physical timing acceptance.",
+        "Current account-history focus and conditional ArrowRight are supported by screenshot/test evidence; dedicated daily-table ArrowRight movement and exact retained numeric scroll offsets are not demonstrated.",
+        "Current full-Light and populated/adverse images are fresh source-bound synthetic unpaid captures; no new paid model semantic run or camera/readability qualification is credited.",
+        "Player Lens refit, physical touch/AR, production invoice/privacy qualification and owner product acceptance remain outside the bounded proof."
+      ],
+      "verificationAfterThirdVisualRepair": true
+    }
+  ],
+  "captureArtifactId": 11724654323,
+  "reviewArtifactId": 11725990209
+}

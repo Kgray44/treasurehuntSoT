@@ -38,6 +38,15 @@ export function SpatialCanvas(props: {
     [overlays, setOverlays] = useState(false);
   const [view, setView] = useState("perspective"),
     [feedback, setFeedback] = useState("Select an object to begin.");
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  useEffect(() => {
+    const root = document.documentElement;
+    const sync = () => setTheme(root.dataset.voyageTheme === "light" ? "light" : "dark");
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(root, { attributes: true, attributeFilter: ["data-voyage-theme"] });
+    return () => observer.disconnect();
+  }, []);
   const environment = simulationEnvironments.find((e) => e.id === environmentId) ?? simulationEnvironments[0];
   const evidence = syntheticEnvironmentEvidence(environment);
   const adaptive = draft.content.adaptive
@@ -128,6 +137,7 @@ export function SpatialCanvas(props: {
   }, [fallback]);
   useEffect(() => {
     engine.current?.update({
+      theme,
       objects: draft.content.entities.map((entity) => ({
         entity,
         world: resolvedWorld(entity.id),

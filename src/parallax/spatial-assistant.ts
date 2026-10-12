@@ -5,13 +5,15 @@ import { validateSpatialAuthoring } from "./studio-validation";
 import { updateAdaptiveContent } from "./adaptive-authoring";
 
 const copy = (maximum: number) => z.string().trim().min(1).max(maximum);
+const explanation = (maximum: number) =>
+  copy(maximum).refine((value) => /\p{L}/u.test(value), "Use readable explanatory text.");
 const position = z.strictObject({
   x: z.number().min(-10).max(10),
   y: z.number().min(-3).max(3),
   z: z.number().min(-10).max(10),
 });
 const placement = z.enum(["DESK", "WALL", "ENTRANCE", "LOCAL"]);
-const common = { id: spatialId, explanation: copy(400), dependsOn: z.array(spatialId).max(16) };
+const common = { id: spatialId, explanation: explanation(400), dependsOn: z.array(spatialId).max(16) };
 const interactions = z
   .array(z.enum(["PICK", "INSPECT", "PLACE"]))
   .min(1)
@@ -72,14 +74,14 @@ export const assistantOperationSchema = z.discriminatedUnion("type", [
 ]);
 export const assistantInterpretationSchema = z.strictObject({
   intentType: z.enum(["CREATE", "EDIT", "INTERACTION", "ACCESSIBILITY", "CRITIQUE", "CLARIFICATION", "UNSUPPORTED"]),
-  summary: copy(600),
-  clarification: copy(400).nullable(),
+  summary: explanation(600),
+  clarification: explanation(400).nullable(),
   operations: z.array(assistantOperationSchema).max(24),
   assumptions: z.array(copy(400)).max(8),
   unsupportedCapabilities: z.array(copy(400)).max(8),
   warnings: z.array(copy(400)).max(12),
   accessibilityNotes: z.array(copy(400)).max(8),
-  creatorExplanation: copy(2000),
+  creatorExplanation: explanation(2000),
 });
 export const assistantProposalSchema = assistantInterpretationSchema.extend({
   schemaVersion: z.literal(1),
@@ -186,7 +188,19 @@ function semanticPlacement(
 }
 
 function assistantPlacement(input: SpatialDraft, entityId: string, value: "DESK" | "WALL" | "ENTRANCE" | "LOCAL") {
-  if (!input.content.adaptive) return editSpatialDraft(input, { type: "PLACEMENT", entityId, placement: value });
+  if (!input.content.adaptive) {
+    const original = input.content.entities.find((entity) => entity.id === entityId)?.transform;
+    const placed = editSpatialDraft(input, { type: "PLACEMENT", entityId, placement: value });
+    const entity = placed.content.entities.find((entry) => entry.id === entityId);
+    // Placement changes the anchor and local offset, not the requested object's
+    // size/orientation. Keep canonical manual placement behavior unchanged.
+    if (!original || !entity) return placed;
+    return editSpatialDraft(placed, {
+      type: "TRANSFORM",
+      entityId,
+      transform: { ...entity.transform, rotation: original.rotation, scale: original.scale },
+    });
+  }
   const recipe = input.content.adaptive.recipes.find((entry) => entry.entityId === entityId);
   return semanticPlacement(input, {
     id: "placement",
@@ -391,14 +405,12 @@ export function prepareAssistantContext(draft: SpatialDraft, selectedEntityId: s
     selectedEntityId,
     totalEntities: draft.content.entities.length,
     placementPolicy: draft.content.placementPolicy,
+    positionsAreAnchorLocal: true,
     entities: projectedEntities,
     semanticRecipes,
     supported: {
-      entityKinds: ["PARCHMENT", "TEXT", "MARKER"],
-      placements: ["DESK", "WALL", "ENTRANCE", "LOCAL"],
-      semanticSurfaces: ["FLOOR", "TABLE", "DESK", "SHELF", "WALL", "OPEN_SPACE"],
-      triggers: ["SCENE_ENTER", "INSPECT", "PICK", "PLACE", "TIMER"],
-      actions: ["SHOW", "HIDE", "HIGHLIGHT"],
+      // The strict response schema already supplies the supported enum values.
+      // Keep scene context for saved state and limits, rather than repeating them.
       materials: false,
       physicalGlow: false,
       arbitraryMedia: false,

@@ -20,6 +20,23 @@ const usd = (nano: number) =>
     nano / USD_NANO,
   );
 const localDate = (value: string | null) => (value ? new Date(value).toLocaleString() : "No activity recorded");
+const dailyMetrics = {
+  requests: {
+    label: "Requests per day",
+    key: "requests",
+    help: "Admitted requests, including pending or unresolved requests.",
+  },
+  settled: {
+    label: "Settled cost per day",
+    key: "settledCostNano",
+    help: "Recorded cost after provider usage has settled.",
+  },
+  accounted: {
+    label: "Accounted spending per day",
+    key: "exposureNano",
+    help: "Settled cost plus pending reservations and unresolved usage.",
+  },
+} as const;
 const groups: {
   title: string;
   help: string;
@@ -74,6 +91,7 @@ export function AIQuotaConsole({
     [notice, setNotice] = useState(""),
     [busy, setBusy] = useState(false);
   const [global, setGlobal] = useState<AIGlobalPolicy>(initial.policy);
+  const [dailyMetric, setDailyMetric] = useState<keyof typeof dailyMetrics>("requests");
   const [history, setHistory] = useState<History>([]),
     [from, setFrom] = useState(`${initial.period}-01`),
     [to, setTo] = useState(initial.resetAt.slice(0, 10));
@@ -136,8 +154,13 @@ export function AIQuotaConsole({
   const budgetRatio = overview.policy.monthlySpendNano
     ? Math.min(100, (100 * overview.usage.exposureNano) / overview.policy.monthlySpendNano)
     : 100;
+  const metric = dailyMetrics[dailyMetric];
+  const dailyMaximum = Math.max(0, ...overview.daily.map((day) => day[metric.key]));
+  const formatDaily = (value: number) => (dailyMetric === "requests" ? value.toLocaleString() : usd(value));
+  const today = overview.daily.at(-1);
+  const elapsedDays = Math.max(1, overview.daily.length);
   return (
-    <div className={styles.console}>
+    <div className={styles.console} data-period={overview.period}>
       <nav className={styles.tabs} aria-label="AI usage views">
         {["Overview", "Global Policy", "Usage History", "Provider Health"].map((name) => (
           <button
@@ -218,43 +241,107 @@ export function AIQuotaConsole({
           </section>
           <section className={styles.card}>
             <header>
-              <h2>Daily spending</h2>
-              <span>Accounted exposure by request day</span>
+              <h2>Daily AI activity</h2>
+              <label className={styles.metricSelector}>
+                Chart shows
+                <select
+                  value={dailyMetric}
+                  onChange={(event) => setDailyMetric(event.target.value as keyof typeof dailyMetrics)}
+                >
+                  {Object.entries(dailyMetrics).map(([value, item]) => (
+                    <option key={value} value={value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </header>
-            <figure className={styles.chart}>
+            <p>Each bar represents the UTC day a request was admitted. {metric.help}</p>
+            <dl className={styles.dailySummary}>
+              <div>
+                <dt>Requests today · UTC</dt>
+                <dd>{(today?.requests ?? 0).toLocaleString()}</dd>
+              </div>
+              <div>
+                <dt>Settled cost today · UTC</dt>
+                <dd>{usd(today?.settledCostNano ?? 0)}</dd>
+              </div>
+              <div>
+                <dt>Average requests / day</dt>
+                <dd>
+                  {(overview.usage.requests / elapsedDays).toLocaleString(undefined, { maximumFractionDigits: 1 })}
+                </dd>
+              </div>
+              <div>
+                <dt>Average settled cost / day</dt>
+                <dd>{usd(overview.usage.settledCostNano / elapsedDays)}</dd>
+              </div>
+            </dl>
+            <div className={styles.chartScale} aria-live="polite">
+              <span>{metric.label}</span>
+              <span>
+                Scale: 0–{formatDaily(dailyMaximum)}
+                {dailyMetric === "requests" ? " requests" : " USD"}
+              </span>
+            </div>
+            <figure className={styles.chart} aria-label={`${metric.label} by UTC day`}>
               <figcaption className={styles.srOnly}>
-                Daily accounted spending, including pending reservations
+                {metric.label} by UTC request day. Exact values follow in the daily activity table.
               </figcaption>
               {overview.daily.map((day) => (
-                <div key={day.date} title={`${day.date}: ${usd(day.exposureNano)}, ${day.requests} requests`}>
+                <div
+                  key={day.date}
+                  title={`${day.date} UTC: ${day.requests} requests; ${usd(day.settledCostNano)} settled; ${usd(day.exposureNano)} accounted`}
+                >
                   <span
+                    data-date={day.date}
+                    data-value={day[metric.key]}
+                    aria-hidden="true"
                     style={{
-                      height: `${Math.max(2, (100 * day.exposureNano) / Math.max(1, ...overview.daily.map((item) => item.exposureNano)))}%`,
+                      height: `${dailyMaximum ? (100 * day[metric.key]) / dailyMaximum : 0}%`,
                     }}
                   />
                   <small>{day.date.slice(-2)}</small>
                 </div>
               ))}
             </figure>
+            {dailyMaximum === 0 && (
+              <p className={styles.emptyChart}>
+                No{" "}
+                {dailyMetric === "requests"
+                  ? "admitted requests"
+                  : dailyMetric === "settled"
+                    ? "settled cost"
+                    : "accounted spending"}{" "}
+                in this month so far.
+              </p>
+            )}
+            <small>
+              Daily averages include zero-activity days from the first of the UTC month through today. Requests with
+              released reservations are excluded.
+            </small>
             <details>
-              <summary>Read daily spending as a table</summary>
-              <div className={styles.scroll}>
+              <summary>Read daily requests and costs as a table</summary>
+              <div className={styles.scroll} tabIndex={0} role="region" aria-label="Daily activity table">
                 <table>
+                  <caption className={styles.srOnly}>Daily AI requests and costs, grouped by UTC request day</caption>
                   <thead>
                     <tr>
-                      <th>Day</th>
-                      <th>Requests</th>
-                      <th>Accounted</th>
-                      <th>Settled</th>
+                      <th scope="col">Day · UTC</th>
+                      <th scope="col">Requests</th>
+                      <th scope="col">Accounted spending</th>
+                      <th scope="col">Settled cost</th>
+                      <th scope="col">Reserved / unresolved</th>
                     </tr>
                   </thead>
                   <tbody>
                     {overview.daily.map((day) => (
                       <tr key={day.date}>
-                        <td>{day.date}</td>
-                        <td>{day.requests}</td>
+                        <th scope="row">{day.date}</th>
+                        <td>{day.requests.toLocaleString()}</td>
                         <td>{usd(day.exposureNano)}</td>
                         <td>{usd(day.settledCostNano)}</td>
+                        <td>{usd(Math.max(0, day.exposureNano - day.settledCostNano))}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -488,7 +575,7 @@ export function AIQuotaConsole({
             Latest 100 records in this view; export is bounded to 1,000 records. Retained proposals and prompts are
             excluded.
           </p>
-          <div className={styles.scroll}>
+          <div className={styles.scroll} tabIndex={0} role="region" aria-label="AI request history table">
             <table>
               <thead>
                 <tr>
@@ -573,7 +660,7 @@ export function AIQuotaConsole({
             </div>
           </dl>
           <h3>Versioned standard text pricing</h3>
-          <div className={styles.scroll}>
+          <div className={styles.scroll} tabIndex={0} role="region" aria-label="AI model pricing table">
             <table>
               <thead>
                 <tr>

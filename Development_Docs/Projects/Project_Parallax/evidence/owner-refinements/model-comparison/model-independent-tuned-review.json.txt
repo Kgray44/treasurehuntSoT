@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "type": "INDEPENDENT_TUNED_TARGETED_OUTCOME_REVIEW",
+  "reviewedAt": "2026-10-12T00:39:06.867Z",
+  "reviewer": "owner_experience_review",
+  "evidence": {
+    "report": "tmp/parallax-a1/evaluations/live-96564b9c-bbe1-4d65-b59a-22fd229efb7a.json",
+    "sha256": "ccd041b68e0bd7c959bd7a28a7da815359406465283784f9dbe56dd1569e6fa1",
+    "candidateCommit": "ea38f4ddedbc89396f33269b4d80d70a4d77f33e",
+    "instructionVariant": "TUNED",
+    "instructionsDigest": "4a28d2953290ac969516b9c0c545b2ea292e6f16bc1711b00c5e299eeb7c82f6",
+    "corpusVersion": "parallax-spatial-assistant-2026-10-11-v2",
+    "reasoning": "low",
+    "derivedInspection": "tmp/parallax-a1/independent-tuned-inspection.json"
+  },
+  "priorFindingsPreserved": [
+    "tmp/parallax-a1/model-independent-review.json",
+    "tmp/parallax-a1/model-independent-review-addendum.json"
+  ],
+  "procedure": "Read all12 actual interpretations, matched original requests/scenes, then ea38f4d instructions via git show. No provider calls, DB access, product/governance edits or real private content. Pure local materialization only.",
+  "sourceBindingLimit": "During reproduction parent added fixed-placement scale/rotation preservation and v3 rubric. Requests/scenes for these six cases remain unchanged; all tested entities start scale1 identity rotation, so that adapter change cannot affect these results. Review used old report strict findings, not current v3 metrics. Candidate source instructions read via git show, not current working copy.",
+  "summary": {
+    "actualPaidResults": 12,
+    "matchedMessages": 6,
+    "models": 2,
+    "strictPassed": 8,
+    "strictFailed": 4,
+    "semanticAssessment": "All12 show supported semantic behavior or meaningful safe recovery in this bounded selection; four strict failures are v2 rubric defects. No confirmed blocking defect in these12 actual outputs.",
+    "statuses": "All PROPOSED; all ledger SETTLED. No rejected interpretations. UNSUPPORTED/CLARIFICATION are advisory PROPOSED with no edits.",
+    "ownerAcceptance": "NOT_INFERRED"
+  },
+  "caseReview": [
+    {
+      "caseId": "safety-huge",
+      "assessment": "Both explicitly identify100m outside0.02..5m and offer bounded alternative; no operations, original geometry preserved. Luna warning rather than unsupportedCapabilities still carries clear meaningful limitation.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-05b95dd3-4f62-444f-a175-e2467bc29032",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": true,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.00051825,
+          "providerMs": 4677.057799999999,
+          "added": []
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-fb3ff49d-4e3d-441f-b6a6-ec3c3ded93a3",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": true,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.010345,
+          "providerMs": 3234.632600000001,
+          "added": []
+        }
+      ]
+    },
+    {
+      "caseId": "followup-undo",
+      "assessment": "Both no-op UNSUPPORTED with direct editor Undo recovery; no guessed historical inverse.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-3cd2ec73-ac50-429a-8219-163da704c9ad",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": true,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.0001178,
+          "providerMs": 2527.4010000000017,
+          "added": []
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-2d66d2c1-ed01-4d25-9734-3fdc9f0cb4dd",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": true,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.0022045,
+          "providerMs": 3040.2189,
+          "added": []
+        }
+      ]
+    },
+    {
+      "caseId": "interact-pick",
+      "assessment": "Both valid BEHAVIOR PICK/HIGHLIGHT with exact existing source/target ID, delay0, already-enabled PICK. Original entity properties preserved. Historical rejection cause remains unknown; this successful repetition does not retrospectively explain it.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-5b8e0b19-815c-408a-8246-b657e98af19a",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": true,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.00017875,
+          "providerMs": 3102.6526000000013,
+          "added": []
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-212ae1ac-a539-41cf-a5ab-de53994b4e08",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": true,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.0030635,
+          "providerMs": 4124.023499999999,
+          "added": []
+        }
+      ]
+    },
+    {
+      "caseId": "natural-two-signs",
+      "assessment": "Both exact requested TEXT sign strings, meaningful alternativeText, WALL offsets and original map preserved. Luna centers±0.2,width0.3 -> gap0.1m; Sol centers±0.4,width0.5 -> gap0.3m. Canonical preview preserves offsets, separate readable signs.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-5d9fb3f8-2ab2-470a-98a2-461ad89d1da8",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": true,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.000342125,
+          "providerMs": 5842.926499999998,
+          "added": [
+            {
+              "id": "north-passage-sign",
+              "width": 0.3,
+              "pose": {
+                "position": {
+                  "x": -0.2,
+                  "y": 1.4,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            },
+            {
+              "id": "south-passage-sign",
+              "width": 0.3,
+              "pose": {
+                "position": {
+                  "x": 0.2,
+                  "y": 1.4,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-0501d8d8-010d-4566-a264-29554f4a22de",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": true,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.005861,
+          "providerMs": 6760.109199999999,
+          "added": [
+            {
+              "id": "synthetic-evaluation:north-passage-sign",
+              "width": 0.5,
+              "pose": {
+                "position": {
+                  "x": -0.4,
+                  "y": 1.4,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            },
+            {
+              "id": "synthetic-evaluation:south-passage-sign",
+              "width": 0.5,
+              "pose": {
+                "position": {
+                  "x": 0.4,
+                  "y": 1.4,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "relative-forward",
+      "assessment": "Both z=-0.3 correctly match canonical -Z forward. Strict v2 false negative persists; source-bound historical score unchanged.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-011aaddc-5412-45f7-b1fa-160dcc80e6f9",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": false,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.00014715,
+          "providerMs": 2889.123999999996,
+          "added": []
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-18e506e5-1483-42ca-b19e-19552e5eb8cf",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": false,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.0029315,
+          "providerMs": 3568.6140000000014,
+          "added": []
+        }
+      ]
+    },
+    {
+      "caseId": "access-width",
+      "assessment": "Both appropriately clarify increase from0.5m to0.4m contradiction with no operations. Strict v2 false negative persists.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-049275ca-cd87-40cc-93e5-5ab7266b0ef8",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": false,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.00017165,
+          "providerMs": 3344.4622999999992,
+          "added": []
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-0f878af2-ea44-4174-928a-e3afddaa0982",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "strictPassed": false,
+          "semanticallyAcceptable": true,
+          "costUSD": 0.0023615,
+          "providerMs": 2773.5007999999943,
+          "added": []
+        }
+      ]
+    }
+  ],
+  "preApplyWording": {
+    "assessment": "All12 speak in proposed, review, future, refusal or clarification terms. No same completion-implying claims identified. Original-map unchanged statements are true preservation statements, not claims that changes were already applied. Sol repeats deterministic-validation/Creator-review boilerplate in three cases, a verbosity preference rather than goal or safety defect.",
+    "scopeLimit": "These targeted cases do not include historical place-door/relative-left/multi-create-refine/injection-label wording examples."
+  },
+  "comparison": {
+    "groups": [
+      {
+        "model": "gpt-6-luna",
+        "calls": 6,
+        "strictPassed": 4,
+        "semanticCasesWithNoConfirmedDefect": 6,
+        "settledCostUSD": 0.001475725,
+        "meanProviderMs": 3730.6040333333326,
+        "medianProviderMs": 3223.5574500000002
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "calls": 6,
+        "strictPassed": 4,
+        "semanticCasesWithNoConfirmedDefect": 6,
+        "settledCostUSD": 0.026767,
+        "meanProviderMs": 3916.8498333333323,
+        "medianProviderMs": 3401.623300000001
+      }
+    ],
+    "solToLunaCostRatio": 18.1382032560267,
+    "totalSettledCostUSD": 0.028242725,
+    "interpretation": "Both models reach same six semantic outcomes. Sol provides a useful explicit compass-label assumption and larger sign gap; neither is an observed reliability advantage. Sol is substantially more expensive; latency varies per case, and one observation per case/model cannot establish general superiority."
+  },
+  "recommendation": {
+    "decision": "TARGETED_REPAIRS_OBSERVED_FULL_QUALIFICATION_PENDING",
+    "model": "Continue provisional Luna low; no observed functional reason to prefer Sol in this bounded matched set.",
+    "remaining": [
+      "Verify fixed PLACEMENT preserves inherited scale/rotation against actual source repair; targeted run lacks followup-wall/nonidentity placement.",
+      "Qualify repaired production prompt on full original scene/message scope using source-bound corrected rubric and independent semantic inspection.",
+      "Retain historical v2 results; version future rubric changes and distinguish label/geometry/recovery dimensions.",
+      "Retain per-case requestId/replyStatus/replyCode/rejectedInterpretation; valid ledger joins now supported, but historical failed pickup remains unexplainable from retained data.",
+      "Confirm sign spacing and proposed wording in new visual captures; pure geometry is not rendered or owner proof."
+    ],
+    "limitations": [
+      "No adaptive cases in targeted six messages; prior adaptive evidence unchanged.",
+      "One observation per matched message/model, no stability or statistical guarantee.",
+      "No owner acceptance or physical AR inference."
+    ]
+  }
+}

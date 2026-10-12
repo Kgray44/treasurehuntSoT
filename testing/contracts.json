@@ -37,6 +37,181 @@
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
       },
       "experience": {
+        "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+        "objective": "Use a coherent blue Spatial Studio, preserve the scene while opening assistance, and return to the Creator Library",
+        "visibleOutcome": "Light appearance covers the authoring shell and synthetic environment; overlay assistance preserves the viewport and canonical authoring controls",
+        "integrationOwner": "Parallax Creator-to-Player experience integration",
+        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
+        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "projectionPaths": ["src/parallax"],
+        "entryPoint": "/studio/library",
+        "states": ["EDITOR_READY", "ASSISTANT_READY", "ASSISTANT_DOCKED", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning.",
+        "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+        "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": [
+          "tests/e2e/parallax-owner-refinements.spec.ts",
+          "tests/e2e/parallax-assistant-presentation.spec.ts",
+          "tests/e2e/parallax-spatial-assistant.spec.ts",
+          "tests/e2e/parallax-workstation.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "creator-assistance-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator enters the actual editor, opens and docks contextual assistance, and returns to the same Creator library",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Ask Parallax",
+                "path": "/studio/parallax",
+                "state": "EDITOR_READY",
+                "kind": "outcome",
+                "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Ask Parallax"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial Assistant",
+                "text": "Spatial Assistant",
+                "path": "/studio/parallax",
+                "state": "ASSISTANT_READY",
+                "kind": "outcome",
+                "meaning": "The assistance action opens a usable contextual idea composer and review area alongside the actual scene.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Dock assistance"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Ask Parallax workspace",
+                "text": "Float assistance",
+                "path": "/studio/parallax",
+                "state": "ASSISTANT_DOCKED",
+                "kind": "outcome",
+                "meaning": "Docking attaches contextual assistance over the existing scene while exposing an explicit return to floating assistance.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close assistance"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "crossdeck.refit.published-lens",
+      "name": "Crossdeck published spatial clue Player consumer",
+      "authority": "one-voyage",
+      "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+      "critical": true,
+      "experience": {
         "persona": "An authorized Player receiving a Creator-published spatial clue in a persisted private Voyage",
         "integrationOwner": "Parallax published-clue delivery with Crossdeck continuity",
         "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
@@ -3312,306 +3487,6 @@
       }
     },
     {
-      "id": "homeport.shell.crossdeck-access-recovery",
-      "name": "Homeport readable Player account recovery after companion access ends",
-      "authority": "project-homeport",
-      "owners": ["project-homeport", "project-crossdeck"],
-      "critical": true,
-      "experience": {
-        "persona": "A signed-out Player returning to the canonical account task after a companion connection loses access",
-        "objective": "Read the Player account entry, use canonical sign-in and recovery, and safely return to the phone connection task",
-        "visibleOutcome": "Readable Player account instructions and links lead to one canonical account flow and a contextual return to the connection task",
-        "integrationOwner": "Project Homeport account experience integration",
-        "systems": ["project-homeport"],
-        "sourcePaths": [
-          "src/app/player/sign-in",
-          "src/components/platform/PlayerSignIn.tsx",
-          "src/components/platform/PlayerSignIn.module.css"
-        ],
-        "projectionPaths": ["src/components/wayfarer/AccountFlow.tsx", "src/homeport/return-to.ts"],
-        "entryPoint": "/player/sign-in?returnTo=%2Fdevices%2Fpair",
-        "states": ["PLAYER_ENTRY_READY", "SIGN_IN_READY", "RECOVERY_READY", "RETURNED"],
-        "devices": ["DESKTOP", "MOBILE"],
-        "roles": ["ANONYMOUS"],
-        "accessibility": "The parchment entry has readable explanation and recovery links; keyboard focus reaches every account and contextual return action without horizontal overflow.",
-        "fallback": "The existing canonical account flow remains usable without an identity provider; expired or revoked private companion content is not presented by this anonymous entry.",
-        "navigation": "Player account entry opens canonical sign-in; Forgot Password and Return to Sign In retain the safe return intent; Return to previous page restores the phone connection task.",
-        "designTarget": "Preserve the current parchment account ledger and its hierarchy, with material-appropriate ink, explicit account actions and a readable safe return.",
-        "references": [
-          {
-            "family": "Authentication",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
-            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
-            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "The accepted narrow task composition uses one visible objective and a clear recovery/return hierarchy.",
-            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
-          },
-          {
-            "family": "Authentication",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
-            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
-            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "The accepted mobile account ledger keeps fields and recovery actions readable and reachable.",
-            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
-          }
-        ],
-        "homeportScreenIds": ["screen-page-player-sign-in", "screen-page-sign-in", "screen-page-forgot-password"],
-        "homeportJourneyIds": ["C"],
-        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/homeport-phase2.spec.ts"],
-        "fixtureProfile": "generic",
-        "recordingRequired": true,
-        "motion": {
-          "measurement": "Keyboard activation to the changed visible canonical sign-in, recovery or connection return",
-          "feedbackBudgetMs": 5000,
-          "justification": "Bound visible account-route feedback in normal and reduced motion within five seconds, without claiming physical-device performance."
-        },
-        "limitations": [
-          "This anonymous recovery composition does not replace authenticated same-person/Voyage pairing, transfer or revocation proof in the Crossdeck contracts.",
-          "Live mail delivery, OAuth, physical phone, assistive technology and owner acceptance are not established by this browser journey."
-        ],
-        "journeys": [
-          {
-            "id": "player-entry-account-recovery",
-            "roles": ["ANONYMOUS"],
-            "outcome": "A signed-out Player reaches canonical account recovery through readable controls and returns safely to the phone connection task",
-            "steps": [
-              {
-                "action": "assert",
-                "role": "main",
-                "name": "",
-                "path": "/player/sign-in",
-                "text": "Open your Chronicle Library",
-                "state": "PLAYER_ENTRY_READY"
-              },
-              {
-                "action": "assert",
-                "role": "link",
-                "name": "Create Account"
-              },
-              {
-                "action": "assert",
-                "role": "link",
-                "name": "Forgot Password"
-              },
-              {
-                "action": "click",
-                "role": "link",
-                "name": "Continue to account sign-in"
-              },
-              {
-                "action": "assert",
-                "kind": "outcome",
-                "role": "main",
-                "name": "",
-                "path": "/sign-in",
-                "text": "One Voyagewright account",
-                "meaning": "The contextual Player entry opens the actual canonical account form",
-                "state": "SIGN_IN_READY",
-                "feedbackBoundary": true
-              },
-              {
-                "action": "click",
-                "role": "link",
-                "name": "Forgot Password"
-              },
-              {
-                "action": "assert",
-                "kind": "outcome",
-                "role": "main",
-                "name": "",
-                "path": "/forgot-password",
-                "text": "Send reset instructions",
-                "meaning": "Recovery presents the actual email reset task while retaining safe return intent",
-                "state": "RECOVERY_READY",
-                "feedbackBoundary": true
-              },
-              {
-                "action": "click",
-                "role": "link",
-                "name": "Return to Sign In"
-              },
-              {
-                "action": "assert",
-                "role": "heading",
-                "name": "Sign in",
-                "path": "/sign-in"
-              },
-              {
-                "action": "click",
-                "role": "link",
-                "name": "Return to previous page"
-              },
-              {
-                "action": "assert",
-                "role": "heading",
-                "name": "Bring the adventure with you",
-                "path": "/devices/pair",
-                "returnPath": true,
-                "state": "RETURNED",
-                "feedbackBoundary": true
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "id": "homeport.shell.crossdeck-companion",
-      "name": "Homeport immersive companion contextual exit and same-Voyage re-entry",
-      "authority": "project-homeport",
-      "owners": ["project-homeport", "project-crossdeck", "one-voyage"],
-      "critical": true,
-      "experience": {
-        "persona": "An authorized Player leaving a companion purpose and returning to the same active Voyage",
-        "integrationOwner": "Homeport immersive companion shell with Crossdeck continuity",
-        "systems": ["project-homeport", "project-crossdeck", "one-voyage"],
-        "sourcePaths": [
-          "src/navigation",
-          "src/components/shell",
-          "src/app/layout.tsx",
-          "src/app/devices/companion",
-          "src/app/devices/display"
-        ],
-        "projectionPaths": ["src/app/api/auth/context", "src/app/api/player/library", "src/app/api/play/sessions"],
-        "devices": ["DESKTOP", "MOBILE"],
-        "roles": ["PLAYER"],
-        "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
-        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
-        "references": [
-          {
-            "family": "Gateway / public entry",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
-            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
-            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
-            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
-          },
-          {
-            "family": "Gateway / public entry",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
-            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
-            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
-            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
-          }
-        ],
-        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
-        "browserTests": [
-          "tests/e2e/homeport-phase2.spec.ts",
-          "tests/e2e/crossdeck-experience-refit.spec.ts",
-          "tests/e2e/crossdeck-refit-recovery.spec.ts"
-        ],
-        "fixtureProfile": "generic",
-        "recordingRequired": true,
-        "continuity": {
-          "objective": "Keep the same canonical signed-in person through immersive companion, ordinary library and the same-Voyage Journal return.",
-          "checks": [
-            {
-              "id": "same-authorized-person",
-              "role": "button",
-              "name": "Crossdeck synthetic navigator",
-              "attribute": "aria-label"
-            }
-          ]
-        },
-        "motion": {
-          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
-          "feedbackBudgetMs": 5000,
-          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
-        },
-        "limitations": [
-          "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
-          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture begins with an authorized fixture surface.",
-          "The isolated fixture adapter must exist in the protected experience helper before protected capture/replay can qualify these contracts.",
-          "The existing canonical profile control supplies a rendered person witness; authenticated API/session checks bind it to the actual synthetic account. The final exact Voyage path proves contextual re-entry. Ordinary anonymous account-recovery obligations remain unchanged in their existing contract."
-        ],
-        "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
-        "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
-        "entryPoint": "/devices/companion?voyage={voyageId}",
-        "states": ["COMPANION_READY", "LIBRARY_READY", "RETURNED"],
-        "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure and Open the journal restore the same current Voyage.",
-        "designTarget": "Keep the companion immersive, preserve compact account/context controls, and make the safe library exit and re-entry readable on desktop and phone.",
-        "roleSetup": {
-          "PLAYER": {
-            "isolatedFixture": {
-              "id": "crossdeck-refit",
-              "surface": "COMPANION"
-            },
-            "witness": {
-              "role": "main",
-              "name": "",
-              "text": "Synthetic Crossdeck refit Voyage"
-            }
-          }
-        },
-        "journeys": [
-          {
-            "id": "companion-context-exit-return",
-            "roles": ["PLAYER"],
-            "outcome": "An authorized Player exits immersive companion presentation through visible Homeport context controls, finds the current adventure and returns to the same Voyage",
-            "steps": [
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Journal companion",
-                "text": "The harbour falls quiet behind you.",
-                "state": "COMPANION_READY"
-              },
-              {
-                "action": "assert",
-                "role": "navigation",
-                "name": "Contextual navigation",
-                "text": "Exit to My Voyages",
-                "absentRole": {
-                  "role": "navigation",
-                  "name": "Global navigation"
-                }
-              },
-              {
-                "action": "click",
-                "role": "link",
-                "name": "Exit to My Voyages"
-              },
-              {
-                "action": "assert",
-                "kind": "outcome",
-                "role": "main",
-                "name": "",
-                "text": "Synthetic Crossdeck refit Voyage",
-                "path": "/player/library",
-                "meaning": "The companion context exit opens the authorized Chronicle Library with the same current adventure, rather than leaving a trapped or generic account task.",
-                "state": "LIBRARY_READY",
-                "feedbackBoundary": true
-              },
-              {
-                "action": "assert",
-                "role": "heading",
-                "name": "My Chronicle Library"
-              },
-              {
-                "action": "click",
-                "role": "link",
-                "name": "Continue Adventure"
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "Open the journal"
-              },
-              {
-                "action": "assert",
-                "role": "navigation",
-                "name": "Journal tools",
-                "path": "/player/playthroughs/{voyageId}/journal",
-                "returnPath": true,
-                "state": "RETURNED"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
       "id": "homeport.transition.interruption",
       "name": "Project Homeport Interrupted Navigation Final Route",
       "authority": "project-homeport",
@@ -3735,7 +3610,218 @@
       "name": "Living capability-floor registry",
       "authority": "project-admiralty",
       "owners": ["project-admiralty"],
-      "critical": true
+      "critical": true,
+      "experience": {
+        "persona": "An authorized Admiralty operator observing daily AI spending and existing account allowances",
+        "objective": "Compare daily requests and costs, then inspect a user allowance through the normal People search",
+        "visibleOutcome": "A selectable daily chart distinguishes requests, settled cost and accounted exposure; per-user controls remain in the existing People dossier",
+        "integrationOwner": "Admiralty AI usage experience integration",
+        "systems": ["project-admiralty"],
+        "sourcePaths": [
+          "src/components/admiralty/AIQuotaConsole.tsx",
+          "src/components/admiralty/AIQuotaConsole.module.css",
+          "src/components/admiralty/AIQuotaUserPanel.tsx",
+          "src/app/admin/ai-usage",
+          "src/app/admin/people"
+        ],
+        "projectionPaths": ["src/parallax/ai-quota-projections.ts"],
+        "entryPoint": "/admin/ai-usage",
+        "states": ["SETTLED_CHART", "ACCOUNTED_CHART", "RETURNED", "DOSSIER_READY", "PEOPLE_RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ADMINISTRATOR"],
+        "accessibility": "A labeled keyboard-operable metric selector and exact daily table preserve access beyond visual bars, with visible focus and narrow-screen overflow contained.",
+        "fallback": "An empty month reports honest zero activity, missing provider credentials remain safely diagnosed, and read-only observation never changes quota policy.",
+        "navigation": "AI Usage & Quotas opens its existing chart; the canonical People navigation searches one account and returns through existing navigation.",
+        "designTarget": "Keep the accepted Admiralty card hierarchy and visual family, adding compact daily metrics, a clearly labeled chart selector, truthful zero bars, UTC labels and distinct settled versus reserved amounts.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-admin", "screen-page-admin-people"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": ["tests/e2e/parallax-owner-refinements.spec.ts", "tests/e2e/parallax-ai-quotas.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Isolated synthetic ledger figures exercise the actual projection and controls; they do not audit a real provider invoice or claim owner product acceptance."
+        ],
+        "roleSetup": {
+          "ADMINISTRATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fadmin%2Fai-usage",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-operator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "AI Usage & Quotas",
+              "text": "AI Usage & Quotas"
+            }
+          }
+        },
+        "journeys": [
+          {
+            "id": "daily-chart-metrics",
+            "roles": ["ADMINISTRATOR"],
+            "outcome": "An operator compares daily requests with settled and accounted costs, then restores the request chart without policy mutation",
+            "steps": [
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Chart shows"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "figure",
+                "name": "Settled cost per day by UTC day",
+                "text": "Settled cost per day",
+                "path": "/admin/ai-usage",
+                "state": "SETTLED_CHART",
+                "kind": "outcome",
+                "meaning": "Choosing settled cost changes the displayed daily monetary metric while keeping exact canonical request-day accounting available."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Chart shows"
+              },
+              {
+                "action": "keyboard",
+                "key": "End"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "figure",
+                "name": "Accounted spending per day by UTC day",
+                "text": "Accounted spending per day",
+                "path": "/admin/ai-usage",
+                "state": "ACCOUNTED_CHART",
+                "kind": "outcome",
+                "meaning": "Choosing accounted spending distinguishes pending reservations and unresolved usage from settled costs."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Chart shows"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "figure",
+                "name": "Requests per day by UTC day",
+                "text": "Requests per day",
+                "path": "/admin/ai-usage",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "canonical-people-allowance",
+            "roles": ["ADMINISTRATOR"],
+            "outcome": "The ordinary People search opens the existing account allowance controls and returns without adding a separate AI user search",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "People"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Search",
+                "value": "parallax-review-creator@example.test"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Search"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Synthetic Parallax Creator"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "AI usage & quotas",
+                "path": "/admin/people/00000000-0000-4000-8000-00000000a101",
+                "state": "DOSSIER_READY",
+                "kind": "outcome",
+                "meaning": "The selected canonical account dossier contains its real inherited AI allowance and governed per-user override controls."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "People"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Start with a known clue",
+                "path": "/admin/people",
+                "state": "PEOPLE_RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "admiralty.phase1.migration",
@@ -4183,6 +4269,366 @@
       }
     },
     {
+      "id": "reach.phase1.foundation",
+      "name": "Reach Phase 1 observation, calibration and laboratory foundation",
+      "authority": "reach",
+      "owners": ["reach", "project-sextant", "watchglass"],
+      "critical": true,
+      "experienceIntent": {
+        "objective": "Point at calibration targets using my real hand and understand whether I can act",
+        "visibleOutcome": "Detected hand, tracking quality, gesture classification and calibration eligibility remain visibly distinct",
+        "integrationOwner": "Reach calibration experience integration",
+        "systems": ["reach", "project-sextant", "watchglass"],
+        "sourcePaths": ["src/reach", "src/components/reach"],
+        "persona": "A Creator or Player completing the named human objective",
+        "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
+        "devices": ["DESKTOP", "MOBILE"],
+        "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
+        "baselineDebt": [
+          {
+            "id": "PE-DEBT-REACH-STAGES",
+            "fingerprint": "0047d89ebcb6a5b9c253bdfd004f7659a55b15b3b4e11cf0dff6bd8642db3902",
+            "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+            "repairOwner": "Spatial Experience Refit",
+            "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+            "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+            "deficiency": "Hand detection can be confused with action eligibility, producing misleading calibration feedback."
+          }
+        ],
+        "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      }
+    },
+    {
+      "id": "sextant.phase3.field-context",
+      "name": "Sextant Phase 3 field semantics, nearby security, media lifecycle and authored fallback",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true,
+      "experienceIntent": {
+        "objective": "Use an instrument in my Voyage and understand supported sensing or fallback",
+        "visibleOutcome": "Instrument choice produces its corresponding task, truthful capability state and useful return/recovery",
+        "integrationOwner": "Sextant instrument experience integration",
+        "systems": ["project-sextant", "landfall"],
+        "sourcePaths": ["src/sextant", "src/components/sextant"],
+        "persona": "A Creator or Player completing the named human objective",
+        "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
+        "devices": ["DESKTOP", "MOBILE"],
+        "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
+        "baselineDebt": [
+          {
+            "id": "PE-DEBT-SEXTANT-INSTRUMENT",
+            "fingerprint": "038b28f51a1bcef32daf224e3ff91b40fb7007bded88314234a1dfd566feebd4",
+            "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+            "repairOwner": "Spatial Experience Refit",
+            "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+            "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+            "deficiency": "Selectable instruments need meaningful outcomes, contextual hierarchy and truthful unsupported states."
+          }
+        ],
+        "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      }
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery",
+      "name": "Homeport readable Player account recovery after companion access ends",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "project-crossdeck"],
+      "critical": true,
+      "experience": {
+        "persona": "A signed-out Player returning to the canonical account task after a companion connection loses access",
+        "objective": "Read the Player account entry, use canonical sign-in and recovery, and safely return to the phone connection task",
+        "visibleOutcome": "Readable Player account instructions and links lead to one canonical account flow and a contextual return to the connection task",
+        "integrationOwner": "Project Homeport account experience integration",
+        "systems": ["project-homeport"],
+        "sourcePaths": [
+          "src/app/player/sign-in",
+          "src/components/platform/PlayerSignIn.tsx",
+          "src/components/platform/PlayerSignIn.module.css"
+        ],
+        "projectionPaths": ["src/components/wayfarer/AccountFlow.tsx", "src/homeport/return-to.ts"],
+        "entryPoint": "/player/sign-in?returnTo=%2Fdevices%2Fpair",
+        "states": ["PLAYER_ENTRY_READY", "SIGN_IN_READY", "RECOVERY_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ANONYMOUS"],
+        "accessibility": "The parchment entry has readable explanation and recovery links; keyboard focus reaches every account and contextual return action without horizontal overflow.",
+        "fallback": "The existing canonical account flow remains usable without an identity provider; expired or revoked private companion content is not presented by this anonymous entry.",
+        "navigation": "Player account entry opens canonical sign-in; Forgot Password and Return to Sign In retain the safe return intent; Return to previous page restores the phone connection task.",
+        "designTarget": "Preserve the current parchment account ledger and its hierarchy, with material-appropriate ink, explicit account actions and a readable safe return.",
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "The accepted narrow task composition uses one visible objective and a clear recovery/return hierarchy.",
+            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "The accepted mobile account ledger keeps fields and recovery actions readable and reachable.",
+            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-sign-in", "screen-page-sign-in", "screen-page-forgot-password"],
+        "homeportJourneyIds": ["C"],
+        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/homeport-phase2.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible canonical sign-in, recovery or connection return",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound visible account-route feedback in normal and reduced motion within five seconds, without claiming physical-device performance."
+        },
+        "limitations": [
+          "This anonymous recovery composition does not replace authenticated same-person/Voyage pairing, transfer or revocation proof in the Crossdeck contracts.",
+          "Live mail delivery, OAuth, physical phone, assistive technology and owner acceptance are not established by this browser journey."
+        ],
+        "journeys": [
+          {
+            "id": "player-entry-account-recovery",
+            "roles": ["ANONYMOUS"],
+            "outcome": "A signed-out Player reaches canonical account recovery through readable controls and returns safely to the phone connection task",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/player/sign-in",
+                "text": "Open your Chronicle Library",
+                "state": "PLAYER_ENTRY_READY"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Create Account"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Forgot Password"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue to account sign-in"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "path": "/sign-in",
+                "text": "One Voyagewright account",
+                "meaning": "The contextual Player entry opens the actual canonical account form",
+                "state": "SIGN_IN_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Forgot Password"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "path": "/forgot-password",
+                "text": "Send reset instructions",
+                "meaning": "Recovery presents the actual email reset task while retaining safe return intent",
+                "state": "RECOVERY_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Sign In"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in",
+                "path": "/sign-in"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to previous page"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Bring the adventure with you",
+                "path": "/devices/pair",
+                "returnPath": true,
+                "state": "RETURNED",
+                "feedbackBoundary": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion",
+      "name": "Homeport immersive companion contextual exit and same-Voyage re-entry",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "project-crossdeck", "one-voyage"],
+      "critical": true,
+      "experience": {
+        "persona": "An authorized Player leaving a companion purpose and returning to the same active Voyage",
+        "integrationOwner": "Homeport immersive companion shell with Crossdeck continuity",
+        "systems": ["project-homeport", "project-crossdeck", "one-voyage"],
+        "sourcePaths": [
+          "src/navigation",
+          "src/components/shell",
+          "src/app/layout.tsx",
+          "src/app/devices/companion",
+          "src/app/devices/display"
+        ],
+        "projectionPaths": ["src/app/api/auth/context", "src/app/api/player/library", "src/app/api/play/sessions"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+        "browserTests": [
+          "tests/e2e/homeport-phase2.spec.ts",
+          "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "tests/e2e/crossdeck-refit-recovery.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "continuity": {
+          "objective": "Keep the same canonical signed-in person through immersive companion, ordinary library and the same-Voyage Journal return.",
+          "checks": [
+            {
+              "id": "same-authorized-person",
+              "role": "button",
+              "name": "Crossdeck synthetic navigator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        },
+        "limitations": [
+          "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture begins with an authorized fixture surface.",
+          "The isolated fixture adapter must exist in the protected experience helper before protected capture/replay can qualify these contracts.",
+          "The existing canonical profile control supplies a rendered person witness; authenticated API/session checks bind it to the actual synthetic account. The final exact Voyage path proves contextual re-entry. Ordinary anonymous account-recovery obligations remain unchanged in their existing contract."
+        ],
+        "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
+        "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
+        "entryPoint": "/devices/companion?voyage={voyageId}",
+        "states": ["COMPANION_READY", "LIBRARY_READY", "RETURNED"],
+        "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure and Open the journal restore the same current Voyage.",
+        "designTarget": "Keep the companion immersive, preserve compact account/context controls, and make the safe library exit and re-entry readable on desktop and phone.",
+        "roleSetup": {
+          "PLAYER": {
+            "isolatedFixture": {
+              "id": "crossdeck-refit",
+              "surface": "COMPANION"
+            },
+            "witness": {
+              "role": "main",
+              "name": "",
+              "text": "Synthetic Crossdeck refit Voyage"
+            }
+          }
+        },
+        "journeys": [
+          {
+            "id": "companion-context-exit-return",
+            "roles": ["PLAYER"],
+            "outcome": "An authorized Player exits immersive companion presentation through visible Homeport context controls, finds the current adventure and returns to the same Voyage",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Journal companion",
+                "text": "The harbour falls quiet behind you.",
+                "state": "COMPANION_READY"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Contextual navigation",
+                "text": "Exit to My Voyages",
+                "absentRole": {
+                  "role": "navigation",
+                  "name": "Global navigation"
+                }
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Exit to My Voyages"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "text": "Synthetic Crossdeck refit Voyage",
+                "path": "/player/library",
+                "meaning": "The companion context exit opens the authorized Chronicle Library with the same current adventure, rather than leaving a trapped or generic account task.",
+                "state": "LIBRARY_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "My Chronicle Library"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Adventure"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "path": "/player/playthroughs/{voyageId}/journal",
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "crossdeck.refit.companion",
       "name": "Crossdeck canonical companion Lens, Chart, Journal, artifact and return experience",
       "authority": "project-crossdeck",
@@ -4201,7 +4647,8 @@
           "src/components/player/journal",
           "src/app/player/playthroughs/[playthroughId]/journal",
           "src/app/play/[taleSlug]/session/[sessionId]",
-          "src/app/player/offline-landfall"
+          "src/app/player/offline-landfall",
+          "src/styles/chronicle.css"
         ],
         "projectionPaths": [
           "src/app/api/crossdeck",
@@ -4404,66 +4851,6 @@
             ]
           }
         ]
-      }
-    },
-    {
-      "id": "reach.phase1.foundation",
-      "name": "Reach Phase 1 observation, calibration and laboratory foundation",
-      "authority": "reach",
-      "owners": ["reach", "project-sextant", "watchglass"],
-      "critical": true,
-      "experienceIntent": {
-        "objective": "Point at calibration targets using my real hand and understand whether I can act",
-        "visibleOutcome": "Detected hand, tracking quality, gesture classification and calibration eligibility remain visibly distinct",
-        "integrationOwner": "Reach calibration experience integration",
-        "systems": ["reach", "project-sextant", "watchglass"],
-        "sourcePaths": ["src/reach", "src/components/reach"],
-        "persona": "A Creator or Player completing the named human objective",
-        "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
-        "devices": ["DESKTOP", "MOBILE"],
-        "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
-        "baselineDebt": [
-          {
-            "id": "PE-DEBT-REACH-STAGES",
-            "fingerprint": "0047d89ebcb6a5b9c253bdfd004f7659a55b15b3b4e11cf0dff6bd8642db3902",
-            "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
-            "repairOwner": "Spatial Experience Refit",
-            "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
-            "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
-            "deficiency": "Hand detection can be confused with action eligibility, producing misleading calibration feedback."
-          }
-        ],
-        "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
-      }
-    },
-    {
-      "id": "sextant.phase3.field-context",
-      "name": "Sextant Phase 3 field semantics, nearby security, media lifecycle and authored fallback",
-      "authority": "project-sextant",
-      "owners": ["project-sextant"],
-      "critical": true,
-      "experienceIntent": {
-        "objective": "Use an instrument in my Voyage and understand supported sensing or fallback",
-        "visibleOutcome": "Instrument choice produces its corresponding task, truthful capability state and useful return/recovery",
-        "integrationOwner": "Sextant instrument experience integration",
-        "systems": ["project-sextant", "landfall"],
-        "sourcePaths": ["src/sextant", "src/components/sextant"],
-        "persona": "A Creator or Player completing the named human objective",
-        "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
-        "devices": ["DESKTOP", "MOBILE"],
-        "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
-        "baselineDebt": [
-          {
-            "id": "PE-DEBT-SEXTANT-INSTRUMENT",
-            "fingerprint": "038b28f51a1bcef32daf224e3ff91b40fb7007bded88314234a1dfd566feebd4",
-            "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
-            "repairOwner": "Spatial Experience Refit",
-            "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
-            "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
-            "deficiency": "Selectable instruments need meaningful outcomes, contextual hierarchy and truthful unsupported states."
-          }
-        ],
-        "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
       }
     }
   ],

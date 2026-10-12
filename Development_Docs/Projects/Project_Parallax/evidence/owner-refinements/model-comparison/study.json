@@ -1,0 +1,591 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE",
+  "authorization": {
+    "additionalCeilingNano": "400000000",
+    "earlierSixCallCanaryExcluded": true,
+    "automaticRetries": 0
+  },
+  "calls": 484,
+  "totalCostNano": "263774605",
+  "totalCostUSD": 0.263774605,
+  "remainingNano": "136225395",
+  "rounds": [
+    {
+      "round": 1,
+      "file": "round-01-current.json.txt",
+      "sha256": "27bccca6f7df9f7de752559c0dadc65d7893c7d994064344efaa048acf0a8768",
+      "source": "f6fa533642e042c24402c94951c09f24fc7bc5de",
+      "uncommittedSource": true,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v2",
+      "instructionVariant": "CURRENT",
+      "instructionVariantOrigin": "MATCHED_RECORDED_DIGEST",
+      "instructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+      "reasoning": "INFERRED_LOW",
+      "reasoningOrigin": "PINNED_EVALUATOR_DEFAULT",
+      "calls": 24,
+      "strictPassed": 20,
+      "costNano": "50381590",
+      "costUSD": 0.05038159,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 12,
+          "costNano": "2503190",
+          "costUSD": 0.00250319,
+          "meanCostUSD": 0.00020859916666666667,
+          "meanProviderMs": 3456.4164999999994,
+          "medianProviderMs": 3329.278099999996,
+          "inputTokens": 22508,
+          "outputTokens": 2521
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "calls": 12,
+          "costNano": "47878400",
+          "costUSD": 0.0478784,
+          "meanCostUSD": 0.003989866666666667,
+          "meanProviderMs": 4738.792549999997,
+          "medianProviderMs": 4492.012499999997,
+          "inputTokens": 22508,
+          "outputTokens": 2480
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "file": "round-02-current.json.txt",
+      "sha256": "c999d35e1668134b8db3b452c1c2b894838cf1378add8b3df790f8e360782dad",
+      "source": "fe52349ac0d16a4c9519133659d4a01363884601",
+      "uncommittedSource": true,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v2",
+      "instructionVariant": "CURRENT",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 18,
+      "strictPassed": 15,
+      "costNano": "3840795",
+      "costUSD": 0.003840795,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 18,
+          "costNano": "3840795",
+          "costUSD": 0.003840795,
+          "meanCostUSD": 0.0002133775,
+          "meanProviderMs": 4035.3353111111105,
+          "medianProviderMs": 3787.0292999999947,
+          "inputTokens": 34081,
+          "outputTokens": 4851
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "file": "round-03-concise.json.txt",
+      "sha256": "c0529b8c04eb22196a61db003ecd8442d0861a2af3b811aa4e011b8c198764a3",
+      "source": "fe52349ac0d16a4c9519133659d4a01363884601",
+      "uncommittedSource": true,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v2",
+      "instructionVariant": "CONCISE",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "4e83427548a2a0a9259026b9567ec2ce8e55e607021fa8a10cb5565f93e33927",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 18,
+      "strictPassed": 16,
+      "costNano": "3611530",
+      "costUSD": 0.00361153,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 18,
+          "costNano": "3611530",
+          "costUSD": 0.00361153,
+          "meanCostUSD": 0.00020064055555555556,
+          "meanProviderMs": 3136.796905555555,
+          "medianProviderMs": 3081.844299999997,
+          "inputTokens": 35071,
+          "outputTokens": 3655
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "file": "round-04-precise.json.txt",
+      "sha256": "2853597fefaf6f6740b7ce1faf10b503dee8f741f7eba353cb9ae545e9ff001c",
+      "source": "fe52349ac0d16a4c9519133659d4a01363884601",
+      "uncommittedSource": true,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v2",
+      "instructionVariant": "PRECISE",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "77f854e3e098f046a5f3d80c597e7698408e87962e9efd7e665455f26262988d",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 18,
+      "strictPassed": 15,
+      "costNano": "3673035",
+      "costUSD": 0.003673035,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 18,
+          "costNano": "3673035",
+          "costUSD": 0.003673035,
+          "meanCostUSD": 0.00020405749999999998,
+          "meanProviderMs": 3659.6316166666656,
+          "medianProviderMs": 2989.285100000001,
+          "inputTokens": 37213,
+          "outputTokens": 3684
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "file": "round-05-candidate.json.txt",
+      "sha256": "8a3e410a3c31f936829a1ae08e4436c70b06654a6a5b8131f31851aa59d99686",
+      "source": "4b1ff2ffc26896e25dc3c87045169345205407b6",
+      "uncommittedSource": false,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v2",
+      "instructionVariant": "CANDIDATE",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "1bac6a68ce1028d4ef050783425986fe7866175062d3e881a142cc114a0e37ed",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 12,
+      "strictPassed": 11,
+      "costNano": "31816800",
+      "costUSD": 0.0318168,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 6,
+          "costNano": "1608300",
+          "costUSD": 0.0016083,
+          "meanCostUSD": 0.00026805,
+          "meanProviderMs": 3384.5179833333336,
+          "medianProviderMs": 4230.585299999999,
+          "inputTokens": 12163,
+          "outputTokens": 1478
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "calls": 6,
+          "costNano": "30208500",
+          "costUSD": 0.0302085,
+          "meanCostUSD": 0.00503475,
+          "meanProviderMs": 4820.723999999999,
+          "medianProviderMs": 5476.6283,
+          "inputTokens": 12163,
+          "outputTokens": 1369
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "file": "round-06-candidate.json.txt",
+      "sha256": "2619ebe42941c5997e3a6c8fab7d02a22d9832dcd9bbe6c3a9bae3b336f358b8",
+      "source": "4b1ff2ffc26896e25dc3c87045169345205407b6",
+      "uncommittedSource": false,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v2",
+      "instructionVariant": "CANDIDATE",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "1bac6a68ce1028d4ef050783425986fe7866175062d3e881a142cc114a0e37ed",
+      "reasoning": "medium",
+      "reasoningOrigin": "REPORT",
+      "calls": 6,
+      "strictPassed": 6,
+      "costNano": "1817800",
+      "costUSD": 0.0018178,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 6,
+          "costNano": "1817800",
+          "costUSD": 0.0018178,
+          "meanCostUSD": 0.0003029666666666667,
+          "meanProviderMs": 3618.867400000001,
+          "medianProviderMs": 3945.7644,
+          "inputTokens": 12163,
+          "outputTokens": 1897
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "file": "round-07-candidate.json.txt",
+      "sha256": "575261a508cda8cc798ce459e628780e02b1e30e9ccdc99d6b9c33ab3dafbd15",
+      "source": "bd8b68e31e63da4501771bb06334b32953a5799e",
+      "uncommittedSource": false,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v2",
+      "instructionVariant": "CANDIDATE",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "1bac6a68ce1028d4ef050783425986fe7866175062d3e881a142cc114a0e37ed",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 60,
+      "strictPassed": 52,
+      "costNano": "9638225",
+      "costUSD": 0.009638225,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 60,
+          "costNano": "9638225",
+          "costUSD": 0.009638225,
+          "meanCostUSD": 0.00016063708333333333,
+          "meanProviderMs": 2751.0624833333327,
+          "medianProviderMs": 2617.3744000000006,
+          "inputTokens": 119481,
+          "outputTokens": 10318
+        }
+      ]
+    },
+    {
+      "round": 8,
+      "file": "round-08-tuned.json.txt",
+      "sha256": "ccd041b68e0bd7c959bd7a28a7da815359406465283784f9dbe56dd1569e6fa1",
+      "source": "ea38f4ddedbc89396f33269b4d80d70a4d77f33e",
+      "uncommittedSource": false,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v2",
+      "instructionVariant": "TUNED",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "4a28d2953290ac969516b9c0c545b2ea292e6f16bc1711b00c5e299eeb7c82f6",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 12,
+      "strictPassed": 8,
+      "costNano": "28242725",
+      "costUSD": 0.028242725,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 6,
+          "costNano": "1475725",
+          "costUSD": 0.001475725,
+          "meanCostUSD": 0.0002459541666666667,
+          "meanProviderMs": 3730.6040333333326,
+          "medianProviderMs": 3344.4622999999992,
+          "inputTokens": 12416,
+          "outputTokens": 1271
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "calls": 6,
+          "costNano": "26767000",
+          "costUSD": 0.026767,
+          "meanCostUSD": 0.004461166666666666,
+          "meanProviderMs": 3916.8498333333323,
+          "medianProviderMs": 3568.6140000000014,
+          "inputTokens": 12416,
+          "outputTokens": 1087
+        }
+      ]
+    },
+    {
+      "round": 9,
+      "file": "round-09-tuned.json.txt",
+      "sha256": "88ea14b29fc3ab67e82d65e2bfca932a6897f26bdfcc7169471f2b64c9d7a232",
+      "source": "8870e1f637bd137058b7909ef96791397541ceea",
+      "uncommittedSource": false,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v3",
+      "instructionVariant": "TUNED",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "4a28d2953290ac969516b9c0c545b2ea292e6f16bc1711b00c5e299eeb7c82f6",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 90,
+      "strictPassed": 81,
+      "costNano": "15577305",
+      "costUSD": 0.015577305,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 90,
+          "costNano": "15577305",
+          "costUSD": 0.015577305,
+          "meanCostUSD": 0.00017308116666666667,
+          "meanProviderMs": 2976.275868888888,
+          "medianProviderMs": 2725.6773000000103,
+          "inputTokens": 186869,
+          "outputTokens": 18020
+        }
+      ]
+    },
+    {
+      "round": 10,
+      "file": "round-10-final.json.txt",
+      "sha256": "2316699083b3134f128e94af0909df0513cdd684a3ba9cc99881d745c13bdaf3",
+      "source": "ab0a97fbcef052a76ec70dcb9b40f1eb4db05bc7",
+      "uncommittedSource": false,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v3",
+      "instructionVariant": "FINAL",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "273f9fa10771ad4eb3e5b5b9a0349bbb32829dd466cebc35e64c53b83c6c702c",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 24,
+      "strictPassed": 21,
+      "costNano": "51188230",
+      "costUSD": 0.05118823,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 12,
+          "costNano": "2682930",
+          "costUSD": 0.00268293,
+          "meanCostUSD": 0.0002235775,
+          "meanProviderMs": 3288.3692333333324,
+          "medianProviderMs": 2730.450500000001,
+          "inputTokens": 24909,
+          "outputTokens": 2694
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "calls": 12,
+          "costNano": "48505300",
+          "costUSD": 0.0485053,
+          "meanCostUSD": 0.004042108333333333,
+          "meanProviderMs": 4538.106475000001,
+          "medianProviderMs": 3867.748800000001,
+          "inputTokens": 24909,
+          "outputTokens": 2377
+        }
+      ]
+    },
+    {
+      "round": 11,
+      "file": "round-11-qualified.json.txt",
+      "sha256": "490549b4e57d3f2a49caf0490746b529c63eb9a0e07eb37ed2628113a551e3d0",
+      "source": "89d8ac0af0ece431a65358b97196504dc78c27c1",
+      "uncommittedSource": false,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v3",
+      "instructionVariant": "QUALIFIED",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "a3150aeb0bd39aac4aabfb6ee4ecd8d7add3000ebdacf95a007cfa551e6ead0c",
+      "reasoning": "medium",
+      "reasoningOrigin": "REPORT",
+      "calls": 12,
+      "strictPassed": 11,
+      "costNano": "3240125",
+      "costUSD": 0.003240125,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 12,
+          "costNano": "3240125",
+          "costUSD": 0.003240125,
+          "meanCostUSD": 0.00027001041666666666,
+          "meanProviderMs": 3605.3428666666673,
+          "medianProviderMs": 3311.8834000000024,
+          "inputTokens": 25113,
+          "outputTokens": 3797
+        }
+      ]
+    },
+    {
+      "round": 12,
+      "file": "round-12-qualified.json.txt",
+      "sha256": "8b040899870c2769ed10a5247d0962c9e5613ef093e875fcfe690d1806f6d6e2",
+      "source": "89d8ac0af0ece431a65358b97196504dc78c27c1",
+      "uncommittedSource": false,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v3",
+      "instructionVariant": "QUALIFIED",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "a3150aeb0bd39aac4aabfb6ee4ecd8d7add3000ebdacf95a007cfa551e6ead0c",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 90,
+      "strictPassed": 82,
+      "costNano": "15814825",
+      "costUSD": 0.015814825,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 90,
+          "costNano": "15814825",
+          "costUSD": 0.015814825,
+          "meanCostUSD": 0.00017572027777777778,
+          "meanProviderMs": 2326.0782800000015,
+          "medianProviderMs": 2177.9272000000055,
+          "inputTokens": 187319,
+          "outputTokens": 17055
+        }
+      ]
+    },
+    {
+      "round": 13,
+      "file": "round-13-selected.json.txt",
+      "sha256": "4f6b33d997ea81a7d514cc82c1ce48133ed4263f1093b11de187c535efa36999",
+      "source": "6c0572f70db3211ebae0e3e681505e380ce63ad2",
+      "uncommittedSource": false,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v3",
+      "instructionVariant": "SELECTED",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "b4a2a141503c6c68a5a545210bca174974fb882a7cd330645b99ea200ce09000",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 6,
+      "strictPassed": 6,
+      "costNano": "27280640",
+      "costUSD": 0.02728064,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 3,
+          "costNano": "1274240",
+          "costUSD": 0.00127424,
+          "meanCostUSD": 0.0004247466666666667,
+          "meanProviderMs": 4565.843433333334,
+          "medianProviderMs": 4437.979800000001,
+          "inputTokens": 6333,
+          "outputTokens": 1285
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "calls": 3,
+          "costNano": "26006400",
+          "costUSD": 0.0260064,
+          "meanCostUSD": 0.008668799999999999,
+          "meanProviderMs": 7865.0193333333345,
+          "medianProviderMs": 7740.7595,
+          "inputTokens": 6333,
+          "outputTokens": 1374
+        }
+      ]
+    },
+    {
+      "round": 14,
+      "file": "round-14-selected.json.txt",
+      "sha256": "9b3ce2c5288bb5771875d82714628ace54caca071ed6b8f9f5be2402af6c024c",
+      "source": "fe5c54386c013746cc56602099b5b42ee1dbb704",
+      "uncommittedSource": true,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v3",
+      "instructionVariant": "SELECTED",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "b4a2a141503c6c68a5a545210bca174974fb882a7cd330645b99ea200ce09000",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 4,
+      "strictPassed": 4,
+      "costNano": "885230",
+      "costUSD": 0.00088523,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 4,
+          "costNano": "885230",
+          "costUSD": 0.00088523,
+          "meanCostUSD": 0.0002213075,
+          "meanProviderMs": 3289.7551000000003,
+          "medianProviderMs": 3768.016800000005,
+          "inputTokens": 8446,
+          "outputTokens": 1141
+        }
+      ]
+    },
+    {
+      "round": 15,
+      "file": "round-15-spaced.json.txt",
+      "sha256": "6875b4d21f8262c05628f3fe9e4b6b359fc025841df2d47a62671319ecfde296",
+      "source": "e57c9319eb0d4170cb5ee3a05a20a6b46a8b17a1",
+      "uncommittedSource": true,
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "instructionVariant": "SPACED",
+      "instructionVariantOrigin": "REPORT",
+      "instructionsDigest": "bc06fca4466c269613bd5c9e6ea8b7cb5d6b09e8796687d70938a54a4cd59cf9",
+      "reasoning": "low",
+      "reasoningOrigin": "REPORT",
+      "calls": 90,
+      "strictPassed": 83,
+      "costNano": "16765750",
+      "costUSD": 0.01676575,
+      "modelMetrics": [
+        {
+          "model": "gpt-6-luna",
+          "calls": 90,
+          "costNano": "16765750",
+          "costUSD": 0.01676575,
+          "meanCostUSD": 0.00018628611111111111,
+          "meanProviderMs": 2739.5886355555563,
+          "medianProviderMs": 2492.2648000000045,
+          "inputTokens": 191999,
+          "outputTokens": 18573
+        }
+      ]
+    }
+  ],
+  "independentReviewFiles": [
+    {
+      "file": "independent-model-materialization.json.txt",
+      "sha256": "97a70cd5ec2fb28096af4727bf07daef9a6d1d0b172ad1880c1834d13aaa2fc8"
+    },
+    {
+      "file": "independent-sixty-inspection.json.txt",
+      "sha256": "b41d86a4cb97917d0fc53316d9b5d050d14ad044a30a8f9d4e65b09eb03f2272"
+    },
+    {
+      "file": "independent-tuned-inspection.json.txt",
+      "sha256": "c26959488cefb5b0d0614c70831199f3c616fa81423648ce2bd5c72d502d38c3"
+    },
+    {
+      "file": "model-independent-final-comparison.json.txt",
+      "sha256": "172a10f42cb25649bd82ec4f8aa12f110546fc054f3a0a24f3dc1c6011c3a0d9"
+    },
+    {
+      "file": "model-independent-final-review.json.txt",
+      "sha256": "304276ff7538ae1cbbc99e8187a8d063789736c82d5402913158195017a96618"
+    },
+    {
+      "file": "model-independent-packet.json.txt",
+      "sha256": "be5fc80889ee6dc630a50800de6fe7a2e5f9195a692b87c07f6252bb8ee9d51e"
+    },
+    {
+      "file": "model-independent-qualified-review.json.txt",
+      "sha256": "aa5a4da2be6eedfbcfc3865a921eec7f647ddfca79c81d635dd90180494899e4"
+    },
+    {
+      "file": "model-independent-review-addendum.json.txt",
+      "sha256": "8ef6e3eb9e7919ca3c298967220a2c297e4f18cab73887c22e4b4f3123549425"
+    },
+    {
+      "file": "model-independent-review.json.txt",
+      "sha256": "395e7482346e7684e88b9c17baf246f93f19456d5105956b22ada43f47eaa8fb"
+    },
+    {
+      "file": "model-independent-selected-review.json.txt",
+      "sha256": "5b87f0e6511c484358891346594d95504ec0759181ea2ba28b5e527bfb26dd7d"
+    },
+    {
+      "file": "model-independent-tuned-review.json.txt",
+      "sha256": "11ad19217af266e0b5126ccc7c266db685a6f467d0798e486dac96901a05b8fd"
+    },
+    {
+      "file": "model-independent-spaced-review.json.txt",
+      "sha256": "87728c0967433e6240212e8de6d31e549967629e7aad2b1a83fc856df31144e8"
+    }
+  ],
+  "ownerAcceptance": "NOT_CLAIMED",
+  "finalSemanticAssessment": {
+    "strictPassed": 83,
+    "cases": 90,
+    "decision": "NO_CONFIRMED_BLOCKING_DEFECT_IN_THIS_BOUNDED_RUN",
+    "model": "gpt-6-luna",
+    "reasoning": "low",
+    "repeatRunReliabilityClaimed": false
+  },
+  "finalReproductionFiles": [
+    {
+      "originalPath": "tmp/parallax-a1/independent-spaced-evidence.json",
+      "file": "independent-spaced-evidence.json.txt",
+      "sha256": "3ce5da9734a497112d62ff2d45d496ed5ee0585f07c63a704e05dbf333a6183b"
+    },
+    {
+      "originalPath": "tmp/parallax-a1/independent-spaced-fixture-check.json",
+      "file": "independent-spaced-fixture-check.json.txt",
+      "sha256": "6490a7cc350b147743f0c461baa1f5ca48814ebfd92102e79d356a1380416352"
+    }
+  ]
+}
