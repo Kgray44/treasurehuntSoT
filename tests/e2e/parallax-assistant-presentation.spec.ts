@@ -172,6 +172,18 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
   }
   await submit("Synthetic provider failure for recovery review.");
   await expect(assistant).toContainText(/unchanged|could not|unavailable/i);
+  await expect(assistant.getByRole("heading", { name: /What would you like/ })).toBeHidden();
+  const failureNotice = assistant
+    .getByRole("status")
+    .filter({ hasText: /unchanged/ })
+    .first();
+  await expect(failureNotice).toBeInViewport();
+  expect(
+    await failureNotice.evaluate((element) => {
+      const bounds = element.getBoundingClientRect();
+      return element.contains(document.elementFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2));
+    }),
+  ).toBe(true);
   await capture(page, "provider-failure-light");
   await submit("Explain an unsupported glowing particle effect.");
   await expect(assistant.getByRole("heading", { name: "A supported alternative to particles" })).toBeVisible();

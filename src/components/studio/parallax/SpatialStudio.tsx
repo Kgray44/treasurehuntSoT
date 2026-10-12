@@ -615,6 +615,7 @@ export function SpatialStudio({
       className={`${styles.studio} ${styles.adaptiveWorkspace}`}
       data-mode={mode}
       data-layout={layout.preset}
+      data-account-id={loaded.layoutScope}
     >
       <header className={styles.header}>
         <div>
@@ -855,6 +856,7 @@ export function SpatialStudio({
             aria-labelledby="left-tab-ASSETS"
             hidden={leftTab !== "ASSETS"}
           >
+            <p className={styles.dockHelp}>Add an object or start from a scene template.</p>
             <SpatialAssetBrowser busy={busy} onAdd={addPreset} onNew={() => newPreset("Desk Map")} />
           </div>
           <div
@@ -915,6 +917,7 @@ export function SpatialStudio({
           >
             <section className={styles.graph} aria-label="Scene graph">
               <h2>Scene graph</h2>
+              <p className={styles.dockHelp}>Select, show, hide, or lock the objects in this scene.</p>
               <label>
                 Find an entity
                 <input
@@ -1008,6 +1011,7 @@ export function SpatialStudio({
           />
           <div className={styles.commandBar}>
             <button
+              aria-label="Ask Parallax"
               aria-expanded={assistantOpen}
               aria-controls="parallax-assistance"
               onClick={() => setAssistantOpen(!assistantOpen)}
@@ -1431,7 +1435,8 @@ export function SpatialStudio({
                       }}
                     >
                       <strong>
-                        {finding.severity} / {finding.code}
+                        {finding.severity}
+                        {mode === "ENGINEERING" ? ` / ${finding.code}` : ""}
                       </strong>{" "}
                       {finding.message}
                     </button>
@@ -1493,6 +1498,37 @@ export function SpatialStudio({
               ›
             </button>
           </div>
+          {!currentEntity && (
+            <section className={styles.sceneOverview} aria-label="Scene overview">
+              <h3>Scene overview</h3>
+              <p>
+                {draft.content.entities.length} objects · {draft.content.studio?.behaviors.length ?? 0} spatial
+                behaviors
+              </p>
+              {assistantScenePreview?.content.entities.some((entity) => entity.id === selected) && (
+                <p>
+                  This object belongs to the proposed scene. Review and apply the proposal before editing its saved
+                  properties.
+                </p>
+              )}
+              <p>
+                Select an object to edit its clue, placement, and interactions.{" "}
+                {mode === "GUIDED"
+                  ? "Guided mode keeps the essential controls in view."
+                  : mode === "DETAILED"
+                    ? "Detailed mode adds appearance and dependencies."
+                    : "Engineering mode also exposes coordinates and anchor diagnostics."}
+              </p>
+              <div>
+                {draft.content.entities.map((entity) => (
+                  <button key={entity.id} onClick={() => setSelected(entity.id)}>
+                    {entity.name}
+                  </button>
+                ))}
+              </div>
+              <button onClick={() => openLeftTab("ASSETS")}>Add an object from Library</button>
+            </section>
+          )}
           {currentEntity && (
             <fieldset disabled={draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked}>
               <legend className={styles.srOnly}>Selected spatial object</legend>
@@ -1717,7 +1753,7 @@ export function SpatialStudio({
                 <button onClick={() => openBottomTab("TIMELINE")}>Edit selected object timeline</button>
                 <button onClick={() => openBottomTab("SIMULATION")}>Simulate interactions</button>
               </details>
-              <details {...sectionProps("engineering")} hidden={mode === "GUIDED"}>
+              <details {...sectionProps("engineering")} hidden={mode !== "ENGINEERING"}>
                 <summary>Advanced / Engineering</summary>
                 {mode === "ENGINEERING" && (
                   <>

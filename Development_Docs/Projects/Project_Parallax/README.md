@@ -19,9 +19,9 @@ Its governing promise is simple even though the machinery behind it is emphatica
 ## Governing authority
 
 - [A1 local OpenAI configuration](Parallax_A1_Local_OpenAI_Configuration.md) describes the shared Windows user credential, safe diagnostics and account-dossier quota controls.
-- [A1 Assistant presentation review](Parallax_A1_Presentation_Review.md) records source-bound production-browser captures, motion evidence and the outstanding owner visual review.
+- [A1 Assistant presentation review](Parallax_A1_Presentation_Review.md) records the initial source-bound production-browser package. [Owner visual refinements](Parallax_A1_Visual_Refinements.md) records the revised package and its explicit owner presentation acceptance.
 
-- [Supplemental A1 Spatial Assistant amendment](../../Governing/Project_Parallax_A1_Spatial_Assistant_Governing_Amendment.md) adds reviewed natural-language authoring, OpenAI integration and Admiralty-controlled durable AI quotas. Implementation and qualification are in progress in a dedicated worktree; live canary and owner visual acceptance remain pending.
+- [Supplemental A1 Spatial Assistant amendment](../../Governing/Project_Parallax_A1_Spatial_Assistant_Governing_Amendment.md) adds reviewed natural-language authoring, OpenAI integration and Admiralty-controlled durable AI quotas. A1 software is integrated on protected main; owner presentation corrections and expanded synthetic model testing are undergoing their separate final software qualification.
 
 1. [Voyagewright Spatial Experience Architecture v1.0](../../Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md) establishes the cross-project spatial ownership boundary.
 2. [Project Parallax Governing Document v1.0](../../Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md) is the canonical Parallax product and engineering baseline.
@@ -136,9 +136,13 @@ Read the preserved authority above with the [current Reach integration amendment
 - [Accounting, API contracts and privacy](Parallax_A1_Accounting_Contracts_and_Privacy.md)
 - [Admiralty AI quota operator guide](Parallax_A1_Quota_Operator_Guide.md)
 - [Evaluation and qualification](Parallax_A1_Evaluation_and_Qualification.md)
+- [Owner visual refinements](Parallax_A1_Visual_Refinements.md)
+- [Model and prompt comparison](Parallax_A1_Model_and_Prompt_Comparison.md)
 - [Mainline implementation and software qualification](Parallax_A1_Implementation_and_Qualification.md)
 - [Spatial Assistant Creator guide](../../../docs/user/spatial-assistant.md)
 
 A1 is software-qualified and integrated through protected PR #710, with landed
-smoke and a bounded live-provider canary. Owner visual review remains pending;
-the implementation record preserves that boundary and physical limitations.
+smoke and a bounded live-provider canary. The owner accepted the revised
+presentation at `fe5c5438`; its correction qualification is tracked separately.
+The model study preserves expanded synthetic testing and its finite quality
+limits; physical-device and AR evidence remain separate.

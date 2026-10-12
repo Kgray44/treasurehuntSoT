@@ -120,9 +120,13 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   await page.screenshot({ path: `${root}/constrained-desktop-engineering.png`, fullPage: true });
   await canvas.focus();
   await page.keyboard.press("/");
+  await expect(page.getByLabel("Describe your spatial idea")).toBeFocused();
+  await page.getByText("Guided placement controls", { exact: true }).click();
+  await page.getByLabel("Spatial placement instruction").focus();
   await expect(page.getByLabel("Spatial placement instruction")).toBeFocused();
+  const { aiAvailable } = await (await page.request.get("/api/studio/parallax")).json();
   await expect(page.getByRole("region", { name: "Contextual spatial assistance" })).toContainText(
-    "AI provider unavailable",
+    aiAvailable ? "Configured provider available in AI assistance" : "AI provider unavailable",
   );
   await page.getByRole("button", { name: "Dock assistance" }).click();
   await page.getByRole("button", { name: "Float assistance" }).click();
@@ -252,6 +256,7 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   const saved = (await listSpatialItems(account.id))[0];
   const storedBefore = JSON.stringify(saved.draft);
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
+  await page.getByText("Guided placement controls", { exact: true }).click();
   await page.getByLabel("Spatial placement instruction").fill("Place the map on a table near the entrance");
   await page.getByRole("button", { name: "Preview placement", exact: true }).click();
   await expect(page.getByRole("region", { name: "Contextual spatial assistance" })).toContainText("draft unchanged");

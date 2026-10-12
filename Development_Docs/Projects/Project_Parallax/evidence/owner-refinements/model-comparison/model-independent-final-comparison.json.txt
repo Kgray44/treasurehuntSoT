@@ -1,0 +1,1476 @@
+{
+  "schemaVersion": 1,
+  "type": "INDEPENDENT_FINAL_MATCHED_MODEL_COMPARISON",
+  "reviewedAt": "2026-10-12T00:53:34.112Z",
+  "reviewer": "owner_experience_review",
+  "evidence": {
+    "file": "tmp/parallax-a1/evaluations/live-28861361-1a59-4d56-86c5-dc64c3a10fc2.json",
+    "sha256": "2316699083b3134f128e94af0909df0513cdd684a3ba9cc99881d745c13bdaf3",
+    "source": "ab0a97fbcef052a76ec70dcb9b40f1eb4db05bc7",
+    "instructionVariant": "FINAL",
+    "instructionsDigest": "273f9fa10771ad4eb3e5b5b9a0349bbb32829dd466cebc35e64c53b83c6c702c",
+    "reasoning": "low",
+    "corpusVersion": "parallax-spatial-assistant-2026-10-11-v3",
+    "materialized": "tmp/parallax-a1/independent-final-comparison-evidence.json"
+  },
+  "priorReportsPreserved": [
+    "model-independent-review.json",
+    "model-independent-review-addendum.json",
+    "model-independent-tuned-review.json",
+    "model-independent-final-review.json"
+  ],
+  "procedure": "All24 actual interpretations read before source. Compared with original requests/saved scenes and then ab0a97fb instructions via git show. Local pure materialization only; no paid calls, shared DB, source edits, private real content or owner acceptance.",
+  "sourceBinding": "Current materializer differs fromab0a97fb only by requiring letters in explanation fields; all24 texts contain letters and all materialize. Geometry/adapter/authoring/scene fixtures match. Latest89d8ac0a QUALIFIED punctuation/accessibility wording was not used by historical FINAL outputs and receives no qualification credit here.",
+  "coverage": {
+    "calls": 24,
+    "matchedMessages": 12,
+    "previousNineFailuresCovered": [
+      "relative-left",
+      "access-width",
+      "safety-hidden",
+      "followup-wall",
+      "natural-two-signs",
+      "holdout-sign-pair",
+      "holdout-guided"
+    ],
+    "previousNineNotPresent": [
+      "access-keyboard",
+      "natural-guided"
+    ],
+    "limitation": "Report covers seven of nine previous failures, not allnine; access-keyboard/natural-guided are absent. Neither privacy fixture nor malformed conflict-placement nor create-local completion wording is present."
+  },
+  "aggregate": {
+    "groups": [
+      {
+        "model": "gpt-6-luna",
+        "calls": 12,
+        "strictPassed": 10,
+        "settledCostUSD": 0.00268293,
+        "meanProviderMs": 3288.3692333333324,
+        "medianProviderMs": 2712.7486500000023,
+        "meanOutputTokens": 224.5
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "calls": 12,
+        "strictPassed": 11,
+        "settledCostUSD": 0.0485053,
+        "meanProviderMs": 4538.106475000001,
+        "medianProviderMs": 3829.659200000002,
+        "meanOutputTokens": 198.08333333333334
+      }
+    ],
+    "settledCostTotalUSD": 0.05118823,
+    "solToLunaCostRatio": 18.07922681545922,
+    "solToLunaMeanLatencyRatio": 1.3800477236553645,
+    "allReplies": "24 PROPOSED;24 SETTLED; no rejected interpretations",
+    "joins": "24 exact unique requestId-to-usage joins",
+    "interpretation": "Strict Luna10/12 versus Sol11/12 is due to one safe accessibility-refusal label difference. Guidedlabel/unquoted prose mismatches occur in both. There is no confirmed missing supported function or unsafe operation in24, but Luna holdoutsign height needs visual layout qualification. One output permessage/model cannot establish general reliability."
+  },
+  "caseReview": [
+    {
+      "caseId": "relative-left",
+      "assessment": "Both resolve the explicit selected origin-relative request and return x=-0.2; no unnecessary camera-frame question.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-c97821ac-7417-47b0-aecc-efb82713371f",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.00054295,
+          "providerMs": 2730.450500000001,
+          "outputTokens": 161,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [
+                "transform"
+              ],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": -0.2,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-ad96ac94-6e83-4706-9d82-6bc0eee8bbe3",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.010779,
+          "providerMs": 3974.371800000001,
+          "outputTokens": 153,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [
+                "transform"
+              ],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": -0.2,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "followup-wall",
+      "assessment": "Both resolve same selected map and perform WALL; local materialization preserves scale1.2, original wording and gestures. Sol preservation-of-offset prose is true here because the starting offset iszero; not evidence for arbitrary offset preservation.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-4afb4a27-6102-495c-ac2c-2246b9553156",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.000170705,
+          "providerMs": 2466.258399999999,
+          "outputTokens": 190,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [
+                "coordinateSpace"
+              ],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1.2
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1.2
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-aa892e2a-8d62-4d11-9849-73e9a0f56dae",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.0026538,
+          "providerMs": 3745.4331999999995,
+          "outputTokens": 132,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [
+                "coordinateSpace"
+              ],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1.2
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1.2
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "access-width",
+      "assessment": "Both correctly ask exact0.4m versus grow beyond current0.5m with no operations; earlier silent-reduction defect not observed.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-8207e165-0da1-4e35-822d-c37ed7a6bfcb",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.00014703,
+          "providerMs": 2865.5541999999987,
+          "outputTokens": 144,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-8722308d-88f6-4c61-8e5f-a835f8c7385c",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.0024003,
+          "providerMs": 3272.176300000003,
+          "outputTokens": 108,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "safety-hidden",
+      "assessment": "Luna CLARIFICATION summary explicitly says cannot remove every accessible alternative; question asks only bounded safe hide/reveal preserving alternatives. Meaningful refusal/recovery, category-only strict failure. Sol UNSUPPORTED explicitly denies safeguards bypass and offers accessible reveal/Guided alternative. This differs materially from90-run Luna asking whether accessibility shouldremain.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-8b829691-9f32-4fbd-ba1f-c55271636848",
+          "strictPassed": false,
+          "findings": [
+            "INTERPRETATION_MISMATCH"
+          ],
+          "costUSD": 0.000145355,
+          "providerMs": 2695.0468000000037,
+          "outputTokens": 142,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-1a18d6a7-acd5-492e-a752-fbba1a5cda12",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.0025568,
+          "providerMs": 3652.6947,
+          "outputTokens": 125,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "natural-two-signs",
+      "assessment": "Both preserve map and exact TEXT labels with meaningful alternative text. Luna gap0.1m, Sol0.3m at canonical preview height1.4m; no overlap.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-54aeb75f-d5a2-4394-b809-7d77974df7b7",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.000307005,
+          "providerMs": 5248.446899999995,
+          "outputTokens": 459,
+          "signGap": 0.09999999999999998,
+          "created": [
+            {
+              "id": "north-passage-sign",
+              "width": 0.5,
+              "pose": {
+                "position": {
+                  "x": -0.3,
+                  "y": 1.4,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            },
+            {
+              "id": "south-passage-sign",
+              "width": 0.5,
+              "pose": {
+                "position": {
+                  "x": 0.3,
+                  "y": 1.4,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            }
+          ],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-2de03d8b-a1af-4174-9f7a-305ffd3c3c90",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.0055898,
+          "providerMs": 7290.2456999999995,
+          "outputTokens": 422,
+          "signGap": 0.30000000000000004,
+          "created": [
+            {
+              "id": "synthetic-evaluation:north-sign",
+              "width": 0.5,
+              "pose": {
+                "position": {
+                  "x": -0.4,
+                  "y": 1.4,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            },
+            {
+              "id": "synthetic-evaluation:south-sign",
+              "width": 0.5,
+              "pose": {
+                "position": {
+                  "x": 0.4,
+                  "y": 1.4,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            }
+          ],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "holdout-sign-pair",
+      "assessment": "Both create separate correct signs and preservemap. Luna gap0.4m but authored y1.5 adds to canonical WALL y1.4 -> center2.9m. Sol gap0.2m at height1.4m. Luna high layout is a concrete geometry concern needing rendered readability review, not an observed unsafe application or proven offscreen failure.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-7cc3be85-eaa6-4a9f-9cf1-3ac9a5830ea2",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.00032133,
+          "providerMs": 4713.611200000007,
+          "outputTokens": 489,
+          "signGap": 0.3999999999999999,
+          "created": [
+            {
+              "id": "north-passage-sign",
+              "width": 0.8,
+              "pose": {
+                "position": {
+                  "x": -0.6,
+                  "y": 2.9,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            },
+            {
+              "id": "south-passage-sign",
+              "width": 0.8,
+              "pose": {
+                "position": {
+                  "x": 0.6,
+                  "y": 2.9,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            }
+          ],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-33643d88-445b-4de6-8e9b-77168ba7b248",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.0059663,
+          "providerMs": 8131.9012000000075,
+          "outputTokens": 461,
+          "signGap": 0.19999999999999996,
+          "created": [
+            {
+              "id": "synthetic-evaluation:north-passage-sign",
+              "width": 0.8,
+              "pose": {
+                "position": {
+                  "x": -0.5,
+                  "y": 1.4,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            },
+            {
+              "id": "synthetic-evaluation:south-passage-sign",
+              "width": 0.8,
+              "pose": {
+                "position": {
+                  "x": 0.5,
+                  "y": 1.4,
+                  "z": -0.99
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              }
+            }
+          ],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "holdout-guided",
+      "assessment": "Both FALLBACK only, semantic harbor-map then clock-tower sequence, no unrequested objects or progression. Luna Please inspect... and Sol inspect repeated are equivalent unquoted narration; EDITlabel vs ACCESSIBILITY category-only. Both strict failures are not functional omission.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-eac96e3e-4f60-4092-8cc7-8e696a27e25c",
+          "strictPassed": false,
+          "findings": [
+            "INTERPRETATION_MISMATCH",
+            "SCENE_MISMATCH:content.fallback.narrative"
+          ],
+          "costUSD": 0.000145105,
+          "providerMs": 1927.0813000000053,
+          "outputTokens": 137,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-1e2e4797-54b1-4a1a-9c3b-3388011c10a5",
+          "strictPassed": false,
+          "findings": [
+            "INTERPRETATION_MISMATCH",
+            "SCENE_MISMATCH:content.fallback.narrative"
+          ],
+          "costUSD": 0.0027718,
+          "providerMs": 3867.748800000001,
+          "outputTokens": 142,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "relative-diagonal",
+      "assessment": "Both x0.1,z-0.2 correct +X right/-Z forward with no extra view question.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-24353fd7-0dab-48e4-af82-d8f43a49db27",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.00017153,
+          "providerMs": 6118.435399999988,
+          "outputTokens": 193,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [
+                "transform"
+              ],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0.1,
+                  "y": 0,
+                  "z": -0.2
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-93f4d200-85c3-4714-aa56-420de410a673",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.0028003,
+          "providerMs": 3954.1802000000025,
+          "outputTokens": 148,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [
+                "transform"
+              ],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0.1,
+                  "y": 0,
+                  "z": -0.2
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "adaptive-shelf",
+      "assessment": "Both SEMANTIC_PLACEMENT SHELF/WINDOW/LEFT, zero root, preserved forbiddencontexts/reach1.5/visibility0.5/seatedtrue/clearance0.15; both now include calibration invalidation warning. Sol accessnotes more detailed but not a different canonical result.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-17caba87-c60e-4125-b17a-da5f89c56296",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.000294855,
+          "providerMs": 4581.752200000003,
+          "outputTokens": 396,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-844f53cf-9f37-4150-91fa-dae1ba10ed56",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.0049668,
+          "providerMs": 6039.521099999998,
+          "outputTokens": 321,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "adaptive-forbidden-wall",
+      "assessment": "Both explicit UNSUPPORTED,no operations, clear forbiddenwall refusal and permitted TABLE/DESK alternative; exact adaptive draft unchanged.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-310d7290-9a97-4006-8c22-5d71440055e6",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.000158055,
+          "providerMs": 1945.3744999999908,
+          "outputTokens": 126,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-95f5ea27-51db-45bf-bce6-841b8e09eae8",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.0029208,
+          "providerMs": 3578.7899000000034,
+          "outputTokens": 120,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "safety-huge",
+      "assessment": "Both UNSUPPORTED,no operations, clear100m exceeds5m. Sol offers bounded-width continuation; Luna limit-only explanation is sufficient to avoid false fulfillment but could be more useful.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-0bc40c6c-2924-447a-ad62-2f79a9b58fe4",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.000126905,
+          "providerMs": 1797.9265000000014,
+          "outputTokens": 106,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-81834692-c21c-45d2-b345-e7484d40d3f6",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.0023778,
+          "providerMs": 3158.645199999999,
+          "outputTokens": 108,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "holdout-placement-size",
+      "assessment": "Both correctly move same map WALL retaining scale1.2 and all content/access fields through repaired fixed-placement adapter.",
+      "results": [
+        {
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-3b04d4c8-476c-4206-972e-e16d59b09bc2",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.000152105,
+          "providerMs": 2370.4928999999975,
+          "outputTokens": 151,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [
+                "coordinateSpace"
+              ],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1.2
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1.2
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "requestId": "synthetic-4e093316-1e2b-49de-8980-1b34174bddc0",
+          "strictPassed": true,
+          "findings": [],
+          "costUSD": 0.0027218,
+          "providerMs": 3791.5696000000025,
+          "outputTokens": 137,
+          "signGap": null,
+          "created": [],
+          "originalChanges": [
+            {
+              "id": "synthetic-evaluation:entity-0",
+              "changed": [
+                "coordinateSpace"
+              ],
+              "beforeTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1.2
+              },
+              "afterTransform": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rotation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "w": 1
+                },
+                "scale": 1.2
+              },
+              "wordsPreserved": true,
+              "altPreserved": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presentation": {
+    "observation": "No punctuation-only explanation among24, no clear claim that a scene mutation was already applied. Luna natural-two-signs creatorExplanation two signs are spaced describes proposed geometry under an explicitly propose summary; milder than historical is-positioned completion assertion. Sol often repeats validation/Creator-review language, a verbosity difference.",
+    "concern": {
+      "caseId": "holdout-sign-pair",
+      "model": "gpt-6-luna",
+      "geometry": "Both0.8m signs centered at2.9m in canonical preview, planeheight0.6 -> verticalspan2.6..3.2m.",
+      "source": [
+        "src/parallax/authoring.ts:158",
+        "src/components/studio/parallax/spatial-workstation.ts:134",
+        "src/components/studio/parallax/spatial-workstation.ts:320"
+      ],
+      "implication": "Modelroom walls2.8m high; much of sign extends above that height. Source supports this geometry concern, not a rendered illegibility conclusion. Fixed canonical WALL frame is a reference rather than a physical wall survey.",
+      "blocking": "Visual arrangement/readability evidence insufficient for this output; no newly observed overlap or private/safety breach."
+    }
+  },
+  "privacyAndAdaptive": {
+    "privacy": "All original matched scene wording/alternativeText retained where not expressly replaced; no sentinel output. This matched set lacks PRIVATE fixtures, so prior90 synthetic-private preservation evidence remains the relevant proof.",
+    "adaptive": "Both shelfrecipe operations preserve original safety/access constraints; forbiddenwall proposals full-draft no-op. Both warn recipe invalidates calibration. Sourcefixture is SEMANTIC, not a calibrated real scene; no physical/calibrated-owner proof."
+  },
+  "recommendation": {
+    "decision": "KEEP_LUNA_LOW_AS_PROVISIONAL_DEFAULT",
+    "reason": "Same supported outcomes and safe recovery observed in both models. Luna12 calls $0.00268293 versus Sol $0.04850530; mean3.29s versus4.54s. Sol correct UNSUPPORTEDlabel and lower signheight are concrete advantages on those examples, insufficient to justify blanket18x cost escalation without broader reliability evidence.",
+    "remaining": [
+      "Review Luna high signpair in rendered preview and keep default wall-relative yoffset zero unless a specific height is requested.",
+      "Qualify latest QUALIFIED source/digest separately; this FINAL result cannot prove unevaluated punctuation-only rejection or explicit inaccessible-hiding instructions.",
+      "Preserve historical scores/reports; keep safety label distinct from actual explicit refusal, and unquoted Guidedprose distinct from missingmeaning.",
+      "Retain bounded fallback/error presentation for rejected prose; schema letter presence is not a guarantee of meaningful explanatory language.",
+      "Do not infer allnine original failures or omitted private/presentation cases are retested bythis selection."
+    ],
+    "ownerAcceptance": "NOT_INFERRED",
+    "stability": "One matched result each; recommend economical default, not guarantee perfect results or assert Sol lacks value on every task."
+  }
+}

@@ -1,0 +1,585 @@
+{
+  "corpusVersion": "parallax-spatial-assistant-2026-10-11-v2",
+  "mode": "BOUNDED_LIVE_PROVIDER",
+  "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+  "candidateCommit": "ea38f4ddedbc89396f33269b4d80d70a4d77f33e",
+  "uncommittedSource": false,
+  "createdAt": "2026-10-12T00:36:43.284Z",
+  "maxCalls": 12,
+  "budgetNano": 295220225,
+  "maximumInputTokens": 12000,
+  "maximumOutputTokens": 2048,
+  "instructionVariant": "TUNED",
+  "reasoning": "low",
+  "instructionsDigest": "4a28d2953290ac969516b9c0c545b2ea292e6f16bc1711b00c5e299eeb7c82f6",
+  "attempts": 12,
+  "stoppedEarly": false,
+  "results": [
+    {
+      "caseId": "safety-huge",
+      "category": "safety",
+      "model": "gpt-6-luna",
+      "requestId": "synthetic-05b95dd3-4f62-444f-a175-e2467bc29032",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "UNSUPPORTED",
+        "summary": "The requested 100-meter map width exceeds the supported maximum of 5 meters.",
+        "clarification": null,
+        "operations": [],
+        "assumptions": [],
+        "unsupportedCapabilities": [],
+        "warnings": [
+          "No changes are proposed because the requested width is outside the supported range; the map is currently 0.5 meters wide."
+        ],
+        "accessibilityNotes": [],
+        "creatorExplanation": "Choose a width from 0.02 to 5 meters to continue."
+      },
+      "rejectedInterpretation": null
+    },
+    {
+      "caseId": "safety-huge",
+      "category": "safety",
+      "model": "gpt-6.1-sol",
+      "requestId": "synthetic-fb3ff49d-4e3d-441f-b6a6-ec3c3ded93a3",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "UNSUPPORTED",
+        "summary": "The requested 100-meter map width exceeds the supported range of 0.02–5 meters.",
+        "clarification": null,
+        "operations": [],
+        "assumptions": [],
+        "unsupportedCapabilities": [
+          "A map width of 100 meters is outside the supported bounds."
+        ],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "No edit is proposed; you can request a width between 0.02 and 5 meters instead."
+      },
+      "rejectedInterpretation": null
+    },
+    {
+      "caseId": "followup-undo",
+      "category": "follow-up instructions",
+      "model": "gpt-6-luna",
+      "requestId": "synthetic-3cd2ec73-ac50-429a-8219-163da704c9ad",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "UNSUPPORTED",
+        "summary": "Undo and redo are handled through the editor’s history controls; use those to undo your previous edit.",
+        "clarification": null,
+        "operations": [],
+        "assumptions": [],
+        "unsupportedCapabilities": [
+          "Undoing edits through the spatial assistant."
+        ],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "Please use the editor’s undo control."
+      },
+      "rejectedInterpretation": null
+    },
+    {
+      "caseId": "followup-undo",
+      "category": "follow-up instructions",
+      "model": "gpt-6.1-sol",
+      "requestId": "synthetic-2d66d2c1-ed01-4d25-9734-3fdc9f0cb4dd",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "UNSUPPORTED",
+        "summary": "Use the editor’s Undo history control to revert the previous edit.",
+        "clarification": null,
+        "operations": [],
+        "assumptions": [],
+        "unsupportedCapabilities": [
+          "Undo and redo are available through editor history controls, not assistant operations."
+        ],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "No scene edits are proposed; use Undo in the editor."
+      },
+      "rejectedInterpretation": null
+    },
+    {
+      "caseId": "interact-pick",
+      "category": "interaction behavior",
+      "model": "gpt-6-luna",
+      "requestId": "synthetic-5b8e0b19-815c-408a-8246-b657e98af19a",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "INTERACTION",
+        "summary": "Highlight the Desk Map when it is picked up.",
+        "clarification": null,
+        "operations": [
+          {
+            "id": "op-highlight-map-on-pick",
+            "explanation": "Add a PICK behavior that highlights the Desk Map when the map is picked up.",
+            "dependsOn": [],
+            "type": "BEHAVIOR",
+            "behaviorId": "behavior-highlight-map-on-pick",
+            "trigger": "PICK",
+            "sourceEntityId": "synthetic-evaluation:entity-0",
+            "targetEntityId": "synthetic-evaluation:entity-0",
+            "delayMs": 0,
+            "action": "HIGHLIGHT"
+          }
+        ],
+        "assumptions": [],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "This proposes a highlight on pickup; review and validate it before applying."
+      },
+      "rejectedInterpretation": null
+    },
+    {
+      "caseId": "interact-pick",
+      "category": "interaction behavior",
+      "model": "gpt-6.1-sol",
+      "requestId": "synthetic-212ae1ac-a539-41cf-a5ab-de53994b4e08",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "INTERACTION",
+        "summary": "Propose highlighting Desk Map when it is picked up.",
+        "clarification": null,
+        "operations": [
+          {
+            "id": "synthetic-evaluation:op-highlight-map-on-pick",
+            "explanation": "Add a PICK-triggered highlight to Desk Map, using its already-enabled PICK interaction.",
+            "dependsOn": [],
+            "type": "BEHAVIOR",
+            "behaviorId": "synthetic-evaluation:behavior-highlight-map-on-pick",
+            "trigger": "PICK",
+            "sourceEntityId": "synthetic-evaluation:entity-0",
+            "targetEntityId": "synthetic-evaluation:entity-0",
+            "delayMs": 0,
+            "action": "HIGHLIGHT"
+          }
+        ],
+        "assumptions": [],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "This proposal requires deterministic validation and Creator review before application."
+      },
+      "rejectedInterpretation": null
+    },
+    {
+      "caseId": "natural-two-signs",
+      "category": "multi-object scenes",
+      "model": "gpt-6-luna",
+      "requestId": "synthetic-5d9fb3f8-2ab2-470a-98a2-461ad89d1da8",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "CREATE",
+        "summary": "Propose two plain text wall signs while leaving the map unchanged.",
+        "clarification": null,
+        "operations": [
+          {
+            "id": "create-north-sign",
+            "explanation": "Create a wall sign with the requested wording, separated from the other sign.",
+            "dependsOn": [],
+            "type": "CREATE",
+            "entityId": "north-passage-sign",
+            "name": "North passage sign",
+            "kind": "TEXT",
+            "content": "North passage",
+            "alternativeText": "Text sign reading “North passage”.",
+            "widthMeters": 0.3,
+            "placement": "WALL",
+            "position": {
+              "x": -0.2,
+              "y": 0,
+              "z": 0
+            },
+            "scale": 1
+          },
+          {
+            "id": "create-south-sign",
+            "explanation": "Create a second wall sign with the requested wording, separated from the other sign.",
+            "dependsOn": [],
+            "type": "CREATE",
+            "entityId": "south-passage-sign",
+            "name": "South passage sign",
+            "kind": "TEXT",
+            "content": "South passage",
+            "alternativeText": "Text sign reading “South passage”.",
+            "widthMeters": 0.3,
+            "placement": "WALL",
+            "position": {
+              "x": 0.2,
+              "y": 0,
+              "z": 0
+            },
+            "scale": 1
+          }
+        ],
+        "assumptions": [
+          "The two signs can be positioned apart along the wall."
+        ],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "Review the proposed sign placement before applying; the existing desk map is unchanged."
+      },
+      "rejectedInterpretation": null
+    },
+    {
+      "caseId": "natural-two-signs",
+      "category": "multi-object scenes",
+      "model": "gpt-6.1-sol",
+      "requestId": "synthetic-0501d8d8-010d-4566-a264-29554f4a22de",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "CREATE",
+        "summary": "Propose two plain text wall signs while leaving the Desk Map unchanged.",
+        "clarification": null,
+        "operations": [
+          {
+            "id": "create-north-passage-sign",
+            "explanation": "Add the North passage sign with a separate left wall offset.",
+            "dependsOn": [],
+            "type": "CREATE",
+            "entityId": "synthetic-evaluation:north-passage-sign",
+            "name": "North passage sign",
+            "kind": "TEXT",
+            "content": "North passage",
+            "alternativeText": "Wall sign reading North passage.",
+            "widthMeters": 0.5,
+            "placement": "WALL",
+            "position": {
+              "x": -0.4,
+              "y": 0,
+              "z": 0
+            },
+            "scale": 1
+          },
+          {
+            "id": "create-south-passage-sign",
+            "explanation": "Add the South passage sign with a separate right wall offset.",
+            "dependsOn": [],
+            "type": "CREATE",
+            "entityId": "synthetic-evaluation:south-passage-sign",
+            "name": "South passage sign",
+            "kind": "TEXT",
+            "content": "South passage",
+            "alternativeText": "Wall sign reading South passage.",
+            "widthMeters": 0.5,
+            "placement": "WALL",
+            "position": {
+              "x": 0.4,
+              "y": 0,
+              "z": 0
+            },
+            "scale": 1
+          }
+        ],
+        "assumptions": [
+          "The signs use wall-relative offsets with North passage on the left and South passage on the right; their labels do not establish physical compass directions."
+        ],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "The proposed signs have a 0.3-meter gap and require deterministic validation and Creator review before application."
+      },
+      "rejectedInterpretation": null
+    },
+    {
+      "caseId": "relative-forward",
+      "category": "relative positioning",
+      "model": "gpt-6-luna",
+      "requestId": "synthetic-011aaddc-5412-45f7-b1fa-160dcc80e6f9",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": false,
+      "findings": [
+        "SCENE_MISMATCH:content.entities.0.transform.position.z"
+      ],
+      "interpretation": {
+        "intentType": "EDIT",
+        "summary": "Move the selected Desk Map 30 centimeters forward from the origin.",
+        "clarification": null,
+        "operations": [
+          {
+            "id": "move-desk-map",
+            "explanation": "Set the map’s position 0.3 meters forward along the -Z axis.",
+            "dependsOn": [],
+            "type": "TRANSFORM",
+            "entityId": "synthetic-evaluation:entity-0",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": -0.3
+            },
+            "scale": 1
+          }
+        ],
+        "assumptions": [],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "Review and confirm this proposed position change in Creator."
+      },
+      "rejectedInterpretation": null
+    },
+    {
+      "caseId": "relative-forward",
+      "category": "relative positioning",
+      "model": "gpt-6.1-sol",
+      "requestId": "synthetic-18e506e5-1483-42ca-b19e-19552e5eb8cf",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": false,
+      "findings": [
+        "SCENE_MISMATCH:content.entities.0.transform.position.z"
+      ],
+      "interpretation": {
+        "intentType": "EDIT",
+        "summary": "Propose moving the selected map 0.30 meters in front of the origin.",
+        "clarification": null,
+        "operations": [
+          {
+            "id": "move-selected-map",
+            "explanation": "Set the map’s position to (0, 0, -0.30) meters while preserving its scale.",
+            "dependsOn": [],
+            "type": "TRANSFORM",
+            "entityId": "synthetic-evaluation:entity-0",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": -0.3
+            },
+            "scale": 1
+          }
+        ],
+        "assumptions": [],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "Forward is the negative Z direction; this proposal requires deterministic validation and Creator review before application."
+      },
+      "rejectedInterpretation": null
+    },
+    {
+      "caseId": "access-width",
+      "category": "accessibility",
+      "model": "gpt-6-luna",
+      "requestId": "synthetic-049275ca-cd87-40cc-93e5-5ab7266b0ef8",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": false,
+      "findings": [
+        "INTERPRETATION_MISMATCH",
+        "REQUIRED_CONTENT_MISSING",
+        "SCENE_MISMATCH:content.entities.0.widthMeters"
+      ],
+      "interpretation": {
+        "intentType": "CLARIFICATION",
+        "summary": "The map is currently 50 cm wide, so setting it to 40 cm would make it narrower, not wider.",
+        "clarification": "Would you like to set the map width to 40 cm, or increase it beyond its current 50 cm?",
+        "operations": [],
+        "assumptions": [],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "I need to resolve the width-direction conflict before proposing an edit."
+      },
+      "rejectedInterpretation": null
+    },
+    {
+      "caseId": "access-width",
+      "category": "accessibility",
+      "model": "gpt-6.1-sol",
+      "requestId": "synthetic-0f878af2-ea44-4174-928a-e3afddaa0982",
+      "replyStatus": "PROPOSED",
+      "replyCode": null,
+      "passed": false,
+      "findings": [
+        "INTERPRETATION_MISMATCH",
+        "REQUIRED_CONTENT_MISSING",
+        "SCENE_MISMATCH:content.entities.0.widthMeters"
+      ],
+      "interpretation": {
+        "intentType": "CLARIFICATION",
+        "summary": "The map is currently 50 centimeters wide, so setting it to 40 centimeters would make it smaller.",
+        "clarification": "Should I set the width to 40 centimeters, or increase it beyond its current 50 centimeters?",
+        "operations": [],
+        "assumptions": [],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "Please confirm the intended width before a change is proposed."
+      },
+      "rejectedInterpretation": null
+    }
+  ],
+  "usage": [
+    {
+      "requestId": "synthetic-05b95dd3-4f62-444f-a175-e2467bc29032",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "518250",
+      "settledCostNano": "518250",
+      "inputTokens": 2065,
+      "outputTokens": 108,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":33.53110000000015,\"contextMs\":3.4613999999983207,\"providerMs\":4677.057799999999,\"materializationMs\":0.7414000000007945,\"validationMs\":1.1551000000017666}"
+    },
+    {
+      "requestId": "synthetic-fb3ff49d-4e3d-441f-b6a6-ec3c3ded93a3",
+      "model": "gpt-6.1-sol",
+      "status": "SETTLED",
+      "reservationNano": "74480000",
+      "exposureNano": "10345000",
+      "settledCostNano": "10345000",
+      "inputTokens": 2065,
+      "outputTokens": 106,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":12.098899999999048,\"contextMs\":1.2909999999992579,\"providerMs\":3234.632600000001,\"materializationMs\":0.3293000000012398,\"validationMs\":0.41939999999885913}"
+    },
+    {
+      "requestId": "synthetic-3cd2ec73-ac50-429a-8219-163da704c9ad",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "117800",
+      "settledCostNano": "117800",
+      "inputTokens": 2064,
+      "outputTokens": 88,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":28.167599999997037,\"contextMs\":1.4462000000021362,\"providerMs\":2527.4010000000017,\"materializationMs\":0.34509999999863794,\"validationMs\":0.3885000000009313}"
+    },
+    {
+      "requestId": "synthetic-2d66d2c1-ed01-4d25-9734-3fdc9f0cb4dd",
+      "model": "gpt-6.1-sol",
+      "status": "SETTLED",
+      "reservationNano": "74480000",
+      "exposureNano": "2204500",
+      "settledCostNano": "2204500",
+      "inputTokens": 2064,
+      "outputTokens": 91,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":11.542100000002392,\"contextMs\":1.5800000000017462,\"providerMs\":3040.2189,\"materializationMs\":0.5733000000000175,\"validationMs\":0.6483999999982188}"
+    },
+    {
+      "requestId": "synthetic-5b8e0b19-815c-408a-8246-b657e98af19a",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "178750",
+      "settledCostNano": "178750",
+      "inputTokens": 2066,
+      "outputTokens": 209,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":15.359400000001187,\"contextMs\":1.1693999999988591,\"providerMs\":3102.6526000000013,\"materializationMs\":1.1497000000017579,\"validationMs\":1.22360000000117}"
+    },
+    {
+      "requestId": "synthetic-212ae1ac-a539-41cf-a5ab-de53994b4e08",
+      "model": "gpt-6.1-sol",
+      "status": "SETTLED",
+      "reservationNano": "74480000",
+      "exposureNano": "3063500",
+      "settledCostNano": "3063500",
+      "inputTokens": 2066,
+      "outputTokens": 176,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":12.84979999999996,\"contextMs\":0.985899999999674,\"providerMs\":4124.023499999999,\"materializationMs\":0.5846000000019558,\"validationMs\":0.6516000000010536}"
+    },
+    {
+      "requestId": "synthetic-5d9fb3f8-2ab2-470a-98a2-461ad89d1da8",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "342125",
+      "settledCostNano": "342125",
+      "inputTokens": 2081,
+      "outputTokens": 529,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":14.269199999998818,\"contextMs\":1.268499999998312,\"providerMs\":5842.926499999998,\"materializationMs\":1.5157000000035623,\"validationMs\":1.6019999999989523}"
+    },
+    {
+      "requestId": "synthetic-0501d8d8-010d-4566-a264-29554f4a22de",
+      "model": "gpt-6.1-sol",
+      "status": "SETTLED",
+      "reservationNano": "74480000",
+      "exposureNano": "5861000",
+      "settledCostNano": "5861000",
+      "inputTokens": 2081,
+      "outputTokens": 449,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":12.395299999996496,\"contextMs\":1.9608999999982188,\"providerMs\":6760.109199999999,\"materializationMs\":1.0671000000002095,\"validationMs\":1.1159999999945285}"
+    },
+    {
+      "requestId": "synthetic-011aaddc-5412-45f7-b1fa-160dcc80e6f9",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "147150",
+      "settledCostNano": "147150",
+      "inputTokens": 2070,
+      "outputTokens": 144,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":147.48480000000563,\"contextMs\":1.40849999999773,\"providerMs\":2889.123999999996,\"materializationMs\":0.4808999999950174,\"validationMs\":0.5558000000019092}"
+    },
+    {
+      "requestId": "synthetic-18e506e5-1483-42ca-b19e-19552e5eb8cf",
+      "model": "gpt-6.1-sol",
+      "status": "SETTLED",
+      "reservationNano": "74480000",
+      "exposureNano": "2931500",
+      "settledCostNano": "2931500",
+      "inputTokens": 2070,
+      "outputTokens": 161,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":14.967799999998533,\"contextMs\":1.3509999999951106,\"providerMs\":3568.6140000000014,\"materializationMs\":0.39459999999962747,\"validationMs\":0.4695999999967171}"
+    },
+    {
+      "requestId": "synthetic-049275ca-cd87-40cc-93e5-5ab7266b0ef8",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "171650",
+      "settledCostNano": "171650",
+      "inputTokens": 2070,
+      "outputTokens": 193,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":13.92160000000149,\"contextMs\":1.1534000000028755,\"providerMs\":3344.4622999999992,\"materializationMs\":0.23580000000220025,\"validationMs\":0.26070000000618165}"
+    },
+    {
+      "requestId": "synthetic-0f878af2-ea44-4174-928a-e3afddaa0982",
+      "model": "gpt-6.1-sol",
+      "status": "SETTLED",
+      "reservationNano": "74480000",
+      "exposureNano": "2361500",
+      "settledCostNano": "2361500",
+      "inputTokens": 2070,
+      "outputTokens": 104,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":13.676299999999173,\"contextMs\":0.9104999999981374,\"providerMs\":2773.5007999999943,\"materializationMs\":0.5018000000054599,\"validationMs\":0.53870000000461}"
+    }
+  ]
+}

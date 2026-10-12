@@ -187,6 +187,10 @@ async function main() {
     }
   }
   const platform = await ensurePlatformFoundation(user.id, accessCode);
+  if (process.env.FOREVER_VALIDATION_ISOLATION === "1" && process.env.SOUNDING_LINE_SUITE_PROFILE === "generic") {
+    const { prepareParallaxExperienceAccounts } = await import("../tests/e2e/fixtures/parallax-experience");
+    await prepareParallaxExperienceAccounts(db);
+  }
 
   const prior = await db.campaign.findUnique({ where: { slug: "development-forever-treasure" } });
   if (prior && preserveExisting) {

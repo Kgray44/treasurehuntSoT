@@ -19,9 +19,6 @@
 .assistant * {
   box-sizing: border-box;
 }
-:global(html[data-voyage-theme="light"]) .assistant {
-  --assistant-accent-text: var(--surface-default);
-}
 .assistant :is(.header, .context, .body, .footer) :is(button, textarea, input) {
   font: inherit;
 }
@@ -313,13 +310,13 @@
 }
 .assistant button.primary {
   background: var(--accent-primary);
-  color: var(--assistant-accent-text, var(--text-on-accent));
+  color: var(--studio-on-accent, var(--text-on-accent));
   font-weight: 600;
   border-color: var(--accent-primary);
 }
 .assistant button.primary:hover:not(:disabled) {
   background: var(--accent-hover);
-  color: var(--assistant-accent-text, var(--text-on-accent));
+  color: var(--studio-on-accent, var(--text-on-accent));
 }
 .assistant .footer {
   flex-shrink: 0;

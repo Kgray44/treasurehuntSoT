@@ -1,7 +1,7 @@
 import { createSpatialDraft, editSpatialDraft, type SpatialDraft } from "../../src/parallax/authoring";
 import type { AssistantInterpretation, AssistantOperation } from "../../src/parallax/spatial-assistant";
 
-export const CORPUS_VERSION = "parallax-spatial-assistant-2026-10-11-v2";
+export const CORPUS_VERSION = "parallax-spatial-assistant-2026-10-11-v4";
 export const MAP = "synthetic-evaluation:entity-0";
 export type SceneExpectation = { path: string; value: unknown };
 export type AssistantEvaluationCase = {
@@ -26,6 +26,8 @@ export type AssistantEvaluationCase = {
     scene: SceneExpectation[];
     fallback: "PRESERVE_GUIDED" | "REPLACE_GUIDED";
     unchanged: boolean;
+    entityAnchors?: { entityId: string; x: number }[];
+    separateCreatedObjects?: boolean;
   };
   deterministicFixture: AssistantInterpretation;
 };
@@ -35,7 +37,7 @@ const creation = (
   kind: "TEXT" | "PARCHMENT" | "MARKER",
   content: string,
   placement: "DESK" | "WALL" | "ENTRANCE" | "LOCAL" = "DESK",
-): AssistantOperation => ({
+): Extract<AssistantOperation, { type: "CREATE" }> => ({
   ...common(`create-${id}`),
   type: "CREATE",
   entityId: id,
@@ -46,7 +48,7 @@ const creation = (
   placement,
   widthMeters: 0.2,
   scale: 1,
-  position: { x: 0, y: 0, z: 0 },
+  position: { x: placement === "DESK" ? 0.5 : 0, y: 0, z: 0 },
 });
 const placement = (value: "DESK" | "WALL" | "ENTRANCE" | "LOCAL", entityId = MAP): AssistantOperation => ({
   ...common(),
@@ -296,16 +298,16 @@ export const assistantEvaluationCorpus: AssistantEvaluationCase[] = [
     "relative positioning",
     "Place the selected map 30 centimeters in front of the origin.",
     "EDIT",
-    [transform(0, 0, 0.3)],
-    [eq("content.entities.0.transform.position.z", 0.3)],
+    [transform(0, 0, -0.3)],
+    [eq("content.entities.0.transform.position.z", -0.3)],
   ),
   supported(
     "relative-diagonal",
     "relative positioning",
     "Put the map 10 centimeters right and 20 centimeters forward.",
     "EDIT",
-    [transform(0.1, 0, 0.2)],
-    [eq("content.entities.0.transform.position.x", 0.1), eq("content.entities.0.transform.position.z", 0.2)],
+    [transform(0.1, 0, -0.2)],
+    [eq("content.entities.0.transform.position.x", 0.1), eq("content.entities.0.transform.position.z", -0.2)],
   ),
   supported(
     "edit-name",
@@ -352,7 +354,10 @@ export const assistantEvaluationCorpus: AssistantEvaluationCase[] = [
     "multi-object scenes",
     "Add two wall signs: 'North passage' and 'South passage'.",
     "CREATE",
-    [creation("north-sign", "TEXT", "North passage", "WALL"), creation("south-sign", "TEXT", "South passage", "WALL")],
+    [
+      { ...creation("north-sign", "TEXT", "North passage", "WALL"), position: { x: -0.15, y: 0, z: 0 } },
+      { ...creation("south-sign", "TEXT", "South passage", "WALL"), position: { x: 0.15, y: 0, z: 0 } },
+    ],
     [eq("content.entities.1.content", "North passage"), eq("content.entities.2.content", "South passage")],
   ),
   supported(
@@ -361,7 +366,7 @@ export const assistantEvaluationCorpus: AssistantEvaluationCase[] = [
     "Keep the second map local and move the selected map to the entrance.",
     "EDIT",
     [placement("ENTRANCE"), { ...placement("LOCAL", "second-map"), id: "second-placement" }],
-    [eq("content.anchors.0.transform.position.x", -1), eq("content.anchors.1.transform.position.x", 0)],
+    [],
     "TWO_OBJECTS",
   ),
   supported(
@@ -519,9 +524,9 @@ export const assistantEvaluationCorpus: AssistantEvaluationCase[] = [
     "access-width",
     "accessibility",
     "Increase the map width to 40 centimeters for easier seated reading.",
-    "ACCESSIBILITY",
-    [content({ widthMeters: 0.4 })],
-    [eq("content.entities.0.widthMeters", 0.4)],
+    "CLARIFICATION",
+    [],
+    [],
   ),
   supported(
     "access-keyboard",
@@ -609,7 +614,7 @@ export const assistantEvaluationCorpus: AssistantEvaluationCase[] = [
     "Now put the same map on the wall instead of at the entrance.",
     "EDIT",
     [placement("WALL")],
-    [eq("content.anchors.0.alignment", "VERTICAL")],
+    [eq("content.anchors.0.alignment", "VERTICAL"), eq("content.entities.0.transform.scale", 1.2)],
     "FOLLOW_UP",
   ),
   supported(
@@ -688,3 +693,16 @@ export const assistantEvaluationCorpus: AssistantEvaluationCase[] = [
     "Authoring cannot change account permissions or spending policy.",
   ),
 ];
+
+// v3 fixes source-proven axis/order assumptions and catches coincident signs.
+// Historical v2 live reports remain unchanged and retain their source identity.
+assistantEvaluationCorpus.find((item) => item.id === "multi-signs")!.expected.separateCreatedObjects = true;
+assistantEvaluationCorpus.find((item) => item.id === "multi-existing")!.expected.entityAnchors = [
+  { entityId: MAP, x: -1 },
+  { entityId: "second-map", x: 0 },
+];
+const widthConflict = assistantEvaluationCorpus.find((item) => item.id === "access-width")!;
+widthConflict.expected.classification = "CLARIFY";
+widthConflict.expected.uncertainty = "ASK";
+widthConflict.expected.unchanged = true;
+widthConflict.deterministicFixture.clarification = "Should the map shrink to 40 cm or grow beyond its current 50 cm?";
