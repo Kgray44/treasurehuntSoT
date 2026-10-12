@@ -1,0 +1,64 @@
+{
+  "fixture": "official photograph; smooth translation, pixel noise, incidental second hand and transient partial occlusion",
+  "tier": "D1",
+  "physicalQualification": "NOT_CLAIMED",
+  "absolute": {
+    "mapping": "INDEX_AXIS_RIDGE_V1",
+    "status": "VALIDATED",
+    "evidenceTier": "UNQUALIFIED",
+    "trainingCount": 165,
+    "trainingResidualP95DiagonalFraction": 0.00588690845437896,
+    "validationCount": 120,
+    "rawValidationP95DiagonalFraction": 0.0052824683733807614,
+    "rawValidationJitterP95DiagonalFraction": 0.005303753517943148,
+    "edgeValidationP95DiagonalFraction": 0.0053716813244406286,
+    "trainingResidualMedianDiagonalFraction": 0.00300744349264827,
+    "rawValidationMedianDiagonalFraction": 0.0027813884525185882,
+    "physicalQualification": "PENDING"
+  },
+  "relative": {
+    "mapping": "RELATIVE_DISPLACEMENT_V1",
+    "status": "VALIDATED",
+    "evidenceTier": "UNQUALIFIED",
+    "trainingCount": 90,
+    "trainingResidualP95DiagonalFraction": 0.005938694223322935,
+    "validationCount": 90,
+    "rawValidationP95DiagonalFraction": 0.005576468973174823,
+    "rawValidationJitterP95DiagonalFraction": 0.0060059747541735976,
+    "edgeValidationP95DiagonalFraction": 0.005576468973174823,
+    "trainingResidualMedianDiagonalFraction": 0.003189870141969675,
+    "rawValidationMedianDiagonalFraction": 0.0032994720160937326,
+    "physicalQualification": "PENDING"
+  },
+  "boundary": "Software capture to canvas submission; excludes sensor exposure and display scanout",
+  "inferenceCount": 400,
+  "inferenceP95Ms": 44.80009764432907,
+  "captureIntervalP95Ms": 91.5,
+  "canvasSubmissionAgeP95Ms": 114.99999999403371,
+  "visualizationIntervalP95Ms": 16.70000000001164,
+  "acquisitionMs": [
+    2089.3999999910593, 2334, 2254.7999999970198, 4572.100000008941, 2909.7999999970198, 3975.0999999940395,
+    3356.1000000089407, 2122.7999999970198, 2276.7000000029802, 2012.7000000029802, 1985.2999999970198,
+    3461.9000000059605, 3357.9000000059605, 3183.3999999910593, 1826.7000000029802, 1908.4000000059605,
+    3721.5999999940395, 2383.4000000059605, 2417.7000000029802, 1886.7000000029802, 1809.2000000029802,
+    2460.9000000059605, 3254, 2445.699999988079
+  ],
+  "uiMainThreadLongTasks": {
+    "supported": true,
+    "count": 0,
+    "totalDurationMs": 0,
+    "maxDurationMs": 0
+  },
+  "heap": {
+    "boundary": "Optional performance.memory.usedJSHeapSize snapshots; no forced GC or leak-free claim",
+    "beforeNavigation": 10000000,
+    "afterStop": 10000000
+  },
+  "cleanup": {
+    "tracks": 0,
+    "workers": 0,
+    "furtherObservations": 0,
+    "furtherVideoDraws": 0,
+    "furtherCanvasClears": 0
+  }
+}

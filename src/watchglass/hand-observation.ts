@@ -30,6 +30,7 @@ export const handObservationSchema = z.strictObject({
       z.strictObject({
         trackId: z.string().min(1),
         trackGeneration: z.number().int().positive(),
+        continuity: z.enum(["ACQUIRED", "CONTINUOUS", "AMBIGUOUS"]).optional(),
         handedness: z.enum(["LEFT", "RIGHT", "UNKNOWN"]),
         handednessConfidence: score,
         coordinateFrame: z.literal("CAMERA_IMAGE_NORMALIZED"),
