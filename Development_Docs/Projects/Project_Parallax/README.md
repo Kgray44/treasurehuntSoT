@@ -21,7 +21,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [A1 local OpenAI configuration](Parallax_A1_Local_OpenAI_Configuration.md) describes the shared Windows user credential, safe diagnostics and account-dossier quota controls.
 - [A1 Assistant presentation review](Parallax_A1_Presentation_Review.md) records the initial source-bound production-browser package. [Owner visual refinements](Parallax_A1_Visual_Refinements.md) records the revised package and its explicit owner presentation acceptance.
 
-- [Supplemental A1 Spatial Assistant amendment](../../Governing/Project_Parallax_A1_Spatial_Assistant_Governing_Amendment.md) adds reviewed natural-language authoring, OpenAI integration and Admiralty-controlled durable AI quotas. A1 software is integrated on protected main; owner presentation corrections and expanded synthetic model testing are undergoing their separate final software qualification.
+- [Supplemental A1 Spatial Assistant amendment](../../Governing/Project_Parallax_A1_Spatial_Assistant_Governing_Amendment.md) adds reviewed natural-language authoring, OpenAI integration and Admiralty-controlled durable AI quotas. A1 software is integrated on protected main; owner presentation corrections and expanded synthetic model testing are software-qualified and integrated through protected PR #717 at `b078f823`.
 
 1. [Voyagewright Spatial Experience Architecture v1.0](../../Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md) establishes the cross-project spatial ownership boundary.
 2. [Project Parallax Governing Document v1.0](../../Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md) is the canonical Parallax product and engineering baseline.
@@ -143,6 +143,6 @@ Read the preserved authority above with the [current Reach integration amendment
 
 A1 is software-qualified and integrated through protected PR #710, with landed
 smoke and a bounded live-provider canary. The owner accepted the revised
-presentation at `fe5c5438`; its correction qualification is tracked separately.
+presentation at `fe5c5438`; its completed correction qualification and exact protected integration are recorded separately.
 The model study preserves expanded synthetic testing and its finite quality
 limits; physical-device and AR evidence remain separate.

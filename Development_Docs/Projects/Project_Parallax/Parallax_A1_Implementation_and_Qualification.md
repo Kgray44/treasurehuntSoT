@@ -101,3 +101,5 @@ That record also tracks separate correction software qualification. Browser view
 physical phone keyboard/touch comfort, field reliability or physical AR quality.
 Software acceptance and mainline availability do not close those physical gates. The Feature Catalog records implemented software
 availability with these limitations; it does not claim visual or hardware acceptance.
+
+The owner-requested Studio/theme/docking/menu and daily-reporting correction is also integrated through protected PR #717 at `b078f823f197e2fa175c6525a7e190b45e680a7c`. Ordinary run 38200759321 passed, the landed tree matches the qualified candidate and all 121 focused landed smoke tests pass. The [refinement record](Parallax_A1_Visual_Refinements.md) and [exact integration receipt](evidence/owner-refinements/integration-b078f823.json) close this software increment while preserving the finite model and physical-device boundaries above.
