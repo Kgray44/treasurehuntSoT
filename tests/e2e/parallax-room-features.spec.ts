@@ -97,5 +97,9 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await expect(editor.getByLabel("Room feature classification", { exact: true })).toHaveValue("TABLE");
   await expect(editor.getByLabel("Feature name", { exact: true })).toHaveValue("Window writing table");
   await editor.getByLabel("Feature name", { exact: true }).focus();
+  expect(
+    (await page.getByRole("complementary", { name: "Spatial inspector", exact: true }).boundingBox())!.width,
+  ).toBeGreaterThan(250);
+  expect((await editor.getByLabel("Feature name", { exact: true }).boundingBox())!.width).toBeGreaterThan(200);
   await page.screenshot({ path: `${root}/room-feature-phone.png` });
 });
