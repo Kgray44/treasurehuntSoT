@@ -49,6 +49,15 @@ continuation needs a source-bound diagnosis or explicit bounded capture decision
 repeating the same capture without one provides no new evidence. Current tokens,
 cache, credits, billing and per-agent usage remain `UNAVAILABLE`.
 
+The subsequent conditional-retry preparation used one source-only merge-tree
+preflight against accepted Reach PR #716. It preserves six frozen Crossdeck and
+488 other incoming contract objects, with only a changelog conflict; the actual
+candidate remains unchanged. One exclusive Crossdeck dispatch claim is reserved
+pending Reach's protected diagnostic PR/commit/merge/run handoff. Zero additional
+capture dispatches, dependency installations, builds/tests or reviews occurred.
+The [conditional contract](../../Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/observability-retry-contract.json)
+does not reset ten repairs against three or consume the final third review.
+
 Measurements in the following table describe the earlier local stages. They do
 not qualify the reconciled source or supersede the terminal hosted result above.
 

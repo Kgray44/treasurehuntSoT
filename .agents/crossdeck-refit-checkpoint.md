@@ -14,6 +14,43 @@ The reconciled application candidate is `76e24ae5024f982a691c1a4e0ebfafc3e963490
 tree `c15aaf3aba0cbdcefbcfe5408dc5347aeb7e8f92`, protected base
 `5e72620cef879685540bb968a9b836d1eb2fdec6`. Draft PR #721 remains unmerged.
 
+## Current conditional diagnostic retry contract
+
+Request `crossdeck-observability-accepted-retry-20261012-r1` is acknowledged.
+This existing Crossdeck owner, `01a12d5e-eb9a-7a72-aecb-adfa3c59a89a`, is the
+**sole capture dispatch owner**, reserved for exactly one additional capture
+after the protected diagnostic handoff. Zero retries have been dispatched.
+Recovery reports KG's explicit 17:26 UTC approval of the separate prerequisite;
+the source-bound
+[conditional contract](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/observability-retry-contract.json)
+records the received authority and exact gates. Reach alone owns the two trusted
+diagnostic files; Crossdeck makes no duplicate helper or product changes.
+
+Wait for Reach's actual protected-accepted diagnostic PR, qualified commit,
+merge commit and passing qualification run identities. Then inspect protected
+main once, mechanically preserve accepted PR #716 and those diagnostics, resolve
+only additive contracts/changelog/docs/index conflicts, and freeze the actual
+combined HEAD/tree/base/source/contract identities before the single required
+capture. A substantive source/product conflict needs an exact bounded decision.
+Check for an already active owned job before dispatch. No repeated install,
+build/test or opaque capture is authorized while waiting.
+
+The
+[prospective Reach #716 preflight](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/reach716-prospective-preflight.json)
+is source-only and changes no branch, index or worktree product. Its only conflict
+is `CHANGELOG.md`; all six frozen Crossdeck objects and accepted incoming
+obligations are compared before any actual integration. Both trusted helpers
+remain unchanged from PR #720 in that accepted source. This prospective tree is
+not a newly frozen or qualified candidate; diagnostics are still pending.
+
+Preserve the original cancelled/no-artifact capture and ten repairs against
+three. The final third independent review remains unused until a trusted current
+packet returns. A retry failure or actual truthful-history rejection is retained
+verbatim and stops further repair/retry for a conforming bounded decision. The
+received contract does not waive counts, change acceptance or authorize a fourth
+review, new product repairs, D4/owner acceptance or duplicate Sextant changes.
+Checkpoint and end while the diagnostic handoff is external; no repeated polls.
+
 ## Historical local proof before reconciliation
 
 The preceding verified application candidate is `7ebaa80e223c93b430b8fbb36a1a9eec61a86c91`,

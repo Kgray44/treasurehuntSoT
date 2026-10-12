@@ -66,6 +66,18 @@ proposes exact authority child/stage and capture role-operation markers in two
 trusted helper files for Reach's source-bound decision. No helper correction,
 diagnostic build/test or capture retry was performed.
 
+Conditional continuation `crossdeck-observability-accepted-retry-20261012-r1`
+reserves this existing Crossdeck owner for one capture after Reach's protected
+diagnostic acceptance. Reach exclusively owns the two helper implementations.
+The [conditional contract](../../Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/observability-retry-contract.json)
+preserves the original failed run and repair history, and requires actual
+diagnostic PR/qualified commit/merge/passing-run identities before integration.
+The [prospective accepted-Reach preflight](../../Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/reach716-prospective-preflight.json)
+has only an additive changelog conflict. Six frozen Crossdeck objects and 488
+other accepted incoming declarations compare exactly in the prospective tree.
+This changes no actual branch/index/product files and supplies no acceptance.
+No new capture, build/test, helper implementation or independent review occurred.
+
 The [repair ledger](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json)
 retrospectively records **10 completed repair-to-recapture attempts** since
 review 1: seven product repairs and three fixture/contract repairs. All ten
