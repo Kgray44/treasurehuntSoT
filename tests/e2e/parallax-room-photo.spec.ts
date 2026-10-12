@@ -85,10 +85,8 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
   expect(room.features.filter((f) => f.classification === "WALL")).toHaveLength(4);
   const desk = room.features.find((f) => f.classification === "DESK")!;
   const deskX = async () => {
-    const row = (
-      JSON.parse((await host.getAttribute("data-room-receipt"))!) as { id: string; min: number[]; max: number[] }[]
-    ).find((r) => r.id === desk.id)!;
-    return (row.min[0] + row.max[0]) / 2;
+    const row = (await receipt()).find((r) => r.id === desk.id);
+    return row ? (row.min[0] + row.max[0]) / 2 : Number.NaN;
   };
   await expect.poll(deskX).toBeCloseTo(1);
   await expect.poll(async () => JSON.parse((await host.getAttribute("data-cutaway-parts"))!).length).toBe(3);
