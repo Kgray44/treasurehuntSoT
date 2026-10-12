@@ -178,7 +178,7 @@ test("Admiralty daily chart selects actual request and cost projections with emp
   await page.goto("/admin/ai-usage");
   await mkdir(root, { recursive: true });
   await expect(page.getByRole("heading", { name: "Daily AI activity" })).toBeVisible();
-  await page.screenshot({ path: `${root}/owner-daily-empty.png`, fullPage: true });
+  await page.screenshot({ path: `${root}/owner-daily-initial.png`, fullPage: true });
   const now = new Date(),
     period = aiUTCPeriod(now).id;
   const day = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 1));

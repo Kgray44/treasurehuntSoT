@@ -1011,6 +1011,7 @@ export function SpatialStudio({
           />
           <div className={styles.commandBar}>
             <button
+              aria-label="Ask Parallax"
               aria-expanded={assistantOpen}
               aria-controls="parallax-assistance"
               onClick={() => setAssistantOpen(!assistantOpen)}

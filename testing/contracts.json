@@ -152,7 +152,7 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "✦ Ask Parallax"
+                "name": "Ask Parallax"
               },
               {
                 "action": "assert",
@@ -3443,8 +3443,9 @@
         "integrationOwner": "Admiralty AI usage experience integration",
         "systems": ["project-admiralty"],
         "sourcePaths": [
-          "src/components/admiralty/AIQuotaConsole",
-          "src/components/admiralty/AIQuotaUserPanel",
+          "src/components/admiralty/AIQuotaConsole.tsx",
+          "src/components/admiralty/AIQuotaConsole.module.css",
+          "src/components/admiralty/AIQuotaUserPanel.tsx",
           "src/app/admin/ai-usage",
           "src/app/admin/people"
         ],

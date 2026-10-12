@@ -24,6 +24,7 @@ import {
   evaluationScene,
 } from "../../tests/parallax/spatial-assistant-corpus-v1";
 import { evaluateAssistantCase } from "../../tests/parallax/evaluate-assistant-case";
+import { assistantSystemInstructions } from "../../src/parallax/openai-provider";
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const args = process.argv.slice(2);
@@ -77,15 +78,20 @@ async function main() {
     throw new Error("Live mode requires --max-calls 1..120 and --budget-usd greater than zero and at most 10.");
   evaluationStage = "SERVER_CONFIGURATION";
   if (!process.env.OPENAI_API_KEY?.trim()) throw new Error("The server process has no configured OPENAI_API_KEY.");
+  const maximumInputTokens = Number(argument("--maximum-input-tokens") ?? defaultAIGlobalPolicy.maximumInputTokens);
+  const maximumOutputTokens = Number(argument("--maximum-output-tokens") ?? defaultAIGlobalPolicy.maximumOutputTokens);
+  if (
+    !Number.isInteger(maximumInputTokens) ||
+    maximumInputTokens < 1000 ||
+    maximumInputTokens > defaultAIGlobalPolicy.maximumInputTokens ||
+    !Number.isInteger(maximumOutputTokens) ||
+    maximumOutputTokens < 256 ||
+    maximumOutputTokens > defaultAIGlobalPolicy.maximumOutputTokens
+  )
+    throw new Error("Evaluation token ceilings must fit within the existing default policy.");
   evaluationStage = "RESERVATION_CEILING";
   for (const model of models)
-    if (
-      aiMaximumExposureNano(
-        aiPricing[model],
-        defaultAIGlobalPolicy.maximumInputTokens,
-        defaultAIGlobalPolicy.maximumOutputTokens,
-      ) > BigInt(budget)
-    )
+    if (aiMaximumExposureNano(aiPricing[model], maximumInputTokens, maximumOutputTokens) > BigInt(budget))
       throw new Error("The live budget cannot cover one conservative reservation for a selected model.");
   evaluationStage = "FIXTURE_DIRECTORY";
   const fixtureRoot = await mkdtemp(join(tmpdir(), "voyagewright-parallax-a1-live-"));
@@ -118,6 +124,8 @@ async function main() {
         policy: JSON.stringify({
           ...defaultAIGlobalPolicy,
           enabled: true,
+          maximumInputTokens,
+          maximumOutputTokens,
           advancedEnabled: models.includes("gpt-6.1-sol"),
           monthlyRequests: maxCalls,
           defaultUserRequests: maxCalls,
@@ -193,7 +201,15 @@ async function main() {
             "proposal" in reply
               ? evaluateAssistantCase(item, draft, assistantInterpretationSchema.strip().parse(reply.proposal))
               : { passed: false, findings: ["NO_VALID_PROPOSAL"] };
-          records.push({ caseId: item.id, category: item.category, model, ...evaluation });
+          records.push({
+            caseId: item.id,
+            category: item.category,
+            model,
+            ...evaluation,
+            // This runner accepts only public synthetic corpus cases. Retain the
+            // reviewed interpretation so semantic findings can be investigated.
+            interpretation: "proposal" in reply ? assistantInterpretationSchema.strip().parse(reply.proposal) : null,
+          });
           if ((reply as { accounting?: string }).accounting !== "SETTLED") stop = true;
         } catch (cause) {
           records.push({
@@ -232,6 +248,9 @@ async function main() {
       createdAt: new Date().toISOString(),
       maxCalls,
       budgetNano: budget,
+      maximumInputTokens,
+      maximumOutputTokens,
+      instructionsDigest: canonicalChecksum(assistantSystemInstructions),
       attempts,
       stoppedEarly: stop,
       results: records,
