@@ -56,5 +56,9 @@ open/dock/close, proposal preview/Apply continuity, keyboard controls, reduced
 motion, and daily chart choices with synthetic isolated accounting data.
 Capture the actual built application and obtain independent review under the
 current Product Experience Engineering workflow. Preserve owner acceptance as
-pending until the owner reviews the revised package. No further paid calls are
-authorized or needed for these presentation changes.
+pending until the owner reviews the revised package. Presentation validation uses
+an unpaid synthetic provider. Separately, the owner authorized additional public
+synthetic OpenAI comparisons, increasing their total ceiling from $0.10 to $0.40.
+This replaces the earlier additional ceiling; it is separate from the exhausted
+six-call A1 authorization. Record settled costs and unresolved exposure across
+every round, with no automatic retries or budget reset between experiments.

@@ -18,12 +18,9 @@ import { requestSpatialAssistant } from "../../src/parallax/spatial-assistant-se
 import { canonicalChecksum } from "../../src/drydock/canonical";
 import { spatialItemKind } from "../../src/parallax/library-service";
 import { parseUSDNano } from "../../src/components/admiralty/ai-quota-format";
-import {
-  assistantEvaluationCorpus,
-  CORPUS_VERSION,
-} from "../../tests/parallax/spatial-assistant-corpus-v1";
+import { assistantEvaluationCorpus, CORPUS_VERSION } from "../../tests/parallax/spatial-assistant-corpus-v1";
 import { evaluateAssistantCase } from "../../tests/parallax/evaluate-assistant-case";
-import { OPENAI_RESPONSES_URL, OpenAIProviderError } from "../../src/parallax/openai-provider";
+import { OPENAI_RESPONSES_URL, OpenAIProviderError, extractOpenAIResponse } from "../../src/parallax/openai-provider";
 import { instructionExperiments } from "../../tests/parallax/spatial-assistant-instruction-experiments";
 import { assistantExperiments, experimentScene } from "../../tests/parallax/spatial-assistant-experiments";
 
@@ -190,6 +187,7 @@ async function main() {
         attemptedCalls = attempts;
         evaluationStage = "BOUNDED_PROVIDER_REQUEST";
         const requestId = `synthetic-${randomUUID()}`;
+        let providerInterpretation: unknown = null;
         try {
           const reply = await requestSpatialAssistant(
             accountId,
@@ -213,7 +211,18 @@ async function main() {
                 const serialized = JSON.stringify(body);
                 if (Buffer.byteLength(serialized, "utf8") + 256 > maximumInputTokens)
                   throw new OpenAIProviderError("CONTEXT_TOO_LARGE", "Evaluation context exceeds its allowance.", true);
-                return fetch(url, { ...init, body: serialized });
+                const response = await fetch(url, { ...init, body: serialized });
+                // Only this public synthetic runner retains schema-validated
+                // interpretations, including ones rejected by materialization.
+                // Never retain headers, credentials or arbitrary raw envelopes.
+                if (response.ok) {
+                  try {
+                    providerInterpretation = extractOpenAIResponse(await response.clone().json()).interpretation;
+                  } catch {
+                    providerInterpretation = null;
+                  }
+                }
+                return response;
               },
             },
           );
@@ -225,10 +234,14 @@ async function main() {
             caseId: item.id,
             category: item.category,
             model,
+            requestId,
+            replyStatus: reply.status,
+            replyCode: "code" in reply ? reply.code : null,
             ...evaluation,
             // This runner accepts only public synthetic corpus cases. Retain the
             // reviewed interpretation so semantic findings can be investigated.
             interpretation: "proposal" in reply ? assistantInterpretationSchema.strip().parse(reply.proposal) : null,
+            rejectedInterpretation: "proposal" in reply ? null : providerInterpretation,
           });
           if ((reply as { accounting?: string }).accounting !== "SETTLED") stop = true;
         } catch (cause) {
@@ -236,6 +249,7 @@ async function main() {
             caseId: item.id,
             category: item.category,
             model,
+            requestId,
             passed: false,
             findings: [cause instanceof SpatialAssistantError ? cause.code : "EVALUATION_FAILED"],
           });

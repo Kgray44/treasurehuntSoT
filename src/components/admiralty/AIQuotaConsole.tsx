@@ -322,7 +322,7 @@ export function AIQuotaConsole({
             </small>
             <details>
               <summary>Read daily requests and costs as a table</summary>
-              <div className={styles.scroll}>
+              <div className={styles.scroll} tabIndex={0} role="region" aria-label="Daily activity table">
                 <table>
                   <caption className={styles.srOnly}>Daily AI requests and costs, grouped by UTC request day</caption>
                   <thead>
@@ -575,7 +575,7 @@ export function AIQuotaConsole({
             Latest 100 records in this view; export is bounded to 1,000 records. Retained proposals and prompts are
             excluded.
           </p>
-          <div className={styles.scroll}>
+          <div className={styles.scroll} tabIndex={0} role="region" aria-label="AI request history table">
             <table>
               <thead>
                 <tr>
@@ -660,7 +660,7 @@ export function AIQuotaConsole({
             </div>
           </dl>
           <h3>Versioned standard text pricing</h3>
-          <div className={styles.scroll}>
+          <div className={styles.scroll} tabIndex={0} role="region" aria-label="AI model pricing table">
             <table>
               <thead>
                 <tr>
