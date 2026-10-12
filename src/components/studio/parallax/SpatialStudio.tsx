@@ -44,6 +44,7 @@ import { PlacementComposer } from "./PlacementComposer";
 import { BehaviorTracks } from "./BehaviorTracks";
 import { AnimationEditor } from "./AnimationEditor";
 import { RoomEnvironmentEditor } from "./RoomEnvironmentEditor";
+import { SaveSpatialAsset, SavedSpatialLibrary } from "./SavedSpatialLibrary";
 import { authoredPreviewEnvironment, createRoomEnvironment } from "@/parallax/environment-authoring";
 import { insertSpatialPreset } from "@/parallax/editor-assets";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
@@ -108,9 +109,7 @@ export function SpatialStudio({
     [mode, setMode] = useState("GUIDED"),
     [preview, setPreview] = useState("EDITOR"),
     [environment, setEnvironment] = useState("bedroom");
-  const [query, setQuery] = useState(""),
-    [sceneQuery, setSceneQuery] = useState(""),
-    [filter, setFilter] = useState("ALL"),
+  const [sceneQuery, setSceneQuery] = useState(""),
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -515,7 +514,11 @@ export function SpatialStudio({
       savedJson.current = saved ? JSON.stringify(next) : "";
       if (saved) bindSavedSceneUrl(next.content.definitionId);
       writeHistory({ past: [], present: next, future: [] });
-      setSelected(next.content.entities.some((e) => e.id === entityId) ? entityId! : next.content.entities[0].id);
+      setSelected(
+        next.content.entities.some((e) => e.id === entityId)
+          ? entityId!
+          : (next.content.studio?.libraryDefinition?.rootEntityId ?? next.content.entities[0].id),
+      );
       setFindings(null);
       setReleaseId("");
       setError("");
@@ -664,16 +667,6 @@ export function SpatialStudio({
   const record = loaded?.items.find((i) => i.id === draft?.content.definitionId);
   const releases = record?.releases ?? [];
   const localFindings = draft ? (findings ?? validateSpatialAuthoring(draft.content)) : [];
-  const filtered =
-    loaded?.items.filter(
-      (i) =>
-        (i.draft.scope === "MY_LIBRARY" || i.draft.chronicleId === (chronicleId ?? null)) &&
-        (filter !== "FAVORITES" || i.draft.favorite) &&
-        (filter !== "MY_LIBRARY" || i.draft.scope === "MY_LIBRARY") &&
-        `${i.draft.content.title} ${i.draft.tags.join(" ")} ${i.draft.category} ${i.draft.collection}`
-          .toLowerCase()
-          .includes(query.toLowerCase()),
-    ) ?? [];
   const chooseRelease = (version: SpatialVersion) => {
     setReleaseId(version.id);
   };
@@ -989,47 +982,72 @@ export function SpatialStudio({
             aria-labelledby="left-tab-SAVED"
             hidden={leftTab !== "SAVED"}
           >
-            <h3>Saved Spatial Library · {filtered.length}</h3>
-            <label>
-              Search Library
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Title, tag, category or collection"
-              />
-            </label>
-            <select aria-label="Library scope" value={filter} onChange={(e) => setFilter(e.target.value)}>
-              <option value="ALL">Recent / all owned items</option>
-              <option value="MY_LIBRARY">My Spatial Library</option>
-              <option value="FAVORITES">Favorites</option>
-            </select>
-            <h3>Owned items</h3>
-            {!filtered.length && <p>No saved items match. Create and save a spatial moment to begin.</p>}
-            {filtered.map((item) => (
-              <button
-                className={styles.libraryItem}
-                key={item.id}
-                disabled={busy}
-                onClick={() =>
-                  void action(async () => {
-                    await persist();
-                    const data = await load();
-                    const refreshed = data.items.find((i) => i.id === item.id)!;
-                    install(refreshed.draft, refreshed.revision, true);
-                  })
-                }
-              >
-                <span className={styles.thumbnail} aria-hidden="true">
-                  {item.draft.content.entities[0]?.kind === "PARCHMENT" ? "▱" : "◇"}
-                </span>
-                <strong>{item.draft.content.title}</strong>
-                <small>
-                  {item.draft.scope === "MY_LIBRARY" ? "My Library" : "Chronicle only"} · {item.releases.length}{" "}
-                  versions · {item.usageCount} uses
-                </small>
-                <small>{item.draft.category.replaceAll("_", " ")} · Guided compatible · Creator owned</small>
-              </button>
-            ))}
+            <SavedSpatialLibrary
+              items={loaded.items}
+              busy={busy}
+              chronicleId={chronicleId}
+              currentId={draft.content.definitionId}
+              onOpen={(item) =>
+                void action(async () => {
+                  await persist();
+                  const data = await load();
+                  const current = data.items.find((i) => i.id === item.id);
+                  if (!current) throw new Error("This saved item is no longer available.");
+                  install(current.draft, current.revision, true);
+                  setPreview("EDITOR");
+                })
+              }
+              onDuplicate={(item) =>
+                void action(async () => {
+                  await persist();
+                  const data = await load();
+                  const current = data.items.find((i) => i.id === item.id);
+                  if (!current) throw new Error("This saved scene is no longer available.");
+                  const copy = forkSpatialDraft(current.draft, crypto.randomUUID());
+                  copy.chronicleId = chronicleId ?? null;
+                  copy.scope = chronicleId ? "CHRONICLE_ONLY" : "MY_LIBRARY";
+                  copy.content.title += " copy";
+                  install(copy, 0, false);
+                  await persist();
+                  await load();
+                  setStatus("Independent scene copy saved");
+                })
+              }
+              onInsert={(item, versionId) =>
+                void action(async () => {
+                  await persist();
+                  const base = draftRef.current!;
+                  const gen = generation.current;
+                  const result = await api({
+                    action: "ASSET_INSERT",
+                    draft: base,
+                    revision: revision.current,
+                    definitionId: item.id,
+                    versionId,
+                  });
+                  if (
+                    generation.current !== gen ||
+                    draftRef.current?.content.definitionId !== base.content.definitionId
+                  )
+                    throw new Error(
+                      "Your scene changed while preparing this copy. Add the asset again using the current scene.",
+                    );
+                  replace(draftSchema.parse(result.draft));
+                  setSelected(result.draft.content.entities[base.content.entities.length].id);
+                  await persist();
+                  await load();
+                  setStatus("Independent asset copy added and saved; its definition is unchanged");
+                })
+              }
+              onArchive={(item) =>
+                void action(async () => {
+                  await persist();
+                  await api({ action: "ARCHIVE", definitionId: item.id, revision: item.revision });
+                  await load();
+                  setStatus("Definition archived; existing scene copies are unchanged");
+                })
+              }
+            />
           </div>
           <div
             className={styles.leftPane}
@@ -2060,6 +2078,65 @@ export function SpatialStudio({
           </details>
           <details {...sectionProps("reuse")}>
             <summary>Library, reuse &amp; publication</summary>
+            {currentEntity && (
+              <SaveSpatialAsset
+                key={currentEntity.id}
+                name={currentEntity.name}
+                busy={busy}
+                onSave={async (metadata) => {
+                  await action(async () => {
+                    await persist();
+                    await api({
+                      action: "ASSET_SAVE",
+                      draft: draftRef.current,
+                      revision: revision.current,
+                      rootId: currentEntity.id,
+                      metadata,
+                      environmentId: environment,
+                    });
+                    await load();
+                    openLeftTab("SAVED");
+                    setStatus("Reusable asset definition and immutable version saved; source scene unchanged");
+                  });
+                }}
+              />
+            )}
+            {draft.content.studio?.libraryDefinition && (
+              <section aria-label="Reusable definition metadata">
+                <p>You are editing the reusable definition. Existing placed copies keep their pinned version.</p>
+                <label>
+                  Definition description
+                  <textarea
+                    maxLength={1000}
+                    value={draft.content.studio.libraryDefinition.description}
+                    onChange={(e) => {
+                      const next = structuredClone(draft);
+                      next.content.studio!.libraryDefinition!.description = e.target.value;
+                      replace(next);
+                    }}
+                  />
+                </label>
+                <label>
+                  Definition classification
+                  <input
+                    maxLength={60}
+                    value={draft.content.studio.libraryDefinition.classification}
+                    onChange={(e) => {
+                      if (!e.target.value.trim()) return;
+                      const next = structuredClone(draft);
+                      next.content.studio!.libraryDefinition!.classification = e.target.value;
+                      replace(next);
+                    }}
+                  />
+                </label>
+              </section>
+            )}
+            {currentEntity &&
+              draft.content.studio?.assetInstances
+                ?.filter((i) => i.entityIds.includes(currentEntity.id))
+                .map((i) => (
+                  <p key={i.id}>Independent placed copy · pinned {i.versionId}. Edits here affect this scene only.</p>
+                ))}
             <label>
               Experience title
               <input

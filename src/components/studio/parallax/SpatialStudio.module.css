@@ -988,6 +988,29 @@
 .libraryItem {
   background: var(--studio-raised);
 }
+.savedDefinition {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  margin: 12px 0;
+  border: 1px solid var(--studio-border-strong);
+  border-radius: 8px;
+  background: var(--studio-panel);
+  overflow-wrap: anywhere;
+}
+.savedDefinition .libraryItem {
+  width: 100%;
+  margin: 0;
+  gap: 5px;
+}
+.savedDefinition p {
+  margin: 0;
+  font-size: 12px;
+}
+.savedDefinition small {
+  line-height: 1.5;
+}
 .thumbnail {
   color: var(--studio-accent);
   font-size: 22px;

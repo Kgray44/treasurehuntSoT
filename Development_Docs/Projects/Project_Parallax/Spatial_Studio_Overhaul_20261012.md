@@ -61,8 +61,43 @@ with transform/selection guards. Surface clamping and grid snapping are
 separate controls. Explicit WebGL retry creates a fresh renderer and retains
 the draft. The sole primary left navigation is the existing icon rail.
 
-This foundation is implementation in progress. Photo reconstruction, semantic
-relations, reusable definition workflows, asset quality, material/light/effect
+This foundation is implementation in progress. Photo reconstruction, asset quality, material/light/effect
 animation, comprehensive simulation diagnostics, Assistant render-confirmed
 execution phases and A–P acceptance remain open. Do not treat this checkpoint
 as full overhaul or native/physical qualification.
+
+## Editable semantic rooms and reusable definitions
+
+The candidate stores optional editable room features in the ordinary scene:
+classification, name, position, dimensions, yaw, provenance/confidence and
+normalized primitive geometry. All ten presets preserve their distinct geometry
+when converted to editable rooms. Rendering and whole-face discovery consume
+the same primitives. Room edits retain surface identities; bound clues resolve
+their current support frame. Shell resizing moves feature positions
+proportionally while furniture keeps its explicit dimensions.
+
+The bounded production-browser room journey and independent review at
+`35823d95704cbd15d7760b2dc119e51d371c6093` verify name/classification edits,
+desk translation/rotation, bound-clue correspondence, dimension-error recovery,
+desktop save/reload and a saved phone edit. Camera persistence, photo analysis
+and complete natural-language targeting remain unverified. Domain room-target
+resolution distinguishes missing/ambiguous features and uses the shared surface
+engine; the OpenAI adapter supplies a bounded semantic feature projection and
+strict ROOM_PLACEMENT operations for fixed authored rooms.
+
+Reusable object/assembly definitions now use the existing owner-scoped library
+records and immutable spatial versions. Export copies only the selected subtree,
+remaps identities and retains internal behavior/keyframes in a local frame. It
+rejects external behavior and protected-media/perception dependencies. Insertion
+copies a pinned owned release, retains origin metadata and installs through
+ordinary editor history/autosave after a generation check. Instances are
+independent; later definition edits and archive do not mutate their stored data.
+The Saved panel distinguishes complete scenes, objects, assemblies, templates,
+reconstructed rooms and scenes with imported models; thumbnails are explicitly
+schematic, derived from entity poses. Scene copies preserve full authored data.
+Imported model rendering and photo reconstruction remain unavailable. Manual
+placement is required for reusable object/assembly export and insertion.
+
+414 focused Parallax tests, changed ESLint and typecheck support this candidate.
+The new reusable-library production-browser journey and independent rendered
+acceptance are pending; no full library or overhaul acceptance is claimed here.

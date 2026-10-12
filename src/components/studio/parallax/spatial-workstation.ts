@@ -33,6 +33,7 @@ export type ViewportState = {
   snap: boolean;
   surfaceClamp: boolean;
   isolateSelected: boolean;
+  hideEnvironment?: boolean;
   overlays: boolean;
   adaptive: boolean;
   editable: boolean;
@@ -378,7 +379,7 @@ export function createWorkstation(
     }
     if (roomChanged) resetView();
     surfaces.visible = s.overlays;
-    world.visible = !s.isolateSelected;
+    world.visible = !s.isolateSelected && !s.hideEnvironment;
     if (s.isolateSelected)
       for (const object of objects.children) object.visible = object.visible && object.userData.entityId === s.selected;
     const selectedObject = objects.children.find((o) => o.userData.entityId === s.selected);

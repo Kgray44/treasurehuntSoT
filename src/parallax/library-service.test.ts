@@ -15,12 +15,16 @@ const mocks = vi.hoisted(() => ({
 }));
 vi.mock("@/lib/db", () => ({
   db: {
-    reusableAuthoringItem: { findMany: mocks.list },
+    reusableAuthoringItem: { findMany: mocks.list, updateMany: mocks.claim },
     reusableAuthoringItemVersion: { findFirst: mocks.findVersion },
     $transaction: async (run: (tx: unknown) => unknown) =>
       run({
         reusableAuthoringItem: { findUnique: mocks.find, create: mocks.create, updateMany: mocks.claim },
-        reusableAuthoringItemVersion: { update: mocks.updateDraft, create: mocks.createVersion },
+        reusableAuthoringItemVersion: {
+          update: mocks.updateDraft,
+          create: mocks.createVersion,
+          findFirst: mocks.findVersion,
+        },
       }),
   },
 }));
@@ -41,7 +45,12 @@ import {
   attachSpatialVersion,
   restoreSpatialAttachment,
   materializeLibraryMoment,
+  saveReusableAsset,
+  reuseSpatialAsset,
+  archiveSpatialItem,
 } from "./library-service";
+import { createReusableSpatialAsset } from "./reusable-assets";
+import { simulationEnvironments } from "./studio-validation";
 function item() {
   const draft = createSpatialDraft("owned", "Desk Map", "chronicle");
   return {
@@ -65,6 +74,77 @@ beforeEach(() => {
   mocks.find.mockResolvedValue(item());
 });
 describe("owner-scoped Spatial Library storage", () => {
+  it("atomically creates separate asset working and immutable records without altering its source scene", async () => {
+    const draft = createSpatialDraft("owned", "Desk Map", "chronicle");
+    mocks.find.mockResolvedValueOnce(item()).mockResolvedValueOnce(null);
+    const result = await saveReusableAsset(
+      "creator",
+      draft,
+      1,
+      draft.content.entities[0].id,
+      { name: "Reusable chart", description: "Synthetic", classification: "Map" },
+      simulationEnvironments[0],
+    );
+    expect(result.definitionId).not.toBe("owned");
+    expect(mocks.create).toHaveBeenCalledOnce();
+    expect(mocks.createVersion).toHaveBeenCalledWith({
+      data: expect.objectContaining({ itemId: result.definitionId, versionNumber: 1 }),
+    });
+    expect(mocks.updateDraft).not.toHaveBeenCalled();
+    expect(mocks.claim).not.toHaveBeenCalled();
+  });
+  it("rejects a foreign or stale asset export before creating any definition", async () => {
+    const draft = createSpatialDraft("owned", "Desk Map", "chronicle");
+    const args = [
+      draft,
+      1,
+      draft.content.entities[0].id,
+      { name: "Chart", description: "", classification: "Map" },
+      simulationEnvironments[0],
+    ] as const;
+    await expect(saveReusableAsset("other", ...args)).rejects.toThrow(/unavailable/);
+    expect(mocks.create).not.toHaveBeenCalled();
+    await expect(saveReusableAsset("creator", draft, 2, args[2], args[3], args[4])).rejects.toThrow(/Conflict/);
+    expect(mocks.createVersion).not.toHaveBeenCalled();
+  });
+  it("reuses only an owned pinned release and leaves installation to ordinary editor history", async () => {
+    const draft = createSpatialDraft("owned");
+    const asset = createReusableSpatialAsset(
+      draft,
+      draft.content.entities[0].id,
+      "asset",
+      { name: "Map", description: "", classification: "Map" },
+      simulationEnvironments[0],
+    );
+    const moment = materializeLibraryMoment(asset, "creator", 1);
+    mocks.findVersion.mockResolvedValue({ checksum: moment.version.checksum, envelope: JSON.stringify(moment) });
+    const result = await reuseSpatialAsset("creator", draft, 1, "asset", moment.version.id);
+    expect(result.draft.content.entities).toHaveLength(2);
+    expect(mocks.findVersion.mock.calls[0][0].where.item).toMatchObject({
+      ownerAccountId: "creator",
+      archivedAt: null,
+    });
+    expect(mocks.updateDraft).not.toHaveBeenCalled();
+    expect(mocks.claim).not.toHaveBeenCalled();
+    mocks.findVersion.mockResolvedValue(null);
+    await expect(reuseSpatialAsset("other", draft, 1, "asset", moment.version.id)).rejects.toThrow(/owned/);
+  });
+  it("archives by owned active revision without deleting immutable releases", async () => {
+    await archiveSpatialItem("creator", "owned", 1);
+    expect(mocks.claim).toHaveBeenCalledWith({
+      where: {
+        id: "owned",
+        ownerAccountId: "creator",
+        kind: "PARALLAX_STUDIO",
+        archivedAt: null,
+        currentVersionNumber: 1,
+      },
+      data: { archivedAt: expect.any(Date), currentVersionNumber: { increment: 1 } },
+    });
+    expect(mocks.updateDraft).not.toHaveBeenCalled();
+    mocks.claim.mockResolvedValue({ count: 0 });
+    await expect(archiveSpatialItem("other", "owned", 1)).rejects.toThrow(/Conflict/);
+  });
   it("uses a revision claim and mutates only the working copy", async () => {
     expect(await saveSpatialDraft("creator", createSpatialDraft("owned", "Desk Map", "chronicle"), 1)).toBe(2);
     expect(mocks.claim).toHaveBeenCalledWith(

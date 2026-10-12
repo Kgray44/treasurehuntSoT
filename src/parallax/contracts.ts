@@ -154,6 +154,30 @@ export const versionContentSchema = z
     }
     if (v.studio) {
       const s = v.studio;
+      if (s.libraryDefinition && !entities.has(s.libraryDefinition.rootEntityId)) fail("PARALLAX_LIBRARY_ROOT_MISSING");
+      if (s.libraryDefinition) {
+        const root = s.libraryDefinition.rootEntityId;
+        if (
+          v.adaptive ||
+          s.environment ||
+          s.assets.length ||
+          s.visionReferences.length ||
+          s.assetInstances?.length ||
+          v.anchors.length !== 1 ||
+          v.anchors[0].kind !== "LOCAL_WORLD" ||
+          v.entities.filter((e) => !e.parentEntityId).some((e) => e.id !== root) ||
+          (s.libraryDefinition.kind === "ASSET" && v.entities.length !== 1)
+        )
+          fail("PARALLAX_LIBRARY_ASSET_NOT_SELF_CONTAINED");
+      }
+      const instances = s.assetInstances ?? [];
+      if (new Set(instances.map((i) => i.id)).size !== instances.length) fail("PARALLAX_ASSET_INSTANCE_DUPLICATE");
+      const instanceEntities = instances.flatMap((i) => i.entityIds);
+      if (
+        new Set(instanceEntities).size !== instanceEntities.length ||
+        instanceEntities.some((id) => !entities.has(id))
+      )
+        fail("PARALLAX_ASSET_INSTANCE_ENTITY_INVALID");
       if (new Set(s.layers.map((l) => l.entityId)).size !== s.layers.length) fail("PARALLAX_LAYER_DUPLICATE");
       if (new Set(s.behaviors.map((b) => b.id)).size !== s.behaviors.length) fail("PARALLAX_BEHAVIOR_DUPLICATE");
       const tracks = s.animationTracks ?? [];

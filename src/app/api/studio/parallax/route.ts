@@ -13,9 +13,13 @@ import {
   attachSpatialVersion,
   restoreSpatialAttachment,
   assertSpatialDraftAccess,
+  saveReusableAsset,
+  reuseSpatialAsset,
+  archiveSpatialItem,
 } from "@/parallax/library-service";
 import {
   validateSpatialAuthoring,
+  simulationEnvironments,
   simulateSpatialEnvironments,
   spatialPerformanceEstimate,
 } from "@/parallax/studio-validation";
@@ -30,6 +34,26 @@ import { creatorFieldQuality, reviewCalibration } from "@/parallax/field-service
 import { calibrationReviewInputSchema } from "@/parallax/field-contracts";
 
 const inputSchema = z.discriminatedUnion("action", [
+  z.strictObject({
+    action: z.literal("ASSET_SAVE"),
+    draft: draftSchema,
+    revision: z.number().int().min(1),
+    rootId: spatialId,
+    metadata: z.strictObject({
+      name: z.string().trim().min(1).max(240),
+      description: z.string().trim().max(1000),
+      classification: z.string().trim().min(1).max(60),
+    }),
+    environmentId: z.string().trim().min(1).max(128),
+  }),
+  z.strictObject({
+    action: z.literal("ASSET_INSERT"),
+    draft: draftSchema,
+    revision: z.number().int().min(1),
+    definitionId: spatialId,
+    versionId: spatialId,
+  }),
+  z.strictObject({ action: z.literal("ARCHIVE"), definitionId: spatialId, revision: z.number().int().min(1) }),
   z.strictObject({ action: z.literal("FIELD_QUALITY"), definitionId: spatialId, draft: draftSchema.optional() }),
   z.strictObject({ action: z.literal("CALIBRATION_REVIEW"), review: calibrationReviewInputSchema, draft: draftSchema }),
   z.strictObject({ action: z.literal("SAVE"), draft: draftSchema, revision: z.number().int().min(0) }),
@@ -146,6 +170,33 @@ export async function POST(request: Request) {
     const input = inputSchema.parse(raw);
     if ("draft" in input && input.draft) await assertSpatialDraftAccess(input.draft);
     switch (input.action) {
+      case "ASSET_SAVE": {
+        const room = input.draft.content.studio?.environment;
+        const environment =
+          room?.id === input.environmentId
+            ? { ...room, horizontal: true, vertical: true, tracking: true, clutter: 0, light: "NORMAL" }
+            : simulationEnvironments.find((e) => e.id === input.environmentId);
+        if (!environment) throw new Error("Choose a current room before saving the selection.");
+        return NextResponse.json(
+          await saveReusableAsset(
+            session.accountId,
+            input.draft,
+            input.revision,
+            input.rootId,
+            input.metadata,
+            environment,
+          ),
+          { headers },
+        );
+      }
+      case "ASSET_INSERT":
+        return NextResponse.json(
+          await reuseSpatialAsset(session.accountId, input.draft, input.revision, input.definitionId, input.versionId),
+          { headers },
+        );
+      case "ARCHIVE":
+        await archiveSpatialItem(session.accountId, input.definitionId, input.revision);
+        return NextResponse.json({ archived: true }, { headers });
       case "FIELD_QUALITY":
         return NextResponse.json(await creatorFieldQuality(session.accountId, input.definitionId, input.draft), {
           headers,

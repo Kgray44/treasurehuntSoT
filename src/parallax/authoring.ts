@@ -341,6 +341,10 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
       break;
     }
     case "DUPLICATE": {
+      if (studio.libraryDefinition?.rootEntityId === entity.id)
+        throw new Error(
+          "Add this asset to a scene to duplicate and group it, then save the assembly as a new definition.",
+        );
       const clone = structuredClone(entity);
       clone.id = edit.newId;
       clone.name += " copy";
@@ -367,6 +371,9 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
         entityId: clone.id,
         locked: false,
       });
+      const origin = studio.assetInstances?.find((i) => i.entityIds.includes(entity.id));
+      if (origin)
+        studio.assetInstances!.push({ ...structuredClone(origin), id: crypto.randomUUID(), entityIds: [clone.id] });
       if (studio.animationTracks)
         studio.animationTracks.push(
           ...studio.animationTracks
@@ -393,6 +400,12 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
       if (studio.animationTracks)
         studio.animationTracks = studio.animationTracks.filter((t) => t.entityId !== entity.id);
       studio.visionReferences = studio.visionReferences.filter((a) => a.entityId !== entity.id);
+      if (studio.assetInstances)
+        studio.assetInstances = studio.assetInstances
+          .map((i) => ({ ...i, entityIds: i.entityIds.filter((id) => id !== entity.id) }))
+          .filter((i) => i.entityIds.length);
+      if (studio.libraryDefinition?.rootEntityId === entity.id)
+        throw new Error("Keep the asset root, or save the remaining objects as a new reusable asset.");
       if (next.content.adaptive) {
         const adaptive = next.content.adaptive;
         adaptive.recipes = adaptive.recipes.filter((r) => r.entityId !== entity.id);

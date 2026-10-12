@@ -9,6 +9,8 @@ import { getStudioTale, saveStudioDraft, DraftConflictError } from "@/chronicle/
 import type { JsonObject } from "@/chronicle/types";
 import type { SpatialVersion, SpatialMoment } from "./contracts";
 import { assertCalibrationClaim } from "./field-service";
+import { createReusableSpatialAsset, insertReusableSpatialAsset, type AssetMetadata } from "./reusable-assets";
+import type { PreviewEnvironment } from "./environment-authoring";
 
 export const spatialItemKind = "PARALLAX_STUDIO";
 export type SpatialLibraryRecord = {
@@ -58,6 +60,92 @@ export async function assertSpatialDraftAccess(draft: SpatialDraft) {
   if (draft.chronicleId && !(await requireOwnedStudioTale(draft.chronicleId)))
     throw new Error("This Chronicle is not available to this Creator account.");
   if (draft.scope === "CHRONICLE_ONLY" && !draft.chronicleId) return; // Unsaved personal workshop draft.
+}
+
+/** Same owned library and immutable version records; saving an asset leaves its source scene untouched. */
+export async function saveReusableAsset(
+  ownerAccountId: string,
+  draft: SpatialDraft,
+  revision: number,
+  rootId: string,
+  metadata: AssetMetadata,
+  environment: PreviewEnvironment,
+) {
+  await assertSpatialDraftAccess(draft);
+  const asset = createReusableSpatialAsset(draft, rootId, crypto.randomUUID(), metadata, environment);
+  const moment = materializeLibraryMoment(asset, ownerAccountId, 1);
+  await db.$transaction(async (tx) => {
+    const source = await tx.reusableAuthoringItem.findUnique({
+      where: { id: draft.content.definitionId },
+      include: { versions: { where: { versionNumber: 0 } } },
+    });
+    if (!source || source.ownerAccountId !== ownerAccountId || source.kind !== spatialItemKind || source.archivedAt)
+      throw new Error("Source scene unavailable.");
+    if (source.currentVersionNumber !== revision || source.versions[0]?.checksum !== canonicalChecksum(draft))
+      throw new DraftConflictError(source.currentVersionNumber);
+    await saveSpatialDraftInTransaction(ownerAccountId, asset, 0, tx);
+    await tx.reusableAuthoringItemVersion.create({
+      data: {
+        id: moment.version.id,
+        itemId: asset.content.definitionId,
+        versionNumber: 1,
+        checksum: moment.version.checksum,
+        envelope: JSON.stringify(moment),
+      },
+    });
+  });
+  return { definitionId: asset.content.definitionId, versionId: moment.version.id };
+}
+
+export async function reuseSpatialAsset(
+  ownerAccountId: string,
+  draft: SpatialDraft,
+  revision: number,
+  definitionId: string,
+  versionId: string,
+) {
+  await assertSpatialDraftAccess(draft);
+  return db.$transaction(async (tx) => {
+    const row = await tx.reusableAuthoringItemVersion.findFirst({
+      where: {
+        id: versionId,
+        itemId: definitionId,
+        versionNumber: { gt: 0 },
+        item: { ownerAccountId, kind: spatialItemKind, archivedAt: null },
+      },
+    });
+    if (!row) throw new Error("Choose an owned, active reusable asset version.");
+    const moment = validateSpatialMoment(JSON.parse(row.envelope));
+    if (
+      moment.definition.id !== definitionId ||
+      moment.definition.ownerPersonId !== ownerAccountId ||
+      moment.version.id !== versionId ||
+      moment.version.checksum !== row.checksum
+    )
+      throw new Error("Reusable asset version binding is invalid.");
+    const next = insertReusableSpatialAsset(draft, moment.version, crypto.randomUUID());
+    const target = await tx.reusableAuthoringItem.findUnique({ where: { id: draft.content.definitionId } });
+    if (!target || target.ownerAccountId !== ownerAccountId || target.kind !== spatialItemKind || target.archivedAt)
+      throw new Error("Target scene unavailable.");
+    if (target.currentVersionNumber !== revision) throw new DraftConflictError(target.currentVersionNumber);
+    // Client checks its editor generation, installs through ordinary history, then autosaves.
+    return { draft: next };
+  });
+}
+
+/** Archive removes a definition from discovery; immutable releases and placed copies remain intact. */
+export async function archiveSpatialItem(ownerAccountId: string, definitionId: string, revision: number) {
+  const claimed = await db.reusableAuthoringItem.updateMany({
+    where: {
+      id: definitionId,
+      ownerAccountId,
+      kind: spatialItemKind,
+      archivedAt: null,
+      currentVersionNumber: revision,
+    },
+    data: { archivedAt: new Date(), currentVersionNumber: { increment: 1 } },
+  });
+  if (!claimed.count) throw new DraftConflictError(revision);
 }
 export async function saveSpatialDraft(ownerAccountId: string, raw: unknown, revision: number): Promise<number> {
   const draft = draftSchema.parse(raw);

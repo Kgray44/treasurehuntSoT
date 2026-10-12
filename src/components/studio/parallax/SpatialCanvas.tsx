@@ -252,6 +252,7 @@ export function SpatialCanvas(props: {
       snap,
       surfaceClamp,
       isolateSelected,
+      hideEnvironment: Boolean(draft.content.studio?.libraryDefinition),
       overlays: overlays || (Boolean(adaptive) && tool === "translate"),
       adaptive: Boolean(adaptive),
       editable: preview === "EDITOR",
@@ -262,6 +263,10 @@ export function SpatialCanvas(props: {
       recoveryCamera.current = null;
     }
   });
+  const libraryPreview = Boolean(draft.content.studio?.libraryDefinition);
+  useEffect(() => {
+    if (rendererState === "READY" && libraryPreview) engine.current?.view("selection");
+  }, [rendererState, draft.content.definitionId, libraryPreview]);
   const selected = draft.content.entities.find((e) => e.id === selectedId);
   const selectedReceipt = receipts.find((r) => r.id === selectedId);
   return (

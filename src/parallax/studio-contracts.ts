@@ -100,6 +100,27 @@ export const studioContentSchema = z.strictObject({
   animationTracks: z.array(animationTrackSchema).max(128).optional(),
   // Authoring geometry, never a native survey or tracking/calibration claim.
   environment: roomEnvironmentSchema.optional(),
+  libraryDefinition: z
+    .strictObject({
+      kind: z.enum(["ASSET", "ASSEMBLY"]),
+      rootEntityId: id,
+      description: z.string().trim().max(1000),
+      classification: text(60),
+    })
+    .optional(),
+  // Placed copies retain immutable origin identity; runtime uses their copied data.
+  assetInstances: z
+    .array(
+      z.strictObject({
+        id,
+        definitionId: id,
+        versionId: id,
+        checksum: z.string().regex(/^[a-f0-9]{64}$/),
+        entityIds: z.array(id).min(1).max(32),
+      }),
+    )
+    .max(32)
+    .optional(),
   assets: z.array(spatialAssetSchema).max(32),
   // Synthetic editor reference frames never replace measured native plane frames.
   surfacePreviewFrames: z
