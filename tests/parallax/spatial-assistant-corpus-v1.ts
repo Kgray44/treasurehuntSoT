@@ -1,7 +1,7 @@
 import { createSpatialDraft, editSpatialDraft, type SpatialDraft } from "../../src/parallax/authoring";
 import type { AssistantInterpretation, AssistantOperation } from "../../src/parallax/spatial-assistant";
 
-export const CORPUS_VERSION = "parallax-spatial-assistant-2026-10-11-v3";
+export const CORPUS_VERSION = "parallax-spatial-assistant-2026-10-11-v4";
 export const MAP = "synthetic-evaluation:entity-0";
 export type SceneExpectation = { path: string; value: unknown };
 export type AssistantEvaluationCase = {
@@ -48,7 +48,7 @@ const creation = (
   placement,
   widthMeters: 0.2,
   scale: 1,
-  position: { x: 0, y: 0, z: 0 },
+  position: { x: placement === "DESK" ? 0.5 : 0, y: 0, z: 0 },
 });
 const placement = (value: "DESK" | "WALL" | "ENTRANCE" | "LOCAL", entityId = MAP): AssistantOperation => ({
   ...common(),

@@ -13,6 +13,25 @@ export function valueAt(input: unknown, path: string): unknown {
     );
 }
 describe("Versioned deterministic semantic contract corpus (no live-model evidence)", () => {
+  it("rejects a new fixed desk note covering existing content after dependent transforms", () => {
+    const item = assistantEvaluationCorpus.find((candidate) => candidate.id === "create-note")!;
+    const interpretation = structuredClone(item.deterministicFixture);
+    const created = interpretation.operations[0];
+    if (created.type !== "CREATE") throw new Error("Expected creation fixture.");
+    expect(evaluateAssistantCase(item, evaluationScene(item), interpretation).passed).toBe(true);
+    interpretation.operations.push({
+      id: "overlap",
+      type: "TRANSFORM",
+      entityId: created.entityId,
+      dependsOn: [created.id],
+      explanation: "Move the note to the occupied desk origin.",
+      position: { x: 0, y: 0, z: 0 },
+      scale: 1,
+    });
+    expect(evaluateAssistantCase(item, evaluationScene(item), interpretation).findings).toContain(
+      "EXISTING_READABLE_OBJECT_OVERLAP",
+    );
+  });
   it("rejects coincident signs even when both requested texts exist", () => {
     const item = assistantEvaluationCorpus.find((candidate) => candidate.id === "multi-signs")!;
     const interpretation = structuredClone(item.deterministicFixture);

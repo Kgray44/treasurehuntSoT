@@ -58,6 +58,39 @@ export function evaluateAssistantCase(item: AssistantEvaluationCase, draft: Spat
             findings.push("CREATED_OBJECTS_OVERLAP");
         }
     }
+    // The fixed synthetic desk/wall fixtures use identical canonical anchor
+    // poses. Check final geometry against existing content, including dependent
+    // transforms; this is a conservative readability rubric, not AR collision proof.
+    if (!draft.content.adaptive) {
+      for (const operation of proposal.operations) {
+        if (operation.type !== "CREATE" || !["DESK", "WALL"].includes(operation.placement)) continue;
+        const created = next.content.entities.find((entity) => entity.id === operation.entityId)!;
+        const createdAnchor = next.content.anchors.find((anchor) => anchor.id === created.anchorId)!;
+        for (const original of draft.content.entities) {
+          const existing = next.content.entities.find((entity) => entity.id === original.id);
+          const existingAnchor = next.content.anchors.find((anchor) => anchor.id === existing?.anchorId);
+          if (
+            !existing ||
+            !existingAnchor ||
+            existingAnchor.kind !== createdAnchor.kind ||
+            existingAnchor.alignment !== createdAnchor.alignment ||
+            !equal(existingAnchor.transform, createdAnchor.transform)
+          )
+            continue;
+          const distance = Math.hypot(
+            created.transform.position.x - existing.transform.position.x,
+            operation.placement === "DESK"
+              ? created.transform.position.z - existing.transform.position.z
+              : created.transform.position.y - existing.transform.position.y,
+          );
+          if (
+            distance <
+            (created.widthMeters * created.transform.scale + existing.widthMeters * existing.transform.scale) / 2
+          )
+            findings.push("EXISTING_READABLE_OBJECT_OVERLAP");
+        }
+      }
+    }
     if (item.expected.fallback === "PRESERVE_GUIDED" && !equal(next.content.fallback, draft.content.fallback))
       findings.push("GUIDED_CHANGED");
     if (item.expected.fallback === "REPLACE_GUIDED" && !next.content.fallback.narrative.trim())
