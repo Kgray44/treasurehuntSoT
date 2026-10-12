@@ -8,12 +8,55 @@ export type SpatialInput = {
   entityId?: string;
   atMs: number;
 };
-/** Pure declarative spatial state; never executes content or emits progression. */
-export function evaluateSpatialBehavior(
+export const maximumSpatialInputs = 128;
+export const initialSpatialInputs = (): SpatialInput[] => [
+  { trigger: "SCENE_ENTER", atMs: 0 },
+  { trigger: "TIMER", atMs: 0 },
+];
+/** Explicit rejection preserves all previous inputs and their delayed effects. */
+export function appendSpatialInput(inputs: readonly SpatialInput[], input: SpatialInput): SpatialInput[] {
+  if (inputs.length >= maximumSpatialInputs) throw new Error("Reset simulation before adding more interactions.");
+  if (!Number.isFinite(input.atMs) || input.atMs < 0 || input.atMs > 60000)
+    throw new Error("Simulation time must be between zero and sixty seconds.");
+  return [...inputs, input];
+}
+function behaviorEvents(
   content: DraftContent | SpatialVersion,
   inputs: readonly SpatialInput[],
   nowMs: number,
-  editor = false,
+  editor: boolean,
+) {
+  return (content.studio?.behaviors ?? [])
+    .flatMap((b, index) =>
+      inputs.flatMap((input, inputIndex) => {
+        if (input.trigger !== b.trigger || (b.sourceEntityId && input.entityId !== b.sourceEntityId)) return [];
+        const audience = content.studio?.layers.find((l) => l.entityId === b.targetEntityId)?.audience;
+        const excluded = editor ? audience === "RUNTIME_ONLY" : audience === "EDITOR_ONLY";
+        return [
+          {
+            behaviorId: b.id,
+            entityId: b.targetEntityId,
+            sourceEntityId: b.sourceEntityId,
+            trigger: b.trigger,
+            action: b.action,
+            inputIndex,
+            atMs: input.atMs + b.delayMs,
+            index,
+            status: excluded
+              ? ("SUPPRESSED" as const)
+              : input.atMs + b.delayMs <= nowMs
+                ? ("APPLIED" as const)
+                : ("WAITING" as const),
+          },
+        ];
+      }),
+    )
+    .sort((a, b) => a.atMs - b.atMs || a.index - b.index);
+}
+function behaviorStates(
+  content: DraftContent | SpatialVersion,
+  events: ReturnType<typeof behaviorEvents>,
+  editor: boolean,
 ) {
   const states = Object.fromEntries(
     content.entities.map((e) => {
@@ -30,27 +73,24 @@ export function evaluateSpatialBehavior(
       ];
     }),
   );
-  const events = (content.studio?.behaviors ?? [])
-    .flatMap((b, index) =>
-      inputs
-        .filter(
-          (i) =>
-            i.trigger === b.trigger &&
-            (!b.sourceEntityId || i.entityId === b.sourceEntityId) &&
-            i.atMs + b.delayMs <= nowMs,
-        )
-        .map((i) => ({ b, at: i.atMs + b.delayMs, index })),
-    )
-    .sort((a, b) => a.at - b.at || a.index - b.index);
-  for (const { b } of events) {
-    const target = states[b.targetEntityId];
-    const audience = content.studio?.layers.find((l) => l.entityId === b.targetEntityId)?.audience;
-    if (target && (editor ? audience !== "RUNTIME_ONLY" : audience !== "EDITOR_ONLY")) {
-      if (b.action === "HIGHLIGHT") target.highlighted = true;
-      else target.visible = b.action === "SHOW";
+  for (const event of events) {
+    if (event.status !== "APPLIED") continue;
+    const target = states[event.entityId];
+    if (target) {
+      if (event.action === "HIGHLIGHT") target.highlighted = true;
+      else target.visible = event.action === "SHOW";
     }
   }
   return states;
+}
+/** Pure declarative spatial state; never executes content or emits progression. */
+export function evaluateSpatialBehavior(
+  content: DraftContent | SpatialVersion,
+  inputs: readonly SpatialInput[],
+  nowMs: number,
+  editor = false,
+) {
+  return behaviorStates(content, behaviorEvents(content, inputs, nowMs, editor), editor);
 }
 
 /** Shortest-path, normalized quaternion interpolation. q and -q are the same orientation. */
@@ -111,7 +151,8 @@ export function evaluateSpatialScene(
   nowMs: number,
   editor = false,
 ) {
-  const behavior = evaluateSpatialBehavior(content, inputs, nowMs, editor);
+  const events = behaviorEvents(content, inputs, nowMs, editor);
+  const behavior = behaviorStates(content, events, editor);
   const states = Object.fromEntries(
     content.entities.map((entity) => [
       entity.id,
@@ -122,20 +163,6 @@ export function evaluateSpatialScene(
       },
     ]),
   );
-  const events = (content.studio?.behaviors ?? [])
-    .flatMap((b, index) =>
-      inputs
-        .filter((i) => i.trigger === b.trigger && (!b.sourceEntityId || i.entityId === b.sourceEntityId))
-        .map((i) => ({
-          behaviorId: b.id,
-          entityId: b.targetEntityId,
-          action: b.action,
-          atMs: i.atMs + b.delayMs,
-          status: i.atMs + b.delayMs <= nowMs ? ("APPLIED" as const) : ("WAITING" as const),
-          index,
-        })),
-    )
-    .sort((a, b) => a.atMs - b.atMs || a.index - b.index);
   if (!editor)
     for (const track of content.studio?.animationTracks ?? []) {
       const state = states[track.entityId];

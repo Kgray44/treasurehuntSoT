@@ -101,3 +101,24 @@ placement is required for reusable object/assembly export and insertion.
 414 focused Parallax tests, changed ESLint and typecheck support this candidate.
 The new reusable-library production-browser journey and independent rendered
 acceptance are pending; no full library or overhaul acceptance is claimed here.
+
+## Simulation experience design
+
+The existing Simulation dock will show the current scene clock, selected source
+object, available interactions, matching authored behaviors and their delays.
+Running, pausing, seeking and resetting use the same clock and pure evaluator as
+the timeline and Lens. Inputs remain a bounded transient session; switching
+scenes stops playback and clears the previous scene's inputs. Reset returns to
+the initial scene-enter/timer inputs and renders their initial state.
+
+Each input will distinguish no matching behavior from a waiting delay, an
+evaluated action and an audience-excluded action. The resulting object state
+will be shown beside actual renderer visibility diagnostics. Creator-facing
+feedback explains recovery when an interaction has no authored effect or a
+result is outside the viewport. Engineering mode adds source identities and
+transforms; Guided mode retains object names and explicit outcomes. The Events
+dock will show the same evaluator evidence. No simulation control writes
+Chronicle progression, and saving retains authored behaviors rather than the
+transient playback state. Browser qualification must create a behavior through
+visible controls, observe its delayed rendered effect, reset, save/reload and
+repeat it; a numerical clock or event log alone is insufficient.

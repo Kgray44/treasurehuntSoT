@@ -115,5 +115,6 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
   await expect(card).toHaveCount(0);
   expect((await listSpatialItems(account.id)).some((i) => i.id === asset.id)).toBe(false);
   expect((await listSpatialItems(account.id)).find((i) => i.id === targetId)!.draft).toEqual(saved);
+  await expect.poll(async () => (await receipt()).every((object) => object.status === "IN_VIEW")).toBe(true);
   await page.screenshot({ path: `${root}/library-archived-definition.png` });
 });

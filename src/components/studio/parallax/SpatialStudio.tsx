@@ -49,7 +49,8 @@ import { authoredPreviewEnvironment, createRoomEnvironment } from "@/parallax/en
 import { insertSpatialPreset } from "@/parallax/editor-assets";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import { resolveAdaptiveScene } from "@/parallax/adaptive";
-import { evaluateSpatialScene, type SpatialInput } from "@/parallax/behavior";
+import { appendSpatialInput, initialSpatialInputs, type SpatialInput } from "@/parallax/behavior";
+import { SpatialSimulation, SimulationEvents } from "./SpatialSimulation";
 import type { RendererReceipt } from "./spatial-workstation";
 import { useWorkspaceLayout } from "./useWorkspaceLayout";
 import { workspaceNames, workspaceLabels, type WorkspaceLayout } from "@/parallax/workspace-layout";
@@ -118,10 +119,8 @@ export function SpatialStudio({
     [targetBlock, setTargetBlock] = useState(blockId ?? ""),
     [override, setOverride] = useState("");
   const [timeMs, setTimeMs] = useState(0),
-    [inputs, setInputs] = useState<SpatialInput[]>([
-      { trigger: "SCENE_ENTER", atMs: 0 },
-      { trigger: "TIMER", atMs: 0 },
-    ]);
+    [inputs, setInputs] = useState<SpatialInput[]>(initialSpatialInputs);
+  const [simulationFeedback, setSimulationFeedback] = useState("");
   const draftRef = useRef<SpatialDraft | null>(null),
     revision = useRef(0),
     savedJson = useRef(""),
@@ -395,6 +394,31 @@ export function SpatialStudio({
     setTimeMs(time);
     setPreview("LENS");
   };
+  const resetSimulation = () => {
+    setPlaying(false);
+    setTimeMs(0);
+    setInputs(initialSpatialInputs());
+    setPreview("LENS");
+    setSimulationFeedback("Simulation reset to the initial scene state.");
+  };
+  const triggerSimulation = (trigger: "INSPECT" | "PICK" | "PLACE") => {
+    const object = draft?.content.entities.find((entity) => entity.id === selected);
+    if (!object?.interactions.includes(trigger)) return;
+    try {
+      setInputs(appendSpatialInput(inputs, { trigger, entityId: object.id, atMs: timeMs }));
+      setPreview("LENS");
+      const count =
+        draft?.content.studio?.behaviors.filter((b) => b.trigger === trigger && b.sourceEntityId === object.id)
+          .length ?? 0;
+      setSimulationFeedback(
+        count
+          ? `${trigger.toLowerCase()} on ${object.name} matched ${count} behavior${count === 1 ? "" : "s"}. See interaction results for timing and renderer state.`
+          : `${trigger.toLowerCase()} on ${object.name} has no matching behavior. Author one in Timeline to give it an effect.`,
+      );
+    } catch (failure) {
+      setSimulationFeedback(failure instanceof Error ? failure.message : "Reset simulation before trying again.");
+    }
+  };
   const adaptiveResolution = draft?.content.adaptive
     ? resolveAdaptiveScene(
         draft.content,
@@ -522,11 +546,10 @@ export function SpatialStudio({
       setFindings(null);
       setReleaseId("");
       setError("");
+      setPlaying(false);
+      setSimulationFeedback("");
       setTimeMs(0);
-      setInputs([
-        { trigger: "SCENE_ENTER", atMs: 0 },
-        { trigger: "TIMER", atMs: 0 },
-      ]);
+      setInputs(initialSpatialInputs());
     },
     [entityId, writeHistory],
   );
@@ -1480,28 +1503,12 @@ export function SpatialStudio({
                           !currentEntity ||
                           !currentEntity.interactions.includes(trigger as "INSPECT" | "PICK" | "PLACE")
                         }
-                        onClick={() =>
-                          setInputs([
-                            ...inputs,
-                            { trigger: trigger as SpatialInput["trigger"], entityId: selected!, atMs: timeMs },
-                          ])
-                        }
+                        onClick={() => triggerSimulation(trigger as "INSPECT" | "PICK" | "PLACE")}
                       >
                         Simulate {trigger.toLowerCase()}
                       </button>
                     ))}
-                    <button
-                      onClick={() => {
-                        setPlaying(false);
-                        setTimeMs(0);
-                        setInputs([
-                          { trigger: "SCENE_ENTER", atMs: 0 },
-                          { trigger: "TIMER", atMs: 0 },
-                        ]);
-                      }}
-                    >
-                      Reset simulation
-                    </button>
+                    <button onClick={resetSimulation}>Reset simulation</button>
                   </div>
                   {(draft.content.studio?.behaviors ?? []).map((b, index) => (
                     <div className={styles.behavior} key={b.id}>
@@ -1601,34 +1608,27 @@ export function SpatialStudio({
               >
                 <h2>Simulation</h2>
                 <p>Current {previewEnvironment.name} reference environment · synthetic evidence</p>
+                <SpatialSimulation
+                  draft={draft}
+                  inputs={inputs}
+                  timeMs={timeMs}
+                  rendered={renderedEntities}
+                  selected={selected}
+                  playing={playing}
+                  preview={preview}
+                  mode={mode}
+                  feedback={simulationFeedback}
+                  onTrigger={triggerSimulation}
+                  onReset={resetSimulation}
+                  onTime={seekTimeline}
+                  onSelect={setSelected}
+                  onRun={() => {
+                    if (timeMs >= 60000) setTimeMs(0);
+                    setPlaying(!playing);
+                    setPreview("LENS");
+                  }}
+                />
                 <div className={styles.inline}>
-                  {["INSPECT", "PICK", "PLACE"].map((trigger) => (
-                    <button
-                      key={trigger}
-                      disabled={!currentEntity?.interactions.includes(trigger as "INSPECT" | "PICK" | "PLACE")}
-                      onClick={() => {
-                        setInputs((previous) => [
-                          ...previous,
-                          { trigger: trigger as SpatialInput["trigger"], entityId: selected!, atMs: timeMs },
-                        ]);
-                        setPreview("LENS");
-                      }}
-                    >
-                      Simulate {trigger.toLowerCase()}
-                    </button>
-                  ))}
-                  <button
-                    onClick={() => {
-                      setPlaying(false);
-                      setTimeMs(0);
-                      setInputs([
-                        { trigger: "SCENE_ENTER", atMs: 0 },
-                        { trigger: "TIMER", atMs: 0 },
-                      ]);
-                    }}
-                  >
-                    Reset simulation
-                  </button>
                   <button
                     onClick={() => {
                       setFindings(validateSpatialAuthoring(draft.content));
@@ -1698,31 +1698,7 @@ export function SpatialStudio({
               >
                 <h2>Preview activity</h2>
                 <p>Transient simulation inputs. These never advance the Chronicle.</p>
-                <ol>
-                  {inputs.map((input, index) => (
-                    <li key={index}>
-                      {(input.atMs / 1000).toFixed(1)} s · {input.trigger} ·{" "}
-                      {draft.content.entities.find((e) => e.id === input.entityId)?.name ?? "Scene"}
-                    </li>
-                  ))}
-                </ol>
-                <h3>Evaluated scene changes</h3>
-                {evaluateSpatialScene(draft.content, inputs, timeMs).events.length ? (
-                  <ol>
-                    {evaluateSpatialScene(draft.content, inputs, timeMs).events.map((event, index) => (
-                      <li key={`${event.behaviorId}:${index}`}>
-                        {(event.atMs / 1000).toFixed(1)} s · {event.action.toLowerCase()} ·{" "}
-                        {draft.content.entities.find((e) => e.id === event.entityId)?.name}
-                        {" · "}
-                        {event.status === "WAITING" ? "waiting for delay" : "evaluated"}
-                        {event.status === "APPLIED" &&
-                          ` · renderer: ${renderedEntities[event.entityId]?.replaceAll("_", " ").toLowerCase() ?? "awaiting render"}`}
-                      </li>
-                    ))}
-                  </ol>
-                ) : (
-                  <p>No behavior matches these inputs. Add a behavior with the matching trigger and source object.</p>
-                )}
+                <SimulationEvents draft={draft} inputs={inputs} timeMs={timeMs} rendered={renderedEntities} />
               </section>
             </div>
           </section>
@@ -2076,7 +2052,7 @@ export function SpatialStudio({
               />
             </label>
           </details>
-          <details {...sectionProps("reuse")}>
+          <details {...sectionProps("reuse")} aria-label="Library, reuse & publication">
             <summary>Library, reuse &amp; publication</summary>
             {currentEntity && (
               <SaveSpatialAsset

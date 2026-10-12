@@ -264,8 +264,12 @@ export function SpatialCanvas(props: {
     }
   });
   const libraryPreview = Boolean(draft.content.studio?.libraryDefinition);
+  const previousLibraryPreview = useRef(false);
   useEffect(() => {
-    if (rendererState === "READY" && libraryPreview) engine.current?.view("selection");
+    if (rendererState !== "READY") return;
+    if (libraryPreview) engine.current?.view("selection");
+    else if (previousLibraryPreview.current) engine.current?.view("perspective");
+    previousLibraryPreview.current = libraryPreview;
   }, [rendererState, draft.content.definitionId, libraryPreview]);
   const selected = draft.content.entities.find((e) => e.id === selectedId);
   const selectedReceipt = receipts.find((r) => r.id === selectedId);

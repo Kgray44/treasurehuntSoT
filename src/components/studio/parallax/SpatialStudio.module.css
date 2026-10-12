@@ -2185,6 +2185,39 @@
   font-size: 11px;
   color: var(--studio-muted);
 }
+.simulationEvidence {
+  line-height: 1.5;
+}
+.simulationEvidence h3 {
+  font-size: 12px;
+  margin: 14px 0 6px;
+}
+.simulationEvidence ol,
+.simulationEvidence ul {
+  padding-left: 20px;
+}
+.simulationEvidence li {
+  margin: 6px 0;
+}
+.simulationEvidence label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+.simulationEvidence input[type="range"] {
+  flex: 1;
+  min-width: 80px;
+}
+.simulationObjects li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.simulationObjects small {
+  flex-basis: 100%;
+}
 .srOnly {
   position: absolute;
   width: 1px;
