@@ -9711,6 +9711,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-e643d3acc6f8/plan.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-focused-companion-358609708acc-fb7cc2a2/plan.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -9837,6 +9843,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/continuation-contract.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/two-device-stage-receipt.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/verification-accounting.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-b53291133625/manifest.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -9856,6 +9880,30 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-b53291133625/refit-reduce/observations.raw.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/observations.raw.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/observations.raw.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/observations.raw.txt",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

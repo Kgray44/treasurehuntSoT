@@ -54,6 +54,16 @@ under the [experience operations](../Development_Docs/Testing/Product_Experience
 Merge only after PASS, then verify the landed source. No new product repair is
 authorized. Shared Journal continuity belongs to the separately bounded Sextant
 follow-up and needs exact file ownership before any change.
+Draft PR #721 is attached. Protected capture run `38277482404` binds candidate
+`76e24ae5024f982a691c1a4e0ebfafc3e9634902` to base `5e72620c`.
+Fresh local build and three two-device cases passed; the fresh original-byte
+manifest is `crossdeck-refit-two-device-e643d3acc6f8/manifest.json` under the
+engineering evidence root. This is verification after integration, not a repair.
+
+The unchanged protected validator rejects `review.iterations > 3`. The
+historical applicable repair count remains ten. Preserve that schema conflict
+as exact qualification evidence; do not substitute the independent-review count
+for repair iterations or silently change the verifier to obtain acceptance.
 Preserve all task-owned artifacts, build junctions, dependencies, primary dirty
 checkout and unrelated owners' worktrees. Preserve immutable artifact identities
 and actual referenced PNG/WebM/ZIP bytes. Do not change network settings.
