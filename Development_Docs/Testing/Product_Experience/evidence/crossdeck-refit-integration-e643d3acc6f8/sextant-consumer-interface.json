@@ -1,0 +1,54 @@
+{
+  "classification": "Engineering bounded cross-project API-consumption agreement",
+  "requestKey": "sextant-phase4-acceptance-followup-20261012-r1",
+  "decision": "ACK_CONSUMER_WRAPPER_BOUNDARY_NO_DUPLICATE_CROSSDECK_REPAIR",
+  "protectedBase": "5e72620cef879685540bb968a9b836d1eb2fdec6",
+  "canonicalOwner": "project-helm",
+  "presentationOwner": "Lanternwake",
+  "progressionOwner": "One Voyage",
+  "ownershipBlob": "ca2a481b4823ff2846c8342a1826b05d6bb75cf3",
+  "helmSafetyContractPath": "Development_Docs/Projects/Project_Helm/Project_Helm_Phase_2_Mainline_Safety_Contract.md",
+  "helmSafetyContractBlob": "2ca5d1b455a3aa21da4f1dc522343b90356b92d6",
+  "sextantOnlyEditableFile": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+  "protectedWrapperBlob": "5bc669aaed1aca1d2f68beb5a5a06cb012710804",
+  "unchangedAuthApi": "authorizeTaleSessionPlayer(sessionId)",
+  "protectedAuthBlob": "fee18617a4954fef1302d9e3534d72c81c7e3267",
+  "identitySelection": "access?.kind === 'identity'; legacy/null false",
+  "acceptedMembershipStatuses": ["INVITED", "ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"],
+  "acceptedLegacyFallback": "Exact-session cookie token hash verification",
+  "excludedEdits": [
+    "src/platform/auth.ts",
+    "src/platform/libraries.ts",
+    "src/components/player/journal/ChronicleJournalSession.tsx",
+    "authenticated PLAYER route",
+    "CSRF",
+    "account/actor",
+    "reading-state writer",
+    "redirect",
+    "progression"
+  ],
+  "crossdeckNoDuplicateWrapperOrServiceRepair": true,
+  "crossdeckUiHandoff": {
+    "blob": "20f6e0bf439ff50f1bc4befe2bd438ef09f56b1f",
+    "region": "Connected devices",
+    "heading": "Your connected screens",
+    "action": "Open on this device",
+    "condition": "surface.surfaceId === here?.surfaceId",
+    "sharedPurposeRoute": "/devices/display?voyage=encodedVoyageId",
+    "otherPurposes": "companionHref(surface.voyageId)",
+    "legitimateMultipleRowsPreserved": true,
+    "consumptionGate": "Crossdeck protected acceptance required"
+  },
+  "canonicalOwnerApprovalClaim": "NOT_INVENTED; unchanged accepted API consumption only",
+  "broaderConsumerCoverageGaps": {
+    "reportedCount": 141,
+    "closedByAgreement": false,
+    "required": "Named owners and exact source-bound actual journeys/receipts"
+  },
+  "repairAccounting": {
+    "crossdeckAttempts": 10,
+    "crossdeckLimit": 3,
+    "counterReset": false
+  },
+  "ownerAcceptance": "NOT_CLAIMED"
+}

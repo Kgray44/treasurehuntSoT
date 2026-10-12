@@ -96,3 +96,27 @@ decision, formatting and ordinary exact-candidate qualification before any
 protected merge, then verify landed source with the actual product smoke. Owner
 acceptance remains `NOT_CLAIMED`. Native Goal telemetry remains historically
 paused; no current token/cache/credit/per-agent count is available from it.
+
+## Sextant bounded Journal consumer agreement
+
+Crossdeck ACKs `sextant-phase4-acceptance-followup-20261012-r1` at accepted
+main `5e72620c`: Sextant owns only the compatibility route wrapper
+`src/app/play/[taleSlug]/session/[sessionId]/page.tsx` for this follow-up.
+Use unchanged `authorizeTaleSessionPlayer(sessionId)` and enable
+`identitySession` only for its `identity` result. Keep legacy/null false.
+The accepted API retains its exact canonical membership statuses and legacy
+token fallback. No auth, library, Journal component, Player route, CSRF, actor,
+state writer, redirect or progression change is included.
+
+Helm retains canonical Journal/library ownership, Lanternwake presentation and
+One Voyage progression. Crossdeck makes no duplicate wrapper/service repair.
+The existing current-surface-only `Open on this device` link in
+`CrossdeckDevices.tsx` remains uniquely scoped under `Connected devices` /
+`Your connected screens`; shared-display purpose uses `/devices/display`,
+other purposes use `companionHref`. Multiple legitimate device rows remain.
+Sextant may consume this UI only after this refit's protected acceptance.
+The source-bound agreement is recorded in
+[the engineering interface receipt](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/sextant-consumer-interface.json).
+No missing Helm approval or active Helm task is invented. The separately
+reported 141 consumer-coverage gaps remain outside this bounded agreement;
+their named owners and actual journey receipts remain required.

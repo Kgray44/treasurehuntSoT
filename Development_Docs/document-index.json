@@ -9849,6 +9849,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/raw-log-manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/sextant-consumer-interface.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/two-device-stage-receipt.json",
       "record_type": "archive-index",
       "status": "preserved",
