@@ -307,6 +307,7 @@ export function CrossdeckCompanion({
                       ? "Released spatial moment"
                       : "Released passage"}
                   <select
+                    disabled={connection.busy}
                     aria-label={
                       role === "ARTIFACT_VIEWER"
                         ? "Released artifact"

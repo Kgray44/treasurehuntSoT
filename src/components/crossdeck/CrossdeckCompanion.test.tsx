@@ -242,6 +242,72 @@ it("switches purpose through server participation and waits for the authorized r
   });
 });
 
+it("waits for the complete purpose mutation before accepting a released passage selection", async () => {
+  const current = connection("ARTIFACT_VIEWER");
+  let finishAction!: (value: Awaited<ReturnType<CrossdeckConnection["act"]>>) => void;
+  const pendingAction = new Promise<Awaited<ReturnType<CrossdeckConnection["act"]>>>((resolve) => {
+    finishAction = resolve;
+  });
+  vi.mocked(current.act).mockReturnValue(pendingAction);
+  const currentState = state();
+  currentState.journal.currentBlockId = chart.id;
+  const currentProps = { ...props(current), state: currentState };
+  const view = render(<CrossdeckCompanion {...currentProps} />);
+  fireEvent.click(screen.getByText("Change companion purpose"));
+  fireEvent.click(screen.getByRole("button", { name: "Journal companion" }));
+  expect(current.act).toHaveBeenCalledWith({ action: "role", surfaceId: "phone", role: "JOURNAL" }, expect.any(String));
+  // The role response can render before the hook's post-mutation refresh finishes.
+  current.busy = true;
+  current.here!.role = "JOURNAL";
+  view.rerender(<CrossdeckCompanion {...currentProps} />);
+  const passage = screen.getByRole("combobox", { name: "Released passage" });
+  expect(screen.getByRole("region", { name: "Journal companion" })).toBeVisible();
+  expect(passage).toHaveValue(chart.id);
+  expect(passage).toBeDisabled();
+  await act(async () => {
+    finishAction({});
+    await pendingAction;
+  });
+  current.busy = false;
+  view.rerender(<CrossdeckCompanion {...currentProps} />);
+  expect(passage).toBeEnabled();
+  fireEvent.change(passage, { target: { value: note.id } });
+  await waitFor(() => expect(screen.getByRole("article", { name: note.title })).toBeVisible());
+  view.rerender(<CrossdeckCompanion {...currentProps} />);
+  expect(passage).toHaveValue(note.id);
+  expect(screen.getByText("The complete third bearing.")).toBeVisible();
+});
+
+it("preserves the selected released passage when a purpose mutation fails", async () => {
+  const current = connection();
+  let finishAction!: (value: Awaited<ReturnType<CrossdeckConnection["act"]>>) => void;
+  const pendingAction = new Promise<Awaited<ReturnType<CrossdeckConnection["act"]>>>((resolve) => {
+    finishAction = resolve;
+  });
+  vi.mocked(current.act).mockReturnValue(pendingAction);
+  const currentProps = props(current);
+  const view = render(<CrossdeckCompanion {...currentProps} />);
+  fireEvent.change(screen.getByRole("combobox", { name: "Released passage" }), {
+    target: { value: artifact.id },
+  });
+  fireEvent.click(screen.getByText("Change companion purpose"));
+  fireEvent.click(screen.getByRole("button", { name: "Voyage Chart" }));
+  current.busy = true;
+  view.rerender(<CrossdeckCompanion {...currentProps} />);
+  expect(screen.getByRole("combobox", { name: "Released passage" })).toBeDisabled();
+  await act(async () => {
+    finishAction(undefined);
+    await pendingAction;
+  });
+  current.busy = false;
+  view.rerender(<CrossdeckCompanion {...currentProps} />);
+  const passage = screen.getByRole("combobox", { name: "Released passage" });
+  expect(passage).toBeEnabled();
+  expect(passage).toHaveValue(artifact.id);
+  expect(screen.getByRole("article", { name: artifact.title })).toBeVisible();
+  expect(screen.getByText("Change companion purpose").closest("details")).toHaveAttribute("open");
+});
+
 it("opens the canonical Lens automatically with meaningful camera-free content and authenticated nonauthoritative receipts", async () => {
   const requests = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) =>
     Response.json(

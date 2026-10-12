@@ -29,7 +29,7 @@ async function sendOptions(page: Page) {
   const dialog = page.getByRole("dialog", { name: "Send this view", exact: true });
   await expect(dialog).toBeVisible();
   await dialog.getByRole("radio").check();
-  const advanced = dialog.locator("details").filter({ has: dialog.getByText("More ways to open", { exact: true }) });
+  const advanced = dialog.locator("details").filter({ has: page.getByText("More ways to open", { exact: true }) });
   if ((await advanced.getAttribute("open")) === null) await advanced.locator("summary").click();
   await dialog.getByLabel("Transfer mode", { exact: true }).selectOption("SEND_VIEW");
   return { handoff, dialog };
