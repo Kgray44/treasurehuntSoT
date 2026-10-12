@@ -22,6 +22,10 @@ const requests = new Map([
   ["Make that pirate map wider, keeping its clue and placement unchanged.", "REFINE"],
   ["Explain an unsupported glowing particle effect.", "UNSUPPORTED"],
   ["Synthetic provider failure for recovery review.", "FAILURE"],
+  [
+    "Turn the existing map into a folded pirate letter on the desk beside the window, hidden initially and revealed five seconds after scene entry.",
+    "ROOM_LETTER",
+  ],
 ]);
 const originalFetch = globalThis.fetch;
 let sequence = 0;
@@ -121,7 +125,7 @@ globalThis.fetch = async (input, init) => {
   await new Promise((resolve) => setTimeout(resolve, 750));
   if (kind === "FAILURE") return Response.json({ error: { code: "rate_limit_exceeded" } }, { status: 429 });
   const base = {
-    intentType: kind === "CREATE" ? "CREATE" : kind === "REFINE" ? "EDIT" : "UNSUPPORTED",
+    intentType: kind === "CREATE" ? "CREATE" : ["REFINE", "ROOM_LETTER"].includes(kind) ? "EDIT" : "UNSUPPORTED",
     summary:
       kind === "CREATE"
         ? "A pirate map for your desk"
@@ -136,6 +140,59 @@ globalThis.fetch = async (input, init) => {
     unsupportedCapabilities: kind === "UNSUPPORTED" ? ["Particle effects are unavailable."] : [],
     creatorExplanation: "Review these supported changes in the real canvas before saving.",
   };
+  if (kind === "ROOM_LETTER") {
+    const entity = submitted.sceneContext.entities[0];
+    const features = submitted.sceneContext.room?.features ?? [];
+    const desk = features.find((feature) => feature.classification === "DESK");
+    const window = features.find((feature) => feature.classification === "WINDOW");
+    if (!entity || !desk || !window) throw new Error("Synthetic room letter requires existing map, desk and window");
+    base.summary = "A hidden pirate letter beside the window";
+    base.accessibilityNotes = ["The same letter remains readable in Guided view."];
+    base.operations = [
+      {
+        id: "room-letter-content",
+        type: "CONTENT",
+        entityId: entity.id,
+        name: "Folded pirate letter",
+        content: "Follow the northern harbor bearing.",
+        alternativeText: "A pirate letter on the writing desk beside the window, revealed after five seconds.",
+        widthMeters: 0.3,
+        interactions: null,
+        dependsOn: [],
+        explanation: "Turn the existing map into the requested letter.",
+      },
+      {
+        id: "room-letter-placement",
+        type: "ROOM_PLACEMENT",
+        entityId: entity.id,
+        classification: "DESK",
+        targetFeatureId: desk.id,
+        nearFeatureId: window.id,
+        dependsOn: ["room-letter-content"],
+        explanation: "Use the room's actual desk beside its window.",
+      },
+      {
+        id: "room-letter-hidden",
+        type: "VISIBILITY",
+        entityId: entity.id,
+        visible: false,
+        dependsOn: ["room-letter-placement"],
+        explanation: "Keep the letter hidden in the initial scene state.",
+      },
+      {
+        id: "room-letter-reveal",
+        type: "BEHAVIOR",
+        behaviorId: "room-letter-timed-reveal",
+        trigger: "SCENE_ENTER",
+        sourceEntityId: null,
+        targetEntityId: entity.id,
+        delayMs: 5000,
+        action: "SHOW",
+        dependsOn: ["room-letter-hidden"],
+        explanation: "Reveal that same letter five seconds after entering the scene.",
+      },
+    ];
+  }
   if (kind === "CREATE")
     base.operations = [
       {

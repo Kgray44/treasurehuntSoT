@@ -8,6 +8,7 @@ import { saveSpatialDraft, listSpatialItems } from "../../src/parallax/library-s
 import { createSpatialDraft } from "../../src/parallax/authoring";
 import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
 import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
+import type { RendererReceipt } from "../../src/components/studio/parallax/spatial-workstation";
 
 test.use({ video: "on", actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
@@ -132,4 +133,65 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
   await expect(photo).toContainText("Protected photo import and room inference are ready.");
   await expect(photo.getByRole("button", { name: /Withdraw photo .* processing permission/ })).toHaveCount(0);
   expect((await listSpatialItems(account.id))[0].draft).toEqual(refined);
+
+  // Continue through the actual Assistant and shared scene clock, rather than
+  // injecting a pre-authored reveal into the photograph fixture.
+  await page.getByText("Room photograph reconstruction", { exact: true }).click();
+  await page.getByRole("button", { name: /Ask Parallax/ }).click();
+  const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
+  await assistant
+    .getByLabel("Describe your spatial idea")
+    .fill(
+      "Turn the existing map into a folded pirate letter on the desk beside the window, hidden initially and revealed five seconds after scene entry.",
+    );
+  await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
+  await expect(assistant.getByRole("heading", { name: "A hidden pirate letter beside the window" })).toBeVisible();
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(refined);
+  await page.screenshot({ path: `${root}/photo-letter-proposed.png` });
+  await assistant.getByRole("button", { name: "Apply all changes", exact: true }).click();
+  await expect(assistant).toContainText("Your changes are saved");
+  await expect(assistant.getByRole("region", { name: "Saved scene canvas check", exact: true })).toContainText(
+    "saved hidden as authored",
+  );
+  await page.screenshot({ path: `${root}/photo-letter-saved-hidden.png` });
+  const authored = (await listSpatialItems(account.id))[0].draft;
+  const letter = authored.content.entities.find((entity) => entity.name === "Folded pirate letter")!;
+  expect(authored.content.studio!.layers.find((layer) => layer.entityId === letter.id)!.visible).toBe(false);
+  expect(authored.content.studio!.behaviors).toContainEqual(
+    expect.objectContaining({
+      trigger: "SCENE_ENTER",
+      targetEntityId: letter.id,
+      action: "SHOW",
+      delayMs: 5000,
+    }),
+  );
+  await assistant.getByRole("button", { name: "View canvas", exact: true }).click();
+  const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
+  await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
+  const letterReceipt = async () =>
+    (JSON.parse((await host.getAttribute("data-scene-receipt")) ?? "[]") as RendererReceipt[]).find(
+      (row) => row.id === letter.id,
+    );
+  await page.getByRole("tab", { name: "Simulation", exact: true }).click();
+  const simulation = page.getByRole("tabpanel", { name: "Simulation", exact: true });
+  await simulation.getByRole("button", { name: "Reset simulation", exact: true }).click();
+  await expect.poll(async () => (await letterReceipt())?.status).toBe("HIDDEN");
+  await page.screenshot({ path: `${root}/photo-letter-before-reveal.png` });
+  await simulation.getByRole("button", { name: "Run simulation", exact: true }).click();
+  await expect.poll(async () => (await letterReceipt())?.status, { timeout: 12000 }).toBe("IN_VIEW");
+  await simulation.getByRole("button", { name: "Pause simulation", exact: true }).click();
+  expect(Number(await simulation.getByLabel("Simulation time in milliseconds").inputValue())).toBeGreaterThanOrEqual(
+    5000,
+  );
+  await page.screenshot({ path: `${root}/photo-letter-after-reveal.png` });
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(authored);
+  await page.reload();
+  await expect.poll(deskX).toBeCloseTo(0.5);
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(authored);
+  if (await simulation.isHidden()) await page.getByRole("tab", { name: "Simulation", exact: true }).click();
+  await simulation.getByRole("button", { name: "Reset simulation", exact: true }).click();
+  await expect.poll(async () => (await letterReceipt())?.status).toBe("HIDDEN");
+  await simulation.getByRole("button", { name: "Preview next delayed action", exact: true }).click();
+  await expect.poll(async () => (await letterReceipt())?.status).toBe("IN_VIEW");
+  await page.screenshot({ path: `${root}/photo-letter-reloaded-replay.png` });
 });
