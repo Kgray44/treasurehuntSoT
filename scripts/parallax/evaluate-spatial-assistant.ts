@@ -21,10 +21,11 @@ import { parseUSDNano } from "../../src/components/admiralty/ai-quota-format";
 import {
   assistantEvaluationCorpus,
   CORPUS_VERSION,
-  evaluationScene,
 } from "../../tests/parallax/spatial-assistant-corpus-v1";
 import { evaluateAssistantCase } from "../../tests/parallax/evaluate-assistant-case";
-import { assistantSystemInstructions } from "../../src/parallax/openai-provider";
+import { OPENAI_RESPONSES_URL, OpenAIProviderError } from "../../src/parallax/openai-provider";
+import { instructionExperiments } from "../../tests/parallax/spatial-assistant-instruction-experiments";
+import { assistantExperiments, experimentScene } from "../../tests/parallax/spatial-assistant-experiments";
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const args = process.argv.slice(2);
@@ -37,12 +38,17 @@ const argument = (name: string) => {
 async function main() {
   const ids = argument("--cases")?.split(",") ?? assistantEvaluationCorpus.map((item) => item.id);
   const cases = ids.map((id) => {
-    const item = assistantEvaluationCorpus.find((candidate) => candidate.id === id);
+    const item = [...assistantEvaluationCorpus, ...assistantExperiments].find((candidate) => candidate.id === id);
     if (!item) throw new Error("Unknown corpus case identity.");
     return item;
   });
   if (new Set(ids).size !== ids.length) throw new Error("Corpus case identities must be unique.");
   evaluationStage = "MODEL_SELECTION";
+  const instructionVariant = argument("--instructions") ?? "CURRENT";
+  if (!(instructionVariant in instructionExperiments)) throw new Error("Unknown evaluation instruction variant.");
+  const instructions = instructionExperiments[instructionVariant as keyof typeof instructionExperiments];
+  const reasoning = argument("--reasoning") ?? "low";
+  if (reasoning !== "low" && reasoning !== "medium") throw new Error("Unknown evaluation reasoning setting.");
   const models = (argument("--models")?.split(",") ?? ["gpt-6-luna"]) as AIModelId[];
   if (!models.length || models.some((model) => !aiModelIds.includes(model)) || new Set(models).size !== models.length)
     throw new Error("Choose supported unique model identities.");
@@ -50,7 +56,7 @@ async function main() {
     const results = cases.map((item) => ({
       caseId: item.id,
       category: item.category,
-      ...evaluateAssistantCase(item, evaluationScene(item), item.deterministicFixture),
+      ...evaluateAssistantCase(item, experimentScene(item), item.deterministicFixture),
     }));
     process.stdout.write(
       JSON.stringify(
@@ -126,6 +132,8 @@ async function main() {
           enabled: true,
           maximumInputTokens,
           maximumOutputTokens,
+          standardReasoning: reasoning,
+          advancedReasoning: reasoning,
           advancedEnabled: models.includes("gpt-6.1-sol"),
           monthlyRequests: maxCalls,
           defaultUserRequests: maxCalls,
@@ -157,7 +165,7 @@ async function main() {
       for (const model of models) {
         if (attempts >= maxCalls || stop) break;
         evaluationStage = "DRAFT_PROVISION";
-        const draft = evaluationScene(item);
+        const draft = experimentScene(item);
         await store.reusableAuthoringItem.upsert({
           where: { id: draft.content.definitionId },
           create: {
@@ -195,7 +203,19 @@ async function main() {
               selectedEntityId: item.selectedEntityId,
               mode: model === "gpt-6.1-sol" ? "ADVANCED" : "STANDARD",
             },
-            { store },
+            {
+              store,
+              fetcher: async (url, init) => {
+                if (url !== OPENAI_RESPONSES_URL || typeof init?.body !== "string")
+                  throw new OpenAIProviderError("EVALUATION_REQUEST_BOUNDARY", "Unexpected evaluation request.", true);
+                const body = JSON.parse(init.body);
+                body.instructions = instructions;
+                const serialized = JSON.stringify(body);
+                if (Buffer.byteLength(serialized, "utf8") + 256 > maximumInputTokens)
+                  throw new OpenAIProviderError("CONTEXT_TOO_LARGE", "Evaluation context exceeds its allowance.", true);
+                return fetch(url, { ...init, body: serialized });
+              },
+            },
           );
           const evaluation =
             "proposal" in reply
@@ -243,6 +263,7 @@ async function main() {
     const report = {
       corpusVersion: CORPUS_VERSION,
       mode: "BOUNDED_LIVE_PROVIDER",
+      experimentSet: "natural-and-adaptive-2026-10-11-v1",
       candidateCommit: head.status === 0 ? head.stdout.trim() : null,
       uncommittedSource: Boolean(dirty.stdout.trim()),
       createdAt: new Date().toISOString(),
@@ -250,7 +271,9 @@ async function main() {
       budgetNano: budget,
       maximumInputTokens,
       maximumOutputTokens,
-      instructionsDigest: canonicalChecksum(assistantSystemInstructions),
+      instructionVariant,
+      reasoning,
+      instructionsDigest: canonicalChecksum(instructions),
       attempts,
       stoppedEarly: stop,
       results: records,
