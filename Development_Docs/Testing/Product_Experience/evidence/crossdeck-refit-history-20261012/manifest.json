@@ -89,7 +89,7 @@
       "bytes": 143140
     },
     {
-      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/fb7cc2a2-focused-companion-receipt.json",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/fb7cc2a2-focused-companion-receipt.raw.txt",
       "sha256": "97177aa66f2e9d583e43bd4e9bd52805823f0551e1b8c2b7c489cc5de6f11c31",
       "bytes": 2083
     },
@@ -97,6 +97,21 @@
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/fb7cc2a2-focused-companion.log",
       "sha256": "86712d03737d89c2e696f0425eb1a8fe90922872ee25f6fc9db09c03dc9ed571",
       "bytes": 3655
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-local-stage-receipt.json",
+      "sha256": "cc7261c02eb78ba7f69ee6047989ca32e431d90c9002dd335520f5cc19625ec2",
+      "bytes": 1896
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-local-stage.log",
+      "sha256": "3ba9b35ed5e58b55e8fd5bbf6a83e65c9d9ad6a2b42bd97edca2e8ca34ae6544",
+      "bytes": 36113
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-canonical-chart-objective.png",
+      "sha256": "414a4cd2ed4030362ce24f716a47fc0dabe72533eb3f1de9710527c8df06fb92",
+      "bytes": 97946
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle1-105ec0d8-normal-11-offline.png",

@@ -22,9 +22,11 @@ unexposed counters remain `UNAVAILABLE`.
 | Credits, billed cost and distinct agent cost       | `UNAVAILABLE`                                                    | No task or per-agent billing counters are exposed.                                                                                                                                           |
 | Reported focused product batch                     | 16 files / 159 tests passed; 154.66 s                            | Completed pre-0657 Vitest wall duration. Earlier 14-file / 150-test batch passed in 57.39 s; overlapping populations are not added.                                                          |
 | Earlier additional product checks                  | 22 passed                                                        | Completed preliminary builder invocation; counts are not added to the final 150-test population.                                                                                             |
-| Implemented companion disclosure checks            | 13 tests passed                                                  | Focused Companion checks plus native semantic/Enter evidence; not independent accessibility acceptance or an added total across overlapping populations.                                     |
+| Implemented companion disclosure checks            | 13 tests passed                                                  | Earlier focused Companion checks plus native semantic/Enter evidence; not independent accessibility acceptance or an added total across overlapping populations.                             |
+| Implemented canonical composition checks           | 15 tests passed; 2.74 s                                          | Realistic CHART/JOURNAL composition proves unique canonical regions; lint/format passed. Local implemented proof, not independent acceptance.                                                |
 | Historical Product Experience helper checks        | 44 passed; 34.789 s                                              | Earlier candidate-helper regression invocation; not qualification of the current unchanged protected helper. Earlier combined run: 43 tests / 34.653 s.                                      |
-| Latest measured production build                   | Passed; 50.304 s                                                 | Fresh build at source `737fc73596bc4b81fad775c46632bcd3b93b0fd4`; total duration, not a compilation/TypeScript phase estimate.                                                               |
+| Latest measured production build                   | Passed; 51.385 s                                                 | Fresh build at source `0e1074c1cf3e7abbe7dd572c6cb828cf45419dc4`; no new build pass is claimed for the next focused unchanged-binary diagnostic.                                             |
+| Earlier 737 production build                       | Passed; 50.304 s                                                 | Source `737fc73596bc4b81fad775c46632bcd3b93b0fd4`; total duration, not a compilation/TypeScript phase estimate.                                                                              |
 | Earlier 4b8c production build                      | Passed; 50.881 s                                                 | Source `4b8c953f8578fdf87273e8d6c800cb191db7576f`; retained historical local result.                                                                                                         |
 | Earlier 0c424 production build                     | Passed; 77.276 s                                                 | Source `0c4246878bbd3b1d0c5f0d0db9dde20e2746eb80`; retained historical local result.                                                                                                         |
 | Earlier f852 production build                      | Passed; 50.482 s                                                 | Source `f8527d3988d17284a898cbd0f27265c8a2d2ea4c`; retained historical local result.                                                                                                         |
@@ -34,18 +36,23 @@ unexposed counters remain `UNAVAILABLE`.
 | Preceding seven-test browser batch                 | Two passed, three failed, two skipped; 346.297 s                 | Failed local batch retained; hook label overwrite, legacy ambiguous label and recovery harness hash assertion were corrected before the rerun.                                               |
 | Committed 0657 browser batch                       | Five passed, two failed; 267.655 s                               | Server readiness 47.987 s; reduced purpose reset and nested recovery locator failed.                                                                                                         |
 | Committed 105ec browser batch                      | All 24 passed; 441.150 s                                         | Three refit and 21 Homeport cases; readiness 9.100 s, cleanup 76 ms.                                                                                                                         |
-| Latest measured affected browser batch             | Three passed; 89.455 s                                           | Source `737fc735`; runtime execution 88.027 s, readiness 1,297 ms, cleanup 34 ms. Does not replace canonical capture or final review.                                                        |
+| Latest measured affected browser batch             | Three passed; 91.260 s                                           | Source `0e1074c1`; browser execution 89.843 s, readiness 1,292 ms, cleanup 34 ms. Does not replace canonical capture or final review.                                                        |
+| Earlier 737 affected browser batch                 | Three passed; 89.455 s                                           | Source `737fc735`; runtime execution 88.027 s, readiness 1,297 ms, cleanup 34 ms.                                                                                                            |
 | Earlier 4b8c affected browser batch                | Three passed; 89.160 s                                           | Source `4b8c953f`; runtime execution 87.470 s, readiness 1,562 ms, cleanup 35 ms.                                                                                                            |
 | Earlier 0c424 affected browser batch               | Three passed; 101.511 s                                          | Source `0c424687`; runtime execution 99.983 s, readiness 1,392 ms, cleanup 31 ms.                                                                                                            |
 | Earlier f852 affected browser batch                | Three passed; 89.945 s                                           | Source `f8527d39`; retained historical local result.                                                                                                                                         |
-| Latest measured guarded synthetic seed             | Passed; 2.236 s                                                  | Source `737fc735`; nonce identity also passed in 118 ms. These stages do not establish a passed experience capture.                                                                          |
+| Latest measured guarded synthetic seed             | Passed; 2.118 s                                                  | Source `0e1074c1`; nonce identity also passed in 124 ms. These stages do not establish a passed experience capture.                                                                          |
+| Earlier 737 guarded synthetic seed                 | Passed; 2.236 s                                                  | Source `737fc735`; nonce identity also passed in 118 ms.                                                                                                                                     |
 | Earlier c8c646 guarded synthetic seed              | Passed; 2.072 s                                                  | Diagnostic source `c8c64648`; nonce identity also passed in 116 ms.                                                                                                                          |
 | Earlier 4b8c guarded synthetic seed                | Passed; 2.060 s                                                  | Source `4b8c953f`; nonce identity also passed in 327 ms.                                                                                                                                     |
 | Earlier 0c424 guarded synthetic seed               | Passed; 2.459 s                                                  | Source `0c424687`; nonce identity also passed in 116 ms.                                                                                                                                     |
 | Earlier f852 guarded synthetic seed                | Passed; 2.094 s                                                  | Source `f8527d39`; nonce identity passed in 137 ms.                                                                                                                                          |
-| Latest canonical contract diagnostic               | Failed; 138.597 s                                                | Source `737fc735`; first 16 contexts passed. Next companion context captured Journal/Lens, then Chart waited for the purpose menu closed by the prior role switch.                           |
+| Latest canonical contract diagnostic               | Failed; 110.368 s                                                | Source `0e1074c1`; first 16 contexts passed. Correct Chart/objective were visible; objective assertion assumed incorrect inner-region containment.                                           |
+| Earlier fb focused diagnostic                      | Failed; 5.731 s; zero contexts passed                            | Four selected contexts; verified unchanged `737fc735` binary. Duplicate outer/inner Voyage Chart accessible regions.                                                                         |
+| Earlier 737 canonical diagnostic                   | Failed; 138.597 s                                                | Source `737fc735`; first 16 contexts passed. Next companion context captured Journal/Lens, then Chart waited for the purpose menu closed by the prior role switch.                           |
 | Earlier c8c646 canonical diagnostic                | Failed; 112.514 s                                                | Source `c8c64648` reused the unchanged `4b8c953f` app binary. First 12 contexts passed; Homeport desktop setup then failed the button-role lookup for the visible native purpose disclosure. |
-| Local browser timing, normal/reduced               | QR 446/513 ms; claim 426/415 ms; rendered ACK 452/445 ms         | Raw source `737fc735` browser measurements; no protected, production-latency or physical-device claim.                                                                                       |
+| Earlier 737 browser timing, normal/reduced         | QR 446/513 ms; claim 426/415 ms; rendered ACK 452/445 ms         | Raw source `737fc735` browser measurements; no protected, production-latency or physical-device claim.                                                                                       |
+| Local 0e browser timing, normal motion             | QR 447 ms; claim 413 ms; send offer 192 ms; rendered ACK 457 ms  | Raw local source `0e1074c1` measurements; not protected, production-latency or physical-device evidence.                                                                                     |
 | Earlier 4b8c canonical capture                     | Failed; 81.581 s                                                 | Source `4b8c953f`: six actual same-login sign-ins; diagnostic mobile recording remained on sign-in. Source limit is six attempts/login/15 minutes; no network 429 was captured.              |
 | Earlier 0c424 canonical capture                    | Failed; 47.572 s                                                 | Source `0c424687`: published Lens contexts reached; subsequent PRIMARY setup assumed a first-opening dialog despite persisted canonical `hasOpened`.                                         |
 | Earlier f852 canonical capture                     | Failed; 5.282 s                                                  | Source `f8527d39`: sign-in/Journal/Lens reached; duplicate active/background Voyage context. This blocker was resolved at `0c424687`; the failed run remains failed.                         |
@@ -99,7 +106,7 @@ The semantic correction was implemented with 13 Companion tests passing before
 the next fresh build. That local semantic proof does not establish independent
 accessibility acceptance.
 
-The latest measured source is `737fc73596bc4b81fad775c46632bcd3b93b0fd4`, tree
+The earlier measured source is `737fc73596bc4b81fad775c46632bcd3b93b0fd4`, tree
 `345b64f9c89d148eb956ac039605fbebd162ef60`. Its
 [receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/737fc735-local-stage-receipt.json)
 and [log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/737fc735-local-stage.log)
@@ -111,10 +118,34 @@ purpose change. The actual
 is preserved. The correction adds real **Change companion purpose** clicks
 before Chart, before **More purposes**/Artifact and before Journal; all six
 contracts, 20 contexts and outcomes remain. No production code, helper or policy
-change is required. The next local replay focuses four companion contexts using
-the unchanged `737fc735` binary. The other 16 passes remain historical local
-observations; trusted fresh full 20-context replay and independent cycle 3 remain
-mandatory. No debt, feature or owner acceptance is inferred.
+change is required. The subsequent local replay focused four companion contexts
+using the unchanged `737fc735` binary; the other 16 passes remain historical
+local observations.
+
+The focused `fb7cc2a24c44f64d4442563655150c1e05f7836c` diagnostic failed in
+5.731 s with zero contexts passed, on duplicate outer/inner **Voyage Chart**
+accessible regions. Its [receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/fb7cc2a2-focused-companion-receipt.raw.txt)
+and [log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/fb7cc2a2-focused-companion.log)
+preserve verified reuse of the `737fc735` binary. Renaming the outer region
+**Chart companion** preserved the canonical inner name. Realistic CHART/JOURNAL
+composition checks passed within 15 Companion tests in 2.74 s; lint/format passed.
+
+The latest measured source is `0e1074c1cf3e7abbe7dd572c6cb828cf45419dc4`, tree
+`8653a5047c0173d9b68db896047eaade88799e67`. Its
+[receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-local-stage-receipt.json)
+and [log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-local-stage.log)
+record build PASS 51.385 s, three browser cases PASS 91.260 s and full canonical
+capture FAIL 110.368 s after 16 passed contexts. The actual failed 9.24-second
+recording's [desktop checkpoint at 8.5 s](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-canonical-chart-objective.png)
+shows the correct Chart and **Current objective: Secret Isle**. The contract
+checked the objective inside the inner canonical region; actual Landfall places
+it beside that region inside **Chart companion**. The correction checks the
+outer objective and separately the canonical region/image, adding one assertion
+per context while retaining all 20 contexts/outcomes. The mock is corrected to
+that composition; no application change follows the `0e1074c1` binary. The next
+four-context diagnostic reuses that verified unchanged binary, with no new build
+pass claimed. Protected fresh build/full 20-context replay and independent cycle
+3 remain mandatory; no debt, feature or owner acceptance is inferred.
 
 Two intermediate native-modal regression invocations failed the return witness
 before it explicitly required the dialog to disappear; the final 44-test pass
@@ -138,7 +169,7 @@ resumed input/cache/output, credits and per-agent accounting remain
 `UNAVAILABLE`. No billing, productivity or savings estimate is inferred.
 
 The [historical export manifest](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/manifest.json)
-binds 21 selected original review observations, failure PNGs and build/local-stage
-receipt/log files totaling 1,810,633 bytes. Historical review/raw IDs are not current protected
+binds 26 selected original review observations, failure PNGs and build/local-stage
+receipt/log files totaling 1,952,326 bytes. Historical review/raw IDs are not current protected
 capture artifact identities. Final accepted source/base/tree, capture/packet digests,
 separate cycle 3 reviewer result, protected run and landed smoke remain pending.

@@ -5118,13 +5118,18 @@
               {
                 "action": "assert",
                 "role": "region",
-                "name": "Voyage Chart",
+                "name": "Chart companion",
                 "kind": "outcome",
                 "text": "Current objective: Secret Isle",
                 "path": "/devices/companion",
                 "meaning": "The Chart purpose renders the canonical released virtual map and its current authored objective for this Voyage.",
                 "state": "CHART_READY",
                 "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Voyage Chart"
               },
               {
                 "action": "assert",

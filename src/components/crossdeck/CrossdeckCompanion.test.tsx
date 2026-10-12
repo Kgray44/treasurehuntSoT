@@ -72,12 +72,13 @@ vi.mock("@/components/player/journal/LandfallJournalChart", async () => {
       }, []);
       return harness.mapReady
         ? React.createElement(
-            "section",
-            { "aria-label": "Voyage Chart", "data-landfall-phase1-preview": true },
+            "div",
+            { "data-landfall-player-chart": true },
+            React.createElement("p", null, "Current objective: Reach the northern light"),
             React.createElement(
-              "div",
-              { "aria-label": "Virtual Landfall chart" },
-              "Current objective: Reach the northern light",
+              "section",
+              { "aria-label": "Voyage Chart", "data-landfall-phase1-preview": true },
+              React.createElement("svg", { role: "img", "aria-label": "Virtual Landfall chart" }),
             ),
           )
         : React.createElement("p", null, "Loading the canonical chart");
@@ -200,7 +201,7 @@ beforeEach(() => {
       this.removeAttribute("open");
     },
   });
-  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({ width: 360, height: 500 } as DOMRect);
+  vi.spyOn(Element.prototype, "getBoundingClientRect").mockReturnValue({ width: 360, height: 500 } as DOMRect);
 });
 afterEach(() => {
   cleanup();
@@ -272,7 +273,9 @@ it.each([
   expect(screen.getAllByRole("region", { name: "Voyage Chart" })).toEqual([canonicalChart]);
   expect(within(companion).getByRole("region", { name: "Voyage Chart" })).toBe(canonicalChart);
   expect(canonicalChart).toHaveAttribute("data-landfall-phase1-preview", "true");
-  expect(within(canonicalChart).getByText("Current objective: Reach the northern light")).toBeVisible();
+  expect(within(companion).getByText("Current objective: Reach the northern light")).toBeVisible();
+  expect(within(canonicalChart).getByRole("img", { name: "Virtual Landfall chart" })).toBeVisible();
+  expect(within(canonicalChart).queryByText("Current objective: Reach the northern light")).toBeNull();
 });
 
 it("exposes named purpose disclosures while preserving native open and close behavior", async () => {

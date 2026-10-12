@@ -194,7 +194,7 @@ and keyboard evidence, not independent accessibility acceptance. The helper,
 security policy and contract obligations remain unchanged. This failed
 diagnostic closes no debt or acceptance boundary.
 
-The latest measured source is
+The earlier measured source is
 `737fc73596bc4b81fad775c46632bcd3b93b0fd4`, tree
 `345b64f9c89d148eb956ac039605fbebd162ef60`. Its fresh build passed in 50.304 s
 and three browser cases passed in 89.455 s, including runtime execution 88.027 s,
@@ -211,26 +211,62 @@ preserve the failure.
 The bounded contract correction adds actual purpose-disclosure clicks before
 Chart, before **More purposes**/Artifact and before Journal. All six contracts,
 20 required contexts and visible outcomes remain. It changes no production
-code, helper or security policy. The next local diagnostic will focus the four
-affected companion contexts using the unchanged `737fc735` application binary;
-the other 16 observations remain historical local passes. A trusted fresh full
-20-context replay is still mandatory before final third review and acceptance.
+code, helper or security policy. The subsequent local diagnostic focused the four
+affected companion contexts using the unchanged `737fc735` application binary,
+as recorded below. The other 16 observations remain historical local passes.
 
-The raw normal/reduced browser timings were QR 446/513 ms, claim 426/415 ms and
+At `737fc735`, the raw normal/reduced browser timings were QR 446/513 ms, claim 426/415 ms and
 rendered acknowledgement 452/445 ms. These are local measurements, not protected
 qualification, production latency guarantees or physical-device evidence.
 
-| Evidence boundary                                        | Current result                                                                                                                                                                                                                                  |
-| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                                                                                                          |
-| Focused source tests                                     | 13 Companion tests passed for the implemented disclosure correction. Earlier 16-file / 159-test batch passed in 154.66 s; populations are not added. Final source binding remains pending.                                                      |
-| Production build                                         | At `737fc735`, fresh build passed in 50.304 s. Earlier `4b8c953f` passed in 50.881 s; a final trusted source-bound build remains required.                                                                                                      |
-| Actual two-context refit journey                         | Three affected browser cases passed at `737fc735` in 89.455 s: runtime 88.027 s, readiness 1,297 ms, cleanup 34 ms. Final qualification remains pending.                                                                                        |
-| Canonical capture                                        | At `737fc735`, failed in 138.597 s after 16 passed contexts. The companion context captured Journal/Lens, then the Chart action waited for a closed purpose menu. Focused correction replay and trusted full 20-context capture remain pending. |
-| Independent 17-dimension rendered criticism              | Cycle 2 identified one open Chart placeholder contrast defect. Repair is implemented; final cycle 3 current contract packets/re-review remain pending.                                                                                          |
-| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                                                                                                          |
-| Landed smoke                                             | Pending integration.                                                                                                                                                                                                                            |
-| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                                                                                                           |
+The four-context diagnostic at `fb7cc2a24c44f64d4442563655150c1e05f7836c`
+failed in 5.731 s with zero contexts passed. The actual Chart produced a strict
+accessible-region duplicate: both the outer Crossdeck presentation and canonical
+inner Landfall region were named **Voyage Chart**. Its
+[receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/fb7cc2a2-focused-companion-receipt.raw.txt)
+and [log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/fb7cc2a2-focused-companion.log)
+preserve the failed reuse of the verified unchanged `737fc735` binary. The outer
+region was renamed **Chart companion**, preserving the canonical inner name.
+Realistic CHART/JOURNAL composition tests establish a unique canonical region;
+15 Companion tests passed in 2.74 s, with lint and formatting passed. This is
+implemented local proof, not independent acceptance.
+
+The latest measured source is `0e1074c1cf3e7abbe7dd572c6cb828cf45419dc4`, tree
+`8653a5047c0173d9b68db896047eaade88799e67`. Production build passed in 51.385 s;
+three browser cases passed in 91.260 s, with execution 89.843 s, readiness
+1,292 ms and cleanup 34 ms. Full canonical capture failed in 110.368 s after
+16 passed contexts. The actual failed 9.24-second recording and its
+[desktop checkpoint at 8.5 s](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-canonical-chart-objective.png)
+show the correct visible Chart and **Current objective: Secret Isle**. The
+`USER_OUTCOME_FAILED` result came from checking that objective inside the inner
+canonical Chart region; Landfall places the objective paragraph beside that
+region, within the outer **Chart companion**. The exact
+[receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-local-stage-receipt.json)
+and [log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-local-stage.log)
+retain the failed capture.
+
+The bounded contract correction checks the objective in **Chart companion**,
+then separately asserts the canonical **Voyage Chart** region and **Virtual
+Landfall chart** image. It adds one assertion per context while preserving all
+20 contexts and visible outcomes. The unit mock is corrected to the real
+composition; no application change follows the `0e1074c1` binary. The next focused
+four-context diagnostic reuses that verified unchanged binary and claims no new
+build pass. A protected fresh build and full 20-context capture remain mandatory
+before final third review. Normal-motion local timings were QR 447 ms, claim
+413 ms, send offer 192 ms and rendered acknowledgement 457 ms. These local
+measurements close no protected, debt, feature or owner-acceptance boundary.
+
+| Evidence boundary                                        | Current result                                                                                                                                                                                                                                               |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                                                                                                                       |
+| Focused source tests                                     | 15 Companion tests passed in 2.74 s for realistic canonical composition; lint/format passed. Earlier 13 disclosure tests and 16-file / 159-test batch remain historical; overlapping populations are not added. Final source binding remains pending.        |
+| Production build                                         | At `0e1074c1`, fresh build passed in 51.385 s. Earlier `737fc735` passed in 50.304 s; the next focused diagnostic reuses the verified unchanged `0e1074c1` binary and claims no new build pass.                                                              |
+| Actual two-context refit journey                         | Three browser cases passed at `0e1074c1` in 91.260 s: execution 89.843 s, readiness 1,292 ms, cleanup 34 ms. Final protected qualification remains pending.                                                                                                  |
+| Canonical capture                                        | At `0e1074c1`, full capture failed in 110.368 s after 16 passed contexts. Chart/objective were visible; the objective check assumed incorrect inner-region containment. Corrected focused replay and protected fresh full 20-context capture remain pending. |
+| Independent 17-dimension rendered criticism              | Cycle 2 identified one open Chart placeholder contrast defect. Repair is implemented; final cycle 3 current contract packets/re-review remain pending.                                                                                                       |
+| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                                                                                                                       |
+| Landed smoke                                             | Pending integration.                                                                                                                                                                                                                                         |
+| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                                                                                                                        |
 
 The measured checkpoint above is not the final accepted candidate. Final
 candidate/base/tree, capture packet, reviewer identity, protected run and landed
@@ -266,10 +302,10 @@ acceptance exist. The exact-byte historical export preserves the
 [cycle 2 review](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle2-67ec3f0c-observations.raw.txt),
 selected original failure PNGs, the
 [839 failed-build receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/839fc784-failed-build-receipt.json)
-and the f852, 0c424, 4b8c, c8c646 and 737fc735 local-stage receipts/logs. Exactly two independent review
+and the f852, 0c424, 4b8c, c8c646, 737fc735, fb7cc2a2 and 0e1074c1 diagnostic receipts/logs. Exactly two independent review
 cycles have occurred; cycle 3 awaits the trusted final packet. The
 [export manifest](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/manifest.json)
-records hashes and sizes for 21 exact-byte files totaling 1,810,633 bytes. These historical raw identities are not current
+records hashes and sizes for 26 exact-byte files totaling 1,952,326 bytes. These historical raw identities are not current
 trusted capture artifact IDs; all original task-local evidence is preserved.
 
 The current Homeport route inventory and both screen catalogs now record
