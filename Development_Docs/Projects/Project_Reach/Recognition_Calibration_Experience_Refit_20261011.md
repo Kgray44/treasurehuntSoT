@@ -32,6 +32,8 @@ Relative movement maps a comfortable palm reference and four measured directiona
 
 One workspace stages preparation, acquisition, independent check, results and practice. The camera image and canvas skeleton share the same contain/letterbox and mirroring transform. Selected and incidental hands remain distinguishable. A separate animation-frame canvas renders current observations and pointer feedback; explanatory React updates are bounded, with guidance hysteresis that never delays eligibility checks. Mobile calibration keeps instructions and acquisition progress beside the target, with controls immediately below. Diagnostics are closed deliberately. Lanternwake owns target motion and reduced-motion policy.
 
+The guided demo waits for its visible hand-placement action at each target before feeding the same bounded acquisition window. Reading, pausing and inspecting the demonstration cannot silently advance a sequence of unchanged simulated holds. Demo pacing remains separate from actual camera acquisition and physical qualification.
+
 Sextant retains explicit consent, camera leases and teardown; the unchanged worker remains one frame in flight. Stale observations hide the pointer. Camera/hand/model/frame/orientation/mirror/view changes invalidate setup, and live absolute screen-position changes invalidate it as well. Stop, background and navigation release camera/worker/render/session timers. No raw-frame retention, upload, hidden calibration persistence, progression writer, Parallax mutation, Phase 2 selection, Phase 3 manipulation or Air Handoff exists.
 
 ## Evidence and independent review

@@ -41,6 +41,8 @@ for (const viewport of [
     await demo(page);
     await shot(page, `${viewport.name}-tracking`);
     await page.getByRole("button", { name: "Begin nine-point calibration" }).click();
+    await page.waitForTimeout(2200);
+    await expect(page.getByLabel("Target 1 of 9", { exact: true })).toBeVisible();
     await shot(page, `${viewport.name}-calibration`);
     await page.getByRole("button", { name: "Pause calibration" }).click();
     await expect(page.getByRole("button", { name: "Resume calibration" })).toBeVisible();
@@ -91,6 +93,8 @@ for (const viewport of [
 test("relative movement uses separate setup, check and cursor claims", async ({ page }) => {
   await demo(page, "RELATIVE");
   await page.getByRole("button", { name: "Set up relative movement" }).click();
+  await page.waitForTimeout(2200);
+  await expect(page.getByLabel("Target 1 of 5", { exact: true })).toBeVisible();
   await targets(page, 5);
   await page.getByRole("button", { name: "Check five new targets" }).click();
   await targets(page, 5);

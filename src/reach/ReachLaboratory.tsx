@@ -37,6 +37,7 @@ type Trial = {
   binding: CalibrationBinding | null;
   after: number;
   acquiredAt: number;
+  demoTargetReady: boolean;
   paused: boolean;
 };
 const initialReadiness: ReachReadiness = {
@@ -117,6 +118,7 @@ export function ReachLaboratory({
   const [completed, setCompleted] = useState(0),
     [total, setTotal] = useState(9),
     [acquisition, setAcquisition] = useState<Acquisition | null>(null),
+    [demoHolding, setDemoHolding] = useState(false),
     [paused, setPaused] = useState(false);
   const [message, setMessage] = useState("A little movement. A new way to explore."),
     [overlay, setOverlay] = useState(false),
@@ -251,7 +253,7 @@ export function ReachLaboratory({
       } catch {
         return;
       }
-      if (t && !t.paused && now >= t.after) {
+      if (t && !t.paused && now >= t.after && (sourceRef.current !== "DEMO" || t.demoTargetReady)) {
         if (now - t.acquiredAt > 20000) {
           t.paused = true;
           t.window?.reset();
@@ -297,6 +299,8 @@ export function ReachLaboratory({
             } else {
               t.after = now + 700;
               t.acquiredAt = now;
+              t.demoTargetReady = false;
+              setDemoHolding(false);
               setTarget(t.order[t.groups.length]);
               setAcquisition(null);
               setMessage("Target saved. Take a breath and move to the next one.");
@@ -535,12 +539,14 @@ export function ReachLaboratory({
       binding: null,
       after: now + 700,
       acquiredAt: now,
+      demoTargetReady: false,
       paused: false,
     };
     setTarget(order[0]);
     setCompleted(0);
     setTotal(order.length);
     setPaused(false);
+    setDemoHolding(false);
     setAcquisition(null);
     filter.current.reset();
     advance(stage);
@@ -618,15 +624,17 @@ export function ReachLaboratory({
         (status.startsWith("MODEL_FAILURE") ? "Hand tracking could not load" : "Camera connection interrupted"));
   const progress = paused
     ? "Paused"
-    : acquisition?.state === "MOVING"
-      ? "Let your hand settle"
-      : acquisition?.state === "PAUSED" || acquisition?.state === "EXPIRED"
-        ? "Waiting for tracking"
-        : acquisition?.state === "COLLECTING"
-          ? "Hold here · collecting"
-          : acquisition?.state === "ACCEPTED"
-            ? "Target saved"
-            : "Find a comfortable hold";
+    : source === "DEMO" && training && !demoHolding
+      ? "Move the demo hand to begin"
+      : acquisition?.state === "MOVING"
+        ? "Let your hand settle"
+        : acquisition?.state === "PAUSED" || acquisition?.state === "EXPIRED"
+          ? "Waiting for tracking"
+          : acquisition?.state === "COLLECTING"
+            ? "Hold here · collecting"
+            : acquisition?.state === "ACCEPTED"
+              ? "Target saved"
+              : "Find a comfortable hold";
   const relativeInstruction =
     step === "TRAINING" && pointingMode === "RELATIVE" ? relativeLayout.instructions[completed] : null;
   const assessment = readiness.hand ? assessHand(readiness.hand) : null;
@@ -643,6 +651,11 @@ export function ReachLaboratory({
     if (!next) return;
     setPoint(next);
     demoPoint.current = next;
+    if (trial.current) {
+      trial.current.demoTargetReady = true;
+      trial.current.acquiredAt = performance.now();
+      setDemoHolding(true);
+    }
   };
   return (
     <section
