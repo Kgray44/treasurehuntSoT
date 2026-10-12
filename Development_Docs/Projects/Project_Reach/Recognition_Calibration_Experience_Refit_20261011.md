@@ -3,7 +3,7 @@ title: Reach recognition, calibration and experience refit
 audience: product-engineering
 status: implemented-and-reviewed
 canonical_for: reach-recognition-calibration-experience-refit
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Reach recognition, calibration and experience refit
@@ -53,6 +53,8 @@ The executable experience contract on `reach.phase1.foundation` preserves protec
 All ten production-browser journeys passed at clean product candidate `632e1895a6fcd8ba4c82f1752f6b671131598a33` in two focused runs. The photographic journey completed all twenty-four training/check holds across both modes, with raw held-out error p95 of 0.53% for absolute and 0.56% for relative; physical qualification remains unclaimed. Its [supplementary manifest](../../Testing/Product_Experience/evidence/reach-d1-632e1895/manifest.json) preserves screenshots, measurements, browser logs and exact source identity separately from the trusted capture manifest.
 
 [Protected capture 38198691260](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38198691260) passed twelve desktop/mobile, normal/reduced-motion journeys and issued immutable artifact `11724538509`. Its product source digest is `c64ecc9728c26d2532a0c26ee23d511a65e91255d710219398f79c7d16398874`; all 108 referenced artifacts were hash verified. The separate rendered-first reviewer accepted all seventeen dimensions, with the six initial findings resolved and no unresolved blocking finding. Ordinary qualification, the final qualified head and protected integration are traced on [PR 716](https://github.com/Kgray44/treasurehuntSoT/pull/716); capture and review preparation do not issue that mainline decision. Neither software qualification nor this implementation record grants real-person D4 or owner acceptance.
+
+Before final qualification, protected main advanced through the concurrent Parallax refinements to `b078f823f197e2fa175c6525a7e190b45e680a7c`. The isolated Reach branch reconciled that baseline at `8f163c322d8a0048985e8666dbd4cb0e15fd2650`; Reach runtime and test source remained unchanged. [Fresh protected capture 38201840448](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38201840448) passed all twelve journeys and issued artifact `11725454140`, with product source digest `fee267ee0448feb3bf4200446a90886dd1835984fb9f3d6a1bcbe55d0dbfb783`. Independent rendered-first baseline review accepted all seventeen dimensions and independently verified all 108 artifact hashes. The six initial findings remain resolved; the Devices doorway has one nonblocking polish note. Three repair iterations remain recorded. The current candidate report binds this fresh capture; the separate D1 measurements retain their original `632e1895` identity. Required ordinary acceptance and landed verification remain the protected integration gates recorded on PR 716.
 
 ## Owner walkthrough and remaining physical proof
 
