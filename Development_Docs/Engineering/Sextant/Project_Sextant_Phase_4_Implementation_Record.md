@@ -3,7 +3,7 @@ title: Project Sextant Phase 4 implementation and qualification record
 audience: product-engineering
 status: in-development-not-accepted
 canonical_for: sextant-phase4-implementation-record
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Sextant Phase 4 — Take It Afield
@@ -736,3 +736,34 @@ TypeScript found an unsupported test-library option. It executed zero native
 tests, produced zero artifacts and removed its verified owned transport branch.
 The test uses the library's exact-name default, with its three focused tests
 passing; a fresh complete TypeScript check remains required before dispatch.
+
+## Accepted-main reconciliation and consumer rehearsal
+
+The candidate additively reconciles accepted main
+`81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb`. The completed Spatial Assistant
+contract, its account setup, fixtures, references, continuity, timing and journeys
+remain exactly as accepted. Sextant's Creator/Player rehearsal now belongs to
+`sextant.phase4.native-context`; it does not replace the Assistant experience or
+claim additional model-provider use. Crossdeck and Sextant field-context retain
+their separate owning contracts and canonical data boundaries.
+
+All three owned consumer designs request desktop/mobile recordings under normal
+and reduced motion. Their feedback boundary measures actual keyboard activation
+to readable Journal readiness and consumer feedback. The 11,000 ms ceiling includes
+the existing authored 8,250 ms full Journal opening and bounded rendering/readiness
+overhead; it is a qualification obligation, not an observed performance result.
+
+The Creator rehearsal must edit the Experience title, save the working draft,
+leave and reopen it through ordinary Creator controls, and observe the saved
+title. It then restores the synthetic working title and reads the independently
+pinned Player clue. This checks draft persistence without claiming publication
+of a new edition or changing the Voyage's canonical progression. These updated
+journeys still require actual capture and independent review.
+
+The interrupted `cfd7a88a` local build compiled JavaScript but stopped during
+TypeScript after an owner gaming pause. It produced no browser journey or complete
+build receipt. Its partial output, synthetic database, plan and log are retained;
+final runtime cleanup is unproven. Gaming restrictions were subsequently released.
+Further large build output is coordinated on the task's reserved D: artifact
+prefix because C: has limited free space. Existing failed and passing receipts
+retain their original source identities.

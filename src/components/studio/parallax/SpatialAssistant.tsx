@@ -194,6 +194,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
   const [baseState, setBaseState] = useState("");
   const controller = useRef<AbortController | null>(null),
     input = useRef<HTMLTextAreaElement>(null),
+    body = useRef<HTMLDivElement>(null),
     review = useRef<HTMLElement>(null),
     requestGeneration = useRef(0),
     mounted = useRef(true),
@@ -263,6 +264,9 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
     };
   }, [stale, previewPort]);
   const shownNotice = stale ? "Your scene has changed. Regenerate this proposal to preserve your newer work." : notice;
+  useLayoutEffect(() => {
+    if (shownNotice && (stage === "FAILED" || stage === "UNAVAILABLE") && body.current) body.current.scrollTop = 0;
+  }, [shownNotice, stage]);
   function affected(ids: readonly string[]) {
     return [
       ...new Set(
@@ -468,13 +472,13 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         <small>{props.draft.content.entities.length} objects</small>
         {props.onCanvasView && <button onClick={props.onCanvasView}>View canvas</button>}
       </div>
-      <div className={styles.body}>
+      <div className={styles.body} ref={body}>
         {restored && (
           <p className={styles.notice} role="status">
             Your task session is restored. I’ll use the current saved scene for your next request.
           </p>
         )}
-        {!proposal && !working && stage !== "ACCEPTED" && (
+        {!proposal && !working && stage === "IDLE" && (
           <section className={styles.welcome}>
             <span className={styles.kicker}>FROM IDEA TO EXPERIENCE</span>
             <h3>

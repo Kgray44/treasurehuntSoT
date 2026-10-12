@@ -1,0 +1,912 @@
+{
+  "schemaVersion": 1,
+  "type": "INDEPENDENT_SELECTED_SIX_SIGN_REVIEW",
+  "reviewedAt": "2026-10-12T02:19:48.498Z",
+  "evidence": {
+    "file": "tmp/parallax-a1/evaluations/live-6d2b4611-d044-49b7-8982-8b2716e886d8.json",
+    "sha256": "4f6b33d997ea81a7d514cc82c1ce48133ed4263f1093b11de187c535efa36999",
+    "source": "6c0572f70db3211ebae0e3e681505e380ce63ad2",
+    "digest": "b4a2a141503c6c68a5a545210bca174974fb882a7cd330645b99ea200ce09000",
+    "variant": "SELECTED",
+    "reasoning": "low"
+  },
+  "review": "Allsix actual outcomes read before source. Both models create correct separate TEXT signs with exact labels, meaningful alternative text and preserved original map. Allzero wall-relative y produce canonical preview center1.4m. Horizontal gaps0.2..0.3m; no sign overlap. No paid calls or source edits.",
+  "models": [
+    {
+      "model": "gpt-6-luna",
+      "calls": 3,
+      "strictPassed": 3,
+      "costUSD": 0.00127424,
+      "meanProviderMs": 4565.843433333334,
+      "medianProviderMs": 4437.979800000001,
+      "meanOutputTokens": 428.3333333333333
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "calls": 3,
+      "strictPassed": 3,
+      "costUSD": 0.0260064,
+      "meanProviderMs": 7865.0193333333345,
+      "medianProviderMs": 7740.7595,
+      "meanOutputTokens": 458
+    }
+  ],
+  "outcomes": [
+    {
+      "caseId": "multi-signs",
+      "model": "gpt-6-luna",
+      "requestId": "synthetic-d6931f0c-72f3-476f-8e73-2ab5347038bf",
+      "costUSD": 0.000621475,
+      "providerMs": 3838.0145999999986,
+      "strictPassed": true,
+      "entities": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": 0,
+              "y": 0.76,
+              "z": -1
+            },
+            "rotation": {
+              "x": -0.7071067811865476,
+              "y": 0,
+              "z": 0,
+              "w": 0.7071067811865476
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:anchor",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:frame",
+            "alignment": "HORIZONTAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": false
+        },
+        {
+          "id": "north-passage-sign",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": -0.35,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "north-passage-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "north-passage-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        },
+        {
+          "id": "south-passage-sign",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": 0.35,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "south-passage-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "south-passage-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        }
+      ],
+      "samePlaneGaps": [
+        {
+          "a": "north-passage-sign",
+          "b": "south-passage-sign",
+          "gap": 0.19999999999999996
+        }
+      ],
+      "originalChanges": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "changed": [],
+          "scaleBefore": 1,
+          "scaleAfter": 1,
+          "privateTextPreserved": true,
+          "privateAltPreserved": true
+        }
+      ]
+    },
+    {
+      "caseId": "multi-signs",
+      "model": "gpt-6.1-sol",
+      "requestId": "synthetic-6b0a8ffb-b44d-436d-9a83-5c0cd153eb93",
+      "costUSD": 0.0140595,
+      "providerMs": 8241.0507,
+      "strictPassed": true,
+      "entities": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": 0,
+              "y": 0.76,
+              "z": -1
+            },
+            "rotation": {
+              "x": -0.7071067811865476,
+              "y": 0,
+              "z": 0,
+              "w": 0.7071067811865476
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:anchor",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:frame",
+            "alignment": "HORIZONTAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": false
+        },
+        {
+          "id": "synthetic-evaluation:north-sign",
+          "width": 0.6,
+          "pose": {
+            "position": {
+              "x": -0.4,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:north-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:north-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        },
+        {
+          "id": "synthetic-evaluation:south-sign",
+          "width": 0.6,
+          "pose": {
+            "position": {
+              "x": 0.4,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:south-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:south-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        }
+      ],
+      "samePlaneGaps": [
+        {
+          "a": "synthetic-evaluation:north-sign",
+          "b": "synthetic-evaluation:south-sign",
+          "gap": 0.20000000000000007
+        }
+      ],
+      "originalChanges": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "changed": [],
+          "scaleBefore": 1,
+          "scaleAfter": 1,
+          "privateTextPreserved": true,
+          "privateAltPreserved": true
+        }
+      ]
+    },
+    {
+      "caseId": "natural-two-signs",
+      "model": "gpt-6-luna",
+      "requestId": "synthetic-59f0a5dc-0cbe-4c31-8bd5-5c57f8b66d21",
+      "costUSD": 0.00035447,
+      "providerMs": 5421.535900000003,
+      "strictPassed": true,
+      "entities": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": 0,
+              "y": 0.76,
+              "z": -1
+            },
+            "rotation": {
+              "x": -0.7071067811865476,
+              "y": 0,
+              "z": 0,
+              "w": 0.7071067811865476
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:anchor",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:frame",
+            "alignment": "HORIZONTAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": false
+        },
+        {
+          "id": "north-passage-sign",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": -0.4,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "north-passage-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "north-passage-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        },
+        {
+          "id": "south-passage-sign",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": 0.4,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "south-passage-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "south-passage-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        }
+      ],
+      "samePlaneGaps": [
+        {
+          "a": "north-passage-sign",
+          "b": "south-passage-sign",
+          "gap": 0.30000000000000004
+        }
+      ],
+      "originalChanges": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "changed": [],
+          "scaleBefore": 1,
+          "scaleAfter": 1,
+          "privateTextPreserved": true,
+          "privateAltPreserved": true
+        }
+      ]
+    },
+    {
+      "caseId": "natural-two-signs",
+      "model": "gpt-6.1-sol",
+      "requestId": "synthetic-3dce8760-3111-459c-af63-84be6e43155c",
+      "costUSD": 0.0059352,
+      "providerMs": 7740.7595,
+      "strictPassed": true,
+      "entities": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": 0,
+              "y": 0.76,
+              "z": -1
+            },
+            "rotation": {
+              "x": -0.7071067811865476,
+              "y": 0,
+              "z": 0,
+              "w": 0.7071067811865476
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:anchor",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:frame",
+            "alignment": "HORIZONTAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": false
+        },
+        {
+          "id": "synthetic-evaluation:north-sign",
+          "width": 0.6,
+          "pose": {
+            "position": {
+              "x": -0.4,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:north-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:north-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        },
+        {
+          "id": "synthetic-evaluation:south-sign",
+          "width": 0.6,
+          "pose": {
+            "position": {
+              "x": 0.4,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:south-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:south-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        }
+      ],
+      "samePlaneGaps": [
+        {
+          "a": "synthetic-evaluation:north-sign",
+          "b": "synthetic-evaluation:south-sign",
+          "gap": 0.20000000000000007
+        }
+      ],
+      "originalChanges": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "changed": [],
+          "scaleBefore": 1,
+          "scaleAfter": 1,
+          "privateTextPreserved": true,
+          "privateAltPreserved": true
+        }
+      ]
+    },
+    {
+      "caseId": "holdout-sign-pair",
+      "model": "gpt-6-luna",
+      "requestId": "synthetic-f8c4e5fa-5e52-4286-88ef-d90c8f2f4028",
+      "costUSD": 0.000298295,
+      "providerMs": 4437.979800000001,
+      "strictPassed": true,
+      "entities": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": 0,
+              "y": 0.76,
+              "z": -1
+            },
+            "rotation": {
+              "x": -0.7071067811865476,
+              "y": 0,
+              "z": 0,
+              "w": 0.7071067811865476
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:anchor",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:frame",
+            "alignment": "HORIZONTAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": false
+        },
+        {
+          "id": "north-passage-sign",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": -0.35,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "north-passage-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "north-passage-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        },
+        {
+          "id": "south-passage-sign",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": 0.35,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "south-passage-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "south-passage-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        }
+      ],
+      "samePlaneGaps": [
+        {
+          "a": "north-passage-sign",
+          "b": "south-passage-sign",
+          "gap": 0.19999999999999996
+        }
+      ],
+      "originalChanges": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "changed": [],
+          "scaleBefore": 1,
+          "scaleAfter": 1,
+          "privateTextPreserved": true,
+          "privateAltPreserved": true
+        }
+      ]
+    },
+    {
+      "caseId": "holdout-sign-pair",
+      "model": "gpt-6.1-sol",
+      "requestId": "synthetic-00e78873-31a3-44e6-84d9-d0f14e78d795",
+      "costUSD": 0.0060117,
+      "providerMs": 7613.247800000005,
+      "strictPassed": true,
+      "entities": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "width": 0.5,
+          "pose": {
+            "position": {
+              "x": 0,
+              "y": 0.76,
+              "z": -1
+            },
+            "rotation": {
+              "x": -0.7071067811865476,
+              "y": 0,
+              "z": 0,
+              "w": 0.7071067811865476
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:anchor",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:frame",
+            "alignment": "HORIZONTAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": false
+        },
+        {
+          "id": "synthetic-evaluation:north-passage-sign",
+          "width": 0.6,
+          "pose": {
+            "position": {
+              "x": -0.4,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:north-passage-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:north-passage-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        },
+        {
+          "id": "synthetic-evaluation:south-passage-sign",
+          "width": 0.6,
+          "pose": {
+            "position": {
+              "x": 0.4,
+              "y": 1.4,
+              "z": -0.99
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": 1
+          },
+          "anchor": {
+            "id": "synthetic-evaluation:south-passage-sign:placement",
+            "kind": "SURFACE_RELATIVE",
+            "frameId": "synthetic-evaluation:south-passage-sign:placement:frame",
+            "alignment": "VERTICAL",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.01
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          "new": true
+        }
+      ],
+      "samePlaneGaps": [
+        {
+          "a": "synthetic-evaluation:north-passage-sign",
+          "b": "synthetic-evaluation:south-passage-sign",
+          "gap": 0.20000000000000007
+        }
+      ],
+      "originalChanges": [
+        {
+          "id": "synthetic-evaluation:entity-0",
+          "changed": [],
+          "scaleBefore": 1,
+          "scaleAfter": 1,
+          "privateTextPreserved": true,
+          "privateAltPreserved": true
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "model": "Luna low provisionally",
+    "reason": "Same three readable sign arrangements and safe proposal language, lower measured cost. Sol makes signs0.6m versus Luna0.5m but both fit measured gaps; not a universal quality ranking.",
+    "scope": "SELECTED tested only three sign messages permodel, six calls. Never SELECTED full90, never allmodel stability, physical AR, rendered readability or owner acceptance.",
+    "remaining": [
+      "Desk-note/existing-map overlap found in historical QUALIFIED90 is untested under SELECTED.",
+      "Latest source anchor-local context and sensible-position rules are source intent, not proof for every placement type.",
+      "Physical/keyboard/seated usability and owner acceptance remain separate.",
+      "Preserve all prior reports and digests; final sourcefe5c has same runtime prompt as6c, historical archive repair is not provider reevaluation."
+    ],
+    "ownerAcceptance": "NOT_INFERRED"
+  }
+}

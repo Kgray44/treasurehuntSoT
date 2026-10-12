@@ -1,7 +1,7 @@
 ---
 title: Parallax A1 implementation and software qualification
 audience: engineering
-status: software-accepted-owner-review-pending
+status: software-accepted-owner-presentation-accepted
 canonical_for: parallax-a1-implementation-qualification
 last_reviewed: 2026-10-11
 ---
@@ -77,7 +77,8 @@ the six authorized real OpenAI calls: all returned validated structured results
 and settled $0.018827055 under the $0.50/no-retry ceiling. Original v1 semantic
 results are four passes and two undisclosed fixture-ID false negatives; v2 fixes
 that matcher without a paid rerun. This sample does not establish full-corpus
-quality. No additional paid call is authorized.
+quality. The later [model comparison](Parallax_A1_Model_and_Prompt_Comparison.md)
+records fifteen separately authorized rounds and their finite quality limits.
 
 # Setup and remaining acceptance boundaries
 
@@ -94,8 +95,11 @@ The [presentation review](Parallax_A1_Presentation_Review.md) binds inspected
 desktop/phone/light/dark captures, twelve viewport/mode/docking combinations,
 visible accessibility checks, focus/scroll/motion proof and hashed recordings.
 The gallery is `artifacts/parallax-a1/browser/6cc62ef911c8/review.html` in the owned
-worktree. Owner visual acceptance remains pending. Browser viewports do not prove
+worktree. The owner accepted the later revised presentation at `fe5c5438`,
+as recorded in the [owner-refinement record](Parallax_A1_Visual_Refinements.md).
+That record also tracks separate correction software qualification. Browser viewports do not prove
 physical phone keyboard/touch comfort, field reliability or physical AR quality.
-Software acceptance and mainline availability do not close those gates or the
-native goal's owner review. The Feature Catalog records implemented software
+Software acceptance and mainline availability do not close those physical gates. The Feature Catalog records implemented software
 availability with these limitations; it does not claim visual or hardware acceptance.
+
+The owner-requested Studio/theme/docking/menu and daily-reporting correction is also integrated through protected PR #717 at `b078f823f197e2fa175c6525a7e190b45e680a7c`. Ordinary run 38200759321 passed, the landed tree matches the qualified candidate and all 121 focused landed smoke tests pass. The [refinement record](Parallax_A1_Visual_Refinements.md) and [exact integration receipt](evidence/owner-refinements/integration-b078f823.json) close this software increment while preserving the finite model and physical-device boundaries above.

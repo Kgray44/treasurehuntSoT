@@ -27,6 +27,19 @@ Emergency disable stops new requests without erasing usage.
 
 ## Global settings and consequences
 
+The overview's daily chart can show **Requests**, **Settled cost**, or **Accounted
+spending**. Today and daily averages use the same ledger projection, including
+zero-activity elapsed days. Labels identify UTC request days and US dollars.
+Settled cost is known billed usage; accounted spending also includes active
+reservations and unresolved exposure. A cost settling later remains associated
+with its request day. Expand the daily activity table for exact requests, settled
+cost, reservations and unresolved spending. The table scrolls on narrow screens
+and is keyboard accessible. Choosing a metric sends no provider request and
+changes no limits.
+
+Use the existing **People** search to open a user's account dossier and inspect
+or change their AI allowances there. There is no second AI-specific user search.
+
 Amounts in the form are US dollars. Request allowances reset at the start of
 the UTC calendar month; changing a limit never clears consumption already
 recorded for that period. The defaults below apply to a newly initialized policy,

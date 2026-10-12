@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "classification": "FOCUSED_QUALIFICATION_REPAIR",
+  "failedCandidate": "f1822d52565489b5fe71603d809fc2834a107698",
+  "ordinaryRunId": 38198713672,
+  "finding": "Bounded eight-entity adaptive context exceeded unchanged conservative 12000-byte admission allowance",
+  "beforeBytesIncludingFraming": 12113,
+  "afterBytesIncludingFraming": 11799,
+  "allowance": 12000,
+  "repair": "Omit static capability enum lists already supplied by the strict response schema; retain saved scene state and capability limits",
+  "focused": {
+    "files": 5,
+    "passed": 163
+  },
+  "paidCalls": 0,
+  "instructionsUnchanged": true,
+  "responseSchemaUnchanged": true,
+  "quotaPolicyUnchanged": true,
+  "browserRecaptureRequired": true
+}

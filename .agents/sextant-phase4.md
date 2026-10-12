@@ -3,7 +3,7 @@ title: Sextant Phase 4 owned implementation context
 audience: automation
 status: active
 canonical_for: sextant-phase4-owned-context
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Sextant Phase 4 — Take It Afield
@@ -250,6 +250,17 @@ Normal product also shows that prompt over actual uppercase sign-in fields.
 Repair unused fitness-service initialization/cleanup and exact-case native
 selectors; preserve active-scene requirement and explicit optional acquisition.
 Require actual no-unsolicited-permission/geofence/product proof on coherent source.
+
+Accepted main `81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb` is reconciled
+additively. Preserve its complete `spatial-pilot.experience` Assistant contract
+exactly. The owned native consumer rehearsal now uses
+`sextant.phase4.native-context`; all three fixture-tagged designs require
+normal/reduced motion and measured Journal readiness. Creator proof must include
+an actual title edit, save and ordinary reopening, then restore the synthetic
+working title and compare the pinned Player clue without publishing a new edition.
+Current screenshots/helper repair remain Reach-owned pending acceptance; do not
+duplicate or bypass them. No native qualification is claimed for the interrupted
+`cfd7a88a` local build, which stopped during TypeScript and captured no journeys.
 
 Source71 local3consumer capture ordinarySignIn PASS,all journeys failed waiting
 for inert Devices behind first-open Journal; runtime/SQLite cleanup PASS.

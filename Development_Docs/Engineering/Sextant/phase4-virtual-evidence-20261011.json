@@ -2529,5 +2529,19 @@
     "cleanup": "PASS",
     "independentReview": "BLOCKED_INCOMPLETE_JOURNEY_EVIDENCE",
     "required": "REPAIR_RECAPTURE_REVIEW_NOT_ACCEPTANCE"
+  },
+  "consumerReconciliation81": {
+    "acceptedBaseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+    "acceptedAssistantContract": "PRESERVED_EXACTLY",
+    "nativeConsumerContract": "sextant.phase4.native-context",
+    "fixtureContracts": 3,
+    "journeys": 4,
+    "devices": ["DESKTOP", "MOBILE"],
+    "motionModes": ["NORMAL", "REDUCED"],
+    "feedbackBudgetMs": 11000,
+    "creatorDraftProof": "EDIT_SAVE_ORDINARY_REOPEN_RESTORE_THEN_COMPARE_PINNED_PLAYER_CLUE",
+    "capture": "PENDING_ACTUAL_EXECUTION",
+    "independentReview": "PENDING_ACTUAL_RECAPTURE",
+    "phaseAcceptance": "NOT_CLAIMED"
   }
 }

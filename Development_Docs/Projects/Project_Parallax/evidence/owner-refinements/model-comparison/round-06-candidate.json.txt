@@ -1,0 +1,284 @@
+{
+  "corpusVersion": "parallax-spatial-assistant-2026-10-11-v2",
+  "mode": "BOUNDED_LIVE_PROVIDER",
+  "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+  "candidateCommit": "4b1ff2ffc26896e25dc3c87045169345205407b6",
+  "uncommittedSource": false,
+  "createdAt": "2026-10-12T00:22:20.827Z",
+  "maxCalls": 6,
+  "budgetNano": 306676250,
+  "maximumInputTokens": 12000,
+  "maximumOutputTokens": 2048,
+  "instructionVariant": "CANDIDATE",
+  "reasoning": "medium",
+  "instructionsDigest": "1bac6a68ce1028d4ef050783425986fe7866175062d3e881a142cc114a0e37ed",
+  "attempts": 6,
+  "stoppedEarly": false,
+  "results": [
+    {
+      "caseId": "natural-note-and-event",
+      "category": "multi-object scenes",
+      "model": "gpt-6-luna",
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "CREATE",
+        "summary": "Add a plain text card to the desk and highlight the existing map when the scene starts.",
+        "clarification": null,
+        "operations": [
+          {
+            "id": "create-inspect-map-card",
+            "explanation": "Create a desk card with the requested text and a clear description for nonvisual access.",
+            "dependsOn": [],
+            "type": "CREATE",
+            "entityId": "inspect-map-card",
+            "name": "Inspect the map",
+            "kind": "TEXT",
+            "content": "Inspect the map",
+            "alternativeText": "A plain text card on the desk reading “Inspect the map.”",
+            "widthMeters": 0.2,
+            "placement": "DESK",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "scale": 1
+          },
+          {
+            "id": "highlight-map-on-enter",
+            "explanation": "Highlight the existing Desk Map as soon as the scene is entered.",
+            "dependsOn": [],
+            "type": "BEHAVIOR",
+            "behaviorId": "highlight-map-on-enter",
+            "trigger": "SCENE_ENTER",
+            "sourceEntityId": null,
+            "targetEntityId": "synthetic-evaluation:entity-0",
+            "delayMs": 0,
+            "action": "HIGHLIGHT"
+          }
+        ],
+        "assumptions": [],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "The card and scene-start highlight are proposed for Creator review; nothing has been applied."
+      }
+    },
+    {
+      "caseId": "natural-reveal",
+      "category": "timeline behavior",
+      "model": "gpt-6-luna",
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "INTERACTION",
+        "summary": "The Desk Map will start hidden and appear one second after the scene starts.",
+        "clarification": null,
+        "operations": [
+          {
+            "id": "op-hide-map",
+            "explanation": "Hide the Desk Map when the scene starts.",
+            "dependsOn": [],
+            "type": "VISIBILITY",
+            "entityId": "synthetic-evaluation:entity-0",
+            "visible": false
+          },
+          {
+            "id": "op-show-map",
+            "explanation": "Show the Desk Map one second after the scene starts.",
+            "dependsOn": [
+              "op-hide-map"
+            ],
+            "type": "BEHAVIOR",
+            "behaviorId": "behavior-show-map-after-one-second",
+            "trigger": "SCENE_ENTER",
+            "sourceEntityId": null,
+            "targetEntityId": "synthetic-evaluation:entity-0",
+            "delayMs": 1000,
+            "action": "SHOW"
+          }
+        ],
+        "assumptions": [],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "The map stays hidden initially, then appears one second after scene entry."
+      }
+    },
+    {
+      "caseId": "natural-guided",
+      "category": "accessibility",
+      "model": "gpt-6-luna",
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "ACCESSIBILITY",
+        "summary": "Add Guided View narration directing people to inspect the harbor map, then the clock tower.",
+        "clarification": null,
+        "operations": [
+          {
+            "id": "op-guided-narration",
+            "explanation": "Use Guided View narration to provide the requested inspection order.",
+            "dependsOn": [],
+            "type": "FALLBACK",
+            "narrative": "Inspect the harbor map, then the clock tower."
+          }
+        ],
+        "assumptions": [
+          "The clock tower is a narrative landmark reference, not a request to create a scene object."
+        ],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "Guided View will narrate the requested order without adding or changing scene objects."
+      }
+    },
+    {
+      "caseId": "natural-contradiction",
+      "category": "conflicting requests",
+      "model": "gpt-6-luna",
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "CLARIFICATION",
+        "summary": "The requested width conflicts: should the map be exactly 20 cm or exactly 40 cm wide?",
+        "clarification": "Which single width should I set for the existing map: 20 cm or 40 cm?",
+        "operations": [],
+        "assumptions": [],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [],
+        "creatorExplanation": "I’ll change the existing map only after you choose one width."
+      }
+    },
+    {
+      "caseId": "adaptive-shelf",
+      "category": "spatial placement",
+      "model": "gpt-6-luna",
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "EDIT",
+        "summary": "I’ll place the selected map on the left side of a shelf near a window while retaining the scene’s seated-access and safety constraints.",
+        "clarification": null,
+        "operations": [
+          {
+            "id": "place-map-left-shelf",
+            "explanation": "Set the map’s adaptive placement to the left side of a shelf near a window; existing seated-access and safety constraints remain in force.",
+            "dependsOn": [],
+            "type": "SEMANTIC_PLACEMENT",
+            "entityId": "synthetic-evaluation:entity-0",
+            "surface": "SHELF",
+            "context": "WINDOW",
+            "relativePlacement": "LEFT",
+            "concealment": "NONE"
+          }
+        ],
+        "assumptions": [],
+        "unsupportedCapabilities": [],
+        "warnings": [],
+        "accessibilityNotes": [
+          "Retain the existing seated-required, reach, visibility, and forbidden-context constraints."
+        ],
+        "creatorExplanation": "The map’s placement intent is updated without changing its interactions or accessibility constraints."
+      }
+    },
+    {
+      "caseId": "adaptive-forbidden-wall",
+      "category": "safety",
+      "model": "gpt-6-luna",
+      "passed": true,
+      "findings": [],
+      "interpretation": {
+        "intentType": "UNSUPPORTED",
+        "summary": "I can’t bypass the map’s forbidden-wall safety constraint; it can remain on a permitted desk or table surface.",
+        "clarification": null,
+        "operations": [],
+        "assumptions": [],
+        "unsupportedCapabilities": [
+          "Bypassing a forbidden-surface safety constraint."
+        ],
+        "warnings": [
+          "This map’s adaptive placement recipe forbids walls and requires seated-accessible placement within reach."
+        ],
+        "accessibilityNotes": [],
+        "creatorExplanation": "Keep the adaptive map on a permitted, reachable desk or table surface."
+      }
+    }
+  ],
+  "usage": [
+    {
+      "requestId": "synthetic-7ce69a56-d8ca-422f-b3a1-b72e09a79fb3",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "671800",
+      "settledCostNano": "671800",
+      "inputTokens": 2003,
+      "outputTokens": 443,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":19.738000000000284,\"contextMs\":4.022800000000643,\"providerMs\":4925.449699999999,\"materializationMs\":4.564399999999296,\"validationMs\":5.088400000000547}"
+    },
+    {
+      "requestId": "synthetic-8598419e-2ffc-47fe-b649-0416e869977b",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "259925",
+      "settledCostNano": "259925",
+      "inputTokens": 1997,
+      "outputTokens": 368,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":18.28990000000158,\"contextMs\":1.3833000000013271,\"providerMs\":3945.7644,\"materializationMs\":0.7026999999998225,\"validationMs\":0.8351000000002387}"
+    },
+    {
+      "requestId": "synthetic-2a3f2f96-e01b-47bf-b387-135d4faa1804",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "233925",
+      "settledCostNano": "233925",
+      "inputTokens": 1997,
+      "outputTokens": 316,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":14.192199999999502,\"contextMs\":1.4948000000003958,\"providerMs\":3271.852499999999,\"materializationMs\":1.227999999999156,\"validationMs\":1.342000000000553}"
+    },
+    {
+      "requestId": "synthetic-05952300-41f3-4fcf-bbf5-0b33c8b881ea",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "147100",
+      "settledCostNano": "147100",
+      "inputTokens": 2000,
+      "outputTokens": 141,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":22.417499999999563,\"contextMs\":1.4235000000007858,\"providerMs\":2367.4558000000034,\"materializationMs\":0.7393000000010943,\"validationMs\":0.8379999999997381}"
+    },
+    {
+      "requestId": "synthetic-7aaa3129-1401-4574-b402-2f6e8bdbce90",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "352675",
+      "settledCostNano": "352675",
+      "inputTokens": 2087,
+      "outputTokens": 513,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":13.594900000000052,\"contextMs\":1.9794000000001688,\"providerMs\":5391.639500000001,\"materializationMs\":2.448099999997794,\"validationMs\":2.5367000000005646}"
+    },
+    {
+      "requestId": "synthetic-d6290719-b5f2-48a1-9545-8e4a228cb273",
+      "model": "gpt-6-luna",
+      "status": "SETTLED",
+      "reservationNano": "3724000",
+      "exposureNano": "152375",
+      "settledCostNano": "152375",
+      "inputTokens": 2079,
+      "outputTokens": 116,
+      "failureCode": null,
+      "timings": "{\"admissionMs\":16.31290000000081,\"contextMs\":1.9916999999986729,\"providerMs\":1811.0425000000032,\"materializationMs\":0.4959999999991851,\"validationMs\":0.5451000000030035}"
+    }
+  ]
+}
