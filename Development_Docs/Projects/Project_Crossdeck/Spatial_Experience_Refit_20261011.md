@@ -108,6 +108,29 @@ truthful 10/3 repair accounting remain unchanged; no second retry or new product
 repair is authorized. Earlier two-device recordings are retained as historical
 source-bound observations, not relabeled to this new tuple.
 
+Terminal harvest supersedes that initial in-progress readback: run `38302871905`
+completed FAILURE, preparation job `114989802954`, 313 seconds, zero artifacts.
+The [terminal failure receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/terminal-failure-receipt.json)
+preserves exact original log/API bytes and safe stage diagnostics. Backend/proxy
+readiness and capture-child launch completed. The first Reach context navigated
+to `/devices/pair`, then its initial laboratory-link click timed out waiting for
+visibility after 30 seconds. Browser and server exited, proxy closed and the
+final authority diagnostic classified PRODUCT_FAILURE. Zero contexts completed;
+Crossdeck contexts never started. Mainline Decision was skipped, so no actual
+truthful-ledger rejection occurred. The original cancellation's cause is still
+unestablished and is not inferred from this different source/contract matrix.
+
+[Source comparison](../../Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/confirmed-source-finding.json)
+confirms the refit pairing page removed the protected base's **Find the Hand
+interaction laboratory** link to `/devices/reach`. The
+[proposed one-file patch](../../Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/restore-reach-pair-entry.proposed.patch)
+restores that entry while keeping `CrossdeckDevices pairing`; it is not applied.
+Crossdeck owns this entry, Reach its laboratory/journey. Diagnosis-only authority
+and the consumed retry require a separate source-bound restoration/qualification
+decision. Repair history remains ten against three; final third review is unused,
+no further capture or product/helper/contract repair occurred, and PR #721 stays
+draft. No debt, readiness, hardware, owner acceptance or merge is claimed.
+
 The [repair ledger](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json)
 retrospectively records **10 completed repair-to-recapture attempts** since
 review 1: seven product repairs and three fixture/contract repairs. All ten

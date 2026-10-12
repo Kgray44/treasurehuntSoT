@@ -81,6 +81,20 @@ identity. No watch loop, local product rebuild/test, duplicate capture or new
 independent review was started. Tokens/cache/credits and per-agent usage remain
 `UNAVAILABLE`; final review remains unused and 10/3 remains preserved.
 
+Terminal metadata measures the retry job at 313 seconds, FAILURE, zero artifacts.
+One bounded terminal harvest downloaded the existing job log and run/job/artifact
+readbacks. Twenty safe events identify successful readiness/entry navigation,
+then the first Reach link wait failing after 30 seconds and completed owned
+browser/proxy/server cleanup. Source comparison confirms the pairing-page entry
+was removed. The [terminal receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/terminal-failure-receipt.json)
+and proposed patch retain concrete next work without running another test/build,
+capture, repair or review. Two owned hosted attempts now remain preserved: the
+original 40-minute cancellation and this sole retry failure. Their source/matrix
+differ; no runtime savings or original-cause equivalence is inferred. Required
+Mainline Decision was skipped, not a ledger rejection. A separate bounded
+source-restoration/qualification decision is the next trigger. Usage remains
+`UNAVAILABLE`, ten repairs remain ten, and final third review remains unused.
+
 Measurements in the following table describe the earlier local stages. They do
 not qualify the reconciled source or supersede the terminal hosted result above.
 

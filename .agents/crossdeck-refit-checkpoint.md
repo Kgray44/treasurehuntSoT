@@ -49,29 +49,52 @@ stopped planning; complete-object comparison proved no frozen obligation changed
 Use the actual protected selection; never drop Reach to retain the old digest.
 No local product build/test or browser recapture was run during reconciliation.
 
-The exact captured candidate request is `d3dea09e782af9899ffc0003dbd1664c3e257b96`,
+The exact dispatched candidate request is `d3dea09e782af9899ffc0003dbd1664c3e257b96`,
 tree `f1233829c18b1ef667a15cda0111893d3bf423d6`, base `602f83ef`. Those
 record-only publication changes preserved the source/combined contract digests
 above. One CLI dispatch returned
 [run 38302871905](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38302871905);
 API readback verifies its protected workflow SHA and attempt 1. Preparation job
-`114989802954` is in progress at the recorded readback. Mainline Decision job
+`114989802954` completed FAILURE; its initial in-progress readback is historical.
+Mainline Decision job
 `114989804933` is skipped, as expected for capture preparation; this is no
 ordinary acceptance. The [fresh dispatch receipt](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/dispatch-receipt.json)
 and [current exclusive claim](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/dispatch-owner-claim.json)
-record exactly one additional dispatch used and no trusted capture artifact yet.
+record exactly one additional dispatch used. Terminal artifact readback is empty.
 The bounded pre-dispatch inventory inspected 40 workflow-dispatch runs with no
 active jobs; it is not global collision proof. No duplicate dispatcher was used.
 
-End this native turn while the owned hosted capture is the only remaining gate.
-Resume on run `38302871905`'s terminal result and exact artifact identity. A
-failure requires its original log and actual safe stage diagnostics, then a
-conforming bounded decision without another retry. Success requires download
-and verification of the trusted current packet before dispatching the final
-third review. Current two-device evidence must be identified honestly before
-that review; the earlier `e643d3acc6f8` packet remains historical. Do not repeat
-unchanged polling, refreeze as main advances, install dependencies or repair
-product/helper code while waiting. Preserve all owned D-stage outputs and links.
+The [terminal failure receipt](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/terminal-failure-receipt.json)
+preserves the original log/API bytes and all 20 safe diagnostic events. Last
+completed experience operation: `navigate-journey-entry` at `/devices/pair`,
+Reach `absolute-calibration-and-recovery`, DESKTOP / ANONYMOUS / NORMAL.
+The first requested click waited for link **Find the Hand interaction laboratory**
+at protected helper line 105 and timed out after 30 seconds. The accepted base's
+pairing page contains that link at line 8; the frozen candidate deletes its
+import/paragraph while retaining `CrossdeckDevices pairing`. Candidate product
+source contains no exact label occurrence. This is a source-confirmed navigation
+regression; no Crossdeck context started and no experience context completed.
+
+Browser cleanup reports EXITED / code 1, proxy CLOSED, server EXITED / code 143;
+`authority.result` reports PRODUCT_FAILURE. The job lasted 313 seconds. This
+failure is not a cleanup or password stall and does not establish the original
+six-contract cancellation's cause. Mainline Decision was skipped; **no actual
+ledger-validator rejection occurred**. No trusted artifact or final review exists.
+
+The [one-file proposed restoration](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/restore-reach-pair-entry.proposed.patch)
+is prepared, not applied: restore `next/link` and the existing visible
+`/devices/reach` link with its accepted name in `src/app/devices/pair/page.tsx`,
+preserving the refit's `pairing` flag and metadata/auth behavior. Crossdeck owns
+this entry; Reach retains the laboratory and its journey. The current resumed
+contract explicitly permits terminal diagnosis only, excludes product repairs,
+and has consumed the one retry. Stop with `BLOCK_WITH_EVIDENCE` and require an
+explicit source-bound follow-up decision on this exact restoration and its
+necessary qualification action before any edit or dispatch. Preserve ten repairs
+against three; a future actual repair/recapture adds to history, never resets it.
+No fourth review, helper/contract/validator change or acceptance bypass is granted.
+Earlier two-device evidence remains historical. Preserve D-stage outputs/links,
+PR #721 draft, original cancellation and this failure; Cleanup/A1 and Sextant stay
+idle while only the new decision remains. Do not refreeze or poll unchanged state.
 
 The
 [prospective Reach #716 preflight](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/reach716-prospective-preflight.json)
