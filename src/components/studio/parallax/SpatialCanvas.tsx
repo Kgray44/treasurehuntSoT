@@ -8,7 +8,7 @@ import { evaluateSpatialScene, type SpatialInput } from "@/parallax/behavior";
 import { simulationEnvironments } from "@/parallax/studio-validation";
 import { resolveAdaptiveScene, type Candidate } from "@/parallax/adaptive";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
-import type { createWorkstation, ViewportState, RendererReceipt } from "./spatial-workstation";
+import type { createWorkstation, ViewportState, RendererReceipt, CameraSnapshot } from "./spatial-workstation";
 import styles from "./SpatialStudio.module.css";
 export function SpatialCanvas(props: {
   draft: SpatialDraft;
@@ -30,6 +30,7 @@ export function SpatialCanvas(props: {
   const host = useRef<HTMLDivElement>(null),
     engine = useRef<ReturnType<typeof createWorkstation> | null>(null);
   const latest = useRef(props);
+  const recoveryCamera = useRef<CameraSnapshot | null>(null);
   useEffect(() => {
     latest.current = props;
   });
@@ -68,14 +69,14 @@ export function SpatialCanvas(props: {
       transform: states[entity.id].transform,
     })),
   };
-  const resolvedWorld = (id: string): Transform => {
-    const e = animatedContent.entities.find((e) => e.id === id)!;
+  const resolvedWorld = (id: string, content = animatedContent): Transform => {
+    const e = content.entities.find((e) => e.id === id)!;
     const placement = adaptive?.placements[id];
     return placement
       ? composeTransform(placement.transform, e.transform)
       : e.parentEntityId && adaptive?.status === "RESOLVED"
-        ? composeTransform(resolvedWorld(e.parentEntityId), e.transform)
-        : previewEntityTransform(animatedContent, id, environmentId, environment);
+        ? composeTransform(resolvedWorld(e.parentEntityId, content), e.transform)
+        : previewEntityTransform(content, id, environmentId, environment);
   };
   const commitWorld = (id: string, world: Transform) => {
     const p = latest.current,
@@ -183,7 +184,10 @@ export function SpatialCanvas(props: {
             select: (id) => latest.current.onSelect(id),
             transform: (id, pose) => callbacks.current.commitWorld(id, pose),
             candidate: (c, point) => callbacks.current.chooseCandidate(c, point),
-            failure: () => setRendererState("UNAVAILABLE"),
+            failure: () => {
+              recoveryCamera.current = engine.current?.cameraSnapshot() ?? null;
+              setRendererState("UNAVAILABLE");
+            },
             rendered: (next) => {
               setReceipts(next);
               latest.current.onRendererReceipt?.(next);
@@ -204,6 +208,7 @@ export function SpatialCanvas(props: {
     };
   }, [fallback, rendererAttempt]);
   useEffect(() => {
+    if (rendererState !== "READY") return;
     engine.current?.update({
       theme,
       objects: draft.content.entities.map((entity) => ({
@@ -227,6 +232,10 @@ export function SpatialCanvas(props: {
       editable: preview === "EDITOR",
       inspection: mode === "ENGINEERING",
     });
+    if (engine.current && recoveryCamera.current) {
+      engine.current.restoreCamera(recoveryCamera.current);
+      recoveryCamera.current = null;
+    }
   });
   const selected = draft.content.entities.find((e) => e.id === selectedId);
   const selectedReceipt = receipts.find((r) => r.id === selectedId);
@@ -334,6 +343,28 @@ export function SpatialCanvas(props: {
         <button onClick={() => engine.current?.view("selection")} title="Frame selected object">
           Frame selection
         </button>
+        {selected && draft.content.studio?.animationTracks?.length && (
+          <button
+            onClick={() => {
+              const times = new Set([
+                0,
+                ...(draft.content.studio?.animationTracks ?? [])
+                  .filter((t) => t.enabled)
+                  .flatMap((t) => t.keyframes.map((f) => f.atMs)),
+              ]);
+              const poses = [...times].map((time) => {
+                const sampled = evaluateSpatialScene(draft.content, inputs, time).states;
+                return resolvedWorld(selected.id, {
+                  ...draft.content,
+                  entities: draft.content.entities.map((e) => ({ ...e, transform: sampled[e.id].transform })),
+                });
+              });
+              engine.current?.view("sequence", poses);
+            }}
+          >
+            Frame animation
+          </button>
+        )}
         <button
           onClick={() => {
             setView("perspective");

@@ -2226,6 +2226,37 @@
 @media (max-width: 700px) {
   .adaptiveWorkspace {
     padding: 4px;
+    height: auto;
+    overflow: visible;
+    min-height: calc(100dvh - var(--studio-top, 76px));
+  }
+  .adaptiveWorkspace .workspace {
+    flex: none;
+    min-height: 440px;
+  }
+  .adaptiveWorkspace .canvas {
+    min-height: 380px;
+    flex: none;
+  }
+  .adaptiveWorkspace .viewportTools {
+    top: 102px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    max-width: calc(100% - 16px);
+    padding: 3px;
+    gap: 3px;
+  }
+  .adaptiveWorkspace .viewportTools button {
+    min-width: 35px;
+    min-height: 42px;
+    padding: 3px;
+    flex: none;
+  }
+  .adaptiveWorkspace .viewportTools button small {
+    font-size: 8px;
   }
   .adaptiveWorkspace .header {
     flex-wrap: wrap;
@@ -2334,7 +2365,16 @@
   }
   .adaptiveWorkspace .selectionInstrument {
     right: 8px;
-    max-width: 65%;
+    left: 8px;
+    max-width: none;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3px 8px;
+  }
+  .adaptiveWorkspace .selectionInstrument > span {
+    display: none;
   }
 }
 :global(html[data-voyage-theme="light"]) .studio {

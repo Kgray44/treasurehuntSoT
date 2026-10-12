@@ -37,6 +37,12 @@ export type RendererReceipt = {
   scale: number[];
   bounds: { min: number[]; max: number[] };
 };
+export type CameraSnapshot = {
+  position: number[];
+  target: number[];
+  projection: "perspective" | "plan";
+  extent: number;
+};
 /** Creator-only synthetic scene. No camera, device observations, imported media or runtime authority. */
 export function createWorkstation(
   host: HTMLElement,
@@ -504,13 +510,32 @@ export function createWorkstation(
   const observer = new ResizeObserver(resize);
   observer.observe(host);
   resize();
-  const resetView = (view = "perspective") => {
+  const resetView = (view = "perspective", sequence?: Transform[]) => {
     const chosen = objects.children.find((o) => o.userData.entityId === state?.selected);
-    const sphere = chosen ? new T.Box3().setFromObject(chosen).getBoundingSphere(new T.Sphere()) : null;
-    const target = view === "selection" && sphere ? sphere.center : new T.Vector3(0, 0.65, 0);
+    const bounds = chosen ? new T.Box3().setFromObject(chosen) : null;
+    if (chosen && bounds && sequence?.length) {
+      const original = {
+        position: chosen.position.clone(),
+        quaternion: chosen.quaternion.clone(),
+        scale: chosen.scale.clone(),
+      };
+      for (const pose of sequence) {
+        chosen.position.set(pose.position.x, pose.position.y, pose.position.z);
+        chosen.quaternion.set(pose.rotation.x, pose.rotation.y, pose.rotation.z, pose.rotation.w);
+        chosen.scale.setScalar(pose.scale);
+        chosen.updateMatrixWorld(true);
+        bounds.union(new T.Box3().setFromObject(chosen));
+      }
+      chosen.position.copy(original.position);
+      chosen.quaternion.copy(original.quaternion);
+      chosen.scale.copy(original.scale);
+      chosen.updateMatrixWorld(true);
+    }
+    const sphere = bounds?.getBoundingSphere(new T.Sphere());
+    const target = ["selection", "sequence"].includes(view) && sphere ? sphere.center : new T.Vector3(0, 0.65, 0);
     const span = Math.max(state?.environment.width ?? 4, state?.environment.depth ?? 4);
     const framing =
-      view === "selection" && sphere
+      ["selection", "sequence"].includes(view) && sphere
         ? Math.max(
             0.04,
             (sphere.radius * 1.5) /
@@ -644,6 +669,26 @@ export function createWorkstation(
     update,
     view: resetView,
     cameraPosition: () => camera.position.toArray(),
+    cameraSnapshot: (): CameraSnapshot => ({
+      position: camera.position.toArray(),
+      target: controls.target.toArray(),
+      projection: camera === orthographic ? "plan" : "perspective",
+      extent: orthographic.top,
+    }),
+    restoreCamera: (snapshot: CameraSnapshot) => {
+      resetView(snapshot.projection);
+      camera.position.fromArray(snapshot.position);
+      controls.target.fromArray(snapshot.target);
+      if (camera === orthographic) {
+        orthographic.top = snapshot.extent;
+        orthographic.bottom = -snapshot.extent;
+        orthographic.left = -snapshot.extent * perspective.aspect;
+        orthographic.right = snapshot.extent * perspective.aspect;
+        orthographic.updateProjectionMatrix();
+      }
+      controls.update();
+      dirty = true;
+    },
     dispose: () => {
       disposed = true;
       cancelAnimationFrame(frame);

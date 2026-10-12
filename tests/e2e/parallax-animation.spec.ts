@@ -84,10 +84,16 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
   await page.getByRole("button", { name: "Seek to 0 seconds", exact: true }).click();
   await expect.poll(async () => (await receipt())[0].position[0]).toBeCloseTo(0);
   await mkdir(root, { recursive: true });
+  await page
+    .getByRole("region", { name: "Spatial canvas", exact: true })
+    .getByRole("button", { name: "Reset view", exact: true })
+    .click();
+  await expect.poll(async () => (await receipt())[0].status).toBe("IN_VIEW");
   await page.screenshot({ path: `${root}/animation-start.png` });
   await editor.getByRole("button", { name: "Preview POSITION keyframe 2", exact: true }).click();
   await expect.poll(async () => (await receipt())[0].position[0]).toBeCloseTo(1);
   await expect.poll(async () => Math.abs((await receipt())[0].rotation[1])).toBeCloseTo(1);
+  await expect.poll(async () => (await receipt())[0].status).toBe("IN_VIEW");
   await page.screenshot({ path: `${root}/animation-end.png` });
   await editor.getByLabel("POSITION keyframe 2 x", { exact: true }).fill("1.2");
   await editor.getByLabel("POSITION keyframe 2 x", { exact: true }).press("Tab");
@@ -120,7 +126,8 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
   await page.screenshot({ path: `${root}/animation-reloaded-zoom.png` });
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
-  await page.screenshot({ path: `${root}/animation-phone.png` });
+  expect((await host.locator("canvas").boundingBox())!.height).toBeGreaterThanOrEqual(370);
+  await page.screenshot({ path: `${root}/animation-phone.png`, fullPage: true });
 });
 
 test("Middle and Ctrl drag use the same camera pan and renderer recovery retains the draft", async ({
@@ -164,6 +171,7 @@ test("Middle and Ctrl drag use the same camera pan and renderer recovery retains
   await expect.poll(async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0].status).toBe("IN_VIEW");
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/renderer-isolated-framed.png` });
+  const cameraBeforeFailure = JSON.parse((await host.getAttribute("data-projected-scene"))!).camera;
   await host.locator("canvas").evaluate((element) => {
     const gl = (element as HTMLCanvasElement).getContext("webgl2")!;
     gl.getExtension("WEBGL_lose_context")!.loseContext();
@@ -173,6 +181,12 @@ test("Middle and Ctrl drag use the same camera pan and renderer recovery retains
   await canvas.getByRole("button", { name: "Retry 3D renderer", exact: true }).click();
   await expect(host.locator("canvas")).toBeVisible();
   await expect(host).toHaveAttribute("data-rendered", "true");
+  await expect
+    .poll(async () => {
+      const camera = JSON.parse((await host.getAttribute("data-projected-scene"))!).camera as number[];
+      return Math.hypot(...camera.map((value, i) => value - cameraBeforeFailure[i]));
+    })
+    .toBeLessThan(1e-8);
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
   await page.screenshot({ path: `${root}/renderer-recovered.png` });
 });
