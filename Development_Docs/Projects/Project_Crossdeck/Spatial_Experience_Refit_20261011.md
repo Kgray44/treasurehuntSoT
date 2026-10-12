@@ -8,6 +8,8 @@ last_reviewed: 2026-10-12
 
 # Crossdeck spatial experience refit
 
+The owner-authorized 2026-10-12 correction restores the accepted public Hand laboratory link on the pairing page while retaining contextual Crossdeck pairing. [Its source-bound authorization](../../Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/authorization-receipt.json) and [separate correction ledger](../../Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/correction-ledger.json) preserve the original ten attempts and both prior failures. Current protected base remains `602f83ef`; fresh focused regression, trusted evidence, final third review and protected qualification are pending. The remainder below retains historical evidence identities.
+
 This engineering record covers contextual connection from the active Chronicle
 and useful personal companion purposes. The original inspected baseline is
 `6d13c357be93514c94e7f36db1a8c930265e65e2`; accepted main was subsequently

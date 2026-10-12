@@ -8,6 +8,8 @@ last_reviewed: 2026-10-12
 
 # Crossdeck refit efficiency measurements
 
+A separately approved Reach-entry restoration uses the existing owner/worktree/dependencies and preserves all earlier measurements. It adds one source correction; no completed recapture or independent review has yet been counted for this continuation. The immutable prior total remains ten repairs against three. Native Goal readback reports accumulated 2,565,200 tokens and 6,537 seconds with status paused; current continuation tokens, cached tokens and billed credits are unavailable. These accumulated values do not identify this correction's cost.
+
 This task-local engineering ledger records exposed measurements for the
 [experience refit](Spatial_Experience_Refit_20261011.md). It is not an account
 billing report or an acceptance receipt. Values are reported measurements;

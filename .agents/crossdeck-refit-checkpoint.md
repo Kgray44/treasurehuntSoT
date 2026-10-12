@@ -8,6 +8,14 @@ last_reviewed: 2026-10-12
 
 # Crossdeck publication checkpoint
 
+## Owner-authorized Reach-entry correction
+
+Request `ld-920579d7c69676fc47fd66d55c5857d4ef5cf6d4e3364d5013a3e842427f6023` reuses this owner and draft PR #721. KG explicitly authorizes the prepared pairing-page restoration and protected merge after qualification. This continuation supersedes the earlier diagnosis-only hold; the original ten repairs and both failed capture receipts remain historical and unchanged. Only `src/app/devices/pair/page.tsx` is repaired: restore the accepted public laboratory link, retaining `CrossdeckDevices pairing` and metadata.
+
+Run focused natural-entry regression, freeze the full seven-contract/32-context selection, and claim exactly one hosted capture. No automatic retry after failure, fourth review, contract/helper/validator change or acceptance bypass is authorized. Use the existing reviewer for final review 3 only after a trusted current packet. Then submit authenticated review, obtain ordinary exact-source PASS, merge through protection and verify landed source. Any substantive new finding or actual truthful-history rejection stops with precise evidence. Sextant remains waiting until acceptance. Native Goal readback is paused; no resume operation is exposed and no replacement Goal was created.
+
+[Authorization receipt](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/authorization-receipt.json) and [separate correction ledger](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/correction-ledger.json) bind this continuation. Remaining sections below preserve prior checkpoint history.
+
 The owned branch is `codex/crossdeck-experience-refit` at
 `C:\Users\kkids\.codex\worktrees\crossdeck-experience-refit\Codex_TreasureHunt`.
 The accepted-diagnostic mechanical merge is `5da389b732e4690e5b959bad0c42eabbd138d3d9`,
