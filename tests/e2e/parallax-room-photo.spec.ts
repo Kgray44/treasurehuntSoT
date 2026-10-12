@@ -66,7 +66,7 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
       min: number[];
       max: number[];
     }[];
-  await expect.poll(async () => (await receipt()).length).toBeGreaterThan(0);
+  await expect(host).toHaveAttribute("data-rendered", "true");
   const originalReceipt = await receipt();
   await photo.getByRole("button", { name: "Preview room proposal", exact: true }).click();
   await expect.poll(async () => (await receipt()).some((row) => row.id.endsWith(":back-wall"))).toBe(true);

@@ -1210,12 +1210,17 @@ export function SpatialStudio({
             onPreset={addPreset}
             mode={mode}
             preview={preview}
-            environmentId={environment}
+            environmentId={roomScenePreview?.content.studio?.environment?.id ?? environment}
             timeMs={timeMs}
             onPreviewChange={setPreview}
             onRendererReceipt={recordRenderedEntities}
             inputs={inputs}
           />
+          {roomScenePreview && (
+            <p role="status">
+              Room proposal preview · review the geometry before applying. Your saved scene is unchanged.
+            </p>
+          )}
           <div className={styles.commandBar}>
             <button
               aria-label="Ask Parallax"
