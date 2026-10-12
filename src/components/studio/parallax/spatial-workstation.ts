@@ -3,7 +3,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import type { Transform, SpatialEntity } from "@/parallax/contracts";
 import type { Candidate } from "@/parallax/adaptive";
-import { syntheticRoomGeometry } from "@/parallax/room-geometry";
+import { syntheticRoomGeometry, solidFaceRectangles } from "@/parallax/room-geometry";
 import { snapToNearestSurface, placeOnSurface, surfaceFrameRotation } from "@/parallax/surface-placement";
 import type { RoomFeature } from "@/parallax/environment-contracts";
 export type ViewportObject = {
@@ -185,6 +185,9 @@ export function createWorkstation(
         (glass.material as T.MeshStandardMaterial).emissive.setHex(0x738fa1);
         (glass.material as T.MeshStandardMaterial).emissiveIntensity = 0.3;
         box(group, [border * 0.65, height - border * 2, depth * 0.15], [0, 0, depth * 0.4], 0x93a3b4);
+      } else if (g.openings?.length) {
+        for (const rect of solidFaceRectangles(g.size[0], g.size[1], g.openings))
+          box(group, [rect.width, rect.depth, g.size[2]], [rect.x, rect.y, 0], color);
       } else box(group, g.size, [0, 0, 0], color);
     }
     if (s.inspection) {
@@ -199,8 +202,17 @@ export function createWorkstation(
     }
     sunlight.intensity = "light" in s.environment && s.environment.light === "LOW" ? 2.5 : 4;
     for (const c of s.candidates.filter((c) => c.surface !== "OPEN_SPACE" && c.id !== "unsafe-walkway")) {
+      const face = new T.BufferGeometry();
+      const vertices = solidFaceRectangles(c.widthMeters, c.depthMeters, c.exclusions ?? []).flatMap((rect) => {
+        const x1 = rect.x - rect.width / 2,
+          x2 = rect.x + rect.width / 2;
+        const y1 = rect.y - rect.depth / 2,
+          y2 = rect.y + rect.depth / 2;
+        return [x1, y1, 0, x2, y1, 0, x2, y2, 0, x1, y1, 0, x2, y2, 0, x1, y2, 0];
+      });
+      face.setAttribute("position", new T.Float32BufferAttribute(vertices, 3));
       const mesh = new T.Mesh(
-        new T.PlaneGeometry(c.widthMeters, c.depthMeters),
+        face,
         new T.MeshBasicMaterial({
           color: c.safe ? 0x57d8c5 : 0xe8847c,
           transparent: true,

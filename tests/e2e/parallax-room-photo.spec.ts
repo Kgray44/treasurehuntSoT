@@ -59,11 +59,22 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
   await expect(photo.getByRole("region", { name: "Proposed room", exact: true })).toBeVisible();
   expect((await listSpatialItems(account.id))[0].draft.content.studio!.environment).toBeUndefined();
   await mkdir(root, { recursive: true });
+  const host = page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"]');
+  const receipt = async () =>
+    JSON.parse((await host.getAttribute("data-room-receipt"))!) as { id: string; min: number[]; max: number[] }[];
+  const originalReceipt = await receipt();
+  await photo.getByRole("button", { name: "Preview room proposal", exact: true }).click();
+  await expect.poll(async () => (await receipt()).some((row) => row.id.endsWith(":back-wall"))).toBe(true);
+  expect((await listSpatialItems(account.id))[0].draft.content.studio!.environment).toBeUndefined();
+  await page.getByRole("button", { name: "Reset view", exact: true }).click();
+  await page.screenshot({ path: `${root}/photo-room-geometry-preview.png` });
+  await photo.getByRole("button", { name: "Return to saved scene", exact: true }).click();
+  await expect.poll(receipt).toEqual(originalReceipt);
+  await photo.getByRole("button", { name: "Preview room proposal", exact: true }).click();
   await photo.getByRole("button", { name: "Apply and save room", exact: true }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/photo-room-proposal.png` });
   await photo.getByRole("button", { name: "Apply and save room", exact: true }).click();
   await expect(photo).toContainText("Room geometry saved.");
-  const host = page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"]');
   const saved = (await listSpatialItems(account.id))[0].draft;
   const room = saved.content.studio!.environment!;
   expect(room.features.filter((f) => f.classification === "WALL")).toHaveLength(4);
@@ -109,5 +120,13 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
     photo.getByRole("button", { name: "Withdraw photo 1 processing permission", exact: true }),
   ).toBeVisible();
   await photo.getByRole("button", { name: "Withdraw photo 1 processing permission", exact: true }).click();
+  await expect(photo).toContainText("Future photo processing permission withdrawn.");
+  await expect(photo.getByRole("button", { name: /Withdraw photo .* processing permission/ })).toHaveCount(0);
   await page.screenshot({ path: `${root}/photo-room-restored.png` });
+  await page.reload();
+  await expect.poll(deskX).toBeCloseTo(0.5);
+  await page.getByText("Room photograph reconstruction", { exact: true }).click();
+  await expect(photo).toContainText("Protected photo import and room inference are ready.");
+  await expect(photo.getByRole("button", { name: /Withdraw photo .* processing permission/ })).toHaveCount(0);
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(refined);
 });

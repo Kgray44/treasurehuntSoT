@@ -120,7 +120,9 @@ Manual room editing remains available when they are not configured.
 Choose a JPEG, PNG or WebP of at most 8 MiB and explicitly authorize sending its
 sanitized image to OpenAI for room reconstruction and token counting. Use room
 views without people or readable private documents. Review the proposed approximate
-dimensions and uncertainty before **Apply and save room**. Applying saves editable
+dimensions and uncertainty, then choose **Preview room proposal** to inspect its
+actual geometry without saving. **Return to saved scene** restores the current
+room; **Discard room proposal** removes the proposal. **Apply and save room** saves editable
 geometry through ordinary scene history; it does not publish the photograph.
 The camera uses a cutaway view while preserving all modeled walls as surfaces.
 
@@ -141,7 +143,9 @@ classification change edits its label; **Rebuild generic feature shape** changes
 its actual model while retaining its name, dimensions and position. **Remove
 room feature** removes an unbound feature. Move attached clues to another
 support before removing or rebuilding their supporting feature. The whole floor
-stays a single feature. Generic doors and windows do not cut wall openings.
+stays a single feature. In editable rooms, parallel windows and doors intersecting
+a wall cut openings through that wall. Surfaces exclude those openings while
+retaining one wall identity. Detached or perpendicular features do not cut it.
 
 Under **Scale room from a known measurement**, choose the selected feature's
 width, height or depth and enter its measured metres. Apply scales the room and

@@ -16,7 +16,70 @@ export type RoomGeometry = {
   featureId?: string;
   classification?: RoomFeature["classification"];
   rotation?: Transform["rotation"];
+  /** Wall-local voids derived from coplanar semantic doors/windows, shared with placement. */
+  openings?: PlanarRectangle[];
 };
+
+export type PlanarRectangle = { x: number; y: number; width: number; depth: number };
+
+/** Partition a complete face around the union of voids, including openings at an edge. */
+export function solidFaceRectangles(
+  width: number,
+  height: number,
+  openings: readonly PlanarRectangle[],
+): PlanarRectangle[] {
+  let solids: PlanarRectangle[] = [{ x: 0, y: 0, width, depth: height }];
+  for (const hole of openings) {
+    solids = solids.flatMap((rect) => {
+      const left = rect.x - rect.width / 2,
+        right = rect.x + rect.width / 2;
+      const bottom = rect.y - rect.depth / 2,
+        top = rect.y + rect.depth / 2;
+      const a = Math.max(left, hole.x - hole.width / 2),
+        b = Math.min(right, hole.x + hole.width / 2);
+      const c = Math.max(bottom, hole.y - hole.depth / 2),
+        d = Math.min(top, hole.y + hole.depth / 2);
+      if (b <= a || d <= c) return [rect];
+      return [
+        [left, a, bottom, top],
+        [b, right, bottom, top],
+        [a, b, bottom, c],
+        [a, b, d, top],
+      ]
+        .filter(([x1, x2, y1, y2]) => x2 - x1 > 1e-8 && y2 - y1 > 1e-8)
+        .map(([x1, x2, y1, y2]) => ({ x: (x1 + x2) / 2, y: (y1 + y2) / 2, width: x2 - x1, depth: y2 - y1 }));
+    });
+  }
+  return solids;
+}
+
+function wallOpenings(wall: RoomGeometry, features: readonly RoomFeature[]): PlanarRectangle[] {
+  const rotation = wall.rotation ?? identityTransform().rotation;
+  const frame = { position: { x: wall.position[0], y: wall.position[1], z: wall.position[2] }, rotation, scale: 1 };
+  return features
+    .filter((feature) => feature.classification === "WINDOW" || feature.classification === "DOOR")
+    .flatMap((feature) => {
+      const angle = (feature.yawDegrees * Math.PI) / 360;
+      const local = composeTransform(inverseTransform(frame), {
+        position: feature.position,
+        rotation: { x: 0, y: Math.sin(angle), z: 0, w: Math.cos(angle) },
+        scale: 1,
+      });
+      // Only parallel, coplanar openings cut this wall. Nearby furniture never becomes a hole.
+      if (
+        Math.abs(2 * local.rotation.y * local.rotation.w) > 1e-5 ||
+        Math.abs(local.position.z) > (wall.size[2] + feature.dimensions[2]) / 2 + 0.01
+      )
+        return [];
+      const left = Math.max(-wall.size[0] / 2, local.position.x - feature.dimensions[0] / 2);
+      const right = Math.min(wall.size[0] / 2, local.position.x + feature.dimensions[0] / 2);
+      const bottom = Math.max(-wall.size[1] / 2, local.position.y - feature.dimensions[1] / 2);
+      const top = Math.min(wall.size[1] / 2, local.position.y + feature.dimensions[1] / 2);
+      return right > left && top > bottom
+        ? [{ x: (left + right) / 2, y: (bottom + top) / 2, width: right - left, depth: top - bottom }]
+        : [];
+    });
+}
 
 /** Named invented environments. Rendering and discovery consume this same geometry. */
 export function syntheticRoomGeometry(room: {
@@ -27,8 +90,8 @@ export function syntheticRoomGeometry(room: {
   vertical: boolean;
   features?: RoomEnvironment["features"];
 }): RoomGeometry[] {
-  if (room.features)
-    return room.features.flatMap((feature) => {
+  if (room.features) {
+    const geometry: RoomGeometry[] = room.features.flatMap((feature) => {
       const angle = (feature.yawDegrees * Math.PI) / 360;
       const frame = {
         position: feature.position,
@@ -57,6 +120,12 @@ export function syntheticRoomGeometry(room: {
         };
       });
     });
+    return geometry.map((part) =>
+      part.classification === "WALL" && part.face === "FRONT"
+        ? { ...part, openings: wallOpenings(part, room.features!) }
+        : part,
+    );
+  }
   const { width: w, depth: d } = room;
   const kind = room.id ?? "bedroom";
   const outdoor = kind === "trail" || kind === "plaza";
@@ -381,25 +450,27 @@ export function discoverRoomSurfaces(
         context: g.context,
         region: g.context.includes("ENTRANCE") ? "ENTRANCE_REGION" : "CURRENT_ROOM",
         position,
-        exclusions:
-          rotatedExclusions ??
-          geometry
-            .filter((item) => {
-              if (item === g || item.surface === "FLOOR" || item.surface === "WALL") return false;
-              const axis = g.face === "TOP" ? 1 : g.face === "FRONT" ? 2 : 0;
-              const plane = axis === 0 ? position.x : axis === 1 ? position.y : position.z;
-              return (
-                item.position[axis] - item.size[axis] / 2 < plane + (g.surface === "FLOOR" ? 1 : 0.18) &&
-                item.position[axis] + item.size[axis] / 2 > plane + 0.01
-              );
-            })
-            .map((item) =>
-              g.face === "TOP"
-                ? { x: item.position[0] - x, y: z - item.position[2], width: item.size[0], depth: item.size[2] }
-                : g.face === "FRONT"
-                  ? { x: item.position[0] - x, y: item.position[1] - y, width: item.size[0], depth: item.size[1] }
-                  : { x: z - item.position[2], y: item.position[1] - y, width: item.size[2], depth: item.size[1] },
-            ),
+        exclusions: [
+          ...(g.openings ?? []),
+          ...(rotatedExclusions ??
+            geometry
+              .filter((item) => {
+                if (item === g || item.surface === "FLOOR" || item.surface === "WALL") return false;
+                const axis = g.face === "TOP" ? 1 : g.face === "FRONT" ? 2 : 0;
+                const plane = axis === 0 ? position.x : axis === 1 ? position.y : position.z;
+                return (
+                  item.position[axis] - item.size[axis] / 2 < plane + (g.surface === "FLOOR" ? 1 : 0.18) &&
+                  item.position[axis] + item.size[axis] / 2 > plane + 0.01
+                );
+              })
+              .map((item) =>
+                g.face === "TOP"
+                  ? { x: item.position[0] - x, y: z - item.position[2], width: item.size[0], depth: item.size[2] }
+                  : g.face === "FRONT"
+                    ? { x: item.position[0] - x, y: item.position[1] - y, width: item.size[0], depth: item.size[1] }
+                    : { x: z - item.position[2], y: item.position[1] - y, width: item.size[2], depth: item.size[1] },
+              )),
+        ],
         normal,
         ...(rotation ? { rotation } : {}),
         widthMeters: g.face === "RIGHT" ? d : w,

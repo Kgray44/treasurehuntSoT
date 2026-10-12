@@ -134,6 +134,7 @@ export function SpatialStudio({
     accountScope = useRef("");
   const [placementPreview, setPlacementPreview] = useState<SpatialDraft | null>(null);
   const [assistantScenePreview, setAssistantScenePreview] = useState<SpatialDraft | null>(null);
+  const [roomScenePreview, setRoomScenePreview] = useState<SpatialDraft | null>(null);
   const [assistantHighlights, setAssistantHighlights] = useState<readonly string[]>([]);
   const writeHistory = useCallback((next: History) => {
     historyRef.current = next;
@@ -142,6 +143,7 @@ export function SpatialStudio({
     setEditorGeneration(generation.current);
     setHistoryState(next);
     setAssistantScenePreview(null);
+    setRoomScenePreview(null);
     setAssistantHighlights([]);
   }, []);
   const draft = history?.present;
@@ -524,8 +526,18 @@ export function SpatialStudio({
       ? assistantPortSession?.port
       : null;
   const assistantPreview = useCallback((next: SpatialDraft | null, affected: readonly string[]) => {
+    setRoomScenePreview(null);
     setAssistantScenePreview(next);
     setAssistantHighlights(affected);
+  }, []);
+  const roomPreview = useCallback((next: SpatialDraft | null) => {
+    setRoomScenePreview(next ? draftSchema.parse(next) : null);
+    if (next) {
+      setAssistantScenePreview(null);
+      setPlacementPreview(null);
+      setAssistantHighlights([]);
+      setAssistantOpen(false);
+    }
   }, []);
   const closeAssistant = () => {
     setAssistantOpen(false);
@@ -1186,12 +1198,12 @@ export function SpatialStudio({
           </div>
           <SpatialCanvas
             highlightedEntityIds={assistantHighlights}
-            draft={assistantScenePreview ?? placementPreview ?? draft}
+            draft={roomScenePreview ?? assistantScenePreview ?? placementPreview ?? draft}
             selectedId={selected}
             onSelect={setSelected}
             onInspect={() => setInspectorOpen(true)}
             onEdit={
-              assistantScenePreview || placementPreview
+              roomScenePreview || assistantScenePreview || placementPreview
                 ? () => setError("Approve or discard the proposal preview before editing objects.")
                 : edit
             }
@@ -1213,8 +1225,10 @@ export function SpatialStudio({
             >
               <span>✦ Ask Parallax</span>
               <small>
-                {assistantScenePreview || placementPreview
-                  ? "Review placement preview"
+                {roomScenePreview || assistantScenePreview || placementPreview
+                  ? roomScenePreview
+                    ? "Review room proposal"
+                    : "Review placement preview"
                   : "Place a folded letter on a table near the entrance…"}
               </small>
             </button>
@@ -1730,6 +1744,7 @@ export function SpatialStudio({
             <RoomPhotoPanel
               key={draft.content.definitionId}
               draft={draft}
+              onPreview={roomPreview}
               csrfToken={() => csrf.current}
               prepare={async () => {
                 await persist();

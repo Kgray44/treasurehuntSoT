@@ -207,3 +207,70 @@ assertions now require actual alert bounds to clear the Inspector title and
 stay within its scrollport. Recapture and independent review remain required.
 The seventeen dimension observations and boundaries from the preceding review
 remain applicable; feedback/hierarchy/focus still require that last repair.
+
+### Second parametric repair: verified
+
+The independent visual-first reviewer inspected thirteen PNGs and both complete
+production recordings at `b54edb6bb68017b72c7754e848dab4994d7665a9`, tree
+`40ca693759236f296c60a460f58d4636fce07c82`. The VALID unpaid manifest and media
+are retained under the matching evidence directory. PX-PARAM-01 remains
+VERIFIED_REPAIRED; PX-PARAM-02 is now VERIFIED_REPAIRED. The readable bounds
+message clears the sticky Inspector header after native Tab/blur, and a finite
+correction saves and reloads without changing the bound desk/clue relationship.
+Disposition: VERIFY_FINAL_EVIDENCE for this bounded packet.
+
+The parametric recording lasts 10.40 seconds, SHA256
+`9c56d36cb1669417c911c1a9f5a334fe79f8860273160ef63f5f680577df7f89`.
+The room regression recording lasts 6.92 seconds, SHA256
+`7b6f79d48b8eb0f009eb05487c59a26470a5273a53210628f0922726fa2c6c50`.
+The photo-unavailable still and actual manual continuation qualify only the
+unconfigured production fallback. They do not qualify successful perception.
+
+### Protected photo development walkthrough: bounded receipt
+
+At `4c18aeedd0b809b2d7d9b273b6aaacaf61d2f9a3`, tree
+`5a9e805eff12d8a7f25563b6766c9d739fd89629`, the independent reviewer inspected
+all four PNGs and the entire 10.24-second development recording before source.
+The manifest explicitly declares VALID / DEVELOPMENT / SYNTHETIC_UNPAID.
+Recording SHA256:
+`5a2b146fd0b796b89447cdb14c96f769744781d2a2383fe337e49da793553e5f`.
+Disposition: VERIFY_FINAL_EVIDENCE for the bounded desktop journey, without
+accepting the full protected-photo experience contract.
+
+The initial proposal is textual: the original room remains in the canvas until
+Apply. Saving renders eight editable features with four walls and a useful
+cutaway. A second synthetic view matches the shared desk, retaining its identity
+and moving it together with the clue. Individual withdrawal preserves geometry;
+reload restores the refined draft and remaining permission. The final PNG shows
+withdrawal pending; only the final native recording frames prove its completion.
+Persistent denial after that final withdrawal was not tested in this packet.
+
+| Dimension    | Production repair and development photo observation / boundary                                                 |
+| ------------ | -------------------------------------------------------------------------------------------------------------- |
+| Composition  | Useful actual room/cutaway; proposal geometry was not previewed before Apply.                                  |
+| Hierarchy    | Correction disclosures, readiness, consent, proposal and saved Apply ordered clearly.                          |
+| Typography   | Full-size PNG guidance legible; scaled recording fine text and localization unqualified.                       |
+| Spacing      | Error clears Inspector header; long photo form scrolls without overlap on desktop.                             |
+| Controls     | Actual bound Remove/Rebuild protection, correction/save/reload, upload/refinement/withdrawal work.             |
+| Contrast     | Dark workflow readable; configured photo light theme not captured.                                             |
+| Consistency  | Canonical room identity, history and saved Apply; blue contextual Inspector.                                   |
+| States       | Production unavailable/manual fallback and development proposed/applied/refined/withdrawn observed separately. |
+| Responsive   | Manual correction works at 390×844; configured photo phone/landscape unqualified.                              |
+| Keyboard     | Native field Tab/blur exercised; complete keyboard photo journey unqualified.                                  |
+| Focus        | Validation reveals without moving focus; photo proposal focus/return and screen reader unqualified.            |
+| Feedback     | Visible bounds recovery, estimated geometry, consent stages and retained-geometry withdrawal text.             |
+| Motion       | Actual room and desk/clue transitions; reduced-motion fixture, no live inference timing proof.                 |
+| Continuity   | Manual and refined photo geometry survive reload; final withdrawal persistence not proven.                     |
+| Complexity   | Disclosed tasks support tested loop; long form and ordinal photo labels limit broader usability.               |
+| Role outcome | Synthetic Creator desktop development workflow succeeds; owner/other roles unqualified.                        |
+| Fallback     | Unconfigured/manual recovery works; configured clarification/cancel/failure/conflict not captured.             |
+
+The earlier `b54edb6bb680` development photo run is retained as INVALIDATED,
+exit 1: storage inside the checkout was rejected and development startup changed
+tracked setup files. It is failed evidence, separate from that candidate's valid
+production repair. The succeeding development fixture moved disposable storage
+outside the checkout and froze startup configuration. Synthetic flat-color
+images, scanner and intercepted OpenAI prove workflow rather than live vision,
+real scanning, production provider readiness, native calibration, physical
+correctness, complete overhaul or owner acceptance. Subsequent preview/opening
+changes require their own capture and review.

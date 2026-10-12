@@ -11,12 +11,14 @@ export function RoomPhotoPanel({
   prepare,
   isCurrent,
   apply,
+  onPreview,
 }: {
   draft: SpatialDraft;
   csrfToken: () => string;
   prepare: () => Promise<Base>;
   isCurrent: (base: Base) => boolean;
   apply: (base: Base, proposal: RoomPerceptionProposal) => Promise<void>;
+  onPreview: (draft: SpatialDraft | null) => void;
 }) {
   const [availability, setAvailability] = useState<{ available: boolean; message: string } | null>(null);
   const [file, setFile] = useState<File | null>(null),
@@ -27,6 +29,11 @@ export function RoomPhotoPanel({
   const [photos, setPhotos] = useState<{ mediaId: string; permissionExpiresAt: string }[]>([]);
   const [proposal, setProposal] = useState<{ base: Base; value: RoomPerceptionProposal } | null>(null);
   const [busy, setBusy] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
+  const clearPreview = () => {
+    onPreview(null);
+    setPreviewing(false);
+  };
   const controller = useRef<AbortController | null>(null),
     mounted = useRef(true);
   const room = draft.content.studio?.environment;
@@ -55,8 +62,9 @@ export function RoomPhotoPanel({
       mounted.current = false;
       abort.abort();
       controller.current?.abort();
+      onPreview(null);
     };
-  }, [draft.content.definitionId]);
+  }, [draft.content.definitionId, onPreview]);
   const json = async (body: unknown, signal?: AbortSignal) => {
     const response = await fetch("/api/studio/parallax/room-photo", {
       method: "POST",
@@ -74,6 +82,7 @@ export function RoomPhotoPanel({
     controller.current = abort;
     setBusy(true);
     setError("");
+    clearPreview();
     setProposal(null);
     setPhase("Saving current scene…");
     try {
@@ -152,6 +161,7 @@ export function RoomPhotoPanel({
             accept="image/jpeg,image/png,image/webp"
             onChange={(event) => {
               setFile(event.target.files?.[0] ?? null);
+              clearPreview();
               setProposal(null);
               setConsent(false);
             }}
@@ -219,12 +229,33 @@ export function RoomPhotoPanel({
           <button
             type="button"
             disabled={busy || !isCurrent(proposal.base)}
+            onClick={() => {
+              if (previewing) clearPreview();
+              else {
+                onPreview({
+                  ...proposal.base.draft,
+                  content: {
+                    ...proposal.base.draft.content,
+                    studio: { ...proposal.base.draft.content.studio!, environment: proposal.value.room },
+                  },
+                });
+                setPreviewing(true);
+              }
+            }}
+          >
+            {previewing ? "Return to saved scene" : "Preview room proposal"}
+          </button>
+          {previewing && <p>Previewing proposed geometry. The saved scene is unchanged until you apply.</p>}
+          <button
+            type="button"
+            disabled={busy || !isCurrent(proposal.base)}
             onClick={async () => {
               setBusy(true);
               setError("");
               try {
                 await apply(proposal.base, proposal.value);
                 if (mounted.current) {
+                  clearPreview();
                   setProposal(null);
                   setPhase(
                     "Room geometry saved. Review it in the canvas and correct its features or known measurement.",
@@ -244,6 +275,7 @@ export function RoomPhotoPanel({
             type="button"
             disabled={busy}
             onClick={() => {
+              clearPreview();
               setProposal(null);
               setPhase("Proposal discarded. Your scene is unchanged.");
             }}
@@ -266,6 +298,7 @@ export function RoomPhotoPanel({
               try {
                 await json({ action: "WITHDRAW", definitionId: draft.content.definitionId, mediaId: photo.mediaId });
                 if (mounted.current) {
+                  clearPreview();
                   setPhotos((current) => current.filter((item) => item.mediaId !== photo.mediaId));
                   setProposal(null);
                   setPhase(
