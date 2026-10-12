@@ -72,7 +72,8 @@ export function evaluateAssistantCase(item: AssistantEvaluationCase, draft: Spat
           if (
             !existing ||
             !existingAnchor ||
-            existingAnchor.kind !== createdAnchor.kind ||
+            existingAnchor.kind !== "SURFACE_RELATIVE" ||
+            createdAnchor.kind !== "SURFACE_RELATIVE" ||
             existingAnchor.alignment !== createdAnchor.alignment ||
             !equal(existingAnchor.transform, createdAnchor.transform)
           )

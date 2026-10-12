@@ -336,7 +336,7 @@ export function AIQuotaUserPanel({
           Latest 100 records in this view; export is bounded to 1,000 records. Retained proposals and prompts are
           excluded.
         </p>
-        <div className={styles.scroll}>
+        <div className={styles.scroll} tabIndex={0} role="region" aria-label="Account AI request history">
           <table>
             <thead>
               <tr>
