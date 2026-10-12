@@ -561,7 +561,31 @@
     {
       "file": "model-independent-tuned-review.json.txt",
       "sha256": "11ad19217af266e0b5126ccc7c266db685a6f467d0798e486dac96901a05b8fd"
+    },
+    {
+      "file": "model-independent-spaced-review.json.txt",
+      "sha256": "87728c0967433e6240212e8de6d31e549967629e7aad2b1a83fc856df31144e8"
     }
   ],
-  "ownerAcceptance": "NOT_CLAIMED"
+  "ownerAcceptance": "NOT_CLAIMED",
+  "finalSemanticAssessment": {
+    "strictPassed": 83,
+    "cases": 90,
+    "decision": "NO_CONFIRMED_BLOCKING_DEFECT_IN_THIS_BOUNDED_RUN",
+    "model": "gpt-6-luna",
+    "reasoning": "low",
+    "repeatRunReliabilityClaimed": false
+  },
+  "finalReproductionFiles": [
+    {
+      "originalPath": "tmp/parallax-a1/independent-spaced-evidence.json",
+      "file": "independent-spaced-evidence.json.txt",
+      "sha256": "3ce5da9734a497112d62ff2d45d496ed5ee0585f07c63a704e05dbf333a6183b"
+    },
+    {
+      "originalPath": "tmp/parallax-a1/independent-spaced-fixture-check.json",
+      "file": "independent-spaced-fixture-check.json.txt",
+      "sha256": "6490a7cc350b147743f0c461baa1f5ca48814ebfd92102e79d356a1380416352"
+    }
+  ]
 }

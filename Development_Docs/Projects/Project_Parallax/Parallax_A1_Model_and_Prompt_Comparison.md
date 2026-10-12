@@ -54,7 +54,13 @@ strict results remain intact. The SPACED prompt now explicitly separates new
 fixed readable content from existing objects as well as other new objects;
 the final SPACED ninety-case run completed with 83/90 strict passes, all settled,
 costing $0.016765750 (mean $0.000186286 per call). All four desk cases now clear
-the existing map. Independent semantic assessment remains pending.
+the existing map. [Independent semantic review](evidence/owner-refinements/model-comparison/model-independent-spaced-review.json.txt)
+inspected all ninety actual outputs against their original requests and saved
+scenes, verified the exact prompt digest, and found no confirmed blocking defect
+in this bounded run. The seven strict mismatches remain recorded: intent labels,
+equivalent Guided narratives, preserved existing interactions and safe locked-object
+clarification. The Guided clock-tower wording is less specific than the fixture;
+that limitation remains visible. Mean provider latency was 2.740 seconds.
 
 Two broad Luna runs tested the original sixty messages plus thirty natural,
 adaptive and fresh examples. The TUNED run had 81/90 strict passes; QUALIFIED
@@ -112,7 +118,10 @@ browser input. Only its public synthetic cases can be run. Invalid or incomplete
 proposals preserve the scene; billed non-edits still consume usage. Unknown
 accounting stops further calls and remains reserved.
 
-Finite synthetic comparisons do not establish universal reliability, physical
+Final SPACED Sol and medium reasoning were not retested; historical matched
+comparisons do not prove an all-model ranking for the current prompt. One attempt
+per message does not establish repeat-run reliability. Finite synthetic comparisons
+do not establish universal reliability, physical
 AR accuracy, production-user content quality or owner visual acceptance. Models
 can still ask an unnecessary follow-up or vary explanatory wording. Explicit
 Creator review and deterministic validation remain mandatory. Current source
