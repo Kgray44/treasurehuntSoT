@@ -70,7 +70,7 @@ test("Creator authors a delayed interaction, sees matching and unmatched outcome
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
-  await page.getByRole("tab", { name: "Simulation", exact: true }).click();
+  if (await simulation.isHidden()) await page.getByRole("tab", { name: "Simulation", exact: true }).click();
   await simulation.getByRole("button", { name: "Simulate inspect", exact: true }).click();
   await simulation.getByRole("button", { name: "Run simulation", exact: true }).click();
   await expect.poll(async () => (await receipt())[0].status).toBe("HIDDEN");
