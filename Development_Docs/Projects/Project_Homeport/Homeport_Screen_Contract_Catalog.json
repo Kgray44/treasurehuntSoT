@@ -8247,7 +8247,7 @@
         "HP-P7-JRN-L"
       ],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
-      "acceptanceContract": "homeport.screen.player-library.current-contract",
+      "acceptanceContract": "homeport.screen.player-library.current-contract;homeport.shell.crossdeck-companion;homeport.shell.crossdeck-companion-mobile",
       "status": "CURRENT_SURFACE",
       "contractStatus": "CURRENT_STATE_RECORDED",
       "targetContract": {
@@ -8299,6 +8299,17 @@
         "state": "READY_FOR_OWNER_WALKTHROUGH",
         "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
         "evidenceIds": ["HP-P7-EV-L-mobile-workspace"]
+      },
+      "crossdeckRefitReconciliation": {
+        "state": "IMPLEMENTED_PENDING_EXACT_SOURCE_EXPERIENCE_VALIDATION",
+        "reviewedAt": "2026-10-12",
+        "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+        "integrationOwner": "project-homeport",
+        "specialistOwner": "project-crossdeck",
+        "sourceAuthority": "src/components/platform/PlayerLibrary.tsx",
+        "scope": "Companion Exit to Library and Continue adventure preserve the same canonical Voyage; existing Library history and visual maturity remain unchanged.",
+        "evidenceIds": [],
+        "ownerAcceptance": "NOT_CLAIMED"
       }
     },
     {

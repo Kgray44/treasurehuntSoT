@@ -7,6 +7,10 @@
   font-family: var(--font-interface);
   line-height: 1.55;
 }
+/* Ready connection instructions retain their contrast during route translation. */
+:global(.product-route-layer[data-route-role="incoming"][data-route-interactive="true"]):has(.onboarding) {
+  opacity: 1 !important;
+}
 .panel {
   max-width: 58rem;
   margin: 1.5rem auto;

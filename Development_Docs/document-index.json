@@ -9537,6 +9537,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/001de655-contrast-trace-findings.raw.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/001de655-focused-companion-receipt.raw.txt",
       "record_type": "archive-index",
       "status": "preserved",
@@ -9544,6 +9550,18 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0c424687-local-stage-receipt.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-consumer-trace-diagnosis.raw.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-contrast-trace-findings.raw.txt",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

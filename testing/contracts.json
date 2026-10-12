@@ -4537,7 +4537,10 @@
           "src/components/shell",
           "src/app/layout.tsx",
           "src/app/devices/companion",
-          "src/app/devices/display"
+          "src/app/devices/display",
+          "src/app/player/library/page.tsx",
+          "src/components/platform/PlayerLibrary.tsx",
+          "src/styles/platform.css"
         ],
         "projectionPaths": ["src/app/api/auth/context", "src/app/api/player/library", "src/app/api/play/sessions"],
         "devices": ["DESKTOP"],
@@ -4737,7 +4740,10 @@
           "src/components/shell",
           "src/app/layout.tsx",
           "src/app/devices/companion",
-          "src/app/devices/display"
+          "src/app/devices/display",
+          "src/app/player/library/page.tsx",
+          "src/components/platform/PlayerLibrary.tsx",
+          "src/styles/platform.css"
         ],
         "projectionPaths": ["src/app/api/auth/context", "src/app/api/player/library", "src/app/api/play/sessions"],
         "devices": ["MOBILE"],

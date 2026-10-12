@@ -248,8 +248,8 @@ retain the failed capture.
 The bounded contract correction checks the objective in **Chart companion**,
 then separately asserts the canonical **Voyage Chart** region and **Virtual
 Landfall chart** image. It adds one assertion per context while preserving all
-20 contexts and visible outcomes. The unit mock is corrected to the real
-composition; no application change follows the `0e1074c1` binary. The subsequent focused
+20 contexts and visible outcomes. The unit mock was corrected to the real
+composition without changing the `0e1074c1` binary for that diagnostic. The subsequent focused
 four-context diagnostic described below reused that verified unchanged binary
 and claims no new build pass. Normal-motion local timings were QR 447 ms, claim
 413 ms, send offer 192 ms and rendered acknowledgement 457 ms. These local
@@ -266,11 +266,21 @@ remain `NOT_CLAIMED` and are not combined with earlier passes to assert a full
 20-context result.
 
 The four-context result is a semantic capture-process pass, not accessibility
-acceptance. Its `ARTIFACT_READY` records contain color-contrast `axeSerious`
-observations in desktop and mobile NORMAL contexts; REDUCED contexts are clear.
-Exact-node diagnosis and repair remain pending. This known blocking observation
-holds draft PR creation and trusted dispatch; no PR has been created, and the
-current packet is not claimed fully accessible or ready for qualification.
+acceptance: source-bound analysis confirmed two Artifact NORMAL contrast
+failures; REDUCED contexts were clear in that packet. Another 72 AXE analyses of
+the partial `0e1074c1` full capture found MOBILE NORMAL RETURNED onboarding and
+LIBRARY_READY route fades. The [consumer trace diagnosis](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/0e1074c1-consumer-trace-diagnosis.raw.txt)
+preserves the owning composition evidence. Scoped repairs are implemented:
+companion Journal-block animation is disabled; incoming/interactive onboarding
+and Library routes have opacity 1; Library main starts at opacity 1 while
+retaining y/timing/card/grid motion. Thirty-five existing consumer tests,
+lint/format and CSS-module validation passed. No fresh build or capture matrix
+has verified these repairs; accessibility acceptance, draft PR creation and
+trusted dispatch remain pending.
+
+Both existing Homeport desktop/mobile contracts now register the exact Library
+page, component and `platform.css` sources. The canonical Library screen appends
+their contract IDs while preserving existing histories and maturity.
 
 The receipt binds source digest
 `f646bc0ed84c4032858989963d705e64f89fb39d79a3071c952618a0b9e64f68`,
@@ -284,18 +294,19 @@ and authenticated review submission, ordinary protected Sounding Line,
 protected integration and landed smoke. Readiness, debt closure, feature
 acceptance and owner acceptance remain unclaimed.
 
-| Evidence boundary                                        | Current result                                                                                                                                                                                                                                                           |
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                                                                                                                                   |
-| Focused source tests                                     | 15 Companion tests passed in 2.74 s for realistic canonical composition; lint/format passed. Earlier 13 disclosure tests and 16-file / 159-test batch remain historical; overlapping populations are not added. Final source binding remains pending.                    |
-| Production build                                         | At `0e1074c1`, fresh build passed in 51.385 s. The `001de655` focused diagnostic reused that verified unchanged binary; no new production build pass is claimed.                                                                                                         |
-| Actual two-context refit journey                         | Three browser cases passed at `0e1074c1` in 91.260 s: execution 89.843 s, readiness 1,292 ms, cleanup 34 ms. Final protected qualification remains pending.                                                                                                              |
-| Canonical capture                                        | Full capture at `0e1074c1` failed in 110.368 s after 16 passed contexts; that failed run remains failed. Trusted fresh full 20-context capture remains pending.                                                                                                          |
-| Focused companion diagnostic                             | At `001de655`, 4/4 semantic capture contexts completed in 37.966 s using the unchanged `0e1074c1` binary. NORMAL desktop/mobile color-contrast `axeSerious` observations block accessibility acceptance and dispatch; omitted 16-context qualification is `NOT_CLAIMED`. |
-| Independent 17-dimension rendered criticism              | Cycle 2 identified one open Chart placeholder contrast defect. Repair is implemented; final cycle 3 current contract packets/re-review remain pending.                                                                                                                   |
-| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                                                                                                                                   |
-| Landed smoke                                             | Pending integration.                                                                                                                                                                                                                                                     |
-| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                                                                                                                                    |
+| Evidence boundary                                        | Current result                                                                                                                                                                                                                                     |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                                                                                                             |
+| Focused source tests                                     | 35 existing consumer tests passed for scoped animation/opacity repairs; lint/format and CSS-module validation passed. No fresh build/capture matrix or accessibility acceptance yet. Earlier test populations remain historical and are not added. |
+| Production build                                         | At `0e1074c1`, fresh build passed in 51.385 s. The `001de655` focused diagnostic reused that verified unchanged binary; no new production build pass is claimed.                                                                                   |
+| Actual two-context refit journey                         | Three browser cases passed at `0e1074c1` in 91.260 s: execution 89.843 s, readiness 1,292 ms, cleanup 34 ms. Final protected qualification remains pending.                                                                                        |
+| Canonical capture                                        | Full capture at `0e1074c1` failed in 110.368 s after 16 passed contexts; that failed run remains failed. Trusted fresh full 20-context capture remains pending.                                                                                    |
+| Focused companion diagnostic                             | At `001de655`, 4/4 semantic contexts completed in 37.966 s. Two Artifact NORMAL contrast failures remain historical; omitted 16-context qualification is `NOT_CLAIMED`.                                                                            |
+| Technical accessibility                                  | Source-bound Artifact and mobile onboarding/Library fade diagnoses led to implemented scoped repairs. Fresh repaired-source matrix, protected capture and independent acceptance remain pending.                                                   |
+| Independent 17-dimension rendered criticism              | Cycle 2 identified one open Chart placeholder contrast defect. Repair is implemented; final cycle 3 current contract packets/re-review remain pending.                                                                                             |
+| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                                                                                                             |
+| Landed smoke                                             | Pending integration.                                                                                                                                                                                                                               |
+| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                                                                                                              |
 
 The measured checkpoint above is not the final accepted candidate. Final
 candidate/base/tree, capture packet, reviewer identity, protected run and landed
@@ -334,7 +345,7 @@ selected original failure PNGs, the
 and the f852, 0c424, 4b8c, c8c646, 737fc735, fb7cc2a2, 0e1074c1 and 001de655 diagnostic receipts/logs. Exactly two independent review
 cycles have occurred; cycle 3 awaits the trusted final packet. The
 [export manifest](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/manifest.json)
-records hashes and sizes for 28 exact-byte files totaling 1,957,498 bytes. These historical raw identities are not current
+records hashes and sizes for 31 exact-byte files totaling 2,145,694 bytes. These historical raw identities are not current
 trusted capture artifact IDs; all original task-local evidence is preserved.
 
 The current Homeport route inventory and both screen catalogs now record

@@ -196,9 +196,13 @@
   box-shadow: none;
   overflow: visible;
 }
-.reader :global(.journal-prose),
+.reader :global(.journal-prose) {
+  font-size: inherit;
+}
+/* Companion passages must be legible as soon as the selected purpose renders. */
 .reader :global(.journal-block) {
   font-size: inherit;
+  animation: none;
 }
 .reader :global(.journal-block) :is(h3, p, strong, blockquote, span, li, label) {
   color: var(--text-ink);
