@@ -12,6 +12,8 @@ last_reviewed: 2026-10-12
 
 ## Unreleased
 
+- Parallax: ten named environments have distinct furnishings and layouts, geometry-driven surfaces, safe floor placement and automatic camera framing.
+
 - Spatial Studio now snaps and aligns clues to wall, furniture and floor planes. The Surfaces overlay derives full planes from current reference-room geometry, wall presets retain their automatic placement preference, and the editor explains manual versus automatic placement. See the [correction record](Development_Docs/Projects/Project_Parallax/Surface_Snapping_Correction.md) for proof and the photo-reconstruction boundary.
 
 ### Engineering

@@ -1,3 +1,4 @@
+import { findSurfacePlacement } from "./surface-placement";
 import { draftSchema, type SpatialDraft } from "./authoring";
 import { defaultRecipe, defaultDiscovery, type SemanticRecipe, type AdaptiveContent } from "./adaptive-contracts";
 import { identityTransform } from "./contracts";
@@ -160,7 +161,14 @@ export function syntheticEnvironmentEvidence(room: {
   const candidates = discoverRoomSurfaces(syntheticRoomGeometry(room), room);
   const floor = candidates.find((c) => c.surface === "FLOOR")!;
   // Whole-plane bounds and the safe furniture-side staging point have distinct purposes.
-  floor.placementOffset = { x: -room.width * 0.25, y: 0, z: -room.depth * 0.2 };
+  floor.exclusions = [...(floor.exclusions ?? []), { x: 0, y: 0, width: 1.2, depth: 1.2 }];
+  const staging = findSurfacePlacement({ ...identityTransform(), position: floor.position }, floor, 0.8);
+  if (staging)
+    floor.placementOffset = {
+      x: staging.position.x - floor.position.x,
+      y: 0,
+      z: staging.position.z - floor.position.z,
+    };
   // Keep placement targets separate from non-surface free-space and hazard regions.
   const template = candidates.find((c) => c.surface === "TABLE") ?? candidates[0];
   candidates.push({

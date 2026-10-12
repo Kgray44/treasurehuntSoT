@@ -62,7 +62,10 @@ export function placeOnSurface(
   if (
     Math.abs(local.z) > maximumDistance ||
     Math.abs(local.x) + halfWidth > c.widthMeters / 2 ||
-    Math.abs(local.y) + halfHeight > c.depthMeters / 2
+    Math.abs(local.y) + halfHeight > c.depthMeters / 2 ||
+    c.exclusions?.some(
+      (r) => Math.abs(local.x - r.x) < r.width / 2 + halfWidth && Math.abs(local.y - r.y) < r.depth / 2 + halfHeight,
+    )
   )
     return null;
   return {
@@ -103,4 +106,27 @@ export function surfacePointIsClear(
       Math.abs(local.y) < (c.depthMeters + width * 0.75) / 2
     );
   });
+}
+
+/** Keep the full plane, but choose a fitting point outside known furniture footprints. */
+export function findSurfacePlacement(world: Transform, c: Candidate, width: number, search = true): Transform | null {
+  const direct = placeOnSurface(world, c, width);
+  if (direct || !search) return direct;
+  const frame = { position: c.position, rotation: surfaceRotation(c.normal), scale: 1 };
+  const points: Transform[] = [];
+  for (let x = -4; x <= 4; x++)
+    for (let y = -4; y <= 4; y++) {
+      const position = composeTransform(frame, {
+        ...identityTransform(),
+        position: { x: (x * c.widthMeters) / 10, y: (y * c.depthMeters) / 10, z: 0 },
+      }).position;
+      const fitted = placeOnSurface({ ...world, position }, c, width);
+      if (fitted) points.push(fitted);
+    }
+  points.sort(
+    (a, b) =>
+      Math.hypot(a.position.x - world.position.x, a.position.y - world.position.y, a.position.z - world.position.z) -
+      Math.hypot(b.position.x - world.position.x, b.position.y - world.position.y, b.position.z - world.position.z),
+  );
+  return points[0] ?? null;
 }

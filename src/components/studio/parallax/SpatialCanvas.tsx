@@ -61,7 +61,7 @@ export function SpatialCanvas(props: {
       ? composeTransform(placement.transform, e.transform)
       : e.parentEntityId && adaptive?.status === "RESOLVED"
         ? composeTransform(resolvedWorld(e.parentEntityId), e.transform)
-        : previewEntityTransform(draft.content, id, environmentId, environment.depth);
+        : previewEntityTransform(draft.content, id, environmentId, environment);
   };
   const states = evaluateSpatialBehavior(draft.content, inputs, timeMs, preview === "EDITOR");
   const commitWorld = (id: string, world: Transform) => {
@@ -79,8 +79,8 @@ export function SpatialCanvas(props: {
     const parent =
       placement?.transform ??
       (e.parentEntityId
-        ? previewEntityTransform(p.draft.content, e.parentEntityId, p.environmentId, room.depth)
-        : composeTransform(previewReferenceFrame(p.draft.content, a, p.environmentId, room.depth), a.transform));
+        ? previewEntityTransform(p.draft.content, e.parentEntityId, p.environmentId, room)
+        : composeTransform(previewReferenceFrame(p.draft.content, a, p.environmentId, room), a.transform));
     const local = composeTransform(inverseTransform(parent), world);
     if (p.draft.content.adaptive) local.position = { x: 0, y: 0, z: 0 };
     p.onEdit({ type: "TRANSFORM", entityId: id, transform: local });
@@ -101,13 +101,13 @@ export function SpatialCanvas(props: {
     )
       return;
     if (!d.content.adaptive) {
-      const world = previewEntityTransform(d.content, entity.id, p.environmentId);
+      const room = simulationEnvironments.find((r) => r.id === p.environmentId) ?? simulationEnvironments[0];
+      const world = previewEntityTransform(d.content, entity.id, p.environmentId, room);
       const target = position ?? {
         x: c.position.x + (c.placementOffset?.x ?? 0),
         y: c.position.y + (c.placementOffset?.y ?? 0),
         z: c.position.z + (c.placementOffset?.z ?? 0),
       };
-      const room = simulationEnvironments.find((r) => r.id === p.environmentId) ?? simulationEnvironments[0];
       const placed = surfacePointIsClear(
         target,
         syntheticEnvironmentEvidence(room).candidates,

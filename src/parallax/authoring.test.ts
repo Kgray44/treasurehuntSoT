@@ -220,7 +220,7 @@ describe("Parallax creator authoring", () => {
         transform: composeTransform(inverseTransform(parent), moved),
       });
       expect(edited.content.entities[0].transform.position.x).toBeCloseTo(0.2);
-      expect(previewEntityTransform(edited.content, entityId).position.x).toBeCloseTo(0.2);
+      expect(previewEntityTransform(edited.content, entityId).position.x).toBeCloseTo(original.position.x + 0.2);
       expect(edited.content.anchors[0].transform).toEqual(anchor.transform);
     }
   });

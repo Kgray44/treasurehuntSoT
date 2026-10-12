@@ -1,12 +1,12 @@
 ---
-title: Parallax room surfaces and orientation correction
+title: Parallax named rooms, surfaces and orientation
 audience: product-engineering
 status: implementation-validation
 canonical_for: parallax-room-surfaces-correction
 last_reviewed: 2026-10-12
 ---
 
-# Room surfaces and snapping
+# Named rooms, surfaces and snapping
 
 The Creator needs a wall-mounted clue to face the wall normal and a tabletop
 substitute to lie on that table. Manual placement must be distinct from automatic
@@ -42,6 +42,19 @@ The surface picker explains manual versus automatic placement. The Inspector
 also names the current method and explains what Move, Rotate and Scale do.
 Existing authoring modes and the Assistant's blue overlay remain intact.
 
+## Distinct synthetic environments
+
+Bedroom and Small dorm have differently sized beds, storage and study areas.
+Living room has a sofa, armchair, coffee table, rug and television. Office has
+four computer workstations and a filing cabinet. Classroom has rows of desks,
+chairs and a teaching whiteboard. Gallery has framed art, display plinths and
+a bench. Outdoor trail has a path, trees, stones and signage. Plaza has benches,
+planters, lighting and a central fountain. Empty room contains only its shell.
+Cluttered room has stacked obstacles. Room-specific geometry drives both
+rendering and surface discovery; decorative and curved shapes are not invented
+planar supports. Known furniture footprints exclude floor placements underneath
+objects. Changing environment resets the camera to frame that scene.
+
 ## Verification boundary
 
 Focused geometry, orientation, anchor, history and canonical domain tests precede
@@ -56,6 +69,6 @@ surface detection, or physical AR qualification. The owner explicitly selected
 existing-room correction first on 2026-10-12. Future room reconstruction must
 provide actual geometry and measured evidence through the existing domain seam.
 
-Feature Catalog decision: ordinary correction to existing authoring and surface
-placement behavior; no completed major capability or important availability
-change. No machine-readable fragment update is required.
+Feature Catalog decision: the named-environment expansion materially improves the
+existing synthetic simulation capability. FT-B092 records distinct furnished
+reference environments and shared geometry-driven surface discovery.

@@ -18,7 +18,7 @@ export type ViewportState = {
   objects: ViewportObject[];
   candidates: Candidate[];
   selected: string | null;
-  environment: { id: string; width: number; depth: number; horizontal: boolean; vertical: boolean };
+  environment: { id: string; width: number; depth: number; horizontal: boolean; vertical: boolean; light?: string };
   tool: "select" | "translate" | "rotate" | "scale";
   space: "world" | "local";
   snap: boolean;
@@ -120,75 +120,39 @@ export function createWorkstation(
     const { width: w, depth: d } = s.environment;
     const light = s.theme === "light";
     for (const g of syntheticRoomGeometry(s.environment)) {
-      const color =
-        g.surface === "FLOOR"
-          ? light
-            ? 0xdce5ef
-            : 0x363940
-          : g.surface === "WALL"
-            ? light
-              ? 0xe3eaf4
-              : 0x454b53
-            : g.surface === "SHELF"
-              ? 0x7e8e9c
-              : 0x947d62;
-      box(world, g.size, g.position, color);
+      const color = (light ? g.lightColor : g.color) ?? (g.surface === "FLOOR" ? 0x8797a8 : 0xc1cbd7);
+      if (g.shape === "TREE") {
+        const trunk = new T.Mesh(new T.CylinderGeometry(0.055, 0.09, g.size[1] * 0.6, 8), material(0x766047));
+        trunk.position.set(g.position[0], g.size[1] * 0.3, g.position[2]);
+        world.add(trunk);
+        for (let i = 0; i < 3; i++) {
+          const foliage = new T.Mesh(
+            new T.ConeGeometry(g.size[0] * (0.7 - i * 0.12), g.size[1] * 0.45, 10),
+            material(color),
+          );
+          foliage.position.set(g.position[0], g.size[1] * (0.52 + i * 0.16), g.position[2]);
+          foliage.castShadow = true;
+          world.add(foliage);
+        }
+      } else if (g.shape === "WINDOW") {
+        box(world, [g.size[0] + 0.1, g.size[1] + 0.1, 0.08], g.position, light ? 0xe3e9ef : 0x748498);
+        const glass = box(world, g.size, [g.position[0], g.position[1], g.position[2] + 0.05], color);
+        (glass.material as T.MeshStandardMaterial).emissive.setHex(0x738fa1);
+        (glass.material as T.MeshStandardMaterial).emissiveIntensity = 0.3;
+        box(world, [0.035, g.size[1], 0.02], [g.position[0], g.position[1], g.position[2] + 0.08], 0x93a3b4);
+      } else box(world, g.size, g.position, color);
     }
-    for (let i = 0; i <= w * 4; i++)
-      box(world, [0.012, 0.002, d], [-w / 2 + i / 4, 0.001, 0], light ? 0xc0cfdf : 0x222630);
-    const grid = new T.GridHelper(
-      Math.max(w, d),
-      Math.ceil(Math.max(w, d) * 2),
-      light ? 0x6b8bae : 0x647487,
-      light ? 0xabc0d6 : 0x344352,
-    );
-    grid.position.y = 0.008;
-    world.add(grid);
-    if (s.environment.vertical) {
-      // Invented architectural window: a bounded emissive panel, no captured imagery.
-      box(world, [w * 0.32, 1.4, 0.08], [-w * 0.13, 1.7, -d / 2 + 0.1], light ? 0x738ba7 : 0x0b1423);
-      const glass = box(world, [w * 0.3, 1.3, 0.02], [-w * 0.13, 1.7, -d / 2 + 0.16], 0xb2d9e3);
-      (glass.material as T.MeshStandardMaterial).emissive.setHex(0x79adbe);
-      (glass.material as T.MeshStandardMaterial).emissiveIntensity = 0.45;
-      box(world, [0.04, 1.4, 0.06], [-w * 0.13, 1.7, -d / 2 + 0.2], light ? 0xa1b1c6 : 0x212835);
-      box(world, [w * 0.32, 0.04, 0.06], [-w * 0.13, 1.7, -d / 2 + 0.2], light ? 0xa1b1c6 : 0x212835);
-      for (let i = 0; i < 8; i++)
-        box(world, [0.04, 2.7, 0.05], [w / 2 - 0.15 - i * 0.18, 1.35, -d / 2 + 0.1], light ? 0xa5b6ca : 0x343d49);
+    if (s.inspection) {
+      const grid = new T.GridHelper(
+        Math.max(w, d),
+        Math.ceil(Math.max(w, d) * 2),
+        light ? 0x6b8bae : 0x647487,
+        light ? 0xabc0d6 : 0x344352,
+      );
+      grid.position.y = 0.012;
+      world.add(grid);
     }
-    if (s.environment.horizontal) {
-      // The reference desk used by accepted fixed surface-relative drafts.
-      for (const x of [-0.62, 0.62])
-        for (const z of [-d * 0.25 - 0.4, -d * 0.25 + 0.4]) box(world, [0.06, 0.7, 0.06], [x, 0.35, z], 0x222b35);
-      for (const g of syntheticRoomGeometry(s.environment).filter(
-        (g) => ["TABLE", "DESK", "SHELF"].includes(g.surface) && g.id !== "sofa-seat" && g.id !== "reference-desk",
-      )) {
-        for (const x of [-0.45, 0.45])
-          for (const z of [-0.45, 0.45])
-            box(
-              world,
-              [0.045, g.position[1], 0.045],
-              [g.position[0] + x, g.position[1] / 2, g.position[2] + z],
-              0x242e3a,
-            );
-      }
-      const sofaZ = -d / 2 + 0.65,
-        sofaX = w / 2 - 1.25;
-      box(world, [1.8, 0.35, 0.7], [sofaX, 0.3, sofaZ], 0x394b5b);
-      box(world, [1.8, 0.55, 0.18], [sofaX, 0.65, sofaZ - 0.32], 0x43586a);
-      for (const x of [-0.9, 0.9]) box(world, [0.15, 0.45, 0.75], [sofaX + x, 0.53, sofaZ], 0x43586a);
-      const pot = new T.Mesh(new T.CylinderGeometry(0.16, 0.12, 0.3, 16), material(0xb5b2ab));
-      pot.position.set(-w / 2 + 0.45, 0.15, -d / 2 + 0.6);
-      world.add(pot);
-      for (let i = 0; i < 9; i++) {
-        const leaf = new T.Mesh(new T.SphereGeometry(0.16, 8, 6), material(0x416b58));
-        leaf.scale.set(0.5, 2.1, 1);
-        leaf.position
-          .copy(pot.position)
-          .add(new T.Vector3(Math.sin(i * 2.4) * 0.18, 0.55 + (i % 3) * 0.14, Math.cos(i * 2.4) * 0.15));
-        leaf.rotation.z = Math.sin(i) * 0.45;
-        world.add(leaf);
-      }
-    }
+    sunlight.intensity = "light" in s.environment && s.environment.light === "LOW" ? 2.5 : 4;
     for (const c of s.candidates.filter((c) => c.surface !== "OPEN_SPACE" && c.id !== "unsafe-walkway")) {
       const mesh = new T.Mesh(
         new T.PlaneGeometry(c.widthMeters, c.depthMeters),
@@ -348,13 +312,15 @@ export function createWorkstation(
     }
   };
   const update = (s: ViewportState) => {
+    const roomChanged = state?.environment.id !== s.environment.id;
     state = s;
     const light = s.theme === "light";
-    renderer.setClearColor(light ? 0xeaf1f9 : 0x101722);
-    (scene.fog as T.Fog).color.setHex(light ? 0xeaf1f9 : 0x101722);
+    const outdoor = ["trail", "plaza"].includes(s.environment.id);
+    renderer.setClearColor(outdoor ? (light ? 0xcde4ed : 0x4b637b) : light ? 0xeaf1f9 : 0x101722);
+    (scene.fog as T.Fog).color.setHex(outdoor ? (light ? 0xcde4ed : 0x4b637b) : light ? 0xeaf1f9 : 0x101722);
     (selection.material as T.LineBasicMaterial).color.setHex(light ? 0x175cd3 : 0x91baff);
     host.dataset.appearance = light ? "light" : "dark";
-    const nextEnvironment = JSON.stringify([s.environment, s.candidates, s.theme]);
+    const nextEnvironment = JSON.stringify([s.environment, s.candidates, s.theme, s.inspection]);
     if (nextEnvironment !== environmentKey) {
       environmentKey = nextEnvironment;
       buildRoom(s);
@@ -378,6 +344,7 @@ export function createWorkstation(
       highlight.visible = o.visible && o.highlighted;
       if (highlight.visible) highlight.setFromObject(obj);
     }
+    if (roomChanged) resetView();
     surfaces.visible = s.overlays;
     const selectedObject = objects.children.find((o) => o.userData.entityId === s.selected);
     const selected = s.objects.find((o) => o.entity.id === s.selected);
@@ -502,7 +469,9 @@ export function createWorkstation(
   resize();
   const resetView = (view = "perspective") => {
     const chosen = objects.children.find((o) => o.userData.entityId === state?.selected);
-    const target = view === "selection" && chosen ? chosen.position : new T.Vector3(0, 0.65, -0.5);
+    const target = view === "selection" && chosen ? chosen.position : new T.Vector3(0, 0.65, 0);
+    const span = Math.max(state?.environment.width ?? 4, state?.environment.depth ?? 4);
+    const framing = view === "selection" ? 0.55 : Math.max(1, span / 4) * Math.max(1, 1 / perspective.aspect);
     camera = view === "plan" ? orthographic : perspective;
     controls.dispose();
     controls = new OrbitControls(camera, renderer.domElement);
@@ -516,10 +485,10 @@ export function createWorkstation(
       .copy(target)
       .add(
         view === "plan"
-          ? new T.Vector3(0.01, 9, 0.01)
+          ? new T.Vector3(0.01, Math.max(9, span * 1.4), 0.01)
           : view === "front"
-            ? new T.Vector3(0, 2, 7)
-            : new T.Vector3(3.8, 2.9, 4.4),
+            ? new T.Vector3(0, 2 * framing, 7 * framing)
+            : new T.Vector3(3.8 * framing, 2.9 * framing, 4.4 * framing),
       );
     controls.update();
     controls.addEventListener("change", invalidate);

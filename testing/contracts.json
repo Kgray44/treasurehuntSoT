@@ -213,8 +213,8 @@
       "critical": true,
       "experience": {
         "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
-        "objective": "Move and resize floating assistance while retaining a full-sized spatial scene and reachable bottom composer",
-        "visibleOutcome": "A Creator moves and resizes floating assistance, sees confirmed window feedback, docks it and returns to the same Creator Library",
+        "objective": "Move and resize floating assistance while retaining a full-sized spatial scene and reachable bottom composer; snap to complete room surfaces and explore genuinely different named environments",
+        "visibleOutcome": "A Creator moves and resizes floating assistance, sees confirmed window feedback, docks it and returns to the same Creator Library with plane-aligned placement and room-specific furnishings",
         "integrationOwner": "Parallax floating assistance experience integration",
         "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
         "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
@@ -228,14 +228,23 @@
           "ASSISTANT_DOCKED",
           "RETURNED",
           "SURFACES_READY",
-          "SURFACE_SNAPPED"
+          "SURFACE_SNAPPED",
+          "ROOM_LIVING_ROOM",
+          "ROOM_DORM",
+          "ROOM_OFFICE",
+          "ROOM_CLASSROOM",
+          "ROOM_GALLERY",
+          "ROOM_TRAIL",
+          "ROOM_PLAZA",
+          "ROOM_EMPTY",
+          "ROOM_CLUTTERED"
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["CREATOR"],
         "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning. Floating title and all edge/corner handles support arrow keys, with Shift for larger steps.",
         "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
         "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
-        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content. The Surfaces control outlines complete current room planes and offers a compact accessible picker. Selecting a wall or furniture aligns the object to its normal, with clear manual/automatic placement language and ordinary Undo.",
+        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content. The Surfaces control outlines complete current room planes and offers a compact accessible picker. Selecting a wall or furniture aligns the object to its normal, with clear manual/automatic placement language and ordinary Undo. Each named synthetic environment has its own meaningful layout and furnishings, an empty room contains only its shell, and changing environments frames the complete scene.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -261,7 +270,8 @@
           "tests/e2e/parallax-assistant-presentation.spec.ts",
           "tests/e2e/parallax-spatial-assistant.spec.ts",
           "tests/e2e/parallax-workstation.spec.ts",
-          "tests/e2e/parallax-surfaces.spec.ts"
+          "tests/e2e/parallax-surfaces.spec.ts",
+          "tests/e2e/parallax-rooms.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
@@ -447,6 +457,393 @@
                 "action": "click",
                 "role": "button",
                 "name": "Toggle spatial overlays"
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Living room",
+                "path": "/studio/parallax",
+                "state": "ROOM_LIVING_ROOM",
+                "kind": "outcome",
+                "meaning": "The Creator selects Living room through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Small dorm",
+                "path": "/studio/parallax",
+                "state": "ROOM_DORM",
+                "kind": "outcome",
+                "meaning": "The Creator selects Small dorm through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Office",
+                "path": "/studio/parallax",
+                "state": "ROOM_OFFICE",
+                "kind": "outcome",
+                "meaning": "The Creator selects Office through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Classroom",
+                "path": "/studio/parallax",
+                "state": "ROOM_CLASSROOM",
+                "kind": "outcome",
+                "meaning": "The Creator selects Classroom through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Gallery",
+                "path": "/studio/parallax",
+                "state": "ROOM_GALLERY",
+                "kind": "outcome",
+                "meaning": "The Creator selects Gallery through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Outdoor trail",
+                "path": "/studio/parallax",
+                "state": "ROOM_TRAIL",
+                "kind": "outcome",
+                "meaning": "The Creator selects Outdoor trail through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Plaza",
+                "path": "/studio/parallax",
+                "state": "ROOM_PLAZA",
+                "kind": "outcome",
+                "meaning": "The Creator selects Plaza through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Empty room",
+                "path": "/studio/parallax",
+                "state": "ROOM_EMPTY",
+                "kind": "outcome",
+                "meaning": "The Creator selects Empty room through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Cluttered room",
+                "path": "/studio/parallax",
+                "state": "ROOM_CLUTTERED",
+                "kind": "outcome",
+                "meaning": "The Creator selects Cluttered room through the ordinary environment control and sees its named room-specific scene."
               },
               {
                 "action": "click",

@@ -3,6 +3,9 @@ import { versionContentSchema, identityTransform, type Anchor, type SpatialEntit
 import { emptyStudioContent, type StudioContent } from "./studio-contracts";
 import { composeTransform, inverseTransform } from "./transforms";
 import { defaultRecipe, defaultDiscovery } from "./adaptive-contracts";
+import { syntheticRoomGeometry, discoverRoomSurfaces } from "./room-geometry";
+type PreviewRoom = { id: string; width: number; depth: number; horizontal: boolean; vertical: boolean };
+const defaultPreviewRoom: PreviewRoom = { id: "bedroom", width: 4, depth: 4, horizontal: true, vertical: true };
 
 export const authoringModes = ["GUIDED", "DETAILED", "ENGINEERING"] as const;
 export const previewModes = [
@@ -155,15 +158,18 @@ export function worldTransform(content: DraftContent, entityId: string): Transfo
 }
 
 /** Synthetic room frames are preview-only; surface offsets remain relative to the selected native surface. */
-export function referenceSurfaceFrame(anchor: Anchor, roomDepth = 4): Transform {
+export function referenceSurfaceFrame(anchor: Anchor, room: PreviewRoom = defaultPreviewRoom): Transform {
   if (anchor.kind !== "SURFACE_RELATIVE") return identityTransform();
+  const planes = discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 });
+  const chosen =
+    anchor.alignment === "VERTICAL"
+      ? planes.find((c) => c.id === "wall-window")
+      : (planes.find((c) => c.id === "reference-desk") ??
+        planes.find((c) => c.safe && ["TABLE", "DESK", "SHELF"].includes(c.surface)) ??
+        planes.find((c) => c.surface === "FLOOR"));
   return {
     ...identityTransform(),
-    position: {
-      x: 0,
-      y: anchor.alignment === "HORIZONTAL" ? 0.75 : 1.4,
-      z: anchor.alignment === "HORIZONTAL" ? -roomDepth * 0.25 : -roomDepth / 2 + 0.06,
-    },
+    position: chosen?.position ?? { x: 0, y: 1.4, z: -room.depth / 2 + 0.06 },
     rotation:
       anchor.alignment === "HORIZONTAL"
         ? { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 }
@@ -175,27 +181,25 @@ export function previewReferenceFrame(
   content: DraftContent,
   anchor: Anchor,
   environmentId?: string,
-  roomDepth = 4,
+  room: PreviewRoom = defaultPreviewRoom,
 ): Transform {
   const frame = content.studio?.surfacePreviewFrames?.find(
     (f) => f.anchorId === anchor.id && (!environmentId || f.environmentId === environmentId),
   );
-  return frame
-    ? { position: frame.position, rotation: frame.rotation, scale: 1 }
-    : referenceSurfaceFrame(anchor, roomDepth);
+  return frame ? { position: frame.position, rotation: frame.rotation, scale: 1 } : referenceSurfaceFrame(anchor, room);
 }
 
 export function previewEntityTransform(
   content: DraftContent,
   entityId: string,
   environmentId?: string,
-  roomDepth = 4,
+  room: PreviewRoom = defaultPreviewRoom,
 ): Transform {
   const entity = content.entities.find((e) => e.id === entityId);
   if (!entity) throw new Error("Choose an existing spatial entity.");
   const anchor = content.anchors.find((a) => a.id === entity.anchorId)!;
   return composeTransform(
-    previewReferenceFrame(content, anchor, environmentId, roomDepth),
+    previewReferenceFrame(content, anchor, environmentId, room),
     worldTransform(content, entityId),
   );
 }

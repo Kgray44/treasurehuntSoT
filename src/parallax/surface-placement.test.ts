@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { createSpatialDraft, changeHistory, undo, redo, previewEntityTransform } from "./authoring";
 import { identityTransform } from "./contracts";
 import { discoverRoomSurfaces, syntheticRoomGeometry, type RoomGeometry } from "./room-geometry";
-import { placeOnSurface, snapToNearestSurface, snapSpatialEntity } from "./surface-placement";
+import { findSurfacePlacement, placeOnSurface, snapToNearestSurface, snapSpatialEntity } from "./surface-placement";
 import { syntheticEnvironmentEvidence, enableAdaptiveAuthoring } from "./adaptive-authoring";
 import { evaluateCandidate, resolveAdaptiveScene, environmentEvidenceSchema } from "./adaptive";
 import { composeTransform } from "./transforms";
@@ -54,7 +54,7 @@ describe("room geometry and surface placement", () => {
   it("aligns the same object to both wall directions, then a table and floor", () => {
     for (const id of ["wall-window", "wall-left", "table-left", "floor-furniture"]) {
       const c = surfaces().find((c) => c.id === id)!;
-      const placed = placeOnSurface({ ...identityTransform(), position: c.position, scale: 0.8 }, c, 0.3)!;
+      const placed = findSurfacePlacement({ ...identityTransform(), position: c.position, scale: 0.8 }, c, 0.3)!;
       expect(placed.scale).toBe(0.8);
       const normal = face(placed.rotation);
       for (const axis of ["x", "y", "z"] as const) expect(normal[axis]).toBeCloseTo(c.normal[axis]);
@@ -90,14 +90,41 @@ describe("room geometry and surface placement", () => {
     const pose = { ...identityTransform(), position: { x: 0, y: 0.1, z: 0 } };
     expect(snapToNearestSurface(pose, surfaces(), 0.25)).toEqual(pose);
     const floor = surfaces().find((c) => c.id === "floor-furniture")!;
-    const world = placeOnSurface({ ...pose, position: { x: -1, y: 0, z: -0.8 } }, floor, 0.25)!;
+    const world = placeOnSurface({ ...pose, position: { x: 1.2, y: 0, z: 0.8 } }, floor, 0.25)!;
     const d = createSpatialDraft("native-floor");
     const saved = snapSpatialEntity(d, d.content.entities[0].id, world, floor);
     const relative = composeTransform(saved.content.anchors[0].transform, saved.content.entities[0].transform);
     expect(relative.position.z).toBeCloseTo(0.01);
-    expect(relative.position.y).toBeCloseTo(0.8);
+    expect(relative.position.y).toBeCloseTo(-0.8);
     expect(relative.rotation.w).toBeCloseTo(1);
     expect(enableAdaptiveAuthoring(saved).content.studio?.surfacePreviewFrames).toBeUndefined();
+  });
+  it("keeps the full floor available while rejecting points under furniture and outside its bounds", () => {
+    const floor = surfaces().find((c) => c.id === "floor-furniture")!;
+    expect(placeOnSurface({ ...identityTransform(), position: { x: -1.2, y: 0, z: -0.18 } }, floor, 0.3)).toBeNull();
+    expect(placeOnSurface({ ...identityTransform(), position: { x: 0, y: 0, z: 0 } }, floor, 0.3)).toBeNull();
+    const staged = findSurfacePlacement({ ...identityTransform(), position: floor.position }, floor, 0.5)!;
+    expect(staged).not.toBeNull();
+    expect(placeOnSurface(staged, floor, 0.5)).not.toBeNull();
+    const draft = enableAdaptiveAuthoring(createSpatialDraft("floor-obstacles"));
+    const recipe = {
+      ...draft.content.adaptive!.recipes[0],
+      preferredSurfaces: ["FLOOR"] as const,
+      alternateSurfaces: [],
+      minimumHeightMeters: 0,
+      maximumHeightMeters: 0.3,
+    };
+    const result = evaluateCandidate({ ...recipe, preferredSurfaces: [...recipe.preferredSurfaces] }, floor, 0.5, true);
+    expect(result.accepted).toBe(true);
+    expect(placeOnSurface(result.transform, floor, 0.5)).not.toBeNull();
+    expect(
+      evaluateCandidate(
+        { ...recipe, preferredSurfaces: [...recipe.preferredSurfaces] },
+        { ...floor, placementOffset: { x: 100, y: 0, z: 100 } },
+        0.5,
+        true,
+      ).accepted,
+    ).toBe(true);
   });
   it("preserves Hidden Wall Message intent in automatic placement and aligns a horizontal substitute", () => {
     const d = enableAdaptiveAuthoring(createSpatialDraft("wall-note", "Hidden Wall Message"));

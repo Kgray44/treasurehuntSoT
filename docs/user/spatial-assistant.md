@@ -91,3 +91,5 @@ the default is 30 days. It does not appear in general usage reports or browser
 storage. Existing clue text, private Guided descriptions, media and other
 accounts' content are excluded from that context. Object labels are included;
 avoid putting sensitive information in a submitted instruction or label.
+
+Choose **Environment** to explore ten distinct synthetic layouts: Bedroom, Living room, Small dorm, Office, Classroom, Gallery, Outdoor trail, Plaza, Empty room and Cluttered room. Each contains furnishings or scenery appropriate to its name. Surfaces follow the displayed geometry; the floor remains one complete plane. Furniture footprints prevent floor placement underneath objects. These invented previews do not reconstruct a room from photographs.

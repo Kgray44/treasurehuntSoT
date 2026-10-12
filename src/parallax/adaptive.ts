@@ -8,7 +8,7 @@ import {
 } from "./adaptive-contracts";
 import type { Transform } from "./contracts";
 import { composeTransform } from "./transforms";
-import { surfaceRotation as rotationForSurface } from "./surface-placement";
+import { surfaceRotation as rotationForSurface, findSurfacePlacement } from "./surface-placement";
 const point = z.strictObject({
   x: z.number().finite().min(-100).max(100),
   y: z.number().finite().min(-10).max(20),
@@ -21,6 +21,17 @@ export const candidateSchema = z.strictObject({
   region: z.enum(["CURRENT_ROOM", "ENTRANCE_REGION"]),
   position: point,
   placementOffset: point.optional(),
+  exclusions: z
+    .array(
+      z.strictObject({
+        x: z.number().finite().min(-100).max(100),
+        y: z.number().finite().min(-100).max(100),
+        width: z.number().finite().positive().max(100),
+        depth: z.number().finite().positive().max(100),
+      }),
+    )
+    .max(128)
+    .optional(),
   normal: point,
   widthMeters: z.number().finite().positive().max(100),
   depthMeters: z.number().finite().positive().max(100),
@@ -214,6 +225,17 @@ export function evaluateCandidate(
         0.05 / (1 + Math.abs(c.position.y - recipe.preferredHeightMeters))) *
         1000,
     ) / 1000;
+  let transform = candidateTransform(recipe, c, width, viewer);
+  if (c.exclusions?.length || c.placementOffset) {
+    const fitted = findSurfacePlacement(
+      transform,
+      c,
+      width + recipe.minimumClearanceMeters * 2,
+      recipe.relativePlacement === "CENTER",
+    );
+    if (!fitted) constraints.push("INSUFFICIENT_FREE_SPACE");
+    else transform = { ...transform, position: fitted.position };
+  }
   const accepted = constraints.length === 0;
   return {
     candidate: c,
@@ -227,7 +249,7 @@ export function evaluateCandidate(
         ? "LOW_CONFIDENCE_FALLBACK"
         : "NO_VALID_PLACEMENT",
     constraints,
-    transform: candidateTransform(recipe, c, width, viewer),
+    transform,
   };
 }
 export type SceneResolution = {

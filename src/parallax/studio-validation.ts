@@ -201,7 +201,7 @@ export const simulationEnvironments = [
     name: "Gallery",
     width: 8,
     depth: 8,
-    horizontal: false,
+    horizontal: true,
     vertical: true,
     light: "LOW",
     clutter: 0.1,
@@ -223,7 +223,7 @@ export const simulationEnvironments = [
     name: "Plaza",
     width: 12,
     depth: 12,
-    horizontal: false,
+    horizontal: true,
     vertical: false,
     light: "NORMAL",
     clutter: 0.1,
@@ -246,7 +246,7 @@ export const simulationEnvironments = [
     width: 2,
     depth: 2,
     horizontal: true,
-    vertical: false,
+    vertical: true,
     light: "LOW",
     clutter: 0.9,
     tracking: false,
@@ -283,7 +283,7 @@ export function simulateSpatialEnvironments(content: DraftContent) {
         !(a.alignment === "HORIZONTAL" ? environment.horizontal : environment.vertical),
     );
     const outside = content.entities.some((e) => {
-      const p = previewEntityTransform(content, e.id).position;
+      const p = previewEntityTransform(content, e.id, environment.id, environment).position;
       return Math.abs(p.x) > environment.width / 2 || Math.abs(p.z) > environment.depth / 2;
     });
     const status = issues.some((i) => i.severity === "ERROR")
