@@ -148,3 +148,9 @@ the accepted Crossdeck obligations.
 Retain the previously agreed `.object .objectKind` Lens ink selector while
 consuming the other accepted Crossdeck Lens styles after protected acceptance.
 No Journal, Lens, Devices or wrapper source was changed by this agreement.
+
+The frozen companion's actual `Return to Chronicle` route is
+`/player/playthroughs/<encoded-voyage-id>/journal`
+(`CrossdeckCompanion.tsx`, `chronicleHref` at line 106). Sextant's new consumer
+journeys must use this exact authenticated Player destination. Its compatibility
+`/play` wrapper is a separate consumer seam.

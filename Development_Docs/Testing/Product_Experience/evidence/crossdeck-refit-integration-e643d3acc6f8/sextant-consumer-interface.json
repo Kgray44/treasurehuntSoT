@@ -37,7 +37,11 @@
     "sharedPurposeRoute": "/devices/display?voyage=encodedVoyageId",
     "otherPurposes": "companionHref(surface.voyageId)",
     "legitimateMultipleRowsPreserved": true,
-    "consumptionGate": "Crossdeck protected acceptance required"
+    "consumptionGate": "Crossdeck protected acceptance required",
+    "actualReturnToChronicleRoute": "/player/playthroughs/encodedVoyageId/journal",
+    "returnSourcePath": "src/components/crossdeck/CrossdeckCompanion.tsx",
+    "returnSourceBlob": "16670d5101b2c5d82578c6edfd6c5345cbb954ae",
+    "wrapperRouteRelationship": "Compatibility /play wrapper is separate; current companion returns to canonical PLAYER Journal."
   },
   "canonicalOwnerApprovalClaim": "NOT_INVENTED; unchanged accepted API consumption only",
   "broaderConsumerCoverageGaps": {
