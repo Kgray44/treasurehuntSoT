@@ -984,7 +984,4 @@
   .workspace[data-training="true"] .guide .actions {
     margin-top: 0;
   }
-  .lab[data-step="RESULTS"] .plane {
-    height: 200px;
-  }
 }

@@ -3623,7 +3623,7 @@
           "RELATIVE_TRAINING",
           "RELATIVE_VALIDATION",
           "RELATIVE_RESULTS",
-          "CAMERA_DENIED",
+          "CAMERA_UNAVAILABLE",
           "RETURNED"
         ],
         "devices": ["DESKTOP", "MOBILE"],
@@ -4202,7 +4202,7 @@
             ]
           },
           {
-            "id": "camera-denial-and-conventional-recovery",
+            "id": "camera-unavailability-and-conventional-recovery",
             "roles": ["ANONYMOUS"],
             "outcome": "A person understands denied camera access and completes a useful conventional demonstration before returning",
             "steps": [
@@ -4228,13 +4228,13 @@
               },
               {
                 "action": "assert",
-                "role": "status",
-                "name": "Reach status",
-                "text": "Camera access was declined",
+                "role": "button",
+                "name": "Retry live camera",
+                "text": "Retry live camera",
                 "path": "/devices/reach",
                 "kind": "outcome",
-                "meaning": "A denied camera explains the actual condition and keeps retry and demonstration available.",
-                "state": "CAMERA_DENIED"
+                "meaning": "An unavailable camera explains its actual condition and exposes explicit retry and a guided conventional alternative.",
+                "state": "CAMERA_UNAVAILABLE"
               },
               {
                 "action": "click",

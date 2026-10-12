@@ -86,6 +86,7 @@ export function ReachLaboratory({
   returnLabel?: string;
 }) {
   const video = useRef<HTMLVideoElement>(null),
+    laboratory = useRef<HTMLElement>(null),
     plane = useRef<HTMLDivElement>(null),
     runtime = useRef<ReachBrowserRuntime | null>(null);
   const selector = useRef(new ActiveHandSelector()),
@@ -130,6 +131,12 @@ export function ReachLaboratory({
     demoFaultRef.current = demoFault;
   }, [demoFault]);
   const motion = useOptionalMotionPolicyContext();
+  useEffect(() => {
+    if (step !== "TRAINING") return;
+    const section = laboratory.current;
+    if (section) window.scrollTo({ top: window.scrollY + section.getBoundingClientRect().top - 88 });
+    plane.current?.focus({ preventScroll: true });
+  }, [step]);
   const advance = useCallback((next: Step) => {
     stepRef.current = next;
     setStep(next);
@@ -620,8 +627,15 @@ export function ReachLaboratory({
         : calibration
           ? "Independent check required"
           : "Setup required";
+  const moveDemoToTarget = () => {
+    const next = target ?? practiceTarget;
+    if (!next) return;
+    setPoint(next);
+    demoPoint.current = next;
+  };
   return (
     <section
+      ref={laboratory}
       className={styles.lab}
       aria-labelledby="reach-heading"
       data-pointing-mode={pointingMode}
@@ -747,7 +761,7 @@ export function ReachLaboratory({
             <progress aria-label="Target progress" max={1} value={acquisition?.progress ?? 0} />
           </div>
         )}
-        <div ref={plane} className={styles.plane} hidden={!showPlane} aria-label="Pointing practice area">
+        <div ref={plane} tabIndex={-1} className={styles.plane} hidden={!showPlane} aria-label="Pointing practice area">
           <div className={styles.planeHeader}>
             <span>
               {step === "PLAYGROUND"
@@ -892,7 +906,7 @@ export function ReachLaboratory({
               {source === "OFF" ? (
                 <div className={styles.actions}>
                   <button className={styles.primary} onClick={startCamera}>
-                    Enable live camera
+                    {status === "DISABLED" ? "Enable live camera" : "Retry live camera"}
                   </button>
                   <button onClick={startDemo}>Explore guided demo</button>
                 </div>
@@ -962,6 +976,7 @@ export function ReachLaboratory({
                 </p>
               </div>
               <div className={styles.actions}>
+                {source === "DEMO" && <button onClick={moveDemoToTarget}>Move demo hand to target</button>}
                 <button className={styles.primary} onClick={togglePause}>
                   {step === "VALIDATION"
                     ? paused
@@ -1067,6 +1082,9 @@ export function ReachLaboratory({
           {step === "PLAYGROUND" && (
             <>
               <div className={styles.actions}>
+                {source === "DEMO" && practiceTarget && (
+                  <button onClick={moveDemoToTarget}>Move demo hand to target</button>
+                )}
                 <button
                   className={styles.primary}
                   onClick={() => {
@@ -1127,17 +1145,6 @@ export function ReachLaboratory({
                 />
               </label>
             ))}
-            {(target || practiceTarget) && (
-              <button
-                onClick={() => {
-                  const next = target ?? practiceTarget!;
-                  setPoint(next);
-                  demoPoint.current = next;
-                }}
-              >
-                Move demo hand to target
-              </button>
-            )}
             <label>
               Tracking condition
               <select
