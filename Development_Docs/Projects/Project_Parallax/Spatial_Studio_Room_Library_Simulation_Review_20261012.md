@@ -27,7 +27,8 @@ retains exact run manifests, PNGs and recordings, including failures.
 | `67adfab5e0d2`                             | Five foundation/room journeys passed; reusable-library journey failed when the test closed an already-open identity section. Failure screenshot/context retained.                                                |
 | `f4a1dac871de51b9d243cd7c34c061822f9ffccb` | Library journey passed; independent review found PX-LIB-01: an isolated definition camera leaked into the returned room.                                                                                         |
 | `caa62c0a33564fbf9e512bbcbc8dd06a0e9f3b6e` | Animation/camera/library journeys passed, including restored room view and both objects IN_VIEW after archive. Simulation reached delayed hide/reset/save but the test collapsed its restored dock after reload. |
-| `1973a912`                                 | Four journeys passed: animation, camera/recovery, reusable library and Creator-authored delayed simulation with saved replay. Independent library re-review and new simulation review requested.                 |
+| `1973a912`                                 | Four journeys passed. Independent library re-review accepted PX-LIB-01; Simulation review identified PX-SIM-01/02 rendered-evidence gaps.                                                                        |
+| `c5f7f69012f21278ced0ab57b3612d0ea034e61b` | Library and Simulation journeys passed. Independent desktop re-review accepted PX-SIM-01/02 repairs and retained library return/archive acceptance.                                                              |
 
 The source-bound manifest records each full candidate/tree identity and lock
 digest. A failed overall run is retained as failed even where individual
@@ -79,7 +80,10 @@ visible copied-scene result. Disposition: REPAIR_AND_RECAPTURE. The repair resto
 a room perspective on definition-to-scene transition, preserves draft equality
 checks and asserts actual IN_VIEW receipts for both objects after archive.
 `library-archived-definition.png` at `caa62c0a3356` shows the complete room with
-both compass primitives. Final independent disposition is pending re-review.
+both compass primitives. Independent re-review at `1973a912` and regression
+review at `c5f7f690` returned VERIFY_FINAL_EVIDENCE: both copied compasses remain
+visible in the useful room overview after natural return/archive, without a
+test-only Frame action. PX-LIB-01 is VERIFIED_REPAIRED.
 
 Library review dimensions remain bounded to desktop dark theme and one built-in
 object: composition and return continuity required PX-LIB-01 repair; hierarchy,
@@ -98,7 +102,43 @@ waiting state, observes the rendered compass disappear, resets it, saves/reloads
 runs timed playback to repeat the effect and exposes Engineering coordinates.
 The same evaluator feeds timeline, Studio preview and canonical Lens.
 
-The new independent simulation review is pending. Current evidence does not
+The independent review at `1973a912` found PX-SIM-01: matched waiting/applied
+results and Engineering evaluated coordinates existed below the captured fold.
+PX-SIM-02 identified a tiny compass during saved timed replay. These were
+rendered-evidence gaps rather than confirmed behavior-engine failures.
+
+At `c5f7f690` (tree `b5e9d2ba10ba071fd630646cff432018c97875f9`), reviewer
+`/root/studio_foundation_review` inspected all eleven PNGs and both recordings
+before frozen source. The Simulation recording SHA256 is
+`371173e409764835efa969c7ba279aea7a80ad9fe7f256dacaf6ce521de64861`.
+Actual pane scrolling exposes inspect → Hide Floating Compass → waiting 1.0 s,
+then evaluated · renderer: hidden. Ordinary Isolate/Frame precedes real elapsed
+Run after reload; the large compass disappears and Reset visibly restores it.
+The Engineering endpoint shows renderer in view and evaluated local coordinates.
+Disposition: VERIFY_FINAL_EVIDENCE for the bounded desktop repair; PX-SIM-01/02
+are VERIFIED_REPAIRED after one repair/recapture iteration.
+
+| Dimension    | Independent Simulation observation and limit                                                                                      |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Composition  | Large compass and readable scrolled outcomes remain visible together.                                                             |
+| Hierarchy    | Named match/no-match feedback appears near the shared clock.                                                                      |
+| Typography   | Waiting/applied lines are readable; smaller Engineering identity is legible in full-resolution stills.                            |
+| Spacing      | No captured desktop overlap; ordinary vertical pane scrolling is exercised.                                                       |
+| Controls     | Author trigger/action/delay, Inspect, Preview delayed action, Run/Pause, Reset, Frame/Isolate and Save complete the loop.         |
+| Contrast     | Dark desktop capture is readable; other themes remain unverified.                                                                 |
+| Consistency  | Authored behavior, shared clock, real renderer state and Save retain workstation vocabulary.                                      |
+| States       | No-match, waiting, hidden, reset, save/reload, elapsed replay and Engineering are visible.                                        |
+| Responsive   | New Simulation/library phone and landscape journeys remain unverified.                                                            |
+| Keyboard     | Semantic labeled controls exercised; complete keyboard-only journey unverified.                                                   |
+| Focus        | Input focus partially observed; full traversal, return and screen-reader behavior unverified.                                     |
+| Feedback     | Named guidance, matching confirmation, wait, renderer outcome and reset are visible; universal latency budget unmeasured.         |
+| Motion       | Framed elapsed hide and reset visibly execute under reduced-motion emulation. Continuous-animation qualification is separate.     |
+| Continuity   | Saved behavior survives reload; transient reset is clear. Library return/archive retains useful view.                             |
+| Complexity   | One behavior is diagnosable through structured rows; larger scenes and many events unverified.                                    |
+| Role outcome | One synthetic Creator completes the bounded desktop loop; owner/other-role outcomes unverified.                                   |
+| Fallback     | No-match recovery and reset observed; quota exhaustion, suppressed layers, input exhaustion and renderer recovery not rerun here. |
+
+Current evidence does not
 establish full-condition graphs, material/light/effect animation, complete
 cross-device operation or physical interaction. These are not substituted by
 the successful numeric clock or event assertions. Protected experience planning

@@ -44,6 +44,7 @@ import { PlacementComposer } from "./PlacementComposer";
 import { BehaviorTracks } from "./BehaviorTracks";
 import { AnimationEditor } from "./AnimationEditor";
 import { RoomEnvironmentEditor } from "./RoomEnvironmentEditor";
+import { boundRoomSurfaceIds } from "@/parallax/parametric-room";
 import { SaveSpatialAsset, SavedSpatialLibrary } from "./SavedSpatialLibrary";
 import { authoredPreviewEnvironment, createRoomEnvironment } from "@/parallax/environment-authoring";
 import { insertSpatialPreset } from "@/parallax/editor-assets";
@@ -1725,6 +1726,7 @@ export function SpatialStudio({
               <RoomEnvironmentEditor
                 key={draft.content.studio.environment.id}
                 room={draft.content.studio.environment}
+                boundSurfaceIds={boundRoomSurfaceIds(draft.content)}
                 onChange={(room) => {
                   const next = structuredClone(draft);
                   next.content.studio!.environment = room;

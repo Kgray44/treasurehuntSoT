@@ -98,9 +98,9 @@ schematic, derived from entity poses. Scene copies preserve full authored data.
 Imported model rendering and photo reconstruction remain unavailable. Manual
 placement is required for reusable object/assembly export and insertion.
 
-414 focused Parallax tests, changed ESLint and typecheck support this candidate.
-The production-browser library and simulation journeys now pass at `1973a912`;
-their new independent rendered review is pending. The
+417 focused Parallax tests, changed ESLint and typecheck support the preceding checkpoint.
+The production-browser library and simulation journeys pass at `c5f7f690`;
+independent rendered review accepts the bounded desktop repairs. The
 [bounded review record](Spatial_Studio_Room_Library_Simulation_Review_20261012.md)
 retains room acceptance, library return-camera repair, failed test captures and
 exact run evidence. No full library or overhaul acceptance is claimed here.
@@ -125,3 +125,24 @@ Chronicle progression, and saving retains authored behaviors rather than the
 transient playback state. Browser qualification must create a behavior through
 visible controls, observe its delayed rendered effect, reset, save/reload and
 repeat it; a numerical clock or event log alone is insufficient.
+
+## Parametric room correction design
+
+The existing Room feature editor retains its feature selector and measurement
+fields. A separate Add room features disclosure creates named, editable generic
+models for the supported feature classes. Correct or remove this feature
+distinguishes a semantic label correction from rebuilding the actual geometry
+as that type. Rebuilding retains the chosen name, footprint and pose. Removal
+and rebuilding reject features supporting attached clues; the whole floor
+cannot be deleted or duplicated. Undo/Redo and ordinary Save remain canonical.
+
+A known width, height or depth of the selected feature uniformly rescales the
+approximate room and its environmental furnishings. The reference measurement
+is retained without declaring the other inferred dimensions measured. Authored
+clue sizes retain their metres, and surface-bound clues follow the changed
+support. Changing the reference's dimension clears the obsolete reference.
+The correction interface must remain usable on phone, and browser evidence must
+show the real rebuilt geometry, bound-support rejection, scaled clue/desk,
+history, desktop reload and phone edit/reload. Doors and windows in this
+checkpoint remain generic visible forms; real wall openings and photo
+perception are still separate work.

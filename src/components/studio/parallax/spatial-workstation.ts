@@ -152,27 +152,38 @@ export function createWorkstation(
       group.position.set(...g.position);
       if (g.rotation) group.quaternion.set(g.rotation.x, g.rotation.y, g.rotation.z, g.rotation.w);
       group.userData.featureId = g.featureId;
+      group.userData.roomPartId = g.id;
       world.add(group);
       const color = (light ? g.lightColor : g.color) ?? (g.surface === "FLOOR" ? 0x8797a8 : 0xc1cbd7);
       if (g.shape === "TREE") {
-        const trunk = new T.Mesh(new T.CylinderGeometry(0.055, 0.09, g.size[1] * 0.6, 8), material(0x766047));
+        const radius = Math.min(g.size[0], g.size[2]);
+        const trunk = new T.Mesh(
+          new T.CylinderGeometry(radius * 0.06, radius * 0.1, g.size[1] * 0.6, 8),
+          material(0x766047),
+        );
         trunk.position.set(0, -g.size[1] / 2 + g.size[1] * 0.3, 0);
         group.add(trunk);
         for (let i = 0; i < 3; i++) {
           const foliage = new T.Mesh(
-            new T.ConeGeometry(g.size[0] * (0.7 - i * 0.12), g.size[1] * 0.45, 10),
+            new T.ConeGeometry(radius * (0.5 - i * 0.08), g.size[1] * 0.4, 10),
             material(color),
           );
-          foliage.position.set(0, -g.size[1] / 2 + g.size[1] * (0.52 + i * 0.16), 0);
+          foliage.position.set(0, -g.size[1] / 2 + g.size[1] * (0.48 + i * 0.15), 0);
           foliage.castShadow = true;
           group.add(foliage);
         }
       } else if (g.shape === "WINDOW") {
-        box(group, [g.size[0] + 0.1, g.size[1] + 0.1, 0.08], [0, 0, 0], light ? 0xe3e9ef : 0x748498);
-        const glass = box(group, g.size, [0, 0, 0.05], color);
+        const [width, height, depth] = g.size;
+        const border = Math.min(width, height) * 0.055;
+        const frameColor = light ? 0xe3e9ef : 0x748498;
+        for (const side of [-1, 1]) {
+          box(group, [border, height, depth], [(side * (width - border)) / 2, 0, 0], frameColor);
+          box(group, [width - border * 2, border, depth], [0, (side * (height - border)) / 2, 0], frameColor);
+        }
+        const glass = box(group, [width - border * 2, height - border * 2, depth * 0.2], [0, 0, depth * 0.25], color);
         (glass.material as T.MeshStandardMaterial).emissive.setHex(0x738fa1);
         (glass.material as T.MeshStandardMaterial).emissiveIntensity = 0.3;
-        box(group, [0.035, g.size[1], 0.02], [0, 0, 0.08], 0x93a3b4);
+        box(group, [border * 0.65, height - border * 2, depth * 0.15], [0, 0, depth * 0.4], 0x93a3b4);
       } else box(group, g.size, [0, 0, 0], color);
     }
     if (s.inspection) {
@@ -661,6 +672,7 @@ export function createWorkstation(
       reportRenderedObjects();
       if (state?.environment.features) {
         const featureBounds = new Map<string, T.Box3>();
+        const featureParts = new Map<string, string[]>();
         for (const part of world.children) {
           const id = part.userData.featureId as string | undefined;
           if (!id) continue;
@@ -668,10 +680,12 @@ export function createWorkstation(
           const existing = featureBounds.get(id);
           if (existing) existing.union(bounds);
           else featureBounds.set(id, bounds);
+          featureParts.set(id, [...(featureParts.get(id) ?? []), part.userData.roomPartId]);
         }
         host.dataset.roomReceipt = JSON.stringify(
           [...featureBounds].map(([id, bounds]) => ({
             id,
+            partIds: featureParts.get(id),
             min: bounds.min.toArray(),
             max: bounds.max.toArray(),
           })),

@@ -70,6 +70,14 @@ export const roomEnvironmentSchema = z
     depth: z.number().finite().min(1).max(100),
     height: z.number().finite().min(1).max(20),
     origin: z.enum(["PRESET", "MANUAL", "PHOTO_RECONSTRUCTION"]),
+    // Optional to preserve historic authored/published shapes. Approximate model scale, not physical calibration.
+    scaleReference: z
+      .strictObject({
+        featureId: id,
+        axis: z.enum(["WIDTH", "HEIGHT", "DEPTH"]),
+        measuredMeters: z.number().finite().min(0.05).max(100),
+      })
+      .optional(),
     features: z.array(roomFeatureSchema).min(1).max(256),
   })
   .superRefine((room, context) => {
@@ -78,6 +86,12 @@ export const roomEnvironmentSchema = z
     if (new Set(features).size !== features.length || new Set(parts).size !== parts.length)
       context.addIssue({ code: "custom", message: "PARALLAX_ROOM_ID_DUPLICATE" });
     if (parts.length > 512) context.addIssue({ code: "custom", message: "PARALLAX_ROOM_GEOMETRY_BUDGET" });
+    if (room.scaleReference) {
+      const reference = room.features.find((f) => f.id === room.scaleReference!.featureId);
+      const axis = ({ WIDTH: 0, HEIGHT: 1, DEPTH: 2 } as const)[room.scaleReference.axis];
+      if (!reference || Math.abs(reference.dimensions[axis] - room.scaleReference.measuredMeters) > 1e-6)
+        context.addIssue({ code: "custom", message: "PARALLAX_ROOM_SCALE_REFERENCE_INVALID" });
+    }
   });
 export type RoomFeature = z.infer<typeof roomFeatureSchema>;
 export type RoomEnvironment = z.infer<typeof roomEnvironmentSchema>;

@@ -93,6 +93,12 @@ export function resizeRoomEnvironment(
       ? feature.dimensions.map((v, i) => v * ratios[i])
       : feature.dimensions) as RoomFeature["dimensions"],
   }));
+  if (room.scaleReference) {
+    const reference = room.features.find((f) => f.id === room.scaleReference!.featureId);
+    const axis = ({ WIDTH: 0, HEIGHT: 1, DEPTH: 2 } as const)[room.scaleReference.axis];
+    if (!reference || Math.abs(reference.dimensions[axis] - room.scaleReference.measuredMeters) > 1e-6)
+      delete room.scaleReference;
+  }
   return roomEnvironmentSchema.parse(room);
 }
 export function roomFeatureRelations(room: RoomEnvironment, featureId: string) {

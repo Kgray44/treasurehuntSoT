@@ -154,6 +154,17 @@ export const versionContentSchema = z
     }
     if (v.studio) {
       const s = v.studio;
+      if (s.environment) {
+        const supportIds = new Set(
+          s.environment.features.flatMap((feature) =>
+            feature.parts.filter((part) => part.surface !== null).map((part) => part.id),
+          ),
+        );
+        if (
+          previewFrames.some((frame) => frame.environmentId === s.environment!.id && !supportIds.has(frame.surfaceId))
+        )
+          fail("PARALLAX_ROOM_SUPPORT_MISSING");
+      }
       if (s.libraryDefinition && !entities.has(s.libraryDefinition.rootEntityId)) fail("PARALLAX_LIBRARY_ROOT_MISSING");
       if (s.libraryDefinition) {
         const root = s.libraryDefinition.rootEntityId;

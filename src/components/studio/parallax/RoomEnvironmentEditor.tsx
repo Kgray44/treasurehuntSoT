@@ -7,26 +7,59 @@ import {
   type RoomFeature,
 } from "@/parallax/environment-contracts";
 import { resizeRoomEnvironment, roomFeatureRelations } from "@/parallax/environment-authoring";
+import {
+  addRoomFeature,
+  removeRoomFeature,
+  rebuildRoomFeature,
+  scaleRoomFromMeasurement,
+} from "@/parallax/parametric-room";
 
 /** Same ordinary draft/history/save port as object editing; no browser-local room authority. */
 export function RoomEnvironmentEditor({
   room,
   onChange,
+  boundSurfaceIds = [],
 }: {
   room: RoomEnvironment;
   onChange: (room: RoomEnvironment) => void;
+  boundSurfaceIds?: string[];
 }) {
   const [selectedId, setSelectedId] = useState(
     room.features.find((f) => ["DESK", "TABLE"].includes(f.classification))?.id ?? room.features[0].id,
   );
   const [error, setError] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [newClass, setNewClass] = useState<RoomFeature["classification"]>("DESK");
+  const [measurementAxis, setMeasurementAxis] = useState<"WIDTH" | "HEIGHT" | "DEPTH">("WIDTH");
+  const [measurement, setMeasurement] = useState("");
   const feature = room.features.find((f) => f.id === selectedId) ?? room.features[0];
   const apply = (next: RoomEnvironment) => {
     try {
+      if (next.scaleReference) {
+        const reference = next.features.find((f) => f.id === next.scaleReference!.featureId);
+        const axis = ({ WIDTH: 0, HEIGHT: 1, DEPTH: 2 } as const)[next.scaleReference.axis];
+        if (!reference || Math.abs(reference.dimensions[axis] - next.scaleReference.measuredMeters) > 1e-6)
+          next = { ...next, scaleReference: undefined };
+      }
       onChange(roomEnvironmentSchema.parse(next));
       setError("");
     } catch {
       setError("Use finite dimensions and positions within the room editing limits.");
+    }
+  };
+  const run = (action: () => RoomEnvironment, message: string, nextSelected?: string) => {
+    try {
+      onChange(action());
+      setError("");
+      setFeedback(message);
+      if (nextSelected) setSelectedId(nextSelected);
+    } catch (cause) {
+      setFeedback("");
+      setError(
+        cause instanceof Error && !cause.message.startsWith("[")
+          ? cause.message
+          : "This change exceeds room dimensions or the geometry budget. Reduce the size or remove unused features.",
+      );
     }
   };
   const patch = (change: Partial<RoomFeature>) =>
@@ -66,6 +99,37 @@ export function RoomEnvironmentEditor({
         features. This is not a measured room survey.
       </p>
       <p>Resizing the room moves its features proportionally. Furniture keeps its own dimensions.</p>
+      <details aria-label="Add room features">
+        <summary role="button">Add room features</summary>
+        <label>
+          New feature type
+          <select
+            aria-label="New room feature type"
+            value={newClass}
+            onChange={(event) => setNewClass(event.target.value as RoomFeature["classification"])}
+          >
+            {roomFeatureClasses.map((classification) => (
+              <option key={classification}>{classification}</option>
+            ))}
+          </select>
+        </label>
+        <button
+          type="button"
+          onClick={() => {
+            const id = `feature-${crypto.randomUUID()}`;
+            run(
+              () => addRoomFeature(room, newClass, id),
+              `Added a generic ${newClass.toLowerCase()}. Adjust its position and dimensions below.`,
+              id,
+            );
+          }}
+        >
+          Add room feature
+        </button>
+        <p>Generic placeholders are editable models. Doors and windows do not cut openings or simulate opening.</p>
+      </details>
+      {feedback && <p aria-live="polite">{feedback}</p>}
+      {error && <p role="alert">{error}</p>}
       {(["Width", "Height", "Depth"] as const).map((label, axis) =>
         numeric(`Room ${label.toLowerCase()} (m)`, [room.width, room.height, room.depth][axis], (value) => {
           try {
@@ -115,6 +179,39 @@ export function RoomEnvironmentEditor({
         {feature.provenance.basis.replaceAll("_", " ").toLowerCase()} ·{" "}
         {Math.round(feature.provenance.confidence * 100)}% confidence in this authoring model
       </p>
+      <details aria-label="Correct or remove room feature">
+        <summary role="button">Correct or remove this feature</summary>
+        <p>
+          Classification changes its label. Rebuild also changes the generic shape, keeping its name, dimensions and
+          position.
+        </p>
+        <button
+          type="button"
+          onClick={() =>
+            run(
+              () => rebuildRoomFeature(room, feature.id, feature.classification, boundSurfaceIds),
+              `Rebuilt ${feature.name} as a generic ${feature.classification.toLowerCase()}.`,
+            )
+          }
+        >
+          Rebuild generic feature shape
+        </button>
+        <button
+          type="button"
+          onClick={() =>
+            run(
+              () => removeRoomFeature(room, feature.id, boundSurfaceIds),
+              `Removed ${feature.name}. Undo restores it.`,
+            )
+          }
+        >
+          Remove room feature
+        </button>
+        <p>
+          Attached objects must be moved to another surface before removing or rebuilding their support. The whole floor
+          is retained.
+        </p>
+      </details>
       {(["x", "y", "z"] as const).map((axis) =>
         numeric(`Feature ${axis} (m)`, feature.position[axis], (value) =>
           patch({ position: { ...feature.position, [axis]: value } }),
@@ -139,7 +236,55 @@ export function RoomEnvironmentEditor({
           .join("; ") || "none"}
         .
       </p>
-      {error && <p role="alert">{error}</p>}
+      <details aria-label="Scale room from a known measurement">
+        <summary role="button">Scale room from a known measurement</summary>
+        <p>
+          Use the selected feature as a reference. This scales room positions and all room-feature dimensions uniformly.
+          Authored clue sizes keep their metres; attached clues follow their support. Other dimensions remain estimates.
+        </p>
+        <label>
+          Reference measurement
+          <select
+            aria-label="Reference measurement axis"
+            value={measurementAxis}
+            onChange={(event) => setMeasurementAxis(event.target.value as typeof measurementAxis)}
+          >
+            <option value="WIDTH">Width</option>
+            <option value="HEIGHT">Height</option>
+            <option value="DEPTH">Depth</option>
+          </select>
+        </label>
+        <label>
+          Known measurement (m)
+          <input
+            aria-label="Known measurement (m)"
+            type="number"
+            min="0.05"
+            max="100"
+            step="0.05"
+            value={measurement}
+            onChange={(event) => setMeasurement(event.target.value)}
+          />
+        </label>
+        <button
+          type="button"
+          onClick={() =>
+            run(
+              () => scaleRoomFromMeasurement(room, feature.id, measurementAxis, Number(measurement)),
+              `Scaled the room using ${feature.name}'s ${measurementAxis.toLowerCase()}. Review the other estimated measurements before saving.`,
+            )
+          }
+        >
+          Apply known measurement
+        </button>
+        {room.scaleReference && (
+          <p>
+            Scale reference: {room.features.find((f) => f.id === room.scaleReference!.featureId)?.name} ·{" "}
+            {room.scaleReference.axis.toLowerCase()} {room.scaleReference.measuredMeters.toFixed(2)} m. Changing that
+            dimension clears this reference.
+          </p>
+        )}
+      </details>
     </section>
   );
 }
