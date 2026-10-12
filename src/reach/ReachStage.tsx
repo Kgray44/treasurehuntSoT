@@ -72,7 +72,7 @@ export function ReachStage({ frame, timings, kind, demo = false, overlay = false
           context.strokeStyle = "rgba(139,225,205,.35)";
           context.fillStyle = "rgba(139,225,205,.05)";
           context.beginPath();
-          context.arc(x, y, Math.max(12, value.uncertainty), 0, Math.PI * 2);
+          context.arc(x, y, value.uncertainty, 0, Math.PI * 2);
           context.fill();
           context.stroke();
         }

@@ -2420,6 +2420,45 @@ Creators describe spatial ideas, inspect validated proposals in the real canvas 
 
 ---
 
+## FT-B113 - Reach Local Hand Tracking and Independently Checked Pointing
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Reach Phase 1
+
+A consented local camera laboratory distinguishes tracked joints, active-hand continuity and pointing eligibility, guides stable setup and independent checks, and offers separate relative movement and experimental absolute pointing practice.
+
+### Important subfeatures
+
+- Registered camera skeleton with visible detected-but-ineligible states and active-hand selection
+- Local spatial/temporal continuity across incidental hands and brief interruptions with ambiguous identity abstention
+- Guided stable acquisition, visible progress, outlier rejection, pause/resume and current-target retry
+- Separate nine-target absolute and five-position relative models with five raw held-out check targets
+- Bounded pointer playground with raw/filtered feedback, measured error visualization and explicit coverage
+- Keyboard/touch and reduced-motion controls, responsive calibration feedback and natural return
+- Sextant-owned consent/teardown, session-only calibration and privacy-safe consented aggregate export
+
+### Primary surfaces
+
+`/devices/reach`, `/devices/pair`
+
+### Meaningful limitations
+
+- D0 simulation and controlled photographic D1 replay do not establish live-person D4 webcam accuracy, latency, comfort or owner acceptance.
+- Absolute RGB pointing is experimental, session/context-bound and unavailable until independent validation passes; relative cursor checks do not claim physical pointing accuracy.
+- Software capture-to-inference/canvas timing excludes sensor exposure and display scanout.
+- No application activation, Phase 2 selection, Phase 3 manipulation, Air Handoff or authoritative progression mutation is provided.
+
+### Evidence
+
+- path: `src/reach/ReachLaboratory.tsx`
+- path: `src/watchglass/hand-posture.ts`
+- test: `src/reach/recognition.test.ts`
+- test: `src/reach/acquisition.test.ts`
+- test: `tests/e2e/reach-laboratory.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md`
+
+---
+
 # Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete

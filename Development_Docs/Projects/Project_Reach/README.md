@@ -12,6 +12,8 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 ## Effective governing sources
 
+The [recognition, calibration and experience refit](Recognition_Calibration_Experience_Refit_20261011.md) revises interpretation and the laboratory: detected hands remain distinct from posture/eligibility, an active hand can coexist with an incidental hand, stable acquisition survives brief interruptions, and relative movement has a separate setup and independent cursor check. Its record tracks qualification, rendered review and the remaining owner/physical walkthrough. The older Phase 1 record describes its original frozen protocol.
+
 - [Reach governing document v1.0](../../Governing/Project_Reach_Spatial_Interaction_and_Intent_System_Governing_Document_v1.0.md)
 - [Spatial architecture v1.1 amendment](../../Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Amendment_v1.1_Reach_and_Browser_First_Interaction.md)
 - [Effective spatial authority and all owner amendments](../../Governing/Voyagewright_Spatial_Experience_Effective_Authority.md)

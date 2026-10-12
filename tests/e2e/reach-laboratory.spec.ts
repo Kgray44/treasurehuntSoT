@@ -24,6 +24,8 @@ async function targets(page: Page, count: number) {
 async function shot(page: Page, name: string) {
   if (process.env.REACH_CAPTURE_ROOT) {
     await mkdir(process.env.REACH_CAPTURE_ROOT, { recursive: true });
+    await page.screenshot({ path: path.join(process.env.REACH_CAPTURE_ROOT, `${name}-viewport.png`) });
+    await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: path.join(process.env.REACH_CAPTURE_ROOT, `${name}.png`), fullPage: true });
   }
 }
@@ -41,9 +43,7 @@ for (const viewport of [
     await page.getByRole("button", { name: "Begin nine-point calibration" }).click();
     await shot(page, `${viewport.name}-calibration`);
     await page.getByRole("button", { name: "Pause calibration" }).click();
-    await expect(
-      page.getByText("Paused. Relax your hand; your completed targets are saved.", { exact: true }),
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "Resume calibration" })).toBeVisible();
     await page.getByRole("button", { name: "Resume calibration" }).click();
     await targets(page, 9);
     await expect(page.getByRole("button", { name: "Open pointing playground" })).toHaveCount(0);

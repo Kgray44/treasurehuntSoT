@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-11",
+  "generated_at": "2026-10-12",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -772,6 +772,12 @@
     },
     {
       "path": "Development_Docs/Features/catalog/project-sextant-phase3.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/reach.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
@@ -8386,6 +8392,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Reach/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

@@ -3,12 +3,15 @@ import {
   calibratedPoint,
   calibrationLayout,
   fitCalibration,
+  fitRelativeCalibration,
+  relativeLayout,
   validateCalibration,
   type CalibrationBinding,
   type CalibrationSample,
 } from "./calibration";
 import { imageToViewport, pointingFeatures, PointFilter } from "./coordinates";
-import { ObservationGate, usableHand } from "./observation";
+import { ActiveHandSelector, ObservationGate, usableHand } from "./observation";
+import { SampleWindow } from "./sample-window";
 import { syntheticObservation } from "./synthetic";
 import { aggregateCalibrationExport } from "./privacy";
 export const phase1ScenarioIds = [
@@ -83,6 +86,20 @@ export async function runPhase1Oracle(suffix: (typeof phase1ScenarioIds)[number]
         Array.from({ length: 5 }, () => calibrationGroups(calibrationLayout.validation)[0]),
       ),
     );
+    const window = new SampleWindow(syntheticBinding, { x: 0.5, y: 0.5 });
+    for (let i = 0; i < 7; i++) window.push(centerFeatures, 100 + i * 50, syntheticBinding);
+    check(window.pause(430).state === "PAUSED");
+    let accepted = false;
+    for (let i = 0; i < 12; i++) {
+      const features = [...centerFeatures];
+      features[1] += Math.sin(i) * 0.001;
+      accepted ||= !!window.push(features, 500 + i * 50, syntheticBinding).samples;
+    }
+    check(accepted);
+    const relative = fitRelativeCalibration(calibrationGroups(relativeLayout.training), syntheticBinding, 1000);
+    check(relative.status === "VALIDATION_REQUIRED");
+    check(validateCalibration(relative, calibrationGroups(calibrationLayout.validation)).status === "VALIDATED");
+    check(validateCalibration(relative, calibrationGroups(calibrationLayout.validation, 0.2)).status === "FAILED");
   }
   if (suffix === "mirror-and-frame-epochs") {
     const viewport = { width: 800, height: 600, offsetX: 10, offsetY: 20, scale: 2, epoch: 1 };
@@ -117,6 +134,19 @@ export async function runPhase1Oracle(suffix: (typeof phase1ScenarioIds)[number]
     check(usableHand(ambiguous) === null);
     check(usableHand({ ...o, hands: [], reason: "NO_HAND" }) === null);
     check(pointingFeatures(o.hands[0]).length === 5);
+    const selector = new ActiveHandSelector();
+    selector.update(o);
+    const settled = syntheticObservation({ x: 0.5, y: 0.5 }, 1, 400);
+    check(selector.update(settled).eligible);
+    const second = structuredClone(settled.hands[0]);
+    second.trackId = "incidental-hand";
+    const both = {
+      ...syntheticObservation({ x: 0.5, y: 0.5 }, 2, 450),
+      hands: [second, settled.hands[0]],
+      reason: "MULTIPLE_HANDS" as const,
+    };
+    check(selector.update(both).eligible);
+    check(selector.update({ ...both, providerGeneration: 2, monotonicCaptureTime: 500 }).changed);
   }
   if (suffix === "background-and-worker-restart") {
     rejects(() => sampleGate(2).accept(syntheticObservation({ x: 0.5, y: 0.5 }, 1, 100), 101));

@@ -367,7 +367,7 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await capture(d, "studio-engineering-mobile");
     expect(await d.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await d.goto("/devices/reach");
-    await expect(d.getByRole("heading", { name: "Find the Hand" })).toBeVisible();
+    await expect(d.getByRole("heading", { name: "Find your point." })).toBeVisible();
     await capture(d, "reach-entry-mobile");
     await writeFile(
       "artifacts/spatial-pilot/browser-measurements.json",

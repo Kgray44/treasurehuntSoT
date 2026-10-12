@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { motion as animated } from "motion/react";
 import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
 import { assessHand } from "@/watchglass/hand-posture";
 import { ReachBrowserRuntime } from "./browser-runtime";
@@ -70,6 +71,13 @@ const emptyFrame = (): ReachVisualFrame => ({
   uncertainty: null,
   previewEstimate: false,
 });
+const timingSnapshot = (value: ReachTiming) => ({
+  observations: value.inference.length,
+  capture: percentile(value.captureIntervals, 0.95),
+  inference: percentile(value.inference, 0.95),
+  submission: percentile(value.submissionAge, 0.95),
+  visualization: percentile(value.visualizationIntervals, 0.95),
+});
 export function ReachLaboratory({
   returnHref = "/devices/pair",
   returnLabel = "Device connections",
@@ -116,38 +124,62 @@ export function ReachLaboratory({
     [demoFault, setDemoFault] = useState("NONE"),
     [practiceTarget, setPracticeTarget] = useState<Point | null>(null);
   const [logEntries, setLogEntries] = useState<{ at: number; reason: string }[]>([]),
-    [, refreshDiagnostics] = useState(0);
+    [metrics, setMetrics] = useState(() => timingSnapshot(new ReachTiming()));
   const demoFaultRef = useRef(demoFault);
   useEffect(() => {
     demoFaultRef.current = demoFault;
   }, [demoFault]);
   const motion = useOptionalMotionPolicyContext();
-  const advance = (next: Step) => {
+  const advance = useCallback((next: Step) => {
     stepRef.current = next;
     setStep(next);
-  };
-  const changeSource = (next: Source) => {
+  }, []);
+  const changeSource = useCallback((next: Source) => {
     sourceRef.current = next;
     setSource(next);
-  };
-  const log = (reason: string) =>
-    setLogEntries((entries) => [...entries.slice(-49), { at: Math.round(performance.now()), reason }]);
-  const invalidate = (reason?: string) => {
-    trial.current = null;
-    calibrationRef.current = null;
-    setCalibration(null);
-    setTarget(null);
-    setAcquisition(null);
-    setPaused(false);
-    filter.current.reset();
-    visual.current.raw = null;
-    visual.current.filtered = null;
-    visual.current.uncertainty = null;
-    if (reason) {
-      advance("PREPARE");
-      setMessage(reason);
-    }
-  };
+  }, []);
+  const log = useCallback(
+    (reason: string) =>
+      setLogEntries((entries) => [...entries.slice(-49), { at: Math.round(performance.now()), reason }]),
+    [],
+  );
+  const invalidate = useCallback(
+    (reason?: string) => {
+      trial.current = null;
+      calibrationRef.current = null;
+      setCalibration(null);
+      setTarget(null);
+      setAcquisition(null);
+      setPaused(false);
+      filter.current.reset();
+      visual.current.raw = null;
+      visual.current.filtered = null;
+      visual.current.uncertainty = null;
+      if (reason) {
+        advance("PREPARE");
+        setMessage(reason);
+      }
+    },
+    [advance],
+  );
+  const stop = useCallback(() => {
+    changeSource("OFF");
+    runtime.current?.stop();
+    invalidate();
+    advance("PREPARE");
+    visual.current = emptyFrame();
+    lastObservation.current = null;
+    selector.current.reset();
+    readyRef.current = initialReadiness;
+    setReadiness(initialReadiness);
+    setHands([]);
+    aggregates.current = [];
+    timing.current.reset();
+    setMetrics(timingSnapshot(timing.current));
+    setExportConsent(false);
+    setPracticeTarget(null);
+    setMessage("Your camera is off and session calibration is cleared.");
+  }, [advance, changeSource, invalidate]);
   const bindingFor = (o: HandObservation, hand: HandObservation["hands"][number]): CalibrationBinding => ({
     providerId: o.providerId,
     modelDigest: o.modelDigest,
@@ -168,7 +200,7 @@ export function ReachLaboratory({
     accept.current = (o) => {
       const now = performance.now();
       lastObservation.current = o;
-      timing.current.observe(o);
+      if (o.evidenceTier !== "D0") timing.current.observe(o);
       const ready = selector.current.update(o);
       readyRef.current = ready;
       visual.current.observation = o;
@@ -288,6 +320,12 @@ export function ReachLaboratory({
       (o) => accept.current(o),
       (state) => {
         setStatus(state);
+        if (state === "READY")
+          setMessage((previous) =>
+            previous.startsWith("Allow camera access")
+              ? "Camera ready. Keep your palm and index finger comfortably in view."
+              : previous,
+          );
         if (!["READY", "MODEL_STARTING", "REQUESTING", "STALE_OR_INVALID_OBSERVATION"].includes(state)) {
           lastObservation.current = null;
           visual.current = emptyFrame();
@@ -310,6 +348,7 @@ export function ReachLaboratory({
     );
     runtime.current = r;
     let lastSize = "";
+    let lastPosition = "";
     const changed = () => {
       const rect = plane.current?.getBoundingClientRect();
       const size = rect
@@ -320,11 +359,38 @@ export function ReachLaboratory({
         invalidate("Your view size changed. Set up again for this pointing area.");
       }
       lastSize = size;
+      const position = rect ? `${Math.round(rect.left)}:${Math.round(rect.top)}` : "";
+      const absoluteLive =
+        sourceRef.current === "LIVE" &&
+        (trial.current?.mode === "ABSOLUTE" || calibrationRef.current?.mapping === "INDEX_AXIS_RIDGE_V1");
+      if (
+        absoluteLive &&
+        lastPosition &&
+        lastPosition !== position &&
+        (calibrationRef.current || trial.current?.binding)
+      ) {
+        ++epoch.current;
+        invalidate("Your pointing area moved on the screen. Set up again in this position.");
+      }
+      lastPosition = position;
     };
     const resize = new ResizeObserver(changed);
     if (plane.current) resize.observe(plane.current);
     window.addEventListener("resize", changed);
+    window.addEventListener("scroll", changed, true);
     window.visualViewport?.addEventListener("resize", changed);
+    window.visualViewport?.addEventListener("scroll", changed);
+    return () => {
+      r.stop();
+      resize.disconnect();
+      window.removeEventListener("resize", changed);
+      window.removeEventListener("scroll", changed, true);
+      window.visualViewport?.removeEventListener("resize", changed);
+      window.visualViewport?.removeEventListener("scroll", changed);
+    };
+  }, [advance, changeSource, invalidate]);
+  useEffect(() => {
+    if (source === "OFF") return;
     const freshness = setInterval(() => {
       const o = lastObservation.current,
         now = performance.now();
@@ -345,16 +411,12 @@ export function ReachLaboratory({
         log("CALIBRATION_EXPIRED");
       }
     }, 100);
-    const diagnostics = setInterval(() => refreshDiagnostics((n) => n + 1), 1000);
+    const diagnostics = setInterval(() => setMetrics(timingSnapshot(timing.current)), 1000);
     return () => {
-      r.stop();
       clearInterval(freshness);
       clearInterval(diagnostics);
-      resize.disconnect();
-      window.removeEventListener("resize", changed);
-      window.visualViewport?.removeEventListener("resize", changed);
     };
-  }, []);
+  }, [source, invalidate, log]);
   useEffect(() => {
     demoPoint.current = point;
   }, [point]);
@@ -411,24 +473,7 @@ export function ReachLaboratory({
       document.removeEventListener("visibilitychange", hidden);
       window.removeEventListener("pagehide", suspend);
     };
-  }, [source, mirror]);
-  function stop() {
-    changeSource("OFF");
-    runtime.current?.stop();
-    invalidate();
-    advance("PREPARE");
-    visual.current = emptyFrame();
-    lastObservation.current = null;
-    selector.current.reset();
-    readyRef.current = initialReadiness;
-    setReadiness(initialReadiness);
-    setHands([]);
-    aggregates.current = [];
-    timing.current.reset();
-    setExportConsent(false);
-    setPracticeTarget(null);
-    setMessage("Your camera is off and session calibration is cleared.");
-  }
+  }, [source, mirror, stop]);
   const startDemo = () => {
     stop();
     changeSource("DEMO");
@@ -580,6 +625,7 @@ export function ReachLaboratory({
       className={styles.lab}
       aria-labelledby="reach-heading"
       data-pointing-mode={pointingMode}
+      data-step={step}
       data-motion-level={motion?.mode ?? "reduced"}
       data-reach-session="local-private"
       data-reach-authority="laboratory-only"
@@ -593,6 +639,7 @@ export function ReachLaboratory({
         <Link href={returnHref} onClick={stop} className={styles.return}>
           ← {returnLabel}
         </Link>
+        {source !== "OFF" && <button onClick={stop}>Stop session</button>}
       </header>
       <ol className={styles.journey} aria-label="Your Reach journey">
         {["Prepare", "Calibrate", "Check", "Explore"].map((label, i) => {
@@ -612,7 +659,7 @@ export function ReachLaboratory({
           );
         })}
       </ol>
-      <div className={styles.workspace} data-plane={showPlane}>
+      <div className={styles.workspace} data-plane={showPlane} data-training={training}>
         <div className={styles.cameraStage}>
           <div className={styles.stageHeader}>
             <span>
@@ -681,6 +728,25 @@ export function ReachLaboratory({
             </div>
           )}
         </div>
+        {training && (
+          <div className={styles.mobileFocus}>
+            <p>
+              {relativeInstruction ??
+                (step === "VALIDATION"
+                  ? pointingMode === "RELATIVE"
+                    ? "Guide the amber cursor to each new target."
+                    : "Point at each new target."
+                  : "Point naturally at the lit target.")}
+            </p>
+            <strong>
+              {paused ? "Paused · your saved targets are kept" : readiness.eligible ? progress : readiness.guidance}
+            </strong>
+            <span>
+              {completed} of {total} saved · {Math.round((acquisition?.progress ?? 0) * 100)}% collected
+            </span>
+            <progress aria-label="Target progress" max={1} value={acquisition?.progress ?? 0} />
+          </div>
+        )}
         <div ref={plane} className={styles.plane} hidden={!showPlane} aria-label="Pointing practice area">
           <div className={styles.planeHeader}>
             <span>
@@ -701,14 +767,15 @@ export function ReachLaboratory({
             active={showPlane && source !== "OFF"}
           />
           {(target || practiceTarget) && (
-            <div
+            <animated.div
               className={styles.target}
               role="img"
               data-calibration-target={!!target}
-              style={{
+              animate={{
                 left: `${(target ?? practiceTarget)!.x * 100}%`,
                 top: `${(target ?? practiceTarget)!.y * 100}%`,
               }}
+              initial={false}
               aria-label={target ? `Target ${completed + 1} of ${total}` : "Practice target"}
             >
               <svg viewBox="0 0 64 64" aria-hidden="true">
@@ -722,7 +789,7 @@ export function ReachLaboratory({
                 />
               </svg>
               <span>{target ? completed + 1 : "+"}</span>
-            </div>
+            </animated.div>
           )}
           {step === "RESULTS" && (
             <div className={styles.planeRest}>
@@ -896,7 +963,13 @@ export function ReachLaboratory({
               </div>
               <div className={styles.actions}>
                 <button className={styles.primary} onClick={togglePause}>
-                  {paused ? "Resume calibration" : "Pause calibration"}
+                  {step === "VALIDATION"
+                    ? paused
+                      ? "Resume check"
+                      : "Pause check"
+                    : paused
+                      ? "Resume calibration"
+                      : "Pause calibration"}
                 </button>
                 <button onClick={retryTarget}>Retry this target</button>
                 <button
@@ -908,7 +981,7 @@ export function ReachLaboratory({
                     setMessage("Calibration cancelled. Your camera stays available.");
                   }}
                 >
-                  Cancel calibration
+                  {step === "VALIDATION" ? "Cancel check" : "Cancel calibration"}
                 </button>
               </div>
             </>
@@ -1029,7 +1102,7 @@ export function ReachLaboratory({
                 Show raw pointer alongside filtered pointer
               </label>
               <p className={styles.hint}>
-                The ring shows measured held-out error, not model confidence. Tracking loss hides the pointer.
+                The shaded area shows measured held-out error, not model confidence. Tracking loss hides the pointer.
               </p>
             </>
           )}
@@ -1109,23 +1182,23 @@ export function ReachLaboratory({
             </div>
             <div>
               <dt>Inference observations</dt>
-              <dd>{timing.current.inference.length}</dd>
+              <dd>{metrics.observations}</dd>
             </div>
             <div>
               <dt>Capture interval p95</dt>
-              <dd>{percentile(timing.current.captureIntervals, 0.95)?.toFixed(1) ?? "—"} ms</dd>
+              <dd>{metrics.capture?.toFixed(1) ?? "—"} ms</dd>
             </div>
             <div>
               <dt>Capture → inference p95</dt>
-              <dd>{percentile(timing.current.inference, 0.95)?.toFixed(1) ?? "—"} ms</dd>
+              <dd>{metrics.inference?.toFixed(1) ?? "—"} ms</dd>
             </div>
             <div>
               <dt>Capture → canvas submission p95</dt>
-              <dd>{percentile(timing.current.submissionAge, 0.95)?.toFixed(1) ?? "—"} ms</dd>
+              <dd>{metrics.submission?.toFixed(1) ?? "—"} ms</dd>
             </div>
             <div>
               <dt>Canvas update interval p95</dt>
-              <dd>{percentile(timing.current.visualizationIntervals, 0.95)?.toFixed(1) ?? "—"} ms</dd>
+              <dd>{metrics.visualization?.toFixed(1) ?? "—"} ms</dd>
             </div>
           </dl>
           <p>

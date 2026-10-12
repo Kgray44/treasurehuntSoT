@@ -38,7 +38,7 @@ The [Governing](Governing/) and [Governance](Governance/) directories hold repos
 ## Current Reach and spatial authority
 
 - [Effective spatial authority](Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) — complete additive chain and Reach-era amendments.
-- [Project Reach](Projects/Project_Reach/README.md) — governing constitution, five phases and qualification plan; not implemented.
+- [Project Reach](Projects/Project_Reach/README.md) — integrated Phase 1 foundation, recognition/calibration refit, governing constitution and remaining physical qualification.
 - [Current launch manifest v1.1](Programs/Spatial_Experience/Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.1_Reach.md) — browser-first owner/dependency update.
 - [Registry guide](Spatial_Experience/README.md) — current projections and pending Reach scenario registration.
 
