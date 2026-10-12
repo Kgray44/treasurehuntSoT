@@ -47,11 +47,14 @@ export function evaluateAssistantCase(item: AssistantEvaluationCase, draft: Spat
       const created = proposal.operations.filter((entry) => entry.type === "CREATE");
       for (let i = 0; i < created.length; i++)
         for (let j = i + 1; j < created.length; j++) {
-          const left = created[i],
-            right = created[j];
-          if (left.placement !== right.placement) continue;
-          const distance = Math.hypot(left.position.x - right.position.x, left.position.y - right.position.y);
-          if (distance < (left.widthMeters * left.scale + right.widthMeters * right.scale) / 2)
+          if (created[i].placement !== created[j].placement) continue;
+          const left = next.content.entities.find((entity) => entity.id === created[i].entityId)!;
+          const right = next.content.entities.find((entity) => entity.id === created[j].entityId)!;
+          const distance = Math.hypot(
+            left.transform.position.x - right.transform.position.x,
+            left.transform.position.y - right.transform.position.y,
+          );
+          if (distance < (left.widthMeters * left.transform.scale + right.widthMeters * right.transform.scale) / 2)
             findings.push("CREATED_OBJECTS_OVERLAP");
         }
     }

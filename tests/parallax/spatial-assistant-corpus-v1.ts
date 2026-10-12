@@ -37,7 +37,7 @@ const creation = (
   kind: "TEXT" | "PARCHMENT" | "MARKER",
   content: string,
   placement: "DESK" | "WALL" | "ENTRANCE" | "LOCAL" = "DESK",
-): AssistantOperation => ({
+): Extract<AssistantOperation, { type: "CREATE" }> => ({
   ...common(`create-${id}`),
   type: "CREATE",
   entityId: id,
