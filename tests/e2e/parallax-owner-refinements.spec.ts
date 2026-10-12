@@ -177,6 +177,116 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
   );
 });
 
+test("floating assistance moves, resizes, restores and keeps its composer at the bottom without editing the scene", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic floating-window Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  await db.aIQuotaControl.upsert({
+    where: { id: AI_CONTROL_ID },
+    create: { id: AI_CONTROL_ID, policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+    update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/studio/parallax");
+  const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
+  await expect(canvas.locator('[data-renderer="READY"] canvas')).toBeVisible();
+  await page.getByRole("button", { name: /Ask Parallax/ }).click();
+  const host = page.locator("#parallax-assistance");
+  await expect(host).toHaveAttribute("data-floating-placed", "true");
+  const beforeCanvas = (await canvas.boundingBox())!;
+  const sceneBefore = await listSpatialItems(account.id);
+  const move = page.getByRole("button", { name: "Move floating Spatial Assistant", exact: true });
+  const drag = async (handle: ReturnType<typeof page.getByRole>, dx: number, dy: number) => {
+    const box = (await handle.boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(box.x + box.width / 2 + dx, box.y + box.height / 2 + dy, { steps: 5 });
+    await page.mouse.up();
+  };
+  const initial = (await host.boundingBox())!;
+  await drag(move, 90, -30);
+  const moved = (await host.boundingBox())!;
+  expect(moved.x).toBeCloseTo(initial.x + 90, 0);
+  expect(moved.y).toBeCloseTo(initial.y - 30, 0);
+  const observations = [];
+  for (const [edge, label] of Object.entries({
+    n: "top",
+    e: "right",
+    s: "bottom",
+    w: "left",
+    ne: "top right",
+    nw: "top left",
+    se: "bottom right",
+    sw: "bottom left",
+  })) {
+    const handle = page.getByRole("button", { name: `Resize floating Spatial Assistant ${label}`, exact: true });
+    const before = (await host.boundingBox())!;
+    await drag(handle, 12, -12);
+    const after = (await host.boundingBox())!;
+    expect(after.x).toBeCloseTo(before.x + (edge.includes("w") ? 12 : 0), 0);
+    expect(after.y).toBeCloseTo(before.y - (edge.includes("n") ? 12 : 0), 0);
+    expect(after.x + after.width).toBeCloseTo(before.x + before.width + (edge.includes("e") ? 12 : 0), 0);
+    expect(after.y + after.height).toBeCloseTo(before.y + before.height - (edge.includes("s") ? 12 : 0), 0);
+    observations.push({ edge, before, after });
+    await drag(handle, -12, 12);
+  }
+  await move.focus();
+  await move.press("Shift+ArrowRight");
+  expect((await host.boundingBox())!.x).toBeCloseTo(moved.x + 40, 0);
+  const corner = page.getByRole("button", { name: "Resize floating Spatial Assistant bottom right", exact: true });
+  await corner.focus();
+  await corner.press("Shift+ArrowLeft");
+  await corner.press("Shift+ArrowUp");
+  const resized = (await host.boundingBox())!;
+  expect(resized.width).toBeCloseTo(moved.width - 40, 0);
+  expect(resized.height).toBeCloseTo(moved.height - 40, 0);
+  const assertComposer = async () => {
+    const form = host.locator("footer form");
+    await expect(form.locator("textarea")).toBeVisible();
+    const panel = (await host.boundingBox())!;
+    const bottom = (await form.boundingBox())!;
+    expect(panel.y + panel.height - bottom.y - bottom.height).toBeLessThan(36);
+    await expect(host.getByRole("button", { name: "Send idea", exact: true })).toBeVisible();
+  };
+  await assertComposer();
+  await mkdir(root, { recursive: true });
+  await page.screenshot({ path: `${root}/floating-moved-resized.png` });
+  await page.getByRole("button", { name: "Dock assistance", exact: true }).click();
+  await expect(move).toBeHidden();
+  await page.getByRole("button", { name: "Float assistance", exact: true }).click();
+  expect(await host.boundingBox()).toEqual(resized);
+  await page.reload();
+  await page.getByRole("button", { name: /Ask Parallax/ }).click();
+  expect(await host.boundingBox()).toEqual(resized);
+  const afterCanvas = (await canvas.boundingBox())!;
+  expect(afterCanvas.width).toBeCloseTo(beforeCanvas.width, 0);
+  expect(afterCanvas.height).toBeCloseTo(beforeCanvas.height, 0);
+  expect(await listSpatialItems(account.id)).toEqual(sceneBefore);
+  for (const size of [
+    { width: 390, height: 844 },
+    { width: 844, height: 390 },
+  ]) {
+    await page.setViewportSize(size);
+    await expect
+      .poll(async () => {
+        const box = (await host.boundingBox())!;
+        return box.x >= 0 && box.y >= 0 && box.x + box.width <= size.width && box.y + box.height <= size.height;
+      })
+      .toBe(true);
+    await assertComposer();
+    await page.screenshot({ path: `${root}/floating-constrained-${size.width}x${size.height}.png` });
+  }
+  await writeFile(
+    `${root}/floating-observations.json`,
+    JSON.stringify({ candidate: process.env.PARALLAX_A1_SOURCE_SHA, initial, moved, resized, observations }, null, 2),
+  );
+});
+
 test("Admiralty daily chart selects actual request and cost projections with empty and populated states", async ({
   page,
   context,

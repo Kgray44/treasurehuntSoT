@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Changelog
@@ -17,6 +17,8 @@ last_reviewed: 2026-10-11
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.
 
 ### Corrected
+
+- Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.
 
 - Parallax owner refinements apply light appearance to the entire Spatial Studio and preview environment, use blue assistance, preserve scene dimensions when docking and expose populated mode-dependent workspace sections. Admiralty adds selectable daily request/cost charts and exact UTC tables. Authorized synthetic comparisons refine server instructions while retaining Luna low as the standard, explicit review and shared Windows credential support. [Refinement evidence](Development_Docs/Projects/Project_Parallax/Parallax_A1_Visual_Refinements.md) keeps software qualification and owner visual acceptance separate.
 

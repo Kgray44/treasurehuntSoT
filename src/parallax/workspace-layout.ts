@@ -30,6 +30,14 @@ export const workspaceLayoutSchema = z.strictObject({
   bottomTab: z.enum(["TIMELINE", "SIMULATION", "DIAGNOSTICS", "EVENTS"]),
   expandedInspector: z.array(z.enum(inspectorSections)).max(inspectorSections.length),
   assistantDocked: z.boolean(),
+  assistantWindow: z
+    .strictObject({
+      x: z.number().int().min(0).max(100000),
+      y: z.number().int().min(0).max(100000),
+      width: z.number().int().min(1).max(100000),
+      height: z.number().int().min(1).max(100000),
+    })
+    .optional(),
 });
 export type WorkspaceLayout = z.infer<typeof workspaceLayoutSchema>;
 export function workspacePreset(preset: WorkspaceLayout["preset"], previous?: WorkspaceLayout): WorkspaceLayout {
