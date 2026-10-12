@@ -45,7 +45,9 @@ export async function GET(request?: Request) {
     try {
       photoMetadata = { photos: await listRoomPhotoPermissions(session.accountId, spatialId.parse(definitionId)) };
     } catch {
-      return NextResponse.json({ error: "This owned room could not be opened." }, { status: 403, headers });
+      // New unsaved scenes have no media grants yet. Readiness still permits
+      // the ordinary prepare/save step before importing their first image.
+      photoMetadata = { photos: [] };
     }
   }
   try {
