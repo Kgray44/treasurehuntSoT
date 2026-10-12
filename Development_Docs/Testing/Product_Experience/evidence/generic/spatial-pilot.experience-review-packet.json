@@ -203,7 +203,7 @@
       ]
     }
   },
-  "sourceDigest": "8102b782bad8dab20b665832d5f1b939c0bbe9bab9a0b54b53cf963610791c74",
+  "sourceDigest": "09b96928fd15f7a2f10a8b4dac2e40a91896e80d73aa963c8c132e686a48833b",
   "artifacts": [
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
@@ -220,7 +220,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3.png",
-      "sha256": "1a0068d90ae46c758f9bfcf0143c9c2d05bbd97750de409af042179478c6ad91",
+      "sha256": "ddfd4d85385a19422529106f14df399ffc0cce40c9e7c2fcf3523d4b5c216c04",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -232,7 +232,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5.png",
-      "sha256": "4653e8ff95f5124fc18ba86255b64d9b968b565b8bc82af33e930561cd5f5f98",
+      "sha256": "671fa6f5c7502a14877c9104047b180f5c76cd7059b979b264ab21db8e9bd403",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -256,7 +256,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL.trace.zip",
-      "sha256": "73c44f4792c513088b008df6dc8e48c4da68644f2004a2638b8ae608e44acb49",
+      "sha256": "4df8d67897957afa3e7b56aa223506578819184d48bc69fb60d6c99bff7286c2",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -266,8 +266,8 @@
     },
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c11fe928044245ecb73f19d231d2eb8b.webm",
-      "sha256": "f93e53c685731fd71d5beca8e5720cfcf26cdc7c6f83cb49c8a02d515747fcdc",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/2fb6c1134092ffbc7a7079878040efbe.webm",
+      "sha256": "abeeea0f90fbff4bbae0f7ed289b076164c5e84da6429684442716c6c8762294",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -290,7 +290,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3.png",
-      "sha256": "21857f1c3b389ab65131c64909f1aae0c0b138f4960f2260b6a60544ebd996de",
+      "sha256": "3c094cc27d809fcaa181b3be257b562fb45a91841d8f48e51b64c6d0c9ad03ad",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -302,7 +302,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5.png",
-      "sha256": "7b77db5efcbf76e143aac28bd55cd92af56269c673de0a95bbe92c5b58a28e97",
+      "sha256": "7028394fbd69df15dc6b885eb58d2f65fb5b56e865d00ddf33a149a884039948",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -326,7 +326,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED.trace.zip",
-      "sha256": "faf52cb89288fc8563183f75655ff44fe7634b1233fa1845e041c4afbfa8052a",
+      "sha256": "c598b50f65c409beea15e08719fefb4cc3fbe38a261afeb736e051de2b689cd0",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -336,8 +336,8 @@
     },
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/411f7bcd519bbc56f6fb252c25712715.webm",
-      "sha256": "3c371bd6a75df8f98fc4e52872f9a4d4565fd592fb7d4e7870578056c9fcef58",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/113a437aef7adf76f0d3078e0b368951.webm",
+      "sha256": "0e677e9e392b2206535f884327c8531436f82ed7f35d44f93f8a13f91e368121",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -360,7 +360,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3.png",
-      "sha256": "58d41dc197a5e1004b598879279786264138bb3f02340fba2d2f1a931a30f234",
+      "sha256": "d48bd04a52ae9b74b4a045bc2dfbbc03b0a2a1f32e7be3e12be29de6510084b2",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -372,7 +372,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-5.png",
-      "sha256": "309d2b375f038166181eca81e1c4aca55a9a305ad1f26146755645190a00a0d6",
+      "sha256": "ee230012c62dbdf6426d6d5511ba6a09a2f8eb22ce54341a5a49f376c14b0c15",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -396,7 +396,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL.trace.zip",
-      "sha256": "8ac6182d09ac092e99b8b003b60ef9f3237347fcfe75daa3641aae0496be9aca",
+      "sha256": "7a11581405a73acc60267a4ee1f1949d199ac886199821c7d5066929aaed1cd7",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -406,8 +406,8 @@
     },
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7dcb15824d4b94b6213497ffa51512cc.webm",
-      "sha256": "e4a322c5b4b7b028d3c5bf425ca6b76fe78f8ca988df76d6dacbbd46f25ddb1c",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/919516e1171db303f1ad8fc316acfff8.webm",
+      "sha256": "e5f7a8e33363ddc449f3b4c0e52ee2d23487492f4228f3324242cb2743803eaf",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -430,7 +430,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_READY-3.png",
-      "sha256": "b745eeed390fb9c3862c604b6fa253b4c8c97204adc05c243b4af51eade61314",
+      "sha256": "dbba65ea69653719e85a11fe605c0cb063f7790ce3219fa91118a21ea01b1850",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -442,7 +442,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_DOCKED-5.png",
-      "sha256": "f07425284741999b25bbe5852b7488f35e14cd0ec768c6bf040a14488325ce40",
+      "sha256": "0fd9dee0adff9d410089023e9cc644449d7e62ba133bbb836d80e2b6361817c6",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -466,7 +466,7 @@
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED.trace.zip",
-      "sha256": "ae558d655e2db5bd92b529ae98e41e5f5a6f3fdab560bcb462854b1e31ce7af8",
+      "sha256": "de766e0f1c1078ba0c0a2c2a1c9915b6a4a13dbce674f7943cc13c0aed46cd97",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -476,8 +476,8 @@
     },
     {
       "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/169c5e63dea922943af2014591d4c586.webm",
-      "sha256": "18a8ee2f09d6ae7de9441eea2f92c06fab295c72b5dafd5f225cfc816964411c",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/23ffa9dedd015e223ad4d1135cbc3c04.webm",
+      "sha256": "6ba64c70f709bec3231eeac713587be31111a0588f6d1eef2186db0e4296887c",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "spatial-pilot.experience",
@@ -486,7 +486,7 @@
       "motionMode": "REDUCED"
     }
   ],
-  "packetDigest": "a92a8c59e068c1f78f9df470d512ba595b4a710b4465d2c168cf1dd4a5ce928a",
+  "packetDigest": "8938722362a242b546901922bed9d68a5e9c35bf4ac74aed378b13555da4b05e",
   "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
   "reviewDimensions": [
     "composition",
