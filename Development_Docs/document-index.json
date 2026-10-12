@@ -1035,6 +1035,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/phase4-followup-r1-credential-verification.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/phase4-followup-r1-fixture-verification.json",
       "record_type": "engineering-record",
       "status": "current",

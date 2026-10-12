@@ -47,6 +47,14 @@ tests or a capture. The first R1 fixture repair is `c758d541`; its isolated
 passed on `ac536fda`, preserving the same persisted and published Tale slug.
 The exact nonce database was removed and the previous plan restored.
 
+Initial preparation also binds the synthetic persona to a public fixture-only
+password behind those unchanged guards, so ordinary role setup needs no arbitrary
+environment credential resolver. The
+[changed-fixture check](../Development_Docs/Engineering/Sextant/phase4-followup-r1-credential-verification.json)
+passed at `99c60ff4`, verifying both the persisted slug and canonical password hash.
+Retain the earlier slug receipt at its original source; neither check claims
+rendered sign-in. Reach's labelled-password handoff remains required.
+
 The [shared-consumer design preparation](../Development_Docs/Engineering/Sextant/phase4-shared-consumer-design-r1.json)
 maps all 141 currently uncovered surfaces to 13 explicit families and contains
 11 proposed natural account journeys. These are not registered or captured;
